@@ -9,7 +9,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import appeng.api.implementations.ICraftingPatternItem;
+import appeng.items.misc.ItemEncodedPattern;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -27,10 +27,12 @@ public class MTEHatchPatternProvider extends MTEHatchInputBus {
             GTTooltipHandler.Tier.LV.ordinal(),
             getSlots(),
             new String[] { "Holds patterns for the Large Molecular Assembler (LMA)." });
+        this.disableSort = true;
     }
 
     public MTEHatchPatternProvider(String name, int slots, String[] description, ITexture[][][] textures) {
         super(name, GTTooltipHandler.Tier.LV.ordinal(), slots, description, textures);
+        this.disableSort = true;
     }
 
     @Override
@@ -55,9 +57,14 @@ public class MTEHatchPatternProvider extends MTEHatchInputBus {
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack itemStack) {
-        final var isValidSlot = super.isValidSlot(index);
-        final var itemValid = itemStack.getItem() instanceof ICraftingPatternItem;
-        return isValidSlot && itemValid;
+        if (itemStack == null) return false;
+
+        return super.isValidSlot(index) && itemStack.getItem() instanceof ItemEncodedPattern pat
+            && pat.getPatternForItem(
+                itemStack,
+                this.getBaseMetaTileEntity()
+                    .getWorld())
+                .isCraftable();
     }
 
     @Override

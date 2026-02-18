@@ -3,13 +3,12 @@ package gregtech.common.gui.modularui.hatch;
 import java.util.Arrays;
 
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
-import appeng.items.misc.ItemEncodedPattern;
 import gregtech.api.util.StringUtils;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
@@ -20,13 +19,20 @@ public class MTEHatchPatternProviderGui extends MTEHatchBaseGui<MTEHatchPatternP
         super(hatch);
     }
 
-    int rowSize() {
-        return 9;
+    @Override
+    protected boolean supportsLeftCornerFlow() {
+        return false;
     }
 
+    @Override
+    protected boolean supportsRightCornerFlow() {
+        return false;
+    }
+
+    private static final int ROW_SIZE = 9;
+
     int numRows() {
-        final var rowSize = this.rowSize();
-        return this.hatch.getSizeInventory() / rowSize;
+        return this.hatch.getSizeInventory() / ROW_SIZE;
     }
 
     private final int BUTTON_SIZE = 18;
@@ -37,36 +43,30 @@ public class MTEHatchPatternProviderGui extends MTEHatchBaseGui<MTEHatchPatternP
     }
 
     @Override
-    protected int getBasePanelWidth() {
-        return super.getBasePanelWidth() + Math.max(0, BUTTON_SIZE * (this.rowSize() - 9));
-    }
-
-    @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-
         return super.createContentSection(panel, syncManager).child(createSlots(syncManager));
     }
 
-    protected SlotGroupWidget createSlots(PanelSyncManager syncManager) {
+    private static final String PATTERN_INV_NAME = "pattern_inv";
 
-        final int rowSize = this.rowSize();
-        final int numRows = this.numRows();
-        syncManager.registerSlotGroup("item_inv", rowSize);
+    private SlotGroupWidget createSlots(PanelSyncManager syncManager) {
+        final var numRows = this.numRows();
+        syncManager.registerSlotGroup(PATTERN_INV_NAME, numRows);
 
         String[] matrix = new String[numRows];
-        String repeat = StringUtils.getRepetitionOf('s', rowSize);
+        String repeat = StringUtils.getRepetitionOf('s', ROW_SIZE);
         Arrays.fill(matrix, repeat);
+
         return SlotGroupWidget.builder()
             .matrix(matrix)
             .key(
                 's',
-                index -> new ItemSlot().slot(
-                    new ModularSlot(hatch.inventoryHandler, index).slotGroup("item_inv")
-                        .filter(is -> is.getItem() instanceof ItemEncodedPattern)))
+                index -> new PatternSlot().slot(
+                    new ModularSlot(hatch.inventoryHandler, index)
+                        .filter(itemStack -> hatch.isItemValidForSlot(index, itemStack))
+                        .slotGroup(PATTERN_INV_NAME)))
             .build()
             .coverChildren()
-            .marginTop((BUTTON_SIZE / 2) * (4 - numRows))
-            .horizontalCenter();
+            .alignX(Alignment.CENTER);
     }
-
 }

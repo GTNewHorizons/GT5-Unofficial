@@ -55,20 +55,16 @@ public class InputBusInventoryProxy implements IInventory {
             totalSlotNum += input.getSizeInventory();
 
             slotIndexCache.add(new SlotMapEntry(startSlot, totalSlotNum - 1));
-            System.out.printf("inventory cache (%d-%d)->%d\n", startSlot, totalSlotNum - 1, i);
         }
         totalSlotCountCache = totalSlotNum;
-        System.out.printf("updated cache (%d slots)\n", totalSlotCountCache);
     }
 
     @Nullable
     private Pair<Integer, Integer> getIndexAndRelativeSlot(int slot) {
         final var idx = Collections.binarySearch(slotIndexCache, new SlotMapEntry(slot, slot));
         if (idx >= 0) {
-            // System.out.printf("found slot %d at idx %d offset %d\n", slot, entry.index, slot - entry.startSlot);
             return Pair.of(idx, slot - slotIndexCache.get(idx).startSlot);
         } else {
-            // System.out.printf("slot %d not found\n", slot);
             return null;
         }
     }
@@ -80,7 +76,6 @@ public class InputBusInventoryProxy implements IInventory {
 
     @Override
     public ItemStack getStackInSlot(int slotIn) {
-        // System.out.printf("Getting slot %d\n", slotIn);
         Pair<Integer, Integer> idxSlot = getIndexAndRelativeSlot(slotIn);
         if (idxSlot == null) {
             return null;
@@ -92,7 +87,6 @@ public class InputBusInventoryProxy implements IInventory {
 
     @Override
     public ItemStack decrStackSize(int index, int count) {
-        // System.out.printf("decr slot %d by %d\n", index, count);
         Pair<Integer, Integer> idxSlot = getIndexAndRelativeSlot(index);
         if (idxSlot == null) {
             return null;
@@ -104,7 +98,6 @@ public class InputBusInventoryProxy implements IInventory {
 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
-        // System.out.printf("setting slot %d\n", index);
         Pair<Integer, Integer> idxSlot = getIndexAndRelativeSlot(index);
         if (idxSlot == null) {
             return;
@@ -116,9 +109,8 @@ public class InputBusInventoryProxy implements IInventory {
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
-        System.out.printf("is valid for slot %d\n", index);
         Pair<Integer, Integer> idxSlot = getIndexAndRelativeSlot(index);
-        if (idxSlot == null) {
+        if (idxSlot == null || stack == null) {
             return false;
         }
 
