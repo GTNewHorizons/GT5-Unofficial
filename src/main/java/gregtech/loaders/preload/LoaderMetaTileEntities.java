@@ -44,7 +44,6 @@ import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
-import gregtech.common.tileentities.machines.*;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GTValues;
@@ -104,6 +103,15 @@ import gregtech.common.tileentities.generators.MTENaquadahReactor;
 import gregtech.common.tileentities.generators.MTEPlasmaGenerator;
 import gregtech.common.tileentities.generators.MTESolarGenerator;
 import gregtech.common.tileentities.generators.MTESteamTurbine;
+import gregtech.common.tileentities.machines.MTEBasicHullBronze;
+import gregtech.common.tileentities.machines.MTEBasicHullBronzeBricks;
+import gregtech.common.tileentities.machines.MTEBasicHullSteel;
+import gregtech.common.tileentities.machines.MTEBasicHullSteelBricks;
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
+import gregtech.common.tileentities.machines.MTEHatchInputBusME;
+import gregtech.common.tileentities.machines.MTEHatchInputME;
+import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 import gregtech.common.tileentities.machines.basic.MTEAdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;

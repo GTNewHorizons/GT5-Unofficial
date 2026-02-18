@@ -713,6 +713,11 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
+    public ItemStack getCrafterIcon() {
+        return this.getMachineCraftingIcon();
+    }
+
+    @Override
     public int rows() {
         // slots/9, rounded up
         return (inventoryProxy.getSizeInventory() + 8) / 9;
@@ -733,14 +738,18 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         return inventoryProxy;
     }
 
-    @Override
     public String getName() {
-        return "LMA (FIXME: LOCALIZE)";
+        final var crafterIcon = getCrafterIcon();
+        if (crafterIcon != null) {
+            return crafterIcon.getDisplayName();
+        } else {
+            return getLocalName();
+        }
     }
 
     @Override
     public TileEntity getTileEntity() {
-        return null;
+        return (TileEntity) getBaseMetaTileEntity();
     }
 
     @Override
