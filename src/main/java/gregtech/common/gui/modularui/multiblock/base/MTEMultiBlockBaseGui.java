@@ -143,13 +143,16 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         registerSyncValues(syncManager);
 
         ModularPanel panel = getBasePanel(guiData, syncManager, uiSettings);
-        return panel.child(
-            Flow.column()
-                .padding(borderRadius)
-                .child(createTerminalRow(panel, syncManager))
-                .childIf(multiblock.canBeMuffled(), this.createMuffleButton())
-                .child(createPanelGap(panel, syncManager))
-                .childIf(multiblock.supportsInventoryRow(), createInventoryRow(panel, syncManager)));
+        return panel.child(createMainColumn(panel, syncManager));
+    }
+
+    public Flow createMainColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return Flow.column()
+            .padding(borderRadius)
+            .child(createTerminalRow(panel, syncManager))
+            .childIf(multiblock.canBeMuffled(), this::createMuffleButton)
+            .child(createPanelGap(panel, syncManager))
+            .childIf(multiblock.supportsInventoryRow(), () -> createInventoryRow(panel, syncManager));
     }
 
     protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
@@ -205,17 +208,23 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .collapseDisabledChild())
             .childIf(
                 multiblock.supportsTerminalRightCornerColumn(),
-                createTerminalRightCornerColumn(panel, syncManager))
-            .childIf(multiblock.supportsTerminalLeftCornerColumn(), createTerminalLeftCornerColumn(panel, syncManager));
+                () -> createTerminalRightCornerColumn(panel, syncManager))
+            .childIf(
+                multiblock.supportsTerminalLeftCornerColumn(),
+                () -> createTerminalLeftCornerColumn(panel, syncManager));
     }
 
     protected Flow createTerminalRightCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return new Column().coverChildren()
             .rightRel(0, 6, 0)
             .bottomRel(0, 6, 0)
-            .childIf(multiblock.supportsShutdownReasonHoverable(), createShutdownReasonHoverableTerminal(syncManager))
-            .childIf(multiblock.supportsMaintenanceIssueHoverable(), createMaintIssueHoverableTerminal(syncManager))
-            .childIf(multiblock.supportsLogo(), makeLogoWidget(syncManager, panel));
+            .childIf(
+                multiblock.supportsShutdownReasonHoverable(),
+                () -> createShutdownReasonHoverableTerminal(syncManager))
+            .childIf(
+                multiblock.supportsMaintenanceIssueHoverable(),
+                () -> createMaintIssueHoverableTerminal(syncManager))
+            .childIf(multiblock.supportsLogo(), () -> makeLogoWidget(syncManager, panel));
     }
 
     protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
@@ -256,9 +265,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .childIf(
                 multiblock.supportsMachineModeSwitch(),
-                IKey.dynamic(
-                    () -> StatCollector
-                        .translateToLocalFormatted("gt.interact.desc.mb.mode", machineModeSyncer.getStringValue()))
+                () -> IKey
+                    .dynamic(
+                        () -> StatCollector
+                            .translateToLocalFormatted("gt.interact.desc.mb.mode", machineModeSyncer.getStringValue()))
                     .asWidget()
                     .marginBottom(2)
                     .widthRel(1))
@@ -273,7 +283,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .widthRel(1))
             .childIf(
                 multiblock.hasRunningText(),
-                new TextWidget<>(StatCollector.translateToLocalFormatted("gt.interact.desc.mb.running"))
+                () -> new TextWidget<>(StatCollector.translateToLocalFormatted("gt.interact.desc.mb.running"))
                     .color(Color.WHITE.main)
                     .setEnabledIf(widget -> multiblock.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
                     .marginBottom(2)
@@ -281,9 +291,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .child(createShutdownDurationWidget(syncManager))
             .child(createShutdownReasonWidget(syncManager))
             .child(createRecipeResultWidget())
-            .childIf(multiblock.showRecipeTextInGUI(), createRecipeInfoTextWidget(syncManager))
+            .childIf(multiblock.showRecipeTextInGUI(), () -> createRecipeInfoTextWidget(syncManager))
 
-            .childIf(multiblock.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
+            .childIf(multiblock.showRecipeTextInGUI(), () -> createRecipeInfoWidget(syncManager));
     }
 
     protected IWidget createShutdownDurationWidget(PanelSyncManager syncManager) {
@@ -553,9 +563,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     private FluidDisplayWidget createFluidDrawable(FluidStack fluidStack) {
         return new FluidDisplayWidget().background(IDrawable.EMPTY)
-            .displayAmount(false)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
-            .fluid(fluidStack)
+            .displayAmount(false)
+            .value(fluidStack)
             .size(DISPLAY_ROW_HEIGHT - 1)
             .marginRight(2);
     }
@@ -622,21 +632,22 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         return new Row().coverChildrenWidth()
             .heightRel(1)
-            .childIf(shouldDisplayVoidExcess(), createVoidExcessButton(syncManager))
-            .childIf(shouldDisplayInputSeparation(), createInputSeparationButton(syncManager))
-            .childIf(shouldDisplayBatchMode(), createBatchModeButton(syncManager))
-            .childIf(shouldDisplayRecipeLock(), createLockToSingleRecipeButton(syncManager))
-            .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager));
+            .childIf(shouldDisplayVoidExcess(), () -> createVoidExcessButton(syncManager))
+            .childIf(shouldDisplayInputSeparation(), () -> createInputSeparationButton(syncManager))
+            .childIf(shouldDisplayBatchMode(), () -> createBatchModeButton(syncManager))
+            .childIf(shouldDisplayRecipeLock(), () -> createLockToSingleRecipeButton(syncManager))
+            .childIf(!machineModeIcons.isEmpty(), () -> createModeSwitchButton(syncManager));
     }
 
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         return Flow.row()
             .mainAxisAlignment(MainAxis.END)
+            .crossAxisAlignment(Alignment.CrossAxis.CENTER)
             .reverseLayout(true)
             .align(Alignment.CenterRight)
             .coverChildrenWidth()
             .heightRel(1)
-            .childIf(multiblock.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
+            .childIf(multiblock.supportsPowerPanel(), () -> createPowerPanelButton(syncManager, parent));
     }
 
     protected boolean shouldDisplayVoidExcess() {
@@ -907,10 +918,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler powerPanel = syncManager
-            .panel("powerPanel", (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, parent), true);
+        IPanelHandler powerPanel = syncManager.syncedPanel(
+            "powerPanel",
+            true,
+            (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, parent));
         return new ButtonWidget<>().size(18, 18)
-            .marginTop(4)
             .marginLeft(4)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_panel"))
             .onMousePressed(d -> {
@@ -1118,7 +1130,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .alignX(0)
             .childIf(
                 multiblock.doesBindPlayerInventory(),
-                SlotGroupWidget.playerInventory(false)
+                () -> SlotGroupWidget.playerInventory(false)
                     .marginLeft(4))
             .child(createButtonColumn(panel, syncManager));
     }
@@ -1131,13 +1143,14 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .reverseLayout(true)
             .childIf(
                 multiblock.doesBindPlayerInventory(),
-                new ItemSlot().slot(new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()) {
+                () -> new ItemSlot()
+                    .slot(new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()) {
 
-                    @Override
-                    public int getSlotStackLimit() {
-                        return multiblock.getInventoryStackLimit();
-                    }
-                }.slotGroup("item_inv"))
+                        @Override
+                        public int getSlotStackLimit() {
+                            return multiblock.getInventoryStackLimit();
+                        }
+                    }.slotGroup("item_inv"))
                     .marginTop(4))
             .child(createPowerSwitchButton())
             .child(createStructureUpdateButton(syncManager));
@@ -1162,10 +1175,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected void registerSyncValues(PanelSyncManager syncManager) {
         syncManager.syncValue(
             "errors",
-            new GenericSyncValue<EnumSet<StructureError>>(
-                multiblock::getStructureErrors,
-                multiblock::setStructureErrors,
-                new StructureErrorAdapter()));
+            GenericSyncValue.<EnumSet<StructureError>>rawTypeBuilder(EnumSet.class)
+                .getter(multiblock::getStructureErrors)
+                .setter(multiblock::setStructureErrors)
+                .adapter(new StructureErrorAdapter())
+                .build());
         syncManager
             .syncValue("errorID", new IntSyncValue(multiblock::getErrorDisplayID, multiblock::setErrorDisplayID));
         syncManager.syncValue(
@@ -1205,10 +1219,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             () -> (multiblock.getTotalRunTime() - multiblock.getLastWorkingTick()) / 20);
         syncManager.syncValue("shutdownDuration", shutdownDurationSyncer);
 
-        GenericSyncValue<ShutDownReason> shutdownReasonSyncer = new GenericSyncValue<ShutDownReason>(
-            baseMetaTileEntity::getLastShutDownReason,
-            baseMetaTileEntity::setShutDownReason,
-            new ShutdownReasonAdapter());
+        GenericSyncValue<ShutDownReason> shutdownReasonSyncer = GenericSyncValue.builder(ShutDownReason.class)
+            .getter(baseMetaTileEntity::getLastShutDownReason)
+            .setter(baseMetaTileEntity::setShutDownReason)
+            .adapter(new ShutdownReasonAdapter())
+            .build();
         syncManager.syncValue("shutdownReason", shutdownReasonSyncer);
 
         syncManager.syncValue(
@@ -1225,10 +1240,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .getKey()));
         syncManager.syncValue(
             "checkRecipeResult",
-            new GenericSyncValue<CheckRecipeResult>(
-                multiblock::getCheckRecipeResult,
-                multiblock::setCheckRecipeResult,
-                new CheckRecipeResultAdapter()));
+            GenericSyncValue.builder(CheckRecipeResult.class)
+                .getter(multiblock::getCheckRecipeResult)
+                .setter(multiblock::setCheckRecipeResult)
+                .adapter(new CheckRecipeResultAdapter())
+                .build());
         syncManager.syncValue(
             "fluidOutput",
             new GenericListSyncHandler<FluidStack>(

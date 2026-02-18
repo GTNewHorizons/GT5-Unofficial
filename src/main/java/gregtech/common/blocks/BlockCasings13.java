@@ -10,6 +10,8 @@ import gregtech.api.enums.Textures;
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
 public class BlockCasings13 extends BlockCasingsAbstract {
 
@@ -25,6 +27,7 @@ public class BlockCasings13 extends BlockCasingsAbstract {
         register(7, ItemList.FieldEnergyAbsorberCasing, "Field Energy Absorber Casing");
         register(8, ItemList.LoadbearingDistributionCasing, "Loadbearing Distribution Casing");
         register(9, ItemList.NaniteFramework, "Nanite Replication Framework");
+
     }
 
     @Override

@@ -35,6 +35,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
@@ -54,7 +55,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                             werkstoff.getStats()
                                 .getMass() * 5L,
                             1L))
-                    .eut(16)
+                    .eut(TierEU.RECIPE_LV / 2)
                     .addTo(latheRecipes);
 
                 GTModHandler.addCraftingRecipe(
@@ -74,7 +75,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                             werkstoff.getStats()
                                 .getMass(),
                             1L))
-                    .eut(16)
+                    .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
 
                 TextureSet texSet = werkstoff.getTexSet();
@@ -82,9 +83,8 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                     ? TextureFactory.of(
                         texSet.mTextures[PrefixTextureLinker.blockTexMap
                             .getOrDefault(texSet, (short) block.getTextureIndex())],
-                        werkstoff.getRGBA(),
-                        false)
-                    : TextureFactory.of(texSet.mTextures[block.getTextureIndex()], werkstoff.getRGBA(), false);
+                        werkstoff.getRGBA())
+                    : TextureFactory.of(texSet.mTextures[block.getTextureIndex()], werkstoff.getRGBA());
                 CoverRegistry.registerDecorativeCover(werkstoff.get(plate), texture);
 
                 return;
@@ -127,12 +127,12 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         werkstoff.getStats()
                             .getMass(),
                         1L))
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(hammerRecipes);
 
             CoverRegistry.registerDecorativeCover(
                 werkstoff.get(plate),
-                TextureFactory.of(werkstoff.getTexSet().mTextures[71], werkstoff.getRGBA(), false));
+                TextureFactory.of(werkstoff.getTexSet().mTextures[71], werkstoff.getRGBA()));
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot))
@@ -142,7 +142,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         werkstoff.getStats()
                             .getMass() * 5L,
                         1L))
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(latheRecipes);
 
             if (werkstoff != WerkstoffLoader.Fluorophlogopite) {
@@ -179,7 +179,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         werkstoff.getStats()
                             .getMass(),
                         1L))
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(hammerRecipes);
 
             GTValues.RA.stdBuilder()
