@@ -101,9 +101,8 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGui<MTEE
     private class PreserveWeaponButton extends KubaCycleButtonWidget {
 
         protected PreserveWeaponButton(PanelSyncManager syncManager) {
-            super();
-            this.baseDynamicOverlay(() -> _yesNo(mPreserveWeapon, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF))
-                .size(18, 18)
+            super(() -> _yesNo(mPreserveWeapon, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF));
+            this.size(18, 18)
                 .syncHandler(mPreserveWeapon_name)
                 .length(2)
                 .tooltipBuilder(this::createTooltip);
@@ -122,9 +121,8 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGui<MTEE
     private class CycleWeaponsButton extends KubaCycleButtonWidget {
 
         protected CycleWeaponsButton(PanelSyncManager syncManager) {
-            super();
-            this.baseDynamicOverlay(() -> _yesNo(mCycleWeapons, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF))
-                .size(18, 18)
+            super(() -> _yesNo(mCycleWeapons, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF));
+            this.size(18, 18)
                 .syncHandler(mCycleWeapons_name)
                 .length(2)
                 .tooltipBuilder(this::createTooltip);
@@ -146,10 +144,8 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGui<MTEE
     private class VoidDamagedAndEnchantedButton extends KubaCycleButtonWidget {
 
         protected VoidDamagedAndEnchantedButton(PanelSyncManager syncManager) {
-            super();
-            this.baseDynamicOverlay(
-                () -> _yesNo(voidAllDamagedAndEnchantedItems, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF))
-                .size(18, 18)
+            super(() -> _yesNo(voidAllDamagedAndEnchantedItems, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF));
+            this.size(18, 18)
                 .syncHandler(voidAllDamagedAndEnchantedItems_name)
                 .length(2)
                 .tooltipBuilder(this::createTooltip);
@@ -171,9 +167,8 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGui<MTEE
     private class allowInfernalDropButton extends KubaCycleButtonWidget {
 
         protected allowInfernalDropButton(PanelSyncManager syncManager) {
-            super();
-            this.baseDynamicOverlay(() -> _yesNo(mIsProducingInfernalDrops, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF))
-                .size(18, 18)
+            super(() -> _yesNo(mIsProducingInfernalDrops, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF));
+            this.size(18, 18)
                 .syncHandler(mIsProducingInfernalDrops_name)
                 .length(2)
                 .tooltipBuilder(this::createTooltip);
@@ -195,9 +190,8 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGui<MTEE
     private class RitualModeButton extends KubaCycleButtonWidget {
 
         protected RitualModeButton(PanelSyncManager syncManager) {
-            super();
-            this.baseDynamicOverlay(() -> _yesNo(isInRitualMode, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF))
-                .size(18, 18)
+            super(() -> _yesNo(isInRitualMode, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF));
+            this.size(18, 18)
                 .syncHandler(isInRitualMode_name)
                 .length(2)
                 .tooltipBuilder(this::createTooltip);

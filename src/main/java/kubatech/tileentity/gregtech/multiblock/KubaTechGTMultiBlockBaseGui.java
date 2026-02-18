@@ -2,23 +2,31 @@ package kubatech.tileentity.gregtech.multiblock;
 
 import static com.cleanroommc.modularui.drawable.UITexture.fullImage;
 
+import java.util.function.Supplier;
+
 import net.minecraft.util.StatCollector;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import kubatech.Tags;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
-import kubatech.tileentity.gregtech.multiblock.modularui2.LockableCycleButtonWidget;
 
-public abstract class KubaTechGTMultiBlockBaseGui<T extends KubaTechGTMultiBlockBase<T>> extends MTEMultiBlockBaseGui<T> {
+public abstract class KubaTechGTMultiBlockBaseGui<T extends KubaTechGTMultiBlockBase<T>>
+    extends MTEMultiBlockBaseGui<T> {
 
     public final String KUBA_RUNNING = "kuba_running";
     public final BooleanSyncValue isRunning = new BooleanSyncValue(() -> multiblock.mMaxProgresstime > 0);
@@ -33,19 +41,23 @@ public abstract class KubaTechGTMultiBlockBaseGui<T extends KubaTechGTMultiBlock
         syncManager.syncValue(KUBA_RUNNING, isRunning);
     }
 
-    public class KubaCycleButtonWidget extends LockableCycleButtonWidget {
+    public class KubaCycleButtonWidget extends CycleButtonWidget {
 
-        @Override
+        public KubaCycleButtonWidget(Supplier<IDrawable> supplier) {
+            IDrawable baseOverlay = new DynamicDrawable(supplier);
+            this.overlay(new DynamicDrawable(() -> {
+                if (isLocked()) return new DrawableStack(baseOverlay, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
+                return baseOverlay;
+            }));
+        }
+
         public boolean isLocked() {
             return isRunning.getValue();
         }
 
-        protected IKey getTranslationMode() {
-            return IKey.dynamic(() -> {
-                if (isLocked()) return StatCollector.translateToLocal("GT5U.gui.button.forbidden_while_running");
-                // else return StatCollector.translateToLocal("GT5U.gui.button.mode_switch");
-                else return "";
-            });
+        public @NotNull Result onMousePressed(int mouseButton) {
+            if (isLocked()) return Result.IGNORE;
+            return super.onMousePressed(mouseButton);
         }
 
         private IKey getDynamicFromI18nKey(String key) {
