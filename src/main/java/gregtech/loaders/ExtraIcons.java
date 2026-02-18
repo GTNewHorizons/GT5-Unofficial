@@ -20,6 +20,7 @@ public class ExtraIcons {
     public static IIcon iridiumLargeCellInner;
     public static IIcon osmiumLargeCellInner;
     public static IIcon neutroniumLargeCellInner;
+    public static IIcon circuitComponentOverlay;
 
     // Modular Augments
     public static IIcon nightVisionAugment;
@@ -61,6 +62,8 @@ public class ExtraIcons {
                 .registerIcon(GregTech.getResourcePath("mech_armor/chestplate/chestplate_augment_creativeflight"));
             forceFieldAugment = reg
                 .registerIcon(GregTech.getResourcePath("mech_armor/chestplate/chestplate_augment_forcefield"));
+            circuitComponentOverlay = reg
+                .registerIcon(GregTech.getResourcePath("gt.circuitcomponent", "circuit_component_overlay"));
         }
     }
 }

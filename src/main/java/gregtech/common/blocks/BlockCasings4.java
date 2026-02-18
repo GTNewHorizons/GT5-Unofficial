@@ -77,4 +77,5 @@ public class BlockCasings4 extends BlockCasingsAbstract {
             default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         };
     }
+
 }

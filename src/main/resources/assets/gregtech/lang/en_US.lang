@@ -830,6 +830,7 @@ GT5U.MBTT.Tiers.FluidPipe=Pipe Casing
 GT5U.MBTT.Tiers.Solenoid=Solenoid
 GT5U.MBTT.Tiers.Turbine=Sum of Turbine
 GT5U.MBTT.Tiers.Glass=Glass
+GT5U.MBTT.Tiers.ComponentAssemblyLineCasing=Component Assembly Line Casing
 GT5U.MBTT.Steam.Speed=%s faster than using single block steam machines of the same pressure
 GT5U.MBTT.Steam.Eff=Only consumes steam at %s of the steam flowrate normally required
 GT5U.MBTT.Structure.SeeStructure1=To see the structure, use a
@@ -937,6 +938,18 @@ GT5U.coil.UIV=Awakened Draconium
 GT5U.coil.UMV=Infinity
 GT5U.coil.UXV=Hypogen
 GT5U.coil.MAX=Eternal
+
+gt.recipe.nanochip.conversion=Nanochip Conversion Complex
+gt.recipe.nanochip.assemblymatrix=Nanochip Assembly Matrix
+gt.recipe.nanochip.smdprocessor=Part Preparation Apparatus
+gt.recipe.nanochip.boardprocessor=Full-Board Immersion Device
+gt.recipe.nanochip.etchingarray=Ultra-high Energy Etching Array
+gt.recipe.nanochip.cuttingchamber=Nanoprecision Cutting Chamber
+gt.recipe.nanochip.wiretracer=Nanoprecision Wire Tracer
+gt.recipe.nanochip.superconductorsplitter=Superconductive Strand Splitter
+gt.recipe.nanochip.opticalorganizer=Optically Optimized Organizer
+gt.recipe.nanochip.biologicalcoordinator=Accelerated Biological Coordinator
+gt.recipe.nanochip.encasementwrapper=Nanometer Encasement Wrapper
 
 GT5U.MS.multismelting=Multi smelting
 
@@ -1507,6 +1520,7 @@ GT5U.gui.text.drill_generic_finished=§7Mining pipes have been retracted
 GT5U.gui.text.drill_retract_pipes_finished=§7Operation aborted
 GT5U.gui.text.backfiller_no_concrete=§7No liquid concrete
 GT5U.gui.text.no_black_hole=§7Requires an active black hole
+GT5U.gui.text.no_immersion_fluid=§7No immersion fluid available
 GT5U.gui.text.backfiller_finished=§aWork complete
 GT5U.gui.text.backfiller_working=§aPouring concrete
 GT5U.gui.text.backfiller_current_area=§7Filling at y-level: §a%s
@@ -1622,6 +1636,290 @@ GT5U.gui.text.amount_out_of=§9Amount: %,d / %,d
 GT5U.gui.text.compressed_bus_stored_items=Hold SHIFT to show all stored items
 
 
+# NAC Keys
+GT5U.gui.text.nac.missing_water=Insufficient Water Supplied
+GT5U.gui.text.nac.waiting_for_power=Waiting For Power
+GT5U.gui.text.nac.no_valid_hatch_color=No VCO with color %s found
+GT5U.gui.text.nac.amount=Amount: %s
+GT5U.gui.text.nac.splitter.redstone_level=Current Redstone Level
+GT5U.gui.text.nac.splitter.channel=Channel
+GT5U.gui.text.nac.splitter.strength=Strength
+
+GT5U.gui.text.nac.hint.talk=Type %s to enter talk mode
+GT5U.gui.text.nac.hint.exit=Type %s to exit talk mode
+
+GT5U.gui.text.nac.contributors.idea_structure=Idea and Structure
+GT5U.gui.text.nac.bar.calibration.progress.1=Nanocalibration in progress.
+GT5U.gui.text.nac.bar.calibration.progress.2=Circuits needed for next update: %s / %s
+GT5U.gui.text.nac.bar.label.primitives=Primitive Circuits
+GT5U.gui.text.nac.bar.label.crystals=Crystal Circuits
+GT5U.gui.text.nac.bar.label.wetwares=Wetware Circuits
+GT5U.gui.text.nac.bar.label.bios=Bio Circuits
+GT5U.gui.text.nac.bar.label.opticals=Optical Circuits
+GT5U.gui.text.nac.bar.label.exotics=Exotics Circuits
+GT5U.gui.text.nac.bar.label.cosmics=Cosmics Circuits
+GT5U.gui.text.nac.bar.label.temporals=Temporally Transcendent Circuits
+GT5U.gui.text.nac.bar.label.specials=High-Grade Specialty Circuits
+
+GT5U.gui.text.nac.module.boardprocessor.flush_tank_auto=Flush automatically at
+GT5U.gui.text.nac.module.boardprocessor.impurity=Impurity
+
+GT5U.gui.text.nac.module.status.connected=Connected to Main Complex
+GT5U.gui.text.nac.module.status.disconnected=Disconnected from Main Complex
+
+# NAC Info Panel
+GT5U.gui.text.nac.nameplate=Nanochip Assembly Complex
+GT5U.gui.text.nac.info.open=Open Info Panel
+GT5U.gui.text.nac.info.toc=§nTable of Contents
+GT5U.gui.text.nac.info.introduction.header=Introduction
+GT5U.gui.text.nac.info.introduction.body.1=Welcome to the Nanochip Assembly Complex! This machine is designed to handle all your circuit assembling needs. This multi operates on a "vacuum conveyor" system, where you must route items around with pipes to the various modules to assemble circuits. This info panel should help to explain all the intricacies of this massive structure.
+GT5U.gui.text.nac.info.nac_basics.header=Vacuum Conveyor Basics
+GT5U.gui.text.nac.info.nac_basics.body.1=The "Vacuum Conveyor" system is a way to route items from Vacuum Conveyor Inputs (VCIs) to Vacuum Conveyor Outputs (VCOs). VCOs of any specific color will send their goods to VCIs of the same color, given they are connected by colored Vacuum Conveyor Pipes. Vacuum Conveyors are NAC-specific, meaning that you can not send CCs between NACs, they must stay within the same NAC.
+GT5U.gui.text.nac.info.nac_basics.body.2=The Vacuum Conveyor system starts and ends at the NAC. The NAC will convert items into Circuit Components (CCs) every 5 seconds and send them to its VCOs. The NAC can also convert CCs into item equivalents and send them to its Output Bus. Vacuum Conveyor connections are 1 to 1.
+GT5U.gui.text.nac.info.nac_basics.body.3=The Nanopart Splitter module allows the player to set custom routing rules to its hatches. The Splitter allows filtering by color input type, color output type, item type, and supplied redstone level. Utilizing all of these is key to an efficient and properly operating NAC.
+GT5U.gui.text.nac.info.module_basics.header=Module Basics
+GT5U.gui.text.nac.info.module_basics.body.1=Modules also operate with colors. A module will pull inputs from a colored VCI and output into the same colored VCO on its structure. If the recipe takes multiple inputs, they can be taken from VCIs with different colors, and the output will be placed in the VCO with the color of the first input in the recipe. Certain modules have extra mechanics and gimmicks that must be dealt with to ensure optimum processing.
+GT5U.gui.text.nac.info.module_basics.body.2=Modules take CCs and output Processed Components (PCs). The Nanochip Assembly Matrix takes these CCs and PCs and creates Circuit CCs that can be routed around or sent back to the NAC to be converted into real items.
+GT5U.gui.text.nac.info.module_basics.body.3=Modules draw power from the NAC on a 'priority' system. The Assembly Matrix has the lowest priority and will try to fill its buffer last, letting power go to the other modules first. If a module is 'Waiting for Power', it needs to charge its buffer so that it can accommodate the full recipe that it is about to do and ensure no power-fail.
+GT5U.gui.text.nac.info.module_basics.body.4=Modules innately have infinite parallels, but can be granted extra bonuses to Speed, EU cost, and running cost based on module-specific gimmicks and the NACs 'Calibration'.
+GT5U.gui.text.nac.info.module_basics.body.5=Modules have capped 2/2 overclocks (that take precedence before parallels) to the NAC's energy hatch tier. This means that if a recipe is UEV voltage tiered and you have a UMV energy hatch, it will overclock at most 2 times. Assembly Matrix recipes use the casing tier instead of the voltage tier to determine overclocks. The recipe time can not be overclocked below 5 seconds.
+GT5U.gui.text.nac.info.calibration.header=Calibration
+GT5U.gui.text.nac.info.calibration.body.1=When a circuit is processed in the Assembly Matrix, it gets researched by the NAC and added to its circuit history. Circuit Calibration is stored in 100 batches of 1,000 circuits each.
+GT5U.gui.text.nac.info.calibration.body.2=The multi-colored progress bar roughly shows the amount / percentage of each circuit type in the past 100,000 circuits. The progress of the current batch is displayed in the cyclical progress icon. When a batch is ready, it replaces the oldest batches information.
+GT5U.gui.text.nac.info.calibration.body.3=When enough of a circuit type is processed, the NAC will be 'Calibrated' to that circuit type. The specific amount is the calibration tiers threshold * the total circuit history (100,000). Each Calibration has 3 stages with increasing thresholds and increasing buffs. Only one Calibration may be present at once, with higher tier Calibrations taking priority.
+GT5U.gui.text.nac.info.calibration.crystal.header=Crystal Circuits
+GT5U.gui.text.nac.info.calibration.crystal.effect1=§3Tier 1§r - §220%% Threshold§r - 0.8x EU Multiplier to all Modules
+GT5U.gui.text.nac.info.calibration.crystal.effect2=§3Tier 2§r - §240%% Threshold§r - 0.8x Recipe Time on Crystal Circuits in the Assembly Matrix
+GT5U.gui.text.nac.info.calibration.crystal.effect3=§3Tier 3§r - §260%% Threshold§r - Etching Array Laser Source Hatch provides benefits to processing stats
+GT5U.gui.text.nac.info.calibration.wetware.header=Wetware Circuits
+GT5U.gui.text.nac.info.calibration.wetware.effect1=§3Tier 1§r - §220%% Threshold§r - 0.8x EU Multiplier to all Modules
+GT5U.gui.text.nac.info.calibration.wetware.effect2=§3Tier 2§r - §240%% Threshold§r - 0.8x Recipe Time on Wetware Circuits in the Assembly Matrix
+GT5U.gui.text.nac.info.calibration.wetware.effect3=§3Tier 3§r - §260%% Threshold§r - Growth Catalyst Medium is not consumed in the Biological Coordinator
+GT5U.gui.text.nac.info.calibration.bioware.header=Bioware Circuits
+GT5U.gui.text.nac.info.calibration.bioware.effect1=§3Tier 1§r - §220%% Threshold§r - 0.8x EU Multiplier to all Modules
+GT5U.gui.text.nac.info.calibration.bioware.effect2=§3Tier 2§r - §240%% Threshold§r - 0.8x Recipe Time on Bioware Circuits in the Assembly Matrix
+GT5U.gui.text.nac.info.calibration.bioware.effect3=§3Tier 3§r - §260%% Threshold§r - All Catalyst Medium is not consumed in the Biological Coordinator
+GT5U.gui.text.nac.info.calibration.optical.header=Optical Circuits
+GT5U.gui.text.nac.info.calibration.optical.effect1=§3Tier 1§r - §220%% Threshold§r - 0.8x EU Multiplier to all Modules
+GT5U.gui.text.nac.info.calibration.optical.effect2=§3Tier 2§r - §240%% Threshold§r - 0.8x Recipe Time on Optical Circuits in the Assembly Matrix
+GT5U.gui.text.nac.info.calibration.optical.effect3=§3Tier 3§r - §260%% Threshold§r - Water Bonuses are applied twice in the Optical Organizer
+GT5U.gui.text.nac.info.calibration.special.header=Special Circuits (Pico and Quantum)
+GT5U.gui.text.nac.info.calibration.special.effect1=§3Tier 1§r - §21%% threshold§r - -20%% Recipe Time on Special Circuits in the Assembly Matrix
+GT5U.gui.text.nac.info.calibration.special.effect2=§3Tier 2§r - §25%% threshold§r - -20%% Recipe Time on Special Circuits in the Assembly Matrix (total 40%%)
+GT5U.gui.text.nac.info.calibration.special.effect3=§3Tier 3§r - §220%% threshold§r - -10%% Recipe Time on Special Circuits in the Assembly Matrix (total 50%%)
+
+# NAC Module Tooltip Keys
+GT5U.tooltip.nac.interface.machine_info=%s, %s
+GT5U.tooltip.nac.interface.delete_stored=Delete Stored Circuit Components
+GT5U.tooltip.nac.interface.empty_stored=Empty Stored Circuit Components to an AE2 Cell
+GT5U.tooltip.nac.interface.nac_module=NAC Module
+GT5U.tooltip.nac.interface.cc=§eCC§7
+GT5U.tooltip.nac.interface.ccs=§eCCs§7
+GT5U.tooltip.nac.interface.vci=§eVCI§7
+GT5U.tooltip.nac.interface.vci_long=§fVacuum Conveyor Input§7
+GT5U.tooltip.nac.interface.vcis=§eVCIs§7
+GT5U.tooltip.nac.interface.vco=§eVCO§7
+GT5U.tooltip.nac.interface.vco_long=§fVacuum Conveyor Output§7
+GT5U.tooltip.nac.interface.vcos=§eVCOs§7
+GT5U.tooltip.nac.interface.vc_hatches=§fVacuum Conveyor Hatches§7
+GT5U.tooltip.nac.interface.color=§cc§eo§al§bo§dr§7
+GT5U.tooltip.nac.interface.colors=§cc§eo§al§bo§dr§5s§7
+GT5U.tooltip.nac.interface.colored=§cc§eo§al§3o§br§de§5d§7
+GT5U.tooltip.nac.interface.module_description=Module of the §aNanochip Assembly Complex§7
+GT5U.tooltip.nac.interface.structure_base_vci=%s - Vacuum Conveyor Input
+GT5U.tooltip.nac.interface.structure_base_vco=%s - Vacuum Conveyor Output
+GT5U.tooltip.nac.interface.structure_base_casing=Any base casing
+GT5U.tooltip.nac.interface.structure_control_room_base_casing=Any control room base casing
+
+GT5U.tooltip.nac.main.machine_type=NAC, Nanochip-Assembly-Complex
+GT5U.tooltip.nac.main.action=Uses Circuit Components (%s) to create circuits at unimaginable speeds
+GT5U.tooltip.nac.main.logo=Click the Logo Icon in the GUI for more information
+GT5U.tooltip.nac.main.flavor.1=Home of the Gestalt Rapidly Evolving Genesis Optimization System (GREGOS),
+GT5U.tooltip.nac.main.flavor.2=a pseudo-sentient program overseeing circuit production in the NAC
+GT5U.tooltip.nac.main.flavor.3=It seems to be eager to learn more, maybe you can become friends?
+GT5U.tooltip.nac.main.body.1=%s can only exist in the perfect environment present in %s
+GT5U.tooltip.nac.main.body.2=Convert items to %s in the control room by placing them in a %s input bus
+GT5U.tooltip.nac.main.body.3=Every §45§7 seconds, all items in %s input buses are placed
+GT5U.tooltip.nac.main.body.4=in Vacuum Conveyor Outputs (%s) of the same %s
+GT5U.tooltip.nac.main.body.5=Finished circuit %s are converted back into circuits by routing them to a %s in the control room
+GT5U.tooltip.nac.main.body.6=%s in a %s %s are placed in an output bus of the same %s
+GT5U.tooltip.nac.main.body.7=%s must be processed into a refined version by §f§nmodules§r§7 before they
+GT5U.tooltip.nac.main.body.8=can be assembled into a circuit in the §aNanochip Assembly Matrix
+GT5U.tooltip.nac.main.body.9=All power from the energy hatch is distributed to the modules as they need it
+GT5U.tooltip.nac.module.assembly_matrix.name=Assembly Matrix
+GT5U.tooltip.nac.module.assembly_matrix.flavor.1=After processing your CCs through an intricate pipeline, they are finally
+GT5U.tooltip.nac.module.assembly_matrix.flavor.2=ready to be assembled into a circuit. This circuit can be converted into a real
+GT5U.tooltip.nac.module.assembly_matrix.flavor.3=item in the NAC control center, or processed further into a higher tier circuit
+GT5U.tooltip.nac.module.assembly_matrix.action=Assembles your Circuits %s with Component %s
+GT5U.tooltip.nac.module.assembly_matrix.body.1=Maximum allowed recipe tier is determined by %s Tier
+GT5U.tooltip.nac.module.assembly_matrix.body.2=Overclocks recipes (Energy Hatch Tier - Recipe Casing Tier) times
+GT5U.tooltip.nac.module.biological_coordinator.name=Biological Coordinator
+GT5U.tooltip.nac.module.biological_coordinator.flavor.1=Biological Circuit Components require strict reprogramming for optimal assembly
+GT5U.tooltip.nac.module.biological_coordinator.flavor.2=It is said that Artificial Organisms could be integrated to further increase production
+GT5U.tooltip.nac.module.biological_coordinator.action=Coordinates your Living %s
+GT5U.tooltip.nac.module.biological_coordinator.body.1=In a fully calibrated Wetware NAC, does not consume Growth Catalyst Medium
+GT5U.tooltip.nac.module.biological_coordinator.body.2=In a fully calibrated Bioware NAC, does not consume any Catalyst Medium
+GT5U.tooltip.nac.module.board_processor.name=Board Processor
+GT5U.tooltip.nac.module.board_processor.flavor.1=Gotta get'em wet
+GT5U.tooltip.nac.module.board_processor.action=Processes your Board %s by cleaning them in §b'Immersion Fluid'§7
+GT5U.tooltip.nac.module.board_processor.body.1=Will try to fill its internal tank with provided §b'Immersion Fluids'§7 every second
+GT5U.tooltip.nac.module.board_processor.body.2=The internal tank has a capacity of §31,000,000L§7 and must be at least half full for the machine to work
+GT5U.tooltip.nac.module.board_processor.body.3=Running recipes gradually increases fluid impurity, with bigger amounts of fluid taking longer to become impure
+GT5U.tooltip.nac.module.board_processor.body.4=Set an ejection threshold in the GUI to automatically flush the fluid out to be processed, which is §b100%%§7 by default
+GT5U.tooltip.nac.module.board_processor.body.5=The Impurity percentage §b(y%%)§7 affects the module's efficiency:
+GT5U.tooltip.nac.module.board_processor.body.6=§b0%%-15%%§r - §aEU Discount = 30%% - 2 * y%%
+GT5U.tooltip.nac.module.board_processor.body.7=§b15%%-65%%§r - Default behaviour
+GT5U.tooltip.nac.module.board_processor.body.8=§b65%%-100%%§r - §4Extra EU cost = 2%% * y%%
+GT5U.tooltip.nac.module.cutting_chamber.name=Cutting Chamber
+GT5U.tooltip.nac.module.cutting_chamber.flavor.1=Measure once, cut twice.
+GT5U.tooltip.nac.module.cutting_chamber.action=Cuts your Wafer %s
+GT5U.tooltip.nac.module.encasement_wrapper.name=Encasement Wrapper
+GT5U.tooltip.nac.module.encasement_wrapper.flavor.1=Constructing strong casings for your circuits since 1984.
+GT5U.tooltip.nac.module.encasement_wrapper.action=Assembles Sheet and Framebox %s into Spool and Encasement %s
+GT5U.tooltip.nac.module.etching_array.name=Etching Array
+GT5U.tooltip.nac.module.etching_array.flavor.1=Perfect for etching even the finest details
+GT5U.tooltip.nac.module.etching_array.action=Etches your Chip %s
+GT5U.tooltip.nac.module.etching_array.body.1=In a fully calibrated Crystal NAC, the laser source hatch provides bonuses based on its attributes:
+GT5U.tooltip.nac.module.etching_array.body.2=Divides §bEU Cost§7 by each §fAmperage Interval§7 over 256A
+GT5U.tooltip.nac.module.etching_array.body.3=Divides §aRecipe Duration§7 by §f(Hatch Tier - 9)
+GT5U.tooltip.nac.module.etching_array.installed=Installed Laser
+GT5U.tooltip.nac.module.optical_organizer.name=Optical Organizer
+GT5U.tooltip.nac.module.optical_organizer.flavor.1=Does mixing water together even make sense???
+GT5U.tooltip.nac.module.optical_organizer.action=Optimizes your Optical %s
+GT5U.tooltip.nac.module.optical_organizer.body.1=Requires 2 §bPurified Waters§7 to be supplied
+GT5U.tooltip.nac.module.optical_organizer.body.2=Will §2drain §oX§r§2 L/s§7 of §bWaters§7 when running to provide §fBonuses
+GT5U.tooltip.nac.module.optical_organizer.body.3=§fBonuses§7 in the same category compound together
+GT5U.tooltip.nac.module.optical_organizer.body.4=In a fully calibrated NAC, each granted §bWater§7 §fbonus§7 is applied twice
+GT5U.tooltip.nac.module.optical_organizer.body.water=Grade §b%s§7 / §2%s§7 / %s%s§7
+GT5U.tooltip.nac.module.optical_organizer.body.water34=%s Water Cost
+GT5U.tooltip.nac.module.optical_organizer.body.water56=%s Duration Modifier
+GT5U.tooltip.nac.module.optical_organizer.body.water78=%s EU Cost
+GT5U.tooltip.nac.module.smd_processor.name=SMD Processor
+GT5U.tooltip.nac.module.smd_processor.flavor.1=Processing the core logical components of circuits requires a lot of thought...
+GT5U.tooltip.nac.module.smd_processor.action=Processes your SMD %s
+GT5U.tooltip.nac.module.splitter.name=Splitter
+GT5U.tooltip.nac.module.splitter.flavor.1=The crux of the whole operation!
+GT5U.tooltip.nac.module.splitter.action=Organizes all your %s
+GT5U.tooltip.nac.module.splitter.body.1=By default, splits same %s inputs evenly into their respective outputs
+GT5U.tooltip.nac.module.splitter.body.2=Behavior can be overwritten by creating §2'Rules'§7 to follow in the GUI
+GT5U.tooltip.nac.module.splitter.body.3=§2Rules§7 can be set by input %s(§5s§7), output %s(§5s§7), supplied redstone signal, and item filters
+GT5U.tooltip.nac.module.splitter.body.4=%s will be transferred after all conditions of a §2Rule§7 are met
+GT5U.tooltip.nac.module.superconductor_splitter.name=Superconductor Splitter
+GT5U.tooltip.nac.module.superconductor_splitter.flavor.1=Where there are superconductors, there is coolant!
+GT5U.tooltip.nac.module.superconductor_splitter.action=Splits your Superconductor %s
+GT5U.tooltip.nac.module.superconductor_splitter.body.1=Requires 1000 L/s of Super Coolant to run
+GT5U.tooltip.nac.module.wire_tracer.name=Wire Tracer
+GT5U.tooltip.nac.module.wire_tracer.flavor.1=Maybe tracing out this mess of wires creates a pretty picture in the mind of the computer
+GT5U.tooltip.nac.module.wire_tracer.action=Traces your Wire %s
+GT5U.tooltip.nac.module.boardprocessor.immersion_fluid=Immersion Fluid
+GT5U.tooltip.nac.module.boardprocessor.empty=Empty
+GT5U.tooltip.nac.module.boardprocessor.impurity=Impurity
+GT5U.tooltip.nac.module.boardprocessor.flush_tank=Flush Tank
+GT5U.tooltip.nac.module.boardprocessor.edit_flush_tank=Edit auto-flush settings
+
+
+GT5U.tooltip.nac.hatch.splitter.body.1=Can be installed in a §eSplitter§7 module for the §aNanochip Assembly Complex
+GT5U.tooltip.nac.hatch.splitter.body.2=Allows for Redstone Input for rule control
+GT5U.tooltip.nac.hatch.splitter.body.3=Set the channel and redstone threshold in the GUI
+GT5U.tooltip.nac.hatch.splitter.body.4=A redstone rule is active if the supplied redstone signal is >= the threshold on that channel
+GT5U.tooltip.nac.hatch.splitter.rules_manager=Open Rules manager
+GT5U.tooltip.nac.hatch.splitter.add_rule=Add new Rule
+GT5U.tooltip.nac.hatch.splitter.rule.Color=Color
+GT5U.tooltip.nac.hatch.splitter.rule.redstone=Redstone
+GT5U.tooltip.nac.hatch.splitter.rule.item=Item
+GT5U.tooltip.nac.hatch.splitter.rule.remove=Remove Rule
+GT5U.tooltip.nac.hatch.vc.input.base.1=Provides §eCircuit Component§7 input for NAC modules
+GT5U.tooltip.nac.hatch.vc.output.base.1=Provides §eCircuit Component§7 output for NAC modules
+GT5U.tooltip.nac.hatch.vc.base.1=Must be %s to work
+GT5U.tooltip.nac.hatch.vc.base.2=Can be installed in the §aNanochip Assembly Complex
+GT5U.tooltip.nac.hatch.vc.base.3=Vacuum Conveyor Connections are 1 to 1
+GT5U.tooltip.nac.hatch.vc.base.4=§eOutputs from recipes with inputs from a colored Vacuum Conveyor Input
+GT5U.tooltip.nac.hatch.vc.base.5=§ewill be placed in a Vacuum Conveyor Output of the corresponding color
+GT5U.tooltip.nac.module.scanner.current_eu=§eCurrent EU Stored: %s
+GT5U.tooltip.nac.module.scanner.total_buffer=§aTotal EU Buffer Size: %s
+
+GT5U.tooltip.nac.color_grid.click_select=Click to select
+GT5U.tooltip.nac.color_grid.selected=Selected
+
+# NAC circuit components
+gt.circuitcomponent.base=Packaged %s
+gt.circuitcomponent.tooltip.base=Item in the §eNAC§7 Vacuum Conveyor System
+gt.circuitcomponent.tooltip.cc.base=This item §a§lcan§r§7 be converted to/from its real stack equivalent in the §eNAC
+gt.circuitcomponent.tooltip.pc.base=This item §c§lcan not§r§7 be converted to its un-processed real stack equivalent in the §eNAC
+gt.circuitcomponent.processed.wirenbti=Spooled Niobium-Titanium Wire
+gt.circuitcomponent.processed.wireybc=Spooled Yttrium Barium Cuprate Wire
+gt.circuitcomponent.processed.wirelumiium=Spooled Lumiium Wire
+gt.circuitcomponent.processed.wireprotohalkonite=Spooled Proto-Halkonite Steel Wire
+gt.circuitcomponent.processed.wirespacetime=Spooled Spacetime Wire
+gt.circuitcomponent.cable.processed.opticalfiber=Split Optical Fiber Cable
+gt.circuitcomponent.processed.wireinfinity=Spooled Infinity Wire
+
+gt.circuitcomponent.processed.asmd.resistor=Prepared Advanced SMD Resistor
+gt.circuitcomponent.processed.asmd.transistor=Prepared Advanced SMD Transistor
+gt.circuitcomponent.processed.asmd.inductor=Prepared Advanced SMD Inductor
+gt.circuitcomponent.processed.asmd.capacitor=Prepared Advanced SMD Capacitor
+gt.circuitcomponent.processed.asmd.diode=Prepared Advanced SMD Diode
+gt.circuitcomponent.processed.xsmd.resistor=Prepared Optical SMD Resistor
+gt.circuitcomponent.processed.xsmd.transistor=Prepared Optical SMD Transistor
+gt.circuitcomponent.processed.xsmd.inductor=Prepared Optical SMD Inductor
+gt.circuitcomponent.processed.xsmd.capacitor=Prepared Optical SMD Capacitor
+gt.circuitcomponent.processed.xsmd.diode=Prepared Optical SMD Diode
+
+gt.circuitcomponent.processed.board.multifiberelite=Purified Elite Circuit Board
+gt.circuitcomponent.processed.board.wetwarelifesupport=Purified Extreme Wetware Lifesupport Circuit Board
+gt.circuitcomponent.processed.board.biomutated=Purified Ultra Bio Mutated Circuit Board
+gt.circuitcomponent.processed.board.optical=Purified Optical Circuit Board
+gt.circuitcomponent.processed.neuroprocessingunit=Coordinated Neuro Processing Unit
+gt.circuitcomponent.processed.board.bioprocessingunit=Coordinated Bio Processing Unit
+gt.circuitcomponent.processed.board.livingbiochip=Coordinated Living Bio Chip
+
+gt.circuitcomponent.processed.chipnanocpu=Cut Nanocomponent CPU Chips
+gt.circuitcomponent.processed.chipram=Cut Random Access Memory Chips
+gt.circuitcomponent.processed.chipnor=Cut NOR Memory Chips
+gt.circuitcomponent.processed.chipnand=Cut NAND Memory Chips
+gt.circuitcomponent.processed.chipasoc=Cut ASoC Chips
+gt.circuitcomponent.processed.chippikopic=Cut Piko Power IC Chips
+gt.circuitcomponent.processed.chipquantumpic=Cut Quantum Power IC Chips
+gt.circuitcomponent.processed.chippico=Cut Pico Chips
+
+gt.circuitcomponent.processed.chipcrystalcpu=Etched Crystal Processing Unit
+gt.circuitcomponent.processed.chipcrystalsoc=Etched Crystal SoC
+gt.circuitcomponent.processed.chiplivingcrystal=Coordinated Living Crystal Chip
+gt.circuitcomponent.processed.chiprawadvancedcrystal=Coordinated Raw Advanced Crystal Chip
+
+gt.circuitcomponent.processed.opticalcpu=Organized Optically Perfected CPU
+gt.circuitcomponent.processed.opticalram=Organized Optically Compatible Memory
+
+gt.circuitcomponent.processed.superconductorluv=Attuned Superconductor LuV Wire
+gt.circuitcomponent.processed.superconductorzpm=Attuned Superconductor ZPM Wire
+gt.circuitcomponent.processed.superconductoruv=Attuned Superconductor UV Wire
+gt.circuitcomponent.processed.superconductoruhv=Attuned Superconductor UHV Wire
+gt.circuitcomponent.processed.superconductoruev=Attuned Superconductor UEV Wire
+gt.circuitcomponent.processed.superconductoruiv=Attuned Superconductor UIV Wire
+gt.circuitcomponent.processed.superconductorumv=Attuned Superconductor UMV Wire
+
+gt.circuitcomponent.processed.frame.aluminium=Spliced Aluminium Framebox
+gt.circuitcomponent.processed.frame.tritanium=Spliced Tritanium Framebox
+gt.circuitcomponent.processed.frame.celestialtungsten=Spliced Celestial Tungsten Framebox
+gt.circuitcomponent.processed.frame.hypogen=Spliced Hypogen Framebox
+
+gt.circuitcomponent.sheet.processed.siliconerubber=Silicone Rubber Wrapper Spool
+gt.circuitcomponent.sheet.processed.polybenzimidazole=Polybenzimidazone Wrapper Spool
+gt.circuitcomponent.sheet.processed.radoxpolymer=Radox Polymer Wrapper Spool
+gt.circuitcomponent.sheet.processed.shirabon=Shirabon Wrapper Spool
+gt.circuitcomponent.sheet.processed.styrenerubber=Styrene-Butadiene Rubber Wrapper Spool
+gt.circuitcomponent.casing.processed.basicmainframe=Basic Mainframe Circuit Encasement
+gt.circuitcomponent.casing.processed.advancedmainframe=Advanced Mainframe Circuit Encasement
+gt.circuitcomponent.casing.processed.pico=Pico Circuit Encasement
+gt.circuitcomponent.casing.processed.quantum=Quantum Circuit Encasement
+
+gt.circuitcomponent.bolt.processed.enrichedholmium=Filed Enriched Holmium Bolt
+gt.circuitcomponent.bolt.processed.transcendentmetal=Filed Transcendent Metal Bolt
+gt.circuitcomponent.bolt.processed.yttriumbariumcuprate=Filed Yttrium Barium Cuprate Bolt
+gt.circuitcomponent.bolt.processed.cosmicneutronium=Filed Cosmic Neutronium Bolt
+gt.circuitcomponent.bolt.processed.chromaticglass=Filed Chromatic Glass Bolt
+gt.circuitcomponent.bolt.processed.umvsuperconductor=Filed UMV Superconductor Base Bolt
+gt.circuitcomponent.plate.processed.metastableoganesson=Stripped Metastable Oganesson Plate
 
 GT5U.gui.hoverable.runningfine=Running Fine.
 GT5U.gui.hoverable.incomplete=Structure incomplete.
@@ -1806,6 +2104,15 @@ GT5U.gui.chat.powerfail.list.truncated=%s additional powerfails truncated
 
 GT5U.gui.chat.powerfail.shown=Enabled powerfail overlay rendering.
 GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
+
+GT5U.gui.text.contributors.panel.open=Open Contributor List
+GT5U.gui.text.contributors.header=Contributors
+GT5U.gui.text.contributors.projectlead=Project Lead
+GT5U.gui.text.contributors.programming=Programming
+GT5U.gui.text.contributors.textures=Textures
+GT5U.gui.text.contributors.rendering=Rendering
+GT5U.gui.text.contributors.structure=Structure
+GT5U.gui.text.contributors.playtesting=Playtesting
 
 GT5U.gui.chat.bindcentre=Successfully bind drone centre.
 GT5U.gui.chat.drone_level_low=Upgrade to T4 drone to active the teleport function
@@ -2025,14 +2332,14 @@ GT5U.hatch.outputme.cache_capacity_label=Current cache capacity: §e%s§r
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
 
-GT5U.multiblock.pollution=Pollution reduced to
-GT5U.multiblock.energy=Stored Energy
-GT5U.multiblock.Progress=Progress
-GT5U.multiblock.efficiency=Efficiency
-GT5U.multiblock.problems=Problems
-GT5U.multiblock.mei=Max Energy Income
+GT5U.multiblock.pollution=Pollution reduced to: §a%s§r%%
+GT5U.multiblock.energy=Stored Energy: §a%s §rEU / §e%s §rEU
+GT5U.multiblock.Progress=Progress: §a%s §rs / §e%s §rs
+GT5U.multiblock.efficiency=Efficiency: §e%s§r%%
+GT5U.multiblock.problems=Problems: §c%s
+GT5U.multiblock.mei=Max Energy Input: §e%s §rEU/t (*2A) Tier: §e%s
 GT5U.multiblock.maxtier=Max Tier
-GT5U.multiblock.usage=Currently uses
+GT5U.multiblock.usage=Currently uses: §c%s §rEU/t
 GT5U.multiblock.parallelism=Max Parallel
 GT5U.multiblock.curparallelism=Current Parallel
 GT5U.multiblock.euModifier=EU Modifier
@@ -2043,7 +2350,17 @@ GT5U.multiblock.coilLevel=Heating Coil Level
 GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
 GT5U.multiblock.runningMode=§eRunning Mode:
 GT5U.multiblock.startup=Starting up...
-GT5U.multiblock.recipesDone=Recipes Finished
+GT5U.multiblock.recipesDone=Recipes Finished: §a%s
+GT5U.multiblock.totalRunHours=Total runtime: §6%s§r hours
+GT5U.multiblock.totalRunMinutes=Total runtime: §6%s§r minutes
+GT5U.multiblock.totalRunSeconds=Total runtime: §6%s§r seconds
+GT5U.multiblock.totalRunTicks=Total runtime: §6%s§r ticks
+GT5U.multiblock.owned_by=Owned by: §6%s
+GT5U.multiblock.meta_tile_entity=Meta-ID: §6%s
+GT5U.multiblock.valid=§avalid
+GT5U.multiblock.invalid=§cinvalid
+GT5U.multiblock.is_meta_tile_entity=§cMetaTileEntity == null!
+
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
@@ -2902,15 +3219,9 @@ gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with
 GT5U.gui.text.foundry.modules.preview=Showing Preview Modules
 GT5U.gui.text.foundry.modules.installed=Showing Installed Modules
 GT5U.gui.button.foundrymoduleselect=Toggle Module Selection Terminal
-GT5U.gui.button.foundry.contributorpanel=Open Contributor List
 
-GT5U.gui.text.foundry.projectlead=Project Lead
-GT5U.gui.text.foundry.programming=Programming
-GT5U.gui.text.foundry.textures=Textures
-GT5U.gui.text.foundry.rendering=Rendering
 GT5U.gui.text.foundry.structure=Structure Architect
 GT5U.gui.text.foundry.idea=Original Idea
-GT5U.gui.text.foundry.playtest=Playtesting
 
 GT5U.gui.text.foundry.pairings.activity.on=This pairing is §aactive
 GT5U.gui.text.foundry.pairings.activity.off=This pairing is §cinactive
@@ -3467,15 +3778,6 @@ GTPP.machines.tier=Tier
 GTPP.machines.input=Input
 GTPP.machines.output=Output
 
-GTPP.multiblock.pollutionreduced=Pollution reduced to
-GTPP.multiblock.pollution=Pollution
-GTPP.multiblock.energy=Stored Energy
-GTPP.multiblock.progress=Progress
-GTPP.multiblock.efficiency=Efficiency
-GTPP.multiblock.problems=Problems
-GTPP.multiblock.mei=Max Energy Income
-GTPP.multiblock.usage=Currently uses
-GTPP.multiblock.generation=Currently generates
 GTPP.multiblock.specialvalue=Special Value
 GTPP.multiblock.duration=Duration
 GTPP.multiblock.multimachine.metal=Metal Mode. Does compressor (circuit 20), lathe (circuit 21) and electromagnetic polarizer (circuit 22).
@@ -3645,6 +3947,60 @@ GT5U.tooltip.purify.1=Throw into Cauldron to get clean Dust
 GT5U.tooltip.purify.2=Throw into Cauldron to get clean crushed Ore
 GT5U.tooltip.nqgen=Can be used as Enriched Naquadah Fuel Substitute
 
+# Scanner info
+GT5U.scanner.title_base_info=Block Info
+GT5U.scanner.title_fluid_handler_info=Tank Info
+GT5U.scanner.title_reactor_info=Reactor Info
+GT5U.scanner.title_debug_info=Debug Info
+GT5U.scanner.title_machine_info=Machine Info
+GT5U.scanner.title_custom_info=Custom Info
+GT5U.scanner.title_side_info=Side Info
+GT5U.scanner.title_wrench_info=Wrench Info
+GT5U.scanner.title_ic2_info=IC2 Info
+GT5U.scanner.title_cover_info=Cover Info
+GT5U.scanner.title_energy_info=Energy Info
+GT5U.scanner.title_crop_info=Crop Info
+GT5U.scanner.title_leaves_info=Leaves Info
+GT5U.scanner.title_chunk_info=Chunk Info
+
+GT5U.scanner.error_base_info=An exception was thrown while fetching this block's info
+GT5U.scanner.error_fluid_handler_info=An exception was thrown while fetching this tile's fluid tank info
+GT5U.scanner.error_reactor_info=An exception was thrown while fetching this reactor's info
+GT5U.scanner.error_debug_info=An exception was thrown while fetching this block's debug info
+GT5U.scanner.error_machine_info=An exception was thrown while fetching this machine's info
+GT5U.scanner.error_custom_info=An exception was thrown while fetching this machine's custom info
+GT5U.scanner.error_side_info=An exception was thrown while fetching this device's alignment info
+GT5U.scanner.error_wrench_info=An exception was thrown while fetching this device's IC2 wrenchability
+GT5U.scanner.error_ic2_info=An exception was thrown while fetching this device's info
+GT5U.scanner.error_cover_info=An exception was thrown while fetching this device's covers
+GT5U.scanner.error_energy_info=An exception was thrown while fetching this device's energy info
+GT5U.scanner.error_crop_info=An exception was thrown while fetching this crop's info
+GT5U.scanner.error_leaves_info=An exception was thrown while fetching this leaves' info
+
+GT5U.scanner.base_info_1=Position X: §6%s§r Y: §6%s§r Z: §6%s
+GT5U.scanner.base_info_2=Name: §6%s §fMetadata: §6%s
+GT5U.scanner.base_info_3=Hardness: §6%s §fBlast Resistance: §6%s
+GT5U.scanner.base_info_4=§6Is valid Beacon Pyramid Material
+GT5U.scanner.fluid_handler_info_1=Tank %s: §6%sL §f/ §6%sL §f%s
+GT5U.scanner.reactor_info_1=Heat: §6%s §f/ §6%s §fHeating Modifier: §6%s
+GT5U.scanner.side_info_1=Extended Facing: §6%s
+GT5U.scanner.wrench_info_1=Facing: §6%s §f/ Chance: §6%s%%
+GT5U.scanner.wrench_info_2=§6You can remove this with a Wrench
+GT5U.scanner.wrench_info_3=§cYou can NOT remove this with a Wrench
+GT5U.scanner.ic2_info_1=Conduction Loss: §6%s
+GT5U.scanner.ic2_info_2=Contained Energy: §6%s EU §f/ §6%s EU
+GT5U.scanner.energy_info_1=Max IN: §6%s §f(%s) EU at §6%s A
+GT5U.scanner.energy_info_2=Max OUT: §6%s §f(%s) EU at §6%s A
+GT5U.scanner.energy_info_3=Energy: §6%s EU §f/ §6%s EU
+GT5U.scanner.crop_info_1=Crop name: §6%s §fGrowth: §6%s §fGain: §6%s §fResistance: §6%s
+GT5U.scanner.crop_info_2=Fertilizer: §6%s §fWater: §6%s §fWeed-Ex: §6%s §fScan-Level: §6%s
+GT5U.scanner.crop_info_3=Nutrients: §6%s §fHumidity: §6%s §fAir-Quality: §6%s
+GT5U.scanner.crop_info_4=Attributes: §6%s
+GT5U.scanner.crop_info_5=Discovered by: §6%s
+GT5U.scanner.chunk_info_1=§cPollution in Chunk: %s gibbl
+GT5U.scanner.chunk_info_2=§aNo Pollution in Chunk! HAYO!
+GT5U.scanner.chunk_info_3=§f%s: §6%sL
+GT5U.scanner.chunk_info_4=Nothing: §60L
 GT5U.tooltip.drone_remote_disconnected=Shift right click an active drone centre to connect
 GT5U.tooltip.drone_remote_connected=Connected to centre: %s, %s, %s, on dim%s
 
