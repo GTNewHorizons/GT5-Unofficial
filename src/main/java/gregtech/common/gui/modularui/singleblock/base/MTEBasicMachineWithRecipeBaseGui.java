@@ -25,11 +25,11 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.metatileentity.BaseTileEntity;
-import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipe;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.widget.GTProgressWidget;
+import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipe;
 
 public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTEBasicMachineWithRecipe> {
 
