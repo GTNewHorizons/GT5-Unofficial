@@ -27,6 +27,16 @@ public interface IGTFluidBuilder {
     IGTFluidBuilder withDefaultLocalName(final String localizedName);
 
     /**
+     * Deprecated, use {@link #withDefaultLocalName(String)}.
+     * 
+     * @param localizedName The localized name of this {@link IGTFluidBuilder}
+     * @return {@link IGTFluidBuilder} self for call chaining
+     */
+    @Deprecated
+    @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
+    IGTFluidBuilder withLocalizedName(final String localizedName);
+
+    /**
      * @param fluidState  The {@link FluidState} of this {@link IGTFluidBuilder}
      * @param temperature The Kelvin temperature of this {@link IGTFluidBuilder}
      * @return {@link IGTFluidBuilder} self for call chaining

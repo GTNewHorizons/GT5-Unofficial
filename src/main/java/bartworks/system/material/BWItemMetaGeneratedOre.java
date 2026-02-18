@@ -49,7 +49,7 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
             return StatCollector.translateToLocalFormatted(
                 blockOre.getPrefix()
                     .getOreprefixKey(),
-                "Empty");
+                StatCollector.translateToLocal("Material.empty"));
         }
 
         return blockOre.getPrefix()

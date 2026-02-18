@@ -29,6 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTUtility;
 import gregtech.common.fluid.GTFluid;
@@ -122,21 +123,27 @@ public class ItemFluidDisplay extends GTGenericItem {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void addTooltipForFluid(Fluid fluid, List<String> list) {
+    public static IOreMaterial getMaterial(Fluid fluid) {
         final Werkstoff w = WerkstoffLoader.fluids.inverse()
             .get(fluid);
         if (w != null) {
-            w.addTooltips(list);
-            return;
+            return w;
         }
         if (fluid instanceof FluidGT6 gtppFluid) {
             final Material material = gtppFluid.getMaterial();
-            if (material != null) material.addTooltips(list);
-            return;
+            if (material != null) return material;
         }
         if (fluid instanceof GTFluid gtFluid) {
-            Materials material = Materials.FLUID_MAP.get(gtFluid);
-            if (material != null) material.addTooltips(list);
+            return Materials.FLUID_MAP.get(gtFluid);
+        }
+        return null;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void addTooltipForFluid(Fluid fluid, List<String> list) {
+        IOreMaterial material = getMaterial(fluid);
+        if (material != null) {
+            material.addTooltips(list);
         }
     }
 

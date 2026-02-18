@@ -55,6 +55,16 @@ public class GTFluidBuilder implements IGTFluidBuilder {
     /**
      * @inheritDoc
      */
+    @Deprecated
+    @Override
+    public IGTFluidBuilder withLocalizedName(final String defaultLocalName) {
+        this.defaultLocalName = defaultLocalName;
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     @Override
     public IGTFluidBuilder withStateAndTemperature(final FluidState fluidState, final int temperature) {
         this.fluidState = fluidState;
