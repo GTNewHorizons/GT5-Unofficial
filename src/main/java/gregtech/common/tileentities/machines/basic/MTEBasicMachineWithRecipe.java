@@ -1,4 +1,4 @@
-package gregtech.api.metatileentity.implementations;
+package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.MetaTileEntityIDs.ASSEMBLER_IV;
@@ -12,6 +12,7 @@ import static net.minecraftforge.common.util.ForgeDirection.UP;
 
 import java.util.Locale;
 
+import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;

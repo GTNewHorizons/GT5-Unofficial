@@ -8,7 +8,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.ReactorProcessingUnit_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.ThoriumReactor;
 
 import gregtech.api.enums.SoundResource;
-import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipeBuilder;
+import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.GTPPCore;

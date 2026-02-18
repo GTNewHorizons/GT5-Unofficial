@@ -25,7 +25,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.metatileentity.BaseTileEntity;
-import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
+import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipe;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTUtility;

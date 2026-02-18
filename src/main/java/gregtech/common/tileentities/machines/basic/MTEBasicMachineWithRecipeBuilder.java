@@ -1,10 +1,10 @@
-package gregtech.api.metatileentity.implementations;
+package gregtech.common.tileentities.machines.basic;
 
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.SoundResource;
-import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipe.SpecialEffects;
 
 public final class MTEBasicMachineWithRecipeBuilder {
 

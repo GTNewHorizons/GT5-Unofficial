@@ -21,8 +21,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import com.jaquadro.minecraft.storagedrawers.StorageDrawers;
-
 import bartworks.common.loaders.ItemRegistry;
 import codechicken.nei.api.API;
 import gregtech.GTMod;
@@ -34,7 +32,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
+import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipe;
 import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
