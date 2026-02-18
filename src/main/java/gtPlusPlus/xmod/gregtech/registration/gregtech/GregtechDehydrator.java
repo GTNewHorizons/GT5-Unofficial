@@ -7,11 +7,11 @@ import static gregtech.api.enums.MetaTileEntityIDs.GT_Dehydrator_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.GT_Dehydrator_LuV;
 import static gregtech.api.enums.MetaTileEntityIDs.GT_Dehydrator_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.GT_Dehydrator_ZPM;
+import static gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.X.CIRCUIT;
+import static gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.X.HULL;
+import static gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.X.ROBOT_ARM;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipe.X.CIRCUIT;
-import static gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipe.X.HULL;
-import static gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipe.X.ROBOT_ARM;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
