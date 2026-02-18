@@ -12,6 +12,8 @@ import gregtech.common.misc.GTStructureChannels;
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
 public class BlockCasings12 extends BlockCasingsAbstract {
 
@@ -19,6 +21,10 @@ public class BlockCasings12 extends BlockCasingsAbstract {
         super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
 
         register(0, ItemList.CokeOvenCasing, "Coke Oven Bricks");
+        register(1, ItemList.MeshInterfaceNanochipCasing, "Nanochip Mesh Interface Casing");
+        register(2, ItemList.ReinforcementNanochipCasing, "Nanochip Reinforcement Casing");
+        register(3, ItemList.ComputationalMatrixNanochipCasing, "Nanochip Computational Matrix Casing");
+        register(4, ItemList.FirewallProjectionNanochipCasing, "Nanochip Firewall Projection Casing");
         register(9, ItemList.Spinmatron_Casing, "Vibration-Safe Casing");
         register(10, ItemList.CasingThaumium, "Alchemically Resistant Thaumium Casing");
         register(11, ItemList.CasingVoid, "Alchemically Inert Void Casing");
@@ -52,6 +58,10 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.COKE_OVEN_CASING.getIcon();
+            case 1 -> Textures.BlockIcons.NANOCHIP_MESH_INTERFACE_CASING.getIcon();
+            case 2 -> Textures.BlockIcons.NANOCHIP_REINFORCEMENT_CASING.getIcon();
+            case 3 -> Textures.BlockIcons.NANOCHIP_COMPUTATIONAL_MATRIX_CASING.getIcon();
+            case 4 -> Textures.BlockIcons.NANOCHIP_FIREWALL_PROJECTION_CASING.getIcon();
             case 9 -> Textures.BlockIcons.SPINMATRON_CASING.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_THAUMIUM.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VOID.getIcon();

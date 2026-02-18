@@ -137,13 +137,11 @@ public class BaseItemComponent extends Item {
             if (componentType == ComponentTypes.PLATE) {
                 CoverRegistry.registerDecorativeCover(
                     componentMaterial.getPlate(1),
-                    TextureFactory
-                        .of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA(), false));
+                    TextureFactory.of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA()));
             } else if (componentType == ComponentTypes.PLATEDOUBLE) {
                 CoverRegistry.registerDecorativeCover(
                     componentMaterial.getPlateDouble(1),
-                    TextureFactory
-                        .of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA(), false));
+                    TextureFactory.of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA()));
             }
             return true;
         } else {
