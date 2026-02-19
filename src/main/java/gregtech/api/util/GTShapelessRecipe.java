@@ -56,7 +56,8 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
                         final boolean tHas = tStack.hasTagCompound();
                         final boolean sHas = stack.hasTagCompound();
                         if (tHas != sHas) return false;
-                        if (tHas && !tStack.getTagCompound().equals(stack.getTagCompound())) return false;
+                        if (tHas && !tStack.getTagCompound()
+                            .equals(stack.getTagCompound())) return false;
                     }
                     tStack = stack;
                 }
