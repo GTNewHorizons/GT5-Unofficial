@@ -1,5 +1,6 @@
 package gregtech.common.tools;
 
+import gregtech.common.items.behaviors.BehaviourWireCutter;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -62,5 +63,10 @@ public class ToolWireCutter extends GTTool {
                 + EnumChatFormatting.RED
                 + aEntity.getCommandSenderName()
                 + EnumChatFormatting.WHITE);
+    }
+
+    @Override
+    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
+        aItem.addItemBehavior(aID, new BehaviourWireCutter());
     }
 }
