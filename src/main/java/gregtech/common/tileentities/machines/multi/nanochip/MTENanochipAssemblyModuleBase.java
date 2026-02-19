@@ -723,12 +723,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     }
 
     @Override
-    public boolean doRandomMaintenanceDamage() {
-        // Does not get have maintenance issues
-        return false;
-    }
-
-    @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
     }
