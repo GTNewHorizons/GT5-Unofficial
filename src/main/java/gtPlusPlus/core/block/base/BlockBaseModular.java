@@ -151,7 +151,8 @@ public class BlockBaseModular extends BasicBlock {
         return "block." + material.getUnlocalizedName()
             + "."
             + this.blockType.name()
-                .toLowerCase() + ".v2";
+                .toLowerCase()
+            + ".v2";
     }
 
     @Override
