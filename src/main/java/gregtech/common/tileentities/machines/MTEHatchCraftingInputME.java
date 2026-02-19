@@ -263,7 +263,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             return dualInputs;
         }
 
-
         /**
          * Try to refund the items and fluids back.
          * <p>
