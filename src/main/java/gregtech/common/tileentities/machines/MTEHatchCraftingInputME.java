@@ -1293,7 +1293,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 .endAtSlot(SLOT_MANUAL_START + SLOT_MANUAL_SIZE - 1)
                 .phantom(false)
                 .background(getGUITextureSet().getItemSlot())
-                .widgetCreator(slot -> new SlotWidget(slot).setChangeListener(() -> {}))
+                .widgetCreator(SlotWidget::new)
                 .build()
                 .setPos(7, 7));
         return builder.build();
