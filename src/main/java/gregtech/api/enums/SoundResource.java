@@ -124,9 +124,9 @@ public enum SoundResource {
     GT_MACHINES_EXOFOUNDRY(277, GregTech.ID, "machines.MTEExoFoundry"),
     GT_MACHINES_NANOCHIP(280, GregTech.ID, "machines.MTENanochipAssemblyComplex"),
 
-    GT_TOOLBOX_OPEN(278, GregTech.ID, "items.ToolboxOpen"),
-    GT_TOOLBOX_CLOSE(279, GregTech.ID, "items.ToolboxClose"),
-    GT_TOOLBOX_DRAW(280, GregTech.ID, "items.ToolboxDraw"),
+    GT_TOOLBOX_OPEN(281, GregTech.ID, "items.ToolboxOpen"),
+    GT_TOOLBOX_CLOSE(282, GregTech.ID, "items.ToolboxClose"),
+    GT_TOOLBOX_DRAW(283, GregTech.ID, "items.ToolboxDraw"),
 
     GUI_BUTTON_DOWN(-1, GregTech.ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, GregTech.ID, "gui.buttonUp"),
