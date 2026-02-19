@@ -396,7 +396,7 @@ public class ProcessingLogic {
             }
 
             // recipe cache does not match, this might be caused by changes of return value of
-            // prepareCatalyst(ItemStack[])
+            // prepareCatalyst(ItemStack[]) or changes of Encoded Patterns in the CRIB
             // so clear the cache and proceed, the new cache will be generated in the next recipe check
             dualInvWithPatternToRecipeCache.remove(activeDualInv);
             activeDualInv = null;

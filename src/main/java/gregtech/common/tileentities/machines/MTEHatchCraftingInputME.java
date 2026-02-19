@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.WeakHashMap;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
@@ -111,7 +109,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.GTDualInputPattern;
@@ -466,7 +463,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private static final int MANUAL_SLOT_WINDOW = 10;
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
-    public Set<ProcessingLogic> processingLogics = Collections.newSetFromMap(new WeakHashMap<>());
     private final List<MTEHatchCraftingInputSlave> proxyHatches = new ArrayList<>();
 
     // holds all internal inventories
@@ -1045,9 +1041,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             if (originalPattern.hasChanged(newItem, world)) {
                 try {
                     originalPattern.refund(getProxy(), getRequest(), true);
-                    for (ProcessingLogic pl : processingLogics) {
-                        pl.removeInventoryRecipeCache(originalPattern);
-                    }
                 } catch (GridAccessException ignored) {}
                 internalInventory[index] = null;
                 needPatternSync = true;
@@ -1073,29 +1066,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         sharedItems[0] = mInventory[SLOT_CIRCUIT];
         System.arraycopy(mInventory, SLOT_MANUAL_START, sharedItems, 1, SLOT_MANUAL_SIZE);
         return ArrayExt.withoutNulls(sharedItems, ItemStack[]::new);
-    }
-
-    @Override
-    public void setProcessingLogic(ProcessingLogic pl) {
-        if (!processingLogics.contains(pl)) {
-            processingLogics.add(Objects.requireNonNull(pl));
-        }
-    }
-
-    @Override
-    public void resetCraftingInputRecipeMap(ProcessingLogic pl) {
-        for (PatternSlot<MTEHatchCraftingInputME> sl : internalInventory) {
-            if (sl == null) continue;
-            pl.removeInventoryRecipeCache(sl);
-        }
-
-    }
-
-    @Override
-    public void resetCraftingInputRecipeMap() {
-        for (ProcessingLogic pl : processingLogics) {
-            resetCraftingInputRecipeMap(pl);
-        }
     }
 
     @Override
@@ -1290,12 +1260,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         return getMachineCraftingIcon();
     }
 
-    @Override
-    public void markDirty() {
-        super.markDirty();
-        resetCraftingInputRecipeMap();
-    }
-
     private boolean postMEPatternChange() {
         // don't post until it's active
         if (!getProxy().isActive()) return false;
@@ -1329,7 +1293,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 .endAtSlot(SLOT_MANUAL_START + SLOT_MANUAL_SIZE - 1)
                 .phantom(false)
                 .background(getGUITextureSet().getItemSlot())
-                .widgetCreator(slot -> new SlotWidget(slot).setChangeListener(() -> resetCraftingInputRecipeMap()))
+                .widgetCreator(slot -> new SlotWidget(slot).setChangeListener(() -> {}))
                 .build()
                 .setPos(7, 7));
         return builder.build();
