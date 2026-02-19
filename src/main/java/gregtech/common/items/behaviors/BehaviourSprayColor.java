@@ -30,6 +30,7 @@ public class BehaviourSprayColor extends BehaviourNone {
     private final ItemStack mFull;
     private final long mUses;
     private final byte mColor;
+    protected Supplier<String> tooltip;
 
     public BehaviourSprayColor(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses, int aColor) {
         this.mEmpty = aEmpty;
@@ -37,6 +38,10 @@ public class BehaviourSprayColor extends BehaviourNone {
         this.mFull = aFull;
         this.mUses = aUses;
         this.mColor = ((byte) aColor);
+        this.tooltip = () -> StatCollector.translateToLocalFormatted(
+            "gt.behaviour.paintspray.tooltip",
+            Dyes.get(this.mColor)
+                .getLocalizedDyeName());
     }
 
     public BehaviourSprayColor(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses) {
@@ -45,6 +50,7 @@ public class BehaviourSprayColor extends BehaviourNone {
         this.mFull = aFull;
         this.mUses = aUses;
         this.mColor = 0;
+        this.tooltip = null;
     }
 
     @Override
@@ -192,16 +198,9 @@ public class BehaviourSprayColor extends BehaviourNone {
         return this.mColor;
     }
 
-    protected Supplier<String> getTooltip() {
-        return () -> StatCollector.translateToLocalFormatted(
-            "gt.behaviour.paintspray.tooltip",
-            Dyes.get(this.mColor)
-                .getLocalizedDyeName());
-    }
-
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        if (getTooltip() != null) aList.add(StatCollector.translateToLocal(getTooltip().get()));
+        if (tooltip != null) aList.add(tooltip.get());
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.chain"));
         aList.add(
             StatCollector.translateToLocalFormatted("gt.behaviour.paintspray.chain_amount", Other.sprayCanChainRange));

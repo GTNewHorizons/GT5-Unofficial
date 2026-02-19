@@ -44,7 +44,7 @@ public class MTELongDistancePipelineFluid extends MTELongDistancePipelineBase {
 
     public MTELongDistancePipelineFluid(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
-        this.tooltipKey = "gt.blockmachines.long_distance_fluid_pipeline.desc";
+        this.tooltipPrefixKey = "gt.blockmachines.long_distance_fluid_pipeline.desc";
     }
 
     public MTELongDistancePipelineFluid(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

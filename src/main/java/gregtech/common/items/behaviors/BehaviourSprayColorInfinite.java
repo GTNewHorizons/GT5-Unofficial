@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
@@ -60,6 +59,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
     public BehaviourSprayColorInfinite(ItemStack sprayCan) {
         super(sprayCan, sprayCan, sprayCan, Other.sprayCanChainRange, 0);
+        this.tooltip = null;
         mCurrentColor = 0;
     }
 
@@ -369,8 +369,4 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         }
     }
 
-    @Override
-    protected Supplier<String> getTooltip() {
-        return null;
-    }
 }

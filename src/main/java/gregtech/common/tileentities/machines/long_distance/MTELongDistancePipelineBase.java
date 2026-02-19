@@ -71,7 +71,7 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
     protected volatile MTELongDistancePipelineBase mSender = null;
     protected volatile ChunkCoordinates mTargetPos = null;
     protected MTELongDistancePipelineBase mTooCloseTarget = null, mTooCloseSender = null;
-    protected String tooltipKey;
+    protected String tooltipPrefixKey;
 
     public MTELongDistancePipelineBase(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -83,9 +83,9 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
 
     @Override
     public String[] getDescription() {
-        if (tooltipKey != null) return GTSplit.splitLocalizedFormattedWithPrefix(
+        if (tooltipPrefixKey != null) return GTSplit.splitLocalizedFormattedWithPrefix(
             "gt.blockmachines.long_distance_pipeline.desc",
-            StatCollector.translateToLocal(tooltipKey),
+            StatCollector.translateToLocal(tooltipPrefixKey),
             minimalDistancePoints);
         return GTSplit.splitLocalizedFormatted("gt.blockmachines.long_distance_pipeline.desc", minimalDistancePoints);
     }

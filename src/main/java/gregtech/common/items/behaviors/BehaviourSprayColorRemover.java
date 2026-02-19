@@ -1,7 +1,5 @@
 package gregtech.common.items.behaviors;
 
-import java.util.function.Supplier;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -14,6 +12,7 @@ public class BehaviourSprayColorRemover extends BehaviourSprayColor {
 
     public BehaviourSprayColorRemover(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses) {
         super(aEmpty, aUsed, aFull, aUses);
+        this.tooltip = () -> StatCollector.translateToLocal("gt.behaviour.paintspray.solvent.tooltip");
     }
 
     @Override
@@ -22,8 +21,4 @@ public class BehaviourSprayColorRemover extends BehaviourSprayColor {
             .removeColor();
     }
 
-    @Override
-    protected Supplier<String> getTooltip() {
-        return () -> StatCollector.translateToLocal("gt.behaviour.paintspray.solvent.tooltip");
-    }
 }

@@ -43,7 +43,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -142,11 +141,10 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         ItemStack aTool) {
         if (aPlayer.isSneaking()) mMagicalEnergyBB.decreaseTier();
         else mMagicalEnergyBB.increaseTier();
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             aPlayer,
-            StatCollector.translateToLocalFormatted(
-                "Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver",
-                mMagicalEnergyBB.getRange()));
+            "Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver",
+            mMagicalEnergyBB.getRange());
         mMagicalEnergyBB.update();
     }
 
