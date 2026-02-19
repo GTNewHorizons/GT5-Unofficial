@@ -1,6 +1,5 @@
 package gregtech.common.tools;
 
-import gregtech.common.items.behaviors.BehaviourWireCutter;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -13,6 +12,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
+import gregtech.common.items.behaviors.BehaviourWireCutter;
 
 public class ToolWireCutter extends GTTool {
 
