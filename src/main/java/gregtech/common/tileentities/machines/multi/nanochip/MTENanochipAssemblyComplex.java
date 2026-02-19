@@ -97,9 +97,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     public CircuitCalibration.CalibrationThreshold currentThreshold;
 
-    // For usage in the GUI
-    public boolean isTalkModeActive = false;
-
     public static final IStructureDefinition<MTENanochipAssemblyComplex> STRUCTURE_DEFINITION = StructureDefinition
         .<MTENanochipAssemblyComplex>builder()
         .addShape(STRUCTURE_PIECE_MAIN, AssemblyComplexStructureString.MAIN_STRUCTURE)
@@ -646,7 +643,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("talkMode", this.isTalkModeActive);
         NBTTagList history = new NBTTagList();
         for (CircuitBatch batch : circuitHistory) {
             history.appendTag(new NBTTagIntArray(batch.writeToIntArray()));
@@ -660,7 +656,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        isTalkModeActive = aNBT.getBoolean("talkMode");
         NBTTagList history = aNBT.getTagList("history", 11);
         for (Object rawTag : history.tagList) {
             if (rawTag instanceof NBTTagIntArray batch) {
