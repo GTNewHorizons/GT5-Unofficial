@@ -1751,6 +1751,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         return mDensity;
     }
 
+    /**
+     * Set material's chemical formula.
+     * 
+     * @param aChemicalFormula     the Chemical Formula want to set
+     * @param isNeededLocalization if it's true, will generate a localized key.
+     */
     public void setChemicalFormula(String aChemicalFormula, boolean isNeededLocalization) {
         this.mChemicalFormula = aChemicalFormula;
         if (isNeededLocalization) {
