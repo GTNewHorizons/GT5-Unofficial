@@ -71,12 +71,14 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
 
     @Override
     public void enableTicking() {
+        if (!mTickDisabled) return;
         getWorld().func_147448_a(Collections.singleton(this));
         mTickDisabled = false;
     }
 
     @Override
     public void disableTicking() {
+        if (mTickDisabled) return;
         getWorld().func_147457_a(this);
         mIgnoreNextUnload = true;
         hasTimeStatisticsStarted = false;

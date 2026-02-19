@@ -58,6 +58,11 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
     }
 
     @Override
+    public boolean willExplodeInRain() {
+        return false;
+    }
+
+    @Override
     public long getMinimumStoredEU() {
         return 2 * V[mTier];
     }
