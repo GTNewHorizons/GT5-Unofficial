@@ -263,18 +263,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             return dualInputs;
         }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            PatternSlot<?> that = (PatternSlot<?>) o;
-            return Objects.equals(pattern, that.pattern);
-        }
-
-        @Override
-        public int hashCode() {
-            return patternItemId.hashCode();
-        }
 
         /**
          * Try to refund the items and fluids back.
