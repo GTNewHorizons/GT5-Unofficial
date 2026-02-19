@@ -66,6 +66,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     implements NanochipTooltipValues {
 
     protected TerminalTextListWidget textList = new TerminalTextListWidget();
+    private boolean isTalkModeActive = false;
 
     private static final String TALK_MODE_COMMAND = "'talk'";
     private static final String EXIT_MODE_COMMAND = "'exit'";
@@ -79,7 +80,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         // initializes the panel so that it can be called in the gregos text response system.
         syncManager
             .syncedPanel("contributorsPanel", true, (p_syncManager, syncHandler) -> openContributorsPanel(panel));
-        textList.setEnabledIf(a -> multiblock.isTalkModeActive)
+        textList.setEnabledIf(a -> isTalkModeActive)
             .childSeparator(
                 IDrawable.EMPTY.asIcon()
                     .height(2))
@@ -95,7 +96,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     // disables hoverable in talk mode
     @Override
     protected boolean shouldShutdownReasonBeDisplayed(String shutdownString) {
-        return super.shouldShutdownReasonBeDisplayed(shutdownString) && !multiblock.isTalkModeActive;
+        return super.shouldShutdownReasonBeDisplayed(shutdownString) && !isTalkModeActive;
     }
 
     @Override
@@ -135,7 +136,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         return super.createTerminalTextWidget(syncManager, parent).child(
             new DynamicSyncedWidget<>().coverChildren()
                 .syncHandler(moduleListHolder))
-            .setEnabledIf(flow -> !multiblock.isTalkModeActive);
+            .setEnabledIf(flow -> !isTalkModeActive);
     }
 
     private static final int MODULE_DISPLAY_SIZE = 14;
@@ -171,7 +172,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         return new ButtonWidget<>().size(24)
             .marginTop(4)
             .overlay(IDrawable.EMPTY)
-            .setEnabledIf(a -> !multiblock.isTalkModeActive)
+            .setEnabledIf(a -> !isTalkModeActive)
             .tooltip(t -> t.addLine(translateToLocal("GT5U.gui.text.nac.info.open")))
             .background(GTGuiTextures.PICTURE_NANOCHIP_LOGO)
             .disableHoverBackground()
@@ -551,11 +552,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager.syncValue(
-            "talk",
-            0,
-            new BooleanSyncValue(() -> multiblock.isTalkModeActive, b -> multiblock.isTalkModeActive = b));
-
+        syncManager.syncValue("talk", 0, new BooleanSyncValue(() -> isTalkModeActive, b -> isTalkModeActive = b));
         syncManager
             .syncValue("primitives", new IntSyncValue(() -> multiblock.getTotalCircuit(CircuitCalibration.PRIMITIVE)));
         syncManager
@@ -790,7 +787,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 if (text.isEmpty()) return Result.IGNORE;
                 // Reset the text box to be blank
                 this.handler.clear();
-                if (!checkForKeywords(text) && multiblock.isTalkModeActive) {
+                if (!checkForKeywords(text) && isTalkModeActive) {
                     list.child(createPlayerTextWidget(text));
                     list.child(createResponseTextWidget(getGREGOSResponse(text, syncManager, parentPanel)));
                     if (text.equals("clear")) {
