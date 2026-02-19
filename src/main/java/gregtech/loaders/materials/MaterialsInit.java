@@ -14051,8 +14051,8 @@ public class MaterialsInit {
     }
 
     private static Materials loadFranciumHydroxide() {
-        return new MaterialBuilder().setName("CrudeFrancium")
-            .setDefaultLocalName("Crude Francium")
+        return new MaterialBuilder().setName("FranciumHydroxide")
+            .setDefaultLocalName("Francium Hydroxide")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyePink)
             .setARGB(0x00f2653d)

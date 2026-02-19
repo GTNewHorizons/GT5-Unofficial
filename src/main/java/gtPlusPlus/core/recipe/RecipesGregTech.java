@@ -71,6 +71,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
+import gregtech.loaders.postload.chains.FranciumLineRecipes;
 import gregtech.loaders.postload.chains.NetheriteRecipes;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.chemistry.IonParticles;
@@ -124,6 +125,7 @@ public class RecipesGregTech {
         RecipesSeleniumProcessing.init();
         RecipesRareEarthProcessing.init();
         NetheriteRecipes.run();
+        FranciumLineRecipes.run();
 
         addFuels();
 
