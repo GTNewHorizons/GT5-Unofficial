@@ -81,6 +81,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r( 89, Materials.Lead);
         r( 90, Materials.Bismuth);
         r( 93, Materials.Radon);
+        r( 94, Materials.Francium);
         r( 96, Materials.Thorium);
         r( 97, Materials.Uranium235);
         r( 98, Materials.Uranium);
@@ -147,6 +148,10 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(170, Materials.Datolite);
         r(171, Materials.MetamorphicMineralMixture);
         r(172, Materials.Plagioclase);
+        r(173, Materials.CrudeFrancium);
+        r(174, Materials.DepletedUraniumResidue);
+        r(175, Materials.FranciumHydroxide);
+        r(176, Materials.UraniumInfusedAcidicSolution);
         r(201, Materials.Manasteel);
         r(202, Materials.Terrasteel);
         r(203, Materials.ElvenElementium);

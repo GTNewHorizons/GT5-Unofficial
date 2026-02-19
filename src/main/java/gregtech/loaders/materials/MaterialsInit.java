@@ -55,6 +55,7 @@ public class MaterialsInit {
         loadRadoxLine();
         loadNetheriteLine();
         loadPrismaticAcidLine();
+        loadFranciumLine();
         loadMagicMaterials();
         loadBotaniaMaterials();
         loadKevlarLine();
@@ -89,6 +90,7 @@ public class MaterialsInit {
         Materials.Europium = loadEuropium();
         Materials.Flerovium = loadFlerovium();
         Materials.Fluorine = loadFluorine();
+        Materials.Francium = loadFrancium();
         Materials.Gadolinium = loadGadolinium();
         Materials.Gallium = loadGallium();
         Materials.Gold = loadGold();
@@ -640,6 +642,21 @@ public class MaterialsInit {
             .setMeltingPoint(53)
             .addAspect(TCAspects.PERDITIO, 2)
             .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static Materials loadFrancium() {
+        return new MaterialBuilder().setName("Francium_GT5U")
+            .setDefaultLocalName("Francium")
+            .setElement(Element.Fr)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeRed)
+            .setARGB(0x00ff3900)
+            .addDustItems()
+            .addPlasma()
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 2)
+            .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
 
@@ -8439,7 +8456,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Potassium Hydroxide")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeLightBlue)
-            .setARGB(0x007e4a9e)
+            .setARGB(0x005e4a9e)
             .addDustItems()
             .addMaterial(Materials.Potassium, 1)
             .addMaterial(Materials.Oxygen, 1)
@@ -14000,6 +14017,58 @@ public class MaterialsInit {
             .setDefaultLocalName("Prismatic Naquadah Composite Slurry")
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x004b4b4b)
+            .addCell()
+            .addFluid()
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static void loadFranciumLine() {
+        Materials.CrudeFrancium = loadCrudeFrancium();
+        Materials.DepletedUraniumResidue = loadDepletedUraniumResidue();
+        Materials.FranciumHydroxide = loadFranciumHydroxide();
+        Materials.UraniumInfusedAcidicSolution = loadUraniumInfusedAcidicSolution();
+    }
+
+    private static Materials loadCrudeFrancium() {
+        return new MaterialBuilder().setName("CrudeFrancium")
+            .setDefaultLocalName("Crude Francium")
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeRed)
+            .setARGB(0x004a180a)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadDepletedUraniumResidue() {
+        return new MaterialBuilder().setName("DepletedUraniumResidue")
+            .setDefaultLocalName("Depleted Uranium Residue")
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0x001d4733)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadFranciumHydroxide() {
+        return new MaterialBuilder().setName("CrudeFrancium")
+            .setDefaultLocalName("Crude Francium")
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyePink)
+            .setARGB(0x00f2653d)
+            .addDustItems()
+            .addMaterial(Materials.Francium, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Hydrogen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadUraniumInfusedAcidicSolution() {
+        return new MaterialBuilder().setName("UraniumInfusedAcidicSolution")
+            .setDefaultLocalName("Uranium Infused Acidic Solution")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setARGB(0x0014f78a)
             .addCell()
             .addFluid()
             .addSubTag(SubTag.TRANSPARENT)

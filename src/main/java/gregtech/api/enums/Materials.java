@@ -78,6 +78,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Europium;
     public static Materials Flerovium;
     public static Materials Fluorine;
+    public static Materials Francium;
     public static Materials Gadolinium;
     public static Materials Gallium;
     public static Materials Gold;
@@ -903,6 +904,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials PrismaticAcid;
     public static Materials PrismaticNaquadah;
     public static Materials PrismaticNaquadahCompositeSlurry;
+
+    // Francium Line
+    public static Materials CrudeFrancium;
+    public static Materials DepletedUraniumResidue;
+    public static Materials FranciumHydroxide;
+    public static Materials UraniumInfusedAcidicSolution;
 
     // Magic Materials
     public static Materials ComplexityCatalyst;
