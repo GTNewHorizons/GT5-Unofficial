@@ -13,17 +13,12 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.chainItemPipeCasings;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
-import java.util.Arrays;
-import java.util.Collection;
-
-import javax.annotation.Nonnull;
-
-import gregtech.api.GregTechAPI;
-import gregtech.api.recipe.check.CheckRecipeResult;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -39,14 +34,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import org.jetbrains.annotations.NotNull;
 
 public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMixer>
     implements ISurvivalConstructable {
@@ -59,8 +54,9 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
     private static final int OFFSET_Z = 0;
 
     private static final int PARALLEL_PER_TIER = 8;
-    private static final float SPEED_INCREASE_TIER = 1f;
-    private static final float EU_EFFICIENCY = 0.75f;
+    private static final float SPEED_INCREASE_TIER = 0.5f;
+    private static final float SPEED_BASIC = 1f;
+    private static final float EU_EFFICIENCY = 1f;
 
     public MTEIndustrialMixer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -97,7 +93,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
                         " AAA ",
                         " AAA ",
                         "EAAAE",
-                        "DDDDD"
+                        "DEEED"
                     },{
                         "DEEED",
                         "EBCBE",
@@ -105,7 +101,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
                         "EBCBE",
                         "EBCBE",
                         "EBCBE",
-                        "DDDDD"
+                        "DEEED"
                     },{
                         "DEEED",
                         "EAAAE",
@@ -113,7 +109,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
                         " AAA ",
                         " AAA ",
                         "EAAAE",
-                        "DDDDD"
+                        "DEEED"
                     },{
                         " DDD ",
                         " EEE ",
@@ -129,14 +125,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
                     'B',
                     chainItemPipeCasings(-1, MTEIndustrialMixer::setItemPipeTier, MTEIndustrialMixer::getItemPipeTier))
                 .addElement('C', Casings.TitaniumTurbineCasing.asElement())
-                .addElement(
-                    'D',
-                    buildHatchAdder(MTEIndustrialMixer.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                        .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockSheetmetalGT, Materials.Titanium.getId()))
-                        .hint(1)
-                        .buildAndChain(
-                            onElementPass(MTEIndustrialMixer::onCasingAdded, ofSheetMetal(Materials.Tungsten))))
+                .addElement('D', ofSheetMetal(Materials.Tungsten))
                 .addElement(
                     'E',
                     buildHatchAdder(MTEIndustrialMixer.class)
@@ -180,12 +169,17 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Mixer, IMM")
-            .addBulkMachineInfo(PARALLEL_PER_TIER, SPEED_INCREASE_TIER, EU_EFFICIENCY)
+            .addVoltageParallelInfo(8)
+            .addStaticSpeedInfo(SPEED_BASIC)
+            .addDynamicSpeedBonusInfo(SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
+            .addStaticEuEffInfo(1)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 7, 5, false)
             .addController("Second Layer Front Center")
             .addCasingInfoMin("Mixer Containment Casing", 5, false)
             .addCasingInfoExactly("Titanium Turbine Casing", 5, false)
+            .addCasingInfoExactly("Any Tiered Glass", 30, true)
+            .addCasingInfoExactly("Tungsten Sheetmetal", 24, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -206,7 +200,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
             @Override
             public CheckRecipeResult process() {
                 setEuModifier(EU_EFFICIENCY);
-                setSpeedBonus(1F / (SPEED_INCREASE_TIER * (itemPipeTier + 1)));
+                setSpeedBonus(1F / SPEED_BASIC + (SPEED_INCREASE_TIER * (itemPipeTier + 1)));
                 return super.process();
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
@@ -270,12 +264,6 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
         return GTPPRecipeMaps.mixerNonCellRecipes;
     }
 
-    @Nonnull
-    @Override
-    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.packagerRecipes, RecipeMaps.unpackagerRecipes);
-    }
-
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
@@ -302,6 +290,11 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
 
     @Override
     public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
         return true;
     }
 }

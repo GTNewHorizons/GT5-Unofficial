@@ -67,6 +67,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
             case 10 -> Textures.BlockIcons.MACHINE_CASING_THAUMIUM.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VOID.getIcon();
             case 12 -> Textures.BlockIcons.MACHINE_CASING_ICHORIUM.getIcon();
+            case 13 -> Textures.BlockIcons.MIXER_CONTAINMENT_CASING.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }
