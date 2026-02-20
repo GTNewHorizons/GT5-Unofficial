@@ -158,24 +158,26 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[aDamage].getBaseMetaTileEntity()
                 .getMetaTileEntity();
             if (isSkipGenerateDescription(tMetaTileEntity)) return;
-            final String[] descriptions;
-            final String key;
-            if (tMetaTileEntity instanceof ISecondaryDescribable secondaryDescribable) {
-                descriptions = secondaryDescribable.getSecondaryDescription();
-                key = "gt.blockmachines." + tMetaTileEntity.getMetaName() + ".tooltip_secondary";
-            } else {
-                descriptions = tMetaTileEntity.getDescription();
-                key = "gt.blockmachines." + tMetaTileEntity.getMetaName() + ".tooltip";
+            String key = "gt.blockmachines." + tMetaTileEntity.getMetaName() + ".tooltip";
+            if (tMetaTileEntity instanceof ISecondaryDescribable) {
+                final String[] tSecondaryDescription = ((ISecondaryDescribable) tMetaTileEntity)
+                    .getSecondaryDescription();
+                registerDescription(tSecondaryDescription, key + "_secondary");
             }
-            if (descriptions == null) return;
-            String description = Arrays.stream(descriptions)
-                .filter(GTUtility::isStringValid)
-                .collect(Collectors.joining(GTSplit.LB));
-            if (description.contains("%%%")) {
-                description = description.replaceAll("%%%.*?%%%", "%s");
-            }
-            GTLanguageManager.addStringLocalization(key, description);
+            registerDescription(tMetaTileEntity.getDescription(), key);
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void registerDescription(@Nullable String[] aDescription, String key) {
+        if (aDescription == null) return;
+        String tDescription = Arrays.stream(aDescription)
+            .filter(GTUtility::isStringValid)
+            .collect(Collectors.joining(GTSplit.LB));
+        if (tDescription.contains("%%%")) {
+            tDescription = tDescription.replaceAll("%%%.*?%%%", "%s");
+        }
+        GTLanguageManager.addStringLocalization(key, tDescription);
     }
 
     @Override
