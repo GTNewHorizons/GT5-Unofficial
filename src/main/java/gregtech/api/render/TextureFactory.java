@@ -65,7 +65,7 @@ public final class TextureFactory {
      * @return The instance of an {@link ITexture} implementation
      */
     public static ITexture of(final ITexture... textures) {
-        return new GTMultiTextureRender(textures);
+        return GTMultiTextureRender.create(textures);
     }
 
     /**
