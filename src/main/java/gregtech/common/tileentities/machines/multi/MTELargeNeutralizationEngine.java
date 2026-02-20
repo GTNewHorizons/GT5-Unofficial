@@ -36,6 +36,12 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -61,6 +67,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
 public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTELargeNeutralizationEngine>
@@ -79,6 +86,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private int fuelConsumption = 0;
     private float boosterEUBoost = 1.0F;
     private int boosterBoostTicks = 0;
+    private int toxicResidue = 0;
 
     public MTELargeNeutralizationEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -266,7 +274,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private void useBooster() {
-        if (depleteInput(Materials.CaesiumHydroxide.getDust(1))) {
+        if (depleteInput(Materials.FranciumHydroxide.getDust(1))){
+            this.boosterEUBoost=5F;
+            this.boosterBoostTicks=600;
+        }
+        else if (depleteInput(Materials.CaesiumHydroxide.getDust(1))) {
             this.boosterEUBoost = 2.5F;
             this.boosterBoostTicks = 200;
         } else if (depleteInput(Materials.PotassiumHydroxide.getDust(1))) {
@@ -287,6 +299,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         aNBT.setInteger("fuelConsumption", fuelConsumption);
         aNBT.setFloat("boosterEUBoost", boosterEUBoost);
         aNBT.setInteger("boosterBoostTicks", boosterBoostTicks);
+        aNBT.setInteger("toxicResidue",toxicResidue);
     }
 
     @Override
@@ -296,6 +309,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         fuelConsumption = aNBT.getInteger("fuelConsumption");
         boosterEUBoost = aNBT.getFloat("boosterEUBoost");
         boosterBoostTicks = aNBT.getInteger("boosterBoostTicks");
+        toxicResidue = aNBT.getInteger("toxicResidue");
     }
 
     @Override
@@ -429,5 +443,25 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                 + EnumChatFormatting.GREEN
                 + formatNumber(recipesDone)
                 + EnumChatFormatting.RESET };
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMultiBlockBaseGui<MTELargeNeutralizationEngine>(this) {
+
+            @Override
+            protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager,
+                ModularPanel parent) {
+                ListWidget<IWidget, ?> terminalText = super.createTerminalTextWidget(syncManager, parent);
+                IntSyncValue toxicResidueSyncer = new IntSyncValue(() -> toxicResidue);
+                terminalText.child(
+                    IKey.dynamic(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.toxic_residue",
+                            toxicResidueSyncer.getStringValue()))
+                        .asWidget());
+                return terminalText;
+            }
+        };
     }
 }
