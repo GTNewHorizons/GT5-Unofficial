@@ -841,6 +841,9 @@ GT5U.MBTT.Structure.GlassEnergyLimitTier=-tier unlocks all
 GT5U.MBTT.Structure.NoTierSkips=This machine can only run recipes matching its average energy hatch tier
 GT5U.MBTT.Structure.MaxTierSkips=This machine can run recipes at most %d tiers above its average energy hatch tier
 GT5U.MBTT.Structure.UnlimitedTierSkips=This machine can run recipes regardless of tier, if given enough energy
+gt.mbtt.structure.front_center=Front center
+gt.mbtt.structure.back_center=Back center
+gt.mbtt.blockcasings4.2.name=Stable Titanium Machine Casing
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
 GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
@@ -879,6 +882,21 @@ GT5U.MBTT.PCB.Tooltip.6=Can't change configuration when running!
 GT5U.MBTT.AlchemyCasingAny=Alchemically Resistant/Inert/Immune Casing
 GT5U.MBTT.AlchemicalConstructAny=Alchemical Construct
 GT5U.MBTT.SuperChest=Super/Quantum Chest
+
+gt.multiblock.DieselEngine.machine_type=Combustion Generator, LCE
+gt.multiblock.DieselEngine.desc1=Supply Diesel Fuels and %s of Lubricant per hour to run
+gt.multiblock.DieselEngine.desc2=Supply %s of Oxygen to boost output (optional)
+gt.multiblock.DieselEngine.default_output=Default: Produces %s at %s fuel efficiency
+gt.multiblock.DieselEngine.boosted_output=Boosted: Produces %s at %s fuel efficiency
+gt.multiblock.DieselEngine.wait_power=You need to wait for it to reach %s to output full power
+gt.multiblock.DieselEngine.intake_warning=Engine Intake Casings must not be obstructed in front (only air blocks)
+gt.multiblock.DieselEngine.gear_box_inner=Inner 2 blocks
+gt.multiblock.DieselEngine.engine_intake_ring=8x, ring around controller
+gt.multiblock.DieselEngine.maintenance_hatch=One of the casings next to a Gear Box
+gt.multiblock.DieselEngine.muffler_hatch=Top middle back, above the rear Gear Box
+gt.multiblock.DieselEngine.diesel_fuel=Diesel Fuel, next to a Gear Box
+gt.multiblock.DieselEngine.lubricant=Lubricant, next to a Gear Box
+gt.multiblock.DieselEngine.oxygen_optional=Oxygen, optional, next to a Gear Box
 
 GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
 
