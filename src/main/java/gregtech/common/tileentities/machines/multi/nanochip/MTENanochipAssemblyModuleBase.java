@@ -90,7 +90,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     private long availableEUt = 0;
 
-    private final ArrayList<ItemStack> inputFakeItems = new ArrayList<>();
+    protected final ArrayList<ItemStack> inputFakeItems = new ArrayList<>();
     protected FluidStack[] fluidInputs = null;
     private byte outputColor = -1;
     private int currentParallel;
@@ -321,6 +321,14 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
         public ItemInputInformation(Map<GTUtility.ItemId, Byte> colors, Map<GTUtility.ItemId, ItemStack> inputs) {
             this.colors = colors;
+            this.inputs = inputs;
+        }
+    }
+
+    protected static class ItemInputsByColor {
+        public final Map<Byte, List<ItemStack>> inputs;
+
+        public ItemInputsByColor(Map<Byte, List<ItemStack>> inputs) {
             this.inputs = inputs;
         }
     }
