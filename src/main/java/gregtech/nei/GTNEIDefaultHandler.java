@@ -69,6 +69,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
 
 public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
@@ -243,6 +244,12 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                 tResults.add(GTOreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
             }
         }
+        if (aResult != null) {
+            List<ItemStack> ccRepresentations = CCNEIRepresentation.NEI_RECIPE_ASSOCIATIONS.get(aResult);
+            if (ccRepresentations != null) {
+                tResults.addAll(ccRepresentations);
+            }
+        }
         if (aResult.getUnlocalizedName()
             .startsWith("gt.blockores")) {
             for (int i = 0; i < 8; i++) {
@@ -308,6 +315,12 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         if ((tPrefixMaterial != null) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
             for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
                 tInputs.add(GTOreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
+            }
+        }
+        if (aInput != null) {
+            List<ItemStack> ccRepresentations = CCNEIRepresentation.NEI_USAGE_ASSOCIATIONS.get(aInput);
+            if (ccRepresentations != null) {
+                tInputs.addAll(ccRepresentations);
             }
         }
         addFluidStacks(aInput, tInputs);
