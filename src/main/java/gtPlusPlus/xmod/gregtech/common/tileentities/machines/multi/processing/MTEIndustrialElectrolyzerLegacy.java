@@ -33,23 +33,23 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEndustrialElectrolyzer extends GTPPMultiBlockBase<MTEndustrialElectrolyzer>
+public class MTEIndustrialElectrolyzerLegacy extends GTPPMultiBlockBase<MTEIndustrialElectrolyzerLegacy>
     implements ISurvivalConstructable {
 
     private int mCasing;
-    private static IStructureDefinition<MTEndustrialElectrolyzer> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialElectrolyzerLegacy> STRUCTURE_DEFINITION = null;
 
-    public MTEndustrialElectrolyzer(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialElectrolyzerLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEndustrialElectrolyzer(final String aName) {
+    public MTEIndustrialElectrolyzerLegacy(final String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEndustrialElectrolyzer(this.mName);
+        return new MTEIndustrialElectrolyzerLegacy(this.mName);
     }
 
     @Override
@@ -61,6 +61,7 @@ public class MTEndustrialElectrolyzer extends GTPPMultiBlockBase<MTEndustrialEle
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addBulkMachineInfo(2, 2.8f, 0.9f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
@@ -78,16 +79,16 @@ public class MTEndustrialElectrolyzer extends GTPPMultiBlockBase<MTEndustrialEle
     }
 
     @Override
-    public IStructureDefinition<MTEndustrialElectrolyzer> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialElectrolyzerLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEndustrialElectrolyzer>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialElectrolyzerLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
                         new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
-                    buildHatchAdder(MTEndustrialElectrolyzer.class)
+                    buildHatchAdder(MTEIndustrialElectrolyzerLegacy.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
                         .casingIndex(TAE.GTPP_INDEX(5))
                         .hint(1)

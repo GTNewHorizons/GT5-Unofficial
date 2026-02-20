@@ -1662,6 +1662,12 @@ GT5U.gui.text.nac.bar.label.cosmics=Cosmics Circuits
 GT5U.gui.text.nac.bar.label.temporals=Temporally Transcendent Circuits
 GT5U.gui.text.nac.bar.label.specials=High-Grade Specialty Circuits
 
+GT5U.gui.text.nac.module.boardprocessor.flush_tank_auto=Flush automatically at
+GT5U.gui.text.nac.module.boardprocessor.impurity=Impurity
+
+GT5U.gui.text.nac.module.status.connected=Connected to Main Complex
+GT5U.gui.text.nac.module.status.disconnected=Disconnected from Main Complex
+
 # NAC Info Panel
 GT5U.gui.text.nac.nameplate=Nanochip Assembly Complex
 GT5U.gui.text.nac.info.open=Open Info Panel
@@ -1702,6 +1708,7 @@ GT5U.gui.text.nac.info.calibration.special.header=Special Circuits (Pico and Qua
 GT5U.gui.text.nac.info.calibration.special.effect1=§3Tier 1§r - §21%% threshold§r - -20%% Recipe Time on Special Circuits in the Assembly Matrix
 GT5U.gui.text.nac.info.calibration.special.effect2=§3Tier 2§r - §25%% threshold§r - -20%% Recipe Time on Special Circuits in the Assembly Matrix (total 40%%)
 GT5U.gui.text.nac.info.calibration.special.effect3=§3Tier 3§r - §220%% threshold§r - -10%% Recipe Time on Special Circuits in the Assembly Matrix (total 50%%)
+
 # NAC Module Tooltip Keys
 GT5U.tooltip.nac.interface.machine_info=%s, %s
 GT5U.tooltip.nac.interface.delete_stored=Delete Stored Circuit Components
@@ -1776,6 +1783,7 @@ GT5U.tooltip.nac.module.etching_array.action=Etches your Chip %s
 GT5U.tooltip.nac.module.etching_array.body.1=In a fully calibrated Crystal NAC, the laser source hatch provides bonuses based on its attributes:
 GT5U.tooltip.nac.module.etching_array.body.2=Divides §bEU Cost§7 by each §fAmperage Interval§7 over 256A
 GT5U.tooltip.nac.module.etching_array.body.3=Divides §aRecipe Duration§7 by §f(Hatch Tier - 9)
+GT5U.tooltip.nac.module.etching_array.installed=Installed Laser
 GT5U.tooltip.nac.module.optical_organizer.name=Optical Organizer
 GT5U.tooltip.nac.module.optical_organizer.flavor.1=Does mixing water together even make sense???
 GT5U.tooltip.nac.module.optical_organizer.action=Optimizes your Optical %s
@@ -1804,6 +1812,12 @@ GT5U.tooltip.nac.module.superconductor_splitter.body.1=Requires 1000 L/s of Supe
 GT5U.tooltip.nac.module.wire_tracer.name=Wire Tracer
 GT5U.tooltip.nac.module.wire_tracer.flavor.1=Maybe tracing out this mess of wires creates a pretty picture in the mind of the computer
 GT5U.tooltip.nac.module.wire_tracer.action=Traces your Wire %s
+GT5U.tooltip.nac.module.boardprocessor.immersion_fluid=Immersion Fluid
+GT5U.tooltip.nac.module.boardprocessor.empty=Empty
+GT5U.tooltip.nac.module.boardprocessor.impurity=Impurity
+GT5U.tooltip.nac.module.boardprocessor.flush_tank=Flush Tank
+GT5U.tooltip.nac.module.boardprocessor.edit_flush_tank=Edit auto-flush settings
+
 
 GT5U.tooltip.nac.hatch.splitter.body.1=Can be installed in a §eSplitter§7 module for the §aNanochip Assembly Complex
 GT5U.tooltip.nac.hatch.splitter.body.2=Allows for Redstone Input for rule control
