@@ -326,7 +326,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         }
     }
 
-
     /**
      * Find all inputs stored in the vacuum conveyor inputs.
      * Clears inputFakeItems and then adds all fake items to this hatch. Note that different stacks with the same id
