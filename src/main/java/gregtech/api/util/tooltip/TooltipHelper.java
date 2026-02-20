@@ -195,7 +195,7 @@ public class TooltipHelper {
      */
     public static String fluidText(long liters) {
         return L_COLOR + NumberFormatUtil.formatNumber(liters)
-            + GTUtility.translate(gt.mbtt.info.l)
+            + GTUtility.translate("gt.mbtt.info.l")
             + EnumChatFormatting.GRAY;
     }
 
