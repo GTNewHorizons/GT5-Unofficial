@@ -144,6 +144,37 @@ item.gt.comb.name=Comb
 item.gt.drop.name=Drop
 item.gt.pollen.name=Pollen
 item.gt.propolis.name=Propolis
+gt.blockcasings2.Casing_SolidSteel=Solid Steel Machine Casing
+gt.blockcasings2.Casing_FrostProof=Frost Proof Machine Casing
+gt.blockcasings2.Casing_Gearbox_Bronze=Bronze Gear Box Casing
+gt.blockcasings2.Casing_Gearbox_Steel=Steel Gear Box Casing
+gt.blockcasings2.Casing_Gearbox_Titanium=Titanium Gear Box Casing
+gt.blockcasings2.Casing_Gearbox_TungstenSteel=Assembly Line Casing
+gt.blockcasings2.Casing_Processor=Processor Machine Casing
+gt.blockcasings2.Casing_DataDrive=Data Drive Machine Casing
+gt.blockcasings2.Casing_ContainmentField=Containment Field Machine Casing
+gt.blockcasings2.Casing_Assembler=Assembler Machine Casing
+gt.blockcasings2.Casing_Pump=Pump Machine Casing
+gt.blockcasings2.Casing_Motor=Motor Machine Casing
+gt.blockcasings2.Casing_Pipe_Bronze=Bronze Pipe Casing
+gt.blockcasings2.Casing_Pipe_Steel=Steel Pipe Casing
+gt.blockcasings2.Casing_Pipe_Titanium=Titanium Pipe Casing
+gt.blockcasings2.Casing_Pipe_TungstenSteel=Tungstensteel Pipe Casing
+gt.blockcasings4.Casing_RobustTungstenSteel=Robust Tungstensteel Machine Casing
+gt.blockcasings4.Casing_CleanStainlessSteel=Clean Stainless Steel Machine Casing
+gt.blockcasings4.Casing_StableTitanium=Stable Titanium Machine Casing
+gt.blockcasings4.Casing_Firebox_Titanium=Titanium Firebox Casing
+gt.blockcasings4.Casing_Fusion=Fusion Machine Casing
+gt.blockcasings4.Casing_Fusion_Coil=Fusion Coil Block
+gt.blockcasings4.Casing_Fusion2=Fusion Machine Casing MK II
+gt.blockcasings4.Casing_Turbine=Turbine Casing
+gt.blockcasings4.Casing_Turbine1=Stainless Steel Turbine Casing
+gt.blockcasings4.Casing_Turbine2=Titanium Turbine Casing
+gt.blockcasings4.Casing_Turbine3=Tungstensteel Turbine Casing
+gt.blockcasings4.Casing_EngineIntake=Engine Intake Casing
+gt.blockcasings4.Casing_MiningOsmiridium=Mining Osmiridium Casing
+gt.blockcasings4.Casing_Firebricks=Firebricks
+
 
 # GT Item Descriptions
 gt.item.desc.stored_heat=Stored Heat: %s
