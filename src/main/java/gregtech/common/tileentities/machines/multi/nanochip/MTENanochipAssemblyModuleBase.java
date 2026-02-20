@@ -235,13 +235,14 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     @Override
     public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         int built = survivalBuildPiece(
             STRUCTURE_PIECE_BASE,
             trigger,
             BASE_STRUCTURE_OFFSET_X,
             BASE_STRUCTURE_OFFSET_Y,
             BASE_STRUCTURE_OFFSET_Z,
-            elementBudget,
+            realBudget,
             env,
             false,
             true);
@@ -251,7 +252,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             structureOffsetX(),
             structureOffsetY(),
             structureOffsetZ(),
-            elementBudget,
+            realBudget,
             env,
             false,
             true);
