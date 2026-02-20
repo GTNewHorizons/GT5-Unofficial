@@ -594,7 +594,6 @@ public class GTProxy implements IFuelHandler {
     public boolean mEnableAllMaterials = false;
     public boolean mEnableCleanroom = true;
     public boolean mLowGravProcessing = false;
-    public boolean mCropNeedBlock = true;
     public boolean mAMHInteraction = true;
     public boolean mForceFreeFace = true;
     public boolean mMixedOreOnlyYieldsTwoThirdsOfPureOre = false;

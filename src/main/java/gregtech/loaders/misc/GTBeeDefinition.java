@@ -34,7 +34,7 @@ import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.AvaritiaAddons;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.Botania;
-import static gregtech.api.enums.Mods.CropsPlusPlus;
+import static gregtech.api.enums.Mods.CropsNH;
 import static gregtech.api.enums.Mods.EnderStorage;
 import static gregtech.api.enums.Mods.ExtraBees;
 import static gregtech.api.enums.Mods.ExtraCells2;
@@ -2718,7 +2718,9 @@ public enum GTBeeDefinition implements IBeeDefinition {
     // Endgame bees
     JAEGERMEISTER(GTBranchDefinition.ENDGAME, "JaegerMeister", false, new Color(0x05AD18), new Color(0xE7DAC3),
         beeSpecies -> {
-            beeSpecies.addProduct(GTModHandler.getModItem(CropsPlusPlus.ID, "BppPotions", 1L, 8), 0.01f);
+            if (CropsNH.isModLoaded()) {
+                beeSpecies.addProduct(GTModHandler.getModItem(CropsNH.ID, "bottledAlcohol", 1L, 8), 0.01f);
+            }
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setNocturnal();
             beeSpecies.setHasEffect();

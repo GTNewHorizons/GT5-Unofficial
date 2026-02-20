@@ -68,8 +68,6 @@ public enum Mods implements IMod {
     CraftTweaker(ModIDs.CRAFT_TWEAKER),
     MineTweaker(ModIDs.MINE_TWEAKER),
     CreativeCore(ModIDs.CREATIVE_CORE),
-    CropLoadCore(ModIDs.CROP_LOAD_CORE),
-    CropsPlusPlus(ModIDs.CROPS_PLUS_PLUS),
     CropsNH(ModIDs.CROPS_NH),
     CustomMainMenu(ModIDs.CUSTOM_MAIN_MENU),
     Darkerer(ModIDs.DARKERER),
@@ -263,7 +261,6 @@ public enum Mods implements IMod {
     ExtraUtilities(ModIDs.EXTRA_UTILITIES),
     GraviSuite(ModIDs.GRAVI_SUITE),
     HungerOverhaul(ModIDs.HUNGER_OVERHAUL),
-    IC2CropPlugin(ModIDs.I_C2_CROP_PLUGIN),
     IndustrialCraft2(ModIDs.INDUSTRIAL_CRAFT2),
     JourneyMap(ModIDs.JOURNEY_MAP),
     Morpheus(ModIDs.MORPHEUS),
@@ -411,8 +408,6 @@ public enum Mods implements IMod {
         public static final String CRAFT_TWEAKER = "MineTweaker3",
             MINE_TWEAKER = "MineTweaker3";
         public static final String CREATIVE_CORE = "creativecore";
-        public static final String CROP_LOAD_CORE = "croploadcore";
-        public static final String CROPS_PLUS_PLUS = "berriespp";
         public static final String CROPS_NH = "cropsnh";
         public static final String CUSTOM_MAIN_MENU = "custommainmenu";
         public static final String DARKERER = "darkerer";
@@ -609,7 +604,6 @@ public enum Mods implements IMod {
         public static final String GRAVI_SUITE = "GraviSuite";
         // "Healer" - Don't know what this is or where it comes from but it's in the list
         public static final String HUNGER_OVERHAUL = "HungerOverhaul";
-        public static final String I_C2_CROP_PLUGIN = "Ic2Nei";
         public static final String INDUSTRIAL_CRAFT2 = "IC2";
         // JourneyMap Server
         public static final String JOURNEY_MAP = "journeymap";
