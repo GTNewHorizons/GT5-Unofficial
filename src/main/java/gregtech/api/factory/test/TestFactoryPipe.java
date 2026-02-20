@@ -75,11 +75,6 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
     }
 
     @Override
-    public void onNeighbourChanged(TestFactoryElement neighbour) {
-        mCheckConnections = true;
-    }
-
-    @Override
     protected void checkConnections() {
         mConnections = 0;
 
@@ -119,10 +114,15 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
     }
 
     @Override
+    public void onEdgeChanged(TestFactoryElement adjacent) {
+        mCheckConnections = true;
+    }
+
+    @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
 
-        TestFactoryGrid.INSTANCE.addElement(this);
+        TestFactoryGrid.INSTANCE.updateElement(this);
     }
 
     @Override
@@ -134,6 +134,6 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
 
     @Override
     public void onColorChangeServer(byte aColor) {
-        TestFactoryGrid.INSTANCE.addElement(this);
+        TestFactoryGrid.INSTANCE.updateElement(this);
     }
 }

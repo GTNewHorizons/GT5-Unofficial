@@ -59,6 +59,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -747,9 +748,9 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         .addElement(
             'H',
             buildHatchAdder(MTEEyeOfHarmony.class).atLeast(InputHatch, OutputHatch, InputBus, OutputBus)
-                .casingIndex(BlockGTCasingsTT.texturePage << 7)
+                .casingIndex(Casings.InfiniteSpacetimeEnergyBoundaryCasing.getTextureId())
                 .hint(1)
-                .buildAndChain(TTCasingsContainer.sBlockCasingsBA0, 12))
+                .buildAndChain(Casings.InfiniteSpacetimeEnergyBoundaryCasing.asElement()))
         .addElement(
             'E',
             GTStructureChannels.EOH_DILATION.use(
