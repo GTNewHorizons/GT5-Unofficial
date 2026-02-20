@@ -16,6 +16,7 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.scanner.ScannerHelper;
 
 public class BehaviourScanner extends BehaviourNone {
 
@@ -28,16 +29,16 @@ public class BehaviourScanner extends BehaviourNone {
         int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         final NBTTagCompound tNBT = aStack.getTagCompound();
         if (((aPlayer instanceof EntityPlayerMP)) && (aItem.canUse(aStack, 20000.0D))) {
-            final ArrayList<String> tList = new ArrayList<>();
+            final List<String> list = new ArrayList<>();
             if (aItem.use(
                 aStack,
-                GTUtility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ),
+                ScannerHelper.scan(list, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ),
                 aPlayer)) {
-                final int tList_sS = tList.size();
+                final int tList_sS = list.size();
                 tNBT.setInteger("dataLinesCount", tList_sS);
                 for (int i = 0; i < tList_sS; i++) {
-                    tNBT.setString("dataLines" + i, tList.get(i));
-                    GTUtility.sendChatToPlayer(aPlayer, tList.get(i));
+                    tNBT.setString("dataLines" + i, list.get(i));
+                    GTUtility.sendChatToPlayer(aPlayer, list.get(i));
                 }
             }
             return true;

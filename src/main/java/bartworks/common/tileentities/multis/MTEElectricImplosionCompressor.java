@@ -325,7 +325,8 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         if (!aBaseMetaTileEntity.isServerSide()) return;
         if (!this.piston) {
             List<Pair<Block, Integer>> tiers = getTierBlockList();
-            Pair<Block, Integer> tieredBlock = tiers.get(Math.min(tier, tiers.size()) - 1);
+            final int index = Math.max(0, Math.min(tier, tiers.size()) - 1);
+            Pair<Block, Integer> tieredBlock = tiers.get(index);
             this.chunkCoordinates.forEach(c -> {
                 // Don't replace real blocks in case user has placed something (e.g. tier upgrade)
                 if (aBaseMetaTileEntity.getWorld()
