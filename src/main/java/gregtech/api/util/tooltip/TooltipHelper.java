@@ -3,7 +3,6 @@ package gregtech.api.util.tooltip;
 import java.text.DecimalFormat;
 
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
@@ -27,6 +26,7 @@ public class TooltipHelper {
     public static final EnumChatFormatting EU_VOLT_COLOR = EnumChatFormatting.YELLOW;
     public static final EnumChatFormatting AMP_COLOR = EnumChatFormatting.AQUA;
     public static final EnumChatFormatting CABLE_LOSS_COLOR = EnumChatFormatting.RED;
+    public static final EnumChatFormatting L_COLOR = EnumChatFormatting.WHITE;
     public static final DecimalFormat percentageFormat = new DecimalFormat("0.##%");
 
     /**
@@ -187,6 +187,24 @@ public class TooltipHelper {
         return CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter)
             + " "
             + EnumChatFormatting.GRAY
-            + StatCollector.translateToLocal("GT5U.item.cable.eu_volt");
+            + GTUtility.translate("GT5U.item.cable.eu_volt");
+    }
+
+    /**
+     * @return The given number of L, formatted.
+     */
+    public static String fluidText(long liters) {
+        return L_COLOR + NumberFormatUtil.formatNumber(liters)
+            + GTUtility.translate(gt.mbtt.info.l)
+            + EnumChatFormatting.GRAY;
+    }
+
+    /**
+     * @return The given number of L per sec, formatted.
+     */
+    public static String fluidRateText(long litersPerSecond) {
+        return L_COLOR + NumberFormatUtil.formatNumber(litersPerSecond)
+            + GTUtility.translate("gt.mbtt.info.l_s")
+            + EnumChatFormatting.GRAY;
     }
 }
