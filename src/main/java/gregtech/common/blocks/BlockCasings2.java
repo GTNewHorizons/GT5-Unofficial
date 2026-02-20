@@ -12,7 +12,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.common.misc.GTStructureChannels;
 
 /**
@@ -35,47 +34,37 @@ public class BlockCasings2 extends BlockCasingsAbstract {
             ForgeDirection.UNKNOWN,
             Dyes.MACHINE_METAL.getRGBA());
 
-        register(0, ItemList.Casing_SolidSteel, GTUtility.translate("gt.blockcasings2.Casing_SolidSteel"));
+        register(0, ItemList.Casing_SolidSteel);
 
-        register(1, ItemList.Casing_FrostProof, GTUtility.translate("gt.blockcasings2.Casing_FrostProof"));
+        register(1, ItemList.Casing_FrostProof);
 
-        register(2, ItemList.Casing_Gearbox_Bronze, GTUtility.translate("gt.blockcasings2.Casing_Gearbox_Bronze"));
+        register(2, ItemList.Casing_Gearbox_Bronze);
 
-        register(3, ItemList.Casing_Gearbox_Steel, GTUtility.translate("gt.blockcasings2.Casing_Gearbox_Steel"));
+        register(3, ItemList.Casing_Gearbox_Steel);
 
-        register(4, ItemList.Casing_Gearbox_Titanium, GTUtility.translate("gt.blockcasings2.Casing_Gearbox_Titanium"));
+        register(4, ItemList.Casing_Gearbox_Titanium);
 
-        register(
-            5,
-            ItemList.Casing_Gearbox_TungstenSteel,
-            GTUtility.translate("gt.blockcasings2.Casing_Gearbox_TungstenSteel"));
+        register(5, ItemList.Casing_Gearbox_TungstenSteel);
 
-        register(6, ItemList.Casing_Processor, GTUtility.translate("gt.blockcasings2.Casing_Processor"));
+        register(6, ItemList.Casing_Processor);
 
-        register(7, ItemList.Casing_DataDrive, GTUtility.translate("gt.blockcasings2.Casing_DataDrive"));
+        register(7, ItemList.Casing_DataDrive);
 
-        register(
-            8,
-            ItemList.Casing_ContainmentField,
-            GTUtility.translate("gt.blockcasings2.Casing_ContainmentField"),
-            BLAST_PROOF);
+        register(8, ItemList.Casing_ContainmentField, BLAST_PROOF);
 
-        register(9, ItemList.Casing_Assembler, GTUtility.translate("gt.blockcasings2.Casing_Assembler"));
+        register(9, ItemList.Casing_Assembler);
 
-        register(10, ItemList.Casing_Pump, GTUtility.translate("gt.blockcasings2.Casing_Pump"));
+        register(10, ItemList.Casing_Pump);
 
-        register(11, ItemList.Casing_Motor, GTUtility.translate("gt.blockcasings2.Casing_Motor"));
+        register(11, ItemList.Casing_Motor);
 
-        register(12, ItemList.Casing_Pipe_Bronze, GTUtility.translate("gt.blockcasings2.Casing_Pipe_Bronze"));
+        register(12, ItemList.Casing_Pipe_Bronze);
 
-        register(13, ItemList.Casing_Pipe_Steel, GTUtility.translate("gt.blockcasings2.Casing_Pipe_Steel"));
+        register(13, ItemList.Casing_Pipe_Steel);
 
-        register(14, ItemList.Casing_Pipe_Titanium, GTUtility.translate("gt.blockcasings2.Casing_Pipe_Titanium"));
+        register(14, ItemList.Casing_Pipe_Titanium);
 
-        register(
-            15,
-            ItemList.Casing_Pipe_TungstenSteel,
-            GTUtility.translate("gt.blockcasings2.Casing_Pipe_TungstenSteel"));
+        register(15, ItemList.Casing_Pipe_TungstenSteel);
 
         for (int i = 0; i < 4; i++) {
             GTStructureChannels.PIPE_CASING.registerAsIndicator(new ItemStack(this, 1, i + 12), i + 1);

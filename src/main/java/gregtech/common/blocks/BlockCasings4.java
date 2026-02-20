@@ -5,7 +5,6 @@ import net.minecraft.util.IIcon;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTUtility;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
@@ -17,26 +16,20 @@ public class BlockCasings4 extends BlockCasingsAbstract {
 
     public BlockCasings4() {
         super(ItemCasings.class, "gt.blockcasings4", MaterialCasings.INSTANCE, 16);
-        register(
-            0,
-            ItemList.Casing_RobustTungstenSteel,
-            GTUtility.translate("gt.blockcasings4.Casing_RobustTungstenSteel"));
-        register(
-            1,
-            ItemList.Casing_CleanStainlessSteel,
-            GTUtility.translate("gt.blockcasings4.Casing_CleanStainlessSteel"));
-        register(2, ItemList.Casing_StableTitanium, GTUtility.translate("gt.blockcasings4.Casing_StableTitanium"));
-        register(3, ItemList.Casing_Firebox_Titanium, GTUtility.translate("gt.blockcasings4.Casing_Firebox_Titanium"));
-        register(6, ItemList.Casing_Fusion, GTUtility.translate("gt.blockcasings4.Casing_Fusion"));
-        register(7, ItemList.Casing_Fusion_Coil, GTUtility.translate("gt.blockcasings4.Casing_Fusion_Coil"));
-        register(8, ItemList.Casing_Fusion2, GTUtility.translate("gt.blockcasings4.Casing_Fusion2"));
-        register(9, ItemList.Casing_Turbine, GTUtility.translate("gt.blockcasings4.Casing_Turbine"));
-        register(10, ItemList.Casing_Turbine1, GTUtility.translate("gt.blockcasings4.Casing_Turbine1"));
-        register(11, ItemList.Casing_Turbine2, GTUtility.translate("gt.blockcasings4.Casing_Turbine2"));
-        register(12, ItemList.Casing_Turbine3, GTUtility.translate("gt.blockcasings4.Casing_Turbine3"));
-        register(13, ItemList.Casing_EngineIntake, GTUtility.translate("gt.blockcasings4.Casing_EngineIntake"));
-        register(14, ItemList.Casing_MiningOsmiridium, GTUtility.translate("gt.blockcasings4.Casing_MiningOsmiridium"));
-        register(15, ItemList.Casing_Firebricks, GTUtility.translate("gt.blockcasings4.Casing_Firebricks"));
+        register(0, ItemList.Casing_RobustTungstenSteel);
+        register(1, ItemList.Casing_CleanStainlessSteel);
+        register(2, ItemList.Casing_StableTitanium);
+        register(3, ItemList.Casing_Firebox_Titanium);
+        register(6, ItemList.Casing_Fusion);
+        register(7, ItemList.Casing_Fusion_Coil);
+        register(8, ItemList.Casing_Fusion2);
+        register(9, ItemList.Casing_Turbine);
+        register(10, ItemList.Casing_Turbine1);
+        register(11, ItemList.Casing_Turbine2);
+        register(12, ItemList.Casing_Turbine3);
+        register(13, ItemList.Casing_EngineIntake);
+        register(14, ItemList.Casing_MiningOsmiridium);
+        register(15, ItemList.Casing_Firebricks);
     }
 
     @Override
