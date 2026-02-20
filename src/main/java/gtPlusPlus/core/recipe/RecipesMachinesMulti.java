@@ -402,12 +402,6 @@ public class RecipesMachinesMulti {
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
-
-        // Industrial Electrolyzer
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_Electrolyzer.get(1),
-            new Object[] { "PCP", "HMH", "PRP", 'P', MaterialsAlloy.STELLITE.getPlate(1), 'C', "circuitElite", 'H',
-                ItemList.Casing_IV, 'M', ItemList.Machine_IV_Electrolyzer, 'R', MaterialsAlloy.STELLITE.getRotor(1) });
     }
 
     private static void multiBender() {

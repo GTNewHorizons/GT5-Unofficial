@@ -369,9 +369,6 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         ItemStack upgradeItemStack = env.getCellStack();
 
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ICellWorkbenchItem cellWorkbenchItem) {
-            if (filter.isFiltered()) {
-                return;
-            }
             String msg = filter.updateFilterFromCell(cellWorkbenchItem, upgradeItemStack);
             if (!msg.isEmpty() && env.getLastClickedPlayer() != null) {
                 String modeKey = filter.getIsBlackList() ? BLACKLIST.getKey() : WHITELIST.getKey();
@@ -382,9 +379,6 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             }
             env.dispatchMarkDirty();
         } else {
-            if (!filter.isFiltered()) {
-                return;
-            }
             filter.clear();
             if (env.getLastClickedPlayer() != null) {
                 GTUtility.sendChatToPlayer(
@@ -510,7 +504,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             final T returns = cell.injectItems(input, Actionable.SIMULATE, env.getActionSource());
             return returns == null || returns.getStackSize() == 0;
         }
-        return lastInputTick == tickCounter || hasAvailableSpace() && filter.isAllowed(stack);
+        return hasAvailableSpace() && filter.isAllowed(stack);
     }
 
     public boolean canStore(@NotNull I stack, long size) {
@@ -520,7 +514,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             final T returns = cell.injectItems(input, Actionable.SIMULATE, env.getActionSource());
             return returns == null || returns.getStackSize() == 0;
         }
-        return lastInputTick == tickCounter || hasAvailableSpace() && filter.isAllowed(stack);
+        return hasAvailableSpace() && filter.isAllowed(stack);
     }
 
     public void addToCache(I stack) {
@@ -533,7 +527,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     }
 
     public boolean storePartial(I stack, boolean simulate) {
-        if (!canStore(stack)) {
+        if (lastInputTick != tickCounter && !canStore(stack)) {
             return false;
         }
         if (!simulate) {
