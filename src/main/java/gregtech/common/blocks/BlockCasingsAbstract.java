@@ -5,7 +5,6 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedTex
 import java.util.List;
 import java.util.function.Supplier;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -173,16 +172,6 @@ public abstract class BlockCasingsAbstract extends GTGenericBlock
 
     protected void register(int meta, @Nullable IItemContainer container) {
         register(meta, container, (Supplier<String>) null);
-    }
-
-    protected void register(int meta, @Nullable IItemContainer container, @Nonnull String defaultLocalName) {
-        register(meta, container);
-    }
-
-    @SafeVarargs
-    protected final void register(int meta, @Nullable IItemContainer container, @Nonnull String defaultLocalName,
-        @Nullable Supplier<String>... tooltips) {
-        register(meta, container, tooltips);
     }
 
     @SafeVarargs
