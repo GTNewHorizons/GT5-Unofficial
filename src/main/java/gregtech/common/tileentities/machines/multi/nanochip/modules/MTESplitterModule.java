@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -40,13 +39,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTESplitterModuleGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
@@ -213,7 +212,8 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         // in VacuumConveyorHatch.onColorChange
         this.vacuumConveyorInputs.fixConsistency();
         this.vacuumConveyorOutputs.fixConsistency();
-        // Splitter logic needs to carefully separate input colors so we can't just use refreshInputItems, we have to do it manually
+        // Splitter logic needs to carefully separate input colors so we can't just use refreshInputItems, we have to do
+        // it manually
         // Some day I'll refactor this, maybe.
         this.inputFakeItems.clear();
         for (ArrayList<MTEHatchVacuumConveyorInput> conveyorList : this.vacuumConveyorInputs.allHatches()) {
@@ -268,7 +268,10 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
                         for (int busIndex = 0; busIndex < hatchesInGroup; busIndex++) {
                             int itemsForThisBus = itemsPerBus + (busIndex < busRemainder ? 1 : 0);
                             // We can just output, we don't have to worry about packet size or anything.
-                            ItemStack stackToOutput = new ItemStack(stack.getItem(), itemsForThisBus, stack.getItemDamage());
+                            ItemStack stackToOutput = new ItemStack(
+                                stack.getItem(),
+                                itemsForThisBus,
+                                stack.getItemDamage());
                             this.addVCOutput(stackToOutput, group.get(busIndex));
                             this.removeItemFromInputByColor(stackToOutput, currentDye);
                         }

@@ -326,6 +326,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     }
 
     protected static class ItemInputsByColor {
+
         public final Map<Byte, List<ItemStack>> inputs;
 
         public ItemInputsByColor(Map<Byte, List<ItemStack>> inputs) {
