@@ -152,16 +152,19 @@ public class TooltipHelper {
      */
     public static String voltageTierText(int voltageIndex, boolean withTierSuffix) {
         if (voltageIndex < VoltageIndex.ULV || voltageIndex > VoltageIndex.MAX) return "Invalid Voltage Tier";
-        return GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex]
-            + EnumChatFormatting.GRAY
-            + (withTierSuffix ? "-tier" : "");
+        return String.format(
+            "%s%s%s%s",
+            GTValues.TIER_COLORS[voltageIndex],
+            GTValues.VN[voltageIndex],
+            EnumChatFormatting.GRAY,
+            withTierSuffix ? "-tier" : "");
     }
 
     /**
      * @return The given EU, formatted.
      */
     public static String euText(long eu) {
-        return EU_VOLT_COLOR + NumberFormatUtil.formatNumber(eu) + EnumChatFormatting.GRAY;
+        return String.format("%s%s%s", EU_VOLT_COLOR, NumberFormatUtil.formatNumber(eu), EnumChatFormatting.GRAY);
     }
 
     /**
@@ -169,42 +172,53 @@ public class TooltipHelper {
      */
     public static String voltageText(long voltage) {
         final byte tier = GTUtility.getTier(voltage);
-        return EU_VOLT_COLOR + NumberFormatUtil
-            .formatNumber(voltage) + EnumChatFormatting.GRAY + " (" + voltageTierText(tier, false) + ")";
+        return String.format(
+            "%s%s%s (%s)",
+            EU_VOLT_COLOR,
+            NumberFormatUtil.formatNumber(voltage),
+            EnumChatFormatting.GRAY,
+            voltageTierText(tier, false));
     }
 
     /**
      * @return The given number of amps, formatted.
      */
     public static String ampText(long amps) {
-        return AMP_COLOR + NumberFormatUtil.formatNumber(amps) + EnumChatFormatting.GRAY;
+        return String.format("%s%s%s", AMP_COLOR, NumberFormatUtil.formatNumber(amps), EnumChatFormatting.GRAY);
     }
 
     /**
      * @return A string of the form "[lossPerMeter] EU-Volt"
      */
     public static String cableLossText(long lossPerMeter) {
-        return CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter)
-            + " "
-            + EnumChatFormatting.GRAY
-            + GTUtility.translate("GT5U.item.cable.eu_volt");
+        return String.format(
+            "%s%s %s",
+            CABLE_LOSS_COLOR,
+            NumberFormatUtil.formatNumber(lossPerMeter),
+            GTUtility.translate("GT5U.item.cable.eu_volt") + EnumChatFormatting.GRAY);
     }
 
     /**
      * @return The given number of L, formatted.
      */
     public static String fluidText(long liters) {
-        return L_COLOR + NumberFormatUtil.formatNumber(liters)
-            + GTUtility.translate("gt.mbtt.info.l")
-            + EnumChatFormatting.GRAY;
+        return String.format(
+            "%s%s%s%s",
+            L_COLOR,
+            NumberFormatUtil.formatNumber(liters),
+            GTUtility.translate("gt.mbtt.info.l"),
+            EnumChatFormatting.GRAY);
     }
 
     /**
      * @return The given number of L per sec, formatted.
      */
     public static String fluidRateText(long litersPerSecond) {
-        return L_COLOR + NumberFormatUtil.formatNumber(litersPerSecond)
-            + GTUtility.translate("gt.mbtt.info.l_s")
-            + EnumChatFormatting.GRAY;
+        return String.format(
+            "%s%s%s%s",
+            L_COLOR,
+            NumberFormatUtil.formatNumber(litersPerSecond),
+            GTUtility.translate("gt.mbtt.info.l_s"),
+            EnumChatFormatting.GRAY);
     }
 }
