@@ -326,14 +326,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         }
     }
 
-    protected static class ItemInputsByColor {
-
-        public final Map<Byte, List<ItemStack>> inputs;
-
-        public ItemInputsByColor(Map<Byte, List<ItemStack>> inputs) {
-            this.inputs = inputs;
-        }
-    }
 
     /**
      * Find all inputs stored in the vacuum conveyor inputs.
