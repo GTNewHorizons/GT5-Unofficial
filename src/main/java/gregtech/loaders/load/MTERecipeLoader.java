@@ -12,7 +12,9 @@ import static gregtech.api.util.GTModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GTModHandler.RecipeBits.DISMANTLEABLE;
 import static gregtech.api.util.GTModHandler.RecipeBits.NOT_REMOVABLE;
 import static gregtech.api.util.GTModHandler.RecipeBits.REVERSIBLE;
+import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.init.Blocks;
@@ -21,6 +23,7 @@ import net.minecraft.item.ItemStack;
 
 import com.jaquadro.minecraft.storagedrawers.StorageDrawers;
 
+import bartworks.common.loaders.ItemRegistry;
 import codechicken.nei.api.API;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -1620,6 +1623,16 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialElectrolyzer.get(1),
             new Object[] { "PCP", "HMH", "PRP", 'P', MaterialsAlloy.STELLITE.getPlate(1), 'C', "circuitElite", 'H',
                 ItemList.Casing_IV, 'M', ItemList.Machine_IV_Electrolyzer, 'R', MaterialsAlloy.STELLITE.getRotor(1) });
+        // Mega Chemical Reactor
+        // todo: tweak this recipe
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Machine_Multi_LargeChemicalReactor.get(64))
+            .itemOutputs(ItemList.MegaChemicalReactor.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
+            .duration(1 * HOURS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
+
     }
 
     // This method is for all the structure rework shapeless crafing migration recipes
@@ -1647,6 +1660,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialElectrolyzer.get(1),
             new Object[] { GregtechItemList.Industrial_Electrolyzer });
+
+        // Mega Chemical Reactor Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.MegaChemicalReactor.get(1),
+            new Object[] { ItemRegistry.megaMachines[3] });
     }
 
     private static void registerSifter() {
