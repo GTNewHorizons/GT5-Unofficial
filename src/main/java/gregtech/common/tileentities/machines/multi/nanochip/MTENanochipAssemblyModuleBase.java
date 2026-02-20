@@ -235,13 +235,14 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     @Override
     public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         int built = survivalBuildPiece(
             STRUCTURE_PIECE_BASE,
             trigger,
             BASE_STRUCTURE_OFFSET_X,
             BASE_STRUCTURE_OFFSET_Y,
             BASE_STRUCTURE_OFFSET_Z,
-            elementBudget,
+            realBudget,
             env,
             false,
             true);
@@ -251,7 +252,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             structureOffsetX(),
             structureOffsetY(),
             structureOffsetZ(),
-            elementBudget,
+            realBudget,
             env,
             false,
             true);
@@ -507,7 +508,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             this.currentParallel = parallelHelper.getCurrentParallel();
             this.mOutputItems = parallelHelper.getItemOutputs();
 
-            addVCOutput(mOutputItems[0], outputHatch);
             mEfficiency = 10000;
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = properRecipe.mDuration;
@@ -682,23 +682,17 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     @Override
     public boolean addOutputAtomic(ItemStack aStack) {
-        // We need to override this because outputs are produced in vacuum conveyor outputs, not as real items
-        if (GTUtility.isStackInvalid(aStack)) return false;
         MTEHatchVacuumConveyorOutput hatch = findOutputHatch(this.outputColor);
-        if (hatch == null) {
-            stopMachine(SimpleShutDownReason.ofCritical("Colored output hatch disappeared mid-recipe."));
-            return false;
-        }
-        // Look up component from this output fake stack and unify it with the packet inside the output hatch
-        CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(aStack);
-        CircuitComponentPacket outputPacket = new CircuitComponentPacket(component, aStack.stackSize);
-        hatch.unifyPacket(outputPacket);
+        addVCOutput(aStack, hatch);
         return true;
     }
 
     // Modules may Override this depending on a specific mechanic
     @Override
     public boolean addItemOutputs(ItemStack[] outputItems) {
+        for (var stack : outputItems) {
+            if (!addOutputAtomic(stack)) return false;
+        }
         return true;
     }
 
