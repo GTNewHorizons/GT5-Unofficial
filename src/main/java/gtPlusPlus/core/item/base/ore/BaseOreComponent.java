@@ -114,12 +114,11 @@ public class BaseOreComponent extends Item {
             if (this.componentMaterial != null) {
                 componentMaterial.addTooltips(list);
             } else {
-                if (!Client.tooltip.showFormula) {
-                    return;
-                }
-                String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
-                if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
-                    list.add(StringUtils.sanitizeStringKeepBrackets(aChemicalFormula));
+                if (Client.tooltip.showFormula) {
+                    String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
+                    if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
+                        list.add(StringUtils.sanitizeStringKeepBrackets(aChemicalFormula));
+                    }
                 }
             }
         }
