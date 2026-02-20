@@ -20,6 +20,10 @@ public class GTMultiTextureRender extends GTTextureBase implements ITexture {
         return GTMod.GT.isClientSide() ? new GTMultiTextureRender(aTextures) : null;
     }
 
+    public static ITexture create(ITexture[] textures) {
+        return new GTMultiTextureRender(textures);
+    }
+
     protected GTMultiTextureRender(ITexture... aTextures) {
         mTextures = aTextures;
     }
