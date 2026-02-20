@@ -815,9 +815,9 @@ tt.keyword.Computation=算力
 tt.keyword.Problems=故障
 tt.keyword.Efficiency=效率
 #Button that allows to pass power to other machines
-tt.keyword.PowerPass=导能
+tt.keyword.PowerPass=导能: §9%s
 #Button that vents EM
-tt.keyword.SafeVoid=安全销毁
+tt.keyword.SafeVoid=安全销毁: §9%s
 tt.keyword.Parametrizer=参数仪
 tt.keyword.Value=值
 tt.keyword.Input=输入
@@ -837,7 +837,7 @@ tt.keyphrase.Energy_Hatches=能源仓
 tt.keyphrase.Probably_uses=可能用到
 tt.keyphrase.Probably_makes=可能制作
 tt.keyphrase.Tier_Rating=等级
-tt.keyphrase.Amp_Rating=电流
+tt.keyphrase.Amp_Rating=电流 §a%s A
 tt.keyphrase.Computation_Available=可用算力
 tt.keyphrase.Computation_Remaining=剩余算力
 tt.keyphrase.Content_Stack_Count=内含：堆数
