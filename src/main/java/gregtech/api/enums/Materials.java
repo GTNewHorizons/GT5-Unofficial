@@ -644,7 +644,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     // Degree 2 Compounds
     public static Materials Aluminiumhydroxide;
     public static Materials Aluminiumoxide;
-    public static Materials Alumite;
     public static Materials Alunite;
     public static Materials Amethyst;
     public static Materials Apatite;
@@ -701,6 +700,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Niter;
     public static Materials NitroCoalFuel;
     public static Materials NitroFuel;
+    public static Materials Obzinite;
     public static Materials Olivine;
     public static Materials Opal;
     public static Materials Pentlandite;
