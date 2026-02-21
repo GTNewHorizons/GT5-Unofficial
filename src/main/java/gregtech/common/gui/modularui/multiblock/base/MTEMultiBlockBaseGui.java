@@ -141,8 +141,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         setMachineModeIcons();
         registerSyncValues(syncManager);
-
         ModularPanel panel = getBasePanel(guiData, syncManager, uiSettings);
+        initPanelMap(panel, syncManager);
         return panel.child(createMainColumn(panel, syncManager));
     }
 
@@ -154,6 +154,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .child(createPanelGap(panel, syncManager))
             .childIf(multiblock.supportsInventoryRow(), () -> createInventoryRow(panel, syncManager));
     }
+
+    protected void initPanelMap(ModularPanel parent, PanelSyncManager syncManager) {}
 
     protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new GTBaseGuiBuilder(multiblock, guiData, syncManager, uiSettings).setWidth(getBasePanelWidth())

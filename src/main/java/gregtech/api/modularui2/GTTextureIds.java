@@ -132,6 +132,7 @@ public final class GTTextureIds {
     public static final String PICTURE_GT_LOGO_STEEL = "gregtech:picture_gt_logo_steel";
     public static final String PICTURE_GT_LOGO_PRIMITIVE = "gregtech:picture_gt_logo_primitive";
     public static final String PICTURE_TECTECH_LOGO_DARK = "tectech:picture_tt_logo_dark";
+    public static final String PICTURE_INTERGALACTIC_LOGO = "intergalactic:picture_intergalactic_logo";
     public static final String PICTURE_LOGO_EXOFOUNDRY = "gregtech:picture_logo_exofoundry";
     public static final String PICTURE_LOGO_NANOCHIP = "gregtech:picture_logo_nanochip";
 
