@@ -2236,6 +2236,50 @@ GT5U.chat.buffer.sort_mode.disable=Sort mode: Disabled
 GT5U.chat.worm_hole_generator.overclocks.enable=Overclocks: §aEnabled§r
 GT5U.chat.worm_hole_generator.overclocks.disable=Overclocks: §cDisabled§r
 
+GT5U.gui.text.toolbox.title=Field Engineer's Toolbox
+GT5U.gui.text.toolbox.slot_title.wrench=Wrench
+GT5U.gui.text.toolbox.slot_title.wire_cutter=Wire Cutter
+GT5U.gui.text.toolbox.slot_title.screwdriver=Screwdriver
+GT5U.gui.text.toolbox.slot_title.soft_mallet=Soft Mallet
+GT5U.gui.text.toolbox.slot_title.battery=Battery
+GT5U.gui.text.toolbox.slot_title.hard_hammer=Hard Hammer
+GT5U.gui.text.toolbox.slot_title.crowbar=Crowbar
+GT5U.gui.text.toolbox.slot_title.soldering_iron=Soldering Iron
+GT5U.gui.text.toolbox.slot_title.generic=Generic
+
+GT5U.gui.text.toolbox.tooltip.base=§2%s Slot§r\n§o%s§r
+GT5U.gui.text.toolbox.tooltip.wrench=Connect pipes, break pipes, rotate stuff
+GT5U.gui.text.toolbox.tooltip.wire_cutter=Connect and break wires
+GT5U.gui.text.toolbox.tooltip.screwdriver=Configure machines and covers
+GT5U.gui.text.toolbox.tooltip.soft_mallet=Enable and disable machines
+GT5U.gui.text.toolbox.tooltip.battery=Add battery to charge all electric tools inside\nOnly works when toolbox is closed\nBattery can receive wireless charge
+GT5U.gui.text.toolbox.tooltip.hard_hammer=Toggle auto input/output
+GT5U.gui.text.toolbox.tooltip.crowbar=Remove covers when sneaking
+GT5U.gui.text.toolbox.tooltip.soldering_iron=Needs soldering wire, will pull from toolbox
+GT5U.gui.text.toolbox.tooltip.generic=Holds whatever you want
+GT5U.gui.text.toolbox.tooltip.no_charge_while_open=§l§cNOTE: §rCharging disabled while open
+
+GT5U.gui.text.toolbox.radial.title=Select Active Tool
+GT5U.gui.text.toolbox.radial.unselect=Deselect Tool
+
+GT5U.gui.text.toolbox.error.no_tools=§eToolbox has no tools! Right click to open and add tools.
+
+GT5U.item.toolbox.tooltip.select_tool=%s: Select active tool
+GT5U.item.toolbox.tooltip.deselect_tool=Sneak-%s: Deselect active tool
+GT5U.item.toolbox.tooltip.open_toolbox=%s: Open toolbox
+
+GT5U.item.toolbox.byline.closed=Your stalwart ally for an epic\n §oengineering journey.
+# The tool-specific bylines are pretty much all jokes. Accuracy in translation isn't important.
+GT5U.item.toolbox.byline.wrench=The solution? Use a machine. And if\n §othat don't work? Use more machine.
+# Translator note: A horrible English pun. "Wire" -> "Why are". Don't feel obligated to preserve it ;)
+GT5U.item.toolbox.byline.wire_cutter=WIRE you reading this? Cut it out.\n §oThere's work to do!
+GT5U.item.toolbox.byline.screwdriver=Contains 0% vodka and 0% orange juice.
+GT5U.item.toolbox.byline.soft_mallet=Wait, isn't this just a clown hammer?
+GT5U.item.toolbox.byline.hard_hammer=This performs the Forge Hammer recipe\n §oon anything you mine with it!
+GT5U.item.toolbox.byline.crowbar=You thought I was going to put a Half-Life\n §oreference here, didn't you?
+GT5U.item.toolbox.byline.soldering_iron=Put some fine soldering alloy wire\n §oin the generic slots!
+GT5U.item.toolbox.byline.format=§o"%s"§r -§cQuerns§r
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3
@@ -2377,6 +2421,9 @@ GT5U.armor.tooltip.movement=§aMovement§r
 GT5U.armor.tooltip.utility=§dUtility§r
 GT5U.armor.tooltip.prismatic=§6Pri§asma§dtic§r
 GT5U.armor.tooltip.maxstack=Max Installed: %d
+
+GT5U.item.toolbox.name_template=%s (%s)
+GT5U.item.toolbox.name_template.mode=%s (%s, %s)
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak + MMB to unlock.

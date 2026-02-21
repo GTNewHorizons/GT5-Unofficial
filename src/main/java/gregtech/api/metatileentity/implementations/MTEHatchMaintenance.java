@@ -46,6 +46,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -55,6 +56,10 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.items.ItemGTToolbox;
+import gregtech.common.items.toolbox.ToolboxDelegateInventory;
+import gregtech.common.items.toolbox.ToolboxItemStackHandler;
+import gregtech.common.items.toolbox.ToolboxUtil;
 import ic2.core.IHasGui;
 import ic2.core.item.ItemToolbox;
 import thaumic.tinkerer.common.block.tile.tablet.TabletFakePlayer;
@@ -190,6 +195,8 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
             if (tStack != null) {
                 if (tStack.getItem() instanceof ItemToolbox) {
                     applyToolbox(tStack, aPlayer);
+                } else if (tStack.getItem() instanceof ItemGTToolbox) {
+                    applyGTToolbox(tStack, aPlayer);
                 } else if (GTOreDictUnificator.isItemStackInstanceOf(tStack, "craftingDuctTape")) {
                     applyDuctTape();
                     if (--tStack.stackSize == 0) {
@@ -368,6 +375,9 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         if (aStack.getItem() instanceof ItemToolbox && aPlayer instanceof EntityPlayer) {
             applyToolbox(aStack, (EntityPlayer) aPlayer);
             return;
+        } else if (aStack.getItem() instanceof ItemGTToolbox && aPlayer instanceof final EntityPlayer entityPlayer) {
+            applyGTToolbox(aStack, entityPlayer);
+            return;
         }
 
         if (GTUtility.isStackInList(aStack, GregTechAPI.sWrenchList) && !mWrench
@@ -424,6 +434,22 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                     aToolboxGUI.setInventorySlotContents(i, null);
             }
         }
+        setMaintenanceSound(SoundResource.GT_MAINTENANCE_TOOLBOX, 1.0F, 1.0F);
+    }
+
+    private void applyGTToolbox(ItemStack toolbox, EntityPlayer player) {
+        final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
+        final IInventory delegateInventory = new ToolboxDelegateInventory(handler, ToolboxSlot.GENERIC_SLOTS);
+
+        // Technically, this will also try to use the wire cutters on the maintenance hatch. However, damage checks are
+        // short-circuited if the tool isn't appropriate, so it will just waste a little time. I'm leaving it as-is so
+        // that if new tools are added and maintenance starts to need them, this method doesn't have to be touched.
+        for (ToolboxSlot slot : ToolboxSlot.TOOL_SLOTS) {
+            // We can safely pass a null slot here since onToolClick has a null check at the beginning.
+            onToolClick(handler.getStackInSlot(slot.getSlotID()), player, delegateInventory);
+        }
+
+        ToolboxUtil.saveToolbox(toolbox, handler);
         setMaintenanceSound(SoundResource.GT_MAINTENANCE_TOOLBOX, 1.0F, 1.0F);
     }
 

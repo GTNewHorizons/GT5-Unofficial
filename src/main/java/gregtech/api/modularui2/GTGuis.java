@@ -56,5 +56,6 @@ public final class GTGuis {
     public static void registerFactories() {
         GuiManager.registerFactory(MetaTileEntityGuiHandler.INSTANCE);
         GuiManager.registerFactory(CoverUIFactory.INSTANCE);
+        GuiManager.registerFactory(ToolboxSelectGuiFactory.INSTANCE);
     }
 }

@@ -10,7 +10,7 @@ import net.minecraft.util.IChatComponent;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.common.items.behaviors.BehaviorTrowel;
+import gregtech.common.items.behaviors.BehaviourTrowel;
 
 public class ToolTrowel extends GTTool {
 
@@ -45,7 +45,7 @@ public class ToolTrowel extends GTTool {
 
     @Override
     public void onStatsAddedToTool(final MetaGeneratedTool aItem, final int aID) {
-        aItem.addItemBehavior(aID, new BehaviorTrowel());
+        aItem.addItemBehavior(aID, new BehaviourTrowel());
     }
 
     @Override
