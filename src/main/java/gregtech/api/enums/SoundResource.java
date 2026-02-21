@@ -124,6 +124,8 @@ public enum SoundResource {
     GT_MACHINES_EXOFOUNDRY(277, GregTech.ID, "machines.MTEExoFoundry"),
     GT_MACHINES_NANOCHIP(280, GregTech.ID, "machines.MTENanochipAssemblyComplex"),
 
+    GT_MACHINES_LHC_SPIN_UP(278, GregTech.ID, "machines.LHCSpinUp"),
+
     GUI_BUTTON_DOWN(-1, GregTech.ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, GregTech.ID, "gui.buttonUp"),
 
