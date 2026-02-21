@@ -39,13 +39,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTESplitterModuleGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
@@ -212,62 +212,70 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         // in VacuumConveyorHatch.onColorChange
         this.vacuumConveyorInputs.fixConsistency();
         this.vacuumConveyorOutputs.fixConsistency();
-        // First step in recipe checking is finding all inputs we have to deal with.
-        // As a result of this process, we also get the colors of the hatch each item is found in, which
-        // we will use for routing the outputs
-        ItemInputInformation inputInfo = refreshInputItems();
+        // Splitter logic needs to carefully separate input colors so we can't just use refreshInputItems, we have to do
+        // it manually
+        // Some day I'll refactor this, maybe.
+        this.inputFakeItems.clear();
+        for (ArrayList<MTEHatchVacuumConveyorInput> conveyorList : this.vacuumConveyorInputs.allHatches()) {
+            for (MTEHatchVacuumConveyorInput conveyor : conveyorList) {
+                // Get the contents of this hatch as fake items.
+                if (conveyor.contents == null) continue;
+                List<ItemStack> itemsInHatch = conveyor.contents.getItemRepresentations();
+                // Get the color of the items in this hatch
+                byte currentDye = conveyor.getColorization();
+                if (currentDye == -1) continue;
+                for (ItemStack stack : itemsInHatch) {
+                    // Add it to the internal module fake item list
+                    this.inputFakeItems.add(stack);
+                    // Now process routing for this stack
+                    List<Byte> outputDyes = getGetOutputColors(currentDye, stack);
+                    if (outputDyes == null) continue;
 
-        Map<GTUtility.ItemId, Byte> colors = inputInfo.colors;
-        Map<GTUtility.ItemId, ItemStack> inputs = inputInfo.inputs;
+                    // Find output hatches that have the color of the dye
+                    List<List<MTEHatchVacuumConveyorOutput>> availableOutputHatches = new ArrayList<>();
+                    for (Byte potentialDye : outputDyes) {
+                        List<MTEHatchVacuumConveyorOutput> outputHatchesForDye = this.vacuumConveyorOutputs
+                            .findColoredHatches(potentialDye);
+                        if (outputHatchesForDye != null && !outputHatchesForDye.isEmpty()) {
+                            availableOutputHatches.add(outputHatchesForDye);
+                        }
+                    }
 
-        for (Map.Entry<GTUtility.ItemId, Byte> color : colors.entrySet()) {
-            Byte currentDye = color.getValue();
-            ItemStack stack = inputs.get(color.getKey());
-            if (currentDye == -1) continue;
+                    // Distribute the stack amongst the available output hatches.
+                    int numberOfGroups = availableOutputHatches.size();
+                    if (numberOfGroups == 0) continue;
 
-            List<Byte> outputDyes = getGetOutputColors(currentDye, stack);
-            if (outputDyes == null) continue;
+                    // First, split between groups.
+                    int itemsPerGroup = stack.stackSize / numberOfGroups;
 
-            // Find output hatches that have the color of the dye
-            List<List<MTEHatchVacuumConveyorOutput>> availableOutputHatches = new ArrayList<>();
-            for (Byte potentialDye : outputDyes) {
-                List<MTEHatchVacuumConveyorOutput> outputHatchesForDye = this.vacuumConveyorOutputs
-                    .findColoredHatches(potentialDye);
-                if (outputHatchesForDye != null && !outputHatchesForDye.isEmpty()) {
-                    availableOutputHatches.add(outputHatchesForDye);
-                }
-            }
+                    // How many groups should get 1 extra item, to split the remainder.
+                    int groupRemainder = stack.stackSize % numberOfGroups;
 
-            // Distribute the stack amongst the available output hatches.
-            int numberOfGroups = availableOutputHatches.size();
-            if (numberOfGroups == 0) continue;
+                    // For each group
+                    for (int groupIndex = 0; groupIndex < numberOfGroups; groupIndex++) {
+                        List<MTEHatchVacuumConveyorOutput> group = availableOutputHatches.get(groupIndex);
 
-            // First, split between groups.
-            int itemsPerGroup = stack.stackSize / numberOfGroups;
+                        // Calculate items for this group (including remainder distribution)
+                        int itemsForThisGroup = itemsPerGroup + (groupIndex < groupRemainder ? 1 : 0);
 
-            // How many groups should get 1 extra item, to split the remainder.
-            int groupRemainder = stack.stackSize % numberOfGroups;
+                        // Now split within the group
+                        int hatchesInGroup = group.size();
+                        int itemsPerBus = itemsForThisGroup / hatchesInGroup;
+                        // How many hatches should get 1 extra item, to split the remainder.
+                        int busRemainder = itemsForThisGroup % hatchesInGroup;
 
-            // For each group
-            for (int groupIndex = 0; groupIndex < numberOfGroups; groupIndex++) {
-                List<MTEHatchVacuumConveyorOutput> group = availableOutputHatches.get(groupIndex);
-
-                // Calculate items for this group (including remainder distribution)
-                int itemsForThisGroup = itemsPerGroup + (groupIndex < groupRemainder ? 1 : 0);
-
-                // Now split within the group
-                int hatchesInGroup = group.size();
-                int itemsPerBus = itemsForThisGroup / hatchesInGroup;
-                // How many hatches should get 1 extra item, to split the remainder.
-                int busRemainder = itemsForThisGroup % hatchesInGroup;
-
-                // Distribute to each bus in the group
-                for (int busIndex = 0; busIndex < hatchesInGroup; busIndex++) {
-                    int itemsForThisBus = itemsPerBus + (busIndex < busRemainder ? 1 : 0);
-                    // We can just output, we don't have to worry about packet size or anything.
-                    ItemStack stackToOutput = new ItemStack(stack.getItem(), itemsForThisBus, stack.getItemDamage());
-                    this.addVCOutput(stackToOutput, group.get(busIndex));
-                    this.removeItemFromInputByColor(stackToOutput, currentDye);
+                        // Distribute to each bus in the group
+                        for (int busIndex = 0; busIndex < hatchesInGroup; busIndex++) {
+                            int itemsForThisBus = itemsPerBus + (busIndex < busRemainder ? 1 : 0);
+                            // We can just output, we don't have to worry about packet size or anything.
+                            ItemStack stackToOutput = new ItemStack(
+                                stack.getItem(),
+                                itemsForThisBus,
+                                stack.getItemDamage());
+                            this.addVCOutput(stackToOutput, group.get(busIndex));
+                            this.removeItemFromInputByColor(stackToOutput, currentDye);
+                        }
+                    }
                 }
             }
         }
