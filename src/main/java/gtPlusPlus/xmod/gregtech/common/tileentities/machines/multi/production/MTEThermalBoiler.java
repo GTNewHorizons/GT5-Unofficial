@@ -273,6 +273,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
         tt.addMachineType(getMachineType())
             .addInfo("Converts Water & Heat into Steam")
             .addInfo("Filters raw materials from lava")
+            .addInfo("Requires a Lava Filter in the controller slot")
             .addInfo("Explodes if water is not supplied")
             .addInfo("Consult user manual for more information")
             .addPollutionAmount(getPollutionPerSecond(null))
