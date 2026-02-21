@@ -2165,6 +2165,120 @@ GT5U.item.pipe.amount=Pipe Amount
 GT5U.item.pipe.empty=Empty
 GT5U.item.pipe.swap=Pipe Swapped:
 
+# Modular Armor
+
+item.itemHelmetMech.name=Mechanical Helmet
+item.itemChestplateMech.name=Mechanical Chestplate
+item.itemLeggingsMech.name=Mechanical Leggings
+item.itemBootsMech.name=Mechanical Boots
+
+GT5U.armor.part.name.Light=Light Mechanical Armor Frame
+GT5U.armor.part.name.Medium=Medium Mechanical Armor Frame
+GT5U.armor.part.name.Heavy=Heavy Mechanical Armor Frame
+GT5U.armor.part.name.Nimble=Nimble Mechanical Armor Frame
+GT5U.armor.part.name.Adaptive=Adaptive Mechanical Armor Frame
+GT5U.armor.part.name.Tough=Tough Mechanical Armor Frame
+GT5U.armor.part.name.Lightning=Lightning Mechanical Armor Frame
+GT5U.armor.part.name.Morphic=Morphic Mechanical Armor Frame
+GT5U.armor.part.name.Bulwark=Bulwark Mechanical Armor Frame
+GT5U.armor.part.name.Infinity=Infinitely Adaptive Armor Frame
+
+GT5U.armor.part.name.Nano=Armor Core (Energy)
+GT5U.armor.part.name.Quantum=Armor Core (Nano)
+GT5U.armor.part.name.Living=Armor Core (Living)
+GT5U.armor.part.name.Singularity=Armor Core (Singularity)
+
+GT5U.armor.part.tooltip.Nano=Basic core for Mechanical Armor
+GT5U.armor.part.tooltip.Quantum=Advanced core for Mechanical Armor
+GT5U.armor.part.tooltip.Living=Supreme core for Mechanical Armor
+GT5U.armor.part.tooltip.Singularity=Perfected core for Mechanical Armor
+
+GT5U.armor.part.name.NightVision=Augment: Optical Brightness Adjuster
+GT5U.armor.part.name.CreativeFlight=Augment: Gravitational Control Module
+GT5U.armor.part.name.Jetpack=Augment: Electric Jetpack
+GT5U.armor.part.name.JetpackPerfectHover=Augment: Adaptive Jetpack Stabilizers
+GT5U.armor.part.name.FireImmunity=Augment: Heat Dispersion System
+GT5U.armor.part.name.StepAssist=Augment: Elevation Calibrators
+GT5U.armor.part.name.GogglesOfRevealing=Augment: Integrated Revealing Lens
+GT5U.armor.part.name.InertiaCanceling=Augment: Inertial Dampeners
+GT5U.armor.part.name.Hazmat=Augment: Protective Lining
+GT5U.armor.part.name.Apiarist=Augment: Bee Pacifier
+GT5U.armor.part.name.SwimSpeed=Augment: Aquatic Jets
+GT5U.armor.part.name.KnockbackResistance=Augment: Shock Absorbers
+GT5U.armor.part.name.SpeedBoost=Augment: Sprint Boosters
+GT5U.armor.part.name.JumpBoost=Augment: Pneumatic Jump Assist
+GT5U.armor.part.name.FallProtection=Augment: Landing Gear
+GT5U.armor.part.name.SpaceSuit=Augment: Astronaut's Equipment
+GT5U.armor.part.name.ForceField=Augment: Energy Grid Defense
+GT5U.armor.part.name.OmniMovement=Augment: Rotational Movement Adjusters
+GT5U.armor.part.name.WaterBreathing=Augment: Rebreather
+
+GT5U.armor.part.tooltip.NightVision=Allows user to see clearly at night and in the dark
+GT5U.armor.part.tooltip.CreativeFlight=Grants the user creative flight
+GT5U.armor.part.tooltip.Jetpack=Allows user to jet upwards and hover in midair
+GT5U.armor.part.tooltip.JetpackPerfectHover=Prevents user from slowly descending while in hover mode
+GT5U.armor.part.tooltip.FireImmunity=Renders user entirely immune to fire and lava
+GT5U.armor.part.tooltip.StepAssist=Allows user to walk up a single block effortlessly
+GT5U.armor.part.tooltip.GogglesOfRevealing=Allows user to see elements of the arcane, such as aura nodes
+GT5U.armor.part.tooltip.InertiaCanceling=Prevents momentum from acting on the user while flying
+GT5U.armor.part.tooltip.Hazmat=Grants the user hazmat protection. Must be applied to all four armor pieces
+GT5U.armor.part.tooltip.Apiarist=Prevents negative bee effects, as if the user were wearing Apiarist's armor
+GT5U.armor.part.tooltip.SwimSpeed=Improves the user's speed in water
+GT5U.armor.part.tooltip.KnockbackResistance=Protects the user from knockback effects
+GT5U.armor.part.tooltip.SpeedBoost=Allows the user to move faster. Can be applied multiple times
+GT5U.armor.part.tooltip.JumpBoost=Allows the user to jump higher
+GT5U.armor.part.tooltip.FallProtection=Converts the user's fall damage into EU usage
+GT5U.armor.part.tooltip.SpaceSuit=Adds Spacesuit capability. Must be applied to all four armor pieces
+GT5U.armor.part.tooltip.ForceField=Allows user to deploy a powerful forcefield which will block any damage for huge amounts of eu
+GT5U.armor.part.tooltip.OmniMovement=Allows user to move at increased speed in all directions
+GT5U.armor.part.tooltip.WaterBreathing=Restore's the user's air if they run out underwater
+
+GT5U.armor.behavior.NightVision=Night Vision
+GT5U.armor.behavior.GogglesOfRevealing=Thaumic Sight
+GT5U.armor.behavior.CreativeFlight=Gravity Manipulation
+GT5U.armor.behavior.Jetpack=Jetpack
+GT5U.armor.behavior.JetpackHover=Jetpack Hover
+GT5U.armor.behavior.JetpackPerfectHover=Jetpack Stabilization
+GT5U.armor.behavior.FireImmunity=Fire Immunity
+GT5U.armor.behavior.StepAssist=Step Assist
+GT5U.armor.behavior.InertiaCanceling=Inertia Canceling
+GT5U.armor.behavior.OmniMovement=Omni Movement
+GT5U.armor.behavior.HazmatProtection=Hazmat Armor
+GT5U.armor.behavior.Apiarist=Apiarist Protection
+GT5U.armor.behavior.SwimSpeed=Enhanced Swimming
+GT5U.armor.behavior.KnockbackResistance=Knockback Resistance
+GT5U.armor.behavior.SpeedBoost=Speed Boost
+GT5U.armor.behavior.JumpBoost=Jump Boost
+GT5U.armor.behavior.FallProtection=Fall Protection
+GT5U.armor.behavior.SpaceSuit=Space Suit
+GT5U.armor.behavior.InfiniteEnergy=Infinite Energy
+GT5U.armor.behavior.ForceField=Force Field
+GT5U.armor.behavior.WaterBreathing=Water Breathing
+GT5U.armor.behavior.Teleporter=Personal Teleporter
+
+GT5U.armor.message.enabled=%s Enabled
+GT5U.armor.message.disabled=%s Disabled
+GT5U.armor.message.installed=%s Installed
+
+GT5U.armor.tooltip.hold_shift=Hold Shift for more info
+GT5U.armor.tooltip.energycoreminimum=Minimum Energy Core Tier: %s
+GT5U.armor.tooltip.energycore=Energy Core Tier: %s
+GT5U.armor.tooltip.chargetier=Charge Tier: %s
+GT5U.armor.tooltip.maxenergy=Maximum Energy: %s
+GT5U.armor.tooltip.applicable=Applicable To:
+GT5U.armor.tooltip.effects=Adds Effect:
+GT5U.armor.tooltip.requires=Requires Effect:
+GT5U.armor.tooltip.incompatible=Incompatible With:
+GT5U.armor.tooltip.stackable= (Stackable)
+GT5U.armor.tooltip.category=Category: %s
+GT5U.armor.tooltip.slots=Armor Slots:
+GT5U.armor.tooltip.armorvalue=Protection: %s
+GT5U.armor.tooltip.protection=§6Protection§r
+GT5U.armor.tooltip.movement=§aMovement§r
+GT5U.armor.tooltip.utility=§dUtility§r
+GT5U.armor.tooltip.prismatic=§6Pri§asma§dtic§r
+GT5U.armor.tooltip.maxstack=Max Installed: %d
+
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak + MMB to unlock.
 gt.behaviour.paintspray.infinite.gui.solvent=Solvent
@@ -3599,6 +3713,17 @@ gt.time.tick.singular=tick
 gt.time.tick.plural=ticks
 gt.time.second.singular=second
 gt.time.second.plural=seconds
+
+#Armor keybinds
+key.gt.toggle_night_vision=Toggle Night Vision
+key.gt.toggle_jetpack_hover=Toggle Jetpack Hover
+key.gt.toggle_jetpack=Toggle Jetpack Engine
+key.gt.toggle_goggles_of_revealing=Toggle Goggles of Revealing
+key.gt.toggle_inertiacanceling=Toggle Inertia Canceling
+key.gt.toggle_omnimovement=Toggle Omni Movement
+key.gt.speed_increase=Increase Speed
+key.gt.speed_decrease=Decrease Speed
+key.gt.force_field=Toggle Force Field
 
 # Tooltips for GT Tools
 gt.softmallet.tooltip=Activates and Deactivates Machines

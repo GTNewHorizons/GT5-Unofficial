@@ -25,6 +25,9 @@ import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gregtech.common.items.IDMetaItem03.Activated_Carbon_Filter_Mesh;
 import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring;
 import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring_Raw;
+import static gregtech.common.items.IDMetaItem03.Armor_Chip_T1;
+import static gregtech.common.items.IDMetaItem03.Armor_Chip_T2;
+import static gregtech.common.items.IDMetaItem03.Armor_Chip_T3;
 import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
@@ -1279,6 +1282,12 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 10L)));
 
+        ItemList.Armor_Chip_T1
+            .set(addItem(Armor_Chip_T1.ID, "Basic Armor Chip", "Creates Tier 1 Mechanical Armor augments"));
+        ItemList.Armor_Chip_T2
+            .set(addItem(Armor_Chip_T2.ID, "Advanced Armor Chip", "Creates Tier 2 Mechanical Armor augments"));
+        ItemList.Armor_Chip_T3
+            .set(addItem(Armor_Chip_T3.ID, "Exotic Armor Chip", "Creates Tier 3 Mechanical Armor augments"));
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();
         initOrePrefixes();

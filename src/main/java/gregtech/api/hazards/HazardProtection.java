@@ -45,21 +45,44 @@ public class HazardProtection {
         for (byte i = 1; i < 5; i++) {
             ItemStack stack = entity.getEquipmentInSlot(i);
 
-            if (!protectsAgainstHazard(stack, hazard)) {
+            if (protectsAgainstHazardFully(entity, stack, hazard)) {
+                return true;
+            }
+
+            if (!protectsAgainstHazard(entity, stack, hazard)) {
                 return false;
             }
         }
+
         return true;
+    }
+
+    public static boolean protectsAgainstHazard(@Nullable EntityLivingBase entity, @Nullable ItemStack stack,
+        @NotNull Hazard hazard) {
+        return stack != null && (hasHazmatEnchant(stack) || (stack.getItem() instanceof IHazardProtector hazardProtector
+            && (hazardProtector.protectsAgainst(entity, stack, hazard)
+                || hazardProtector.protectsAgainstFully(entity, stack, hazard))));
+    }
+
+    public static boolean protectsAgainstHazardFully(@Nullable EntityLivingBase entity, @Nullable ItemStack stack,
+        @NotNull Hazard hazard) {
+        return stack != null && (hasHazmatEnchant(stack) || (stack.getItem() instanceof IHazardProtector hazardProtector
+            && hazardProtector.protectsAgainstFully(entity, stack, hazard)));
     }
 
     public static boolean protectsAgainstHazard(@Nullable ItemStack stack, @NotNull Hazard hazard) {
         return stack != null && (hasHazmatEnchant(stack) || (stack.getItem() instanceof IHazardProtector hazardProtector
-            && hazardProtector.protectsAgainst(stack, hazard)));
+            && (hazardProtector.protectsAgainst(stack, hazard)
+                || hazardProtector.protectsAgainstFully(null, stack, hazard))));
     }
 
     public static boolean providesFullHazmatProtection(@Nullable ItemStack stack) {
         if (stack == null) return false;
         for (Hazard hazard : Hazard.VALUES) {
+            if (protectsAgainstHazardFully(null, stack, hazard)) {
+                continue;
+            }
+
             if (!protectsAgainstHazard(stack, hazard)) {
                 return false;
             }
