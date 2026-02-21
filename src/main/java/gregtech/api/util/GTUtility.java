@@ -24,10 +24,7 @@ import static net.minecraftforge.common.util.ForgeDirection.WEST;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.AbstractCollection;
 import java.util.AbstractList;
 import java.util.ArrayDeque;
@@ -42,7 +39,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -199,11 +195,6 @@ import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
  * Just a few Utility Functions I use.
  */
 public class GTUtility {
-
-    /**
-     * Formats a number with group separator and at most 2 fraction digits.
-     */
-    private static final Map<Locale, DecimalFormat> decimalFormatters = new HashMap<>();
 
     /*
      * Forge screwed the Fluid Registry up again, so I make my own, which is also much more efficient than the stupid
@@ -2536,33 +2527,6 @@ public class GTUtility {
             }
         }
         return UNKNOWN;
-    }
-
-    private static DecimalFormat getDecimalFormat() {
-        return decimalFormatters.computeIfAbsent(Locale.getDefault(Locale.Category.FORMAT), locale -> {
-            DecimalFormat numberFormat = new DecimalFormat(); // uses the necessary locale inside anyway
-            numberFormat.setGroupingUsed(true);
-            numberFormat.setMaximumFractionDigits(2);
-            numberFormat.setRoundingMode(RoundingMode.HALF_UP);
-            DecimalFormatSymbols decimalFormatSymbols = numberFormat.getDecimalFormatSymbols();
-            decimalFormatSymbols.setGroupingSeparator(','); // Use sensible separator for best clarity.
-            numberFormat.setDecimalFormatSymbols(decimalFormatSymbols);
-            return numberFormat;
-        });
-    }
-
-    public static String scientificFormat(long aNumber) {
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
-        dfs.setExponentSeparator("e");
-        DecimalFormat format = new DecimalFormat("0.00E0", dfs);
-        return format.format(aNumber);
-    }
-
-    public static String scientificFormat(BigInteger aNumber) {
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
-        dfs.setExponentSeparator("e");
-        DecimalFormat format = new DecimalFormat("0.00E0", dfs);
-        return format.format(aNumber);
     }
 
     /**
