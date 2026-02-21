@@ -20,6 +20,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -38,8 +39,8 @@ import tectech.util.TTUtility;
  */
 public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
 
-    private static Textures.BlockIcons.CustomIcon TM_H;
-    private static Textures.BlockIcons.CustomIcon TM_H_ACTIVE;
+    private static IIconContainer TM_H;
+    private static IIconContainer TM_H_ACTIVE;
     public static final Map<String, MTEHatchCapacitor.CapacitorComponent> componentBinds = new HashMap<>();
 
     public MTEHatchCapacitor(int aID, String aName, String aNameRegional, int aTier) {
@@ -66,8 +67,8 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        TM_H_ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_CAPS_ACTIVE");
-        TM_H = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_CAPS");
+        TM_H_ACTIVE = Textures.BlockIcons.custom("iconsets/TM_TESLA_CAPS_ACTIVE");
+        TM_H = Textures.BlockIcons.custom("iconsets/TM_TESLA_CAPS");
     }
 
     @Override
