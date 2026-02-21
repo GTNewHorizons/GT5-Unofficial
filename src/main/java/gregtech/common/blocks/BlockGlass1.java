@@ -27,19 +27,15 @@ public class BlockGlass1 extends BlockCasingsAbstract {
         super(ItemCasings.class, "gt.blockglass1", Material.glass, 4);
         this.opaque = false;
 
-        register(0, ItemList.GlassPHResistant, "Chemical Grade Glass", translatedText("gt.casing.chemical-resistant"));
-        register(1, ItemList.GlassUVResistant, "Electron-Permeable Neutronium Coated Glass");
-        register(2, ItemList.GlassOmniPurposeInfinityFused, "Omni-Purpose Infinity Fused Glass");
-        register(3, ItemList.GlassQuarkContainment, "Non-Photonic Matter Exclusion Glass");
-        register(
-            4,
-            ItemList.Hawking_Glass,
-            "Hawking Radiation Realignment Focus",
-            translatedText("gt.casing.hawking-focus"));
-        register(5, ItemList.NaniteShieldingGlass, "Nanite Shielding Glass");
-        register(6, ItemList.Spinmatron_Chamber_Grate, "Chamber Grate");
-        register(7, ItemList.Glass_ExoFoundry, "Exo-Foundry Containment Glass");
-        register(8, ItemList.ComplexNanochipGlass, "Nanochip Complex Glass");
+        register(0, ItemList.GlassPHResistant, translatedText("gt.casing.chemical-resistant"));
+        register(1, ItemList.GlassUVResistant);
+        register(2, ItemList.GlassOmniPurposeInfinityFused);
+        register(3, ItemList.GlassQuarkContainment);
+        register(4, ItemList.Hawking_Glass, translatedText("gt.casing.hawking-focus"));
+        register(5, ItemList.NaniteShieldingGlass);
+        register(6, ItemList.Spinmatron_Chamber_Grate);
+        register(7, ItemList.Glass_ExoFoundry);
+        register(8, ItemList.ComplexNanochipGlass);
 
     }
 

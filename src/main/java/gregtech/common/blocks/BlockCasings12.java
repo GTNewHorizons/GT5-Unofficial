@@ -20,15 +20,15 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     public BlockCasings12() {
         super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
 
-        register(0, ItemList.CokeOvenCasing, "Coke Oven Bricks");
-        register(1, ItemList.MeshInterfaceNanochipCasing, "Nanochip Mesh Interface Casing");
-        register(2, ItemList.ReinforcementNanochipCasing, "Nanochip Reinforcement Casing");
-        register(3, ItemList.ComputationalMatrixNanochipCasing, "Nanochip Computational Matrix Casing");
-        register(4, ItemList.FirewallProjectionNanochipCasing, "Nanochip Firewall Projection Casing");
-        register(9, ItemList.Spinmatron_Casing, "Vibration-Safe Casing");
-        register(10, ItemList.CasingThaumium, "Alchemically Resistant Thaumium Casing");
-        register(11, ItemList.CasingVoid, "Alchemically Inert Void Casing");
-        register(12, ItemList.CasingIchorium, "Alchemically Immune Ichorium Casing");
+        register(0, ItemList.CokeOvenCasing);
+        register(1, ItemList.MeshInterfaceNanochipCasing);
+        register(2, ItemList.ReinforcementNanochipCasing);
+        register(3, ItemList.ComputationalMatrixNanochipCasing);
+        register(4, ItemList.FirewallProjectionNanochipCasing);
+        register(9, ItemList.Spinmatron_Casing);
+        register(10, ItemList.CasingThaumium);
+        register(11, ItemList.CasingVoid);
+        register(12, ItemList.CasingIchorium);
         for (int i = 0; i < 3; i++) {
             GTStructureChannels.METAL_MACHINE_CASING.registerAsIndicator(new ItemStack(this, 1, i + 10), i + 1);
         }
