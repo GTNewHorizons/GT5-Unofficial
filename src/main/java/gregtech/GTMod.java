@@ -120,6 +120,7 @@ import gregtech.loaders.postload.MachineTooltipsLoader;
 import gregtech.loaders.postload.MissingMappingsHandler;
 import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.postload.RecyclerBlacklistLoader;
+import gregtech.loaders.postload.ScannerHandlerLoader;
 import gregtech.loaders.postload.ScrapboxDropLoader;
 import gregtech.loaders.preload.GTPreLoad;
 import gregtech.loaders.preload.LoaderCircuitBehaviors;
@@ -551,6 +552,7 @@ public class GTMod {
             tRunnable.run();
         }
         GTPostLoad.addFakeRecipes();
+        ScannerHandlerLoader.registerScannerHandlers();
 
         if (GregTechAPI.mOutputRF || GregTechAPI.mInputRF) {
             GTUtility.checkAvailabilities();
