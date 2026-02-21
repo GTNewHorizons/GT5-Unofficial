@@ -23,6 +23,7 @@ import gregtech.api.GregTechAPI;
  */
 @Deprecated
 public class GTLanguageManager {
+
     public static final String ANY_SUB_BLOCK = "Any Sub Block of this";
 
     /**
