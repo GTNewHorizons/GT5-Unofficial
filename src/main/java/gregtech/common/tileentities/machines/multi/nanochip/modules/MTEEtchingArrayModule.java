@@ -209,7 +209,8 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.getBoolean("installed")) {
             currentTip.add(
-                EnumChatFormatting.LIGHT_PURPLE + "Installed Laser: "
+                EnumChatFormatting.LIGHT_PURPLE + translateToLocal("GT5U.tooltip.nac.module.etching_array.installed")
+                    + ": "
                     + tag.getInteger("laserAmps")
                     + "A "
                     + GTValues.VN[tag.getInteger("laserTier")]);

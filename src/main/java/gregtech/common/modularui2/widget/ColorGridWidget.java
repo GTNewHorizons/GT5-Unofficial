@@ -1,5 +1,7 @@
 package gregtech.common.modularui2.widget;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -159,9 +161,11 @@ public class ColorGridWidget extends Column {
             .tooltipDynamic(tooltip -> {
                 if (selected.contains((byte) index)) {
                     tooltip.add(Dyes.VALUES[index].getLocalizedDyeName());
-                    tooltip.add(EnumChatFormatting.GREEN + " Selected");
+                    tooltip
+                        .add(EnumChatFormatting.GREEN + " " + translateToLocal("GT5U.tooltip.nac.color_grid.selected"));
                 } else {
-                    tooltip.addLine((EnumChatFormatting.GRAY + "Click to select"));
+                    tooltip.addLine(
+                        EnumChatFormatting.GRAY + translateToLocal("GT5U.tooltip.nac.color_grid.click_select"));
                     tooltip.add(Dyes.VALUES[index].getLocalizedDyeName());
 
                 }

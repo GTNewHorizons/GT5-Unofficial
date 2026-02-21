@@ -1640,6 +1640,13 @@ GT5U.gui.text.compressed_bus_stored_items=Hold SHIFT to show all stored items
 GT5U.gui.text.nac.missing_water=Insufficient Water Supplied
 GT5U.gui.text.nac.waiting_for_power=Waiting For Power
 GT5U.gui.text.nac.no_valid_hatch_color=No VCO with color %s found
+GT5U.gui.text.nac.amount=Amount: %s
+GT5U.gui.text.nac.splitter.redstone_level=Current Redstone Level
+GT5U.gui.text.nac.splitter.channel=Channel
+GT5U.gui.text.nac.splitter.strength=Strength
+
+GT5U.gui.text.nac.hint.talk=Type %s to enter talk mode
+GT5U.gui.text.nac.hint.exit=Type %s to exit talk mode
 
 GT5U.gui.text.nac.contributors.idea_structure=Idea and Structure
 GT5U.gui.text.nac.bar.calibration.progress.1=Nanocalibration in progress.
@@ -1653,6 +1660,12 @@ GT5U.gui.text.nac.bar.label.exotics=Exotics Circuits
 GT5U.gui.text.nac.bar.label.cosmics=Cosmics Circuits
 GT5U.gui.text.nac.bar.label.temporals=Temporally Transcendent Circuits
 GT5U.gui.text.nac.bar.label.specials=High-Grade Specialty Circuits
+
+GT5U.gui.text.nac.module.boardprocessor.flush_tank_auto=Flush automatically at
+GT5U.gui.text.nac.module.boardprocessor.impurity=Impurity
+
+GT5U.gui.text.nac.module.status.connected=Connected to Main Complex
+GT5U.gui.text.nac.module.status.disconnected=Disconnected from Main Complex
 
 # NAC Info Panel
 GT5U.gui.text.nac.nameplate=Nanochip Assembly Complex
@@ -1694,8 +1707,11 @@ GT5U.gui.text.nac.info.calibration.special.header=Special Circuits (Pico and Qua
 GT5U.gui.text.nac.info.calibration.special.effect1=§3Tier 1§r - §21%% threshold§r - -20%% Recipe Time on Special Circuits in the Assembly Matrix
 GT5U.gui.text.nac.info.calibration.special.effect2=§3Tier 2§r - §25%% threshold§r - -20%% Recipe Time on Special Circuits in the Assembly Matrix (total 40%%)
 GT5U.gui.text.nac.info.calibration.special.effect3=§3Tier 3§r - §220%% threshold§r - -10%% Recipe Time on Special Circuits in the Assembly Matrix (total 50%%)
+
 # NAC Module Tooltip Keys
 GT5U.tooltip.nac.interface.machine_info=%s, %s
+GT5U.tooltip.nac.interface.delete_stored=Delete Stored Circuit Components
+GT5U.tooltip.nac.interface.empty_stored=Empty Stored Circuit Components to an AE2 Cell
 GT5U.tooltip.nac.interface.nac_module=NAC Module
 GT5U.tooltip.nac.interface.cc=§eCC§7
 GT5U.tooltip.nac.interface.ccs=§eCCs§7
@@ -1766,6 +1782,7 @@ GT5U.tooltip.nac.module.etching_array.action=Etches your Chip %s
 GT5U.tooltip.nac.module.etching_array.body.1=In a fully calibrated Crystal NAC, the laser source hatch provides bonuses based on its attributes:
 GT5U.tooltip.nac.module.etching_array.body.2=Divides §bEU Cost§7 by each §fAmperage Interval§7 over 256A
 GT5U.tooltip.nac.module.etching_array.body.3=Divides §aRecipe Duration§7 by §f(Hatch Tier - 9)
+GT5U.tooltip.nac.module.etching_array.installed=Installed Laser
 GT5U.tooltip.nac.module.optical_organizer.name=Optical Organizer
 GT5U.tooltip.nac.module.optical_organizer.flavor.1=Does mixing water together even make sense???
 GT5U.tooltip.nac.module.optical_organizer.action=Optimizes your Optical %s
@@ -1794,11 +1811,23 @@ GT5U.tooltip.nac.module.superconductor_splitter.body.1=Requires 1000 L/s of Supe
 GT5U.tooltip.nac.module.wire_tracer.name=Wire Tracer
 GT5U.tooltip.nac.module.wire_tracer.flavor.1=Maybe tracing out this mess of wires creates a pretty picture in the mind of the computer
 GT5U.tooltip.nac.module.wire_tracer.action=Traces your Wire %s
+GT5U.tooltip.nac.module.boardprocessor.immersion_fluid=Immersion Fluid
+GT5U.tooltip.nac.module.boardprocessor.empty=Empty
+GT5U.tooltip.nac.module.boardprocessor.impurity=Impurity
+GT5U.tooltip.nac.module.boardprocessor.flush_tank=Flush Tank
+GT5U.tooltip.nac.module.boardprocessor.edit_flush_tank=Edit auto-flush settings
+
 
 GT5U.tooltip.nac.hatch.splitter.body.1=Can be installed in a §eSplitter§7 module for the §aNanochip Assembly Complex
 GT5U.tooltip.nac.hatch.splitter.body.2=Allows for Redstone Input for rule control
 GT5U.tooltip.nac.hatch.splitter.body.3=Set the channel and redstone threshold in the GUI
 GT5U.tooltip.nac.hatch.splitter.body.4=A redstone rule is active if the supplied redstone signal is >= the threshold on that channel
+GT5U.tooltip.nac.hatch.splitter.rules_manager=Open Rules manager
+GT5U.tooltip.nac.hatch.splitter.add_rule=Add new Rule
+GT5U.tooltip.nac.hatch.splitter.rule.Color=Color
+GT5U.tooltip.nac.hatch.splitter.rule.redstone=Redstone
+GT5U.tooltip.nac.hatch.splitter.rule.item=Item
+GT5U.tooltip.nac.hatch.splitter.rule.remove=Remove Rule
 GT5U.tooltip.nac.hatch.vc.input.base.1=Provides §eCircuit Component§7 input for NAC modules
 GT5U.tooltip.nac.hatch.vc.output.base.1=Provides §eCircuit Component§7 output for NAC modules
 GT5U.tooltip.nac.hatch.vc.base.1=Must be %s to work
@@ -1808,6 +1837,9 @@ GT5U.tooltip.nac.hatch.vc.base.4=§eOutputs from recipes with inputs from a colo
 GT5U.tooltip.nac.hatch.vc.base.5=§ewill be placed in a Vacuum Conveyor Output of the corresponding color
 GT5U.tooltip.nac.module.scanner.current_eu=§eCurrent EU Stored: %s
 GT5U.tooltip.nac.module.scanner.total_buffer=§aTotal EU Buffer Size: %s
+
+GT5U.tooltip.nac.color_grid.click_select=Click to select
+GT5U.tooltip.nac.color_grid.selected=Selected
 
 # NAC circuit components
 gt.circuitcomponent.base=Packaged %s
@@ -1947,6 +1979,7 @@ GT5U.gui.tooltip.hatch.crafting_input_me.export=Return all internally stored ite
 GT5U.gui.text.fluid_limiter.threshold=§8Percent threshold
 GT5U.gui.text.volumetric_flask.capacity=Capacity
 GT5U.gui.text.volumetric_flask.confirm=Confirm
+GT5U.gui.tooltip.hatch.crafting_pattern_provider.1=Holds patterns for the Large Molecular Assembler (LMA)
 
 GT5U.gui.text.wireless_maintenance_detector.extra.no_issues=§8No Issues
 GT5U.gui.text.wireless_maintenance_detector.extra.ge1_issues=§8>= 1 Issue
@@ -3632,6 +3665,7 @@ GTPP.waila.steam.use=Currently uses: §e%s§r L/s Steam
 
 GTPP.CC.machinetier=Control Core Tier
 GTPP.CC.discount=EU Discount
+GTPP.CC.parallel=Maximum Parallel
 
 # Tooltips for the Charger Packs
 GTPP.battpack.tooltip.1=Worn as a Belt within Baubles
