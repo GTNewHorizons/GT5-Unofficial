@@ -270,10 +270,8 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
 
         // check each layer
         while (mHeight < 8 && checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0) && !mTopLayerFound) {
-            if (mOutputHatchesByLayer.get(mHeight - 1)
-                .isEmpty()) {
+            if (mOutputHatchesByLayer.isEmpty() || mOutputHatchesByLayer.get(mHeight - 1).isEmpty()) {
                 // layer without output hatch
-                Logger.INFO("Height: " + mHeight + " - Missing output on " + (mHeight - 1));
                 return false;
             }
             // not top
