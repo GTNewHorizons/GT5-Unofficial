@@ -97,7 +97,6 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                         .atLeastList(Arrays.asList(InputHatch, OutputHatch, SpecialHatchElement.ControlHatch))
                         .casingIndex(CASING_INDEX_MAIN)
                         .hint(1)
-                        .cacheHint(() -> "Input Hatch, Output Hatch, Control Hatch")
                         .build()),
                 onElementPass(t -> t.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 11))))
         // Omni-purpose infinity fused glass
@@ -807,6 +806,11 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             @Override
             public long count(MTEPurificationUnitDegasser mte) {
                 return mte.controlHatch == null ? 0 : 1;
+            }
+
+            @Override
+            public String getDisplayName() {
+                return StatCollector.translateToLocal("GT5U.MBTT.ControlHatch");
             }
         };
 

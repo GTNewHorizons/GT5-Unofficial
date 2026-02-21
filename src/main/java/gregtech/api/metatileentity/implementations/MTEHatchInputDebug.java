@@ -1,12 +1,9 @@
 package gregtech.api.metatileentity.implementations;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_HATCH_IN_DEBUG;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -16,12 +13,16 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputDebugGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchInputDebug extends MTEHatchInput {
 
     private static final int SLOT_COUNT = 16;
@@ -29,7 +30,7 @@ public class MTEHatchInputDebug extends MTEHatchInput {
     public final FluidStack[] fluidList = new FluidStack[SLOT_COUNT];
 
     public MTEHatchInputDebug(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, 1, aName, aNameRegional, aTier, getDescriptionArray());
+        super(aID, 1, aName, aNameRegional, aTier, null);
     }
 
     public MTEHatchInputDebug(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -132,11 +133,11 @@ public class MTEHatchInputDebug extends MTEHatchInput {
         return new MTEHatchInputDebug(mName, mTier, mDescriptionArray, mTextures);
     }
 
-    private static String[] getDescriptionArray() {
-        return new String[] { EnumChatFormatting.GRAY + "Stocks Fluids internally",
-            EnumChatFormatting.GRAY + "Configure Fluids in the UI",
-            EnumChatFormatting.GRAY + "Configured Fluids will not be consumed in processing",
-            EnumChatFormatting.ITALIC + "Who knew it was this easy???", "Author: " + GREEN + BOLD + "Chrom" };
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedWithSuffix(
+            "gt.blockmachines.input_hatch_debug.desc",
+            GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorChrom));
     }
 
     @Override

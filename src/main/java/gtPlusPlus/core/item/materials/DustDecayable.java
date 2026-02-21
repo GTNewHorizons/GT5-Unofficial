@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.enums.ItemList;
@@ -18,7 +19,6 @@ import gregtech.common.config.Client;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
 import gtPlusPlus.core.item.base.BaseItemTickable;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 
 public class DustDecayable extends BaseItemTickable {
@@ -50,7 +50,7 @@ public class DustDecayable extends BaseItemTickable {
         super.addInformation(stack, player, list, bool);
         if (Client.tooltip.showRadioactiveText) {
             if (this.radLevel > 0) {
-                list.add(GTPPCore.GT_Tooltip_Radioactive.get());
+                list.add(StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip_Radioactive", this.radLevel));
             }
         }
         list.add(

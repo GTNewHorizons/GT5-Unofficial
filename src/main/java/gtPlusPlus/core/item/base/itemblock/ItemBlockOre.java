@@ -14,11 +14,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.common.WorldgenGTOreLayer;
 import gregtech.common.config.Client;
 import gtPlusPlus.core.block.base.BlockBaseOre;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -60,6 +60,12 @@ public class ItemBlockOre extends ItemBlock {
     }
 
     @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        return StatCollector
+            .translateToLocalFormatted(OrePrefixes.ore.getOreprefixKey(), this.mThisMaterial.getLocalizedName());
+    }
+
+    @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
         final boolean bool) {
 
@@ -68,18 +74,7 @@ public class ItemBlockOre extends ItemBlock {
             mInitOres_Everglades = true;
         }
 
-        if (Client.tooltip.showFormula) {
-            if (this.mThisMaterial != null) {
-                list.add(this.mThisMaterial.vChemicalFormula);
-            }
-        }
-
-        if (Client.tooltip.showRadioactiveText) {
-            // Radioactive?
-            if (this.mThisRadiation > 0) {
-                list.add(GTPPCore.GT_Tooltip_Radioactive.get());
-            }
-        }
+        mThisMaterial.addTooltips(list);
 
         if (Client.tooltip.showOreContainsText) {
             if (this.mThisMaterial != null) {

@@ -7,8 +7,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public abstract class MTEBasicHullNonElectric extends MTEBasicHull {
 
-    public MTEBasicHullNonElectric(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aDescription);
+    public MTEBasicHullNonElectric(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier);
     }
 
     public MTEBasicHullNonElectric(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

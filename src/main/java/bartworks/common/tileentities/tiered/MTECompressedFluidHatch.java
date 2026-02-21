@@ -19,18 +19,19 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTECompressedFluidHatch extends MTEHatchInput {
 
     final int CAPACITY = 100_000_000;
 
     public MTECompressedFluidHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
-        setCustomCapacity(CAPACITY);
     }
 
     public MTECompressedFluidHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

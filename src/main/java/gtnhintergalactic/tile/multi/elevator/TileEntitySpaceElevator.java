@@ -49,7 +49,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -725,7 +725,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.name"));
-        if (TooltipUtil.elevatorLoreText != null) tt.addInfo(ITALIC + TooltipUtil.elevatorLoreText);
+        if (TooltipUtil.elevatorLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.elevatorLoreText));
         tt.addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc2"))
             .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc3"))
             .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc4"))
@@ -747,7 +747,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.FrameNeutronium"), 56, false)
             .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.Motor"), 88, true)
             .addEnergyHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-            .toolTipFinisher(GTValues.Authorminecraft7771);
+            .toolTipFinisher(GTAuthors.Authorminecraft7771);
         return tt;
     }
 
