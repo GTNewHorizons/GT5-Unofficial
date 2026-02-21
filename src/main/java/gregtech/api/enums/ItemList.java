@@ -2952,6 +2952,7 @@ public enum ItemList implements IItemContainer {
     Wrap_OpticallyCompatibleMemories,
     Wrap_LivingCrystalChips,
     Wrap_LivingBioChips,
+    ToolBox,
     MeshInterfaceNanochipCasing,
     ReinforcementNanochipCasing,
     ComputationalMatrixNanochipCasing,

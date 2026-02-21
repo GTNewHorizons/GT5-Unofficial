@@ -3327,6 +3327,19 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Steel, 10),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 2),
+                new ItemStack(Blocks.chest, 1),
+                new ItemStack(Items.dye, 4, Dyes.dyeRed.mIndex),
+                new ItemStack(Items.dye, 1, Dyes.dyeOrange.mIndex))
+            .fluidInputs(Materials.Polyethylene.getMolten(4 * INGOTS))
+            .itemOutputs(ItemList.ToolBox.get(1L))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(assemblerRecipes);
+
         GTOreDictUnificator.addItemDataFromInputs(
             ItemList.Machine_HP_Solar.get(1L),
             GTModHandler.getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L),
