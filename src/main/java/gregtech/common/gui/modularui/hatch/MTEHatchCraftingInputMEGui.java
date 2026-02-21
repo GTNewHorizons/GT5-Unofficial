@@ -187,11 +187,6 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
                         's',
                         index -> new ItemSlot().slot(
                             new ModularSlot(hatch.inventoryHandler, SLOT_MANUAL_START + index)
-                                .changeListener((itemStack, onlyAmount, client, init) -> {
-                                    if (!client) {
-                                        hatch.resetCraftingInputRecipeMap();
-                                    }
-                                })
                                 .slotGroup(MANUAL_ITEM_INV_NAME)
 
                         ))

@@ -1,10 +1,9 @@
 package gregtech.api.logic;
 
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -76,12 +75,11 @@ public class ProcessingLogic {
     /**
      * The cache keyed by the {@link IDualInputInventoryWithPattern}, storing the possible recipes of the inv.
      * <p>
-     * The entries can be removed by {@link #removeInventoryRecipeCache(IDualInputInventoryWithPattern)}, and it
-     * requires the hatches to actively call it when the inventory is changed (like the pattern is changed).
+     * The entries can be removed by {@link #removeInventoryRecipeCache(IDualInputInventoryWithPattern)}.
      * <p>
      * It will also be fully cleared when the {@link #getCurrentRecipeMap()} is not same to the last.
      */
-    protected Map<IDualInputInventoryWithPattern, Set<GTRecipe>> dualInvWithPatternToRecipeCache = new HashMap<>();
+    protected WeakHashMap<IDualInputInventoryWithPattern, Set<GTRecipe>> dualInvWithPatternToRecipeCache = new WeakHashMap<>();
 
     public ProcessingLogic() {}
 
@@ -396,7 +394,7 @@ public class ProcessingLogic {
             }
 
             // recipe cache does not match, this might be caused by changes of return value of
-            // prepareCatalyst(ItemStack[])
+            // prepareCatalyst(ItemStack[]) or changes of Encoded Patterns in the CRIB
             // so clear the cache and proceed, the new cache will be generated in the next recipe check
             dualInvWithPatternToRecipeCache.remove(activeDualInv);
             activeDualInv = null;
