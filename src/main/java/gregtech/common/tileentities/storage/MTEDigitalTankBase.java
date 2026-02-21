@@ -31,7 +31,6 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import gregtech.api.interfaces.ITexture;
@@ -63,9 +62,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             aTier,
             3,
             new String[] {
-                translateToLocalFormatted(
-                    "GT5U.machines.digitaltank.tooltip",
-                    formatNumber(commonSizeCompute(aTier))),
+                translateToLocalFormatted("GT5U.machines.digitaltank.tooltip", formatNumber(commonSizeCompute(aTier))),
                 translateToLocal("GT5U.machines.digitaltank.tooltip1"), });
     }
 
