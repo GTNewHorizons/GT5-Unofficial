@@ -58,9 +58,12 @@ public class MTEHatchPatternProvider extends MTEHatchInputBus {
     @Override
     public boolean isItemValidForSlot(int index, ItemStack itemStack) {
         if (itemStack == null) return false;
-        if(!(itemStack.getItem() instanceof ItemEncodedPattern patItem)) return false;
+        if (!(itemStack.getItem() instanceof ItemEncodedPattern patItem)) return false;
 
-        final var pattern = patItem.getPatternForItem(itemStack, this.getBaseMetaTileEntity().getWorld());
+        final var pattern = patItem.getPatternForItem(
+            itemStack,
+            this.getBaseMetaTileEntity()
+                .getWorld());
         if (pattern == null) return false;
 
         return super.isValidSlot(index) && pattern.isCraftable();
