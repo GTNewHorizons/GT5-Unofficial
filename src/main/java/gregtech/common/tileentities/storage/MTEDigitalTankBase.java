@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
@@ -64,7 +65,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             new String[] {
                 translateToLocalFormatted(
                     "GT5U.machines.digitaltank.tooltip",
-                    NumberFormatUtil.formatNumber(commonSizeCompute(aTier))),
+                    formatNumber(commonSizeCompute(aTier))),
                 translateToLocal("GT5U.machines.digitaltank.tooltip1"), });
     }
 
