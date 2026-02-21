@@ -15,7 +15,7 @@ import mrtjp.projectred.integration.GatePart;
 public class ProjectRedAction extends DependentAction {
 
     public ProjectRedAction() {
-        super(Mods.ProjectRedIntegration, new SimpleAction<>(TileMultipart.class, ProjectRedAction::onApply));
+        super(Mods.ProjectRedIntegration, () -> new SimpleAction<>(TileMultipart.class, ProjectRedAction::onApply));
     }
 
     private static List<ToolboxSlot> onApply(TileMultipart tile, ForgeDirection side) {

@@ -1470,6 +1470,9 @@ public class GTProxy implements IFuelHandler {
                 aEvent.isSilkTouching,
                 aEvent);
         }
+        if (aStack.getItem() instanceof final ItemGTToolbox toolbox) {
+            toolbox.onBlockHarvestingEvent(aEvent);
+        }
         if (EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, aStack) > 2) {
             try {
                 for (ItemStack tDrop : aEvent.drops) {

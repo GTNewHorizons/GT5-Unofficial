@@ -7,6 +7,6 @@ import gregtech.api.enums.ToolboxSlot;
 public class EnderIOAction extends DependentAction {
 
     public EnderIOAction() {
-        super(Mods.EnderIO, new SimpleAction<>(TileConduitBundle.class, ToolboxSlot.WRENCH));
+        super(Mods.EnderIO, () -> new SimpleAction<>(TileConduitBundle.class, ToolboxSlot.WRENCH));
     }
 }
