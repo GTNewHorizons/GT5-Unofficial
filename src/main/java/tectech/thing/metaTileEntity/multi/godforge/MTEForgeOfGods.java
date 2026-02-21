@@ -470,10 +470,30 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     private void drainFuel() {
+        int fuelConsumptionFactor = data.getFuelConsumptionFactor();
+
+        if (data.getSelectedFuelType() == 0) {
+            if (data.isUpgradeActive(STEM)) {
+                if (fuelConsumptionFactor > ForgeOfGodsData.MAX_RESIDUE_FACTOR_DISCOUNTED) {
+                    data.setFuelConsumptionFactor(ForgeOfGodsData.MAX_RESIDUE_FACTOR_DISCOUNTED);
+                }
+            } else if (fuelConsumptionFactor > ForgeOfGodsData.MAX_RESIDUE_FACTOR) {
+                data.setFuelConsumptionFactor(ForgeOfGodsData.MAX_RESIDUE_FACTOR);
+            }
+        } else if (data.getSelectedFuelType() == 1) {
+            if (data.isUpgradeActive(STEM)) {
+                if (fuelConsumptionFactor > ForgeOfGodsData.MAX_STELLAR_PLASMA_FACTOR_DISCOUNTED) {
+                    data.setFuelConsumptionFactor(ForgeOfGodsData.MAX_STELLAR_PLASMA_FACTOR_DISCOUNTED);
+                }
+            } else if (fuelConsumptionFactor > ForgeOfGodsData.MAX_STELLAR_PLASMA_FACTOR) {
+                data.setFuelConsumptionFactor(ForgeOfGodsData.MAX_STELLAR_PLASMA_FACTOR);
+            }
+        }
+
         data.setFuelConsumption(
             (long) Math.max(calculateFuelConsumption(data) * 5 * (data.isBatteryCharging() ? 2 : 1), 1));
         if (data.getFuelConsumption() >= Integer.MAX_VALUE) {
-            reduceBattery(data.getFuelConsumptionFactor());
+            reduceBattery(fuelConsumptionFactor);
             return;
         }
 
@@ -489,14 +509,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             fuelToDrain.amount -= drained.amount;
 
             if (fuelToDrain.amount == 0) {
-                data.setTotalFuelConsumed(data.getTotalFuelConsumed() + data.getFuelConsumptionFactor());
+                data.setTotalFuelConsumed(data.getTotalFuelConsumed() + fuelConsumptionFactor);
                 if (data.isBatteryCharging()) {
-                    increaseBattery(data.getFuelConsumptionFactor());
+                    increaseBattery(fuelConsumptionFactor);
                 }
                 return;
             }
         }
-        reduceBattery(data.getFuelConsumptionFactor());
+        reduceBattery(fuelConsumptionFactor);
     }
 
     public boolean addModuleToMachineList(IGregTechTileEntity tileEntity, int baseCasingIndex) {
