@@ -19,7 +19,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
@@ -47,7 +46,7 @@ public class BlockBaseModular extends BasicBlock {
     public BlockBaseModular(final Material material, final BlockTypes blockType, final int colour) {
         this(
             material.getUnlocalizedName(),
-            material.getLocalizedName(),
+            material.getDefaultLocalName(),
             net.minecraft.block.material.Material.iron,
             blockType,
             colour,
@@ -55,8 +54,6 @@ public class BlockBaseModular extends BasicBlock {
         this.material = material;
         registerComponent();
         BLOCK_CACHE.put(material.getUnlocalizedName() + "." + blockType.name(), this);
-        GTLanguageManager
-            .addStringLocalization("gtplusplus." + getUnlocalizedName() + ".name", this.blockType.getProperName());
     }
 
     protected BlockBaseModular(final String unlocalizedName, final String blockMaterialString,
@@ -141,9 +138,7 @@ public class BlockBaseModular extends BasicBlock {
 
     @Override
     public String getLocalizedName() {
-        return String.format(
-            GTLanguageManager.getTranslation("gtplusplus." + getUnlocalizedName() + ".name"),
-            this.material.getTranslatedName());
+        return OrePrefixes.getLocalizedNameForItem(blockType.getProperName(), "%s", material.getLocalizedName());
     }
 
     @Override

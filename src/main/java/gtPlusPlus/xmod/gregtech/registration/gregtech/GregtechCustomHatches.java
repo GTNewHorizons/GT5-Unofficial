@@ -52,7 +52,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_ZPM;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GTMod;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gtPlusPlus.api.objects.Logger;
@@ -133,7 +133,7 @@ public class GregtechCustomHatches {
                 9).getStackForm(1L));
         addItemTooltip(
             GregtechItemList.Hatch_Air_Intake_Atmospheric.get(1),
-            () -> "Author: " + GTValues.AuthorNoc.get());
+            () -> "Author: " + GTAuthors.AuthorNoc.get());
 
         // Multiblock Reservoir Hatch
         GregtechItemList.Hatch_Reservoir.set(
