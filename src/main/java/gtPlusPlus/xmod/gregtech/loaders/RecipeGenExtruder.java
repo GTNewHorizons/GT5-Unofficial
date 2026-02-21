@@ -47,7 +47,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
         final ItemStack shape_Block = ItemList.Shape_Extruder_Block.get(0);
         final ItemStack shape_Ingot = ItemList.Shape_Extruder_Ingot.get(0);
 
-        Logger.WARNING("Generating Extruder recipes for " + material.getDefaultLocalName());
+        Logger.WARNING("Generating Extruder recipes for " + material.getLocalizedName());
 
         if (material.getIngot(1) != null && material.getBlock(1) != null) {
             // Ingot Recipe
@@ -58,7 +58,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(extruderRecipes);
 
-            Logger.WARNING("Extruder Ingot Recipe: " + material.getDefaultLocalName() + " - Success");
+            Logger.WARNING("Extruder Ingot Recipe: " + material.getLocalizedName() + " - Success");
 
             // Block Recipe
             GTValues.RA.stdBuilder()
@@ -68,7 +68,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(extruderRecipes);
 
-            Logger.WARNING("Extruder Block Recipe: " + material.getDefaultLocalName() + " - Success");
+            Logger.WARNING("Extruder Block Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         // Plate Recipe
@@ -80,7 +80,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(extruderRecipes);
 
-            Logger.WARNING("Extruder Plate Recipe: " + material.getDefaultLocalName() + " - Success");
+            Logger.WARNING("Extruder Plate Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         // Ring Recipe
@@ -93,7 +93,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
                     .eut(material.vVoltageMultiplier)
                     .addTo(extruderRecipes);
 
-                Logger.WARNING("Extruder Ring Recipe: " + material.getDefaultLocalName() + " - Success");
+                Logger.WARNING("Extruder Ring Recipe: " + material.getLocalizedName() + " - Success");
             }
         }
 
@@ -106,7 +106,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(extruderRecipes);
 
-            Logger.WARNING("Extruder Gear Recipe: " + material.getDefaultLocalName() + " - Success");
+            Logger.WARNING("Extruder Gear Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         // Rod Recipe
@@ -118,7 +118,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(extruderRecipes);
 
-            Logger.WARNING("Extruder Rod Recipe: " + material.getDefaultLocalName() + " - Success");
+            Logger.WARNING("Extruder Rod Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         // Bolt Recipe
@@ -130,7 +130,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(extruderRecipes);
 
-            Logger.WARNING("Extruder Bolt Recipe: " + material.getDefaultLocalName() + " - Success");
+            Logger.WARNING("Extruder Bolt Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         // Rotor Recipe
@@ -144,7 +144,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(extruderRecipes);
 
-            Logger.WARNING("Extruder Rotor Recipe: " + material.getDefaultLocalName() + " - Success");
+            Logger.WARNING("Extruder Rotor Recipe: " + material.getLocalizedName() + " - Success");
         }
 
     }

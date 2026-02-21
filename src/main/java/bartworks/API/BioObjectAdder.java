@@ -183,7 +183,6 @@ public final class BioObjectAdder {
                                     .getGreen() })
                         .withStateAndTemperature(FluidState.LIQUID, 300)
                         .buildAndRegister()
-                        .addLocalizedName()
                         .asFluid());
 
                 GTValues.RA.stdBuilder()

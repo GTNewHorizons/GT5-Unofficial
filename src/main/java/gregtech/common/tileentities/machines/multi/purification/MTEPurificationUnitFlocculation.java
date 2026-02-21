@@ -270,18 +270,18 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             .addSeparator()
             .addInfo(
                 "Supply with " + EnumChatFormatting.WHITE
-                    + addFormattedString(INPUT_CHEMICAL.getLocalizedName())
+                    + INPUT_CHEMICAL.mLocalizedName
                     + EnumChatFormatting.GRAY
                     + " to operate")
             .addInfo(
                 "Outputs " + EnumChatFormatting.WHITE
-                    + addFormattedString(OUTPUT_WASTE.getLocalizedName())
+                    + OUTPUT_WASTE.mLocalizedName
                     + EnumChatFormatting.GRAY
                     + " that can be recycled")
             .addSeparator()
             .addInfo(
                 "During operation, will consume ALL " + EnumChatFormatting.WHITE
-                    + addFormattedString(INPUT_CHEMICAL.getLocalizedName())
+                    + INPUT_CHEMICAL.mLocalizedName
                     + EnumChatFormatting.GRAY
                     + " in the input hatch")
             .addInfo(
@@ -291,13 +291,13 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + "of "
                     + EnumChatFormatting.WHITE
-                    + addFormattedString(INPUT_CHEMICAL.getLocalizedName())
+                    + INPUT_CHEMICAL.mLocalizedName
                     + EnumChatFormatting.GRAY
                     + " consumed")
             .addInfo(
                 "gain an additive " + EnumChatFormatting.RED
                     + SUCCESS_PER_LEVEL
-                    + "%%"
+                    + "%"
                     + EnumChatFormatting.GRAY
                     + " increase to success. If total fluid supplied is not")
             .addInfo(
@@ -457,7 +457,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         infoData.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.purification_unit_flocculation.consumed",
-                INPUT_CHEMICAL.getLocalizedName(),
+                INPUT_CHEMICAL.mLocalizedName,
                 "" + EnumChatFormatting.RED + inputFluidConsumed));
         return infoData.toArray(new String[] {});
     }

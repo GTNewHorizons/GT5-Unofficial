@@ -96,7 +96,7 @@ public class GTPPComb extends Item {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return GTPPCombType.get(stack.getItemDamage())
-            .getLocalizedName();
+            .getName();
     }
 
     public static void initCombsRecipes() {

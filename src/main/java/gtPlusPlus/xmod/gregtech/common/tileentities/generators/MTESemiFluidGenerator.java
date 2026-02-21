@@ -50,8 +50,8 @@ public class MTESemiFluidGenerator extends MTEBasicGenerator {
     public String[] getDescription() {
         return ArrayUtils.addAll(
             this.mDescriptionArray,
-            "Produces " + addFormattedString(String.valueOf(this.getPollution())) + " pollution/sec",
-            "Fuel Efficiency: " + addFormattedString(String.valueOf(this.getEfficiency())) + "%%",
+            "Produces " + (this.getPollution()) + " pollution/sec",
+            "Fuel Efficiency: " + this.getEfficiency() + "%",
             GTPPCore.GT_Tooltip.get());
     }
 

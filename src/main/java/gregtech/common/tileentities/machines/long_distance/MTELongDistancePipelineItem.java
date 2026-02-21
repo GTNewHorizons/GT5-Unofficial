@@ -37,12 +37,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTELongDistancePipelineItem extends MTELongDistancePipelineBase {
 
     public MTELongDistancePipelineItem(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier);
-        this.tooltipPrefixKey = "gt.blockmachines.long_distance_item_pipeline.desc";
+        super(aID, aName, aNameRegional, aTier, "Sends Items over long distances");
     }
 
     public MTELongDistancePipelineItem(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

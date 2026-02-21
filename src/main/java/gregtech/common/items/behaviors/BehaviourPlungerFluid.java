@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -16,11 +15,15 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
 public class BehaviourPlungerFluid extends BehaviourNone {
 
     private final int mCosts;
+    private final String mTooltip = GTLanguageManager.addStringLocalization(
+        "gt.behaviour.plunger.fluid",
+        "Clears 1000 Liters of Fluid from Tanks. Fully clears when sneaking.");
 
     public BehaviourPlungerFluid(int aCosts) {
         this.mCosts = aCosts;
@@ -61,7 +64,7 @@ public class BehaviourPlungerFluid extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        aList.add(StatCollector.translateToLocal("gt.behaviour.plunger.fluid"));
+        aList.add(this.mTooltip);
         return aList;
     }
 }

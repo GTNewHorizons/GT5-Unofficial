@@ -83,12 +83,12 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
      *
      * @param aID the machine ID
      */
-    public MetaPipeEntity(int aID, String aBasicName, int aInvSlotCount) {
-        this(aID, aBasicName, aInvSlotCount, true);
+    public MetaPipeEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
+        this(aID, aBasicName, aRegionalName, aInvSlotCount, true);
     }
 
-    public MetaPipeEntity(int aID, String aBasicName, int aInvSlotCount, boolean aAddInfo) {
-        super(aID, aBasicName, aInvSlotCount);
+    public MetaPipeEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount, boolean aAddInfo) {
+        super(aID, aBasicName, aRegionalName, aInvSlotCount);
         setBaseMetaTileEntity(new BaseMetaPipeEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
 

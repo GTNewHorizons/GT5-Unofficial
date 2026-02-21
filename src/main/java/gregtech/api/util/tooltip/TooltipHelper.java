@@ -154,7 +154,7 @@ public class TooltipHelper {
         if (voltageIndex < VoltageIndex.ULV || voltageIndex > VoltageIndex.MAX) return "Invalid Voltage Tier";
         return GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex]
             + EnumChatFormatting.GRAY
-            + (withTierSuffix ? StatCollector.translateToLocal("gt.voltage.tier") : "");
+            + (withTierSuffix ? "-tier" : "");
     }
 
     /**
@@ -184,6 +184,9 @@ public class TooltipHelper {
      * @return A string of the form "[lossPerMeter] EU-Volt"
      */
     public static String cableLossText(long lossPerMeter) {
-        return CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter) + EnumChatFormatting.GRAY;
+        return CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter)
+            + " "
+            + EnumChatFormatting.GRAY
+            + StatCollector.translateToLocal("GT5U.item.cable.eu_volt");
     }
 }

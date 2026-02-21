@@ -52,6 +52,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.crossmod.ae2.IMEAwareItemInventory;
 import gregtech.crossmod.ae2.MEItemInventoryHandler;
@@ -106,8 +107,15 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             final int tSize = stack.stackTagCompound.getInteger("mItemCount");
             if (tContents != null && tSize > 0) {
                 tooltip.add(
-                    StatCollector.translateToLocalFormatted("gt.tileentity.chest_info", tContents.getDisplayName()));
-                tooltip.add(StatCollector.translateToLocalFormatted("gt.tileentity.chest_amount", formatNumber(tSize)));
+                    GTLanguageManager.addStringLocalization("TileEntity_CHEST_INFO", "Contains Item: ")
+                        + EnumChatFormatting.YELLOW
+                        + tContents.getDisplayName()
+                        + EnumChatFormatting.GRAY);
+                tooltip.add(
+                    GTLanguageManager.addStringLocalization("TileEntity_CHEST_AMOUNT", "Item Amount: ")
+                        + EnumChatFormatting.GREEN
+                        + formatNumber(tSize)
+                        + EnumChatFormatting.GRAY);
             }
         }
     }

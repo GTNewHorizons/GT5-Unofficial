@@ -3,7 +3,10 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
@@ -12,15 +15,14 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.lib.GTPPCore;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTETransformerHiAmp extends MTETransformer {
 
     private boolean mHalfMode = false;
 
-    public MTETransformerHiAmp(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier);
+    public MTETransformerHiAmp(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
+        super(aID, aName, aNameRegional, aTier, aDescription);
     }
 
     public MTETransformerHiAmp(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -87,11 +89,12 @@ public class MTETransformerHiAmp extends MTETransformer {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedFormattedWithPrefixAndAlkalus(
-            super.getDescription()[0],
-            "gt.blockmachines.transformer_advanced.desc",
-            4,
-            16);
+        return ArrayUtils.addAll(
+            this.mDescriptionArray,
+            StatCollector.translateToLocal("GT5U.machines.MTETransformerHiAmp.descLn1"),
+            StatCollector.translateToLocal("GT5U.machines.MTETransformerHiAmp.descLn2"),
+            StatCollector.translateToLocal("GT5U.machines.MTETransformerHiAmp.descLn3"),
+            GTPPCore.GT_Tooltip.get());
     }
 
     @Override

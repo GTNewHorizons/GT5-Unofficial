@@ -174,7 +174,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     .hatchClass(MTEHatchInput.class)
                     .hint(2)
                     .adder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
-                    .cacheHint(() -> StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_coolant"))
+                    .cacheHint(() -> "Input Hatch (Coolant)")
                     .casingIndex(CASING_INDEX_TOWER)
                     .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 5))))
         // Plasma input hatch
@@ -185,7 +185,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     .hatchClass(MTEHatchInput.class)
                     .hint(3)
                     .adder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
-                    .cacheHint(() -> StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_plasma"))
+                    .cacheHint(() -> "Input Hatch (Plasma)")
                     .casingIndex(CASING_INDEX_HEATER)
                     .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 11))))
         .build();

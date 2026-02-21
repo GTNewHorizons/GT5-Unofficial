@@ -4,7 +4,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
-import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
 
@@ -53,12 +52,6 @@ public interface IGTRegisteredFluid {
      */
     @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
     IGTRegisteredFluid configureMaterials(final Materials material);
-
-    IGTRegisteredFluid addLocalizedName();
-
-    IGTRegisteredFluid addLocalizedName(final Materials material);
-
-    IGTRegisteredFluid addLocalizedName(final Werkstoff werkstoff);
 
     /**
      * @return this {@link IGTRegisteredFluid} cast to {@link Fluid}

@@ -16,6 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.TAE;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.MaterialCasings;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -56,10 +57,30 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
             }
             TAE.registerTexture(2, i, TextureFactory.of(this, i));
         }
-        // GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Unnamed"); // Can Use, don't
-        // change texture
-        // (Used for Fusion
-        // MK4)
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Aquatic Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Inconel Reinforced Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Multi-Use Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Trinium Plated Casing");
+        GTLanguageManager
+            .addStringLocalization(this.getUnlocalizedName() + ".4.name", "Vanadium Redox Power Cell (IV)");
+        GTLanguageManager
+            .addStringLocalization(this.getUnlocalizedName() + ".5.name", "Vanadium Redox Power Cell (LuV)");
+        GTLanguageManager
+            .addStringLocalization(this.getUnlocalizedName() + ".6.name", "Vanadium Redox Power Cell (ZPM)");
+        GTLanguageManager
+            .addStringLocalization(this.getUnlocalizedName() + ".7.name", "Vanadium Redox Power Cell (UV)");
+        GTLanguageManager
+            .addStringLocalization(this.getUnlocalizedName() + ".8.name", "Vanadium Redox Power Cell (UHV)");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Supply Depot Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Advanced Cryogenic Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Volcanus Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Fusion Machine Casing MK III");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Advanced Fusion Coil");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Unnamed"); // Can Use, don't
+                                                                                                    // change texture
+                                                                                                    // (Used for Fusion
+                                                                                                    // MK4)
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Containment Casing");
         GregtechItemList.Casing_FishPond.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Extruder.set(new ItemStack(this, 1, 1));
         GregtechItemList.Casing_Multi_Use.set(new ItemStack(this, 1, 2));

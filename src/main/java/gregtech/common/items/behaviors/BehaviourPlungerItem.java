@@ -7,7 +7,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -17,11 +16,14 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntityItemPipe;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
 public class BehaviourPlungerItem extends BehaviourNone {
 
     private final int mCosts;
+    private final String mTooltip = GTLanguageManager
+        .addStringLocalization("gt.behaviour.plunger.item", "Clears Items from Pipes");
 
     public BehaviourPlungerItem(int aCosts) {
         this.mCosts = aCosts;
@@ -80,7 +82,7 @@ public class BehaviourPlungerItem extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        aList.add(StatCollector.translateToLocal("gt.behaviour.plunger.item"));
+        aList.add(this.mTooltip);
         return aList;
     }
 }

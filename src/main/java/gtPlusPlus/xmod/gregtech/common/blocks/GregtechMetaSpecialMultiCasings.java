@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -35,6 +36,27 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 
     public GregtechMetaSpecialMultiCasings() {
         super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.1", MaterialCasings.INSTANCE);
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Turbine Shaft");
+        GTLanguageManager
+            .addStringLocalization(this.getUnlocalizedName() + ".1.name", "Reinforced Steam Turbine Casing");
+        GTLanguageManager
+            .addStringLocalization(this.getUnlocalizedName() + ".2.name", "Reinforced HP Steam Turbine Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Reinforced Gas Turbine Casing");
+        GTLanguageManager
+            .addStringLocalization(this.getUnlocalizedName() + ".4.name", "Reinforced Plasma Turbine Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Tesla Containment Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Structural Solar Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Salt Containment Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Thermally Insulated Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Flotation Cell Casings");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Reinforced Engine Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Molecular Containment Casing");
+        GTLanguageManager
+            .addStringLocalization(this.getUnlocalizedName() + ".12.name", "High Voltage Current Capacitor");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Particle Containment Casing");
+        GTLanguageManager
+            .addStringLocalization(this.getUnlocalizedName() + ".14.name", "Reinforced Heat Exchanger Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Reinforced SC Turbine Casing");
         TAE.registerTexture(1, 12, TextureFactory.of(this, 14));
 
         GregtechItemList.Casing_Turbine_Shaft.set(new ItemStack(this, 1, 0));

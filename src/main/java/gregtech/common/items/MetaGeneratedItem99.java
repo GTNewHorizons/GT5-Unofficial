@@ -2,7 +2,6 @@ package gregtech.common.items;
 
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.OrePrefixes.cellMolten;
-import static gregtech.api.enums.OrePrefixes.material;
 
 import java.util.BitSet;
 import java.util.List;
@@ -23,6 +22,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class MetaGeneratedItem99 extends MetaGeneratedItem {
@@ -88,6 +88,13 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         ItemStack tStack = new ItemStack(this, 1, i);
         enabled.set(i);
 
+        GTLanguageManager.addStringLocalization(
+            getUnlocalizedName(tStack) + ".name",
+            cellMolten.getDefaultLocalNameFormatForItem(tMaterial));
+        GTLanguageManager.addStringLocalization(
+            getUnlocalizedName(tStack) + ".tooltip",
+            tMaterial.getChemicalTooltip(cellMolten.getMaterialAmount() / M));
+
         if (cellMolten.isUnifiable()) {
             GTOreDictUnificator.set(cellMolten, tMaterial, tStack);
         } else {
@@ -101,6 +108,13 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
             ItemStack tStack = new ItemStack(this, 1, offset + i);
             enabled.set(offset + i);
 
+            GTLanguageManager.addStringLocalization(
+                getUnlocalizedName(tStack) + ".name",
+                prefix.getDefaultLocalNameFormatForItem(tMaterial));
+            GTLanguageManager.addStringLocalization(
+                getUnlocalizedName(tStack) + ".tooltip",
+                tMaterial.getChemicalTooltip(prefix.getMaterialAmount() / M));
+
             if (prefix.isUnifiable()) {
                 GTOreDictUnificator.set(prefix, tMaterial, tStack);
             } else {
@@ -113,7 +127,10 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
     /** Returns null for item damage out of bounds. */
     private Materials getMaterial(int damage) {
-        if (!Materials.isMaterialItem(damage)) {
+        if (damage < 0) {
+            return null;
+        }
+        if (damage >= 32000) {
             return null;
         }
         return GregTechAPI.sGeneratedMaterials[damage % 1_000];
@@ -148,11 +165,12 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        final int damage = aStack.getItemDamage();
-        final OrePrefixes prefix = getOrePrefix(damage);
-        final Materials material = getMaterial(damage);
-        if (prefix != null && material != null) return prefix.getLocalizedNameForItem(material);
-        return super.getItemStackDisplayName(aStack);
+        String aName = super.getItemStackDisplayName(aStack);
+        Materials material = getMaterial(aStack.getItemDamage());
+        if (material != null) {
+            return material.getLocalizedNameForItem(aName);
+        }
+        return aName;
     }
 
     @Override
@@ -203,11 +221,12 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        if (!Materials.isMaterialItem(aStack)) return;
-        final int damage = aStack.getItemDamage();
-        final Materials material = getMaterial(damage);
-        final OrePrefixes prefix = getOrePrefix(damage);
-        if (material == null || prefix == null) return;
-        material.addTooltips(aList, prefix.getMaterialAmount() / M);
+        if (aStack.getItemDamage() < 0 || aStack.getItemDamage() >= 32000) return;
+        Materials material = getMaterial(aStack.getItemDamage());
+        if (material == null) return;
+        String flavorText = material.getFlavorText();
+        if (flavorText != null && !flavorText.isEmpty()) {
+            aList.add("§8§o" + flavorText);
+        }
     }
 }

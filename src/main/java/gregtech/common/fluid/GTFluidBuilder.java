@@ -20,7 +20,7 @@ import gregtech.api.interfaces.fluid.IGTRegisteredFluid;
 public class GTFluidBuilder implements IGTFluidBuilder {
 
     final String fluidName;
-    String defaultLocalName;
+    String localizedName;
     ResourceLocation stillIconResourceLocation = null, flowingIconResourceLocation = null;
     short[] colorRGBA = Dyes._NULL.getRGBA();
     Block fluidBlock = null;
@@ -47,8 +47,8 @@ public class GTFluidBuilder implements IGTFluidBuilder {
      * @inheritDoc
      */
     @Override
-    public IGTFluidBuilder withDefaultLocalName(final String defaultLocalName) {
-        this.defaultLocalName = defaultLocalName;
+    public IGTFluidBuilder withLocalizedName(final String localizedName) {
+        this.localizedName = localizedName;
         return this;
     }
 
@@ -130,8 +130,8 @@ public class GTFluidBuilder implements IGTFluidBuilder {
         if (stillIconResourceLocation == null) {
             withTextureName(fluidName.toLowerCase(Locale.ENGLISH));
         }
-        if (defaultLocalName == null) {
-            defaultLocalName = fluidName;
+        if (localizedName == null) {
+            localizedName = fluidName;
         }
         return new GTFluid(this);
     }

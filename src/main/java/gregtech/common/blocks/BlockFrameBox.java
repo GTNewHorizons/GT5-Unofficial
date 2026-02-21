@@ -48,6 +48,9 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
 
     protected final String mUnlocalizedName;
 
+    private static final String DOT_NAME = ".name";
+    private static final String DOT_TOOLTIP = ".tooltip";
+
     // We need to keep around a temporary TE to preserve this TE after breaking the block, so we can
     // properly call getDrops() on it
     private static final ThreadLocal<IGregTechTileEntity> mTemporaryTileEntity = new ThreadLocal<>();
@@ -67,6 +70,12 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         for (int meta = 1; meta < GregTechAPI.sGeneratedMaterials.length; meta++) {
             Materials material = GregTechAPI.sGeneratedMaterials[meta];
             if (material != null && material.hasMetalItems()) {
+                GTLanguageManager.addStringLocalization(
+                    getUnlocalizedName() + "." + meta + DOT_NAME,
+                    GTLanguageManager.i18nPlaceholder ? getLocalizedNameFormat(material) : getLocalizedName(material));
+                GTLanguageManager.addStringLocalization(
+                    getUnlocalizedName() + "." + meta + DOT_TOOLTIP,
+                    material.getChemicalTooltip());
 
                 ITexture[] texture = { TextureFactory.of(
                     material.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()],
@@ -82,7 +91,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         return new ItemStack(this, amount, meta);
     }
 
-    public static String getLocalizedNameFormat(Materials aMaterial) {
+    public String getLocalizedNameFormat(Materials aMaterial) {
         return switch (aMaterial.mName) {
             case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
             case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
@@ -95,12 +104,8 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         return mUnlocalizedName;
     }
 
-    public static String getLocalizedName(Materials materials) {
-        return OrePrefixes.getLocalizedNameForItem(getLocalizedNameFormat(materials), materials.getLocalizedName());
-    }
-
-    public static String getLocalizedName(int meta) {
-        return getLocalizedName(getMaterial(meta));
+    public String getLocalizedName(Materials aMaterial) {
+        return aMaterial.getDefaultLocalizedNameForItem(getLocalizedNameFormat(aMaterial));
     }
 
     private void createFrame(World worldIn, int x, int y, int z, BaseMetaPipeEntity baseMte) {

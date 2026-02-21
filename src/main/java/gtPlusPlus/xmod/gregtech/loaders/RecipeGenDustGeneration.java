@@ -64,7 +64,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
 
     private void generateRecipes(final Material material, final boolean disableOptional) {
 
-        Logger.INFO("Generating Shaped Crafting recipes for " + material.getDefaultLocalName());
+        Logger.INFO("Generating Shaped Crafting recipes for " + material.getLocalizedName());
 
         final ItemStack normalDust = material.getDust(1);
         final ItemStack smallDust = material.getSmallDust(1);
@@ -171,7 +171,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             .eut(material.vVoltageMultiplier)
             .addTo(mixerRecipes);
 
-        Logger.WARNING("Dust Mixer Recipe: " + material.getDefaultLocalName() + " - Success");
+        Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
     }
 
     public static void addMixerRecipe_Standalone(final Material material) {
@@ -179,14 +179,14 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
         // Is this a composite?
         if (inputStacks == null) {
-            Logger.WARNING("InputStacks == NUll - " + material.getDefaultLocalName());
+            Logger.WARNING("InputStacks == NUll - " + material.getLocalizedName());
             return;
         }
 
         // Is this a composite?
         Logger.WARNING("mixer length: " + inputStacks.length);
         if (!((inputStacks.length >= 1) && (inputStacks.length <= 4))) {
-            Logger.WARNING("InputStacks is out range 1-4 - " + material.getDefaultLocalName());
+            Logger.WARNING("InputStacks is out range 1-4 - " + material.getLocalizedName());
             return;
         }
         // Log Input items
@@ -196,7 +196,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
 
         // Is smallest ratio invalid?
         if (inputStackSize == null) {
-            Logger.WARNING("inputStackSize == NUll - " + material.getDefaultLocalName());
+            Logger.WARNING("inputStackSize == NUll - " + material.getLocalizedName());
             return;
         }
 
@@ -269,7 +269,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             .eut(material.vVoltageMultiplier)
             .addTo(mixerRecipes);
 
-        Logger.WARNING("Dust Mixer Recipe: " + material.getDefaultLocalName() + " - Success");
+        Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
 
     }
 
@@ -307,20 +307,20 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             ItemStack aOutput = aMatInfo.getHotIngot(1);
             if (aOutput != null) {
                 if (addBlastFurnaceRecipe(aMatInfo, aDust, aOutput, aMatInfo.getMeltingPointK())) {
-                    Logger.MATERIALS("Successfully added a blast furnace recipe for " + aMatInfo.getDefaultLocalName());
+                    Logger.MATERIALS("Successfully added a blast furnace recipe for " + aMatInfo.getLocalizedName());
                 } else {
-                    Logger.MATERIALS("Failed to add a blast furnace recipe for " + aMatInfo.getDefaultLocalName());
+                    Logger.MATERIALS("Failed to add a blast furnace recipe for " + aMatInfo.getLocalizedName());
                 }
             } else {
-                Logger.MATERIALS("Failed to add a blast furnace recipe for " + aMatInfo.getDefaultLocalName());
+                Logger.MATERIALS("Failed to add a blast furnace recipe for " + aMatInfo.getLocalizedName());
             }
         } else {
             ItemStack aOutput = aMatInfo.getIngot(1);
             if (aOutput != null) {
                 if (GTModHandler.addSmeltingAndAlloySmeltingRecipe(aDust, aOutput, false)) {
-                    Logger.MATERIALS("Successfully added a furnace recipe for " + aMatInfo.getDefaultLocalName());
+                    Logger.MATERIALS("Successfully added a furnace recipe for " + aMatInfo.getLocalizedName());
                 } else {
-                    Logger.MATERIALS("Failed to add a furnace recipe for " + aMatInfo.getDefaultLocalName());
+                    Logger.MATERIALS("Failed to add a furnace recipe for " + aMatInfo.getLocalizedName());
                 }
             }
         }

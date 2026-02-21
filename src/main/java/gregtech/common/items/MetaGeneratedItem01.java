@@ -506,7 +506,6 @@ import gregtech.api.util.GTFoodStat;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
 import gregtech.common.covers.CoverArm;
@@ -568,12 +567,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     private static final String PartNotCoverText = "Cannot be used as a Cover";
     private static final String RAText = "Grabs from and inserts into specific slots";
     private static final String FRText1 = "Configurable up to ";
-    private static final String FRText2 = " L/sec (as Cover)" + GTSplit.LB
-        + "Rightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick"
-        + GTSplit.LB
-        + "to adjust the pump speed by 1/16/256 L/sec per click"
-        + GTSplit.LB
-        + "Can not transfer more than 2.1B L per Operation";
+    private static final String FRText2 = " L/sec (as Cover)/n Rightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick/n to adjust the pump speed by 1/16/256 L/sec per click/n Can not transfer more than 2.1B L per Operation";
     private static final int[] Spray_Colors = new int[] { Spray_Color_0.ID, Spray_Color_1.ID, Spray_Color_2.ID,
         Spray_Color_3.ID, Spray_Color_4.ID, Spray_Color_5.ID, Spray_Color_6.ID, Spray_Color_7.ID, Spray_Color_8.ID,
         Spray_Color_9.ID, Spray_Color_10.ID, Spray_Color_11.ID, Spray_Color_12.ID, Spray_Color_13.ID, Spray_Color_14.ID,
@@ -2232,7 +2226,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Robot_Arm_LV.ID,
                 "Robot Arm (LV)",
-                "1 stack every 20 secs (as Cover)" + GTSplit.LB + "" + RAText,
+                "1 stack every 20 secs (as Cover)/n " + RAText,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L),
@@ -2241,7 +2235,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Robot_Arm_MV.ID,
                 "Robot Arm (MV)",
-                "1 stack every 5 secs (as Cover)" + GTSplit.LB + "" + RAText,
+                "1 stack every 5 secs (as Cover)/n " + RAText,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2L),
@@ -2250,7 +2244,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Robot_Arm_HV.ID,
                 "Robot Arm (HV)",
-                "1 stack every 1 sec (as Cover)" + GTSplit.LB + "" + RAText,
+                "1 stack every 1 sec (as Cover)/n " + RAText,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 4L),
@@ -2259,7 +2253,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Robot_Arm_EV.ID,
                 "Robot Arm (EV)",
-                "1 stack every 1/5 sec (as Cover)" + GTSplit.LB + "" + RAText,
+                "1 stack every 1/5 sec (as Cover)/n " + RAText,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 8L),
@@ -2268,7 +2262,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Robot_Arm_IV.ID,
                 "Robot Arm (IV)",
-                "1 stack every 1/20 sec (as Cover)" + GTSplit.LB + "" + RAText,
+                "1 stack every 1/20 sec (as Cover)/n " + RAText,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 16L),
@@ -2984,7 +2978,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     Cover_Wireless_Energy_LV.ID + i - 1,
                     GTValues.VN[i] + " Wireless Energy Cover",
                     String.join(
-                        GTSplit.LB,
+                        "/n ",
                         "Stores energy globally in a network, up to 2^(2^31) EU.",
                         "Does not connect to wires. This cover withdraws EU from the network.",
                         "Ignores voltage limitations (no explosions).",
@@ -3167,8 +3161,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Cover_RedstoneTransmitterInternal.ID,
                 "Redstone Transmitter (Internal)",
-                "Transfers Redstone signals wireless" + GTSplit.LB
-                    + "§cDEPRECATED! This will be removed in the next major update.",
+                "Transfers Redstone signals wireless/n §cDEPRECATED! This will be removed in the next major update.",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
         ItemList.Cover_RedstoneReceiver.set(
@@ -3182,7 +3175,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Cover_WirelessController.ID,
                 "Wireless Machine Controller Cover",
-                "Turns Machines ON/OFF wirelessly" + GTSplit.LB + "Can only connect with advanced wireless covers",
+                "Turns Machines ON/OFF wirelessly/n Can only connect with advanced wireless covers",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
 
@@ -3287,8 +3280,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Black_Hole_Stabilizer.ID,
                 "Superstable Black Hole Seed",
-                "Opens a superstable black hole" + GTSplit.LB
-                    + "Black hole will never destabilize and will operate at maximum efficiency",
+                "Opens a superstable black hole/n Black hole will never destabilize and will operate at maximum efficiency",
                 new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 128)));
 
@@ -3508,7 +3500,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {
         int aDamage = aItemEntity.getEntityItem()
             .getItemDamage();
-        if (Materials.isMaterialItem(aDamage) && (!aItemEntity.worldObj.isRemote)) {
+        if ((aDamage < 32000) && (aDamage >= 0) && (!aItemEntity.worldObj.isRemote)) {
             Materials aMaterial = GregTechAPI.sGeneratedMaterials[(aDamage % 1000)];
             if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
                 int tX = MathHelper.floor_double(aItemEntity.posX);
@@ -3567,7 +3559,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         if (blockClicked == Blocks.cauldron && metadata > 0) {
             final int damage = oldItemStack.getItemDamage();
 
-            if (Materials.isMaterialItem(damage)) {
+            if ((damage < 32000) && (damage >= 0)) {
                 final Materials oldMaterial = GregTechAPI.sGeneratedMaterials[(damage % 1000)];
                 final OrePrefixes oldPrefix = this.mGeneratedPrefixList[(damage / 1000)];
                 final ItemStack newItemStack = getCauldronWashingResult(oldPrefix, oldMaterial, oldItemStack.stackSize);
@@ -3632,7 +3624,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         int aDamage = aStack.getItemDamage();
-        if (Materials.isMaterialItem(aDamage)) {
+        if ((aDamage < 32000) && (aDamage >= 0)) {
             Materials aMaterial = GregTechAPI.sGeneratedMaterials[(aDamage % 1000)];
             if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];

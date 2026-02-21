@@ -93,7 +93,7 @@ public class GTPPDrop extends Item {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return GTPPDropType.get(stack.getItemDamage())
-            .getLocalizedName();
+            .getName();
     }
 
     private static final int[] sFluidOutputs = new int[] { 144, 136, 128, 120, 112, 104, 96, 88, 80, 72, 64, 48, 32, 16,

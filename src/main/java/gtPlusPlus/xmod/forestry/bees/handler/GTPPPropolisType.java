@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.forestry.bees.handler;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.material.Material;
@@ -48,12 +47,8 @@ public enum GTPPPropolisType {
         this.mShowInList = false;
     }
 
-    public String getLocalizedName() {
-        return StatCollector.translateToLocal("gtplusplus.propolis." + this.mNameUnlocal);
-    }
-
     public String getName() {
-        return this.mName + " Propolis";
+        return GTLanguageManager.getTranslation("gtplusplus.propolis." + this.mNameUnlocal);
     }
 
     public int getColours() {

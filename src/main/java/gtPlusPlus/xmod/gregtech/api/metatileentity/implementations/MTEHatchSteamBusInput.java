@@ -9,15 +9,13 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputBusGui;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.lib.GTPPCore;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchSteamBusInput extends MTEHatchInputBus {
 
     public RecipeMap<?> mRecipeMap = null;
@@ -36,7 +34,9 @@ public class MTEHatchSteamBusInput extends MTEHatchInputBus {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedWithAlkalus("gt.blockmachines.input_bus_steam.desc");
+        return new String[] { "Item Input for Steam Multiblocks",
+            "Shift + right click with screwdriver to toggle automatic item shuffling", "Capacity: 4 stacks",
+            "Does not work with non-steam multiblocks", GTPPCore.GT_Tooltip.get() };
     }
 
     @Override

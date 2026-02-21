@@ -1,21 +1,19 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import gregtech.api.enums.HarvestTool;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.PipeStats;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class GTPPMTEFluidPipe extends MTEFluidPipe {
 
     public final PipeStats pipeStats;
 
-    public GTPPMTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, PipeStats pipeStats,
+    public GTPPMTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, PipeStats pipeStats,
         int aCapacity, int aHeatResistance, boolean aGasProof) {
-        this(aID, aName, aPrefixKey, aThickNess, pipeStats, aCapacity, aHeatResistance, aGasProof, 1);
+        this(aID, aName, aNameRegional, aThickNess, pipeStats, aCapacity, aHeatResistance, aGasProof, 1);
     }
 
     public GTPPMTEFluidPipe(final String aName, final float aThickNess, final PipeStats pipeStats, final int aCapacity,
@@ -23,9 +21,9 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
         this(aName, aThickNess, pipeStats, aCapacity, aHeatResistance, aGasProof, 1);
     }
 
-    public GTPPMTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, PipeStats pipeStats,
+    public GTPPMTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, PipeStats pipeStats,
         int aCapacity, int aHeatResistance, boolean aGasProof, int aFluidTypes) {
-        super(aID, aName, aPrefixKey, aThickNess, null, aCapacity, aHeatResistance, aGasProof, aFluidTypes);
+        super(aID, aName, aNameRegional, aThickNess, null, aCapacity, aHeatResistance, aGasProof, aFluidTypes);
         this.mLastReceivedFrom = 0;
         this.oLastReceivedFrom = 0;
         this.pipeStats = pipeStats;
@@ -58,13 +56,5 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
     @Override
     protected ITexture getBaseTexture(boolean connected, int colorIndex) {
         return getBaseTexture(getThickness(), mPipeAmount, pipeStats.iconSet, pipeStats.rgba, connected, colorIndex);
-    }
-
-    @Override
-    public IOreMaterial getMaterial() {
-        if (pipeStats == null) {
-            return null;
-        }
-        return pipeStats.getMaterial();
     }
 }

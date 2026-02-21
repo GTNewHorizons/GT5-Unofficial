@@ -6,13 +6,11 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.lib.GTPPCore;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchSuperBusInput extends MTEHatchInputBus {
 
     @Override
@@ -45,7 +43,8 @@ public class MTEHatchSuperBusInput extends MTEHatchInputBus {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedFormattedWithAlkalus("gt.blockmachines.input_bus_super.desc", getSlots(this.mTier));
+        return new String[] { "Item Input for Multiblocks", getSlots(this.mTier) + " Slots",
+            GTPPCore.GT_Tooltip.get() };
     }
 
     @Override

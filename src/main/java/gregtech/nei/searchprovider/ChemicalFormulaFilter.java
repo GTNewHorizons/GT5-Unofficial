@@ -84,7 +84,7 @@ public class ChemicalFormulaFilter implements ItemFilter {
 
         ItemData data = GTOreDictUnificator.getAssociation(itemstack);
         if (data != null) {
-            return data.mMaterial.mMaterial.getChemicalFormula();
+            return data.mMaterial.mMaterial.mChemicalFormula;
         }
 
         return "";

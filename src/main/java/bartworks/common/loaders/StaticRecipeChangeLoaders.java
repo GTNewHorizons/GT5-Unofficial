@@ -37,10 +37,10 @@ public class StaticRecipeChangeLoaders {
 
     private static void runUnficationDeleter(Werkstoff werkstoff) {
         if (werkstoff.getType() == Werkstoff.Types.ELEMENT && werkstoff.getBridgeMaterial() != null
-            && Element.get(werkstoff.getFormulaTooltip()) != Element._NULL) {
-            werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getFormulaTooltip());
-            Element.get(werkstoff.getFormulaTooltip()).mLinkedMaterials = new ArrayList<>();
-            Element.get(werkstoff.getFormulaTooltip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
+            && Element.get(werkstoff.getToolTip()) != Element._NULL) {
+            werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getToolTip());
+            Element.get(werkstoff.getToolTip()).mLinkedMaterials = new ArrayList<>();
+            Element.get(werkstoff.getToolTip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
         }
 
         for (OrePrefixes prefixes : OrePrefixes.VALUES) if (werkstoff.hasItemType(prefixes)) {
@@ -54,10 +54,10 @@ public class StaticRecipeChangeLoaders {
 
     private static void runMaterialLinker(Werkstoff werkstoff) {
         if (werkstoff.getType() == Werkstoff.Types.ELEMENT && werkstoff.getBridgeMaterial() != null
-            && Element.get(werkstoff.getFormulaTooltip()) != Element._NULL) {
-            werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getFormulaTooltip());
-            Element.get(werkstoff.getFormulaTooltip()).mLinkedMaterials = new ArrayList<>();
-            Element.get(werkstoff.getFormulaTooltip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
+            && Element.get(werkstoff.getToolTip()) != Element._NULL) {
+            werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getToolTip());
+            Element.get(werkstoff.getToolTip()).mLinkedMaterials = new ArrayList<>();
+            Element.get(werkstoff.getToolTip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
         }
 
         for (OrePrefixes prefixes : OrePrefixes.VALUES)

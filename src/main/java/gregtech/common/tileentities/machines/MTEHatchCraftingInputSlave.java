@@ -28,17 +28,14 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTSplit;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDualInputHatchWithPattern, IDataCopyable {
 
     @Override
@@ -52,7 +49,15 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     private boolean masterSet = false; // indicate if values of masterX, masterY, masterZ are valid
 
     public MTEHatchCraftingInputSlave(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 11, 0, null);
+        super(
+            aID,
+            aName,
+            aNameRegional,
+            11,
+            0,
+            new String[] { "Proxy for Crafting Input Buffer/Bus", "Hatch Tier: " + TIER_COLORS[11] + VN[11],
+                "Link with Crafting Input Buffer/Bus using Data Stick to share inventory",
+                "Left click on the Crafting Input Buffer/Bus, then right click on this block to link them", });
         disableSort = true;
     }
 
@@ -353,11 +358,5 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     @Override
     public void resetCraftingInputRecipeMap() {
         if (getMaster() != null) getMaster().resetCraftingInputRecipeMap();
-    }
-
-    @Override
-    public String[] getDescription() {
-        return GTSplit
-            .splitLocalizedFormatted("gt.blockmachines.input_bus_crafting_slave.desc", TIER_COLORS[11] + VN[11]);
     }
 }

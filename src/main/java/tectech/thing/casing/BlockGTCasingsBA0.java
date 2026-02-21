@@ -13,6 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.MaterialCasings;
 import tectech.thing.CustomItemList;
@@ -47,6 +48,32 @@ public class BlockGTCasingsBA0 extends BlockCasingsAbstract {
                 .of(this, b);
             /* IMPORTANT for block recoloring **/
         }
+
+        GTLanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".0.name", "Redstone Alloy Primary Tesla Windings");
+        GTLanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".1.name", "MV Superconductor Primary Tesla Windings");
+        GTLanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".2.name", "HV Superconductor Primary Tesla Windings");
+        GTLanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".3.name", "EV Superconductor Primary Tesla Windings");
+        GTLanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".4.name", "IV Superconductor Primary Tesla Windings");
+        GTLanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".5.name", "LuV Superconductor Primary Tesla Windings");
+        GTLanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".9.name", "ZPM Superconductor Primary Tesla Windings");
+
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Tesla Base Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Tesla Toroid Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Tesla Secondary Windings");
+
+        GTLanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".10.name", "Reinforced Temporal Structure Casing");
+        GTLanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".11.name", "Reinforced Spatial Structure Casing");
+        GTLanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".12.name", "Infinite Spacetime Energy Boundary Casing");
 
         CustomItemList.tM_TeslaPrimary_0.set(new ItemStack(this, 1, 0));
         CustomItemList.tM_TeslaPrimary_1.set(new ItemStack(this, 1, 1));

@@ -41,11 +41,19 @@ public class GTGenericItem extends Item implements IProjectileItem {
     protected IIcon mIcon;
 
     public GTGenericItem(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip) {
+        this(aUnlocalized, aEnglish, aEnglishTooltip, true);
+    }
+
+    public GTGenericItem(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip,
+        final boolean aWriteToolTipIntoLangFile) {
         super();
         this.mName = aUnlocalized;
         GTLanguageManager.addStringLocalization(this.mName + ".name", aEnglish);
         if (GTUtility.isStringValid(aEnglishTooltip)) {
-            GTLanguageManager.addStringLocalization(this.mTooltip = this.mName + ".tooltip_main", aEnglishTooltip);
+            GTLanguageManager.addStringLocalization(
+                this.mTooltip = this.mName + ".tooltip_main",
+                aEnglishTooltip,
+                aWriteToolTipIntoLangFile);
         } else {
             this.mTooltip = null;
         }

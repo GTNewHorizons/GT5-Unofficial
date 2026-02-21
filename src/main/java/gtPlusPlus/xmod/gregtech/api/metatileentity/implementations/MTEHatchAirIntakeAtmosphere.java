@@ -1,12 +1,9 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTSplit;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchAirIntakeAtmosphere extends MTEHatchAirIntake {
 
     public MTEHatchAirIntakeAtmosphere(final int aID, final String aName, final String aNameRegional, final int aTier) {
@@ -20,8 +17,11 @@ public class MTEHatchAirIntakeAtmosphere extends MTEHatchAirIntake {
 
     @Override
     public String[] getCustomTooltip() {
-        return GTSplit
-            .splitLocalizedFormatted("gt.blockmachines.input_hatch_generator.atmosphere.desc", getMaxTickTime());
+        String[] aTooltip = new String[3];
+        aTooltip[0] = "§cDO NOT OBSTRUCT THE INPUT!";
+        aTooltip[1] = "Draws in Air from the surrounding environment";
+        aTooltip[2] = "Completelly fills up every " + getMaxTickTime() + " ticks";
+        return aTooltip;
     }
 
     @Override

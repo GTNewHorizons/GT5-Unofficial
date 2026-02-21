@@ -1,19 +1,14 @@
 package gregtech.common;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
-import net.minecraft.util.StatCollector;
 
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
-import gregtech.api.util.StringUtils;
 
 public class OreMixBuilder {
 
@@ -23,9 +18,9 @@ public class OreMixBuilder {
     public Set<String> dimsEnabled = new HashSet<>();
     public int minY, maxY, weight, density, size;
     public IOreMaterial primary, secondary, between, sporadic, representative;
+    public String localizedName;
     public Set<IStoneCategory> stoneCategories = new HashSet<>(Arrays.asList(StoneCategory.Stone));
     public boolean defaultStoneCategories = true;
-    public List<String> materialKeys = new ArrayList<>();
 
     public OreMixBuilder name(String name) {
         this.oreMixName = name;
@@ -74,9 +69,9 @@ public class OreMixBuilder {
 
     public OreMixBuilder primary(IOreMaterial primary) {
         this.primary = primary;
-        if (representative == null || materialKeys.isEmpty()) {
+        if (representative == null || localizedName == null) {
             representative = primary;
-            materialKeys.add(primary.getLocalizedNameKey());
+            localizedName = primary.getLocalizedName();
         }
         return this;
     }
@@ -114,18 +109,22 @@ public class OreMixBuilder {
      * @param materials The materials to be used for localization. The first material in the array will be used to
      *                  represent to ore mix in GUI's. If none are provided the {@link #primary} will be used.
      */
-    public OreMixBuilder setLocalizedName(Materials... materials) {
-        if (materials.length == 1) this.representative = materials[0];
-        for (Materials m : materials) {
-            materialKeys.add(m.getLocalizedNameKey());
+    public OreMixBuilder localize(Materials... materials) {
+        if (materials.length > 1) {
+            String localizedName = String.join(
+                ", ",
+                Arrays.stream(materials)
+                    .map(material -> material.mLocalizedName)
+                    .toArray(String[]::new));
+            int index = localizedName.lastIndexOf(", ");
+            if (index != -1) {
+                localizedName = localizedName.substring(0, index) + " & " + localizedName.substring(index + 2);
+            }
+            this.localizedName = localizedName;
+        } else {
+            this.localizedName = materials[0].mLocalizedName;
         }
+        this.representative = materials[0];
         return this;
-    }
-
-    public String getLocalizedName() {
-        return StringUtils.formatList(
-            materialKeys.stream()
-                .map(StatCollector::translateToLocal)
-                .toArray(String[]::new));
     }
 }

@@ -2,13 +2,11 @@ package gregtech.api.util;
 
 import static gregtech.api.enums.GTValues.E;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -50,7 +48,6 @@ public class GTLanguageManager {
     /**
      * If placeholder like %material should be used for writing lang entries to file.
      */
-    @Deprecated
     public static boolean i18nPlaceholder = true;
     /**
      * If there's any lang entry that is not found on lang file and waiting to be written.
@@ -68,8 +65,6 @@ public class GTLanguageManager {
      * Map referencing private field of StringTranslate, used by StatCollector. Used to inject lang entries there.
      */
     private static final Map<String, String> stringTranslateLanguageList;
-    private static final Map<String, String> stringTranslateLanguageListFallBack;
-    public static String LanguageCode = "en_US";
 
     static {
         try {
@@ -77,28 +72,33 @@ public class GTLanguageManager {
                 .findField(net.minecraft.util.StringTranslate.class, "languageList", "field_74816_c");
             Field fieldStringTranslateInstance = ReflectionHelper
                 .findField(net.minecraft.util.StringTranslate.class, "instance", "field_74817_a");
-            Field fieldStatCollectorFallbackTranslator = ReflectionHelper
-                .findField(net.minecraft.util.StatCollector.class, "fallbackTranslator", "field_150828_b");
             // noinspection unchecked
             stringTranslateLanguageList = (Map<String, String>) fieldStringTranslateLanguageList
                 .get(fieldStringTranslateInstance.get(null));
-            stringTranslateLanguageListFallBack = (Map<String, String>) fieldStringTranslateLanguageList
-                .get(fieldStatCollectorFallbackTranslator.get(null));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
+     * @deprecated Parameter aWriteIntoLangFile is no longer used, use {@link #addStringLocalization(String, String)} or
+     *             consider migrating to MC lang system instead.
+     */
+    @Deprecated
+    public static synchronized String addStringLocalization(String aKey, String aEnglish, boolean aWriteIntoLangFile) {
+        return addStringLocalization(aKey, aEnglish);
+    }
+
+    /**
      * If you newly use this method, please consider using MC lang system instead.
      */
-    public static synchronized void addStringLocalization(String aKey, String aEnglish) {
+    public static synchronized String addStringLocalization(String aKey, String aEnglish) {
         String trimmedKey = aKey != null ? aKey.trim() : "";
-        if (trimmedKey.isEmpty()) return; // RIP cascading class loading, don't use GT_Utility here
+        if (trimmedKey.isEmpty()) return E; // RIP cascading class loading, don't use GT_Utility here
         if (sEnglishFile == null) {
             // Lang file is not set up yet
             BUFFERMAP.put(trimmedKey, aEnglish);
-            return;
+            return aEnglish;
         }
         if (!BUFFERMAP.isEmpty()) {
             // Lang file is now set up, resolve all the buffers
@@ -108,29 +108,31 @@ public class GTLanguageManager {
             }
             BUFFERMAP.clear();
         }
+
         if (!LANGMAP.containsKey(trimmedKey)) {
-            storeTranslation(trimmedKey, aEnglish);
+            return storeTranslation(trimmedKey, aEnglish);
         }
+        return LANGMAP.get(trimmedKey);
     }
 
-    private static synchronized void storeTranslation(String trimmedKey, String english) {
+    private static synchronized String storeTranslation(String trimmedKey, String english) {
         String translation = writeToLangFile(trimmedKey, english);
         LANGMAP.put(trimmedKey, translation);
+        addToMCLangList(trimmedKey, translation);
         TEMPMAP.put(trimmedKey, translation);
         LanguageRegistry.instance()
-            .injectLanguage(LanguageCode, TEMPMAP);
+            // If we use the actual user configured locale here, switching lang to others while running game
+            // turns everything into unlocalized string. So we make it "default" and call it a day.
+            .injectLanguage("en_US", TEMPMAP);
         TEMPMAP.clear();
+        return translation;
     }
 
     private static synchronized String writeToLangFile(String trimmedKey, String aEnglish) {
-        addToMCLangListFallBack(trimmedKey, aEnglish);
         Property tProperty = sEnglishFile.get("LanguageFile", trimmedKey, aEnglish);
         if (hasUnsavedEntry && GregTechAPI.sPostloadFinished) {
             sEnglishFile.save();
             hasUnsavedEntry = false;
-        }
-        if (StatCollector.canTranslate(trimmedKey)) {
-            return StatCollector.translateToLocal(trimmedKey);
         }
         String translation = tProperty.getString();
         if (tProperty.wasRead()) {
@@ -142,7 +144,6 @@ public class GTLanguageManager {
         } else {
             markFileDirty();
         }
-        addToMCLangList(trimmedKey, translation);
         return translation;
     }
 
@@ -463,60 +464,6 @@ public class GTLanguageManager {
     private static void addToMCLangList(String aKey, String translation) {
         if (stringTranslateLanguageList != null) {
             stringTranslateLanguageList.put(aKey, translation);
-        }
-    }
-
-    private static void addToMCLangListFallBack(String aKey, String english) {
-        if (stringTranslateLanguageListFallBack != null) {
-            stringTranslateLanguageListFallBack.put(aKey, english);
-        }
-    }
-
-    public static synchronized void reloadLanguage(Map<String, String> languageMap) {
-        if (!GregTechAPI.sFullLoadFinished) return;
-        File languageDir = sEnglishFile.getConfigFile()
-            .getParentFile();
-        String userLang = Minecraft.getMinecraft()
-            .getLanguageManager()
-            .getCurrentLanguage()
-            .getLanguageCode();
-        LanguageCode = userLang;
-        if (userLang.equals("en_US")) {
-            reloadLanguageWithEnglish(languageDir, languageMap);
-            return;
-        }
-        String l10nFileName = "GregTech_" + userLang + ".lang";
-        File l10nFile = new File(languageDir, l10nFileName);
-        if (!l10nFile.isFile()) {
-            reloadLanguageWithEnglish(languageDir, languageMap);
-            return;
-        }
-        sEnglishFile = new Configuration(l10nFile);
-        isEN_US = false;
-        sEnglishFile.load();
-        for (String key : LANGMAP.keySet()) {
-            if (languageMap.containsKey(key)) {
-                LANGMAP.put(key, languageMap.get(key));
-                continue;
-            }
-            Property tProperty = sEnglishFile.get("LanguageFile", key, stringTranslateLanguageListFallBack.get(key));
-            String translation = tProperty.getString();
-            languageMap.put(key, translation);
-            LANGMAP.put(key, translation);
-        }
-    }
-
-    public static synchronized void reloadLanguageWithEnglish(File languageDir, Map<String, String> languageMap) {
-        isEN_US = true;
-        sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
-        for (String key : LANGMAP.keySet()) {
-            if (languageMap.containsKey(key)) {
-                LANGMAP.put(key, languageMap.get(key));
-                continue;
-            }
-            String english = stringTranslateLanguageListFallBack.get(key);
-            languageMap.put(key, english);
-            LANGMAP.put(key, english);
         }
     }
 }

@@ -8,7 +8,6 @@ import java.util.Locale;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -190,8 +189,7 @@ public enum ItemList implements IItemContainer {
         // Construct a translation key from UnlocalizedName and CamelCased DisplayName
         final String tKey = rStack.getUnlocalizedName() + ".with." + tCamelCasedDisplayNameBuilder + ".name";
 
-        GTLanguageManager.addStringLocalization(tKey, aDisplayName);
-        rStack.setStackDisplayName(StatCollector.translateToLocal(tKey));
+        rStack.setStackDisplayName(GTLanguageManager.addStringLocalization(tKey, aDisplayName));
         return GTUtility.copyAmount(aAmount, rStack);
     }
 

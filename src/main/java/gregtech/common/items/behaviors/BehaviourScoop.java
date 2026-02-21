@@ -6,17 +6,19 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import forestry.api.lepidopterology.EnumFlutterType;
 import forestry.api.lepidopterology.IButterfly;
 import forestry.api.lepidopterology.IEntityButterfly;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.util.GTLanguageManager;
 
 public class BehaviourScoop extends BehaviourNone {
 
     private final int mCosts;
+    private final String mTooltip = GTLanguageManager
+        .addStringLocalization("gt.behaviour.scoop", "Catches Butterflies on Leftclick");
 
     public BehaviourScoop(int aCosts) {
         this.mCosts = aCosts;
@@ -54,7 +56,7 @@ public class BehaviourScoop extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        aList.add(StatCollector.translateToLocal("gt.behaviour.scoop"));
+        aList.add(this.mTooltip);
         return aList;
     }
 }

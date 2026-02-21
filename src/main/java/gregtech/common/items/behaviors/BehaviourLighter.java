@@ -9,12 +9,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.MetaBaseItem;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
 public class BehaviourLighter extends BehaviourNone {
@@ -23,6 +23,12 @@ public class BehaviourLighter extends BehaviourNone {
     private final ItemStack mUsedLighter;
     private final ItemStack mFullLighter;
     private final long mFuelAmount;
+    private final String mTooltip = GTLanguageManager
+        .addStringLocalization("gt.behaviour.lighter.tooltip", "Can light things on Fire");
+    private final String mTooltipUses = GTLanguageManager
+        .addStringLocalization("gt.behaviour.lighter.uses", "Remaining Uses:");
+    private final String mTooltipUnstackable = GTLanguageManager
+        .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
 
     public BehaviourLighter(ItemStack aEmptyLighter, ItemStack aUsedLighter, ItemStack aFullLighter, long aFuelAmount) {
         this.mFullLighter = aFullLighter;
@@ -114,13 +120,13 @@ public class BehaviourLighter extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        aList.add(StatCollector.translateToLocal("gt.behaviour.lighter.tooltip"));
+        aList.add(this.mTooltip);
         NBTTagCompound tNBT = aStack.getTagCompound();
         long tFuelAmount = tNBT == null ? this.mFuelAmount
             : GTUtility.areStacksEqual(aStack, this.mFullLighter, true) ? this.mFuelAmount
                 : tNBT.getLong("GT.LighterFuel");
-        aList.add(StatCollector.translateToLocalFormatted("gt.behaviour.lighter.uses", tFuelAmount));
-        aList.add(StatCollector.translateToLocal("gt.behaviour.unstackable"));
+        aList.add(this.mTooltipUses + " " + tFuelAmount);
+        aList.add(this.mTooltipUnstackable);
         return aList;
     }
 }

@@ -90,7 +90,6 @@ public class GTPreLoad {
                 .getLanguageManager()
                 .getCurrentLanguage()
                 .getLanguageCode();
-            GTLanguageManager.LanguageCode = userLang;
             GT_FML_LOGGER.info("User lang is " + userLang);
             if (userLang.equals("en_US")) {
                 GT_FML_LOGGER.info("Loading GregTech.lang");
@@ -119,10 +118,8 @@ public class GTPreLoad {
             .parallelStream()
             .filter(Objects::nonNull)
             .forEach(
-                aMaterial -> {
-                    GTLanguageManager
-                        .addStringLocalization(aMaterial.getLocalizedNameKey(), aMaterial.mDefaultLocalName);
-                });
+                aMaterial -> aMaterial.mLocalizedName = GTLanguageManager
+                    .addStringLocalization("Material." + aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName));
     }
 
     public static void getConfiguration(File configDir) {

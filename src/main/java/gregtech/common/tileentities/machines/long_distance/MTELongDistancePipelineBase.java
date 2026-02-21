@@ -52,7 +52,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.BlockLongDistancePipe;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicHullNonElectric;
-import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -71,10 +70,9 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
     protected volatile MTELongDistancePipelineBase mSender = null;
     protected volatile ChunkCoordinates mTargetPos = null;
     protected MTELongDistancePipelineBase mTooCloseTarget = null, mTooCloseSender = null;
-    protected String tooltipPrefixKey;
 
-    public MTELongDistancePipelineBase(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier);
+    public MTELongDistancePipelineBase(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
+        super(aID, aName, aNameRegional, aTier, aDescription);
     }
 
     public MTELongDistancePipelineBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -83,11 +81,9 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
 
     @Override
     public String[] getDescription() {
-        if (tooltipPrefixKey != null) return GTSplit.splitLocalizedFormattedWithPrefix(
-            "gt.blockmachines.long_distance_pipeline.desc",
-            StatCollector.translateToLocal(tooltipPrefixKey),
-            minimalDistancePoints);
-        return GTSplit.splitLocalizedFormatted("gt.blockmachines.long_distance_pipeline.desc", minimalDistancePoints);
+        return new String[] { "Only one Input and Output are allowed per pipeline",
+            "Only Input and Output have to be chunkloaded", "Transfer rate is solely limited by input rate",
+            "Minimum distance: " + minimalDistancePoints + " blocks" };
     }
 
     @Override

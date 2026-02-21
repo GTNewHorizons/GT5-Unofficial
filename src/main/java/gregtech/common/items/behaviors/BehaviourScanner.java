@@ -8,19 +8,21 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.items.MetaBaseItem;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.scanner.ScannerHelper;
 
 public class BehaviourScanner extends BehaviourNone {
 
     public static final IItemBehaviour<MetaBaseItem> INSTANCE = new BehaviourScanner();
+    private final String mTooltip = GTLanguageManager
+        .addStringLocalization("gt.behaviour.scanning", "Can scan Blocks in World");
 
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
@@ -52,12 +54,12 @@ public class BehaviourScanner extends BehaviourNone {
             NBTTagCompound tNBT = aStack.getTagCompound();
             int lines = tNBT.getInteger("dataLinesCount");
             if (lines < 1) throw new Exception();
-            aList.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("gt.behaviour.scanning.result"));
+            aList.add(EnumChatFormatting.BLUE + "Block scan data result:");
             for (int i = 0; i < lines; i++) {
                 aList.add(EnumChatFormatting.RESET + tNBT.getString("dataLines" + i));
             }
         } catch (Exception e) {
-            aList.add(StatCollector.translateToLocal("gt.behaviour.scanning"));
+            aList.add(this.mTooltip);
         }
         return aList;
     }

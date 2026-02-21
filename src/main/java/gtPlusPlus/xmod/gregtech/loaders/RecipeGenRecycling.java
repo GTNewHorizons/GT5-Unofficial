@@ -65,7 +65,7 @@ public class RecipeGenRecycling implements Runnable {
             return;
         }
 
-        Logger.WARNING("Generating Recycling recipes for " + material.getDefaultLocalName());
+        Logger.WARNING("Generating Recycling recipes for " + material.getLocalizedName());
 
         final OrePrefixes[] mValidPrefixesAsString = { OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.nugget,
             OrePrefixes.plate, OrePrefixes.plateDense, OrePrefixes.plateDouble, OrePrefixes.plateTriple,
@@ -83,7 +83,7 @@ public class RecipeGenRecycling implements Runnable {
 
         for (int r = 0; r < mValidPairs.length; r++) {
             ItemStack temp = getItemStackOfAmountFromOreDictNoBroken(
-                mValidPrefixesAsString[r].getName() + StringUtils.sanitizeString(material.getDefaultLocalName()),
+                mValidPrefixesAsString[r].getName() + StringUtils.sanitizeString(material.getLocalizedName()),
                 1);
             if (temp != null) {
                 mValidPairs[mSlotIndex++] = Pair.of(mValidPrefixesAsString[r], temp.copy());
@@ -140,7 +140,7 @@ public class RecipeGenRecycling implements Runnable {
                     .addTo(maceratorRecipes);
 
                 Logger.WARNING(
-                    "Recycle Recipe: " + material.getDefaultLocalName()
+                    "Recycle Recipe: " + material.getLocalizedName()
                         + " - Success - Recycle "
                         + tempStack.getDisplayName()
                         + " and obtain "
@@ -200,7 +200,7 @@ public class RecipeGenRecycling implements Runnable {
                 .addTo(fluidExtractionRecipes);
 
             Logger.WARNING(
-                "Fluid Recycle Recipe: " + material.getDefaultLocalName()
+                "Fluid Recycle Recipe: " + material.getLocalizedName()
                     + " - Success - Recycle "
                     + tempStack.getDisplayName()
                     + " and obtain "
@@ -290,7 +290,7 @@ public class RecipeGenRecycling implements Runnable {
     public static ItemStack get(final OrePrefixes aPrefix, final Material aMaterial, final ItemStack aReplacement,
         final long aAmount) {
         return get(
-            aPrefix.getName() + StringUtils.sanitizeString(aMaterial.getDefaultLocalName()),
+            aPrefix.getName() + StringUtils.sanitizeString(aMaterial.getLocalizedName()),
             aReplacement,
             aAmount,
             false,

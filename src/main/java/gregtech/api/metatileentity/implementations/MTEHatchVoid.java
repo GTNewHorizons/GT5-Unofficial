@@ -20,18 +20,22 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchVoid extends MTEHatchOutput {
 
     public MTEHatchVoid(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 1, null, 1);
+        super(
+            aID,
+            aName,
+            aNameRegional,
+            1,
+            new String[] { "Voids fluids from Multiblocks", "Must be configured to work",
+                "Mimics behavior of restricted hatches" },
+            1);
     }
 
     public MTEHatchVoid(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -157,10 +161,5 @@ public class MTEHatchVoid extends MTEHatchOutput {
                 .setMaxWidth(65)
                 .setPos(10, 30))
             .widget(new FakeSyncWidget.ByteSyncer(() -> mMode, val -> mMode = val));
-    }
-
-    @Override
-    public String[] getDescription() {
-        return GTSplit.splitLocalized("gt.blockmachines.output_hatch_void.desc");
     }
 }

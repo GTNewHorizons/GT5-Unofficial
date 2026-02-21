@@ -44,7 +44,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.config.Client;
 import ic2.core.IC2Potion;
 
 public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMaterial {
@@ -58,15 +60,22 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     };
 
     protected final OrePrefixes orePrefixes;
+    protected final String itemTypeLocalizedName;
 
     public BWMetaGeneratedItems(OrePrefixes orePrefixes, Object unused) {
         super("bwMetaGeneratedGTEnhancement" + orePrefixes.getName(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
+        this.itemTypeLocalizedName = GTLanguageManager.addStringLocalization(
+            "bw.itemtype." + orePrefixes,
+            orePrefixes.getMaterialPrefix() + "%material" + orePrefixes.getMaterialPostfix());
     }
 
     public BWMetaGeneratedItems(OrePrefixes orePrefixes) {
         super("bwMetaGenerated" + orePrefixes.getName(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
+        this.itemTypeLocalizedName = GTLanguageManager.addStringLocalization(
+            "bw.itemtype." + orePrefixes,
+            orePrefixes.getMaterialPrefix() + "%material" + orePrefixes.getMaterialPostfix());
         this.setCreativeTab(BWMetaGeneratedItems.metaTab);
         for (Werkstoff w : Werkstoff.werkstoffHashSet) {
             ItemStack tStack = new ItemStack(this, 1, w.getmID());
@@ -123,9 +132,14 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
             && aStack.getItemDamage() == WerkstoffLoader.Tiberium.getmID())
             aList.add(translateToLocal("GT5U.tooltip.nqgen"));
 
-        Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) this.getDamage(aStack));
-        if (werkstoff != null) {
-            werkstoff.addTooltips(aList);
+        if (Client.tooltip.showFormula) {
+            Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) this.getDamage(aStack));
+            if (werkstoff != null) {
+                String tooltip = werkstoff.getLocalizedToolTip();
+                if (!tooltip.isEmpty()) {
+                    aList.add(tooltip);
+                }
+            }
         }
     }
 
@@ -134,7 +148,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
         int aMetaData = aStack.getItemDamage();
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aMetaData);
         if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
-        return this.orePrefixes.getLocalizedNameForItem(werkstoff.getBridgeMaterial());
+        return this.itemTypeLocalizedName.replace("%material", werkstoff.getLocalizedName());
     }
 
     @Override

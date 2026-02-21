@@ -8,6 +8,7 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -18,6 +19,22 @@ public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlock
 
     public GregtechMetaCasingBlocksPipeGearbox() {
         super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.pipesgears", MaterialCasings.INSTANCE);
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Eglin Steel Gear Box Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Inconel-792 Gear Box Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Incoloy MA956 Gear Box Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Nitinol-60 Gear Box Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Zeron-100 Gear Box Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Pikyonium Gear Box Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Titansteel Gear Box Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Abyssal Gear Box Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Babbit Alloy Pipe Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Inconel-690 Pipe Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Stellite Pipe Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Nitinol-60 Pipe Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Lafium Pipe Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Cinobite Pipe Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Titansteel Pipe Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Abyssal Pipe Casing");
 
         int aMappingID = 0;
         sMaterialMapping.put(aMappingID++, MaterialsAlloy.EGLIN_STEEL.getRgbAsHex());

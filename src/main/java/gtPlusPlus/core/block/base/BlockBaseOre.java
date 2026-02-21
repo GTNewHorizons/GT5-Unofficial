@@ -52,9 +52,9 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
             GameRegistry.registerBlock(
                 this,
                 ItemBlockOre.class,
-                "ore" + StringUtils.sanitizeString(this.blockMaterial.getDefaultLocalName()));
+                "ore" + StringUtils.sanitizeString(this.blockMaterial.getLocalizedName()));
             GTOreDictUnificator.registerOre(
-                "ore" + StringUtils.sanitizeString(this.blockMaterial.getDefaultLocalName()),
+                "ore" + StringUtils.sanitizeString(this.blockMaterial.getLocalizedName()),
                 new ItemStack(this));
         } catch (Exception t) {
             t.printStackTrace();

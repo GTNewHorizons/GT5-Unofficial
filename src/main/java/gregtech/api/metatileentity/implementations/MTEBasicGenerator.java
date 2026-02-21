@@ -72,8 +72,7 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
     public String[] getDescription() {
         String[] desc = new String[mDescriptionArray.length + 1];
         System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-        desc[mDescriptionArray.length] = "Fuel Efficiency: " + addFormattedString(String.valueOf(getEfficiency()))
-            + "%%";
+        desc[mDescriptionArray.length] = "Fuel Efficiency: " + getEfficiency() + "%";
         return desc;
     }
 

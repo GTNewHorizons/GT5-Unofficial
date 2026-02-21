@@ -34,7 +34,7 @@ public class BaseTinkersMaterial {
     }
 
     public BaseTinkersMaterial(Material aMaterial) {
-        mLocalName = aMaterial.getDefaultLocalName();
+        mLocalName = aMaterial.getLocalizedName();
         mUnlocalName = "material.gtpp." + StringUtils.sanitizeString(mLocalName);
         mMaterial = aMaterial;
         mID = aNextFreeID++;

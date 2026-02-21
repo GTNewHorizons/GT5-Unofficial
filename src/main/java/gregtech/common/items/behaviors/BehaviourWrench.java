@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
@@ -21,6 +20,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import ic2.api.tile.IWrenchable;
 import ic2.core.block.BlockRubWood;
@@ -28,6 +28,8 @@ import ic2.core.block.BlockRubWood;
 public class BehaviourWrench extends BehaviourNone {
 
     private final int mCosts;
+    private final String mTooltip = GTLanguageManager
+        .addStringLocalization("gt.behaviour.wrench", "Rotates Blocks on Rightclick");
 
     public BehaviourWrench(int aCosts) {
         this.mCosts = aCosts;
@@ -276,7 +278,7 @@ public class BehaviourWrench extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        aList.add(StatCollector.translateToLocal("gt.behaviour.wrench"));
+        aList.add(this.mTooltip);
         return aList;
     }
 }

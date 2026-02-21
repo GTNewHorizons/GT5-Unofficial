@@ -8,16 +8,20 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.items.MetaBaseItem;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
 public class BehaviourSensorKit extends BehaviourNone {
+
+    private final String mTooltip = GTLanguageManager.addStringLocalization(
+        "gt.behaviour.sensorkit.tooltip",
+        "Used to display Information using the Mod Nuclear Control");
 
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
@@ -46,7 +50,7 @@ public class BehaviourSensorKit extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        aList.add(StatCollector.translateToLocal("gt.behaviour.sensorkit.tooltip"));
+        aList.add(this.mTooltip);
         return aList;
     }
 }

@@ -68,7 +68,7 @@ public class RecipeGenOre extends RecipeGenBase {
         }
 
         // if (material.getMaterialComposites().length > 1){
-        Logger.MATERIALS("[Recipe Generator Debug] [" + material.getDefaultLocalName() + "]");
+        Logger.MATERIALS("[Recipe Generator Debug] [" + material.getLocalizedName() + "]");
         int tVoltageMultiplier = MaterialUtils.getVoltageForTier(material.vTier);
 
         final ItemStack dustStone = ItemUtils.getItemStackOfAmountFromOreDict("dustStone", 1);
@@ -397,7 +397,7 @@ public class RecipeGenOre extends RecipeGenBase {
                             "[Electrolyzer] Found Fluid Component, adding " + f.getKey()
                                 + " cells of "
                                 + f.getValue()
-                                    .getDefaultLocalName()
+                                    .getLocalizedName()
                                 + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getCell(f.getKey());
@@ -406,14 +406,14 @@ public class RecipeGenOre extends RecipeGenBase {
                         Logger.MATERIALS(
                             "[Electrolyzer] In total, adding " + mCellCount
                                 + " cells for "
-                                + material.getDefaultLocalName()
+                                + material.getLocalizedName()
                                 + " processing.");
                     } else {
                         Logger.MATERIALS(
                             "[Electrolyzer] Found Solid Component, adding " + f.getKey()
                                 + " dusts of "
                                 + f.getValue()
-                                    .getDefaultLocalName()
+                                    .getLocalizedName()
                                 + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getDust(f.getKey());
@@ -492,7 +492,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
             } else if (componentMap.size() > 6 && componentMap.size() <= 9) {
                 Logger.MATERIALS(
-                    "[Issue][Electrolyzer] " + material.getDefaultLocalName()
+                    "[Issue][Electrolyzer] " + material.getLocalizedName()
                         + " is composed of over 6 materials, so an electrolyzer recipe for processing cannot be generated. Trying to create one for the Dehydrator instead.");
 
                 ItemStack[] mInternalOutputs = new ItemStack[9];
@@ -511,7 +511,7 @@ public class RecipeGenOre extends RecipeGenBase {
                             "[Dehydrator] Found Fluid Component, adding " + f.getKey()
                                 + " cells of "
                                 + f.getValue()
-                                    .getDefaultLocalName()
+                                    .getLocalizedName()
                                 + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getCell(f.getKey());
@@ -520,14 +520,14 @@ public class RecipeGenOre extends RecipeGenBase {
                         Logger.MATERIALS(
                             "[Dehydrator] In total, adding " + mCellCount
                                 + " cells for "
-                                + material.getDefaultLocalName()
+                                + material.getLocalizedName()
                                 + " processing.");
                     } else {
                         Logger.MATERIALS(
                             "[Dehydrator] Found Solid Component, adding " + f.getKey()
                                 + " dusts of "
                                 + f.getValue()
-                                    .getDefaultLocalName()
+                                    .getLocalizedName()
                                 + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getDust(f.getKey());

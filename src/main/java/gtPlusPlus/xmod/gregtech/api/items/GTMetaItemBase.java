@@ -34,7 +34,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
      * @param aGeneratedPrefixList The OreDict Prefixes you want to have generated.
      */
     public GTMetaItemBase(final String aUnlocalized) {
-        super(aUnlocalized, "Generated Item", null);
+        super(aUnlocalized, "Generated Item", null, false);
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
     }

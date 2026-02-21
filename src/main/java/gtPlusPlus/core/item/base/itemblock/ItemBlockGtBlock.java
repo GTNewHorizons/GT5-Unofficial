@@ -16,6 +16,7 @@ import gregtech.common.config.Client;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -64,11 +65,12 @@ public class ItemBlockGtBlock extends ItemBlock {
     }
 
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
-        final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 
         if (Client.tooltip.showFormula) {
-            if (this.mMaterial == null) {
+            if (this.mMaterial != null) {
+                list.add(this.mMaterial.vChemicalFormula);
+            } else {
                 try {
                     BlockBaseModular g = (BlockBaseModular) thisBlock;
                     this.mMaterial = g.getMaterialEx();
@@ -77,7 +79,6 @@ public class ItemBlockGtBlock extends ItemBlock {
                 }
                 // list.add("Material is Null.");
             }
-            if (this.mMaterial != null) this.mMaterial.addTooltips(list);
         }
 
         if (this.isOre) {
@@ -114,6 +115,14 @@ public class ItemBlockGtBlock extends ItemBlock {
                 if (b != null) {
                     int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
                     list.add("Mining Level: " + Math.min(Math.max(aMiningLevel1, 0), 5));
+                }
+            }
+        }
+
+        if (Client.tooltip.showRadioactiveText) {
+            if (this.mMaterial != null) {
+                if (this.mMaterial.vRadiationLevel > 0) {
+                    list.add(GTPPCore.GT_Tooltip_Radioactive.get());
                 }
             }
         }

@@ -86,7 +86,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
      */
     @Override
     public short[] getRGBa(final ItemStack aStack) {
-        if (!Materials.isMaterialItem(this.getDamage(aStack))) {
+        if (this.getDamage(aStack) < 0 || this.getDamage(aStack) >= 32000) {
             return Materials._NULL.mRGBa;
         }
         final Materials tMaterial = GregTechAPI.sGeneratedMaterials[this.getDamage(aStack) % 1000];
@@ -149,7 +149,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
     @Override
     public ItemStack getContainerItem(final ItemStack aStack) {
         final int aDamage = aStack.getItemDamage();
-        if (Materials.isMaterialItem(aDamage)) {
+        if ((aDamage < 32000) && (aDamage >= 0)) {
             final Materials aMaterial = GregTechAPI.sGeneratedMaterials[aDamage % 1000];
             if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
                 final OrePrefixes aPrefix = this.mGeneratedPrefixList[aDamage / 1000];
@@ -163,7 +163,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
 
     @Override
     public final IIconContainer getIconContainer(final int aMetaData) {
-        if (!Materials.isMaterialItem(aMetaData)) return null;
+        if (aMetaData < 0 || aMetaData >= 32000) return null;
         return GregTechAPI.sGeneratedMaterials[aMetaData % 1000] == null ? null
             : this.getIconContainer(aMetaData, GregTechAPI.sGeneratedMaterials[aMetaData % 1000]);
     }
@@ -209,7 +209,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
     @Override
     public int getItemStackLimit(final ItemStack aStack) {
         final int tDamage = this.getDamage(aStack);
-        if (Materials.isMaterialItem(tDamage) && (this.mGeneratedPrefixList[tDamage / 1000] != null)) {
+        if ((tDamage < 32000) && (this.mGeneratedPrefixList[tDamage / 1000] != null)) {
             return Math
                 .min(super.getItemStackLimit(aStack), this.mGeneratedPrefixList[tDamage / 1000].getDefaultStackSize());
         }

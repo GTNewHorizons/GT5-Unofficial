@@ -54,7 +54,7 @@ public class ItemBaseBook extends ItemWritableBook {
         }
         BookHandler.BookTemplate book = BookHandler.mBookMap.get(tItem.getItemDamage());
         if (book != null) {
-            return EnumChatFormatting.ITALIC + StatCollector.translateToLocal("Book." + book.mTitle() + ".Name");
+            return EnumChatFormatting.ITALIC + Utils.addBookTitleLocalization(book.mTitle());
         }
         return "GT++ Storybook";
     }

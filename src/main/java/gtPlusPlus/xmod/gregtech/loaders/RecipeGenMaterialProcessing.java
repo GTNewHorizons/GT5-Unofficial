@@ -53,7 +53,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
         }
 
         if (material.getMaterialComposites().length > 1) {
-            Logger.MATERIALS("[Recipe Generator Debug] [" + material.getDefaultLocalName() + "]");
+            Logger.MATERIALS("[Recipe Generator Debug] [" + material.getLocalizedName() + "]");
             final int tVoltageMultiplier = material.vVoltageMultiplier;
             int[] partSizes = new int[99];
             if (material.vSmallestRatio != null) {
@@ -91,7 +91,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                             "[Centrifuge] Found Fluid Component, adding " + f.getKey()
                                 + " cells of "
                                 + f.getValue()
-                                    .getDefaultLocalName()
+                                    .getLocalizedName()
                                 + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getCell(f.getKey());
@@ -100,14 +100,14 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                         Logger.MATERIALS(
                             "[Centrifuge] In total, adding " + mCellCount
                                 + " cells for "
-                                + material.getDefaultLocalName()
+                                + material.getLocalizedName()
                                 + " processing.");
                     } else {
                         Logger.MATERIALS(
                             "[Centrifuge] Found Solid Component, adding " + f.getKey()
                                 + " dusts of "
                                 + f.getValue()
-                                    .getDefaultLocalName()
+                                    .getLocalizedName()
                                 + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getDust(f.getKey());
@@ -190,7 +190,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
 
             } else if (componentMap.size() > 6 && componentMap.size() <= 9) {
                 Logger.MATERIALS(
-                    "[Issue][Electrolyzer] " + material.getDefaultLocalName()
+                    "[Issue][Electrolyzer] " + material.getLocalizedName()
                         + " is composed of over 6 materials, so an electrolyzer recipe for processing cannot be generated. Trying to create one for the Dehydrator instead.");
 
                 ItemStack[] mInternalOutputs = new ItemStack[9];
@@ -207,7 +207,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                             "[Dehydrator] Found Fluid Component, adding " + f.getKey()
                                 + " cells of "
                                 + f.getValue()
-                                    .getDefaultLocalName()
+                                    .getLocalizedName()
                                 + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getCell(f.getKey());
@@ -216,14 +216,14 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                         Logger.MATERIALS(
                             "[Dehydrator] In total, adding " + mCellCount
                                 + " cells for "
-                                + material.getDefaultLocalName()
+                                + material.getLocalizedName()
                                 + " processing.");
                     } else {
                         Logger.MATERIALS(
                             "[Dehydrator] Found Solid Component, adding " + f.getKey()
                                 + " dusts of "
                                 + f.getValue()
-                                    .getDefaultLocalName()
+                                    .getLocalizedName()
                                 + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getDust(f.getKey());

@@ -32,7 +32,7 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         if (material.vVoltageMultiplier > TierEU.RECIPE_IV) {
             return;
         }
-        Logger.WARNING("Generating Shaped Crafting recipes for " + material.getDefaultLocalName()); // TODO
+        Logger.WARNING("Generating Shaped Crafting recipes for " + material.getLocalizedName()); // TODO
 
         // Single Plate Shaped/Shapeless
         if (material.getPlate(1) != null && material.getIngot(1) != null)
@@ -53,9 +53,9 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
                 material.getRing(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h ", "fR", 'R', material.getRod(1) })) {
-                Logger.WARNING("GT:NH Ring Recipe: " + material.getDefaultLocalName() + " - Success");
+                Logger.WARNING("GT:NH Ring Recipe: " + material.getLocalizedName() + " - Success");
             } else {
-                Logger.WARNING("GT:NH Ring Recipe: " + material.getDefaultLocalName() + " - Failed");
+                Logger.WARNING("GT:NH Ring Recipe: " + material.getLocalizedName() + " - Failed");
             }
         }
 
@@ -65,9 +65,9 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
                 material.getFrameBox(2),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "RRR", "RwR", "RRR", 'R', material.getRod(1) })) {
-                Logger.WARNING("Framebox Recipe: " + material.getDefaultLocalName() + " - Success");
+                Logger.WARNING("Framebox Recipe: " + material.getLocalizedName() + " - Success");
             } else {
-                Logger.WARNING("Framebox Recipe: " + material.getDefaultLocalName() + " - Failed");
+                Logger.WARNING("Framebox Recipe: " + material.getLocalizedName() + " - Failed");
             }
         }
 
@@ -77,9 +77,9 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
                 material.getBolt(2),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "s ", " R", 'R', material.getRod(1) })) {
-                Logger.WARNING("Bolt Recipe: " + material.getDefaultLocalName() + " - Success");
+                Logger.WARNING("Bolt Recipe: " + material.getLocalizedName() + " - Success");
             } else {
-                Logger.WARNING("Bolt Recipe: " + material.getDefaultLocalName() + " - Failed");
+                Logger.WARNING("Bolt Recipe: " + material.getLocalizedName() + " - Failed");
             }
         }
 
@@ -89,9 +89,9 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
                 material.getFineWire(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "Fx", 'F', material.getFoil(1) })) {
-                Logger.WARNING("Fine Wire Recipe: " + material.getDefaultLocalName() + " - Success");
+                Logger.WARNING("Fine Wire Recipe: " + material.getLocalizedName() + " - Success");
             } else {
-                Logger.WARNING("Fine Wire Recipe: " + material.getDefaultLocalName() + " - Failed");
+                Logger.WARNING("Fine Wire Recipe: " + material.getLocalizedName() + " - Failed");
             }
         }
 
@@ -101,9 +101,9 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
                 material.getFoil(2),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "hP", 'P', material.getPlate(1) })) {
-                Logger.WARNING("Foil Recipe: " + material.getDefaultLocalName() + " - Success");
+                Logger.WARNING("Foil Recipe: " + material.getLocalizedName() + " - Success");
             } else {
-                Logger.WARNING("Foil Recipe: " + material.getDefaultLocalName() + " - Failed");
+                Logger.WARNING("Foil Recipe: " + material.getLocalizedName() + " - Failed");
             }
         }
 
@@ -112,9 +112,9 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
             material.getRod(1),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "f ", " I", 'I', material.getIngot(1) })) {
-                Logger.WARNING("Rod Recipe: " + material.getDefaultLocalName() + " - Success");
+                Logger.WARNING("Rod Recipe: " + material.getLocalizedName() + " - Success");
             } else {
-                Logger.WARNING("Rod Recipe: " + material.getDefaultLocalName() + " - Failed");
+                Logger.WARNING("Rod Recipe: " + material.getLocalizedName() + " - Failed");
             }
 
         // Shaped Recipe - Long Rod to two smalls
@@ -122,9 +122,9 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
             material.getRod(2),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "s", "L", 'L', material.getLongRod(1) })) {
-                Logger.WARNING("Rod Recipe: " + material.getDefaultLocalName() + " - Success");
+                Logger.WARNING("Rod Recipe: " + material.getLocalizedName() + " - Success");
             } else {
-                Logger.WARNING("Rod Recipe: " + material.getDefaultLocalName() + " - Failed");
+                Logger.WARNING("Rod Recipe: " + material.getLocalizedName() + " - Failed");
             }
 
         // Two small to long rod
@@ -132,9 +132,9 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
             material.getLongRod(1),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "RhR", 'R', material.getRod(1) })) {
-                Logger.WARNING("Long Rod Recipe: " + material.getDefaultLocalName() + " - Success");
+                Logger.WARNING("Long Rod Recipe: " + material.getLocalizedName() + " - Success");
             } else {
-                Logger.WARNING("Long Rod Recipe: " + material.getDefaultLocalName() + " - Failed");
+                Logger.WARNING("Long Rod Recipe: " + material.getLocalizedName() + " - Failed");
             }
 
         // Rotor Recipe
@@ -148,9 +148,9 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "PhP", "SRf", "PdP", 'P', material.getPlate(1), 'S', material.getScrew(1), 'R',
                     material.getRing(1), })) {
-                Logger.WARNING("Rotor Recipe: " + material.getDefaultLocalName() + " - Success");
+                Logger.WARNING("Rotor Recipe: " + material.getLocalizedName() + " - Success");
             } else {
-                Logger.WARNING("Rotor Recipe: " + material.getDefaultLocalName() + " - Failed");
+                Logger.WARNING("Rotor Recipe: " + material.getLocalizedName() + " - Failed");
             }
         }
 
@@ -162,9 +162,9 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
                 material.getGear(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "RPR", "PwP", "RPR", 'P', material.getPlate(1), 'R', material.getRod(1), })) {
-                Logger.WARNING("Gear Recipe: " + material.getDefaultLocalName() + " - Success");
+                Logger.WARNING("Gear Recipe: " + material.getLocalizedName() + " - Success");
             } else {
-                Logger.WARNING("Gear Recipe: " + material.getDefaultLocalName() + " - Failed");
+                Logger.WARNING("Gear Recipe: " + material.getLocalizedName() + " - Failed");
             }
         }
 
@@ -174,9 +174,9 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
                 material.getScrew(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "fB", "B ", 'B', material.getBolt(1), })) {
-                Logger.WARNING("Screw Recipe: " + material.getDefaultLocalName() + " - Success");
+                Logger.WARNING("Screw Recipe: " + material.getLocalizedName() + " - Success");
             } else {
-                Logger.WARNING("Screw Recipe: " + material.getDefaultLocalName() + " - Failed");
+                Logger.WARNING("Screw Recipe: " + material.getLocalizedName() + " - Failed");
             }
         }
     }

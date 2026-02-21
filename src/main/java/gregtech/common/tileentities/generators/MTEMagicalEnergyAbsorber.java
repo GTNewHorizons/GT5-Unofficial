@@ -60,6 +60,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
@@ -141,10 +142,14 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         ItemStack aTool) {
         if (aPlayer.isSneaking()) mMagicalEnergyBB.decreaseTier();
         else mMagicalEnergyBB.increaseTier();
-        GTUtility.sendChatTrans(
+        GTUtility.sendChatToPlayer(
             aPlayer,
-            "Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver",
-            mMagicalEnergyBB.getRange());
+            String.format(
+                GTLanguageManager.addStringLocalization(
+                    "Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver",
+                    "Absorption range: %s blocks"),
+                mMagicalEnergyBB.getRange(),
+                true));
         mMagicalEnergyBB.update();
     }
 
@@ -193,6 +198,8 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
 
     @Override
     public String[] getDescription() {
+        final String LI = "- %%%";
+        final String EU_PER = "%%%EU per ";
         List<String> description = new ArrayList<>();
         description
             .add(UNDERLINE + "Feasts on " + LIGHT_PURPLE + UNDERLINE + "magic" + GRAY + UNDERLINE + " close to it:");
@@ -205,21 +212,13 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
                 + GRAY
                 + " atop");
         if (sEnergyPerEndercrystal > 0) {
-            description.add(
-                "- " + addFormattedString(String.valueOf(sEnergyPerEndercrystal))
-                    + "EU per "
-                    + LIGHT_PURPLE
-                    + "Ender Crystal"
-                    + GRAY
-                    + " in range");
+            description.add(LI + sEnergyPerEndercrystal + EU_PER + LIGHT_PURPLE + "Ender Crystal" + GRAY + " in range");
         }
         if (Thaumcraft.isModLoaded()) {
+            description.add(LI + mMaxVisPerDrain + "%%%CV/t from an " + LIGHT_PURPLE + "Energised Node" + GRAY);
             description.add(
-                "- " + addFormattedString(
-                    String.valueOf(mMaxVisPerDrain)) + "CV/t from an " + LIGHT_PURPLE + "Energised Node" + GRAY);
-            description.add(
-                "- " + addFormattedString(String.valueOf(sEnergyPerEssentia * getEfficiency() / 100))
-                    + "EU per "
+                LI + (sEnergyPerEssentia * getEfficiency()) / 100
+                    + EU_PER
                     + LIGHT_PURPLE
                     + "Essentia"
                     + GRAY
@@ -227,23 +226,21 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         }
         description.add(" ");
         description.add(UNDERLINE + "Lookup range (Use Screwdriver to change):");
-        description.add("Default: " + GREEN + addFormattedString(String.valueOf(mMagicalEnergyBB.getDefaultRange())));
-        description.add("Max: " + GREEN + addFormattedString(String.valueOf(mMagicalEnergyBB.getMaxRange())));
+        description.add("Default: %%%" + GREEN + mMagicalEnergyBB.getDefaultRange());
+        description.add("Max: %%%" + GREEN + mMagicalEnergyBB.getMaxRange());
         description.add(" ");
         description
             .add(UNDERLINE + "Fuels on " + LIGHT_PURPLE + UNDERLINE + "enchantments" + GRAY + UNDERLINE + " input:");
         description.add(
-            "- Item: " + addFormattedString(String.valueOf(10000 * getEfficiency() / 100))
-                + "EU per "
+            "- Item: %%%" + (10000 * getEfficiency()) / 100
+                + EU_PER
                 + LIGHT_PURPLE
                 + "enchant"
                 + GRAY
                 + " weight × level / max");
-        description.add(
-            "- Book: " + addFormattedString(
-                "10000") + "EU per " + LIGHT_PURPLE + "enchant" + GRAY + " weight × level / max");
+        description.add("- Book: %%%" + 10000 + EU_PER + LIGHT_PURPLE + "enchant" + GRAY + " weight × level / max");
         description.add(" ");
-        description.add("Efficiency: " + GREEN + addFormattedString(String.valueOf(getEfficiency())) + "%%");
+        description.add("Efficiency: %%%" + GREEN + getEfficiency() + "%");
         return description.toArray(new String[0]);
     }
 

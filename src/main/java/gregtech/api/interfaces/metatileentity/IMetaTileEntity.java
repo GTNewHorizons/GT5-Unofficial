@@ -1,9 +1,5 @@
 package gregtech.api.interfaces.metatileentity;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -345,70 +341,9 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         ArrayList<String> aList);
 
     /**
-     * Get the description for the TileEntity.
-     * <p>
-     * The behavior of this method depends on whether the class is annotated with {@link SkipGenerateDescription}:
-     * </p>
-     * <ul>
-     * <li>When the class is annotated with {@link SkipGenerateDescription}, the returned value is displayed directly in
-     * the game.</li>
-     * <li>When the class is not annotated with {@link SkipGenerateDescription}, the returned value is automatically
-     * added to <code>GregTech.lang</code>, and display the value from <code>GregTech.lang</code> in the game</li>
-     * </ul>
-     * <p>
-     * Additional notes when the class is not annotated with {@link SkipGenerateDescription}:
-     * </p>
-     * <ul>
-     * <li>To use the %s format specifier, you can use the {@link #addFormattedString(String)}</li>
-     * <li>Only static text is supported(because of <code>GregTech.lang</code>); dynamic text (e.g. display different
-     * random text each time) should also use the {@link #addFormattedString(String)}</li>
-     * </ul>
-     *
-     * @return the description, will display in the tooltips
-     * @see SkipGenerateDescription
-     * @see #addFormattedString(String)
+     * get a small Description
      */
     String[] getDescription();
-
-    /**
-     * Add a formatting marker for automatic parameter substitution.
-     * <p>
-     * This can also be used to display raw text.
-     *
-     * @param formattedStr the String to be formatted with parameter substitution markers.
-     * @return the special formatting markers for automatic parsing.
-     * @apiNote This method should NOT be used when the class is annotated with {@link SkipGenerateDescription},
-     *          otherwise the game will display the format used for marking.<br>
-     *          When use this method, please replace all "(number)%" with "(number)%%".
-     * @see #getDescription()
-     */
-    default String addFormattedString(String formattedStr) {
-        return "%%%" + formattedStr + "%%%";
-    }
-
-    /**
-     * Annotation to mark classes that should skip generating tooltips through the GregTech.lang system.
-     * <p>
-     *
-     * When a class is annotated with {@link SkipGenerateDescription}:
-     * </p>
-     * <ul>
-     * <li>The returned value of {@link #getDescription()} is displayed directly in the game</li>
-     * <li>Automatic addition to <code>GregTech.lang</code> is skipped</li>
-     * </ul>
-     * <p>
-     * When a class is not annotated with {@link SkipGenerateDescription}:
-     * </p>
-     * <ul>
-     * <li>The returned value of {@link #getDescription()} is automatically added to <code>GregTech.lang</code></li>
-     *
-     * @apiNote please ensure the return of {@link #getDescription()} is not Hardcoded if this annotation is present.
-     *          This annotation is only effective when annotated to subclasses of {@link IMetaTileEntity}.
-     * @see #getDescription()
-     */
-    @Target(ElementType.TYPE)
-    @Retention(RetentionPolicy.RUNTIME)
-    @interface SkipGenerateDescription {}
 
     /**
      * In case the Output Voltage varies.

@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.forestry.bees.custom;
 
-import net.minecraft.util.StatCollector;
-
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.util.Utils;
@@ -76,19 +74,18 @@ public enum CustomCombs {
         this.material = material;
         this.chance = chance;
         this.showInList = show;
-        // return "gt.comb."+this.name;
-        GTLanguageManager.addStringLocalization(
-            "comb." + this.name,
-            this.name.substring(0, 1)
-                .toUpperCase() + this.name.substring(1) + " Comb");
     }
 
     public void setHidden() {
         this.showInList = false;
     }
 
-    public String getLocalizedName() {
-        return StatCollector.translateToLocal("comb." + this.name);
+    public String getName() {
+        // return "gt.comb."+this.name;
+        return GTLanguageManager.addStringLocalization(
+            "comb." + this.name,
+            this.name.substring(0, 1)
+                .toUpperCase() + this.name.substring(1) + " Comb");
     }
 
     public int[] getColours() {

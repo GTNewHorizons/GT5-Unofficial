@@ -246,7 +246,6 @@ import gregtech.api.util.GTFoodStat;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverExternal;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverInternal;
@@ -2329,36 +2328,28 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             addItem(
                 Cover_AdvancedRedstoneTransmitter.ID,
                 "Advanced Redstone Transmitter",
-                "Transfers Redstone signals wirelessly" + GTSplit.LB
-                    + " Can only connect with advanced wireless covers",
+                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneTransmitterInternal.set(
             addItem(
                 Cover_AdvancedRedstoneTransmitterInternal.ID,
                 "Advanced Redstone Transmitter (Internal)",
-                "Transfers Redstone signals wirelessly" + GTSplit.LB
-                    + " Can only connect with advanced wireless covers"
-                    + GTSplit.LB
-                    + " §cDEPRECATED! This will be removed in the next major update.",
+                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers/n §cDEPRECATED! This will be removed in the next major update.",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneReceiver.set(
             addItem(
                 Cover_AdvancedRedstoneReceiver.ID,
                 "Advanced Redstone Receiver",
-                "Transfers Redstone signals wirelessly" + GTSplit.LB
-                    + " Can only connect with advanced wireless covers",
+                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneReceiverInternal.set(
             addItem(
                 Cover_AdvancedRedstoneReceiverInternal.ID,
                 "Advanced Redstone Receiver (Internal)",
-                "Transfers Redstone signals wirelessly" + GTSplit.LB
-                    + " Can only connect with advanced wireless covers"
-                    + GTSplit.LB
-                    + " §cDEPRECATED! This will be removed in the next major update.",
+                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers/n §cDEPRECATED! This will be removed in the next major update.",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
 
@@ -2366,8 +2357,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             addItem(
                 Cover_WirelessFluidDetector.ID,
                 "Wireless Fluid Detector Cover",
-                "Transfers Fluid Amount as Redstone wirelessly" + GTSplit.LB
-                    + "Can only connect with advanced wireless covers",
+                "Transfers Fluid Amount as Redstone wirelessly/n Can only connect with advanced wireless covers",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
@@ -2376,8 +2366,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             addItem(
                 Cover_WirelessItemDetector.ID,
                 "Wireless Item Detector Cover",
-                "Transfers Item Amount as Redstone wirelessly" + GTSplit.LB
-                    + "Can only connect with advanced wireless covers",
+                "Transfers Item Amount as Redstone wirelessly/n Can only connect with advanced wireless covers",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
@@ -2387,8 +2376,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             addItem(
                 Cover_WirelessNeedsMaintainance.ID,
                 "Wireless Needs Maintenance Cover",
-                "Transfers Maintenance Issues as Redstone wirelessly" + GTSplit.LB
-                    + "Can only connect with advanced wireless covers",
+                "Transfers Maintenance Issues as Redstone wirelessly/n Can only connect with advanced wireless covers",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 3L)));
 
@@ -2396,8 +2384,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             addItem(
                 Cover_WirelessActivityDetector.ID,
                 "Wireless Activity Detector Cover",
-                "Transfers Activity as Redstone wirelessly" + GTSplit.LB
-                    + "Can only connect with advanced wireless covers",
+                "Transfers Activity as Redstone wirelessly/n Can only connect with advanced wireless covers",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),

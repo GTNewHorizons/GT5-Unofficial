@@ -9,10 +9,12 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -20,6 +22,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -74,10 +77,20 @@ public class MTETieredTank extends MTEBasicTank {
                 .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
                 tooltip.add(
-                    StatCollector.translateToLocalFormatted("gt.tileentity.tank_info", tContents.getLocalizedName()));
+                    GTLanguageManager.addStringLocalization(
+                        "TileEntity_TANK_INFO",
+                        "Contains Fluid: ",
+                        !GregTechAPI.sPostloadFinished) + EnumChatFormatting.YELLOW
+                        + tContents.getLocalizedName()
+                        + EnumChatFormatting.GRAY);
                 tooltip.add(
-                    StatCollector
-                        .translateToLocalFormatted("gt.tileentity.tank_amount", formatNumber(tContents.amount)));
+                    GTLanguageManager.addStringLocalization(
+                        "TileEntity_TANK_AMOUNT",
+                        "Fluid Amount: ",
+                        !GregTechAPI.sPostloadFinished) + EnumChatFormatting.GREEN
+                        + formatNumber(tContents.amount)
+                        + " L"
+                        + EnumChatFormatting.GRAY);
             }
         }
     }

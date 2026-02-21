@@ -129,7 +129,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
     public String getItemStackDisplayName(ItemStack aStack) {
         String aName = super.getItemStackDisplayName(aStack);
         int aDamage = aStack.getItemDamage();
-        if (Materials.isMaterialItem(aDamage)) return Materials.getLocalizedNameForItem(aName, aDamage % 1000);
+        if (aDamage < 32000 && aDamage >= 0) return Materials.getLocalizedNameForItem(aName, aDamage % 1000);
         return aName;
     }
 

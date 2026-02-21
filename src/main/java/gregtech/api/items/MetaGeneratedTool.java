@@ -458,7 +458,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     EnumChatFormatting.GRAY
                         + translateToLocalFormatted(
                             "gt.item.desc.tier",
-                            tMaterial.getLocalizedName() + ":" + EnumChatFormatting.YELLOW,
+                            tMaterial.mLocalizedName + ":" + EnumChatFormatting.YELLOW,
                             "" + getHarvestLevel(aStack, ""))
                         + EnumChatFormatting.GRAY);
                 aList.add(
@@ -600,7 +600,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     EnumChatFormatting.WHITE
                         + translateToLocalFormatted(
                             "gt.item.desc.level",
-                            tMaterial.getLocalizedName() + EnumChatFormatting.YELLOW,
+                            tMaterial.mLocalizedName + EnumChatFormatting.YELLOW,
                             "" + getHarvestLevel(aStack, ""))
                         + EnumChatFormatting.GRAY);
                 aList.add(

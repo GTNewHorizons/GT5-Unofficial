@@ -8,13 +8,10 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.Utils;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
 
     public MTEHatchAirIntake(final int aID, final String aName, final String aNameRegional, final int aTier) {
@@ -33,10 +30,12 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
 
     @Override
     public String[] getCustomTooltip() {
-        return Utils.splitLocalizedFormattedWithAlkalus(
-            "gt.blockmachines.input_hatch_generator.airintake.desc",
-            getAmountOfFluidToGenerate(),
-            getMaxTickTime());
+        String[] aTooltip = new String[4];
+        aTooltip[0] = "§cDO NOT OBSTRUCT THE INPUT!";
+        aTooltip[1] = "Draws in Air from the surrounding environment";
+        aTooltip[2] = "Creates " + getAmountOfFluidToGenerate() + "L of Air every " + getMaxTickTime() + " ticks";
+        aTooltip[3] = "§7Added by: §2Alkalus §7- §c[GT++]";
+        return aTooltip;
     }
 
     @Override

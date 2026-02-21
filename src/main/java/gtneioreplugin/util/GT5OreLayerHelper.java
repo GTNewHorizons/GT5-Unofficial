@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.minecraft.init.Blocks;
@@ -70,7 +69,7 @@ public class GT5OreLayerHelper {
 
     public static class OreLayerWrapper {
 
-        public final String veinName, worldGenHeightRange;
+        public final String veinName, worldGenHeightRange, localizedName;
         public final IOreMaterial[] ores = new IOreMaterial[4];
         public final short randomWeight, size, density;
         /** {full dim name} */
@@ -82,11 +81,10 @@ public class GT5OreLayerHelper {
         public final IOreMaterial mSecondaryMaterial;
         public final IOreMaterial mBetweenMaterial;
         public final IOreMaterial mSporadicMaterial;
-        public final Supplier<String> localizedName;
 
         public OreLayerWrapper(OreMixBuilder mix) {
             this.veinName = mix.oreMixName;
-            this.localizedName = mix::getLocalizedName;
+            this.localizedName = mix.localizedName;
             this.ores[0] = mix.primary;
             this.ores[1] = mix.secondary;
             this.ores[2] = mix.between;
@@ -142,10 +140,6 @@ public class GT5OreLayerHelper {
             return ores[OreVeinLayer.VEIN_PRIMARY] == material || ores[OreVeinLayer.VEIN_SECONDARY] == material
                 || ores[OreVeinLayer.VEIN_BETWEEN] == material
                 || ores[OreVeinLayer.VEIN_SPORADIC] == material;
-        }
-
-        public String getLocalizedName() {
-            return this.localizedName.get();
         }
     }
 

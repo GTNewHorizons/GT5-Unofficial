@@ -60,7 +60,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -71,6 +71,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -1115,7 +1116,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addSubChannelUsage(GTStructureChannels.EOH_STABILISATION)
             .addSubChannelUsage(GTStructureChannels.EOH_DILATION)
             .addSubChannelUsage(GTStructureChannels.EOH_COMPRESSION)
-            .toolTipFinisher(EnumChatFormatting.GOLD, 87, GTAuthors.AuthorColen);
+            .toolTipFinisher(EnumChatFormatting.GOLD, 87, GTValues.AuthorColen);
         return tt;
     }
 
@@ -1730,16 +1731,16 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             if (nbt.hasKey(PLANET_BLOCK)) {
                 tooltip.add(
                     1,
-                    StatCollector.translateToLocalFormatted(
-                        "EOH_Controller_PlanetBlock",
-                        AQUA + new ItemStack(ModBlocks.getBlock(nbt.getString(PLANET_BLOCK))).getDisplayName()));
+                    GTLanguageManager.addStringLocalization("EOH_Controller_PlanetBlock", "Current Planet Block: ")
+                        + AQUA
+                        + new ItemStack(ModBlocks.getBlock(nbt.getString(PLANET_BLOCK))).getDisplayName());
             }
             if (nbt.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG) > 0) {
                 tooltip.add(
                     1,
-                    StatCollector.translateToLocalFormatted(
-                        "EOH_Controller_AstralArrayAmount",
-                        AQUA + formatNumber(nbt.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG))));
+                    GTLanguageManager
+                        .addStringLocalization("EOH_Controller_AstralArrayAmount", "Stored Astral Arrays: ") + AQUA
+                        + formatNumber(nbt.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG)));
             }
         }
     }

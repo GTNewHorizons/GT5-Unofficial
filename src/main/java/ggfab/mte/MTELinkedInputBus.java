@@ -31,11 +31,11 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
+import ggfab.GGConstants;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -43,11 +43,9 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProcessingAwareHatch, IDataCopyable {
 
     public static final int SIZE_INVENTORY = 18;
@@ -60,7 +58,15 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     private WorldSave save;
 
     public MTELinkedInputBus(int id, String name, String nameRegional, int tier) {
-        super(id, name, nameRegional, tier, 1, null);
+        super(
+            id,
+            name,
+            nameRegional,
+            tier,
+            1,
+            new String[] { SIZE_INVENTORY + " slot input bus linked together wirelessly",
+                "Link does not cross world boundary", "Left/right click with data stick to copy/paste configuration",
+                GGConstants.GGMARK_TOOLTIP, });
     }
 
     public MTELinkedInputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -664,10 +670,5 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
             super.deserializeNBT(nbt);
             fake = nbt.getBoolean("fake");
         }
-    }
-
-    @Override
-    public String[] getDescription() {
-        return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_bus_linked.desc", SIZE_INVENTORY);
     }
 }

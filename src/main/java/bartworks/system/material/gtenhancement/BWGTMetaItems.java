@@ -97,7 +97,7 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
     public String getItemStackDisplayName(ItemStack aStack) {
         Materials material = this.getMaterial(aStack);
         if (material == null) material = Materials._NULL;
-        return this.orePrefixes.getLocalizedNameForItem(material);
+        return material.getLocalizedNameForItem(this.itemTypeLocalizedName);
     }
 
     @Override

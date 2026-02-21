@@ -164,6 +164,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     t -> GTStructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
                         .atLeast(SpecialHatchElement.PhSensor)
                         .hint(2)
+                        .cacheHint(() -> "pH Sensor Hatch")
                         .casingIndex(CASING_INDEX_MIDDLE)
                         .build()),
                 // Naquadah Reinforced Water Plant Casing
@@ -176,10 +177,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .atLeast(InputBus)
                     .hint(3)
                     .adder(MTEPurificationUnitPhAdjustment::addAlkalineBusToMachineList)
-                    .cacheHint(
-                        () -> StatCollector.translateToLocalFormatted(
-                            "GT5U.MBTT.InputBus.WithFormat",
-                            ALKALINE_MATERIAL.getLocalizedName()))
+                    .cacheHint(() -> "Input Bus (" + ALKALINE_MATERIAL.mLocalizedName + ")")
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -190,10 +188,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .atLeast(InputHatch)
                     .hint(4)
                     .adder(MTEPurificationUnitPhAdjustment::addAcidHatchToMachineList)
-                    .cacheHint(
-                        () -> StatCollector.translateToLocalFormatted(
-                            "GT5U.MBTT.InputHatch.WithFormat",
-                            ACIDIC_MATERIAL.getLocalizedName()))
+                    .cacheHint(() -> "Input Hatch (" + ACIDIC_MATERIAL.mLocalizedName + ")")
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -351,11 +346,11 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + " ticks, consumes ALL "
                     + EnumChatFormatting.WHITE
-                    + addFormattedString(ALKALINE_MATERIAL.getLocalizedName())
+                    + ALKALINE_MATERIAL.mLocalizedName
                     + EnumChatFormatting.GRAY
                     + " and "
                     + EnumChatFormatting.WHITE
-                    + addFormattedString(ACIDIC_MATERIAL.getLocalizedName())
+                    + ACIDIC_MATERIAL.mLocalizedName
                     + EnumChatFormatting.GRAY
                     + " in the special hatches")
             .addInfo(
@@ -591,11 +586,6 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             @Override
             public long count(MTEPurificationUnitPhAdjustment gtMetaTileEntityPurificationUnitPhAdjustment) {
                 return gtMetaTileEntityPurificationUnitPhAdjustment.sensorHatches.size();
-            }
-
-            @Override
-            public String getDisplayName() {
-                return StatCollector.translateToLocal("GT5U.MBTT.pHSensorHatch");
             }
         };
 

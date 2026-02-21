@@ -127,7 +127,7 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
         String uid = "gtpp.bee.species" + species;
         String description = "for.description." + species;
         String name = "for.bees.species." + lowercaseName;
-        GTLanguageManager.addStringLocalization("for.bees.species." + lowercaseName, species);
+        GTLanguageManager.addStringLocalization("for.bees.species." + lowercaseName, species, true);
         GTPP_Bees.sMaterialMappings.put(
             binomial.toLowerCase()
                 .replaceAll(" ", ""),

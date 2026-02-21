@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
@@ -46,27 +45,25 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) meta);
 
         if (werkstoff == null) {
-            return StatCollector.translateToLocalFormatted(
-                blockOre.getPrefix()
-                    .getOreprefixKey(),
-                StatCollector.translateToLocal("Material.empty"));
+            return blockOre.blockTypeLocalizedName.replace("%material", "Empty");
         }
 
-        return blockOre.getPrefix()
-            .getLocalizedNameForItem(werkstoff.getBridgeMaterial());
+        return blockOre.blockTypeLocalizedName.replace("%material", werkstoff.getLocalizedName());
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> desc, boolean advancedTooltips) {
-        if (!Client.tooltip.showFormula) {
-            return;
-        }
-        int meta = stack.getItemDamage();
+        if (Client.tooltip.showFormula) {
+            int meta = stack.getItemDamage();
 
-        Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) meta);
+            Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) meta);
 
-        if (werkstoff != null) {
-            werkstoff.addTooltips(desc);
+            if (werkstoff != null) {
+                String tooltip = werkstoff.getLocalizedToolTip();
+                if (!tooltip.isEmpty()) {
+                    desc.add(tooltip);
+                }
+            }
         }
     }
 }
