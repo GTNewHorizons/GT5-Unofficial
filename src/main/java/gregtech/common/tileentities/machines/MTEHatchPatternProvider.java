@@ -1,5 +1,8 @@
 package gregtech.common.tileentities.machines;
 
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_HATCH_PATTERN_PROVIDER;
+
+import gregtech.api.render.TextureFactory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -25,15 +28,28 @@ public class MTEHatchPatternProvider extends MTEHatchInputBus {
             id,
             name,
             nameRegional,
-            GTTooltipHandler.Tier.LV.ordinal(),
+            GTTooltipHandler.Tier.IV.ordinal(),
             getSlots(),
-            new String[] { StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_pattern_provider.1") });
+            new String[] {
+                StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_pattern_provider.1"),
+                StatCollector.translateToLocalFormatted("GT5U.gui.tooltip.hatch.crafting_pattern_provider.2", getSlots())
+            });
         this.disableSort = true;
     }
 
     public MTEHatchPatternProvider(String name, int slots, String[] description, ITexture[][][] textures) {
-        super(name, GTTooltipHandler.Tier.LV.ordinal(), slots, description, textures);
+        super(name, GTTooltipHandler.Tier.IV.ordinal(), slots, description, textures);
         this.disableSort = true;
+    }
+
+    @Override
+    public ITexture[] getTexturesActive(ITexture aBaseTexture) {
+        return getTexturesInactive(aBaseTexture);
+    }
+
+    @Override
+    public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_HATCH_PATTERN_PROVIDER) };
     }
 
     @Override
