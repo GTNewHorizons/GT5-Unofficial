@@ -26,6 +26,7 @@ import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -579,51 +580,6 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Fluix, 2))
             .fluidInputs(GTModHandler.getDistilledWater(500))
             .duration(20 * TICKS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(mixerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Fertilizer.get(1), new ItemStack(Blocks.dirt, 8, 32767))
-            .circuit(1)
-            .itemOutputs(getModItem(Forestry.ID, "soil", 8L, 0))
-            .fluidInputs(Materials.Water.getFluid(1_000))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(mixerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.FR_Fertilizer.get(1), new ItemStack(Blocks.dirt, 8, 32767))
-            .circuit(1)
-            .itemOutputs(getModItem(Forestry.ID, "soil", 8L, 0))
-            .fluidInputs(Materials.Water.getFluid(1_000))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(mixerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.FR_Compost.get(1), new ItemStack(Blocks.dirt, 8, 32767))
-            .circuit(1)
-            .itemOutputs(getModItem(Forestry.ID, "soil", 8L, 0))
-            .fluidInputs(Materials.Water.getFluid(1_000))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(mixerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.FR_Mulch.get(8), new ItemStack(Blocks.dirt, 8, 32767))
-            .circuit(1)
-            .itemOutputs(getModItem(Forestry.ID, "soil", 8L, 0))
-            .fluidInputs(Materials.Water.getFluid(1_000))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(mixerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.sand, 1, 32767), new ItemStack(Blocks.dirt, 1, 32767))
-            .circuit(1)
-            .itemOutputs(getModItem(Forestry.ID, "soil", 2L, 1))
-            .fluidInputs(Materials.Water.getFluid(250))
-            .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
 
@@ -1634,13 +1590,15 @@ public class MixerRecipes implements Runnable {
                 .addTo(mixerNonCellRecipes);
         }
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Spray_WeedEx.get(1))
-            .fluidInputs(Materials.NaphthenicAcid.getFluid(10))
-            .fluidOutputs(Materials.WeedEX9000.getFluid(750))
-            .duration(5 * SECONDS)
-            .eut(100)
-            .addTo(mixerRecipes);
+        if (Mods.CropsNH.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(getModItem(Mods.CropsNH.ID, "weedEx", 1))
+                .fluidInputs(Materials.NaphthenicAcid.getFluid(10))
+                .fluidOutputs(Materials.WeedEX9000.getFluid(750))
+                .duration(5 * SECONDS)
+                .eut(100)
+                .addTo(mixerRecipes);
+        }
 
         GTValues.RA.stdBuilder()
             .itemInputs(

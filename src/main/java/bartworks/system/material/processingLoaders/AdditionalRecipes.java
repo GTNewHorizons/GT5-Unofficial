@@ -354,15 +354,6 @@ public class AdditionalRecipes {
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.Thorianit.get(crushed), ItemList.Crop_Drop_Thorium.get(9))
-            .itemOutputs(WerkstoffLoader.Thorianit.get(crushedPurified, 4))
-            .fluidInputs(Materials.Water.getFluid(1_000))
-            .fluidOutputs(Materials.Thorium.getMolten(1 * INGOTS))
-            .duration(4 * SECONDS + 16 * TICKS)
-            .eut(24)
-            .addTo(UniversalChemical);
-
         // Prasiolite
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(dust, Materials.Quartzite, 4L), Materials.Amethyst.getDust(1))
