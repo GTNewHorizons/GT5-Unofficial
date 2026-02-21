@@ -42,6 +42,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -115,6 +116,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
 
     private int tierGearBoxCasing = -1;
     private int tierPipeCasing = -1;
+    private int tierFrame = -1;
     private int tierMachineCasing = -1;
 
     private int tCountCasing = 0;
@@ -148,6 +150,15 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
         return null;
     }
 
+    @Nullable
+    public static Integer getTierFrame(Block block, int meta) {
+        if (block == GregTechAPI.sBlockFrames) {
+            if (meta == Materials.Bronze.mMetaItemSubID) return 1;
+            if (meta == Materials.Steel.mMetaItemSubID) return 2;
+        }
+        return null;
+    }
+
     protected void updateHatchTexture() {
         for (MTEHatch h : mSteamInputs) h.updateTexture(getCasingTextureId());
         for (MTEHatch h : mSteamOutputs) h.updateTexture(getCasingTextureId());
@@ -158,7 +169,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
 
     @Override
     protected int getCasingTextureId() {
-        if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierMachineCasing == 2)
+        if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierFrame == 2 || tierMachineCasing == 2)
             return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
         return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
     }
@@ -207,7 +218,16 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
                         -1,
                         (t, m) -> t.tierPipeCasing = m,
                         t -> t.tierPipeCasing))
-                .addElement('D', ofBlock(Blocks.iron_bars, 0))
+                .addElement(
+                    'D',
+                    ofBlocksTiered(
+                        MTESteamMixer::getTierFrame,
+                        ImmutableList.of(
+                            Pair.of(GregTechAPI.sBlockFrames, Materials.Bronze.mMetaItemSubID),
+                            Pair.of(GregTechAPI.sBlockFrames, Materials.Steel.mMetaItemSubID)),
+                        -1,
+                        (t, m) -> t.tierFrame = m,
+                        t -> t.tierFrame))
                 .addElement('E', ofBlock(Blocks.iron_block, 0))
                 .addElement(
                     'A',
@@ -291,6 +311,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tierGearBoxCasing = -1;
         tierPipeCasing = -1;
+        tierFrame = -1;
         tierMachineCasing = -1;
         tCountCasing = 0;
         if (!(revision >= 1 ? checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET)
@@ -298,6 +319,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
             return false;
         boolean casingCountValid = revision >= 1 ? tCountCasing >= 25 : tCountCasing >= 90;
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
+            && tierFrame == 1
             && tierMachineCasing == 1
             && casingCountValid
             && !mSteamInputFluids.isEmpty()) {
@@ -306,6 +328,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
             return true;
         }
         if (tierGearBoxCasing == 2 && tierPipeCasing == 2
+            && tierFrame == 2
             && tierMachineCasing == 2
             && casingCountValid
             && !mSteamInputFluids.isEmpty()) {
