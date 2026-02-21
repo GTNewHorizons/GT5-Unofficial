@@ -171,6 +171,10 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
 
     default void setShutDownReason(@Nonnull ShutDownReason reason) {}
 
+    void enableTicking();
+
+    void disableTicking();
+
     /**
      * gets the time statistics used for CPU timing
      */
