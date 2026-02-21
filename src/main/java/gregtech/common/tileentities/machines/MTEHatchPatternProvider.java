@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_HATCH_PATTERN_PROVIDER;
 
-import gregtech.api.render.TextureFactory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -18,6 +17,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.render.TextureFactory;
 import gregtech.client.GTTooltipHandler;
 import gregtech.common.gui.modularui.hatch.MTEHatchPatternProviderGui;
 
@@ -30,10 +30,9 @@ public class MTEHatchPatternProvider extends MTEHatchInputBus {
             nameRegional,
             GTTooltipHandler.Tier.IV.ordinal(),
             getSlots(),
-            new String[] {
-                StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_pattern_provider.1"),
-                StatCollector.translateToLocalFormatted("GT5U.gui.tooltip.hatch.crafting_pattern_provider.2", getSlots())
-            });
+            new String[] { StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_pattern_provider.1"),
+                StatCollector
+                    .translateToLocalFormatted("GT5U.gui.tooltip.hatch.crafting_pattern_provider.2", getSlots()) });
         this.disableSort = true;
     }
 
