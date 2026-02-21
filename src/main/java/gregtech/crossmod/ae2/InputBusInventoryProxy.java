@@ -120,7 +120,7 @@ public class InputBusInventoryProxy implements IInventory {
 
     @Override
     public String getInventoryName() {
-        return "FIXME: LOCALIZE (does this ever show?)";
+        return ""; // Not shown
     }
 
     @Override
