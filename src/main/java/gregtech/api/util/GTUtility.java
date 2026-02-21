@@ -509,26 +509,20 @@ public class GTUtility {
      *
      * @param player     The player who will receive the message.
      * @param messageKey The lang key of the translation. The text corresponding to the key must only contain
-     *                   placeholder '%s'; otherwise, it cannot be translated.
-     * @param args       Substitutions for `%s` in the translation. `IChatComponent` will be handled properly, others
-     *                   will be converted to String
+     *                   placeholder '%s' or positioned one '%1$s'; otherwise, it cannot be translated.
+     * @param args       Substitutions for `%s` in the translation. {@link IChatComponent} will be converted to their
+     *                   unformatted text.
      */
     public static void sendChatTrans(EntityPlayer player, @Nonnull String messageKey, Object... args) {
-        // FIXME：
-        // should have a better translation component to:
-        // 1. process format stacks;
-        // 2. accept placeholders other than '%s', at least positional ones like '%1$s'
         player.addChatComponentMessage(new ChatComponentTranslation(messageKey, args));
     }
 
     /**
-     * Send a chat component to the player.
-     * We use this method to ensure future compatibility.
-     * When we have a better translation component, we can modify the chat component sent to the player through this
-     * function.
+     * Send a chat component to the player. Sometimes we need it to send complex messages,
+     * such as multiple chat components in a single line.
      *
      * @param player    The player who will receive the message.
-     * @param component The chat component to send.
+     * @param component The chat component to be sent.
      */
     public static void sendChatComp(EntityPlayer player, @Nonnull IChatComponent component) {
         player.addChatComponentMessage(component);
@@ -641,6 +635,18 @@ public class GTUtility {
         }
 
         return out.toString();
+    }
+
+    public static String wrapStack(String message) {
+        return FORMAT_PUSH_STACK + message + FORMAT_POP_STACK;
+    }
+
+    public static final String[] COVER_DIRECTION_NAMES = new String[] { "GT5U.interface.coverTabs.down",
+        "GT5U.interface.coverTabs.up", "GT5U.interface.coverTabs.north", "GT5U.interface.coverTabs.south",
+        "GT5U.interface.coverTabs.west", "GT5U.interface.coverTabs.east" };
+
+    public static String getUnlocalizedSideName(ForgeDirection side) {
+        return GTUtility.COVER_DIRECTION_NAMES[side.ordinal()];
     }
 
     public static void checkAvailabilities() {
