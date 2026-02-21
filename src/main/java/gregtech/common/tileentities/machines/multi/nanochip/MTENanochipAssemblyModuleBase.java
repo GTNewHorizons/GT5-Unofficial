@@ -478,9 +478,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
         GTRecipe properRecipe = this.transformRecipe(recipe);
 
-        // Create parallel helper to calculate parallel and consume inputs
         ParallelHelper simulatedParallelHelper = createParallelHelper(properRecipe, inputInfo);
-
         // Do an initial calculation for parallels without consuming items, to determine power needed.
         simulatedParallelHelper.setConsumption(false)
             .build();
@@ -496,17 +494,15 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                 return CheckRecipeResultRegistry.NAC_WAITING_FOR_POWER;
             }
 
-            // build the actual parallel helper, that will consume the inputs properly
-            ParallelHelper actualParallelHelper = this.createParallelHelper(properRecipe, inputInfo)
-                .setConsumption(true)
-                .setInputConsumer(new CCInputConsumer(this.vacuumConveyorInputs, this))
-                .build();
+            // consume the inputs. note that the input itemstack is null as it is ignored.
+            CCInputConsumer inputConsumer = new CCInputConsumer(this.vacuumConveyorInputs, this);
+            inputConsumer.consume(properRecipe, simulatedParallelHelper.getCurrentParallel(), this.fluidInputs, null);
 
             // Set item outputs and parallel count. Note that while these outputs are fake, we override the method to
             // not output to normal busses
             // Then use addVCOutput to convert these back into CCs in the right hatch
-            this.currentParallel = actualParallelHelper.getCurrentParallel();
-            this.mOutputItems = actualParallelHelper.getItemOutputs();
+            this.currentParallel = simulatedParallelHelper.getCurrentParallel();
+            this.mOutputItems = simulatedParallelHelper.getItemOutputs();
 
             mEfficiency = 10000;
             mEfficiencyIncrease = 10000;
