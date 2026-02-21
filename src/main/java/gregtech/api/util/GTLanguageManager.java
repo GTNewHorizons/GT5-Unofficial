@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.api.enums.GTValues.E;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import gregtech.api.GregTechAPI;
  */
 @Deprecated
 public class GTLanguageManager {
+    public static final String ANY_SUB_BLOCK = "Any Sub Block of this";
 
     /**
      * Buffer to reduce memory allocation when injecting data to LanguageRegistry.
@@ -113,6 +115,10 @@ public class GTLanguageManager {
             return storeTranslation(trimmedKey, aEnglish);
         }
         return LANGMAP.get(trimmedKey);
+    }
+
+    public static synchronized String addAnySubBlockLocalization(String unlocalizedName) {
+        return addStringLocalization(unlocalizedName + "." + WILDCARD + ".name", ANY_SUB_BLOCK);
     }
 
     private static synchronized String storeTranslation(String trimmedKey, String english) {
