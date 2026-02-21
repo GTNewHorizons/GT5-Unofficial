@@ -5,8 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_COLORS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -166,34 +165,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     protected void fillStacksIntoFirstSlots() {
-        final int L = mInventory.length - 1;
-        HashMap<GTUtility.ItemId, Integer> slots = new HashMap<>(L);
-        HashMap<GTUtility.ItemId, ItemStack> stacks = new HashMap<>(L);
-        List<GTUtility.ItemId> order = new ArrayList<>(L);
-        List<Integer> validSlots = new ArrayList<>(L);
-        for (int i = 0; i < L; i++) {
-            if (!isValidSlot(i)) continue;
-            validSlots.add(i);
-            ItemStack s = mInventory[i];
-            if (s == null) continue;
-            GTUtility.ItemId sID = GTUtility.ItemId.createNoCopy(s);
-            slots.merge(sID, s.stackSize, Integer::sum);
-            if (!stacks.containsKey(sID)) stacks.put(sID, s);
-            order.add(sID);
-            mInventory[i] = null;
-        }
-        int slotindex = 0;
-        for (GTUtility.ItemId sID : order) {
-            int toSet = slots.get(sID);
-            if (toSet == 0) continue;
-            int slot = validSlots.get(slotindex);
-            slotindex++;
-            mInventory[slot] = stacks.get(sID)
-                .copy();
-            toSet = Math.min(toSet, mInventory[slot].getMaxStackSize());
-            mInventory[slot].stackSize = toSet;
-            slots.merge(sID, toSet, (a, b) -> a - b);
-        }
+        GTUtility.compactInventory(Arrays.asList(mInventory), 0, mInventory.length - 1);
     }
 
     @Override
