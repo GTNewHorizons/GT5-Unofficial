@@ -2944,7 +2944,7 @@ GT5U.infodata.wormhole_generator.hatch.front=Спереди
 GT5U.infodata.purification_plant.status_button=Статус
 GT5U.infodata.purification_plant.status_title=§lPurification Unit Status
 GT5U.infodata.purification_plant.linked_units=Linked Purification Units:
-GT5U.infodata.purification_plant.linked_units.status.online=В сети
+GT5U.infodata.purification_plant.linked_units.status.active=В сети
 GT5U.infodata.purification_plant.linked_units.status.disabled=Отключён
 GT5U.infodata.purification_plant.linked_units.status.incomplete=Незавершенная структура
 

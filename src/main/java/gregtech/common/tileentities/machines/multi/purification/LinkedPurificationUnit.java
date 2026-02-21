@@ -80,25 +80,38 @@ public class LinkedPurificationUnit {
     }
 
     public String getStatusString() {
-        if (this.isActive()) {
-            return EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.gui.text.status.active");
-        }
-
         PurificationUnitStatus status = this.mMetaTileEntity.status();
         switch (status) {
-            case ONLINE -> {
-                return EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.gui.text.status.online");
+            case ACTIVE -> {
+                return EnumChatFormatting.GREEN
+                    + StatCollector.translateToLocal("GT5U.infodata.purification_plant.linked_units.status.active");
+            }
+            case IDLE -> {
+                return EnumChatFormatting.GREEN
+                    + StatCollector.translateToLocal("GT5U.infodata.purification_plant.linked_units.status.idle");
             }
             case DISABLED -> {
-                return EnumChatFormatting.YELLOW + StatCollector.translateToLocal("GT5U.gui.text.status.disabled");
+                return EnumChatFormatting.YELLOW
+                    + StatCollector.translateToLocal("GT5U.infodata.purification_plant.linked_units.status.disabled");
             }
             case INCOMPLETE_STRUCTURE -> {
-                return EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.gui.text.status.incomplete");
+                return EnumChatFormatting.RED
+                    + StatCollector.translateToLocal("GT5U.infodata.purification_plant.linked_units.status.incomplete");
             }
         }
 
         // If this happens, this is a bug and there is a switch case missing.
         return null;
+    }
+
+    public String getStatusUnlocalized() {
+        PurificationUnitStatus status = this.mMetaTileEntity.status();
+        return switch (status) {
+            case ACTIVE -> "active";
+            case IDLE -> "idle";
+            case DISABLED -> "disabled";
+            case INCOMPLETE_STRUCTURE -> "incomplete";
+        };
     }
 
     /**
