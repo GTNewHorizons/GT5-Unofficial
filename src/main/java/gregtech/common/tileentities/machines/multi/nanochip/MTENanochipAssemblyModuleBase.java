@@ -90,7 +90,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     private long availableEUt = 0;
 
-    private final ArrayList<ItemStack> inputFakeItems = new ArrayList<>();
+    protected final ArrayList<ItemStack> inputFakeItems = new ArrayList<>();
     protected FluidStack[] fluidInputs = null;
     private byte outputColor = -1;
     private int currentParallel;
