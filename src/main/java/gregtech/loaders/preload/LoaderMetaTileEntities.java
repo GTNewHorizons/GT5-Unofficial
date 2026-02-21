@@ -111,6 +111,7 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
+import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 import gregtech.common.tileentities.machines.basic.MTEAdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
@@ -9330,6 +9331,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 CRAFTING_INPUT_SLAVE.ID,
                 "hatch.crafting_input.proxy",
                 "Crafting Input Proxy").getStackForm(1L));
+        ItemList.Hatch_PatternProvider_Crafting.set(
+            new MTEHatchPatternProvider(
+                INPUT_BUS_PATTERN_PROVIDER.ID,
+                "hatch.pattern_provider.crafting",
+                "Crafting Pattern Provider").getStackForm(1L));
     }
 
     private static void registerMagHatch() {
