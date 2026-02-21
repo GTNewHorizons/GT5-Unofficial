@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -26,7 +27,7 @@ public class MTEHatchPatternProvider extends MTEHatchInputBus {
             nameRegional,
             GTTooltipHandler.Tier.LV.ordinal(),
             getSlots(),
-            new String[] { "Holds patterns for the Large Molecular Assembler (LMA)." });
+            new String[] { StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_pattern_provider.1") });
         this.disableSort = true;
     }
 
