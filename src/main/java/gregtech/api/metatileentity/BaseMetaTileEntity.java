@@ -2256,8 +2256,14 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return mMetaTileEntity instanceof IMTERenderer mteRenderer
+        return getMetaTileEntity() instanceof IMTERenderer mteRenderer
             ? mteRenderer.getRenderBoundingBox(xCoord, yCoord, zCoord)
             : super.getRenderBoundingBox();
+    }
+
+    @Override
+    public double getMaxRenderDistanceSquared() {
+        return getMetaTileEntity() instanceof IMTERenderer mteRenderer ? mteRenderer.getMaxRenderDistanceSquared()
+            : super.getMaxRenderDistanceSquared();
     }
 }

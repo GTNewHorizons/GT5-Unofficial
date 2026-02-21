@@ -92,6 +92,12 @@ public class ShutDownReasonRegistry {
     public static final ShutDownReason INSUFFICIENT_DYNAMO = SimpleShutDownReason.ofCritical("insufficient_dyamo");
 
     /**
+     * Critical shut down due to overheat.
+     */
+    @Nonnull
+    public static final ShutDownReason OVERHEATED = SimpleShutDownReason.ofCritical("overheat_fail");
+
+    /**
      * Fluid that needs to be constantly supplied are out. E.g. PCB coolant with cooling upgrades enabled.
      */
     @Nonnull
