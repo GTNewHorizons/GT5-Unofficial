@@ -108,6 +108,19 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return m - 4;
     }
 
+    private int getResidueCapacity() {
+        return switch (structureTier) {
+            case 1 -> 100000;
+            case 2 -> 250000;
+            case 3 -> 1000000;
+            default -> throw new AssertionError("Structure tier should be within 1 and 3");
+        };
+    }
+
+    private float getResiduePercentage() {
+        return (float) toxicResidue / getResidueCapacity() * 100;
+    }
+
     private static Block getBlock() {
         return GregTechAPI.sBlockCasings12;
     }
@@ -274,11 +287,10 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private void useBooster() {
-        if (depleteInput(Materials.FranciumHydroxide.getDust(1))){
-            this.boosterEUBoost=5F;
-            this.boosterBoostTicks=600;
-        }
-        else if (depleteInput(Materials.CaesiumHydroxide.getDust(1))) {
+        if (depleteInput(Materials.FranciumHydroxide.getDust(1))) {
+            this.boosterEUBoost = 5F;
+            this.boosterBoostTicks = 600;
+        } else if (depleteInput(Materials.CaesiumHydroxide.getDust(1))) {
             this.boosterEUBoost = 2.5F;
             this.boosterBoostTicks = 200;
         } else if (depleteInput(Materials.PotassiumHydroxide.getDust(1))) {
@@ -299,7 +311,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         aNBT.setInteger("fuelConsumption", fuelConsumption);
         aNBT.setFloat("boosterEUBoost", boosterEUBoost);
         aNBT.setInteger("boosterBoostTicks", boosterBoostTicks);
-        aNBT.setInteger("toxicResidue",toxicResidue);
+        aNBT.setInteger("toxicResidue", toxicResidue);
     }
 
     @Override
@@ -454,11 +466,17 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                 ModularPanel parent) {
                 ListWidget<IWidget, ?> terminalText = super.createTerminalTextWidget(syncManager, parent);
                 IntSyncValue toxicResidueSyncer = new IntSyncValue(() -> toxicResidue);
+                IntSyncValue residueCapacitySyncer = new IntSyncValue(() -> getResidueCapacity());
+                final float residuePercentage = toxicResidueSyncer.getValue()
+                    .floatValue() / residueCapacitySyncer.getValue()
+                    * 100F;
                 terminalText.child(
                     IKey.dynamic(
                         () -> StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.toxic_residue",
-                            toxicResidueSyncer.getStringValue()))
+                            toxicResidueSyncer.getStringValue(),
+                            residueCapacitySyncer.getStringValue(),
+                            Float.toString(residuePercentage)))
                         .asWidget());
                 return terminalText;
             }
