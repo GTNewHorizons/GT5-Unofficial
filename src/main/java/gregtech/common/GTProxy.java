@@ -138,6 +138,7 @@ import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.threads.RunnableCableUpdate;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTBlockMap;
 import gregtech.api.util.GTCLSCompat;
@@ -1972,11 +1973,11 @@ public class GTProxy implements IFuelHandler {
     public void onServerTickEvent(TickEvent.ServerTickEvent aEvent) {
         if (aEvent.side.isServer()) {
             if (aEvent.phase == TickEvent.Phase.START) {
-                RunnableMachineUpdate.onBeforeTickLockLocked();
                 TICK_LOCK.lock();
             } else {
                 TICK_LOCK.unlock();
-                RunnableMachineUpdate.onAfterTickLockReleased();
+                RunnableMachineUpdate.endTick();
+                RunnableCableUpdate.endTick();
                 GTMusicSystem.ServerSystem.tick();
             }
         }
