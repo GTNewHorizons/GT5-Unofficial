@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.features.IBlockingModeIgnoreItemRegistry;
+import appeng.api.features.IInterfaceTerminalRegistry;
 import appeng.api.storage.IExternalStorageRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.covers.CoverPlacer;
@@ -18,14 +19,16 @@ import gregtech.api.objects.AE2DigitalChestHandler;
 import gregtech.api.objects.AE2NonconsumableHatchHandler;
 import gregtech.common.covers.CoverFacadeAE;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
+import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
 
 public final class AE2Compat {
 
     public static void onPreInit() {
-        AEApi.instance()
+        IInterfaceTerminalRegistry reg = AEApi.instance()
             .registries()
-            .interfaceTerminal()
-            .register(MTEHatchCraftingInputME.class);
+            .interfaceTerminal();
+        reg.register(MTEHatchCraftingInputME.class);
+        reg.register(MTELargeMolecularAssembler.class);
     }
 
     public static void onPostInit() {
