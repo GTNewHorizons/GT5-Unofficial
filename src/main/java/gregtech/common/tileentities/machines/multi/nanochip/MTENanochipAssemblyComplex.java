@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -455,7 +456,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                     // Skip empty hatches
                     if (hatch.contents == null) continue;
                     Map<CircuitComponent, Long> contents = hatch.contents.getComponents();
-                    for (Map.Entry<CircuitComponent, Long> entry : contents.entrySet()) {
+                    // Use Iterator to protect against ConcurrentModificationException
+                    Iterator<Map.Entry<CircuitComponent, Long>> iterator = contents.entrySet()
+                        .iterator();
+                    while (iterator.hasNext()) {
+                        Map.Entry<CircuitComponent, Long> entry = iterator.next();
                         CircuitComponent component = entry.getKey();
                         long amount = entry.getValue();
                         if (component.realComponent != null) {
@@ -464,9 +469,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                                 long originalAmount = contents.get(component);
                                 long newAmount = originalAmount - ejected;
                                 if (newAmount == 0) {
-                                    contents.remove(component);
+                                    iterator.remove();
                                 } else {
-                                    contents.put(component, newAmount);
+                                    entry.setValue(newAmount);
                                 }
                             }
                         }
