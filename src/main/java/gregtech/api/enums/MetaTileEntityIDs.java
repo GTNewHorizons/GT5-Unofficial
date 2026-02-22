@@ -1765,6 +1765,7 @@ public enum MetaTileEntityIDs {
     CABLECOATER_MV(29994),
     CABLECOATER_HV(29995),
     CABLECOATER_EV(29996),
+    CuringMachine(29997),
     Hatch_Muffler_Adv_LV(30001),
     Hatch_Muffler_Adv_MV(30002),
     Hatch_Muffler_Adv_HV(30003),
