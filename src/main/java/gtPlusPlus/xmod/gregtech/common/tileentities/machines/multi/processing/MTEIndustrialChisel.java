@@ -8,6 +8,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.Mods.ArchitectureCraft;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
@@ -16,8 +17,18 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import gcewing.architecture.ArchitectureCraft;
+import gcewing.architecture.common.config.ArchitectConfiguration;
+import gcewing.architecture.common.item.ArchitectureItemBlock;
+import gcewing.architecture.common.shape.Shape;
+import gcewing.architecture.common.tile.TileSawbench;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -204,32 +215,28 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
         return Carving.chisel.getItemsForChiseling(aStack);
     }
 
-    private static ItemStack getChiselOutput(ItemStack aInput, ItemStack aTarget) {
-        ItemStack tOutput;
-        if (aTarget != null && canBeMadeFrom(aInput, aTarget)) {
-            tOutput = aTarget;
-        } else if (aTarget != null && !canBeMadeFrom(aInput, aTarget)) {
-            tOutput = null;
-        } else {
-            tOutput = getItemsForChiseling(aInput).get(0);
-        }
-        return tOutput;
-    }
-
     private GTRecipe generateChiselRecipe(ItemStack aInput) {
         boolean tIsCached = hasValidCache(aInput, this.target, true);
-        if (tIsCached || aInput != null && hasChiselResults(aInput)) {
+        if (tIsCached || aInput != null && (hasChiselResults(aInput) || this.target.getItem() instanceof ArchitectureItemBlock)) {
             ItemStack tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, this.target);
             if (tOutput != null) {
                 if (mCachedRecipe != null && GTUtility.areStacksEqual(aInput, mInputCache)
                     && GTUtility.areStacksEqual(tOutput, mOutputCache)) {
                     return mCachedRecipe;
                 }
+                int outputAmount = 1;
+                int inputAmount = 1;
+                if(ArchitectureCraft.isModLoaded() && tOutput.getItem() instanceof ArchitectureItemBlock)
+                {
+                    NBTTagCompound tag = tOutput.getTagCompound();
+                    inputAmount = Shape.forId(tag.getInteger("Shape")).materialUsed;
+                    outputAmount = Shape.forId(tag.getInteger("Shape")).itemsProduced;
+                }
                 // We can chisel this
                 GTRecipe aRecipe = new GTRecipe(
                     false,
-                    new ItemStack[] { GTUtility.copyAmount(1, aInput) },
-                    new ItemStack[] { GTUtility.copyAmount(1, tOutput) },
+                    new ItemStack[] { GTUtility.copyAmount(inputAmount, aInput) },
+                    new ItemStack[] { GTUtility.copyAmount(outputAmount, tOutput) },
                     null,
                     new int[] { 10000 },
                     GTValues.emptyFluidStackArray,
@@ -244,6 +251,46 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
             }
         }
         return null;
+    }
+
+    private static ItemStack getChiselOutput(ItemStack aInput, ItemStack aTarget) {
+        ItemStack tOutput;
+
+        if(ArchitectureCraft.isModLoaded())
+        {
+            if(!(aInput.getItem() instanceof ItemBlock) || aInput.getItem() instanceof ArchitectureItemBlock)
+            {
+                return null;
+            }
+            Block block = Block.getBlockFromItem(aInput.getItem());
+            if(aTarget.getItem() instanceof ArchitectureItemBlock && ((block == Blocks.glass || block == Blocks.stained_glass) || (block.renderAsNormalBlock() && !block.hasTileEntity())))
+            {
+                tOutput = aTarget.copy();
+                NBTTagCompound tag = aTarget.getTagCompound();
+                NBTTagCompound tagOutput = (NBTTagCompound) tag.copy();
+                int aInputDmg = aInput.getItemDamage();
+                GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(block);
+                if (id == null) return null;
+                String baseName = id.toString();
+                int shapeId = tag.getInteger("Shape");
+                if(aInputDmg <= 15 && aInputDmg >= 0)
+                {
+                    tagOutput.setInteger("BaseData", aInputDmg);
+                    tagOutput.setInteger("Shape", shapeId);
+                    tagOutput.setString("BaseName", baseName);
+                    tOutput.setTagCompound(tagOutput);
+                    return tOutput;
+                }
+            }
+        }
+        if (aTarget != null && canBeMadeFrom(aInput, aTarget)) {
+            tOutput = aTarget;
+        } else if (aTarget != null && !canBeMadeFrom(aInput, aTarget)) {
+            tOutput = null;
+        } else {
+            tOutput = getItemsForChiseling(aInput).get(0);
+        }
+        return tOutput;
     }
 
     private GTRecipe getRecipe() {
