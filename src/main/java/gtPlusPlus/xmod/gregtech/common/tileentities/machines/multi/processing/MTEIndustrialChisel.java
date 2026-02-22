@@ -121,7 +121,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                     buildHatchAdder(MTEIndustrialChisel.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(90)
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings5Misc, 5))))
                 .build();
         }
@@ -231,11 +231,13 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                 }
                 // We can chisel this
                 GTRecipe aRecipe = new GTRecipe(
-                    false,
                     new ItemStack[] { GTUtility.copyAmount(inputAmount, aInput) },
                     new ItemStack[] { GTUtility.copyAmount(outputAmount, tOutput) },
                     null,
-                    new int[] { 10000 },
+                    null,
+                    null,
+                    null,
+                    null,
                     GTValues.emptyFluidStackArray,
                     GTValues.emptyFluidStackArray,
                     20,
