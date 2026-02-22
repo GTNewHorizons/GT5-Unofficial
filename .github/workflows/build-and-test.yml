@@ -4,7 +4,6 @@ name: Build and test
 on:
   pull_request:
     branches: [ master, main, release/** ]
-
   push:
     branches: [ master, main, release/** ]
 

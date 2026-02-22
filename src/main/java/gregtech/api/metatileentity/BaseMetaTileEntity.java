@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
@@ -26,9 +25,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -68,7 +66,6 @@ import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.net.GTPacketTileEntity;
 import gregtech.api.objects.blockupdate.BlockUpdateHandler;
@@ -79,9 +76,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.covers.Cover;
-import gregtech.common.items.behaviors.BehaviourSoftMallet;
 import gregtech.common.pollution.Pollution;
-import gregtech.common.render.IMTERenderer;
 import gregtech.mixin.interfaces.accessors.EntityItemAccessor;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import ic2.api.Direction;
@@ -131,7 +126,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     public void writeToNBT(NBTTagCompound nbt) {
         try {
             super.writeToNBT(nbt);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.", e);
         }
         try {
@@ -154,7 +149,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             nbt.setBoolean("mOutputDisabled", mOutputDisabled);
             nbt.setString("shutDownReasonID", getLastShutDownReason().getID());
             nbt.setTag("shutDownReason", getLastShutDownReason().writeToNBT(new NBTTagCompound()));
-        } catch (Exception e) {
+        } catch (Throwable e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.", e);
         }
         saveMetaTileNBT(nbt);
@@ -623,23 +618,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public boolean hasWailaAdvancedBody(ItemStack itemStack, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        if (hasValidMetaTileEntity()) {
-            return getMetaTileEntity().hasWailaAdvancedBody(itemStack, accessor, config);
-        }
-        return super.hasWailaAdvancedBody(itemStack, accessor, config);
-    }
-
-    @Override
-    public void getWailaAdvancedBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        if (hasValidMetaTileEntity()) {
-            getMetaTileEntity().getWailaAdvancedBody(itemStack, currentTip, accessor, config);
-        }
-        super.getWailaAdvancedBody(itemStack, currentTip, accessor, config);
-    }
-
-    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
@@ -709,7 +687,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         if (hasValidMetaTileEntity()) {
             try {
                 mMetaTileEntity.receiveClientEvent((byte) aEventID, (byte) aValue);
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 GTLog.err.println(
                     "Encountered Exception while receiving Data from the Server, the Client should've been crashed by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
                 e.printStackTrace(GTLog.err);
@@ -775,9 +753,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 "Is" + (mMetaTileEntity.isAccessAllowed(aPlayer) ? " "
                     : EnumChatFormatting.RED + " not " + EnumChatFormatting.RESET) + "accessible for you");
             tList.add(
-                "Recorded " + formatNumber(mMetaTileEntity.mSoundRequests)
+                "Recorded " + GTUtility.formatNumbers(mMetaTileEntity.mSoundRequests)
                     + " sound requests in "
-                    + formatNumber(mTickTimer - mLastCheckTick)
+                    + GTUtility.formatNumbers(mTickTimer - mLastCheckTick)
                     + " ticks.");
             mLastCheckTick = mTickTimer;
             mMetaTileEntity.mSoundRequests = 0;
@@ -801,13 +779,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     public String[] getInfoData() {
         return canAccessData() ? getMetaTileEntity().getInfoData() : GTValues.emptyStringArray;
-    }
-
-    @Override
-    public void getExtraInfoData(List<String> info) {
-        if (canAccessData()) {
-            getMetaTileEntity().getExtraInfoData(info);
-        }
     }
 
     @Override
@@ -1221,7 +1192,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    protected final boolean hasValidMetaTileEntity() {
+    protected boolean hasValidMetaTileEntity() {
         return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
     }
 
@@ -1243,7 +1214,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         if (!canAccessData()) {
             return false;
         }
-        if (aIgnoreTooLessEnergy || mMetaTileEntity.getEUVar() - aEnergy >= 0) {
+        if (mMetaTileEntity.getEUVar() - aEnergy >= 0 || aIgnoreTooLessEnergy) {
             setStoredEU(mMetaTileEntity.getEUVar() - aEnergy);
             if (mMetaTileEntity.getEUVar() < 0) {
                 setStoredEU(0);
@@ -1256,7 +1227,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     public boolean decreaseStoredSteam(long aEnergy, boolean aIgnoreTooLessEnergy) {
         if (!canAccessData()) return false;
-        if (aIgnoreTooLessEnergy || mMetaTileEntity.getSteamVar() - aEnergy >= 0) {
+        if (mMetaTileEntity.getSteamVar() - aEnergy >= 0 || aIgnoreTooLessEnergy) {
             setStoredSteam(mMetaTileEntity.getSteamVar() - aEnergy);
             if (mMetaTileEntity.getSteamVar() < 0) {
                 setStoredSteam(0);
@@ -1432,21 +1403,20 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             if (aPlayer.isSneaking()) {
                                 mInputDisabled = !mInputDisabled;
                                 if (mInputDisabled) mOutputDisabled = !mOutputDisabled;
-                                GTUtility.sendChatComp(
+                                GTUtility.sendChatToPlayer(
                                     aPlayer,
-                                    new ChatComponentTranslation(
-                                        mInputDisabled ? "GT5U.chat.machine.auto_input.disable"
-                                            : "GT5U.chat.machine.auto_input.enable").appendText("  ")
-                                                .appendSibling(
-                                                    new ChatComponentTranslation(
-                                                        mOutputDisabled ? "GT5U.chat.machine.auto_output.disable"
-                                                            : "GT5U.chat.machine.auto_output.enable")));
+                                    GTUtility.trans("086", "Auto-Input: ") + (mInputDisabled
+                                        ? GTUtility.trans("087", "Disabled")
+                                        : GTUtility.trans("088", "Enabled") + GTUtility.trans("089", "  Auto-Output: ")
+                                            + (mOutputDisabled ? GTUtility.trans("087", "Disabled")
+                                                : GTUtility.trans("088", "Enabled"))));
                                 sendSoundToPlayers(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1);
                             } else {
                                 mMuffler = !mMuffler;
-                                GTUtility.sendChatTrans(
+                                GTUtility.sendChatToPlayer(
                                     aPlayer,
-                                    mMuffler ? "GT5U.machines.muffled.on" : "GT5U.machines.muffled.off");
+                                    StatCollector.translateToLocal(
+                                        mMuffler ? "GT5U.machines.muffled.on" : "GT5U.machines.muffled.off"));
                             }
                             if (tCurrentItem.stackSize == 0)
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
@@ -1456,36 +1426,24 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
                     if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-
-                            final int mode = MetaGeneratedTool.getToolMode(tCurrentItem);
-                            final boolean shouldEnable = switch (mode) {
-                                case BehaviourSoftMallet.MODE_ACTIVATE -> true;
-                                case BehaviourSoftMallet.MODE_DEACTIVATE -> false;
-                                default -> !mWorks;
-                            };
-
-                            if (shouldEnable) {
-                                if (!mWorks) {
-                                    if (this.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
-                                        GTMod.proxy.powerfailTracker.removePowerfailEvents(this);
-                                    }
-                                    enableWorking();
+                            if (mWorks) disableWorking();
+                            else {
+                                if (this.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
+                                    GTMod.proxy.powerfailTracker.removePowerfailEvents(this);
                                 }
-                            } else if (mWorks) {
-                                disableWorking();
+                                enableWorking();
                             }
-                            if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText()) {
-                                GTUtility.sendChatTrans(aPlayer, getMetaTileEntity().getAlternativeModeText());
-                            } else {
-                                GTUtility.sendChatTrans(
-                                    aPlayer,
-                                    isAllowedToWork() ? "GT5U.chat.machine.processing.enable"
-                                        : "GT5U.chat.machine.processing.disable");
+                            {
+                                String tChat = GTUtility.trans("090", "Machine Processing: ")
+                                    + (isAllowedToWork() ? GTUtility.trans("088", "Enabled")
+                                        : GTUtility.trans("087", "Disabled"));
+                                if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText())
+                                    tChat = getMetaTileEntity().getAlternativeModeText();
+                                GTUtility.sendChatToPlayer(aPlayer, tChat);
                             }
                             sendSoundToPlayers(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1);
-                            if (tCurrentItem.stackSize == 0) {
+                            if (tCurrentItem.stackSize == 0)
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
-                            }
                         }
                         return true;
                     }
@@ -1497,13 +1455,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 1.0F, -1);
                         } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                             mStrongRedstone ^= wrenchingSide.flag;
-                            // FIXME: localize wrenchingSide
-                            GTUtility.sendChatTrans(
+                            GTUtility.sendChatToPlayer(
                                 aPlayer,
-                                (mStrongRedstone & wrenchingSide.flag) != 0
-                                    ? "GT5U.chat.machine.redstone_output_set.strong"
-                                    : "GT5U.chat.machine.redstone_output_set.weak",
-                                wrenchingSide);
+                                GTUtility.trans("091", "Redstone Output at Side ") + wrenchingSide
+                                    + GTUtility.trans("092", " set to: ")
+                                    + ((mStrongRedstone & wrenchingSide.flag) != 0 ? GTUtility.trans("093", "Strong")
+                                        : GTUtility.trans("094", "Weak")));
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1);
                             issueBlockUpdate();
                         }
@@ -1559,7 +1516,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                         sendSoundToPlayers(SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT, 1.0F, 1);
 
                                     } else {
-                                        GTUtility.sendChatTrans(aPlayer, "gt.cover.info.chat.tick_rate_not_allowed");
+                                        GTUtility.sendChatToPlayer(
+                                            aPlayer,
+                                            StatCollector.translateToLocal("gt.cover.info.chat.tick_rate_not_allowed"));
                                     }
                                     if (tCurrentItem.stackSize == 0)
                                         ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
@@ -1595,7 +1554,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         try {
             if (!aPlayer.isSneaking() && hasValidMetaTileEntity())
                 return mMetaTileEntity.onRightclick(this, aPlayer, side, aX, aY, aZ);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             GTLog.err.println(
                 "Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
             e.printStackTrace(GTLog.err);
@@ -1609,7 +1568,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     public void onLeftclick(EntityPlayer aPlayer) {
         try {
             if (aPlayer != null && hasValidMetaTileEntity()) mMetaTileEntity.onLeftclick(this, aPlayer);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             GTLog.err.println(
                 "Encountered Exception while leftclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
             e.printStackTrace(GTLog.err);
@@ -2252,12 +2211,5 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     protected int getCoverTabHeightOffset() {
         return isSteampowered() || getMetaTileEntity() instanceof MTESteamMultiBase<?> ? 32 : 0;
-    }
-
-    @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-        return mMetaTileEntity instanceof IMTERenderer mteRenderer
-            ? mteRenderer.getRenderBoundingBox(xCoord, yCoord, zCoord)
-            : super.getRenderBoundingBox();
     }
 }

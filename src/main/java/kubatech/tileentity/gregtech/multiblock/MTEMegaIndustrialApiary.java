@@ -214,7 +214,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             'G',
             buildHatchAdder(MTEMegaIndustrialApiary.class).atLeast(InputBus, OutputBus, Energy, Maintenance)
                 .casingIndex(CASING_INDEX)
-                .hint(1)
+                .dot(1)
                 .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings1, 10))))
         .addElement(
             'H',
@@ -872,7 +872,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 .setEnabled(w -> !isInInventory));
 
         builder.widget(createPowerSwitchButton(builder))
-            .widget(createMuffleButton(builder, this.canBeMuffled()))
+            .widget(createMuffleButton(builder))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
             .widget(createBatchModeButton(builder))

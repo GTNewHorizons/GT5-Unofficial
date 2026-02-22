@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.cover;
+package gregtech.common.covers.gui;
 
 import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MAX;
 import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MIN;
@@ -15,16 +15,13 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
-import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.modes.MachineProcessingCondition;
 import gregtech.common.covers.modes.TransferMode;
-import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
-public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
+public class CoverFluidRegulatorGui extends CoverGui<CoverFluidRegulator> {
 
     private static final NumberFormatMUI numberFormat;
 
@@ -38,7 +35,7 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         EnumSyncValue<TransferMode> ioModeSyncValue = new EnumSyncValue<>(
             TransferMode.class,
             cover::getIOMode,
@@ -104,16 +101,10 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
     }
 
     private @NotNull String validateTickRateText(String tickRateText) {
-        return Long
-            .toString(
-                (long) valiateTickRate(
-                    MathUtils.parseExpression(tickRateText, cover.getTickRateForUi(), true)
-                        .getResult() == null
-                            ? 20
-                            : MathUtils.parseExpression(tickRateText, cover.getTickRateForUi(), true)
-                                .getResult()
-                                .getNumberValue()
-                                .doubleValue()));
+        return Long.toString(
+            (long) valiateTickRate(
+                MathUtils.parseExpression(tickRateText, cover.getTickRateForUi(), true)
+                    .getResult()));
     }
 
     /**
@@ -151,9 +142,9 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
     }
 
     private @NotNull String getAverageSpeedText() {
-        return GTUtility.translate("gt.interact.desc.fluid_regulator.Average") + " "
+        return IKey.lang("gt.interact.desc.fluid_regulator.Average") + " "
             + numberFormat.format(cover.getTickRateForUi() == 0 ? 0 : cover.getSpeed() * 20d / cover.getTickRateForUi())
             + " "
-            + GTUtility.translate("gt.interact.desc.fluid_regulator.L_Sec");
+            + IKey.lang("gt.interact.desc.fluid_regulator.L_Sec");
     }
 }

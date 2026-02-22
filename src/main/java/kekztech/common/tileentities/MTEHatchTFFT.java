@@ -212,14 +212,14 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
 
     @Override
 
-    public void addListener(IMEMonitorHandlerReceiver l, Object verificationToken) {
+    public void addListener(IMEMonitorHandlerReceiver<IAEFluidStack> l, Object verificationToken) {
         if (listeners == null) listeners = new HashMap<>();
         listeners.put(l, verificationToken);
     }
 
     @Override
 
-    public void removeListener(IMEMonitorHandlerReceiver l) {
+    public void removeListener(IMEMonitorHandlerReceiver<IAEFluidStack> l) {
         if (listeners == null) listeners = new HashMap<>();
         listeners.remove(l);
     }
@@ -313,13 +313,4 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
             }
         }
     }
-
-    @Override
-    public int getCapacity() {
-        if (controller != null) {
-            return (int) Math.min(controller.getCapacityPerFluid(), Integer.MAX_VALUE);
-        }
-        return 0;
-    }
-
 }

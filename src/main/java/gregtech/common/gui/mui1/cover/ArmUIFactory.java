@@ -7,8 +7,6 @@ import java.text.FieldPosition;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -16,13 +14,12 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverArm;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class ArmUIFactory extends CoverUIFactory<CoverArm> {
+public class ArmUIFactory extends CoverLegacyDataUIFactory {
 
     private static final int startX = 10;
     private static final int startY = 25;
@@ -30,14 +27,6 @@ public class ArmUIFactory extends CoverUIFactory<CoverArm> {
     private static final int spaceY = 18;
 
     private int maxSlot;
-
-    @Override
-    protected @Nullable CoverArm adaptCover(Cover cover) {
-        if (cover instanceof CoverArm armCover) {
-            return armCover;
-        }
-        return null;
-    }
 
     /**
      * Display the text "Any" instead of a number when the slot is set to -1.
@@ -65,30 +54,41 @@ public class ArmUIFactory extends CoverUIFactory<CoverArm> {
         builder.widget(
             new CoverDataControllerWidget<>(this::getCover, getUIBuildContext()).addFollower(
                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                CoverArm::isExport,
+                cover -> getFlagExport(cover.getVariable()) > 0,
                 (cover, state) -> {
-                    cover.setExport(state);
-                    return cover;
+                    if (state) {
+                        return cover.setVariable(cover.getVariable() | CoverArm.EXPORT_MASK | CoverArm.CONVERTED_BIT);
+                    } else {
+                        return cover.setVariable(cover.getVariable() & ~CoverArm.EXPORT_MASK | CoverArm.CONVERTED_BIT);
+                    }
                 },
                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
                     .addTooltip(translateToLocal("gt.interact.desc.export.tooltip"))
                     .setPos(spaceX * 0, spaceY * 0))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                    cover -> !cover.isExport(),
+                    cover -> getFlagExport(cover.getVariable()) == 0,
                     (cover, state) -> {
-                        cover.setExport(!state);
-                        return cover;
+                        if (state) {
+                            return cover
+                                .setVariable(cover.getVariable() & ~CoverArm.EXPORT_MASK | CoverArm.CONVERTED_BIT);
+                        } else {
+                            return cover
+                                .setVariable(cover.getVariable() | CoverArm.EXPORT_MASK | CoverArm.CONVERTED_BIT);
+                        }
                     },
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
                         .addTooltip(translateToLocal("gt.interact.desc.import.tooltip"))
                         .setPos(spaceX * 1, spaceY * 0))
                 .addFollower(
                     new CoverDataFollowerNumericWidget<>(),
-                    cover -> (double) (cover.getInternalSlotId() - 1),
+                    cover -> (double) (getFlagInternalSlot(cover.getVariable()) - 1),
                     (cover, state) -> {
-                        cover.setInternalSlotId((int) (state + 1));
-                        return cover;
+                        final int coverVariable = cover.getVariable();
+                        return cover.setVariable(
+                            getFlagExport(coverVariable) | ((state.intValue() + 1) & CoverArm.SLOT_ID_MASK)
+                                | (getFlagAdjacentSlot(coverVariable) << 14)
+                                | CoverArm.CONVERTED_BIT);
                     },
                     widget -> widget.setBounds(-1, maxSlot)
                         .setDefaultValue(-1)
@@ -98,10 +98,13 @@ public class ArmUIFactory extends CoverUIFactory<CoverArm> {
                         .setSize(spaceX * 2 + 5, 12))
                 .addFollower(
                     new CoverDataFollowerNumericWidget<>(),
-                    cover -> (double) cover.getExternalSlotId() - 1,
+                    cover -> (double) (getFlagAdjacentSlot(cover.getVariable()) - 1),
                     (cover, state) -> {
-                        cover.setExternalSlotId((int) (state + 1));
-                        return cover;
+                        final int coverVariable = cover.getVariable();
+                        return cover.setVariable(
+                            getFlagExport(coverVariable) | getFlagInternalSlot(coverVariable)
+                                | (((state.intValue() + 1) & CoverArm.SLOT_ID_MASK) << 14)
+                                | CoverArm.CONVERTED_BIT);
                     },
                     widget -> widget.setValidator(val -> {
                         // We need to check the adjacent inventory
@@ -130,7 +133,8 @@ public class ArmUIFactory extends CoverUIFactory<CoverArm> {
                 new TextWidget()
                     .setStringSupplier(
                         getCoverString(
-                            c -> c.isExport() ? translateToLocal("gt.interact.desc.export")
+                            c -> (c.getVariable() & CoverArm.EXPORT_MASK) > 0
+                                ? translateToLocal("gt.interact.desc.export")
                                 : translateToLocal("gt.interact.desc.import")))
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 3, 4 + startY + spaceY * 0))
@@ -149,5 +153,17 @@ public class ArmUIFactory extends CoverUIFactory<CoverArm> {
         } else {
             return -1;
         }
+    }
+
+    private int getFlagExport(int coverVariable) {
+        return coverVariable & CoverArm.EXPORT_MASK;
+    }
+
+    private int getFlagInternalSlot(int coverVariable) {
+        return coverVariable & CoverArm.SLOT_ID_MASK;
+    }
+
+    private int getFlagAdjacentSlot(int coverVariable) {
+        return (coverVariable >> 14) & CoverArm.SLOT_ID_MASK;
     }
 }

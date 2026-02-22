@@ -13,13 +13,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import gregtech.common.pollution.FurnacePollution;
 import tconstruct.tools.logic.FurnaceLogic;
 
-@Mixin(value = FurnaceLogic.class, remap = false)
+@Mixin(FurnaceLogic.class)
 public abstract class MixinFurnaceLogicPollution extends TileEntity {
 
-    @Shadow(remap = false)
+    @Shadow
     public abstract boolean isBurning();
 
-    @Inject(method = "updateEntity", at = @At("RETURN"), remap = true)
+    @Inject(method = "updateEntity", at = @At("TAIL"))
     private void gt5u$addPollution(CallbackInfo ci) {
         if (isBurning()) {
             furnaceAddPollutionOnUpdate(

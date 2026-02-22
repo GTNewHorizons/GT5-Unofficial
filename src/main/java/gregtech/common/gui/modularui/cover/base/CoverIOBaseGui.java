@@ -2,6 +2,8 @@ package gregtech.common.gui.modularui.cover.base;
 
 import net.minecraft.util.StatCollector;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;

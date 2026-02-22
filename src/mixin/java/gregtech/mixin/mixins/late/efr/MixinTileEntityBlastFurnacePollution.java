@@ -13,13 +13,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ganymedes01.etfuturum.tileentities.TileEntityBlastFurnace;
 import gregtech.common.pollution.FurnacePollution;
 
-@Mixin(value = TileEntityBlastFurnace.class, remap = false)
+@Mixin(TileEntityBlastFurnace.class)
 public abstract class MixinTileEntityBlastFurnacePollution extends TileEntity {
 
-    @Shadow(remap = false)
+    @Shadow
     public abstract boolean isBurning();
 
-    @Inject(method = "updateEntity", at = @At("RETURN"), remap = true)
+    @Inject(method = "updateEntity", at = @At("TAIL"))
     private void gt5u$addPollution(CallbackInfo ci) {
         if (isBurning()) {
             furnaceAddPollutionOnUpdate(

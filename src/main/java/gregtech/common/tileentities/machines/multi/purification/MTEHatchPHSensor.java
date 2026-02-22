@@ -1,29 +1,34 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.gui.modularui.hatch.MTEHatchPHSensorGui;
+import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
 
 public class MTEHatchPHSensor extends MTEHatch {
 
     // This implementation was largely copied from the neutron sensor hatch
 
-    protected double threshold = 0;
+    protected float threshold = 0;
     protected boolean inverted = false;
     private boolean isOn = false;
 
@@ -86,14 +91,14 @@ public class MTEHatchPHSensor extends MTEHatch {
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        threshold = aNBT.getDouble("mThreshold");
+        threshold = aNBT.getFloat("mThreshold");
         inverted = aNBT.getBoolean("mInverted");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setDouble("mThreshold", threshold);
+        aNBT.setFloat("mThreshold", threshold);
         aNBT.setBoolean("mInverted", inverted);
         super.saveNBTData(aNBT);
     }
@@ -101,7 +106,7 @@ public class MTEHatchPHSensor extends MTEHatch {
     /**
      * Updates redstone output strength based on the pH of the multiblock.
      */
-    public void updateRedstoneOutput(double pH) {
+    public void updateRedstoneOutput(float pH) {
         isOn = (pH > threshold) ^ inverted;
     }
 
@@ -137,30 +142,39 @@ public class MTEHatchPHSensor extends MTEHatch {
         return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont) };
     }
 
-    public double getThreshold() {
-        return threshold;
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(
+            new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
+                .setTextureGetter(
+                    (state) -> state == 1 ? GTUITextures.OVERLAY_BUTTON_REDSTONE_ON
+                        : GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                .addTooltip(0, translateToLocal("gt.interact.desc.normal.tooltip"))
+                .addTooltip(1, translateToLocal("gt.interact.desc.inverted.tooltip"))
+                .setPos(10, 8))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> inverted ? translateToLocal("gt.interact.desc.inverted")
+                            : translateToLocal("gt.interact.desc.normal"))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(28, 12))
+            .widget(
+                new NumericWidget().setBounds(0, 14.0)
+                    .setIntegerOnly(false)
+                    .setGetter(() -> (double) threshold)
+                    .setSetter((value) -> threshold = (float) Math.round(value * 100.0) / 100.0f)
+                    .setScrollValues(0.1, 0.01, 1.0)
+                    .setMaximumFractionDigits(2)
+                    .setTextColor(Color.WHITE.dark(1))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setFocusOnGuiOpen(true)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                    .setPos(10, 28)
+                    .setSize(77, 12))
+            .widget(
+                new TextWidget(translateToLocal("GT5U.gui.text.ph_sensor")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(90, 30));
     }
-
-    public void setThreshold(double threshold) {
-        this.threshold = threshold;
-    }
-
-    public boolean isInverted() {
-        return inverted;
-    }
-
-    public void setInverted(boolean inverted) {
-        this.inverted = inverted;
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEHatchPHSensorGui(this).build(data, syncManager, uiSettings);
-    }
-
 }

@@ -7,16 +7,13 @@ import java.util.List;
 import java.util.function.Function;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -43,7 +40,6 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
-import gregtech.api.metatileentity.implementations.MTEBuffer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
@@ -140,13 +136,6 @@ public class BlockOverlayRenderer {
             return;
         }
 
-        if (GTUtility.isStackInList(event.currentItem, GregTechAPI.sScrewdriverList)
-            && aTileEntity instanceof IGregTechTileEntity gtEntity
-            && gtEntity.getMetaTileEntity() instanceof MTEBuffer) {
-            drawGrid(event, false, false, event.player.isSneaking());
-            return;
-        }
-
         if ((event.currentItem == null && event.player.isSneaking())
             || GTUtility.isStackInList(event.currentItem, GregTechAPI.sCrowbarList)
             || GTUtility.isStackInList(event.currentItem, GregTechAPI.sScrewdriverList)) {
@@ -173,7 +162,6 @@ public class BlockOverlayRenderer {
 
     private static void drawGrid(DrawBlockHighlightEvent aEvent, boolean showCoverConnections, boolean aIsWrench,
         boolean aIsSneaking) {
-        aEvent.setCanceled(true);
 
         GL11.glPushMatrix();
 
@@ -184,73 +172,25 @@ public class BlockOverlayRenderer {
         // pause shader
         int program = GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM);
         GL20.glUseProgram(0);
-        GL11.glLineWidth(calculateLineWidth());
 
         MovingObjectPosition target = aEvent.target;
         EntityPlayer player = aEvent.player;
         double camX = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) aEvent.partialTicks;
         double camY = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double) aEvent.partialTicks;
         double camZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double) aEvent.partialTicks;
-        int red = Client.blockoverlay.red;
-        int green = Client.blockoverlay.green;
-        int blue = Client.blockoverlay.blue;
-        int alpha = Client.blockoverlay.alpha;
-        final TileEntity tTile = player.worldObj.getTileEntity(target.blockX, target.blockY, target.blockZ);
-        final Block block = player.worldObj.getBlock(target.blockX, target.blockY, target.blockZ);
-        final int meta = player.worldObj.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
-
-        // draw block outline
-        if (block.getMaterial() != Material.air) {
-            final World world = player.worldObj;
-
-            block.setBlockBoundsBasedOnState(world, target.blockX, target.blockY, target.blockZ);
-
-            AxisAlignedBB box = block
-                .getSelectedBoundingBoxFromPool(world, target.blockX, target.blockY, target.blockZ);
-            box = box.expand(0.002D, 0.002D, 0.002D);
-            box = box.getOffsetBoundingBox(-camX, -camY, -camZ);
-
-            Tessellator tess = Tessellator.instance;
-
-            tess.startDrawing(GL11.GL_LINE_STRIP);
-            tess.setColorRGBA(red, green, blue, alpha);
-            tess.addVertex(box.minX, box.minY, box.minZ);
-            tess.addVertex(box.maxX, box.minY, box.minZ);
-            tess.addVertex(box.maxX, box.minY, box.maxZ);
-            tess.addVertex(box.minX, box.minY, box.maxZ);
-            tess.addVertex(box.minX, box.minY, box.minZ);
-            tess.draw();
-
-            tess.startDrawing(GL11.GL_LINE_STRIP);
-            tess.setColorRGBA(red, green, blue, alpha);
-            tess.addVertex(box.minX, box.maxY, box.minZ);
-            tess.addVertex(box.maxX, box.maxY, box.minZ);
-            tess.addVertex(box.maxX, box.maxY, box.maxZ);
-            tess.addVertex(box.minX, box.maxY, box.maxZ);
-            tess.addVertex(box.minX, box.maxY, box.minZ);
-            tess.draw();
-
-            tess.startDrawing(GL11.GL_LINES);
-            tess.setColorRGBA(red, green, blue, alpha);
-            tess.addVertex(box.minX, box.minY, box.minZ);
-            tess.addVertex(box.minX, box.maxY, box.minZ);
-            tess.addVertex(box.maxX, box.minY, box.minZ);
-            tess.addVertex(box.maxX, box.maxY, box.minZ);
-            tess.addVertex(box.maxX, box.minY, box.maxZ);
-            tess.addVertex(box.maxX, box.maxY, box.maxZ);
-            tess.addVertex(box.minX, box.minY, box.maxZ);
-            tess.addVertex(box.minX, box.maxY, box.maxZ);
-            tess.draw();
-        }
-
         GL11.glTranslated(target.blockX - (int) camX, target.blockY - (int) camY, target.blockZ - (int) camZ);
         GL11.glTranslated(0.5D - (camX - (int) camX), 0.5D - (camY - (int) camY), 0.5D - (camZ - (int) camZ));
         final int tSideHit = target.sideHit;
         Rotation.sideRotations[tSideHit].glApply();
         // draw grid
         GL11.glTranslated(0.0D, -0.502D, 0.0D);
+        GL11.glLineWidth(calculateLineWidth());
         final Tessellator tess = Tessellator.instance;
         tess.startDrawing(GL11.GL_LINES);
+        int red = Client.blockoverlay.red;
+        int green = Client.blockoverlay.green;
+        int blue = Client.blockoverlay.blue;
+        int alpha = Client.blockoverlay.alpha;
         tess.setColorRGBA(red, green, blue, alpha);
         tess.addVertex(+.50D, .0D, -.25D);
         tess.addVertex(-.50D, .0D, -.25D);
@@ -260,6 +200,9 @@ public class BlockOverlayRenderer {
         tess.addVertex(+.25D, .0D, +.50D);
         tess.addVertex(-.25D, .0D, -.50D);
         tess.addVertex(-.25D, .0D, +.50D);
+        final TileEntity tTile = player.worldObj.getTileEntity(target.blockX, target.blockY, target.blockZ);
+        final Block block = player.worldObj.getBlock(target.blockX, target.blockY, target.blockZ);
+        final int meta = player.worldObj.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
 
         // draw connection indicators
         int tConnections = 0;
@@ -372,8 +315,6 @@ public class BlockOverlayRenderer {
             }
         }
         GL20.glUseProgram(program); // resume shader
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix(); // get back to player center
     }
 

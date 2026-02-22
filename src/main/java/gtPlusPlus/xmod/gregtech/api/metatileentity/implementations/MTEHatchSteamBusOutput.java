@@ -17,7 +17,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 
 public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
@@ -189,16 +188,6 @@ public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         getBaseMetaTileEntity().add2by2Slots(builder);
-    }
-
-    @Override
-    public boolean isFiltered() {
-        return false;
-    }
-
-    @Override
-    public boolean isFilteredToItem(GTUtility.ItemId id) {
-        return false;
     }
 
     @Override

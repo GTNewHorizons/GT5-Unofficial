@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.cover;
+package gregtech.common.covers.gui;
 
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CYCLIC;
 
@@ -11,21 +11,19 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
-import gregtech.api.modularui2.CoverGuiData;
 import gregtech.common.covers.CoverEUMeter;
-import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 
-public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
+public class CoverEUMeterGui extends CoverGui<CoverEUMeter> {
 
     public CoverEUMeterGui(CoverEUMeter cover) {
         super(cover);
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         column.child(
             makeRowLayout().child(positionRow(makeEnergyTypeRow()))
-                .child(positionRow(RowHelper.makeInvertRedstoneRow(cover)))
+                .child(positionRow(Rows.makeInvertRedstoneRow(cover)))
                 .child(positionRow(makeEnergyThresholdRow())));
     }
 

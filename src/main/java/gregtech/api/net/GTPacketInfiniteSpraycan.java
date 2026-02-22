@@ -1,7 +1,6 @@
 package gregtech.api.net;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -9,16 +8,12 @@ import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.IBlockAccess;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
-import gregtech.crossmod.backhand.Backhand;
 import io.netty.buffer.ByteBuf;
 
 public class GTPacketInfiniteSpraycan extends GTPacket {
@@ -74,56 +69,13 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
 
     @Override
     public void process(final IBlockAccess aWorld) {
-        getSpraycanItemStack().ifPresent(itemStack -> {
-            if (itemStack.getItem() instanceof final MetaBaseItem item) {
-                item.forEachBehavior(
-                    itemStack,
-                    behavior -> behavior instanceof BehaviourSprayColorInfinite spraycanBehavior
-                        && action.execute(spraycanBehavior, itemStack, player, newColor));
-            }
-        });
-    }
-
-    @NotNull
-    private Optional<ItemStack> getSpraycanItemStack() {
-        final ItemStack mainhandItemStack;
-        final ItemStack offhandItemStack;
-
-        mainhandItemStack = itemStackIsSpraycan(player.inventory.getCurrentItem()) ? player.inventory.getCurrentItem()
-            : null;
-        offhandItemStack = itemStackIsSpraycan(Backhand.getOffhandItem(player)) ? Backhand.getOffhandItem(player)
-            : null;
-
-        if (mainhandItemStack == null && offhandItemStack == null) {
-            return Optional.empty();
+        ItemStack currentItemStack = player.inventory.getCurrentItem();
+        if (currentItemStack != null && currentItemStack.getItem() instanceof MetaBaseItem item) {
+            item.forEachBehavior(
+                currentItemStack,
+                behavior -> behavior instanceof BehaviourSprayColorInfinite spraycanBehavior
+                    && action.execute(spraycanBehavior, currentItemStack, player, newColor));
         }
-
-        // Prefer offhand for setting color
-        if (action == Action.SET_COLOR) {
-            // noinspection ReplaceNullCheck
-            if (offhandItemStack != null) {
-                return Optional.of(offhandItemStack);
-            }
-            return Optional.of(mainhandItemStack);
-        }
-
-        // noinspection ReplaceNullCheck
-        if (mainhandItemStack != null) {
-            return Optional.of(mainhandItemStack);
-        }
-        return Optional.of(offhandItemStack);
-    }
-
-    private static boolean itemStackIsSpraycan(@Nullable ItemStack itemStack) {
-        if (itemStack == null) {
-            return false;
-        }
-
-        if (itemStack.getItem() instanceof final MetaBaseItem item) {
-            return item.forEachBehavior(itemStack, BehaviourSprayColorInfinite.class::isInstance);
-        }
-
-        return false;
     }
 
     public enum Action {
@@ -133,9 +85,9 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
             @Override
             boolean execute(final BehaviourSprayColorInfinite behaviour, final ItemStack itemStack,
                 final EntityPlayerMP player, final int newColor) {
-                if (!BehaviourSprayColorInfinite.isLocked(itemStack)) {
+                if (!behaviour.isLocked(itemStack)) {
                     behaviour.incrementColor(itemStack, player.isSneaking());
-                    playSound(player, SoundResource.GT_SPRAYCAN_SHAKE);
+                    playShakeSound(player);
 
                     return true;
                 }
@@ -148,9 +100,9 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
             boolean execute(final BehaviourSprayColorInfinite behavior, final ItemStack itemStack,
                 final EntityPlayerMP player, final int newColor) {
                 if (behavior.toggleLock(itemStack)) {
-                    playSound(player, SoundResource.GT_SPRAYCAN_LOCK);
+                    Action.playLockSound(player);
                 } else {
-                    playSound(player, SoundResource.GT_SPRAYCAN_UNLOCK);
+                    Action.playUnlockSound(player);
                 }
                 return true;
             }
@@ -162,7 +114,7 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
                 final EntityPlayerMP player, final int newColor) {
                 if (newColor != -1) {
                     behavior.setColor(itemStack, (byte) newColor);
-                    playSound(player, SoundResource.GT_SPRAYCAN_SHAKE);
+                    Action.playShakeSound(player);
                     return true;
                 }
                 return false;
@@ -174,16 +126,45 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
             boolean execute(final BehaviourSprayColorInfinite behavior, final ItemStack itemStack,
                 final EntityPlayerMP player, final int newColor) {
                 if (behavior.togglePreventShake(itemStack)) {
-                    playSound(player, SoundResource.GT_SPRAYCAN_LOCK);
+                    Action.playLockSound(player);
                 } else {
-                    playSound(player, SoundResource.GT_SPRAYCAN_UNLOCK);
+                    Action.playUnlockSound(player);
                 }
                 return true;
             }
         };
 
-        private static void playSound(final EntityPlayerMP player, SoundResource sound) {
-            GTUtility.sendSoundToPlayers(player.worldObj, sound, 1.0F, 1, player.posX, player.posY, player.posZ);
+        private static void playShakeSound(final EntityPlayerMP player) {
+            GTUtility.sendSoundToPlayers(
+                player.worldObj,
+                SoundResource.GT_SPRAYCAN_SHAKE,
+                1.0F,
+                1,
+                player.posX,
+                player.posY,
+                player.posZ);
+        }
+
+        private static void playLockSound(final EntityPlayerMP player) {
+            GTUtility.sendSoundToPlayers(
+                player.worldObj,
+                SoundResource.GT_SPRAYCAN_LOCK,
+                1.0F,
+                1,
+                player.posX,
+                player.posY,
+                player.posZ);
+        }
+
+        private static void playUnlockSound(final EntityPlayerMP player) {
+            GTUtility.sendSoundToPlayers(
+                player.worldObj,
+                SoundResource.GT_SPRAYCAN_UNLOCK,
+                1.0F,
+                1,
+                player.posX,
+                player.posY,
+                player.posZ);
         }
 
         abstract boolean execute(final BehaviourSprayColorInfinite behavior, ItemStack itemStack, EntityPlayerMP player,

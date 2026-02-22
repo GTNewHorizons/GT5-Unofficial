@@ -1,6 +1,5 @@
 package goodgenerator.blocks.tileEntity;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -153,10 +152,10 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
         float aX, float aY, float aZ, ItemStack aTool) {
         if (getMaxBatchSize() == 1) {
             parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 128);
-            GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
         } else {
             parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 1);
-            GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
         return true;
     }
@@ -207,13 +206,13 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             .addCasingInfoMin("Steel Frame Box", 16, false)
             .addCasingInfoMin("Speeding Pipe Casing", 4, false)
             .addCasingInfoMin("Any Tiered Glass", 32, false)
-            .addInputHatch("Hint Block Number 1")
-            .addInputBus("Hint Block Number 1")
-            .addOutputHatch("Hint Block Number 2")
-            .addOutputBus("Hint Block Number 2")
-            .addMaintenanceHatch("Hint Block Number 2")
-            .addOtherStructurePart("Neutron Accelerator", "Hint Block Number 2")
-            .addOtherStructurePart("Neutron Sensor", "Hint Block Number 2")
+            .addInputHatch("Hint block with dot 1")
+            .addInputBus("Hint block with dot 1")
+            .addOutputHatch("Hint block with dot 2")
+            .addOutputBus("Hint block with dot 2")
+            .addMaintenanceHatch("Hint block with dot 2")
+            .addOtherStructurePart("Neutron Accelerator", "Hint block with dot 2")
+            .addOtherStructurePart("Neutron Sensor", "Hint block with dot 2")
             .toolTipFinisher();
         return tt;
     }
@@ -234,7 +233,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                                 gregtech.api.enums.HatchElement.InputBus,
                                 gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(49)
-                            .hint(1)
+                            .dot(1)
                             .build(),
                         onElementPass(MTENeutronActivator::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
                 .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 6))
@@ -252,7 +251,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                                 NeutronHatchElement.NeutronAccelerator,
                                 NeutronHatchElement.NeutronSensor)
                             .casingIndex(49)
-                            .hint(2)
+                            .dot(2)
                             .build(),
                         onElementPass(MTENeutronActivator::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
                 .build();
@@ -418,16 +417,12 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                 EnumChatFormatting.YELLOW + Integer.toString(this.mMaxProgresstime / 20) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "gg.scanner.info.neutron_activator.input",
-                EnumChatFormatting.GREEN + formatNumber(currentNKEInput) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(currentNKEInput) + EnumChatFormatting.RESET),
             StatCollector.translateToLocal("scanner.info.NA") + " "
                 + EnumChatFormatting.LIGHT_PURPLE
-                + formatNumber(getCurrentNeutronKineticEnergy())
+                + GTUtility.formatNumbers(getCurrentNeutronKineticEnergy())
                 + EnumChatFormatting.RESET
-                + "eV",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+                + "eV" };
     }
 
     @Override
