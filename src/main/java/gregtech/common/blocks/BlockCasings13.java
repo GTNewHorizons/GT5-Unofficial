@@ -27,6 +27,7 @@ public class BlockCasings13 extends BlockCasingsAbstract {
         register(7, ItemList.FieldEnergyAbsorberCasing, "Field Energy Absorber Casing");
         register(8, ItemList.LoadbearingDistributionCasing, "Loadbearing Distribution Casing");
         register(9, ItemList.NaniteFramework, "Nanite Replication Framework");
+
     }
 
     @Override
