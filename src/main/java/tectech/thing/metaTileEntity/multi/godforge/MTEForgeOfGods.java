@@ -491,10 +491,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
         }
 
+        int updatedFuelConsumptionFactor = data.getFuelConsumptionFactor();
         data.setFuelConsumption(
             (long) Math.max(calculateFuelConsumption(data) * 5 * (data.isBatteryCharging() ? 2 : 1), 1));
         if (data.getFuelConsumption() >= Integer.MAX_VALUE) {
-            reduceBattery(fuelConsumptionFactor);
+            reduceBattery(updatedFuelConsumptionFactor);
             return;
         }
 
@@ -510,14 +511,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             fuelToDrain.amount -= drained.amount;
 
             if (fuelToDrain.amount == 0) {
-                data.setTotalFuelConsumed(data.getTotalFuelConsumed() + fuelConsumptionFactor);
+                data.setTotalFuelConsumed(data.getTotalFuelConsumed() + updatedFuelConsumptionFactor);
                 if (data.isBatteryCharging()) {
-                    increaseBattery(fuelConsumptionFactor);
+                    increaseBattery(updatedFuelConsumptionFactor);
                 }
                 return;
             }
         }
-        reduceBattery(fuelConsumptionFactor);
+        reduceBattery(updatedFuelConsumptionFactor);
     }
 
     public boolean addModuleToMachineList(IGregTechTileEntity tileEntity, int baseCasingIndex) {
