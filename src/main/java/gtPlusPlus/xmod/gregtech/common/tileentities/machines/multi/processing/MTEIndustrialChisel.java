@@ -17,14 +17,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gcewing.architecture.ArchitectureCraft;
-import gcewing.architecture.common.config.ArchitectConfiguration;
-import gcewing.architecture.common.item.ArchitectureItemBlock;
-import gcewing.architecture.common.shape.Shape;
-import gcewing.architecture.common.tile.TileSawbench;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSlab;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -36,6 +29,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import gcewing.architecture.ArchitectureCraft;
+import gcewing.architecture.common.item.ArchitectureItemBlock;
+import gcewing.architecture.common.shape.Shape;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
@@ -217,7 +214,8 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
 
     private GTRecipe generateChiselRecipe(ItemStack aInput) {
         boolean tIsCached = hasValidCache(aInput, this.target, true);
-        if (tIsCached || aInput != null && (hasChiselResults(aInput) || this.target.getItem() instanceof ArchitectureItemBlock)) {
+        if (tIsCached
+            || aInput != null && (hasChiselResults(aInput) || this.target.getItem() instanceof ArchitectureItemBlock)) {
             ItemStack tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, this.target);
             if (tOutput != null) {
                 if (mCachedRecipe != null && GTUtility.areStacksEqual(aInput, mInputCache)
@@ -226,8 +224,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                 }
                 int outputAmount = 1;
                 int inputAmount = 1;
-                if(ArchitectureCraft.isModLoaded() && tOutput.getItem() instanceof ArchitectureItemBlock)
-                {
+                if (ArchitectureCraft.isModLoaded() && tOutput.getItem() instanceof ArchitectureItemBlock) {
                     NBTTagCompound tag = tOutput.getTagCompound();
                     inputAmount = Shape.forId(tag.getInteger("Shape")).materialUsed;
                     outputAmount = Shape.forId(tag.getInteger("Shape")).itemsProduced;
@@ -255,15 +252,14 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
     private static ItemStack getChiselOutput(ItemStack aInput, ItemStack aTarget) {
         ItemStack tOutput;
 
-        if(ArchitectureCraft.isModLoaded())
-        {
-            if(!(aInput.getItem() instanceof ItemBlock) || aInput.getItem() instanceof ArchitectureItemBlock)
-            {
+        if (ArchitectureCraft.isModLoaded()) {
+            if (!(aInput.getItem() instanceof ItemBlock) || aInput.getItem() instanceof ArchitectureItemBlock) {
                 return null;
             }
             Block block = Block.getBlockFromItem(aInput.getItem());
-            if(aTarget.getItem() instanceof ArchitectureItemBlock && ((block == Blocks.glass || block == Blocks.stained_glass) || (block.renderAsNormalBlock() && !block.hasTileEntity())))
-            {
+            if (aTarget.getItem() instanceof ArchitectureItemBlock
+                && ((block == Blocks.glass || block == Blocks.stained_glass)
+                    || (block.renderAsNormalBlock() && !block.hasTileEntity()))) {
                 tOutput = aTarget.copy();
                 NBTTagCompound tag = aTarget.getTagCompound();
                 NBTTagCompound tagOutput = (NBTTagCompound) tag.copy();
@@ -272,8 +268,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                 if (id == null) return null;
                 String baseName = id.toString();
                 int shapeId = tag.getInteger("Shape");
-                if(aInputDmg <= 15 && aInputDmg >= 0)
-                {
+                if (aInputDmg <= 15 && aInputDmg >= 0) {
                     tagOutput.setInteger("BaseData", aInputDmg);
                     tagOutput.setInteger("Shape", shapeId);
                     tagOutput.setString("BaseName", baseName);
