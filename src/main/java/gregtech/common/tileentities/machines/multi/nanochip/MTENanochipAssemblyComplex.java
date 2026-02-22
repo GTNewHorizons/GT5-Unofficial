@@ -457,7 +457,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                     if (hatch.contents == null) continue;
                     Map<CircuitComponent, Long> contents = hatch.contents.getComponents();
                     // Use Iterator to protect against ConcurrentModificationException
-                    Iterator<Map.Entry<CircuitComponent, Long>> iterator = contents.entrySet().iterator();
+                    Iterator<Map.Entry<CircuitComponent, Long>> iterator = contents.entrySet()
+                        .iterator();
                     while (iterator.hasNext()) {
                         Map.Entry<CircuitComponent, Long> entry = iterator.next();
                         CircuitComponent component = entry.getKey();
