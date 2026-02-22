@@ -244,7 +244,6 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                     20,
                     16,
                     0);
-
                 // Cache it
                 cacheItem(aInput, tOutput, aRecipe);
                 return aRecipe;
