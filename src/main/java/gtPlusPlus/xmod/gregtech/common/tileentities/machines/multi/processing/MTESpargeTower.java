@@ -43,7 +43,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -225,7 +224,6 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null || aTileEntity.isDead()
             || !(aTileEntity.getMetaTileEntity() instanceof MTEHatchOutput tHatch)) {
-            Logger.INFO("Bad Output Hatch");
             return false;
         }
         while (mOutputHatchesByLayer.size() < mHeight) {
@@ -234,7 +232,6 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         tHatch.updateTexture(aBaseCasingIndex);
         boolean addedHatch = mOutputHatchesByLayer.get(mHeight - 1)
             .add(tHatch);
-        Logger.INFO("Added Hatch: " + addedHatch);
         return addedHatch;
     }
 
@@ -264,7 +261,6 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
 
         // check base
         if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0)) {
-            Logger.INFO("Bad Base. Height: " + mHeight);
             return false;
         }
 
@@ -279,11 +275,6 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
             mHeight++;
         }
 
-        // validate final invariants...
-        Logger.INFO("Height: " + mHeight);
-        Logger.INFO("Casings: " + mCasing);
-        Logger.INFO("Required: " + (7 * mHeight - 5));
-        Logger.INFO("Found Top: " + mTopLayerFound);
         return mCasing >= 45 && mTopLayerFound && mMaintenanceHatches.size() == 1;
     }
 
