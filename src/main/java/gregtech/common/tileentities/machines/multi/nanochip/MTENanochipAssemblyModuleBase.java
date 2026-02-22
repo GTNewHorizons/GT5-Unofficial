@@ -478,26 +478,31 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
         GTRecipe properRecipe = this.transformRecipe(recipe);
 
-        // Create parallel helper to calculate parallel and consume inputs
-        ParallelHelper parallelHelper = createParallelHelper(properRecipe, inputInfo);
-        // Add item consumer to parallel helper and make it consume the input items while it builds
-        parallelHelper.setConsumption(true)
-            .setInputConsumer(new CCInputConsumer(this.vacuumConveyorInputs, this))
+        ParallelHelper simulatedParallelHelper = createParallelHelper(properRecipe, inputInfo);
+        // Do an initial calculation for parallels without consuming items, to determine power needed.
+        simulatedParallelHelper.setConsumption(false)
             .build();
-        CheckRecipeResult result = parallelHelper.getResult();
+
+        CheckRecipeResult result = simulatedParallelHelper.getResult();
         if (result.wasSuccessful()) {
-            BigInteger euToConsume = BigInteger.valueOf(parallelHelper.getCurrentParallel())
+
+            BigInteger euToConsume = BigInteger.valueOf(simulatedParallelHelper.getCurrentParallel())
                 .multiply(BigInteger.valueOf(properRecipe.mDuration))
                 .multiply(BigInteger.valueOf(properRecipe.mEUt));
+
             if (euToConsume.compareTo(this.currentEU) > 0) {
                 return CheckRecipeResultRegistry.NAC_WAITING_FOR_POWER;
             }
 
+            // consume the inputs. note that the input itemstack is null as it is ignored.
+            CCInputConsumer inputConsumer = new CCInputConsumer(this.vacuumConveyorInputs, this);
+            inputConsumer.consume(properRecipe, simulatedParallelHelper.getCurrentParallel(), this.fluidInputs, null);
+
             // Set item outputs and parallel count. Note that while these outputs are fake, we override the method to
             // not output to normal busses
             // Then use addVCOutput to convert these back into CCs in the right hatch
-            this.currentParallel = parallelHelper.getCurrentParallel();
-            this.mOutputItems = parallelHelper.getItemOutputs();
+            this.currentParallel = simulatedParallelHelper.getCurrentParallel();
+            this.mOutputItems = simulatedParallelHelper.getItemOutputs();
 
             mEfficiency = 10000;
             mEfficiencyIncrease = 10000;
