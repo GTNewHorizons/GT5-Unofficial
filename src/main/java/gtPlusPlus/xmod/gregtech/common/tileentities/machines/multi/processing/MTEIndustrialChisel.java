@@ -12,6 +12,7 @@ import static gregtech.api.enums.Mods.ArchitectureCraft;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -30,10 +31,8 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gcewing.architecture.ArchitectureCraft;
 import gcewing.architecture.common.item.ArchitectureItemBlock;
 import gcewing.architecture.common.shape.Shape;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -42,6 +41,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -121,7 +121,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                     buildHatchAdder(MTEIndustrialChisel.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(90)
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings5Misc, 5))))
                 .build();
         }
@@ -230,20 +230,20 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                     outputAmount = Shape.forId(tag.getInteger("Shape")).itemsProduced;
                 }
                 // We can chisel this
-                GTRecipe aRecipe = new GTRecipe(
-                    false,
-                    new ItemStack[] { GTUtility.copyAmount(inputAmount, aInput) },
-                    new ItemStack[] { GTUtility.copyAmount(outputAmount, tOutput) },
-                    null,
-                    new int[] { 10000 },
-                    GTValues.emptyFluidStackArray,
-                    GTValues.emptyFluidStackArray,
-                    20,
-                    16,
-                    0);
+                Optional<GTRecipe> aRecipe = GTRecipeBuilder.builder()
+                    .itemInputs(GTUtility.copyAmount(inputAmount, aInput))
+                    .itemOutputs(GTUtility.copyAmount(outputAmount, tOutput))
+                    .outputChances(10000)
+                    .duration(20)
+                    .eut(16)
+                    .specialValue(0)
+                    .build();
+
                 // Cache it
-                cacheItem(aInput, tOutput, aRecipe);
-                return aRecipe;
+                if (aRecipe.isPresent()) {
+                    cacheItem(aInput, tOutput, aRecipe.get());
+                }
+                return aRecipe.orElse(null);
             }
         }
         return null;
