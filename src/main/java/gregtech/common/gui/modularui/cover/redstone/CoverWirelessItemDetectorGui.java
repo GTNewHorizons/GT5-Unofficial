@@ -59,8 +59,10 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
 
                     .child(
                         makeNumberField(88).value(thresholdSyncer)
+                            .setDefaultNumber(0)
+                            .setNumbers(0, Integer.MAX_VALUE)
                             .marginRight(2))
-                    .child(new TextWidget(translateToLocal("gt.interact.desc.itemthreshold"))))
+                    .child(new TextWidget<>(translateToLocal("gt.interact.desc.itemthreshold"))))
             .coverChildrenWidth()
             .child(
                 Flow.row()
@@ -70,6 +72,7 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
                     .child(
                         // number field with 'Any' goes here
                         makeNumberField(88).value(slotSyncer)
+                            .setFormatAsInteger(true)
                             .setDefaultNumber(-1)
                             .setNumbers(-1, tile.getSizeInventory() - 1)
                             .marginRight(2))
@@ -77,7 +80,7 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
                         // to convey the -1 = 'Any'.
                         if (slotSyncer.getIntValue() == -1) t.addLine(translateToLocal("gt.interact.desc.any_slot"));
                     }))
-                    .child(new TextWidget(translateToLocal("gt.interact.desc.item_slot"))))
+                    .child(new TextWidget<>(translateToLocal("gt.interact.desc.item_slot"))))
             .coverChildrenWidth()
 
             .child(physicalRow(physicalSyncer));

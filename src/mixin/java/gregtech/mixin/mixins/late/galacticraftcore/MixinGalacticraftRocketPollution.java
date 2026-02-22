@@ -23,17 +23,28 @@ public abstract class MixinGalacticraftRocketPollution extends EntityAutoRocket 
 
     @Inject(method = "onUpdate", at = @At("HEAD"))
     private void gt5u$addRocketPollution(CallbackInfo ci) {
-        if (this.worldObj.isRemote || !(launchPhase == EnumLaunchPhase.LAUNCHED.ordinal()
-            || launchPhase == EnumLaunchPhase.IGNITED.ordinal())) {
+        if (worldObj.isRemote) {
+            return;
+        }
+
+        if ((worldObj.getTotalWorldTime() % 20) != 0) {
             return;
         }
 
         int pollutionAmount = 0;
+        int tierFactor = PollutionConfig.rocketPollutionAmount * getRocketTier();
+
         if (launchPhase == EnumLaunchPhase.LAUNCHED.ordinal()) {
-            pollutionAmount = PollutionConfig.rocketPollutionAmount * this.getRocketTier();
+            pollutionAmount = tierFactor;
         } else if (launchPhase == EnumLaunchPhase.IGNITED.ordinal()) {
-            pollutionAmount = PollutionConfig.rocketPollutionAmount * this.getRocketTier() / 100;
+            pollutionAmount = tierFactor / 100;
         }
+
+        if (pollutionAmount <= 0) {
+            return;
+        }
+
         Pollution.addPollution(worldObj.getChunkFromBlockCoords((int) posX, (int) posZ), pollutionAmount);
     }
+
 }

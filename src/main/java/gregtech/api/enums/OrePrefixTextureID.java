@@ -54,6 +54,7 @@ public class OrePrefixTextureID {
     public static final int ORE_SMALL = 67;
     public static final int ORE = 68;
     public static final int BLOCK = 71;
+    // Note: 71 through 76 are used by blocks 1 through 6
     public static final int PIPE_SIDE = 77;
     public static final int PIPE_TINY = 78;
     public static final int PIPE_SMALL = 79;
@@ -63,6 +64,7 @@ public class OrePrefixTextureID {
     public static final int FRAME = 83;
     public static final int PIPE_QUADRUPLE = 84;
     public static final int PIPE_NONUPLE = 85;
+    public static final int BLOCK_SHEETMETAL = 86;
     public static final int TURBINE_BLADE = 100;
     public static final int COMB = 101;
     public static final int PLATE_SUPERDENSE = 125;

@@ -9,6 +9,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_GREEN;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_PURPLE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.ITALIC;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.LIGHT_PURPLE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.OBFUSCATED;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
@@ -41,6 +42,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.oredict.OreDictionary;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.IIconContainer;
@@ -613,13 +616,6 @@ public class GTValues {
         + EnumChatFormatting.BOLD
         + "Raven";
 
-    public static final String AuthorNotAPenguin = "Author: " + EnumChatFormatting.WHITE
-        + EnumChatFormatting.BOLD
-        + "Not"
-        + EnumChatFormatting.AQUA
-        + EnumChatFormatting.BOLD
-        + "APenguin";
-
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
 
     public static final Supplier<String> AuthorNoc = chain(
@@ -647,8 +643,7 @@ public class GTValues {
 
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
-    public static final String AuthorPureBluez = "Author: " + EnumChatFormatting.WHITE
-        + "Pure"
+    public static final String StandalonePureBluez = EnumChatFormatting.WHITE + "Pure"
         + EnumChatFormatting.AQUA
         + "B"
         + EnumChatFormatting.DARK_AQUA
@@ -658,9 +653,16 @@ public class GTValues {
         + EnumChatFormatting.DARK_BLUE
         + "ez";
 
+    public static final String AuthorPureBluez = "Author: " + StandalonePureBluez;
+
+    // for use with the chain
+    public static final Supplier<String> AUTHOR_SUPPLIER = () -> "Author: ";
+    public static final Supplier<String> AUTHORS_SUPPLIER = () -> "Authors: ";
+    public static final Supplier<String> AND_SUPPLIER = () -> EnumChatFormatting.RESET + " & ";
+
     // a list specifically for random selection of formatting codes.
-    private static final String[] formattingCodes = new String[] { DARK_GREEN, DARK_AQUA, DARK_PURPLE, GOLD, BLUE,
-        GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE, OBFUSCATED, UNDERLINE };
+    public static final String[] formattingCodes = new String[] { DARK_GREEN, DARK_AQUA, DARK_PURPLE, GOLD, BLUE, GREEN,
+        AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE, OBFUSCATED, UNDERLINE };
 
     public static final Supplier<String> fancyAuthorChrom = chain(
         createChromLetter("C", ORDER),
@@ -704,11 +706,12 @@ public class GTValues {
             }
             colorList[i] = builder.toString();
         }
-        return chromAnimatedText(" ", 1, 1000, colorList);
+        return emptyAnimatedText(1, 1000, colorList);
     }
 
     // special version of the animated text that strips the return value of spaces, don't bother using this elsewhere
-    private static Supplier<String> chromAnimatedText(String text, int posstep, int delay, String... formattingArray) {
+    private static Supplier<String> emptyAnimatedText(int posstep, int delay, String... formattingArray) {
+        String text = " ";
         if (text == null || formattingArray == null || formattingArray.length == 0) return () -> "";
 
         final int finalDelay = Math.max(delay, 1);
@@ -727,6 +730,111 @@ public class GTValues {
                 .replaceAll("\\s", "");
         };
     }
+
+    public static final Supplier<String> AuthorAuynonymous = chain(
+        createAuynonymousLetter(0),
+        createAuynonymousLetter(1),
+        createAuynonymousLetter(2),
+        createAuynonymousLetter(3),
+        createAuynonymousLetter(4),
+        createAuynonymousLetter(5),
+        createAuynonymousLetter(6),
+        createAuynonymousLetter(7),
+        createAuynonymousLetter(8),
+        createAuynonymousLetter(9),
+        createAuynonymousLetter(10));
+
+    private static Supplier<String> createAuynonymousLetter(int index) {
+        final String[] letters = new String[] { "A", "u", "y", "n", "o", "n", "y", "m", "o", "u", "s" };
+        String[] colorList = new String[letters.length];
+        final String letter = letters[index];
+        for (int i = 0; i < letters.length; i++) {
+            colorList[i] = LIGHT_PURPLE
+                + (i == (letters.length - index - 1) ? EnumChatFormatting.BOLD + "" + EnumChatFormatting.ITALIC + "<3"
+                    : letter);
+        }
+        return emptyAnimatedText(1, 1000, colorList);
+    }
+
+    public static final String StandaloneNotAPenguin = EnumChatFormatting.WHITE + "Not"
+        + EnumChatFormatting.AQUA
+        + "APenguin";
+
+    public static final String AuthorNotAPenguinStatic = "Author: " + EnumChatFormatting.BOLD + StandaloneNotAPenguin;
+
+    public static final Supplier<String> AuthorNotAPenguinAnimated = chain(
+        createNotAPenguinLetter(0),
+        createNotAPenguinLetter(1),
+        createNotAPenguinLetter(2),
+        createNotAPenguinLetter(3),
+        createNotAPenguinLetter(4),
+        createNotAPenguinLetter(5),
+        createNotAPenguinLetter(6),
+        createNotAPenguinLetter(7),
+        createNotAPenguinLetter(8),
+        createNotAPenguinLetter(9),
+        createNotAPenguinLetter(10));
+
+    private static Supplier<String> createNotAPenguinLetter(int index) {
+        final String[] letters = new String[] { "N", "o", "t", "A", "P", "e", "n", "g", "u", "i", "n" };
+        String[] colorList = new String[letters.length];
+        for (int i = 0; i < letters.length; ++i) {
+            int[] whiteIndices = new int[] { (letters.length - index - 1 + letters.length) % letters.length,
+                (letters.length - index + letters.length) % letters.length,
+                (letters.length - index + 1 + letters.length) % letters.length };
+            if (i == whiteIndices[0] || i == whiteIndices[1] || i == whiteIndices[2]) {
+                colorList[i] = WHITE + ITALIC + letters[index];
+            } else colorList[i] = AQUA + letters[index];
+        }
+        return emptyAnimatedText(1, 100, colorList);
+    }
+
+    public static final Supplier<String> AuthorSerenibyss = chain(
+        getAuthorSerenibyssLetter("S", 3, LIGHT_PURPLE, 11, WHITE, 25, AQUA),
+        getAuthorSerenibyssLetter("e", 12, AQUA, 18, LIGHT_PURPLE, 29, WHITE),
+        getAuthorSerenibyssLetter("r", 0, WHITE, 10, LIGHT_PURPLE, 20, AQUA),
+        getAuthorSerenibyssLetter("e", 9, LIGHT_PURPLE, 17, AQUA, 22, WHITE),
+        getAuthorSerenibyssLetter("n", 6, WHITE, 14, AQUA, 27, LIGHT_PURPLE),
+        getAuthorSerenibyssLetter("i", 1, AQUA, 15, WHITE, 21, LIGHT_PURPLE),
+        getAuthorSerenibyssLetter("b", 13, WHITE, 19, LIGHT_PURPLE, 23, WHITE),
+        getAuthorSerenibyssLetter("y", 2, AQUA, 8, LIGHT_PURPLE, 24, WHITE),
+        getAuthorSerenibyssLetter("s", 5, AQUA, 16, WHITE, 26, LIGHT_PURPLE),
+        getAuthorSerenibyssLetter("s", 4, LIGHT_PURPLE, 7, WHITE, 28, AQUA));
+
+    private static Supplier<String> getAuthorSerenibyssLetter(String letter, Object... switchParams) {
+        int[] switchIntervals = new int[switchParams.length / 2];
+        String[] colors = new String[switchParams.length / 2];
+        for (int i = 0; i < switchParams.length; i += 2) {
+            switchIntervals[i / 2] = (int) switchParams[i];
+            colors[i / 2] = (String) switchParams[i + 1];
+        }
+
+        String[] colorAlternator = new String[30];
+        int index = switchIntervals[0];
+        int switchIndex = 0;
+        boolean obfuscated = false;
+        do {
+            String color;
+            if (ArrayUtils.contains(switchIntervals, index)) {
+                obfuscated = true;
+                color = colors[switchIndex] + OBFUSCATED;
+            } else if (obfuscated) {
+                obfuscated = false;
+                switchIndex++;
+                if (switchIndex == colors.length) switchIndex = 0;
+                color = colors[switchIndex];
+            } else {
+                color = colors[switchIndex];
+            }
+            colorAlternator[index] = color;
+            index++;
+            if (index == 30) index = 0;
+        } while (index != switchIntervals[0]);
+
+        return animatedText(letter, 1, 250, colorAlternator);
+    }
+
+    public static final String AuthorJL2210 = "" + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + "JL2210";
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
         V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };

@@ -68,7 +68,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
             buildHatchAdder(MTEDissolutionTank.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
                 .casingIndex(49)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement('h', ofBlock(GregTechAPI.sBlockCasings1, 11))
         .addElement('g', chainAllGlasses())

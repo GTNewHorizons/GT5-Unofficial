@@ -23,11 +23,11 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.data.StarColors;
-import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
-import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
-import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncHypervisor;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValues;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorSetting;
 
@@ -145,7 +145,7 @@ public class StarColorImportPanel {
                 return GTGuiTextures.UNSELECTED_OPTION;
             }
             StarColorSetting setting = starColor.getColor(index);
-            return new Rectangle().setColor(Color.rgb(setting.getColorR(), setting.getColorG(), setting.getColorB()))
+            return new Rectangle().color(Color.rgb(setting.getColorR(), setting.getColorG(), setting.getColorB()))
                 .asIcon()
                 .size(16)
                 .margin(1);

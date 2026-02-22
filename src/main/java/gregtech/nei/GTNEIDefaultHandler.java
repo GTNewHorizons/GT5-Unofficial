@@ -69,6 +69,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
 
 public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
@@ -243,6 +244,12 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                 tResults.add(GTOreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
             }
         }
+        if (aResult != null) {
+            List<ItemStack> ccRepresentations = CCNEIRepresentation.NEI_RECIPE_ASSOCIATIONS.get(aResult);
+            if (ccRepresentations != null) {
+                tResults.addAll(ccRepresentations);
+            }
+        }
         if (aResult.getUnlocalizedName()
             .startsWith("gt.blockores")) {
             for (int i = 0; i < 8; i++) {
@@ -304,6 +311,12 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         if ((tPrefixMaterial != null) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
             for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
                 tInputs.add(GTOreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
+            }
+        }
+        if (aInput != null) {
+            List<ItemStack> ccRepresentations = CCNEIRepresentation.NEI_USAGE_ASSOCIATIONS.get(aInput);
+            if (ccRepresentations != null) {
+                tInputs.addAll(ccRepresentations);
             }
         }
         addFluidStacks(aInput, tInputs);
@@ -511,21 +524,23 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         public static final DecimalFormat chanceFormat = new DecimalFormat("##0.##%");
         public final int mChance;
+        public final boolean mIsInput;
         public final int realStackSize;
         public final boolean renderRealStackSize;
 
         public FixedPositionedStack(Object object, boolean renderRealStackSizes, int x, int y) {
-            this(object, renderRealStackSizes, x, y, 0, true);
+            this(object, renderRealStackSizes, x, y, -1, true, false);
         }
 
         public FixedPositionedStack(Object object, boolean renderRealStackSizes, int x, int y, boolean aUnificate) {
-            this(object, renderRealStackSizes, x, y, 0, aUnificate);
+            this(object, renderRealStackSizes, x, y, -1, aUnificate, false);
         }
 
         public FixedPositionedStack(Object object, boolean renderRealStackSize, int x, int y, int aChance,
-            boolean aUnificate) {
+            boolean aUnificate, boolean aIsInput) {
             super(aUnificate ? GTOreDictUnificator.getNonUnifiedStacks(object) : object, x, y, true);
             this.mChance = aChance;
+            this.mIsInput = aIsInput;
             realStackSize = item != null ? item.stackSize : 0;
             this.renderRealStackSize = renderRealStackSize;
             if (!renderRealStackSize) {
@@ -535,16 +550,36 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             }
         }
 
+        public boolean isInput() {
+            return mIsInput;
+        }
+
         public boolean isChanceBased() {
-            return mChance > 0 && mChance < 10000;
+            return mChance >= 0 && mChance < 10000;
         }
 
         public String getChanceText() {
             return chanceFormat.format((float) mChance / 10000);
         }
 
+        public boolean isNotConsumedParallel() {
+            if (!mIsInput) return false;
+            if (isFluid()) {
+                FluidStack fluidStack = GTUtility.getFluidFromDisplayStack(item);
+                if (fluidStack == null) return false;
+                return mChance == 0;
+            }
+            return mChance == 0;
+        }
+
         public boolean isNotConsumed() {
-            return !isFluid() && item.stackSize == 0;
+            if (!mIsInput) return false;
+            if (isFluid()) {
+                FluidStack fluidStack = GTUtility.getFluidFromDisplayStack(item);
+                if (fluidStack == null) return false;
+                return fluidStack.amount == 0;
+            }
+            return item.stackSize == 0;
         }
 
         public boolean isFluid() {
@@ -588,6 +623,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                     GTNEIDefaultHandler.this.neiProperties.renderRealStackSizes,
                                     widget.getPos().x + 1,
                                     widget.getPos().y + 1,
+                                    aRecipe.getInputChance(i),
+                                    true,
                                     true));
                         }
                     } else if (widget.getMcSlot()
@@ -604,7 +641,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                         widget.getPos().x + 1,
                                         widget.getPos().y + 1,
                                         aRecipe.getOutputChance(i),
-                                        GTNEIDefaultHandler.this.neiProperties.unificateOutput));
+                                        GTNEIDefaultHandler.this.neiProperties.unificateOutput,
+                                        false));
                             }
                         } else if (widget.getMcSlot()
                             .getItemHandler() == specialSlotInventory) {
@@ -629,8 +667,12 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                                 GTUtility.getFluidDisplayStack(inputs[i], true),
                                                 GTNEIDefaultHandler.this.neiProperties.renderRealStackSizes,
                                                 widget.getPos().x + 1,
-                                                widget.getPos().y + 1));
+                                                widget.getPos().y + 1,
+                                                aRecipe.getFluidInputChance(i),
+                                                true,
+                                                true));
                                     }
+
                                 } else if (widget.getMcSlot()
                                     .getItemHandler() == fluidOutputsInventory) {
                                         int i = widget.getMcSlot()
@@ -643,7 +685,10 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                                     GTUtility.getFluidDisplayStack(outputs[i], true),
                                                     GTNEIDefaultHandler.this.neiProperties.renderRealStackSizes,
                                                     widget.getPos().x + 1,
-                                                    widget.getPos().y + 1));
+                                                    widget.getPos().y + 1,
+                                                    aRecipe.getFluidOutputChance(i),
+                                                    true,
+                                                    false));
                                         }
                                     }
                 }
@@ -658,6 +703,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                             GTNEIDefaultHandler.this.neiProperties.renderRealStackSizes,
                             pos.x + 1,
                             pos.y + 1,
+                            aRecipe.getInputChance(i),
+                            true,
                             true));
                 }
             }, (i, backgrounds, pos) -> {
@@ -669,7 +716,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                             pos.x + 1,
                             pos.y + 1,
                             aRecipe.getOutputChance(i),
-                            GTNEIDefaultHandler.this.neiProperties.unificateOutput));
+                            GTNEIDefaultHandler.this.neiProperties.unificateOutput,
+                            false));
                 }
             }, (i, backgrounds, pos) -> {}, (i, backgrounds, pos) -> {
                 if (i >= GTNEIDefaultHandler.this.uiProperties.maxFluidInputs && aRecipe.mFluidInputs[i] != null
@@ -679,7 +727,10 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                             GTUtility.getFluidDisplayStack(aRecipe.mFluidInputs[i], true),
                             GTNEIDefaultHandler.this.neiProperties.renderRealStackSizes,
                             pos.x + 1,
-                            pos.y + 1));
+                            pos.y + 1,
+                            aRecipe.getFluidInputChance(i),
+                            true,
+                            true));
                 }
             }, (i, backgrounds, pos) -> {
                 if (i >= GTNEIDefaultHandler.this.uiProperties.maxFluidOutputs && aRecipe.mFluidOutputs[i] != null
@@ -689,7 +740,10 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                             GTUtility.getFluidDisplayStack(aRecipe.mFluidOutputs[i], true),
                             GTNEIDefaultHandler.this.neiProperties.renderRealStackSizes,
                             pos.x + 1,
-                            pos.y + 1));
+                            pos.y + 1,
+                            aRecipe.getFluidOutputChance(i),
+                            true,
+                            false));
                 }
             },
                 IDrawable.EMPTY,

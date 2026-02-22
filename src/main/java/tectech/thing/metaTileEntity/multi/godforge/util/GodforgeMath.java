@@ -114,9 +114,9 @@ public class GodforgeMath {
 
         if (data.isUpgradeActive(DOR)) {
             if (module instanceof MTEPlasmaModule) {
-                speedBonus /= Math.pow(module.getMaxParallel(), 0.02);
+                speedBonus /= Math.pow(module.getCalculatedMaxParallel(), 0.02);
             } else {
-                speedBonus /= Math.pow(module.getMaxParallel(), 0.012);
+                speedBonus /= Math.pow(module.getCalculatedMaxParallel(), 0.012);
             }
         }
 
@@ -205,7 +205,7 @@ public class GodforgeMath {
 
         int maxParallel = (int) (baseParallel * totalBonuses);
 
-        module.setMaxParallel(maxParallel);
+        module.setCalculatedMaxParallel(maxParallel);
     }
 
     public static void calculateEnergyDiscountForModules(MTEBaseModule module, ForgeOfGodsData data) {
@@ -262,7 +262,7 @@ public class GodforgeMath {
         int plasmaTier = 0;
         double overclockTimeFactor = 2;
 
-        if (data.isUpgradeActive(END)) {
+        if (data.isUpgradeActive(EE)) {
             plasmaTier = 2;
         } else if (data.isUpgradeActive(SEDS)) {
             plasmaTier = 1;
@@ -286,7 +286,7 @@ public class GodforgeMath {
         module.setUpgrade83(data.isUpgradeActive(IMKG));
         module.setMultiStepPlasma(data.isUpgradeActive(TPTP));
         module.setPlasmaTier(plasmaTier);
-        module.setMagmatterCapable(data.isUpgradeActive(END));
+        module.setMagmatterCapable(data.isUpgradeActive(EE));
         module.setVoltageConfig(data.isUpgradeActive(TBF));
         module.setOverclockTimeFactor(overclockTimeFactor);
     }
@@ -305,7 +305,7 @@ public class GodforgeMath {
             if (data.isUpgradeActive(QGPIU) && !exoticizer.isMagmatterModeOn()) {
                 return true;
             }
-            if (data.isUpgradeActive(END) && exoticizer.isMagmatterModeOn()) {
+            if (data.isUpgradeActive(EE) && exoticizer.isMagmatterModeOn()) {
                 return true;
             }
         }

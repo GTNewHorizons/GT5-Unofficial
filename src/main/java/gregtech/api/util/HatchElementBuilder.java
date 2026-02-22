@@ -50,7 +50,7 @@ public class HatchElementBuilder<T> {
 
     private IGTHatchAdder<? super T> mAdder;
     private int mCasingIndex = -1;
-    private int mDot = -1;
+    private int mHint = -1;
     private BiPredicate<? super T, ? super IGregTechTileEntity> mShouldSkip;
     private BiFunction<? super T, ItemStack, ? extends Predicate<ItemStack>> mHatchItemFilter;
     private Supplier<String> mHatchItemType;
@@ -187,7 +187,7 @@ public class HatchElementBuilder<T> {
 
     /**
      * Mark this hatch element as the only candidate of given structure element. (e.g. muffler hatch on top of EBF)
-     * Currently, this will make the built IStructureElement to ignore gt_no_hatch directive from player
+     * Exclusive hatches bypass the gt_hatch channel requirement.
      * <p>
      * Do note that {@link #buildAndChain(IStructureElement[])} and its overloads will force the resulting structure
      * element to be non-exclusive.
@@ -209,9 +209,9 @@ public class HatchElementBuilder<T> {
         return this;
     }
 
-    public HatchElementBuilder<T> dot(int aDot) {
-        if (aDot <= 0) throw new IllegalArgumentException();
-        mDot = aDot;
+    public HatchElementBuilder<T> hint(int aHint) {
+        if (aHint <= 0) throw new IllegalArgumentException();
+        mHint = aHint;
         return this;
     }
 
@@ -398,7 +398,7 @@ public class HatchElementBuilder<T> {
     }
 
     public IStructureElement<T> build() {
-        if (mAdder == null || mCasingIndex == -1 || mDot == -1) {
+        if (mAdder == null || mCasingIndex == -1 || mHint == -1) {
             throw new IllegalArgumentException();
         }
         if (mHatchItemFilter == null) {
@@ -421,7 +421,7 @@ public class HatchElementBuilder<T> {
 
                 @Override
                 public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                    StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), mDot - 1);
+                    StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), mHint - 1);
                     return true;
                 }
             };
@@ -452,7 +452,8 @@ public class HatchElementBuilder<T> {
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), mDot - 1);
+                StructureLibAPI
+                    .hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), HatchElementBuilder.this.mHint - 1);
                 return true;
             }
 
@@ -508,10 +509,10 @@ public class HatchElementBuilder<T> {
                 if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
                     return PlaceResult.REJECT;
                 if (mReject != null && mReject.test(t)) return PlaceResult.REJECT;
-                if (GTStructureChannels.NO_HATCH.hasValue(trigger) && !mExclusive) {
+                if (!GTStructureChannels.HATCH.hasValue(trigger) && !mExclusive) {
                     String type = getHint();
                     env.getChatter()
-                        .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
+                        .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_placeable", type));
                     return PlaceResult.REJECT;
                 }
                 ItemStack taken = env.getSource()

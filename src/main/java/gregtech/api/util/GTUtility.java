@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GTValues.D1;
@@ -11,7 +12,6 @@ import static gregtech.api.enums.Materials.FLUID_MAP;
 import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
-import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
@@ -91,6 +91,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
@@ -102,7 +103,6 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
@@ -116,11 +116,11 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.Contract;
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
@@ -128,21 +128,18 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 import com.google.auto.value.AutoValue;
-import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.google.common.collect.SetMultimap;
-import com.gtnewhorizon.structurelib.alignment.IAlignment;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.mojang.authlib.GameProfile;
 
 import buildcraft.api.transport.IPipeTile;
-import cofh.api.energy.IEnergyReceiver;
+import codechicken.translocator.TileItemTranslocator;
 import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.ModAPIManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.items.ItemMatterCluster;
 import gregtech.GTMod;
@@ -159,21 +156,14 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IBlockContainer;
-import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.IHasIndexedTexture;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.item.ItemStackSizeCalculator;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.interfaces.tileentity.IUpgradableMachine;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.ItemEnergyArmor;
 import gregtech.api.items.MetaGeneratedTool;
@@ -182,11 +172,12 @@ import gregtech.api.net.GTPacketSound;
 import gregtech.api.objects.CollectorUtils;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.ores.OreManager;
-import gregtech.common.pollution.Pollution;
+import ic2.api.recipe.ICannerBottleRecipeManager;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
@@ -211,19 +202,30 @@ public class GTUtility {
      */
     private static final Map<Locale, DecimalFormat> decimalFormatters = new HashMap<>();
 
-    /**
+    /*
      * Forge screwed the Fluid Registry up again, so I make my own, which is also much more efficient than the stupid
      * Stuff over there.
      */
+
+    /**
+     * All catched fluid container data.
+     */
     private static final List<FluidContainerData> sFluidContainerList = new ArrayList<>();
 
-    private static final Map<GTItemStack, FluidContainerData> sFilledContainerToData = new /* Concurrent */ HashMap<>();
-    private static final Map<GTItemStack, Map<String, FluidContainerData>> sEmptyContainerToFluidToData = new HashMap<>();
-    private static final Map<String, List<ItemStack>> sFluidToContainers = new HashMap<>();
     /**
-     * Must use {@code Supplier} here because the ore prefixes have not yet been registered at class load time.
+     * Associates the filled container item with the fluid container data.
      */
-    private static final Map<OrePrefixes, Supplier<ItemStack>> sOreToCobble = new HashMap<>();
+    private static final Map<GTItemStack, FluidContainerData> sFilledContainerToData = new /* Concurrent */ HashMap<>();
+
+    /**
+     * Associates the empty container item with a map mapping fluid names to the associated fluid container data.
+     */
+    private static final Map<GTItemStack, Map<String, FluidContainerData>> sEmptyContainerToFluidToData = new HashMap<>();
+
+    /**
+     * Associates the name of the fluid with all filled container items.
+     */
+    private static final Map<String, List<ItemStack>> sFluidToContainers = new HashMap<>();
 
     private static final Map<Integer, Boolean> sOreTable = new HashMap<>();
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
@@ -231,23 +233,6 @@ public class GTUtility {
     private static int sBookCount = 0;
     public static UUID defaultUuid = null; // maybe default non-null?
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
-
-    static {
-        GregTechAPI.sItemStackMappings.add(sFilledContainerToData);
-        GregTechAPI.sItemStackMappings.add(sEmptyContainerToFluidToData);
-
-        // 1 is the magic index to get the cobblestone block.
-        // See: GT_Block_Stones.java, GT_Block_Granites.java
-        Function<Materials, Supplier<ItemStack>> materialToCobble = m -> Suppliers.memoize(
-            () -> GTOreDictUnificator.getOres(OrePrefixes.stone, m)
-                .get(1))::get;
-        sOreToCobble.put(OrePrefixes.oreBlackgranite, materialToCobble.apply(Materials.GraniteBlack));
-        sOreToCobble.put(OrePrefixes.oreRedgranite, materialToCobble.apply(Materials.GraniteRed));
-        sOreToCobble.put(OrePrefixes.oreMarble, materialToCobble.apply(Materials.Marble));
-        sOreToCobble.put(OrePrefixes.oreBasalt, materialToCobble.apply(Materials.Basalt));
-        sOreToCobble.put(OrePrefixes.oreNetherrack, () -> new ItemStack(Blocks.netherrack));
-        sOreToCobble.put(OrePrefixes.oreEndstone, () -> new ItemStack(Blocks.end_stone));
-    }
 
     public static Map<GTItemStack, FluidContainerData> getFilledContainerToData() {
         return sFilledContainerToData;
@@ -272,7 +257,7 @@ public class GTUtility {
             rField = aObject.getClass()
                 .getDeclaredField(aField);
             rField.setAccessible(true);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rField;
@@ -283,7 +268,7 @@ public class GTUtility {
             final Field field = clazz.getDeclaredField(fieldName);
             field.setAccessible(true);
             return field;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (D1) e.printStackTrace(GTLog.err);
         }
         return null;
@@ -298,7 +283,7 @@ public class GTUtility {
                         .getDeclaredField(aField);
             if (aPrivate) tField.setAccessible(true);
             return tField;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (aLogErrors) e.printStackTrace(GTLog.err);
         }
         return null;
@@ -313,7 +298,7 @@ public class GTUtility {
                         .getDeclaredField(aField);
             if (aPrivate) tField.setAccessible(true);
             return tField.get(aObject instanceof Class || aObject instanceof String ? null : aObject);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (aLogErrors) e.printStackTrace(GTLog.err);
         }
         return null;
@@ -354,7 +339,7 @@ public class GTUtility {
                     .getMethod(aMethod, tParameterTypes);
             if (aPrivate) tMethod.setAccessible(true);
             return tMethod.invoke(aObject, aParameters);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (aLogErrors) e.printStackTrace(GTLog.err);
         }
         return null;
@@ -367,17 +352,17 @@ public class GTUtility {
                 for (Constructor<?> tConstructor : aClass.getConstructors()) {
                     try {
                         return tConstructor.newInstance(aParameters);
-                    } catch (Throwable e) {
+                    } catch (Exception e) {
                         if (D1) e.printStackTrace(GTLog.err);
                     }
                 }
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 if (aLogErrors) e.printStackTrace(GTLog.err);
             }
         } else {
             try {
                 return aClass.getConstructors()[aConstructorIndex].newInstance(aParameters);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 if (aLogErrors) e.printStackTrace(GTLog.err);
             }
         }
@@ -508,11 +493,45 @@ public class GTUtility {
         return "(" + color + GTValues.VN[tier] + EnumChatFormatting.RESET + ")";
     }
 
+    /**
+     * @deprecated Use {@link #sendChatTrans} instead.
+     */
+    @Deprecated
     public static void sendChatToPlayer(EntityPlayer player, String message) {
         if (message != null) {
             message = processFormatStacks(message);
             player.addChatComponentMessage(new ChatComponentText(message));
         }
+    }
+
+    /**
+     * Send a translated chat message to the player.
+     *
+     * @param player     The player who will receive the message.
+     * @param messageKey The lang key of the translation. The text corresponding to the key must only contain
+     *                   placeholder '%s'; otherwise, it cannot be translated.
+     * @param args       Substitutions for `%s` in the translation. `IChatComponent` will be handled properly, others
+     *                   will be converted to String
+     */
+    public static void sendChatTrans(EntityPlayer player, @Nonnull String messageKey, Object... args) {
+        // FIXME：
+        // should have a better translation component to:
+        // 1. process format stacks;
+        // 2. accept placeholders other than '%s', at least positional ones like '%1$s'
+        player.addChatComponentMessage(new ChatComponentTranslation(messageKey, args));
+    }
+
+    /**
+     * Send a chat component to the player.
+     * We use this method to ensure future compatibility.
+     * When we have a better translation component, we can modify the chat component sent to the player through this
+     * function.
+     *
+     * @param player    The player who will receive the message.
+     * @param component The chat component to send.
+     */
+    public static void sendChatComp(EntityPlayer player, @Nonnull IChatComponent component) {
+        player.addChatComponentMessage(component);
     }
 
     /**
@@ -626,27 +645,9 @@ public class GTUtility {
 
     public static void checkAvailabilities() {
         if (CHECK_ALL) {
-            try {
-                Class<IItemDuct> tClass = IItemDuct.class;
-                tClass.getCanonicalName();
-                TE_CHECK = true;
-            } catch (Throwable e) {
-                if (D1) e.printStackTrace(GTLog.err);
-            }
-            try {
-                Class<IPipeTile> tClass = buildcraft.api.transport.IPipeTile.class;
-                tClass.getCanonicalName();
-                BC_CHECK = true;
-            } catch (Throwable e) {
-                if (D1) e.printStackTrace(GTLog.err);
-            }
-            try {
-                Class<IEnergyReceiver> tClass = cofh.api.energy.IEnergyReceiver.class;
-                tClass.getCanonicalName();
-                RF_CHECK = true;
-            } catch (Throwable e) {
-                if (D1) e.printStackTrace(GTLog.err);
-            }
+            TE_CHECK = ModAPIManager.INSTANCE.hasAPI("CoFHAPI|transport");
+            BC_CHECK = ModAPIManager.INSTANCE.hasAPI("BuildCraftAPI|transport");
+            RF_CHECK = ModAPIManager.INSTANCE.hasAPI("CoFHAPI|energy");
             CHECK_ALL = false;
         }
     }
@@ -655,9 +656,8 @@ public class GTUtility {
         if (tileEntity == null) return false;
         checkAvailabilities();
         if (TE_CHECK && tileEntity instanceof IItemDuct) return true;
-        if (BC_CHECK && tileEntity instanceof buildcraft.api.transport.IPipeTile pipeTile)
-            return pipeTile.isPipeConnected(side);
-        return Translocator.isModLoaded() && tileEntity instanceof codechicken.translocator.TileItemTranslocator;
+        if (BC_CHECK && tileEntity instanceof IPipeTile pipeTile) return pipeTile.isPipeConnected(side);
+        return Translocator.isModLoaded() && tileEntity instanceof TileItemTranslocator;
     }
 
     public static List<ItemStack> wrapInventory(IInventory inv) {
@@ -697,15 +697,28 @@ public class GTUtility {
         compactInventory(imte, 0, imte.getSizeInventory());
     }
 
-    public static void compactInventory(IMetaTileEntity imte, int start, int end) {
-        imte.markDirty();
-
+    public static boolean compactInventory(IMetaTileEntity imte, int start, int end) {
         ItemStackSizeCalculator stackSizes = (slot, stack) -> imte.getStackSizeLimit(slot + start, stack);
 
-        compactInventory(wrapInventory(imte).subList(start, end), stackSizes);
+        if (compactInventory(wrapInventory(imte).subList(start, end), stackSizes)) {
+            imte.markDirty();
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public static void compactInventory(List<ItemStack> inv, ItemStackSizeCalculator stackSizes) {
+    public static boolean compactInventory(List<ItemStack> inv, int start, int end) {
+        return compactInventory(inv.subList(start, end), (slot, stack) -> stack.getMaxStackSize());
+    }
+
+    /**
+     * Compacts an inventory like this:
+     * Empty_0, Iron_48, Iron_64, Empty_0, Gold_32, Iron_32, Gold_16
+     * into this:
+     * Iron_64, Iron_64, Gold_48, Iron_16
+     */
+    public static boolean compactInventory(List<ItemStack> inv, ItemStackSizeCalculator stackSizes) {
         int len = inv.size();
 
         // Filter each ItemStack into their own lists (grouped by Item, meta, and NBT).
@@ -720,6 +733,8 @@ public class GTUtility {
             slots.computeIfAbsent(stack, ignored -> new ObjectArrayList<>())
                 .add(ObjectIntPair.of(stack, i));
         }
+
+        MutableBoolean didSomething = new MutableBoolean(false);
 
         // For each ItemStack, merge stacks from the end of the list to the front
         slots.forEach((ignored, stacks) -> {
@@ -746,6 +761,8 @@ public class GTUtility {
                     toBeExtracted.left().stackSize -= toTransfer;
                     inflateStack.stackSize += toTransfer;
                     remaining -= toTransfer;
+
+                    didSomething.setValue(true);
 
                     if (toBeExtracted.left().stackSize <= 0) {
                         inv.set(toBeExtracted.rightInt(), null);
@@ -777,6 +794,7 @@ public class GTUtility {
                 if (stack != null) {
                     inv.set(insert, stack);
                     inv.set(extract, null);
+                    didSomething.setValue(true);
                 } else {
                     break;
                 }
@@ -784,6 +802,8 @@ public class GTUtility {
 
             insert++;
         }
+
+        return didSomething.booleanValue();
     }
 
     public static void swapSlots(IInventory inv, int a, int b) {
@@ -796,18 +816,98 @@ public class GTUtility {
         inv.markDirty();
     }
 
-    public static void cleanInventory(IInventory inv) {
-        cleanInventory(wrapInventory(inv));
+    public static boolean cleanInventory(IInventory inv) {
+        if (cleanInventory(wrapInventory(inv))) {
+            inv.markDirty();
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public static void cleanInventory(List<ItemStack> inv) {
+    public static boolean cleanInventory(List<ItemStack> inv) {
+        boolean didSomething = false;
+
         for (int i = 0, invSize = inv.size(); i < invSize; i++) {
             ItemStack stack = inv.get(i);
 
             if (stack != null && (stack.getItem() == null || stack.stackSize <= 0)) {
                 inv.set(i, null);
+                didSomething = true;
             }
         }
+
+        return didSomething;
+    }
+
+    /**
+     * Drops the item to the world.
+     * <p>
+     * NOTE: the stack is directly passed to the entity, so you should not continue using it.
+     *
+     * @param world    the world to spawn the item
+     * @param x        the x coord to spawn the item
+     * @param y        the y coord to spawn the item
+     * @param z        the z coord to spawn the item
+     * @param stack    the stack to spawn
+     * @param noMotion {@code true} to remove the initial motion when spawned to the world
+     */
+    public static void dropItem(World world, double x, double y, double z, @Nullable ItemStack stack,
+        boolean noMotion) {
+        if (isStackInvalid(stack)) return;
+        EntityItem entity = new EntityItem(world, x, y, z, stack);
+        if (noMotion) {
+            // remove initial motion
+            entity.motionX = 0;
+            entity.motionY = 0;
+            entity.motionZ = 0;
+        }
+        world.spawnEntityInWorld(entity);
+    }
+
+    /**
+     * @see #dropItem(World, double, double, double, ItemStack, boolean)
+     */
+    public static void dropItem(World world, double x, double y, double z, @Nullable ItemStack stack) {
+        dropItem(world, x, y, z, stack, false);
+    }
+
+    /**
+     * Drops the item to the world at the block pos.
+     * <p>
+     * NOTE: the stack is directly passed to the entity, so you should not continue using it.
+     *
+     * @param world         the world to spawn the item
+     * @param x             the x coord to spawn the item
+     * @param y             the y coord to spawn the item
+     * @param z             the z coord to spawn the item
+     * @param stack         the stack to spawn
+     * @param positionShift {@code true} to add a small random shift to the position
+     * @param noMotion      {@code true} to remove the initial motion when spawned to the world
+     */
+    public static void dropItemToBlockPos(World world, int x, int y, int z, @Nullable ItemStack stack,
+        boolean positionShift, boolean noMotion) {
+        if (isStackInvalid(stack)) return;
+        double x1, y1, z1;
+        if (positionShift) {
+            // shift the position to drop, but always inside the block pos
+            // equivalent to x = x + (0.1..0.9).random()
+            x1 = x + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
+            y1 = y + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
+            z1 = z + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
+        } else {
+            x1 = x + 0.5;
+            y1 = y + 0.5;
+            z1 = z + 0.5;
+        }
+        dropItem(world, x1, y1, z1, stack, noMotion);
+    }
+
+    /**
+     * @see #dropItemToBlockPos(World, int, int, int, ItemStack, boolean, boolean)
+     */
+    public static void dropItemToBlockPos(World world, int x, int y, int z, @Nullable ItemStack stack) {
+        dropItemToBlockPos(world, x, y, z, stack, false, false);
     }
 
     public static void dropItemsOrClusters(World world, float x, float y, float z, List<ItemStack> stacks) {
@@ -1000,44 +1100,30 @@ public class GTUtility {
         sFilledContainerToData.clear();
         sEmptyContainerToFluidToData.clear();
         sFluidToContainers.clear();
-        for (FluidContainerData tData : sFluidContainerList) {
-            String fluidName = tData.fluid.getFluid()
+        for (FluidContainerData data : sFluidContainerList) {
+            String fluidName = data.fluid.getFluid()
                 .getName();
-            sFilledContainerToData.put(new GTItemStack(tData.filledContainer), tData);
-            Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData
-                .get(new GTItemStack(tData.emptyContainer));
-            List<ItemStack> tContainers = sFluidToContainers.get(fluidName);
-            if (tFluidToContainer == null) {
-                sEmptyContainerToFluidToData
-                    .put(new GTItemStack(tData.emptyContainer), tFluidToContainer = new /* Concurrent */ HashMap<>());
-            }
-            tFluidToContainer.put(fluidName, tData);
-            if (tContainers == null) {
-                tContainers = new ArrayList<>();
-                tContainers.add(tData.filledContainer);
-                sFluidToContainers.put(fluidName, tContainers);
-            } else tContainers.add(tData.filledContainer);
+            sFilledContainerToData.put(new GTItemStack(data.filledContainer), data);
+            sEmptyContainerToFluidToData.computeIfAbsent(new GTItemStack(data.emptyContainer), $ -> new HashMap<>())
+                .put(fluidName, data);
+            sFluidToContainers.computeIfAbsent(fluidName, $ -> new ArrayList<>())
+                .add(data.filledContainer);
         }
     }
 
-    public static void addFluidContainerData(FluidContainerData aData) {
-        String fluidName = aData.fluid.getFluid()
+    public static void addFluidContainerData(FluidContainerData data) {
+        String fluidName = data.fluid.getFluid()
             .getName();
-        sFluidContainerList.add(aData);
-        sFilledContainerToData.put(new GTItemStack(aData.filledContainer), aData);
-        Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData
-            .get(new GTItemStack(aData.emptyContainer));
-        List<ItemStack> tContainers = sFluidToContainers.get(fluidName);
-        if (tFluidToContainer == null) {
-            sEmptyContainerToFluidToData
-                .put(new GTItemStack(aData.emptyContainer), tFluidToContainer = new /* Concurrent */ HashMap<>());
-        }
-        tFluidToContainer.put(fluidName, aData);
-        if (tContainers == null) {
-            tContainers = new ArrayList<>();
-            tContainers.add(aData.filledContainer);
-            sFluidToContainers.put(fluidName, tContainers);
-        } else tContainers.add(aData.filledContainer);
+        sFluidContainerList.add(data);
+        sFilledContainerToData.put(new GTItemStack(data.filledContainer), data);
+        sEmptyContainerToFluidToData.computeIfAbsent(new GTItemStack(data.emptyContainer), $ -> new HashMap<>())
+            .put(fluidName, data);
+        sFluidToContainers.computeIfAbsent(fluidName, $ -> new ArrayList<>())
+            .add(data.filledContainer);
+    }
+
+    public static boolean isEmptyFluidContainer(ItemStack itemStack) {
+        return sEmptyContainerToFluidToData.containsKey(new GTItemStack(itemStack));
     }
 
     public static List<ItemStack> getContainersFromFluid(FluidStack tFluidStack) {
@@ -1232,16 +1318,15 @@ public class GTUtility {
     }
 
     public static synchronized boolean removeIC2BottleRecipe(ItemStack aContainer, ItemStack aInput,
-        Map<ic2.api.recipe.ICannerBottleRecipeManager.Input, RecipeOutput> aRecipeList, ItemStack aOutput) {
+        Map<ICannerBottleRecipeManager.Input, RecipeOutput> aRecipeList, ItemStack aOutput) {
         if ((isStackInvalid(aInput) && isStackInvalid(aOutput) && isStackInvalid(aContainer)) || aRecipeList == null)
             return false;
         boolean rReturn = false;
-        Iterator<Map.Entry<ic2.api.recipe.ICannerBottleRecipeManager.Input, RecipeOutput>> tIterator = aRecipeList
-            .entrySet()
+        Iterator<Map.Entry<ICannerBottleRecipeManager.Input, RecipeOutput>> tIterator = aRecipeList.entrySet()
             .iterator();
         aOutput = GTOreDictUnificator.get(aOutput);
         while (tIterator.hasNext()) {
-            Map.Entry<ic2.api.recipe.ICannerBottleRecipeManager.Input, RecipeOutput> tEntry = tIterator.next();
+            Map.Entry<ICannerBottleRecipeManager.Input, RecipeOutput> tEntry = tIterator.next();
             if (aInput == null || tEntry.getKey()
                 .matches(aContainer, aInput)) {
                 List<ItemStack> tList = tEntry.getValue().items;
@@ -1848,7 +1933,7 @@ public class GTUtility {
             && !HazardProtection.isWearingFullHeatHazmat(aEntity)) {
             try {
                 return aEntity.attackEntityFrom(source, aDamage);
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 GTMod.GT_FML_LOGGER.error("Error damaging entity", t);
             }
         }
@@ -2177,48 +2262,6 @@ public class GTUtility {
         return aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, WILDCARD));
     }
 
-    /**
-     * re-maps all Keys of a Map after the Keys were weakened.
-     */
-    public static <X, Y> Map<X, Y> reMap(Map<X, Y> aMap) {
-        Map<X, Y> tMap = null;
-        // We try to clone the Map first (most Maps are Cloneable) in order to retain as much state of the Map as
-        // possible when rehashing. For example, "Custom" HashMaps from fastutil may have a custom hash function which
-        // would not be used to rehash if we just create a new HashMap.
-        if (aMap instanceof Cloneable) {
-            try {
-                tMap = (Map<X, Y>) aMap.getClass()
-                    .getMethod("clone")
-                    .invoke(aMap);
-            } catch (Throwable e) {
-                GTLog.err.println("Failed to clone Map of type " + aMap.getClass());
-                e.printStackTrace(GTLog.err);
-            }
-        }
-
-        if (tMap == null) {
-            tMap = new HashMap<>(aMap);
-        }
-
-        aMap.clear();
-        aMap.putAll(tMap);
-        return aMap;
-    }
-
-    /**
-     * re-maps all Keys of a Map after the Keys were weakened.
-     */
-    public static <X, Y> SetMultimap<X, Y> reMap(SetMultimap<X, Y> aMap) {
-        @SuppressWarnings("unchecked")
-        Map.Entry<X, Y>[] entries = aMap.entries()
-            .toArray(new Map.Entry[0]);
-        aMap.clear();
-        for (Map.Entry<X, Y> entry : entries) {
-            aMap.put(entry.getKey(), entry.getValue());
-        }
-        return aMap;
-    }
-
     public static <X, Y extends Comparable<Y>> LinkedHashMap<X, Y> sortMapByValuesAcending(Map<X, Y> map) {
         return map.entrySet()
             .stream()
@@ -2402,517 +2445,6 @@ public class GTUtility {
         return (int) Math.floor(aValue / aScale);
     }
 
-    public static int getCoordinateScan(ArrayList<String> aList, EntityPlayer aPlayer, World aWorld, int aScanLevel,
-        int aX, int aY, int aZ, ForgeDirection side, float aClickX, float aClickY, float aClickZ) {
-        if (aList == null) return 0;
-
-        ArrayList<String> tList = new ArrayList<>();
-        int rEUAmount = 0;
-
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-
-        final Block tBlock = aWorld.getBlock(aX, aY, aZ);
-
-        addBaseInfo(aPlayer, aWorld, aX, aY, aZ, tList, tTileEntity, tBlock);
-
-        if (tTileEntity != null) {
-            rEUAmount += addFluidHandlerInfo(side, tList, tTileEntity);
-
-            if (tTileEntity instanceof ic2.api.reactor.IReactorChamber chamber) {
-                rEUAmount += 500;
-                // Redirect the rest of the scans to the reactor itself
-                tTileEntity = (TileEntity) chamber.getReactor();
-            }
-            rEUAmount += addReactorInfo(tList, tTileEntity);
-            rEUAmount += addAlignmentInfo(tList, tTileEntity);
-            rEUAmount += addIC2WrenchableInfo(aPlayer, tList, tTileEntity);
-            rEUAmount += addIC2EnergyConductorInfo(tList, tTileEntity);
-            rEUAmount += addIC2EnergyStorageInfo(tList, tTileEntity);
-            rEUAmount += addUpgradableMachineInfo(tList, tTileEntity);
-            rEUAmount += addMachineProgressInfo(tList, tTileEntity);
-            rEUAmount += addCoverableInfo(side, tList, tTileEntity);
-            addEnergyContainerInfo(tList, tTileEntity);
-            addOwnerInfo(tList, tTileEntity);
-            addDeviceInfo(tList, tTileEntity);
-
-            rEUAmount += addIC2CropInfo(tList, tTileEntity);
-
-            rEUAmount += addForestryLeavesInfo(tList, tTileEntity);
-        }
-
-        final Chunk currentChunk = aWorld.getChunkFromBlockCoords(aX, aZ);
-        addUndergroundFluidInfo(aPlayer, tList, currentChunk);
-        addPollutionInfo(tList, currentChunk);
-
-        rEUAmount += addDebuggableBlockInfo(aPlayer, aX, aY, aZ, tList, tBlock);
-
-        final BlockScanningEvent tEvent = new BlockScanningEvent(
-            aWorld,
-            aPlayer,
-            aX,
-            aY,
-            aZ,
-            side,
-            aScanLevel,
-            tBlock,
-            tTileEntity,
-            tList,
-            aClickX,
-            aClickY,
-            aClickZ);
-        tEvent.mEUCost = rEUAmount;
-        MinecraftForge.EVENT_BUS.post(tEvent);
-        if (!tEvent.isCanceled()) aList.addAll(tList);
-        return tEvent.mEUCost;
-    }
-
-    private static void addBaseInfo(EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, ArrayList<String> tList,
-        TileEntity tTileEntity, Block tBlock) {
-        tList.add(
-            EnumChatFormatting.STRIKETHROUGH + "-----"
-                + EnumChatFormatting.RESET
-                + " X: "
-                + EnumChatFormatting.AQUA
-                + formatNumbers(aX)
-                + EnumChatFormatting.RESET
-                + " Y: "
-                + EnumChatFormatting.AQUA
-                + formatNumbers(aY)
-                + EnumChatFormatting.RESET
-                + " Z: "
-                + EnumChatFormatting.AQUA
-                + formatNumbers(aZ)
-                + EnumChatFormatting.RESET
-                + " D: "
-                + EnumChatFormatting.AQUA
-                + aWorld.provider.dimensionId
-                + EnumChatFormatting.RESET
-                + " "
-                + EnumChatFormatting.STRIKETHROUGH
-                + "-----");
-        try {
-            tList.add(
-                GTUtility.trans("162", "Name: ") + EnumChatFormatting.BLUE
-                    + ((tTileEntity instanceof IInventory inv) ? inv.getInventoryName() : tBlock.getUnlocalizedName())
-                    + EnumChatFormatting.RESET
-                    + GTUtility.trans("163", " MetaData: ")
-                    + EnumChatFormatting.AQUA
-                    + aWorld.getBlockMetadata(aX, aY, aZ)
-                    + EnumChatFormatting.RESET);
-            tList.add(
-                GTUtility.trans("164", "Hardness: ") + EnumChatFormatting.YELLOW
-                    + tBlock.getBlockHardness(aWorld, aX, aY, aZ)
-                    + EnumChatFormatting.RESET
-                    + GTUtility.trans("165", " Blast Resistance: ")
-                    + EnumChatFormatting.YELLOW
-                    + tBlock
-                        .getExplosionResistance(aPlayer, aWorld, aX, aY, aZ, aPlayer.posX, aPlayer.posY, aPlayer.posZ)
-                    + EnumChatFormatting.RESET);
-            if (tBlock.isBeaconBase(aWorld, aX, aY, aZ, aX, aY + 1, aZ)) tList.add(
-                EnumChatFormatting.GOLD + GTUtility.trans("166", "Is valid Beacon Pyramid Material")
-                    + EnumChatFormatting.RESET);
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this block's info.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-    }
-
-    private static int addFluidHandlerInfo(ForgeDirection side, ArrayList<String> tList, TileEntity tTileEntity) {
-        int rEUAmount = 0;
-        try {
-            if (tTileEntity instanceof IFluidHandler fluidHandler) {
-                rEUAmount += 500;
-                final FluidTankInfo[] tTanks = fluidHandler.getTankInfo(side);
-                if (tTanks != null) for (byte i = 0; i < tTanks.length; i++) {
-                    tList.add(
-                        GTUtility.trans("167", "Tank ") + i
-                            + ": "
-                            + EnumChatFormatting.GREEN
-                            + formatNumbers((tTanks[i].fluid == null ? 0 : tTanks[i].fluid.amount))
-                            + EnumChatFormatting.RESET
-                            + " L / "
-                            + EnumChatFormatting.YELLOW
-                            + formatNumbers(tTanks[i].capacity)
-                            + EnumChatFormatting.RESET
-                            + " L "
-                            + EnumChatFormatting.GOLD
-                            + getFluidName(tTanks[i].fluid, true)
-                            + EnumChatFormatting.RESET);
-                }
-            }
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this tile's fluid tank info.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rEUAmount;
-    }
-
-    private static int addDebuggableBlockInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, ArrayList<String> tList,
-        Block tBlock) {
-        int rEUAmount = 0;
-        try {
-            if (tBlock instanceof IDebugableBlock debugableBlock) {
-                rEUAmount += 500;
-                final ArrayList<String> temp = debugableBlock.getDebugInfo(aPlayer, aX, aY, aZ, 3);
-                if (temp != null) tList.addAll(temp);
-            }
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this block's debug info.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rEUAmount;
-    }
-
-    private static void addPollutionInfo(ArrayList<String> tList, Chunk currentChunk) {
-        if (Pollution.hasPollution(currentChunk)) {
-            tList.add(
-                GTUtility.trans("202", "Pollution in Chunk: ") + EnumChatFormatting.RED
-                    + formatNumbers(Pollution.getPollution(currentChunk))
-                    + EnumChatFormatting.RESET
-                    + GTUtility.trans("203", " gibbl"));
-        } else {
-            tList.add(
-                EnumChatFormatting.GREEN + GTUtility.trans("204", "No Pollution in Chunk! HAYO!")
-                    + EnumChatFormatting.RESET);
-        }
-    }
-
-    private static void addUndergroundFluidInfo(EntityPlayer aPlayer, ArrayList<String> tList, Chunk currentChunk) {
-        if (aPlayer.capabilities.isCreativeMode) {
-            final FluidStack tFluid = undergroundOilReadInformation(currentChunk); // -# to only read
-            if (tFluid != null) tList.add(
-                EnumChatFormatting.GOLD + tFluid.getLocalizedName()
-                    + EnumChatFormatting.RESET
-                    + ": "
-                    + EnumChatFormatting.YELLOW
-                    + formatNumbers(tFluid.amount)
-                    + EnumChatFormatting.RESET
-                    + " L");
-            else tList.add(
-                EnumChatFormatting.GOLD + GTUtility.trans("201", "Nothing")
-                    + EnumChatFormatting.RESET
-                    + ": "
-                    + EnumChatFormatting.YELLOW
-                    + '0'
-                    + EnumChatFormatting.RESET
-                    + " L");
-        }
-    }
-
-    private static int addForestryLeavesInfo(ArrayList<String> tList, TileEntity tTileEntity) {
-        int rEUAmount = 0;
-        try {
-            if (Mods.Forestry.isModLoaded()
-                && tTileEntity instanceof forestry.arboriculture.tiles.TileLeaves tileLeaves) {
-                final forestry.api.arboriculture.ITree tree = tileLeaves.getTree();
-                if (tree != null) {
-                    rEUAmount += 1000;
-                    if (!tree.isAnalyzed()) tree.analyze();
-                    tree.addTooltip(tList);
-                }
-            }
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this leaves' info.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rEUAmount;
-    }
-
-    private static int addIC2CropInfo(ArrayList<String> tList, TileEntity tTileEntity) {
-        int rEUAmount = 0;
-        try {
-            if (tTileEntity instanceof ic2.api.crops.ICropTile crop) {
-                rEUAmount += 1000;
-                if (crop.getScanLevel() < 4) crop.setScanLevel((byte) 4);
-                if (crop.getCrop() != null) {
-                    tList.add(
-                        GTUtility.trans("187", "Type -- Crop-Name: ") + crop.getCrop()
-                            .name()
-                            + GTUtility.trans("188", "  Growth: ")
-                            + crop.getGrowth()
-                            + GTUtility.trans("189", "  Gain: ")
-                            + crop.getGain()
-                            + GTUtility.trans("190", "  Resistance: ")
-                            + crop.getResistance());
-                }
-                tList.add(
-                    GTUtility.trans("191", "Plant -- Fertilizer: ") + crop.getNutrientStorage()
-                        + GTUtility.trans("192", "  Water: ")
-                        + crop.getHydrationStorage()
-                        + GTUtility.trans("193", "  Weed-Ex: ")
-                        + crop.getWeedExStorage()
-                        + GTUtility.trans("194", "  Scan-Level: ")
-                        + crop.getScanLevel());
-                tList.add(
-                    GTUtility.trans("195", "Environment -- Nutrients: ") + crop.getNutrients()
-                        + GTUtility.trans("196", "  Humidity: ")
-                        + crop.getHumidity()
-                        + GTUtility.trans("197", "  Air-Quality: ")
-                        + crop.getAirQuality());
-                if (crop.getCrop() != null) {
-                    final StringBuilder tStringB = new StringBuilder();
-                    for (final String tAttribute : crop.getCrop()
-                        .attributes()) {
-                        tStringB.append(", ")
-                            .append(tAttribute);
-                    }
-                    final String tString = tStringB.toString();
-                    tList.add(GTUtility.trans("198", "Attributes:") + tString.replaceFirst(",", E));
-                    tList.add(
-                        GTUtility.trans("199", "Discovered by: ") + crop.getCrop()
-                            .discoveredBy());
-                }
-            }
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this crop's info.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rEUAmount;
-    }
-
-    private static void addDeviceInfo(ArrayList<String> tList, TileEntity tTileEntity) {
-        try {
-            if (tTileEntity instanceof IGregTechDeviceInformation info && info.isGivingInformation()) {
-                tList.addAll(Arrays.asList(info.getInfoData()));
-            }
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's info.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-    }
-
-    private static void addOwnerInfo(ArrayList<String> tList, TileEntity tTileEntity) {
-        try {
-            if (tTileEntity instanceof IGregTechTileEntity gtTE) {
-                tList.add(
-                    GTUtility.trans("186", "Owned by: ") + EnumChatFormatting.BLUE
-                        + gtTE.getOwnerName()
-                        + EnumChatFormatting.RESET);
-            }
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's owner.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-    }
-
-    private static void addEnergyContainerInfo(ArrayList<String> tList, TileEntity tTileEntity) {
-        try {
-            if (tTileEntity instanceof IBasicEnergyContainer energyContainer && energyContainer.getEUCapacity() > 0) {
-                tList.add(
-                    GTUtility.trans("179", "Max IN: ") + EnumChatFormatting.RED
-                        + formatNumbers(energyContainer.getInputVoltage())
-                        + " ("
-                        + GTValues.VN[getTier(energyContainer.getInputVoltage())]
-                        + ") "
-                        + EnumChatFormatting.RESET
-                        + GTUtility.trans("182", " EU at ")
-                        + EnumChatFormatting.RED
-                        + formatNumbers(energyContainer.getInputAmperage())
-                        + EnumChatFormatting.RESET
-                        + GTUtility.trans("183", " A"));
-                tList.add(
-                    GTUtility.trans("181", "Max OUT: ") + EnumChatFormatting.RED
-                        + formatNumbers(energyContainer.getOutputVoltage())
-                        + " ("
-                        + GTValues.VN[getTier(energyContainer.getOutputVoltage())]
-                        + ") "
-                        + EnumChatFormatting.RESET
-                        + GTUtility.trans("182", " EU at ")
-                        + EnumChatFormatting.RED
-                        + formatNumbers(energyContainer.getOutputAmperage())
-                        + EnumChatFormatting.RESET
-                        + GTUtility.trans("183", " A"));
-                tList.add(
-                    GTUtility.trans("184", "Energy: ") + EnumChatFormatting.GREEN
-                        + formatNumbers(energyContainer.getStoredEU())
-                        + EnumChatFormatting.RESET
-                        + " EU / "
-                        + EnumChatFormatting.YELLOW
-                        + formatNumbers(energyContainer.getEUCapacity())
-                        + EnumChatFormatting.RESET
-                        + " EU");
-            }
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's energy info.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-    }
-
-    private static int addCoverableInfo(ForgeDirection side, ArrayList<String> tList, TileEntity tTileEntity) {
-        int rEUAmount = 0;
-        try {
-            if (tTileEntity instanceof ICoverable coverable) {
-                rEUAmount += 300;
-                final String tString = coverable.getCoverAtSide(side)
-                    .getDescription();
-                if (tString != null && !tString.equals(E)) tList.add(tString);
-            }
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's covers.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rEUAmount;
-    }
-
-    private static int addMachineProgressInfo(ArrayList<String> tList, TileEntity tTileEntity) {
-        int rEUAmount = 0;
-        try {
-            if (tTileEntity instanceof IMachineProgress progress) {
-                if (progress.isAllowedToWork() && !progress.hasThingsToDo()) {
-                    tList.add(EnumChatFormatting.RED + "Disabled." + EnumChatFormatting.RESET);
-                }
-                if (progress.wasShutdown() && isStringValid(
-                    progress.getLastShutDownReason()
-                        .getDisplayString())) {
-                    tList.add(
-                        progress.getLastShutDownReason()
-                            .getDisplayString());
-                }
-                rEUAmount += 400;
-                int tValue = 0;
-                if (0 < (tValue = progress.getMaxProgress())) tList.add(
-                    GTUtility.trans("178", "Progress/Load: ") + EnumChatFormatting.GREEN
-                        + formatNumbers(progress.getProgress())
-                        + EnumChatFormatting.RESET
-                        + " / "
-                        + EnumChatFormatting.YELLOW
-                        + formatNumbers(tValue)
-                        + EnumChatFormatting.RESET);
-            }
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's progress.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rEUAmount;
-    }
-
-    private static int addUpgradableMachineInfo(ArrayList<String> tList, TileEntity tTileEntity) {
-        int rEUAmount = 0;
-        try {
-            if (tTileEntity instanceof IUpgradableMachine upgradableMachine) {
-                rEUAmount += 500;
-                if (upgradableMachine.isMuffled()) tList
-                    .add(EnumChatFormatting.GREEN + GTUtility.trans("177", "Is Muffled") + EnumChatFormatting.RESET);
-            }
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's upgrades.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rEUAmount;
-    }
-
-    private static int addIC2EnergyStorageInfo(ArrayList<String> tList, TileEntity tTileEntity) {
-        int rEUAmount = 0;
-        try {
-            if (tTileEntity instanceof ic2.api.tile.IEnergyStorage storage) {
-                rEUAmount += 200;
-                tList.add(
-                    GTUtility.trans("176", "Contained Energy: ") + EnumChatFormatting.YELLOW
-                        + formatNumbers(storage.getStored())
-                        + EnumChatFormatting.RESET
-                        + " EU / "
-                        + EnumChatFormatting.YELLOW
-                        + formatNumbers(storage.getCapacity())
-                        + EnumChatFormatting.RESET
-                        + " EU");
-            }
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's IC2 energy info.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rEUAmount;
-    }
-
-    private static int addIC2EnergyConductorInfo(ArrayList<String> tList, TileEntity tTileEntity) {
-        int rEUAmount = 0;
-        try {
-            if (tTileEntity instanceof ic2.api.energy.tile.IEnergyConductor conductor) {
-                rEUAmount += 200;
-                tList.add(
-                    GTUtility.trans("175", "Conduction Loss: ") + EnumChatFormatting.YELLOW
-                        + conductor.getConductionLoss()
-                        + EnumChatFormatting.RESET);
-            }
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's EU conduction info.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rEUAmount;
-    }
-
-    private static int addIC2WrenchableInfo(EntityPlayer aPlayer, ArrayList<String> tList, TileEntity tTileEntity) {
-        int rEUAmount = 0;
-        try {
-            if (tTileEntity instanceof ic2.api.tile.IWrenchable wrenchable) {
-                rEUAmount += 100;
-                tList.add(
-                    GTUtility.trans("171", "Facing: ") + EnumChatFormatting.GREEN
-                        + wrenchable.getFacing()
-                        + EnumChatFormatting.RESET
-                        + GTUtility.trans("172", " / Chance: ")
-                        + EnumChatFormatting.YELLOW
-                        + (wrenchable.getWrenchDropRate() * 100)
-                        + EnumChatFormatting.RESET
-                        + "%");
-                tList.add(
-                    wrenchable.wrenchCanRemove(aPlayer)
-                        ? EnumChatFormatting.GREEN + GTUtility.trans("173", "You can remove this with a Wrench")
-                            + EnumChatFormatting.RESET
-                        : EnumChatFormatting.RED + GTUtility.trans("174", "You can NOT remove this with a Wrench")
-                            + EnumChatFormatting.RESET);
-            }
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's IC@ wrenchability.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rEUAmount;
-    }
-
-    private static int addAlignmentInfo(ArrayList<String> tList, TileEntity tTileEntity) {
-        int rEUAmount = 0;
-        try {
-            if (tTileEntity instanceof IAlignmentProvider alignmentProvider) {
-                final IAlignment tAlignment = alignmentProvider.getAlignment();
-                if (tAlignment != null) {
-                    rEUAmount += 100;
-                    tList.add(
-                        GTUtility.trans("219", "Extended Facing: ") + EnumChatFormatting.GREEN
-                            + tAlignment.getExtendedFacing()
-                            + EnumChatFormatting.RESET);
-                }
-            }
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's alignment info.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rEUAmount;
-    }
-
-    private static int addReactorInfo(ArrayList<String> tList, TileEntity tTileEntity) {
-        int rEUAmount = 0;
-        try {
-            if (tTileEntity instanceof ic2.api.reactor.IReactor reactor) {
-                rEUAmount += 500;
-                tList.add(
-                    GTUtility.trans("168", "Heat: ") + EnumChatFormatting.GREEN
-                        + formatNumbers(reactor.getHeat())
-                        + EnumChatFormatting.RESET
-                        + " / "
-                        + EnumChatFormatting.YELLOW
-                        + formatNumbers(reactor.getMaxHeat())
-                        + EnumChatFormatting.RESET);
-                tList.add(
-                    GTUtility.trans("169", "HEM: ") + EnumChatFormatting.YELLOW
-                        + reactor.getHeatEffectModifier()
-                        + EnumChatFormatting.RESET);
-            }
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this reactor's info.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rEUAmount;
-    }
-
     /**
      * @deprecated Use {@link StatCollector}
      */
@@ -3012,18 +2544,6 @@ public class GTUtility {
         });
     }
 
-    public static String formatNumbers(BigInteger aNumber) {
-        return getDecimalFormat().format(aNumber);
-    }
-
-    public static String formatNumbers(long aNumber) {
-        return getDecimalFormat().format(aNumber);
-    }
-
-    public static String formatNumbers(double aNumber) {
-        return getDecimalFormat().format(aNumber);
-    }
-
     public static String scientificFormat(long aNumber) {
         DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
         dfs.setExponentSeparator("e");
@@ -3072,8 +2592,7 @@ public class GTUtility {
      * Check if stack has enough items of given gregtech material (will be oredicted) and subtract from stack, if
      * there's no creative or 111 stack.
      */
-    public static boolean consumeItems(EntityPlayer player, ItemStack stack, gregtech.api.enums.Materials mat,
-        int count) {
+    public static boolean consumeItems(EntityPlayer player, ItemStack stack, Materials mat, int count) {
         if (stack != null && GTOreDictUnificator.getItemData(stack).mMaterial.mMaterial == mat
             && stack.stackSize >= count) {
             if ((!player.capabilities.isCreativeMode) && (stack.stackSize != 111)) stack.stackSize -= count;
@@ -3337,15 +2856,7 @@ public class GTUtility {
             if (aFluid != null) tData.append(aFluid.amount)
                 .append(",")
                 .append(aFluid.getLocalizedName())
-                .append(","); // TODO
-            // CHECK
-            // IF
-            // THAT
-            // /5000
-            // is
-            // needed
-            // (Not
-            // needed)
+                .append(",");
             for (String tString : aOres) {
                 tData.append(tString)
                     .append(",");
@@ -3613,26 +3124,6 @@ public class GTUtility {
         return false;
     }
 
-    /**
-     * Do <b>NOT</b> mutate the returned {@code ItemStack}! We return {@code ItemStack} instead of {@code Block} so that
-     * we can include metadata.
-     */
-    public static ItemStack getCobbleForOre(Block ore, short metaData) {
-        // We need to convert small ores to regular ores because small ores don't have associated ItemData.
-        // We take the modulus of the metadata by 16000 because that is the magic number to convert small ores to
-        // regular ores.
-        // See: GT_TileEntity_Ores.java
-        ItemData association = GTOreDictUnificator
-            .getAssociation(new ItemStack(Item.getItemFromBlock(ore), 1, metaData % 16000));
-        if (association != null) {
-            Supplier<ItemStack> supplier = sOreToCobble.get(association.mPrefix);
-            if (supplier != null) {
-                return supplier.get();
-            }
-        }
-        return new ItemStack(Blocks.cobblestone);
-    }
-
     public static Optional<GTRecipe> reverseShapelessRecipe(ItemStack output, Object... aRecipe) {
         if (output == null) {
             return Optional.empty();
@@ -3668,9 +3159,11 @@ public class GTUtility {
 
         return Optional.of(
             new GTRecipe(
-                false,
                 new ItemStack[] { output },
                 inputs.toArray(new ItemStack[0]),
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -3740,9 +3233,11 @@ public class GTUtility {
 
         return Optional.of(
             new GTRecipe(
-                false,
                 new ItemStack[] { output },
                 inputs.toArray(new ItemStack[0]),
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -4570,13 +4065,13 @@ public class GTUtility {
             ret.append(EnumChatFormatting.RESET);
             ret.append(
                 amountText + EnumChatFormatting.GOLD
-                    + formatNumbers(amount)
+                    + formatNumber(amount)
                     + (isLiquid ? "L" : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perTickText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perTick))
+                    + formatNumber(roundNumber.apply(perTick))
                     + (isLiquid ? "L" : "")
                     + (perSecond > 1_000_000
                         ? EnumChatFormatting.WHITE + " ["
@@ -4589,7 +4084,7 @@ public class GTUtility {
             ret.append("\n");
             ret.append(
                 perSecondText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perSecond))
+                    + formatNumber(roundNumber.apply(perSecond))
                     + (isLiquid ? "L" : "")
                     + (perSecond > 1_000_000
                         ? EnumChatFormatting.WHITE + " ["
@@ -4602,7 +4097,7 @@ public class GTUtility {
             ret.append("\n");
             ret.append(
                 perMinuteText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perMinute))
+                    + formatNumber(roundNumber.apply(perMinute))
                     + (isLiquid ? "L" : "")
                     + (perMinute > 1_000_000
                         ? EnumChatFormatting.WHITE + " ["
@@ -4615,7 +4110,7 @@ public class GTUtility {
             ret.append("\n");
             ret.append(
                 perHourText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perHour))
+                    + formatNumber(roundNumber.apply(perHour))
                     + (isLiquid ? "L" : "")
                     + (perHour > 1_000_000
                         ? EnumChatFormatting.WHITE + " ["
@@ -4628,7 +4123,7 @@ public class GTUtility {
             ret.append("\n");
             ret.append(
                 perDayText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perDay))
+                    + formatNumber(roundNumber.apply(perDay))
                     + (isLiquid ? "L" : "")
                     + (perDay > 1_000_000
                         ? EnumChatFormatting.WHITE + " ["

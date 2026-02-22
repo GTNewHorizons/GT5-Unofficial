@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 
@@ -191,6 +192,17 @@ public class OrePrefixes {
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
     public static final OrePrefixes oreEnd = new OrePrefixBuilder("oreEnd").withDefaultLocalName("End Ores")
         .withPrefix("End ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix of EFR */
+    public static final OrePrefixes oreDeepslate = new OrePrefixBuilder("oreDeepslate")
+        .withDefaultLocalName("Deepslate Ores")
+        .withPrefix("Deepslate ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -1090,6 +1102,19 @@ public class OrePrefixes {
     /** IGNORE */
     public static final OrePrefixes block_ = new OrePrefixBuilder("block_").withDefaultLocalName("Random Blocks")
         .defaultStackSize(OTHER_STACK_SIZE)
+        .build();
+
+    /** A decorative sheet metal block. */
+    public static final OrePrefixes sheetmetal = new OrePrefixBuilder("sheetmetal")
+        .withDefaultLocalName("Sheetmetal Blocks")
+        .withNameKey("gt.component.sheetmetal")
+        .unifiable()
+        .recyclable()
+        .materialBased()
+        .materialAmount(M * 2)
+        .materialGenerationBits(METAL)
+        .defaultStackSize(OTHER_STACK_SIZE)
+        .textureIndex(OrePrefixTextureID.BLOCK_SHEETMETAL)
         .build();
 
     /** Storage Block consisting out of 9 Ingots/Gems/Dusts. Introduced by CovertJaguar */
@@ -2073,6 +2098,7 @@ public class OrePrefixes {
     private final @NotNull String defaultLocalName;
     private final @NotNull String materialPrefix;
     private final @NotNull String materialPostfix;
+    private final @Nullable String nameKey;
     private final boolean isUnifiable;
     private final boolean isMaterialBased;
     private final boolean isSelfReferencing;
@@ -2091,6 +2117,7 @@ public class OrePrefixes {
         @NotNull String defaultLocalName,
         @NotNull String materialPrefix,
         @NotNull String materialPostfix,
+        @Nullable String nameKey,
         boolean isUnifiable,
         boolean isMaterialBased,
         boolean isSelfReferencing,
@@ -2108,6 +2135,7 @@ public class OrePrefixes {
         this.defaultLocalName = defaultLocalName;
         this.materialPrefix = materialPrefix;
         this.materialPostfix = materialPostfix;
+        this.nameKey = nameKey;
         this.isUnifiable = isUnifiable;
         this.isMaterialBased = isMaterialBased;
         this.isSelfReferencing = isSelfReferencing;
@@ -2152,7 +2180,7 @@ public class OrePrefixes {
     }
 
     private void addAspect(TCAspects aspect, int amount) {
-        new TC_AspectStack(TCAspects.MACHINA, 1).addToAspectList(mAspects);
+        new TC_AspectStack(aspect, amount).addToAspectList(mAspects);
     }
 
     public @NotNull String getDefaultLocalName() {
@@ -2355,6 +2383,9 @@ public class OrePrefixes {
 
         wireFine.mCondition = SubTag.METAL;
 
+        sheetmetal.mCondition = new ICondition.And<>(
+            obj -> obj instanceof Materials mat && mat.hasMetalItems(),
+            new ICondition.Nor<>(SubTag.STRETCHY, SubTag.SOFT, SubTag.BOUNCY, SubTag.NO_SMASHING));
         // -----
 
         pipeRestrictiveTiny.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount);
@@ -2362,12 +2393,6 @@ public class OrePrefixes {
         pipeRestrictiveMedium.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 3);
         pipeRestrictiveLarge.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 4);
         pipeRestrictiveHuge.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 5);
-        cableGt16.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount * 5);
-        cableGt12.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount * 4);
-        cableGt08.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount * 3);
-        cableGt04.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount * 2);
-        cableGt02.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount);
-        cableGt01.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount);
         bucket.mSecondaryMaterial = new MaterialStack(Materials.Iron, ingot.materialAmount * 3);
         bucketClay.mSecondaryMaterial = new MaterialStack(Materials.Clay, dust.materialAmount * 5);
         CELL_TYPES
@@ -2824,6 +2849,11 @@ public class OrePrefixes {
                 case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
                 default -> materialPrefix + "%material" + materialPostfix;
             };
+        }
+
+        if (nameKey != null) {
+            // Replace the %s with %material so that it works with the existing system.
+            return GTUtility.translate(nameKey, "%material");
         }
 
         // Use Standard Localization

@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
@@ -17,28 +18,29 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
-import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
-import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
-import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
-import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
+import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.Modules;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncHypervisor;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValues;
 
 public class GeneralInfoPanel {
 
     private static final int SIZE = 300;
     private static final int OFFSET_SIZE = 280;
 
-    public static ModularPanel openPanel(SyncHypervisor hypervisor) {
-        ModularPanel panel = hypervisor.getModularPanel(Panels.GENERAL_INFO);
-        ForgeOfGodsData data = hypervisor.getData();
+    public static ModularPanel openModulePanel(SyncHypervisor hypervisor, Modules<?> module) {
+        ModularPanel panel = hypervisor.getModularPanel(module, Panels.GENERAL_INFO);
 
-        registerSyncValues(hypervisor);
+        registerSyncValues(module, hypervisor);
 
         panel.size(SIZE)
             .padding(10, 0, 10, 0)
             .background(GTGuiTextures.BACKGROUND_GLOW_WHITE)
             .disableHoverBackground()
             .child(ForgeOfGodsGuiUtil.panelCloseButton());
+
+        BooleanSyncValue inversionSyncer = SyncValues.INVERSION.lookupFrom(module, Panels.GENERAL_INFO, hypervisor);
 
         DynamicSyncHandler handler = new DynamicSyncHandler().widgetProvider(($, $$) -> {
             ListWidget<IWidget, ?> textList = new ListWidget<>().size(OFFSET_SIZE);
@@ -79,7 +81,7 @@ public class GeneralInfoPanel {
             textList.child(moduleToC);
             textList.child(upgradeToC);
             textList.child(milestoneToC);
-            textList.childIf(data.isInversion(), inversionToC);
+            textList.childIf(inversionSyncer.getBoolValue(), () -> inversionToC);
 
             textList.child(fuelHeader);
             textList.child(fuelText);
@@ -89,14 +91,13 @@ public class GeneralInfoPanel {
             textList.child(upgradeText);
             textList.child(milestoneHeader);
             textList.child(milestoneText);
-            textList.childIf(data.isInversion(), inversionHeader);
-            textList.childIf(data.isInversion(), inversionText);
+            textList.childIf(inversionSyncer.getBoolValue(), () -> inversionHeader);
+            textList.childIf(inversionSyncer.getBoolValue(), () -> inversionText);
 
             return textList;
         });
 
-        SyncValues.INVERSION.lookupFrom(Panels.GENERAL_INFO, hypervisor)
-            .setChangeListener(() -> handler.notifyUpdate($ -> {}));
+        inversionSyncer.setChangeListener(() -> handler.notifyUpdate($ -> {}));
 
         panel.child(
             new DynamicSyncedWidget<>().coverChildren()
@@ -105,8 +106,8 @@ public class GeneralInfoPanel {
         return panel;
     }
 
-    private static void registerSyncValues(SyncHypervisor hypervisor) {
-        SyncValues.INVERSION.registerFor(Panels.GENERAL_INFO, hypervisor);
+    private static void registerSyncValues(Modules<?> module, SyncHypervisor hypervisor) {
+        SyncValues.INVERSION.registerFor(module, Panels.GENERAL_INFO, hypervisor);
     }
 
     private static TextWidget<?> createHeader(String langKey) {

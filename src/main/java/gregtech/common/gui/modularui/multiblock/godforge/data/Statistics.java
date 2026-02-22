@@ -1,11 +1,11 @@
 package gregtech.common.gui.modularui.multiblock.godforge.data;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GTUtility;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 import tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath;
@@ -49,19 +49,19 @@ public enum Statistics {
             }
             case PARALLEL -> {
                 GodforgeMath.calculateMaxParallelForModules(module, data, fuelFactor);
-                yield String.valueOf(format.format(module.getMaxParallel()));
+                yield String.valueOf(format.format(module.getCalculatedMaxParallel()));
             }
             case SPEED_BONUS -> {
                 GodforgeMath.calculateSpeedBonusForModules(module, data);
-                yield String.valueOf(GTUtility.formatNumbers(module.getSpeedBonus()));
+                yield String.valueOf(formatNumber(module.getSpeedBonus()));
             }
             case ENERGY_DISCOUNT -> {
                 GodforgeMath.calculateEnergyDiscountForModules(module, data);
-                yield String.valueOf(GTUtility.formatNumbers(module.getEnergyDiscount()));
+                yield String.valueOf(formatNumber(module.getEnergyDiscount()));
             }
             case OC_DIVISOR -> {
                 GodforgeMath.setMiscModuleParameters(module, data);
-                yield String.valueOf(GTUtility.formatNumbers(module.getOverclockTimeFactor()));
+                yield String.valueOf(formatNumber(module.getOverclockTimeFactor()));
             }
             case PROCESSING_VOLTAGE -> {
                 GodforgeMath.calculateProcessingVoltageForModules(module, data, fuelFactor);

@@ -7,6 +7,8 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.ValueSyncHandler;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValue.ForgeOfGodsSyncValue;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValues;
 
 public enum Milestones {
 
@@ -88,16 +90,17 @@ public enum Milestones {
     private final String titleLangKey;
     private final String progressLangKey;
 
-    private final SyncValues<? extends ValueSyncHandler<? extends Number>> totalSyncer;
-    private final SyncValues<IntSyncValue> levelSyncer;
-    private final SyncValues<FloatSyncValue> progressSyncer;
-    private final SyncValues<FloatSyncValue> progressInvertedSyncer;
+    private final ForgeOfGodsSyncValue<? extends ValueSyncHandler<? extends Number>> totalSyncer;
+    private final ForgeOfGodsSyncValue<IntSyncValue> levelSyncer;
+    private final ForgeOfGodsSyncValue<FloatSyncValue> progressSyncer;
+    private final ForgeOfGodsSyncValue<FloatSyncValue> progressInvertedSyncer;
 
     Milestones(UITexture mainBackground, int mainWidth, int mainHeight, UITexture symbolBackground, int symbolWidth,
         int symbolHeight, UITexture progressBarMainOverlay, UITexture progressBarInvertedOverlay, Alignment position,
         String titleLangKey, String progressLangKey,
-        SyncValues<? extends ValueSyncHandler<? extends Number>> totalSyncer, SyncValues<IntSyncValue> levelSyncer,
-        SyncValues<FloatSyncValue> progressSyncer, SyncValues<FloatSyncValue> progressInvertedSyncer) {
+        ForgeOfGodsSyncValue<? extends ValueSyncHandler<? extends Number>> totalSyncer,
+        ForgeOfGodsSyncValue<IntSyncValue> levelSyncer, ForgeOfGodsSyncValue<FloatSyncValue> progressSyncer,
+        ForgeOfGodsSyncValue<FloatSyncValue> progressInvertedSyncer) {
         this.mainBackground = mainBackground;
         this.mainWidth = mainWidth;
         this.mainHeight = mainHeight;
@@ -163,19 +166,19 @@ public enum Milestones {
         return progressLangKey;
     }
 
-    public SyncValues<? extends ValueSyncHandler<? extends Number>> getTotalSyncer() {
+    public ForgeOfGodsSyncValue<? extends ValueSyncHandler<? extends Number>> getTotalSyncer() {
         return totalSyncer;
     }
 
-    public SyncValues<IntSyncValue> getLevelSyncer() {
+    public ForgeOfGodsSyncValue<IntSyncValue> getLevelSyncer() {
         return levelSyncer;
     }
 
-    public SyncValues<FloatSyncValue> getProgressSyncer() {
+    public ForgeOfGodsSyncValue<FloatSyncValue> getProgressSyncer() {
         return progressSyncer;
     }
 
-    public SyncValues<FloatSyncValue> getProgressInvertedSyncer() {
+    public ForgeOfGodsSyncValue<FloatSyncValue> getProgressInvertedSyncer() {
         return progressInvertedSyncer;
     }
 }

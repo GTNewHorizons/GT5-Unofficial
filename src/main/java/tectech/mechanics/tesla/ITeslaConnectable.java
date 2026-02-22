@@ -3,6 +3,7 @@ package tectech.mechanics.tesla;
 import static java.lang.Math.sqrt;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -117,10 +118,11 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
             teslaNodeSet.add(origin);
         }
 
-        public static long powerTeslaNodeMap(ITeslaConnectable origin) {
+        public static Map<ITeslaConnectableSimple, Integer> powerTeslaNodeMap(ITeslaConnectable origin) {
             long remainingAmperes = origin.getTeslaOutputCurrent();
             boolean canSendPower = !origin.isTeslaReadyToReceive() && remainingAmperes > 0;
 
+            Map<ITeslaConnectableSimple, Integer> ampsUsedMap = new HashMap<>();
             if (canSendPower) {
                 for (Map.Entry<Integer, ITeslaConnectableSimple> Rx : origin.getTeslaNodeMap()
                     .entries()) {
@@ -165,6 +167,7 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
                                         target.getTeslaPosition(),
                                         origin.getTeslaDimension()));
                             remainingAmperes--;
+                            ampsUsedMap.merge(target, 1, Integer::sum);
                             // Update the can send power flag each time we send power
                             canSendPower = (origin.getTeslaStoredEnergy() < outputVoltageConsumption
                                 || remainingAmperes > 0);
@@ -178,7 +181,7 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
                     if (!canSendPower) break;
                 }
             }
-            return origin.getTeslaOutputCurrent() - remainingAmperes;
+            return ampsUsedMap;
         }
     }
 }

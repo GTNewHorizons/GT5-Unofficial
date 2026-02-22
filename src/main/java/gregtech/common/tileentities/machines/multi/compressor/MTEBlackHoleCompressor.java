@@ -79,7 +79,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
-import gregtech.common.tileentities.render.TileEntityBlackhole;
+import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.multi.base.SoundLoopAnyBlock;
@@ -135,7 +135,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             buildHatchAdder(MTEBlackHoleCompressor.class)
                 .atLeast(Energy.or(ExoticEnergy), InputBus, OutputBus, InputHatch, SpecialHatchElement.UtilityHatch)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(12))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(MTEBlackHoleCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 12))))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 11))
@@ -145,7 +145,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             buildHatchAdder(MTEBlackHoleCompressor.class).atLeast(InputHatch)
                 .adder(MTEBlackHoleCompressor::addSpacetimeInput)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(11))
-                .dot(2)
+                .hint(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings10, 11)))
         .build();
 
@@ -497,16 +497,21 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 + tag.getInteger("parallels"));
         if (tag.getByte("blackHoleStatus") != 1) {
             if (tag.getFloat("blackHoleStability") > 0) {
-                currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Active");
                 currentTip.add(
-                    EnumChatFormatting.DARK_PURPLE + "Stability: "
-                        + EnumChatFormatting.BOLD
-                        + Math.round(tag.getFloat("blackHoleStability"))
-                        + "%");
+                    EnumChatFormatting.DARK_PURPLE
+                        + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.active"));
+                currentTip.add(
+                    EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.black_hole_compressor.stability",
+                        "" + EnumChatFormatting.BOLD + Math.round(tag.getFloat("blackHoleStability"))));
             } else {
-                currentTip.add(EnumChatFormatting.RED + "BLACK HOLE UNSTABLE");
+                currentTip.add(
+                    EnumChatFormatting.RED
+                        + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.unstable"));
             }
-        } else currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Offline");
+        } else currentTip.add(
+            EnumChatFormatting.DARK_PURPLE
+                + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.offline"));
     }
 
     private int getModeFromCircuit(ItemStack[] t) {
@@ -549,15 +554,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     blackHoleStatus = 2;
                     createRenderBlock();
                 } else if (ItemList.Black_Hole_Closer.isStackEqual(removed) && blackHoleStatus != 1) {
-                    blackHoleStatus = 1;
-                    blackHoleStability = 100;
-                    catalyzingCostModifier = 1;
-                    catalyzingCounter = 0;
-                    if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
-                    collapseTimer = 40;
-                    for (MTEBlackHoleUtility hatch : utilityHatches) {
-                        hatch.updateRedstoneOutput(false);
-                    }
+                    closeBlackHole();
                 } else if (ItemList.Black_Hole_Stabilizer.isStackEqual(removed) && blackHoleStatus == 1) {
                     blackHoleStatus = 4;
                     createRenderBlock();
@@ -717,19 +714,19 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         blackHoleStability -= stabilityDecrease;
 
         // Close black hole and reset if it has been unstable for 15 minutes or more
-        if (blackHoleStability <= -900) {
-            blackHoleStatus = 1;
-            blackHoleStability = 100;
-            catalyzingCostModifier = 1;
-            rendererTileEntity = null;
-            destroyRenderBlock();
+        if (blackHoleStability <= -900) closeBlackHole();
+    }
 
-            // Update all the utility hatches
-            for (MTEBlackHoleUtility hatch : utilityHatches) {
-                hatch.updateRedstoneOutput(false);
-            }
+    private void closeBlackHole() {
+        blackHoleStatus = 1;
+        blackHoleStability = 100;
+        catalyzingCostModifier = 1;
+        catalyzingCounter = 0;
+        if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
+        collapseTimer = 40;
+        for (MTEBlackHoleUtility hatch : utilityHatches) {
+            hatch.updateRedstoneOutput(false);
         }
-
     }
 
     @Override
@@ -784,7 +781,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     private boolean shouldRender = true;
-    private TileEntityBlackhole rendererTileEntity = null;
+    private RenderingTileEntityBlackhole rendererTileEntity = null;
 
     // Returns true if render was actually created
     private boolean createRenderBlock() {
@@ -799,7 +796,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .setBlock(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z, Blocks.air);
         base.getWorld()
             .setBlock(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z, GregTechAPI.sBlackholeRender);
-        rendererTileEntity = (TileEntityBlackhole) base.getWorld()
+        rendererTileEntity = (RenderingTileEntityBlackhole) base.getWorld()
             .getTileEntity(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z);
 
         rendererTileEntity.startScaleChange(true);

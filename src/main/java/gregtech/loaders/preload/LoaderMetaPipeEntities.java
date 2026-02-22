@@ -20,7 +20,6 @@ import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockFrameBox;
 
 public final class LoaderMetaPipeEntities implements Runnable {
@@ -60,9 +59,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     && GTOreDictUnificator.get(OrePrefixes.stick, material, 1) != null) {
                     // Auto generate frame box recipe in an assembler.
                     GTValues.RA.stdBuilder()
-                        .itemInputs(
-                            GTOreDictUnificator.get(OrePrefixes.stick, material, 4),
-                            GTUtility.getIntegratedCircuit(4))
+                        .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, material, 4))
+                        .circuit(4)
                         .itemOutputs(block.getStackForm(1, meta))
                         .duration(3 * SECONDS + 4 * TICKS)
                         .eut(calculateRecipeEU(material, 7))

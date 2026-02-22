@@ -11,9 +11,12 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -21,7 +24,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -269,8 +271,6 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         return 8;
     }
 
-    private static final String[] mModeStr = { "Blocks", "TileEntities" };
-
     private static final String[] mUnlocalizedModeStr = { "GT5U.word_accelerator.mode.blocks",
         "GT5U.word_accelerator.mode.tile_entities" };
 
@@ -282,9 +282,12 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         getBaseMetaTileEntity().issueTileUpdate();
 
         markDirty();
-        PlayerChatHelper.SendInfo(
-            pPlayer,
-            String.format("Machine acceleration changed to x%d", mAccelerateStatic[getSpeedTierOverride()]));
+        if (pPlayer instanceof EntityPlayerMP playerMP) {
+            playerMP.addChatMessage(
+                new ChatComponentTranslation(
+                    "tt.block.world_accelerator.set_speed",
+                    mAccelerateStatic[getSpeedTierOverride()]));
+        }
 
         return true;
     }
@@ -297,13 +300,26 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
                 incRadiusTierOverride();
 
                 markDirty();
-                PlayerChatHelper
-                    .SendInfo(pPlayer, String.format("Machine range changed to %d Blocks", getRadiusTierOverride()));
-            } else PlayerChatHelper.SendError(pPlayer, "Can't change range; Machine is in TileEntity Mode!");
+                if (pPlayer instanceof EntityPlayerMP playerMP) {
+                    playerMP.addChatMessage(
+                        new ChatComponentTranslation("tt.block.world_accelerator.set_range", getRadiusTierOverride()));
+                }
+            } else {
+                if (pPlayer instanceof EntityPlayerMP playerMP) {
+                    playerMP.addChatMessage(
+                        new ChatComponentTranslation("tt.block.world_accelerator.set_range_fail")
+                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+                }
+            }
         } else {
             mMode = (byte) (mMode == 0x00 ? 0x01 : 0x00);
             markDirty();
-            PlayerChatHelper.SendInfo(pPlayer, String.format("Switched mode to: %s", mModeStr[mMode]));
+            if (pPlayer instanceof EntityPlayerMP playerMP) {
+                playerMP.addChatMessage(
+                    new ChatComponentTranslation(
+                        "tt.block.world_accelerator.set_mode",
+                        new ChatComponentTranslation(mUnlocalizedModeStr[mMode])));
+            }
         }
     }
 

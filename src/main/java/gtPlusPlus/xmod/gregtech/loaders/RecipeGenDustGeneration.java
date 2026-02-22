@@ -6,10 +6,8 @@ import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -19,6 +17,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
@@ -27,7 +26,6 @@ import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
 public class RecipeGenDustGeneration extends RecipeGenBase {
 
@@ -49,52 +47,13 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         final ItemStack smallDust = M.getSmallDust(1);
         final ItemStack tinyDust = M.getTinyDust(1);
         if (tinyDust != null && normalDust != null) {
-            if (RecipeUtils.addShapedRecipe(
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                normalDust)) {
-                Logger.INFO("9 Tiny dust to 1 Dust Recipe: " + M.getLocalizedName() + " - Success");
-            } else {
-                Logger.INFO("9 Tiny dust to 1 Dust Recipe: " + M.getLocalizedName() + " - Failed");
-            }
-
-            if (RecipeUtils
-                .addShapedRecipe(normalDust, null, null, null, null, null, null, null, null, M.getTinyDust(9))) {
-                Logger.INFO("9 Tiny dust from 1 Recipe: " + M.getLocalizedName() + " - Success");
-            } else {
-                Logger.INFO("9 Tiny dust from 1 Recipe: " + M.getLocalizedName() + " - Failed");
-            }
+            GTModHandler.addCraftingRecipe(normalDust, new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
+            GTModHandler.addCraftingRecipe(M.getTinyDust(9), new Object[] { "D  ", "   ", "   ", 'D', normalDust });
         }
 
         if (smallDust != null && normalDust != null) {
-            if (RecipeUtils.addShapedRecipe(
-                smallDust,
-                smallDust,
-                null,
-                smallDust,
-                smallDust,
-                null,
-                null,
-                null,
-                null,
-                normalDust)) {
-                Logger.INFO("4 Small dust to 1 Dust Recipe: " + M.getLocalizedName() + " - Success");
-            } else {
-                Logger.INFO("4 Small dust to 1 Dust Recipe: " + M.getLocalizedName() + " - Failed");
-            }
-            if (RecipeUtils
-                .addShapedRecipe(null, normalDust, null, null, null, null, null, null, null, M.getSmallDust(4))) {
-                Logger.INFO("4 Small dust from 1 Dust Recipe: " + M.getLocalizedName() + " - Success");
-            } else {
-                Logger.INFO("4 Small dust from 1 Dust Recipe: " + M.getLocalizedName() + " - Failed");
-            }
+            GTModHandler.addCraftingRecipe(normalDust, new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
+            GTModHandler.addCraftingRecipe(M.getSmallDust(4), new Object[] { " D ", "   ", "   ", 'D', normalDust });
         }
     }
 
@@ -150,27 +109,19 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         // Relog input values, with stack sizes
         Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
 
-        // Get us four ItemStacks to input into the mixer
-        ItemStack[] input = new ItemStack[4];
+        ItemStack[] cleanedInputs = Arrays.stream(inputStacks)
+            .filter(Objects::nonNull)
+            .toArray(ItemStack[]::new);
 
-        input[0] = (inputStacks.length >= 1) ? ((inputStacks[0] == null) ? null : inputStacks[0]) : null;
-        input[1] = (inputStacks.length >= 2) ? ((inputStacks[1] == null) ? null : inputStacks[1]) : null;
-        input[2] = (inputStacks.length >= 3) ? ((inputStacks[2] == null) ? null : inputStacks[2]) : null;
-        input[3] = (inputStacks.length >= 4) ? ((inputStacks[3] == null) ? null : inputStacks[3]) : null;
+        // Circuit Number Declaration
+        int circuitNumber = -1;
 
         if (inputStacks.length == 1) {
-            input[1] = input[0];
-            input[0] = GTUtility.getIntegratedCircuit(inputStacks.length + 10);
+            circuitNumber = 11;
         } else if (inputStacks.length == 2) {
-            input[2] = input[1];
-            input[1] = input[0];
-            input[0] = GTUtility.getIntegratedCircuit(inputStacks.length + 10);
-
+            circuitNumber = 12;
         } else if (inputStacks.length == 3) {
-            input[3] = input[2];
-            input[2] = input[1];
-            input[1] = input[0];
-            input[0] = GTUtility.getIntegratedCircuit(inputStacks.length + 10);
+            circuitNumber = 13;
         }
 
         // Add mixer Recipe
@@ -206,46 +157,37 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             }
         }
 
-        input = ItemUtils.cleanItemStackArray(input);
-
         // Add mixer Recipe
-        List<ItemStack> inputs = new ArrayList<>(Arrays.asList(input));
-        inputs.removeIf(Objects::isNull);
-
-        if (oxygen == null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(inputs.toArray(new ItemStack[0]))
-                .itemOutputs(outputStacks)
-                .duration((int) Math.max(material.getMass() * 2L * 1, 1))
-                .eut(material.vVoltageMultiplier)
-                .addTo(mixerRecipes);
-        } else {
-            GTValues.RA.stdBuilder()
-                .itemInputs(inputs.toArray(new ItemStack[0]))
-                .itemOutputs(outputStacks)
-                .fluidInputs(oxygen)
-                .duration((int) Math.max(material.getMass() * 2L * 1, 1))
-                .eut(material.vVoltageMultiplier)
-                .addTo(mixerRecipes);
+        GTRecipeBuilder builder = GTValues.RA.stdBuilder()
+            .itemInputs(cleanedInputs)
+            .itemOutputs(outputStacks);
+        if (oxygen != null) {
+            builder.fluidInputs(oxygen);
         }
+        if (circuitNumber > 0) {
+            builder.circuit(circuitNumber);
+        }
+        builder.duration((int) Math.max(material.getMass() * 2L, 1))
+            .eut(material.vVoltageMultiplier)
+            .addTo(mixerRecipes);
 
         Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
     }
 
-    public static boolean addMixerRecipe_Standalone(final Material material) {
+    public static void addMixerRecipe_Standalone(final Material material) {
         final ItemStack[] inputStacks = material.getMaterialComposites();
         final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
         // Is this a composite?
         if (inputStacks == null) {
             Logger.WARNING("InputStacks == NUll - " + material.getLocalizedName());
-            return false;
+            return;
         }
 
         // Is this a composite?
         Logger.WARNING("mixer length: " + inputStacks.length);
         if (!((inputStacks.length >= 1) && (inputStacks.length <= 4))) {
             Logger.WARNING("InputStacks is out range 1-4 - " + material.getLocalizedName());
-            return false;
+            return;
         }
         // Log Input items
         Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
@@ -255,7 +197,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         // Is smallest ratio invalid?
         if (inputStackSize == null) {
             Logger.WARNING("inputStackSize == NUll - " + material.getLocalizedName());
-            return true;
+            return;
         }
 
         // set stack sizes on an input ItemStack[]
@@ -268,27 +210,11 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         // Relog input values, with stack sizes
         Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
 
-        // Get us four ItemStacks to input into the mixer
-        ItemStack input1, input2, input3, input4;
-        input1 = inputStacks[0];
-        input2 = (inputStacks.length >= 2) ? (input2 = (inputStacks[1] == null) ? null : inputStacks[1]) : null;
-        input3 = (inputStacks.length >= 3) ? (input3 = (inputStacks[2] == null) ? null : inputStacks[2]) : null;
-        input4 = (inputStacks.length >= 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3]) : null;
+        ItemStack[] cleanedInputs = Arrays.stream(inputStacks)
+            .filter(Objects::nonNull)
+            .toArray(ItemStack[]::new);
 
-        if (inputStacks.length == 1) {
-            input2 = input1;
-            input1 = GTUtility.getIntegratedCircuit(20);
-        } else if (inputStacks.length == 2) {
-            input3 = input2;
-            input2 = input1;
-            input1 = GTUtility.getIntegratedCircuit(20);
-
-        } else if (inputStacks.length == 3) {
-            input4 = input3;
-            input3 = input2;
-            input2 = input1;
-            input1 = GTUtility.getIntegratedCircuit(20);
-        }
+        boolean addCircuit = inputStacks.length <= 3;
 
         // Add mixer Recipe
         FluidStack oxygen = GTValues.NF;
@@ -330,26 +256,21 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         }
 
         // Add mixer Recipe
-        if (oxygen == null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(input1, input2, input3, input4)
-                .itemOutputs(outputStacks)
-                .duration((int) Math.max(material.getMass() * 2L * 1, 1))
-                .eut(material.vVoltageMultiplier)
-                .addTo(mixerRecipes);
-        } else {
-            GTValues.RA.stdBuilder()
-                .itemInputs(input1, input2, input3, input4)
-                .itemOutputs(outputStacks)
-                .fluidInputs(oxygen)
-                .duration((int) Math.max(material.getMass() * 2L * 1, 1))
-                .eut(material.vVoltageMultiplier)
-                .addTo(mixerRecipes);
+        GTRecipeBuilder builder = GTValues.RA.stdBuilder()
+            .itemInputs(cleanedInputs)
+            .itemOutputs(outputStacks);
+        if (oxygen != null) {
+            builder.fluidInputs(oxygen);
         }
+        if (addCircuit) {
+            builder.circuit(20);
+        }
+        builder.duration((int) Math.max(material.getMass() * 2L, 1))
+            .eut(material.vVoltageMultiplier)
+            .addTo(mixerRecipes);
 
         Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
 
-        return true;
     }
 
     public static boolean generatePackagerRecipes(Material aMatInfo) {

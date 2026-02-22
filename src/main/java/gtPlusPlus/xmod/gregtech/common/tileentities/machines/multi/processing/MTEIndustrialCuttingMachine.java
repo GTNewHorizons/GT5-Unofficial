@@ -40,8 +40,6 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
     implements ISurvivalConstructable {
 
     private int mCasing;
-    private static final int MACHINEMODE_CUTTER = 0;
-    private static final int MACHINEMODE_SLICER = 1;
 
     private static IStructureDefinition<MTEIndustrialCuttingMachine> STRUCTURE_DEFINITION = null;
 
@@ -96,7 +94,7 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
                     buildHatchAdder(MTEIndustrialCuttingMachine.class)
                         .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(getCasingTextureIndex())
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 13))))
                 .build();
         }

@@ -7,17 +7,21 @@ import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static net.minecraftforge.fluids.FluidContainerRegistry.fillFluidContainer;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -52,7 +56,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.gui.modularui.multiblock.MTECokeOvenGUI;
+import gregtech.common.gui.modularui.multiblock.MTECokeOvenGui;
 import gregtech.common.pollution.Pollution;
 
 public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implements ISurvivalConstructable {
@@ -104,7 +108,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
             'C',
             buildHatchAdder(MTECokeOven.class).atLeast(new HatchElement())
                 .casingIndex(1)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings12, 0)))
         .build();
 
@@ -137,7 +141,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     @Override
     public FluidStack drain(ForgeDirection side, int maxDrain, boolean doDrain) {
         if (side != ForgeDirection.UNKNOWN) return null;
-        if (fluid.amount <= 0) return null;
+        if (fluid == null || fluid.amount <= 0) return null;
         final int toDrain = Math.min(fluid.amount, maxDrain);
         if (doDrain) fluid.amount -= toDrain;
         return GTUtility.copyAmount(toDrain, fluid);
@@ -149,8 +153,8 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     }
 
     @Override
-    protected @NotNull MTECokeOvenGUI getGui() {
-        return new MTECokeOvenGUI(this);
+    protected @NotNull MTECokeOvenGui getGui() {
+        return new MTECokeOvenGui(this);
     }
 
     @Override
@@ -453,5 +457,48 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
             return hatches.add(hatch);
         }
         return false;
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (FluidContainerRegistry.isContainer(aPlayer.getHeldItem())) {
+            if (fluid == null) {
+                return false;
+            }
+            if (aPlayer.capabilities.isCreativeMode) {
+                return false;
+            }
+            ItemStack heldItem = aPlayer.getHeldItem();
+            ItemStack singleHeldItem = heldItem.copy();
+            singleHeldItem.stackSize = 1;
+            if (fluid.amount < 1000) {
+                return false;
+            }
+            FluidStack fluidBucket = fluid.copy();
+            fluidBucket.amount = 1000;
+            ItemStack filledFluidContainer = fillFluidContainer(fluidBucket, singleHeldItem);
+            if (filledFluidContainer == null) {
+                return false;
+            }
+            if (heldItem.stackSize == 1) {
+                aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, filledFluidContainer);
+            } else {
+                aPlayer.inventory.decrStackSize(aPlayer.inventory.currentItem, 1);
+                if (!aPlayer.inventory.addItemStackToInventory(filledFluidContainer)) {
+                    aPlayer.worldObj.spawnEntityInWorld(
+                        new EntityItem(
+                            aPlayer.worldObj,
+                            aPlayer.posX,
+                            aPlayer.posY,
+                            aPlayer.posZ,
+                            filledFluidContainer));
+                }
+            }
+            fluid.amount -= 1000;
+            aPlayer.inventory.markDirty();
+            aPlayer.inventoryContainer.detectAndSendChanges();
+            return true;
+        }
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer);
     }
 }

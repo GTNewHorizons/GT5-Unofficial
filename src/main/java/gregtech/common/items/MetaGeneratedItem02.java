@@ -1789,7 +1789,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             addItem(
                 Food_Large_Sandwich_Steak.ID,
                 "Large Steak Sandwich",
-                "Yes, I once accidentially called it 'Steam Sandwich'",
+                "Yes, I once accidentally called it 'Steam Sandwich'",
                 new GTFoodStat(20, 1.0F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -2399,6 +2399,11 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
         ItemList.Item_Redstone_Sniffer
             .set(new ItemRedstoneSniffer("Item_Redstone_Sniffer", "Redstone Sniffer", "What are these frequencies?!"));
+        ItemList.DroneRemoteInterface.set(
+            new ItemDroneRemoteInterface(
+                "Item_Drone_Remote_Interface",
+                "Drone Remote Interface",
+                "Built-in super powerful navigation beacon!!"));
         ItemList.Vajra_Core.set(addItem(Vajra_Core.ID, "Vajra Core", ""));
         ItemList.Magnetron.set(addItem(Magnetron.ID, "Magnetron", ""));
         ItemList.ChaosLocator
@@ -2410,7 +2415,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 .set(tCrop, ItemList.Crop_Drop_Ferru.get(1L));
             GTUtility.getField(tCrop = Crops.instance.getCropList()[14], "mDrop")
                 .set(tCrop, ItemList.Crop_Drop_Aurelia.get(1L));
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (GTValues.D1) {
                 e.printStackTrace(GTLog.err);
             }
@@ -2541,8 +2546,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         RA.stdBuilder()
             .itemInputs(
                 ItemList.Cover_RedstoneTransmitter.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
-                GTUtility.getIntegratedCircuit(1))
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_AdvancedRedstoneTransmitter.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -2550,53 +2555,43 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         RA.stdBuilder()
             .itemInputs(
                 ItemList.Cover_RedstoneReceiver.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
-                GTUtility.getIntegratedCircuit(1))
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_AdvancedRedstoneReceiver.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_Controller.get(1L),
-                ItemList.Sensor_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_Controller.get(1L), ItemList.Sensor_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessController.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_FluidDetector.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_FluidDetector.get(1L), ItemList.Emitter_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessFluidDetector.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_ItemDetector.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_ItemDetector.get(1L), ItemList.Emitter_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessItemDetector.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_NeedsMaintainance.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_NeedsMaintainance.get(1L), ItemList.Emitter_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessNeedsMaintainance.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_ActivityDetector.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_ActivityDetector.get(1L), ItemList.Emitter_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessActivityDetector.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -2696,13 +2691,13 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .itemInputs(ItemList.Crop_Drop_Plumbilia.get(9L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(extractorRecipes);
         RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Argentia.get(9L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1L))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(extractorRecipes);
         RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Indigo.get(1L))
@@ -2720,13 +2715,13 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .itemInputs(ItemList.Crop_Drop_Coppon.get(9L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1L))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(extractorRecipes);
         RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Tine.get(9L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1L))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(extractorRecipes);
 
     }

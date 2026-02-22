@@ -87,7 +87,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             'C',
             buildHatchAdder(MTEDataBank.class).atLeast(Maintenance, Energy, EnergyMulti, Dynamo, DynamoMulti)
                 .casingIndex(BlockGTCasingsTT.textureOffset)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(TTCasingsContainer.sBlockCasingsTT, 0))
         .addElement(
             'D',
@@ -97,7 +97,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                     DataBankHatches.InboundConnector,
                     DataBankHatches.WirelessOutboundConnector)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 1)
-                .dot(2)
+                .hint(2)
                 .buildAndChain(
                     DataBankHatches.DataStick
                         .newAnyOrCasing(BlockGTCasingsTT.textureOffset + 1, 2, TTCasingsContainer.sBlockCasingsTT, 1)))

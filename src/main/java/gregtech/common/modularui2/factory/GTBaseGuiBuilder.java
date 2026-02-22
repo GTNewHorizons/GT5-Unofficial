@@ -1,37 +1,29 @@
 package gregtech.common.modularui2.factory;
 
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.api.util.item.GhostCircuitItemStackHandler;
 import gregtech.common.covers.Cover;
-import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.modularui2.widget.CoverTabButton;
-import gregtech.common.modularui2.widget.GhostCircuitSlotWidget;
 
 // spotless:off
 /**
@@ -155,7 +147,7 @@ public final class GTBaseGuiBuilder {
             panel.bindPlayerInventory();
         }
         if (doesAddTitle && NetworkUtils.isClient()) {
-            panel.child(createTitle());
+            panel.child(CommonWidgets.createMachineTitle(mte, width));
         }
         if (doesAddCoverTabs) {
             panel.child(createCoverTabs());
@@ -168,34 +160,6 @@ public final class GTBaseGuiBuilder {
         }
         syncManager.addCloseListener($ -> mte.markDirty());
         return panel;
-    }
-
-    private IWidget createTitle() {
-        String title = mte.getLocalName();
-
-        int borderRadius = 5;
-        int maxWidth = width - borderRadius * 2;
-
-        int titleWidth = TextRenderer.getFontRenderer()
-            .getStringWidth(title);
-        int widgetWidth = Math.min(maxWidth, titleWidth);
-
-        int rows = (int) Math.ceil((double) titleWidth / maxWidth);
-        int heightPerRow = (int) (IKey.renderer.getFontHeight());
-        int height = heightPerRow * rows;
-
-        return new SingleChildWidget<>().coverChildren()
-            .topRelAnchor(0, 1)
-            .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
-            .child(
-                IKey.str(title)
-                    .asWidget()
-                    .size(widgetWidth, height)
-                    .widgetTheme(GTWidgetThemes.TEXT_TITLE)
-                    .marginLeft(5)
-                    .marginRight(5)
-                    .marginTop(5)
-                    .marginBottom(1));
     }
 
     private IWidget createCoverTabs() {
@@ -228,30 +192,19 @@ public final class GTBaseGuiBuilder {
             posGuiData.getY(),
             posGuiData.getZ(),
             side);
-        return syncManager.panel(
+        return syncManager.syncedPanel(
             panelKey,
+            true,
             (syncManager, syncHandler) -> coverable.getCoverAtSide(side)
                 .buildPopUpUI(coverGuiData, panelKey, syncManager, uiSettings)
-                .child(ButtonWidget.panelCloseButton()),
-            true);
+                .child(ButtonWidget.panelCloseButton()));
     }
 
     private IWidget createGhostCircuitSlot() {
         if (!(mte instanceof IConfigurationCircuitSupport ccs) || !ccs.allowSelectCircuit()) {
             throw new IllegalStateException("Tried to add configuration circuit slot to an unsupported machine!");
         }
-
-        IntSyncValue selectedSyncHandler = new IntSyncValue(() -> {
-            ItemStack selectedItem = mte.getStackInSlot(ccs.getCircuitSlot());
-            if (selectedItem != null && selectedItem.getItem() instanceof ItemIntegratedCircuit) {
-                // selected index 0 == config 1
-                return selectedItem.getItemDamage() - 1;
-            }
-            return -1;
-        });
-        syncManager.syncValue("selector_screen_selected", selectedSyncHandler);
-        return new GhostCircuitSlotWidget(mte, syncManager)
-            .slot(new ModularSlot(new GhostCircuitItemStackHandler(mte), 0))
+        return CommonWidgets.createCircuitSlot(syncManager, mte)
             .pos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1);
     }
 

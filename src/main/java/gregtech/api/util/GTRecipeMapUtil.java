@@ -73,7 +73,10 @@ public class GTRecipeMapUtil {
         List<ItemStack> itemOutputs = new ArrayList<>(Arrays.asList(b.getItemOutputs()));
         List<FluidStack> fluidInputs = new ArrayList<>(Arrays.asList(b.getFluidInputs()));
         List<FluidStack> fluidOutputs = new ArrayList<>(Arrays.asList(b.getFluidOutputs()));
-        TIntList chances = b.getChances() != null ? new TIntArrayList(b.getChances()) : null;
+        TIntList chances = b.getOutputChances() != null ? new TIntArrayList(b.getOutputChances()) : null;
+        if (!hasCells(itemInputs, itemOutputs) && !removeIntegratedCircuit) {
+            return b; // Skip conversion if no cells/filled containers exist
+        }
         cellToFluid(itemInputs, fluidInputs, removeIntegratedCircuit, null);
         cellToFluid(itemOutputs, fluidOutputs, removeIntegratedCircuit, chances);
         itemInputs.removeIf(Objects::isNull);
@@ -100,6 +103,24 @@ public class GTRecipeMapUtil {
                 if (chances != null) chances.removeAt(i);
             }
         }
+    }
+
+    private static boolean hasCells(List<ItemStack> itemInputs, List<ItemStack> itemOutputs) {
+        // Check input items
+        for (ItemStack stack : itemInputs) {
+            if (stack == null) continue;
+            if (GTUtility.getFluidForFilledItem(stack, true) != null || GTUtility.isCellEmpty(stack)) {
+                return true;
+            }
+        }
+        // Check output items
+        for (ItemStack stack : itemOutputs) {
+            if (stack == null) continue;
+            if (GTUtility.getFluidForFilledItem(stack, true) != null || GTUtility.isCellEmpty(stack)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static List<GTRecipe> buildOrEmpty(GTRecipeBuilder builder) {

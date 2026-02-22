@@ -28,12 +28,12 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
-import gregtech.common.gui.modularui.multiblock.godforge.data.SyncActions;
-import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
+import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.data.UpgradeColor;
-import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
-import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncActions;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncHypervisor;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValues;
 import gregtech.common.gui.modularui.widget.RotatedDrawable;
 import tectech.loader.ConfigHandler;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
@@ -156,6 +156,9 @@ public class UpgradeTreePanel {
                             .isCostPaid(upgrade)) {
                             SyncActions.COMPLETE_UPGRADE.callFrom(Panels.UPGRADE_TREE, hypervisor, upgrade);
                         } else {
+                            EnumSyncValue<ForgeOfGodsUpgrade> syncer = SyncValues.UPGRADE_CLICKED
+                                .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
+                            syncer.setValue(upgrade);
                             if (!manualInsertionPanel.isPanelOpen()) {
                                 manualInsertionPanel.openPanel();
                             }

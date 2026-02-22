@@ -9,6 +9,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
@@ -124,7 +126,6 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
 
         if (!(info.material instanceof Werkstoff w)) return false;
         if (!w.hasItemType(OrePrefixes.ore)) return false;
-        if ((w.getGenerationFeatures().blacklist & 0b1000) != 0) return false;
 
         return true;
     }
@@ -153,7 +154,6 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         if (!(stone instanceof StoneType stoneType)) return null;
         if (!(info.material instanceof Werkstoff w)) return null;
         if (!w.hasItemType(OrePrefixes.ore)) return null;
-        if ((w.getGenerationFeatures().blacklist & 0b1000) != 0) return null;
 
         Ores ores = this.ores.get(stoneType);
         if (ores == null) return null;
@@ -162,7 +162,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
     }
 
     @Override
-    public ArrayList<ItemStack> getOreDrops(Random random, OreInfo<?> info2, boolean silktouch, int fortune) {
+    public @NotNull ArrayList<ItemStack> getOreDrops(Random random, OreInfo<?> info2, boolean silktouch, int fortune) {
         if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
