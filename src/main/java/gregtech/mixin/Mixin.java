@@ -97,6 +97,15 @@ public enum Mixin implements IMixins {
         .addCommonMixins("ic2.MixinIc2FissionFuelRemoval")
         .addRequiredMod(TargetedMod.IC2)
         .setPhase(Phase.LATE)),
+
+    //Fixes
+    GALAXY_SPACE_ORE_METADATA_FIX(
+        new MixinBuilder("Add correct getMetadata Method to the Planet and Moon blocks to differentiate ores and non ores").setPhase(Phase.LATE)
+            .addCommonMixins("galaxyspace.MixinGalacticSpaceOreMetaDataFix").
+            addRequiredMod(TargetedMod.GALAXYSPACE)
+
+    ),
+
     // Hazmat armors
     IC2_HAZMAT(new MixinBuilder()
         .setPhase(Phase.LATE)
@@ -180,6 +189,9 @@ public enum Mixin implements IMixins {
             .setPhase(Phase.LATE)
             .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.rocketsPollute)
             .addRequiredMod(TargetedMod.GALACTICRAFT_CORE));
+
+    //Fixes
+
     // spotless:on
 
     private final MixinBuilder builder;

@@ -12,6 +12,7 @@ public enum TargetedMod implements ITargetMod {
     BIOMESOPLENTY(null, "BiomesOPlenty"),
     EFR(null, "etfuturum"),
     GALACTICRAFT_CORE("micdoodle8.mods.galacticraft.core.asm.GCLoadingPlugin", "GalacticraftCore"),
+    GALAXYSPACE("galaxyspace.GalaxySpace", "GalaxySpace"),
     GT6("gregtech.asm.GT_ASM", "gregapi"),
     HEE("chylex.hee.HEECore", "HardcoreEnderExpansion"),
     IC2("ic2.core.coremod.IC2core", "IC2"),
