@@ -230,6 +230,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                     outputAmount = Shape.forId(tag.getInteger("Shape")).itemsProduced;
                 }
                 // We can chisel this
+<<<<<<< HEAD
                 GTRecipe aRecipe = new GTRecipe(
                     new ItemStack[] { GTUtility.copyAmount(inputAmount, aInput) },
                     new ItemStack[] { GTUtility.copyAmount(outputAmount, tOutput) },
@@ -243,6 +244,8 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                     20,
                     16,
                     0);
+=======
+>>>>>>> 446cd71568f0c95ca51404ac27aea70ae373af9e
                 // Cache it
                 cacheItem(aInput, tOutput, aRecipe);
                 return aRecipe;
