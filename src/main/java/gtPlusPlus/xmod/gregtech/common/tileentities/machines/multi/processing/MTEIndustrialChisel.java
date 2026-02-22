@@ -12,6 +12,7 @@ import static gregtech.api.enums.Mods.ArchitectureCraft;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -30,10 +31,8 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gcewing.architecture.ArchitectureCraft;
 import gcewing.architecture.common.item.ArchitectureItemBlock;
 import gcewing.architecture.common.shape.Shape;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -42,6 +41,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -245,10 +245,21 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                     16,
                     0);
 =======
+                Optional<GTRecipe> aRecipe = GTRecipeBuilder.builder()
+                    .itemInputs(GTUtility.copyAmount(inputAmount, aInput))
+                    .itemOutputs(GTUtility.copyAmount(outputAmount, tOutput))
+                    .outputChances(10000)
+                    .duration(20)
+                    .eut(16)
+                    .specialValue(0)
+                    .build();
+
 >>>>>>> 446cd71568f0c95ca51404ac27aea70ae373af9e
                 // Cache it
-                cacheItem(aInput, tOutput, aRecipe);
-                return aRecipe;
+                if (aRecipe.isPresent()) {
+                    cacheItem(aInput, tOutput, aRecipe.get());
+                }
+                return aRecipe.orElse(null);
             }
         }
         return null;
