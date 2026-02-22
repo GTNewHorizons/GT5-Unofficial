@@ -694,9 +694,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
                 newSlot.extracted = newStack = curr.getItemStack();
                 newSlot.extractedAmount = newSlot.extracted.stackSize;
             }
-            if (!GTUtility.areStacksEqual(oldStack, newStack)) {
+            if (!ItemStack.areItemStacksEqual(oldStack, newStack)) {
                 justHadNewItems = true; // any changes
-                if (!ItemStack.areItemStacksEqual(oldStack, newStack)) {
+                if (!GTUtility.areStacksEqual(oldStack, newStack)) {
                     configChanged = true; // type changes
                 }
             }
