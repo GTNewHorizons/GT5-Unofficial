@@ -247,7 +247,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
 
         int index = 0;
-
+        boolean configChanged = false;
         while (iterator.hasNext() && index < SLOT_COUNT) {
             IAEFluidStack curr = iterator.next();
 
@@ -265,15 +265,17 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 newSlot.extracted = newStack = curr.getFluidStack();
                 newSlot.extractedAmount = newSlot.extracted.amount;
             }
-
             if (oldStack != null ? !oldStack.isFluidStackIdentical(newStack) : newStack != null) {
-                justHadNewFluids = true;
+                justHadNewFluids = true; // any changes
+                if (oldStack != null ? !oldStack.isFluidEqual(newStack) : newStack != null) {
+                    configChanged = true; // type changes
+                }
             }
 
             index++;
         }
-
         Arrays.fill(slots, index, slots.length, null);
+        if (configChanged) configureWatchers();
     }
 
     public FluidStack[] getStoredFluids() {
@@ -589,7 +591,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     public void setSlotConfig(int index, FluidStack config) {
         slots[index] = config == null ? null : new Slot(config.copy());
-        configureWatchers();
     }
 
     /**
@@ -929,7 +930,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                         if (heldFluid != null && containsSuchStack(heldFluid)) return;
 
                         setSlotConfig(slotIndex, GTUtility.copyAmount(1, heldFluid));
-
+                        configureWatchers();
                         if (getBaseMetaTileEntity().isServerSide()) {
                             try {
                                 updateInformationSlot(slotIndex);

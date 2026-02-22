@@ -676,7 +676,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         }
 
         int index = 0;
-
+        boolean configChanged = false;
         while (iterator.hasNext() && index < SLOT_COUNT) {
             IAEItemStack curr = iterator.next();
 
@@ -694,15 +694,17 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
                 newSlot.extracted = newStack = curr.getItemStack();
                 newSlot.extractedAmount = newSlot.extracted.stackSize;
             }
-
-            if (!ItemStack.areItemStacksEqual(oldStack, newStack)) {
-                justHadNewItems = true;
+            if (!GTUtility.areStacksEqual(oldStack, newStack)) {
+                justHadNewItems = true; // any changes
+                if (!ItemStack.areItemStacksEqual(oldStack, newStack)) {
+                    configChanged = true; // type changes
+                }
             }
 
             index++;
         }
-
         Arrays.fill(slots, index, slots.length, null);
+        if (configChanged) configureWatchers();
     }
 
     protected void updateAllInformationSlots() {
@@ -766,7 +768,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     public void setSlotConfig(int index, ItemStack config) {
         slots[index] = config == null ? null : new Slot(config.copy());
-        configureWatchers();
     }
 
     /**
@@ -891,7 +892,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
                         if (cursorStack != null && containsSuchStack(cursorStack)) return;
 
                         setSlotConfig(slot.getSlotIndex(), GTUtility.copyAmount(1, cursorStack));
-
+                        configureWatchers();
                         if (getBaseMetaTileEntity().isServerSide()) {
                             try {
                                 updateInformationSlot(slot.getSlotIndex());
