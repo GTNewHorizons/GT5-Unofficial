@@ -255,7 +255,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
             Slot oldSlot = slots[index];
             FluidStack oldStack = null;
-            if (oldSlot != null) oldStack = oldSlot.extracted.copy();
+            if (oldSlot != null && oldSlot.extracted != null) oldStack = oldSlot.extracted.copy();
 
             setSlotConfig(index, GTUtility.copyAmount(1, curr.getFluidStack()));
 
@@ -266,8 +266,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 newSlot.extractedAmount = newSlot.extracted.amount;
             }
             if (oldStack != null ? !oldStack.isFluidStackIdentical(newStack) : newStack != null) {
-                justHadNewFluids = true; // any changes
-                if (oldStack != null ? !oldStack.isFluidEqual(newStack) : newStack != null) {
+                justHadNewFluids = true; // type or amount changes
+                if (expediteRecipeCheck && oldStack != null ? !oldStack.isFluidEqual(newStack) : newStack != null) {
                     configChanged = true; // type changes
                 }
             }

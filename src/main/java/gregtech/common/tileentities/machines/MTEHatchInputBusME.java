@@ -684,7 +684,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
             Slot oldSlot = slots[index];
             ItemStack oldStack = null;
-            if (oldSlot != null) oldStack = oldSlot.extracted.copy();
+            if (oldSlot != null && oldSlot.extracted != null) oldStack = oldSlot.extracted.copy();
 
             setSlotConfig(index, GTUtility.copyAmount(1, curr.getItemStack()));
 
@@ -695,8 +695,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
                 newSlot.extractedAmount = newSlot.extracted.stackSize;
             }
             if (!ItemStack.areItemStacksEqual(oldStack, newStack)) {
-                justHadNewItems = true; // any changes
-                if (!GTUtility.areStacksEqual(oldStack, newStack)) {
+                justHadNewItems = true; // type or amount changes
+                if (expediteRecipeCheck && !GTUtility.areStacksEqual(oldStack, newStack)) {
                     configChanged = true; // type changes
                 }
             }
