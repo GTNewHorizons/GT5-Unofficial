@@ -41,7 +41,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.misc.MTESolarHeater;
@@ -103,9 +102,9 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             .addCasingInfoMin("Thermally Insulated Casing", 60, false)
             .addCasingInfoMin("Salt Containment Casing", 66, false)
             .addCasingInfoMin("Thermal Containment Casing", 60, false)
-            .addInputHatch("Any 2 dot hint(min 1)", 2)
-            .addOutputHatch("Any 2 dot hint(min 1)", 2)
-            .addMaintenanceHatch("Any 2 dot hint", 2)
+            .addInputHatch("Hint Block Number 2 (Min 1)", 2)
+            .addOutputHatch("Hint Block Number 2 (Min 1)", 2)
+            .addMaintenanceHatch("Hint Block Number 2", 2)
             .toolTipFinisher();
         return tt;
     }
@@ -226,7 +225,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                             .adder(MTESolarTower::addSolarHeater)
                             // Use a positive casing index to make adder builder happy
                             .casingIndex(1)
-                            .dot(1)
+                            .hint(1)
                             .continueIfSuccess()
                             .build()))
                 .addElement(
@@ -246,7 +245,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                     lazy(
                         t -> buildHatchAdder(MTESolarTower.class).atLeast(InputHatch, OutputHatch, Maintenance)
                             .casingIndex(t.getCasingTextureIndex())
-                            .dot(2)
+                            .hint(2)
                             .buildAndChain(
                                 onElementPass(x -> ++x.mCasing1, ofBlock(t.getCasingBlock(), t.getCasingMeta())))))
                 .build();
@@ -559,8 +558,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                     int aFluidAmount = Math.min(aFluid.amount, this.mHeatLevel);
 
                     this.mHeatLevel -= aFluidAmount;
-                    this.depleteInput(FluidUtils.getFluidStack(mColdSalt, aFluidAmount));
-                    this.addOutput(FluidUtils.getFluidStack(mHotSalt, aFluidAmount));
+                    this.depleteInput(new FluidStack(mColdSalt, aFluidAmount));
+                    this.addOutput(new FluidStack(mHotSalt, aFluidAmount));
                     this.mHeatLevel = Math.max(this.mHeatLevel, 0);
 
                     break;

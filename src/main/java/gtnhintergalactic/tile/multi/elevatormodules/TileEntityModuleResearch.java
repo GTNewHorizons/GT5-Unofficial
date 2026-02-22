@@ -23,6 +23,9 @@ import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
  * Space Research project module of the Space Elevator
  *
  * @author minecraft7771
+ *
+ *         RECIPE IS CURRENTLY TEMPORARILY COMMENTED OUT IN MachineLoader.java FYI
+ *         BLOCK IS ALSO HIDDEN IN NEIGTNewHorizonsConfig.java IN COREMOD
  */
 public class TileEntityModuleResearch extends TileEntityModuleBase {
 
@@ -70,10 +73,10 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
             .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
             .beginStructureBlock(1, 5, 2, false)
             .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-            .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+            .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+            .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+            .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+            .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
             .toolTipFinisher();
         return tt;
     }

@@ -28,10 +28,27 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class FluidExtractorRecipes implements Runnable {
 
     @Override
     public void run() {
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteBlack, 1))
+            .fluidOutputs(Materials.GraniteBlack.getMolten(1 * INGOTS))
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+            .addTo(fluidExtractionRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteRed, 1))
+            .fluidOutputs(Materials.GraniteRed.getMolten(1 * INGOTS))
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+            .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Dye_SquidInk.get(1L))
@@ -118,7 +135,7 @@ public class FluidExtractorRecipes implements Runnable {
             .outputChances(1000)
             .fluidOutputs(Materials.WoodTar.getFluid(100L))
             .duration(1 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -150,26 +167,26 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Monazite, 1L))
             .fluidOutputs(Materials.Helium.getGas(200L))
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L, 0))
-            .fluidOutputs(Materials.ReinforceGlass.getMolten(1 * INGOTS))
+            .fluidOutputs(Materials.ReinforcedGlass.getMolten(1 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(NewHorizonsCoreMod.ID, "item.ReinforcedGlassPlate", 1L, 0))
-            .fluidOutputs(Materials.ReinforceGlass.getMolten(1 * HALF_INGOTS))
+            .itemInputs(getModItem(NewHorizonsCoreMod.ID, "ReinforcedGlassPlate", 1L, 0))
+            .fluidOutputs(Materials.ReinforcedGlass.getMolten(1 * HALF_INGOTS))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(NewHorizonsCoreMod.ID, "item.ReinforcedGlassLense", 1L, 0))
-            .fluidOutputs(Materials.ReinforceGlass.getMolten(54))
+            .itemInputs(getModItem(NewHorizonsCoreMod.ID, "ReinforcedGlassLense", 1L, 0))
+            .fluidOutputs(Materials.ReinforcedGlass.getMolten(54))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(fluidExtractionRecipes);

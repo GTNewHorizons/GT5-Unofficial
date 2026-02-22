@@ -1,5 +1,6 @@
 package bartworks.API.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTRecipeConstants.GLASS;
 import static gregtech.api.util.GTUtility.getTierNameWithParentheses;
 
@@ -17,7 +18,6 @@ import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.recipe.Sievert;
 import gregtech.nei.GTNEIDefaultHandler;
@@ -54,26 +54,25 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
 
     @Override
     protected void drawNEIOverlayForInput(GTNEIDefaultHandler.FixedPositionedStack stack) {
+        super.drawNEIOverlayForInput(stack);
         drawFluidOverlay(stack);
     }
 
     @Override
     protected void drawNEIOverlayForOutput(GTNEIDefaultHandler.FixedPositionedStack stack) {
+        super.drawNEIOverlayForOutput(stack);
         drawFluidOverlay(stack);
     }
 
     private void drawFluidOverlay(GTNEIDefaultHandler.FixedPositionedStack stack) {
-        if (stack.isFluid()) {
-            drawNEIOverlayText(
-                "+",
-                stack,
-                colorOverride.getTextColorOrDefault("nei_overlay_yellow", 0xFDD835),
-                0.5f,
-                true,
-                Alignment.TopRight);
-            return;
-        }
-        super.drawNEIOverlayForOutput(stack);
+        if (!stack.isFluid()) return;
+        drawNEIOverlayText(
+            "+",
+            stack,
+            colorOverride.getTextColorOrDefault("nei_overlay_yellow", 0xFDD835),
+            0.5f,
+            true,
+            Alignment.TopRight);
     }
 
     @Override
@@ -84,17 +83,17 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
         Sievert data = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERT, new Sievert(0, false));
         int sievert = data.sievert;
         boolean isExact = data.isExact;
-        recipeInfo.drawText(
-            StatCollector.translateToLocalFormatted("GT5U.nei.display.total", GTUtility.formatNumbers(eut * duration)));
+        recipeInfo
+            .drawText(StatCollector.translateToLocalFormatted("GT5U.nei.display.total", formatNumber(eut * duration)));
         recipeInfo.drawText(
             StatCollector.translateToLocalFormatted(
                 "GT5U.nei.display.usage",
-                GTUtility.formatNumbers(eut),
+                formatNumber(eut),
                 getTierNameWithParentheses(eut)));
 
         recipeInfo.drawText(StatCollector.translateToLocalFormatted("nei.biovat.0.name", GTValues.VN[glassTier]));
         if (sievert != 0) {
-            if (!isExact) {
+            if (isExact) {
                 recipeInfo.drawText(StatCollector.translateToLocalFormatted("nei.biovat.1.name", sievert));
             } else {
                 recipeInfo.drawText(StatCollector.translateToLocalFormatted("nei.biovat.2.name", sievert));

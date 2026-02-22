@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.mega;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -51,6 +52,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -122,13 +124,13 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             buildHatchAdder(MTEMegaAlloyBlastSmelter.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy, ExoticEnergy)
                 .casingIndex(TAE.GTPP_INDEX(15))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(ofBlock(ModBlocks.blockCasingsMisc, 15)))
         .addElement(
             'E',
             buildHatchAdder(MTEMegaAlloyBlastSmelter.class).atLeast(Maintenance)
                 .casingIndex(TAE.GTPP_INDEX(15))
-                .dot(2)
+                .hint(2)
                 .buildAndChain(ofBlock(ModBlocks.blockCasingsMisc, 15)))
         .addElement('D', ofBlock(ModBlocks.blockCasingsMisc, 15))
         .addElement('C', ofBlock(ModBlocks.blockCasingsMisc, 14))
@@ -168,7 +170,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (glassTier < GTUtility.getTier(recipe.mEUt)) {
+                if (glassTier < VoltageIndex.UMV && glassTier < GTUtility.getTier(recipe.mEUt)) {
                     return CheckRecipeResultRegistry.insufficientMachineTier(GTUtility.getTier(recipe.mEUt));
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -210,7 +212,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         if (!checkPiece("main", 5, 16, 0)) return false;
         if (coilType == CoilType.BasicCoil) coilLevel = HeatingCoilLevel.None;
         if (mMufflerHatches.size() != 1) return false;
-        if (this.glassTier < VoltageIndex.UEV && !getExoticAndNormalEnergyHatchList().isEmpty()) {
+        if (this.glassTier < VoltageIndex.UMV && !getExoticAndNormalEnergyHatchList().isEmpty()) {
             for (MTEHatch hatchEnergy : getExoticAndNormalEnergyHatchList()) {
                 if (this.glassTier < hatchEnergy.mTier) {
                     return false;
@@ -267,32 +269,31 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Alloy Cooker, MABS")
+            .addInfo(
+                TooltipHelper.coloredText(
+                    TooltipHelper.italicText("\"all it does is make metals hot\""),
+                    EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
-                "Gains a " + EnumChatFormatting.AQUA
-                    + "5%"
-                    + EnumChatFormatting.GRAY
-                    + " Speed Bonus per "
-                    + EnumChatFormatting.WHITE
-                    + "Heating Coil Tier")
-            .addInfo("Speed bonus is only applicable if equivalent or better glass tier is present")
-            .addInfo("Furthermore, a multiplicative energy discount is granted for using coils above the recipe tier")
-            .addDynamicEuEffInfo(0.05f, TooltipTier.COIL)
+                TooltipHelper.speedText("-5%") + " Recipe Time per "
+                    + TooltipHelper.tierText(TooltipTier.COIL)
+                    + " Tier above TPV (additive)")
+            .addInfo("if the equivalent or better " + TooltipHelper.tierText(TooltipTier.GLASS) + " is present")
             .addInfo(
-                EnumChatFormatting.ITALIC
-                    + "Can also use normal ABS coils in their place instead, if you don't like the bonuses :)"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY)
-            .addGlassEnergyLimitInfo(VoltageIndex.UEV)
+                TooltipHelper.effText("-5%") + " EU Usage per "
+                    + TooltipHelper.tierText(TooltipTier.COIL)
+                    + " Tier above the Recipe Tier (multiplicative)")
+            .addSeparator()
+            .addInfo(
+                "Recipe Tier limited by " + TooltipHelper.tierText(TooltipTier.GLASS)
+                    + " Tier, "
+                    + TooltipHelper.voltageTierText(VoltageIndex.UMV)
+                    + " unlocks all")
+            .addInfo("Can also use normal ABS coils in their place instead, if you don't like the bonuses :)")
+            .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addUnlimitedTierSkips()
-            .addInfo(
-                EnumChatFormatting.RED + ""
-                    + EnumChatFormatting.ITALIC
-                    + "\"all it does is make metals hot\""
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY)
+            .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 20, 11, false)
             .addController("Mid of the fourth layer")
@@ -307,6 +308,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                 1)
             .addMufflerHatch("1 in the center of the top layer", 3)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
     }
@@ -335,34 +337,34 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                 + "------------",
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime)
+                + formatNumber(mProgresstime)
                 + EnumChatFormatting.RESET
                 + "t / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime)
+                + formatNumber(mMaxProgresstime)
                 + EnumChatFormatting.RESET
                 + "t",
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
+                + formatNumber(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
+                + formatNumber(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(-lEUt)
+                + formatNumber(-lEUt)
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getAverageInputVoltage())
+                + formatNumber(getAverageInputVoltage())
                 + EnumChatFormatting.RESET
                 + " EU/t(*"
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getMaxInputAmps())
+                + formatNumber(getMaxInputAmps())
                 + EnumChatFormatting.RESET
                 + "A) "
                 + StatCollector.translateToLocal("GT5U.machines.tier")
@@ -379,6 +381,10 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             StatCollector.translateToLocalFormatted(
                 "gtpp.infodata.abs.mega.energy_discount",
                 "" + EnumChatFormatting.BLUE + lessEnergy + "%" + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(recipesDone)
+                + EnumChatFormatting.RESET,
             EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
     }
 
@@ -438,9 +444,9 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         } else {
             inputSeparation = !inputSeparation;
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
+                inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
         }
     }
 
@@ -450,9 +456,9 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }

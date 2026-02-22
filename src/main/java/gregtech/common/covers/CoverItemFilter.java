@@ -1,23 +1,17 @@
 package gregtech.common.covers;
 
-import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
-
-import java.util.Collections;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizon.gtnhlib.item.ItemStackPredicate;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -26,10 +20,11 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTByteBuffer;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverGui;
-import gregtech.common.covers.gui.CoverItemFilterGui;
 import gregtech.common.covers.modes.FilterType;
+import gregtech.common.gui.modularui.cover.CoverItemFilterGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.ItemFilterUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -118,26 +113,26 @@ public class CoverItemFilter extends Cover {
         if (coverable == null) {
             return;
         }
-        final TileEntity tTileEntity = coverable.getTileEntityAtSide(coverSide);
-        final Object fromEntity = mExport ? coverable : tTileEntity;
-        final Object toEntity = !mExport ? coverable : tTileEntity;
-        final ForgeDirection fromSide = !mExport ? coverSide.getOpposite() : coverSide;
-        final ForgeDirection toSide = mExport ? coverSide.getOpposite() : coverSide;
 
-        final List<ItemStack> filter = Collections.singletonList(this.filter.getStackInSlot(0));
+        GTItemTransfer transfer = new GTItemTransfer();
 
-        moveMultipleItemStacks(
-            fromEntity,
-            toEntity,
-            fromSide,
-            toSide,
-            filter,
-            mWhitelist,
-            (byte) 64,
-            (byte) 1,
-            (byte) 64,
-            (byte) 1,
-            64);
+        if (mExport) {
+            transfer.push(coverable, coverSide);
+        } else {
+            transfer.pull(coverable, coverSide);
+        }
+
+        ItemStackPredicate predicate = ItemStackPredicate.matches(this.filter.getStackInSlot(0));
+
+        if (mWhitelist) {
+            predicate = predicate.negate();
+        }
+
+        transfer.setFilter(predicate);
+
+        transfer.setStacksToTransfer(64);
+
+        transfer.transfer();
     }
 
     @Override
@@ -204,7 +199,7 @@ public class CoverItemFilter extends Cover {
     // GUI stuff
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverItemFilterGui(this);
     }
 

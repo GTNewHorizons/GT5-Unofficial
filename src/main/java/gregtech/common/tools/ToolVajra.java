@@ -22,7 +22,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import bartworks.system.material.BWMetaGeneratedOres;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -31,8 +30,6 @@ import gregtech.api.items.ItemTool;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.common.blocks.BlockFrameBox;
-import gregtech.common.blocks.BlockOres;
-import gtPlusPlus.core.block.base.BlockBaseOre;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.core.crop.TileEntityCrop;
@@ -178,6 +175,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
             if (target.removedByPlayer(world, player, x, y, z, true)) {
                 target.onBlockDestroyedByPlayer(world, x, y, z, metaData);
                 target.harvestBlock(world, player, x, y, z, metaData);
+                world.notifyBlocksOfNeighborChange(x, y, z, target);
             }
         }
         stack.getTagCompound()
@@ -208,8 +206,6 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     private boolean isHarvestableGTSpecial(Block target, TileEntity tileEntity) {
         if (target instanceof BlockFrameBox) return tileEntity == null;
 
-        if (target instanceof BlockOres || target instanceof BWMetaGeneratedOres || target instanceof BlockBaseOre)
-            return true;
         // Cables extend BaseMetaPipeEntity (???)
         if (tileEntity instanceof BaseMetaPipeEntity) return true;
         return false;

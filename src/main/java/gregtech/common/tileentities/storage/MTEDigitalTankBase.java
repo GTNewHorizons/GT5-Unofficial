@@ -1,11 +1,11 @@
 package gregtech.common.tileentities.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -50,6 +51,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.SpecialChars;
 
 public abstract class MTEDigitalTankBase extends MTEBasicTank
     implements IFluidLockable, IAddUIWidgets, IAddGregtechLogo {
@@ -66,7 +68,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             aTier,
             3,
             new String[] {
-                translateToLocalFormatted("GT5U.machines.digitaltank.tooltip", formatNumbers(commonSizeCompute(aTier))),
+                translateToLocalFormatted("GT5U.machines.digitaltank.tooltip", formatNumber(commonSizeCompute(aTier))),
                 translateToLocal("GT5U.machines.digitaltank.tooltip1"), });
     }
 
@@ -123,7 +125,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 tooltip.add(
                     GTLanguageManager.addStringLocalization("TileEntity_TANK_AMOUNT", "Fluid Amount: ")
                         + EnumChatFormatting.GREEN
-                        + formatNumbers(tContents.amount)
+                        + formatNumber(tContents.amount)
                         + " L"
                         + EnumChatFormatting.GRAY);
             } else if (stack.stackTagCompound.hasKey("lockedFluidName")) {
@@ -484,12 +486,15 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             currenttip.remove(0);
             currenttip.add(
                 0,
-                formatNumbers(fluid.amount) + " / "
-                    + formatNumbers(getRealCapacity())
-                    + " L "
-                    + fluid.getLocalizedName());
+                SpecialChars.getRenderString(
+                    "waila.fluid",
+                    fluid.getFluid()
+                        .getName(),
+                    fluid.getLocalizedName(),
+                    fluid.amount + "",
+                    getRealCapacity() + ""));
         } else {
-            currenttip.add(0, "Tank Empty");
+            currenttip.add(0, StatCollector.translateToLocal("GT5U.waila.digital_tank.empty"));
         }
     }
 
@@ -508,7 +513,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         fluidTank.setAllowOverflow(allowOverflow());
         fluidTank.setPreventDraining(mLockFluid);
-
+        final boolean isServer = GTUtility.isServer();
         FluidSlotWidget fluidSlotWidget = new FluidSlotWidget(fluidTank);
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
@@ -554,14 +559,16 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 .setPos(101, 30))
             .widget(new CycleButtonWidget().setToggle(() -> mOutputFluid, val -> {
                 mOutputFluid = val;
-                if (!mOutputFluid) {
-                    GTUtility.sendChatToPlayer(
-                        buildContext.getPlayer(),
-                        GTUtility.trans("262", "Fluid Auto Output Disabled"));
-                } else {
-                    GTUtility.sendChatToPlayer(
-                        buildContext.getPlayer(),
-                        GTUtility.trans("263", "Fluid Auto Output Enabled"));
+                if (isServer) {
+                    if (!mOutputFluid) {
+                        GTUtility.sendChatToPlayer(
+                            buildContext.getPlayer(),
+                            GTUtility.trans("262", "Fluid Auto Output Disabled"));
+                    } else {
+                        GTUtility.sendChatToPlayer(
+                            buildContext.getPlayer(),
+                            GTUtility.trans("263", "Fluid Auto Output Enabled"));
+                    }
                 }
             })
                 .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
@@ -586,13 +593,18 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                                 .getName());
                         inBrackets = getDrainableStack().getLocalizedName();
                     }
-                    GTUtility.sendChatToPlayer(
-                        buildContext.getPlayer(),
-                        String.format("%s (%s)", GTUtility.trans("265", "1 specific Fluid"), inBrackets));
+                    if (isServer) {
+                        GTUtility.sendChatToPlayer(
+                            buildContext.getPlayer(),
+                            String.format("%s (%s)", GTUtility.trans("265", "1 specific Fluid"), inBrackets));
+                    }
                 } else {
                     fluidTank.drain(0, true);
-                    GTUtility
-                        .sendChatToPlayer(buildContext.getPlayer(), GTUtility.trans("266", "Lock Fluid Mode Disabled"));
+                    if (isServer) {
+                        GTUtility.sendChatToPlayer(
+                            buildContext.getPlayer(),
+                            GTUtility.trans("266", "Lock Fluid Mode Disabled"));
+                    }
                 }
                 fluidSlotWidget.notifyTooltipChange();
             })
@@ -604,14 +616,12 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 .setSize(18, 18))
             .widget(new CycleButtonWidget().setToggle(() -> mAllowInputFromOutputSide, val -> {
                 mAllowInputFromOutputSide = val;
-                if (!mAllowInputFromOutputSide) {
-                    GTUtility.sendChatToPlayer(
-                        buildContext.getPlayer(),
-                        translateToLocal("gt.interact.desc.input_from_output_off"));
-                } else {
-                    GTUtility.sendChatToPlayer(
-                        buildContext.getPlayer(),
-                        translateToLocal("gt.interact.desc.input_from_output_on"));
+                if (isServer) {
+                    if (!mAllowInputFromOutputSide) {
+                        GTUtility.sendChatTrans(buildContext.getPlayer(), "gt.interact.desc.input_from_output_off");
+                    } else {
+                        GTUtility.sendChatTrans(buildContext.getPlayer(), "gt.interact.desc.input_from_output_on");
+                    }
                 }
             })
                 .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
@@ -623,14 +633,16 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             .widget(new CycleButtonWidget().setToggle(() -> mVoidFluidPart, val -> {
                 mVoidFluidPart = val;
                 fluidTank.setAllowOverflow(allowOverflow());
-                if (!mVoidFluidPart) {
-                    GTUtility.sendChatToPlayer(
-                        buildContext.getPlayer(),
-                        GTUtility.trans("267", "Overflow Voiding Mode Disabled"));
-                } else {
-                    GTUtility.sendChatToPlayer(
-                        buildContext.getPlayer(),
-                        GTUtility.trans("268", "Overflow Voiding Mode Enabled"));
+                if (isServer) {
+                    if (!mVoidFluidPart) {
+                        GTUtility.sendChatToPlayer(
+                            buildContext.getPlayer(),
+                            GTUtility.trans("267", "Overflow Voiding Mode Disabled"));
+                    } else {
+                        GTUtility.sendChatToPlayer(
+                            buildContext.getPlayer(),
+                            GTUtility.trans("268", "Overflow Voiding Mode Enabled"));
+                    }
                 }
             })
                 .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
@@ -642,12 +654,16 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             .widget(new CycleButtonWidget().setToggle(() -> mVoidFluidFull, val -> {
                 mVoidFluidFull = val;
                 fluidTank.setAllowOverflow(allowOverflow());
-                if (!mVoidFluidFull) {
-                    GTUtility
-                        .sendChatToPlayer(buildContext.getPlayer(), GTUtility.trans("269", "Void Full Mode Disabled"));
-                } else {
-                    GTUtility
-                        .sendChatToPlayer(buildContext.getPlayer(), GTUtility.trans("270", "Void Full Mode Enabled"));
+                if (isServer) {
+                    if (!mVoidFluidFull) {
+                        GTUtility.sendChatToPlayer(
+                            buildContext.getPlayer(),
+                            GTUtility.trans("269", "Void Full Mode Disabled"));
+                    } else {
+                        GTUtility.sendChatToPlayer(
+                            buildContext.getPlayer(),
+                            GTUtility.trans("270", "Void Full Mode Enabled"));
+                    }
                 }
             })
                 .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)

@@ -111,6 +111,43 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         super(aName);
     }
 
+    private static final IStructureElement<MTEWindmill> DISPENSER_OR_CLAY = new IStructureElement<>() {
+
+        @Override
+        public boolean check(MTEWindmill t, World world, int x, int y, int z) {
+            Block block = world.getBlock(x, y, z);
+
+            if (block == Blocks.dispenser) {
+                return t.addDispenserToOutputSet(world.getTileEntity(x, y, z));
+            }
+
+            if (block == Blocks.hardened_clay && world.getBlockMetadata(x, y, z) == 0) {
+                t.mHardenedClay++;
+                return true;
+            }
+
+            return false;
+        }
+
+        @Override
+        public boolean spawnHint(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
+            StructureLibAPI.hintParticle(world, x, y, z, Blocks.hardened_clay, 0);
+            return true;
+        }
+
+        @Override
+        public boolean placeBlock(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
+            return world.setBlock(x, y, z, Blocks.hardened_clay, 0, 3);
+        }
+
+        @Override
+        public BlocksToPlace getBlocksToPlace(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger,
+            AutoPlaceEnvironment env) {
+            return BlocksToPlace
+                .create(new ItemStack(Blocks.dispenser, 1, 0), new ItemStack(Blocks.hardened_clay, 1, 0));
+        }
+    };
+
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEWindmill> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEWindmill>builder()
@@ -125,7 +162,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                     { " ppppp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp " },
                     { "       ", " ppppp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       " },
                     { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
-                    { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
+                    { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  cdc  ", "       " },
                     { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
                     { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
                     { " bb~bb ", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", " bbbbb " }, }))
@@ -150,6 +187,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                         return this.delegate.spawnHint(gt_tileEntity_windmill, world, x, y, z, trigger);
                     }
                 })))
+        .addElement('d', DISPENSER_OR_CLAY)
         .addElement('b', ofBlock(Blocks.brick_block, 0))
         .addElement('s', new IStructureElement<>() {
 
@@ -360,30 +398,33 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public boolean addOutput(ItemStack aStack) {
-        if (GTUtility.isStackInvalid(aStack)) return false;
+    public boolean addItemOutputs(ItemStack[] stacks) {
+        for (ItemStack stack : stacks) {
+            if (GTUtility.isStackInvalid(stack)) continue;
 
-        for (TileEntityDispenser tHatch : this.tileEntityDispensers) {
-            for (int i = tHatch.getSizeInventory() - 1; i >= 0; i--) {
-                if (tHatch.getStackInSlot(i) == null || GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)
-                    && aStack.stackSize + tHatch.getStackInSlot(i).stackSize <= 64) {
-                    if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)) {
-                        ItemStack merge = tHatch.getStackInSlot(i)
-                            .copy();
-                        merge.stackSize = aStack.stackSize + tHatch.getStackInSlot(i).stackSize;
-                        tHatch.setInventorySlotContents(i, merge);
-                    } else {
-                        tHatch.setInventorySlotContents(i, aStack.copy());
-                    }
+            for (TileEntityDispenser tHatch : this.tileEntityDispensers) {
+                for (int i = tHatch.getSizeInventory() - 1; i >= 0; i--) {
+                    if (tHatch.getStackInSlot(i) == null || GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)
+                        && stack.stackSize + tHatch.getStackInSlot(i).stackSize <= 64) {
+                        if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)) {
+                            ItemStack merge = tHatch.getStackInSlot(i)
+                                .copy();
+                            merge.stackSize = stack.stackSize + tHatch.getStackInSlot(i).stackSize;
+                            tHatch.setInventorySlotContents(i, merge);
+                        } else {
+                            tHatch.setInventorySlotContents(i, stack.copy());
+                        }
 
-                    if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)) {
-                        return true;
+                        if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)) {
+                            return true;
+                        }
+                        tHatch.setInventorySlotContents(i, null);
+                        return false;
                     }
-                    tHatch.setInventorySlotContents(i, null);
-                    return false;
                 }
             }
         }
+
         return false;
     }
 
@@ -559,6 +600,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     public int getTitleColor() {
         return this.COLOR_TITLE_WHITE.get();
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 
     @Override

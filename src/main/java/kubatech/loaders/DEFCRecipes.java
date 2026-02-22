@@ -26,7 +26,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -36,7 +35,6 @@ import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 
@@ -78,7 +76,7 @@ public class DEFCRecipes {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "tile.BloodyIchorium", 1, 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "BloodyIchorium", 1, 0),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 6L))
             .fluidInputs(Materials.Void.getMolten(8 * INGOTS))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingT1.get(1))
@@ -218,7 +216,7 @@ public class DEFCRecipes {
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 12),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Draconium, 4),
                     GTModHandler.getModItem(DraconicEvolution.ID, "wyvernCore", 4, 0),
-                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ManyullynCrystal", 1, 0),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "ManyullynCrystal", 1, 0),
                     kubatech.api.enums.ItemList.DEFCAwakenedSchematic.get(0L))
                 .fluidInputs(Materials.Infinity.getMolten(10 * INGOTS))
                 .itemOutputs(GTModHandler.getModItem(DraconicEvolution.ID, "awakenedCore", 1, 0))
@@ -236,7 +234,7 @@ public class DEFCRecipes {
                 GTModHandler.getModItem(DraconicEvolution.ID, "awakenedCore", 4, 0),
                 GTModHandler.getModItem(DraconicEvolution.ID, "chaosFragment", 2, 2),
                 kubatech.api.enums.ItemList.DEFCChaoticSchematic.get(0L))
-            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(10 * INGOTS))
+            .fluidInputs(Materials.SpaceTime.getMolten(10 * INGOTS))
             .itemOutputs(GTModHandler.getModItem(DraconicEvolution.ID, "chaoticCore", 1, 0))
             .eut(24_000_000)
             .duration(3200)
@@ -278,8 +276,8 @@ public class DEFCRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Blocks.dragon_egg, 0),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
-                GTUtility.getIntegratedCircuit(1))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64))
+            .circuit(1)
             .fluidInputs(Materials.Radon.getPlasma(1 * INGOTS))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 288))
             .eut(TierEU.RECIPE_UHV)
@@ -291,8 +289,8 @@ public class DEFCRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTModHandler.getModItem(Witchery.ID, "infinityegg", 0),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64))
+                .circuit(1)
                 .fluidInputs(Materials.Radon.getPlasma(72))
                 .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
                 .eut(TierEU.RECIPE_UHV)

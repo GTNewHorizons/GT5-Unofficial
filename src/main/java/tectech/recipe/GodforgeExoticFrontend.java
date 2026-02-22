@@ -1,6 +1,6 @@
 package tectech.recipe;
 
-import static gregtech.api.util.GTUtility.trans;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static tectech.loader.recipe.Godforge.magmatterItemsForNEI;
 import static tectech.loader.recipe.Godforge.magmatterSpaceFluidItemsForNEI;
 import static tectech.loader.recipe.Godforge.magmatterTimeFluidItemsForNEI;
@@ -12,16 +12,17 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 
 import codechicken.nei.PositionedStack;
-import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.Materials;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
@@ -46,7 +47,7 @@ public class GodforgeExoticFrontend extends RecipeMapFrontend {
 
     @Override
     public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        if (neiCachedRecipe.mRecipe.mFluidOutputs[0].equals(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1_000))) {
+        if (neiCachedRecipe.mRecipe.mFluidOutputs[0].equals(Materials.QuarkGluonPlasma.getFluid(1_000))) {
             neiCachedRecipe.mInputs.set(0, new PositionedStack(quarkGluonItemsForNEI, 48, 23, true));
             neiCachedRecipe.mInputs.set(1, new PositionedStack(quarkGluonFluidItemsForNEI, 48, 52, true));
         } else {
@@ -70,9 +71,13 @@ public class GodforgeExoticFrontend extends RecipeMapFrontend {
     protected void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         long eut = recipeInfo.recipe.mEUt;
         long duration = recipeInfo.recipe.mDuration;
-        recipeInfo.drawText(trans("152", "Total: ") + GTUtility.formatNumbers(eut * duration) + " EU");
-        recipeInfo.drawText(trans("153", "Usage: ") + GTUtility.formatNumbers(eut) + " EU/t");
-        recipeInfo.drawText(trans("158", "Time: ") + GTUtility.formatNumbers(duration / 20) + " secs");
+        recipeInfo.drawText(
+            StatCollector.translateToLocalFormatted("GT5U.gui.text.total_line", formatNumber(eut * duration)));
+
+        recipeInfo.drawText(StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", formatNumber(eut)));
+
+        recipeInfo
+            .drawText(StatCollector.translateToLocalFormatted("GT5U.gui.text.time_line", formatNumber(duration / 20)));
 
     }
 

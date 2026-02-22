@@ -148,7 +148,7 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
                     buildHatchAdder(MTEFrothFlotationCell.class)
                         .atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy)
                         .casingIndex(getCasingTextureId())
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1))))
                 .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 9))
                 .addElement('X', ofBlock(ModBlocks.blockCasings3Misc, 1))
@@ -278,6 +278,11 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
     @Override
     public boolean isRecipeLockingEnabled() {
         return lockedMaterialName != null && !lockedMaterialName.isEmpty();
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 
     @Override

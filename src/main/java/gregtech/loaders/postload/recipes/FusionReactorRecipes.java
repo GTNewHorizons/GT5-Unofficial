@@ -13,6 +13,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gtPlusPlus.core.material.MaterialsElements;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class FusionReactorRecipes implements Runnable {
 
     @Override
@@ -36,12 +37,12 @@ public class FusionReactorRecipes implements Runnable {
             .fluidInputs(Materials.Deuterium.getGas(125), Materials.Tritium.getGas(125))
             .fluidOutputs(Materials.Helium.getPlasma(125))
             .duration(16 * TICKS)
-            .eut(4096)
+            .eut(TierEU.RECIPE_IV / 2)
             .metadata(FUSION_THRESHOLD, 40_000_000L)
             .addTo(fusionRecipes); // FT1 Cheap - farmable
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Deuterium.getGas(125), Materials.Helium_3.getGas(125))
+            .fluidInputs(Materials.Deuterium.getGas(125), Materials.Helium3.getGas(125))
             .fluidOutputs(Materials.Helium.getPlasma(125))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_EV)
@@ -60,7 +61,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidInputs(Materials.Beryllium.getMolten(1 * NUGGETS), Materials.Deuterium.getGas(375))
             .fluidOutputs(Materials.Nitrogen.getPlasma(125))
             .duration(16 * TICKS)
-            .eut(16384)
+            .eut(TierEU.RECIPE_LuV / 2)
             .metadata(FUSION_THRESHOLD, 180_000_000L)
             .addTo(fusionRecipes); // FT1+ Expensive //
 
@@ -97,12 +98,28 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT1 - utility
 
         GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Neodymium.getMolten(2 * NUGGETS), Materials.Promethium.getMolten(1 * NUGGETS))
+            .fluidOutputs(Materials.Europium.getMolten(2 * NUGGETS))
+            .duration(8 * TICKS)
+            .eut(24576)
+            .metadata(FUSION_THRESHOLD, 150_000_000L)
+            .addTo(fusionRecipes); // FT1 - alternative europium
+
+        GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Lutetium.getMolten(1 * NUGGETS), Materials.Chrome.getMolten(1 * NUGGETS))
             .fluidOutputs(Materials.Americium.getMolten(1 * NUGGETS))
             .duration(4 * SECONDS + 16 * TICKS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 200_000_000L)
             .addTo(fusionRecipes); // FT2 - utility
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Lutetium.getMolten(2 * NUGGETS), Materials.Promethium.getMolten(1 * NUGGETS))
+            .fluidOutputs(Materials.Americium.getMolten(2 * NUGGETS))
+            .duration(24 * TICKS)
+            .eut(38764)
+            .metadata(FUSION_THRESHOLD, 200_000_000L)
+            .addTo(fusionRecipes); // FT2 - alternative americium
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Plutonium.getMolten(1 * NUGGETS), Materials.Thorium.getMolten(1 * NUGGETS))
@@ -189,7 +206,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidInputs(Materials.Gallium.getMolten(1 * NUGGETS), Materials.Radon.getGas(125))
             .fluidOutputs(Materials.Duranium.getMolten(1 * NUGGETS))
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16384)
+            .eut(TierEU.RECIPE_LuV / 2)
             .metadata(FUSION_THRESHOLD, 140_000_000L)
             .addTo(fusionRecipes);
 
@@ -242,7 +259,7 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT2+
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Silver.getMolten(1 * INGOTS), Materials.Helium_3.getGas(375))
+            .fluidInputs(Materials.Silver.getMolten(1 * INGOTS), Materials.Helium3.getGas(375))
             .fluidOutputs(Materials.Tin.getPlasma(2 * INGOTS))
             .duration(16 * TICKS)
             .eut(49152)

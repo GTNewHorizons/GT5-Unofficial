@@ -105,7 +105,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
                             tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
                                 .or(gregtech.api.enums.HatchElement.Dynamo))
                         .casingIndex(179)
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(ofBlock(Loaders.FRF_Casings, 0)))
                 .addElement('C', ofBlock(Loaders.FRF_Casings, 0))
                 .addElement('G', ofBlock(Loaders.fieldRestrictingGlass, 0))
@@ -152,15 +152,14 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Naquadah Fuel Refinery")
-            .addInfo("But at what cost?")
+        tt.addMachineType("Naquadah Fuel Refinery, NFR")
             .addInfo("Produces naquadah fuels")
             .addInfo("Needs field restriction coils to control the fatal radiation")
             .addInfo("Use higher tier coils to unlock more fuel types and perform more perfect overclocks")
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(3, 15, 15, false)
-            .addController("Mid of the third layer")
+            .addController("Middle of the third layer")
             .addCasingInfoExactly("Naquadah Fuel Refinery Casing", 114, false)
             .addCasingInfoExactly("Field Restriction Coil", 32, true)
             .addCasingInfoExactly("Field Restriction Glass", 8, false)
@@ -253,9 +252,9 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }

@@ -14,7 +14,6 @@ import tectech.loader.recipe.ResearchStationAssemblyLine;
 import tectech.loader.thing.CoverLoader;
 import tectech.loader.thing.MachineLoader;
 import tectech.loader.thing.ThingsLoader;
-import tectech.thing.metaTileEntity.Textures;
 
 @SuppressWarnings("deprecation")
 public final class MainLoader {
@@ -27,7 +26,7 @@ public final class MainLoader {
         creativeTabTecTech = new CreativeTabTecTech("TecTech");
 
         // set expanded texture arrays for tiers
-        Textures.run();
+        // Textures.run();
 
         ProgressManager.ProgressBar progressBarPreload = ProgressManager.push("TecTech Preload", 1);
 
@@ -54,7 +53,7 @@ public final class MainLoader {
         LOGGER.info("Damage types addition Done");
 
         progressBarLoad.step("Register Packet Dispatcher");
-        new NetworkDispatcher();
+        NetworkDispatcher.registerPackets();
         LOGGER.info("Packet Dispatcher registered");
 
         progressBarLoad.step("Register GUI Handler");

@@ -23,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -45,6 +44,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -55,9 +55,9 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.multi.gui.MTEIndustrialElectromagneticSeparatorGui;
 
 public class MTEIndustrialElectromagneticSeparator
     extends MTEExtendedPowerMultiBlockBase<MTEIndustrialElectromagneticSeparator> implements ISurvivalConstructable {
@@ -131,7 +131,7 @@ public class MTEIndustrialElectromagneticSeparator
                 buildHatchAdder(MTEIndustrialElectromagneticSeparator.class)
                     .atLeast(InputBus, OutputBus, Maintenance, Energy.or(MultiAmpEnergy))
                     .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
-                    .dot(1)
+                    .hint(1)
                     .buildAndChain(
                         onElementPass(
                             MTEIndustrialElectromagneticSeparator::onCasingAdded,
@@ -143,7 +143,7 @@ public class MTEIndustrialElectromagneticSeparator
                 .adder(MTEIndustrialElectromagneticSeparator::addMagHatch)
                 .hatchClass(MTEHatchMagnet.class)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
-                .dot(2)
+                .hint(2)
                 .build())
         .build();
 
@@ -423,9 +423,9 @@ public class MTEIndustrialElectromagneticSeparator
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }
@@ -433,7 +433,9 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    protected @NotNull MTEIndustrialElectromagneticSeparatorGui getGui() {
-        return new MTEIndustrialElectromagneticSeparatorGui(this);
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SEPARATOR,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_POLARIZER);
     }
 }

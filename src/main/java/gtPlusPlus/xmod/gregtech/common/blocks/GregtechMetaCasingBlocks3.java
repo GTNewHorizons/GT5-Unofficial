@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -11,10 +13,10 @@ import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.enums.TAE;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.MaterialCasings;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -39,9 +41,8 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
             if (tier > 0) {
                 long capacity = MTEPowerSubStation.getCapacityFromCellTier(tier);
                 aList.add(
-                    StatCollector.translateToLocalFormatted(
-                        "gtpp.tooltip.meta_casing.energy_storage",
-                        GTUtility.formatNumbers(capacity)));
+                    StatCollector
+                        .translateToLocalFormatted("gtpp.tooltip.meta_casing.energy_storage", formatNumber(capacity)));
             }
             super.addInformation(aStack, aPlayer, aList, aF3_H);
         }
@@ -99,6 +100,8 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
         for (int i = 4; i < 9; i++) {
             GTStructureChannels.PSS_CELL.registerAsIndicator(new ItemStack(this, 1, i), i - 2);
         }
+
+        GTMod.proxy.mCTMBlockCache.put(this, (byte) 12, true);
     }
 
     @Override

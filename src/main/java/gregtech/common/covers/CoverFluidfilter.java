@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -22,11 +23,11 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverFluidfilterGui;
-import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.FilterDirectionMode;
 import gregtech.common.covers.modes.FilterType;
+import gregtech.common.gui.modularui.cover.CoverFluidfilterGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.FluidFilterUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -158,7 +159,10 @@ public class CoverFluidfilter extends Cover {
         if (fluid == null) return E;
 
         final FluidStack sFluid = new FluidStack(fluid, 1000);
-        return (String.format("Filtering Fluid: %s - %s", sFluid.getLocalizedName(), getFilterMode(mFilterMode)));
+        return (StatCollector.translateToLocalFormatted(
+            "gt.interact.desc.filtering_fuild",
+            sFluid.getLocalizedName(),
+            getFilterMode(mFilterMode)));
     }
 
     public String getFilterMode(int aFilterMode) {
@@ -171,7 +175,7 @@ public class CoverFluidfilter extends Cover {
             case DENY_INPUT_INVERT_OUTPUT -> translateToLocal("gt.interact.desc.deny_i_invert_o");
             case ANY_INPUT_FILTER_OUTPUT -> translateToLocal("gt.interact.desc.any_i_filter_o");
             case ANY_INPUT_INVERT_OUTPUT -> translateToLocal("gt.interact.desc.any_i_invert_o");
-            default -> ("UNKNOWN");
+            default -> translateToLocal("gt.interact.desc.unknown");
         };
     }
 
@@ -273,7 +277,7 @@ public class CoverFluidfilter extends Cover {
     // GUI stuff
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverFluidfilterGui(this);
     }
 

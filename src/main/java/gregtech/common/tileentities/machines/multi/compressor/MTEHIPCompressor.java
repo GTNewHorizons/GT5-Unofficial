@@ -57,6 +57,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -87,16 +88,19 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             'B',
             buildHatchAdder(MTEHIPCompressor.class).atLeast(Maintenance, Energy, SpecialHatchElement.HeatSensor)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(4))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(MTEHIPCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 4))))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 9))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings10, 10))
-        .addElement('F', activeCoils(ofCoil(MTEHIPCompressor::setCoilLevel, MTEHIPCompressor::getCoilLevel)))
+        .addElement(
+            'F',
+            GTStructureChannels.HEATING_COIL
+                .use(activeCoils(ofCoil(MTEHIPCompressor::setCoilLevel, MTEHIPCompressor::getCoilLevel))))
         .addElement(
             'G',
             buildHatchAdder(MTEHIPCompressor.class).atLeast(InputBus, OutputBus, InputHatch)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(5))
-                .dot(2)
+                .hint(2)
                 .buildAndChain(onElementPass(MTEHIPCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 5))))
         .addElement('H', ofBlock(GregTechAPI.sBlockCasings10, 5))
         .build();
@@ -264,7 +268,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                     + "1"
                     + EnumChatFormatting.GRAY
                     + " parallels per voltage tier")
-            .beginStructureBlock(15, 8, 7, false)
+            .beginStructureBlock(15, 10, 7, false)
             .addController("Front Center")
             .addCasingInfoMin("Electric Compressor Casing", 95, false)
             .addCasingInfoMin("Compressor Pipe Casing", 60, false)
@@ -281,6 +285,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             .addOutputBus("Pipe Casings on Side", 2)
             .addEnergyHatch("Any Electric Compressor Casing", 1)
             .addMaintenanceHatch("Any Electric Compressor Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher(Ollie);
         return tt;
     }
@@ -340,18 +345,14 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-        if (tag.getBoolean("cooling")) currentTip.add(
-            "HIP Heat: " + EnumChatFormatting.RED
-                + EnumChatFormatting.BOLD
-                + tag.getInteger("heat")
-                + "%"
-                + EnumChatFormatting.RESET);
-        else currentTip.add(
-            "HIP Heat: " + EnumChatFormatting.AQUA
-                + EnumChatFormatting.BOLD
-                + tag.getInteger("heat")
-                + "%"
-                + EnumChatFormatting.RESET);
+        currentTip.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.hip_compressor.heat",
+                "" + (tag.getBoolean("cooling") ? EnumChatFormatting.RED : EnumChatFormatting.AQUA)
+                    + EnumChatFormatting.BOLD
+                    + tag.getInteger("heat")
+                    + "%"
+                    + EnumChatFormatting.RESET));
     }
 
     @Override

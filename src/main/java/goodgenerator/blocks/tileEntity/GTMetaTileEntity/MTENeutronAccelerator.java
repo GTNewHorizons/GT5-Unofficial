@@ -1,7 +1,7 @@
 package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.util.GTUtility.formatNumbers;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -24,7 +24,7 @@ public class MTENeutronAccelerator extends MTEHatch {
             0,
             new String[] { "Uses Energy to Accelerate the Neutrons!",
                 "Max consumption: " + EnumChatFormatting.YELLOW
-                    + formatNumbers(getMaxEUConsume(aTier))
+                    + formatNumber(getMaxEUConsume(aTier))
                     + EnumChatFormatting.WHITE
                     + " EU/t",
                 "Every EU gets converted into 10-20 eV Neutron Kinetic Energy." });
@@ -62,12 +62,12 @@ public class MTENeutronAccelerator extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_2A[mTier] };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_2A[mTier + 1] };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_2A[mTier] };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_2A[mTier + 1] };
     }
 
     @Override

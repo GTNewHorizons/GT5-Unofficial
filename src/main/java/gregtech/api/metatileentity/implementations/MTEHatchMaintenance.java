@@ -38,6 +38,8 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
@@ -55,6 +57,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import ic2.core.IHasGui;
 import ic2.core.item.ItemToolbox;
+import thaumic.tinkerer.common.block.tile.tablet.TabletFakePlayer;
 
 public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAlignment {
 
@@ -175,10 +178,14 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         float aX, float aY, float aZ) {
         if (side == aBaseMetaTileEntity.getFrontFacing()) {
             if (aBaseMetaTileEntity.isClientSide()) return true;
-            // only allow OC robot fake player
-            if (aPlayer instanceof FakePlayer && !aPlayer.getGameProfile()
-                .getName()
-                .endsWith(".robot")) return false;
+            // only allow OC robot & dynamism tablet fake player
+            if (aPlayer instanceof FakePlayer) {
+                if (!(aPlayer instanceof TabletFakePlayer) && !aPlayer.getGameProfile()
+                    .getName()
+                    .endsWith(".robot")) {
+                    return false;
+                }
+            }
             ItemStack tStack = aPlayer.getCurrentEquippedItem();
             if (tStack != null) {
                 if (tStack.getItem() instanceof ItemToolbox) {
@@ -203,10 +210,18 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     }
 
     @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-        if (aBaseMetaTileEntity.isClientSide())
-            StructureLibAPI.queryAlignment((IAlignmentProvider) aBaseMetaTileEntity);
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound data = super.getDescriptionData();
+        if (data == null) data = new NBTTagCompound();
+        data.setByte("mRotation", (byte) rotation.getIndex());
+        return data;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void onDescriptionPacket(NBTTagCompound data) {
+        super.onDescriptionPacket(data);
+        rotation = Rotation.byIndex(data.getByte("mRotation"));
     }
 
     @Override
@@ -242,9 +257,9 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
             mMaintenanceSound,
             mMaintenanceSoundStrength,
             mMaintenanceSoundModulation,
-            tMte.getXCoord(),
-            tMte.getYCoord(),
-            tMte.getZCoord());
+            tMte.getXCoord() + .5,
+            tMte.getYCoord() + .5,
+            tMte.getZCoord() + .5);
 
         setMaintenanceSound((String) null, 1.0F, 1.0F);
     }

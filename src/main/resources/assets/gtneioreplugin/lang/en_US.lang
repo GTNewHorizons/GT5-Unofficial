@@ -19,6 +19,9 @@ gtnop.gui.nei.dimension=Dimension
 gtnop.gui.nei.chance=Chance
 gtnop.gui.nei.fluidAmount=Amount
 
+gtnop.gui.nei.chance.value=%s%%
+gtnop.gui.nei.fluidAmount.value=%s-%s
+
 gtnop.gui.nei.asteroidPrimary=Main-Gen1
 gtnop.gui.nei.asteroidSecondary=Main-Gen2
 gtnop.gui.nei.asteroidBetween=Minor-Gen1
@@ -37,60 +40,70 @@ gtnop.gui.nei.oreOthers=Other ore
 gtnop.nei.genPosition=Position
 gtnop.nei.genPositionInfo=In the center of each chunk
 
-
 # world names
 gtnop.world.Overworld=Overworld
 gtnop.world.Nether=Nether
 gtnop.world.TheEnd=The End
-gtnop.world.Twilight=Twilight Forest
+gtnop.world.TwilightForest=Twilight Forest
 gtnop.world.EndAsteroid=Far End Asteroids
 gtnop.world.Vanilla EndAsteroids=Vanilla End Asteroids
-gtnop.world.Moon=Moon
-gtnop.world.Mars=Mars
-gtnop.world.Phobos=Phobos
-gtnop.world.Deimos=Deimos
-gtnop.world.Asteroids=Asteroids
-gtnop.world.Ceres=Ceres
-gtnop.world.Europa=Europa
-gtnop.world.Ganymede=Ganymede
-gtnop.world.Callisto=Callisto
-gtnop.world.Ross128b=Ross128b
-gtnop.world.Io=Io
-gtnop.world.Venus=Venus
-gtnop.world.Mercury=Mercury
-gtnop.world.Enceladus=Enceladus
-gtnop.world.Titan=Titan
-gtnop.world.Ross128ba=Ross128ba
-gtnop.world.Miranda=Miranda
-gtnop.world.Oberon=Oberon
-gtnop.world.Proteus=Proteus
-gtnop.world.Triton=Triton
-gtnop.world.Pluto=Pluto
-gtnop.world.Kuiperbelt=Kuiper Belt
-gtnop.world.Haumea=Haumea
-gtnop.world.MakeMake=Makemake
-gtnop.world.CentauriA=α Centauri Bb
-gtnop.world.VegaB=Vega B
-gtnop.world.BarnardC=Barnard C
-gtnop.world.BarnardE=Barnard E
-gtnop.world.BarnardF=Barnard F
-gtnop.world.TcetiE=T Ceti E
-gtnop.world.Anubis=Anubis
-gtnop.world.MehenBelt=Mehen Belt
-gtnop.world.Horus=Horus
-gtnop.world.Maahes=Maahes
-gtnop.world.Neper=Neper
-gtnop.world.Seth=Seth
+gtnop.world.dimensionDarkWorld=The Toxic Everglades
+gtnop.world.moon=Moon
+gtnop.world.mars=Mars
+gtnop.world.phobos=Phobos
+gtnop.world.deimos=Deimos
+gtnop.world.asteroids=Asteroids
+gtnop.world.ceres=Ceres
+gtnop.world.europa=Europa
+gtnop.world.ganymed=Ganymede
+gtnop.world.callisto=Callisto
+gtnop.world.ross128b=Ross128b
+gtnop.world.iojupiter=Io
+gtnop.world.venus=Venus
+gtnop.world.mercury=Mercury
+gtnop.world.enceladus=Enceladus
+gtnop.world.titan=Titan
+gtnop.world.ross128ba=Ross128ba
+gtnop.world.miranda=Miranda
+gtnop.world.oberon=Oberon
+gtnop.world.proteus=Proteus
+gtnop.world.triton=Triton
+gtnop.world.pluto=Pluto
+gtnop.world.kuiperbelt=Kuiper Belt
+gtnop.world.haumea=Haumea
+gtnop.world.makemake=Makemake
+gtnop.world.centauribb=α Centauri Bb
+gtnop.world.vega1=Vega B
+gtnop.world.barnarda2=Barnard C
+gtnop.world.barnarda4=Barnard E
+gtnop.world.barnarda5=Barnard F
+gtnop.world.tcetie=T Ceti E
+gtnop.world.anubis=Anubis
+gtnop.world.asteroidbeltmehen=Mehen Belt
+gtnop.world.horus=Horus
+gtnop.world.maahes=Maahes
+gtnop.world.neper=Neper
+gtnop.world.seth=Seth
 gtnop.world.Underdark=Deep Dark
 
+# world tiers
+gtnop.tier.0=%s
+gtnop.tier.1=T1: %s
+gtnop.tier.2=T2: %s
+gtnop.tier.3=T3: %s
+gtnop.tier.4=T4: %s
+gtnop.tier.5=T5: %s
+gtnop.tier.6=T6: %s
+gtnop.tier.7=T7: %s
+gtnop.tier.8=T8: %s
+gtnop.tier.9=T9: %s
+gtnop.tier.10=T10: %s
 
 # biome names
 gtnop.biome.none.name=None
 
-
 # ore names extra
 gtnop.ore.null.name=None
-
 
 # vein types
 gtnop.ore.vein.name=Vein

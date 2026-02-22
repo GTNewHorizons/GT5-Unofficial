@@ -7,7 +7,9 @@ import bartworks.common.net.PacketBioVatRenderer;
 import bartworks.common.net.PacketEIC;
 import bartworks.common.net.PacketOreDictCache;
 import bartworks.common.net.PacketServerJoined;
-import gregtech.common.blocks.PacketOres;
+import gregtech.api.net.cape.GTPacketBroadcastCapes;
+import gregtech.api.net.cape.GTPacketListCapes;
+import gregtech.api.net.cape.GTPacketSetCape;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 /**
@@ -18,16 +20,15 @@ public enum GTPacketTypes {
     TILE_ENTITY(0, new GTPacketTileEntity()),
     SOUND(1, new GTPacketSound()),
     BLOCK_EVENT(2, new GTPacketBlockEvent()),
-    ORES(3, new PacketOres()),
     POLLUTION(4, new GTPacketPollution()),
     CLIENT_PREFERENCE(9, new GTPacketClientPreference()),
     SET_CONFIGURATION_CIRCUIT(12, new GTPacketSetConfigurationCircuit()),
     UPDATE_ITEM(13, new GTPacketUpdateItem()),
     SEND_COVER_DATA(16, new GTPacketSendCoverData()),
     REQUEST_COVER_DATA(17, new GTPacketRequestCoverData()),
-    // Free ID 18
+    SET_MOLD(18, new GTPacketSetMold()),
     SEND_OREGEN_PATTERN(19, new GTPacketSendOregenPattern()),
-    // Free ID 20
+    // ID 20 unused
     MUSIC_SYSTEM_DATA(21, new GTPacketMusicSystemData()),
     INFINITE_SPRAYCAN(22, new GTPacketInfiniteSpraycan()),
     BIO_VAT_RENDERER(23, new PacketBioVatRenderer()),
@@ -38,7 +39,7 @@ public enum GTPacketTypes {
     CREATE_TILE_ENTITY(28, new GTPacketCreateTE()),
     NODE_INFO(29, new GTPacketNodeInfo()),
     COIL_STATUS(30, new GTCoilStatus()),
-    DEBUG_COVER(31, new PacketDebugRedstoneCover()),
+    PLAYER_TELEPORT(31, new PacketTeleportPlayer()),
     LMA_CRAFTING_FX(32, new GTPacketLMACraftingFX()),
     SEND_WIRELESS_EU(33, new GTPacketUpdatePowerGoggles()),
     OVERWRITE_POWER_GOGGLES_MEASUREMENTS(34, new GTPacketOverwritePowerGogglesMeasurements()),
@@ -47,6 +48,10 @@ public enum GTPacketTypes {
     ON_POWERFAIL(37, new GTPacketOnPowerfail()),
     CLEAR_POWERFAIL(38, new GTPacketClearPowerfail()),
     CHAT(39, new GTPacketChat()),
+    BROADCAST_CAPES(40, new GTPacketBroadcastCapes()),
+    LIST_CAPES(41, new GTPacketListCapes()),
+    SET_CAPE(42, new GTPacketSetCape()),
+
     // merge conflict prevention comment, keep a trailing comma above
     ;
 

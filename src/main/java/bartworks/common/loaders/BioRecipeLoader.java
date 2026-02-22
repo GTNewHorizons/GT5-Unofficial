@@ -34,8 +34,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class BioRecipeLoader {
 
     public static void run() {
@@ -121,12 +121,14 @@ public class BioRecipeLoader {
         }
     }
 
+    @SuppressWarnings({ "PointlessArithmeticExpression", "RedundantSuppression" })
     public static void registerWaterBasedBacterialVatRecipes() {
         FluidStack[] easyFluids = { Materials.Water.getFluid(1_000), GTModHandler.getDistilledWater(1_000) };
         for (FluidStack fluidStack : easyFluids) {
             if (CropsPlusPlus.isModLoaded()) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.getIntegratedCircuit(2), new ItemStack(Items.sugar, 64))
+                    .itemInputs(new ItemStack(Items.sugar, 64))
+                    .circuit(2)
                     .special(BioItemList.getPetriDish(BioCultureLoader.CommonYeast))
                     .fluidInputs(new FluidStack(fluidStack, 100))
                     .fluidOutputs(FluidRegistry.getFluidStack("potion.ghp", 1))
@@ -171,6 +173,7 @@ public class BioRecipeLoader {
         }
     }
 
+    @SuppressWarnings({ "PointlessArithmeticExpression", "RedundantSuppression" })
     public static void registerBacterialVatRecipes() {
         registerWaterBasedBacterialVatRecipes();
 

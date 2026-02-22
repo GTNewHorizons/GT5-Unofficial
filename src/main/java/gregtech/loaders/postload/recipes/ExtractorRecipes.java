@@ -22,16 +22,16 @@ public class ExtractorRecipes implements Runnable {
         addExtractionRecipe(new ItemStack(Blocks.bookshelf, 1, WILDCARD), new ItemStack(Items.book, 3, 0));
         addExtractionRecipe(
             new ItemStack(Items.slime_ball, 1),
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 2L));
+            GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 2L));
         addExtractionRecipe(
             ItemList.IC2_Resin.get(1L),
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 3L));
+            GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 3L));
         addExtractionRecipe(
             getIC2Item("rubberSapling", 1L),
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L));
+            GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 1L));
         addExtractionRecipe(
             getIC2Item("rubberLeaves", 16L),
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L));
+            GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 1L));
 
         addExtractionRecipe(ItemList.Cell_Air.get(1L), ItemList.Cell_Empty.get(1L));
         addExtractionRecipe(ItemList.IC2_Food_Can_Filled.get(1L), ItemList.IC2_Food_Can_Empty.get(1L));

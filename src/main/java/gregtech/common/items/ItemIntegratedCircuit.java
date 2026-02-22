@@ -42,7 +42,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
 import ic2.core.item.ItemToolbox;
@@ -226,7 +226,7 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
             for (Runnable tRunnable : GregTechAPI.sGTItemIconload) {
                 try {
                     tRunnable.run();
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     GTMod.GT_FML_LOGGER.error("Error registering icons", e);
                 }
             }
@@ -289,7 +289,7 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
     private void openSelectorGui(ItemStack configurator, int meta, EntityPlayer player) {
         UIInfos.openClientUI(
             player,
-            buildContext -> new SelectItemUIFactory(
+            buildContext -> new ItemSelectBaseGui(
                 StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
                 configurator,
                 ItemIntegratedCircuit::onConfigured,

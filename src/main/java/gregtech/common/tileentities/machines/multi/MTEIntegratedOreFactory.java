@@ -40,7 +40,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -102,25 +101,25 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             'E',
             buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(Energy, Maintenance)
                 .casingIndex(CASING_INDEX1)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'I',
             buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(InputBus)
                 .casingIndex(CASING_INDEX1)
-                .dot(2)
+                .hint(2)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'W',
             buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(InputHatch, Muffler)
                 .casingIndex(CASING_INDEX2)
-                .dot(3)
+                .hint(3)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'O',
             buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(OutputBus, OutputHatch)
                 .casingIndex(CASING_INDEX2)
-                .dot(4)
+                .hint(4)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .build();
 
@@ -205,6 +204,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInfo("Does all ore processing in one step")
             .addStaticParallelInfo(1024)
             .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water")
+            .addInfo("Recipes that need extra input require their extra inputs on top of the normal costs")
             .addInfo("Processing time is dependent on mode")
             .addInfo("Use a screwdriver to switch mode")
             .addInfo("Sneak click with screwdriver to void the stone dust")
@@ -215,7 +215,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addController("The third layer")
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 128, false)
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 105, false)
-            .addCasingInfoExactly("Reinforced Glass", 48, false)
+            .addCasingInfoExactly("Any Tiered Glass", 48, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 30, false)
             .addCasingInfoExactly("Tungstensteel Frame Box", 16, false)
             .addCasingInfoExactly("Steel Gear Box Casing", 16, false)
@@ -227,11 +227,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addOutputBus("Output products", 4)
             .toolTipFinisher();
         return tt;
-    }
-
-    @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> !r.isUpsideDown() && !f.isVerticallyFliped();
     }
 
     @Override
@@ -348,6 +343,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         }
 
         int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
+        lastParallel = finalParallel;
 
         // for scanner
         setCurrentParallelism(finalParallel);
@@ -434,8 +430,16 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             this.lEUt = -this.lEUt;
         }
         this.updateSlots();
-
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (mProgresstime >= mMaxProgresstime - 1 && mMaxProgresstime > 0) {
+            // Multiblock base already includes 1 parallel
+            this.recipesDone += lastParallel - 1;
+        }
+        super.runMachine(aBaseMetaTileEntity, aTick);
     }
 
     private boolean checkTypes(int aID, IntOpenHashSet... aTables) {

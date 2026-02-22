@@ -23,7 +23,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
 
 /*
@@ -33,9 +32,6 @@ import gtnhlanth.common.register.BotWerkstoffMaterialPool;
 public class BotRecipes {
 
     public static void addGTRecipe() {
-        ItemStack C1 = GTUtility.getIntegratedCircuit(1);
-        ItemStack C2 = GTUtility.getIntegratedCircuit(2);
-        ItemStack C24 = GTUtility.getIntegratedCircuit(24);
 
         // CaCO3 + 2HCl = H2O + CO2 + CaCl2
         GTValues.RA.stdBuilder()
@@ -113,7 +109,8 @@ public class BotRecipes {
 
         // WO3 + 6H = W + 3H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(WO3, C2)
+            .itemInputs(WO3)
+            .circuit(2)
             .itemOutputs(Materials.Tungsten.getDust(1))
             .fluidInputs(Materials.Hydrogen.getGas(6_000))
             .fluidOutputs(Materials.Steam.getGas(3_000))
@@ -137,14 +134,16 @@ public class BotRecipes {
         // 2Cl + CO = COCl2
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.CarbonMonoxide.getCells(1), GTUtility.getIntegratedCircuit(12))
+            .itemInputs(Materials.CarbonMonoxide.getCells(1))
+            .circuit(12)
             .itemOutputs(Phosgene.get(cell, 1))
             .fluidInputs(Materials.Chlorine.getGas(2_000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Chlorine.getCells(2), GTUtility.getIntegratedCircuit(12))
+            .itemInputs(Materials.Chlorine.getCells(2))
+            .circuit(12)
             .itemOutputs(Phosgene.get(cell, 1), Materials.Empty.getCells(1))
             .fluidInputs(Materials.CarbonMonoxide.getGas(1_000))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -157,7 +156,8 @@ public class BotRecipes {
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Chlorine.getCells(2), GTUtility.getIntegratedCircuit(2))
+            .itemInputs(Materials.Chlorine.getCells(2))
+            .circuit(2)
             .itemOutputs(Materials.Empty.getCells(2))
             .fluidInputs(Materials.CarbonMonoxide.getGas(1_000))
             .fluidOutputs(BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(1_000))
@@ -167,7 +167,7 @@ public class BotRecipes {
 
         // H3PO4 = P + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(C2)
+            .circuit(2)
             .itemOutputs(Materials.Phosphorus.getDust(1))
             .fluidInputs(Materials.PhosphoricAcid.getFluid(1_000))
             .fluidOutputs(Materials.Water.getFluid(500))
@@ -197,7 +197,8 @@ public class BotRecipes {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3), C2)
+            .itemInputs(AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3))
+            .circuit(2)
             .itemOutputs(WerkstoffLoader.SodiumNitrate.get(dust, 5))
             .fluidOutputs(Materials.Ammonia.getGas(1_000), Materials.Water.getFluid(1_000))
             .duration(5 * SECONDS)
@@ -206,7 +207,8 @@ public class BotRecipes {
 
         // N2H4O3 + NaOH + H =H2SO4= NH3 + HNO3 + Na + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(C24, AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3))
+            .itemInputs(AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3))
+            .circuit(24)
             .itemOutputs(Materials.Sodium.getDust(1))
             .fluidInputs(Materials.SulfuricAcid.getFluid(1_000), Materials.Hydrogen.getGas(1_000))
             .fluidOutputs(
@@ -219,7 +221,7 @@ public class BotRecipes {
 
         // 2HNO3 + C3H8 = 2CH3NO2 + 2H2O + C
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(2))
+            .circuit(2)
             .fluidInputs(Materials.Propane.getGas(1_000), Materials.NitricAcid.getFluid(2_000))
             .fluidOutputs(Nitromethane.getFluidOrGas(2_000))
             .duration(15 * SECONDS)

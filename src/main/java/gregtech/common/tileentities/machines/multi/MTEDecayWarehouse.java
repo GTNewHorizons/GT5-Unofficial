@@ -6,13 +6,13 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.UNDERLINE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.casing.Casings.RadiationProofMachineCasing;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTUtility.areStacksEqual;
-import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,6 +69,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
@@ -341,6 +342,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
             return;
         }
 
+        if (mStartUpCheck > 0) return;
         if (aTick % 20 != 0) return;
 
         decayRate = 0;
@@ -404,9 +406,9 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
                         SoundResource.GTCEU_OP_PLUNGER,
                         1.0F,
                         -1.0F,
-                        base.getXCoord(),
-                        base.getYCoord(),
-                        base.getZCoord());
+                        base.getXCoord() + .5,
+                        base.getYCoord() + .5,
+                        base.getZCoord() + .5);
 
                     return true;
                 }
@@ -427,59 +429,51 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         long availableEUt = mEnergyHatches.size() > 1 ? getMaxInputPower() : getMaxInputVoltage();
+
+        availableEUt = (long) (availableEUt * 0.95);
+
         int remainingIOQuota = GTUtility.safeInt(availableEUt / EU_PER_IO, 0);
 
         mMaxProgresstime = 20;
-        mEfficiencyIncrease = 10_000;
+        mEfficiency = 10_000;
         lEUt = 0;
 
         List<ItemStack> outputs = new ArrayList<>();
 
         int productAmount = MathHelper.floor_double(storedProduct + EPSILON);
 
+        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this);
+
         // eject any stored product dusts
         if (productAmount > 0 && remainingIOQuota > 0) {
-            ItemStack output = product.copy();
-
             int toEject = Math.min(productAmount, remainingIOQuota);
 
-            output.stackSize = toEject;
-            addOutputPartial(output, true);
+            int ejected = ejectionHelper.ejectStack(GTUtility.copyAmountUnsafe(toEject, product));
 
-            int insertable = toEject - output.stackSize;
+            if (ejected > 0) {
+                storedProduct -= ejected;
+                remainingIOQuota -= ejected;
+                lEUt -= EU_PER_IO * ejected;
 
-            if (insertable > 0) {
-                output.stackSize = insertable;
-                storedProduct -= insertable;
-                remainingIOQuota -= insertable;
-                lEUt -= EU_PER_IO * insertable;
-
-                outputs.add(output);
+                outputs.add(GTUtility.copyAmountUnsafe(ejected, product));
             }
         }
 
-        // eject any isotope dusts if we're in export mode and haven't already exported something
-        // we can only export one thing at a time, to prevent voiding
-        if (machineMode == MODE_EXPORT && outputs.isEmpty() && remainingIOQuota > 0 && isotope != null) {
+        // eject any isotope dusts if we're in export mode
+        if (machineMode == MODE_EXPORT && remainingIOQuota > 0 && isotope != null) {
             int isotopeAmount = MathHelper.floor_double(storedIsotope + EPSILON);
 
             if (isotopeAmount > 0) {
-                ItemStack output = isotope.copy();
-
                 int toEject = Math.min(isotopeAmount, remainingIOQuota);
 
-                output.stackSize = toEject;
-                addOutputPartial(output, true);
+                int ejected = ejectionHelper.ejectStack(GTUtility.copyAmountUnsafe(toEject, isotope));
 
-                int insertable = toEject - output.stackSize;
+                if (ejected > 0) {
+                    storedIsotope -= ejected;
+                    remainingIOQuota -= ejected;
+                    lEUt -= EU_PER_IO * ejected;
 
-                if (insertable > 0) {
-                    output.stackSize = insertable;
-                    storedIsotope -= insertable;
-                    remainingIOQuota -= insertable;
-                    lEUt -= EU_PER_IO * insertable;
-
-                    outputs.add(output);
+                    outputs.add(GTUtility.copyAmountUnsafe(ejected, isotope));
                 }
             }
         }
@@ -576,10 +570,10 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
         sb.append(" (");
         if (decayRate > 1) {
-            sb.append(formatNumbers(decayRate))
+            sb.append(formatNumber(decayRate))
                 .append("/s)");
         } else {
-            sb.append(formatNumbers(1d / decayRate))
+            sb.append(formatNumber(1d / decayRate))
                 .append("s/ea)");
         }
 
@@ -604,7 +598,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
                     () -> GTUtility.translate(
                         "GT5U.gui.text.content-entry",
                         isotope == null ? "" : isotope.getDisplayName(),
-                        formatNumbers(storedIsotope)))
+                        formatNumber(storedIsotope)))
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> isotope != null)
                 .setSize(179, 10));
@@ -614,14 +608,14 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
                     () -> GTUtility.translate(
                         "GT5U.gui.text.content-entry",
                         product == null ? "" : product.getDisplayName(),
-                        formatNumbers(storedProduct)))
+                        formatNumber(storedProduct)))
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> product != null)
                 .setSize(179, 10));
         screenElements.widget(
             TextWidget
                 .dynamicString(
-                    () -> GTUtility.translate("GT5U.gui.text.decay-rate", formatNumbers(decayRate), getDecayRate()))
+                    () -> GTUtility.translate("GT5U.gui.text.decay-rate", formatNumber(decayRate), getDecayRate()))
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> decayRate > 0)
                 .setSize(179, 10));

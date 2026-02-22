@@ -10,7 +10,6 @@ import net.minecraft.util.IIcon;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gtnhintergalactic.GTNHIntergalactic;
 
 /**
@@ -92,7 +91,7 @@ public class ItemMiningDrones extends Item {
         UEV(Materials.Neutronium),
         UIV(Materials.CosmicNeutronium),
         UMV(Materials.Infinity),
-        UXV(MaterialsUEVplus.TranscendentMetal);
+        UXV(Materials.TranscendentMetal);
 
         /** Material for this drone tier */
         private final Materials mat;

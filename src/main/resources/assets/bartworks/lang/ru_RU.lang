@@ -140,8 +140,6 @@ tooltip.bw.tier.name=Тир:
 tooltip.bw.empty.name=Пусто
 tooltip.bw.mb_via.name=%s§7 через §2BartWorks
 
-tooltip.bw.high_temp_gas_cooled_reactor.material=Материал для высокотемпературного газоохлаждаемого реактора
-
 tooltip.bw.item.circuit.tagged=a circuit
 tooltip.bw.item.circuit.tagged.imprint=An imprint for: %s
 tooltip.bw.item.circuit.tagged.sliced=A sliced %s
@@ -246,16 +244,6 @@ BW.infoData.BioVat.production=Производство
 BW.infoData.htr.helium_level=Уровень гелия: %sЛ / %sЛ
 BW.infoData.htr.problems=Проблемы: %s
 
-BW.infoData.htgr.mode=Режим: %s
-BW.infoData.htgr.mode.emptying=Emptying
-BW.infoData.htgr.mode.normal=Normal
-BW.infoData.htgr.progress=Прогресс: %sс / %sс
-BW.infoData.htgr.fuel_type=Тип топлива: %s
-BW.infoData.htgr.fuel_type.none=NONE
-BW.infoData.htgr.fuel_type.triso=TRISO (%s)
-BW.infoData.htgr.fuel_amount=Количество топлива: %s шт.
-BW.infoData.htgr.coolant=Хладагент: %sЛ/с
-
 BW.infoData.thtr.progress=Прогресс: %sсек / %sсек
 BW.infoData.thtr.triso_pebbles=Пеллеты TRISO: %sшт. / %sшт.
 BW.infoData.thtr.coolant=Хладагент/t: %sЛ/t
@@ -274,7 +262,7 @@ BW.NEI.display.radhatch.2=Время: %s сек
 misc.BatchModeTextOn=Включён пакетный режим
 misc.BatchModeTextOff=Отключён пакетный режим
 
-tooltip.cal.imprintedWith=Imprinted with:
+tooltip.cal.imprintedWith=Imprinted with: %s
 chat.cal.mode.0=Режим: Сборочная линия электросхем
 chat.cal.mode.1=Режим: Сборщик электросхем
 #Liquids

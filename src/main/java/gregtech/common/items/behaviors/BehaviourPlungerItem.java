@@ -66,9 +66,9 @@ public class BehaviourPlungerItem extends BehaviourNone {
                                         SoundResource.GTCEU_OP_PLUNGER,
                                         1.0F,
                                         -1.0F,
-                                        aX,
-                                        aY,
-                                        aZ);
+                                        hitX,
+                                        hitY,
+                                        hitZ);
                                 }
                                 return true;
                             }

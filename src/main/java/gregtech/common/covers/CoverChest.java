@@ -10,8 +10,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
@@ -21,6 +21,8 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTByteBuffer;
+import gregtech.common.gui.modularui.cover.CoverChestGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.ChestUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -28,22 +30,22 @@ public class CoverChest extends Cover {
 
     private final int slots;
     private final int stackSizeLimit = 1;
-    private LimitingItemStackHandler items;
+    private LegacyLimitingItemStackHandler items;
     private boolean firstTick;
 
     public CoverChest(CoverContext context, int slots, ITexture coverTexture) {
         super(context, coverTexture);
         if (slots <= 0) throw new IllegalArgumentException("slots must be greater than 0");
         this.slots = slots;
-        this.items = new LimitingItemStackHandler(slots, stackSizeLimit);
+        this.items = new LegacyLimitingItemStackHandler(slots, stackSizeLimit);
     }
 
     public int getSlotCount() {
         return slots;
     }
 
-    public IItemHandlerModifiable getItems() {
-        return this.items;
+    public LegacyLimitingItemStackHandler getItems() {
+        return items;
     }
 
     @Override
@@ -123,7 +125,7 @@ public class CoverChest extends Cover {
                     }
                 }
             }
-            this.items = new LimitingItemStackHandler(slots, stackSizeLimit);
+            this.items = new LegacyLimitingItemStackHandler(slots, stackSizeLimit);
             int toCopy = Math.min(items.getSlots(), items.getSlots());
             for (int i = 0; i < toCopy; i++) {
                 items.setStackInSlot(i, items.getStackInSlot(i));
@@ -133,15 +135,20 @@ public class CoverChest extends Cover {
     }
 
     @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverChestGui(this);
+    }
+
+    @Override
     public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new ChestUIFactory(buildContext).createWindow();
     }
 
-    private static class LimitingItemStackHandler extends ItemStackHandler {
+    private static class LegacyLimitingItemStackHandler extends ItemStackHandler implements IItemHandlerModifiable {
 
         private final int slotLimit;
 
-        private LimitingItemStackHandler(int slots, int slotLimit) {
+        private LegacyLimitingItemStackHandler(int slots, int slotLimit) {
             super(slots);
             this.slotLimit = slotLimit;
         }

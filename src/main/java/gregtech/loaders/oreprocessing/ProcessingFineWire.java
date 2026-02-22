@@ -21,7 +21,7 @@ public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeReg
         if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_SMASHING)) {
             GTRecipeRegistrator.registerWiremillRecipes(aMaterial, 100, 4);
         }
-        if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)
+        if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)
             && !aMaterial.contains(SubTag.NO_WORKING)) {
             GTModHandler.addCraftingRecipe(
                 GTUtility.copyAmount(1, aStack),

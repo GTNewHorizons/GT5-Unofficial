@@ -1,34 +1,29 @@
 package gregtech.common.modularui2.factory;
 
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.api.util.item.GhostCircuitItemStackHandler;
-import gregtech.common.items.ItemIntegratedCircuit;
+import gregtech.common.covers.Cover;
 import gregtech.common.modularui2.widget.CoverTabButton;
-import gregtech.common.modularui2.widget.GhostCircuitSlotWidget;
 
 // spotless:off
 /**
@@ -64,6 +59,8 @@ public final class GTBaseGuiBuilder {
     private boolean doesAddCoverTabs = true;
     private boolean doesAddGhostCircuitSlot;
     private boolean doesAddGregTechLogo;
+    private int gregtechLogoPosX = 152;
+    private int gregtechLogoPosY = 63;
 
     public GTBaseGuiBuilder(IMetaTileEntity mte, PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         this.mte = mte;
@@ -133,6 +130,15 @@ public final class GTBaseGuiBuilder {
     }
 
     /**
+     * Sets a new position for the Gregtech Logo
+     */
+    public GTBaseGuiBuilder moveGregtechLogoPos(int X, int Y) {
+        this.gregtechLogoPosX = X;
+        this.gregtechLogoPosY = Y;
+        return this;
+    }
+
+    /**
      * Builds the resulting panel. Call after calling all the necessary feature switch methods.
      */
     public ModularPanel build() {
@@ -141,7 +147,7 @@ public final class GTBaseGuiBuilder {
             panel.bindPlayerInventory();
         }
         if (doesAddTitle && NetworkUtils.isClient()) {
-            panel.child(createTitle());
+            panel.child(CommonWidgets.createMachineTitle(mte, width));
         }
         if (doesAddCoverTabs) {
             panel.child(createCoverTabs());
@@ -156,21 +162,6 @@ public final class GTBaseGuiBuilder {
         return panel;
     }
 
-    private IWidget createTitle() {
-        String title = mte.getLocalName();
-        return new ParentWidget<>().coverChildren()
-            .topRelAnchor(0, 1)
-            .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
-            .child(
-                IKey.str(title)
-                    .asWidget()
-                    .widgetTheme(GTWidgetThemes.TEXT_TITLE)
-                    .marginLeft(5)
-                    .marginRight(5)
-                    .marginTop(5)
-                    .marginBottom(1));
-    }
-
     private IWidget createCoverTabs() {
         Flow column = Flow.column()
             .coverChildren()
@@ -180,8 +171,8 @@ public final class GTBaseGuiBuilder {
         for (int i = 0; i < 6; i++) {
             column.child(getCoverTabButton(mte.getBaseMetaTileEntity(), ForgeDirection.getOrientation(i)));
         }
-        uiSettings.getNEISettings()
-            .addNEIExclusionArea(column);
+        uiSettings.getRecipeViewerSettings()
+            .addExclusionArea(column);
         return column;
     }
 
@@ -192,36 +183,34 @@ public final class GTBaseGuiBuilder {
     private IPanelHandler getCoverPanel(ICoverable coverable, ForgeDirection side) {
         String panelKey = "cover_panel_" + side.toString()
             .toLowerCase();
-        return syncManager.panel(
+        Cover cover = coverable.getCoverAtSide(side);
+
+        CoverGuiData coverGuiData = new CoverGuiData(
+            posGuiData.getPlayer(),
+            cover.getCoverID(),
+            posGuiData.getX(),
+            posGuiData.getY(),
+            posGuiData.getZ(),
+            side);
+        return syncManager.syncedPanel(
             panelKey,
+            true,
             (syncManager, syncHandler) -> coverable.getCoverAtSide(side)
-                .buildPopUpUI(panelKey, syncManager, uiSettings)
-                .child(ButtonWidget.panelCloseButton()),
-            true);
+                .buildPopUpUI(coverGuiData, panelKey, syncManager, uiSettings)
+                .child(ButtonWidget.panelCloseButton()));
     }
 
     private IWidget createGhostCircuitSlot() {
         if (!(mte instanceof IConfigurationCircuitSupport ccs) || !ccs.allowSelectCircuit()) {
             throw new IllegalStateException("Tried to add configuration circuit slot to an unsupported machine!");
         }
-
-        IntSyncValue selectedSyncHandler = new IntSyncValue(() -> {
-            ItemStack selectedItem = mte.getStackInSlot(ccs.getCircuitSlot());
-            if (selectedItem != null && selectedItem.getItem() instanceof ItemIntegratedCircuit) {
-                // selected index 0 == config 1
-                return selectedItem.getItemDamage() - 1;
-            }
-            return -1;
-        });
-        syncManager.syncValue("selector_screen_selected", selectedSyncHandler);
-        return new GhostCircuitSlotWidget(mte, selectedSyncHandler)
-            .slot(new ModularSlot(new GhostCircuitItemStackHandler(mte), 0))
+        return CommonWidgets.createCircuitSlot(syncManager, mte)
             .pos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1);
     }
 
     private IWidget createGregTechLogo() {
         return new Widget<>().widgetTheme(GTWidgetThemes.PICTURE_LOGO)
             .size(17, 17) // todo: size
-            .pos(152, 63);
+            .pos(gregtechLogoPosX, gregtechLogoPosY);
     }
 }

@@ -49,7 +49,6 @@ tile.blockCircuitProgrammer.name=Circuit Programmer
 tile.blockDecayablesChest.name=Lead Lined Box
 tile.blockVolumetricFlaskSetter.name=Volumetric Flask Configurator
 tile.blockSuperLight.name=Shining Star
-tile.blockPestKiller.name=Pest Killer
 tile.blockSuperJukebox.name=Sir Mixalot [Jukebox]
 tile.blockSuperJukebox.deprecated=§cDEPRECATED, Use the Electric Jukeboxes instead
 
@@ -97,6 +96,8 @@ gtpp.recipe.multidehydrator=Multiblock Dehydrator
 gtpp.recipe.semifluidgeneratorfuels=Semifluid Generator Fuels
 gtpp.recipe.flotationcell=Flotation Cell
 gtpp.recipe.treefarm=Tree Growth Simulator
+gtpp.recipe.algae_pond=Algae Pond
+gtpp.recipe.multiblockrockbreaker=Boldarnator
 
 # Recipe categories
 gtpp.recipe.category.abs_non_alloy_recipes=ABS Non-Alloy Recipes
@@ -137,6 +138,7 @@ gtpp.nei.tgs.info-1=Output is further boosted
 gtpp.nei.tgs.info-2=by machine energy tier
 gtpp.nei.tgs.info-3=and tool type
 
+gtpp.nei.ap.tier=Algae Pond Tier: %s
 
 # Thermal Foundation Stuff
 item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
@@ -2280,7 +2282,6 @@ tile.blockFishTrap.name=Fish Catcher
 tile.blockInfiniteFluidTank.name=Infinite Fluid Tank
 tile.blockMiningExplosives.name=Mining Explosives
 tile.blockHellFire.name=Hellish Fire
-tile.blockProjectBench.name=Project Table
 tile.blockTradeBench.name=Trade Bench
 tile.blockModularity.name=Modularity Bench
 tile.blockBlackGate.name=Wither Cage
@@ -3059,12 +3060,8 @@ item.GTPP.BattPack.09.name.name=Charge Pack [UHV]
 
 # Added 13/3/19
 item.gtpp.debug.scanner.name=GT++ Debug Scanner
-item.RawWaste.name=Cell of Animal Waste
-item.ManureSlurry.name=Cell of Manure Slurry
-item.FertileManureSlurry.name=Cell of Fertile Slurry
 item.itemDustTinyDemicheleiteBr.name=Tiny Pile of Demicheleite (Br)
 item.itemDustSmallDemicheleiteBr.name=Small Pile of Demicheleite (Br)
-tile.blockPooCollector.name=Agricultural Sewer
 tile.Block of Lithium 7.name=Block of Lithium 7
 
 # Added 14/3/19
@@ -3082,8 +3079,6 @@ item.itemBombUnf.name=Throwable Bomb (unf)
 item.itemBombCasing.name=Bomb Casing
 item.gtpp.throwable.bomb.name=Throwable Bomb
 item.itemDetCable.name=Bomb Fuse
-tile.blockPooCollector.0.name=Agricultural Sewer
-tile.blockPooCollector.8.name=Biocomposite Collector
 item.itemIngotBakelite.name=Bakelite Ingot
 item.itemDustBakelite.name=Bakelite Dust
 item.itemDustTinyBakelite.name=Tiny Pile of Bakelite Dust
@@ -3313,7 +3308,6 @@ item.itemDustIndalloy140.name=Indalloy 140 Dust
 item.itemDustLFTRFuel1.name=LFTR Fuel 1 Dust
 item.itemDustLFTRFuel2.name=LFTR Fuel 2 Dust
 item.itemDustLFTRFuel3.name=LFTR Fuel 3 Dust
-item.itemDustManureByproducts.name=Manure Byproduct Dust
 item.itemDustMixTumbaga.name=Tumbaga Mix Dust
 item.itemDustOrganicFertilizer.name=Organic Fertilizer Dust
 item.itemDustPotassiumNitrate.name=Potassium Nitrate Dust
@@ -3328,13 +3322,11 @@ item.itemDustSmallAmmoniumNitrate.name=Small Pile of Ammonium Nitrate Dust
 item.itemDustSmallCopperIISulfate.name=Small Pile of Copper(II) Sulfate Dust
 item.itemDustSmallCopperIISulfatePentahydrate.name=Small Pile of Copper(II) Sulfate Pentahydrate Dust
 item.itemDustSmallCyanoaceticAcid.name=Small Pile of Cyanoacetic Acid Dust
-item.itemDustSmallDirt.name=Small Pile of Dried Earth Dust
 item.itemDustSmallFormaldehydeCatalyst.name=Small Pile of Formaldehyde Catalyst Dust
 item.itemDustSmallIndalloy140.name=Small Pile of Indalloy 140 Dust
 item.itemDustSmallLFTRFuel1.name=Small Pile of LFTR Fuel 1 Dust
 item.itemDustSmallLFTRFuel2.name=Small Pile of LFTR Fuel 2 Dust
 item.itemDustSmallLFTRFuel3.name=Small Pile of LFTR Fuel 3 Dust
-item.itemDustSmallManureByproducts.name=Small Pile of Manure Byproduct Dust
 item.itemDustSmallMixTumbaga.name=Small Pile of Tumbaga Mix Dust
 item.itemDustSmallOrganicFertilizer.name=Small Pile of Organic Fertilizer Dust
 item.itemDustSmallPotassiumNitrate.name=Small Pile of Potassium Nitrate Dust
@@ -3355,7 +3347,6 @@ item.itemDustTinyIndalloy140.name=Tiny Pile of Indalloy 140 Dust
 item.itemDustTinyLFTRFuel1.name=Tiny Pile of LFTR Fuel 1 Dust
 item.itemDustTinyLFTRFuel2.name=Tiny Pile of LFTR Fuel 2 Dust
 item.itemDustTinyLFTRFuel3.name=Tiny Pile of LFTR Fuel 3 Dust
-item.itemDustTinyManureByproducts.name=Tiny Pile of Manure Byproduct Dust
 item.itemDustTinyMixTumbaga.name=Tiny Pile of Tumbaga Mix Dust
 item.itemDustTinyOrganicFertilizer.name=Tiny Pile of Organic Fertilizer Dust
 item.itemDustTinyPotassiumNitrate.name=Tiny Pile of Potassium Nitrate Dust
@@ -3526,9 +3517,6 @@ item.GTPP.bauble.fireprotection.0.name.name=Supreme Pizza Gloves
 item.itemCellSeleniumDioxide.name=Selenium Dioxide Cell
 item.itemCellSeleniousAcid.name=Selenious Acid Cell
 
-# Added 25/7/19
-container.pestkiller=Pest Killer
-
 # Added 15/8/19
 gtpp.nei.decayables=Decayables Chest
 entity.batKing.name=Bat King
@@ -3653,7 +3641,7 @@ item.CarbonMonoxide.name=Carbon Monoxide Cell
 item.itemCellCarbonMonoxide.name=Carbon Monoxide Cell
 item.acetone.name=Acetone Cell
 item.saltwater.name=Salt Water Cell
-item.BasicAgrichemItem.22.name=Mold (Pellet)
+item.BasicAgrichemItem.22.name=Extruder Shape (Pellet)
 item.BasicAgrichemItem.23.name=Clean Aluminium Mix
 
 # Added 12/12/19
@@ -3794,8 +3782,8 @@ item.itemBasicTurbine_2.name=Basic Steel Turbine
 interaction.voidexcess.enabled=Void Excess Enabled
 interaction.voidexcess.disabled=Void Excess Disabled
 
-interaction.separateBusses.enabled=Input buses are separated
-interaction.separateBusses.disabled=Input buses are not separated
+interaction.separateBuses.enabled=Input buses are separated
+interaction.separateBuses.disabled=Input buses are not separated
 
 # Added 29/11/21
 
@@ -3932,7 +3920,7 @@ item.SunnariumBit.name=Sunnarium Bit
 sleep.event.okay=You slept well and now feel a little better.
 sleep.event.good=You slept well and now feel much better.
 sleep.event.wellrested=You feel really well rested.
-sleep.event.downsides=The downsides of life no longer effect you.
+sleep.event.downsides=The downsides of life no longer affect you.
 item.miscutils:magicfeather.name=Magical Feather
 
 # Added 10/02/22
@@ -3963,7 +3951,7 @@ item.ItemCustomSpawnEgg.name=Spawn %s
 item.itemSimpleFiremaker.message.0=You light the fire pit.
 item.itemSimpleFiremaker.message.1=You somehow managed to set yourself on fire...
 item.itemSimpleFiremaker.message.2=You created a fire!
-item.itemSimpleFiremaker.message.3=Your attemp does nothing.
+item.itemSimpleFiremaker.message.3=Your attempt does nothing.
 
 # Added 17/07/23
 item.BasicGenericChemItem.29.name=Limpid Water Catalyst
@@ -4022,11 +4010,11 @@ gtpp.tooltip.cover_item.connection.deny=Allows Connections: false
 gtpp.tooltip.cover_item.change_state=Shift Rmb to change state before applying
 gtpp.tooltip.dark_world_portal.frame.0=Use this to access the Toxic Everglades.
 gtpp.tooltip.dark_world_portal.frame.1=Assembled in the same shape as the Nether Portal.
-gtpp.tooltip.dark_world_portal.0=Place this if you are lazy to create the portal structure, slacker.
+gtpp.tooltip.dark_world_portal.0=Place this if you are too lazy to create the portal structure, slacker.
 gtpp.tooltip.dark_world.ground=Will burn very quickly if it happens to catch fire.
-gtpp.tooltip.dark_world.polluted_dirt=Maybe you can do something with this?.
+gtpp.tooltip.dark_world.polluted_dirt=Maybe you can do something with this?
 gtpp.tooltip.dark_world.polluted_dirt.1=This smells worse than a bean fart...
-gtpp.tooltip.alkalus_disk.0=Shines the way, towards the far away Everglades.
+gtpp.tooltip.alkalus_disk.0=Shines the way towards the far away Everglades.
 gtpp.tooltip.alkalus_disk.1=This item produces such a temperature, that you'd hate to use it incorrectly.
 gtpp.tooltip.tool.durability=Durability:
 gtpp.tooltip.tool.turbine_efficiency=Turbine Efficiency:
@@ -4043,9 +4031,6 @@ gtpp.tooltip.wireless_charger.3=§aLocal Mode§7: Can supply 2A to each player w
 gtpp.tooltip.wireless_charger.4=§aMixed Mode§7: Can supply 1A up to %,dm away and more 1A within %,dm.
 
 #gtpp info data
-gtpp.infodata.multi_block.total_time=Total Time Since Built: %s Weeks, %s Days,
-gtpp.infodata.multi_block.total_time.0=%s Hours, %s Minutes, %s Seconds.
-gtpp.infodata.multi_block.total_time.in_ticks=Total Time in ticks: %s
 gtpp.infodata.tesseract_generator.name=Tesseract Generator
 gtpp.infodata.tesseract_generator.frequency=Frequency: %d
 gtpp.infodata.tesseract_generator.status.active=Active

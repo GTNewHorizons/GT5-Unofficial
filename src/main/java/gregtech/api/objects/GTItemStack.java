@@ -2,16 +2,22 @@ package gregtech.api.objects;
 
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
+import java.util.Objects;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import org.jetbrains.annotations.Nullable;
+
+import com.gtnewhorizon.gtnhlib.hash.Fnv1a32;
 
 import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.Hash;
 
 /**
- * An optimization of {@link ItemStack} to have a better {@code hashcode} and {@code equals} in order to improve
- * {@code HashMap} and {@code Set} performance
+ * A wrapper of {@link ItemStack} which provides {@code hashcode} and {@code equals} methods in order to allow
+ * storing it as a key in {@code HashMap} and {@code Set}
  */
 public class GTItemStack {
 
@@ -34,7 +40,28 @@ public class GTItemStack {
         }
     };
 
-    public final Item mItem;
+    public static final Hash.Strategy<ItemStack> ITEMSTACK_HASH_STRATEGY_NBT_SENSITIVE = new Hash.Strategy<>() {
+
+        @Override
+        public int hashCode(ItemStack o) {
+            int hash = Fnv1a32.initialState();
+
+            if (o != null) {
+                hash = Fnv1a32.hashStep(hash, Objects.hashCode(o.getItem()));
+                hash = Fnv1a32.hashStep(hash, Items.feather.getDamage(o));
+                hash = Fnv1a32.hashStep(hash, Objects.hashCode(o.getTagCompound()));
+            }
+
+            return hash;
+        }
+
+        @Override
+        public boolean equals(ItemStack a, ItemStack b) {
+            return GTUtility.areStacksEqual(a, b, false);
+        }
+    };
+
+    public final @Nullable Item mItem;
     public final byte mStackSize;
     public final short mMetaData;
 
@@ -75,15 +102,16 @@ public class GTItemStack {
     @Override
     public boolean equals(Object aStack) {
         if (aStack == this) return true;
-        if (aStack instanceof GTItemStack) {
-            return ((GTItemStack) aStack).mItem == mItem && ((GTItemStack) aStack).mMetaData == mMetaData;
+        if (aStack instanceof GTItemStack gtItemStack) {
+            return gtItemStack.mItem == mItem && gtItemStack.mMetaData == mMetaData;
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return GTUtility.stackToInt(toStack());
+        if (mItem == null) return 0;
+        return mItem.hashCode() * 38197 + mMetaData;
     }
 
     /**

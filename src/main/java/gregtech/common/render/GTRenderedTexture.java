@@ -27,16 +27,13 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     protected final IIconContainer mIconContainer;
     private final short[] mRGBa;
     private final boolean glow;
-    private final boolean stdOrient;
     private final boolean useExtFacing;
 
-    protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean glow, boolean stdOrient,
-        boolean extFacing) {
+    protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean glow, boolean extFacing) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTRenderedTexture");
         mIconContainer = aIcon;
         mRGBa = aRGBa;
         this.glow = glow;
-        this.stdOrient = stdOrient;
         this.useExtFacing = extFacing;
     }
 
@@ -362,7 +359,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         }
         // spotless:on
 
-        if (side == ForgeDirection.DOWN) {
+        if (side == ForgeDirection.DOWN && !GTMod.clientProxy().fixedBottomFaceUV) {
             flipU ^= true;
         }
 
@@ -370,7 +367,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     }
 
     private ExtendedFacing getExtendedFacing(int x, int y, int z) {
-        if (stdOrient || !useExtFacing) return ExtendedFacing.DEFAULT;
+        if (!useExtFacing) return ExtendedFacing.DEFAULT;
 
         final EntityPlayer player = GTMod.proxy.getThePlayer();
         if (player == null) return ExtendedFacing.DEFAULT;

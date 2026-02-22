@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity.base;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
@@ -105,10 +106,12 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                     lazy(
                         x -> HatchElementBuilder.<MTELargeFusionComputer>builder()
                             .atLeast(
-                                gregtech.api.enums.HatchElement.InputHatch.or(gregtech.api.enums.HatchElement.InputBus),
+                                gregtech.api.enums.HatchElement.InputHatch
+                                    // Input Bus for crib support
+                                    .or(gregtech.api.enums.HatchElement.InputBus),
                                 gregtech.api.enums.HatchElement.OutputHatch)
                             .casingIndex(x.textureIndex())
-                            .dot(1)
+                            .hint(1)
                             .buildAndChain(x.getGlassBlock(), x.getGlassMeta())))
                 .addElement(
                     'E',
@@ -120,7 +123,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                             .adder(MTELargeFusionComputer::addEnergyInjector)
                             .casingIndex(x.textureIndex())
                             .hatchItemFilterAnd(x2 -> filterByMTETier(x2.energyHatchTier(), Integer.MAX_VALUE))
-                            .dot(2)
+                            .hint(2)
                             .buildAndChain(x.getCasingBlock(), x.getCasingMeta())))
                 .addElement('F', lazy(x -> ofFrame(x.getFrameBox())))
                 .addElement(
@@ -129,7 +132,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                         x -> buildHatchAdder(MTELargeFusionComputer.class).adder(MTELargeFusionComputer::addDroneHatch)
                             .hatchId(9401)
                             .casingIndex(x.textureIndex())
-                            .dot(3)
+                            .hint(3)
                             .buildAndChain(x.getCasingBlock(), x.getCasingMeta())))
                 .build();
         }
@@ -233,10 +236,10 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
         float aX, float aY, float aZ, ItemStack aTool) {
         if (getMaxBatchSize() == 1) {
             parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 128);
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
         } else {
             parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 1);
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
         }
         return true;
     }
@@ -296,8 +299,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                         this.getBaseMetaTileEntity()
                             .decreaseStoredEnergyUnits(-lEUt, true);
                         if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
-                            if (mOutputItems != null)
-                                for (ItemStack tStack : mOutputItems) if (tStack != null) addOutput(tStack);
+                            if (mOutputItems != null) addItemOutputs(mOutputItems);
                             if (mOutputFluids != null)
                                 for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
                             mEfficiency = Math
@@ -307,6 +309,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                             mProgresstime = 0;
                             mMaxProgresstime = 0;
                             mEfficiencyIncrease = 0;
+                            recipesDone += Math.max(processingLogic.getCurrentParallels(), lastParallel);
                             mLastWorkingTick = mTotalRunTime;
                             para = 0;
                             if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe();
@@ -529,27 +532,31 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                 + tier,
             StatCollector.translateToLocal("scanner.info.UX.0") + ": "
                 + EnumChatFormatting.LIGHT_PURPLE
-                + GTUtility.formatNumbers(this.para)
+                + formatNumber(this.para)
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.fusion.req") + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(-lEUt)
+                + formatNumber(-lEUt)
                 + EnumChatFormatting.RESET
                 + "EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(baseMetaTileEntity != null ? baseMetaTileEntity.getStoredEU() : 0)
+                + formatNumber(baseMetaTileEntity != null ? baseMetaTileEntity.getStoredEU() : 0)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEUStore())
+                + formatNumber(maxEUStore())
                 + EnumChatFormatting.RESET
                 + " EU",
             StatCollector.translateToLocal("GT5U.fusion.plasma") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(plasmaOut)
+                + formatNumber(plasmaOut)
                 + EnumChatFormatting.RESET
-                + "L/t" };
+                + "L/t",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     protected long energyStorageCache;

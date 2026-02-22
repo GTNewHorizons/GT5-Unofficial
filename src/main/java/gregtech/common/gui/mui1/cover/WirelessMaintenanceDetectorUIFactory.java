@@ -55,7 +55,7 @@ public class WirelessMaintenanceDetectorUIFactory
         super.addUIWidgets(builder);
         for (int i = 0; i < 8; i++) {
             builder.widget(
-                new TextWidget(StatCollector.translateToLocal(extraTexts[i])).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal(extraTexts[i]))
                     .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (2 + i / 2)));
         }
         builder.widget(
@@ -65,7 +65,6 @@ public class WirelessMaintenanceDetectorUIFactory
                         c -> c.isPhysical() ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
                             : StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.0")))
                 .setSynced(false)
-                .setDefaultColor(COLOR_TEXT_GRAY.get())
                 .setTextAlignment(Alignment.CenterLeft)
                 .setPos(startX + spaceX, 4 + startY + spaceY * 6)
                 .setSize(spaceX * 10, 12));

@@ -18,7 +18,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -45,7 +44,6 @@ import gtPlusPlus.core.handler.events.PlayerSleepEventHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.bauble.BaseBauble;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.xmod.gregtech.common.modularui2.GTPPGuiTextures;
@@ -73,7 +71,6 @@ public class CommonProxy implements IFuelHandler {
         ModBlocks.init();
         GTPPFluids.init();
 
-        CI.preInit();
         CompatIntermodStaging.preInit(e);
         BookHandler.run();
         // Registration of entities and renderers
@@ -89,8 +86,6 @@ public class CommonProxy implements IFuelHandler {
     }
 
     public void init(final FMLInitializationEvent e) {
-        CI.init();
-
         if (e.getSide()
             .isClient() && Mods.AdvancedSolarPanel.isModLoaded()) {
             MinecraftForge.EVENT_BUS.register(new MolecularTransformerTooltipNotice());
@@ -121,10 +116,6 @@ public class CommonProxy implements IFuelHandler {
         CompatHandler.runQueuedRecipes();
         Logger.INFO("Registering custom mob drops.");
         registerCustomMobDrops();
-    }
-
-    public void serverStarting(final FMLServerStartingEvent e) {
-        CompatHandler.InitialiseLateHandlerThenAddRecipes();
     }
 
     public void onLoadComplete(FMLLoadCompleteEvent event) {

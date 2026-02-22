@@ -14,7 +14,7 @@ public class ProgressbarWidgetTheme extends WidgetTheme {
     private final int imageSize;
 
     public ProgressbarWidgetTheme(UITexture emptyTexture, UITexture fullTexture, int imageSize) {
-        super(null, null, Color.WHITE.main, 0xFF404040, false);
+        super(0, 0, null, Color.WHITE.main, 0xFF404040, false, 0);
         this.emptyTexture = emptyTexture;
         this.fullTexture = fullTexture;
         this.imageSize = imageSize;
@@ -24,7 +24,7 @@ public class ProgressbarWidgetTheme extends WidgetTheme {
         this(wholeTexture.getSubArea(0, 0, 1, 0.5f), wholeTexture.getSubArea(0, 0.5f, 1, 1), imageSize);
     }
 
-    public ProgressbarWidgetTheme(WidgetTheme parent, JsonObject json, JsonObject fallback) {
+    public ProgressbarWidgetTheme(ProgressbarWidgetTheme parent, JsonObject json, JsonObject fallback) {
         super(parent, json, fallback);
         if (json.has("imageSize")) {
             if (json.has("wholeTexture")) {
@@ -67,5 +67,10 @@ public class ProgressbarWidgetTheme extends WidgetTheme {
 
     public int getImageSize() {
         return imageSize;
+    }
+
+    @Override
+    public WidgetTheme withNoHoverBackground() {
+        return this;
     }
 }

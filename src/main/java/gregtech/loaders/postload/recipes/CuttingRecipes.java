@@ -21,10 +21,40 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class CuttingRecipes implements Runnable {
 
     @Override
     public void run() {
+
+        recipeWithClassicFluids(
+            new ItemStack[] { ItemList.Food_Dough_Chocolate.get(1), ItemList.Shape_Slicer_Flat.get(0) },
+            new ItemStack[] { ItemList.Food_Raw_Cookie.get(4) },
+            6 * SECONDS + 8 * TICKS,
+            4,
+            false);
+
+        recipeWithClassicFluids(
+            new ItemStack[] { ItemList.Food_Baked_Bun.get(1), ItemList.Shape_Slicer_Flat.get(0) },
+            new ItemStack[] { ItemList.Food_Sliced_Bun.get(2) },
+            6 * SECONDS + 8 * TICKS,
+            4,
+            false);
+
+        recipeWithClassicFluids(
+            new ItemStack[] { ItemList.Food_Baked_Bread.get(1), ItemList.Shape_Slicer_Flat.get(0) },
+            new ItemStack[] { ItemList.Food_Sliced_Bread.get(2) },
+            6 * SECONDS + 8 * TICKS,
+            4,
+            false);
+
+        recipeWithClassicFluids(
+            new ItemStack[] { ItemList.Food_Baked_Baguette.get(1), ItemList.Shape_Slicer_Flat.get(0) },
+            new ItemStack[] { ItemList.Food_Sliced_Baguette.get(2) },
+            6 * SECONDS + 8 * TICKS,
+            4,
+            false);
+
         // silicon wafer recipes
         {
             recipeWithClassicFluids(
@@ -299,6 +329,16 @@ public class CuttingRecipes implements Runnable {
                 .eut(eut)
                 .requiresCleanRoom()
                 .addTo(cutterRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(inputs)
+                .itemOutputs(outputs)
+                .fluidInputs(
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(10, duration * eut / 4000))))
+                .duration((int) (duration / 2.5))
+                .eut(eut)
+                .requiresCleanRoom()
+                .addTo(cutterRecipes);
         } else {
             GTValues.RA.stdBuilder()
                 .itemInputs(inputs)
@@ -321,6 +361,15 @@ public class CuttingRecipes implements Runnable {
                 .itemOutputs(outputs)
                 .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * eut / 1280))))
                 .duration(duration)
+                .eut(eut)
+                .addTo(cutterRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(inputs)
+                .itemOutputs(outputs)
+                .fluidInputs(
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(10, duration * eut / 4000))))
+                .duration((int) (duration / 2.5))
                 .eut(eut)
                 .addTo(cutterRecipes);
         }

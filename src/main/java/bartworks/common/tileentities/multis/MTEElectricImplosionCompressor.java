@@ -44,7 +44,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -82,10 +81,8 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 
@@ -93,12 +90,12 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     implements ISurvivalConstructable, INEIPreviewModifier {
 
     private static final boolean pistonEnabled = !Configuration.multiblocks.disablePistonInEIC;
-    private Boolean piston = true;
+    private boolean piston = true;
     private static final SoundResource sound = SoundResource.RANDOM_EXPLODE;
     private final ArrayList<ChunkCoordinates> chunkCoordinates = new ArrayList<>(5);
     private int mBlockTier = 0;
     private int mCasing;
-    private boolean isSuccessful = true;
+    private boolean isSuccessful = false;
 
     public MTEElectricImplosionCompressor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -170,7 +167,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                 'B',
                 buildHatchAdder(MTEElectricImplosionCompressor.class).atLeast(Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
-                    .dot(2)
+                    .hint(2)
                     .buildAndChain(
                         onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)),
                         onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings3, 4))))
@@ -179,7 +176,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                 buildHatchAdder(MTEElectricImplosionCompressor.class)
                     .atLeast(InputBus, OutputBus, Maintenance, InputHatch, OutputHatch)
                     .casingIndex(CASING_INDEX)
-                    .dot(1)
+                    .hint(1)
                     .buildAndChain(
                         onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)),
                         onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings3, 4))))
@@ -236,7 +233,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .beginStructureBlock(3, 9, 3, false)
             .addController("Front 3rd layer center")
             .addCasingInfoMin("Solid Steel Machine Casing", 8, false)
-            .addStructureInfo("Casings can be replaced with Explosion Warning Signs")
+            .addStructureInfo("Casings can be replaced with Explosion Hazard Signs")
             .addOtherStructurePart("Transformer-Winding Blocks", "Outer layer 2,3,7,8")
             .addOtherStructurePart("Nickel-Zinc-Ferrite Blocks", "Inner layer 2,3,7,8")
             .addOtherStructurePart("Containment Blocks", "Layer 4,5,6")
@@ -257,17 +254,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                // For overclocking we'll allow all power to be used
-                return super.createOverclockCalculator(recipe)
-                    .setEUt(MTEElectricImplosionCompressor.this.getMaxInputEu())
-                    .setAmperage(1);
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -334,12 +321,12 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     }
 
     private void resetPiston(int tier) {
-        if (!pistonEnabled) return;
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
         if (!aBaseMetaTileEntity.isServerSide()) return;
         if (!this.piston) {
             List<Pair<Block, Integer>> tiers = getTierBlockList();
-            Pair<Block, Integer> tieredBlock = tiers.get(Math.min(tier, tiers.size()) - 1);
+            final int index = Math.max(0, Math.min(tier, tiers.size()) - 1);
+            Pair<Block, Integer> tieredBlock = tiers.get(index);
             this.chunkCoordinates.forEach(c -> {
                 // Don't replace real blocks in case user has placed something (e.g. tier upgrade)
                 if (aBaseMetaTileEntity.getWorld()
@@ -492,9 +479,9 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }

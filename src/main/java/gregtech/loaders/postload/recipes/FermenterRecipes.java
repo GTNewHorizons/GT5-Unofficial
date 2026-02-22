@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class FermenterRecipes implements Runnable {
 
     @Override

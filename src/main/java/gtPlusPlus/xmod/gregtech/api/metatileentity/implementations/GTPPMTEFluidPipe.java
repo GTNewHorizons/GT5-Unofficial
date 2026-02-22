@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -38,7 +39,7 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
 
     @Override
     public byte getTileEntityBaseType() {
-        return 4;
+        return HarvestTool.WrenchPipeLevel0.toTileEntityBaseType();
     }
 
     @Override

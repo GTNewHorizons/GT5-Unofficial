@@ -450,6 +450,10 @@ public class Loaders {
             GTStructureChannels.PRASS_UNIT_CASING
                 .registerAsIndicator(new ItemStack(preciseUnitCasing, 1, i - 1), i + 1);
         }
+        for (int i = 0; i < 14; i++) {
+            GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING
+                .registerAsIndicator(new ItemStack(componentAssemblylineCasing, 1, i), i + 1);
+        }
     }
 
     public static void compactMod() {

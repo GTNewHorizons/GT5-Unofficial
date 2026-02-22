@@ -1,6 +1,6 @@
 package gregtech.api.render;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -17,7 +17,8 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.gtnewhorizons.angelica.api.IBlockAccessExtended;
 
 import gregtech.api.enums.Mods;
@@ -57,8 +58,8 @@ public class RenderOverlay {
             }
         });
     private final Map<ChunkCoordinates, ITexture[]> overlays = new ConcurrentHashMap<>();
-    private final ListMultimap<RenderLocation, OverlayTicket> ticketsByLocation = ArrayListMultimap.create();
-    private final ListMultimap<ChunkCoordIntPair, OverlayTicket> byChunk = ArrayListMultimap.create();
+    private final Multimap<RenderLocation, OverlayTicket> ticketsByLocation = ArrayListMultimap.create();
+    private final Multimap<ChunkCoordIntPair, OverlayTicket> byChunk = HashMultimap.create();
 
     public OverlayTicket set(int xOwner, int yOwner, int zOwner, int x, int y, int z, ForgeDirection dir,
         ITexture texture, int zlevel) {
@@ -77,7 +78,7 @@ public class RenderOverlay {
     }
 
     private ITexture getTextureArray(RenderLocation renderLoc) {
-        List<OverlayTicket> tickets = ticketsByLocation.get(renderLoc);
+        Collection<OverlayTicket> tickets = ticketsByLocation.get(renderLoc);
         if (tickets.isEmpty()) {
             return null;
         }
@@ -93,9 +94,8 @@ public class RenderOverlay {
         return overlays.get(new ChunkCoordinates(x, y, z));
     }
 
-    public void reset() {
-        overlays.clear();
-        byChunk.clear();
+    public static void reset() {
+        instances.invalidateAll();
     }
 
     public static RenderOverlay getOrCreate(World world) {

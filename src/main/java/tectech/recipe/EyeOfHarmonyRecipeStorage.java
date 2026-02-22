@@ -15,9 +15,10 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.math.LongMath;
 
+import galacticgreg.api.ModDimensionDef;
+import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -25,7 +26,9 @@ import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;
 import gtneioreplugin.util.DimensionHelper;
 import gtneioreplugin.util.GT5OreLayerHelper;
+import gtneioreplugin.util.GT5OreLayerHelper.NormalOreDimensionWrapper;
 import gtneioreplugin.util.GT5OreSmallHelper;
+import gtneioreplugin.util.GT5OreSmallHelper.SmallOreDimensionWrapper;
 import tectech.util.FluidStackLong;
 import tectech.util.ItemStackLong;
 
@@ -49,18 +52,21 @@ public class EyeOfHarmonyRecipeStorage {
         private static final long serialVersionUID = -3501819612517400500L;
 
         {
-            for (String dimAbbreviation : DimensionHelper.DimNameDisplayed) {
+            for (String dimAbbreviation : DimensionHelper.getAllDisplayedNames()) {
                 BlockDimensionDisplay blockDimensionDisplay = (BlockDimensionDisplay) ModBlocks.blocks
                     .get(dimAbbreviation);
+
+                ModDimensionDef dimensionDef = DimensionDef.getDefByName(DimensionHelper.getFullName(dimAbbreviation));
+
+                if (dimensionDef != null && !dimensionDef.hasEoHRecipe()) continue;
 
                 if (dimAbbreviation.equals("DD")) {
                     specialDeepDarkRecipe(this, blockDimensionDisplay);
                 } else {
 
-                    GT5OreLayerHelper.NormalOreDimensionWrapper normalOre = GT5OreLayerHelper.dimToOreWrapper
-                        .getOrDefault(dimAbbreviation, null);
-                    GT5OreSmallHelper.SmallOreDimensionWrapper smallOre = GT5OreSmallHelper.dimToSmallOreWrapper
-                        .getOrDefault(dimAbbreviation, null);
+                    NormalOreDimensionWrapper normalOre = GT5OreLayerHelper.getVeinByDim(dimAbbreviation);
+                    SmallOreDimensionWrapper smallOre = GT5OreSmallHelper.getSmallOrebyDim(dimAbbreviation);
+
                     if (normalOre == null && smallOre == null) {
                         // No ores are generated in this dimension. Fail silently.
                         continue;
@@ -117,7 +123,7 @@ public class EyeOfHarmonyRecipeStorage {
                 .fluidInputs(
                     Materials.Hydrogen.getGas(0),
                     Materials.Helium.getGas(0),
-                    MaterialsUEVplus.RawStarMatter.getFluid(0))
+                    Materials.RawStarMatter.getFluid(0))
                 .fluidOutputs(outputFluids.toArray(new FluidStack[0]))
                 .duration(recipe.getRecipeTimeInTicks())
                 .eut(0)

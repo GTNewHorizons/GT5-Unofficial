@@ -3,10 +3,15 @@ package gregtech.common.tileentities.automation;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_ITEMDISTRIBUTOR;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_ITEMDISTRIBUTOR_GLOW;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -20,9 +25,14 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBuffer;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
 
 public class MTEItemDistributor extends MTEBuffer {
+
+    private static final int NBT_BYTE_ARRAY = 7;
+
+    private static final String DISTRIBUTION_TOOLTIP = "GT5U.machines.item_distributor.distribution.tooltip";
 
     private byte[] itemsPerSide = new byte[6];
     private ForgeDirection currentSide = ForgeDirection.DOWN;
@@ -114,11 +124,15 @@ public class MTEItemDistributor extends MTEBuffer {
 
     @Override
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        if (aBaseMetaTileEntity.hasInventoryBeenModified()) {
+            GTUtility.compactInventory(this);
+        }
+
         int currentSideOrdinal = currentSide.ordinal();
-        fillStacksIntoFirstSlots();
-        int movedItems;
+
         TileEntity adjacentTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(currentSide);
         int inspectedSides = 0;
+
         while (itemsPerSide[currentSideOrdinal] == 0) {
             currentSideOrdinal = ((currentSideOrdinal + 1) % 6);
             currentSide = ForgeDirection.getOrientation(currentSideOrdinal);
@@ -129,33 +143,33 @@ public class MTEItemDistributor extends MTEBuffer {
                 return;
             }
         }
-        movedItems = GTUtility.moveOneItemStack(
-            aBaseMetaTileEntity,
-            adjacentTileEntity,
-            currentSide,
-            currentSide.getOpposite(),
-            null,
-            false,
-            (byte) 64,
-            (byte) 1,
-            (byte) (itemsPerSide[currentSideOrdinal] - currentSideItemCount),
-            (byte) 1);
-        currentSideItemCount += movedItems;
+
+        GTItemTransfer transfer = new GTItemTransfer();
+
+        transfer.source(aBaseMetaTileEntity, currentSide);
+        transfer.sink(adjacentTileEntity, currentSide.getOpposite());
+
+        transfer.setMaxItemsPerTransfer(itemsPerSide[currentSideOrdinal] - currentSideItemCount);
+
+        int movedItems = transfer.transfer();
+        currentSideItemCount += (byte) movedItems;
+
         if (currentSideItemCount >= itemsPerSide[currentSideOrdinal]) {
             currentSideOrdinal = ((currentSideOrdinal + 1) % 6);
             currentSide = ForgeDirection.getOrientation(currentSideOrdinal);
             currentSideItemCount = 0;
         }
+
         if (movedItems > 0 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
             mSuccess = 50;
+            GTUtility.compactInventory(this);
         }
-        fillStacksIntoFirstSlots();
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        final int ordinalSide = side.ordinal();
+    public void onScrewdriverRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        final int ordinalSide = wrenchingSide.ordinal();
         // Adjust items per side by 1 or -1, constrained to the cyclic interval [0, 127]
         itemsPerSide[ordinalSide] += aPlayer.isSneaking() ? -1 : 1;
         itemsPerSide[ordinalSide] = (byte) ((itemsPerSide[ordinalSide] + 128) % 128);
@@ -171,6 +185,13 @@ public class MTEItemDistributor extends MTEBuffer {
     }
 
     @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setByteArray("mItemsPerSide", itemsPerSide);
+    }
+
+    @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         super.setItemNBT(aNBT);
         boolean hasSettings = false;
@@ -181,6 +202,28 @@ public class MTEItemDistributor extends MTEBuffer {
             }
         }
         if (hasSettings) aNBT.setByteArray("mItemsPerSide", itemsPerSide);
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(NBTTagCompound tag, List<String> tooltip) {
+        super.addAdditionalTooltipInformation(tag, tooltip);
+        if (tag.hasKey("mItemsPerSide", NBT_BYTE_ARRAY)) {
+            addDistributionTooltip(tag.getByteArray("mItemsPerSide"), tooltip);
+        }
+    }
+
+    private void addDistributionTooltip(byte[] distributionPerSide, List<String> tooltip) {
+        List<String> distributionDescriptions = new ArrayList<>();
+        for (int i = 0; i < distributionPerSide.length; i++) {
+            byte sideDistribution = distributionPerSide[i];
+            if (sideDistribution != 0) {
+                distributionDescriptions.add(String.format("  %s: %d", getFacingNameLocalized(i), sideDistribution));
+            }
+        }
+        if (!distributionDescriptions.isEmpty()) {
+            tooltip.add(GTUtility.translate(DISTRIBUTION_TOOLTIP) + ":");
+            tooltip.addAll(distributionDescriptions);
+        }
     }
 
     @Override

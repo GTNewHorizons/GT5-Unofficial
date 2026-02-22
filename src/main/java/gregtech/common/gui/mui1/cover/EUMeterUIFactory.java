@@ -8,7 +8,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverEUMeter;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -58,8 +57,8 @@ public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
                         CoverDataFollowerToggleButtonWidget.ofRedstone(),
                         CoverEUMeter::isInverted,
                         CoverEUMeter::setInverted,
-                        widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal"))
-                            .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
+                        widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal.tooltip"))
+                            .addTooltip(1, translateToLocal("gt.interact.desc.inverted.tooltip"))
                             .setPos(spaceX * 0, spaceY * 1))
                     .addFollower(
                         numericWidget,
@@ -83,10 +82,9 @@ public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
                         getCoverString(
                             c -> c.isInverted() ? translateToLocal("gt.interact.desc.inverted")
                                 : translateToLocal("gt.interact.desc.normal")))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX, 4 + startY + spaceY))
             .widget(
-                new TextWidget(GTUtility.trans("222.1", "Energy threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.EnergyThreshold"))
                     .setPos(startX, startY + spaceY * 3 + 4))
 
             .widget(new FakeSyncWidget.LongSyncer(() -> {

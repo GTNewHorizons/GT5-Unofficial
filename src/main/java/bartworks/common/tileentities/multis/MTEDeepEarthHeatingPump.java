@@ -16,7 +16,6 @@ package bartworks.common.tileentities.multis;
 import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static gregtech.api.enums.GTValues.VN;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 
@@ -32,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
-import bartworks.common.tileentities.multis.gui.MTEDeepEarthHeatingPumpGui;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -40,9 +38,11 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 
 public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
@@ -221,8 +221,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
-        GTUtility
-            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+        GTUtility.sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", getMachineModeName());
     }
 
     @Override
@@ -329,7 +328,9 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
-    protected @NotNull MTEDeepEarthHeatingPumpGui getGui() {
-        return new MTEDeepEarthHeatingPumpGui(this);
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_STEAM,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }
 }

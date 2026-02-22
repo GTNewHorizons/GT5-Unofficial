@@ -1,7 +1,5 @@
 package gregtech.common.covers;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -20,8 +18,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.cover.CoverItemMeterGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.ItemMeterUIFactory;
-import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import io.netty.buffer.ByteBuf;
 
@@ -62,7 +62,7 @@ public class CoverItemMeter extends Cover {
         return this.threshold;
     }
 
-    public CoverItemMeter setThresdhold(int threshold) {
+    public CoverItemMeter setThreshold(int threshold) {
         this.threshold = threshold;
         return this;
     }
@@ -106,8 +106,9 @@ public class CoverItemMeter extends Cover {
         if (mte instanceof MTEDigitalChestBase dc) {
             max = dc.getMaxItemCount();
             used = dc.getProgresstime();
-        } else if (mte instanceof MTEHatchOutputBusME) {
-            if (((MTEHatchOutputBusME) mte).canAcceptItem()) {
+        } else if (mte instanceof MTEHatchOutputBusME meoutputbus) {
+            // todo for cache mode
+            if (meoutputbus.canAcceptAnyItem()) {
                 max = 64;
                 used = 0;
             }
@@ -144,10 +145,10 @@ public class CoverItemMeter extends Cover {
         if (aPlayer.isSneaking()) {
             if (inverted) {
                 inverted = false;
-                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.normal"));
+                GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.normal");
             } else {
                 inverted = true;
-                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.inverted"));
+                GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.inverted");
             }
         } else {
             slot++;
@@ -209,6 +210,11 @@ public class CoverItemMeter extends Cover {
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverItemMeterGui(this);
     }
 
     @Override

@@ -6,7 +6,7 @@ import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.massFabFakeRecipes;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -115,7 +115,7 @@ public class GTPostLoad {
                 .fluidInputs(tData.fluid)
                 .duration((tData.fluid.amount / 62) * TICKS)
                 .eut(1)
-                .addTo(fluidCannerRecipes);
+                .addTo(cannerRecipes);
             GTRecipeBuilder builder = GTValues.RA.stdBuilder()
                 .itemInputs(tData.filledContainer);
             if (tData.emptyContainer.stackSize > 0) {
@@ -124,7 +124,7 @@ public class GTPostLoad {
             builder.fluidOutputs(tData.fluid)
                 .duration((tData.fluid.amount / 62) * TICKS)
                 .eut(1)
-                .addTo(fluidCannerRecipes);
+                .addTo(cannerRecipes);
         }
     }
 
@@ -308,7 +308,7 @@ public class GTPostLoad {
         }
 
         MTEMassfabricator.uuaRecipe = GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .fluidInputs(Materials.UUAmplifier.getFluid(MTEMassfabricator.sUUAperUUM))
             .fluidOutputs(Materials.UUMatter.getFluid(1L))
             .duration(MTEMassfabricator.sDurationMultiplier / MTEMassfabricator.sUUASpeedBonus)
@@ -409,8 +409,8 @@ public class GTPostLoad {
         String plateName = OrePrefixes.plate.get(m)
             .toString();
         boolean noSmash = !m.contains(SubTag.NO_SMASHING);
-        if ((m.mTypes & 2) != 0) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getIngots(1));
-        if ((m.mTypes & 4) != 0) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getGems(1));
+        if (m.hasMetalItems()) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getIngots(1));
+        if (m.hasGemItems()) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getGems(1));
         if (m.getBlocks(1) != null) GTRecipeRegistrator.registerUsagesForMaterials(null, noSmash, m.getBlocks(1));
     }
 
@@ -443,6 +443,26 @@ public class GTPostLoad {
         if (Thaumcraft.isModLoaded()) {
             RecipeMaps.largeBoilerFakeFuels.getBackend()
                 .addSolidRecipe(GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1));
+        }
+    }
+
+    public static void addCauldronRecipe() {
+        for (Materials material : Materials.getAll()) {
+            ItemStack dustImpure = GTOreDictUnificator.get(OrePrefixes.dustImpure, material, 1);
+            ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, material, 1);
+
+            if (dust == null || dustImpure == null) {
+                continue;
+            }
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(dustImpure)
+                .fluidInputs(Materials.Water.getFluid(333))
+                .itemOutputs(dust)
+                .duration(0)
+                .eut(0)
+                .fake()
+                .addTo(RecipeMaps.cauldronRecipe);
         }
     }
 

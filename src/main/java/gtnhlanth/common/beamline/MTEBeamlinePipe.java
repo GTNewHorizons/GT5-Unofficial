@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -71,7 +72,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
 
     @Override
     public byte getTileEntityBaseType() {
-        return 7;
+        return HarvestTool.WrenchPipeLevel3.toTileEntityBaseType();
     }
 
     @Override

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -19,6 +20,7 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
@@ -38,6 +40,8 @@ import gregtech.common.pollution.Pollution;
 public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISecondaryDescribable {
 
     private boolean running = false;
+
+    private static final Block EtFuturumDirtPath = GameRegistry.findBlock("etfuturum", "grass_path");
 
     public MTECharcoalPit(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -124,6 +128,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
     }
 
     private boolean isWoodLog(Block log, int meta) {
+        if (log instanceof BlockLog) return true;
         for (int id : OreDictionary.getOreIDs(new ItemStack(log, 1, meta))) {
             if (OreDictionary.getOreName(id)
                 .equals("logWood")) return true;
@@ -163,6 +168,8 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
             if (!aList1.contains(new ChunkPosition(aX, aY + 1, aZ))
                 && (!aList2.contains(new ChunkPosition(aX, aY + 1, aZ)))) expandToChunkYPos = true;
         } else if (!(blockYPos == Blocks.dirt || blockYPos == Blocks.grass
+            || blockYPos == Blocks.farmland
+            || (EtFuturumDirtPath != null && blockYPos == EtFuturumDirtPath)
             || (aX == 0 && aY == -1 && aZ == 0 && blockYPos == GregTechAPI.sBlockMachines))) {
                 return false;
             }

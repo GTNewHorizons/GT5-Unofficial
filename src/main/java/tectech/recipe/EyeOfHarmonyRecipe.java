@@ -20,13 +20,16 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import bartworks.system.material.Werkstoff;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.util.GT5OreLayerHelper;
 import gtneioreplugin.util.GT5OreSmallHelper;
@@ -37,16 +40,16 @@ import tectech.util.ItemStackLong;
 public class EyeOfHarmonyRecipe {
 
     static final FluidStackLong[] SPECIAL_FLUIDS = new FluidStackLong[] {
-        new FluidStackLong(MaterialsUEVplus.WhiteDwarfMatter.getMolten(1_152), 1_152),
-        new FluidStackLong(MaterialsUEVplus.WhiteDwarfMatter.getMolten(1_152), 1_152),
-        new FluidStackLong(MaterialsUEVplus.WhiteDwarfMatter.getMolten(4_608), 4_608),
-        new FluidStackLong(MaterialsUEVplus.WhiteDwarfMatter.getMolten(18_432), 18_432),
-        new FluidStackLong(MaterialsUEVplus.BlackDwarfMatter.getMolten(1_152), 1_152),
-        new FluidStackLong(MaterialsUEVplus.BlackDwarfMatter.getMolten(4_608), 4_608),
-        new FluidStackLong(MaterialsUEVplus.BlackDwarfMatter.getMolten(18_432), 18_432),
-        new FluidStackLong(MaterialsUEVplus.Universium.getMolten(1_152), 1_152),
-        new FluidStackLong(MaterialsUEVplus.Universium.getMolten(4_608), 4_608),
-        new FluidStackLong(MaterialsUEVplus.Universium.getMolten(18_432), 18_432) };
+        new FluidStackLong(Materials.WhiteDwarfMatter.getMolten(1_152), 1_152),
+        new FluidStackLong(Materials.WhiteDwarfMatter.getMolten(1_152), 1_152),
+        new FluidStackLong(Materials.WhiteDwarfMatter.getMolten(4_608), 4_608),
+        new FluidStackLong(Materials.WhiteDwarfMatter.getMolten(18_432), 18_432),
+        new FluidStackLong(Materials.BlackDwarfMatter.getMolten(1_152), 1_152),
+        new FluidStackLong(Materials.BlackDwarfMatter.getMolten(4_608), 4_608),
+        new FluidStackLong(Materials.BlackDwarfMatter.getMolten(18_432), 18_432),
+        new FluidStackLong(Materials.Universium.getMolten(1_152), 1_152),
+        new FluidStackLong(Materials.Universium.getMolten(4_608), 4_608),
+        new FluidStackLong(Materials.Universium.getMolten(18_432), 18_432) };
 
     HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<>() {
 
@@ -166,7 +169,7 @@ public class EyeOfHarmonyRecipe {
         // Add a bonus fluid of compressed star matter.
         fluidStackLongArrayList.add(
             new FluidStackLong(
-                MaterialsUEVplus.RawStarMatter.getFluid((this.spacetimeCasingTierRequired + 1) * 100_000),
+                Materials.RawStarMatter.getFluid((this.spacetimeCasingTierRequired + 1) * 100_000),
                 (this.spacetimeCasingTierRequired + 1) * 100_000));
 
         // Tier 0 & 1 - 576 White
@@ -208,32 +211,32 @@ public class EyeOfHarmonyRecipe {
         return switch (key) {
             case "Ne" -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1);
             case "ED", "VA", "EA" -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1);
-            case "Mo" -> getModItem(NewHorizonsCoreMod.ID, "item.MoonStoneDust", 1, placeholder);
-            case "De" -> getModItem(NewHorizonsCoreMod.ID, "item.DeimosStoneDust", 1, placeholder);
-            case "Ma" -> getModItem(NewHorizonsCoreMod.ID, "item.MarsStoneDust", 1, placeholder);
-            case "Ph" -> getModItem(NewHorizonsCoreMod.ID, "item.PhobosStoneDust", 1, placeholder);
-            case "As", "KB" -> getModItem(NewHorizonsCoreMod.ID, "item.AsteroidsStoneDust", 1, placeholder);
-            case "Ca" -> getModItem(NewHorizonsCoreMod.ID, "item.CallistoStoneDust", 1, placeholder);
-            case "Ce" -> getModItem(NewHorizonsCoreMod.ID, "item.CeresStoneDust", 1, placeholder);
-            case "Eu" -> getModItem(NewHorizonsCoreMod.ID, "item.EuropaStoneDust", 1, placeholder);
-            case "Ga" -> getModItem(NewHorizonsCoreMod.ID, "item.GanymedeStoneDust", 1, placeholder);
-            case "Io" -> getModItem(NewHorizonsCoreMod.ID, "item.IoStoneDust", 1, placeholder);
-            case "Me" -> getModItem(NewHorizonsCoreMod.ID, "item.MercuryStoneDust", 1, placeholder);
-            case "Ve" -> getModItem(NewHorizonsCoreMod.ID, "item.VenusStoneDust", 1, placeholder);
-            case "En" -> getModItem(NewHorizonsCoreMod.ID, "item.EnceladusStoneDust", 1, placeholder);
-            case "Mi" -> getModItem(NewHorizonsCoreMod.ID, "item.MirandaStoneDust", 1, placeholder);
-            case "Ob" -> getModItem(NewHorizonsCoreMod.ID, "item.OberonStoneDust", 1, placeholder);
-            case "Ti" -> getModItem(NewHorizonsCoreMod.ID, "item.TitanStoneDust", 1, placeholder);
-            case "Pr" -> getModItem(NewHorizonsCoreMod.ID, "item.ProteusStoneDust", 1, placeholder);
-            case "Tr" -> getModItem(NewHorizonsCoreMod.ID, "item.TritonStoneDust", 1, placeholder);
-            case "Ha" -> getModItem(NewHorizonsCoreMod.ID, "item.HaumeaStoneDust", 1, placeholder);
-            case "MM" -> getModItem(NewHorizonsCoreMod.ID, "item.MakeMakeStoneDust", 1, placeholder);
-            case "Pl" -> getModItem(NewHorizonsCoreMod.ID, "item.PlutoStoneDust", 1, placeholder);
-            case "BE" -> getModItem(NewHorizonsCoreMod.ID, "item.BarnardaEStoneDust", 1, placeholder);
-            case "BF" -> getModItem(NewHorizonsCoreMod.ID, "item.BarnardaFStoneDust", 1, placeholder);
-            case "CB" -> getModItem(NewHorizonsCoreMod.ID, "item.CentauriAStoneDust", 1, placeholder);
-            case "TE" -> getModItem(NewHorizonsCoreMod.ID, "item.TCetiEStoneDust", 1, placeholder);
-            case "VB" -> getModItem(NewHorizonsCoreMod.ID, "item.VegaBStoneDust", 1, placeholder);
+            case "Mo", "Ra" -> getModItem(NewHorizonsCoreMod.ID, "MoonStoneDust", 1, placeholder);
+            case "De" -> getModItem(NewHorizonsCoreMod.ID, "DeimosStoneDust", 1, placeholder);
+            case "Ma" -> getModItem(NewHorizonsCoreMod.ID, "MarsStoneDust", 1, placeholder);
+            case "Ph" -> getModItem(NewHorizonsCoreMod.ID, "PhobosStoneDust", 1, placeholder);
+            case "As", "KB" -> getModItem(NewHorizonsCoreMod.ID, "AsteroidsStoneDust", 1, placeholder);
+            case "Ca" -> getModItem(NewHorizonsCoreMod.ID, "CallistoStoneDust", 1, placeholder);
+            case "Ce" -> getModItem(NewHorizonsCoreMod.ID, "CeresStoneDust", 1, placeholder);
+            case "Eu" -> getModItem(NewHorizonsCoreMod.ID, "EuropaStoneDust", 1, placeholder);
+            case "Ga" -> getModItem(NewHorizonsCoreMod.ID, "GanymedeStoneDust", 1, placeholder);
+            case "Io" -> getModItem(NewHorizonsCoreMod.ID, "IoStoneDust", 1, placeholder);
+            case "Me" -> getModItem(NewHorizonsCoreMod.ID, "MercuryStoneDust", 1, placeholder);
+            case "Ve" -> getModItem(NewHorizonsCoreMod.ID, "VenusStoneDust", 1, placeholder);
+            case "En" -> getModItem(NewHorizonsCoreMod.ID, "EnceladusStoneDust", 1, placeholder);
+            case "Mi" -> getModItem(NewHorizonsCoreMod.ID, "MirandaStoneDust", 1, placeholder);
+            case "Ob" -> getModItem(NewHorizonsCoreMod.ID, "OberonStoneDust", 1, placeholder);
+            case "Ti" -> getModItem(NewHorizonsCoreMod.ID, "TitanStoneDust", 1, placeholder);
+            case "Pr" -> getModItem(NewHorizonsCoreMod.ID, "ProteusStoneDust", 1, placeholder);
+            case "Tr" -> getModItem(NewHorizonsCoreMod.ID, "TritonStoneDust", 1, placeholder);
+            case "Ha" -> getModItem(NewHorizonsCoreMod.ID, "HaumeaStoneDust", 1, placeholder);
+            case "MM" -> getModItem(NewHorizonsCoreMod.ID, "MakeMakeStoneDust", 1, placeholder);
+            case "Pl" -> getModItem(NewHorizonsCoreMod.ID, "PlutoStoneDust", 1, placeholder);
+            case "BE" -> getModItem(NewHorizonsCoreMod.ID, "BarnardaEStoneDust", 1, placeholder);
+            case "BF" -> getModItem(NewHorizonsCoreMod.ID, "BarnardaFStoneDust", 1, placeholder);
+            case "CB" -> getModItem(NewHorizonsCoreMod.ID, "CentauriAStoneDust", 1, placeholder);
+            case "TE" -> getModItem(NewHorizonsCoreMod.ID, "TCetiEStoneDust", 1, placeholder);
+            case "VB" -> getModItem(NewHorizonsCoreMod.ID, "VegaBStoneDust", 1, placeholder);
             default -> placeholder;
         };
     }
@@ -313,9 +316,10 @@ public class EyeOfHarmonyRecipe {
     private static final double SECONDARY_MULTIPLIER = (1.0 / 9.0); // Thermal centrifuge byproduct chance.
     private static final double TERTIARY_MULTIPLIER = (0.1); // Macerating thermal centrifuged byproduct chance.
     private static final double QUATERNARY_MULTIPLIER = (0.7); // Mercury/chem bath processing chance.
+    private static final double QUATERNARY99_MULTIPLIER = (0.99); // Mercury/chem bath processing chance.
+    private static final double ELECTROMAGNETIC_MULTIPLIER = (0.4 / 4.0 + 0.2 / 9.0); // MagneticSep. processing chance.
 
-    private static final double[] ORE_MULTIPLIER = { PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER,
-        QUATERNARY_MULTIPLIER };
+    private static final double[] ORE_MULTIPLIER = { PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER };
 
     public static class HashMapHelper extends HashMap<Materials, Double> {
 
@@ -339,11 +343,64 @@ public class EyeOfHarmonyRecipe {
         if (material == null) return;
         outputMap.add(material.mDirectSmelting, (material.mOreMultiplier * 2) * mainMultiplier * probability);
 
+        if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD))
+            outputMap.add(Materials.Gold, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
+        if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_IRON))
+            outputMap.add(Materials.Iron, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
+        if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM))
+            outputMap.add(Materials.Neodymium, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
+
+        if (material.mOreByProducts.size() == 0) {
+            if (material.contains(SubTag.WASHING_MERCURY_99_PERCENT))
+                outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+            else if (material.contains(SubTag.WASHING_MERCURY))
+                outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (material.contains(SubTag.WASHING_SODIUMPERSULFATE))
+                outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+        }
+
+        if (material.contains(SubTag.WASHING_MERCURY_99_PERCENT))
+            outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+        else if (material.contains(SubTag.WASHING_MERCURY))
+            outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+        else if (material.contains(SubTag.WASHING_SODIUMPERSULFATE))
+            outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+
         int index = 0;
         for (Materials byProductMaterial : material.mOreByProducts) {
-            outputMap
-                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
+            if (index < 3) outputMap
+                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index] * 2) * probability);
+            // For Materials that index is > 3, normally they will not be used (unless using Chem bath).
+
+            if (byProductMaterial.mMaterialInto == material.mMaterialInto) continue;
+
+            // Will never duplicate since mOreByProducts does not support duplicate.
+            if (byProductMaterial.contains(SubTag.WASHING_MERCURY_99_PERCENT)) outputMap
+                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+            else if (byProductMaterial.contains(SubTag.WASHING_MERCURY)) outputMap
+                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (byProductMaterial.contains(SubTag.WASHING_SODIUMPERSULFATE)) outputMap
+                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (index >= 3) outputMap
+                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            // EOH is better than other ore processing so it can get products that normally cannot get.
+
+            index++;
         }
+
+        for (int i = index; i < 3; i++) {
+            Materials byProductMaterial = GTUtility
+                .selectItemInList(i, material.mMacerateInto, material.mOreByProducts);
+            outputMap.add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[i] * 2) * probability);
+            // Since it's duplicate, do not check if it can Mercury/chem bath.
+        }
+    }
+
+    public static void processHelperIfPossible(HashMapHelper outputMap, IOreMaterial material, double mainMultiplier,
+        double probability) {
+        if (material instanceof Materials gtMat) processHelper(outputMap, gtMat, mainMultiplier, probability);
+        else if (material instanceof Werkstoff bwMat)
+            processHelper(outputMap, bwMat.getBridgeMaterial(), mainMultiplier, probability);
     }
 
     private static ArrayList<Pair<Materials, Long>> processDimension(
@@ -355,19 +412,20 @@ public class EyeOfHarmonyRecipe {
 
         if (normalOreDimWrapper != null) {
             normalOreDimWrapper.oreVeinToProbabilityInDimension.forEach((veinInfo, probability) -> {
-                processHelper(outputMap, veinInfo.mPrimaryVeinMaterial, mainMultiplier, probability);
-                processHelper(outputMap, veinInfo.mSecondaryMaterial, mainMultiplier, probability);
+                processHelperIfPossible(outputMap, veinInfo.mPrimaryVeinMaterial, mainMultiplier, probability);
+                processHelperIfPossible(outputMap, veinInfo.mSecondaryMaterial, mainMultiplier, probability);
                 // 8.0 to replicate void miner getDropsVanillaVeins method yields.
-                processHelper(outputMap, veinInfo.mBetweenMaterial, mainMultiplier / 8.0, probability);
-                processHelper(outputMap, veinInfo.mSporadicMaterial, mainMultiplier / 8.0, probability);
+                processHelperIfPossible(outputMap, veinInfo.mBetweenMaterial, mainMultiplier / 8.0, probability);
+                processHelperIfPossible(outputMap, veinInfo.mSporadicMaterial, mainMultiplier / 8.0, probability);
             });
         }
 
         // Iterate over small ores in dimension and add them, kinda hacky but works and is close enough.
         if (smallOreDimWrapper != null) {
-            smallOreDimWrapper.oreVeinToProbabilityInDimension.forEach(
-                (veinInfo,
-                    probability) -> processHelper(outputMap, veinInfo.getOreMaterial(), mainMultiplier, probability));
+            smallOreDimWrapper.oreVeinProbabilities.forEach(
+                (veinInfo, probability) -> {
+                    processHelperIfPossible(outputMap, veinInfo.material, mainMultiplier, probability);
+                });
         }
 
         ArrayList<Pair<Materials, Long>> outputList = new ArrayList<>();

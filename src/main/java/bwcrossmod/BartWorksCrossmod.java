@@ -25,8 +25,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import bartworks.common.configs.Configuration;
-import bartworks.system.oregen.BWWorldGenRoss128b;
-import bartworks.system.oregen.BWWorldGenRoss128ba;
 import bwcrossmod.GTpp.loader.RadioHatchCompat;
 import bwcrossmod.galacticraft.atmosphere.BWAtmosphereManager;
 import bwcrossmod.galacticraft.solarsystems.Ross128SolarSystem;
@@ -65,8 +63,6 @@ public class BartWorksCrossmod {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         if (GalacticraftCore.isModLoaded()) {
-            BWWorldGenRoss128b.initOres();
-            BWWorldGenRoss128ba.init_Ores();
             MinecraftForge.EVENT_BUS.register(BWAtmosphereManager.INSTANCE);
         }
     }

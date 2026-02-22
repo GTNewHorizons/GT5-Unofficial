@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -53,29 +54,29 @@ public class MTETransformer extends MTETieredMachineBlock {
         ITexture[][][] rTextures = new ITexture[12][17][];
         for (byte i = -1; i < 16; i++) {
             rTextures[0][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier + 1] };
             rTextures[1][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier + 1] };
             rTextures[2][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier + 1] };
             rTextures[3][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier + 2] };
             rTextures[4][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier + 2] };
             rTextures[5][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier + 2] };
             rTextures[6][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 1] };
             rTextures[7][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 1] };
             rTextures[8][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 1] };
             rTextures[9][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier + 2] };
             rTextures[10][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier + 2] };
             rTextures[11][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier + 2] };
         }
         return rTextures;
     }
@@ -155,7 +156,7 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public long maxAmperesIn() {
-        return getBaseMetaTileEntity().isAllowedToWork() ? 1 : 4;
+        return getBaseMetaTileEntity().isAllowedToWork() ? 2 : 5;
     }
 
     @Override
@@ -270,7 +271,8 @@ public class MTETransformer extends MTETieredMachineBlock {
         currenttip.add(
             String.format(
                 "%s %s(%dA) -> %s(%dA)",
-                (allowedToWork ? (GREEN + "Step Down") : (RED + "Step Up")) + RESET,
+                (allowedToWork ? (GREEN + StatCollector.translateToLocal("GT5U.waila.transformer.step_down"))
+                    : (RED + StatCollector.translateToLocal("GT5U.waila.transformer.step_up"))) + RESET,
                 GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                     : tag.getLong("maxEUInput"),
                 tag.getLong("maxAmperesIn"),
@@ -280,15 +282,15 @@ public class MTETransformer extends MTETieredMachineBlock {
 
         if ((side == facing && allowedToWork) || (side != facing && !allowedToWork)) {
             currenttip.add(
-                String.format(
-                    GOLD + "Input:" + RESET + " %s(%dA)",
+                GOLD + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.transformer.input",
                     GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                         : tag.getLong("maxEUInput"),
                     tag.getLong("maxAmperesIn")));
         } else {
             currenttip.add(
-                String.format(
-                    BLUE + "Output:" + RESET + " %s(%dA)",
+                BLUE + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.transformer.output",
                     GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
                         : tag.getLong("maxEUOutput"),
                     tag.getLong("maxAmperesOut")));

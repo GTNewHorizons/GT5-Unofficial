@@ -1,7 +1,5 @@
 package gregtech.common.covers;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import java.util.Arrays;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,8 +22,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverGui;
-import gregtech.common.covers.gui.CoverLiquidMeterGui;
+import gregtech.common.gui.modularui.cover.CoverLiquidMeterGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.LiquidMeterUIFactory;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import io.netty.buffer.ByteBuf;
@@ -134,10 +132,10 @@ public class CoverLiquidMeter extends Cover implements Invertable {
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (inverted) {
             inverted = false;
-            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.normal"));
+            GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.normal");
         } else {
             inverted = true;
-            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.inverted"));
+            GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.inverted");
         }
     }
 
@@ -206,7 +204,7 @@ public class CoverLiquidMeter extends Cover implements Invertable {
     }
 
     @Override
-    protected @NotNull CoverGui<CoverLiquidMeter> getCoverGui() {
+    protected @NotNull CoverBaseGui<CoverLiquidMeter> getCoverGui() {
         return new CoverLiquidMeterGui(this, getMaxCapacity());
     }
 

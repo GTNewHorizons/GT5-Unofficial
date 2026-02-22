@@ -153,14 +153,14 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         .addElement(
             'e',
             buildHatchAdder(MTEAdvAssLine.class).anyOf(Energy, ExoticEnergy)
-                .dot(1)
+                .hint(1)
                 .casingIndex(16)
                 .allowOnly(ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement(
             'd',
             buildHatchAdder(MTEAdvAssLine.class).atLeast(DataHatchElement.DataAccess)
-                .dot(2)
+                .hint(2)
                 .casingIndex(42)
                 .allowOnly(ForgeDirection.NORTH)
                 .buildAndChain(GregTechAPI.sBlockCasings3, 10))
@@ -168,7 +168,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             'b',
             buildHatchAdder(MTEAdvAssLine.class).atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance)
                 .casingIndex(16)
-                .dot(3)
+                .hint(3)
                 .allowOnly(ForgeDirection.DOWN)
                 .buildAndChain(
                     ofBlock(GregTechAPI.sBlockCasings2, 0),
@@ -525,6 +525,11 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
         /*
@@ -572,7 +577,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         }
 
         if (mInputBusses.size() < currentInputLength) {
-            criticalStopMachine("ggfab.gui.advassline.shutdown.input_busses");
+            criticalStopMachine("ggfab.gui.advassline.shutdown.input_buses");
             return false;
         }
         boolean oStuck = stuck;
@@ -632,7 +637,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         MTEHatchInputBus inputBus = mInputBusses.get(index);
         if (!inputBus.isValid()) return null;
         if (inputBus instanceof MTEHatchInputBusME meBus) {
-            ItemStack item = meBus.getFirstShadowItemStack(true);
+            ItemStack item = meBus.getFirstValidStack(true);
             if (item == null) return null;
             GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(item);
             if (!curBatchItemsFromME.containsKey(id)) return null;
@@ -647,7 +652,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         MTEHatchInput inputHatch = mInputHatches.get(index);
         if (!inputHatch.isValid()) return null;
         if (inputHatch instanceof MTEHatchInputME meHatch) {
-            FluidStack fluid = meHatch.getFirstShadowFluidStack(true);
+            FluidStack fluid = meHatch.getFirstValidStack(true);
             if (fluid == null) return null;
             if (!curBatchFluidsFromME.containsKey(fluid.getFluid())) return null;
             return curBatchFluidsFromME.get(fluid.getFluid());
@@ -742,12 +747,17 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             int originalMaxParallel = 1;
             int maxParallel = originalMaxParallel;
 
+            int maxRegularOverclock = getTier(inputVoltage) - getTier(recipe.mEUt);
+
+            // Delete this one before enable overclocking under one tick.
+            int maxOverclockTo1Tick = GTUtility.log2(recipe.mDuration / recipe.mInputs.length);
+
             OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                 .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
                 .setParallel(originalMaxParallel)
                 .setEUt(inputEUt / recipe.mInputs.length)
                 .setLaserOC(true)
-                .setMaxRegularOverclocks(getTier(inputVoltage) - getTier(recipe.mEUt));
+                .setMaxRegularOverclocks(Math.min(maxRegularOverclock, maxOverclockTo1Tick));
 
             // Disabled to disable overclocking under one tick.
             /*
@@ -808,9 +818,10 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 batchMultiplierMax = Math
                     .min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
             }
-            currentRecipeParallel = (int) (currentParallelBeforeBatchMode * batchMultiplierMax);
+            int batchMultiplierMaxInt = (int) batchMultiplierMax;
+            currentRecipeParallel = (int) (currentParallelBeforeBatchMode * batchMultiplierMaxInt);
             lEUt = calculator.getConsumption();
-            mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax) * recipe.mInputs.length;
+            mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMaxInt) * recipe.mInputs.length;
             setCurrentRecipe(recipe);
             result = CheckRecipeResultRegistry.SUCCESSFUL;
             break;
@@ -937,9 +948,9 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }
@@ -1024,11 +1035,18 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 if (id + 1 >= currentInputLength) {
                     // use previously calculated parallel output
                     ItemStack output = mOutputItems[0];
-                    if (addOutput(output) || !voidingMode.protectItem) reset();
-                    else stuck = true;
+                    if (addOutputAtomic(GTUtility.copy(output)) || !voidingMode.protectItem) {
+                        recipesDone += currentRecipeParallel;
+                        reset();
+                    } else {
+                        stuck = true;
+                    }
                 } else {
-                    if (slices[id + 1].start()) reset();
-                    else stuck = true;
+                    if (slices[id + 1].start()) {
+                        reset();
+                    } else {
+                        stuck = true;
+                    }
                 }
             }
         }

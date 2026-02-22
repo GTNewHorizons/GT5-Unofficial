@@ -20,7 +20,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.items.GTGenericItem;
 import gregtech.common.covers.CoverPosition;
-import gregtech.common.gui.modularui.uifactory.RedstoneSnifferGuiBuilder;
+import gregtech.common.gui.modularui.item.RedstoneSnifferGui;
 
 public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
@@ -47,7 +47,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
 
     @Override
     public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager, UISettings uiSettings) {
-        return new RedstoneSnifferGuiBuilder(guiData, guiSyncManager).build();
+        return new RedstoneSnifferGui(guiData, guiSyncManager).build();
     }
 
     public static class SnifferEntry {

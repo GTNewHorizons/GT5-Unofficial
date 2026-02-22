@@ -37,14 +37,14 @@ public class BehaviourScrewdriver extends BehaviourNone {
         if ((aBlock == Blocks.unpowered_repeater) || (aBlock == Blocks.powered_repeater)) {
             if (GTModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) {
                 aWorld.setBlockMetadataWithNotify(aX, aY, aZ, metadata, 3);
-                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SCREWDRIVER, 1.0F, 1.0F, aX, aY, aZ);
+                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SCREWDRIVER, 1.0F, 1.0F, hitX, hitY, hitZ);
             }
             return true;
         }
         if ((aBlock == Blocks.unpowered_comparator) || (aBlock == Blocks.powered_comparator)) {
             if (GTModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) {
                 aWorld.setBlockMetadataWithNotify(aX, aY, aZ, metadata, 3);
-                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SCREWDRIVER, 1.0F, 1.0F, aX, aY, aZ);
+                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SCREWDRIVER, 1.0F, 1.0F, hitX, hitY, hitZ);
             }
             return true;
         }

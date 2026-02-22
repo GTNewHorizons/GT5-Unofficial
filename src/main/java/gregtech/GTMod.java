@@ -28,10 +28,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Stopwatch;
-import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
+import bwcrossmod.galacticgreg.VoidMinerLoader;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -56,6 +56,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.IBlockWithClientMeta;
@@ -63,8 +64,6 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuis;
-import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.registries.LHECoolantRegistry;
@@ -79,6 +78,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.GTCapesLoader;
 import gregtech.common.GTClient;
 import gregtech.common.GTDummyWorld;
 import gregtech.common.GTNetwork;
@@ -90,12 +90,13 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
-import gregtech.common.misc.GTCommand;
+import gregtech.common.misc.GTMiscCommand;
 import gregtech.common.misc.GTPowerfailCommand;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
+import gregtech.common.ores.UnificationOreAdapter;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.holoinventory.HoloInventory;
@@ -136,45 +137,45 @@ import ic2.api.recipe.RecipeOutput;
     name = "GregTech",
     version = "MC1710",
     guiFactory = "gregtech.client.GTGuiFactory",
-    dependencies = " required-after:IC2;" + " required-after:structurelib;"
-        + " required-after:gtnhlib@[0.6.35,);"
-        + " required-after:modularui@[1.1.12,);"
-        + " required-after:appliedenergistics2@[rv3-beta-258,);"
-        + " after:dreamcraft;"
-        + " after:Forestry;"
-        + " after:PFAAGeologica;"
-        + " after:Thaumcraft;"
-        + " after:Railcraft;"
-        + " after:ThermalExpansion;"
-        + " after:TwilightForest;"
-        + " after:harvestcraft;"
-        + " after:magicalcrops;"
-        + " after:Botania;"
-        + " after:BuildCraft|Transport;"
-        + " after:BuildCraft|Silicon;"
-        + " after:BuildCraft|Factory;"
-        + " after:BuildCraft|Energy;"
-        + " after:BuildCraft|Core;"
-        + " after:BuildCraft|Builders;"
-        + " after:GalacticraftCore;"
-        + " after:GalacticraftMars;"
-        + " after:GalacticraftPlanets;"
-        + " after:ThermalExpansion|Transport;"
-        + " after:ThermalExpansion|Energy;"
-        + " after:ThermalExpansion|Factory;"
-        + " after:RedPowerCore;"
-        + " after:RedPowerBase;"
-        + " after:RedPowerMachine;"
-        + " after:RedPowerCompat;"
-        + " after:RedPowerWiring;"
-        + " after:RedPowerLogic;"
-        + " after:RedPowerLighting;"
-        + " after:RedPowerWorld;"
-        + " after:RedPowerControl;"
-        + " after:UndergroundBiomes;"
-        + " after:TConstruct;"
-        + " after:Translocator;"
-        + " after:gendustry;")
+    dependencies = "required-after:IC2;" + "required-after:structurelib;"
+        + "required-after:gtnhlib@[0.6.35,);"
+        + "required-after:modularui@[1.1.12,);"
+        + "required-after:appliedenergistics2@[rv3-beta-258,);"
+        + "after:dreamcraft;"
+        + "after:Forestry;"
+        + "after:PFAAGeologica;"
+        + "after:Thaumcraft;"
+        + "after:Railcraft;"
+        + "after:ThermalExpansion;"
+        + "after:TwilightForest;"
+        + "after:harvestcraft;"
+        + "after:magicalcrops;"
+        + "after:Botania;"
+        + "after:BuildCraft|Transport;"
+        + "after:BuildCraft|Silicon;"
+        + "after:BuildCraft|Factory;"
+        + "after:BuildCraft|Energy;"
+        + "after:BuildCraft|Core;"
+        + "after:BuildCraft|Builders;"
+        + "after:GalacticraftCore;"
+        + "after:GalacticraftMars;"
+        + "after:GalacticraftPlanets;"
+        + "after:ThermalExpansion|Transport;"
+        + "after:ThermalExpansion|Energy;"
+        + "after:ThermalExpansion|Factory;"
+        + "after:RedPowerCore;"
+        + "after:RedPowerBase;"
+        + "after:RedPowerMachine;"
+        + "after:RedPowerCompat;"
+        + "after:RedPowerWiring;"
+        + "after:RedPowerLogic;"
+        + "after:RedPowerLighting;"
+        + "after:RedPowerWorld;"
+        + "after:RedPowerControl;"
+        + "after:UndergroundBiomes;"
+        + "after:TConstruct;"
+        + "after:Translocator;"
+        + "after:gendustry;")
 public class GTMod {
 
     static {
@@ -223,9 +224,16 @@ public class GTMod {
         GTValues.NW = new GTNetwork();
         GTValues.RA = new RecipeAdder();
 
+        // TEs that can be wrenched.
         for (int i = 0; i < 4; i++) {
             GregTechAPI.registerTileEntityConstructor(i, i2 -> GregTechAPI.constructBaseMetaTileEntity());
         }
+
+        // TEs that can be mined.
+        for (int i = 12; i < 16; i++) {
+            GregTechAPI.registerTileEntityConstructor(i, i2 -> GregTechAPI.constructBaseMetaTileEntity());
+        }
+
         for (int i = 4; i < 12; i++) {
             GregTechAPI.registerTileEntityConstructor(i, i2 -> new BaseMetaPipeEntity());
         }
@@ -234,6 +242,8 @@ public class GTMod {
         Textures.BlockIcons.VOID.name();
         // noinspection ResultOfMethodCallIgnored// Suspicious likely pointless
         Textures.ItemIcons.VOID.name();
+
+        UnificationOreAdapter.load();
     }
 
     public static GTClient clientProxy() {
@@ -284,12 +294,14 @@ public class GTMod {
 
         GTPreLoad.loadConfig();
 
+        new Thread(new GTCapesLoader(), "GT Cape Loader").start();
+
         // ModularUI
         GTGuis.registerFactories();
         GTGuiTextures.init();
         GTGuiTheme.registerThemes();
-        GTWidgetThemes.register();
 
+        // Load enchantments
         new EnchantmentHazmat();
         new EnchantmentEnderDamage();
         new EnchantmentRadioactivity();
@@ -421,6 +433,7 @@ public class GTMod {
         new CropLoader().run();
         new GTWorldgenloader().run();
         new CoverLoader().run();
+        StoneType.init();
 
         GTRecipeRegistrator.registerUsagesForMaterials(
             null,
@@ -548,7 +561,10 @@ public class GTMod {
         }
 
         GTPostLoad.addSolidFakeLargeBoilerFuels();
+        GTPostLoad.addCauldronRecipe();
         GTPostLoad.identifyAnySteam();
+
+        VoidMinerLoader.init();
 
         achievements = new GTAchievements();
 
@@ -715,13 +731,11 @@ public class GTMod {
             tRunnable.run();
         }
 
-        event.registerServerCommand(new GTCommand());
+        event.registerServerCommand(new GTMiscCommand());
         event.registerServerCommand(new SPCommand());
         event.registerServerCommand(new SPMCommand());
         event.registerServerCommand(new SpaceProjectCommand());
         event.registerServerCommand(new GTPowerfailCommand());
-        // Sets a new Machine Block Update Thread everytime a world is loaded
-        RunnableMachineUpdate.initExecutorService();
     }
 
     @Mod.EventHandler
@@ -749,14 +763,10 @@ public class GTMod {
 
     @Mod.EventHandler
     public void onIDChangingEvent(FMLModIdMappingEvent event) {
+        if (event.remappedIds.isEmpty()) return;
+
         GTUtility.reInit();
         GTRecipe.reInit();
-        for (Map<?, ?> gt_itemStackMap : GregTechAPI.sItemStackMappings) {
-            GTUtility.reMap(gt_itemStackMap);
-        }
-        for (SetMultimap<GTItemStack, ?> gt_itemStackMap : GregTechAPI.itemStackMultiMaps) {
-            GTUtility.reMap(gt_itemStackMap);
-        }
         RemovedMetaRegistry.init();
     }
 

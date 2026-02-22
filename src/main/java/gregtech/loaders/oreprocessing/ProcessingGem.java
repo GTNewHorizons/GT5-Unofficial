@@ -53,8 +53,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             || aMaterial == Materials.Spodumene
             || aMaterial == Materials.NetherQuartz) return;
 
-        switch (aPrefix) {
-            case gem -> {
+        switch (aPrefix.getName()) {
+            case "gem" -> {
                 // fuel recipes
                 if (aFuelPower) {
                     GTValues.RA.stdBuilder()
@@ -93,7 +93,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .itemInputs(aStack)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 2L))
                                 .duration(3 * SECONDS + 4 * TICKS)
-                                .eut(16)
+                                .eut(TierEU.RECIPE_LV / 2)
                                 .addTo(hammerRecipes);
                         }
                     }
@@ -117,7 +117,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         if (GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
                             // Plate
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(1))
+                                .itemInputs(GTUtility.copyAmount(1, aStack))
+                                .circuit(1)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                                 .duration((int) Math.max(aMaterialMass * 2L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 24))
@@ -127,7 +128,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         if (GTOreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L) != null) {
                             // Double plates
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(2, aStack), GTUtility.getIntegratedCircuit(2))
+                                .itemInputs(GTUtility.copyAmount(2, aStack))
+                                .circuit(2)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass * 2L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
@@ -137,7 +139,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         if (GTOreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L) != null) {
                             // Triple plate
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(3, aStack), GTUtility.getIntegratedCircuit(3))
+                                .itemInputs(GTUtility.copyAmount(3, aStack))
+                                .circuit(3)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass * 3L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
@@ -147,7 +150,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         if (GTOreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L) != null) {
                             // Quadruple plate
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(4, aStack), GTUtility.getIntegratedCircuit(4))
+                                .itemInputs(GTUtility.copyAmount(4, aStack))
+                                .circuit(4)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass * 4L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
@@ -157,7 +161,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         if (GTOreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L) != null) {
                             // Quintuple plate
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(5, aStack), GTUtility.getIntegratedCircuit(5))
+                                .itemInputs(GTUtility.copyAmount(5, aStack))
+                                .circuit(5)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass * 5L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
@@ -167,7 +172,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         if (GTOreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L) != null) {
                             // dense plate
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(9, aStack), GTUtility.getIntegratedCircuit(9))
+                                .itemInputs(GTUtility.copyAmount(9, aStack))
+                                .circuit(9)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass * 9L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
@@ -191,14 +197,14 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         }
                     }
                 } else {
-                    if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
+                    if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Implosion compressor recipes
                         if (GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(3, aStack))
                                 .itemOutputs(
                                     GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1),
-                                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 2))
                                 .duration(1 * SECONDS)
                                 .eut(TierEU.RECIPE_LV)
                                 .metadata(ADDITIVE_AMOUNT, 8)
@@ -246,7 +252,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     }
                 }
             }
-            case gemChipped -> {
+            case "gemChipped" -> {
                 // Fuel recipes
                 if (aFuelPower) {
                     GTValues.RA.stdBuilder()
@@ -270,7 +276,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             .addTo(latheRecipes);
                     }
 
-                    if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
+                    if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Implosion compressor recipes
                         {
                             if (GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1) != null) {
@@ -278,7 +284,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                     .itemInputs(GTUtility.copyAmount(3, aStack))
                                     .itemOutputs(
                                         GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 2))
                                     .duration(1 * SECONDS)
                                     .eut(TierEU.RECIPE_LV)
                                     .metadata(ADDITIVE_AMOUNT, 8)
@@ -308,12 +314,12 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemInputs(GTUtility.copyAmount(3, aStack), is)
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1L))
                         .duration(30 * SECONDS)
-                        .eut(30)
+                        .eut(TierEU.RECIPE_LV)
                         .addTo(laserEngraverRecipes);
 
                 }
             }
-            case gemExquisite -> {
+            case "gemExquisite" -> {
                 // Fuel recipes
                 if (aFuelPower) {
                     GTValues.RA.stdBuilder()
@@ -324,7 +330,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 }
 
                 if (!aNoWorking) {
-                    if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
+                    if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Crafting recipes
                         {
                             if (aSpecialRecipeReq) {
@@ -343,11 +349,11 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemInputs(aStack)
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 2L))
                         .duration(3 * SECONDS + 4 * TICKS)
-                        .eut(16)
+                        .eut(TierEU.RECIPE_LV / 2)
                         .addTo(hammerRecipes);
                 }
             }
-            case gemFlawed -> {
+            case "gemFlawed" -> {
                 // fuel recipes
                 if (aFuelPower) {
                     GTValues.RA.stdBuilder()
@@ -371,7 +377,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             .addTo(latheRecipes);
                     }
 
-                    if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
+                    if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Implosion compressor recipes
                         {
                             if (GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1) != null) {
@@ -379,7 +385,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                     .itemInputs(GTUtility.copyAmount(3, aStack))
                                     .itemOutputs(
                                         GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 2))
                                     .duration(1 * SECONDS)
                                     .eut(TierEU.RECIPE_LV)
                                     .metadata(ADDITIVE_AMOUNT, 8)
@@ -406,7 +412,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     .itemInputs(aStack)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, 2L))
                     .duration(3 * SECONDS + 4 * TICKS)
-                    .eut(16)
+                    .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
 
                 for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
@@ -422,7 +428,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                 }
             }
-            case gemFlawless -> {
+            case "gemFlawless" -> {
 
                 // Fuel recipes
                 if (aFuelPower) {
@@ -443,13 +449,13 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
                                 GTOreDictUnificator.getDust(
                                     aMaterial,
-                                    aPrefix.mMaterialAmount - OrePrefixes.stickLong.mMaterialAmount))
+                                    aPrefix.getMaterialAmount() - OrePrefixes.stickLong.getMaterialAmount()))
                             .duration(((int) Math.max(aMaterialMass * 5L, 1L)) * TICKS)
-                            .eut(16)
+                            .eut(TierEU.RECIPE_LV / 2)
                             .addTo(latheRecipes);
                     }
 
-                    if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
+                    if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Implosion compressor recipes
                         {
                             if (GTOreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1) != null) {
@@ -457,7 +463,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                     .itemInputs(GTUtility.copyAmount(3, aStack))
                                     .itemOutputs(
                                         GTOreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 2))
                                     .duration(1 * SECONDS)
                                     .eut(TierEU.RECIPE_LV)
                                     .metadata(ADDITIVE_AMOUNT, 8)
@@ -484,7 +490,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     .itemInputs(aStack)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 2L))
                     .duration(3 * SECONDS + 4 * TICKS)
-                    .eut(16)
+                    .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
 
                 for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver

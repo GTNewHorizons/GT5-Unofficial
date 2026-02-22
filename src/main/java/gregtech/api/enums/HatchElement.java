@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
+
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -18,6 +20,9 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
+import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 
 public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
 
@@ -49,6 +54,11 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
         public long count(MTEMultiBlockBase t) {
             return t.mInputBusses.size();
         }
+
+        @Override
+        public List<Class<? extends IMetaTileEntity>> mteBlacklist() {
+            return ImmutableList.of(MTEHatchLensHousing.class, MTEHatchSteamBusInput.class);
+        }
     },
     OutputHatch("GT5U.MBTT.OutputHatch", MTEMultiBlockBase::addOutputHatchToMachineList, MTEHatchOutput.class) {
 
@@ -62,6 +72,11 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
         @Override
         public long count(MTEMultiBlockBase t) {
             return t.mOutputBusses.size();
+        }
+
+        @Override
+        public List<Class<? extends IMetaTileEntity>> mteBlacklist() {
+            return ImmutableList.of(MTEHatchSteamBusOutput.class);
         }
     },
     Energy("GT5U.MBTT.EnergyHatch", MTEMultiBlockBase::addEnergyInputToMachineList, MTEHatchEnergy.class) {
@@ -96,6 +111,14 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
         @Override
         public long count(MTEMultiBlockBase t) {
             return t.getExoticEnergyHatches()
+                .size();
+        }
+    },
+    ExoticDynamo("GT5U.MBTT.ExoticEnergyDynamo", MTEMultiBlockBase::addExoticDynamoToMachineList) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return t.getExoticDynamoHatches()
                 .size();
         }
     };

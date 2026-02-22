@@ -1,9 +1,6 @@
 package gregtech.common.pollution;
 
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.enums.Mods.ThaumicBases;
+import static gregtech.api.enums.Mods.*;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -26,13 +23,20 @@ public class PollutionTooltip {
         if (event.itemStack == null) return;
 
         if (PollutionConfig.furnacesPollute) {
-            String furnacePollution = StatCollector
-                .translateToLocalFormatted(PRODUCES_POLLUTION_FORMAT, PollutionConfig.furnacePollutionAmount);
 
             // Furnace and Iron Furnace
-            if (GTUtility.areStacksEqual(event.itemStack, new ItemStack(Blocks.furnace)) || GTUtility
+            if (GTUtility.areStacksEqual(event.itemStack, new ItemStack(Blocks.furnace))) {
+                event.toolTip.add(
+                    StatCollector
+                        .translateToLocalFormatted(PRODUCES_POLLUTION_FORMAT, FurnacePollution.FURNACE.getPollution()));
+            }
+
+            if (GTUtility
                 .areStacksEqual(event.itemStack, GTModHandler.getModItem(IndustrialCraft2.ID, "blockMachine", 1, 1))) {
-                event.toolTip.add(furnacePollution);
+                event.toolTip.add(
+                    StatCollector.translateToLocalFormatted(
+                        PRODUCES_POLLUTION_FORMAT,
+                        FurnacePollution.IRON_FURNACE.getPollution()));
             }
 
             // Alchemical Furnace
@@ -40,7 +44,10 @@ public class PollutionTooltip {
                 if (GTUtility.areStacksEqual(
                     event.itemStack,
                     GTModHandler.getModItem(Thaumcraft.ID, "blockStoneDevice", 1, 0))) {
-                    event.toolTip.add(furnacePollution);
+                    event.toolTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            PRODUCES_POLLUTION_FORMAT,
+                            FurnacePollution.ALCHEMICAL_FURNACE.getPollution()));
                 }
             }
 
@@ -49,7 +56,45 @@ public class PollutionTooltip {
                 if (GTUtility.areStacksEqual(
                     event.itemStack,
                     GTModHandler.getModItem(ThaumicBases.ID, "advAlchFurnace", 1, 0))) {
-                    event.toolTip.add(furnacePollution);
+                    event.toolTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            PRODUCES_POLLUTION_FORMAT,
+                            FurnacePollution.ADVANCED_ALCHEMICAL_FURNACE.getPollution()));
+                }
+            }
+
+            if (EtFuturumRequiem.isModLoaded()) {
+                if (GTUtility.areStacksEqual(
+                    event.itemStack,
+                    GTModHandler.getModItem(EtFuturumRequiem.ID, "blast_furnace", 1, 0))
+                    || GTUtility.areStacksEqual(
+                        event.itemStack,
+                        GTModHandler.getModItem(EtFuturumRequiem.ID, "smoker", 1, 0))) {
+                    event.toolTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            PRODUCES_POLLUTION_FORMAT,
+                            FurnacePollution.BLAST_FURNACE.getPollution()));
+                }
+            }
+
+            if (Natura.isModLoaded()) {
+                if (GTUtility
+                    .areStacksEqual(event.itemStack, GTModHandler.getModItem(Natura.ID, "NetherFurnace", 1, 0))) {
+                    event.toolTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            PRODUCES_POLLUTION_FORMAT,
+                            FurnacePollution.NETHER_FURNACE.getPollution()));
+                }
+            }
+
+            if (TinkerConstruct.isModLoaded()) {
+                if (GTUtility.areStacksEqual(
+                    event.itemStack,
+                    GTModHandler.getModItem(TinkerConstruct.ID, "FurnaceSlab", 1, 0))) {
+                    event.toolTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            PRODUCES_POLLUTION_FORMAT,
+                            FurnacePollution.SLAB_FURNACE.getPollution()));
                 }
             }
         }

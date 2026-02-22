@@ -221,7 +221,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             buildHatchAdder(MTEExtremeEntityCrusher.class)
                 .atLeast(InputBus, OutputBus, OutputHatch, Energy, Maintenance)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings2, 0))))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('f', ofFrame(Materials.Steel))
@@ -459,33 +459,27 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (this.mMaxProgresstime > 0) {
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("kubatech.chat.forbidden_while_running"));
+            GTUtility.sendChatTrans(aPlayer, "kubatech.chat.forbidden_while_running");
             return;
         }
         if (aPlayer.isSneaking()) {
             if (!InfernalMobs.isModLoaded()) return;
             mIsProducingInfernalDrops = !mIsProducingInfernalDrops;
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 aPlayer,
-                StatCollector.translateToLocal(
-                    "kubatech.chat.eec.infernal_drops_" + (mIsProducingInfernalDrops ? "enabled" : "disabled")));
+                "kubatech.chat.eec.infernal_drops_" + (mIsProducingInfernalDrops ? "enabled" : "disabled"));
         } else {
             if (!BloodMagic.isModLoaded()) return;
             isInRitualMode = !isInRitualMode;
             checkRitualConnection();
 
             if (!isInRitualMode) {
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    StatCollector.translateToLocal("kubatech.chat.eec.ritual_mode_disabled"));
+                GTUtility.sendChatTrans(aPlayer, "kubatech.chat.eec.ritual_mode_disabled");
             } else {
-                GTUtility
-                    .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("kubatech.chat.eec.ritual_mode_enabled"));
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatTrans(aPlayer, "kubatech.chat.eec.ritual_mode_enabled");
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    StatCollector
-                        .translateToLocal("kubatech.chat.eec.ritual_mode_" + (mIsRitualValid ? "connected" : "error")));
+                    "kubatech.chat.eec.ritual_mode_" + (mIsRitualValid ? "connected" : "error"));
             }
         }
     }
@@ -504,7 +498,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         this.batchMode = !this.batchMode;
-        GTUtility.sendChatToPlayer(aPlayer, "Batch Mode: " + (this.batchMode ? "Enabled" : "Disabled"));
+        GTUtility.sendChatTrans(
+            aPlayer,
+            this.batchMode ? "GT5U.chat.machine.batch_mode.enable" : "GT5U.chat.machine.batch_mode.disable");
         return true;
     }
 
@@ -779,7 +775,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             }
 
             // We do care. Preserve the weapon
-            if (!mCycleWeapons || !addOutputPartial(tWeapon, false)) return null;
+            if (!mCycleWeapons || !addOutputAtomic(tWeapon)) return null;
             weaponCache.setStackInSlot(0, null);
             tWeapon = null;
         }
@@ -862,9 +858,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             SoundResource.RANDOM_BREAK,
             0.5F,
             0.9F,
-            tMTE.getXCoord(),
-            tMTE.getYCoord(),
-            tMTE.getZCoord());
+            tMTE.getXCoord() + .5,
+            tMTE.getYCoord() + .5,
+            tMTE.getZCoord() + .5);
     }
 
     private boolean checkRitualConnection() {

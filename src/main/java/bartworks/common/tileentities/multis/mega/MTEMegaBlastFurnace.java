@@ -13,6 +13,7 @@
 
 package bartworks.common.tileentities.multis.mega;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE;
@@ -79,7 +80,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
             't',
             buildHatchAdder(MTEMegaBlastFurnace.class).atLeast(OutputHatch)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
         .addElement(
@@ -92,7 +93,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
             buildHatchAdder(MTEMegaBlastFurnace.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .build();
 
@@ -159,6 +160,11 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         tt.addMachineType("Blast Furnace, MEBF, MBF")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
+                TooltipHelper.effText("-5%") + " EU Usage per "
+                    + TooltipHelper.coloredText("900K", EnumChatFormatting.RED)
+                    + " above the recipe requirement")
+            .addSeparator()
+            .addInfo(
                 "Increases Heat by " + EnumChatFormatting.RED
                     + "100K"
                     + EnumChatFormatting.GRAY
@@ -168,26 +174,16 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
                     + EnumChatFormatting.AQUA
                     + "MV")
             .addInfo(
-                "Reduces " + TooltipHelper.effText("EU Usage")
-                    + " by "
-                    + EnumChatFormatting.WHITE
-                    + "5%"
-                    + EnumChatFormatting.GRAY
-                    + " every "
-                    + EnumChatFormatting.RED
-                    + "900K"
-                    + EnumChatFormatting.GRAY
-                    + " above the recipe requirement")
-            .addInfo(
                 "Every " + EnumChatFormatting.RED
                     + "1800K"
                     + EnumChatFormatting.GRAY
                     + " over the recipe requirement grants 1 "
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "Perfect Overclock")
+            .addSeparator()
             .addTecTechHatchInfo()
-            .addGlassEnergyLimitInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
+            .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 20, 15, true)
@@ -227,16 +223,16 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         float aX, float aY, float aZ, ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
             this.inputSeparation = !this.inputSeparation;
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + this.inputSeparation);
+                this.inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
             return true;
         }
         this.batchMode = !this.batchMode;
         if (this.batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
         } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
         }
         return true;
     }
@@ -282,7 +278,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     protected String[] getExtendedInfoData() {
         return new String[] { StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
             + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(this.mHeatingCapacity)
+            + formatNumber(this.mHeatingCapacity)
             + EnumChatFormatting.RESET
             + " K" };
     }

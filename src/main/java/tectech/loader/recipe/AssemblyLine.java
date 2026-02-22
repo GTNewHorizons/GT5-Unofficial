@@ -73,7 +73,7 @@ public class AssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 64))
             .fluidInputs(
                 Materials.Glass.getMolten(16 * INGOTS),
-                Materials.Silicone.getMolten(1872),
+                Materials.RubberSilicone.getMolten(1872),
                 GTModHandler.getIC2Coolant(2_000),
                 BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium)
                     .getMolten(9 * INGOTS))

@@ -38,11 +38,13 @@ public class GTRecipeUtils {
                 }
             }
             GTRecipe newRecipe = new GTRecipe(
-                false,
                 itemInputsWithoutProgrammableCircuit.toArray(new ItemStack[0]),
                 recipeInput.mOutputs,
                 recipeInput.mSpecialItems,
-                recipeInput.mChances,
+                recipeInput.mInputChances,
+                recipeInput.mOutputChances,
+                recipeInput.mFluidInputChances,
+                recipeInput.mFluidOutputChances,
                 recipeInput.mFluidInputs,
                 recipeInput.mFluidOutputs,
                 recipeInput.mDuration,
@@ -73,17 +75,30 @@ public class GTRecipeUtils {
         // iterate over all recipes without duplicates and add them to the output. If the recipe had a programmable
         // circuit in it then add it back with its damage value coming from the circuit map.
         for (GTRecipe filteredRecipe : recipesHashSet) {
-            // check to see if the recipe is in the circuit map
+            ItemStack[] finalInputs = filteredRecipe.mInputs;
+
             if (circuitMap.contains(filteredRecipe)) {
-                // add the circuit back
-                // update the item input array with the new input from
-                // ItemInputsWithoutProgrammableCircuit + circuit map circuit
-                filteredRecipe.mInputs = ArrayUtils.add(filteredRecipe.mInputs, circuitMap.get(filteredRecipe));
+                // append the chosen circuit to the END of the inputs
+                finalInputs = ArrayUtils.add(filteredRecipe.mInputs, circuitMap.get(filteredRecipe));
             }
-            // if the recipe was not in the circuit map then just add it the output as no updates to the item input
-            // needs to be made
-            recipeOutput.add(filteredRecipe);
+
+            GTRecipe finalRecipe = new GTRecipe(
+                finalInputs,
+                filteredRecipe.mOutputs,
+                filteredRecipe.mSpecialItems,
+                filteredRecipe.mInputChances,
+                filteredRecipe.mOutputChances,
+                filteredRecipe.mFluidInputChances,
+                filteredRecipe.mFluidOutputChances,
+                filteredRecipe.mFluidInputs,
+                filteredRecipe.mFluidOutputs,
+                filteredRecipe.mDuration,
+                filteredRecipe.mEUt,
+                filteredRecipe.mSpecialValue);
+
+            recipeOutput.add(finalRecipe);
         }
+
         // print results to log
         Logger.INFO(
             "Recipe Array duplication removal process completed for '" + recipeMapName

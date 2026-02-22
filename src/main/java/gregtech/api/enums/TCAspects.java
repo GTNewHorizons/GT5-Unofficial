@@ -2,6 +2,9 @@ package gregtech.api.enums;
 
 import java.util.List;
 
+import cpw.mods.fml.common.Optional;
+import thaumcraft.api.aspects.Aspect;
+
 public enum TCAspects {
 
     AER(1),
@@ -73,6 +76,11 @@ public enum TCAspects {
 
     TCAspects(int aValue) {
         mValue = aValue;
+    }
+
+    @Optional.Method(modid = Mods.ModIDs.THAUMCRAFT)
+    public Aspect getAspect() {
+        return (Aspect) mAspect;
     }
 
     public static class TC_AspectStack {

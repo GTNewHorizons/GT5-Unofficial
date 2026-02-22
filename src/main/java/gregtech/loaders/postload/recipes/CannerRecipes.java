@@ -12,6 +12,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class CannerRecipes implements Runnable {
 
     @Override
@@ -108,7 +109,7 @@ public class CannerRecipes implements Runnable {
                 ItemList.BatteryHull_IV.get(1L))
             .itemOutputs(ItemList.BatteryHull_IV_Full.get(1L))
             .duration(7 * SECONDS + 10 * TICKS)
-            .eut(1024)
+            .eut(TierEU.RECIPE_EV / 2)
             .addTo(cannerRecipes);
         // LuV 32768
 
@@ -128,7 +129,7 @@ public class CannerRecipes implements Runnable {
                 ItemList.BatteryHull_ZPM.get(1L))
             .itemOutputs(ItemList.BatteryHull_ZPM_Full.get(1L))
             .duration(12 * SECONDS + 10 * TICKS)
-            .eut(4096)
+            .eut(TierEU.RECIPE_IV / 2)
             .addTo(cannerRecipes);
         // UV 524288
 

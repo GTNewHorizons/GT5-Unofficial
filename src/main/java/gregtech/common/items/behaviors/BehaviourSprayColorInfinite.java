@@ -32,7 +32,7 @@ import gregtech.api.net.GTPacketInfiniteSpraycan;
 import gregtech.api.util.ColoredBlockContainer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
-import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 
 public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
@@ -100,7 +100,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
     @Override
     protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
-        ColoredBlockContainer block = ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, player);
+        ColoredBlockContainer block = ColoredBlockContainer.getInstance(player, aX, aY, aZ, side);
         if (mCurrentColor == REMOVE_COLOR) {
             return block.removeColor();
         }
@@ -120,13 +120,14 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.infinite"));
         aList.add(mTooltipChain);
+        aList.add(mTooltipUnstackable);
         aList.add(" ");
 
         if (!statuses.isEmpty()) {
             aList.add(String.join(" :: ", statuses));
         }
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.more_info"));
-        aList.add(AuthorQuerns);
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.author_byline"));
         return aList;
     }
 
@@ -321,6 +322,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     }
     // endregion
 
+    // region Static Methods
     public static Dyes getDye(ItemStack itemStack) {
         if (itemStack.hasTagCompound()) {
             final byte color = itemStack.getTagCompound()
@@ -333,17 +335,18 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         return Dyes.MACHINE_METAL;
     }
 
-    public boolean isLocked(final ItemStack itemStack) {
+    public static boolean isLocked(final ItemStack itemStack) {
         return itemStack.hasTagCompound() && itemStack.getTagCompound()
             .getBoolean(LOCK_NBT_TAG);
     }
 
-    private boolean isPreventingShake(final ItemStack itemStack) {
+    private static boolean isPreventingShake(final ItemStack itemStack) {
         return itemStack.hasTagCompound() && itemStack.getTagCompound()
             .getBoolean(PREVENT_SHAKE_TAG);
     }
+    // endregion
 
-    private static class DyeSelectGUI extends SelectItemUIFactory {
+    private static class DyeSelectGUI extends ItemSelectBaseGui {
 
         public DyeSelectGUI(final String header, final ItemStack headerItem, final Consumer<ItemStack> selectedCallback,
             final List<ItemStack> stacks, final int selected, final boolean noDeselect) {

@@ -65,11 +65,14 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.util.GTUtility;
-import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import kubatech.Tags;
 
 public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {
+
+    @Deprecated
+    public int mEUt;
 
     @SuppressWarnings("unchecked")
     protected static <K extends KubaTechGTMultiBlockBase<?>> UIInfo<?, ?> createKTMetaTileEntityUI(
@@ -228,7 +231,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
             list.remove(0);
             wasSomethingRemoved = true;
             for (ItemStack stack : toOutputNow) {
-                addOutput(stack);
+                addOutputPartial(stack);
             }
         }
         return wasSomethingRemoved;
@@ -239,7 +242,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
         builder.widget(
             new DrawableWidget().setDrawable(PICTURE_KUBATECH_LOGO)
                 .setSize(13, 15)
-                .setPos(191 - 13, 86 - 15)
+                .setPos(191 - 16, 86 - 16)
                 .addTooltip(new Text(Tags.MODNAME).color(Color.GRAY.normal))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
@@ -260,6 +263,11 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
     @Override
     public @NotNull Pos2d getStructureUpdateButtonPos() {
         return new Pos2d(174, 148 - (slotWidgets.size() * 18));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 
     @Override
@@ -289,6 +297,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
                 .setSize(182, 79));
 
         builder.widget(createPowerSwitchButton(builder))
+            .widget(createMuffleButton(builder, this.canBeMuffled()))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
             .widget(createBatchModeButton(builder))

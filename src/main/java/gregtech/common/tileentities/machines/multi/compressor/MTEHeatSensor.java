@@ -1,32 +1,27 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
+import gregtech.common.gui.modularui.hatch.MTEHeatSensorGui;
 
 public class MTEHeatSensor extends MTEHatch {
 
-    protected float threshold = 0;
+    protected double threshold = 0;
     protected boolean inverted = false;
     private boolean isOn = false;
 
@@ -88,14 +83,14 @@ public class MTEHeatSensor extends MTEHatch {
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        threshold = aNBT.getFloat("mThreshold");
+        threshold = aNBT.getDouble("mThreshold");
         inverted = aNBT.getBoolean("mInverted");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setFloat("mThreshold", threshold);
+        aNBT.setDouble("mThreshold", threshold);
         aNBT.setBoolean("mInverted", inverted);
         super.saveNBTData(aNBT);
     }
@@ -139,38 +134,30 @@ public class MTEHeatSensor extends MTEHatch {
         return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont) };
     }
 
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
-                .setTextureGetter(
-                    (state) -> state == 1 ? GTUITextures.OVERLAY_BUTTON_REDSTONE_ON
-                        : GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                .addTooltip(0, translateToLocal("gt.interact.desc.normal"))
-                .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
-                .setPos(10, 8))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> inverted ? translateToLocal("gt.interact.desc.inverted")
-                            : translateToLocal("gt.interact.desc.normal"))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(28, 12))
-            .widget(
-                new NumericWidget().setBounds(0, 100)
-                    .setGetter(() -> (double) threshold)
-                    .setSetter((value) -> threshold = (float) value)
-                    .setScrollValues(0.1, 0.01, 1.0)
-                    .setMaximumFractionDigits(2)
-                    .setTextColor(Color.WHITE.dark(1))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setFocusOnGuiOpen(true)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                    .setPos(10, 28)
-                    .setSize(77, 12))
-            .widget(
-                new TextWidget(translateToLocal("GT5U.gui.text.heat_sensor")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(90, 30));
+    public double getThreshold() {
+        return threshold;
     }
+
+    public void setThreshold(double threshold) {
+        this.threshold = threshold;
+    }
+
+    public boolean isInverted() {
+        return inverted;
+    }
+
+    public void setInverted(boolean inverted) {
+        this.inverted = inverted;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHeatSensorGui(this).build(data, syncManager, uiSettings);
+    }
+
 }

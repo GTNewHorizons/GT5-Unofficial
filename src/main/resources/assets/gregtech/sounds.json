@@ -200,7 +200,7 @@
           "license_name": "Attribution 3.0"
         }
       }
-     ]
+    ]
   },
   "machines.MTEPreciseAssembler": {
     "category": "block",
@@ -382,6 +382,24 @@
       }
     ]
   },
+  "machines.MTEExoFoundry": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEExoFoundry",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTENanochipAssemblyComplex": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTENanochipAssemblyComplex",
+        "stream": false
+      }
+    ]
+  },
   "maintenance.MaintenanceAutoHatch": {
     "category": "block",
     "sounds": [
@@ -436,18 +454,12 @@
             "https://freesound.org/people/bruno.auzet/sounds/578270/",
             "https://freesound.org/people/NinjaSharkStudios/sounds/566206/"
           ],
-          "original_sound_names": [
-            "drone DJI.wav",
-            "DeWalt Drill_1.wav"
-          ],
+          "original_sound_names": ["drone DJI.wav", "DeWalt Drill_1.wav"],
           "original_author_urls": [
             "https://freesound.org/people/bruno.auzet/",
             "https://freesound.org/people/NinjaSharkStudios/"
           ],
-          "original_author_names": [
-            "bruno.auzet",
-            "NinjaSharkStudios"
-          ],
+          "original_author_names": ["bruno.auzet", "NinjaSharkStudios"],
           "original_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
           "original_license_name": "CC0 1.0 Universal"
         }
@@ -488,6 +500,15 @@
           "original_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
           "original_license_name": "CC0 1.0 Universal"
         }
+      }
+    ]
+  },
+  "machines.MTESpinmatron": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTESpinmatron",
+        "stream": false
       }
     ]
   }

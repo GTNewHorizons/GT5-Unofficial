@@ -402,7 +402,7 @@ public class ParallelHelper {
             return;
         }
         if (!calculator.getAllowedTierSkip()) {
-            result = CheckRecipeResultRegistry.insufficientVoltage(tRecipeEUt);
+            result = CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
             return;
         }
 
@@ -431,16 +431,16 @@ public class ParallelHelper {
             .copyOfRange(recipe.mFluidOutputs, 0, Math.min(machine.getFluidOutputLimit(), recipe.mFluidOutputs.length))
             : GTValues.emptyFluidStackArray;
 
-        SingleRecipeCheck recipeCheck = null;
-        SingleRecipeCheck.Builder tSingleRecipeCheckBuilder = null;
+        SingleRecipeCheck recipeLock = null;
+        SingleRecipeCheck.Builder recipeLockBuilder = null;
         if (isRecipeLocked && singleRecipeMachine != null) {
-            recipeCheck = singleRecipeMachine.getSingleRecipeCheck();
-            if (recipeCheck == null) {
+            recipeLock = singleRecipeMachine.getSingleRecipeCheck();
+            if (recipeLock == null) {
                 // Machine is configured to lock to a single recipe, but haven't built the recipe checker yet.
                 // Build the checker on next successful recipe.
                 RecipeMap<?> recipeMap = singleRecipeMachine.getRecipeMap();
                 if (recipeMap != null) {
-                    tSingleRecipeCheckBuilder = SingleRecipeCheck.builder(recipeMap)
+                    recipeLockBuilder = SingleRecipeCheck.builder(recipeMap)
                         .setBefore(itemInputs, fluidInputs);
                 }
             }
@@ -451,15 +451,18 @@ public class ParallelHelper {
             if (machine == null) {
                 throw new IllegalStateException("Tried to calculate void protection, but machine is not set");
             }
-            VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
-            voidProtectionHelper.setMachine(machine)
+
+            VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper().setMachine(machine)
                 .setItemOutputs(truncatedItemOutputs)
                 .setFluidOutputs(truncatedFluidOutputs)
-                .setChangeGetter(recipe::getOutputChance)
-                .setChanceMultiplier(chanceMultiplier)
+                .setOutputChanceGetter(recipe::getOutputChance)
+                .setFluidOutputChanceGetter(recipe::getFluidOutputChance)
+                .setOutputChanceMultiplier(chanceMultiplier)
                 .setMaxParallel(maxParallel)
                 .build();
+
             maxParallel = Math.min(voidProtectionHelper.getMaxParallel(), maxParallel);
+
             if (voidProtectionHelper.isItemFull()) {
                 result = CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
                 return;
@@ -475,15 +478,17 @@ public class ParallelHelper {
         // determine normal parallel
         int actualMaxParallel = tRecipeEUt > 0 ? (int) Math.min(maxParallelBeforeBatchMode, availableEUt / tRecipeEUt)
             : maxParallelBeforeBatchMode;
-        if (recipeCheck != null) {
-            currentParallel = recipeCheck.checkRecipeInputs(true, actualMaxParallel, itemInputs, fluidInputs);
+
+        if (recipeLock != null) {
+            currentParallel = recipeLock.checkRecipeInputs(true, actualMaxParallel, itemInputs, fluidInputs);
         } else {
             currentParallel = (int) maxParallelCalculator.calculate(recipe, actualMaxParallel, fluidInputs, itemInputs);
+
             if (currentParallel > 0) {
-                if (tSingleRecipeCheckBuilder != null) {
+                if (recipeLockBuilder != null) {
                     // If recipe checker is not built yet, build and set it
                     inputConsumer.consume(recipe, 1, fluidInputs, itemInputs);
-                    SingleRecipeCheck builtCheck = tSingleRecipeCheckBuilder.setAfter(itemInputs, fluidInputs)
+                    SingleRecipeCheck builtCheck = recipeLockBuilder.setAfter(itemInputs, fluidInputs)
                         .setRecipe(recipe)
                         .build();
                     singleRecipeMachine.setSingleRecipeCheck(builtCheck);
@@ -501,6 +506,7 @@ public class ParallelHelper {
 
         calculator.setCurrentParallel(currentParallel)
             .calculate();
+
         // If Batch Mode is enabled determine how many extra parallels we can get
         if (batchMode && currentParallel > 0 && calculator.getDuration() < MAX_BATCH_MODE_TICK_TIME) {
             int tExtraParallels;
@@ -509,8 +515,8 @@ public class ParallelHelper {
                 Math.min(
                     currentParallel * Math.min(batchMultiplierMax - 1, batchModifier - 1),
                     maxParallel - currentParallel));
-            if (recipeCheck != null) {
-                tExtraParallels = recipeCheck.checkRecipeInputs(true, maxExtraParallels, itemInputs, fluidInputs);
+            if (recipeLock != null) {
+                tExtraParallels = recipeLock.checkRecipeInputs(true, maxExtraParallels, itemInputs, fluidInputs);
             } else {
                 tExtraParallels = (int) maxParallelCalculator
                     .calculate(recipe, maxExtraParallels, fluidInputs, itemInputs);
@@ -575,8 +581,10 @@ public class ParallelHelper {
             if (recipe.getFluidOutput(i) == null) continue;
             FluidStack origin = recipe.getFluidOutput(i)
                 .copy();
-            long fluids = (long) origin.amount * currentParallel;
-
+            final long chancedFluidMultiplier = calculateIntegralChancedOutputMultiplier(
+                (int) (recipe.getFluidOutputChance(i) * chanceMultiplier),
+                currentParallel);
+            long fluids = (long) origin.amount * chancedFluidMultiplier;
             addFluidsLong(fluidOutputsList, origin, fluids);
         }
         fluidOutputs = fluidOutputsList.toArray(new FluidStack[0]);
@@ -585,15 +593,19 @@ public class ParallelHelper {
     public static double calculateChancedOutputMultiplier(int chanceInt, int parallel) {
         // Multiply the integer part of the chance directly with parallel
         double multiplier = Math.floorDiv(chanceInt, 10000) * parallel;
-        int transformedChanceInt = chanceInt % 10000;
-        if (transformedChanceInt == 0) return multiplier;
+
+        int fractionalChance = chanceInt % 10000;
+        if (fractionalChance == 0) return multiplier;
+
         // Calculation of the Decimal Part of chance
-        double chance = transformedChanceInt / 10000.0;
+        double chance = fractionalChance / 10000.0;
         double mean = parallel * chance;
         double stdDev = Math.sqrt(parallel * chance * (1 - chance));
+
         // Check if everything within 3 standard deviations of mean is within the range
         // of possible values (0 ~ currentParallel)
         boolean isSuitableForFittingWithNormalDistribution = mean - 3 * stdDev >= 0 && mean + 3 * stdDev <= parallel;
+
         if (isSuitableForFittingWithNormalDistribution) {
             // Use Normal Distribution to fit Binomial Distribution
             double tMultiplier = stdDev * XSTR.XSTR_INSTANCE.nextGaussian() + mean;
@@ -601,7 +613,7 @@ public class ParallelHelper {
         } else {
             // Do Binomial Distribution by loop
             for (int roll = 0; roll < parallel; roll++) {
-                if (transformedChanceInt > XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                if (fractionalChance > XSTR.XSTR_INSTANCE.nextInt(10000)) {
                     multiplier += 1;
                 }
             }

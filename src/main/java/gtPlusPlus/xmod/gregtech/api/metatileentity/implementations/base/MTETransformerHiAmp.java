@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -44,9 +45,9 @@ public class MTETransformerHiAmp extends MTETransformer {
     @Override
     public long maxAmperesIn() {
         if (this.mHalfMode) {
-            return ((getBaseMetaTileEntity().isAllowedToWork()) ? 2L : 8L);
+            return ((getBaseMetaTileEntity().isAllowedToWork()) ? 3L : 12L);
         }
-        return ((getBaseMetaTileEntity().isAllowedToWork()) ? 4L : 16L);
+        return ((getBaseMetaTileEntity().isAllowedToWork()) ? 6L : 24L);
     }
 
     @Override
@@ -54,29 +55,29 @@ public class MTETransformerHiAmp extends MTETransformer {
         ITexture[][][] rTextures = new ITexture[12][17][];
         for (byte i = -1; i < 16; i++) {
             rTextures[0][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 1] };
             rTextures[1][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 1] };
             rTextures[2][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 1] };
             rTextures[3][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 2] };
             rTextures[4][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 2] };
             rTextures[5][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 2] };
             rTextures[6][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 1] };
             rTextures[7][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 1] };
             rTextures[8][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 1] };
             rTextures[9][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier + 2] };
             rTextures[10][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier + 2] };
             rTextures[11][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier + 2] };
         }
         return rTextures;
     }
@@ -90,8 +91,9 @@ public class MTETransformerHiAmp extends MTETransformer {
     public String[] getDescription() {
         return ArrayUtils.addAll(
             this.mDescriptionArray,
-            "Accepts 4A and outputs 16A",
-            "Toggle 2A/8A half-mode with Screwdriver",
+            StatCollector.translateToLocal("GT5U.machines.MTETransformerHiAmp.descLn1"),
+            StatCollector.translateToLocal("GT5U.machines.MTETransformerHiAmp.descLn2"),
+            StatCollector.translateToLocal("GT5U.machines.MTETransformerHiAmp.descLn3"),
             GTPPCore.GT_Tooltip.get());
     }
 

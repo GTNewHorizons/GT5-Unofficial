@@ -1,5 +1,7 @@
 package gregtech.api.threads;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,8 +18,12 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.MetaPipeEntity;
+import gregtech.api.metatileentity.implementations.MTEFrame;
+import gregtech.common.config.Gregtech;
 import it.unimi.dsi.fastutil.longs.LongArrayFIFOQueue;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
@@ -101,12 +107,16 @@ public class RunnableMachineUpdate implements Runnable {
     }
 
     protected static void postTaskToRun(Runnable runnable) {
+        initExecutorService();
         CompletableFuture<Void> f = CompletableFuture.runAsync(runnable, EXECUTOR_SERVICE);
         TASK_COUNTER.incrementAndGet();
         f.thenRun(SEMAPHORE::release);
     }
 
-    public static void initExecutorService() {
+    private static void initExecutorService() {
+        if (EXECUTOR_SERVICE != null) {
+            return;
+        }
         EXECUTOR_SERVICE = Executors.newFixedThreadPool(
             Math.max(
                 1,
@@ -117,6 +127,9 @@ public class RunnableMachineUpdate implements Runnable {
     }
 
     public static void shutdownExecutorService() {
+        if (EXECUTOR_SERVICE == null) {
+            return;
+        }
         try {
             GTMod.GT_FML_LOGGER.info("Shutting down Machine block update executor service");
             EXECUTOR_SERVICE.shutdown(); // Disable new tasks from being submitted
@@ -142,12 +155,15 @@ public class RunnableMachineUpdate implements Runnable {
             EXECUTOR_SERVICE.shutdownNow();
         } finally {
             GTMod.GT_FML_LOGGER.info("Leaving... RunnableMachineUpdate.shutdownExecutorService");
+            EXECUTOR_SERVICE = null;
         }
     }
 
     @Override
     public void run() {
         int posX, posY, posZ;
+        List<BMPEdata> adjacentCableList = new LinkedList<>();
+        LongSet adjacentCableKeys = new LongOpenHashSet();
         try {
             while (!tQueue.isEmpty()) {
                 final long packedCoords = tQueue.dequeueLong();
@@ -175,8 +191,16 @@ public class RunnableMachineUpdate implements Runnable {
                 if (tTileEntity instanceof IMachineBlockUpdateable)
                     ((IMachineBlockUpdateable) tTileEntity).onMachineBlockUpdate();
 
-                // Skip propagation through pipes\cables\etc as they have their own RunnableCableUpdate
-                if (tTileEntity instanceof BaseMetaPipeEntity) continue;
+                // Skip propagation through pipes\cables\etc, but save some BaseMetaPipeEntity data for later
+                if (Gregtech.features.speedupMachineUpdateThread) {
+                    final boolean isBaseMetaPipeEntity = tTileEntity instanceof BaseMetaPipeEntity;
+                    if (isBaseMetaPipeEntity) {
+                        final BMPEdata bmpeData = new BMPEdata((BaseMetaPipeEntity) tTileEntity, posX, posY, posZ);
+                        adjacentCableKeys.add(packedCoords);
+                        adjacentCableList.add(bmpeData);
+                        if (!bmpeData.isPotentialStructureBlock) continue;
+                    }
+                }
 
                 // Now see if we should add the nearby blocks to the queue:
                 // 1) If we've visited less than 5 blocks, then yes
@@ -196,6 +220,24 @@ public class RunnableMachineUpdate implements Runnable {
                     }
                 }
             }
+
+            // Check for connected cables-likes and create RunnableCableUpdate for them.
+            // Requires a full list of visited machines to avoid missing not-yet-visited connections
+            // and a full list of BMPEs to avoid false-positives (e.g. cable runs)
+            for (var cable : adjacentCableList) {
+                if (!cable.isMetaPipe) continue;
+                for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+                    final ForgeDirection side = ForgeDirection.VALID_DIRECTIONS[i];
+                    if (!cable.metaPipe.isConnectedAtSide(side)) continue;
+                    final long targetCoords = CoordinatePacker
+                        .pack(cable.x + side.offsetX, cable.y + side.offsetY, cable.z + side.offsetZ);
+                    if (adjacentCableKeys.contains(targetCoords)) continue;
+                    if (visited.contains(targetCoords)) {
+                        RunnableCableUpdate.setCableUpdateValues(world, cable.x, cable.y, cable.z);
+                    }
+                }
+            }
+
         } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error(
                 "Well this update was broken... " + initialX
@@ -209,6 +251,27 @@ public class RunnableMachineUpdate implements Runnable {
                     + world.provider.dimensionId
                     + "}",
                 e);
+        }
+    }
+
+    private static class BMPEdata {
+
+        final int x, y, z;
+        final BaseMetaPipeEntity baseMetaPipe;
+        final IMetaTileEntity metaTile;
+        final MetaPipeEntity metaPipe;
+        final boolean isMetaPipe;
+        final boolean isPotentialStructureBlock;
+
+        BMPEdata(BaseMetaPipeEntity bmpe, int x, int y, int z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            baseMetaPipe = bmpe;
+            metaTile = baseMetaPipe.getMetaTileEntity();
+            isMetaPipe = metaTile instanceof MetaPipeEntity;
+            metaPipe = isMetaPipe ? (MetaPipeEntity) metaTile : null;
+            isPotentialStructureBlock = metaPipe instanceof MTEFrame;
         }
     }
 }

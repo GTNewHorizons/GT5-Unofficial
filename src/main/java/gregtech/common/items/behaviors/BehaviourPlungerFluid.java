@@ -43,7 +43,8 @@ public class BehaviourPlungerFluid extends BehaviourNone {
                     if ((aPlayer.capabilities.isCreativeMode)
                         || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
                         ((IFluidHandler) aTileEntity).drain(tDirection, drainAmount, true);
-                        GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_PLUNGER, 1.0F, 1.0F, aX, aY, aZ);
+                        GTUtility
+                            .sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_PLUNGER, 1.0F, 1.0F, hitX, hitY, hitZ);
                         return true;
                     }
                 }
@@ -54,7 +55,7 @@ public class BehaviourPlungerFluid extends BehaviourNone {
             if (mTileEntity instanceof MTEBasicTank machine) {
                 if (machine.mFluid != null && machine.mFluid.amount > 0)
                     machine.mFluid.amount = machine.mFluid.amount - Math.min(machine.mFluid.amount, drainAmount);
-                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_PLUNGER, 1.0F, 1.0F, aX, aY, aZ);
+                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_PLUNGER, 1.0F, 1.0F, hitX, hitY, hitZ);
                 return true;
             }
         }

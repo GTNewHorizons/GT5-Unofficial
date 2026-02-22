@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
@@ -34,7 +35,6 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTUtility;
 
 public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
@@ -69,7 +69,7 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
                 AuthorColen + GRAY + BOLD + " & " + BLUE + BOLD + "Cloud",
                 translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
                     + YELLOW
-                    + GTUtility.formatNumbers(aAmp * V[aTier])
+                    + formatNumber(aAmp * V[aTier])
                     + GRAY
                     + " EU/t" },
             aAmp);
@@ -94,31 +94,31 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        if (maxAmperes >= 64) {
-            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_LASER[mTier] };
-        } else if (maxAmperes >= 16) {
-            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_64A[mTier] };
-        } else if (maxAmperes >= 4) {
-            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_16A[mTier] };
-        } else if (maxAmperes >= 2) {
-            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_4A[mTier] };
+        if (maxAmperes > 64) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_LASER[mTier + 1] };
+        } else if (maxAmperes > 16) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_64A[mTier + 1] };
+        } else if (maxAmperes > 4) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_16A[mTier + 1] };
+        } else if (maxAmperes > 2) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_4A[mTier + 1] };
         } else {
-            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[mTier] };
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[mTier + 1] };
         }
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        if (maxAmperes >= 64) {
-            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_LASER[mTier] };
-        } else if (maxAmperes >= 16) {
-            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_64A[mTier] };
-        } else if (maxAmperes >= 4) {
-            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_16A[mTier] };
-        } else if (maxAmperes >= 2) {
-            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_4A[mTier] };
+        if (maxAmperes > 64) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_LASER[mTier + 1] };
+        } else if (maxAmperes > 16) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_64A[mTier + 1] };
+        } else if (maxAmperes > 4) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_16A[mTier + 1] };
+        } else if (maxAmperes > 2) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_4A[mTier + 1] };
         } else {
-            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[mTier] };
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[mTier + 1] };
         }
     }
 

@@ -173,19 +173,15 @@ public class GTRecipeRegistrator {
 
     public static void registerMaterialRecycling(ItemStack aStack, ItemData aData) {
         if (GTUtility.isStackInvalid(aStack) || GTUtility.areStacksEqual(new ItemStack(Items.blaze_rod), aStack)
+            || GTUtility.areStacksEqual(GTOreDictUnificator.get(OrePrefixes.block, Materials.Ichorium, 1L), aStack)
+            || GTUtility.areStacksEqual(new ItemStack(Blocks.quartz_block, 1), aStack)
             || GTUtility.areStacksEqual(new ItemStack(Blocks.obsidian), aStack)
             || aData == null
             || !aData.hasValidMaterialData()
             || !aData.mMaterial.mMaterial.mAutoGenerateRecycleRecipes
             || aData.mMaterial.mAmount <= 0
             || GTUtility.getFluidForFilledItem(aStack, false) != null) return;
-        // Prevents registering a quartz block -> 9x quartz dust recipe
-        if (!GTUtility.areStacksEqual(new ItemStack(Blocks.quartz_block, 1), aStack)
-            && (!GTUtility.areStacksEqual(new ItemStack(Blocks.netherrack, 1), aStack))
-            && (!GTUtility.areStacksEqual(new ItemStack(Blocks.end_stone, 1), aStack))
-            && (!GTUtility.areStacksEqual(new ItemStack(Blocks.glowstone, 1), aStack))) {
-            registerReverseMacerating(GTUtility.copyAmount(1, aStack), aData, aData.mPrefix == null, true);
-        }
+        registerReverseMacerating(GTUtility.copyAmount(1, aStack), aData, aData.mPrefix == null, true);
         if (!GTUtility.areStacksEqual(GTModHandler.getIC2Item("iridiumOre", 1L), aStack)) {
             registerReverseSmelting(
                 GTUtility.copyAmount(1, aStack),
@@ -614,7 +610,9 @@ public class GTRecipeRegistrator {
                                 new ItemData(
                                     aItemData.mMaterial.mMaterial,
                                     aItemData.mMaterial.mAmount * tRecipe.amount1,
-                                    new MaterialStack(tMaterial, OrePrefixes.stick.mMaterialAmount * tRecipe.amount2)));
+                                    new MaterialStack(
+                                        tMaterial,
+                                        OrePrefixes.stick.getMaterialAmount() * tRecipe.amount2)));
 
                         if (aRecipeReplacing && aPlate != null && sShapesA[i] != null && sShapesA[i].length > 1) {
                             assert aItemData != null;
@@ -680,47 +678,43 @@ public class GTRecipeRegistrator {
         if (GTOreDictUnificator.get(prefix1, aMaterial, 1L) != null
             && GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 1L), GTUtility.getIntegratedCircuit(1))
+                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 1L))
+                .circuit(1)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, multiplier))
                 .duration(baseDuration * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix1, aMaterial, 2L / multiplier),
-                    GTUtility.getIntegratedCircuit(2))
+                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 2L / multiplier))
+                .circuit(2)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L))
                 .duration(((int) (baseDuration * 1.5f)) * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix1, aMaterial, 4L / multiplier),
-                    GTUtility.getIntegratedCircuit(4))
+                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 4L / multiplier))
+                .circuit(4)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L))
                 .duration(baseDuration * 2 * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix1, aMaterial, 8L / multiplier),
-                    GTUtility.getIntegratedCircuit(8))
+                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 8L / multiplier))
+                .circuit(8)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 1L))
                 .duration(((int) (baseDuration * 2.5f)) * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix1, aMaterial, 12L / multiplier),
-                    GTUtility.getIntegratedCircuit(12))
+                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 12L / multiplier))
+                .circuit(12)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L))
                 .duration(baseDuration * 3 * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix1, aMaterial, 16L / multiplier),
-                    GTUtility.getIntegratedCircuit(16))
+                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 16L / multiplier))
+                .circuit(16)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L))
                 .duration(((int) (baseDuration * 3.5f)) * TICKS)
                 .eut(aEUt)
@@ -730,47 +724,43 @@ public class GTRecipeRegistrator {
         if (GTOreDictUnificator.get(prefix2, aMaterial, 1L) != null
             && GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 1L), GTUtility.getIntegratedCircuit(1))
+                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 1L))
+                .circuit(1)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 2L / multiplier))
                 .duration(((int) (baseDuration * 0.5f)) * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix2, aMaterial, 4L / multiplier),
-                    GTUtility.getIntegratedCircuit(2))
+                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 4L / multiplier))
+                .circuit(2)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L))
                 .duration(baseDuration * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix2, aMaterial, 8L / multiplier),
-                    GTUtility.getIntegratedCircuit(4))
+                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 8L / multiplier))
+                .circuit(4)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L))
                 .duration(((int) (baseDuration * 1.5f)) * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix2, aMaterial, 16L / multiplier),
-                    GTUtility.getIntegratedCircuit(8))
+                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 16L / multiplier))
+                .circuit(8)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 1L))
                 .duration(baseDuration * 2 * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix2, aMaterial, 24L / multiplier),
-                    GTUtility.getIntegratedCircuit(12))
+                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 24L / multiplier))
+                .circuit(12)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L))
                 .duration(((int) (baseDuration * 2.5f)) * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix2, aMaterial, 32L / multiplier),
-                    GTUtility.getIntegratedCircuit(16))
+                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 32L / multiplier))
+                .circuit(16)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L))
                 .duration(baseDuration * 3 * TICKS)
                 .eut(aEUt)
@@ -779,7 +769,8 @@ public class GTRecipeRegistrator {
         if (GTOreDictUnificator.get(prefix1, aMaterial, 1L) != null
             && GTOreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 1L) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 1L), GTUtility.getIntegratedCircuit(3))
+                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 1L))
+                .circuit(3)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 4L * multiplier))
                 .duration(baseDuration * TICKS)
                 .eut(aEUt)
@@ -788,7 +779,8 @@ public class GTRecipeRegistrator {
         if (GTOreDictUnificator.get(prefix2, aMaterial, 1L) != null
             && GTOreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 1L) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 1L), GTUtility.getIntegratedCircuit(3))
+                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 1L))
+                .circuit(3)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 2L * multiplier))
                 .duration(((int) (baseDuration * 0.5f)) * TICKS)
                 .eut(aEUt)

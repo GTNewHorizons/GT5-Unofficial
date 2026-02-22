@@ -17,6 +17,7 @@ import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -54,6 +55,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -62,13 +64,12 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTEIndustrialWashPlantGui;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 
@@ -82,6 +83,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     private static final int MACHINEMODE_OREWASH = 0;
     private static final int MACHINEMODE_SIMPLEWASH = 1;
     private static final int MACHINEMODE_CHEMBATH = 2;
+    private static final Block DISTILLED_WATER_BLOCK = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
 
     public MTEIndustrialWashPlant(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -140,7 +142,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
                     buildHatchAdder(MTEIndustrialWashPlant.class)
                         .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(getCasingTextureIndex())
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
                 .addElement('w', ofChain(isAir(), ofAnyWater(true)))
                 .build();
@@ -295,55 +297,67 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
         final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * mCurrentDirectionX;
         final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * mCurrentDirectionZ;
 
-        int tAmount = 0;
+        boolean failed = false;
         for (int i = mOffsetX_Lower + 1; i <= mOffsetX_Upper - 1; ++i) {
             for (int j = mOffsetZ_Lower + 1; j <= mOffsetZ_Upper - 1; ++j) {
                 for (int h = 0; h < 2; ++h) {
                     Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-                    if (tBlock == Blocks.air || tBlock == Blocks.flowing_water || tBlock == Blocks.water) {
-                        if (this.getStoredFluids() != null) {
-                            for (FluidStack stored : this.getStoredFluids()) {
-                                if (stored.isFluidEqual(Materials.Water.getFluid(1))) {
-                                    if (stored.amount >= 1000) {
-                                        stored.amount -= 1000;
-                                        Block fluidUsed = null;
-                                        if (tBlock == Blocks.air || tBlock == Blocks.flowing_water) {
-                                            fluidUsed = Blocks.water;
-                                        }
-                                        if (tBlock == Blocks.water) {
-                                            fluidUsed = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
-                                        }
-                                        aBaseMetaTileEntity.getWorld()
-                                            .setBlock(
-                                                aBaseMetaTileEntity.getXCoord() + xDir + i,
-                                                aBaseMetaTileEntity.getYCoord() + h,
-                                                aBaseMetaTileEntity.getZCoord() + zDir + j,
-                                                fluidUsed);
-                                    }
-                                }
-                            }
-                        }
+                    if (tBlock == DISTILLED_WATER_BLOCK) {
+                        continue;
                     }
-                    if (tBlock == Blocks.water || tBlock == Blocks.flowing_water) {
-                        ++tAmount;
-                    } else if (tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
-                        ++tAmount;
-                    } else if (Mods.COFHCore.isModLoaded()) {
-                        if (tBlock instanceof BlockWater || tBlock instanceof BlockTickingWater) {
-                            ++tAmount;
-                        }
+
+                    // if we ever hit this code, we know it's not fully distilled, so check must fail
+                    failed = true;
+
+                    boolean isAir = tBlock == Blocks.air || tBlock == Blocks.flowing_water;
+
+                    boolean isCOFHCore = Mods.COFHCore.isModLoaded()
+                        && (tBlock instanceof BlockWater || tBlock instanceof BlockTickingWater);
+                    boolean isWater = (tBlock == Blocks.water) || isCOFHCore;
+
+                    // not a valid source block to transform
+                    if (!isAir && !isWater) {
+                        return false;
                     }
+
+                    ArrayList<FluidStack> storedFluids = this.getStoredFluids();
+
+                    // can't find fluid to convert water source, so next ones will also fail
+                    if (storedFluids == null) return false;
+
+                    boolean waterSourceProcessed = false;
+
+                    for (FluidStack stored : storedFluids) {
+                        if (!stored.isFluidEqual(Materials.Water.getFluid(1))) continue;
+
+                        if (stored.amount < 1000) continue;
+
+                        stored.amount -= 1000;
+                        Block fluidUsed;
+                        if (isAir) { // first conversion from empty/flowing water to regular water source
+                            fluidUsed = Blocks.water;
+                        } else { // second conversion from regular water source to distilled
+                            fluidUsed = DISTILLED_WATER_BLOCK;
+                        }
+                        aBaseMetaTileEntity.getWorld()
+                            .setBlock(
+                                aBaseMetaTileEntity.getXCoord() + xDir + i,
+                                aBaseMetaTileEntity.getYCoord() + h,
+                                aBaseMetaTileEntity.getZCoord() + zDir + j,
+                                fluidUsed);
+
+                        waterSourceProcessed = true;
+                        break; // don't deplete other water sources
+                    }
+
+                    // if no water source processed, we know we can't process next ones as well
+                    if (!waterSourceProcessed) return false;
+
                 }
             }
         }
 
-        boolean isValidWater = tAmount >= 30;
-        if (isValidWater) {
-            Logger.WARNING("Filled structure.");
-        } else {
-            Logger.WARNING("Did not fill structure.");
-        }
-        return isValidWater;
+        return !failed;
     }
 
     @Override
@@ -408,7 +422,10 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     }
 
     @Override
-    protected @NotNull MTEIndustrialWashPlantGui getGui() {
-        return new MTEIndustrialWashPlantGui(this);
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_CHEMBATH);
     }
 }

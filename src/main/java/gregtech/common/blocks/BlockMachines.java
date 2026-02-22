@@ -38,6 +38,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDebugableBlock;
@@ -86,15 +87,14 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @Override
     public String getHarvestTool(int aMeta) {
-        if (aMeta >= 8 && aMeta <= 11) {
-            return "cutter";
-        }
-        return "wrench";
+        return HarvestTool.fromMeta(aMeta)
+            .getHarvestTool();
     }
 
     @Override
     public int getHarvestLevel(int aMeta) {
-        return aMeta % 4;
+        return HarvestTool.fromMeta(aMeta)
+            .getHarvestLevel();
     }
 
     @Override
@@ -102,12 +102,24 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         return false;
     }
 
+    private boolean checkingAdjacent = false;
+
     @Override
     public void onNeighborChange(IBlockAccess aWorld, int aX, int aY, int aZ, int aTileX, int aTileY, int aTileZ) {
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof BaseTileEntity)) {
-            ((BaseTileEntity) tTileEntity).onAdjacentBlockChange(aTileX, aTileY, aTileZ);
+        // Hack to prevent StackOverflowExceptions on chunk loads when there are lots of adjacent GT machines.
+        // Each time a tile is put into the world, each adjacent block is updated, which calls this method, which forces
+        // this block's tile to be loaded, until you run out of stack space.
+        // checkingAdjacent will only be true when this happens, and since we're just clearing the adjacent TEs in this
+        // method we can just skip those nested operations.
+        if (checkingAdjacent) return;
+
+        checkingAdjacent = true;
+
+        if (aWorld.getTileEntity(aX, aY, aZ) instanceof BaseTileEntity base) {
+            base.onAdjacentBlockChange(aTileX, aTileY, aTileZ);
         }
+
+        checkingAdjacent = false;
     }
 
     @Override
@@ -178,8 +190,13 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
             default -> ForgeDirection.UNKNOWN;
         };
         final TileEntity machineEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return machineEntity instanceof BaseMetaTileEntity bmte
-            && (bmte.hasCoverAtSide(forgeSide) || bmte.getMetaTileEntity() instanceof MTERedstoneBase);
+        if (machineEntity instanceof BaseMetaTileEntity bmte) {
+            return bmte.hasCoverAtSide(forgeSide) || bmte.getMetaTileEntity() instanceof MTERedstoneBase;
+        }
+        if (machineEntity instanceof BaseMetaPipeEntity bmpe) {
+            return bmpe.hasCoverAtSide(forgeSide);
+        }
+        return false;
     }
 
     /**
@@ -386,6 +403,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
                 && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList)
                 && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)
+                && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)
                 && !CoverRegistry.isCover(tCurrentItem)) return false;
         }
 

@@ -33,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Textures;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.ITexture;
@@ -89,7 +90,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
             'B',
             ofChain(
                 buildHatchAdder(MTEMicrowave.class).atLeast(Maintenance, Energy, OutputBus)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(CASING_INDEX)
                     .buildAndChain(sBlockCasings4, 1),
                 ofHatchAdderOptional(MTEMicrowave::addClassicToMachineList, CASING_INDEX, 1, sBlockCasings4, 1)))
@@ -311,10 +312,9 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
         return hasBeenPausedThisCycle || super.onRunningTick(aStack); // consume eu and other resources if not paused
     }
 
-    // TODO Why is the basetype 1??
     @Override
     public byte getTileEntityBaseType() {
-        return 1;
+        return HarvestTool.WrenchLevel1.toTileEntityBaseType();
     }
 
     @Override

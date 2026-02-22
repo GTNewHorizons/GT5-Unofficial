@@ -14,8 +14,7 @@ import io.netty.buffer.ByteBufOutputStream;
 
 public class GTPacketSound extends GTPacket {
 
-    private int mX, mZ;
-    private short mY;
+    private double mX, mY, mZ;
     private String mSoundName;
     private float mSoundStrength, mSoundPitch;
 
@@ -23,7 +22,7 @@ public class GTPacketSound extends GTPacket {
         super();
     }
 
-    public GTPacketSound(String aSoundName, float aSoundStrength, float aSoundPitch, int aX, short aY, int aZ) {
+    public GTPacketSound(String aSoundName, float aSoundStrength, float aSoundPitch, double aX, double aY, double aZ) {
         super();
         mX = aX;
         mY = aY;
@@ -39,9 +38,9 @@ public class GTPacketSound extends GTPacket {
             byteOutputStream.writeUTF(mSoundName);
             byteOutputStream.writeFloat(mSoundStrength);
             byteOutputStream.writeFloat(mSoundPitch);
-            byteOutputStream.writeInt(mX);
-            byteOutputStream.writeShort(mY);
-            byteOutputStream.writeInt(mZ);
+            byteOutputStream.writeDouble(mX);
+            byteOutputStream.writeDouble(mY);
+            byteOutputStream.writeDouble(mZ);
         } catch (IOException e) {
             // this really shouldn't happen, but whatever
             e.printStackTrace(GTLog.err);
@@ -54,9 +53,9 @@ public class GTPacketSound extends GTPacket {
             aData.readUTF(),
             aData.readFloat(),
             aData.readFloat(),
-            aData.readInt(),
-            aData.readShort(),
-            aData.readInt());
+            aData.readDouble(),
+            aData.readDouble(),
+            aData.readDouble());
     }
 
     @Override

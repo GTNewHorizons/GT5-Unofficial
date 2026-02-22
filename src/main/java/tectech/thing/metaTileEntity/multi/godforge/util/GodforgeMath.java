@@ -1,13 +1,13 @@
 package tectech.thing.metaTileEntity.multi.godforge.util;
 
 import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.*;
+import static tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData.*;
 
 import java.math.BigInteger;
 
 import gregtech.api.util.GTUtility;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
-import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.godforge.MTEMoltenModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEPlasmaModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTESmeltingModule;
@@ -18,32 +18,38 @@ public class GodforgeMath {
         return (int) (Math.random() * (max - min)) + min;
     }
 
-    public static double calculateFuelConsumption(MTEForgeOfGods godforge) {
+    public static double calculateFuelConsumption(ForgeOfGodsData data) {
         double upgradeFactor = 1;
-        if (godforge.isUpgradeActive(STEM)) {
+        if (data.isUpgradeActive(STEM)) {
             upgradeFactor = 0.8;
         }
-        if (godforge.getFuelType() == 0) {
-            return godforge.getFuelFactor() * 300 * GTUtility.powInt(1.15, godforge.getFuelFactor()) * upgradeFactor;
-        }
-        if (godforge.getFuelType() == 1) {
-            return godforge.getFuelFactor() * 2 * GTUtility.powInt(1.08, godforge.getFuelFactor()) * upgradeFactor;
-        } else return godforge.getFuelFactor() / 25f * upgradeFactor;
+
+        int fuelFactor = data.getFuelConsumptionFactor();
+        int fuelType = data.getSelectedFuelType();
+
+        if (fuelType == 0) {
+            return fuelFactor * 300 * GTUtility.powInt(1.15, fuelFactor) * upgradeFactor;
+        } else if (fuelType == 1) {
+            return fuelFactor * 2 * GTUtility.powInt(1.08, fuelFactor) * upgradeFactor;
+        } else return fuelFactor / 25f * upgradeFactor;
     }
 
-    public static int calculateStartupFuelConsumption(MTEForgeOfGods godforge) {
-        return (int) Math.max(godforge.getFuelFactor() * 25 * GTUtility.powInt(1.2, godforge.getFuelFactor()), 1);
+    public static int calculateStartupFuelConsumption(ForgeOfGodsData data) {
+        int fuelFactor = data.getFuelConsumptionFactor();
+        double value = Math.max(fuelFactor * 25 * GTUtility.powInt(1.2, fuelFactor), 1);
+        return (int) Math.min(value, Integer.MAX_VALUE);
     }
 
-    public static int calculateMaxFuelFactor(MTEForgeOfGods godforge) {
+    public static int calculateMaxFuelFactor(ForgeOfGodsData data) {
         int fuelCap = 5;
-        if (godforge.isUpgradeActive(TSE)) {
+        if (data.isUpgradeActive(TSE)) {
             fuelCap = Integer.MAX_VALUE;
         } else {
-            if (godforge.isUpgradeActive(GEM)) {
-                fuelCap += godforge.getTotalActiveUpgrades();
+            if (data.isUpgradeActive(GEM)) {
+                fuelCap += data.getUpgrades()
+                    .getTotalActiveUpgrades();
             }
-            if (godforge.isUpgradeActive(CFCE)) {
+            if (data.isUpgradeActive(CFCE)) {
                 fuelCap *= 1.2;
             }
         }
@@ -58,14 +64,14 @@ public class GodforgeMath {
         }
     }
 
-    public static void calculateMaxHeatForModules(MTEBaseModule module, MTEForgeOfGods godforge) {
-        calculateMaxHeatForModules(module, godforge, godforge.getFuelFactor());
+    public static void calculateMaxHeatForModules(MTEBaseModule module, ForgeOfGodsData data) {
+        calculateMaxHeatForModules(module, data, data.getFuelConsumptionFactor());
     }
 
-    public static void calculateMaxHeatForModules(MTEBaseModule module, MTEForgeOfGods godforge, int fuelFactor) {
+    public static void calculateMaxHeatForModules(MTEBaseModule module, ForgeOfGodsData data, int fuelFactor) {
         double logBase = 1.5;
         int baseHeat = 12601;
-        if (godforge.isUpgradeActive(SEFCP)) {
+        if (data.isUpgradeActive(SEFCP)) {
             if (module instanceof MTESmeltingModule) {
                 logBase = 1.12;
             } else {
@@ -73,14 +79,14 @@ public class GodforgeMath {
             }
         }
         int recipeHeat = baseHeat + (int) (Math.log(fuelFactor) / Math.log(logBase) * 1000);
-        module.setHeatForOC(calculateOverclockHeat(module, godforge, recipeHeat));
+        module.setHeatForOC(calculateOverclockHeat(module, data, recipeHeat));
         module.setHeat(recipeHeat);
     }
 
-    public static int calculateOverclockHeat(MTEBaseModule module, MTEForgeOfGods godforge, Integer recipeHeat) {
+    public static int calculateOverclockHeat(MTEBaseModule module, ForgeOfGodsData data, Integer recipeHeat) {
         int actualHeat;
         double exponent;
-        if (godforge.isUpgradeActive(NDPE)) {
+        if (data.isUpgradeActive(NDPE)) {
             if (module instanceof MTESmeltingModule) {
                 exponent = 0.85;
             } else {
@@ -91,7 +97,7 @@ public class GodforgeMath {
             } else {
                 actualHeat = recipeHeat;
             }
-        } else if (godforge.isUpgradeActive(CNTI)) {
+        } else if (data.isUpgradeActive(CNTI)) {
             actualHeat = Math.min(recipeHeat, 30000);
         } else {
             actualHeat = Math.min(recipeHeat, 15000);
@@ -99,23 +105,23 @@ public class GodforgeMath {
         return actualHeat;
     }
 
-    public static void calculateSpeedBonusForModules(MTEBaseModule module, MTEForgeOfGods godforge) {
+    public static void calculateSpeedBonusForModules(MTEBaseModule module, ForgeOfGodsData data) {
         double speedBonus = 1;
 
-        if (godforge.isUpgradeActive(IGCC)) {
+        if (data.isUpgradeActive(IGCC)) {
             speedBonus = Math.pow(module.getHeat(), -0.01);
         }
 
-        if (godforge.isUpgradeActive(DOR)) {
+        if (data.isUpgradeActive(DOR)) {
             if (module instanceof MTEPlasmaModule) {
-                speedBonus /= Math.pow(module.getMaxParallel(), 0.02);
+                speedBonus /= Math.pow(module.getCalculatedMaxParallel(), 0.02);
             } else {
-                speedBonus /= Math.pow(module.getMaxParallel(), 0.012);
+                speedBonus /= Math.pow(module.getCalculatedMaxParallel(), 0.012);
             }
         }
 
         if (module instanceof MTEExoticModule) {
-            if (godforge.isUpgradeActive(PA)) {
+            if (data.isUpgradeActive(PA)) {
                 speedBonus = Math.sqrt(speedBonus);
             } else {
                 speedBonus = 1;
@@ -125,11 +131,11 @@ public class GodforgeMath {
         module.setSpeedBonus(speedBonus);
     }
 
-    public static void calculateMaxParallelForModules(MTEBaseModule module, MTEForgeOfGods godforge) {
-        calculateMaxParallelForModules(module, godforge, godforge.getFuelFactor());
+    public static void calculateMaxParallelForModules(MTEBaseModule module, ForgeOfGodsData data) {
+        calculateMaxParallelForModules(module, data, data.getFuelConsumptionFactor());
     }
 
-    public static void calculateMaxParallelForModules(MTEBaseModule module, MTEForgeOfGods godforge, int fuelFactor) {
+    public static void calculateMaxParallelForModules(MTEBaseModule module, ForgeOfGodsData data, int fuelFactor) {
         int baseParallel = 0;
         float fuelFactorMultiplier = 1;
         float heatMultiplier = 1;
@@ -150,18 +156,17 @@ public class GodforgeMath {
             baseParallel = 64;
         }
 
-        if (module instanceof MTEMoltenModule
-            || (module instanceof MTESmeltingModule && godforge.isUpgradeActive(DOP))) {
+        if (module instanceof MTEMoltenModule || (module instanceof MTESmeltingModule && data.isUpgradeActive(DOP))) {
             isMoltenOrSmeltingWithUpgrade = true;
         }
 
-        if (godforge.isUpgradeActive(CTCDD)) {
+        if (data.isUpgradeActive(CTCDD)) {
             node53 = 2;
         }
 
-        if (godforge.isUpgradeActive(SA)) {
+        if (data.isUpgradeActive(SA)) {
             fuelFactorMultiplier = 1 + calculateEffectiveFuelFactor(fuelFactor) / 15f;
-            if (godforge.isUpgradeActive(TCT)) {
+            if (data.isUpgradeActive(TCT)) {
                 if (isMoltenOrSmeltingWithUpgrade) {
                     fuelFactorMultiplier *= 3;
                 } else {
@@ -170,7 +175,7 @@ public class GodforgeMath {
             }
         }
 
-        if (godforge.isUpgradeActive(EPEC)) {
+        if (data.isUpgradeActive(EPEC)) {
             if (isMoltenOrSmeltingWithUpgrade) {
                 heatMultiplier = 1 + module.getHeat() / 15000f;
             } else {
@@ -178,18 +183,20 @@ public class GodforgeMath {
             }
         }
 
-        if (godforge.isUpgradeActive(POS)) {
+        if (data.isUpgradeActive(POS)) {
             if (isMoltenOrSmeltingWithUpgrade) {
-                upgradeAmountMultiplier = 1 + godforge.getTotalActiveUpgrades() / 5f;
+                upgradeAmountMultiplier = 1 + data.getUpgrades()
+                    .getTotalActiveUpgrades() / 5f;
             } else {
-                upgradeAmountMultiplier = 1 + godforge.getTotalActiveUpgrades() / 8f;
+                upgradeAmountMultiplier = 1 + data.getUpgrades()
+                    .getTotalActiveUpgrades() / 8f;
             }
         }
 
         float totalBonuses = node53 * fuelFactorMultiplier * heatMultiplier * upgradeAmountMultiplier;
 
         if (module instanceof MTEExoticModule) {
-            if (godforge.isUpgradeActive(PA)) {
+            if (data.isUpgradeActive(PA)) {
                 totalBonuses = (float) Math.sqrt(totalBonuses);
             } else {
                 totalBonuses = 1;
@@ -198,20 +205,19 @@ public class GodforgeMath {
 
         int maxParallel = (int) (baseParallel * totalBonuses);
 
-        module.setMaxParallel(maxParallel);
+        module.setCalculatedMaxParallel(maxParallel);
     }
 
-    public static void calculateEnergyDiscountForModules(MTEBaseModule module, MTEForgeOfGods godforge) {
+    public static void calculateEnergyDiscountForModules(MTEBaseModule module, ForgeOfGodsData data) {
         double fillRatioDiscount = 1;
         double maxBatteryDiscount = 1;
 
-        if (godforge.isUpgradeActive(REC)) {
-            maxBatteryDiscount = 1 - (1 - Math.pow(1.05, -0.05 * godforge.getMaxBatteryCharge())) / 20;
+        if (data.isUpgradeActive(REC)) {
+            maxBatteryDiscount = 1 - (1 - Math.pow(1.05, -0.05 * data.getMaxBatteryCharge())) / 20;
         }
 
-        if (godforge.isUpgradeActive(IMKG)) {
-            double fillRatioMinusZeroPointFive = (double) godforge.getBatteryCharge() / godforge.getMaxBatteryCharge()
-                - 0.5;
+        if (data.isUpgradeActive(IMKG)) {
+            double fillRatioMinusZeroPointFive = (double) data.getInternalBattery() / data.getMaxBatteryCharge() - 0.5;
             if (module instanceof MTEPlasmaModule) {
                 fillRatioDiscount = 1 - (fillRatioMinusZeroPointFive * fillRatioMinusZeroPointFive * (-0.6) + 0.15);
             } else {
@@ -221,7 +227,7 @@ public class GodforgeMath {
         }
 
         if (module instanceof MTEExoticModule) {
-            if (godforge.isUpgradeActive(PA)) {
+            if (data.isUpgradeActive(PA)) {
                 fillRatioDiscount = Math.sqrt(fillRatioDiscount);
                 maxBatteryDiscount = Math.sqrt(maxBatteryDiscount);
             } else {
@@ -233,43 +239,43 @@ public class GodforgeMath {
         module.setEnergyDiscount((float) (fillRatioDiscount * maxBatteryDiscount));
     }
 
-    public static void calculateProcessingVoltageForModules(MTEBaseModule module, MTEForgeOfGods godforge) {
-        calculateProcessingVoltageForModules(module, godforge, godforge.getFuelFactor());
+    public static void calculateProcessingVoltageForModules(MTEBaseModule module, ForgeOfGodsData data) {
+        calculateProcessingVoltageForModules(module, data, data.getFuelConsumptionFactor());
     }
 
-    public static void calculateProcessingVoltageForModules(MTEBaseModule module, MTEForgeOfGods godforge,
+    public static void calculateProcessingVoltageForModules(MTEBaseModule module, ForgeOfGodsData data,
         int fuelFactor) {
         long voltage = 2_000_000_000;
 
-        if (godforge.isUpgradeActive(GISS)) {
+        if (data.isUpgradeActive(GISS)) {
             voltage += calculateEffectiveFuelFactor(fuelFactor) * 100_000_000L;
         }
 
-        if (godforge.isUpgradeActive(NGMS)) {
-            voltage *= GTUtility.powInt(4, godforge.getRingAmount());
+        if (data.isUpgradeActive(NGMS)) {
+            voltage *= GTUtility.powInt(4, data.getRingAmount());
         }
 
         module.setProcessingVoltage(voltage);
     }
 
-    public static void setMiscModuleParameters(MTEBaseModule module, MTEForgeOfGods godforge) {
+    public static void setMiscModuleParameters(MTEBaseModule module, ForgeOfGodsData data) {
         int plasmaTier = 0;
         double overclockTimeFactor = 2;
 
-        if (godforge.isUpgradeActive(END)) {
+        if (data.isUpgradeActive(EE)) {
             plasmaTier = 2;
-        } else if (godforge.isUpgradeActive(SEDS)) {
+        } else if (data.isUpgradeActive(SEDS)) {
             plasmaTier = 1;
         }
 
-        if (godforge.isUpgradeActive(GGEBE)) {
+        if (data.isUpgradeActive(GGEBE)) {
             if (module instanceof MTEPlasmaModule) {
                 overclockTimeFactor = 2.3;
             } else {
                 overclockTimeFactor = 2.15;
             }
             if (module instanceof MTEExoticModule) {
-                if (godforge.isUpgradeActive(PA)) {
+                if (data.isUpgradeActive(PA)) {
                     overclockTimeFactor = 2 + (overclockTimeFactor - 2) * (overclockTimeFactor - 2);
                 } else {
                     overclockTimeFactor = 2;
@@ -277,29 +283,29 @@ public class GodforgeMath {
             }
         }
 
-        module.setUpgrade83(godforge.isUpgradeActive(IMKG));
-        module.setMultiStepPlasma(godforge.isUpgradeActive(TPTP));
+        module.setUpgrade83(data.isUpgradeActive(IMKG));
+        module.setMultiStepPlasma(data.isUpgradeActive(TPTP));
         module.setPlasmaTier(plasmaTier);
-        module.setMagmatterCapable(godforge.isUpgradeActive(END));
-        module.setVoltageConfig(godforge.isUpgradeActive(TBF));
+        module.setMagmatterCapable(data.isUpgradeActive(EE));
+        module.setVoltageConfig(data.isUpgradeActive(TBF));
         module.setOverclockTimeFactor(overclockTimeFactor);
     }
 
-    public static boolean allowModuleConnection(MTEBaseModule module, MTEForgeOfGods godforge) {
+    public static boolean allowModuleConnection(MTEBaseModule module, ForgeOfGodsData data) {
 
-        if (module instanceof MTEMoltenModule && godforge.isUpgradeActive(FDIM)) {
+        if (module instanceof MTEMoltenModule && data.isUpgradeActive(FDIM)) {
             return true;
         }
 
-        if (module instanceof MTEPlasmaModule && godforge.isUpgradeActive(GPCI)) {
+        if (module instanceof MTEPlasmaModule && data.isUpgradeActive(GPCI)) {
             return true;
         }
 
         if (module instanceof MTEExoticModule exoticizer) {
-            if (godforge.isUpgradeActive(QGPIU) && !exoticizer.isMagmatterModeOn()) {
+            if (data.isUpgradeActive(QGPIU) && !exoticizer.isMagmatterModeOn()) {
                 return true;
             }
-            if (godforge.isUpgradeActive(END) && exoticizer.isMagmatterModeOn()) {
+            if (data.isUpgradeActive(EE) && exoticizer.isMagmatterModeOn()) {
                 return true;
             }
         }
@@ -315,11 +321,107 @@ public class GodforgeMath {
         }
     }
 
-    public static void queryMilestoneStats(MTEBaseModule module, MTEForgeOfGods godforge) {
-        godforge.addTotalPowerConsumed(module.getPowerTally());
+    public static void queryMilestoneStats(MTEBaseModule module, ForgeOfGodsData data) {
+        data.setTotalPowerConsumed(
+            data.getTotalPowerConsumed()
+                .add(module.getPowerTally()));
         module.setPowerTally(BigInteger.ZERO);
-        godforge.addTotalRecipesProcessed(module.getRecipeTally());
+        data.setTotalRecipesProcessed(data.getTotalRecipesProcessed() + module.getRecipeTally());
         module.setRecipeTally(0);
-        module.setInversionConfig(godforge.isInversionAvailable());
+        module.setInversionConfig(data.isInversion());
+    }
+
+    public static void determineChargeMilestone(ForgeOfGodsData data) {
+        if (!data.isInversion()) {
+            float charge = (float) Math.max(
+                (Math.log(
+                    (data.getTotalPowerConsumed()
+                        .divide(BigInteger.valueOf(POWER_MILESTONE_CONSTANT))).longValue())
+                    / POWER_LOG_CONSTANT + 1),
+                0) / 7;
+            data.setPowerMilestonePercentage(charge);
+            data.setMilestoneProgress(0, (int) Math.floor(data.getPowerMilestonePercentage() * 7));
+            return;
+        }
+
+        float rawProgress = (data.getTotalPowerConsumed()
+            .divide(POWER_MILESTONE_T7_CONSTANT)
+            .floatValue() - 1) / 7;
+        int closestRelevantSeven = (int) Math.floor(rawProgress);
+        float actualProgress = rawProgress - closestRelevantSeven;
+        data.setMilestoneProgress(0, 7 + (int) Math.floor(rawProgress * 7));
+
+        if (closestRelevantSeven % 2 == 0) {
+            data.setInvertedPowerMilestonePercentage(actualProgress);
+            data.setPowerMilestonePercentage(1 - actualProgress);
+        } else {
+            data.setPowerMilestonePercentage(actualProgress);
+            data.setInvertedPowerMilestonePercentage(1 - actualProgress);
+        }
+    }
+
+    public static void determineConversionMilestone(ForgeOfGodsData data) {
+        if (!data.isInversion()) {
+            long total = data.getTotalRecipesProcessed();
+            double raw = Math.log(total * 1f / RECIPE_MILESTONE_CONSTANT) / RECIPE_LOG_CONSTANT + 1;
+            data.setRecipeMilestonePercentage((float) Math.max(raw, 0) / 7);
+            data.setMilestoneProgress(1, (int) Math.floor(data.getRecipeMilestonePercentage() * 7));
+            return;
+        }
+
+        float rawProgress = (((float) data.getTotalRecipesProcessed() / RECIPE_MILESTONE_T7_CONSTANT) - 1) / 7;
+        int closestRelevantSeven = (int) Math.floor(rawProgress);
+        float actualProgress = rawProgress - closestRelevantSeven;
+        data.setMilestoneProgress(1, 7 + (int) Math.floor(rawProgress * 7));
+
+        if (closestRelevantSeven % 2 == 0) {
+            data.setInvertedRecipeMilestonePercentage(actualProgress);
+            data.setRecipeMilestonePercentage(1 - actualProgress);
+        } else {
+            data.setRecipeMilestonePercentage(actualProgress);
+            data.setInvertedRecipeMilestonePercentage(1 - actualProgress);
+        }
+    }
+
+    public static void determineCatalystMilestone(ForgeOfGodsData data) {
+        if (!data.isInversion()) {
+            long total = data.getTotalFuelConsumed();
+            double raw = Math.log(total * 1f / FUEL_MILESTONE_CONSTANT) / FUEL_LOG_CONSTANT + 1;
+            data.setFuelMilestonePercentage((float) Math.max(raw, 0) / 7);
+            data.setMilestoneProgress(2, (int) Math.floor(data.getFuelMilestonePercentage() * 7));
+            return;
+        }
+
+        float rawProgress = (((float) data.getTotalFuelConsumed() / FUEL_MILESTONE_T7_CONSTANT) - 1) / 7;
+        int closestRelevantSeven = (int) Math.floor(rawProgress);
+        float actualProgress = rawProgress - closestRelevantSeven;
+        data.setMilestoneProgress(2, 7 + (int) Math.floor(rawProgress * 7));
+
+        if ((closestRelevantSeven % 2) == 0) {
+            data.setInvertedFuelMilestonePercentage(actualProgress);
+            data.setFuelMilestonePercentage(1 - actualProgress);
+        } else {
+            data.setFuelMilestonePercentage(actualProgress);
+            data.setInvertedFuelMilestonePercentage(1 - actualProgress);
+        }
+    }
+
+    public static void determineCompositionMilestone(ForgeOfGodsData data) {
+        if (!data.isInversion()) {
+            data.setStructureMilestonePercentage(data.getTotalExtensionsBuilt() / 7.0f);
+            return;
+        }
+
+        float rawProgress = (data.getTotalExtensionsBuilt() - 7) / 7f;
+        int closestRelevantSeven = (int) Math.floor(rawProgress);
+        float actualProgress = rawProgress - closestRelevantSeven;
+
+        if ((closestRelevantSeven % 2) == 0) {
+            data.setInvertedStructureMilestonePercentage(actualProgress);
+            data.setStructureMilestonePercentage(1 - actualProgress);
+        } else {
+            data.setStructureMilestonePercentage(actualProgress);
+            data.setInvertedStructureMilestonePercentage(1 - actualProgress);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -82,7 +83,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                     lazy(
                         t -> buildHatchAdder(MTELargeTurbine.class).atLeast(t.getHatchElements())
                             .casingIndex(t.getCasingTextureIndex())
-                            .dot(2)
+                            .hint(2)
                             .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
                 .build();
         }
@@ -106,10 +107,12 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
 
     public MTELargeTurbine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        usesTurbine = true;
     }
 
     public MTELargeTurbine(String aName) {
         super(aName);
+        usesTurbine = true;
     }
 
     @Override
@@ -383,7 +386,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
             // 8 Lines available for information panels
             tRunning + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(((long) mEUt * mEfficiency) / 10000)
+                + formatNumber(((long) mEUt * mEfficiency) / 10000)
                 + EnumChatFormatting.RESET
                 + " EU/t", /* 1 */
             tMaintainance, /* 2 */
@@ -394,16 +397,16 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 + "%", /* 2 */
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
+                + formatNumber(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + /* 3 */ EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
+                + formatNumber(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(GTUtility.safeInt((long) realOptFlow))
+                + formatNumber(GTUtility.safeInt((long) realOptFlow))
                 + EnumChatFormatting.RESET
                 + " L/" // based on processing time uses ticks or seconds (for plasma)
                 + (this.mMaxProgresstime == 1 ? 't' : 's')
@@ -414,7 +417,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 + ")", /* 5 */
             StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
                 + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(storedFluid)
+                + formatNumber(storedFluid)
                 + EnumChatFormatting.RESET
                 + "L", /* 6 */
             StatCollector.translateToLocal(
@@ -423,7 +426,11 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + " %" /* 8 */
+                + " %", /* 8 */
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(recipesDone)
+                + EnumChatFormatting.RESET /* 9 */
         };
     }
 
@@ -437,10 +444,9 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
         ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 aPlayer,
-                looseFit ? GTUtility.trans("500", "Fitting: Loose - More Flow")
-                    : GTUtility.trans("501", "Fitting: Tight - More Efficiency"));
+                looseFit ? "GT5U.chat.turbine.fitting.loose" : "GT5U.chat.turbine.fitting.tight");
         }
     }
 

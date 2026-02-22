@@ -2,8 +2,8 @@ package gregtech.api.enums;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.EnumChatFormatting;
 
+import gregtech.GTMod;
 import gregtech.api.net.GTPacketChat;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.Localized;
@@ -14,7 +14,7 @@ import gregtech.api.util.Localized;
  * isn't a hard requirement. Exact use and arguments are defined per-entry. These can be chained recursively via
  * {@link Localized}, which can accept other Localized instances as format arguments (they are localized when the
  * Localized instance is converted to a string, not at construction).
- * 
+ *
  * @see GTPacketChat
  * @see Localized
  * @see GTUtility#processFormatStacks(String)
@@ -75,8 +75,35 @@ public enum ChatMessage {
             if (args[pluralIndex] instanceof Integer i) {
                 value = i;
             } else {
-                value = Integer
-                    .parseInt(EnumChatFormatting.getTextWithoutFormattingCodes(args[pluralIndex].toString()));
+                StringBuilder sb = new StringBuilder();
+
+                char[] charArray = args[pluralIndex].toString()
+                    .toCharArray();
+
+                for (int i = 0, charArrayLength = charArray.length; i < charArrayLength; i++) {
+                    char c = charArray[i];
+
+                    if (c == '§') {
+                        i++;
+                        continue;
+                    }
+
+                    if (c >= '0' && c <= '9') {
+                        sb.append(c);
+                    }
+                }
+
+                try {
+                    value = Integer.parseInt(sb.toString());
+                } catch (NumberFormatException e) {
+                    GTMod.GT_FML_LOGGER.warn(
+                        "Could not parse ChatMessage value to check if the index is plural. Lang Key (Singular)={}, Index={}, Value={}",
+                        singular,
+                        pluralIndex,
+                        args[pluralIndex],
+                        new Exception());
+                    value = 2;
+                }
             }
 
             String key = value == 1 ? singular : plural;

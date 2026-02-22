@@ -62,7 +62,7 @@ import gregtech.api.net.GTPacketSetConfigurationCircuit;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.common.data.GTBlockEventTracker;
-import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 
@@ -556,10 +556,13 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public void markDirty() {
-        // Avoid sending neighbor updates, just mark the chunk as dirty to make sure it gets saved
-        final Chunk chunk = worldObj.getChunkFromBlockCoords(xCoord, zCoord);
-        if (chunk != null) {
-            chunk.setChunkModified();
+        // If some code calls markDirty before worldObj is assigned, e.g., in loadNBTData we will crash
+        if (worldObj != null) {
+            // Avoid sending neighbor updates, just mark the chunk as dirty to make sure it gets saved
+            final Chunk chunk = worldObj.getChunkFromBlockCoords(xCoord, zCoord);
+            if (chunk != null) {
+                chunk.setChunkModified();
+            }
         }
     }
 
@@ -903,10 +906,13 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
         final List<ItemStack> circuits = GTUtility.getAllIntegratedCircuits();
         uiContext.openClientWindow(
-            player -> new SelectItemUIFactory(
+            player -> new ItemSelectBaseGui(
                 StatCollector.translateToLocal("GT5U.machines.select_circuit"),
                 getStackForm(0),
-                this::onCircuitSelected,
+                (ItemStack selected) -> {
+                    this.onCircuitSelected(selected);
+                    GTValues.NW.sendToServer(new GTPacketSetConfigurationCircuit(this, selected));
+                },
                 circuits,
                 GTUtility.findMatchingStackInList(circuits, inv.getStackInSlot(ccs.getCircuitSlot())))
                     .setAnotherWindow(true, dialogOpened)
@@ -921,7 +927,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
         if (!(this instanceof IInventory inv)) return;
 
-        GTValues.NW.sendToServer(new GTPacketSetConfigurationCircuit(this, selected));
         // we will not do any validation on client side
         // it doesn't get to actually decide what inventory contains anyway
         inv.setInventorySlotContents(ccs.getCircuitSlot(), selected);

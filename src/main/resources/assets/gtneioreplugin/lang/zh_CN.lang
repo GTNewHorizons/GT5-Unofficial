@@ -19,6 +19,9 @@ gtnop.gui.nei.dimension=维度
 gtnop.gui.nei.chance=几率
 gtnop.gui.nei.fluidAmount=储量
 
+gtnop.gui.nei.chance.value=%s%%
+gtnop.gui.nei.fluidAmount.value=%s-%s
+
 gtnop.gui.nei.asteroidPrimary=主要生成一
 gtnop.gui.nei.asteroidSecondary=主要生成二
 gtnop.gui.nei.asteroidBetween=次要生成一
@@ -37,11 +40,10 @@ gtnop.gui.nei.oreOthers=伴随生成
 gtnop.nei.genPosition=生成位置
 gtnop.nei.genPositionInfo=各个区块的正中心
 
-
 # world names
 gtnop.world.Overworld=主世界
 gtnop.world.Nether=下界
-gtnop.world.TheEnd=末地
+gtnop.world.The End=末地
 gtnop.world.Twilight=暮色森林
 gtnop.world.EndAsteroid=末地小行星
 gtnop.world.Vanilla EndAsteroids=原版末地小行星
@@ -77,14 +79,11 @@ gtnop.world.BarnardF=巴纳德F
 gtnop.world.TcetiE=鲸鱼座T星E
 gtnop.world.Underdark=漆黑世界
 
-
 # biome names
 gtnop.biome.none.name=无
 
-
 # ore names extra
 gtnop.ore.null.name=无
-
 
 # vein types
 gtnop.ore.vein.name=矿脉

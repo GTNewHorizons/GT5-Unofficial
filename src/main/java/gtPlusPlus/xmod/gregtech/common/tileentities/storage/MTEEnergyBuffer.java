@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -89,7 +90,7 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[this.mTier + 1] };
     }
 
     public ITexture[] getBack(final byte aColor) {
@@ -114,7 +115,7 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[this.mTier + 1] };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
@@ -256,8 +257,8 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
         final double roundOff = Math.round(c * 100.00) / 100.00;
         GTUtility.sendChatToPlayer(
             playerIn,
-            "Energy: " + GTUtility.formatNumbers(tempStorage) + " EU at " + V[this.mTier] + "v (" + roundOff + "%)");
-        GTUtility.sendChatToPlayer(playerIn, "Amperage: " + GTUtility.formatNumbers(maxAmperesOut()) + "A");
+            "Energy: " + formatNumber(tempStorage) + " EU at " + V[this.mTier] + "v (" + roundOff + "%)");
+        GTUtility.sendChatToPlayer(playerIn, "Amperage: " + formatNumber(maxAmperesOut()) + "A");
     }
     // Utils.LOG_WARNING("Begin Show Energy");
     /*
@@ -288,10 +289,10 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     @Override
     public String[] getInfoData() {
-        String cur = GTUtility.formatNumbers(
+        String cur = formatNumber(
             this.getBaseMetaTileEntity()
                 .getStoredEU());
-        String max = GTUtility.formatNumbers(
+        String max = formatNumber(
             this.getBaseMetaTileEntity()
                 .getEUCapacity());
 

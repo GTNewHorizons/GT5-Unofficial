@@ -13,28 +13,13 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ProgressWidget;
-import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -45,25 +30,22 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.client.GTSoundLoop;
-import gregtech.common.modularui2.widget.GTProgressWidget;
+import gregtech.common.gui.modularui.singleblock.MTEBoilerGui;
 import gregtech.common.pollution.Pollution;
 
-public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, IAddUIWidgets {
+public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
 
     public static final byte SOUND_EVENT_LET_OFF_EXCESS_STEAM = 1;
     public int mTemperature = 20;
@@ -481,89 +463,36 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     @Override
     protected abstract GTGuiTheme getGuiTheme();
 
-    @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        syncManager.registerSlotGroup("item_inv", 0);
-        IWidget waterSlots = Flow.column()
-            .coverChildren()
-            .child(
-                new ItemSlot().slot(
-                    new ModularSlot(inventoryHandler, 0).slotGroup("item_inv")
-                        .filter(this::isValidFluidInputSlotItem))
-                    .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN))
-            .child(
-                new com.cleanroommc.modularui.widget.Widget<>().widgetTheme(GTWidgetThemes.PICTURE_CANISTER)
-                    .size(18))
-            .child(
-                new ItemSlot().slot(
-                    new ModularSlot(inventoryHandler, 1).slotGroup("item_inv")
-                        .accessibility(false, true))
-                    .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_OUT));
-        IWidget indicators = Flow.row()
-            .coverChildren()
-            .crossAxisAlignment(Alignment.CrossAxis.CENTER)
-            .childPadding(3)
-            .child(
-                new FluidSlot().syncHandler(
-                    new FluidSlotSyncHandler(steamTank).canDrainSlot(false)
-                        .canFillSlot(false)
-                        .controlsAmount(false))
-                    .alwaysShowFull(false)
-                    .size(10, 54))
-            .child(
-                new FluidSlot().syncHandler(
-                    new FluidSlotSyncHandler(fluidTank).canDrainSlot(false)
-                        .canFillSlot(false)
-                        .controlsAmount(false))
-                    .alwaysShowFull(false)
-                    .size(10, 54))
-            .child(
-                new GTProgressWidget().value(new DoubleSyncValue(() -> (float) mTemperature / maxProgresstime()))
-                    .direction(ProgressWidget.Direction.UP)
-                    .widgetTheme(GTWidgetThemes.PROGRESSBAR_BOILER_HEAT)
-                    .size(10, 54));
-        IWidget fuelSlots = Flow.column()
-            .coverChildren()
-            .childIf(doesAddAshSlot(), createAshSlot())
-            .child(
-                new GTProgressWidget()
-                    .value(
-                        new DoubleSyncValue(
-                            () -> mProcessingEnergy > 0 ? Math.max((float) mProcessingEnergy / 1000, 1f / 5) : 0))
-                    .direction(ProgressWidget.Direction.UP)
-                    .widgetTheme(GTWidgetThemes.PROGRESSBAR_FUEL)
-                    .size(14)
-                    .margin(2))
-            .childIf(doesAddFuelSlot(), createFuelSlot());
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
-            .build()
-            .child(
-                Flow.row()
-                    .alignX(0.5f)
-                    .top(25)
-                    .coverChildren()
-                    .childPadding(9)
-                    .child(waterSlots)
-                    .child(indicators)
-                    .child(fuelSlots));
+    // this is the mui1 fluid tank, but mui2 has compat with it
+    public FluidStackTank getFluidStackTank() {
+        return this.fluidTank;
     }
 
-    protected boolean doesAddFuelSlot() {
+    public FluidStackTank getSteamTank() {
+        return this.steamTank;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBoilerGui(this).build(data, syncManager, uiSettings);
+    }
+
+    public boolean doesAddFuelSlot() {
         return true;
     }
 
-    protected com.cleanroommc.modularui.widget.Widget<?> createFuelSlot() {
+    public com.cleanroommc.modularui.widget.Widget<?> createFuelSlot() {
         return new ItemSlot().slot(
             new ModularSlot(inventoryHandler, 2).slotGroup("item_inv")
                 .filter(this::isItemValidFuel))
             .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL);
     }
 
-    protected boolean doesAddAshSlot() {
+    public boolean doesAddAshSlot() {
         return true;
     }
 
-    protected com.cleanroommc.modularui.widget.Widget<?> createAshSlot() {
+    public com.cleanroommc.modularui.widget.Widget<?> createAshSlot() {
         return new ItemSlot().slot(
             new ModularSlot(inventoryHandler, 3).slotGroup("item_inv")
                 .accessibility(false, true))
@@ -575,80 +504,13 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         return SteamVariant.BRONZE;
     }
 
-    protected IDrawable[] getFuelSlotBackground() {
-        return new IDrawable[] { getGUITextureSet().getItemSlot(),
-            GTUITextures.OVERLAY_SLOT_COAL_STEAM.get(getSteamVariant()) };
-    }
-
-    protected IDrawable[] getAshSlotBackground() {
-        return new IDrawable[] { getGUITextureSet().getItemSlot(),
-            GTUITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()) };
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new SlotWidget(inventoryHandler, 0).setFilter(this::isValidFluidInputSlotItem)
-                .setPos(43, 25)
-                .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotIn()))
-            .widget(
-                new SlotWidget(inventoryHandler, 1).setAccess(true, false)
-                    .setPos(43, 61)
-                    .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotOut()))
-            .widget(createMuffleButton())
-            .widget(createFuelSlotMui1())
-            .widget(createAshSlotMui1())
-            .widget(
-                new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getSteamCapacity())
-                    .setTexture(getProgressbarEmpty(), GTUITextures.PROGRESSBAR_BOILER_STEAM, 10)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setPos(70, 25)
-                    .setSize(10, 54))
-            .widget(
-                new ProgressBar().setProgress(() -> mFluid == null ? 0 : (float) mFluid.amount / getCapacity())
-                    .setTexture(getProgressbarEmpty(), GTUITextures.PROGRESSBAR_BOILER_WATER, 10)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setPos(83, 25)
-                    .setSize(10, 54))
-            .widget(
-                new ProgressBar().setProgress(() -> (float) mTemperature / maxProgresstime())
-                    .setTexture(getProgressbarEmpty(), GTUITextures.PROGRESSBAR_BOILER_HEAT, 10)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setPos(96, 25)
-                    .setSize(10, 54))
-            .widget(
-                new ProgressBar()
-                    // cap minimum so that one can easily see there's fuel remaining
-                    .setProgress(() -> mProcessingEnergy > 0 ? Math.max((float) mProcessingEnergy / 1000, 1f / 5) : 0)
-                    .setTexture(getProgressbarFuel(), 14)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setPos(116, 45)
-                    .setSize(14, 14))
-            .widget(
-                new DrawableWidget().setDrawable(getOverlaySlotCanister())
-                    .setPos(43, 43)
-                    .setSize(18, 18));
-    }
-
-    private boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
+    public boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
         return GTUtility.fillFluidContainer(Materials.Steam.getGas(getSteamCapacity()), stack, false, true) != null
             || isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));
     }
 
-    protected Widget createFuelSlotMui1() {
-        return new SlotWidget(inventoryHandler, 2).setFilter(this::isItemValidFuel)
-            .setPos(115, 61)
-            .setBackground(getFuelSlotBackground());
-    }
-
     protected boolean isItemValidFuel(@NotNull ItemStack stack) {
         return true;
-    }
-
-    protected SlotWidget createAshSlotMui1() {
-        return (SlotWidget) new SlotWidget(inventoryHandler, 3).setAccess(true, false)
-            .setPos(115, 25)
-            .setBackground(getAshSlotBackground());
     }
 
     @Override
@@ -659,27 +521,5 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     @Override
     public int getTitleColor() {
         return getSteamVariant() == SteamVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
-    }
-
-    // for GT++
-
-    protected IDrawable getOverlaySlotIn() {
-        return GTUITextures.OVERLAY_SLOT_IN_STEAM.get(getSteamVariant());
-    }
-
-    protected IDrawable getOverlaySlotOut() {
-        return GTUITextures.OVERLAY_SLOT_OUT_STEAM.get(getSteamVariant());
-    }
-
-    protected IDrawable getOverlaySlotCanister() {
-        return GTUITextures.OVERLAY_SLOT_CANISTER_STEAM.get(getSteamVariant());
-    }
-
-    protected UITexture getProgressbarEmpty() {
-        return GTUITextures.PROGRESSBAR_BOILER_EMPTY_STEAM.get(getSteamVariant());
-    }
-
-    protected UITexture getProgressbarFuel() {
-        return GTUITextures.PROGRESSBAR_FUEL_STEAM.get(getSteamVariant());
     }
 }

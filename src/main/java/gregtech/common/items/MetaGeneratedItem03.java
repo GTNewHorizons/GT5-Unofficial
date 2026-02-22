@@ -23,6 +23,9 @@ import static gregtech.client.GTTooltipHandler.Tier.UXV;
 import static gregtech.client.GTTooltipHandler.Tier.ZPM;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gregtech.common.items.IDMetaItem03.Activated_Carbon_Filter_Mesh;
+import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring;
+import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring_Raw;
+import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_Bioprocessor;
@@ -204,6 +207,7 @@ import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
 import static gregtech.common.items.IDMetaItem03.MV_Coil;
+import static gregtech.common.items.IDMetaItem03.Manafly;
 import static gregtech.common.items.IDMetaItem03.NandChip;
 import static gregtech.common.items.IDMetaItem03.Naquarite_Universal_Insulator_Foil;
 import static gregtech.common.items.IDMetaItem03.Netherite_Nanoparticles;
@@ -233,34 +237,6 @@ import static gregtech.common.items.IDMetaItem03.Tube_Wires;
 import static gregtech.common.items.IDMetaItem03.UHV_Coil;
 import static gregtech.common.items.IDMetaItem03.ULV_Coil;
 import static gregtech.common.items.IDMetaItem03.UV_Coil;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Axe;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Block;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Bolt;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Bottle;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Casing;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Cell;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_File;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Gear;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Hammer;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Hoe;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Ingot;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Pickaxe;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Pipe_Huge;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Pipe_Large;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Pipe_Medium;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Pipe_Small;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Pipe_Tiny;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Plate;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Ring;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Rod;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Rotor;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Saw;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Shovel;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Small_Gear;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Sword;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_ToolHeadDrill;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Turbine_Blade;
-import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Wire;
 import static gregtech.common.items.IDMetaItem03.WovenKevlar;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
@@ -972,187 +948,187 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 IndustrialApiary_Upgrade_Acceleration_1.ID,
                 "Acceleration Upgrade x2",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 2x acceleration level/n * Energy Consumption +1 AMP LV",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_2.set(
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_2.ID,
                 "Acceleration Upgrade x4",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 4x acceleration level/n * Energy Consumption +1 AMP MV",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_3.set(
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_3.ID,
                 "Acceleration Upgrade x8",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 8x acceleration level/n * Energy Consumption +1 AMP HV",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_4.set(
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_4.ID,
                 "Acceleration Upgrade x16",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 16x acceleration level/n * Energy Consumption +1 AMP EV",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_5.set(
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_5.ID,
                 "Acceleration Upgrade x32",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 32x acceleration level/n * Energy Consumption +1 AMP IV",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_6.set(
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_6.ID,
                 "Acceleration Upgrade x64",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 64x acceleration level/n * Energy Consumption +1 AMP LuV",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_7.set(
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_7.ID,
                 "Acceleration Upgrade x128",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 128x acceleration level/n * Energy Consumption +1 AMP ZPM",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_8.set(
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_8.ID,
                 "Acceleration Upgrade x256",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 256x acceleration level/n * Energy Consumption +1 AMP UV",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_8_Upgraded.set(
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_8_Upgraded.ID,
                 "Upgraded Acceleration Upgrade x256",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 256x acceleration level/n * Will also grant 8x production upgrade/n * Energy Consumption +1 AMP UV",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_PRODUCTION.set(
             addItem(
                 IndustrialApiary_Upgrade_PRODUCTION.ID,
                 "Production Upgrade",
                 "Production upgrade for Industrial Apiary/n Maximum Installed: 8/n Increases production modifier by 0.25/n Energy Consumption +40%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_PLAINS.set(
             addItem(
                 IndustrialApiary_Upgrade_PLAINS.ID,
                 "Plains Emulation Upgrade",
                 "Plains emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Plains/n * Energy Consumption +40%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_LIGHT.set(
             addItem(
                 IndustrialApiary_Upgrade_LIGHT.ID,
                 "Light Upgrade",
                 "Light upgrade for Industrial Apiary/n Maximum Installed: 1/n * Internal Lighting/n * Energy Consumption +5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_FLOWERING.set(
             addItem(
                 IndustrialApiary_Upgrade_FLOWERING.ID,
                 "Flowering Upgrade",
                 "Flowering upgrade for Industrial Apiary/n Maximum Installed: 8/n * Flowering and Pollination +20%/n * Energy Consumption +10%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_WINTER.set(
             addItem(
                 IndustrialApiary_Upgrade_WINTER.ID,
                 "Winter Emulation Upgrade",
                 "Winter emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Taiga/n * Energy Consumption +50%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_DRYER.set(
             addItem(
                 IndustrialApiary_Upgrade_DRYER.ID,
                 "Dryer Upgrade",
                 "Dryer upgrade for Industrial Apiary/n Maximum Installed: 16/n * Humidity -12.5%/n * Energy Consumption +2.5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_AUTOMATION.set(
             addItem(
                 IndustrialApiary_Upgrade_AUTOMATION.ID,
                 "Automation Upgrade",
                 "Automation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Automation/n * Energy Consumption +10%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_HUMIDIFIER.set(
             addItem(
                 IndustrialApiary_Upgrade_HUMIDIFIER.ID,
                 "Humidifier Upgrade",
                 "Humidifier upgrade for Industrial Apiary/n Maximum Installed: 16/n * Humidity +12.5%/n * Energy Consumption +2.5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_HELL.set(
             addItem(
                 IndustrialApiary_Upgrade_HELL.ID,
                 "HELL Emulation Upgrade",
                 "HELL emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: HELL/n * Energy Consumption +50%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_POLLEN.set(
             addItem(
                 IndustrialApiary_Upgrade_POLLEN.ID,
                 "Pollen Scrubber Upgrade",
                 "Pollen scrubber upgrade for Industrial Apiary/n Maximum Installed: 1/n * Flowering and Pollination -100%/n * Energy Consumption +30%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_DESERT.set(
             addItem(
                 IndustrialApiary_Upgrade_DESERT.ID,
                 "Desert Emulation Upgrade",
                 "Desert emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Desert/n * Energy Consumption +20%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_COOLER.set(
             addItem(
                 IndustrialApiary_Upgrade_COOLER.ID,
                 "Cooler Upgrade",
                 "Cooler upgrade for Industrial Apiary/n Maximum Installed: 16/n * Temperature -12.5%/n * Energy Consumption +2.5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_LIFESPAN.set(
             addItem(
                 IndustrialApiary_Upgrade_LIFESPAN.ID,
                 "Lifespan Upgrade",
                 "Lifespan upgrade for Industrial Apiary/n Maximum Installed: 4/n * Lifespan -33%/n * Energy Consumption +5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_SEAL.set(
             addItem(
                 IndustrialApiary_Upgrade_SEAL.ID,
                 "Seal Upgrade",
                 "Seal upgrade for Industrial Apiary/n Maximum Installed: 1/n * Rain Protection/n * Energy Consumption +5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_STABILIZER.set(
             addItem(
                 IndustrialApiary_Upgrade_STABILIZER.ID,
                 "Genetic Stabilizer Upgrade",
                 "Genetic stabilizer upgrade for Industrial Apiary/n Maximum Installed: 1/n * Genetic Decay -100%/n * Energy Consumption +150%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_JUNGLE.set(
             addItem(
                 IndustrialApiary_Upgrade_JUNGLE.ID,
                 "Jungle Emulation Upgrade",
                 "Jungle emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Jungle/n * Energy Consumption +20%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_TERRITORY.set(
             addItem(
                 IndustrialApiary_Upgrade_TERRITORY.ID,
                 "Territory Upgrade",
                 "Territory upgrade for Industrial Apiary/n Maximum Installed: 4/n * Territory +50%/n * Energy Consumption +5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_OCEAN.set(
             addItem(
                 IndustrialApiary_Upgrade_OCEAN.ID,
                 "Ocean Emulation Upgrade",
                 "Ocean emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Ocean/n * Energy Consumption +20%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_SKY.set(
             addItem(
                 IndustrialApiary_Upgrade_SKY.ID,
                 "Open Sky Upgrade",
                 "Open sky upgrade for Industrial Apiary/n Maximum Installed: 1/n * Open Sky Simulation/n * Energy Consumption +5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_HEATER.set(
             addItem(
                 IndustrialApiary_Upgrade_HEATER.ID,
                 "Heater Upgrade",
                 "Heater upgrade for Industrial Apiary/n Maximum Installed: 16/n * Temperature +12.5%/n * Energy Consumption +2.5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_SIEVE.set(
             addItem(
                 IndustrialApiary_Upgrade_SIEVE.ID,
                 "Sieve Upgrade",
                 "Sieve upgrade for Industrial Apiary/n Maximum Installed: 1/n * Pollen Collection/n * Energy Consumption +25%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_UNLIGHT.set(
             addItem(
                 IndustrialApiary_Upgrade_UNLIGHT.ID,
                 "Night Upgrade",
                 "Night upgrade for Industrial Apiary/n Maximum Installed: 1/n * Internal Darkness/n * Energy Consumption +5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                OrePrefixes.apiaryUpgrade.getName()));
 
         ItemList.NuclearStar
             .set(
@@ -1268,6 +1244,18 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Intensely_Bonded_Netherite_Nanoparticles
             .set(addItem(Intensely_Bonded_Netherite_Nanoparticles.ID, "Intensely Bonded Netherite Nanoparticles", ""));
         ItemList.Hot_Netherite_Scrap.set(addItem(Hot_Netherite_Scrap.ID, "Hot Netherite Scrap", "Activated?"));
+        ItemList.Beryllium_Shielding_Plate.set(
+            addItem(
+                Beryllium_Shielding_Plate.ID,
+                "Beryllium Shielding Plate",
+                "A plate made of Beryllium, used for reactor shielding"));
+        ItemList.Alumina_Support_Ring.set(
+            addItem(Alumina_Support_Ring.ID, "Alumina Support Ring", "A support ring used for insulated fluid pipes"));
+        ItemList.Alumina_Support_Ring_Raw.set(
+            addItem(
+                Alumina_Support_Ring_Raw.ID,
+                "Raw Alumina Support Ring",
+                "An unfired support ring used for insulated fluid pipes"));
         ItemList.Prismarine_Precipitate.set(addItem(Prismarine_Precipitate.ID, "Prismarine Precipitate", ""));
         ItemList.Prismatic_Crystal.set(addItem(Prismatic_Crystal.ID, "Prismatic Crystal", ""));
         ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet
@@ -1283,146 +1271,14 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 "Naquarite Universal Insulator Foil",
                 String.join("/n ", "The Perfect Insulator!", "Absorbs all heat, radiation and electricity.")));
 
-        ItemList.White_Dwarf_Shape_Extruder_Plate.set(
+        ItemList.ManaFly.set(
             addItem(
-                White_Dwarf_Shape_Extruder_Plate.ID,
-                "White Dwarf Extruder Shape (Plate)",
-                "Ultra Strong Stellar Shape for making Plates"));
-        ItemList.White_Dwarf_Shape_Extruder_Rod.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Rod.ID,
-                "White Dwarf Extruder Shape (Rod)",
-                "Ultra Strong Stellar Shape for making Rods"));
-        ItemList.White_Dwarf_Shape_Extruder_Bolt.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Bolt.ID,
-                "White Dwarf Extruder Shape (Bolt)",
-                "Ultra Strong Stellar Shape for making Bolts"));
-        ItemList.White_Dwarf_Shape_Extruder_Ring.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Ring.ID,
-                "White Dwarf Extruder Shape (Ring)",
-                "Ultra Strong Stellar Shape for making Rings"));
-        ItemList.White_Dwarf_Shape_Extruder_Cell.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Cell.ID,
-                "White Dwarf Extruder Shape (Cell)",
-                "Ultra Strong Stellar Shape for making Cells"));
-        ItemList.White_Dwarf_Shape_Extruder_Ingot.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Ingot.ID,
-                "White Dwarf Extruder Shape (Ingot)",
-                "Ultra Strong Stellar Shape for, wait, can't we just use a Furnace?"));
-        ItemList.White_Dwarf_Shape_Extruder_Wire.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Wire.ID,
-                "White Dwarf Extruder Shape (Wire)",
-                "Ultra Strong Stellar Shape for making Wires"));
-        ItemList.White_Dwarf_Shape_Extruder_Casing.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Casing.ID,
-                "White Dwarf Extruder Shape (Casing)",
-                "Ultra Strong Stellar Shape for making Item Casings"));
-        ItemList.White_Dwarf_Shape_Extruder_Pipe_Tiny.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Pipe_Tiny.ID,
-                "White Dwarf Extruder Shape (Tiny Pipe)",
-                "Ultra Strong Stellar Shape for making tiny Pipes"));
-        ItemList.White_Dwarf_Shape_Extruder_Pipe_Small.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Pipe_Small.ID,
-                "White Dwarf Extruder Shape (Small Pipe)",
-                "Ultra Strong Stellar Shape for making small Pipes"));
-        ItemList.White_Dwarf_Shape_Extruder_Pipe_Medium.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Pipe_Medium.ID,
-                "White Dwarf Extruder Shape (Normal Pipe)",
-                "Ultra Strong Stellar Shape for making Pipes"));
-        ItemList.White_Dwarf_Shape_Extruder_Pipe_Large.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Pipe_Large.ID,
-                "White Dwarf Extruder Shape (Large Pipe)",
-                "Ultra Strong Stellar Shape for making large Pipes"));
-        ItemList.White_Dwarf_Shape_Extruder_Pipe_Huge.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Pipe_Huge.ID,
-                "White Dwarf Extruder Shape (Huge Pipe)",
-                "Ultra Strong Stellar Shape for making full Block Pipes"));
-        ItemList.White_Dwarf_Shape_Extruder_Block.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Block.ID,
-                "White Dwarf Extruder Shape (Block)",
-                "Ultra Strong Stellar Shape for making Blocks"));
-        ItemList.White_Dwarf_Shape_Extruder_Sword.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Sword.ID,
-                "White Dwarf Extruder Shape (Sword Blade)",
-                "Ultra Strong Stellar Shape for making Swords"));
-        ItemList.White_Dwarf_Shape_Extruder_Pickaxe.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Pickaxe.ID,
-                "White Dwarf Extruder Shape (Pickaxe Head)",
-                "Ultra Strong Stellar Shape for making Pickaxes"));
-        ItemList.White_Dwarf_Shape_Extruder_Shovel.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Shovel.ID,
-                "White Dwarf Extruder Shape (Shovel Head)",
-                "Ultra Strong Stellar Shape for making Shovels"));
-        ItemList.White_Dwarf_Shape_Extruder_Axe.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Axe.ID,
-                "White Dwarf Extruder Shape (Axe Head)",
-                "Ultra Strong Stellar Shape for making Axes"));
-        ItemList.White_Dwarf_Shape_Extruder_Hoe.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Hoe.ID,
-                "White Dwarf Extruder Shape (Hoe Head)",
-                "Ultra Strong Stellar Shape for making Hoes"));
-        ItemList.White_Dwarf_Shape_Extruder_Hammer.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Hammer.ID,
-                "White Dwarf Extruder Shape (Hammer Head)",
-                "Ultra Strong Stellar Shape for making Hammers"));
-        ItemList.White_Dwarf_Shape_Extruder_File.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_File.ID,
-                "White Dwarf Extruder Shape (File Head)",
-                "Ultra Strong Stellar Shape for making Files"));
-        ItemList.White_Dwarf_Shape_Extruder_Saw.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Saw.ID,
-                "White Dwarf Extruder Shape (Saw Blade)",
-                "Ultra Strong Stellar Shape for making Saws"));
-        ItemList.White_Dwarf_Shape_Extruder_Gear.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Gear.ID,
-                "White Dwarf Extruder Shape (Gear)",
-                "Ultra Strong Stellar Shape for making Gears"));
-        ItemList.White_Dwarf_Shape_Extruder_Bottle.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Bottle.ID,
-                "White Dwarf Extruder Shape (Bottle)",
-                "Ultra Strong Stellar Shape for making Bottles"));
-        ItemList.White_Dwarf_Shape_Extruder_Rotor.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Rotor.ID,
-                "White Dwarf Extruder Shape (Rotor)",
-                "Ultra Strong Stellar Shape for a Rotor"));
-        ItemList.White_Dwarf_Shape_Extruder_Small_Gear.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Small_Gear.ID,
-                "White Dwarf Extruder Shape (Small Gear)",
-                "Ultra Strong Stellar Shape for a Small Gear"));
-        ItemList.White_Dwarf_Shape_Extruder_Turbine_Blade.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_Turbine_Blade.ID,
-                "White Dwarf Extruder Shape (Turbine Blade)",
-                "Ultra Strong Stellar Extruder Shape for a Turbine Blade"));
-        ItemList.White_Dwarf_Shape_Extruder_ToolHeadDrill.set(
-            addItem(
-                White_Dwarf_Shape_Extruder_ToolHeadDrill.ID,
-                "White Dwarf Extruder Shape (Drill Head)",
-                "White Dwarf Extruder Shape for a Drill Head"));
+                Manafly.ID,
+                "Manafly",
+                "If you sift this, you're a monster",
+                new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L),
+                new TCAspects.TC_AspectStack(TCAspects.HERBA, 10L)));
+
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();
         initOrePrefixes();

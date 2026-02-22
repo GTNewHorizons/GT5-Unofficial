@@ -40,7 +40,8 @@ public class CokeAndPyrolyseOven {
         ArrayList<ItemStack> aLogData = OreDictionary.getOres("logWood");
         for (ItemStack stack : aLogData) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(20), GTUtility.copyAmount(20, stack))
+                .itemInputs(GTUtility.copyAmount(20, stack))
+                .circuit(20)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 24))
                 .fluidInputs(Materials.Steam.getGas(1_000))
                 .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 1440))
@@ -51,9 +52,8 @@ public class CokeAndPyrolyseOven {
 
         // Coal to Coke
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(22),
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16))
+            .circuit(22)
             .itemOutputs(GTOreDictUnificator.get("fuelCoke", 10))
             .fluidInputs(Materials.Steam.getGas(1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 20 * INGOTS))
@@ -80,7 +80,7 @@ public class CokeAndPyrolyseOven {
             .itemOutputs(GTOreDictUnificator.get("fuelCoke", 14))
             .fluidInputs(Materials.Steam.getGas(2_000))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 5040))
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .duration(1 * MINUTES)
             .addTo(cokeOvenRecipes);
     }
@@ -88,56 +88,62 @@ public class CokeAndPyrolyseOven {
     private static void addCokingRecipes(ItemStack plant, ItemStack charcoal, ItemStack coke) {
         // Plant to Charcoal
         GTValues.RA.stdBuilder()
-            .itemInputs(plant, GTUtility.getIntegratedCircuit(3))
+            .itemInputs(plant)
+            .circuit(3)
             .itemOutputs(charcoal)
             .fluidOutputs(Materials.Creosote.getFluid(2_000))
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .duration(25 * SECONDS)
             .addTo(pyrolyseRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(plant, GTUtility.getIntegratedCircuit(4))
+            .itemInputs(plant)
+            .circuit(4)
             .itemOutputs(charcoal)
             .fluidInputs(Materials.Nitrogen.getGas(2_000))
             .fluidOutputs(Materials.CharcoalByproducts.getGas(4_000))
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .duration(250 * TICKS)
             .addTo(pyrolyseRecipes);
 
         // Charcoal to Coke
         GTValues.RA.stdBuilder()
-            .itemInputs(charcoal, GTUtility.getIntegratedCircuit(3))
+            .itemInputs(charcoal)
+            .circuit(3)
             .itemOutputs(coke)
             .fluidOutputs(Materials.Creosote.getFluid(4_000))
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .duration(50 * SECONDS)
             .addTo(pyrolyseRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(charcoal, GTUtility.getIntegratedCircuit(4))
+            .itemInputs(charcoal)
+            .circuit(4)
             .itemOutputs(coke)
             .fluidInputs(Materials.Nitrogen.getGas(1_000))
             .fluidOutputs(Materials.CharcoalByproducts.getGas(2_000))
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .duration(25 * SECONDS)
             .addTo(pyrolyseRecipes);
 
         // Coke to Wood tar/Wood gas
         GTValues.RA.stdBuilder()
-            .itemInputs(coke, GTUtility.getIntegratedCircuit(5))
+            .itemInputs(coke)
+            .circuit(5)
             .itemOutputs(Materials.Ash.getDust(5))
             .fluidInputs(Materials.Steam.getGas(2_000))
             .fluidOutputs(Materials.WoodTar.getFluid(4_000))
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .duration(75 * SECONDS)
             .addTo(pyrolyseRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(coke, GTUtility.getIntegratedCircuit(6))
+            .itemInputs(coke)
+            .circuit(6)
             .itemOutputs(Materials.Ash.getDust(5))
             .fluidInputs(Materials.Steam.getGas(2_000))
             .fluidOutputs(Materials.WoodGas.getGas(6_000))
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .duration(75 * SECONDS)
             .addTo(pyrolyseRecipes);
     }

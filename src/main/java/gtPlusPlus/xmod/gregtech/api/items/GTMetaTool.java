@@ -591,16 +591,16 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         }
         final Materials aMaterial = getPrimaryMaterial(aStack);
         final HashMap<Integer, Integer> tMap = new HashMap<>(), tResult = new HashMap<>();
-        if (aMaterial.mEnchantmentTools != null) {
-            tMap.put(aMaterial.mEnchantmentTools.effectId, (int) aMaterial.mEnchantmentToolsLevel);
-            if (aMaterial.mEnchantmentTools == Enchantment.fortune) {
-                tMap.put(Enchantment.looting.effectId, (int) aMaterial.mEnchantmentToolsLevel);
+        if (aMaterial.mToolEnchantment != null) {
+            tMap.put(aMaterial.mToolEnchantment.effectId, (int) aMaterial.mToolEnchantmentLevel);
+            if (aMaterial.mToolEnchantment == Enchantment.fortune) {
+                tMap.put(Enchantment.looting.effectId, (int) aMaterial.mToolEnchantmentLevel);
             }
-            if (aMaterial.mEnchantmentTools == Enchantment.knockback) {
-                tMap.put(Enchantment.power.effectId, (int) aMaterial.mEnchantmentToolsLevel);
+            if (aMaterial.mToolEnchantment == Enchantment.knockback) {
+                tMap.put(Enchantment.power.effectId, (int) aMaterial.mToolEnchantmentLevel);
             }
-            if (aMaterial.mEnchantmentTools == Enchantment.fireAspect) {
-                tMap.put(Enchantment.flame.effectId, (int) aMaterial.mEnchantmentToolsLevel);
+            if (aMaterial.mToolEnchantment == Enchantment.fireAspect) {
+                tMap.put(Enchantment.flame.effectId, (int) aMaterial.mToolEnchantmentLevel);
             }
         }
         final Enchantment[] tEnchants = tStats.getEnchantments(aStack);

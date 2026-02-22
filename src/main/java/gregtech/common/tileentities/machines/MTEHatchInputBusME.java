@@ -1,10 +1,12 @@
 package gregtech.common.tileentities.machines;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,23 +14,31 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -45,9 +55,9 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import appeng.api.config.Actionable;
-import appeng.api.config.PowerMultiplier;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
+import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
@@ -59,7 +69,9 @@ import appeng.core.localization.WailaText;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
+import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -77,6 +89,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.widget.AESlotWidget;
@@ -91,8 +104,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     public static final String COPIED_DATA_IDENTIFIER = "stockingBus";
     protected BaseActionSource requestSource = null;
     protected @Nullable AENetworkProxy gridProxy = null;
-    protected final ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
-    protected final int[] savedStackSizes = new int[SLOT_COUNT];
+    protected final Slot[] slots = new Slot[SLOT_COUNT];
     protected boolean processingRecipe = false;
     protected final boolean autoPullAvailable;
     protected boolean autoPullItemList = false;
@@ -102,22 +114,20 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     protected boolean additionalConnection = false;
     protected boolean justHadNewItems = false;
     protected boolean expediteRecipeCheck = false;
+    /**
+     * The cached activity for this bus. Only valid while processing a recipe. This avoids several expensive operations.
+     */
+    protected boolean cachedActivity = false;
 
     public MTEHatchInputBusME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            autoPullAvailable ? 6 : 3,
-            SLOT_COUNT * 2 + 2,
-            getDescriptionArray(autoPullAvailable));
+        super(aID, aName, aNameRegional, autoPullAvailable ? 6 : 4, 2, getDescriptionArray(autoPullAvailable));
         this.autoPullAvailable = autoPullAvailable;
         disableSort = true;
     }
 
     public MTEHatchInputBusME(String aName, boolean autoPullAvailable, int aTier, String[] aDescription,
         ITexture[][][] aTextures) {
-        super(aName, aTier, SLOT_COUNT * 2 + 2, aDescription, aTextures);
+        super(aName, aTier, 2, aDescription, aTextures);
         this.autoPullAvailable = autoPullAvailable;
         disableSort = true;
     }
@@ -151,15 +161,36 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     protected boolean isAllowedToWork() {
+        if (processingRecipe) return cachedActivity;
+
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
-        return igte != null && igte.isAllowedToWork();
+        if (igte == null || !igte.isAllowedToWork()) return false;
+
+        AENetworkProxy proxy = getProxy();
+
+        if (!proxy.isActive()) return false;
+
+        return true;
     }
 
     @Override
     public void onEnableWorking() {
+        super.onEnableWorking();
+
         if (expediteRecipeCheck) {
             justHadNewItems = true;
+        }
+    }
+
+    @Override
+    public void onDisableWorking() {
+        super.onDisableWorking();
+
+        if (autoPullItemList) {
+            clearSlotConfigs();
+        } else {
+            clearExtractedStacks();
         }
     }
 
@@ -228,7 +259,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     @Override
-    public AENetworkProxy getProxy() {
+    public @NotNull AENetworkProxy getProxy() {
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
@@ -249,26 +280,40 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     @Override
     public boolean isPowered() {
-        return getProxy() != null && getProxy().isPowered();
+        return getProxy().isPowered();
     }
 
     @Override
     public boolean isActive() {
-        return getProxy() != null && getProxy().isActive();
+        return getProxy().isActive();
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        int[] sizes = new int[16];
-        for (int i = 0; i < 16; ++i) sizes[i] = mInventory[i + 16] == null ? 0 : mInventory[i + 16].stackSize;
-        aNBT.setIntArray("sizes", sizes);
+
+        aNBT.setInteger("version", 1);
         aNBT.setBoolean("autoStock", autoPullItemList);
         aNBT.setInteger("minAutoPullStackSize", minAutoPullStackSize);
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         aNBT.setInteger("refreshTime", autoPullRefreshTime);
         getProxy().writeToNBT(aNBT);
+
+        NBTTagList slotList = new NBTTagList();
+        aNBT.setTag("slots", slotList);
+
+        for (int i = 0; i < slots.length; i++) {
+            Slot slot = slots[i];
+
+            if (slot == null) continue;
+
+            NBTTagCompound tag = new NBTTagCompound();
+            slot.writeToNBT(tag);
+            tag.setInteger("index", i);
+
+            slotList.appendTag(tag);
+        }
     }
 
     protected void setAutoPullItemList(boolean pullItemList) {
@@ -276,15 +321,17 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             return;
         }
 
-        autoPullItemList = pullItemList;
-        if (!autoPullItemList) {
-            for (int i = 0; i < SLOT_COUNT; i++) {
-                mInventory[i] = null;
+        if (autoPullItemList != pullItemList) {
+            autoPullItemList = pullItemList;
+
+            clearSlotConfigs();
+
+            if (autoPullItemList) {
+                refreshItemList();
             }
-        } else {
-            refreshItemList();
+
+            updateAllInformationSlots();
         }
-        updateAllInformationSlots();
     }
 
     public boolean doFastRecipeCheck() {
@@ -294,18 +341,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (aNBT.hasKey("sizes")) {
-            int[] sizes = aNBT.getIntArray("sizes");
-            if (sizes.length == 16) {
-                for (int i = 0; i < 16; ++i) {
-                    if (sizes[i] != 0 && mInventory[i] != null) {
-                        ItemStack s = mInventory[i].copy();
-                        s.stackSize = sizes[i];
-                        mInventory[i + 16] = s;
-                    }
-                }
-            }
-        }
+
         autoPullItemList = aNBT.getBoolean("autoStock");
         minAutoPullStackSize = aNBT.getInteger("minAutoPullStackSize");
         additionalConnection = aNBT.getBoolean("additionalConnection");
@@ -315,6 +351,55 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         }
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
+
+        clearSlotConfigs();
+
+        switch (aNBT.getInteger("version")) {
+            case 0 -> {
+                int[] sizes = aNBT.hasKey("sizes") ? aNBT.getIntArray("sizes") : new int[0];
+
+                final NBTTagList inventory = aNBT.getTagList("Inventory", Constants.NBT.TAG_COMPOUND);
+
+                ItemStack[] oldInventory = new ItemStack[SLOT_COUNT * 2 + 2];
+
+                // Copy of the current mInventory loading code, because otherwise the upper stacks are discarded due to
+                // the reduced mInventory size.
+                // noinspection unchecked
+                for (NBTTagCompound tag : (List<NBTTagCompound>) inventory.tagList) {
+                    oldInventory[tag.getInteger("IntSlot")] = GTUtility.loadItem(tag);
+                }
+
+                // Migrate the circuit and manual slots
+                mInventory[0] = oldInventory[SLOT_COUNT * 2];
+                mInventory[1] = oldInventory[SLOT_COUNT * 2 + 1];
+
+                // Migrate the config from the old system (raw item stacks) to the new system (dedicated slot objects)
+                for (int i = 0; i < SLOT_COUNT; i++) {
+                    if (oldInventory[i] != null) {
+                        Slot slot = new Slot(oldInventory[i]);
+
+                        if (i < sizes.length && sizes[i] > 0) {
+                            slot.extracted = slot.config.copy();
+                            slot.extractedAmount = sizes[i];
+                        }
+
+                        slots[i] = slot;
+                    }
+                }
+            }
+            case 1 -> {
+                NBTTagList slotList = aNBT.getTagList("slots", Constants.NBT.TAG_COMPOUND);
+
+                // noinspection unchecked
+                for (NBTTagCompound tag : (List<NBTTagCompound>) slotList.tagList) {
+                    Slot slot = Slot.readFromNBT(tag);
+
+                    if (slot != null) {
+                        slots[tag.getInteger("index")] = slot;
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -324,22 +409,28 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     @Override
     public String[] getInfoData() {
-        return new String[] { (getProxy() != null && getProxy().isActive())
-            ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
-            : StatCollector
-                .translateToLocalFormatted("GT5U.infodata.hatch.crafting_input_me.bus.offline", getAEDiagnostics()) };
+        return new String[] {
+            getProxy().isActive() ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
+                : StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
+                    getAEDiagnostics()) };
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return false;
+        return aIndex == getManualSlot();
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return false;
+        return aIndex == getManualSlot();
+    }
+
+    @Override
+    public boolean isValidSlot(int aIndex) {
+        return aIndex == getManualSlot();
     }
 
     @Override
@@ -396,14 +487,16 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     @Override
     public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
         if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+
         ItemStack circuit = GTUtility.loadItem(nbt, "circuit");
         if (GTUtility.isStackInvalid(circuit)) circuit = null;
+        setInventorySlotContents(getCircuitSlot(), circuit);
 
         if (autoPullAvailable) {
             setAutoPullItemList(nbt.getBoolean("autoPull"));
             minAutoPullStackSize = nbt.getInteger("minStackSize");
-            // Data sticks created before refreshTime was implemented should not cause stocking buses to
-            // spam divide by zero errors
+            // Data sticks created before refreshTime was implemented should not cause stocking buses to spam divide by
+            // zero errors
             if (nbt.hasKey("refreshTime")) {
                 autoPullRefreshTime = nbt.getInteger("refreshTime");
             }
@@ -411,18 +504,23 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         }
 
         additionalConnection = nbt.getBoolean("additionalConnection");
+
         if (!autoPullItemList) {
-            NBTTagList stockingItems = nbt.getTagList("itemsToStock", 10);
+            NBTTagList stockingItems = nbt.getTagList("itemsToStock", Constants.NBT.TAG_COMPOUND);
+
+            clearSlotConfigs();
+
             for (int i = 0; i < stockingItems.tagCount(); i++) {
-                this.mInventory[i] = GTUtility.loadItem(stockingItems.getCompoundTagAt(i));
+                slots[i] = new Slot(GTUtility.loadItem(stockingItems.getCompoundTagAt(i)));
             }
         }
-        setInventorySlotContents(getCircuitSlot(), circuit);
+
         updateValidGridProxySides();
         byte color = nbt.getByte("color");
         this.getBaseMetaTileEntity()
             .setColorization(color);
 
+        updateAllInformationSlots();
         return true;
     }
 
@@ -438,24 +536,28 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         tag.setByte("color", this.getColor());
         tag.setTag("circuit", GTUtility.saveItem(getStackInSlot(getCircuitSlot())));
 
-        NBTTagList stockingItems = new NBTTagList();
-
         if (!autoPullItemList) {
-            for (int index = 0; index < SLOT_COUNT; index++) {
-                stockingItems.appendTag(GTUtility.saveItem(mInventory[index]));
+            NBTTagList stockingItems = new NBTTagList();
+
+            for (Slot slot : slots) {
+                if (slot == null) continue;
+
+                stockingItems.appendTag(slot.config.writeToNBT(new NBTTagCompound()));
             }
+
             tag.setTag("itemsToStock", stockingItems);
         }
+
         return tag;
     }
 
     protected int getManualSlot() {
-        return SLOT_COUNT * 2 + 1;
+        return 1;
     }
 
     @Override
     public int getCircuitSlot() {
-        return SLOT_COUNT * 2;
+        return 0;
     }
 
     @Override
@@ -470,6 +572,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     @Override
     public boolean setStackToZeroInsteadOfNull(int aIndex) {
+        if (processingRecipe) {
+            return true;
+        }
         return aIndex != getManualSlot();
     }
 
@@ -485,67 +590,54 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     public void setRecipeCheck(boolean value) {
         expediteRecipeCheck = value;
-    }
 
-    @Override
-    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
-        if (expediteRecipeCheck && aStack != null) {
-            justHadNewItems = true;
+        IGregTechTileEntity igte = getBaseMetaTileEntity();
+
+        // Changing this field requires a structure check/update, so let's do that automatically
+        if (igte.isServerSide()) {
+            GregTechAPI.causeMachineUpdate(igte.getWorld(), igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
         }
-        super.setInventorySlotContents(aIndex, aStack);
     }
 
     @Override
-    public ItemStack getStackInSlot(int aIndex) {
-        if (!processingRecipe) return super.getStackInSlot(aIndex);
+    protected boolean useMui2() {
+        return false;
+    }
 
-        if (aIndex < 0 || aIndex > mInventory.length) return null;
+    @Override
+    public int getSizeInventory() {
+        // Add fake slots so that multis can detect the stocked items properly
+        // 0 to 15: stocked items
+        // 16: circuit
+        // 17: manual slot
+        return SLOT_COUNT + 2;
+    }
 
-        // Display slots
-        if (aIndex >= SLOT_COUNT && aIndex < SLOT_COUNT * 2) return null;
+    @Override
+    public ItemStack getStackInSlot(int slotIndex) {
+        // Used to offset the slot index due to recipe checks, when doing other things it will return 0,
+        // which allows for changing phantom circuit using mouse clicks
+        int virtualSlotOffset = processingRecipe ? SLOT_COUNT : 0;
 
-        if (aIndex == getCircuitSlot() || aIndex == getManualSlot()) return mInventory[aIndex];
+        if (slotIndex < 0 || slotIndex >= getSizeInventory()) return null;
 
-        if (mInventory[aIndex] != null) {
+        // Put the circuit + manual slots at the end. The stocked slots come first, then the circuit, then the manual.
+        // Since machines reverse this order prior to recipe checks, the actual order is: manual, then circuit, then
+        // stocked.
+        if (slotIndex == getCircuitSlot() + virtualSlotOffset) return mInventory[getCircuitSlot()];
+        if (slotIndex == getManualSlot() + virtualSlotOffset) return mInventory[getManualSlot()];
+        if (!processingRecipe) return null;
 
-            AENetworkProxy proxy = getProxy();
-            if (proxy == null || !proxy.isActive()) {
-                return null;
-            }
-
-            if (!isAllowedToWork()) {
-                this.shadowInventory[aIndex] = null;
-                this.savedStackSizes[aIndex] = 0;
-                super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
-                return null;
-            }
-
-            try {
-                IMEMonitor<IAEItemStack> sg = proxy.getStorage()
-                    .getItemInventory();
-
-                IAEItemStack request = AEItemStack.create(mInventory[aIndex]);
-                request.setStackSize(Integer.MAX_VALUE);
-
-                IAEItemStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
-
-                if (result != null) {
-                    this.shadowInventory[aIndex] = result.getItemStack();
-                    this.savedStackSizes[aIndex] = this.shadowInventory[aIndex].stackSize;
-                    this.setInventorySlotContents(aIndex + SLOT_COUNT, this.shadowInventory[aIndex]);
-                    return this.shadowInventory[aIndex];
-                } else {
-                    // Request failed
-                    this.setInventorySlotContents(aIndex + SLOT_COUNT, null);
-                    return null;
-                }
-            } catch (final GridAccessException ignored) {}
+        if (!isAllowedToWork()) {
             return null;
-        } else {
-            // AE available but no items requested
-            this.setInventorySlotContents(aIndex + SLOT_COUNT, null);
         }
-        return mInventory[aIndex];
+
+        Slot slot = GTDataUtils.getIndexSafe(slots, slotIndex);
+
+        if (slot == null) return null;
+
+        // Must pass the reference out to the multi
+        return slot.extracted;
     }
 
     protected BaseActionSource getRequestSource() {
@@ -554,190 +646,206 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     @Override
-    public void onExplosion() {
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            mInventory[i] = null;
-        }
-    }
-
-    @Override
     public void startRecipeProcessing() {
+        // Call isAllowedToWork before setting processingRecipe to true
+        cachedActivity = isAllowedToWork();
         processingRecipe = true;
         updateAllInformationSlots();
     }
 
     protected void refreshItemList() {
-        if (!isActive()) return;
-        AENetworkProxy proxy = getProxy();
+        if (!isAllowedToWork()) return;
+
+        IMEMonitor<IAEItemStack> sg;
+        Iterator<IAEItemStack> iterator;
+
         try {
-            IMEMonitor<IAEItemStack> sg = proxy.getStorage()
+            sg = getProxy().getStorage()
                 .getItemInventory();
-            Iterator<IAEItemStack> iterator = sg.getStorageList()
+            iterator = sg.getStorageList()
                 .iterator();
-            int index = 0;
-            while (iterator.hasNext() && index < SLOT_COUNT) {
-                IAEItemStack currItem = iterator.next();
-                if (currItem.getStackSize() >= minAutoPullStackSize) {
-                    ItemStack itemstack = GTUtility.copyAmount(1, currItem.getItemStack());
-                    if (expediteRecipeCheck) {
-                        ItemStack previous = this.mInventory[index];
-                        if (itemstack != null) {
-                            justHadNewItems = !ItemStack.areItemStacksEqual(itemstack, previous);
-                        }
-                    }
-                    this.mInventory[index] = itemstack;
-                    index++;
-                }
-            }
-            for (int i = index; i < SLOT_COUNT; i++) {
-                mInventory[i] = null;
+        } catch (final GridAccessException ignored) {
+            return;
+        }
+
+        int index = 0;
+
+        clearSlotConfigs();
+
+        while (iterator.hasNext() && index < SLOT_COUNT) {
+            IAEItemStack curr = iterator.next();
+
+            if (curr.getStackSize() < minAutoPullStackSize) continue;
+
+            Slot oldSlot = slots[index];
+
+            // Prevent weird reference problems by copying the slot
+            if (oldSlot != null) oldSlot = oldSlot.copy();
+
+            setSlotConfig(index, GTUtility.copyAmount(1, curr.getItemStack()));
+
+            Slot newSlot = slots[index];
+
+            if (newSlot != null) {
+                newSlot.extracted = curr.getItemStack();
+                newSlot.extractedAmount = newSlot.extracted.stackSize;
             }
 
-        } catch (final GridAccessException ignored) {}
+            if (!Objects.equals(oldSlot, newSlot)) {
+                justHadNewItems = true;
+            }
+
+            index++;
+        }
     }
 
     protected void updateAllInformationSlots() {
-        for (int index = 0; index < SLOT_COUNT; index++) {
-            updateInformationSlot(index, mInventory[index]);
+        if (isAllowedToWork()) {
+            try {
+                for (int index = 0; index < SLOT_COUNT; index++) {
+                    updateInformationSlot(index);
+                }
+            } catch (GridAccessException e) {
+                // :P
+            }
+        } else {
+            clearExtractedStacks();
         }
     }
 
     @Override
     public CheckRecipeResult endRecipeProcessing(MTEMultiBlockBase controller) {
         CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.SUCCESSFUL;
-        for (int i = 0; i < SLOT_COUNT; ++i) {
-            if (savedStackSizes[i] != 0) {
-                ItemStack oldStack = shadowInventory[i];
-                if (oldStack == null || oldStack.stackSize < savedStackSizes[i]) {
-                    AENetworkProxy proxy = getProxy();
-                    try {
-                        IMEMonitor<IAEItemStack> sg = proxy.getStorage()
-                            .getItemInventory();
-                        IAEItemStack request = AEItemStack.create(mInventory[i]);
-                        int toExtract = savedStackSizes[i] - (oldStack == null ? 0 : oldStack.stackSize);
-                        request.setStackSize(toExtract);
-                        IAEItemStack result = sg.extractItems(request, Actionable.MODULATE, getRequestSource());
-                        proxy.getEnergy()
-                            .extractAEPower(request.getStackSize(), Actionable.MODULATE, PowerMultiplier.CONFIG);
-                        setInventorySlotContents(i + SLOT_COUNT, oldStack);
-                        if (result == null || result.getStackSize() != toExtract) {
-                            controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
-                            checkRecipeResult = SimpleCheckRecipeResult
-                                .ofFailurePersistOnShutdown("stocking_bus_fail_extraction");
-                        }
-                    } catch (final GridAccessException ignored) {
-                        controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
-                        checkRecipeResult = SimpleCheckRecipeResult
-                            .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
-                    }
-                }
-                savedStackSizes[i] = 0;
-                shadowInventory[i] = null;
-                if (mInventory[i + SLOT_COUNT] != null && mInventory[i + SLOT_COUNT].stackSize <= 0) {
-                    mInventory[i + SLOT_COUNT] = null;
-                }
+
+        IMEMonitor<IAEItemStack> sg;
+        IEnergyGrid energy;
+
+        try {
+            AENetworkProxy proxy = getProxy();
+
+            // on some setup endRecipeProcessing() somehow runs before onFirstTick();
+            // test world
+            // https://discord.com/channels/181078474394566657/522098956491030558/1441490828760449124
+            if (!proxy.isReady()) proxy.onReady();
+
+            sg = proxy.getStorage()
+                .getItemInventory();
+            energy = getProxy().getEnergy();
+        } catch (GridAccessException e) {
+            controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
+            return SimpleCheckRecipeResult.ofFailurePersistOnShutdown("stocking_bus_fail_extraction");
+        }
+
+        for (Slot slot : slots) {
+            if (slot == null || slot.extracted == null || slot.extractedAmount == 0) continue;
+
+            int toExtract = slot.extractedAmount - slot.extracted.stackSize;
+
+            if (toExtract <= 0) continue;
+
+            IAEItemStack request = slot.createAEStack(toExtract);
+
+            IAEItemStack result = Platform.poweredExtraction(energy, sg, request, getRequestSource());
+
+            if (result == null || result.getStackSize() != toExtract) {
+                controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
+                checkRecipeResult = SimpleCheckRecipeResult.ofFailurePersistOnShutdown("stocking_bus_fail_extraction");
             }
         }
+
         processingRecipe = false;
+
         return checkRecipeResult;
     }
 
-    /**
-     * Update the right side of the GUI, which shows the amounts of items set on the left side
-     */
-    public ItemStack updateInformationSlot(int aIndex, ItemStack aStack) {
-        if (aIndex >= 0 && aIndex < SLOT_COUNT) {
-            if (aStack == null) {
-                super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
-            } else {
-                AENetworkProxy proxy = getProxy();
-                if (!proxy.isActive()) {
-                    super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
-                    return null;
-                }
-
-                if (!isAllowedToWork()) {
-                    this.shadowInventory[aIndex] = null;
-                    this.savedStackSizes[aIndex] = 0;
-                    super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
-                    return null;
-                }
-
-                try {
-                    IMEMonitor<IAEItemStack> sg = proxy.getStorage()
-                        .getItemInventory();
-                    IAEItemStack request = AEItemStack.create(mInventory[aIndex]);
-                    request.setStackSize(Integer.MAX_VALUE);
-                    IAEItemStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
-                    ItemStack s = (result != null) ? result.getItemStack() : null;
-                    // We want to track changes in any ItemStack to notify any connected controllers to make a recipe
-                    // check early
-                    if (expediteRecipeCheck) {
-                        ItemStack previous = getStackInSlot(aIndex + SLOT_COUNT);
-                        if (s != null) {
-                            justHadNewItems = !ItemStack.areItemStacksEqual(s, previous);
-                        }
-                    }
-                    setInventorySlotContents(aIndex + SLOT_COUNT, s);
-                    return s;
-                } catch (final GridAccessException ignored) {}
-            }
-        }
-        return null;
+    public void setSlotConfig(int index, ItemStack config) {
+        slots[index] = config == null ? null : new Slot(config.copy());
     }
 
     /**
-     * Used to avoid slot update.
+     * Polls the AE network to update the available items for the given slot.
      */
-    public ItemStack getShadowItemStack(int index) {
-        if (index < 0 || index >= shadowInventory.length) {
+    public void updateInformationSlot(int index) throws GridAccessException {
+        Slot slot = GTDataUtils.getIndexSafe(slots, index);
+
+        if (slot == null) return;
+
+        if (!isAllowedToWork()) {
+            slot.resetExtracted();
+            return;
+        }
+
+        IMEMonitor<IAEItemStack> sg = getProxy().getStorage()
+            .getItemInventory();
+
+        IAEItemStack request = slot.createAEStack(Integer.MAX_VALUE);
+
+        IAEItemStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
+
+        ItemStack previous = slot.extracted;
+
+        slot.extracted = result != null ? result.getItemStack() : null;
+        slot.extractedAmount = slot.extracted == null ? 0 : slot.extracted.stackSize;
+
+        // We want to track changes in any ItemStack to notify any connected controllers to make a recipe check early
+        if (expediteRecipeCheck && slot.extracted != null) {
+            justHadNewItems = !ItemStack.areItemStacksEqual(slot.extracted, previous);
+        }
+    }
+
+    protected void clearSlotConfigs() {
+        Arrays.fill(slots, null);
+    }
+
+    protected void clearExtractedStacks() {
+        for (Slot slot : slots) {
+            if (slot == null) continue;
+
+            slot.resetExtracted();
+        }
+    }
+
+    /**
+     * Gets the first non-null extracted item stack.
+     *
+     * @return The first extracted item stack, or null if it doesn't exist.
+     */
+    public ItemStack getFirstValidStack() {
+        return getFirstValidStack(false);
+    }
+
+    /**
+     * Gets the first non-null extracted item stack.
+     *
+     * @param slotsMustMatch When true, every slot in this input bus must be the same (ignores stack sizes).
+     * @return The first extracted item stack, or null if it doesn't exist.
+     */
+    public ItemStack getFirstValidStack(boolean slotsMustMatch) {
+        if (slotsMustMatch) {
+            ItemStack firstValid = null;
+
+            for (Slot slot : slots) {
+                if (slot == null || slot.extracted == null) continue;
+
+                if (firstValid == null) {
+                    firstValid = slot.extracted;
+                } else {
+                    if (!GTUtility.areStacksEqual(firstValid, slot.extracted)) {
+                        return null;
+                    }
+                }
+            }
+
+            return firstValid;
+        } else {
+            for (Slot slot : slots) {
+                if (slot == null || slot.extracted == null) continue;
+
+                return slot.extracted;
+            }
+
             return null;
         }
-        return shadowInventory[index];
-    }
-
-    public int getShadowInventorySize() {
-        return shadowInventory.length;
-    }
-
-    /**
-     * Gets the first non-null shadow item stack.
-     *
-     * @return The first shadow item stack, or null if this doesn't exist.
-     */
-    public ItemStack getFirstShadowItemStack() {
-        return getFirstShadowItemStack(false);
-    }
-
-    /**
-     * Gets the first non-null shadow item stack.
-     *
-     * @param hasToMatchGhost Whether the first item stack returned has to match the first non-null ghost stack
-     * @return The first shadow item stack, or null if this doesn't exist.
-     */
-    public ItemStack getFirstShadowItemStack(boolean hasToMatchGhost) {
-        ItemStack itemStack;
-        ItemStack lockedSlot = null;
-        if (hasToMatchGhost) {
-            byte slotToCheck = 0;
-            do {
-                lockedSlot = mInventory[slotToCheck];
-                slotToCheck++;
-            } while (lockedSlot == null && slotToCheck < getSizeInventory());
-            if (lockedSlot == null) return null;
-        }
-        byte slotToCheck = 0;
-        do {
-            itemStack = getShadowItemStack(slotToCheck);
-            slotToCheck++;
-        } while ((itemStack == null || !(hasToMatchGhost && lockedSlot.getItem() == itemStack.getItem()))
-            && slotToCheck < getSizeInventory());
-        return itemStack;
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return aIndex == getManualSlot();
     }
 
     @Override
@@ -745,20 +853,28 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         return 179;
     }
 
+    private boolean containsSuchStack(ItemStack tStack) {
+        return Stream.of(slots)
+            .filter(Objects::nonNull)
+            .anyMatch(slot -> GTUtility.areStacksEqual(slot.config, tStack));
+    }
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final SlotWidget[] aeSlotWidgets = new SlotWidget[16];
-
         if (autoPullAvailable) {
             buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
         }
 
+        SlotItemHandler configItemHandler = new SlotItemHandler();
+
+        builder.widget(new SlotSyncWidget());
+
         builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 4)
+            SlotGroup.ofItemHandler(configItemHandler, 4)
                 .startFromSlot(0)
                 .endAtSlot(15)
                 .phantom(true)
-                .slotCreator(index -> new BaseSlot(inventoryHandler, index, true) {
+                .slotCreator(index -> new BaseSlot(configItemHandler, index, true) {
 
                     @Override
                     public boolean isEnabled() {
@@ -770,17 +886,17 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
                     @Override
                     protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
                         if (clickData.mouseButton != 0 || !getMcSlot().isEnabled()) return;
-                        final int aSlotIndex = getMcSlot().getSlotIndex();
-                        if (cursorStack == null) {
-                            getMcSlot().putStack(null);
-                        } else {
-                            if (containsSuchStack(cursorStack)) return;
-                            getMcSlot().putStack(GTUtility.copyAmount(1, cursorStack));
-                        }
+
+                        if (cursorStack != null && containsSuchStack(cursorStack)) return;
+
+                        setSlotConfig(slot.getSlotIndex(), GTUtility.copyAmount(1, cursorStack));
+
                         if (getBaseMetaTileEntity().isServerSide()) {
-                            final ItemStack newInfo = updateInformationSlot(aSlotIndex, cursorStack);
-                            aeSlotWidgets[getMcSlot().getSlotIndex()].getMcSlot()
-                                .putStack(newInfo);
+                            try {
+                                updateInformationSlot(slot.getSlotIndex());
+                            } catch (GridAccessException e) {
+                                // :P
+                            }
                         }
                     }
 
@@ -805,13 +921,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
                                 .singletonList(StatCollector.translateToLocal("modularui.phantom.single.clear"));
                         }
                     }
-
-                    private boolean containsSuchStack(ItemStack tStack) {
-                        for (int i = 0; i < 16; ++i) {
-                            if (GTUtility.areStacksEqual(mInventory[i], tStack, false)) return true;
-                        }
-                        return false;
-                    }
                 }.dynamicTooltip(() -> {
                     if (autoPullItemList) {
                         return Collections.singletonList(
@@ -824,13 +933,12 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
                 .build()
                 .setPos(7, 9))
             .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 4)
+                SlotGroup.ofItemHandler(configItemHandler, 4)
                     .startFromSlot(16)
                     .endAtSlot(31)
                     .phantom(true)
                     .background(GTUITextures.SLOT_DARK_GRAY)
-                    .widgetCreator(
-                        slot -> aeSlotWidgets[slot.getSlotIndex() - 16] = new AESlotWidget(slot).disableInteraction())
+                    .widgetCreator(slot -> new AESlotWidget(slot).disableInteraction())
                     .build()
                     .setPos(97, 9))
             .widget(
@@ -946,8 +1054,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
                             : GTUITextures.OVERLAY_BUTTON_CROSS)
                     .setBackground(GTUITextures.BUTTON_STANDARD)
                     .setPos(53, 87)
-                    .setSize(16, 16)
-                    .addTooltip(StatCollector.translateToLocal("GT5U.machines.stocking_bus.hatch_warning")));
+                    .setSize(16, 16));
         return builder.build();
     }
 
@@ -974,9 +1081,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             StatCollector.translateToLocal("GT5U.waila.stocking_bus.auto_pull." + (autopull ? "enabled" : "disabled")));
         if (autopull) {
             currenttip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.waila.stocking_bus.min_stack_size",
-                    GTUtility.formatNumbers(minSize)));
+                StatCollector
+                    .translateToLocalFormatted("GT5U.waila.stocking_bus.min_stack_size", formatNumber(minSize)));
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
@@ -1013,5 +1119,277 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         strings.add("Change ME connection behavior by right-clicking with wire cutter.");
         strings.add("Configuration data can be copy/pasted using a data stick.");
         return strings.toArray(new String[0]);
+    }
+
+    protected static class Slot {
+
+        /** The item to pull into this slot. */
+        public final ItemStack config;
+
+        /** The amount of stuff initially in the ME system when the recipe check started. */
+        public int extractedAmount;
+        /**
+         * The extracted stack (almost certainly equal to config). This is shared as a reference to the multiblock,
+         * which decrements the stored amount as it gets consumed. After the recipe check has finished, the amount in
+         * this stack is compared to {@link #extractedAmount} and the difference is subtracted from the ME system. If
+         * this operation fails, the machine is shut down.
+         */
+        public ItemStack extracted;
+
+        /** A cached AE stack for {@link #config}, to speed up extractions. */
+        private final IAEItemStack prototypeStack;
+
+        public Slot(ItemStack config) {
+            this.config = config;
+            this.prototypeStack = AEItemStack.create(config)
+                .setStackSize(0);
+        }
+
+        /** Resets the extracted amount. */
+        public void resetExtracted() {
+            extracted = null;
+            extractedAmount = 0;
+        }
+
+        public IAEItemStack createAEStack(long amount) {
+            return prototypeStack.copy()
+                .setStackSize(amount);
+        }
+
+        @Override
+        public final boolean equals(Object o) {
+            if (!(o instanceof Slot slot)) return false;
+
+            return extractedAmount == slot.extractedAmount && Objects.equals(config, slot.config)
+                && Objects.equals(extracted, slot.extracted);
+        }
+
+        public Slot copy() {
+            Slot copy = new Slot(this.config);
+
+            copy.extracted = this.extracted;
+            copy.extractedAmount = this.extractedAmount;
+
+            return copy;
+        }
+
+        public void writeToNBT(NBTTagCompound tag) {
+            tag.setTag("config", config.writeToNBT(new NBTTagCompound()));
+            if (extracted != null) {
+                tag.setTag("extracted", extracted.writeToNBT(new NBTTagCompound()));
+                tag.setInteger("extractedAmount", extractedAmount);
+            }
+        }
+
+        public static Slot readFromNBT(NBTTagCompound tag) {
+            Slot slot = new Slot(ItemStack.loadItemStackFromNBT(tag.getCompoundTag("config")));
+
+            if (slot.config == null) return null;
+
+            if (tag.hasKey("extracted")) {
+                slot.extracted = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("extracted"));
+                slot.extractedAmount = tag.getInteger("extractedAmount");
+            }
+
+            return slot;
+        }
+    }
+
+    private class SlotItemHandler implements IItemHandlerModifiable {
+
+        @Override
+        public int getSlots() {
+            return SLOT_COUNT * 2;
+        }
+
+        @Override
+        public ItemStack getStackInSlot(int slotIndex) {
+            boolean forConfig = slotIndex < SLOT_COUNT;
+            slotIndex %= SLOT_COUNT;
+
+            Slot slot = GTDataUtils.getIndexSafe(slots, slotIndex);
+
+            if (slot == null) return null;
+
+            return forConfig ? slot.config : GTUtility.copyAmountUnsafe(slot.extractedAmount, slot.extracted);
+        }
+
+        @Override
+        public @org.jetbrains.annotations.Nullable ItemStack insertItem(int slot, @Nullable ItemStack stack,
+            boolean simulate) {
+            return stack;
+        }
+
+        @Override
+        public @org.jetbrains.annotations.Nullable ItemStack extractItem(int slot, int amount, boolean simulate) {
+            return null;
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return Integer.MAX_VALUE;
+        }
+
+        @Override
+        public void setStackInSlot(int slotIndex, ItemStack stack) {
+            // do nothing
+        }
+    }
+
+    private class SlotSyncWidget extends FakeSyncWidget.ListSyncer<Slot> {
+
+        public SlotSyncWidget() {
+            super(
+                () -> GTDataUtils.mapToList(slots, slot -> slot == null ? null : slot.copy()),
+                slots2 -> System.arraycopy(slots2.toArray(new Slot[0]), 0, slots, 0, SLOT_COUNT),
+                SlotSyncWidget::writeSlot,
+                SlotSyncWidget::readSlot);
+        }
+
+        private static int counter = 0;
+        private static final int NOT_NULL = 0b1 << counter++;
+        private static final int EXTRACTED_SET = 0b1 << counter++;
+
+        private static void writeSlot(PacketBuffer buffer, Slot slot) {
+            int flags = 0;
+
+            if (slot != null) {
+                flags |= NOT_NULL;
+                if (slot.extracted != null) {
+                    flags |= EXTRACTED_SET;
+                }
+            }
+
+            buffer.writeByte(flags);
+
+            try {
+                if (slot != null) {
+                    buffer.writeItemStackToBuffer(slot.config);
+
+                    if (slot.extracted != null) {
+                        buffer.writeItemStackToBuffer(slot.extracted);
+                        buffer.writeInt(slot.extractedAmount);
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        private static Slot readSlot(PacketBuffer buffer) {
+            int flags = buffer.readByte();
+
+            if ((flags & NOT_NULL) == 0) return null;
+
+            try {
+                Slot slot = new Slot(buffer.readItemStackFromBuffer());
+
+                if ((flags & EXTRACTED_SET) != 0) {
+                    slot.extracted = buffer.readItemStackFromBuffer();
+                    slot.extractedAmount = buffer.readInt();
+                }
+
+                return slot;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    @Override
+    public ItemStack removeResource(ItemStack[] targets, int amount) {
+        if (targets == null || targets.length == 0 || amount <= 0 || getBaseMetaTileEntity() == null) {
+            return null;
+        }
+
+        for (int i = 0; i < getSizeInventory(); i++) {
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack == null || slotStack.stackSize < amount) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    ItemStack removed = decrStackSize(i, amount);
+                    if (removed != null) {
+                        updateSlots();
+                        return removed;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public ItemStack removeAllResource(ItemStack[] targets) {
+        if (targets == null || targets.length == 0 || getBaseMetaTileEntity() == null) {
+            return null;
+        }
+
+        ItemStack result = null;
+        boolean updated = false;
+        for (int i = 0; i < getSizeInventory(); i++) {
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack == null) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    ItemStack removed = decrStackSize(i, slotStack.stackSize);
+                    if (removed != null) {
+                        if (result == null) {
+                            result = removed.copy();
+                        } else if (GTUtility.areStacksEqual(result, removed)) {
+                            result.stackSize += removed.stackSize;
+                        }
+                        updated = true;
+                    }
+                }
+            }
+        }
+        if (updated) {
+            updateSlots();
+        }
+        return result;
+    }
+
+    @Override
+    public ItemStack findResource(ItemStack[] targets) {
+        if (targets == null || targets.length == 0) {
+            return null;
+        }
+
+        for (int i = 0; i < getSizeInventory(); i++) {
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack == null) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    return slotStack.copy();
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean hasResource(ItemStack[] targets) {
+        if (targets == null || targets.length == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < getSizeInventory(); i++) {
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack == null) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

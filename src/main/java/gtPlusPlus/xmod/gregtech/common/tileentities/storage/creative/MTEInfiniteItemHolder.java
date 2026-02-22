@@ -4,6 +4,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
+import com.gtnewhorizon.gtnhlib.item.AbstractInventoryIterator;
+import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
+import com.gtnewhorizon.gtnhlib.item.InventoryIterator;
+import com.gtnewhorizon.gtnhlib.item.SimpleItemIO;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -87,5 +98,63 @@ public class MTEInfiniteItemHolder extends MTETieredChest {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEInfiniteItemHolder(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+    }
+
+    @Override
+    protected ItemSink getItemSink(ForgeDirection side) {
+        return new ItemIOImpl();
+    }
+
+    @Override
+    protected ItemSource getItemSource(ForgeDirection side) {
+        return new ItemIOImpl();
+    }
+
+    @Override
+    protected ItemIO getItemIO(ForgeDirection side) {
+        return new ItemIOImpl();
+    }
+
+    class ItemIOImpl extends SimpleItemIO {
+
+        private static final int[] SLOTS = { 0 };
+
+        @Override
+        protected @NotNull InventoryIterator iterator(int[] allowedSlots) {
+            return new MTEInfiniteItemHolderInventoryIterator(ItemIOImpl.SLOTS, allowedSlots);
+        }
+
+        @Override
+        public @Nullable InventoryIterator simulatedSinkIterator() {
+            return new MTEInfiniteItemHolderInventoryIterator(ItemIOImpl.SLOTS, allowedSinkSlots);
+        }
+
+        private class MTEInfiniteItemHolderInventoryIterator extends AbstractInventoryIterator {
+
+            public MTEInfiniteItemHolderInventoryIterator(int[] slots, int[] allowedSlots) {
+                super(slots, allowedSlots);
+            }
+
+            @Override
+            protected ItemStack getStackInSlot(int slot) {
+                if (slot != 0) return null;
+
+                return GTUtility.copyAmountUnsafe(Integer.MAX_VALUE, mItemStack);
+            }
+
+            @Override
+            public ItemStack extract(int amount, boolean forced) {
+                if (getCurrentSlot() != 0) return null;
+
+                return GTUtility.copyAmountUnsafe(amount, mItemStack);
+            }
+
+            @Override
+            public int insert(ImmutableItemStack stack, boolean forced) {
+                if (getCurrentSlot() != 0) return stack.getStackSize();
+
+                return 0;
+            }
+        }
     }
 }

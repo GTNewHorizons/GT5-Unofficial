@@ -1,11 +1,10 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW;
@@ -48,6 +47,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
@@ -114,10 +114,9 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                     'i',
                     lazy(
                         t -> buildHatchAdder(MTEFusionComputer.class)
-                            .atLeast(ImmutableMap.of(InputHatch.withAdder(MTEFusionComputer::addInjector), 1))
-                            .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
+                            .atLeast(gregtech.api.enums.HatchElement.InputHatch.or(HatchElement.InputBus))
                             .casingIndex(53)
-                            .dot(1)
+                            .hint(1)
                             .buildAndChain(t.getCasing(), t.getCasingMeta())))
                 .addElement(
                     'e',
@@ -126,16 +125,15 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                             .atLeast(ImmutableMap.of(Energy.withAdder(MTEFusionComputer::addEnergyInjector), 16))
                             .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
                             .casingIndex(53)
-                            .dot(2)
+                            .hint(2)
                             .buildAndChain(t.getCasing(), t.getCasingMeta())))
                 .addElement(
                     'x',
                     lazy(
                         t -> buildHatchAdder(MTEFusionComputer.class)
-                            .atLeast(OutputHatch.withAdder(MTEFusionComputer::addExtractor))
-                            .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
+                            .atLeast(gregtech.api.enums.HatchElement.OutputHatch)
                             .casingIndex(53)
-                            .dot(3)
+                            .hint(3)
                             .buildAndChain(t.getCasing(), t.getCasingMeta())))
                 .addElement(
                     'd',
@@ -143,7 +141,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                         t -> buildHatchAdder(MTEFusionComputer.class).adder(MTEFusionComputer::addDroneHatch)
                             .hatchId(9401)
                             .casingIndex(53)
-                            .dot(4)
+                            .hint(4)
                             .buildAndChain(t.getCasing(), t.getCasingMeta())))
                 .build();
         }
@@ -236,26 +234,6 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
         if (tHatch.mTier < tier()) return false;
         tHatch.updateTexture(aBaseCasingIndex);
         return mEnergyHatches.add(tHatch);
-    }
-
-    private boolean addInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
-        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (!(aMetaTileEntity instanceof MTEHatchInput tHatch)) return false;
-        if (tHatch.getTierForStructure() < tier()) return false;
-        tHatch.updateTexture(aBaseCasingIndex);
-        tHatch.mRecipeMap = getRecipeMap();
-        return mInputHatches.add(tHatch);
-    }
-
-    private boolean addExtractor(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
-        if (aBaseMetaTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (!(aMetaTileEntity instanceof MTEHatchOutput tHatch)) return false;
-        if (tHatch.getTierForStructure() < tier()) return false;
-        tHatch.updateTexture(aBaseCasingIndex);
-        return mOutputHatches.add(tHatch);
     }
 
     private boolean addDroneHatch(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
@@ -406,8 +384,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                         this.getBaseMetaTileEntity()
                             .decreaseStoredEnergyUnits(-mEUt, true);
                         if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
-                            if (mOutputItems != null)
-                                for (ItemStack tStack : mOutputItems) if (tStack != null) addOutput(tStack);
+                            if (mOutputItems != null) addItemOutputs(mOutputItems);
                             if (mOutputFluids != null)
                                 for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
                             mEfficiency = Math
@@ -416,6 +393,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                             mProgresstime = 0;
                             mMaxProgresstime = 0;
                             mEfficiencyIncrease = 0;
+                            recipesDone += Math.max(processingLogic.getCurrentParallels(), lastParallel);
                             mLastWorkingTick = mTotalRunTime;
                             if (mOutputFluids != null && mOutputFluids.length > 0) {
                                 try {
@@ -491,23 +469,27 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                 + tier,
             StatCollector.translateToLocal("GT5U.fusion.req") + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(powerRequired)
+                + formatNumber(powerRequired)
                 + EnumChatFormatting.RESET
                 + "EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mEUStore)
+                + formatNumber(mEUStore)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEUStore())
+                + formatNumber(maxEUStore())
                 + EnumChatFormatting.RESET
                 + " EU",
             StatCollector.translateToLocal("GT5U.fusion.plasma") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(plasmaOut)
+                + formatNumber(plasmaOut)
                 + EnumChatFormatting.RESET
-                + "L/t" };
+                + "L/t",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + recipesDone
+                + EnumChatFormatting.RESET };
     }
 
     @Override
@@ -557,6 +539,11 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
     protected long clientEU;
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {

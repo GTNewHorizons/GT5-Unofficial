@@ -81,7 +81,7 @@ public class EnumRowBuilder<E extends Enum<E>> {
                 button.addTooltipLine(this.tooltip[enumVal.ordinal()]);
             }
             if (enumVal instanceof KeyProvider keyProvider) {
-                button.addTooltipLine(keyProvider.getKey());
+                button.addTooltipLine(IKey.lang(keyProvider.getKey()));
             }
             row.child(button);
         }

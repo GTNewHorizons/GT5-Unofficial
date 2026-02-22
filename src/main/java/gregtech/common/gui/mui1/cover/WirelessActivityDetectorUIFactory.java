@@ -10,7 +10,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.redstone.CoverWirelessDoesWorkDetector;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -48,16 +47,15 @@ public class WirelessActivityDetectorUIFactory
             CoverWirelessDoesWorkDetector.ActivityMode mode = getCover().getMode();
 
             if (mode == CoverWirelessDoesWorkDetector.ActivityMode.MACHINE_ENABLED) {
-                return GTUtility.trans("271", "Machine enabled");
+                return StatCollector.translateToLocal("gt.interact.desc.Wireless_Activity.Enabled");
             } else if (mode == CoverWirelessDoesWorkDetector.ActivityMode.MACHINE_IDLE) {
-                return GTUtility.trans("242", "Machine idle");
+                return StatCollector.translateToLocal("gt.interact.desc.Wireless_Activity.Idle");
             } else {
-                return GTUtility.trans("241", "Recipe progress");
+                return StatCollector.translateToLocal("gt.interact.desc.Wireless_Activity.Recipe_Progress");
             }
 
         })
             .setSynced(false)
-            .setDefaultColor(COLOR_TEXT_GRAY.get())
             .setPos(startX + spaceX * 3, 4 + startY + spaceY * 2))
             .widget(
                 TextWidget
@@ -67,7 +65,6 @@ public class WirelessActivityDetectorUIFactory
                                 ? StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.1")
                                 : StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.0")))
                     .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(startX + spaceX, 4 + startY + spaceY * 3)
                     .setSize(spaceX * 10, 12));
@@ -83,21 +80,21 @@ public class WirelessActivityDetectorUIFactory
                 coverData -> coverData.getMode() == CoverWirelessDoesWorkDetector.ActivityMode.RECIPE_PROGRESS,
                 (coverData, state) -> coverData.setMode(CoverWirelessDoesWorkDetector.ActivityMode.RECIPE_PROGRESS),
                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_PROGRESS)
-                    .addTooltip(GTUtility.trans("241", "Recipe progress"))
+                    .addTooltip(StatCollector.translateToLocal("gt.interact.tooltip.Wireless_Activity.Recipe_Progress"))
                     .setPos(spaceX * 0, spaceY * 2))
             .addFollower(
                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                 coverData -> coverData.getMode() == CoverWirelessDoesWorkDetector.ActivityMode.MACHINE_IDLE,
                 (coverData, state) -> coverData.setMode(CoverWirelessDoesWorkDetector.ActivityMode.MACHINE_IDLE),
                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
-                    .addTooltip(GTUtility.trans("242", "Machine idle"))
+                    .addTooltip(StatCollector.translateToLocal("gt.interact.tooltip.Wireless_Activity.Idle"))
                     .setPos(spaceX * 1, spaceY * 2))
             .addFollower(
                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                 coverData -> coverData.getMode() == CoverWirelessDoesWorkDetector.ActivityMode.MACHINE_ENABLED,
                 (coverData, state) -> coverData.setMode(CoverWirelessDoesWorkDetector.ActivityMode.MACHINE_ENABLED),
                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
-                    .addTooltip(GTUtility.trans("271", "Machine enabled"))
+                    .addTooltip(StatCollector.translateToLocal("gt.interact.tooltip.Wireless_Activity.Enabled"))
                     .setPos(spaceX * 2, spaceY * 2))
             .addFollower(
                 CoverDataFollowerToggleButtonWidget.ofDisableable(),

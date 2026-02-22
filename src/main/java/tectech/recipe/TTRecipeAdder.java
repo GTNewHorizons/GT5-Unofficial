@@ -74,7 +74,7 @@ public class TTRecipeAdder extends RecipeAdder {
         GTValues.RA.stdBuilder()
             .itemInputs(aResearchItem)
             .itemOutputs(aOutput)
-            .special(recipeGT.newDataStickForNEI("Writes Research result"))
+            .special(recipeGT.newDataStickForNEI("Writes Research result", 1))
             .duration(totalComputationRequired)
             .eut(researchEUt)
             .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
@@ -86,7 +86,7 @@ public class TTRecipeAdder extends RecipeAdder {
             .itemInputs(aInputs)
             .itemOutputs(aOutput)
             .fluidInputs(aFluidInputs)
-            .special(recipeGT.newDataStickForNEI("Reads Research result"))
+            .special(recipeGT.newDataStickForNEI("Reads Research result", 0))
             .duration(assDuration)
             .eut(assEUt)
             .ignoreCollision()
@@ -215,7 +215,7 @@ public class TTRecipeAdder extends RecipeAdder {
         GTValues.RA.stdBuilder()
             .itemInputs(aResearchItem)
             .itemOutputs(aOutput)
-            .special(recipeGT.newDataStickForNEI("Writes Research result"))
+            .special(recipeGT.newDataStickForNEI("Writes Research result", 1))
             .duration(totalComputationRequired)
             .eut(researchEUt)
             .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
@@ -227,7 +227,7 @@ public class TTRecipeAdder extends RecipeAdder {
             false,
             tInputs,
             new ItemStack[] { aOutput },
-            new ItemStack[] { recipeGT.newDataStickForNEI("Reads Research result") },
+            new ItemStack[] { recipeGT.newDataStickForNEI("Reads Research result", 0) },
             aFluidInputs,
             null,
             assDuration,

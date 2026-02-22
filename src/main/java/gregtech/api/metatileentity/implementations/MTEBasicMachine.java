@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
@@ -16,7 +17,6 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.metatileentity.BaseTileEntity.UNUSED_SLOT_TOOLTIP;
 import static gregtech.api.util.GTRecipeConstants.EXPLODE;
 import static gregtech.api.util.GTRecipeConstants.ON_FIRE;
-import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
@@ -45,6 +45,10 @@ import net.minecraftforge.fluids.IFluidHandler;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -83,7 +87,9 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTClientPreference;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -93,6 +99,7 @@ import gregtech.api.util.GTWaila;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -138,6 +145,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         () -> mFluidOut,
         fluidStack -> mFluidOut = fluidStack,
         this::getCapacity);
+
+    public FluidStackTank getFluidOutputTank() {
+        return this.fluidOutputTank;
+    }
 
     /**
      * Registers machine with single-line description.
@@ -302,6 +313,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         return aIndex > 0 && super.isValidSlot(aIndex)
             && aIndex != getCircuitSlot()
             && aIndex != OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length;
+    }
+
+    @Override
+    public boolean isIOSlot(int slot) {
+        // Ignore output slots, special slots, battery slots, and circuit slots
+        return slot >= getInputSlot() && slot < getInputSlot() + mInputSlotCount;
     }
 
     @Override
@@ -599,23 +616,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 && (tSucceeded || mOutputBlocked % 300 == 1
                     || aBaseMetaTileEntity.hasInventoryBeenModified()
                     || aTick % 600 == 0)) {
-                TileEntity tTileEntity2 = aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getFrontFacing());
-                long tStoredEnergy = aBaseMetaTileEntity.getUniversalEnergyStored();
-                int tMaxStacks = (int) (tStoredEnergy / 64L);
-                if (tMaxStacks > mOutputItems.length) tMaxStacks = mOutputItems.length;
+                GTItemTransfer transfer = new GTItemTransfer();
 
-                moveMultipleItemStacks(
-                    aBaseMetaTileEntity,
-                    tTileEntity2,
-                    aBaseMetaTileEntity.getFrontFacing(),
-                    aBaseMetaTileEntity.getBackFacing(),
-                    null,
-                    false,
-                    (byte) 64,
-                    (byte) 1,
-                    (byte) 64,
-                    (byte) 1,
-                    tMaxStacks);
+                transfer.outOfMachine(this, aBaseMetaTileEntity.getFrontFacing());
+                transfer.dropItems(this);
+
+                transfer.setStacksToTransfer(mOutputItems.length);
+
+                transfer.transfer();
             }
 
             if (mOutputBlocked != 0) if (isOutputEmpty()) mOutputBlocked = 0;
@@ -892,19 +900,18 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         return new String[] {
             translateToLocalFormatted(
                 "GT5U.infodata.progress",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers((mProgresstime / 20)) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber((mProgresstime / 20)) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
             translateToLocalFormatted(
                 "GT5U.infodata.energy",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(getBaseMetaTileEntity().getStoredEU())
+                EnumChatFormatting.GREEN + formatNumber(getBaseMetaTileEntity().getStoredEU())
                     + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(getBaseMetaTileEntity().getEUCapacity())
+                EnumChatFormatting.YELLOW + formatNumber(getBaseMetaTileEntity().getEUCapacity())
                     + EnumChatFormatting.RESET),
             translateToLocalFormatted(
                 "GT5U.infodata.currently_uses",
-                EnumChatFormatting.RED + GTUtility.formatNumbers(mEUt) + EnumChatFormatting.RESET,
-                EnumChatFormatting.RED + GTUtility.formatNumbers(mEUt == 0 ? 0 : mAmperage)
-                    + EnumChatFormatting.RESET) };
+                EnumChatFormatting.RED + formatNumber(mEUt) + EnumChatFormatting.RESET,
+                EnumChatFormatting.RED + formatNumber(mEUt == 0 ? 0 : mAmperage) + EnumChatFormatting.RESET) };
     }
 
     @Override
@@ -918,7 +925,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
             if (aPlayer.isSneaking()) {
                 mDisableFilter = !mDisableFilter;
-                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + mDisableFilter);
             } else {
                 mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
                 GTUtility.sendChatToPlayer(
@@ -935,8 +942,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         if (!entityPlayer.isSneaking() || wrenchingSide != mMainFacing)
             return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
         mDisableMultiStack = !mDisableMultiStack;
-        GTUtility
-            .sendChatToPlayer(entityPlayer, translateToLocal("GT5U.hatch.disableMultiStack." + mDisableMultiStack));
+        GTUtility.sendChatTrans(entityPlayer, "GT5U.hatch.disableMultiStack." + mDisableMultiStack);
         return true;
     }
 
@@ -956,12 +962,17 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (side == mMainFacing || aIndex < getInputSlot()
-            || aIndex >= getInputSlot() + mInputSlotCount
-            || (!mAllowInputFromOutputSide && side == aBaseMetaTileEntity.getFrontFacing())) return false;
-        for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++)
-            if (GTUtility.areStacksEqual(GTOreDictUnificator.get(aStack), mInventory[i]) && mDisableMultiStack)
+        if (side == mMainFacing) return false;
+        if (aIndex < getInputSlot()) return false;
+        if (aIndex >= getInputSlot() + mInputSlotCount) return false;
+        if (!mAllowInputFromOutputSide && side == aBaseMetaTileEntity.getFrontFacing()) return false;
+
+        for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++) {
+            if (GTUtility.areStacksEqual(GTOreDictUnificator.get(aStack), mInventory[i]) && mDisableMultiStack) {
                 return i == aIndex;
+            }
+        }
+
         return mDisableFilter || allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack);
     }
 
@@ -1017,6 +1028,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     public static boolean isValidForLowGravity(GTRecipe tRecipe, int dimId) {
+        if (FakeCleanroom.isLowGravBypassEnabled()) return true;
         return // TODO check or get a better solution
         DimensionManager.getProvider(dimId)
             .getClass()
@@ -1037,7 +1049,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             || DimensionManager.getProvider(dimId)
                 .getClass()
                 .getName()
-                .contains("SpaceStation");
+                .contains("SpaceStation")
+            || DimensionManager.getProvider(dimId)
+                .getClass()
+                .getName()
+                .contains("Mothership");
     }
 
     /**
@@ -1100,7 +1116,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     mOutputItems[i] = null;
                 }
         }
-        mOutputFluid = tRecipe.getFluidOutput(0);
+        if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getFluidOutputChance(0))
+            mOutputFluid = tRecipe.getFluidOutput(0);
         if (!skipOC) {
             calculateCustomOverclock(tRecipe);
             // In case recipe is too OP for that machine
@@ -1182,14 +1199,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GT5U.waila.energy.use_with_amperage",
-                                GTUtility.formatNumbers(mEUt),
+                                formatNumber(mEUt),
                                 GTUtility.getAmperageForTier(mEUt, (byte) getInputTier()),
                                 GTUtility.getColoredTierNameFromTier((byte) getInputTier())));
                     } else if (mEUt < 0) {
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GT5U.waila.energy.produce_with_amperage",
-                                GTUtility.formatNumbers(-mEUt),
+                                formatNumber(-mEUt),
                                 GTUtility.getAmperageForTier(-mEUt, (byte) getOutputTier()),
                                 GTUtility.getColoredTierNameFromTier((byte) getOutputTier())));
                     }
@@ -1198,13 +1215,13 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GTPP.waila.steam.use",
-                                GTUtility.formatNumbers(mEUt * 40L),
+                                formatNumber(mEUt * 40L),
                                 GTUtility.getColoredTierNameFromVoltage(mEUt)));
                     } else if (mEUt < 0) {
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GTPP.waila.steam.use",
-                                GTUtility.formatNumbers(-mEUt * 40L),
+                                formatNumber(-mEUt * 40L),
                                 GTUtility.getColoredTierNameFromVoltage(-mEUt)));
                     }
                 }
@@ -1285,6 +1302,21 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     .setSize(17, 17)
                     .setPos(152, 63));
         }
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicMachineBaseGui(this).build(data, syncManager, uiSettings);
+    }
+
+    // disable the entire inventory row (including corner column)
+    public boolean supportsInventoryRow() {
+        return this.doesBindPlayerInventory();
     }
 
     @Override
@@ -1473,8 +1505,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     () -> Collections.singletonList(
                         translateToLocalFormatted(
                             STEAM_AMOUNT_LANGKEY,
-                            numberFormat.format(getSteamVar),
-                            numberFormat.format(maxSteamStore()))))
+                            numberFormat.format(getSteamVar * 2), // internal steam storage is done at a 2:1 ratio
+                            numberFormat.format(maxSteamStore() * 2))))// internal steam storage is done at a 2:1 ratio
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setUpdateTooltipEveryTick(true)
                 .setSize(48, 42)

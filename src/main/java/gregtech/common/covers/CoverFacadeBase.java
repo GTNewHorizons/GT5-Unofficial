@@ -27,8 +27,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTByteBuffer;
 import gregtech.api.util.GTRenderingWorld;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverFacadeBaseGui;
-import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverFacadeBaseGui;
 import gregtech.common.gui.mui1.cover.FacadeBaseUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -273,7 +273,7 @@ public abstract class CoverFacadeBase extends Cover {
         if (block == null) return Textures.BlockIcons.ERROR_RENDERING[0];
         // TODO: change this when *someone* made the block render in both pass
         if (block.getRenderBlockPass() != 0) return Textures.BlockIcons.ERROR_RENDERING[0];
-        return TextureFactory.builder()
+        return TextureFactory.blockBuilder()
             .setFromBlock(block, getTargetMeta(mStack))
             .useWorldCoord()
             .setFromSide(coverSide)
@@ -332,7 +332,7 @@ public abstract class CoverFacadeBase extends Cover {
     // GUI stuff
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverFacadeBaseGui(this);
     }
 

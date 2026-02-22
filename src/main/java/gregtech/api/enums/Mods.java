@@ -154,6 +154,7 @@ public enum Mods implements IMod {
     NotEnoughIDs(ModIDs.NOT_ENOUGH_I_DS),
     NotEnoughItems(ModIDs.NOT_ENOUGH_ITEMS),
     IC2NuclearControl(ModIDs.I_C2_NUCLEAR_CONTROL),
+    NuclearHorizons(ModIDs.NUCLEAR_HORIZONS),
     Nutrition(ModIDs.NUTRITION),
     OpenGlasses(ModIDs.OPEN_GLASSES),
     OpenBlocks(ModIDs.OPEN_BLOCKS),
@@ -177,6 +178,7 @@ public enum Mods implements IMod {
     ProjectRedTransmission(ModIDs.PROJECT_RED_TRANSMISSION),
     ProjectRedTransportation(ModIDs.PROJECT_RED_TRANSPORTATION),
     Railcraft(ModIDs.RAILCRAFT),
+    RandomBoubles(ModIDs.RANDOM_BOUBLES),
     RandomThings(ModIDs.RANDOM_THINGS),
     RWG(ModIDs.RWG),
     RemoteIO(ModIDs.REMOTE_IO),
@@ -215,6 +217,7 @@ public enum Mods implements IMod {
     ToroHealth(ModIDs.TORO_HEALTH),
     Translocator(ModIDs.TRANSLOCATOR),
     UniversalSingularities(ModIDs.UNIVERSAL_SINGULARITIES),
+    VendingMachine(ModIDs.VENDING_MACHINE),
     VisualProspecting(ModIDs.VISUAL_PROSPECTING),
     WailaPlugins(ModIDs.WAILA_PLUGINS),
     WailaHarvestability(ModIDs.WAILA_HARVESTABILITY),
@@ -274,7 +277,15 @@ public enum Mods implements IMod {
     Witchery(ModIDs.WITCHERY),
     ZTones(ModIDs.Z_TONES),
 
-    Minecraft(ModIDs.MINECRAFT),
+    Minecraft(ModIDs.MINECRAFT) {
+
+        {
+            // instance initializer to avoid having to override isModLoaded
+            checked = true;
+            modLoaded = true;
+        }
+
+    },
 
     Aroma1997Core(ModIDs.AROMA1997_CORE),
     ExtraCells2(ModIDs.EXTRA_CELLS2),
@@ -289,17 +300,19 @@ public enum Mods implements IMod {
 
     public final String ID;
     public final String resourceDomain;
-    private Boolean modLoaded;
+    protected boolean checked, modLoaded;
 
     Mods(String ID) {
         this.ID = ID;
         this.resourceDomain = ID.toLowerCase(Locale.ENGLISH);
     }
 
+    // isModLoaded is final to allow the JIT to inline this
     @Override
-    public boolean isModLoaded() {
-        if (this.modLoaded == null) {
+    public final boolean isModLoaded() {
+        if (!this.checked) {
             this.modLoaded = Loader.isModLoaded(ID);
+            this.checked = true;
         }
         return this.modLoaded;
     }
@@ -483,6 +496,7 @@ public enum Mods implements IMod {
         public static final String NOT_ENOUGH_I_DS = "neid";
         public static final String NOT_ENOUGH_ITEMS = "NotEnoughItems";
         public static final String I_C2_NUCLEAR_CONTROL = "IC2NuclearControl"; // "Nuclear-Control"
+        public static final String NUCLEAR_HORIZONS = "nuclear_horizons";
         public static final String NUTRITION = "nutrition";
         public static final String OPEN_GLASSES = "openglasses"; // "OCGlasses"
         public static final String OPEN_BLOCKS = "OpenBlocks";
@@ -506,6 +520,7 @@ public enum Mods implements IMod {
             PROJECT_RED_TRANSMISSION = "ProjRed|Transmission",
             PROJECT_RED_TRANSPORTATION = "ProjRed|Transportation";
         public static final String RAILCRAFT = "Railcraft";
+        public static final String RANDOM_BOUBLES = "randomboubles";
         public static final String RANDOM_THINGS = "RandomThings";
         public static final String RWG = "RWG";
         public static final String REMOTE_IO = "RIO";
@@ -544,6 +559,7 @@ public enum Mods implements IMod {
         public static final String TORO_HEALTH = "torohealthmod";
         public static final String TRANSLOCATOR = "Translocator";
         public static final String UNIVERSAL_SINGULARITIES = "universalsingularities";
+        public static final String VENDING_MACHINE = "vendingmachine";
         public static final String VISUAL_PROSPECTING = "visualprospecting";
         public static final String WAILA_PLUGINS = "wailaplugins";
         public static final String WAILA_HARVESTABILITY = "WailaHarvestability";

@@ -11,7 +11,6 @@ import net.minecraftforge.common.config.Property;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsBotania;
 
 public class AssemblyLineServer {
 
@@ -263,10 +262,9 @@ public class AssemblyLineServer {
                                 case 1 -> mMats = new Materials[] { Materials.InfusedAir, Materials.Amber,
                                     Materials.Amethyst, Materials.InfusedWater, Materials.BlueTopaz,
                                     Materials.CertusQuartz, Materials.Dilithium, Materials.EnderEye,
-                                    Materials.EnderPearl, Materials.FoolsRuby, Materials.Force, Materials.Forcicium,
+                                    Materials.EnderPearl, Materials.Spinel, Materials.Force, Materials.Forcicium,
                                     Materials.Forcillium, Materials.GreenSapphire, Materials.InfusedFire,
-                                    Materials.Jasper, MaterialsBotania.ManaDiamond,
-                                    MaterialsBotania.BotaniaDragonstone };
+                                    Materials.Jasper, Materials.ManaDiamond, Materials.Dragonstone };
                                 case 2 -> mMats = new Materials[] { Materials.Lazurite, Materials.Lignite,
                                     Materials.Monazite, Materials.Niter, Materials.Olivine, Materials.Opal,
                                     Materials.InfusedOrder, Materials.InfusedEntropy, Materials.Phosphorus,

@@ -14,7 +14,6 @@ import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
@@ -95,7 +94,7 @@ public class FormingPressRecipes implements Runnable {
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 13))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 16))
                 .duration(10 * SECONDS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(formingPressRecipes);
 
             GTValues.RA.stdBuilder()
@@ -104,7 +103,7 @@ public class FormingPressRecipes implements Runnable {
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 13))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 16))
                 .duration(10 * SECONDS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(formingPressRecipes);
 
             GTValues.RA.stdBuilder()
@@ -113,7 +112,7 @@ public class FormingPressRecipes implements Runnable {
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 14))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 17))
                 .duration(10 * SECONDS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(formingPressRecipes);
 
             GTValues.RA.stdBuilder()
@@ -122,7 +121,7 @@ public class FormingPressRecipes implements Runnable {
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 15))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 18))
                 .duration(10 * SECONDS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(formingPressRecipes);
 
             GTValues.RA.stdBuilder()
@@ -131,7 +130,7 @@ public class FormingPressRecipes implements Runnable {
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 19))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 20))
                 .duration(10 * SECONDS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(formingPressRecipes);
         }
 
@@ -148,7 +147,7 @@ public class FormingPressRecipes implements Runnable {
                 ItemList.Shape_Mold_Credit.get(0L))
             .itemOutputs(ItemList.Credit_Greg_Cupronickel.get(4L))
             .duration(5 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(formingPressRecipes);
 
         GTValues.RA.stdBuilder()
@@ -157,7 +156,7 @@ public class FormingPressRecipes implements Runnable {
                 ItemList.Shape_Mold_Credit.get(0L))
             .itemOutputs(ItemList.Coin_Doge.get(4L))
             .duration(5 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(formingPressRecipes);
 
         GTValues.RA.stdBuilder()
@@ -166,7 +165,7 @@ public class FormingPressRecipes implements Runnable {
                 ItemList.Shape_Mold_Credit.get(0L))
             .itemOutputs(ItemList.Credit_Iron.get(4L))
             .duration(5 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(formingPressRecipes);
 
         GTValues.RA.stdBuilder()
@@ -175,7 +174,7 @@ public class FormingPressRecipes implements Runnable {
                 ItemList.Shape_Mold_Credit.get(0L))
             .itemOutputs(ItemList.Credit_Iron.get(4L))
             .duration(5 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(formingPressRecipes);
 
         GTValues.RA.stdBuilder()
@@ -184,7 +183,7 @@ public class FormingPressRecipes implements Runnable {
                 ItemList.Shape_Mold_Ingot.get(0L))
             .itemOutputs(new ItemStack(Items.brick, 1, 0))
             .duration(5 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(formingPressRecipes);
         // Bartworks Glass Tube
         GTValues.RA.stdBuilder()
@@ -193,17 +192,17 @@ public class FormingPressRecipes implements Runnable {
                 ItemList.Shape_Mold_Rod_Long.get(0L))
             .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(formingPressRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.MagMatter, 1L),
-                GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.WhiteDwarfMatter, 1L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.TranscendentMetal, 4L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.SixPhasedCopper, 4L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.Eternity, 4L),
-                GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.BlackDwarfMatter, 1L))
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MagMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.WhiteDwarfMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 4L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.SixPhasedCopper, 4L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 4L),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.BlackDwarfMatter, 1L))
             .fluidInputs(Materials.UUMatter.getFluid(4_096_000L))
             .itemOutputs(ItemList.NaniteFramework.get(1))
             .duration(60 * SECONDS)

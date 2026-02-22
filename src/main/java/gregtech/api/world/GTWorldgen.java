@@ -15,6 +15,12 @@ public abstract class GTWorldgen {
     public final boolean mEnabled;
     private final Map<String, Boolean> mDimensionMap = new ConcurrentHashMap<>();
 
+    public static final int WRONG_BIOME = 0;
+    public static final int WRONG_DIMENSION = 1;
+    public static final int NO_OVERLAP = 2;
+    public static final int ORE_PLACED = 3;
+    public static final int NO_OVERLAP_AIR_BLOCK = 4;
+
     @SuppressWarnings({ "unchecked", "rawtypes" }) // The adding of "this" needs a List<this> which does not exist
     public GTWorldgen(String aName, List aList, boolean aDefault) {
         mWorldGenName = aName;
@@ -31,14 +37,14 @@ public abstract class GTWorldgen {
      * @param aChunkZ        zCoord of the Chunk
      * @return if the Worldgeneration has been successfully completed
      */
-    public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
-        int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+    public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aChunkX, int aChunkZ,
+        IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         return false;
     }
 
-    public int executeWorldgenChunkified(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
-        int aChunkZ, int seedX, int seedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
-        return 4; // This is for the empty Orevein
+    public int executeWorldgenChunkified(World aWorld, Random aRandom, String aBiome, int aChunkX, int aChunkZ,
+        int seedX, int seedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+        return ORE_PLACED; // This is for the empty Orevein
     }
 
     /**

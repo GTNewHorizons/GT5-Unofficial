@@ -50,7 +50,7 @@ import gregtech.api.util.GTUtility;
 // the global pollution manager should be a
 // non static instance in GTProxy
 // and all access to it should be non static and via
-// GTProxy.gregtechProxy.pollutionManager......
+// GTProxy.proxy.pollutionManager......
 public class Pollution {
 
     private static final Storage STORAGE = new Storage();
@@ -454,6 +454,11 @@ public class Pollution {
         public void onWorldLoad(WorldEvent.Load e) {
             // super class loads everything lazily. We force it to load them all.
             if (!e.world.isRemote) STORAGE.loadAll(e.world);
+        }
+
+        @SubscribeEvent
+        public void onWorldUnload(WorldEvent.Unload e) {
+            GTMod.proxy.dimensionWisePollution.remove(e.world.provider.dimensionId);
         }
     }
 

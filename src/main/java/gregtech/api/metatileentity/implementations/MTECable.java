@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 
@@ -22,6 +23,7 @@ import cofh.api.energy.IEnergyReceiver;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
@@ -43,6 +45,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTGCCompat;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverSolarPanel;
@@ -90,7 +93,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
     @Override
     public byte getTileEntityBaseType() {
-        return (byte) (mInsulated ? 9 : 8);
+        if (mInsulated) return HarvestTool.CutterLevel1.toTileEntityBaseType();
+        return HarvestTool.CutterLevel0.toTileEntityBaseType();
     }
 
     @Override
@@ -294,7 +298,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
         // Swap in the new cable
         aBaseMetaTileEntity.setMetaTileID(newMetaID);
-        aBaseMetaTileEntity.setMetaTileEntity(newCable);
+        newCable.setBaseMetaTileEntity(aBaseMetaTileEntity);
 
         aBaseMetaTileEntity.markDirty();
         aBaseMetaTileEntity.issueBlockUpdate();
@@ -504,25 +508,13 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
     @Override
     public String[] getDescription() {
+        // The %%% are required for ItemMachines#addDescription
         return new String[] {
-            StatCollector.translateToLocal("GT5U.item.cable.max_voltage") + ": %%%"
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mVoltage)
-                + " ("
-                + GTUtility.getColoredTierNameFromVoltage(mVoltage)
-                + EnumChatFormatting.GREEN
-                + ")"
-                + EnumChatFormatting.GRAY,
-            StatCollector.translateToLocal("GT5U.item.cable.max_amperage") + ": %%%"
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mAmperage)
-                + EnumChatFormatting.GRAY,
+            StatCollector.translateToLocal("GT5U.item.cable.max_voltage") + " %%%"
+                + TooltipHelper.voltageText(mVoltage),
+            StatCollector.translateToLocal("GT5U.item.cable.max_amperage") + ": %%%" + TooltipHelper.ampText(mAmperage),
             StatCollector.translateToLocal("GT5U.item.cable.loss") + ": %%%"
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(mCableLossPerMeter)
-                + EnumChatFormatting.GRAY
-                + "%%% "
-                + StatCollector.translateToLocal("GT5U.item.cable.eu_volt") };
+                + TooltipHelper.cableLossText(mCableLossPerMeter) };
     }
 
     @Override
@@ -552,11 +544,11 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         final BaseMetaPipeEntity base = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         final PowerNodePath path = (PowerNodePath) base.getNodePath();
 
-        path.reloadLocks();
-
         if (path == null)
             return new String[] { EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.cable.failed")
                 + EnumChatFormatting.RESET };
+
+        path.reloadLocks();
 
         final long currAmp = path.getAmperage();
         final long currVoltage = path.getVoltage();
@@ -569,18 +561,18 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         return new String[] {
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.cable.amperage",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(currAmp) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mAmperage) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(currAmp) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(mAmperage) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.cable.voltage_out",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(currVoltage) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(maxVoltageOut) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(currVoltage) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(maxVoltageOut) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.cable.avg_amperage",
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(avgAmp) + EnumChatFormatting.RESET),
+                EnumChatFormatting.YELLOW + formatNumber(avgAmp) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.cable.avg_output",
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(avgVoltage) + EnumChatFormatting.RESET) };
+                EnumChatFormatting.YELLOW + formatNumber(avgVoltage) + EnumChatFormatting.RESET) };
     }
 
     @Override
@@ -650,7 +642,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         currenttip.add(
             StatCollector.translateToLocal("GT5U.item.cable.max_voltage") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mVoltage)
+                + formatNumber(mVoltage)
                 + " ("
                 + GTUtility.getColoredTierNameFromVoltage(mVoltage)
                 + EnumChatFormatting.GREEN
@@ -658,11 +650,11 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         currenttip.add(
             StatCollector.translateToLocal("GT5U.item.cable.max_amperage") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mAmperage));
+                + formatNumber(mAmperage));
         currenttip.add(
             StatCollector.translateToLocal("GT5U.item.cable.loss") + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(mCableLossPerMeter)
+                + formatNumber(mCableLossPerMeter)
                 + EnumChatFormatting.RESET
                 + " "
                 + StatCollector.translateToLocal("GT5U.item.cable.eu_volt"));

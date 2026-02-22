@@ -14,6 +14,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ImplosionCompressorRecipes implements Runnable {
 
     @Override
@@ -22,7 +23,7 @@ public class ImplosionCompressorRecipes implements Runnable {
             .itemInputs(ItemList.IC2_Compressed_Coal_Chunk.get(1L))
             .itemOutputs(
                 ItemList.IC2_Industrial_Diamond.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L))
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 4L))
             .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 8)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -32,7 +33,7 @@ public class ImplosionCompressorRecipes implements Runnable {
             .itemInputs(ItemList.Ingot_IridiumAlloy.get(1L))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L))
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 4L))
             .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 8)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)

@@ -37,8 +37,8 @@ import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 
 public class CraftingMaterialLoader implements IWerkstoffRunnable {
 
@@ -142,7 +142,8 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .addTo(extruderRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot), GTUtility.getIntegratedCircuit(3))
+                .itemInputs(werkstoff.get(ingot))
+                .circuit(3)
                 .itemOutputs(werkstoff.get(wireFine, 8))
                 .duration(
                     (int) Math.max(
@@ -153,7 +154,8 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .addTo(wiremillRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(stick), GTUtility.getIntegratedCircuit(3))
+                .itemInputs(werkstoff.get(stick))
+                .circuit(3)
                 .itemOutputs(werkstoff.get(wireFine, 4))
                 .duration(
                     (int) Math.max(
@@ -213,7 +215,7 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(ingot, 5), ItemList.Shape_Extruder_Rotor.get(0L))
                 .itemOutputs(werkstoff.get(rotor))
                 .duration(10 * SECONDS)
-                .eut(60)
+                .eut(TierEU.RECIPE_MV / 2)
                 .addTo(extruderRecipes);
         }
     }

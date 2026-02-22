@@ -28,7 +28,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)
+        if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)
             && !aMaterial.contains(SubTag.NO_WORKING)) {
             ItemStack tPlate = GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L);
             ItemStack tRing = GTOreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L);
@@ -46,7 +46,8 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                 }
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(tPlate.copy(), tRing.copy(), GTUtility.getIntegratedCircuit(4))
+                    .itemInputs(tPlate.copy(), tRing.copy())
+                    .circuit(4)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
                     .fluidInputs(Materials.Tin.getMolten(2 * NUGGETS))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
@@ -54,7 +55,8 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(assemblerRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(tPlate.copy(), tRing.copy(), GTUtility.getIntegratedCircuit(4))
+                    .itemInputs(tPlate.copy(), tRing.copy())
+                    .circuit(4)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
                     .fluidInputs(Materials.Lead.getMolten(3 * NUGGETS))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
@@ -62,7 +64,8 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(assemblerRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(tPlate.copy(), tRing.copy(), GTUtility.getIntegratedCircuit(4))
+                    .itemInputs(tPlate.copy(), tRing.copy())
+                    .circuit(4)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
                     .fluidInputs(Materials.SolderingAlloy.getMolten(1 * NUGGETS))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)

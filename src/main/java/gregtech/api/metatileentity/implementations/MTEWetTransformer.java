@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -38,29 +39,29 @@ public class MTEWetTransformer extends MTETransformer {
         ITexture[][][] rTextures = new ITexture[12][17][];
         for (byte b = -1; b < 16; b++) {
             rTextures[0][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1] };
             rTextures[1][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1] };
             rTextures[2][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1] };
             rTextures[3][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 2] };
             rTextures[4][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 2] };
             rTextures[5][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 2] };
             rTextures[6][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier + 1] };
             rTextures[7][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier + 1] };
             rTextures[8][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier + 1] };
             rTextures[9][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 2] };
             rTextures[10][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 2] };
             rTextures[11][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 2] };
         }
         return rTextures;
     }
@@ -69,8 +70,9 @@ public class MTEWetTransformer extends MTETransformer {
     public String[] getDescription() {
         return ArrayUtils.addAll(
             mDescriptionArray,
-            "Accepts 16A and outputs 64A",
-            "Toggle 2A/8A half-mode with Screwdriver",
+            StatCollector.translateToLocal("GT5U.machines.MTETransformerWet.descLn1"),
+            StatCollector.translateToLocal("GT5U.machines.MTETransformerWet.descLn2"),
+            StatCollector.translateToLocal("GT5U.machines.MTETransformerWet.descLn3"),
             EnumChatFormatting.BLUE + "Tec"
                 + EnumChatFormatting.DARK_BLUE
                 + "Tech"
@@ -94,9 +96,9 @@ public class MTEWetTransformer extends MTETransformer {
     @Override
     public long maxAmperesIn() {
         if (mHalfMode) {
-            return getBaseMetaTileEntity().isAllowedToWork() ? 8 : 32;
+            return getBaseMetaTileEntity().isAllowedToWork() ? 10 : 40;
         }
-        return getBaseMetaTileEntity().isAllowedToWork() ? 16 : 64;
+        return getBaseMetaTileEntity().isAllowedToWork() ? 20 : 80;
     }
 
     @Override

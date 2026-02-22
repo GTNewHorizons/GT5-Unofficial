@@ -5,8 +5,11 @@ import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceRes
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.REJECT;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.SKIP;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
+import static gregtech.api.GregTechAPI.sBlockSheetmetalBW;
+import static gregtech.api.GregTechAPI.sBlockSheetmetalGT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +19,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
 import javax.annotation.Nonnull;
@@ -34,8 +38,10 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
@@ -45,8 +51,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
+import bartworks.system.material.Werkstoff;
 import cofh.asmhooks.block.BlockTickingWater;
 import cofh.asmhooks.block.BlockWater;
+import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
@@ -56,6 +64,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
@@ -64,6 +73,7 @@ import gregtech.common.blocks.BlockCyclotronCoils;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.misc.GTStructureChannels;
+import gtPlusPlus.core.material.Material;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
@@ -129,6 +139,16 @@ public class GTStructureUtility {
         };
     }
 
+    public static <T> IStructureElement<T> ofSheetMetal(Materials material) {
+        if (material == null) throw new IllegalArgumentException("material for sheet metal can not be null!");
+        return ofBlock(sBlockSheetmetalGT, material.mMetaItemSubID);
+    }
+
+    public static <T> IStructureElement<T> ofSheetMetal(Werkstoff werkstoff) {
+        if (werkstoff == null) throw new IllegalArgumentException("werkstoff for sheet metal can not be null!");
+        return ofBlock(sBlockSheetmetalBW, werkstoff.getmID());
+    }
+
     public static <T> IStructureElement<T> ofFrame(Materials aFrameMaterial) {
         if (aFrameMaterial == null) throw new IllegalArgumentException();
         return new IStructureElement<>() {
@@ -153,9 +173,12 @@ public class GTStructureUtility {
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                if (mIcons == null) {
+                if (mIcons == null && FMLLaunchHandler.side()
+                    .isClient()) {
                     mIcons = new IIcon[6];
-                    Arrays.fill(mIcons, aFrameMaterial.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon());
+                    Arrays.fill(
+                        mIcons,
+                        aFrameMaterial.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon());
                 }
                 StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, aFrameMaterial.mRGBa);
                 return true;
@@ -217,6 +240,18 @@ public class GTStructureUtility {
                     env.getChatter());
             }
         };
+    }
+
+    public static <T> IStructureElement<T> ofFrame(Supplier<ItemStack> frameSupplier) {
+        return lazy(t -> {
+            ItemStack stack = frameSupplier.get();
+            Block block = Block.getBlockFromItem(stack.getItem());
+            return ofBlock(block, stack.getItemDamage());
+        });
+    }
+
+    public static <T> IStructureElement<T> ofFrame(Material material) {
+        return ofFrame(() -> material.getFrameBox(1));
     }
 
     public static <T> HatchElementBuilder<T> buildHatchAdder() {
@@ -730,6 +765,23 @@ public class GTStructureUtility {
         };
     }
 
+    /**
+     * like {@link #filterByMTEClass(java.util.List)}, but adds a blacklist check to the predicate
+     *
+     * @param list
+     * @param blacklist
+     * @return predicate of all multis of same type as hatchelement, with blacklist omitted
+     */
+    @Nonnull
+    public static Predicate<ItemStack> filterByMTEClassWithBlacklist(
+        List<? extends Class<? extends IMetaTileEntity>> list, List<Class<? extends IMetaTileEntity>> blacklist) {
+        return is -> {
+            IMetaTileEntity tile = ItemMachines.getMetaTileEntity(is);
+            return tile != null && list.stream()
+                .anyMatch(c -> c.isInstance(tile) && !blacklist.contains(tile.getClass()));
+        };
+    }
+
     @Nonnull
     public static Predicate<ItemStack> filterByMTETier(int aMinTier, int aMaxTier) {
         return is -> {
@@ -753,6 +805,52 @@ public class GTStructureUtility {
         Function<T, Integer> getter) {
         return GTStructureChannels.BOROGLASS.use(
             lazy(t -> ofBlocksTiered(GlassTier::getGlassBlockTier, GlassTier.getGlassList(), notSet, setter, getter)));
+    }
+
+    private static Integer getItemPipeCasingTier(Block block, int meta) {
+        if (block != GregTechAPI.sBlockCasings11) return null;
+        if (meta < 0 || meta > 7) return null;
+        return meta + 1;
+    }
+
+    public static <T> IStructureElement<T> chainItemPipeCasings() {
+        return chainItemPipeCasings(-1, (t, tier) -> {}, t -> -1);
+    }
+
+    public static <T> IStructureElement<T> chainItemPipeCasings(int notSet, BiConsumer<T, Integer> setter,
+        Function<T, Integer> getter) {
+        return GTStructureChannels.ITEM_PIPE_CASING.use(
+            lazy(
+                t -> ofBlocksTiered(
+                    GTStructureUtility::getItemPipeCasingTier,
+                    ImmutableList.of(
+                        Pair.of(GregTechAPI.sBlockCasings11, 0),
+                        Pair.of(GregTechAPI.sBlockCasings11, 1),
+                        Pair.of(GregTechAPI.sBlockCasings11, 2),
+                        Pair.of(GregTechAPI.sBlockCasings11, 3),
+                        Pair.of(GregTechAPI.sBlockCasings11, 4),
+                        Pair.of(GregTechAPI.sBlockCasings11, 5),
+                        Pair.of(GregTechAPI.sBlockCasings11, 6),
+                        Pair.of(GregTechAPI.sBlockCasings11, 7)),
+                    notSet,
+                    setter,
+                    getter)));
+    }
+
+    public static <T> IStructureElement<T> chainAllCasings() {
+        return chainAllCasings(-1, (te, t) -> {}, te -> -1);
+    }
+
+    public static <T> IStructureElement<T> chainAllCasings(int notSet, BiConsumer<T, Integer> setter,
+        Function<T, Integer> getter) {
+        return GTStructureChannels.TIER_CASING.use(
+            lazy(
+                t -> ofBlocksTiered(
+                    CasingTier::getCasingBlockTier,
+                    CasingTier.getCasingList(),
+                    notSet,
+                    setter,
+                    getter)));
     }
 
     public static <T> IStructureElement<T> noSurvivalAutoplace(IStructureElement<T> element) {
@@ -871,8 +969,16 @@ public class GTStructureUtility {
 
                 if (!(stack.getItem() instanceof ItemMachines itemMachines)) return false;
 
-                return itemMachines
+                boolean success = itemMachines
                     .placeBlockAt(stack, null, world, x, y, z, ForgeDirection.UP.ordinal(), 0.5f, 0.5f, 0.5f, 0);
+
+                if (!success) return false;
+
+                if (world.getTileEntity(x, y, z) instanceof ITurnable turnable) {
+                    turnable.setFrontFacing(ForgeDirection.SOUTH);
+                }
+
+                return true;
             }
 
             @Override
@@ -894,12 +1000,13 @@ public class GTStructureUtility {
 
                 if (actual == wanted) return PlaceResult.SKIP;
 
-                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
+                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) {
                     return PlaceResult.REJECT;
+                }
 
                 ItemStack stack = wanted.getStackForm(1);
 
-                return StructureUtility.survivalPlaceBlock(
+                PlaceResult result = StructureUtility.survivalPlaceBlock(
                     stack,
                     EXACT,
                     null,
@@ -911,6 +1018,14 @@ public class GTStructureUtility {
                     env.getSource(),
                     env.getActor(),
                     env.getChatter());
+
+                if (result != ACCEPT) return result;
+
+                if (world.getTileEntity(x, y, z) instanceof ITurnable turnable) {
+                    turnable.setFrontFacing(ForgeDirection.SOUTH);
+                }
+
+                return result;
             }
         };
     }

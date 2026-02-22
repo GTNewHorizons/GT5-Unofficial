@@ -74,7 +74,7 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
             buildHatchAdder(MTEIndustrialBrewery.class)
                 .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(15))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(MTEIndustrialBrewery::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 15))))
         .addElement('A', chainAllGlasses())
@@ -141,7 +141,7 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Brewery")
+        tt.addMachineType("Brewery, BBB")
             .addBulkMachineInfo(4, 1.5F, 1F)
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front Center")

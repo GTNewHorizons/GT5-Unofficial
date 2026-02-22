@@ -28,6 +28,9 @@ import static gregtech.common.items.IDMetaTool01.POCKET_SAW;
 import static gregtech.common.items.IDMetaTool01.POCKET_WIRECUTTER;
 import static gregtech.common.items.IDMetaTool01.SAW;
 import static gregtech.common.items.IDMetaTool01.WIRECUTTER;
+import static gregtech.common.items.IDMetaTool01.WIRECUTTER_HV;
+import static gregtech.common.items.IDMetaTool01.WIRECUTTER_LV;
+import static gregtech.common.items.IDMetaTool01.WIRECUTTER_MV;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTEnergy;
 
 import java.util.ArrayList;
@@ -79,7 +82,6 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
 
 public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISurvivalConstructable {
@@ -124,7 +126,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             .addInfo("Advanced tools multiply output amount")
             .addInfo("  Logs: Saw (1x), Buzzsaw (2x), Chainsaw (4x)")
             .addInfo("  Saplings: Branch Cutter (1x), Grafter (4x)")
-            .addInfo("  Leaves: Shears (1x), Wire Cutter (2x), Automatic Snips (4x)")
+            .addInfo("  Leaves: Shears (1x), Wire Cutter (2x), Electric Wire Cutter (4x)")
             .addInfo("  Fruit: Knife (1x)")
             .addInfo("Multiple tools can be used at the same time")
             .addSeparator()
@@ -219,7 +221,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                             Energy.or(TTEnergy),
                             Muffler)
                         .casingIndex(CASING_TEXTURE_ID)
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 15))))
                 .build();
         }
@@ -395,8 +397,9 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             if (shouldDamage) {
                 if (!canDamage || GTModHandler.isElectricItem(stack)
                     && !GTModHandler.canUseElectricItem(stack, TOOL_CHARGE_PER_OPERATION)) {
-                    depleteInput(stack);
-                    addOutput(stack);
+                    if (addOutputAtomic(stack)) {
+                        depleteInput(stack);
+                    }
                 }
             }
             if (canDamage) {
@@ -458,9 +461,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                     if (damage == WIRECUTTER.ID || damage == POCKET_WIRECUTTER.ID) {
                         return 2;
                     }
-                }
-                if (tool instanceof MetaGeneratedGregtechTools) {
-                    if (toolStack.getItemDamage() == MetaGeneratedGregtechTools.ELECTRIC_SNIPS) {
+                    if (damage == WIRECUTTER_LV.ID || damage == WIRECUTTER_MV.ID || damage == WIRECUTTER_HV.ID) {
                         return 4;
                     }
                 }
@@ -497,8 +498,11 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             // We first try to swap it with a sapling from an input bus to not interrupt existing setups.
             if (!legacyToolSwap()) {
                 // Swap failed, output whatever is blocking the slot.
-                addOutput(controllerSlot);
-                mInventory[1] = null;
+                if (addOutputAtomic(controllerSlot)) {
+                    mInventory[1] = null;
+                } else {
+                    return null;
+                }
             }
         }
 
@@ -739,9 +743,10 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             // Mode.LEAVES
             { new ItemStack(Items.shears),
                 toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.POCKET_WIRECUTTER.ID, 1, null, null, null),
-                MetaGeneratedGregtechTools.getInstance()
-                    .getToolWithStats(MetaGeneratedGregtechTools.ELECTRIC_SNIPS, 1, null, null, null), },
+                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_LV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_MV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_HV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.POCKET_WIRECUTTER.ID, 1, null, null, null), },
             // Mode.FRUIT
             { toolInstance.getToolWithStats(IDMetaTool01.KNIFE.ID, 1, null, null, null),
                 toolInstance.getToolWithStats(IDMetaTool01.POCKET_KNIFE.ID, 1, null, null, null), } };
@@ -797,6 +802,9 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                 null, // All inputs are taken from aAtl argument.
                 outputStacks,
                 specialStack,
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,

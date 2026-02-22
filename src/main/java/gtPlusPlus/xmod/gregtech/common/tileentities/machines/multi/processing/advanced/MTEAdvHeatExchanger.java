@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -45,7 +46,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
@@ -79,7 +79,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             'C',
             ofChain(
                 buildHatchAdder(MTEAdvHeatExchanger.class).atLeast(AdvHEHatches.ColdOutputHatch)
-                    .dot(2)
+                    .hint(2)
                     .casingIndex(CASING_INDEX)
                     .build(),
                 onElementPass(MTEAdvHeatExchanger::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
@@ -87,7 +87,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             'H',
             ofChain(
                 buildHatchAdder(MTEAdvHeatExchanger.class).atLeast(AdvHEHatches.HotInputHatch)
-                    .dot(3)
+                    .hint(3)
                     .casingIndex(CASING_INDEX)
                     .build(),
                 onElementPass(MTEAdvHeatExchanger::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
@@ -95,7 +95,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             'h',
             ofChain(
                 buildHatchAdder(MTEAdvHeatExchanger.class).atLeast(InputHatch, OutputHatch, Maintenance)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(CASING_INDEX)
                     .build(),
                 onElementPass(MTEAdvHeatExchanger::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
@@ -124,25 +124,106 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("More complicated than a Fusion Reactor. Seriously")
-            .addInfo("But you know this by now, right?")
             .addInfo("Works as fast as 32 Large Heat Exchangers")
+            .addInfo(
+                "Inputs are" + EnumChatFormatting.RED
+                    + " Lava"
+                    + EnumChatFormatting.GRAY
+                    + ","
+                    + EnumChatFormatting.RED
+                    + " Hot Coolant"
+                    + EnumChatFormatting.GRAY
+                    + ", or"
+                    + EnumChatFormatting.RED
+                    + " Hot Solar Salt")
+            .addInfo(
+                "Outputs are" + EnumChatFormatting.BLUE
+                    + " Pahoehoe Lava"
+                    + EnumChatFormatting.GRAY
+                    + ","
+                    + EnumChatFormatting.BLUE
+                    + " IC2 Coolant"
+                    + EnumChatFormatting.GRAY
+                    + ", or"
+                    + EnumChatFormatting.BLUE
+                    + " Cold Solar Salt")
+            .addInfo(
+                "Converts Distilled Water into" + EnumChatFormatting.WHITE
+                    + " Steam"
+                    + EnumChatFormatting.GRAY
+                    + " or"
+                    + EnumChatFormatting.WHITE
+                    + " SH Steam"
+                    + EnumChatFormatting.GRAY
+                    + " in the process")
+            .addInfo(
+                "Outputs" + EnumChatFormatting.WHITE
+                    + " SH Steam"
+                    + EnumChatFormatting.GRAY
+                    + " if the input rate of hot fluid is above a certain"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " threshold")
             .addSeparator()
-            .addInfo("Inputs are Hot Coolant or Lava")
-            .addInfo("Outputs Coolant or Pahoehoe Lava and SH Steam/Steam")
-            .addInfo("Outputs SH Steam if input flow is equal to or above a certain value:")
-            .addInfo("Hot Coolant: 25,600 L/s, maximum 51,200 L/s, max output 10,240,000 SH Steam/s")
-            .addInfo("Lava: 32,000 L/s, maximum 64,000 L/s, max output 5,120,000 SH Steam/s")
-            .addInfo("A circuit in the controller lowers the SH Steam threshold and efficiency")
-            .addInfo("3.75% reduction and 1.5% efficiency loss per circuit config over 1")
+            .addInfo(
+                EnumChatFormatting.RED + "Lava"
+                    + EnumChatFormatting.GRAY
+                    + " : SH Threshold"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " 32,000 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Input"
+                    + EnumChatFormatting.RED
+                    + " 64,000 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Output"
+                    + EnumChatFormatting.WHITE
+                    + " 5,120,000 SH Steam/s")
+            .addInfo(
+                EnumChatFormatting.RED + "Hot Coolant"
+                    + EnumChatFormatting.GRAY
+                    + " : SH Threshold"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " 25,600 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Input"
+                    + EnumChatFormatting.RED
+                    + " 51,200 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Output"
+                    + EnumChatFormatting.WHITE
+                    + " 10,240,000 SH Steam/s")
+            .addInfo(
+                EnumChatFormatting.RED + "Hot Solar Salt"
+                    + EnumChatFormatting.GRAY
+                    + " : SH Threshold"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " 5,120 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Input"
+                    + EnumChatFormatting.RED
+                    + " 10,240 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Output"
+                    + EnumChatFormatting.WHITE
+                    + " 10,240,000 SH Steam/s")
+            .addSeparator()
+            .addInfo("A circuit in the controller lowers the SH threshold at the cost of steam")
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + "3.75%"
+                    + EnumChatFormatting.GRAY
+                    + " reduced SH threshold and"
+                    + EnumChatFormatting.WHITE
+                    + " 1.5%"
+                    + EnumChatFormatting.GRAY
+                    + " reduced steam per circuit over 1")
             .beginStructureBlock(5, 9, 5, false)
             .addController("Front bottom")
             .addCasingInfoMin("Reinforced Heat Exchanger Casing", 90, false)
             .addOtherStructurePart("Tungstensteel Pipe Casing", "Center 3x5x3 (45 blocks)")
             .addMaintenanceHatch("Any casing", 1)
-            .addInputHatch("Hot fluid, bottom center", 2)
+            .addInputHatch("Hot fluid, bottom center casing", 2)
             .addInputHatch("Distilled water, any bottom layer casing", 1)
-            .addOutputHatch("Cold fluid, top center", 3)
+            .addOutputHatch("Cold fluid, top center casing", 3)
             .addOutputHatch("Steam/SH Steam, any bottom layer casing", 1)
             .toolTipFinisher();
         return tt;
@@ -357,18 +438,18 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         return new String[] {
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
+                + formatNumber(mProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
+                + formatNumber(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
             StatCollector.translateToLocal("GT5U.multiblock.usage") + " "
                 + StatCollector.translateToLocal("GT5U.LHE.steam")
                 + ": "
                 + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                + GTUtility.formatNumbers(superheated ? -2 * lEUt : -lEUt)
+                + formatNumber(superheated ? -2 * lEUt : -lEUt)
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
@@ -390,7 +471,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                 + StatCollector.translateToLocal("GT5U.LHE.threshold")
                 + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(superheated_threshold)
+                + formatNumber(superheated_threshold)
                 + EnumChatFormatting.RESET };
     }
 
@@ -406,7 +487,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
 
     @Override
     public String getMachineType() {
-        return "Heat Exchanger";
+        return "Heat Exchanger, WWXL";
     }
 
     @Override

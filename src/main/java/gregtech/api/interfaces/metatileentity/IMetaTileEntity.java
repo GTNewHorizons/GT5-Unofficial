@@ -48,13 +48,21 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
      * <p/>
-     * 0 = BaseMetaTileEntity, Wrench lvl 0 to dismantle 1 = BaseMetaTileEntity, Wrench lvl 1 to dismantle 2 =
-     * BaseMetaTileEntity, Wrench lvl 2 to dismantle 3 = BaseMetaTileEntity, Wrench lvl 3 to dismantle 4 =
-     * BaseMetaPipeEntity, Wrench lvl 0 to dismantle 5 = BaseMetaPipeEntity, Wrench lvl 1 to dismantle 6 =
-     * BaseMetaPipeEntity, Wrench lvl 2 to dismantle 7 = BaseMetaPipeEntity, Wrench lvl 3 to dismantle 8 =
-     * BaseMetaPipeEntity, Cutter lvl 0 to dismantle 9 = BaseMetaPipeEntity, Cutter lvl 1 to dismantle 10 =
-     * BaseMetaPipeEntity, Cutter lvl 2 to dismantle 11 = BaseMetaPipeEntity, Cutter lvl 3 to dismantle 12 = GT++ 13 =
-     * GT++ 14 = GT++ 15 = GT++
+     * // spotless:off
+     * 0 = BaseMetaTileEntity, Wrench lvl 0 to dismantle
+     * 1 = BaseMetaTileEntity, Wrench lvl 1 to dismantle
+     * 2 = BaseMetaTileEntity, Wrench lvl 2 to dismantle
+     * 3 = BaseMetaTileEntity, Wrench lvl 3 to dismantle
+     * 4 = BaseMetaPipeEntity, Wrench lvl 0 to dismantle
+     * 5 = BaseMetaPipeEntity, Wrench lvl 1 to dismantle
+     * 6 = BaseMetaPipeEntity, Wrench lvl 2 to dismantle
+     * 7 = BaseMetaPipeEntity, Wrench lvl 3 to dismantle
+     * 8 = BaseMetaPipeEntity, Cutter lvl 0 to dismantle
+     * 9 = BaseMetaPipeEntity, Cutter lvl 1 to dismantle
+     * 10 = BaseMetaPipeEntity, Cutter lvl 2 to dismantle
+     * 11 = BaseMetaPipeEntity, Cutter lvl 3 to dismantle
+     * 12 = GT++ 13 = GT++ 14 = GT++ 15 = GT++
+     * // spotless:on
      */
     byte getTileEntityBaseType();
 
@@ -95,7 +103,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void loadNBTData(NBTTagCompound aNBT);
 
     /**
-     * Adds the NBT-Information to the ItemStack, when being dismanteled properly Used to store Machine specific Upgrade
+     * Adds the NBT-Information to the ItemStack, when being dismantled properly Used to store Machine specific Upgrade
      * Data.
      */
     void setItemNBT(NBTTagCompound aNBT);
@@ -199,6 +207,22 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      *         upon Block destruction and for Inventory Access Management
      */
     boolean isValidSlot(int aIndex);
+
+    /// Checks if the slot is an I/O slot that contributes to [GTItemSink#getStoredItemsInSink(ItemStackPredicate)].
+    /// Also controls which slots block AE pattern pushes for blocking mode.
+    default boolean isIOSlot(int slot) {
+        return true;
+    }
+
+    /**
+     * Gets the max stack size limit for a slot and a stack.
+     *
+     * @param slot  The slot, or -1 for a general 'lowest slot' query.
+     * @param stack The stack, or null for a general 'any standard stack' query (getMaxStackSize() == 64).
+     */
+    default int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
+        return Math.min(getInventoryStackLimit(), stack == null ? 64 : stack.getMaxStackSize());
+    }
 
     /**
      * Check if the item at the specified index should be dropped
@@ -392,7 +416,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         if (getBaseMetaTileEntity() != null) {
             return getBaseMetaTileEntity().getGUIColorization();
         } else {
-            return Dyes.MACHINE_METAL.toInt();
+            return Dyes.GUI_METAL.toInt();
         }
     }
 

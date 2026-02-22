@@ -45,7 +45,7 @@ public class GasSiphonRecipes {
         // T6 (-> 0.5 to 2A of ZPM)
         Map<Integer, FluidStack> neptuneRecipes = new HashMap<>();
         neptuneRecipes.put(1, Materials.Tritium.getGas(3_000));
-        neptuneRecipes.put(2, Materials.Helium_3.getGas(500));
+        neptuneRecipes.put(2, Materials.Helium3.getGas(500));
         neptuneRecipes.put(3, Materials.Ammonia.getGas(400));
         neptuneRecipes.put(4, WerkstoffLoader.Xenon.getFluidOrGas(350));
 

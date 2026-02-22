@@ -49,6 +49,8 @@ import gregtech.common.capability.CleanroomReference;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.mechanics.pipe.IConnectsToDataPipe;
+import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 
@@ -197,12 +199,18 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
+        final IGregTechTileEntity meta = getBaseMetaTileEntity();
+        if (!meta.isValidFacing(wrenchingSide)) return false;
+        meta.setFrontFacing(wrenchingSide);
 
-        if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
-            getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
-            return true;
+        for (final ForgeDirection s : ForgeDirection.VALID_DIRECTIONS) {
+            final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(s);
+            if (iGregTechTileEntity != null) {
+                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser pipe) pipe.updateNetwork(true);
+                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData pipe) pipe.updateNetwork(true);
+            }
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -607,18 +615,29 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     @Override
     public void onBlockDestroyed() {
         final IGregTechTileEntity meta = getBaseMetaTileEntity();
+        if (this instanceof IConnectsToEnergyTunnel) {
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(side);
 
-        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(side);
-
-            if (iGregTechTileEntity != null) {
-                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser neighbor) {
-                    neighbor.mConnections &= ~side.getOpposite().flag;
-                    neighbor.connectionCount--;
+                if (iGregTechTileEntity != null) {
+                    if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser neighbor
+                        && neighbor.isConnectedAtSide(side.getOpposite())) {
+                        neighbor.mConnections &= ~side.getOpposite().flag;
+                        neighbor.connectionCount--;
+                    }
                 }
-                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData neighbor) {
-                    neighbor.mConnections &= ~side.getOpposite().flag;
-                    neighbor.connectionCount--;
+            }
+        }
+        if (this instanceof IConnectsToDataPipe) {
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(side);
+
+                if (iGregTechTileEntity != null) {
+                    if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData neighbor
+                        && neighbor.isConnectedAtSide(side.getOpposite())) {
+                        neighbor.mConnections &= ~side.getOpposite().flag;
+                        neighbor.connectionCount--;
+                    }
                 }
             }
         }
@@ -655,7 +674,14 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         final int tY = getBaseMetaTileEntity().getYCoord();
         final int tZ = getBaseMetaTileEntity().getZCoord();
         final World tWorld = getBaseMetaTileEntity().getWorld();
-        GTUtility.sendSoundToPlayers(tWorld, SoundResource.IC2_MACHINES_MACHINE_OVERLOAD, 1.0F, -1, tX, tY, tZ);
+        GTUtility.sendSoundToPlayers(
+            tWorld,
+            SoundResource.IC2_MACHINES_MACHINE_OVERLOAD,
+            1.0F,
+            -1,
+            tX + .5,
+            tY + .5,
+            tZ + .5);
         tWorld.setBlock(tX, tY, tZ, Blocks.air);
         if (GregTechAPI.sMachineExplosions) tWorld.createExplosion(null, tX + 0.5, tY + 0.5, tZ + 0.5, tStrength, true);
     }
@@ -752,7 +778,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
                 .getCache(IEnergyGrid.class);
             if (!eg.isNetworkPowered())
                 return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.power");
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return "";
@@ -768,14 +794,14 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         Dyes dye = Dyes.dyeWhite;
         if (this.colorOverride.sLoaded()) {
             if (this.colorOverride.sGuiTintingEnabled() && getBaseMetaTileEntity() != null) {
-                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.MACHINE_METAL);
+                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.GUI_METAL);
                 return this.colorOverride.getGuiTintOrDefault(dye.mName, dye.toInt());
             }
         } else if (GregTechAPI.sColoredGUI) {
             if (GregTechAPI.sMachineMetalGUI) {
-                dye = Dyes.MACHINE_METAL;
+                dye = Dyes.GUI_METAL;
             } else if (getBaseMetaTileEntity() != null) {
-                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.MACHINE_METAL);
+                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.GUI_METAL);
             }
         }
         return dye.toInt();

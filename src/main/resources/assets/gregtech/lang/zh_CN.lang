@@ -99,7 +99,6 @@ GT5U.machines.miner=采矿机
 GT5U.machines.powersource.power=功率
 GT5U.machines.powersource.steam=蒸汽
 GT5U.machines.pump=泵
-GT5U.machines.separatebus=输入总线已独立
 GT5U.machines.pumpareaset=工作区域设置为
 GT5U.machines.oilfluidpump=石油/流体钻机
 GT5U.machines.minermulti=采矿场
@@ -220,13 +219,13 @@ GT5U.hatch.infiniteCache.false=ME输出总线离线超过2秒后将停止接收�
 GT5U.hatch.additionalConnection.true=可从任意方向连入ME网络
 GT5U.hatch.additionalConnection.false=仅可从正面连入ME网络
 
-GT5U.multiblock.pollution=污染减少到
-GT5U.multiblock.energy=存储能量
-GT5U.multiblock.Progress=工作时间
-GT5U.multiblock.efficiency=效率
-GT5U.multiblock.problems=问题
-GT5U.multiblock.mei=最大输入
-GT5U.multiblock.usage=大概功率
+GT5U.multiblock.pollution=污染减少到: §a%s§r%%
+GT5U.multiblock.energy=存储能量: §a%s §rEU / §e%s §rEU
+GT5U.multiblock.Progress=工作时间: §a%s §rs / §e%s §rs
+GT5U.multiblock.efficiency=效率: §e%s§r%%
+GT5U.multiblock.problems=问题: §c%s
+GT5U.multiblock.mei=最大输入: §e%s §rEU/t (*2A) Tier: §e%s
+GT5U.multiblock.usage=大概功率: §c%s §rEU/t
 GT5U.multiblock.runningMode=§e运行模式：
 
 # NEI recipe handlers
@@ -301,7 +300,7 @@ GT5U.interface.coverTabs.east=东
 # Waila
 GT5U.waila.machine.working_disabled=工作停止
 GT5U.waila.machine.idle=空闲
-GT5U.waila.machine.in_progress=运行中: %,.1fs / %,.1fs (%,.1f%%)
+GT5U.waila.machine.in_progress=%,.1fs / %,.1fs (%,.1f%%)
 GT5U.waila.machine_facing=机器朝向: %s
 GT5U.waila.output_facing=输出方向: %s
 GT5U.waila.facing=方向: %s
@@ -755,37 +754,6 @@ achievement.gt.blockmachines.wireless.receiver.tier.13.desc=捡起此物品以�
 achievement.gt.blockmachines.wireless.receiver.tier.14=MAX无线能源仓
 achievement.gt.blockmachines.wireless.receiver.tier.14.desc=捡起此物品以在NEI内解锁该合成表
 
-achievement.gt.blockmachines.wireless.transmitter.tier.00=ULV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.00.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.01=LV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.01.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.02=MV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.02.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.03=HV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.03.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.04=EV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.04.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.05=IV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.05.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.06=LuV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.06.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.07=ZPM无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.07.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.08=UV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.08.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.09=UHV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.09.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.10=UEV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.10.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.11=UIV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.11.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.12=UMV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.12.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.13=UXV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.13.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.14=MAX无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.14.desc=捡起此物品以在NEI内解锁该合成表
-
 achievement.gt.blockmachines.multimachine.em.infuser=能量注入仪
 achievement.gt.blockmachines.multimachine.em.infuser.desc=捡起此物品以在NEI内解锁该合成表
 achievement.gt.blockmachines.hatch.holder.tier.09=物品固定容器
@@ -1084,15 +1052,6 @@ GTPP.machines.tier=等级
 GTPP.machines.input=输入
 GTPP.machines.output=输出
 
-GTPP.multiblock.pollutionreduced=减少污染至
-GTPP.multiblock.pollution=污染
-GTPP.multiblock.energy=能量存储
-GTPP.multiblock.progress=进程
-GTPP.multiblock.efficiency=效率
-GTPP.multiblock.problems=维护问题
-GTPP.multiblock.mei=最大能量输入
-GTPP.multiblock.usage=NEI功率
-GTPP.multiblock.generation=可能生成
 GTPP.multiblock.specialvalue=特殊值
 GTPP.multiblock.duration=NEI时间
 
@@ -1100,7 +1059,6 @@ GTPP.multiblock.duration=NEI时间
 
 GTPP.CC.machinetier=控制核心等级
 GTPP.CC.discount=EU损耗
-GTPP.CC.parallel=最大并行
 
 # Tooltips for the Charger Packs
 GTPP.battpack.tooltip.1=在Baubles的腰带栏内使用
@@ -1303,3 +1261,22 @@ achievement.gt.blockmachines.gtpp.multimachine.flotationcell=工业浮选机
 achievement.gt.blockmachines.gtpp.multimachine.flotationcell.desc=[AL]捡起此物品以在NEI内解锁该合成表
 achievement.gt.blockmachines.gtpp.multimachine.isamill=艾萨研磨机
 achievement.gt.blockmachines.gtpp.multimachine.isamill.desc=[AL]捡起此物品以在NEI内解锁该合成表
+
+# Thaumcraft Aspects
+tc.aspect.custom1=平等,平衡,均衡
+tc.aspect.custom2=疯癫,癫狂,狂热
+tc.aspect.custom3=起始,起源,源头
+tc.aspect.custom4=星辰,星座,天国
+tc.aspect.custom5=荣耀,荣誉,声誉
+
+tc.aspect.custom1.name=平衡
+tc.aspect.custom2.name=癫狂
+tc.aspect.custom3.name=起源
+tc.aspect.custom4.name=星辰
+tc.aspect.custom5.name=荣耀
+
+tc.aspect.help.custom1=平衡的事物
+tc.aspect.help.custom2=扭曲的思想
+tc.aspect.help.custom3=新事物的起始
+tc.aspect.help.custom4=宇宙
+tc.aspect.help.custom5=荣耀

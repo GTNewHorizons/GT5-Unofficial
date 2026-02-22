@@ -11,6 +11,9 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.KeyProvider;
+import gregtech.common.gui.modularui.cover.base.CoverAdvancedRedstoneReceiverBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.AdvancedRedstoneReceiverBaseUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -67,11 +70,28 @@ public abstract class CoverAdvancedRedstoneReceiverBase extends CoverAdvancedWir
         return new AdvancedRedstoneReceiverBaseUIFactory(buildContext).createWindow();
     }
 
-    public enum GateMode {
-        AND,
-        NAND,
-        OR,
-        NOR,
-        SINGLE_SOURCE
+    @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverAdvancedRedstoneReceiverBaseGui(this);
+    }
+
+    public enum GateMode implements KeyProvider {
+
+        AND("gt.interact.desc.andgate"),
+        NAND("gt.interact.desc.nandgate"),
+        OR("gt.interact.desc.orgate"),
+        NOR("gt.interact.desc.norgate"),
+        SINGLE_SOURCE("gt.interact.desc.analogmode");
+
+        private final String key;
+
+        GateMode(String key) {
+            this.key = key;
+        }
+
+        @Override
+        public String getKey() {
+            return this.key;
+        }
     }
 }

@@ -35,7 +35,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTUtility.ItemId;
 import kubatech.api.enums.ItemList;
-import kubatech.loaders.item.items.ItemTeaUltimate;
+import kubatech.loaders.item.kubaitem.items.ItemTeaUltimate;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;

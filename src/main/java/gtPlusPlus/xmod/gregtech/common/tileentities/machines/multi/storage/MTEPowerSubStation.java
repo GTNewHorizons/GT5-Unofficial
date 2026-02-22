@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -155,8 +156,8 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         if (side == this.getBaseMetaTileEntity()
             .getBackFacing()) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(24)),
-                mIsOutputtingPower ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[(int) this.getOutputTier()]
-                    : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_2A[(int) this.getInputTier()] };
+                mIsOutputtingPower ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[(int) this.getOutputTier() + 1]
+                    : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_2A[(int) this.getInputTier() + 1] };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(23)) };
     }
@@ -247,7 +248,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                         .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
                         .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
                         .casingIndex(TAE.GTPP_INDEX(24))
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
                 .addElement(
                     'B',
@@ -255,7 +256,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                         .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
                         .disallowOnly(ForgeDirection.UP)
                         .casingIndex(TAE.GTPP_INDEX(24))
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
                 .addElement(
                     'T',
@@ -263,7 +264,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                         .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
                         .disallowOnly(ForgeDirection.DOWN)
                         .casingIndex(TAE.GTPP_INDEX(24))
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
                 .addElement(
                     'I',
@@ -687,22 +688,18 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
 
         String storedEnergyText;
         if (this.getEUVar() > this.mBatteryCapacity) {
-            storedEnergyText = EnumChatFormatting.RED + GTUtility.formatNumbers(this.getEUVar())
-                + EnumChatFormatting.RESET;
+            storedEnergyText = EnumChatFormatting.RED + formatNumber(this.getEUVar()) + EnumChatFormatting.RESET;
         } else {
-            storedEnergyText = EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.getEUVar())
-                + EnumChatFormatting.RESET;
+            storedEnergyText = EnumChatFormatting.GREEN + formatNumber(this.getEUVar()) + EnumChatFormatting.RESET;
         }
 
         int errorCode = getErrorDisplayID();
         boolean mMaint = (errorCode != 0);
 
         return new String[] { "Ergon Energy - District Sub-Station", "Stored EU: " + storedEnergyText,
-            "Capacity: " + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(this.maxEUStore())
-                + EnumChatFormatting.RESET,
+            "Capacity: " + EnumChatFormatting.YELLOW + formatNumber(this.maxEUStore()) + EnumChatFormatting.RESET,
             "Running Costs: " + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(this.computeEnergyTax())
+                + formatNumber(this.computeEnergyTax())
                 + EnumChatFormatting.RESET
                 + " EU/t",
             "Controller Mode: " + mode,
@@ -716,23 +713,23 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                 + "]",
             EnumChatFormatting.STRIKETHROUGH + "----------------------", "Stats for Nerds",
             "Average Input: " + EnumChatFormatting.BLUE
-                + GTUtility.formatNumbers(this.getAverageEuAdded())
+                + formatNumber(this.getAverageEuAdded())
                 + EnumChatFormatting.RESET
                 + " EU",
             "Average Output: " + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(this.getAverageEuConsumed())
+                + formatNumber(this.getAverageEuConsumed())
                 + EnumChatFormatting.RESET
                 + " EU",
             "Total Input: " + EnumChatFormatting.BLUE
-                + GTUtility.formatNumbers(this.mTotalEnergyAdded)
+                + formatNumber(this.mTotalEnergyAdded)
                 + EnumChatFormatting.RESET
                 + " EU",
             "Total Output: " + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(this.mTotalEnergyConsumed)
+                + formatNumber(this.mTotalEnergyConsumed)
                 + EnumChatFormatting.RESET
                 + " EU",
             "Total Costs: " + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(this.mTotalEnergyLost)
+                + formatNumber(this.mTotalEnergyLost)
                 + EnumChatFormatting.RESET
                 + " EU", };
     }
@@ -841,6 +838,11 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     private float clientProgress;
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {

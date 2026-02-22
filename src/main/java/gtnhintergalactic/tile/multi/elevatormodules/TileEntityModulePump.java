@@ -30,7 +30,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gregtech.common.tileentities.machines.MTEHatchOutputME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtnhintergalactic.recipe.SpacePumpingRecipes;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -418,7 +418,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
                 .beginStructureBlock(1, 5, 2, false)
                 .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .toolTipFinisher();
             return tt;
         }
@@ -508,7 +508,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
                 .beginStructureBlock(1, 5, 2, false)
                 .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .toolTipFinisher();
             return tt;
         }
@@ -598,7 +598,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT4"))
                 .beginStructureBlock(1, 5, 2, false)
                 .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .toolTipFinisher();
             return tt;
         }

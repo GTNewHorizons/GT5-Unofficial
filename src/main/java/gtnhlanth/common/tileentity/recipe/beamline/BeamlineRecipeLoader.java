@@ -164,7 +164,7 @@ public class BeamlineRecipeLoader {
                                     .minFocus(mask.getMinFocus())
                                     .build())
                             .duration(1)
-                            .eut(1920)
+                            .eut(TierEU.RECIPE_EV)
                             .addTo(targetChamberRecipes);
                     }
                 }
@@ -209,6 +209,24 @@ public class BeamlineRecipeLoader {
                     .amount(24)
                     .energy(5, 12, 1)
                     .minFocus(60)
+                    .build())
+            .duration(1)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(targetChamberRecipes);
+
+        focusItem = new ItemStack(LanthItemList.maskMap.get(MaskList.ACC), 0);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                focusItem,
+                WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
+            .itemOutputs(GTUtility.copyAmountUnsafe(64, ItemList.Circuit_Chip_CrystalSoC2.get(1)))
+            .metadata(
+                TARGET_CHAMBER_METADATA,
+                TargetChamberMetadata.builder(focusItem)
+                    .particleID(1)
+                    .amount(36)
+                    .energy(6, 14, 1)
+                    .minFocus(70)
                     .build())
             .duration(1)
             .eut(TierEU.RECIPE_LuV)

@@ -23,6 +23,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
@@ -30,28 +31,32 @@ import org.jetbrains.annotations.Nullable;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IBlockWithActiveOffset;
 import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.config.Client;
 import gregtech.common.data.GTCoilTracker;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.render.GTRendererBlock;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
 public class BlockCasings5 extends BlockCasingsAbstract
-    implements IHeatingCoil, IBlockWithTextures, IBlockWithClientMeta {
+    implements IHeatingCoil, IBlockWithTextures, IBlockWithClientMeta, IBlockWithActiveOffset, IGregtechWailaProvider {
 
     public static final Supplier<String> COIL_HEAT_TOOLTIP = translatedText("gt.coilheattooltip");
     public static final Supplier<String> COIL_UNIT_TOOLTIP = translatedText("gt.coilunittooltip");
-
-    public static final int ACTIVE_OFFSET = 16;
 
     public BlockCasings5() {
         super(ItemCasings.class, "gt.blockcasings5", MaterialCasings.INSTANCE, 16);
@@ -99,6 +104,28 @@ public class BlockCasings5 extends BlockCasingsAbstract
     @Override
     public int getTextureIndex(int aMeta) {
         return (1 << 7) | (aMeta % ACTIVE_OFFSET);
+    }
+
+    @Override
+    public IIcon getIcon(int side, int meta) {
+        IIconContainer background = switch (meta % ACTIVE_OFFSET) {
+            case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL_BACKGROUND;
+            case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME_BACKGROUND;
+            case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL_BACKGROUND;
+            case 4 -> Textures.BlockIcons.MACHINE_COIL_HSSG_BACKGROUND;
+            case 5 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAH_BACKGROUND;
+            case 6 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY_BACKGROUND;
+            case 7 -> Textures.BlockIcons.MACHINE_COIL_ELECTRUMFLUX_BACKGROUND;
+            case 8 -> Textures.BlockIcons.MACHINE_COIL_AWAKENEDDRACONIUM_BACKGROUND;
+            case 9 -> Textures.BlockIcons.MACHINE_COIL_HSSS_BACKGROUND;
+            case 10 -> Textures.BlockIcons.MACHINE_COIL_TRINIUM_BACKGROUND;
+            case 11 -> Textures.BlockIcons.MACHINE_COIL_INFINITY_BACKGROUND;
+            case 12 -> Textures.BlockIcons.MACHINE_COIL_HYPOGEN_BACKGROUND;
+            case 13 -> Textures.BlockIcons.MACHINE_COIL_ETERNAL_BACKGROUND;
+            default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_BACKGROUND;
+        };
+
+        return background.getIcon();
     }
 
     @Override
@@ -180,11 +207,6 @@ public class BlockCasings5 extends BlockCasingsAbstract
         return GTRendererBlock.RENDER_ID;
     }
 
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
     /*--------------- COIL CHECK IMPL. ------------*/
 
     public static HeatingCoilLevel getCoilHeatFromDamage(int meta) {
@@ -239,5 +261,13 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
         HeatingCoilLevel coilLevel = BlockCasings5.getCoilHeatFromDamage(metadata);
         tooltip.add(COIL_HEAT_TOOLTIP.get() + coilLevel.getHeat() + COIL_UNIT_TOOLTIP.get());
+    }
+
+    @Override
+    public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        ItemStack stack = accessor.getStack()
+            .copy();
+        stack.setItemDamage(stack.getItemDamage() % ACTIVE_OFFSET);
+        return stack;
     }
 }

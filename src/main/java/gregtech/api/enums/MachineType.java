@@ -11,6 +11,7 @@ public enum MachineType {
     AUTOCLAVE(FunnyTexts.AUTOCLAVE, "gt.recipe.autoclave"),
     BENDING_MACHINE(FunnyTexts.BENDING_MACHINE, "gt.recipe.metalbender"),
     BREWERY(FunnyTexts.BREWERY, "gt.recipe.brewer"),
+    CABLE_COATER(FunnyTexts.CABLE_COATER, "gt.recipe.cable"),
     CANNER(FunnyTexts.CANNER, "gt.recipe.canner"),
     CENTRIFUGE(FunnyTexts.CENTRIFUGE, "gt.recipe.centrifuge"),
     CHEMICAL_BATH(FunnyTexts.CHEMICAL_BATH, "gt.recipe.chemicalbath"),
@@ -34,7 +35,6 @@ public enum MachineType {
     LASER_ENGRAVER(FunnyTexts.LASER_ENGRAVER, "gt.recipe.laserengraver"),
     LATHE(FunnyTexts.LATHE, "gt.recipe.lathe"),
     MACERATOR(FunnyTexts.MACERATOR, "gt.recipe.macerator"),
-    MACERATOR_PULVERIZER(FunnyTexts.MACERATOR_PULVERIZER, "gt.recipe.macerator_pulverizer"),
     MATTER_AMPLIFIER(FunnyTexts.MATTER_AMPLIFIER, "gt.recipe.uuamplifier"),
     MATTER_FABRICATOR(FunnyTexts.MATTER_FABRICATOR, "gt.recipe.massfab"),
     MICROWAVE(FunnyTexts.MICROWAVE, "gt.recipe.microwave"),
@@ -50,10 +50,10 @@ public enum MachineType {
     SCANNER(FunnyTexts.SCANNER, "gt.recipe.scanner"),
     ROCKBREAKER(FunnyTexts.ROCKBREAKER, "gt.recipe.rockbreaker"),
     SIFTER(FunnyTexts.SIFTER, "gt.recipe.sifter"),
-    SLICER(FunnyTexts.SLICER, "gt.recipe.slicer"),
     THERMAL_CENTRIFUGE(FunnyTexts.THERMAL_CENTRIFUGE, "gt.recipe.thermalcentrifuge"),
     UNPACKAGER(FunnyTexts.UNPACKAGER, "gt.recipe.unpackager"),
-    WIREMILL(FunnyTexts.WIREMILL, "gt.recipe.wiremill");
+    WIREMILL(FunnyTexts.WIREMILL, "gt.recipe.wiremill"),
+    DRAWER_FRAMER(FunnyTexts.DRAWER_FRAMER, "gt.recipe.drawerframer");
 
     private static class FunnyTexts {
 
@@ -64,6 +64,7 @@ public enum MachineType {
         static final String BENDING_MACHINE = "gt.recipe.metalbender.description";
         static final String BREWERY = "gt.recipe.brewer.description";
         static final String CANNER = "gt.recipe.canner.description";
+        static final String CABLE_COATER = "gt.recipe.cablecoater.description";
         static final String CENTRIFUGE = "gt.recipe.centrifuge.description";
         static final String CHEMICAL_BATH = "gt.recipe.chemicalbath.description";
         static final String CHEMICAL_REACTOR = "gt.recipe.chemicalreactor.description";
@@ -86,7 +87,6 @@ public enum MachineType {
         static final String LASER_ENGRAVER = "gt.recipe.laserengraver.description";
         static final String LATHE = "gt.recipe.lathe.description";
         static final String MACERATOR = "gt.recipe.macerator.description";
-        static final String MACERATOR_PULVERIZER = "gt.recipe.macerator_pulverizer.description";
         static final String MATTER_AMPLIFIER = "gt.recipe.uuamplifier.description";
         static final String MATTER_FABRICATOR = "gt.recipe.massfab.description";
         static final String MICROWAVE = "gt.recipe.microwave.description";
@@ -102,10 +102,10 @@ public enum MachineType {
         static final String ROCKBREAKER = "gt.recipe.rockbreaker.description";
         static final String SIFTER = "gt.recipe.sifter.description";
         static final String SCANNER = "gt.recipe.scanner.description";
-        static final String SLICER = "gt.recipe.slicer.description";
         static final String THERMAL_CENTRIFUGE = "gt.recipe.thermalcentrifuge.description";
         static final String UNPACKAGER = "gt.recipe.unpackager.description";
         static final String WIREMILL = "gt.recipe.wiremill.description";
+        static final String DRAWER_FRAMER = "gt.recipe.drawerframer.description";
     }
 
     private static final String TT_machineType = "GT5U.MBTT.MachineType";

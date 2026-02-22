@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,9 +43,18 @@ public class CoverUIFactory<C> {
         addTitleToUI(builder);
         addUIWidgets(builder);
         if (getUIBuildContext().isAnotherWindow()) {
+            // Close button background
+            builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                if (!widget.isClient()) {
+                    widget.getWindow()
+                        .closeWindow();
+                }
+            })
+                .setBackground(ModularUITextures.VANILLA_BACKGROUND)
+                .setSize(12, 12)
+                .setPos(getGUIWidth() - 15, 3));
             builder.widget(
-                ButtonWidget.closeWindowButton(true)
-                    .setPos(getGUIWidth() - 15, 3));
+                new TextWidget(StatCollector.translateToLocal("mui.button.close")).setPos(getGUIWidth() - 12, 5));
         }
 
         final Cover cover = uiBuildContext.getTile()

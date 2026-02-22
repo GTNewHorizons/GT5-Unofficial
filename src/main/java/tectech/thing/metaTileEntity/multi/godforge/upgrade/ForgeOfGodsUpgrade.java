@@ -1,8 +1,8 @@
 package tectech.thing.metaTileEntity.multi.godforge.upgrade;
 
-import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.BGWindowSize.*;
-import static tectech.thing.metaTileEntity.multi.godforge.util.MilestoneIcon.*;
-import static tectech.thing.metaTileEntity.multi.godforge.util.UpgradeColor.*;
+import static gregtech.common.gui.modularui.multiblock.godforge.data.Milestones.*;
+import static gregtech.common.gui.modularui.multiblock.godforge.data.UpgradeColor.*;
+import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.PanelSize.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,17 +12,14 @@ import java.util.Set;
 import java.util.function.UnaryOperator;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.google.common.collect.ImmutableSet;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.math.Size;
 
+import gregtech.common.gui.modularui.multiblock.godforge.data.Milestones;
+import gregtech.common.gui.modularui.multiblock.godforge.data.UpgradeColor;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
-import tectech.thing.metaTileEntity.multi.godforge.util.MilestoneIcon;
-import tectech.thing.metaTileEntity.multi.godforge.util.UpgradeColor;
 
 public enum ForgeOfGodsUpgrade {
 
@@ -71,7 +68,7 @@ public enum ForgeOfGodsUpgrade {
 
         START.build(b -> b
             .background(BLUE, COMPOSITION)
-            .windowSize(LARGE)
+            .panelSize(LARGE)
             .treePos(126, 56));
 
         IGCC.build(b -> b
@@ -247,14 +244,14 @@ public enum ForgeOfGodsUpgrade {
         EE.build(b -> b
             .prereqs(TBF)
             .cost(10)
-            .background(BLUE, COMPOSITION)
+            .background(BLUE, CONVERSION)
             .treePos(216, 758));
 
         END.build(b -> b
             .prereqs(EE)
             .cost(12)
             .background(BLUE, COMPOSITION)
-            .windowSize(LARGE)
+            .panelSize(LARGE)
             .treePos(126, 798));
 
         // spotless:on
@@ -289,9 +286,10 @@ public enum ForgeOfGodsUpgrade {
 
     // UI
     private UpgradeColor color;
-    private MilestoneIcon icon;
-    private BGWindowSize windowSize;
-    private Pos2d treePos;
+    private Milestones icon;
+    private PanelSize panelSize;
+    private int treeX;
+    private int treeY;
 
     // Pre-generated data
     private ForgeOfGodsUpgrade[] dependents = new ForgeOfGodsUpgrade[0];
@@ -316,8 +314,9 @@ public enum ForgeOfGodsUpgrade {
         this.shardCost = b.shardCost;
         this.color = b.color;
         this.icon = b.icon;
-        this.windowSize = b.windowSize;
-        this.treePos = b.treePos;
+        this.panelSize = b.panelSize;
+        this.treeX = b.treeX;
+        this.treeY = b.treeY;
     }
 
     public void addExtraCost(ItemStack... cost) {
@@ -348,7 +347,22 @@ public enum ForgeOfGodsUpgrade {
     }
 
     public ItemStack[] getExtraCost() {
-        return extraCost.toArray(new ItemStack[0]);
+        // Ensure this array always has a size of 12
+        ItemStack[] cost = new ItemStack[12];
+        for (int i = 0; i < extraCost.size(); i++) {
+            cost[i] = extraCost.get(i);
+        }
+        return cost;
+    }
+
+    public ItemStack[] getExtraCostNoNulls() {
+        List<ItemStack> cost = new ArrayList<>();
+        for (ItemStack singleCost : extraCost) {
+            if (singleCost != null) {
+                cost.add(singleCost);
+            }
+        }
+        return cost.toArray(new ItemStack[0]);
     }
 
     public UITexture getBackground() {
@@ -360,39 +374,47 @@ public enum ForgeOfGodsUpgrade {
     }
 
     public UITexture getSymbol() {
-        return icon.getSymbol();
+        return icon.getSymbolBackground();
     }
 
     public float getSymbolWidthRatio() {
-        return icon.getWidthRatio();
+        return icon.getSymbolWidthRatio();
     }
 
-    public Size getWindowSize() {
-        return windowSize.getWindowSize();
+    public int getPanelSize() {
+        return panelSize.getPanelSize();
     }
 
-    public int getLoreYPos() {
-        return windowSize.getLoreY();
+    public int getBodySize() {
+        return panelSize.getBodySize();
     }
 
-    public Pos2d getTreePos() {
-        return treePos;
+    public int getLoreSize() {
+        return panelSize.getLoreSize();
     }
 
-    public String getNameText() {
-        return StatCollector.translateToLocal(name);
+    public int getTreeX() {
+        return treeX;
     }
 
-    public String getShortNameText() {
-        return StatCollector.translateToLocal(nameShort);
+    public int getTreeY() {
+        return treeY;
     }
 
-    public String getBodyText() {
-        return StatCollector.translateToLocal(bodyText);
+    public String getNameKey() {
+        return name;
     }
 
-    public String getLoreText() {
-        return StatCollector.translateToLocal(loreText);
+    public String getShortNameKey() {
+        return nameShort;
+    }
+
+    public String getBodyKey() {
+        return bodyText;
+    }
+
+    public String getLoreKey() {
+        return loreText;
     }
 
     public static class Builder {
@@ -406,9 +428,10 @@ public enum ForgeOfGodsUpgrade {
 
         // UI
         private UpgradeColor color = BLUE;
-        private MilestoneIcon icon = CHARGE;
-        private BGWindowSize windowSize = STANDARD;
-        private Pos2d treePos = new Pos2d(0, 0);
+        private Milestones icon = CHARGE;
+        private PanelSize panelSize = STANDARD;
+        private int treeX;
+        private int treeY;
 
         private Builder() {}
 
@@ -432,44 +455,49 @@ public enum ForgeOfGodsUpgrade {
         }
 
         // UI
-        public Builder background(UpgradeColor color, MilestoneIcon icon) {
+        public Builder background(UpgradeColor color, Milestones icon) {
             this.color = color;
             this.icon = icon;
             return this;
         }
 
-        public Builder windowSize(BGWindowSize windowSize) {
-            this.windowSize = windowSize;
+        public Builder panelSize(PanelSize panelSize) {
+            this.panelSize = panelSize;
             return this;
         }
 
         public Builder treePos(int x, int y) {
-            this.treePos = new Pos2d(x, y);
+            this.treeX = x;
+            this.treeY = y;
             return this;
         }
     }
 
-    enum BGWindowSize {
+    public enum PanelSize {
 
-        STANDARD(250, 250, 110),
-        LARGE(300, 300, 85),
+        STANDARD(250, 80, 115),
+        LARGE(300, 55, 170);
 
-        ;
+        private final int panelSize;
+        private final int bodySize;
+        private final int loreSize;
 
-        private final Size size;
-        private final int loreY;
-
-        BGWindowSize(int width, int height, int loreY) {
-            this.size = new Size(width, height);
-            this.loreY = loreY;
+        PanelSize(int panelSize, int bodySize, int loreSize) {
+            this.panelSize = panelSize;
+            this.bodySize = bodySize;
+            this.loreSize = loreSize;
         }
 
-        public Size getWindowSize() {
-            return size;
+        public int getPanelSize() {
+            return panelSize;
         }
 
-        public int getLoreY() {
-            return loreY;
+        public int getBodySize() {
+            return bodySize;
+        }
+
+        public int getLoreSize() {
+            return loreSize;
         }
     }
 }
