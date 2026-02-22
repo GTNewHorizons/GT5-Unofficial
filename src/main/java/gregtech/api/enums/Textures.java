@@ -2625,7 +2625,7 @@ public class Textures {
             VOID = GlobalIcons.VOID, // The Empty Texture
             RENDERING_ERROR = GlobalIcons.RENDERING_ERROR,
 
-            MORTAR = GTItemIconContainer.create("MORTAR"),
+            MORTAR = create("MORTAR"),
             ROLLING_PIN = create("ROLLING_PIN"),
             HANDLE_SWORD = create("HANDLE_SWORD"),
             HANDLE_FILE = create("HANDLE_FILE"),
@@ -2656,7 +2656,7 @@ public class Textures {
             ENERGY_BAR_8 = create("ENERGY_BAR_8"),
             WIRELESS_HEADPHONES = create("WIRELESS_HEADPHONES"),
             HALO = create("HALO"),
-            HALO_FUZZY = GTItemIconContainer.create("HALO_FUZZY"),
+            HALO_FUZZY = create("HALO_FUZZY"),
             JACKHAMMER_BASE = create("JACKHAMMER_BASE");
         // spotless:on
 
