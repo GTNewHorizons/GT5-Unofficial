@@ -2097,7 +2097,7 @@ public class Textures {
         OVERLAY_VACUUM_PIPE_PORT_INPUT = createOptional("OVERLAY_VACUUM_PIPE_PORT_INPUT"),
         OVERLAY_VACUUM_HATCH_OUTPUT = createOptional("OVERLAY_VACUUM_HATCH_OUTPUT"),
         OVERLAY_VACUUM_HATCH_OUTPUT_ACTIVE = createOptional("OVERLAY_VACUUM_HATCH_OUTPUT_ACTIVE"),
-        OVERLAY_VACUUM_PIPE_PORT_OUTPUT = createOptional("OVERLAY_VACUUM_PIPE_PORT_OUTPUT"),
+        OVERLAY_VACUUM_PIPE_PORT_OUTPUT = createOptional("OVERLAY_VACUUM_PIPE_PORT_OUTPUT")
         // semicolon after the comment to reduce merge conflicts
         ;
 
