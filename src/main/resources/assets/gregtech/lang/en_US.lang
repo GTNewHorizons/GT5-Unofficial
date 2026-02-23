@@ -1817,6 +1817,7 @@ GT5U.tooltip.nac.module.boardprocessor.empty=Empty
 GT5U.tooltip.nac.module.boardprocessor.impurity=Impurity
 GT5U.tooltip.nac.module.boardprocessor.flush_tank=Flush Tank
 GT5U.tooltip.nac.module.boardprocessor.edit_flush_tank=Edit auto-flush settings
+GT5U.tooltip.nac.module.controller=Middle of the Mesh Interface Platform
 
 
 GT5U.tooltip.nac.hatch.splitter.body.1=Can be installed in a §eSplitter§7 module for the §aNanochip Assembly Complex

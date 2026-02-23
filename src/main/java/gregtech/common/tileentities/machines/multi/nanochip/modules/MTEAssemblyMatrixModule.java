@@ -32,6 +32,7 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -199,6 +200,18 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.2")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.3")))
+            .beginStructureBlock(7, 4, 7, false)
+            .addController(translateToLocal("GT5U.tooltip.nac.module.controller"))
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 25, false)
+            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 24, false)
+            .addCasingInfoExactly(translateToLocal("componentAssemblyLineCasing.name"), 20, true)
+            .addCasingInfoExactly(
+                translateToLocal("gt.blockframes.325.name")
+                    .replace("%material", Materials.NaquadahAlloy.getLocalizedName()),
+                12,
+                false)
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 8, false)
+            .addCasingInfoExactly(OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials.NaquadahAlloy), 3, false)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
