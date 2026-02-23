@@ -376,7 +376,7 @@ public class ItemRegistry {
         ItemRegistry.dehp = new MTEDeepEarthHeatingPump(DeepEarthHeatingPump.ID, "DEHP", "Deep Earth Heating Pump")
             .getStackForm(1L);
         ItemRegistry.megaMachines[0] = new MTEMegaBlastFurnace(
-            MegaBlastFurnace.ID,
+            LegacyMegaBlastFurnace.ID,
             "MegaBlastFurnace",
             StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
         ItemRegistry.megaMachines[1] = new MTEMegaVacuumFreezer(
