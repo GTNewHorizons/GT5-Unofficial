@@ -255,12 +255,21 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.2")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.3")))
+            .beginStructureBlock(63, 49, 63, false)
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 3956, false)
+            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 2226, false)
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 1720, false)
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.3.name"), 721, false)
+            .addCasingInfoExactly(
+                translateToLocal("gt.blockframes.324.name").replace("%material", Materials.Naquadah.getLocalizedName()),
+                53,
+                false)
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.4.name"), 32, false)
             .addStructureInfo(TOOLTIP_VCI_LONG + ": " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
             .addStructureInfo(TOOLTIP_VCO_LONG + ": " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
             .addInputBus(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
             .addOutputBus(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
             .addEnergyHatch(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
-
             .toolTipFinisher();
     }
 

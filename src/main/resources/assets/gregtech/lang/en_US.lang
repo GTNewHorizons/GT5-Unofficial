@@ -1729,7 +1729,7 @@ GT5U.tooltip.nac.interface.module_description=Module of the §aNanochip Assembly
 GT5U.tooltip.nac.interface.structure_base_vci=%s - Vacuum Conveyor Input
 GT5U.tooltip.nac.interface.structure_base_vco=%s - Vacuum Conveyor Output
 GT5U.tooltip.nac.interface.structure_base_casing=Any base casing
-GT5U.tooltip.nac.interface.structure_control_room_base_casing=Any control room base casing
+GT5U.tooltip.nac.interface.structure_control_room_base_casing=Any control room interface casing
 
 GT5U.tooltip.nac.main.machine_type=NAC, Nanochip-Assembly-Complex
 GT5U.tooltip.nac.main.action=Uses Circuit Components (%s) to create circuits at unimaginable speeds
