@@ -599,6 +599,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         BigInteger availableEnergy = BigInteger
                             .valueOf(Math.min(this.getHatchVar(), this.getMaxInputEu() * MODULE_CONNECT_INTERVAL));
                         if (availableEnergy.compareTo(BigInteger.ZERO) <= 0) return;
+                        BigInteger drainedEnergy = BigInteger.ZERO;
                         // iterate over the modules, sending EU to fill their internal buffers
                         for (MTENanochipAssemblyModuleBase<?> module : modules) {
                             module.connect(this);
@@ -611,9 +612,10 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                                 .min(availableEnergy);
                             BigInteger sentEnergy = module.increaseStoredEU(euToSend);
                             availableEnergy = availableEnergy.subtract(sentEnergy);
+                            drainedEnergy = drainedEnergy.add(sentEnergy);
                             if (availableEnergy.compareTo(BigInteger.ZERO) <= 0) break;
                         }
-                        setHatchVar(getHatchVar() - availableEnergy.longValue());
+                        setHatchVar(getHatchVar() - drainedEnergy.longValue());
                     }
                 }
             } else {
