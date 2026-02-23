@@ -356,6 +356,8 @@ public class GTAuthors {
         return animatedText(letter, 1, 250, colorAlternator);
     }
 
+    public static final String AuthorJL2210 = "" + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + "JL2210";
+
     public static String formatAuthors(String... authors) {
         return StringUtils.formatList(
             Arrays.stream(authors)
