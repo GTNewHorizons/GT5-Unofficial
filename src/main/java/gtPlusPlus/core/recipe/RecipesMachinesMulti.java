@@ -922,7 +922,7 @@ public class RecipesMachinesMulti {
                 MaterialsAlloy.EGLIN_STEEL.getRod(4))
             .circuit(14)
             .itemOutputs(GregtechItemList.Casing_IndustrialAutoChisel.get(1))
-            .fluidInputs(MaterialsAlloy.EGLIN_STEEL_BASE.getFluidStack(2 * INGOTS))
+            .fluidInputs(MaterialsAlloy.EGLIN_STEEL.getFluidStack(2 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
