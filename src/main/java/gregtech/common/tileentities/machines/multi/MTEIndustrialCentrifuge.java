@@ -261,6 +261,11 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
     public boolean supportsInputSeparation() {
         return true;
     }
