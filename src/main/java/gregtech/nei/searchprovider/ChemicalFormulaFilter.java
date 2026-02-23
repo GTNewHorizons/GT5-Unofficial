@@ -68,7 +68,10 @@ public class ChemicalFormulaFilter implements ItemFilter {
     }
 
     private static String sanitizeFormula(String formula) {
-        return EnumChatFormatting.getTextWithoutFormattingCodes(formula);
+        formula = EnumChatFormatting.getTextWithoutFormattingCodes(formula);
+        formula = normalizeCustomGlyphs(formula);
+        formula = normalizeScriptDigits(formula);
+        return formula;
     }
 
     private static boolean isValidFormula(String formula) {
@@ -99,8 +102,6 @@ public class ChemicalFormulaFilter implements ItemFilter {
             chemicalFormula = getChemicalFormula(stack);
             if (isValidFormula(chemicalFormula)) {
                 chemicalFormula = sanitizeFormula(chemicalFormula);
-                chemicalFormula = normalizeCustomGlyphs(chemicalFormula);
-                chemicalFormula = normalizeScriptDigits(chemicalFormula);
             } else {
                 chemicalFormula = "";
             }
