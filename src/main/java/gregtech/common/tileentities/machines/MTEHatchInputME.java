@@ -265,13 +265,20 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 newSlot.extracted = newStack = curr.getFluidStack();
                 newSlot.extractedAmount = newSlot.extracted.amount;
             }
-            if (oldStack != null ? !oldStack.isFluidStackIdentical(newStack) : newStack != null) {
-                justHadNewFluids = true; // type or amount changes
-                if (expediteRecipeCheck && oldStack != null ? !oldStack.isFluidEqual(newStack) : newStack != null) {
-                    configChanged = true; // type changes
+            boolean sametype = GTUtility.areFluidsEqual(oldStack, newStack);
+            if (newStack != null) {
+                // lower amount/disappearance is not considered 'new fluids'
+                if (sametype) {
+                    if (newStack.amount > oldStack.amount) {
+                        justHadNewFluids = true; // same type, higher amount
+                    }
+                } else {
+                    justHadNewFluids = true; // different type
                 }
             }
-
+            if (expediteRecipeCheck && !((oldStack == null && newStack == null) || sametype)) {
+                configChanged = true;
+            }
             index++;
         }
         Arrays.fill(slots, index, slots.length, null);
