@@ -200,6 +200,24 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
                                                                                                  // tier sc
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.superconductor_splitter.flavor.1")))
+            .beginStructureBlock(7, 7, 7, false)
+            .addController(translateToLocal("GT5U.tooltip.nac.module.controller"))
+            // Nanochip Reinforcement Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 40, false)
+            // Nanochip Mesh Interface Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 29, false)
+            // Nanochip Complex Glass
+            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 24, false)
+            // Naquadria Frame Box
+            .addCasingInfoExactly(
+                translateToLocal("gt.blockframes.327.name")
+                    .replace("%material", Materials.Naquadria.getLocalizedName()),
+                24,
+                false)
+            // UEV Solenoid Superconductor Coil
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings.cyclotron_coils.8.name"), 16, false)
+            // UHV Solenoid Superconductor Coil
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings.cyclotron_coils.7.name"), 6, false)
             .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
