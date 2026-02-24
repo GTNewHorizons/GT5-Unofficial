@@ -3082,7 +3082,7 @@ gt.blockmachines.multimachine.foundry.powerefficient.tooltip3=- Subtracts an add
 gt.blockmachines.multimachine.foundry.powerefficient.tooltip4=   paired with the §3Sentient Overclocker§7 module
 
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.flavor=Raised Boundary
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip1=- Allows for §dUIV+§7 Recipes to be processed
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip1=- Allows for §1§nUIV+§7 Recipes to be processed
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip2=- Grants benefits when paired with other §dHeliocast Reinforcement§7 modules
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3=- §f2+ Modules:
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=   - Increases Base Speed by %s75%%§7 per module
