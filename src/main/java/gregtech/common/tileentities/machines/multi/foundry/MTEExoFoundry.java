@@ -475,6 +475,16 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     + EnumChatFormatting.GRAY
                     + " over the hatch tier without modules")
             .addInfo(
+                "Will " + EnumChatFormatting.BOLD
+                    + "not"
+                    + EnumChatFormatting.GRAY
+                    + " process "
+                    + EnumChatFormatting.DARK_BLUE
+                    + EnumChatFormatting.UNDERLINE
+                    + "UIV+"
+                    + EnumChatFormatting.GRAY
+                    + " voltage tier recipes without modules")
+            .addInfo(
                 "Has " + EnumChatFormatting.GOLD
                     + "3 Tiers"
                     + EnumChatFormatting.GRAY

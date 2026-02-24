@@ -35,8 +35,6 @@ public class BlockLongDistancePipe extends GTGenericBlock {
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
         GregTechAPI.registerMachineBlock(this, -1);
 
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
-
         ItemList.Long_Distance_Pipeline_Fluid_Pipe.set(new ItemStack(this, 1, 0));
         ItemList.Long_Distance_Pipeline_Item_Pipe.set(new ItemStack(this, 1, 1));
         mIcons = new IIconContainer[] { Textures.BlockIcons.LONG_DISTANCE_PIPE_FLUID,
