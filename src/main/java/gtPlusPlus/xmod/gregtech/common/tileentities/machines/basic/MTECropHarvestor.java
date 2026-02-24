@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -34,6 +35,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -60,7 +62,7 @@ public class MTECropHarvestor extends MTEBasicTank {
         super(
             aID,
             "basicmachine.cropharvester.0" + aTier,
-            "Crop Manager (" + GTValues.VN[aTier] + ")",
+            GTUtility.translate("gt.machines.cropharvestor.name", GTValues.VN[aTier]),
             aTier,
             21,
             aDescription);
@@ -475,14 +477,20 @@ public class MTECropHarvestor extends MTEBasicTank {
         int aSide = (aRadius - 1) / 2;
         return ArrayUtils.addAll(
             this.mDescriptionArray,
-            "Secondary mode can Hydrate/Fertilize/Weed-EX",
-            "You can set the mode to harvest any growth stage crop or only fully mature ones",
-            "Consumes " + powerUsage() + "eu per harvest",
-            "Consumes " + powerUsageSecondary() + "eu per secondary operation",
-            "Can harvest 2 block levels above and below itself",
-            "Range: " + aRadius + "x5x" + aRadius + " blocks",
-            "Has " + (this.mTier * 5) + "% chance for extra drops",
-            "Holds " + this.getCapacity() + "L of Water",
+            GTUtility.translate("gt.machines.cropharvestor.tooltip.0"),
+            GTUtility.translate("gt.machines.cropharvestor.tooltip.1"),
+            GTUtility.translate("gt.machines.cropharvestor.tooltip.2", TooltipHelper.euText(powerUsage())),
+            GTUtility.translate("gt.machines.cropharvestor.tooltip.3", TooltipHelper.euText(powerUsageSecondary())),
+            GTUtility.translate(
+                "gt.machines.cropharvestor.tooltip.4",
+                TooltipHelper.coloredText("2", EnumChatFormatting.WHITE)),
+            GTUtility.translate(
+                "gt.machines.cropharvestor.tooltip.5",
+                TooltipHelper.coloredText(String.valueOf(aRadius + "x5x" + aRadius), EnumChatFormatting.WHITE)),
+            GTUtility.translate(
+                "gt.machines.cropharvestor.tooltip.6",
+                TooltipHelper.coloredText(String.valueOf(this.mTier * 5 + "%"), EnumChatFormatting.WHITE)),
+            GTUtility.translate("gt.machines.cropharvestor.tooltip.7", TooltipHelper.fluidText(this.getCapacity())),
             GTPPCore.GT_Tooltip.get());
     }
 
