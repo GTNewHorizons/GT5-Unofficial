@@ -167,7 +167,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 49, false)
             // Awakened Draconium Frame Box
             .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.324.name").replace("%material", Materials.DraconiumAwakened.getLocalizedName()),
+                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.DraconiumAwakened.getLocalizedName()),
                 48,
                 false)
             // Nanochip Complex Glass

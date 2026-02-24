@@ -210,7 +210,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
             .addCasingInfoExactly(translateToLocal("componentAssemblyLineCasing.name"), 20, true)
             // Naquadah Alloy Frame Box
             .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.325.name")
+                translateToLocal("gt.blockframes.10.name")
                     .replace("%material", Materials.NaquadahAlloy.getLocalizedName()),
                 12,
                 false)

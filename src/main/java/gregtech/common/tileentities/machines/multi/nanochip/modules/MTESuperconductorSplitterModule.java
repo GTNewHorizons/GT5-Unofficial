@@ -210,7 +210,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
             .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 24, false)
             // Naquadria Frame Box
             .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.327.name")
+                translateToLocal("gt.blockframes.10.name")
                     .replace("%material", Materials.Naquadria.getLocalizedName()),
                 24,
                 false)

@@ -137,7 +137,7 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
             .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 32, false)
             // Quantium Frame Box
             .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.324.name").replace("%material", Materials.Quantium.getLocalizedName()),
+                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Quantium.getLocalizedName()),
                 32,
                 false)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)

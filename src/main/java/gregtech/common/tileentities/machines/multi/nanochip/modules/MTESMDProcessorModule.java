@@ -130,7 +130,7 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
             .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 20, false)
             // Radox Polymer Frame Box
             .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.979.name")
+                translateToLocal("gt.blockframes.10.name")
                     .replace("%material", Materials.RadoxPolymer.getLocalizedName()),
                 17,
                 false)

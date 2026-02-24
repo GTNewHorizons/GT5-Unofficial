@@ -269,7 +269,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addCasingInfoExactly(translateToLocal("gt.blockcasings12.3.name"), 721, false)
             // Naquadah Frame Box
             .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.324.name").replace("%material", Materials.Naquadah.getLocalizedName()),
+                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Naquadah.getLocalizedName()),
                 53,
                 false)
             // Nanochip Firewall Projection Casing
