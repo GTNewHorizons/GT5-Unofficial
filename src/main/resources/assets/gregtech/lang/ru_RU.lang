@@ -1281,6 +1281,7 @@ GT5U.machines.basic_tank.liquid_amount=Количество жидкости
 GT5U.machines.computation_hatch.pending_computation=§7Total Computation I/O: §b%d§r
 GT5U.machines.computation_hatch.wasted_computation=§7Wasted Computation: §b%d§r
 gt.machines.cropharvestor.name=Автосадовник (%s)
+gt.machines.cropharvestor.description=Автоматический сбор урожая и уход за культурами IC2 в большой области
 gt.machines.cropharvestor.tooltip.0=Второй режим может Увлажнять/Удобрять/Средство от сорняков
 gt.machines.cropharvestor.tooltip.1=Вы можете установить режим для сбора урожая на любой стадии роста или только полностью созревших культур
 gt.machines.cropharvestor.tooltip.2=Расходует %s EU за урожай

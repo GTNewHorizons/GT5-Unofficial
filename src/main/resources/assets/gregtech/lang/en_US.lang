@@ -1420,6 +1420,7 @@ GT5U.machines.coke_oven_hatch.mode.input=Hatch now inputs items
 GT5U.machines.coke_oven_hatch.mode.output=Hatch now outputs items
 GT5U.machines.coke_oven_hatch.mode.output_fluid=Hatch now outputs fluids
 gt.machines.cropharvestor.name=Crop Manager (%s)
+gt.machines.cropharvestor.description=Automatically harvests and maintains IC2 crops in a large area
 gt.machines.cropharvestor.tooltip.0=Secondary mode can Hydrate/Fertilize/Weed-EX
 gt.machines.cropharvestor.tooltip.1=You can set the mode to harvest any growth stage crop or only fully mature ones
 gt.machines.cropharvestor.tooltip.2=Consumes %s EU per harvest
