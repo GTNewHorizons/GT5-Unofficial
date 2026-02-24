@@ -1290,6 +1290,13 @@ gt.machines.cropharvestor.tooltip.4=Может собирать на %s блок
 gt.machines.cropharvestor.tooltip.5=Рабочая область: %s блоков
 gt.machines.cropharvestor.tooltip.6=Есть %s шанс на дополнительный дроп
 gt.machines.cropharvestor.tooltip.7=Хранит %s воды
+gt.machines.cropharvestor.tooltip.gui.water=Вода: %s / %s
+gt.machines.cropharvestor.tooltip.gui.care_on=Включить увлажнение/удобрение/Weed-EX
+gt.machines.cropharvestor.tooltip.gui.care_off=Отключить увлажнение/удобрение/Weed-EX
+gt.machines.cropharvestor.tooltip.gui.harvest_on=Включить сбор урожая
+gt.machines.cropharvestor.tooltip.gui.harvest_off=Отключить сбор урожая
+gt.machines.cropharvestor.tooltip.gui.full_growth_harvest_on=Включить сбор при полной зрелости
+gt.machines.cropharvestor.tooltip.gui.full_growth_harvest_off=Отключить сбор при полной зрелости
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear

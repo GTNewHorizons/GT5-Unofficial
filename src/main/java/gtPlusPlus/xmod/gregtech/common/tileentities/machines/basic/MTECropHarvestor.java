@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -601,24 +600,24 @@ public class MTECropHarvestor extends MTEBasicTank {
         builder.widget(
             new CycleButtonWidget().setToggle(() -> mModeAlternative, val -> mModeAlternative = val)
                 .setTexture(GTPPUITextures.OVERLAY_BUTTON_HARVESTER_MODE)
-                .addTooltip(0, "Enable Hydration/Fertilizing/Weed-EX")
-                .addTooltip(1, "Disable Hydration/Fertilizing/Weed-EX")
+                .addTooltip(0, GTUtility.translate("gt.machines.cropharvestor.tooltip.gui.care_on"))
+                .addTooltip(1, GTUtility.translate("gt.machines.cropharvestor.tooltip.gui.care_off"))
                 .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(47, 63)
                 .setSize(18, 18));
         builder.widget(
             new CycleButtonWidget().setToggle(() -> mHarvestEnabled, val -> mHarvestEnabled = val)
                 .setTexture(GTPPUITextures.OVERLAY_BUTTON_HARVESTER_TOGGLE)
-                .addTooltip(0, "Enable Harvest")
-                .addTooltip(1, "Disable Harvest")
+                .addTooltip(0, GTUtility.translate("gt.machines.cropharvestor.tooltip.gui.harvest_on"))
+                .addTooltip(1, GTUtility.translate("gt.machines.cropharvestor.tooltip.gui.harvest_off"))
                 .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(67, 63)
                 .setSize(18, 18));
         builder.widget(
             new CycleButtonWidget().setToggle(() -> harvestFullGrowth, val -> harvestFullGrowth = val)
                 .setTexture(GTPPUITextures.OVERLAY_BUTTON_HARVESTER_GROWTH_TOGGLE)
-                .addTooltip(0, "Enable Full Growth Harvest")
-                .addTooltip(1, "Disable Full Growth Harvest")
+                .addTooltip(0, GTUtility.translate("gt.machines.cropharvestor.tooltip.gui.full_growth_harvest_on"))
+                .addTooltip(1, GTUtility.translate("gt.machines.cropharvestor.tooltip.gui.full_growth_harvest_off"))
                 .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(87, 63)
                 .setSize(18, 18));
@@ -656,10 +655,10 @@ public class MTECropHarvestor extends MTEBasicTank {
                     .setSynced(false, false)
                     .dynamicTooltip(
                         () -> Collections.singletonList(
-                            StatCollector.translateToLocalFormatted(
-                                "gtpp.gui.crop_harvestor.tooltip.water",
-                                getFluidAmount(),
-                                getCapacity())))
+                            GTUtility.translate(
+                                "gt.machines.cropharvestor.tooltip.gui.water",
+                                TooltipHelper.fluidText(getFluidAmount()),
+                                TooltipHelper.fluidText(getCapacity()))))
                     .setPos(47, 7)
                     .setSize(10, 54))
             .widget(new FakeSyncWidget.FluidStackSyncer(this::getDrainableStack, this::setDrainableStack));
