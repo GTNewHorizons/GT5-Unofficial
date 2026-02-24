@@ -1285,8 +1285,8 @@ gt.machines.cropharvestor.tooltip.0=Второй режим может Увла�
 gt.machines.cropharvestor.tooltip.1=Вы можете установить режим для сбора урожая на любой стадии роста или только полностью созревших культур
 gt.machines.cropharvestor.tooltip.2=Расходует %s EU за урожай
 gt.machines.cropharvestor.tooltip.3=Расходует %s EU за вторичную операцию
-gt.machines.cropharvestor.tooltip.4=Может собирать на 2 блока выше и ниже себя
-gt.machines.cropharvestor.tooltip.5=Рабочая область: %sx5x%s блоков
+gt.machines.cropharvestor.tooltip.4=Может собирать на %s блока выше и ниже себя
+gt.machines.cropharvestor.tooltip.5=Рабочая область: %s блоков
 gt.machines.cropharvestor.tooltip.6=Есть %s шанс на дополнительный дроп
 gt.machines.cropharvestor.tooltip.7=Хранит %s воды
 
