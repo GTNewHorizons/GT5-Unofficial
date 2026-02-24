@@ -162,7 +162,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             .beginStructureBlock(7, 10, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.module.controller"))
             // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 55, false)
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 56, false)
             // Nanochip Mesh Interface Casing
             .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 49, false)
             // Awakened Draconium Frame Box
