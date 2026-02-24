@@ -127,7 +127,7 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
                     TOOLTIP_CCs))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.encasement_wrapper.flavor.1")))
-            .beginStructureBlock(7, 6, 7, false)
+            .beginStructureBlock(7, 9, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.module.controller"))
             // Nanochip Mesh Interface Casing
             .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 47, false)

@@ -122,7 +122,7 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.smd_processor.action", TOOLTIP_CCs))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.smd_processor.flavor.1")))
-            .beginStructureBlock(7, 3, 7, false)
+            .beginStructureBlock(7, 6, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.module.controller"))
             // Nanochip Reinforcement Casing
             .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 44, false)
@@ -130,7 +130,8 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
             .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 20, false)
             // Radox Polymer Frame Box
             .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.979.name").replace("%material", Materials.RadoxPolymer.getLocalizedName()),
+                translateToLocal("gt.blockframes.979.name")
+                    .replace("%material", Materials.RadoxPolymer.getLocalizedName()),
                 17,
                 false)
             // Nanochip Complex Glass

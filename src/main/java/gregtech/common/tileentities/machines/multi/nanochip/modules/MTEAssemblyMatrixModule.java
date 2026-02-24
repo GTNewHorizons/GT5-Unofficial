@@ -200,7 +200,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.2")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.3")))
-            .beginStructureBlock(7, 4, 7, false)
+            .beginStructureBlock(7, 7, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.module.controller"))
             // Nanochip Reinforcement Casing
             .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 25, false)
