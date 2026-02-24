@@ -489,13 +489,10 @@ public class MTECropHarvestor extends MTEBasicTank {
                 "gt.machines.cropharvestor.tooltip.4",
                 TooltipHelper.coloredText("2", EnumChatFormatting.WHITE)));
         tooltip.add(
-            GTUtility.translate(
-                "gt.machines.cropharvestor.tooltip.5",
-                TooltipHelper.coloredText(String.valueOf(aRadius + "x5x" + aRadius), EnumChatFormatting.WHITE)));
+            GTUtility
+                .translate("gt.machines.cropharvestor.tooltip.5", TooltipHelper.tierText(aRadius + "x5x" + aRadius)));
         tooltip.add(
-            GTUtility.translate(
-                "gt.machines.cropharvestor.tooltip.6",
-                TooltipHelper.coloredText(String.valueOf(this.mTier * 5 + "%"), EnumChatFormatting.WHITE)));
+            GTUtility.translate("gt.machines.cropharvestor.tooltip.6", TooltipHelper.tierText(this.mTier * 5 + "%")));
         tooltip.add(
             GTUtility.translate("gt.machines.cropharvestor.tooltip.7", TooltipHelper.fluidText(this.getCapacity())));
         tooltip.add(GTPPCore.GT_Tooltip.get());
