@@ -117,7 +117,7 @@ public class GTLanguageManager {
     }
 
     public static synchronized void addAnySubBlockLocalization(String unlocalizedName) {
-        return addStringLocalization(unlocalizedName + "." + WILDCARD + ".name", ANY_SUB_BLOCK);
+        addStringLocalization(unlocalizedName + "." + WILDCARD + ".name", ANY_SUB_BLOCK);
     }
 
     private static synchronized void storeTranslation(String trimmedKey, String english) {

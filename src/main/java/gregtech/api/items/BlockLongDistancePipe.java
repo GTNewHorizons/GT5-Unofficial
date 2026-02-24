@@ -21,7 +21,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.ItemLongDistancePipe;
 import gregtech.common.blocks.MaterialMachines;
 

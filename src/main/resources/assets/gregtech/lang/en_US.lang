@@ -200,7 +200,7 @@ gt.authors=Authors: %s
 gt.voltage.tier=-tier
 
 # Tooltip for Block Machines
-gt.blockmachines.cable.desc=Max Voltage: %s\nMax Amperage: %s\nLoss/Meter/Ampere: %s EU-Volt
+gt.blockmachines.cable.desc=Max Voltage: %s\nMax Amperage: %s\nLoss/Meter/Ampere: %s
 gt.blockmachines.gt_frame.desc.format=Just something you can put covers on.
 gt.blockmachines.transformer.desc=%s -> %s (Use Soft Mallet to invert)
 gt.blockmachines.transformer_advanced.desc=Accepts %sA and outputs %sA\nToggle 2A/8A half-mode with Screwdriver
@@ -2444,6 +2444,7 @@ GT5U.item.programmed_circuit.tooltip.1=Right click to reconfigure
 GT5U.item.programmed_circuit.tooltip.2=Needs a screwdriver or programming tool
 
 GT5U.item.cable.swapped=Cable swapped:
+GT5U.item.cable.loss.eu_volt=%s EU-Volt
 GT5U.item.tank.locked_to=Content locked to %s
 
 GT5U.item.pipe.capacity=Capacity
