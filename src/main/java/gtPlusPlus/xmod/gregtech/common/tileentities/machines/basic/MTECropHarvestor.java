@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,8 +15,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -473,25 +472,33 @@ public class MTECropHarvestor extends MTEBasicTank {
 
     @Override
     public String[] getDescription() {
+        return this.mDescriptionArray;
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        super.addAdditionalTooltipInformation(stack, tooltip);
         int aRadius = 10 + getRange(this.mTier);
-        int aSide = (aRadius - 1) / 2;
-        return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            GTUtility.translate("gt.machines.cropharvestor.tooltip.0"),
-            GTUtility.translate("gt.machines.cropharvestor.tooltip.1"),
-            GTUtility.translate("gt.machines.cropharvestor.tooltip.2", TooltipHelper.euText(powerUsage())),
-            GTUtility.translate("gt.machines.cropharvestor.tooltip.3", TooltipHelper.euText(powerUsageSecondary())),
+        tooltip.add(GTUtility.translate("gt.machines.cropharvestor.tooltip.0"));
+        tooltip.add(GTUtility.translate("gt.machines.cropharvestor.tooltip.1"));
+        tooltip.add(GTUtility.translate("gt.machines.cropharvestor.tooltip.2", TooltipHelper.euText(powerUsage())));
+        tooltip.add(
+            GTUtility.translate("gt.machines.cropharvestor.tooltip.3", TooltipHelper.euText(powerUsageSecondary())));
+        tooltip.add(
             GTUtility.translate(
                 "gt.machines.cropharvestor.tooltip.4",
-                TooltipHelper.coloredText("2", EnumChatFormatting.WHITE)),
+                TooltipHelper.coloredText("2", EnumChatFormatting.WHITE)));
+        tooltip.add(
             GTUtility.translate(
                 "gt.machines.cropharvestor.tooltip.5",
-                TooltipHelper.coloredText(String.valueOf(aRadius + "x5x" + aRadius), EnumChatFormatting.WHITE)),
+                TooltipHelper.coloredText(String.valueOf(aRadius + "x5x" + aRadius), EnumChatFormatting.WHITE)));
+        tooltip.add(
             GTUtility.translate(
                 "gt.machines.cropharvestor.tooltip.6",
-                TooltipHelper.coloredText(String.valueOf(this.mTier * 5 + "%"), EnumChatFormatting.WHITE)),
-            GTUtility.translate("gt.machines.cropharvestor.tooltip.7", TooltipHelper.fluidText(this.getCapacity())),
-            GTPPCore.GT_Tooltip.get());
+                TooltipHelper.coloredText(String.valueOf(this.mTier * 5 + "%"), EnumChatFormatting.WHITE)));
+        tooltip.add(
+            GTUtility.translate("gt.machines.cropharvestor.tooltip.7", TooltipHelper.fluidText(this.getCapacity())));
+        tooltip.add(GTPPCore.GT_Tooltip.get());
     }
 
     @Override
