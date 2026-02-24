@@ -646,21 +646,21 @@ public class MTECropHarvestor extends MTEBasicTank {
                     .canInsert(false)
                     .build()
                     .setPos(61, 7));
-        builder
-            .widget(
-                new ProgressBar()
-                    .setTexture(GTPPUITextures.PROGRESSBAR_BOILER_EMPTY, GTUITextures.PROGRESSBAR_BOILER_WATER, 54)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setProgress(() -> (float) getFluidAmount() / getCapacity())
-                    .setSynced(false, false)
-                    .dynamicTooltip(
-                        () -> Collections.singletonList(
-                            GTUtility.translate(
-                                "gt.machines.cropharvestor.tooltip.gui.water",
-                                TooltipHelper.fluidText(getFluidAmount()),
-                                TooltipHelper.fluidText(getCapacity()))))
-                    .setPos(47, 7)
-                    .setSize(10, 54))
+        builder.widget(
+            new ProgressBar()
+                .setTexture(GTPPUITextures.PROGRESSBAR_BOILER_EMPTY, GTUITextures.PROGRESSBAR_BOILER_WATER, 54)
+                .setDirection(ProgressBar.Direction.UP)
+                .setProgress(() -> (float) getFluidAmount() / getCapacity())
+                .setSynced(false, false)
+                .dynamicTooltip(() -> {
+                    String amount = TooltipHelper.fluidText(getFluidAmount());
+                    String capacity = TooltipHelper.fluidText(getCapacity());
+                    String waterText = amount + TooltipHelper.L_COLOR + " / " + capacity;
+                    return Collections
+                        .singletonList(GTUtility.translate("gt.machines.cropharvestor.tooltip.gui.water", waterText));
+                })
+                .setPos(47, 7)
+                .setSize(10, 54))
             .widget(new FakeSyncWidget.FluidStackSyncer(this::getDrainableStack, this::setDrainableStack));
     }
 }
