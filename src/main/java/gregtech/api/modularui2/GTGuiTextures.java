@@ -86,6 +86,27 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_TITLE_NANOCHIP)
         .build();
+    public static final UITexture TAB_COLORED_NORMAL = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/colored_normal")
+        .imageSize(28, 28)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(GTTextureIds.TAB_COLORED_NORMAL)
+        .build();
+    public static final UITexture TAB_COLORED_BRONZE = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/colored_bronze")
+        .imageSize(28, 28)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(GTTextureIds.TAB_COLORED_BRONZE)
+        .build();
+    public static final UITexture TAB_COLORED_STEEL = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/colored_steel")
+        .imageSize(28, 28)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(GTTextureIds.TAB_COLORED_STEEL)
+        .build();
     public static final UITexture BACKGROUND_POPUP_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/background/popup")
         .imageSize(195, 136)
@@ -1817,7 +1838,8 @@ public final class GTGuiTextures {
 
     // endregion machine modes
     /**
-     * Creates texture of full image. Theme of GUI does not affect how the texture is drawn.
+     * Creates texture of full image. Theme of GUI does not affect how the texture
+     * is drawn.
      *
      * @param path Path to the image, excluding gregtech/textures/gui
      * @return Texture of full image

@@ -121,6 +121,10 @@ public final class GTTextureIds {
     public static final String BUTTON_COVER_TAB_HIGHLIGHT_PRIMITIVE = "gregtech:button_cover_tab_highlight_primitive";
     public static final String BUTTON_COVER_TAB_DISABLED_PRIMITIVE = "gregtech:button_cover_tab_disabled_primitive";
 
+    public static final String TAB_COLORED_NORMAL = "gregtech:tab_colored_normal";
+    public static final String TAB_COLORED_BRONZE = "gregtech:tab_colored_bronze";
+    public static final String TAB_COLORED_STEEL = "gregtech:tab_colored_steel";
+
     public static final String PICTURE_GT_LOGO_STANDARD = "gregtech:picture_gt_logo_standard";
     public static final String PICTURE_GT_LOGO_GRAY = "gregtech:picture_gt_logo_gray";
     public static final String PICTURE_GT_LOGO_BRONZE = "gregtech:picture_gt_logo_bronze";
