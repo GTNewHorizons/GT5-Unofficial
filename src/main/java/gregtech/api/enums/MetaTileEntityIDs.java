@@ -1720,6 +1720,7 @@ public enum MetaTileEntityIDs {
     IndustrialPackager(15513),
     IndustrialElectrolyzer(15514),
     MegaChemicalReactor(15515),
+    IndustrialMixer(15516),
     ENTROPIC_PROCESSOR(15750),
     DECAY_WAREHOUSE(15751),
     LATEX(15752),
