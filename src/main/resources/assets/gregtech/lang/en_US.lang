@@ -1833,6 +1833,7 @@ GT5U.tooltip.nac.module.splitter.body.1=By default, splits same %s inputs evenly
 GT5U.tooltip.nac.module.splitter.body.2=Behavior can be overwritten by creating §2'Rules'§7 to follow in the GUI
 GT5U.tooltip.nac.module.splitter.body.3=§2Rules§7 can be set by input %s(§5s§7), output %s(§5s§7), supplied redstone signal, and item filters
 GT5U.tooltip.nac.module.splitter.body.4=%s will be transferred after all conditions of a §2Rule§7 are met
+GT5U.tooltip.nac.module.splitter.redstone_hatch= Any top mesh interface casing
 GT5U.tooltip.nac.module.superconductor_splitter.name=Superconductor Splitter
 GT5U.tooltip.nac.module.superconductor_splitter.flavor.1=Where there are superconductors, there is coolant!
 GT5U.tooltip.nac.module.superconductor_splitter.action=Splits your Superconductor %s

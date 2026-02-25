@@ -22,6 +22,7 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -179,15 +180,18 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             // Nanochip Reinforcement Casing
             .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 37, false)
             // Nanochip Mesh Interface Casing
-            .addCasingInfoRange(translateToLocal("gt.blockcasings12.1.name"), 0, 18, false)
-            // Splitter Redstone Input
-            .addCasingInfoRange(translateToLocal("gt.blockmachines.hatch.splitter.redstone.name"), 0, 18, false)
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 18, false)
+            // Kevlar Frame Box
             .addCasingInfoExactly(
                 translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Kevlar.getLocalizedName()),
                 10,
                 false)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
+            .addStructureInfo(
+                EnumChatFormatting.WHITE + "gt.blockmachines.hatch.splitter.redstone.name"
+                    + EnumChatFormatting.GRAY
+                    + "GT5U.tooltip.nac.module.splitter.redstone_hatch")
             .toolTipFinisher();
     }
 
