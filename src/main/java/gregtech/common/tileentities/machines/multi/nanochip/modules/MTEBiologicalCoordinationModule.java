@@ -140,7 +140,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.flavor.2")))
             .beginStructureBlock(7, 8, 7, false)
-            .addController(translateToLocal("GT5U.tooltip.nac.module.controller"))
+            .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Mesh Interface Casing
             .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 37, false)
             // Nanochip Reinforcement Casing
@@ -154,6 +154,8 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 20, false)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
+            .addStructureInfoSeparator()
+            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
             .toolTipFinisher();
     }
 

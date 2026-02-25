@@ -128,7 +128,7 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.wire_tracer.flavor.1")))
             .beginStructureBlock(7, 8, 7, false)
-            .addController(translateToLocal("GT5U.tooltip.nac.module.controller"))
+            .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
             .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 46, false)
             // Nanochip Mesh Interface Casing
@@ -148,6 +148,8 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
                 false)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
+            .addStructureInfoSeparator()
+            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
             .toolTipFinisher();
     }
 

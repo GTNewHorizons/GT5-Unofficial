@@ -1759,6 +1759,8 @@ GT5U.tooltip.nac.interface.structure_base_vco=%s - Vacuum Conveyor Output
 GT5U.tooltip.nac.interface.structure_base_casing=Any base casing
 GT5U.tooltip.nac.interface.structure_control_room_base_casing=Any control room mesh interface casing
 GT5U.tooltip.nac.interface.structure_outer_ring_base_casing=Any mesh interface platform on outer ring
+GT5U.tooltip.nac.interface.structure.module_controller=Middle of the Mesh Interface Platform
+GT5U.tooltip.nac.interface.structure.module_description=§fMaterial Count§r §c§lNOT§r §fIncluding Mesh Interface Platform§r
 
 GT5U.tooltip.nac.main.machine_type=NAC, Nanochip-Assembly-Complex
 GT5U.tooltip.nac.main.action=Uses Circuit Components (%s) to create circuits at unimaginable speeds
@@ -1846,8 +1848,6 @@ GT5U.tooltip.nac.module.boardprocessor.empty=Empty
 GT5U.tooltip.nac.module.boardprocessor.impurity=Impurity
 GT5U.tooltip.nac.module.boardprocessor.flush_tank=Flush Tank
 GT5U.tooltip.nac.module.boardprocessor.edit_flush_tank=Edit auto-flush settings
-GT5U.tooltip.nac.module.controller=Middle of the Mesh Interface Platform
-
 
 GT5U.tooltip.nac.hatch.splitter.body.1=Can be installed in a §eSplitter§7 module for the §aNanochip Assembly Complex
 GT5U.tooltip.nac.hatch.splitter.body.2=Allows for Redstone Input for rule control

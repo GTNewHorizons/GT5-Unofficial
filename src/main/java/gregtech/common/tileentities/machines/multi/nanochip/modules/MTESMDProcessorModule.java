@@ -123,7 +123,7 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.smd_processor.flavor.1")))
             .beginStructureBlock(7, 6, 7, false)
-            .addController(translateToLocal("GT5U.tooltip.nac.module.controller"))
+            .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
             .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 44, false)
             // Nanochip Mesh Interface Casing
@@ -140,6 +140,8 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
             .addCasingInfoExactly(translateToLocal("gt.blockcasingsNH.10.name"), 4, false)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
+            .addStructureInfoSeparator()
+            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
             .toolTipFinisher();
     }
 
