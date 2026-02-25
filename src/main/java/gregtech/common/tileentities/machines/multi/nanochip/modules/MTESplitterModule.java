@@ -174,6 +174,18 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.splitter.body.4", TOOLTIP_CCs))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.splitter.flavor.1")))
+            .beginStructureBlock(7, 5, 7, false)
+            .addController(translateToLocal("GT5U.tooltip.nac.module.controller"))
+            // Nanochip Reinforcement Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 37, false)
+            // Nanochip Mesh Interface Casing
+            .addCasingInfoRange(translateToLocal("gt.blockcasings12.1.name"), 0, 18, false)
+            // Splitter Redstone Input
+            .addCasingInfoRange(translateToLocal("gt.blockmachines.hatch.splitter.redstone.name"), 0, 18, false)
+            .addCasingInfoExactly(
+                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Kevlar.getLocalizedName()),
+                10,
+                false)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
