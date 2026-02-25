@@ -16,6 +16,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -126,6 +127,25 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.wire_tracer.action", TOOLTIP_CCs))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.wire_tracer.flavor.1")))
+            .beginStructureBlock(7, 8, 7, false)
+            .addController(translateToLocal("GT5U.tooltip.nac.module.controller"))
+            // Nanochip Reinforcement Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 46, false)
+            // Nanochip Mesh Interface Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 28, false)
+            // Nanochip Complex Glass
+            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 25, false)
+            // Superconductor Base UHV Frame Box
+            .addCasingInfoExactly(
+                translateToLocal("gt.blockframes.10.name")
+                    .replace("%material", Materials.SuperconductorUHVBase.getLocalizedName()),
+                20,
+                false)
+            // Superconductor Base UEV Sheetmetal
+            .addCasingInfoExactly(
+                OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials.SuperconductorUEVBase),
+                1,
+                false)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
