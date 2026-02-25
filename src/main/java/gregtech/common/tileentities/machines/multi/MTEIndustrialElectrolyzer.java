@@ -3,9 +3,11 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
@@ -104,7 +106,7 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
                 .addElement(
                     'D',
                     buildHatchAdder(MTEIndustrialElectrolyzer.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
                         .casingIndex(Casings.ElectrolyzerCasing.textureId)
                         .hint(1)
                         .buildAndChain(
@@ -207,7 +209,8 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 6;
+        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 6
+            && !this.mMufflerHatches.isEmpty();
     }
 
     @Override
