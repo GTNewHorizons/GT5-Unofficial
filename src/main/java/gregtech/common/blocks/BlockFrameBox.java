@@ -198,7 +198,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
 
     @Override
     public int getHarvestLevel(int aMeta) {
-        return 3;
+        return 2;
     }
 
     @Override

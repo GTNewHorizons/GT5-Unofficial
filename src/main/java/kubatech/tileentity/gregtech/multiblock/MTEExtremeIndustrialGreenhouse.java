@@ -224,6 +224,10 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     // TODO: Remove after 2.9
     private boolean isOldStructure = false;
 
+    public boolean isOldStructure() {
+        return this.isOldStructure;
+    }
+
     public boolean isInNoHumidityMode() {
         return this.useNoHumidity;
     }
@@ -270,7 +274,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                 .atLeast(InputBus, OutputBus, Energy, Maintenance, InputHatch)
                 .casingIndex(CASING.textureId)
                 .hint(1)
-                .buildAndChain(onElementPass(t -> t.mCasing++, Casings.SterileFarmCasing.asElement())))
+                .buildAndChain(onElementPass(t -> t.mCasing++, CASING.asElement())))
         .addElement('f', ofBlock(GregTechAPI.sBlockFrames, 316))
         .addElement(
             'l',
