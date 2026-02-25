@@ -49,9 +49,12 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
     @Override
     public String[] getDescription() {
         return new String[] {
-            translateToLocal("gt.blockmachines.magical.maintenance.desc.0"), // For magically maintaining Multiblocks with Centi-Vis
-            translateToLocal("gt.blockmachines.magical.maintenance.desc.1"), // Consumes 25 Centi-Vis of each primal aspect to fix all maintenance issues.
-            translateToLocal("gt.blockmachines.magical.maintenance.desc.2"), // Passively Consumes 1 Centi-Vis of each primal aspect every 2.5 Seconds.
+            translateToLocal("gt.blockmachines.magical.maintenance.desc.0"), // For magically maintaining Multiblocks with Centi-Vis.
+            translateToLocal("gt.blockmachines.magical.maintenance.desc.1"), // Passively Consumes 1 Centi-Vis of each primal aspect every 2.5 Seconds.
+            translateToLocal("gt.blockmachines.magical.maintenance.desc.2"), // Consumes 25 primal vis to fix corresponding maintenance issue.
+            translateToLocal("gt.blockmachines.magical.maintenance.desc.3"), // Aer (Wrench), Terra (Screwdriver), Ignis (Soldering Iron)
+            translateToLocal("gt.blockmachines.magical.maintenance.desc.4"), // Aqua (Crowbar), Ordo (Soft Mallet), Perditio (Hard Hammer)
+
         };
     }
 
