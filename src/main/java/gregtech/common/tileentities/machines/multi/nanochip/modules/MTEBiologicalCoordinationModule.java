@@ -147,8 +147,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 36, false)
             // Tritanium Frame Box
             .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name")
-                    .replace("%material", Materials.Tritanium.getLocalizedName()),
+                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Tritanium.getLocalizedName()),
                 36,
                 false)
             // Nanochip Complex Glass
