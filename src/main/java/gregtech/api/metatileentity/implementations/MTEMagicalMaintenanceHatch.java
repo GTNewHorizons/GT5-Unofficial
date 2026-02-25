@@ -85,7 +85,7 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
         nbt.setInteger("mFireDrain", this.mFireDrain);
         nbt.setInteger("mWaterDrain", this.mWaterDrain);
         nbt.setInteger("mOrderDrain", this.mOrderDrain);
-        nbt.setInteger("mAirDrained", this.mAirDrain);
+        nbt.setInteger("mEntropyDrain", this.mEntropyDrain);
     }
 
     @Override
