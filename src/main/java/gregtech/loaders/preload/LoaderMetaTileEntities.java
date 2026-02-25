@@ -45,7 +45,6 @@ import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
-import gregtech.api.metatileentity.implementations.MTEMagicalMaintenanceHatch;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GTValues;
@@ -78,6 +77,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutputBusCompressed;
 import gregtech.api.metatileentity.implementations.MTEHatchQuadrupleHumongous;
 import gregtech.api.metatileentity.implementations.MTEHatchVoid;
 import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
+import gregtech.api.metatileentity.implementations.MTEMagicalMaintenanceHatch;
 import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.metatileentity.implementations.MTEWetTransformer;
 import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
@@ -665,7 +665,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTValues.AuthorThree));
 
         if (Thaumcraft.isModLoaded() && ElectroMagicTools.isModLoaded()) {
-            ItemList.MagicalMaintenanceHatch.set(new MTEMagicalMaintenanceHatch(MagicalMaintenanceHatch.ID, "hatch.maintenance.magic", "Vis-Regulated Maintenance Hatch", 5).getStackForm(1));
+            ItemList.MagicalMaintenanceHatch.set(
+                new MTEMagicalMaintenanceHatch(
+                    MagicalMaintenanceHatch.ID,
+                    "hatch.maintenance.magic",
+                    "Vis-Regulated Maintenance Hatch",
+                    5).getStackForm(1));
             addItemTooltip(ItemList.MagicalMaintenanceHatch.get(1), chain(() -> "Author: ", GTValues.AuthorJude));
         }
 

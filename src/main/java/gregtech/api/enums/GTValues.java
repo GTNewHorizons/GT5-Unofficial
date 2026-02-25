@@ -681,24 +681,35 @@ public class GTValues {
             EnumChatFormatting.YELLOW + BOLD));
 
     public static final Supplier<String> AuthorJude = chain(
-        createJudeOuterText("x", EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.LIGHT_PURPLE, EnumChatFormatting.DARK_PURPLE),
-        createJudeOuterText("X", EnumChatFormatting.LIGHT_PURPLE, EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.DARK_PURPLE),
+        createJudeOuterText(
+            "x",
+            EnumChatFormatting.DARK_PURPLE,
+            EnumChatFormatting.LIGHT_PURPLE,
+            EnumChatFormatting.DARK_PURPLE),
+        createJudeOuterText(
+            "X",
+            EnumChatFormatting.LIGHT_PURPLE,
+            EnumChatFormatting.DARK_PURPLE,
+            EnumChatFormatting.DARK_PURPLE),
         createJudeCenterText("jude", EnumChatFormatting.DARK_BLUE, EnumChatFormatting.BLUE),
-        createJudeOuterText("X", EnumChatFormatting.LIGHT_PURPLE, EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.DARK_PURPLE),
-        createJudeOuterText("x", EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.LIGHT_PURPLE, EnumChatFormatting.DARK_PURPLE)
-    );
+        createJudeOuterText(
+            "X",
+            EnumChatFormatting.LIGHT_PURPLE,
+            EnumChatFormatting.DARK_PURPLE,
+            EnumChatFormatting.DARK_PURPLE),
+        createJudeOuterText(
+            "x",
+            EnumChatFormatting.DARK_PURPLE,
+            EnumChatFormatting.LIGHT_PURPLE,
+            EnumChatFormatting.DARK_PURPLE));
 
-    private static Supplier<String> createJudeOuterText(String text, EnumChatFormatting colorA, EnumChatFormatting colorB, EnumChatFormatting colorC) {
-        return animatedText(
-            text,
-            0,
-            200,
-            colorA + BOLD,
-            colorB + BOLD,
-            colorC + BOLD);
+    private static Supplier<String> createJudeOuterText(String text, EnumChatFormatting colorA,
+        EnumChatFormatting colorB, EnumChatFormatting colorC) {
+        return animatedText(text, 0, 200, colorA + BOLD, colorB + BOLD, colorC + BOLD);
     }
 
-    private static Supplier<String> createJudeCenterText(String text, EnumChatFormatting colorA, EnumChatFormatting colorB) {
+    private static Supplier<String> createJudeCenterText(String text, EnumChatFormatting colorA,
+        EnumChatFormatting colorB) {
         return animatedText(
             text,
             0,

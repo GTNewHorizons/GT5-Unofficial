@@ -1,12 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.render.TextureFactory;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -14,10 +9,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.render.TextureFactory;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.visnet.VisNetHandler;
-
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
 
@@ -29,10 +30,10 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
     private int mWaterBuffer = 0;
     private int mOrderBuffer = 0;
     private int mEntropyBuffer = 0;
+
     private final int mVisCap = 50;
     private final int mVisCost = 25;
     private final int mVisPassiveDrain = 1;
-
 
     private static final ResourceLocation focusMaintenanceSound = new ResourceLocation(
         "emt",
@@ -48,12 +49,11 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            translateToLocal("gt.blockmachines.magical.maintenance.desc.0"), // For magically maintaining Multiblocks with Centi-Vis.
-            translateToLocal("gt.blockmachines.magical.maintenance.desc.1"), // Passively Consumes 1 Centi-Vis of each primal aspect every 2.5 Seconds.
-            translateToLocal("gt.blockmachines.magical.maintenance.desc.2"), // Consumes 25 primal vis to fix corresponding maintenance issue.
-            translateToLocal("gt.blockmachines.magical.maintenance.desc.3"), // Aer (Wrench), Terra (Screwdriver), Ignis (Soldering Iron)
-            translateToLocal("gt.blockmachines.magical.maintenance.desc.4"), // Aqua (Crowbar), Ordo (Soft Mallet), Perditio (Hard Hammer)
+        return new String[] { translateToLocal("gt.blockmachines.magical.maintenance.desc.0"),
+            translateToLocal("gt.blockmachines.magical.maintenance.desc.1"),
+            translateToLocal("gt.blockmachines.magical.maintenance.desc.2"),
+            translateToLocal("gt.blockmachines.magical.maintenance.desc.3"),
+            translateToLocal("gt.blockmachines.magical.maintenance.desc.4"),
 
         };
     }
@@ -102,7 +102,6 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
         this.mEntropyBuffer = nbt.getInteger("mEntropyBuffer");
     }
 
-
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -123,7 +122,8 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
             mOrderBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.ORDER, 5);
         }
         if (mEntropyBuffer < mVisCap) {
-            mEntropyBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.ENTROPY, 5);
+            mEntropyBuffer += VisNetHandler
+                .drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.ENTROPY, 5);
         }
 
         // Consume buffered vis to repair maintenance tools
@@ -166,7 +166,7 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-                                float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         return false;
     }
 
@@ -178,13 +178,13 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-                                  ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-                                 ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
