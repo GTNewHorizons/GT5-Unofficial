@@ -665,7 +665,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTValues.AuthorThree));
 
         if (Thaumcraft.isModLoaded() && ElectroMagicTools.isModLoaded()) {
-            ItemList.MagicalMaintenanceHatch.set(new MTEMagicalMaintenanceHatch(MagicalMaintenanceHatch.ID, "hatch.maintenance.magic", "Vis‑Regulated Maintenance Hatch", 5).getStackForm(1));
+            ItemList.MagicalMaintenanceHatch.set(new MTEMagicalMaintenanceHatch(MagicalMaintenanceHatch.ID, "hatch.maintenance.magic", "Vis-Regulated Maintenance Hatch", 5).getStackForm(1));
             addItemTooltip(ItemList.MagicalMaintenanceHatch.get(1), chain(() -> "Author: ", GTValues.AuthorJude));
         }
 

@@ -151,12 +151,12 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
 
         // Passive Drain 1 Centi-Vis every 2.5 seconds
         if (aTick % 50 == 0) {
-            mAirDrain -= mVisPassiveDrain;
-            mEarthDrain -= mVisPassiveDrain;
-            mFireDrain -= mVisPassiveDrain;
-            mWaterDrain -= mVisPassiveDrain;
-            mOrderDrain -= mVisPassiveDrain;
-            mEntropyDrain -= mVisPassiveDrain;
+            if (mAirDrain > 0) mAirDrain -= mVisPassiveDrain;
+            if (mEarthDrain > 0) mEarthDrain -= mVisPassiveDrain;
+            if (mFireDrain > 0) mFireDrain -= mVisPassiveDrain;
+            if (mWaterDrain > 0) mWaterDrain -= mVisPassiveDrain;
+            if (mOrderDrain > 0) mOrderDrain -= mVisPassiveDrain;
+            if (mEntropyDrain > 0) mEntropyDrain -= mVisPassiveDrain;
         }
     }
 
