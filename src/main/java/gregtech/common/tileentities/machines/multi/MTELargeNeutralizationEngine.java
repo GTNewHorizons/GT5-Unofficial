@@ -39,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -87,6 +88,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private float boosterEUBoost = 1.0F;
     private int boosterBoostTicks = 0;
     private int toxicResidue = 0;
+    private int residueDecay;
+    private int residueIncrease;
 
     public MTELargeNeutralizationEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -113,12 +116,29 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             case 1 -> 100000;
             case 2 -> 250000;
             case 3 -> 1000000;
-            default -> throw new AssertionError("Structure tier should be within 1 and 3");
+            default -> -1;
         };
     }
 
-    private float getResiduePercentage() {
-        return (float) toxicResidue / getResidueCapacity() * 100;
+    private int getBaseResidueDecay() {
+        return switch (structureTier) {
+            case 1 -> 200;
+            case 2 -> 400;
+            case 3 -> 700;
+            default -> -1;
+        };
+    }
+
+    private float getRandomDecayMultiplier() {
+        return (90 + getBaseMetaTileEntity().getWorld().rand.nextInt(21)) / 100F;
+    }
+
+    private int getResidueDecay() {
+        return Math.max(0, (int) (getBaseResidueDecay() * getRandomDecayMultiplier()));
+    }
+
+    private int getResidueIncrease() {
+        return 0;
     }
 
     private static Block getBlock() {
@@ -312,6 +332,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         aNBT.setFloat("boosterEUBoost", boosterEUBoost);
         aNBT.setInteger("boosterBoostTicks", boosterBoostTicks);
         aNBT.setInteger("toxicResidue", toxicResidue);
+        aNBT.setInteger("residueIncrease", residueIncrease);
+        aNBT.setInteger("residueDecay", residueDecay);
     }
 
     @Override
@@ -322,6 +344,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         boosterEUBoost = aNBT.getFloat("boosterEUBoost");
         boosterBoostTicks = aNBT.getInteger("boosterBoostTicks");
         toxicResidue = aNBT.getInteger("toxicResidue");
+        residueIncrease = aNBT.getInteger("residueIncrease");
+        residueDecay = aNBT.getInteger("residueDecay");
     }
 
     @Override
@@ -386,6 +410,9 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             this.mEfficiencyIncrease = 50;
             this.mProgresstime = 1;
             this.mMaxProgresstime = 1;
+            residueIncrease = getResidueIncrease();
+            residueDecay = getResidueDecay();
+            this.toxicResidue = Math.max(0, this.toxicResidue + residueIncrease - residueDecay);
             return CheckRecipeResultRegistry.GENERATING;
         }
         this.shutDown();
@@ -465,8 +492,14 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager,
                 ModularPanel parent) {
                 ListWidget<IWidget, ?> terminalText = super.createTerminalTextWidget(syncManager, parent);
+                BooleanSyncValue checkMachineSyncer = new BooleanSyncValue(() -> mMachine);
+                syncManager.syncValue("checkMachine", checkMachineSyncer);
+                if (!checkMachineSyncer.getBoolValue()) return terminalText;
+
                 IntSyncValue toxicResidueSyncer = new IntSyncValue(() -> toxicResidue);
                 IntSyncValue residueCapacitySyncer = new IntSyncValue(() -> getResidueCapacity());
+                syncManager.syncValue("toxicResidue", toxicResidueSyncer);
+                syncManager.syncValue("residueCapacitySyncer", residueCapacitySyncer);
                 final float residuePercentage = toxicResidueSyncer.getValue()
                     .floatValue() / residueCapacitySyncer.getValue()
                     * 100F;
@@ -477,6 +510,19 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                             toxicResidueSyncer.getStringValue(),
                             residueCapacitySyncer.getStringValue(),
                             Float.toString(residuePercentage)))
+                        .asWidget());
+                IntSyncValue residueDecaySyncer = new IntSyncValue(() -> residueDecay);
+                IntSyncValue residueIncreaseSyncer = new IntSyncValue(() -> residueIncrease);
+                syncManager.syncValue("residueDecay", residueDecaySyncer);
+                syncManager.syncValue("residueIncrease", residueIncreaseSyncer);
+                final int residueChange = residueIncreaseSyncer.getIntValue() - residueDecaySyncer.getIntValue();
+                terminalText.child(
+                    IKey.dynamic(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.residue_change",
+                            residueIncreaseSyncer.getStringValue(),
+                            residueDecaySyncer.getStringValue(),
+                            Integer.toString(residueChange)))
                         .asWidget());
                 return terminalText;
             }
