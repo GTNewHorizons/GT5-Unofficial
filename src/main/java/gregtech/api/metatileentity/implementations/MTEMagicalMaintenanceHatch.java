@@ -23,12 +23,12 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
 
     private static Textures.BlockIcons.CustomIcon face;
 
-    private int mAirDrain = 0;
-    private int mEarthDrain = 0;
-    private int mFireDrain = 0;
-    private int mWaterDrain = 0;
-    private int mOrderDrain = 0;
-    private int mEntropyDrain = 0;
+    private int mAirBuffer = 0;
+    private int mEarthBuffer = 0;
+    private int mFireBuffer = 0;
+    private int mWaterBuffer = 0;
+    private int mOrderBuffer = 0;
+    private int mEntropyBuffer = 0;
     private final int mVisCap = 50;
     private final int mVisCost = 25;
     private final int mVisPassiveDrain = 1;
@@ -80,83 +80,84 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
     @Override
     public void saveNBTData(NBTTagCompound nbt) {
         super.saveNBTData(nbt);
-        nbt.setInteger("mAirDrained", this.mAirDrain);
-        nbt.setInteger("mEarthDrain", this.mEarthDrain);
-        nbt.setInteger("mFireDrain", this.mFireDrain);
-        nbt.setInteger("mWaterDrain", this.mWaterDrain);
-        nbt.setInteger("mOrderDrain", this.mOrderDrain);
-        nbt.setInteger("mEntropyDrain", this.mEntropyDrain);
+        nbt.setInteger("mAirBuffer", this.mAirBuffer);
+        nbt.setInteger("mEarthBuffer", this.mEarthBuffer);
+        nbt.setInteger("mFireBuffer", this.mFireBuffer);
+        nbt.setInteger("mWaterBuffer", this.mWaterBuffer);
+        nbt.setInteger("mOrderBuffer", this.mOrderBuffer);
+        nbt.setInteger("mEntropyBuffer", this.mEntropyBuffer);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound nbt) {
         super.loadNBTData(nbt);
-        this.mAirDrain = nbt.getInteger("mAirDrained");
-        this.mEarthDrain = nbt.getInteger("mEarthDrain");
-        this.mFireDrain = nbt.getInteger("mFireDrain");
-        this.mWaterDrain = nbt.getInteger("mWaterDrain");
-        this.mOrderDrain = nbt.getInteger("mOrderDrain");
-        this.mEntropyDrain = nbt.getInteger("mEntropyDrain");
+        this.mAirBuffer = nbt.getInteger("mAirBuffer");
+        this.mEarthBuffer = nbt.getInteger("mEarthBuffer");
+        this.mFireBuffer = nbt.getInteger("mFireBuffer");
+        this.mWaterBuffer = nbt.getInteger("mWaterBuffer");
+        this.mOrderBuffer = nbt.getInteger("mOrderBuffer");
+        this.mEntropyBuffer = nbt.getInteger("mEntropyBuffer");
     }
 
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        // Internal Buffer Soft Caps at 50 vis
-        if (mAirDrain < mVisCap) {
-            mAirDrain += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.AIR, 5);
+        // Internal Buffer, Soft Caps at 50 vis
+        if (mAirBuffer < mVisCap) {
+            mAirBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.AIR, 5);
         }
-        if (mEarthDrain < mVisCap) {
-            mEarthDrain += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.EARTH, 5);
+        if (mEarthBuffer < mVisCap) {
+            mEarthBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.EARTH, 5);
         }
-        if (mFireDrain < mVisCap) {
-            mFireDrain += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.FIRE, 5);
+        if (mFireBuffer < mVisCap) {
+            mFireBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.FIRE, 5);
         }
-        if (mWaterDrain < mVisCap) {
-            mWaterDrain += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.WATER, 5);
+        if (mWaterBuffer < mVisCap) {
+            mWaterBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.WATER, 5);
         }
-        if (mOrderDrain < mVisCap) {
-            mOrderDrain += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.ORDER, 5);
+        if (mOrderBuffer < mVisCap) {
+            mOrderBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.ORDER, 5);
         }
-        if (mEntropyDrain < mVisCap) {
-            mEntropyDrain += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.ENTROPY, 5);
+        if (mEntropyBuffer < mVisCap) {
+            mEntropyBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.ENTROPY, 5);
         }
 
-        // Drain if needed
-        if (mAirDrain >= mVisCost && !this.mWrench) {
+        // Consume buffered vis to repair maintenance tools
+        if (mAirBuffer >= mVisCost && !this.mWrench) {
             this.mWrench = true;
-            mAirDrain -= mVisCost;
+            mAirBuffer -= mVisCost;
         }
-        if (mEarthDrain >= mVisCost && !this.mScrewdriver) {
+        if (mEarthBuffer >= mVisCost && !this.mScrewdriver) {
             this.mScrewdriver = true;
-            mEarthDrain -= mVisCost;
+            mEarthBuffer -= mVisCost;
         }
-        if (mFireDrain >= mVisCost && !this.mSolderingTool) {
+        if (mFireBuffer >= mVisCost && !this.mSolderingTool) {
             this.mSolderingTool = true;
-            mFireDrain -= mVisCost;
+            mFireBuffer -= mVisCost;
         }
-        if (mWaterDrain >= mVisCost && !this.mCrowbar) {
+        if (mWaterBuffer >= mVisCost && !this.mCrowbar) {
             this.mCrowbar = true;
-            mWaterDrain -= mVisCost;
+            mWaterBuffer -= mVisCost;
         }
-        if (mOrderDrain >= mVisCost && !this.mSoftMallet) {
+        if (mOrderBuffer >= mVisCost && !this.mSoftMallet) {
             this.mSoftMallet = true;
-            mOrderDrain -= mVisCost;
+            mOrderBuffer -= mVisCost;
         }
-        if (mEntropyDrain >= mVisCost && !this.mHardHammer) {
+        if (mEntropyBuffer >= mVisCost && !this.mHardHammer) {
             this.mHardHammer = true;
-            mEntropyDrain -= mVisCost;
+            mEntropyBuffer -= mVisCost;
         }
 
-        // Passive Drain 1 Centi-Vis every 2.5 seconds
+        // Passive Buffer 1 Centi-Vis every 2.5 seconds
         if (aTick % 50 == 0) {
-            if (mAirDrain > 0) mAirDrain -= mVisPassiveDrain;
-            if (mEarthDrain > 0) mEarthDrain -= mVisPassiveDrain;
-            if (mFireDrain > 0) mFireDrain -= mVisPassiveDrain;
-            if (mWaterDrain > 0) mWaterDrain -= mVisPassiveDrain;
-            if (mOrderDrain > 0) mOrderDrain -= mVisPassiveDrain;
-            if (mEntropyDrain > 0) mEntropyDrain -= mVisPassiveDrain;
+
+            if (mAirBuffer > 0) mAirBuffer -= mVisPassiveDrain;
+            if (mEarthBuffer > 0) mEarthBuffer -= mVisPassiveDrain;
+            if (mFireBuffer > 0) mFireBuffer -= mVisPassiveDrain;
+            if (mWaterBuffer > 0) mWaterBuffer -= mVisPassiveDrain;
+            if (mOrderBuffer > 0) mOrderBuffer -= mVisPassiveDrain;
+            if (mEntropyBuffer > 0) mEntropyBuffer -= mVisPassiveDrain;
         }
     }
 
