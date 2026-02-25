@@ -129,6 +129,22 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.cutting_chamber.action", TOOLTIP_CCs))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.cutting_chamber.flavor.1")))
+            .beginStructureBlock(7, 8, 7, false)
+            .addController(translateToLocal("GT5U.tooltip.nac.module.controller"))
+            // Nanochip Reinforcement Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 31, false)
+            // Nanochip Mesh Interface Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 28, false)
+            // Nanochip Complex Glass
+            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 24, false)
+            // Neutronium Frame Box
+            .addCasingInfoExactly(
+                translateToLocal("gt.blockframes.10.name")
+                    .replace("%material", Materials.Neutronium.getLocalizedName()),
+                21,
+                false)
+            // Naquadria-Reinforced Water Plant Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings9.12.name"), 16, false)
             .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
