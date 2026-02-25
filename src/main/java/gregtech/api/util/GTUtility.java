@@ -710,6 +710,16 @@ public class GTUtility {
         }
     }
 
+    public static boolean compactInventory(List<ItemStack> inv, int start, int end) {
+        return compactInventory(inv.subList(start, end), (slot, stack) -> stack.getMaxStackSize());
+    }
+
+    /**
+     * Compacts an inventory like this:
+     * Empty_0, Iron_48, Iron_64, Empty_0, Gold_32, Iron_32, Gold_16
+     * into this:
+     * Iron_64, Iron_64, Gold_48, Iron_16
+     */
     public static boolean compactInventory(List<ItemStack> inv, ItemStackSizeCalculator stackSizes) {
         int len = inv.size();
 
