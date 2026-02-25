@@ -206,6 +206,8 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             .addCasingInfoExactly(translateToLocal("casing.shielded_accelerator.name"), 9, false)
             // Non-Photonic Matter Exclusion Glass
             .addCasingInfoExactly(translateToLocal("gt.blockglass1.3.name"), 4, false)
+            // Laser Source Hatch
+            .addCasingInfoExactly(translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), 1, true)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
