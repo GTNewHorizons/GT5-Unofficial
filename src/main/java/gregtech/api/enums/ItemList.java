@@ -2223,6 +2223,7 @@ public enum ItemList implements IItemContainer {
     EntropicProcessor,
     DecayWarehouse,
     LATEX,
+    MagicalMaintenanceHatch,
     AcceleratorLV,
     AcceleratorMV,
     AcceleratorHV,

@@ -3089,6 +3089,11 @@ achievement.gt.blockcasings5.12.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockcasings5.13=Eternal Coil
 achievement.gt.blockcasings5.13.desc=Pickup this item to see the recipe in NEI
 
+# Magical Maintenance Hatch
+gt.blockmachines.magical.maintenance.desc.0=For magically maintaining Multiblocks with Centi-Vis.
+gt.blockmachines.magical.maintenance.desc.1=Consumes 25 Centi-Vis of each primal aspect to fix all maintenance issues.
+gt.blockmachines.magical.maintenance.desc.2=Passively Consumes 1 Centi-Vis of each primal aspect every 2.5 Seconds.
+
 # Exo-Foundry
 gt.blockmachines.multimachine.foundry.basemodule=When used in the Exo-Foundry:
 gt.blockmachines.multimachine.foundry.modulelimit=- Limit of §f1 §7per §6Foundry
