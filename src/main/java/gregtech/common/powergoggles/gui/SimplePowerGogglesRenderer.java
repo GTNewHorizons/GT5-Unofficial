@@ -406,6 +406,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     public void renderPowerChart() {
 
         renderPowerChartBackground();
+        renderGraphScaleIndicator();
         if (measurements.isEmpty()) return;
 
         List<PowerGogglesMeasurement> lastMeasurements = getLastMeasurements(
@@ -422,10 +423,43 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
                 .pow(exponent);
         }
 
+        if (PowerGogglesConfigHandler.manualGraphScale) {
+            BigInteger manualMin = parseConfigBigInteger(PowerGogglesConfigHandler.manualGraphMin);
+            BigInteger manualMax = parseConfigBigInteger(PowerGogglesConfigHandler.manualGraphMax);
+            if (manualMin != null && manualMax != null && manualMin.compareTo(manualMax) < 0) {
+                minReading = manualMin;
+                maxReading = manualMax;
+            }
+        }
+
         renderPowerChartBounds(minReading, maxReading);
         if (lastMeasurements.size() < 2) return;
 
-        renderPowerChartLines(maxReading, lastMeasurements);
+        renderPowerChartLines(minReading, maxReading, lastMeasurements);
+    }
+
+    private void renderGraphScaleIndicator() {
+        if (!PowerGogglesConfigHandler.manualGraphScale) return;
+
+        String indicator = "M";
+        double scale = 0.5f;
+        int right = xOffset + chartWidth;
+        int top = screenHeight - yOffset - chartHeight - borderRadius * 2;
+        int padding = 0;
+        int x = right - padding - (int) (fontRenderer.getStringWidth(indicator) * scale);
+        int y = top + padding;
+
+        drawScaledString(indicator, x, y, PowerGogglesConfigHandler.chartManualScaleIndicatorColor, scale);
+    }
+
+    private BigInteger parseConfigBigInteger(String value) {
+        if (value == null || value.isEmpty()) return null;
+        try {
+            BigInteger parsed = new BigInteger(value);
+            return parsed.compareTo(BigInteger.ZERO) < 0 ? null : parsed;
+        } catch (NumberFormatException ignored) {
+            return null;
+        }
     }
 
     private BigInteger getMinimumMeasurement(List<PowerGogglesMeasurement> lastMeasurements) {
@@ -477,7 +511,8 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             scale);
     }
 
-    private void renderPowerChartLines(BigInteger maxReading, List<PowerGogglesMeasurement> lastMeasurements) {
+    private void renderPowerChartLines(BigInteger minReading, BigInteger maxReading,
+        List<PowerGogglesMeasurement> lastMeasurements) {
         int measurementCount = lastMeasurements.size();
 
         double completeChartLineWidth = chartWidth * 0.8d;
@@ -500,7 +535,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         BigInteger lastMeasurement = lastMeasurements.get(0)
             .getMeasurement();
         double lastX = xOffset + borderRadius + (chartWidth * 0.2d);
-        double lastY = getPointY(chartY, chartHeight, maxReading, lastMeasurement);
+        double lastY = getPointY(chartY, chartHeight, minReading, maxReading, lastMeasurement);
         double lineWidth = completeChartLineWidth / PowerGogglesConstants.MEASUREMENT_COUNT_5M;
 
         for (int i = 1; i < measurementCount; i++) {
@@ -510,7 +545,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             setLineColor(tessellator, lastMeasurement, measurement);
 
             double currentX = lastX + lineWidth;
-            double currentY = getPointY(chartY, chartHeight, maxReading, measurement);
+            double currentY = getPointY(chartY, chartHeight, minReading, maxReading, measurement);
 
             tessellator.addVertex(lastX, lastY, 0);
             tessellator.addVertex(currentX, currentY, 0);
@@ -528,15 +563,18 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         GL11.glPopAttrib();
     }
 
-    private double getPointY(int chartY, int chartHeight, BigInteger maxReading, BigInteger lastMeasurement) {
-        if (lastMeasurement.equals(BigInteger.ZERO)) {
+    private double getPointY(int chartY, int chartHeight, BigInteger minReading, BigInteger maxReading,
+        BigInteger measurement) {
+        if (maxReading.compareTo(minReading) <= 0) {
             return screenHeight - chartY;
         }
-        BigInteger percentageLastMeasurement = lastMeasurement.multiply(BigInteger.valueOf(100));
 
-        double heightRatio = percentageLastMeasurement.divide(maxReading)
+        BigInteger clampedMeasurement = measurement.max(minReading)
+            .min(maxReading);
+        BigInteger range = maxReading.subtract(minReading);
+        BigInteger offset = clampedMeasurement.subtract(minReading);
+        double heightPercentage = new BigDecimal(offset).divide(new BigDecimal(range), 8, RoundingMode.HALF_EVEN)
             .doubleValue();
-        double heightPercentage = heightRatio / 100.0;
         return screenHeight - (chartY + (chartHeight * heightPercentage));
     }
 
