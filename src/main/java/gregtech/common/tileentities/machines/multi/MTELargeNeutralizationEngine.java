@@ -53,6 +53,7 @@ import bartworks.API.recipe.BartWorksRecipeMaps;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -113,9 +114,9 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private int getResidueCapacity() {
         return switch (structureTier) {
-            case 1 -> 100000;
-            case 2 -> 250000;
-            case 3 -> 1000000;
+            case 1 -> 75000;
+            case 2 -> 200000;
+            case 3 -> 500000;
             default -> -1;
         };
     }
@@ -143,6 +144,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private static Block getBlock() {
         return GregTechAPI.sBlockCasings12;
+    }
+
+    private VoltageIndex getRobotArmTier() {
+
+        return null;
     }
 
     private static IStructureDefinition<MTELargeNeutralizationEngine> STRUCTURE_DEFINITION = null;
