@@ -746,6 +746,10 @@ GT5U.power_goggles_config.background_color=Chart Background Color
 GT5U.power_goggles_config.background_color_tooltip=Affects the background color of the power graph
 GT5U.power_goggles_config.border_color=Chart Border Color
 GT5U.power_goggles_config.border_color_tooltip=Affects the border color of the power graph
+GT5U.power_goggles_config.chart_max_text_color=Chart Max Text Color
+GT5U.power_goggles_config.chart_max_text_color_tooltip=Affects the chart maximum value label color
+GT5U.power_goggles_config.chart_min_text_color=Chart Min Text Color
+GT5U.power_goggles_config.chart_min_text_color_tooltip=Affects the chart minimum value label color
 GT5U.power_goggles_config.background_lines_color=Measurements Background Color
 GT5U.power_goggles_config.background_lines_color_tooltip=Affects the background color of the measurements tab
 

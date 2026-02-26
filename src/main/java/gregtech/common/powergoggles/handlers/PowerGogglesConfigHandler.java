@@ -33,6 +33,8 @@ public class PowerGogglesConfigHandler {
 
     public static int chartBackgroundColor;
     public static int chartBorderColor;
+    public static int chartMinTextColor;
+    public static int chartMaxTextColor;
     public static int masurementsBackgroundColor;
 
     public static int textBadColor;
@@ -117,6 +119,24 @@ public class PowerGogglesConfigHandler {
                     Configuration.CATEGORY_GENERAL,
                     "Chart Border Color",
                     Color.rgb(81, 79, 104),
+                    "",
+                    0,
+                    Integer.MAX_VALUE)
+                .getInt();
+            chartMinTextColor = config
+                .get(
+                    Configuration.CATEGORY_GENERAL,
+                    "Chart Min Text Color",
+                    Color.rgb(237, 2, 158),
+                    "",
+                    0,
+                    Integer.MAX_VALUE)
+                .getInt();
+            chartMaxTextColor = config
+                .get(
+                    Configuration.CATEGORY_GENERAL,
+                    "Chart Max Text Color",
+                    Color.rgb(237, 2, 158),
                     "",
                     0,
                     Integer.MAX_VALUE)

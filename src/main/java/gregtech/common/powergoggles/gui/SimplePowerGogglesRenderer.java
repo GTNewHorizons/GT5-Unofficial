@@ -467,13 +467,13 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             PowerGogglesUtil.format(minReading),
             xOffset,
             screenHeight - yOffset - borderRadius * 2 - (int) (fontRenderer.FONT_HEIGHT * scale),
-            Color.rgb(237, 2, 158),
+            PowerGogglesConfigHandler.chartMinTextColor,
             scale);
         drawScaledString(
             minReading.equals(maxReading) ? "" : PowerGogglesUtil.format(maxReading),
             xOffset,
             screenHeight - yOffset - borderRadius * 2 - chartHeight,
-            Color.rgb(237, 2, 158),
+            PowerGogglesConfigHandler.chartMaxTextColor,
             scale);
     }
 

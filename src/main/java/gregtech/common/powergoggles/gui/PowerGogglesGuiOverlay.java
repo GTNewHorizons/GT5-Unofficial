@@ -312,11 +312,27 @@ public class PowerGogglesGuiOverlay {
             .child(
                 makeColorConfigButton(
                     overlayPanel,
+                    () -> PowerGogglesConfigHandler.chartMinTextColor,
+                    val -> { PowerGogglesConfigHandler.chartMinTextColor = val; },
+                    "Chart Min Text Color",
+                    "GT5U.power_goggles_config.chart_min_text_color",
+                    "GT5U.power_goggles_config.chart_min_text_color_tooltip"))
+            .child(
+                makeColorConfigButton(
+                    overlayPanel,
                     () -> PowerGogglesConfigHandler.masurementsBackgroundColor,
                     val -> { PowerGogglesConfigHandler.masurementsBackgroundColor = val; },
                     "Measurements Background Color",
                     "GT5U.power_goggles_config.background_lines_color",
                     "GT5U.power_goggles_config.background_lines_color_tooltip"))
+            .child(
+                makeColorConfigButton(
+                    overlayPanel,
+                    () -> PowerGogglesConfigHandler.chartMaxTextColor,
+                    val -> { PowerGogglesConfigHandler.chartMaxTextColor = val; },
+                    "Chart Max Text Color",
+                    "GT5U.power_goggles_config.chart_max_text_color",
+                    "GT5U.power_goggles_config.chart_max_text_color_tooltip"))
 
             .child(
                 new Row().size(228, 18)
