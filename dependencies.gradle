@@ -153,7 +153,7 @@ afterEvaluate {
     }
 }
 
-// deps may transitively add Baubles, so we replace it
+/* // deps may transitively add Baubles, so we replace it
 project.getConfigurations()
     .all(c -> {
         final DependencySubstitutions ds = c.getResolutionStrategy()
@@ -162,5 +162,5 @@ project.getConfigurations()
             .using(ds.module("com.github.GTNewHorizons:Baubles-Expanded:2.2.6-GTNH"))
             .withClassifier("dev")
             .because("Baubles-Expanded replaces Baubles");
-    });
+    }); */
 
