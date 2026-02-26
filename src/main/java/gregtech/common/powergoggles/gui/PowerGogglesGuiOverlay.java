@@ -105,6 +105,7 @@ public class PowerGogglesGuiOverlay {
             .background(background)
             .child(makeNotationButton(gui))
             .child(makeReadingButton(gui))
+            .child(makeShowPowerBarButton())
             .child(makeChatHidesHudButton())
             .child(
                 makeSliderFlow(
@@ -191,6 +192,29 @@ public class PowerGogglesGuiOverlay {
             .marginBottom(4);
     }
 
+    private static IWidget makeShowPowerBarButton() {
+        ButtonWidget<?> showPowerBarButton = new ButtonWidget<>().overlay(
+            IKey.lang(
+                "GT5U.power_goggles_config.toggle_power_bar",
+                (PowerGogglesConfigHandler.showPowerBar ? IKey.lang("gui.yes") : IKey.lang("gui.no"))));
+        showPowerBarButton
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.power_goggles_config.toggle_power_bar_tooltip")));
+        showPowerBarButton.onMousePressed(mouseButton -> {
+            PowerGogglesConfigHandler.showPowerBar = !PowerGogglesConfigHandler.showPowerBar;
+            PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                .get("Show Power Bar")
+                .set(PowerGogglesConfigHandler.showPowerBar);
+            PowerGogglesConfigHandler.config.save();
+            showPowerBarButton.overlay(
+                IKey.lang(
+                    "GT5U.power_goggles_config.toggle_power_bar",
+                    (PowerGogglesConfigHandler.showPowerBar ? IKey.lang("gui.yes") : IKey.lang("gui.no"))));
+            return true;
+        });
+        return showPowerBarButton.size(230, 18)
+            .marginBottom(4);
+    }
+
     private static IWidget makeSliderFlow(Supplier<Double> valSupplier, Consumer<Double> setter, String key,
         String textKey) {
         return new Row().size(230, 18)
@@ -269,6 +293,31 @@ public class PowerGogglesGuiOverlay {
                     "Good Gradient",
                     "GT5U.power_goggles_config.gradient_good",
                     "GT5U.power_goggles_config.gradient_good_tooltip"))
+            .child(
+                makeColorConfigButton(
+                    overlayPanel,
+                    () -> PowerGogglesConfigHandler.chartBackgroundColor,
+                    val -> { PowerGogglesConfigHandler.chartBackgroundColor = val; },
+                    "Chart Background Color",
+                    "GT5U.power_goggles_config.background_color",
+                    "GT5U.power_goggles_config.background_color_tooltip"))
+            .child(
+                makeColorConfigButton(
+                    overlayPanel,
+                    () -> PowerGogglesConfigHandler.chartBorderColor,
+                    val -> { PowerGogglesConfigHandler.chartBorderColor = val; },
+                    "Chart Border Color",
+                    "GT5U.power_goggles_config.border_color",
+                    "GT5U.power_goggles_config.border_color_tooltip"))
+            .child(
+                makeColorConfigButton(
+                    overlayPanel,
+                    () -> PowerGogglesConfigHandler.masurementsBackgroundColor,
+                    val -> { PowerGogglesConfigHandler.masurementsBackgroundColor = val; },
+                    "Measurements Background Color",
+                    "GT5U.power_goggles_config.background_lines_color",
+                    "GT5U.power_goggles_config.background_lines_color_tooltip"))
+
             .child(
                 new Row().size(228, 18)
                     .marginBottom(4)

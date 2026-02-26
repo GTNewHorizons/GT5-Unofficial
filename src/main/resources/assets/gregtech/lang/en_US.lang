@@ -728,6 +728,8 @@ GT5U.power_goggles_config.settings_color=Color Scheme
 
 GT5U.power_goggles_config.toggle_notation=Toggle Notation: %s
 GT5U.power_goggles_config.toggle_reading=Toggle Reading Type: %s
+GT5U.power_goggles_config.toggle_power_bar=Show Power Bar: %s
+GT5U.power_goggles_config.toggle_power_bar_tooltip=Gradient based on %% EU consumed in the last 5 minutes relative to current storage
 GT5U.power_goggles_config.toggle_hud_with_chat=Hide HUD when chat open: %s
 GT5U.power_goggles_config.main_text_scale=Storage Text Scale
 GT5U.power_goggles_config.sub_text_scale=Sub Text Scale
@@ -739,6 +741,13 @@ GT5U.power_goggles_config.gradient_ok=OK Gradient Color
 GT5U.power_goggles_config.gradient_ok_tooltip=Affects what color the power rectangle's gradient approaches as EU change approaches 0
 GT5U.power_goggles_config.gradient_good=Good Gradient Color
 GT5U.power_goggles_config.gradient_good_tooltip=Affects what color the power rectangle's gradient approaches as EU change goes higher
+
+GT5U.power_goggles_config.background_color=Chart Background Color
+GT5U.power_goggles_config.background_color_tooltip=Affects the background color of the power graph
+GT5U.power_goggles_config.border_color=Chart Border Color
+GT5U.power_goggles_config.border_color_tooltip=Affects the border color of the power graph
+GT5U.power_goggles_config.background_lines_color=Measurements Background Color
+GT5U.power_goggles_config.background_lines_color_tooltip=Affects the background color of the measurements tab
 
 GT5U.power_goggles_config.text_bad=Bad Text Color
 GT5U.power_goggles_config.text_bad_tooltip=Affects Text and Power Chart color when EU change is negative

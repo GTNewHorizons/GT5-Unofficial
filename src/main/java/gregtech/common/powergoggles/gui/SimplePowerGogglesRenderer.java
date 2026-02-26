@@ -68,7 +68,9 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         GL11.glTranslated(-scaleOffsetX, -scaleOffsetY, 0);
 
         renderStorageText();
-        renderGradientRectangle();
+        if (PowerGogglesConfigHandler.showPowerBar) {
+            renderGradientRectangle();
+        }
         renderTimedDifferenceText();
 
         if (PowerGogglesConfigHandler.showPowerChart) {
@@ -84,7 +86,9 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         if (fontRenderer == null) {
             fontRenderer = mc.fontRenderer;
         }
-        this.gradientRectangleHeight = PowerGogglesConfigHandler.rectangleHeight;
+        this.gradientRectangleHeight = PowerGogglesConfigHandler.showPowerBar
+            ? PowerGogglesConfigHandler.rectangleHeight
+            : 0;
         this.gradientRectangleWidth = PowerGogglesConfigHandler.rectangleWidth;
 
         this.chartWidth = PowerGogglesConfigHandler.rectangleWidth;
@@ -358,7 +362,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
     private void renderBackground() {
 
-        int bgColor = Color.argb(47, 20, 76, (int) (255 * 0.85));
+        int bgColor = PowerGogglesConfigHandler.masurementsBackgroundColor;
 
         double mainStringHeight = fontRenderer.FONT_HEIGHT * mainScale;
         double subStringHeight = fontRenderer.FONT_HEIGHT * subScale * 2;
@@ -444,9 +448,9 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int right = xOffset + chartWidth;
         int top = screenHeight - yOffset - chartHeight - borderRadius * 2;
         int bottom = screenHeight - yOffset - borderRadius * 2;
-        int bgColor = Color.argb(19, 14, 91, (int) (255 * 0.75f));
+        int bgColor = PowerGogglesConfigHandler.chartBackgroundColor;
         GuiHelper.drawGradientRect(-1, left, top, right, bottom, bgColor, bgColor);
-        int borderColor = Color.rgb(81, 79, 104);
+        int borderColor = PowerGogglesConfigHandler.chartBorderColor;
         GuiHelper.drawGradientRect(
             -2,
             left - borderRadius,
