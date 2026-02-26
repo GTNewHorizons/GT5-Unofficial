@@ -25,9 +25,9 @@ public class BlockCasings12 extends BlockCasingsAbstract {
         register(2, ItemList.ReinforcementNanochipCasing);
         register(3, ItemList.ComputationalMatrixNanochipCasing);
         register(4, ItemList.FirewallProjectionNanochipCasing);
-        register(5,ItemList.Casing_Strengthened_Inanimate);
-        register(6,ItemList.Casing_Precise_Stationary);
-        register(7,ItemList.Casing_Ultimately_Static);
+        register(5, ItemList.Casing_Strengthened_Inanimate);
+        register(6, ItemList.Casing_Precise_Stationary);
+        register(7, ItemList.Casing_Ultimately_Static);
         register(9, ItemList.Spinmatron_Casing);
         register(10, ItemList.CasingThaumium);
         register(11, ItemList.CasingVoid);

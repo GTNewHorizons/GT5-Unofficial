@@ -3057,7 +3057,11 @@ public enum ItemList implements IItemContainer {
         WIRELESS_ENERGY_COVERS = { Cover_Wireless_Energy_LV, Cover_Wireless_Energy_MV, Cover_Wireless_Energy_HV,
             Cover_Wireless_Energy_EV, Cover_Wireless_Energy_IV, Cover_Wireless_Energy_LuV, Cover_Wireless_Energy_ZPM,
             Cover_Wireless_Energy_UV, Cover_Wireless_Energy_UHV, Cover_Wireless_Energy_UEV, Cover_Wireless_Energy_UIV,
-            Cover_Wireless_Energy_UMV, Cover_Wireless_Energy_UXV, Cover_Wireless_Energy_MAX };
+            Cover_Wireless_Energy_UMV, Cover_Wireless_Energy_UXV, Cover_Wireless_Energy_MAX },
+        ROBOT_ARMS = { Robot_Arm_LV, Robot_Arm_MV, Robot_Arm_HV, Robot_Arm_EV, Robot_Arm_IV, Robot_Arm_LuV,
+            Robot_Arm_ZPM, Robot_Arm_UV, Robot_Arm_UHV, Robot_Arm_UEV, Robot_Arm_UIV, Robot_Arm_UMV, Robot_Arm_UXV,
+            Robot_Arm_MAX };
+
     public static Fluid sOilExtraHeavy, sEpichlorhydrin, sDrillingFluid, sBlueVitriol, sNickelSulfate, sGreenVitriol,
         sToluene, sNitrationMixture, sRocketFuel, sHydricSulfur, sIndiumConcentrate, sLeadZincSolution,
         sHydrochloricAcid;

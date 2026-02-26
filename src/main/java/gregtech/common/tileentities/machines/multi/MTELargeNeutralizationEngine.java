@@ -22,10 +22,12 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -52,8 +54,8 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -91,6 +93,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private int toxicResidue = 0;
     private int residueDecay;
     private int residueIncrease;
+    private float robotArmDecayBoost;
 
     public MTELargeNeutralizationEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -131,11 +134,16 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private float getRandomDecayMultiplier() {
-        return (90 + getBaseMetaTileEntity().getWorld().rand.nextInt(21)) / 100F;
+        return (900 + getBaseMetaTileEntity().getRandomNumber(201)) / 1000F;
+    }
+
+    private static float getRobotArmDecayBoost(int tier) {
+        if (tier <= 5) return (float) Math.pow(1.2F, tier);
+        return (float) Math.pow(1.3F, tier);
     }
 
     private int getResidueDecay() {
-        return Math.max(0, (int) (getBaseResidueDecay() * getRandomDecayMultiplier()));
+        return Math.max(0, (int) (getBaseResidueDecay() * getRandomDecayMultiplier() * this.robotArmDecayBoost));
     }
 
     private int getResidueIncrease() {
@@ -146,9 +154,19 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return GregTechAPI.sBlockCasings12;
     }
 
-    private VoltageIndex getRobotArmTier() {
-
-        return null;
+    private int getRobotArmTier() {
+        final HashMap<Item, Integer> itemsToCheck = new HashMap<>();
+        for (int i = ItemList.ROBOT_ARMS.length - 1; i >= 0; i--) {
+            itemsToCheck.put(ItemList.ROBOT_ARMS[i].getItem(), i);
+        }
+        ArrayList<ItemStack> storedInputs = getStoredInputs();
+        int maxFoundRobotTier = 0;
+        for (ItemStack storedInput : storedInputs) {
+            if (itemsToCheck.containsKey(storedInput.getItem())) {
+                maxFoundRobotTier = Math.max(maxFoundRobotTier, itemsToCheck.get(storedInput.getItem()));
+            }
+        }
+        return maxFoundRobotTier;
     }
 
     private static IStructureDefinition<MTELargeNeutralizationEngine> STRUCTURE_DEFINITION = null;
@@ -340,6 +358,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         aNBT.setInteger("toxicResidue", toxicResidue);
         aNBT.setInteger("residueIncrease", residueIncrease);
         aNBT.setInteger("residueDecay", residueDecay);
+        aNBT.setFloat("robotArmDecayBoost", robotArmDecayBoost);
     }
 
     @Override
@@ -352,6 +371,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         toxicResidue = aNBT.getInteger("toxicResidue");
         residueIncrease = aNBT.getInteger("residueIncrease");
         residueDecay = aNBT.getInteger("residueDecay");
+        robotArmDecayBoost = aNBT.getFloat("robotArmDecayBoost");
     }
 
     @Override
@@ -412,6 +432,12 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             } else {
                 useBooster();
             }
+            int robotArmTier = getRobotArmTier();
+            if (robotArmTier > 0) {
+                int random = getBaseMetaTileEntity().getRandomNumber(108000);
+                if (random == 0) depleteInput(ItemList.ROBOT_ARMS[robotArmTier - 1].get(1L));
+            }
+            this.robotArmDecayBoost = getRobotArmDecayBoost(robotArmTier);
             this.mEUt = getEUOutput(fuelConsumption);
             this.mEfficiencyIncrease = 50;
             this.mProgresstime = 1;
