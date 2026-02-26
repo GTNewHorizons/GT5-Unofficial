@@ -3092,7 +3092,7 @@ achievement.gt.blockcasings5.13.desc=Pickup this item to see the recipe in NEI
 # Magical Maintenance Hatch
 gt.blockmachines.magical.maintenance.desc.0=For magically maintaining Multiblocks with Centi-Vis.
 gt.blockmachines.magical.maintenance.desc.1=Passively Consumes 1 Centi-Vis of each primal aspect every 2.5 Seconds.
-gt.blockmachines.magical.maintenance.desc.2=Consumes 25 primal vis to fix corresponding maintenance issue.
+gt.blockmachines.magical.maintenance.desc.2=Consumes 25 primal vis to fix corresponding maintenance issues.
 gt.blockmachines.magical.maintenance.desc.3=§eAer §7(Wrench), §aTerra §7(Screwdriver), §cIgnis §7(Soldering Iron)
 gt.blockmachines.magical.maintenance.desc.4=§9Aqua §7(Crowbar), §fOrdo §7(Soft Mallet), §8Perditio §7(Hard Hammer)
 
