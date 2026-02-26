@@ -20,18 +20,15 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     public BlockCasings12() {
         super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
 
-        register(0, ItemList.CokeOvenCasing, "Coke Oven Bricks");
-        register(1, ItemList.MeshInterfaceNanochipCasing, "Nanochip Mesh Interface Casing");
-        register(2, ItemList.ReinforcementNanochipCasing, "Nanochip Reinforcement Casing");
-        register(3, ItemList.ComputationalMatrixNanochipCasing, "Nanochip Computational Matrix Casing");
-        register(4, ItemList.FirewallProjectionNanochipCasing, "Nanochip Firewall Projection Casing");
-        register(5, ItemList.Casing_Strengthened_Inanimate, "Strengthened Inanimate Machine Casing");
-        register(6, ItemList.Casing_Precise_Stationary, "Precise Stationary Machine Casing");
-        register(7, ItemList.Casing_Ultimately_Static, "Ultimately Static Machine Casing");
-        register(9, ItemList.Spinmatron_Casing, "Vibration-Safe Casing");
-        register(10, ItemList.CasingThaumium, "Alchemically Resistant Thaumium Casing");
-        register(11, ItemList.CasingVoid, "Alchemically Inert Void Casing");
-        register(12, ItemList.CasingIchorium, "Alchemically Immune Ichorium Casing");
+        register(0, ItemList.CokeOvenCasing);
+        register(1, ItemList.MeshInterfaceNanochipCasing);
+        register(2, ItemList.ReinforcementNanochipCasing);
+        register(3, ItemList.ComputationalMatrixNanochipCasing);
+        register(4, ItemList.FirewallProjectionNanochipCasing);
+        register(9, ItemList.Spinmatron_Casing);
+        register(10, ItemList.CasingThaumium);
+        register(11, ItemList.CasingVoid);
+        register(12, ItemList.CasingIchorium);
         for (int i = 0; i < 3; i++) {
             GTStructureChannels.METAL_MACHINE_CASING.registerAsIndicator(new ItemStack(this, 1, i + 10), i + 1);
         }
@@ -64,10 +61,11 @@ public class BlockCasings12 extends BlockCasingsAbstract {
             case 1 -> Textures.BlockIcons.NANOCHIP_MESH_INTERFACE_CASING.getIcon();
             case 2 -> Textures.BlockIcons.NANOCHIP_REINFORCEMENT_CASING.getIcon();
             case 3 -> Textures.BlockIcons.NANOCHIP_COMPUTATIONAL_MATRIX_CASING.getIcon();
-            case 4 -> Textures.BlockIcons.NANOCHIP_FIREWALL_PROJECTION_CASING.getIcon();
-            case 5 -> Textures.BlockIcons.MACHINE_CASING_STRENGTHENED_INANIMATE.getIcon();
-            case 6 -> Textures.BlockIcons.MACHINE_CASING_PRECISE_STATIONARY.getIcon();
-            case 7 -> Textures.BlockIcons.MACHINE_CASING_ULTIMATELY_STATIC.getIcon();
+            case 4 -> {
+                if (ordinalSide == 0 || ordinalSide == 1)
+                    yield Textures.BlockIcons.NANOCHIP_FIREWALL_PROJECTION_CASING_TOP.getIcon();
+                yield Textures.BlockIcons.NANOCHIP_FIREWALL_PROJECTION_CASING.getIcon();
+            }
             case 9 -> Textures.BlockIcons.SPINMATRON_CASING.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_THAUMIUM.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VOID.getIcon();
