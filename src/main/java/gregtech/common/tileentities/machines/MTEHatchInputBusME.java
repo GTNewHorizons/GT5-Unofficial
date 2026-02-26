@@ -586,7 +586,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     @Override
     public int getCircuitSlotX() {
-        return 80;
+        return 85;
     }
 
     @Override
@@ -955,7 +955,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
                 })
                     .setUpdateTooltipEveryTick(true))
                 .build()
-                .setPos(7, 9))
+                .setPos(12, 9))
             .widget(
                 SlotGroup.ofItemHandler(configItemHandler, 4)
                     .startFromSlot(16)
@@ -964,10 +964,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
                     .background(GTUITextures.SLOT_DARK_GRAY)
                     .widgetCreator(slot -> new AESlotWidget(slot).disableInteraction())
                     .build()
-                    .setPos(97, 9))
+                    .setPos(102, 9))
             .widget(
                 new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_DOUBLE)
-                    .setPos(82, 30)
+                    .setPos(87, 30)
                     .setSize(12, 12));
 
         if (autoPullAvailable) {
@@ -993,7 +993,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
                         StatCollector.translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip.1"),
                         StatCollector.translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip.2")))
                 .setSize(16, 16)
-                .setPos(80, 10))
+                .setPos(85, 10))
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList));
         }
 
@@ -1017,12 +1017,12 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         })
             .setTextAlignment(Alignment.Center)
             .setSize(130, 9)
-            .setPos(23, 84))
+            .setPos(28, 84))
             .widget(
                 new SlotWidget(inventoryHandler, getManualSlot())
                     // ghost slots are prioritized over manual slot
                     .setShiftClickPriority(11)
-                    .setPos(79, 45));
+                    .setPos(84, 45));
     }
 
     protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
@@ -1127,7 +1127,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     protected static String[] getDescriptionArray(boolean autoPullAvailable) {
         List<String> strings = new ArrayList<>(8);
         strings.add("Next-gen item input for Multiblocks");
-        strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 6 : 3] + VN[autoPullAvailable ? 6 : 3]);
+        strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 6 : 4] + VN[autoPullAvailable ? 6 : 4]);
         strings.add("Retrieves directly from ME");
         strings.add("Keeps 16 item types in stock");
 

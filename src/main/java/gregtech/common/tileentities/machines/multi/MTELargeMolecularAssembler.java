@@ -15,17 +15,18 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -56,6 +57,7 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.DimensionalCoord;
+import appeng.api.util.IInterfaceViewable;
 import appeng.core.worlddata.WorldData;
 import appeng.items.misc.ItemEncodedPattern;
 import appeng.me.GridAccessException;
@@ -74,6 +76,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.net.GTPacketLMACraftingFX;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
@@ -83,9 +86,11 @@ import gregtech.common.gui.modularui.multiblock.MTELargeMolecularAssemblerGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
+import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
+import gregtech.crossmod.ae2.InputBusInventoryProxy;
 
 public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<MTELargeMolecularAssembler>
-    implements ICraftingProvider, IActionHost, IGridProxyable, ISurvivalConstructable {
+    implements ICraftingProvider, IActionHost, IGridProxyable, IInterfaceViewable, ISurvivalConstructable {
 
     private static final String DATA_ORB_JOBS_KEY = "MX-CraftingJobs";
     private static final String DATA_ORB_JOBS_JOB_KEY = "Job";
@@ -144,6 +149,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     private boolean aeJobsDirty;
 
     private Map<ItemStack, ICraftingPatternDetails> cachedPatternDetail = new ItemStackMap<>(true);
+    private int cachedInputBusCount = 0;
 
     private BaseActionSource requestSource;
     private IItemList<IAEItemStack> cachedOutputs = AEApi.instance()
@@ -156,6 +162,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     public boolean hiddenCraftingFX;
 
     private AENetworkProxy gridProxy;
+    private final InputBusInventoryProxy inventoryProxy = new InputBusInventoryProxy();
 
     public MTELargeMolecularAssembler(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -269,6 +276,8 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         if (aNBT.hasKey("proxy")) {
             getProxy().readFromNBT(aNBT.getCompoundTag("proxy"));
         }
+
+        issuePatternChangeIfNeeded(0);
     }
 
     @Override
@@ -536,19 +545,20 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             return;
         }
 
-        Set<ItemStack> inputs = GTUtility.filterValidMTEs(mInputBusses)
+        List<MTEHatchInputBus> inputs = GTUtility.filterValidMTEs(mInputBusses)
             .stream()
             .filter(bus -> !(bus instanceof MTEHatchCraftingInputME))
-            .flatMap(
-                bus -> IntStream.range(0, bus.getSizeInventory())
-                    .mapToObj(bus::getStackInSlot))
-            .filter(Objects::nonNull)
-            .collect(Collectors.toSet());
+            .collect(Collectors.toList());
 
         boolean changed = false;
         Map<ItemStack, ICraftingPatternDetails> patterns = new ItemStackMap<>(true);
 
-        for (ItemStack is : inputs) {
+        for (ItemStack is : inputs.stream()
+            .flatMap(
+                bus -> IntStream.range(0, bus.getSizeInventory())
+                    .mapToObj(bus::getStackInSlot))
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet())) {
             if (!(is.getItem() instanceof ItemEncodedPattern pattern)) {
                 continue;
             }
@@ -567,9 +577,17 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         }
 
         changed |= patterns.size() != cachedPatternDetail.size();
+        changed |= inputs.size() != cachedInputBusCount;
         cachedPatternDetail = patterns;
+        cachedInputBusCount = inputs.size();
 
         if (changed) {
+            final var patternInputs = inputs.stream()
+                .filter(mte -> mte instanceof MTEHatchPatternProvider)
+                .map(mte -> (MTEHatchPatternProvider) mte)
+                .collect(Collectors.toList());
+
+            inventoryProxy.setInputs(patternInputs);
             try {
                 AENetworkProxy proxy = getProxy();
                 if (proxy == null) return;
@@ -692,6 +710,57 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             getBaseMetaTileEntity().getXCoord(),
             getBaseMetaTileEntity().getYCoord(),
             getBaseMetaTileEntity().getZCoord());
+    }
+
+    @Override
+    public ItemStack getCrafterIcon() {
+        return this.getMachineCraftingIcon();
+    }
+
+    @Override
+    public int rows() {
+        // slots/9, rounded up
+        return (inventoryProxy.getSizeInventory() + 8) / 9;
+    }
+
+    @Override
+    public int rowSize() {
+        return 9;
+    }
+
+    @Override
+    public int numSlots() {
+        return inventoryProxy.getSizeInventory();
+    }
+
+    @Override
+    public IInventory getPatterns() {
+        return inventoryProxy;
+    }
+
+    public String getName() {
+        final var crafterIcon = getCrafterIcon();
+        if (crafterIcon != null) {
+            return crafterIcon.getDisplayName();
+        } else {
+            return getLocalName();
+        }
+    }
+
+    @Override
+    public TileEntity getTileEntity() {
+        return (TileEntity) getBaseMetaTileEntity();
+    }
+
+    @Override
+    public boolean shouldDisplay() {
+        return true;
+    }
+
+    @Override
+    public boolean allowsPatternOptimization() {
+        // crafting patterns must not be optimized (i think?)
+        return false;
     }
 
     @Override
