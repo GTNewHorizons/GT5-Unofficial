@@ -25,6 +25,9 @@ public class BlockCasings12 extends BlockCasingsAbstract {
         register(2, ItemList.ReinforcementNanochipCasing);
         register(3, ItemList.ComputationalMatrixNanochipCasing);
         register(4, ItemList.FirewallProjectionNanochipCasing);
+        register(5,ItemList.Casing_Strengthened_Inanimate);
+        register(6,ItemList.Casing_Precise_Stationary);
+        register(7,ItemList.Casing_Ultimately_Static);
         register(9, ItemList.Spinmatron_Casing);
         register(10, ItemList.CasingThaumium);
         register(11, ItemList.CasingVoid);
@@ -66,6 +69,9 @@ public class BlockCasings12 extends BlockCasingsAbstract {
                     yield Textures.BlockIcons.NANOCHIP_FIREWALL_PROJECTION_CASING_TOP.getIcon();
                 yield Textures.BlockIcons.NANOCHIP_FIREWALL_PROJECTION_CASING.getIcon();
             }
+            case 5 -> Textures.BlockIcons.MACHINE_CASING_STRENGTHENED_INANIMATE.getIcon();
+            case 6 -> Textures.BlockIcons.MACHINE_CASING_PRECISE_STATIONARY.getIcon();
+            case 7 -> Textures.BlockIcons.MACHINE_CASING_ULTIMATELY_STATIC.getIcon();
             case 9 -> Textures.BlockIcons.SPINMATRON_CASING.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_THAUMIUM.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VOID.getIcon();
