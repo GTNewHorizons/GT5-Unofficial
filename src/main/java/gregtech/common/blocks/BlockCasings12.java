@@ -61,7 +61,11 @@ public class BlockCasings12 extends BlockCasingsAbstract {
             case 1 -> Textures.BlockIcons.NANOCHIP_MESH_INTERFACE_CASING.getIcon();
             case 2 -> Textures.BlockIcons.NANOCHIP_REINFORCEMENT_CASING.getIcon();
             case 3 -> Textures.BlockIcons.NANOCHIP_COMPUTATIONAL_MATRIX_CASING.getIcon();
-            case 4 -> Textures.BlockIcons.NANOCHIP_FIREWALL_PROJECTION_CASING.getIcon();
+            case 4 -> {
+                if (ordinalSide == 0 || ordinalSide == 1)
+                    yield Textures.BlockIcons.NANOCHIP_FIREWALL_PROJECTION_CASING_TOP.getIcon();
+                yield Textures.BlockIcons.NANOCHIP_FIREWALL_PROJECTION_CASING.getIcon();
+            }
             case 9 -> Textures.BlockIcons.SPINMATRON_CASING.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_THAUMIUM.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VOID.getIcon();
