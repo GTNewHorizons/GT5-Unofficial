@@ -33,7 +33,6 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
 
     private final int mVisCap = 50;
     private final int mVisCost = 25;
-    private final int mVisPassiveDrain = 1;
 
     private static final ResourceLocation focusMaintenanceSound = new ResourceLocation(
         "emt",
@@ -52,10 +51,7 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
         return new String[] { translateToLocal("gt.blockmachines.magical.maintenance.desc.0"),
             translateToLocal("gt.blockmachines.magical.maintenance.desc.1"),
             translateToLocal("gt.blockmachines.magical.maintenance.desc.2"),
-            translateToLocal("gt.blockmachines.magical.maintenance.desc.3"),
-            translateToLocal("gt.blockmachines.magical.maintenance.desc.4"),
-
-        };
+            translateToLocal("gt.blockmachines.magical.maintenance.desc.3") };
     }
 
     @Override
@@ -150,16 +146,6 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
         if (mEntropyBuffer >= mVisCost && !this.mHardHammer) {
             this.mHardHammer = true;
             mEntropyBuffer -= mVisCost;
-        }
-
-        // Passive Drain 1 Centi-Vis every 2.5 seconds
-        if (aTick % 50 == 0) {
-            if (mAirBuffer > 0) mAirBuffer -= mVisPassiveDrain;
-            if (mEarthBuffer > 0) mEarthBuffer -= mVisPassiveDrain;
-            if (mFireBuffer > 0) mFireBuffer -= mVisPassiveDrain;
-            if (mWaterBuffer > 0) mWaterBuffer -= mVisPassiveDrain;
-            if (mOrderBuffer > 0) mOrderBuffer -= mVisPassiveDrain;
-            if (mEntropyBuffer > 0) mEntropyBuffer -= mVisPassiveDrain;
         }
     }
 
