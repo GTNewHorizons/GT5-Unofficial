@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -96,9 +97,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     private CircuitBatch currentBlock;
 
     public CircuitCalibration.CalibrationThreshold currentThreshold;
-
-    // For usage in the GUI
-    public boolean isTalkModeActive = false;
 
     public static final IStructureDefinition<MTENanochipAssemblyComplex> STRUCTURE_DEFINITION = StructureDefinition
         .<MTENanochipAssemblyComplex>builder()
@@ -458,7 +456,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                     // Skip empty hatches
                     if (hatch.contents == null) continue;
                     Map<CircuitComponent, Long> contents = hatch.contents.getComponents();
-                    for (Map.Entry<CircuitComponent, Long> entry : contents.entrySet()) {
+                    // Use Iterator to protect against ConcurrentModificationException
+                    Iterator<Map.Entry<CircuitComponent, Long>> iterator = contents.entrySet()
+                        .iterator();
+                    while (iterator.hasNext()) {
+                        Map.Entry<CircuitComponent, Long> entry = iterator.next();
                         CircuitComponent component = entry.getKey();
                         long amount = entry.getValue();
                         if (component.realComponent != null) {
@@ -467,9 +469,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                                 long originalAmount = contents.get(component);
                                 long newAmount = originalAmount - ejected;
                                 if (newAmount == 0) {
-                                    contents.remove(component);
+                                    iterator.remove();
                                 } else {
-                                    contents.put(component, newAmount);
+                                    entry.setValue(newAmount);
                                 }
                             }
                         }
@@ -597,6 +599,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         BigInteger availableEnergy = BigInteger
                             .valueOf(Math.min(this.getHatchVar(), this.getMaxInputEu() * MODULE_CONNECT_INTERVAL));
                         if (availableEnergy.compareTo(BigInteger.ZERO) <= 0) return;
+                        BigInteger drainedEnergy = BigInteger.ZERO;
                         // iterate over the modules, sending EU to fill their internal buffers
                         for (MTENanochipAssemblyModuleBase<?> module : modules) {
                             module.connect(this);
@@ -609,9 +612,10 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                                 .min(availableEnergy);
                             BigInteger sentEnergy = module.increaseStoredEU(euToSend);
                             availableEnergy = availableEnergy.subtract(sentEnergy);
+                            drainedEnergy = drainedEnergy.add(sentEnergy);
                             if (availableEnergy.compareTo(BigInteger.ZERO) <= 0) break;
                         }
-                        setHatchVar(getHatchVar() - availableEnergy.longValue());
+                        setHatchVar(getHatchVar() - drainedEnergy.longValue());
                     }
                 }
             } else {
@@ -646,7 +650,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("talkMode", this.isTalkModeActive);
         NBTTagList history = new NBTTagList();
         for (CircuitBatch batch : circuitHistory) {
             history.appendTag(new NBTTagIntArray(batch.writeToIntArray()));
@@ -660,7 +663,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        isTalkModeActive = aNBT.getBoolean("talkMode");
         NBTTagList history = aNBT.getTagList("history", 11);
         for (Object rawTag : history.tagList) {
             if (rawTag instanceof NBTTagIntArray batch) {

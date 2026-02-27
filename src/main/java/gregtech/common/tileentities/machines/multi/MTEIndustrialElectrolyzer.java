@@ -3,17 +3,16 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.api.util.GTStructureUtility.chainItemPipeCasings;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -21,85 +20,99 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.pollution.PollutionConfig;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEIndustrialWireMill>
+public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MTEIndustrialElectrolyzer>
     implements ISurvivalConstructable {
 
-    private static IStructureDefinition<MTEIndustrialWireMill> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialElectrolyzer> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private static final int OFFSET_X = 3;
+    private static final int OFFSET_X = 2;
     private static final int OFFSET_Y = 2;
-    private static final int OFFSET_Z = 0;
+    private static final int OFFSET_Z = 1;
 
     private static final int PARALLEL_PER_TIER = 4;
-    private static final float SPEED_INCREASE_TIER = 0.5f;
-    private static final float EU_EFFICIENCY = 0.75f;
+    private static final float SPEED = 2.8f;
+    private static final float EU_EFFICIENCY = 0.9f;
 
-    public MTEIndustrialWireMill(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialElectrolyzer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEIndustrialWireMill(final String aName) {
+    public MTEIndustrialElectrolyzer(final String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialWireMill(this.mName);
+        return new MTEIndustrialElectrolyzer(this.mName);
     }
 
     @Override
-    public IStructureDefinition<MTEIndustrialWireMill> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialElectrolyzer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialWireMill>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialElectrolyzer>builder()
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
                     // spotless:off
                     new String[][]{{
-                        " CBBBC ",
-                        "CCBBBCC",
-                        "CCC~CCC"
+                        " DDD ",
+                        "     ",
+                        "     ",
+                        "     ",
+                        " DDD "
                     },{
-                        "CCBBBCC",
-                        "CCAAACC",
-                        "CCCCCCC"
+                        "DDDDD",
+                        " ADA ",
+                        " A~A ",
+                        " ADA ",
+                        "DDDDD"
                     },{
-                        " CBBBC ",
-                        "CCBBBCC",
-                        "CCCCCCC"
+                        "DCDBD",
+                        " CDB ",
+                        " CDB ",
+                        " CDB ",
+                        "DDDDD"
+                    },{
+                        "DDDDD",
+                        " ADA ",
+                        " ADA ",
+                        " ADA ",
+                        "DDDDD"
+                    },{
+                        " DDD ",
+                        "     ",
+                        "     ",
+                        "     ",
+                        " DDD "
                     }})
                 //spotless:on
-                .addElement('B', chainAllGlasses())
+                .addElement('A', ofFrame(MaterialsAlloy.POTIN))
+                .addElement('B', Casings.BrassItemPipeCasing.asElement())
+                .addElement('C', Casings.TinItemPipeCasing.asElement())
                 .addElement(
-                    'A',
-                    chainItemPipeCasings(
-                        -1,
-                        MTEIndustrialWireMill::setItemPipeTier,
-                        MTEIndustrialWireMill::getItemPipeTier))
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEIndustrialWireMill.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                        .casingIndex(Casings.WireFactoryCasing.textureId)
+                    'D',
+                    buildHatchAdder(MTEIndustrialElectrolyzer.class)
+                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
+                        .casingIndex(Casings.ElectrolyzerCasing.textureId)
                         .hint(1)
                         .buildAndChain(
-                            onElementPass(MTEIndustrialWireMill::onCasingAdded, Casings.WireFactoryCasing.asElement())))
+                            onElementPass(
+                                MTEIndustrialElectrolyzer::onCasingAdded,
+                                Casings.ElectrolyzerCasing.asElement())))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -109,60 +122,57 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.WireFactoryCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCDIndustrialWireMillActive)
+            if (aActive) return new ITexture[] { Casings.ElectrolyzerCasing.getCasingTexture(), TextureFactory.builder()
+                .addIcon(TexturesGtBlock.oMCDIndustrialElectrolyzerActive)
                 .extFacing()
                 .build(),
                 TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialWireMillActiveGlow)
+                    .addIcon(TexturesGtBlock.oMCDIndustrialElectrolyzerActiveGlow)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Casings.WireFactoryCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCDIndustrialWireMill)
+            return new ITexture[] { Casings.ElectrolyzerCasing.getCasingTexture(), TextureFactory.builder()
+                .addIcon(TexturesGtBlock.oMCDIndustrialElectrolyzer)
                 .extFacing()
                 .build(),
                 TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialWireMillGlow)
+                    .addIcon(TexturesGtBlock.oMCDIndustrialElectrolyzerGlow)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Casings.WireFactoryCasing.getCasingTexture() };
+        return new ITexture[] { Casings.ElectrolyzerCasing.getCasingTexture() };
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Wiremill, IWF")
-            .addVoltageParallelInfo(PARALLEL_PER_TIER)
-            .addDynamicSpeedBonusInfo(SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
-            .addStaticEuEffInfo(EU_EFFICIENCY)
+        tt.addMachineType("Electrolyzer")
+            .addBulkMachineInfo(PARALLEL_PER_TIER, SPEED, EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 3, 3, false)
+            .beginStructureBlock(5, 5, 5, false)
             .addController("Front Center")
-            .addCasingInfoMin("Wire Factory Casings", 14, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .addCasingInfoMin("Electrolyzer Casings", 6, false)
+            .addCasingInfoExactly("Potin Frame Box", 12, false)
+            .addCasingInfoExactly("Tin Item Pipe Casing", 4, false)
+            .addCasingInfoExactly("Brass Item Pipe Casing", 4, false)
+            .addInputBus("Any Electrolyzer Casing", 1)
+            .addOutputBus("Any Electrolyzer Casing", 1)
+            .addInputHatch("Any Electrolyzer Casing", 1)
+            .addOutputHatch("Any Electrolyzer Casing", 1)
+            .addEnergyHatch("Any Electrolyzer Casing", 1)
+            .addMaintenanceHatch("Any Electrolyzer Casing", 1)
+            .addMufflerHatch("Any Electrolyzer Casing", 1)
+            .addStructureAuthors("Vortex")
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(EU_EFFICIENCY);
-                setSpeedBonus(1F / (SPEED_INCREASE_TIER * itemPipeTier));
-                return super.process();
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setSpeedBonus(1F / SPEED)
+            .setEuModifier(EU_EFFICIENCY)
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -170,20 +180,10 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
         return (PARALLEL_PER_TIER * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
-    private int mCasingAmount;
+    private int casingAmount;
 
     private void onCasingAdded() {
-        mCasingAmount++;
-    }
-
-    private int itemPipeTier = -1;
-
-    private void setItemPipeTier(int tier) {
-        itemPipeTier = tier;
-    }
-
-    private int getItemPipeTier() {
-        return itemPipeTier;
+        casingAmount++;
     }
 
     @Override
@@ -208,29 +208,19 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        itemPipeTier = -1;
-        mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && mCasingAmount >= 14;
-    }
-
-    @Override
-    public int getRecipeCatalystPriority() {
-        return -1;
+        casingAmount = 0;
+        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 6
+            && !this.mMufflerHatches.isEmpty();
     }
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return PollutionConfig.pollutionPerSecondMultiIndustrialWireMill;
-    }
-
-    @Override
-    protected SoundResource getProcessStartSound() {
-        return SoundResource.GTCEU_LOOP_MOTOR;
+        return PollutionConfig.pollutionPerSecondMultiIndustrialElectrolyzer;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.wiremillRecipes;
+        return GTPPRecipeMaps.electrolyzerNonCellRecipes;
     }
 
     @Override
