@@ -7,7 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
@@ -140,9 +139,13 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
     }
 
     private int fillIfBelowCap(int buffer, Aspect aspect) {
-        return buffer < mVisCap
-            ? buffer + VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), aspect, 1)
-            : buffer;
+        return buffer < mVisCap ? buffer + VisNetHandler.drainVis(
+            getBaseMetaTileEntity().getWorld(),
+            getBaseMetaTileEntity().getXCoord(),
+            getBaseMetaTileEntity().getYCoord(),
+            getBaseMetaTileEntity().getZCoord(),
+            aspect,
+            1) : buffer;
     }
 
     @Override
@@ -167,21 +170,5 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
-    }
-
-    private World getWorld() {
-        return getBaseMetaTileEntity().getWorld();
-    }
-
-    private int getXCoord() {
-        return getBaseMetaTileEntity().getXCoord();
-    }
-
-    private int getYCoord() {
-        return getBaseMetaTileEntity().getYCoord();
-    }
-
-    private int getZCoord() {
-        return getBaseMetaTileEntity().getZCoord();
     }
 }
