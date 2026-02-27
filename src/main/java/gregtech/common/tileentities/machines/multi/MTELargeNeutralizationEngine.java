@@ -22,12 +22,10 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -155,18 +153,13 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private int getRobotArmTier() {
-        final HashMap<Item, Integer> itemsToCheck = new HashMap<>();
-        for (int i = ItemList.ROBOT_ARMS.length - 1; i >= 0; i--) {
-            itemsToCheck.put(ItemList.ROBOT_ARMS[i].getItem(), i);
-        }
         ArrayList<ItemStack> storedInputs = getStoredInputs();
-        int maxFoundRobotTier = 0;
-        for (ItemStack storedInput : storedInputs) {
-            if (itemsToCheck.containsKey(storedInput.getItem())) {
-                maxFoundRobotTier = Math.max(maxFoundRobotTier, itemsToCheck.get(storedInput.getItem()));
+        for (int i = ItemList.ROBOT_ARMS.length - 1; i >= 0; i--) {
+            for (ItemStack storedInput : storedInputs) {
+                if (GTUtility.areStacksEqual(storedInput, ItemList.ROBOT_ARMS[i].get(1L))) return i;
             }
         }
-        return maxFoundRobotTier;
+        return 0;
     }
 
     private static IStructureDefinition<MTELargeNeutralizationEngine> STRUCTURE_DEFINITION = null;
