@@ -103,23 +103,23 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         // Internal Buffer, Soft Caps at 50 vis
         if (mAirBuffer < mVisCap) {
-            mAirBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.AIR, 5);
+            mAirBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.AIR, 1);
         }
         if (mEarthBuffer < mVisCap) {
-            mEarthBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.EARTH, 5);
+            mEarthBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.EARTH, 1);
         }
         if (mFireBuffer < mVisCap) {
-            mFireBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.FIRE, 5);
+            mFireBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.FIRE, 1);
         }
         if (mWaterBuffer < mVisCap) {
-            mWaterBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.WATER, 5);
+            mWaterBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.WATER, 1);
         }
         if (mOrderBuffer < mVisCap) {
-            mOrderBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.ORDER, 5);
+            mOrderBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.ORDER, 1);
         }
         if (mEntropyBuffer < mVisCap) {
             mEntropyBuffer += VisNetHandler
-                .drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.ENTROPY, 5);
+                .drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.ENTROPY, 1);
         }
 
         // Consume buffered vis to repair maintenance tools
