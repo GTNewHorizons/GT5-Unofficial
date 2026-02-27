@@ -531,6 +531,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             return false;
         }
         if (!simulate) {
+            env.dispatchMarkDirty();
             addToCache(stack);
         }
         return true;
