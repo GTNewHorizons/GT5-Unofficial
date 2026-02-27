@@ -152,9 +152,8 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
             mEntropyBuffer -= mVisCost;
         }
 
-        // Passive Buffer 1 Centi-Vis every 2.5 seconds
+        // Passive Drain 1 Centi-Vis every 2.5 seconds
         if (aTick % 50 == 0) {
-
             if (mAirBuffer > 0) mAirBuffer -= mVisPassiveDrain;
             if (mEarthBuffer > 0) mEarthBuffer -= mVisPassiveDrain;
             if (mFireBuffer > 0) mFireBuffer -= mVisPassiveDrain;
