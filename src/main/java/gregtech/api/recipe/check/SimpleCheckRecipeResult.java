@@ -6,11 +6,12 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+
+import gregtech.api.util.GTUtility;
 
 /**
  * Simple implementation of {@link CheckRecipeResult}. You can create new object without registering it.
@@ -40,7 +41,7 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
     @Override
     @Nonnull
     public @NotNull String getDisplayString() {
-        return Objects.requireNonNull(StatCollector.translateToLocal("GT5U.gui.text." + key));
+        return Objects.requireNonNull(GTUtility.translate("gt.gui.text." + key));
     }
 
     @Override
@@ -93,7 +94,7 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
     }
 
     /**
-     * Creates new result with successful state. Add your localized description with `GT5U.gui.text.{key}`. This is
+     * Creates new result with successful state. Add your localized description with `gt.gui.text.{key}`. This is
      * already registered to registry.
      */
     @Nonnull
@@ -102,7 +103,7 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
     }
 
     /**
-     * Creates new result with failed state. Add your localized description with `GT5U.gui.text.{key}`. This is already
+     * Creates new result with failed state. Add your localized description with `gt.gui.text.{key}`. This is already
      * registered to registry.
      */
     @Nonnull
@@ -112,7 +113,7 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
 
     /**
      * Creates new result object with failed state that does not get reset on shutdown. Add your localized description
-     * with `GT5U.gui.text.{key}`. This is already registered to registry.
+     * with `gt.gui.text.{key}`. This is already registered to registry.
      */
     public static CheckRecipeResult ofFailurePersistOnShutdown(String key) {
         return new SimpleCheckRecipeResult(false, key, true);
