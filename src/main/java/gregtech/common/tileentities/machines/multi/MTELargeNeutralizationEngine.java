@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
+import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -115,11 +116,15 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private int getResidueCapacity() {
         return switch (structureTier) {
-            case 1 -> 75000;
-            case 2 -> 200000;
-            case 3 -> 500000;
+            case 1 -> 375000;
+            case 2 -> 1000000;
+            case 3 -> 2500000;
             default -> -1;
         };
+    }
+
+    private float getResidueUsedPercentage(){
+        return Math.round(10*(float) toxicResidue/getResidueCapacity()*100F)/10F;
     }
 
     private int getBaseResidueDecay() {
@@ -158,6 +163,10 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private int getResidueIncrease() {
         return (int) (getResidueRate() * fuelConsumption);
+    }
+
+    private int getNetResidue(){
+        return getResidueIncrease()-getResidueDecay();
     }
 
     private static Block getBlock() {
@@ -534,23 +543,24 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
                 IntSyncValue toxicResidueSyncer = new IntSyncValue(() -> toxicResidue);
                 IntSyncValue residueCapacitySyncer = new IntSyncValue(() -> getResidueCapacity());
+                FloatSyncValue residuePercentageSyncer = new FloatSyncValue(() -> getResidueUsedPercentage());
                 syncManager.syncValue("toxicResidue", toxicResidueSyncer);
                 syncManager.syncValue("residueCapacitySyncer", residueCapacitySyncer);
-                final float residuePercentage = toxicResidueSyncer.getValue()
-                    .floatValue() / residueCapacitySyncer.getValue()
-                    * 100F;
+                syncManager.syncValue("residuePercentageSyncer", residuePercentageSyncer);
                 terminalText.child(
                     IKey.dynamic(
                         () -> StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.toxic_residue",
                             toxicResidueSyncer.getStringValue(),
                             residueCapacitySyncer.getStringValue(),
-                            Float.toString(residuePercentage)))
+                            residuePercentageSyncer.getStringValue()))
                         .asWidget());
                 IntSyncValue residueDecaySyncer = new IntSyncValue(() -> residueDecay);
                 IntSyncValue residueIncreaseSyncer = new IntSyncValue(() -> residueIncrease);
+                IntSyncValue netResidueSyncer = new IntSyncValue(() -> getNetResidue());
                 syncManager.syncValue("residueDecay", residueDecaySyncer);
                 syncManager.syncValue("residueIncrease", residueIncreaseSyncer);
+                syncManager.syncValue("netResidue",netResidueSyncer);
                 final int residueChange = residueIncreaseSyncer.getIntValue() - residueDecaySyncer.getIntValue();
                 terminalText.child(
                     IKey.dynamic(
@@ -558,7 +568,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                             "GT5U.gui.text.residue_change",
                             residueIncreaseSyncer.getStringValue(),
                             residueDecaySyncer.getStringValue(),
-                            Integer.toString(residueChange)))
+                            netResidueSyncer.getStringValue()))
                         .asWidget());
                 return terminalText;
             }
