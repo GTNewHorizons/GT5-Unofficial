@@ -140,12 +140,24 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return (float) Math.pow(1.3F, tier);
     }
 
+    private float getResidueScaleDecayBoost() {
+        return (float) Math.pow(toxicResidue, 0.08F);
+    }
+
     private int getResidueDecay() {
-        return Math.max(0, (int) (getBaseResidueDecay() * getRandomDecayMultiplier() * this.robotArmDecayBoost));
+        return Math.max(
+            0,
+            (int) (getBaseResidueDecay() * getRandomDecayMultiplier()
+                * this.robotArmDecayBoost
+                * getResidueScaleDecayBoost()));
+    }
+
+    private float getResidueRate() {
+        return (float) (Math.pow(fuelValue, 0.8F) * 0.05F);
     }
 
     private int getResidueIncrease() {
-        return 0;
+        return (int) (getResidueRate() * fuelConsumption);
     }
 
     private static Block getBlock() {
@@ -153,11 +165,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private int getRobotArmTier() {
-        ArrayList<ItemStack> storedInputs = getStoredInputs();
         for (int i = ItemList.ROBOT_ARMS.length - 1; i >= 0; i--) {
-            for (ItemStack storedInput : storedInputs) {
-                if (GTUtility.areStacksEqual(storedInput, ItemList.ROBOT_ARMS[i].get(1L))) return i;
-            }
+            if (depleteInput(ItemList.ROBOT_ARMS[i].get(1L), true)) return i;
         }
         return 0;
     }
@@ -345,6 +354,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setByte("structureTier", (byte) structureTier);
+        aNBT.setInteger("fuelValue", fuelValue);
         aNBT.setInteger("fuelConsumption", fuelConsumption);
         aNBT.setFloat("boosterEUBoost", boosterEUBoost);
         aNBT.setInteger("boosterBoostTicks", boosterBoostTicks);
@@ -358,6 +368,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         structureTier = aNBT.getByte("structureTier");
+        fuelValue = aNBT.getInteger("fuelValue");
         fuelConsumption = aNBT.getInteger("fuelConsumption");
         boosterEUBoost = aNBT.getFloat("boosterEUBoost");
         boosterBoostTicks = aNBT.getInteger("boosterBoostTicks");
