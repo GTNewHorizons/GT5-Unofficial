@@ -166,7 +166,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private int getNetResidue(){
-        return getResidueIncrease()-getResidueDecay();
+        return residueIncrease-residueDecay;
     }
 
     private static Block getBlock() {
