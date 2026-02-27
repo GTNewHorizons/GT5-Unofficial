@@ -101,52 +101,48 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        // Internal Buffer, Soft Caps at 50 vis
-        if (mAirBuffer < mVisCap) {
-            mAirBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.AIR, 1);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            preformMaintenance();
         }
-        if (mEarthBuffer < mVisCap) {
-            mEarthBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.EARTH, 1);
-        }
-        if (mFireBuffer < mVisCap) {
-            mFireBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.FIRE, 1);
-        }
-        if (mWaterBuffer < mVisCap) {
-            mWaterBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.WATER, 1);
-        }
-        if (mOrderBuffer < mVisCap) {
-            mOrderBuffer += VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.ORDER, 1);
-        }
-        if (mEntropyBuffer < mVisCap) {
-            mEntropyBuffer += VisNetHandler
-                .drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), Aspect.ENTROPY, 1);
-        }
+    }
 
-        // Consume buffered vis to repair maintenance tools
-        if (mAirBuffer >= mVisCost && !this.mWrench) {
-            this.mWrench = true;
+    private void preformMaintenance() {
+        // Internal Buffer, Soft Caps at 50 vis
+        mAirBuffer = fillIfBelowCap(mAirBuffer, Aspect.AIR);
+        mEarthBuffer = fillIfBelowCap(mEarthBuffer, Aspect.EARTH);
+        mFireBuffer = fillIfBelowCap(mFireBuffer, Aspect.FIRE);
+        mWaterBuffer = fillIfBelowCap(mWaterBuffer, Aspect.WATER);
+        mOrderBuffer = fillIfBelowCap(mOrderBuffer, Aspect.ORDER);
+        mEntropyBuffer = fillIfBelowCap(mEntropyBuffer, Aspect.ENTROPY);
+
+        // Repair if needed + Drain
+        boolean shouldRepair = !this.mWrench || !this.mScrewdriver
+            || !this.mSolderingTool
+            || !this.mCrowbar
+            || !this.mSoftMallet
+            || !this.mHardHammer;
+
+        boolean canRepair = mAirBuffer >= mVisCost && mEarthBuffer >= mVisCost
+            && mFireBuffer >= mVisCost
+            && mWaterBuffer >= mVisCost
+            && mOrderBuffer >= mVisCost
+            && mEntropyBuffer >= mVisCost;
+
+        if (canRepair && shouldRepair) {
+            this.mWrench = this.mScrewdriver = this.mSolderingTool = this.mCrowbar = this.mSoftMallet = this.mHardHammer = true;
             mAirBuffer -= mVisCost;
-        }
-        if (mEarthBuffer >= mVisCost && !this.mScrewdriver) {
-            this.mScrewdriver = true;
             mEarthBuffer -= mVisCost;
-        }
-        if (mFireBuffer >= mVisCost && !this.mSolderingTool) {
-            this.mSolderingTool = true;
             mFireBuffer -= mVisCost;
-        }
-        if (mWaterBuffer >= mVisCost && !this.mCrowbar) {
-            this.mCrowbar = true;
             mWaterBuffer -= mVisCost;
-        }
-        if (mOrderBuffer >= mVisCost && !this.mSoftMallet) {
-            this.mSoftMallet = true;
             mOrderBuffer -= mVisCost;
-        }
-        if (mEntropyBuffer >= mVisCost && !this.mHardHammer) {
-            this.mHardHammer = true;
             mEntropyBuffer -= mVisCost;
         }
+    }
+
+    private int fillIfBelowCap(int buffer, Aspect aspect) {
+        return buffer < mVisCap
+            ? buffer + VisNetHandler.drainVis(getWorld(), getXCoord(), getYCoord(), getZCoord(), aspect, 1)
+            : buffer;
     }
 
     @Override
