@@ -472,10 +472,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 }
                 if (i < data.minSize * parallels || bonusStackChance > XSTR.XSTR_INSTANCE.nextInt(10000)) {
                     int random = XSTR.XSTR_INSTANCE.nextInt(totalChance);
-                    int currentChance = 0;
                     for (int j = 0; j < tRecipe.mOutputChances.length; j++) {
-                        currentChance += tRecipe.mOutputChances[j];
-                        if (random <= currentChance) {
+                        random -= tRecipe.mOutputChances[j];
+                        if (random < 0) {
                             ItemStack generatedOre = tRecipe.mOutputs[j];
                             if (configuredOres == null || configuredOres.isEmpty()
                                 || isWhitelisted == configuredOres.contains(getOreString(generatedOre))) {
