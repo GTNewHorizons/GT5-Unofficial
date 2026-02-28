@@ -21,7 +21,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.ItemLongDistancePipe;
 import gregtech.common.blocks.MaterialMachines;
 
@@ -34,9 +33,6 @@ public class BlockLongDistancePipe extends GTGenericBlock {
         setStepSound(soundTypeMetal);
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
         GregTechAPI.registerMachineBlock(this, -1);
-
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Long Distance Fluid Pipeline Pipe");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Long Distance Item Pipeline Pipe");
 
         ItemList.Long_Distance_Pipeline_Fluid_Pipe.set(new ItemStack(this, 1, 0));
         ItemList.Long_Distance_Pipeline_Item_Pipe.set(new ItemStack(this, 1, 1));

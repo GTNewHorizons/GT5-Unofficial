@@ -8,7 +8,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTI
 
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -79,6 +78,7 @@ import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -90,12 +90,14 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.widget.AESlotWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchInputBusME extends MTEHatchInputBus
     implements IConfigurationCircuitSupport, IRecipeProcessingAwareHatch, IAddGregtechLogo, IAddUIWidgets,
     IPowerChannelState, ISmartInputHatch, IDataCopyable, IMEConnectable {
@@ -120,7 +122,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     protected boolean cachedActivity = false;
 
     public MTEHatchInputBusME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, autoPullAvailable ? 6 : 4, 2, getDescriptionArray(autoPullAvailable));
+        super(aID, aName, aNameRegional, autoPullAvailable ? 6 : 4, 2, null);
         this.autoPullAvailable = autoPullAvailable;
         disableSort = true;
     }
@@ -1100,25 +1102,13 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
-    protected static String[] getDescriptionArray(boolean autoPullAvailable) {
-        List<String> strings = new ArrayList<>(8);
-        strings.add("Next-gen item input for Multiblocks");
-        strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 6 : 4] + VN[autoPullAvailable ? 6 : 4]);
-        strings.add("Retrieves directly from ME");
-        strings.add("Keeps 16 item types in stock");
-
-        if (autoPullAvailable) {
-            strings.add(
-                "Auto-Pull from ME mode will automatically stock the first 16 items in the ME system, updated every 5 seconds.");
-            strings.add("Toggle by right-clicking with screwdriver, or use the GUI.");
-            strings.add(
-                "Use the GUI to limit the minimum stack size for Auto-Pulling, adjust the slot refresh timer and enable fast recipe checks.");
-            strings.add("WARNING: Fast recipe checks can be laggy. Use with caution.");
-        }
-
-        strings.add("Change ME connection behavior by right-clicking with wire cutter.");
-        strings.add("Configuration data can be copy/pasted using a data stick.");
-        return strings.toArray(new String[0]);
+    @Override
+    public String[] getDescription() {
+        if (autoPullAvailable) return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.input_bus_me.desc",
+            TIER_COLORS[6] + VN[6],
+            StatCollector.translateToLocal("gt.blockmachines.input_bus_me.autopull.desc") + GTSplit.LB);
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_bus_me.desc", TIER_COLORS[4] + VN[4], "");
     }
 
     protected static class Slot {

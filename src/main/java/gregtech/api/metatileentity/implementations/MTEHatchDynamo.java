@@ -7,19 +7,16 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTSplit;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchDynamo extends MTEHatch {
 
     public MTEHatchDynamo(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { "Generating electric Energy from Multiblocks", "Puts out up to 1 Amp" });
+        super(aID, aName, aNameRegional, aTier, 0, (String) null);
     }
 
     public MTEHatchDynamo(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -85,5 +82,10 @@ public class MTEHatchDynamo extends MTEHatch {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.dynamo_hatch.desc");
     }
 }

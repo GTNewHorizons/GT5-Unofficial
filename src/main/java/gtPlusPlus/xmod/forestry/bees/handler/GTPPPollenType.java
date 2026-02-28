@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.forestry.bees.handler;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.material.Material;
@@ -46,8 +47,8 @@ public enum GTPPPollenType {
         this.mShowInList = false;
     }
 
-    public String getName() {
-        return GTLanguageManager.getTranslation("gtplusplus.pollen." + this.mNameUnlocal);
+    public String getLocalizedName() {
+        return StatCollector.translateToLocal("gtplusplus.pollen." + this.mNameUnlocal);
     }
 
     public int[] getColours() {

@@ -21,31 +21,26 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTClientPreference;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchInput extends MTEHatch {
 
     // hatch filter is disabled by default, meaning any fluid can be inserted when in structure.
     public boolean disableFilter = true;
     public RecipeMap<?> mRecipeMap = null;
-    private int customCapacity = 0;
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            4,
-            new String[] { "Fluid Input for Multiblocks", "Right click with screwdriver to toggle input filter",
-                String.format("Capacity: %sL", formatNumber(8000L * (1L << aTier))) });
+        super(aID, aName, aNameRegional, aTier, 4, (String) null);
     }
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -53,14 +48,7 @@ public class MTEHatchInput extends MTEHatch {
     }
 
     public MTEHatchInput(int aID, int aSlot, String aName, String aNameRegional, int aTier) {
-        this(
-            aID,
-            aSlot,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { "Fluid Input for Multiblocks", "Can hold " + aSlot + " types of fluid." });
-        mDescriptionArray[1] = String.format("Capacity: %sL", formatNumber(getCapacityPerTank(aTier, aSlot)));
+        this(aID, aSlot, aName, aNameRegional, aTier, null);
     }
 
     public MTEHatchInput(int aID, int aSlot, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -77,12 +65,6 @@ public class MTEHatchInput extends MTEHatch {
 
     public MTEHatchInput(String aName, int aSlots, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aSlots, aDescription, aTextures);
-    }
-
-    public void setCustomCapacity(int capacity) {
-        this.customCapacity = capacity;
-        if (mDescriptionArray != null && mDescriptionArray.length > 0)
-            mDescriptionArray[mDescriptionArray.length - 1] = String.format("Capacity: %sL", formatNumber(capacity));
     }
 
     @Override
@@ -211,7 +193,7 @@ public class MTEHatchInput extends MTEHatch {
 
     @Override
     public int getCapacity() {
-        return customCapacity != 0 ? customCapacity : (8000 * (1 << mTier));
+        return 8000 * (1 << mTier);
     }
 
     @Override
@@ -221,5 +203,16 @@ public class MTEHatchInput extends MTEHatch {
             .isGUIClickable()) return;
         disableFilter = !disableFilter;
         GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + disableFilter);
+    }
+
+    @Override
+    public String[] getDescription() {
+        final int slots = mInventory.length;
+        if (slots == 3)
+            return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_hatch.desc", formatNumber(getCapacity()));
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.input_hatch_multislot.desc",
+            formatNumber(getCapacityPerTank(mTier, slots)),
+            slots);
     }
 }
