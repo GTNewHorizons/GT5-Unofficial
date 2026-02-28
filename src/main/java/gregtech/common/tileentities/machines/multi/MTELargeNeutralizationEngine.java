@@ -25,7 +25,6 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
-import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,13 +36,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ListWidget;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -70,6 +62,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTELargeNeutralizationEngineGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
@@ -89,10 +82,12 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private int fuelConsumption = 0;
     private float boosterEUBoost = 1.0F;
     private int boosterBoostTicks = 0;
-    private int toxicResidue = 0;
-    private int residueDecay;
-    private int residueIncrease;
+    public int toxicResidue = 0;
+    public int residueDecay;
+    public int residueIncrease;
     private float robotArmDecayBoost;
+
+    private int maxFluidUse = 100000000;
 
     public MTELargeNeutralizationEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -114,7 +109,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return m - 4;
     }
 
-    private int getResidueCapacity() {
+    public int getResidueCapacity() {
         return switch (structureTier) {
             case 1 -> 375000;
             case 2 -> 1000000;
@@ -123,8 +118,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         };
     }
 
-    private float getResidueUsedPercentage(){
-        return Math.round(10*(float) toxicResidue/getResidueCapacity()*100F)/10F;
+    public float getResidueUsedPercentage() {
+        return Math.round(10 * (float) toxicResidue / getResidueCapacity() * 100F) / 10F;
     }
 
     private int getBaseResidueDecay() {
@@ -165,8 +160,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return (int) (getResidueRate() * fuelConsumption);
     }
 
-    private int getNetResidue(){
-        return residueIncrease-residueDecay;
+    public int getNetResidue() {
+        return residueIncrease - residueDecay;
     }
 
     private static Block getBlock() {
@@ -371,6 +366,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         aNBT.setInteger("residueIncrease", residueIncrease);
         aNBT.setInteger("residueDecay", residueDecay);
         aNBT.setFloat("robotArmDecayBoost", robotArmDecayBoost);
+        aNBT.setInteger("maxFluidUse", maxFluidUse);
     }
 
     @Override
@@ -385,6 +381,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         residueIncrease = aNBT.getInteger("residueIncrease");
         residueDecay = aNBT.getInteger("residueDecay");
         robotArmDecayBoost = aNBT.getFloat("robotArmDecayBoost");
+        maxFluidUse = aNBT.getInteger("maxFluidUse");
     }
 
     @Override
@@ -438,6 +435,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             if (recipe == null) continue;
             this.fuelValue = recipe.mSpecialValue;
             FluidStack storedFluidConsume = storedFluid.copy();
+            storedFluidConsume.amount = Math.min(storedFluidConsume.amount, maxFluidUse);
             this.fuelConsumption = storedFluidConsume.amount;
             if (!depleteInput(storedFluidConsume)) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
             if (boosterBoostTicks > 0) {
@@ -531,47 +529,14 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTEMultiBlockBaseGui<MTELargeNeutralizationEngine>(this) {
+        return new MTELargeNeutralizationEngineGui(this);
+    }
 
-            @Override
-            protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager,
-                ModularPanel parent) {
-                ListWidget<IWidget, ?> terminalText = super.createTerminalTextWidget(syncManager, parent);
-                BooleanSyncValue checkMachineSyncer = new BooleanSyncValue(() -> mMachine);
-                syncManager.syncValue("checkMachine", checkMachineSyncer);
-                if (!checkMachineSyncer.getBoolValue()) return terminalText;
+    public int getMaxFluidUse() {
+        return maxFluidUse;
+    }
 
-                IntSyncValue toxicResidueSyncer = new IntSyncValue(() -> toxicResidue);
-                IntSyncValue residueCapacitySyncer = new IntSyncValue(() -> getResidueCapacity());
-                FloatSyncValue residuePercentageSyncer = new FloatSyncValue(() -> getResidueUsedPercentage());
-                syncManager.syncValue("toxicResidue", toxicResidueSyncer);
-                syncManager.syncValue("residueCapacitySyncer", residueCapacitySyncer);
-                syncManager.syncValue("residuePercentageSyncer", residuePercentageSyncer);
-                terminalText.child(
-                    IKey.dynamic(
-                        () -> StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.text.toxic_residue",
-                            toxicResidueSyncer.getStringValue(),
-                            residueCapacitySyncer.getStringValue(),
-                            residuePercentageSyncer.getStringValue()))
-                        .asWidget());
-                IntSyncValue residueDecaySyncer = new IntSyncValue(() -> residueDecay);
-                IntSyncValue residueIncreaseSyncer = new IntSyncValue(() -> residueIncrease);
-                IntSyncValue netResidueSyncer = new IntSyncValue(() -> getNetResidue());
-                syncManager.syncValue("residueDecay", residueDecaySyncer);
-                syncManager.syncValue("residueIncrease", residueIncreaseSyncer);
-                syncManager.syncValue("netResidue",netResidueSyncer);
-                final int residueChange = residueIncreaseSyncer.getIntValue() - residueDecaySyncer.getIntValue();
-                terminalText.child(
-                    IKey.dynamic(
-                        () -> StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.text.residue_change",
-                            residueIncreaseSyncer.getStringValue(),
-                            residueDecaySyncer.getStringValue(),
-                            netResidueSyncer.getStringValue()))
-                        .asWidget());
-                return terminalText;
-            }
-        };
+    public void setMaxFluidUse(int maxFluidUse) {
+        this.maxFluidUse = maxFluidUse;
     }
 }
