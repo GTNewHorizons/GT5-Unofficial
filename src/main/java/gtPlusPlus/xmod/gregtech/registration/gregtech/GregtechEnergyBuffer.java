@@ -98,7 +98,7 @@ public class GregtechEnergyBuffer {
             new MTEEnergyBuffer(
                 Energy_Buffer_1by1_MAX.ID,
                 "energybuffer.tier.09",
-                "MAX Voltage Energy Buffer",
+                "Highly Ultimate Voltage Energy Buffer",
                 9,
                 "",
                 1).getStackForm(1L));

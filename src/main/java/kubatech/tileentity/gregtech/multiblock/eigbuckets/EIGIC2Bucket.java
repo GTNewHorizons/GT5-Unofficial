@@ -19,7 +19,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.OreInfo;
@@ -217,11 +217,21 @@ public class EIGIC2Bucket extends EIGBucket {
         boolean cheating = false;
         FakeTileEntityCrop crop;
         try {
-            if (world.getBlock(xyz[0], xyz[1] - 2, xyz[2]) != GregTechAPI.sBlockCasings4
-                || world.getBlockMetadata(xyz[0], xyz[1] - 2, xyz[2]) != 1) {
-                // no
-                cheating = true;
-                return;
+            if (greenhouse.isOldStructure()) {
+                if (world.getBlock(xyz[0], xyz[1] - 2, xyz[2]) != Casings.CleanStainlessSteelMachineCasing.getBlock()
+                    || world.getBlockMetadata(xyz[0], xyz[1] - 2, xyz[2])
+                        != Casings.CleanStainlessSteelMachineCasing.meta) {
+                    // no
+                    cheating = true;
+                    return;
+                }
+            } else {
+                if (world.getBlock(xyz[0], xyz[1] - 2, xyz[2]) != Casings.SterileFarmCasing.getBlock()
+                    || world.getBlockMetadata(xyz[0], xyz[1] - 2, xyz[2]) != Casings.SterileFarmCasing.meta) {
+                    // no
+                    cheating = true;
+                    return;
+                }
             }
 
             // instantiate the TE in which we grow the seed.
@@ -376,7 +386,22 @@ public class EIGIC2Bucket extends EIGBucket {
             e.printStackTrace(System.err);
         } finally {
             // always reset the world to it's original state
-            if (!cheating) world.setBlock(xyz[0], xyz[1] - 2, xyz[2], GregTechAPI.sBlockCasings4, 1, 0);
+            if (!cheating) {
+                if (greenhouse.isOldStructure()) world.setBlock(
+                    xyz[0],
+                    xyz[1] - 2,
+                    xyz[2],
+                    Casings.CleanStainlessSteelMachineCasing.getBlock(),
+                    Casings.CleanStainlessSteelMachineCasing.meta,
+                    0);
+                else world.setBlock(
+                    xyz[0],
+                    xyz[1] - 2,
+                    xyz[2],
+                    Casings.SterileFarmCasing.getBlock(),
+                    Casings.SterileFarmCasing.meta,
+                    0);
+            }
             // world.setBlockToAir(xyz[0], xyz[1], xyz[2]);
         }
     }
