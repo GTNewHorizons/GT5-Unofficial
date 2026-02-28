@@ -274,8 +274,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 false)
             // Nanochip Firewall Projection Casing
             .addCasingInfoExactly(translateToLocal("gt.blockcasings12.4.name"), 32, false)
-            .addStructureInfo(TOOLTIP_VCI_LONG + ": " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
-            .addStructureInfo(TOOLTIP_VCO_LONG + ": " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
+            .addStructureInfo(TOOLTIP_VCI_LONG + " " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
+            .addStructureInfo(TOOLTIP_VCO_LONG + " " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
             .addInputBus(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
             .addOutputBus(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
             .addEnergyHatch(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)

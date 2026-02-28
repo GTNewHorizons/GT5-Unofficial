@@ -186,12 +186,13 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
                 translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Kevlar.getLocalizedName()),
                 10,
                 false)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .addStructureInfo(
                 EnumChatFormatting.WHITE + translateToLocal("gt.blockmachines.hatch.splitter.redstone.name")
+                    + ": "
                     + EnumChatFormatting.GRAY
                     + translateToLocal("GT5U.tooltip.nac.module.splitter.redstone_hatch"))
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .addStructureInfoSeparator()
             .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
             .toolTipFinisher();
