@@ -1006,7 +1006,7 @@ fog.upgrade.text.23=Multiplies maximum processing voltage by 4 per active ring, 
 fog.upgrade.text.24=Allows the Heliothermal Plasma Fabricator to process up to T5 plasmas.
 fog.upgrade.text.25=Allows the Heliofusion Exoticizer to be affected by other upgrade benefits, but those benefits are square rooted first. The overclock bonus is adjusted via the following formula: OC Factor = 2 + (Base OC Factor - 2)^2
 fog.upgrade.text.26=Allows construction of the second ring and adds 4 module slots.
-fog.upgrade.text.27=Uncaps maximum fuel consumption, but fuel consumption used in bonus calculations scales according to this formula: Actual FC = Current Max FC + (Current FC - Current Max FC)^0.4, where FC refers to fuel consumption and max FC refers to the max fuel consumption without this upgrade.
+fog.upgrade.text.27=Uncaps maximum fuel consumption, but fuel consumption used in bonus calculations scales according to this formula: Actual FC = Current Max FC + (Current FC - Current Max FC)^0.4, where FC refers to fuel consumption and max FC refers to the max fuel consumption without this upgrade. Note that fuel consumption cannot exceed 2^31 for technical reasons.
 fog.upgrade.text.28=Uncaps maximum processing voltage. Voltage can be set in each module's GUI.
 fog.upgrade.text.29=Unlocks Magmatter production in the Heliofusion Exoticizer and creation of exotic plasmas in the Heliothermal Plasma Fabricator.
 fog.upgrade.text.30=Allows construction of the third ring, adds 4 module slots and unlocks Graviton Shard ejection & injection.
