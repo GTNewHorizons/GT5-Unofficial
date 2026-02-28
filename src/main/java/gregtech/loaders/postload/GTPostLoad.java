@@ -168,6 +168,7 @@ public class GTPostLoad {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tool_DataOrb.getWithName(1L, "Orb to overwrite"))
             .itemOutputs(ItemList.Tool_DataOrb.getWithName(1L, "Copy of the Orb"))
+            .special(ItemList.Tool_DataOrb.getWithName(0L, "Orb to copy"))
             .duration(25 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .ignoreCollision()
