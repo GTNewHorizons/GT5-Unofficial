@@ -85,6 +85,7 @@ public enum Mods implements IMod {
     EnhancedLootBags(ModIDs.ENHANCED_LOOT_BAGS),
     EtFuturumRequiem(ModIDs.ET_FUTURUM_REQUIEM),
     EternalSingularity(ModIDs.ETERNAL_SINGULARITY),
+    Fether(ModIDs.FETHER),
     FindIt(ModIDs.FIND_IT),
     FloodLights(ModIDs.FLOOD_LIGHTS),
     ForbiddenMagic(ModIDs.FORBIDDEN_MAGIC),
@@ -425,6 +426,7 @@ public enum Mods implements IMod {
         public static final String ENHANCED_LOOT_BAGS = "enhancedlootbags";
         public static final String ET_FUTURUM_REQUIEM = "etfuturum";
         public static final String ETERNAL_SINGULARITY = "eternalsingularity";
+        public static final String FETHER = "fether";
         public static final String FIND_IT = "findit";
         public static final String FLOOD_LIGHTS = "FloodLights";
         public static final String FORBIDDEN_MAGIC = "ForbiddenMagic";

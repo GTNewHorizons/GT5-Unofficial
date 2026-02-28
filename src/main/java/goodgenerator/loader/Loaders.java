@@ -285,7 +285,7 @@ public class Loaders {
         Loaders.FRF = new MTEFuelRefineFactory(MetaTileEntityIDs.FuelRefineFactory.ID, "FRF", "Naquadah Fuel Refinery")
             .getStackForm(1L);
         Loaders.UCFE = new MTEUniversalChemicalFuelEngine(
-            MetaTileEntityIDs.UniversalChemicalFuelEngine.ID,
+            MetaTileEntityIDs.LegacyUniversalChemicalFuelEngine.ID,
             "UniversalChemicalFuelEngine",
             "Universal Chemical Fuel Engine").getStackForm(1L);
         int[] neutronAcceleratorIDs = new int[] { MetaTileEntityIDs.NeutronAcceleratorULV.ID,
