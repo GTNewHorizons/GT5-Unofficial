@@ -22,6 +22,7 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -174,8 +175,26 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.splitter.body.4", TOOLTIP_CCs))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.splitter.flavor.1")))
+            .beginStructureBlock(7, 5, 7, false)
+            .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
+            // Nanochip Reinforcement Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 37, false)
+            // Nanochip Mesh Interface Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 18, false)
+            // Kevlar Frame Box
+            .addCasingInfoExactly(
+                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Kevlar.getLocalizedName()),
+                10,
+                false)
+            .addStructureInfo(
+                EnumChatFormatting.WHITE + translateToLocal("gt.blockmachines.hatch.splitter.redstone.name")
+                    + ": "
+                    + EnumChatFormatting.GRAY
+                    + translateToLocal("GT5U.tooltip.nac.module.splitter.redstone_hatch"))
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
+            .addStructureInfoSeparator()
+            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
             .toolTipFinisher();
     }
 
