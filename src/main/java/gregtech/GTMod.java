@@ -111,7 +111,6 @@ import gregtech.loaders.misc.GTBees;
 import gregtech.loaders.postload.BlockResistanceLoader;
 import gregtech.loaders.postload.BookAndLootLoader;
 import gregtech.loaders.postload.CraftingRecipeLoader;
-import gregtech.loaders.postload.CropLoader;
 import gregtech.loaders.postload.GTPostLoad;
 import gregtech.loaders.postload.GTWorldgenloader;
 import gregtech.loaders.postload.ItemMaxStacksizeLoader;
@@ -431,7 +430,6 @@ public class GTMod {
         new RecyclerBlacklistLoader().run();
         new MachineRecipeLoader().run();
         new ScrapboxDropLoader().run();
-        new CropLoader().run();
         new GTWorldgenloader().run();
         new CoverLoader().run();
         StoneType.init();
@@ -767,7 +765,6 @@ public class GTMod {
     public void onIDChangingEvent(FMLModIdMappingEvent event) {
         if (event.remappedIds.isEmpty()) return;
 
-        GTUtility.reInit();
         GTRecipe.reInit();
         RemovedMetaRegistry.init();
     }
