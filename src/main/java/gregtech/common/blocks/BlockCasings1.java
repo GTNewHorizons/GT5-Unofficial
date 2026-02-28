@@ -27,22 +27,22 @@ public class BlockCasings1 extends BlockCasingsAbstract {
     public BlockCasings1() {
         super(ItemCasings.class, "gt.blockcasings", MaterialCasings.INSTANCE, 16);
 
-        register(0, ItemList.Casing_ULV, "ULV Machine Casing");
-        register(1, ItemList.Casing_LV, "LV Machine Casing");
-        register(2, ItemList.Casing_MV, "MV Machine Casing");
-        register(3, ItemList.Casing_HV, "HV Machine Casing");
-        register(4, ItemList.Casing_EV, "EV Machine Casing");
-        register(5, ItemList.Casing_IV, "IV Machine Casing");
-        register(6, ItemList.Casing_LuV, "LuV Machine Casing");
-        register(7, ItemList.Casing_ZPM, "ZPM Machine Casing");
-        register(8, ItemList.Casing_UV, "UV Machine Casing");
-        register(9, ItemList.Casing_MAX, "UHV Machine Casing");
-        register(10, ItemList.Casing_BronzePlatedBricks, "Bronze Plated Bricks");
-        register(11, ItemList.Casing_HeatProof, "Heat Proof Machine Casing");
-        register(12, ItemList.Casing_Dim_Trans, "Dimensionally Transcendent Casing");
-        register(13, ItemList.Casing_Dim_Injector, "Dimensional Injection Casing");
-        register(14, ItemList.Casing_Dim_Bridge, "Dimensional Bridge");
-        register(15, ItemList.Casing_Coil_Superconductor, "Superconducting Coil Block");
+        register(0, ItemList.Casing_ULV);
+        register(1, ItemList.Casing_LV);
+        register(2, ItemList.Casing_MV);
+        register(3, ItemList.Casing_HV);
+        register(4, ItemList.Casing_EV);
+        register(5, ItemList.Casing_IV);
+        register(6, ItemList.Casing_LuV);
+        register(7, ItemList.Casing_ZPM);
+        register(8, ItemList.Casing_UV);
+        register(9, ItemList.Casing_MAX);
+        register(10, ItemList.Casing_BronzePlatedBricks);
+        register(11, ItemList.Casing_HeatProof);
+        register(12, ItemList.Casing_Dim_Trans);
+        register(13, ItemList.Casing_Dim_Injector);
+        register(14, ItemList.Casing_Dim_Bridge);
+        register(15, ItemList.Casing_Coil_Superconductor);
 
         for (int i = 0; i < 10; i++) {
             GTStructureChannels.TIER_MACHINE_CASING.registerAsIndicator(new ItemStack(this, 1, i), i + 1);

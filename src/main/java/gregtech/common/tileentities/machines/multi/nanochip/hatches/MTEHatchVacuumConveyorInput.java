@@ -1,5 +1,9 @@
 package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 
+import static gregtech.api.enums.Dyes.MACHINE_METAL;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VACUUM_HATCH_INPUT;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VACUUM_HATCH_INPUT_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VACUUM_PIPE_PORT_INPUT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -9,9 +13,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.render.TextureFactory;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.IVacuumStorage;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
@@ -40,6 +46,22 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor {
                 + "------------------------------------------------------------------------",
             translateToLocal("GT5U.tooltip.nac.hatch.vc.base.4"),
             translateToLocal("GT5U.tooltip.nac.hatch.vc.base.5") };
+    }
+
+    @Override
+    public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
+        return new ITexture[] { aBaseTexture,
+            TextureFactory
+                .of(OVERLAY_VACUUM_HATCH_INPUT, Dyes.getModulation(getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(OVERLAY_VACUUM_PIPE_PORT_INPUT) };
+    }
+
+    @Override
+    public ITexture[] getTexturesActive(ITexture aBaseTexture) {
+        return new ITexture[] { aBaseTexture,
+            TextureFactory
+                .of(OVERLAY_VACUUM_HATCH_INPUT_ACTIVE, Dyes.getModulation(getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(OVERLAY_VACUUM_PIPE_PORT_INPUT) };
     }
 
     @Override
