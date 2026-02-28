@@ -1947,7 +1947,8 @@ GT5U.gui.tooltip.hatch.crafting_input_me.export=Return all internally stored ite
 GT5U.gui.text.fluid_limiter.threshold=§8Percent threshold
 GT5U.gui.text.volumetric_flask.capacity=Capacity
 GT5U.gui.text.volumetric_flask.confirm=Confirm
-GT5U.gui.tooltip.hatch.crafting_pattern_provider.1=Holds patterns for the Large Molecular Assembler (LMA)
+GT5U.gui.tooltip.hatch.crafting_pattern_provider.1=Pattern Storage for §eLarge Molecular Assembler (LMA)§r
+GT5U.gui.tooltip.hatch.crafting_pattern_provider.2=Capacity: %d Patterns
 
 GT5U.gui.text.wireless_maintenance_detector.extra.no_issues=§8No Issues
 GT5U.gui.text.wireless_maintenance_detector.extra.ge1_issues=§8>= 1 Issue
