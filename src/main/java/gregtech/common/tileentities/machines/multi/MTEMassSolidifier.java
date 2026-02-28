@@ -348,6 +348,11 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     }
 
     @Override
+    public int getRecipeCatalystPriority() {
+        return -10;
+    }
+
+    @Override
     public boolean supportsVoidProtection() {
         return true;
     }
