@@ -40,6 +40,10 @@ public final class GTTextureIds {
     public static final String SLOT_ITEM_PRIMITIVE = "gregtech:slot_item_primitive";
     public static final String SLOT_ITEM_FOUNDRY = "gregtech:slot_item_foundry";
     public static final String SLOT_EXTRUDER_SHAPE = "gregtech:slot_extrusion_standard";
+    public static final String SLOT_ITEM_GOLD = "gregtech:slot_item_gold";
+    public static final String SLOT_ITEM_GREEN = "gregtech:slot_item_green";
+    public static final String SLOT_ITEM_PURPLE = "gregtech:slot_item_purple";
+    public static final String SLOT_ITEM_PRISMATIC = "gregtech:slot_item_prismatic";
     public static final String SLOT_ITEM_NANOCHIP = "gregtech:slot_item_nanochip";
 
     public static final String SLOT_FLUID_STANDARD = "gregtech:slot_fluid_standard";
