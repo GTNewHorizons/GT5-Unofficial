@@ -2256,7 +2256,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEItemDistributor(
                 ITEM_DISTRIBUTOR_UHV.ID,
                 "automation.itemdistributor.tier.09",
-                "MAX Voltage Item Distributor",
+                "Highly Ultimate Voltage Item Distributor",
                 9).getStackForm(1L));
     }
 
