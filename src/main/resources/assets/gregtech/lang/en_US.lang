@@ -1512,6 +1512,7 @@ GT5U.gui.button.drone_pause.2=Disable this if your machine controller cover is m
 GT5U.gui.button.drone_key_panel=Open connection key panel
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
 GT5U.gui.button.power_panel=Open Power Panel
+GT5U.gui.button.fluid_panel=Open Fluid Panel
 GT5U.gui.button.turbinemenu=Open Chamber Controller
 GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.button.max_parallel=Always use maximum
