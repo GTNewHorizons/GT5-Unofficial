@@ -5,7 +5,6 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gtPlusPlus.recipes.RecipeRemovals;
-import gtPlusPlus.xmod.bartcrops.CropsPlusPlusHandler;
 import gtPlusPlus.xmod.bop.BiomesOPlentyHandler;
 import gtPlusPlus.xmod.forestry.ForestryHandler;
 import gtPlusPlus.xmod.gregtech.HandlerGT;
@@ -21,7 +20,6 @@ public class CompatIntermodStaging {
         ForestryHandler.preInit();
         HandlerIC2.preInit();
         BiomesOPlentyHandler.preInit();
-        CropsPlusPlusHandler.preInit(preinit);
         HandlerRailcraft.preInit();
     }
 
@@ -37,7 +35,6 @@ public class CompatIntermodStaging {
         HandlerIC2.postInit();
         BiomesOPlentyHandler.postInit();
         HandlerTinkers.postInit();
-        CropsPlusPlusHandler.postInit(postinit);
         HandlerRailcraft.postInit();
         RecipeRemovals.postInit();
     }

@@ -8,7 +8,6 @@ import ic2.core.block.BlockScaffold;
 import ic2.core.block.machine.BlockMiningPipe;
 import ic2.core.block.machine.BlockMiningTip;
 import ic2.core.block.wiring.BlockCable;
-import ic2.core.crop.BlockCrop;
 
 public class GTToolHarvestHelper {
 
@@ -54,8 +53,7 @@ public class GTToolHarvestHelper {
     }
 
     public static boolean isIC2Wrenchable(Block block) {
-        return (block instanceof BlockMultiID && !(block instanceof BlockCable) && !(block instanceof BlockCrop))
-            || block instanceof BlockScaffold
+        return (block instanceof BlockMultiID && !(block instanceof BlockCable)) || block instanceof BlockScaffold
             || block instanceof BlockMiningPipe
             || block instanceof BlockMiningTip;
     }

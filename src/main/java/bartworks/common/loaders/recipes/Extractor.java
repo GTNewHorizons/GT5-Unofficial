@@ -1,6 +1,6 @@
 package bartworks.common.loaders.recipes;
 
-import static gregtech.api.enums.Mods.CropLoadCore;
+import static gregtech.api.enums.Mods.CropsNH;
 import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
@@ -20,7 +20,7 @@ public class Extractor implements Runnable {
     @Override
     public void run() {
         List<ItemStack> oreCropVine = OreDictionary.getOres("cropVine", false);
-        if (CropLoadCore.isModLoaded() && !oreCropVine.isEmpty()) {
+        if (CropsNH.isModLoaded() && !oreCropVine.isEmpty()) {
             for (ItemStack stack : oreCropVine) {
 
                 GTValues.RA.stdBuilder()
