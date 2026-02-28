@@ -225,7 +225,9 @@ public class ProductionPanel extends ModularPanel {
                     IKey.lang("GT5U.gui.text.drone_connectionCount", droneConnectionList.size())
                         .asWidget())
                 .child(
-                    IKey.lang("GT5U.gui.text.drone_connectionList")
+                    IKey.lang(
+                        droneConnectionList.isEmpty() ? "GT5U.gui.text.drone_no_connection"
+                            : "GT5U.gui.text.drone_connectionList")
                         .asWidget()
                         .marginBottom(4))
                 .child(createMachineGrid(droneConnectionList)))
@@ -301,9 +303,6 @@ public class ProductionPanel extends ModularPanel {
     }
 
     private IWidget createMachineGrid(List<DroneConnection> connections) {
-        if (connections.isEmpty()) {
-            return new EmptyWidget();
-        }
         HashMap<String, ItemStack> machineStack = new HashMap<>();
         connections.forEach(connection -> {
             ItemStack machine = connection.getMachineItem();
@@ -359,7 +358,8 @@ public class ProductionPanel extends ModularPanel {
     private <T> IWidget createStatsGrid(Map<T, Long> data, int childPadding,
         Function<T, IWidget> displayWidgetFactory) {
         if (data.isEmpty()) {
-            return new EmptyWidget();
+            return IKey.lang("GT5U.gui.text.drone_no_data")
+                .asWidget();
         }
         List<IWidget> cells = data.entrySet()
             .stream()
