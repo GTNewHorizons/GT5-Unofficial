@@ -16,7 +16,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -255,14 +254,6 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(ItemList.IC2_Grin_Powder.get(1L))
-                    .fluidInputs(new FluidStack(tFluid, 750))
-                    .fluidOutputs(getFluidStack("potion.poison.strong", 750))
-                    .duration(6 * SECONDS + 8 * TICKS)
-                    .eut(4)
-                    .addTo(brewingRecipes);
-
-                GTValues.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.apple, 1, 0))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.applejuice", 750))
@@ -282,14 +273,6 @@ public class BreweryRecipes implements Runnable {
                     .itemInputs(new ItemStack(Items.golden_apple, 1, 1))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.idunsapplejuice", 750))
-                    .duration(6 * SECONDS + 8 * TICKS)
-                    .eut(4)
-                    .addTo(brewingRecipes);
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(ItemList.IC2_Hops.get(1L))
-                    .fluidInputs(new FluidStack(tFluid, 750))
-                    .fluidOutputs(getFluidStack("potion.hopsjuice", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
                     .addTo(brewingRecipes);
@@ -351,14 +334,6 @@ public class BreweryRecipes implements Runnable {
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
                 .fluidInputs(Materials.Milk.getFluid(750))
                 .fluidOutputs(getFluidStack("potion.darkchocolatemilk", 750))
-                .duration(6 * SECONDS + 8 * TICKS)
-                .eut(4)
-                .addTo(brewingRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.IC2_Hops.get(1L))
-                .fluidInputs(getFluidStack("potion.wheatyjuice", 750))
-                .fluidOutputs(getFluidStack("potion.wheatyhopsjuice", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
                 .addTo(brewingRecipes);

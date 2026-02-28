@@ -594,7 +594,6 @@ public class GTProxy implements IFuelHandler {
     public boolean mEnableAllMaterials = false;
     public boolean mEnableCleanroom = true;
     public boolean mLowGravProcessing = false;
-    public boolean mCropNeedBlock = true;
     public boolean mAMHInteraction = true;
     public boolean mForceFreeFace = true;
     public boolean mMixedOreOnlyYieldsTwoThirdsOfPureOre = false;
@@ -876,17 +875,10 @@ public class GTProxy implements IFuelHandler {
         ItemList.IC2_Item_Casing_Tin.set(GTModHandler.getIC2Item("casingtin", 1L));
         ItemList.IC2_Item_Casing_Lead.set(GTModHandler.getIC2Item("casinglead", 1L));
         ItemList.IC2_Item_Casing_Steel.set(GTModHandler.getIC2Item("casingadviron", 1L));
-        ItemList.IC2_Spray_WeedEx.set(GTModHandler.getIC2Item("weedEx", 1L));
         ItemList.IC2_Mixed_Metal_Ingot.set(GTModHandler.getIC2Item("mixedMetalIngot", 1L));
-        ItemList.IC2_Fertilizer.set(GTModHandler.getIC2Item("fertilizer", 1L));
-        ItemList.IC2_CoffeeBeans.set(GTModHandler.getIC2Item("coffeeBeans", 1L));
-        ItemList.IC2_CoffeePowder.set(GTModHandler.getIC2Item("coffeePowder", 1L));
-        ItemList.IC2_Hops.set(GTModHandler.getIC2Item("hops", 1L));
         ItemList.IC2_Resin.set(GTModHandler.getIC2Item("resin", 1L));
         ItemList.IC2_Plantball.set(GTModHandler.getIC2Item("plantBall", 1L));
         ItemList.IC2_PlantballCompressed.set(GTModHandler.getIC2Item("compressedPlantBall", 1L, ItemList.IC2_Plantball.get(1L)));
-        ItemList.IC2_Crop_Seeds.set(GTModHandler.getIC2Item("cropSeed", 1L));
-        ItemList.IC2_Grin_Powder.set(GTModHandler.getIC2Item("grinPowder", 1L));
         ItemList.IC2_Energium_Dust.set(GTModHandler.getIC2Item("energiumDust", 1L));
         ItemList.IC2_Scrap.set(GTModHandler.getIC2Item("scrap", 1L));
         ItemList.IC2_Scrapbox.set(GTModHandler.getIC2Item("scrapBox", 1L));
@@ -970,7 +962,6 @@ public class GTProxy implements IFuelHandler {
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("cfPack", 1L, 32767));
         // GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("jetpack", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("treetap", 1L, 32767));
-        GTModHandler.sNonReplaceableItems.add(ItemList.IC2_Spray_WeedEx.getWithDamage(1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("staticBoots", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("compositeArmor", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("hazmatHelmet", 1L, 32767));

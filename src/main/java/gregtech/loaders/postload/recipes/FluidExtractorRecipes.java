@@ -65,43 +65,6 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Indigo.get(1L))
-            .fluidOutputs(getFluidStack("indigo", 1 * INGOTS))
-            .duration(6 * SECONDS + 8 * TICKS)
-            .eut(4)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_MilkWart.get(1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L))
-            .outputChances(1000)
-            .fluidOutputs(Materials.Milk.getFluid(150L))
-            .duration(6 * SECONDS + 8 * TICKS)
-            .eut(4)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_OilBerry.get(1L))
-            .fluidOutputs(Materials.Oil.getFluid(100L))
-            .duration(6 * SECONDS + 8 * TICKS)
-            .eut(4)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_UUMBerry.get(1L))
-            .fluidOutputs(Materials.UUMatter.getFluid(4L))
-            .duration(6 * SECONDS + 8 * TICKS)
-            .eut(4)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_UUABerry.get(1L))
-            .fluidOutputs(Materials.UUAmplifier.getFluid(4L))
-            .duration(6 * SECONDS + 8 * TICKS)
-            .eut(4)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.fish, 1, 0))
             .fluidOutputs(Materials.FishOil.getFluid(40L))
             .duration(16 * TICKS)
@@ -501,13 +464,6 @@ public class FluidExtractorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.pumpkin_seeds, 1, 32767))
             .fluidOutputs(Materials.SeedOil.getFluid(10))
-            .duration(1 * SECONDS + 12 * TICKS)
-            .eut(2)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Rape.get(1))
-            .fluidOutputs(Materials.SeedOil.getFluid(125))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(2)
             .addTo(fluidExtractionRecipes);
