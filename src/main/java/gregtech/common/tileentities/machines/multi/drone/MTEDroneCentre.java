@@ -67,9 +67,9 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentre> implements ISurvivalConstructable {
 
-    private static final IIconContainer ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_ACTIVE");
-    private static final IIconContainer FACE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_FACE");
-    private static final IIconContainer INACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_INACTIVE");
+    private static final IIconContainer ACTIVE = Textures.BlockIcons.custom("iconsets/DRONE_CENTRE_ACTIVE");
+    private static final IIconContainer FACE = Textures.BlockIcons.custom("iconsets/DRONE_CENTRE_FACE");
+    private static final IIconContainer INACTIVE = Textures.BlockIcons.custom("iconsets/DRONE_CENTRE_INACTIVE");
     private static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 2);
     private static final int CASINGS_MIN = 85;
     private int mCasingAmount = 0;

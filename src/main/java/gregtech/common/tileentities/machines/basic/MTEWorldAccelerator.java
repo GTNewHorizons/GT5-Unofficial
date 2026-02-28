@@ -26,6 +26,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -88,10 +89,10 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     }
 
     private byte mMode = 1; // 0: RandomTicks around 1: TileEntities with range 1
-    private static Textures.BlockIcons.CustomIcon _mGTIco_Norm_Idle;
-    private static Textures.BlockIcons.CustomIcon _mGTIco_Norm_Active;
-    private static Textures.BlockIcons.CustomIcon _mGTIco_TE_Idle;
-    private static Textures.BlockIcons.CustomIcon _mGTIco_TE_Active;
+    private static IIconContainer _mGTIco_Norm_Idle;
+    private static IIconContainer _mGTIco_Norm_Active;
+    private static IIconContainer _mGTIco_TE_Idle;
+    private static IIconContainer _mGTIco_TE_Active;
     public static final int[] mAccelerateStatic = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 512, 512, 512, 512, 512,
         512 };
     private static final int AMPERAGE_NORMAL = 3;
@@ -100,10 +101,10 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     @Override
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        _mGTIco_Norm_Idle = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_ACCELERATOR");
-        _mGTIco_Norm_Active = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_ACCELERATOR_ACTIVE");
-        _mGTIco_TE_Idle = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_ACCELERATOR_TE");
-        _mGTIco_TE_Active = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_ACCELERATOR_TE_ACTIVE");
+        _mGTIco_Norm_Idle = Textures.BlockIcons.customOptional("iconsets/OVERLAY_ACCELERATOR");
+        _mGTIco_Norm_Active = Textures.BlockIcons.customOptional("iconsets/OVERLAY_ACCELERATOR_ACTIVE");
+        _mGTIco_TE_Idle = Textures.BlockIcons.customOptional("iconsets/OVERLAY_ACCELERATOR_TE");
+        _mGTIco_TE_Active = Textures.BlockIcons.customOptional("iconsets/OVERLAY_ACCELERATOR_TE_ACTIVE");
     }
 
     @SideOnly(Side.CLIENT)

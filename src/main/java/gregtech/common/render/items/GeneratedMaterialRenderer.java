@@ -1,5 +1,7 @@
 package gregtech.common.render.items;
 
+import static gregtech.api.enums.Textures.InvisibleIcon.INVISIBLE_ICON;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -75,7 +77,7 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
                 }
             }
 
-            if (tOverlay != null) {
+            if (tOverlay != null && tOverlay != INVISIBLE_ICON) {
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 TextureUtils.bindAtlas(aItem.getSpriteNumber());
                 renderItemOverlay(type, tOverlay);

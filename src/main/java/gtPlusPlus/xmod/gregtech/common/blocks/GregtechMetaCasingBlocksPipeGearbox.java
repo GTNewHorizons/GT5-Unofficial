@@ -67,7 +67,7 @@ public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlock
                 }
             }
         }
-        return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+        return Textures.GlobalIcons.RENDERING_ERROR.getIcon();
     }
 
     @SideOnly(Side.CLIENT)

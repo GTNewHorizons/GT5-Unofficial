@@ -63,14 +63,12 @@ import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     implements IConstructable, ISurvivalConstructable {
 
-    private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon(
-        "icons/LargeEssentiaSmeltery_On");
-    private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon(
-        "icons/LargeEssentiaSmeltery_On_GLOW");
-    private static final IIconContainer textureFontOff = new Textures.BlockIcons.CustomIcon(
-        "icons/LargeEssentiaSmeltery_Off");
-    private static final IIconContainer textureFontOff_Glow = new Textures.BlockIcons.CustomIcon(
-        "icons/LargeEssentiaSmeltery_Off_GLOW");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_On");
+    private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
+        .custom("icons/LargeEssentiaSmeltery_On_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_Off");
+    private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
+        .custom("icons/LargeEssentiaSmeltery_Off_GLOW");
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";

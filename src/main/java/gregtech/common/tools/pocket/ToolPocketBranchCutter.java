@@ -27,7 +27,7 @@ public class ToolPocketBranchCutter extends ToolBranchCutter {
         return aIsToolHead
             ? MetaGeneratedTool
                 .getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_pocketMultiToolBranchCutter]
-            : Textures.ItemIcons.VOID;
+            : Textures.GlobalIcons.VOID;
     }
 
     @Override

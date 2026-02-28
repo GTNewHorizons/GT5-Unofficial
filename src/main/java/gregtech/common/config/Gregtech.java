@@ -102,6 +102,11 @@ public class Gregtech {
         @Config.DefaultBoolean(false)
         @Config.RequiresMcRestart
         public boolean debugChunkloaders;
+
+        @Config.Comment("Enables logging of icons registration. (May help resource-pack creators)")
+        @Config.DefaultBoolean(false)
+        @Config.RequiresMcRestart
+        public boolean logRegisterIcons;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.features")

@@ -2,7 +2,6 @@ package gtnhintergalactic.client;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
 
@@ -33,14 +32,14 @@ public class IGTextures implements Runnable {
      */
     @Override
     public void run() {
-        SIPHON_OVERLAY_FRONT = new CustomIcon("iconsets/OVERLAY_FRONT_PLANETARYSIPHON");
-        SIPHON_OVERLAY_FRONT_GLOW = new CustomIcon("iconsets/OVERLAY_FRONT_PLANETARYSIPHON_GLOW");
-        SIPHON_OVERLAY_FRONT_ACTIVE_GLOW = new CustomIcon("iconsets/OVERLAY_FRONT_PLANETARYSIPHON_ACTIVE_GLOW");
+        SIPHON_OVERLAY_FRONT = BlockIcons.custom("iconsets/OVERLAY_FRONT_PLANETARYSIPHON");
+        SIPHON_OVERLAY_FRONT_GLOW = BlockIcons.custom("iconsets/OVERLAY_FRONT_PLANETARYSIPHON_GLOW");
+        SIPHON_OVERLAY_FRONT_ACTIVE_GLOW = BlockIcons.custom("iconsets/OVERLAY_FRONT_PLANETARYSIPHON_ACTIVE_GLOW");
 
-        DYSON_OVERLAY_FRONT = new CustomIcon("iconsets/OVERLAY_FRONT_DYSONSPHERE");
-        DYSON_OVERLAY_FRONT_ACTIVE = new CustomIcon("iconsets/OVERLAY_FRONT_DYSONSPHERE_ACTIVE");
-        DYSON_OVERLAY_FRONT_GLOW = new CustomIcon("iconsets/OVERLAY_FRONT_DYSONSPHERE_GLOW");
-        DYSON_OVERLAY_FRONT_ACTIVE_GLOW = new CustomIcon("iconsets/OVERLAY_FRONT_DYSONSPHERE_ACTIVE_GLOW");
+        DYSON_OVERLAY_FRONT = BlockIcons.custom("iconsets/OVERLAY_FRONT_DYSONSPHERE");
+        DYSON_OVERLAY_FRONT_ACTIVE = BlockIcons.custom("iconsets/OVERLAY_FRONT_DYSONSPHERE_ACTIVE");
+        DYSON_OVERLAY_FRONT_GLOW = BlockIcons.custom("iconsets/OVERLAY_FRONT_DYSONSPHERE_GLOW");
+        DYSON_OVERLAY_FRONT_ACTIVE_GLOW = BlockIcons.custom("iconsets/OVERLAY_FRONT_DYSONSPHERE_ACTIVE_GLOW");
 
         BlockIcons.setCasingTextureForId(CASING_INDEX_RECEIVER, TextureFactory.of(GregTechAPI.sBlockCasingsDyson, 0));
         BlockIcons.setCasingTextureForId(CASING_INDEX_LAUNCH, TextureFactory.of(GregTechAPI.sBlockCasingsDyson, 2));

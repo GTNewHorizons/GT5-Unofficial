@@ -62,7 +62,7 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
                     return TexturesGtBlock.Casing_Coil_QFT.getIcon();
                 }
                 case 5, 6, 7, 8, 12, 13, 14, 15 -> {
-                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+                    return Textures.GlobalIcons.RENDERING_ERROR.getIcon();
                 }
                 case 10 -> {
                     if (aSide < 2) {

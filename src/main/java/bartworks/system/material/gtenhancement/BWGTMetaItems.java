@@ -35,7 +35,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
@@ -125,7 +124,7 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
     protected IIconContainer getIconContainerBartWorks(int aMetaData) {
         if (SideReference.Side.Server || PrefixTextureLinker.texMap == null) return null;
 
-        Map<TextureSet, Textures.ItemIcons.CustomIcon> iconLink = PrefixTextureLinker.texMap.get(this.orePrefixes);
+        Map<TextureSet, IIconContainer> iconLink = PrefixTextureLinker.texMap.get(this.orePrefixes);
 
         if (iconLink == null) return null;
 
