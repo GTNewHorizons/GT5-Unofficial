@@ -148,6 +148,10 @@ public final class GTBaseGuiBuilder {
         }
         if (doesAddTitle && NetworkUtils.isClient()) {
             panel.child(CommonWidgets.createMachineTitle(mte, width));
+            Widget<?> colorIndicator = CommonWidgets.createMachineColorIndicator(mte, width);
+            if (colorIndicator != null) {
+                panel.child(colorIndicator);
+            }
         }
         if (doesAddCoverTabs) {
             panel.child(createCoverTabs());

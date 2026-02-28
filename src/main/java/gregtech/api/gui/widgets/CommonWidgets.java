@@ -1,11 +1,14 @@
 package gregtech.api.gui.widgets;
 
+import java.util.Locale;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -17,13 +20,18 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.CommonMetaTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
+import gregtech.common.config.Client;
+import gregtech.common.gui.modularui.widget.RotatedDrawable;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.modularui2.widget.GhostCircuitSlotWidget;
 
@@ -34,7 +42,8 @@ public class CommonWidgets {
 
     /**
      * Returns a muffle button with the provided syncHandler
-     * For unsynced sync handlers. Use {@link #createMuffleButton(String)} with a key for synced handlers
+     * For unsynced sync handlers. Use {@link #createMuffleButton(String)} with a
+     * key for synced handlers
      *
      * @param syncValue - sync handler, can not be synced to manager or will crash
      * @return a muffle button with the attached sync value
@@ -145,7 +154,8 @@ public class CommonWidgets {
     }
 
     /**
-     * Returns a ghost circuit slot widget. baseMachine should be an instance of IConfigurationCircuitSupport
+     * Returns a ghost circuit slot widget. baseMachine should be an instance of
+     * IConfigurationCircuitSupport
      * Otherwise, returns an empty widget
      *
      * @param syncManager - manager
@@ -183,7 +193,8 @@ public class CommonWidgets {
     }
 
     /**
-     * Returns a title widget positioned on the top left above the panel. Client only!
+     * Returns a title widget positioned on the top left above the panel. Client
+     * only!
      *
      * @param mte        - The machine to make the title for
      * @param panelWidth - The width of the machine's main panel
@@ -219,4 +230,89 @@ public class CommonWidgets {
         }
         return null;
     }
+
+    /**
+     * Creates the machine color indicator tab shown on the right side of the panel.
+     * <p>
+     * The indicator is client-only and only appears when:
+     * <ul>
+     * <li>the client setting {@code Client.iface.showGuiColorIndicator} is enabled,
+     * and</li>
+     * <li>the machine has a custom colorization ({@code >= 0}).</li>
+     * </ul>
+     *
+     * @param mte        machine being rendered
+     * @param panelWidth width of the main panel, used as horizontal anchor
+     * @return indicator widget, or {@code null} when the indicator should not be
+     *         shown
+     */
+    public static Widget<?> createMachineColorIndicator(IMetaTileEntity mte, int panelWidth) {
+        if (!NetworkUtils.isClient() || !Client.iface.showGuiColorIndicator || !hasCustomGuiColor(mte)) {
+            return null;
+        }
+        final int frameSize = 16;
+        final int colorSquareSize = 8;
+        final int colorSquarePos = (frameSize - colorSquareSize) / 2;
+        final int colorInnerSize = colorSquareSize - 2;
+        final int borderColor = 0xFF000000 | mte.getTextColorOrDefault("text_gray", 0x404040);
+        final String indicatorTooltip = StatCollector
+            .translateToLocalFormatted("GT5U.tooltip.machine_color_indicator", getMachineColorName(mte));
+        return new SingleChildWidget<>().size(frameSize)
+            .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
+            .background(new RotatedDrawable(getTabTextureForTheme(mte)))
+            .tooltip(tooltip -> tooltip.add(indicatorTooltip))
+            .pos(panelWidth - 3, 82)
+            .child(
+                new SingleChildWidget<>().size(colorSquareSize, colorSquareSize)
+                    .pos(colorSquarePos, colorSquarePos)
+                    .tooltip(tooltip -> tooltip.add(indicatorTooltip))
+                    .background(new DynamicDrawable(() -> new Rectangle().setColor(borderColor)))
+                    .child(
+                        new Widget<>().size(colorInnerSize, colorInnerSize)
+                            .pos(1, 1)
+                            .tooltip(tooltip -> tooltip.add(indicatorTooltip))
+                            .background(
+                                new DynamicDrawable(
+                                    () -> new Rectangle().setColor(0xFF000000 | mte.getGUIColorization())))));
+    }
+
+    private static boolean hasCustomGuiColor(IMetaTileEntity mte) {
+        return mte.getBaseMetaTileEntity() != null && mte.getBaseMetaTileEntity()
+            .getColorization() >= 0;
+    }
+
+    private static String getMachineColorName(IMetaTileEntity mte) {
+        if (mte.getBaseMetaTileEntity() == null) {
+            return Dyes.GUI_METAL.getLocalizedDyeName();
+        }
+        return Dyes.getOrDefault(
+            mte.getBaseMetaTileEntity()
+                .getColorization(),
+            Dyes.GUI_METAL)
+            .getLocalizedDyeName();
+    }
+
+    private static IDrawable getTabTextureForTheme(IMetaTileEntity mte) {
+        if (!(mte instanceof CommonMetaTileEntity commonMte)) {
+            return GTGuiTextures.TAB_COLORED_NORMAL;
+        }
+
+        GTGuiTheme theme = commonMte.getEffectiveGuiTheme();
+        String themeId = theme.getId();
+        String suffix = themeId.contains(":") ? themeId.substring(themeId.indexOf(':') + 1) : themeId;
+        suffix = suffix.toUpperCase(Locale.ROOT)
+            .replaceAll("[^A-Z0-9]+", "_");
+        String textureField = "TAB_COLORED_" + suffix;
+
+        try {
+            Object value = GTGuiTextures.class.getField(textureField)
+                .get(null);
+            if (value instanceof IDrawable drawable) {
+                return drawable;
+            }
+        } catch (ReflectiveOperationException ignored) {}
+
+        return GTGuiTextures.TAB_COLORED_NORMAL;
+    }
+
 }
