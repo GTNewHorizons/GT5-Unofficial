@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,12 +10,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -34,6 +33,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -60,7 +60,7 @@ public class MTECropHarvestor extends MTEBasicTank {
         super(
             aID,
             "basicmachine.cropharvester.0" + aTier,
-            "Crop Manager (" + GTValues.VN[aTier] + ")",
+            GTUtility.translate("gt.machines.cropharvestor.name", GTValues.VN[aTier]),
             aTier,
             21,
             aDescription);
@@ -471,19 +471,30 @@ public class MTECropHarvestor extends MTEBasicTank {
 
     @Override
     public String[] getDescription() {
+        return this.mDescriptionArray;
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        super.addAdditionalTooltipInformation(stack, tooltip);
         int aRadius = 10 + getRange(this.mTier);
-        int aSide = (aRadius - 1) / 2;
-        return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Secondary mode can Hydrate/Fertilize/Weed-EX",
-            "You can set the mode to harvest any growth stage crop or only fully mature ones",
-            "Consumes " + powerUsage() + "eu per harvest",
-            "Consumes " + powerUsageSecondary() + "eu per secondary operation",
-            "Can harvest 2 block levels above and below itself",
-            "Range: " + aRadius + "x5x" + aRadius + " blocks",
-            "Has " + (this.mTier * 5) + "% chance for extra drops",
-            "Holds " + this.getCapacity() + "L of Water",
-            GTPPCore.GT_Tooltip.get());
+        tooltip.add(GTUtility.translate("gt.machines.cropharvestor.tooltip.0"));
+        tooltip.add(GTUtility.translate("gt.machines.cropharvestor.tooltip.1"));
+        tooltip.add(GTUtility.translate("gt.machines.cropharvestor.tooltip.2", TooltipHelper.euText(powerUsage())));
+        tooltip.add(
+            GTUtility.translate("gt.machines.cropharvestor.tooltip.3", TooltipHelper.euText(powerUsageSecondary())));
+        tooltip.add(
+            GTUtility.translate(
+                "gt.machines.cropharvestor.tooltip.4",
+                TooltipHelper.coloredText("2", EnumChatFormatting.WHITE)));
+        tooltip.add(
+            GTUtility
+                .translate("gt.machines.cropharvestor.tooltip.5", TooltipHelper.tierText(aRadius + "x5x" + aRadius)));
+        tooltip.add(
+            GTUtility.translate("gt.machines.cropharvestor.tooltip.6", TooltipHelper.tierText(this.mTier * 5 + "%")));
+        tooltip.add(
+            GTUtility.translate("gt.machines.cropharvestor.tooltip.7", TooltipHelper.fluidText(this.getCapacity())));
+        tooltip.add(GTPPCore.GT_Tooltip.get());
     }
 
     @Override
@@ -589,24 +600,24 @@ public class MTECropHarvestor extends MTEBasicTank {
         builder.widget(
             new CycleButtonWidget().setToggle(() -> mModeAlternative, val -> mModeAlternative = val)
                 .setTexture(GTPPUITextures.OVERLAY_BUTTON_HARVESTER_MODE)
-                .addTooltip(0, "Enable Hydration/Fertilizing/Weed-EX")
-                .addTooltip(1, "Disable Hydration/Fertilizing/Weed-EX")
+                .addTooltip(0, GTUtility.translate("gt.machines.cropharvestor.tooltip.gui.care_on"))
+                .addTooltip(1, GTUtility.translate("gt.machines.cropharvestor.tooltip.gui.care_off"))
                 .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(47, 63)
                 .setSize(18, 18));
         builder.widget(
             new CycleButtonWidget().setToggle(() -> mHarvestEnabled, val -> mHarvestEnabled = val)
                 .setTexture(GTPPUITextures.OVERLAY_BUTTON_HARVESTER_TOGGLE)
-                .addTooltip(0, "Enable Harvest")
-                .addTooltip(1, "Disable Harvest")
+                .addTooltip(0, GTUtility.translate("gt.machines.cropharvestor.tooltip.gui.harvest_on"))
+                .addTooltip(1, GTUtility.translate("gt.machines.cropharvestor.tooltip.gui.harvest_off"))
                 .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(67, 63)
                 .setSize(18, 18));
         builder.widget(
             new CycleButtonWidget().setToggle(() -> harvestFullGrowth, val -> harvestFullGrowth = val)
                 .setTexture(GTPPUITextures.OVERLAY_BUTTON_HARVESTER_GROWTH_TOGGLE)
-                .addTooltip(0, "Enable Full Growth Harvest")
-                .addTooltip(1, "Disable Full Growth Harvest")
+                .addTooltip(0, GTUtility.translate("gt.machines.cropharvestor.tooltip.gui.full_growth_harvest_on"))
+                .addTooltip(1, GTUtility.translate("gt.machines.cropharvestor.tooltip.gui.full_growth_harvest_off"))
                 .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(87, 63)
                 .setSize(18, 18));
@@ -635,21 +646,21 @@ public class MTECropHarvestor extends MTEBasicTank {
                     .canInsert(false)
                     .build()
                     .setPos(61, 7));
-        builder
-            .widget(
-                new ProgressBar()
-                    .setTexture(GTPPUITextures.PROGRESSBAR_BOILER_EMPTY, GTUITextures.PROGRESSBAR_BOILER_WATER, 54)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setProgress(() -> (float) getFluidAmount() / getCapacity())
-                    .setSynced(false, false)
-                    .dynamicTooltip(
-                        () -> Collections.singletonList(
-                            StatCollector.translateToLocalFormatted(
-                                "gtpp.gui.crop_harvestor.tooltip.water",
-                                getFluidAmount(),
-                                getCapacity())))
-                    .setPos(47, 7)
-                    .setSize(10, 54))
+        builder.widget(
+            new ProgressBar()
+                .setTexture(GTPPUITextures.PROGRESSBAR_BOILER_EMPTY, GTUITextures.PROGRESSBAR_BOILER_WATER, 54)
+                .setDirection(ProgressBar.Direction.UP)
+                .setProgress(() -> (float) getFluidAmount() / getCapacity())
+                .setSynced(false, false)
+                .dynamicTooltip(() -> {
+                    String amount = TooltipHelper.fluidText(getFluidAmount());
+                    String capacity = TooltipHelper.fluidText(getCapacity());
+                    String waterText = amount + TooltipHelper.L_COLOR + " / " + capacity;
+                    return Collections
+                        .singletonList(GTUtility.translate("gt.machines.cropharvestor.tooltip.gui.water", waterText));
+                })
+                .setPos(47, 7)
+                .setSize(10, 54))
             .widget(new FakeSyncWidget.FluidStackSyncer(this::getDrainableStack, this::setDrainableStack));
     }
 }
