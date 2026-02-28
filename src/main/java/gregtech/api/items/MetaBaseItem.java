@@ -669,4 +669,26 @@ public abstract class MetaBaseItem extends GTGenericItem
         return false;
     }
 
+    @Override
+    public String getItemStackDisplayName(final ItemStack itemStack) {
+        final String base = super.getItemStackDisplayName(itemStack);
+
+        ArrayList<IItemBehaviour<MetaBaseItem>> behaviorList = mItemBehaviors.get((short) getDamage(itemStack));
+        if (behaviorList == null) {
+            return base;
+        }
+
+        try {
+            for (IItemBehaviour<MetaBaseItem> behavior : behaviorList) {
+                final String newName = behavior.getNameOverride(base, itemStack);
+                if (newName != null) {
+                    return newName;
+                }
+            }
+        } catch (Exception e) {
+            if (D1) e.printStackTrace(GTLog.err);
+        }
+
+        return base;
+    }
 }
