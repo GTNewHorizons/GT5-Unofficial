@@ -126,10 +126,6 @@ public class Loaders {
         "highEnergyMixture",
         GoodGenerator.GG,
         new String[] { GoodGenerator.MOD_ID + ":highEnergyMixture" });
-    public static final Item saltyRoot = new GGItem(
-        "saltyRoot",
-        GoodGenerator.GG,
-        new String[] { GoodGenerator.MOD_ID + ":saltyRoot" });
     public static final Item huiCircuit = new GGItem(
         "huiCircuit",
         addText("huiCircuit.tooltip", 5),
@@ -439,7 +435,6 @@ public class Loaders {
         GameRegistry.registerItem(advancedFuelRod, "advancedFuelRod", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(fluidCore, "fluidCore", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highEnergyMixture, "highEnergyMixture", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(saltyRoot, "saltyRoot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(huiCircuit, "huiCircuit", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(circuitWrap, "circuitWrap", GoodGenerator.MOD_ID);
         GameRegistry.registerTileEntity(TileAntimatter.class, "AntimatterRender");
