@@ -113,6 +113,7 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 import gregtech.common.tileentities.machines.basic.MTEAdvSeismicProspector;
+import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
 import gregtech.common.tileentities.machines.basic.MTECharger;
@@ -817,671 +818,607 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerUnpackager() {
         ItemList.Machine_LV_Unboxinator.set(
-            new MTEBasicMachineWithRecipe(
-                UNPACKAGER_LV.ID,
-                "basicmachine.unboxinator.tier.01",
-                "Basic Unpackager",
-                1,
-                MachineType.UNPACKAGER.tooltipDescription(),
-                RecipeMaps.unpackagerRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "UNBOXINATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(UNPACKAGER_LV.ID)
+                .setName("basicmachine.unboxinator.tier.01", "Basic Unpackager")
+                .setTier(1)
+                .setDescription(MachineType.UNPACKAGER.tooltipDescription())
+                .setRecipes(RecipeMaps.unpackagerRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("UNBOXINATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Unboxinator.set(
-            new MTEBasicMachineWithRecipe(
-                UNPACKAGER_MV.ID,
-                "basicmachine.unboxinator.tier.02",
-                "Advanced Unpackager",
-                2,
-                MachineType.UNPACKAGER.tooltipDescription(),
-                RecipeMaps.unpackagerRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "UNBOXINATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(UNPACKAGER_MV.ID)
+                .setName("basicmachine.unboxinator.tier.02", "Advanced Unpackager")
+                .setTier(2)
+                .setDescription(MachineType.UNPACKAGER.tooltipDescription())
+                .setRecipes(RecipeMaps.unpackagerRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("UNBOXINATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Unboxinator.set(
-            new MTEBasicMachineWithRecipe(
-                UNPACKAGER_HV.ID,
-                "basicmachine.unboxinator.tier.03",
-                "Advanced Unpackager II",
-                3,
-                MachineType.UNPACKAGER.tooltipDescription(),
-                RecipeMaps.unpackagerRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "UNBOXINATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(UNPACKAGER_HV.ID)
+                .setName("basicmachine.unboxinator.tier.03", "Advanced Unpackager II")
+                .setTier(3)
+                .setDescription(MachineType.UNPACKAGER.tooltipDescription())
+                .setRecipes(RecipeMaps.unpackagerRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("UNBOXINATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Unboxinator.set(
-            new MTEBasicMachineWithRecipe(
-                UNPACKAGER_EV.ID,
-                "basicmachine.unboxinator.tier.04",
-                "Advanced Unpackager III",
-                4,
-                MachineType.UNPACKAGER.tooltipDescription(),
-                RecipeMaps.unpackagerRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "UNBOXINATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(UNPACKAGER_EV.ID)
+                .setName("basicmachine.unboxinator.tier.04", "Advanced Unpackager III")
+                .setTier(4)
+                .setDescription(MachineType.UNPACKAGER.tooltipDescription())
+                .setRecipes(RecipeMaps.unpackagerRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("UNBOXINATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Unboxinator.set(
-            new MTEBasicMachineWithRecipe(
-                UNPACKAGER_IV.ID,
-                "basicmachine.unboxinator.tier.05",
-                "Unboxinator",
-                5,
-                MachineType.UNPACKAGER.tooltipDescription(),
-                RecipeMaps.unpackagerRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "UNBOXINATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(UNPACKAGER_IV.ID)
+                .setName("basicmachine.unboxinator.tier.05", "Unboxinator")
+                .setTier(5)
+                .setDescription(MachineType.UNPACKAGER.tooltipDescription())
+                .setRecipes(RecipeMaps.unpackagerRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("UNBOXINATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_LuV_Unboxinator.set(
-            new MTEBasicMachineWithRecipe(
-                UNPACKAGER_LuV.ID,
-                "basicmachine.unboxinator.tier.06",
-                "Unboxinator",
-                6,
-                MachineType.UNPACKAGER.tooltipDescription(),
-                RecipeMaps.unpackagerRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "UNBOXINATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(UNPACKAGER_LuV.ID)
+                .setName("basicmachine.unboxinator.tier.06", "Unboxinator")
+                .setTier(6)
+                .setDescription(MachineType.UNPACKAGER.tooltipDescription())
+                .setRecipes(RecipeMaps.unpackagerRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("UNBOXINATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_ZPM_Unboxinator.set(
-            new MTEBasicMachineWithRecipe(
-                UNPACKAGER_ZPM.ID,
-                "basicmachine.unboxinator.tier.07",
-                "Unboxinator",
-                7,
-                MachineType.UNPACKAGER.tooltipDescription(),
-                RecipeMaps.unpackagerRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "UNBOXINATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(UNPACKAGER_ZPM.ID)
+                .setName("basicmachine.unboxinator.tier.07", "Unboxinator")
+                .setTier(7)
+                .setDescription(MachineType.UNPACKAGER.tooltipDescription())
+                .setRecipes(RecipeMaps.unpackagerRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("UNBOXINATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_UV_Unboxinator.set(
-            new MTEBasicMachineWithRecipe(
-                UNPACKAGER_UV.ID,
-                "basicmachine.unboxinator.tier.08",
-                "Unboxinator",
-                8,
-                MachineType.UNPACKAGER.tooltipDescription(),
-                RecipeMaps.unpackagerRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "UNBOXINATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(UNPACKAGER_UV.ID)
+                .setName("basicmachine.unboxinator.tier.08", "Unboxinator")
+                .setTier(8)
+                .setDescription(MachineType.UNPACKAGER.tooltipDescription())
+                .setRecipes(RecipeMaps.unpackagerRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("UNBOXINATOR")
+                .build()
+                .getStackForm(1L));
     }
 
     private static void registerAssemblingMachine() {
 
         ItemList.Machine_LV_Assembler.set(
-            new MTEBasicMachineWithRecipe(
-                ASSEMBLER_LV.ID,
-                "basicmachine.assembler.tier.01",
-                "Basic Assembling Machine",
-                1,
-                MachineType.ASSEMBLER.tooltipDescription(),
-                RecipeMaps.assemblerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ASSEMBLER_LV.ID)
+                .setName("basicmachine.assembler.tier.01", "Basic Assembling Machine")
+                .setTier(1)
+                .setDescription(MachineType.ASSEMBLER.tooltipDescription())
+                .setRecipes(assemblerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("ASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Assembler.set(
-            new MTEBasicMachineWithRecipe(
-                ASSEMBLER_MV.ID,
-                "basicmachine.assembler.tier.02",
-                "Advanced Assembling Machine",
-                2,
-                MachineType.ASSEMBLER.tooltipDescription(),
-                RecipeMaps.assemblerRecipes,
-                9,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ASSEMBLER_MV.ID)
+                .setName("basicmachine.assembler.tier.02", "Advanced Assembling Machine")
+                .setTier(2)
+                .setDescription(MachineType.ASSEMBLER.tooltipDescription())
+                .setRecipes(assemblerRecipes)
+                .setSlotsCount(9, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("ASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Assembler.set(
-            new MTEBasicMachineWithRecipe(
-                ASSEMBLER_HV.ID,
-                "basicmachine.assembler.tier.03",
-                "Advanced Assembling Machine II",
-                3,
-                MachineType.ASSEMBLER.tooltipDescription(),
-                RecipeMaps.assemblerRecipes,
-                9,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ASSEMBLER_HV.ID)
+                .setName("basicmachine.assembler.tier.03", "Advanced Assembling Machine II")
+                .setTier(3)
+                .setDescription(MachineType.ASSEMBLER.tooltipDescription())
+                .setRecipes(assemblerRecipes)
+                .setSlotsCount(9, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("ASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Assembler.set(
-            new MTEBasicMachineWithRecipe(
-                ASSEMBLER_EV.ID,
-                "basicmachine.assembler.tier.04",
-                "Advanced Assembling Machine III",
-                4,
-                MachineType.ASSEMBLER.tooltipDescription(),
-                RecipeMaps.assemblerRecipes,
-                9,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ASSEMBLER_EV.ID)
+                .setName("basicmachine.assembler.tier.04", "Advanced Assembling Machine III")
+                .setTier(4)
+                .setDescription(MachineType.ASSEMBLER.tooltipDescription())
+                .setRecipes(assemblerRecipes)
+                .setSlotsCount(9, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("ASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Assembler.set(
-            new MTEBasicMachineWithRecipe(
-                ASSEMBLER_IV.ID,
-                "basicmachine.assembler.tier.05",
-                "Advanced Assembling Machine IV",
-                5,
-                MachineType.ASSEMBLER.tooltipDescription(),
-                RecipeMaps.assemblerRecipes,
-                9,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ASSEMBLER_IV.ID)
+                .setName("basicmachine.assembler.tier.05", "Advanced Assembling Machine IV")
+                .setTier(5)
+                .setDescription(MachineType.ASSEMBLER.tooltipDescription())
+                .setRecipes(assemblerRecipes)
+                .setSlotsCount(9, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("ASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AssemblingMachineLuV.set(
-            new MTEBasicMachineWithRecipe(
-                ASSEMBLING_MACHINE_LuV.ID,
-                "basicmachine.assembler.tier.06",
-                "Elite Assembling Machine",
-                6,
-                MachineType.ASSEMBLER.tooltipDescription(),
-                assemblerRecipes,
-                9,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ASSEMBLING_MACHINE_LuV.ID)
+                .setName("basicmachine.assembler.tier.06", "Elite Assembling Machine")
+                .setTier(6)
+                .setDescription(MachineType.ASSEMBLER.tooltipDescription())
+                .setRecipes(assemblerRecipes)
+                .setSlotsCount(9, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("ASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AssemblingMachineZPM.set(
-            new MTEBasicMachineWithRecipe(
-                ASSEMBLING_MACHINE_ZPM.ID,
-                "basicmachine.assembler.tier.07",
-                "Elite Assembling Machine II",
-                7,
-                MachineType.ASSEMBLER.tooltipDescription(),
-                assemblerRecipes,
-                9,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ASSEMBLING_MACHINE_ZPM.ID)
+                .setName("basicmachine.assembler.tier.07", "Elite Assembling Machine II")
+                .setTier(7)
+                .setDescription(MachineType.ASSEMBLER.tooltipDescription())
+                .setRecipes(assemblerRecipes)
+                .setSlotsCount(9, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("ASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AssemblingMachineUV.set(
-            new MTEBasicMachineWithRecipe(
-                ASSEMBLING_MACHINE_UV.ID,
-                "basicmachine.assembler.tier.08",
-                "Ultimate Assembly Constructor",
-                8,
-                MachineType.ASSEMBLER.tooltipDescription(),
-                assemblerRecipes,
-                9,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ASSEMBLING_MACHINE_UV.ID)
+                .setName("basicmachine.assembler.tier.08", "Ultimate Assembly Constructor")
+                .setTier(8)
+                .setDescription(MachineType.ASSEMBLER.tooltipDescription())
+                .setRecipes(assemblerRecipes)
+                .setSlotsCount(9, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("ASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AssemblingMachineUHV.set(
-            new MTEBasicMachineWithRecipe(
-                ASSEMBLING_MACHINE_UHV.ID,
-                "basicmachine.assembler.tier.09",
-                "Epic Assembly Constructor",
-                9,
-                MachineType.ASSEMBLER.tooltipDescription(),
-                assemblerRecipes,
-                9,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ASSEMBLING_MACHINE_UHV.ID)
+                .setName("basicmachine.assembler.tier.09", "Epic Assembly Constructor")
+                .setTier(9)
+                .setDescription(MachineType.ASSEMBLER.tooltipDescription())
+                .setRecipes(assemblerRecipes)
+                .setSlotsCount(9, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("ASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AssemblingMachineUEV.set(
-            new MTEBasicMachineWithRecipe(
-                ASSEMBLING_MACHINE_UEV.ID,
-                "basicmachine.assembler.tier.10",
-                "Epic Assembly Constructor II",
-                10,
-                MachineType.ASSEMBLER.tooltipDescription(),
-                assemblerRecipes,
-                9,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ASSEMBLING_MACHINE_UEV.ID)
+                .setName("basicmachine.assembler.tier.10", "Epic Assembly Constructor II")
+                .setTier(10)
+                .setDescription(MachineType.ASSEMBLER.tooltipDescription())
+                .setRecipes(assemblerRecipes)
+                .setSlotsCount(9, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("ASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AssemblingMachineUIV.set(
-            new MTEBasicMachineWithRecipe(
-                ASSEMBLING_MACHINE_UIV.ID,
-                "basicmachine.assembler.tier.11",
-                "Epic Assembly Constructor III",
-                11,
-                MachineType.ASSEMBLER.tooltipDescription(),
-                assemblerRecipes,
-                9,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ASSEMBLING_MACHINE_UIV.ID)
+                .setName("basicmachine.assembler.tier.11", "Epic Assembly Constructor III")
+                .setTier(11)
+                .setDescription(MachineType.ASSEMBLER.tooltipDescription())
+                .setRecipes(assemblerRecipes)
+                .setSlotsCount(9, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("ASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AssemblingMachineUMV.set(
-            new MTEBasicMachineWithRecipe(
-                ASSEMBLING_MACHINE_UMV.ID,
-                "basicmachine.assembler.tier.12",
-                "Epic Assembly Constructor IV",
-                12,
-                MachineType.ASSEMBLER.tooltipDescription(),
-                assemblerRecipes,
-                9,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ASSEMBLING_MACHINE_UMV.ID)
+                .setName("basicmachine.assembler.tier.12", "Epic Assembly Constructor IV")
+                .setTier(12)
+                .setDescription(MachineType.ASSEMBLER.tooltipDescription())
+                .setRecipes(assemblerRecipes)
+                .setSlotsCount(9, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("ASSEMBLER")
+                .build()
+                .getStackForm(1L));
     }
 
     private static void registerMatterAmplifier() {
         ItemList.Machine_LV_Amplifab.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_LV.ID,
-                "basicmachine.amplifab.tier.01",
-                "Basic Amplifabricator",
-                1,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                RecipeMaps.amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_LV.ID)
+                .setName("basicmachine.amplifab.tier.01", "Basic Amplifabricator")
+                .setTier(1)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Amplifab.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_MV.ID,
-                "basicmachine.amplifab.tier.02",
-                "Advanced Amplifabricator",
-                2,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                RecipeMaps.amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_MV.ID)
+                .setName("basicmachine.amplifab.tier.02", "Advanced Amplifabricator")
+                .setTier(2)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Amplifab.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_HV.ID,
-                "basicmachine.amplifab.tier.03",
-                "Advanced Amplifabricator II",
-                3,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                RecipeMaps.amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_HV.ID)
+                .setName("basicmachine.amplifab.tier.03", "Advanced Amplifabricator II")
+                .setTier(3)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Amplifab.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_EV.ID,
-                "basicmachine.amplifab.tier.04",
-                "Advanced Amplifabricator III",
-                4,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                RecipeMaps.amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_EV.ID)
+                .setName("basicmachine.amplifab.tier.04", "Advanced Amplifabricator III")
+                .setTier(4)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Amplifab.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_IV.ID,
-                "basicmachine.amplifab.tier.05",
-                "Advanced Amplifabricator IV",
-                5,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                RecipeMaps.amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_IV.ID)
+                .setName("basicmachine.amplifab.tier.05", "Advanced Amplifabricator IV")
+                .setTier(5)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AmplifabricatorLuV.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_LuV.ID,
-                "basicmachine.amplifab.tier.06",
-                "Elite Amplifabricator",
-                6,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_LuV.ID)
+                .setName("basicmachine.amplifab.tier.06", "Elite Amplifabricator")
+                .setTier(6)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AmplifabricatorZPM.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_ZPM.ID,
-                "basicmachine.amplifab.tier.07",
-                "Elite Amplifabricator II",
-                7,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_ZPM.ID)
+                .setName("basicmachine.amplifab.tier.07", "Elite Amplifabricator II")
+                .setTier(7)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AmplifabricatorUV.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_UV.ID,
-                "basicmachine.amplifab.tier.08",
-                "Ultimate Amplicreator",
-                8,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_UV.ID)
+                .setName("basicmachine.amplifab.tier.08", "Ultimate Amplicreator")
+                .setTier(8)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AmplifabricatorUHV.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_UHV.ID,
-                "basicmachine.amplifab.tier.09",
-                "Epic Amplicreator",
-                9,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_UHV.ID)
+                .setName("basicmachine.amplifab.tier.09", "Epic Amplicreator")
+                .setTier(9)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AmplifabricatorUEV.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_UEV.ID,
-                "basicmachine.amplifab.tier.10",
-                "Epic Amplicreator II",
-                10,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_UEV.ID)
+                .setName("basicmachine.amplifab.tier.10", "Epic Amplicreator II")
+                .setTier(10)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AmplifabricatorUIV.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_UIV.ID,
-                "basicmachine.amplifab.tier.11",
-                "Epic Amplicreator III",
-                11,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_UIV.ID)
+                .setName("basicmachine.amplifab.tier.11", "Epic Amplicreator III")
+                .setTier(11)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AmplifabricatorUMV.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_UMV.ID,
-                "basicmachine.amplifab.tier.12",
-                "Epic Amplicreator IV",
-                12,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_UMV.ID)
+                .setName("basicmachine.amplifab.tier.12", "Epic Amplicreator IV")
+                .setTier(12)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
     }
 
     private static void registerAlloySmelter() {
         ItemList.Machine_LV_AlloySmelter.set(
-            new MTEBasicMachineWithRecipe(
-                ALLOY_SMELTER_LV.ID,
-                "basicmachine.alloysmelter.tier.01",
-                "Basic Alloy Smelter",
-                1,
-                MachineType.ALLOY_SMELTER.tooltipDescription(),
-                RecipeMaps.alloySmelterRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ALLOY_SMELTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ALLOY_SMELTER_LV.ID)
+                .setName("basicmachine.alloysmelter.tier.01", "Basic Alloy Smelter")
+                .setTier(1)
+                .setDescription(MachineType.ALLOY_SMELTER.tooltipDescription())
+                .setRecipes(alloySmelterRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("ALLOY_SMELTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_AlloySmelter.set(
-            new MTEBasicMachineWithRecipe(
-                ALLOY_SMELTER_MV.ID,
-                "basicmachine.alloysmelter.tier.02",
-                "Advanced Alloy Smelter",
-                2,
-                MachineType.ALLOY_SMELTER.tooltipDescription(),
-                RecipeMaps.alloySmelterRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ALLOY_SMELTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ALLOY_SMELTER_MV.ID)
+                .setName("basicmachine.alloysmelter.tier.02", "Advanced Alloy Smelter")
+                .setTier(2)
+                .setDescription(MachineType.ALLOY_SMELTER.tooltipDescription())
+                .setRecipes(alloySmelterRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("ALLOY_SMELTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_AlloySmelter.set(
-            new MTEBasicMachineWithRecipe(
-                ALLOY_SMELTER_HV.ID,
-                "basicmachine.alloysmelter.tier.03",
-                "Advanced Alloy Smelter II",
-                3,
-                MachineType.ALLOY_SMELTER.tooltipDescription(),
-                RecipeMaps.alloySmelterRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ALLOY_SMELTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ALLOY_SMELTER_HV.ID)
+                .setName("basicmachine.alloysmelter.tier.03", "Advanced Alloy Smelter II")
+                .setTier(3)
+                .setDescription(MachineType.ALLOY_SMELTER.tooltipDescription())
+                .setRecipes(alloySmelterRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("ALLOY_SMELTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_AlloySmelter.set(
-            new MTEBasicMachineWithRecipe(
-                ALLOY_SMELTER_EV.ID,
-                "basicmachine.alloysmelter.tier.04",
-                "Advanced Alloy Smelter III",
-                4,
-                MachineType.ALLOY_SMELTER.tooltipDescription(),
-                RecipeMaps.alloySmelterRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ALLOY_SMELTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ALLOY_SMELTER_EV.ID)
+                .setName("basicmachine.alloysmelter.tier.04", "Advanced Alloy Smelter III")
+                .setTier(4)
+                .setDescription(MachineType.ALLOY_SMELTER.tooltipDescription())
+                .setRecipes(alloySmelterRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("ALLOY_SMELTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_AlloySmelter.set(
-            new MTEBasicMachineWithRecipe(
-                ALLOY_SMELTER_IV.ID,
-                "basicmachine.alloysmelter.tier.05",
-                "Advanced Alloy Smelter IV",
-                5,
-                MachineType.ALLOY_SMELTER.tooltipDescription(),
-                RecipeMaps.alloySmelterRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ALLOY_SMELTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ALLOY_SMELTER_IV.ID)
+                .setName("basicmachine.alloysmelter.tier.05", "Advanced Alloy Smelter IV")
+                .setTier(5)
+                .setDescription(MachineType.ALLOY_SMELTER.tooltipDescription())
+                .setRecipes(alloySmelterRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("ALLOY_SMELTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AlloySmelterLuV.set(
-            new MTEBasicMachineWithRecipe(
-                ALLOY_SMELTER_LuV.ID,
-                "basicmachine.alloysmelter.tier.06",
-                "Elite Alloy Smelter",
-                6,
-                MachineType.ALLOY_SMELTER.tooltipDescription(),
-                alloySmelterRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ALLOY_SMELTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ALLOY_SMELTER_LuV.ID)
+                .setName("basicmachine.alloysmelter.tier.06", "Elite Alloy Smelter")
+                .setTier(6)
+                .setDescription(MachineType.ALLOY_SMELTER.tooltipDescription())
+                .setRecipes(alloySmelterRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("ALLOY_SMELTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AlloySmelterZPM.set(
-            new MTEBasicMachineWithRecipe(
-                ALLOY_SMELTER_ZPM.ID,
-                "basicmachine.alloysmelter.tier.07",
-                "Elite Alloy Smelter II",
-                7,
-                MachineType.ALLOY_SMELTER.tooltipDescription(),
-                alloySmelterRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ALLOY_SMELTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ALLOY_SMELTER_ZPM.ID)
+                .setName("basicmachine.alloysmelter.tier.07", "Elite Alloy Smelter II")
+                .setTier(7)
+                .setDescription(MachineType.ALLOY_SMELTER.tooltipDescription())
+                .setRecipes(alloySmelterRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("ALLOY_SMELTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AlloySmelterUV.set(
-            new MTEBasicMachineWithRecipe(
-                ALLOY_SMELTER_UV.ID,
-                "basicmachine.alloysmelter.tier.08",
-                "Ultimate Alloy Integrator",
-                8,
-                MachineType.ALLOY_SMELTER.tooltipDescription(),
-                alloySmelterRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ALLOY_SMELTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ALLOY_SMELTER_UV.ID)
+                .setName("basicmachine.alloysmelter.tier.08", "Ultimate Alloy Integrator")
+                .setTier(8)
+                .setDescription(MachineType.ALLOY_SMELTER.tooltipDescription())
+                .setRecipes(alloySmelterRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("ALLOY_SMELTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AlloySmelterUHV.set(
-            new MTEBasicMachineWithRecipe(
-                ALLOY_SMELTER_UHV.ID,
-                "basicmachine.alloysmelter.tier.09",
-                "Epic Alloy Integrator",
-                9,
-                MachineType.ALLOY_SMELTER.tooltipDescription(),
-                alloySmelterRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ALLOY_SMELTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ALLOY_SMELTER_UHV.ID)
+                .setName("basicmachine.alloysmelter.tier.09", "Epic Alloy Integrator")
+                .setTier(9)
+                .setDescription(MachineType.ALLOY_SMELTER.tooltipDescription())
+                .setRecipes(alloySmelterRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("ALLOY_SMELTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AlloySmelterUEV.set(
-            new MTEBasicMachineWithRecipe(
-                ALLOY_SMELTER_UEV.ID,
-                "basicmachine.alloysmelter.tier.10",
-                "Epic Alloy Integrator II",
-                10,
-                MachineType.ALLOY_SMELTER.tooltipDescription(),
-                alloySmelterRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ALLOY_SMELTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ALLOY_SMELTER_UEV.ID)
+                .setName("basicmachine.alloysmelter.tier.10", "Epic Alloy Integrator II")
+                .setTier(10)
+                .setDescription(MachineType.ALLOY_SMELTER.tooltipDescription())
+                .setRecipes(alloySmelterRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("ALLOY_SMELTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AlloySmelterUIV.set(
-            new MTEBasicMachineWithRecipe(
-                ALLOY_SMELTER_UIV.ID,
-                "basicmachine.alloysmelter.tier.11",
-                "Epic Alloy Integrator III",
-                11,
-                MachineType.ALLOY_SMELTER.tooltipDescription(),
-                alloySmelterRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ALLOY_SMELTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ALLOY_SMELTER_UIV.ID)
+                .setName("basicmachine.alloysmelter.tier.11", "Epic Alloy Integrator III")
+                .setTier(11)
+                .setDescription(MachineType.ALLOY_SMELTER.tooltipDescription())
+                .setRecipes(alloySmelterRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("ALLOY_SMELTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AlloySmelterUMV.set(
-            new MTEBasicMachineWithRecipe(
-                ALLOY_SMELTER_UMV.ID,
-                "basicmachine.alloysmelter.tier.12",
-                "Epic Alloy Integrator IV",
-                12,
-                MachineType.ALLOY_SMELTER.tooltipDescription(),
-                alloySmelterRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ALLOY_SMELTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ALLOY_SMELTER_UMV.ID)
+                .setName("basicmachine.alloysmelter.tier.12", "Epic Alloy Integrator IV")
+                .setTier(12)
+                .setDescription(MachineType.ALLOY_SMELTER.tooltipDescription())
+                .setRecipes(alloySmelterRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("ALLOY_SMELTER")
+                .build()
+                .getStackForm(1L));
     }
 
     private static void registerHPSteamMachines() {
@@ -2487,4207 +2424,3852 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private void registerChemicalBath() {
         ItemList.Machine_LV_ChemicalBath.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_BATH_LV.ID,
-                "basicmachine.chemicalbath.tier.01",
-                "Basic Chemical Bath",
-                1,
-                MachineType.CHEMICAL_BATH.tooltipDescription(),
-                RecipeMaps.chemicalBathRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_BATH").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_BATH_LV.ID)
+                .setName("basicmachine.chemicalbath.tier.01", "Basic Chemical Bath")
+                .setTier(1)
+                .setDescription(MachineType.CHEMICAL_BATH.tooltipDescription())
+                .setRecipes(chemicalBathRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CHEMICAL_BATH")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_ChemicalBath.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_BATH_MV.ID,
-                "basicmachine.chemicalbath.tier.02",
-                "Advanced Chemical Bath",
-                2,
-                MachineType.CHEMICAL_BATH.tooltipDescription(),
-                RecipeMaps.chemicalBathRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_BATH").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_BATH_MV.ID)
+                .setName("basicmachine.chemicalbath.tier.02", "Advanced Chemical Bath")
+                .setTier(2)
+                .setDescription(MachineType.CHEMICAL_BATH.tooltipDescription())
+                .setRecipes(chemicalBathRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CHEMICAL_BATH")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_ChemicalBath.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_BATH_HV.ID,
-                "basicmachine.chemicalbath.tier.03",
-                "Advanced Chemical Bath II",
-                3,
-                MachineType.CHEMICAL_BATH.tooltipDescription(),
-                RecipeMaps.chemicalBathRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_BATH").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_BATH_HV.ID)
+                .setName("basicmachine.chemicalbath.tier.03", "Advanced Chemical Bath II")
+                .setTier(3)
+                .setDescription(MachineType.CHEMICAL_BATH.tooltipDescription())
+                .setRecipes(chemicalBathRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CHEMICAL_BATH")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_ChemicalBath.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_BATH_EV.ID,
-                "basicmachine.chemicalbath.tier.04",
-                "Advanced Chemical Bath III",
-                4,
-                MachineType.CHEMICAL_BATH.tooltipDescription(),
-                RecipeMaps.chemicalBathRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_BATH").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_BATH_EV.ID)
+                .setName("basicmachine.chemicalbath.tier.04", "Advanced Chemical Bath III")
+                .setTier(4)
+                .setDescription(MachineType.CHEMICAL_BATH.tooltipDescription())
+                .setRecipes(chemicalBathRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CHEMICAL_BATH")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_ChemicalBath.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_BATH_IV.ID,
-                "basicmachine.chemicalbath.tier.05",
-                "Advanced Chemical Bath IV",
-                5,
-                MachineType.CHEMICAL_BATH.tooltipDescription(),
-                RecipeMaps.chemicalBathRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_BATH").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_BATH_IV.ID)
+                .setName("basicmachine.chemicalbath.tier.05", "Advanced Chemical Bath IV")
+                .setTier(5)
+                .setDescription(MachineType.CHEMICAL_BATH.tooltipDescription())
+                .setRecipes(chemicalBathRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CHEMICAL_BATH")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ChemicalBathLuV.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_BATH_LuV.ID,
-                "basicmachine.chemicalbath.tier.06",
-                "Elite Chemical Bath",
-                6,
-                MachineType.CHEMICAL_BATH.tooltipDescription(),
-                chemicalBathRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_BATH").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_BATH_LuV.ID)
+                .setName("basicmachine.chemicalbath.tier.06", "Elite Chemical Bath")
+                .setTier(6)
+                .setDescription(MachineType.CHEMICAL_BATH.tooltipDescription())
+                .setRecipes(chemicalBathRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CHEMICAL_BATH")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ChemicalBathZPM.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_BATH_ZPM.ID,
-                "basicmachine.chemicalbath.tier.07",
-                "Elite Chemical Bath II",
-                7,
-                MachineType.CHEMICAL_BATH.tooltipDescription(),
-                chemicalBathRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_BATH").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_BATH_ZPM.ID)
+                .setName("basicmachine.chemicalbath.tier.07", "Elite Chemical Bath II")
+                .setTier(7)
+                .setDescription(MachineType.CHEMICAL_BATH.tooltipDescription())
+                .setRecipes(chemicalBathRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CHEMICAL_BATH")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ChemicalBathUV.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_BATH_UV.ID,
-                "basicmachine.chemicalbath.tier.08",
-                "Ultimate Chemical Dunktron",
-                8,
-                MachineType.CHEMICAL_BATH.tooltipDescription(),
-                chemicalBathRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_BATH").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_BATH_UV.ID)
+                .setName("basicmachine.chemicalbath.tier.08", "Ultimate Chemical Dunktron")
+                .setTier(8)
+                .setDescription(MachineType.CHEMICAL_BATH.tooltipDescription())
+                .setRecipes(chemicalBathRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CHEMICAL_BATH")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ChemicalBathUHV.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_BATH_UHV.ID,
-                "basicmachine.chemicalbath.tier.09",
-                "Epic Chemical Dunktron",
-                9,
-                MachineType.CHEMICAL_BATH.tooltipDescription(),
-                chemicalBathRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_BATH").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_BATH_UHV.ID)
+                .setName("basicmachine.chemicalbath.tier.09", "Epic Chemical Dunktron")
+                .setTier(9)
+                .setDescription(MachineType.CHEMICAL_BATH.tooltipDescription())
+                .setRecipes(chemicalBathRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CHEMICAL_BATH")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ChemicalBathUEV.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_BATH_UEV.ID,
-                "basicmachine.chemicalbath.tier.10",
-                "Epic Chemical Dunktron II",
-                10,
-                MachineType.CHEMICAL_BATH.tooltipDescription(),
-                chemicalBathRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_BATH").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_BATH_UEV.ID)
+                .setName("basicmachine.chemicalbath.tier.10", "Epic Chemical Dunktron II")
+                .setTier(10)
+                .setDescription(MachineType.CHEMICAL_BATH.tooltipDescription())
+                .setRecipes(chemicalBathRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CHEMICAL_BATH")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ChemicalBathUIV.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_BATH_UIV.ID,
-                "basicmachine.chemicalbath.tier.11",
-                "Epic Chemical Dunktron III",
-                11,
-                MachineType.CHEMICAL_BATH.tooltipDescription(),
-                chemicalBathRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_BATH").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_BATH_UIV.ID)
+                .setName("basicmachine.chemicalbath.tier.11", "Epic Chemical Dunktron III")
+                .setTier(11)
+                .setDescription(MachineType.CHEMICAL_BATH.tooltipDescription())
+                .setRecipes(chemicalBathRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CHEMICAL_BATH")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ChemicalBathUMV.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_BATH_UMV.ID,
-                "basicmachine.chemicalbath.tier.12",
-                "Epic Chemical Dunktron IV",
-                12,
-                MachineType.CHEMICAL_BATH.tooltipDescription(),
-                chemicalBathRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_BATH").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_BATH_UMV.ID)
+                .setName("basicmachine.chemicalbath.tier.12", "Epic Chemical Dunktron IV")
+                .setTier(12)
+                .setDescription(MachineType.CHEMICAL_BATH.tooltipDescription())
+                .setRecipes(chemicalBathRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CHEMICAL_BATH")
+                .build()
+                .getStackForm(1L));
     }
 
     private void registerChemicalReactor() {
         ItemList.Machine_LV_ChemicalReactor.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_REACTOR_LV.ID,
-                "basicmachine.chemicalreactor.tier.01",
-                "Basic Chemical Reactor",
-                1,
-                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
-                RecipeMaps.chemicalReactorRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_REACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_REACTOR_LV.ID)
+                .setName("basicmachine.chemicalreactor.tier.01", "Basic Chemical Reactor")
+                .setTier(1)
+                .setDescription(MachineType.CHEMICAL_REACTOR.tooltipDescription())
+                .setRecipes(chemicalReactorRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("CHEMICAL_REACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_ChemicalReactor.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_REACTOR_MV.ID,
-                "basicmachine.chemicalreactor.tier.02",
-                "Advanced Chemical Reactor",
-                2,
-                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
-                RecipeMaps.chemicalReactorRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_REACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_REACTOR_MV.ID)
+                .setName("basicmachine.chemicalreactor.tier.02", "Advanced Chemical Reactor")
+                .setTier(2)
+                .setDescription(MachineType.CHEMICAL_REACTOR.tooltipDescription())
+                .setRecipes(chemicalReactorRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("CHEMICAL_REACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_ChemicalReactor.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_REACTOR_HV.ID,
-                "basicmachine.chemicalreactor.tier.03",
-                "Advanced Chemical Reactor II",
-                3,
-                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
-                RecipeMaps.chemicalReactorRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_REACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_REACTOR_HV.ID)
+                .setName("basicmachine.chemicalreactor.tier.03", "Advanced Chemical Reactor II")
+                .setTier(3)
+                .setDescription(MachineType.CHEMICAL_REACTOR.tooltipDescription())
+                .setRecipes(chemicalReactorRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("CHEMICAL_REACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_ChemicalReactor.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_REACTOR_EV.ID,
-                "basicmachine.chemicalreactor.tier.04",
-                "Advanced Chemical Reactor III",
-                4,
-                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
-                RecipeMaps.chemicalReactorRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_REACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_REACTOR_EV.ID)
+                .setName("basicmachine.chemicalreactor.tier.04", "Advanced Chemical Reactor III")
+                .setTier(4)
+                .setDescription(MachineType.CHEMICAL_REACTOR.tooltipDescription())
+                .setRecipes(chemicalReactorRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("CHEMICAL_REACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_ChemicalReactor.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_REACTOR_IV.ID,
-                "basicmachine.chemicalreactor.tier.05",
-                "Advanced Chemical Reactor IV",
-                5,
-                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
-                RecipeMaps.chemicalReactorRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_REACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_REACTOR_IV.ID)
+                .setName("basicmachine.chemicalreactor.tier.05", "Advanced Chemical Reactor IV")
+                .setTier(5)
+                .setDescription(MachineType.CHEMICAL_REACTOR.tooltipDescription())
+                .setRecipes(chemicalReactorRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("CHEMICAL_REACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ChemicalReactorLuV.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_REACTOR_LuV.ID,
-                "basicmachine.chemicalreactor.tier.06",
-                "Elite Chemical Reactor",
-                6,
-                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
-                chemicalReactorRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_REACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_REACTOR_LuV.ID)
+                .setName("basicmachine.chemicalreactor.tier.06", "Elite Chemical Reactor")
+                .setTier(6)
+                .setDescription(MachineType.CHEMICAL_REACTOR.tooltipDescription())
+                .setRecipes(chemicalReactorRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("CHEMICAL_REACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ChemicalReactorZPM.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_REACTOR_ZPM.ID,
-                "basicmachine.chemicalreactor.tier.07",
-                "Elite Chemical Reactor II",
-                7,
-                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
-                chemicalReactorRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_REACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_REACTOR_ZPM.ID)
+                .setName("basicmachine.chemicalreactor.tier.07", "Elite Chemical Reactor II")
+                .setTier(7)
+                .setDescription(MachineType.CHEMICAL_REACTOR.tooltipDescription())
+                .setRecipes(chemicalReactorRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("CHEMICAL_REACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ChemicalReactorUV.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_REACTOR_UV.ID,
-                "basicmachine.chemicalreactor.tier.08",
-                "Ultimate Chemical Perforer",
-                8,
-                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
-                chemicalReactorRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_REACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_REACTOR_UV.ID)
+                .setName("basicmachine.chemicalreactor.tier.08", "Ultimate Chemical Perforer")
+                .setTier(8)
+                .setDescription(MachineType.CHEMICAL_REACTOR.tooltipDescription())
+                .setRecipes(chemicalReactorRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("CHEMICAL_REACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ChemicalReactorUHV.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_REACTOR_UHV.ID,
-                "basicmachine.chemicalreactor.tier.09",
-                "Epic Chemical Performer",
-                9,
-                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
-                chemicalReactorRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_REACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_REACTOR_UHV.ID)
+                .setName("basicmachine.chemicalreactor.tier.09", "Epic Chemical Performer")
+                .setTier(9)
+                .setDescription(MachineType.CHEMICAL_REACTOR.tooltipDescription())
+                .setRecipes(chemicalReactorRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("CHEMICAL_REACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ChemicalReactorUEV.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_REACTOR_UEV.ID,
-                "basicmachine.chemicalreactor.tier.10",
-                "Epic Chemical Performer II",
-                10,
-                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
-                chemicalReactorRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_REACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_REACTOR_UEV.ID)
+                .setName("basicmachine.chemicalreactor.tier.10", "Epic Chemical Performer II")
+                .setTier(10)
+                .setDescription(MachineType.CHEMICAL_REACTOR.tooltipDescription())
+                .setRecipes(chemicalReactorRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("CHEMICAL_REACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ChemicalReactorUIV.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_REACTOR_UIV.ID,
-                "basicmachine.chemicalreactor.tier.11",
-                "Epic Chemical Performer III",
-                11,
-                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
-                chemicalReactorRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_REACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_REACTOR_UIV.ID)
+                .setName("basicmachine.chemicalreactor.tier.11", "Epic Chemical Performer III")
+                .setTier(11)
+                .setDescription(MachineType.CHEMICAL_REACTOR.tooltipDescription())
+                .setRecipes(chemicalReactorRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("CHEMICAL_REACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ChemicalReactorUMV.set(
-            new MTEBasicMachineWithRecipe(
-                CHEMICAL_REACTOR_UMV.ID,
-                "basicmachine.chemicalreactor.tier.12",
-                "Epic Chemical Performer IV",
-                12,
-                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
-                chemicalReactorRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CHEMICAL_REACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CHEMICAL_REACTOR_UMV.ID)
+                .setName("basicmachine.chemicalreactor.tier.12", "Epic Chemical Performer IV")
+                .setTier(12)
+                .setDescription(MachineType.CHEMICAL_REACTOR.tooltipDescription())
+                .setRecipes(chemicalReactorRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("CHEMICAL_REACTOR")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerFermenter() {
         ItemList.Machine_LV_Fermenter.set(
-            new MTEBasicMachineWithRecipe(
-                FERMENTER_LV.ID,
-                "basicmachine.fermenter.tier.01",
-                "Basic Fermenter",
-                1,
-                MachineType.FERMENTER.tooltipDescription(),
-                RecipeMaps.fermentingRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FERMENTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FERMENTER_LV.ID)
+                .setName("basicmachine.fermenter.tier.01", "Basic Fermenter")
+                .setTier(1)
+                .setDescription(MachineType.FERMENTER.tooltipDescription())
+                .setRecipes(fermentingRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("FERMENTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Fermenter.set(
-            new MTEBasicMachineWithRecipe(
-                FERMENTER_MV.ID,
-                "basicmachine.fermenter.tier.02",
-                "Advanced Fermenter",
-                2,
-                MachineType.FERMENTER.tooltipDescription(),
-                RecipeMaps.fermentingRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FERMENTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FERMENTER_MV.ID)
+                .setName("basicmachine.fermenter.tier.02", "Advanced Fermenter")
+                .setTier(2)
+                .setDescription(MachineType.FERMENTER.tooltipDescription())
+                .setRecipes(fermentingRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("FERMENTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Fermenter.set(
-            new MTEBasicMachineWithRecipe(
-                FERMENTER_HV.ID,
-                "basicmachine.fermenter.tier.03",
-                "Advanced Fermenter II",
-                3,
-                MachineType.FERMENTER.tooltipDescription(),
-                RecipeMaps.fermentingRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FERMENTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FERMENTER_HV.ID)
+                .setName("basicmachine.fermenter.tier.03", "Advanced Fermenter II")
+                .setTier(3)
+                .setDescription(MachineType.FERMENTER.tooltipDescription())
+                .setRecipes(fermentingRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("FERMENTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Fermenter.set(
-            new MTEBasicMachineWithRecipe(
-                FERMENTER_EV.ID,
-                "basicmachine.fermenter.tier.04",
-                "Advanced Fermenter III",
-                4,
-                MachineType.FERMENTER.tooltipDescription(),
-                RecipeMaps.fermentingRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FERMENTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FERMENTER_EV.ID)
+                .setName("basicmachine.fermenter.tier.04", "Advanced Fermenter III")
+                .setTier(4)
+                .setDescription(MachineType.FERMENTER.tooltipDescription())
+                .setRecipes(fermentingRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("FERMENTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Fermenter.set(
-            new MTEBasicMachineWithRecipe(
-                FERMENTER_IV.ID,
-                "basicmachine.fermenter.tier.05",
-                "Advanced Fermenter IV",
-                5,
-                MachineType.FERMENTER.tooltipDescription(),
-                RecipeMaps.fermentingRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FERMENTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FERMENTER_IV.ID)
+                .setName("basicmachine.fermenter.tier.05", "Advanced Fermenter IV")
+                .setTier(5)
+                .setDescription(MachineType.FERMENTER.tooltipDescription())
+                .setRecipes(fermentingRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("FERMENTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FermenterLuV.set(
-            new MTEBasicMachineWithRecipe(
-                FERMENTER_LuV.ID,
-                "basicmachine.fermenter.tier.06",
-                "Elite Fermenter",
-                6,
-                MachineType.FERMENTER.tooltipDescription(),
-                fermentingRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FERMENTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FERMENTER_LuV.ID)
+                .setName("basicmachine.fermenter.tier.06", "Elite Fermenter")
+                .setTier(6)
+                .setDescription(MachineType.FERMENTER.tooltipDescription())
+                .setRecipes(fermentingRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("FERMENTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FermenterZPM.set(
-            new MTEBasicMachineWithRecipe(
-                FERMENTER_ZPM.ID,
-                "basicmachine.fermenter.tier.07",
-                "Elite Fermenter II",
-                7,
-                MachineType.FERMENTER.tooltipDescription(),
-                fermentingRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FERMENTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FERMENTER_ZPM.ID)
+                .setName("basicmachine.fermenter.tier.07", "Elite Fermenter II")
+                .setTier(7)
+                .setDescription(MachineType.FERMENTER.tooltipDescription())
+                .setRecipes(fermentingRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("FERMENTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FermenterUV.set(
-            new MTEBasicMachineWithRecipe(
-                FERMENTER_UV.ID,
-                "basicmachine.fermenter.tier.08",
-                "Ultimate Fermentation Hastener",
-                8,
-                MachineType.FERMENTER.tooltipDescription(),
-                fermentingRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FERMENTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FERMENTER_UV.ID)
+                .setName("basicmachine.fermenter.tier.08", "Ultimate Fermentation Hastener")
+                .setTier(8)
+                .setDescription(MachineType.FERMENTER.tooltipDescription())
+                .setRecipes(fermentingRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("FERMENTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FermenterUHV.set(
-            new MTEBasicMachineWithRecipe(
-                FERMENTER_UHV.ID,
-                "basicmachine.fermenter.tier.09",
-                "Epic Fermentation Hastener",
-                9,
-                MachineType.FERMENTER.tooltipDescription(),
-                fermentingRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FERMENTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FERMENTER_UHV.ID)
+                .setName("basicmachine.fermenter.tier.09", "Epic Fermentation Hastener")
+                .setTier(9)
+                .setDescription(MachineType.FERMENTER.tooltipDescription())
+                .setRecipes(fermentingRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("FERMENTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FermenterUEV.set(
-            new MTEBasicMachineWithRecipe(
-                FERMENTER_UEV.ID,
-                "basicmachine.fermenter.tier.10",
-                "Epic Fermentation Hastener II",
-                10,
-                MachineType.FERMENTER.tooltipDescription(),
-                fermentingRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FERMENTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FERMENTER_UEV.ID)
+                .setName("basicmachine.fermenter.tier.10", "Epic Fermentation Hastener II")
+                .setTier(10)
+                .setDescription(MachineType.FERMENTER.tooltipDescription())
+                .setRecipes(fermentingRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("FERMENTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FermenterUIV.set(
-            new MTEBasicMachineWithRecipe(
-                FERMENTER_UIV.ID,
-                "basicmachine.fermenter.tier.11",
-                "Epic Fermentation Hastener III",
-                11,
-                MachineType.FERMENTER.tooltipDescription(),
-                fermentingRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FERMENTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FERMENTER_UIV.ID)
+                .setName("basicmachine.fermenter.tier.11", "Epic Fermentation Hastener III")
+                .setTier(11)
+                .setDescription(MachineType.FERMENTER.tooltipDescription())
+                .setRecipes(fermentingRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("FERMENTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FermenterUMV.set(
-            new MTEBasicMachineWithRecipe(
-                FERMENTER_UMV.ID,
-                "basicmachine.fermenter.tier.12",
-                "Epic Fermentation Hastener IV",
-                12,
-                MachineType.FERMENTER.tooltipDescription(),
-                fermentingRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FERMENTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FERMENTER_UMV.ID)
+                .setName("basicmachine.fermenter.tier.12", "Epic Fermentation Hastener IV")
+                .setTier(12)
+                .setDescription(MachineType.FERMENTER.tooltipDescription())
+                .setRecipes(fermentingRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("FERMENTER")
+                .build()
+                .getStackForm(1L));
     }
 
     private void registerFluidCanner() {
         ItemList.Machine_LV_FluidCanner.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_CANNER_LV.ID,
-                "basicmachine.fluidcanner.tier.01",
-                "Basic Fluid Canner",
-                1,
-                MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_CANNER_LV.ID)
+                .setName("basicmachine.fluidcanner.tier.01", "Basic Fluid Canner")
+                .setTier(1)
+                .setDescription(MachineType.FLUID_CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("FLUID_CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_FluidCanner.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_CANNER_MV.ID,
-                "basicmachine.fluidcanner.tier.02",
-                "Advanced Fluid Canner",
-                2,
-                MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_CANNER_MV.ID)
+                .setName("basicmachine.fluidcanner.tier.02", "Advanced Fluid Canner")
+                .setTier(2)
+                .setDescription(MachineType.FLUID_CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("FLUID_CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_FluidCanner.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_CANNER_HV.ID,
-                "basicmachine.fluidcanner.tier.03",
-                "Quick Fluid Canner",
-                3,
-                MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_CANNER_HV.ID)
+                .setName("basicmachine.fluidcanner.tier.03", "Quick Fluid Canner")
+                .setTier(3)
+                .setDescription(MachineType.FLUID_CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("FLUID_CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_FluidCanner.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_CANNER_EV.ID,
-                "basicmachine.fluidcanner.tier.04",
-                "Turbo Fluid Canner",
-                4,
-                MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_CANNER_EV.ID)
+                .setName("basicmachine.fluidcanner.tier.04", "Turbo Fluid Canner")
+                .setTier(4)
+                .setDescription(MachineType.FLUID_CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("FLUID_CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_FluidCanner.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_CANNER_IV.ID,
-                "basicmachine.fluidcanner.tier.05",
-                "Instant Fluid Canner",
-                5,
-                MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_CANNER_IV.ID)
+                .setName("basicmachine.fluidcanner.tier.05", "Instant Fluid Canner")
+                .setTier(5)
+                .setDescription(MachineType.FLUID_CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("FLUID_CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidCannerLuV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_CANNER_LuV.ID,
-                "basicmachine.fluidcanner.tier.06",
-                "Elite Fluid Canner",
-                6,
-                MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_CANNER_LuV.ID)
+                .setName("basicmachine.fluidcanner.tier.06", "Elite Fluid Canner")
+                .setTier(6)
+                .setDescription(MachineType.FLUID_CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("FLUID_CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidCannerZPM.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_CANNER_ZPM.ID,
-                "basicmachine.fluidcanner.tier.07",
-                "Elite Fluid Canner II",
-                7,
-                MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_CANNER_ZPM.ID)
+                .setName("basicmachine.fluidcanner.tier.07", "Elite Fluid Canner II")
+                .setTier(7)
+                .setDescription(MachineType.FLUID_CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("FLUID_CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidCannerUV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_CANNER_UV.ID,
-                "basicmachine.fluidcanner.tier.08",
-                "Ultimate Liquid Can Actuator",
-                8,
-                MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_CANNER_UV.ID)
+                .setName("basicmachine.fluidcanner.tier.08", "Ultimate Liquid Can Actuator")
+                .setTier(8)
+                .setDescription(MachineType.FLUID_CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("FLUID_CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidCannerUHV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_CANNER_UHV.ID,
-                "basicmachine.fluidcanner.tier.09",
-                "Epic Liquid Can Actuator",
-                9,
-                MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_CANNER_UHV.ID)
+                .setName("basicmachine.fluidcanner.tier.09", "Epic Liquid Can Actuator")
+                .setTier(9)
+                .setDescription(MachineType.FLUID_CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("FLUID_CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidCannerUEV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_CANNER_UEV.ID,
-                "basicmachine.fluidcanner.tier.10",
-                "Epic Liquid Can Actuator II",
-                10,
-                MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_CANNER_UEV.ID)
+                .setName("basicmachine.fluidcanner.tier.10", "Epic Liquid Can Actuator II")
+                .setTier(10)
+                .setDescription(MachineType.FLUID_CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("FLUID_CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidCannerUIV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_CANNER_UIV.ID,
-                "basicmachine.fluidcanner.tier.11",
-                "Epic Liquid Can Actuator III",
-                11,
-                MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_CANNER_UIV.ID)
+                .setName("basicmachine.fluidcanner.tier.11", "Epic Liquid Can Actuator III")
+                .setTier(11)
+                .setDescription(MachineType.FLUID_CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("FLUID_CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidCannerUMV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_CANNER_UMV.ID,
-                "basicmachine.fluidcanner.tier.12",
-                "Epic Liquid Can Actuator IV",
-                12,
-                MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_CANNER_UMV.ID)
+                .setName("basicmachine.fluidcanner.tier.12", "Epic Liquid Can Actuator IV")
+                .setTier(12)
+                .setDescription(MachineType.FLUID_CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("FLUID_CANNER")
+                .build()
+                .getStackForm(1L));
     }
 
     private void registerFluidExtractor() {
         ItemList.Machine_LV_FluidExtractor.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_EXTRACTOR_LV.ID,
-                "basicmachine.fluidextractor.tier.01",
-                "Basic Fluid Extractor",
-                1,
-                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
-                RecipeMaps.fluidExtractionRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_EXTRACTOR_LV.ID)
+                .setName("basicmachine.fluidextractor.tier.01", "Basic Fluid Extractor")
+                .setTier(1)
+                .setDescription(MachineType.FLUID_EXTRACTOR.tooltipDescription())
+                .setRecipes(fluidExtractionRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("FLUID_EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_FluidExtractor.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_EXTRACTOR_MV.ID,
-                "basicmachine.fluidextractor.tier.02",
-                "Advanced Fluid Extractor",
-                2,
-                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
-                RecipeMaps.fluidExtractionRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_EXTRACTOR_MV.ID)
+                .setName("basicmachine.fluidextractor.tier.02", "Advanced Fluid Extractor")
+                .setTier(2)
+                .setDescription(MachineType.FLUID_EXTRACTOR.tooltipDescription())
+                .setRecipes(fluidExtractionRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("FLUID_EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_FluidExtractor.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_EXTRACTOR_HV.ID,
-                "basicmachine.fluidextractor.tier.03",
-                "Advanced Fluid Extractor II",
-                3,
-                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
-                RecipeMaps.fluidExtractionRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_EXTRACTOR_HV.ID)
+                .setName("basicmachine.fluidextractor.tier.03", "Advanced Fluid Extractor II")
+                .setTier(3)
+                .setDescription(MachineType.FLUID_EXTRACTOR.tooltipDescription())
+                .setRecipes(fluidExtractionRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("FLUID_EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_FluidExtractor.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_EXTRACTOR_EV.ID,
-                "basicmachine.fluidextractor.tier.04",
-                "Advanced Fluid Extractor III",
-                4,
-                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
-                RecipeMaps.fluidExtractionRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_EXTRACTOR_EV.ID)
+                .setName("basicmachine.fluidextractor.tier.04", "Advanced Fluid Extractor III")
+                .setTier(4)
+                .setDescription(MachineType.FLUID_EXTRACTOR.tooltipDescription())
+                .setRecipes(fluidExtractionRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("FLUID_EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_FluidExtractor.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_EXTRACTOR_IV.ID,
-                "basicmachine.fluidextractor.tier.05",
-                "Advanced Fluid Extractor IV",
-                5,
-                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
-                RecipeMaps.fluidExtractionRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_EXTRACTOR_IV.ID)
+                .setName("basicmachine.fluidextractor.tier.05", "Advanced Fluid Extractor IV")
+                .setTier(5)
+                .setDescription(MachineType.FLUID_EXTRACTOR.tooltipDescription())
+                .setRecipes(fluidExtractionRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("FLUID_EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidExtractorLuV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_EXTRACTOR_LuV.ID,
-                "basicmachine.fluidextractor.tier.06",
-                "Elite Fluid Extractor",
-                6,
-                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
-                fluidExtractionRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_EXTRACTOR_LuV.ID)
+                .setName("basicmachine.fluidextractor.tier.06", "Elite Fluid Extractor")
+                .setTier(6)
+                .setDescription(MachineType.FLUID_EXTRACTOR.tooltipDescription())
+                .setRecipes(fluidExtractionRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("FLUID_EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidExtractorZPM.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_EXTRACTOR_ZPM.ID,
-                "basicmachine.fluidextractor.tier.07",
-                "Elite Fluid Extractor II",
-                7,
-                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
-                fluidExtractionRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_EXTRACTOR_ZPM.ID)
+                .setName("basicmachine.fluidextractor.tier.07", "Elite Fluid Extractor II")
+                .setTier(7)
+                .setDescription(MachineType.FLUID_EXTRACTOR.tooltipDescription())
+                .setRecipes(fluidExtractionRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("FLUID_EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidExtractorUV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_EXTRACTOR_UV.ID,
-                "basicmachine.fluidextractor.tier.08",
-                "Ultimate Liquefying Sucker",
-                8,
-                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
-                fluidExtractionRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_EXTRACTOR_UV.ID)
+                .setName("basicmachine.fluidextractor.tier.08", "Ultimate Liquefying Sucker")
+                .setTier(8)
+                .setDescription(MachineType.FLUID_EXTRACTOR.tooltipDescription())
+                .setRecipes(fluidExtractionRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("FLUID_EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidExtractorUHV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_EXTRACTOR_UHV.ID,
-                "basicmachine.fluidextractor.tier.09",
-                "Epic Liquefying Sucker",
-                9,
-                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
-                fluidExtractionRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_EXTRACTOR_UHV.ID)
+                .setName("basicmachine.fluidextractor.tier.09", "Epic Liquefying Sucker")
+                .setTier(9)
+                .setDescription(MachineType.FLUID_EXTRACTOR.tooltipDescription())
+                .setRecipes(fluidExtractionRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("FLUID_EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidExtractorUEV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_EXTRACTOR_UEV.ID,
-                "basicmachine.fluidextractor.tier.10",
-                "Epic Liquefying Sucker II",
-                10,
-                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
-                fluidExtractionRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_EXTRACTOR_UEV.ID)
+                .setName("basicmachine.fluidextractor.tier.10", "Epic Liquefying Sucker II")
+                .setTier(10)
+                .setDescription(MachineType.FLUID_EXTRACTOR.tooltipDescription())
+                .setRecipes(fluidExtractionRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("FLUID_EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidExtractorUIV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_EXTRACTOR_UIV.ID,
-                "basicmachine.fluidextractor.tier.11",
-                "Epic Liquefying Sucker III",
-                11,
-                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
-                fluidExtractionRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_EXTRACTOR_UIV.ID)
+                .setName("basicmachine.fluidextractor.tier.11", "Epic Liquefying Sucker III")
+                .setTier(11)
+                .setDescription(MachineType.FLUID_EXTRACTOR.tooltipDescription())
+                .setRecipes(fluidExtractionRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("FLUID_EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidExtractorUMV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_EXTRACTOR_UMV.ID,
-                "basicmachine.fluidextractor.tier.12",
-                "Epic Liquefying Sucker IV",
-                12,
-                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
-                fluidExtractionRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_EXTRACTOR_UMV.ID)
+                .setName("basicmachine.fluidextractor.tier.12", "Epic Liquefying Sucker IV")
+                .setTier(12)
+                .setDescription(MachineType.FLUID_EXTRACTOR.tooltipDescription())
+                .setRecipes(fluidExtractionRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("FLUID_EXTRACTOR")
+                .build()
+                .getStackForm(1L));
     }
 
     private void registerFluidHeater() {
         ItemList.Machine_LV_FluidHeater.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_HEATER_LV.ID,
-                "basicmachine.fluidheater.tier.01",
-                "Basic Fluid Heater",
-                1,
-                MachineType.FLUID_HEATER.tooltipDescription(),
-                RecipeMaps.fluidHeaterRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BOILER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_HEATER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_HEATER_LV.ID)
+                .setName("basicmachine.fluidheater.tier.01", "Basic Fluid Heater")
+                .setTier(1)
+                .setDescription(MachineType.FLUID_HEATER.tooltipDescription())
+                .setRecipes(fluidHeaterRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BOILER)
+                .setOverlays("FLUID_HEATER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_FluidHeater.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_HEATER_MV.ID,
-                "basicmachine.fluidheater.tier.02",
-                "Advanced Fluid Heater",
-                2,
-                MachineType.FLUID_HEATER.tooltipDescription(),
-                RecipeMaps.fluidHeaterRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BOILER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_HEATER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_HEATER_MV.ID)
+                .setName("basicmachine.fluidheater.tier.02", "Advanced Fluid Heater")
+                .setTier(2)
+                .setDescription(MachineType.FLUID_HEATER.tooltipDescription())
+                .setRecipes(fluidHeaterRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BOILER)
+                .setOverlays("FLUID_HEATER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_FluidHeater.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_HEATER_HV.ID,
-                "basicmachine.fluidheater.tier.03",
-                "Advanced Fluid Heater II",
-                3,
-                MachineType.FLUID_HEATER.tooltipDescription(),
-                RecipeMaps.fluidHeaterRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BOILER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_HEATER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_HEATER_HV.ID)
+                .setName("basicmachine.fluidheater.tier.03", "Advanced Fluid Heater II")
+                .setTier(3)
+                .setDescription(MachineType.FLUID_HEATER.tooltipDescription())
+                .setRecipes(fluidHeaterRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BOILER)
+                .setOverlays("FLUID_HEATER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_FluidHeater.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_HEATER_EV.ID,
-                "basicmachine.fluidheater.tier.04",
-                "Advanced Fluid Heater III",
-                4,
-                MachineType.FLUID_HEATER.tooltipDescription(),
-                RecipeMaps.fluidHeaterRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BOILER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_HEATER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_HEATER_EV.ID)
+                .setName("basicmachine.fluidheater.tier.04", "Advanced Fluid Heater III")
+                .setTier(4)
+                .setDescription(MachineType.FLUID_HEATER.tooltipDescription())
+                .setRecipes(fluidHeaterRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BOILER)
+                .setOverlays("FLUID_HEATER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_FluidHeater.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_HEATER_IV.ID,
-                "basicmachine.fluidheater.tier.05",
-                "Advanced Fluid Heater IV",
-                5,
-                MachineType.FLUID_HEATER.tooltipDescription(),
-                RecipeMaps.fluidHeaterRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BOILER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_HEATER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_HEATER_IV.ID)
+                .setName("basicmachine.fluidheater.tier.05", "Advanced Fluid Heater IV")
+                .setTier(5)
+                .setDescription(MachineType.FLUID_HEATER.tooltipDescription())
+                .setRecipes(fluidHeaterRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BOILER)
+                .setOverlays("FLUID_HEATER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidHeaterLuV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_HEATER_LuV.ID,
-                "basicmachine.fluidheater.tier.06",
-                "Elite Fluid Heater",
-                6,
-                MachineType.FLUID_HEATER.tooltipDescription(),
-                fluidHeaterRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BOILER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_HEATER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_HEATER_LuV.ID)
+                .setName("basicmachine.fluidheater.tier.06", "Elite Fluid Heater")
+                .setTier(6)
+                .setDescription(MachineType.FLUID_HEATER.tooltipDescription())
+                .setRecipes(fluidHeaterRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BOILER)
+                .setOverlays("FLUID_HEATER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidHeaterZPM.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_HEATER_ZPM.ID,
-                "basicmachine.fluidheater.tier.07",
-                "Elite Fluid Heater II",
-                7,
-                MachineType.FLUID_HEATER.tooltipDescription(),
-                fluidHeaterRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BOILER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_HEATER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_HEATER_ZPM.ID)
+                .setName("basicmachine.fluidheater.tier.07", "Elite Fluid Heater II")
+                .setTier(7)
+                .setDescription(MachineType.FLUID_HEATER.tooltipDescription())
+                .setRecipes(fluidHeaterRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BOILER)
+                .setOverlays("FLUID_HEATER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidHeaterUV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_HEATER_UV.ID,
-                "basicmachine.fluidheater.tier.08",
-                "Ultimate Heat Infuser",
-                8,
-                MachineType.FLUID_HEATER.tooltipDescription(),
-                fluidHeaterRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BOILER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_HEATER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_HEATER_UV.ID)
+                .setName("basicmachine.fluidheater.tier.08", "Ultimate Heat Infuser")
+                .setTier(8)
+                .setDescription(MachineType.FLUID_HEATER.tooltipDescription())
+                .setRecipes(fluidHeaterRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BOILER)
+                .setOverlays("FLUID_HEATER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidHeaterUHV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_HEATER_UHV.ID,
-                "basicmachine.fluidheater.tier.09",
-                "Epic Heat Infuser",
-                9,
-                MachineType.FLUID_HEATER.tooltipDescription(),
-                fluidHeaterRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BOILER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_HEATER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_HEATER_UHV.ID)
+                .setName("basicmachine.fluidheater.tier.09", "Epic Heat Infuser")
+                .setTier(9)
+                .setDescription(MachineType.FLUID_HEATER.tooltipDescription())
+                .setRecipes(fluidHeaterRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BOILER)
+                .setOverlays("FLUID_HEATER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidHeaterUEV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_HEATER_UEV.ID,
-                "basicmachine.fluidheater.tier.10",
-                "Epic Heat Infuser II",
-                10,
-                MachineType.FLUID_HEATER.tooltipDescription(),
-                fluidHeaterRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BOILER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_HEATER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_HEATER_UEV.ID)
+                .setName("basicmachine.fluidheater.tier.10", "Epic Heat Infuser II")
+                .setTier(10)
+                .setDescription(MachineType.FLUID_HEATER.tooltipDescription())
+                .setRecipes(fluidHeaterRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BOILER)
+                .setOverlays("FLUID_HEATER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidHeaterUIV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_HEATER_UIV.ID,
-                "basicmachine.fluidheater.tier.11",
-                "Epic Heat Infuser III",
-                11,
-                MachineType.FLUID_HEATER.tooltipDescription(),
-                fluidHeaterRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BOILER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_HEATER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_HEATER_UIV.ID)
+                .setName("basicmachine.fluidheater.tier.11", "Epic Heat Infuser III")
+                .setTier(11)
+                .setDescription(MachineType.FLUID_HEATER.tooltipDescription())
+                .setRecipes(fluidHeaterRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BOILER)
+                .setOverlays("FLUID_HEATER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidHeaterUMV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_HEATER_UMV.ID,
-                "basicmachine.fluidheater.tier.12",
-                "Epic Heat Infuser IV",
-                12,
-                MachineType.FLUID_HEATER.tooltipDescription(),
-                fluidHeaterRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BOILER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_HEATER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_HEATER_UMV.ID)
+                .setName("basicmachine.fluidheater.tier.12", "Epic Heat Infuser IV")
+                .setTier(12)
+                .setDescription(MachineType.FLUID_HEATER.tooltipDescription())
+                .setRecipes(fluidHeaterRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BOILER)
+                .setOverlays("FLUID_HEATER")
+                .build()
+                .getStackForm(1L));
     }
 
     private void registerMixer() {
         ItemList.Machine_LV_Mixer.set(
-            new MTEBasicMachineWithRecipe(
-                MIXER_LV.ID,
-                "basicmachine.mixer.tier.01",
-                "Basic Mixer",
-                1,
-                MachineType.MIXER.tooltipDescription(),
-                RecipeMaps.mixerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_MIXER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MIXER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MIXER_LV.ID)
+                .setName("basicmachine.mixer.tier.01", "Basic Mixer")
+                .setTier(1)
+                .setDescription(MachineType.MIXER.tooltipDescription())
+                .setRecipes(mixerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_MIXER)
+                .setOverlays("MIXER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Mixer.set(
-            new MTEBasicMachineWithRecipe(
-                MIXER_MV.ID,
-                "basicmachine.mixer.tier.02",
-                "Advanced Mixer",
-                2,
-                MachineType.MIXER.tooltipDescription(),
-                RecipeMaps.mixerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_MIXER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MIXER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MIXER_MV.ID)
+                .setName("basicmachine.mixer.tier.02", "Advanced Mixer")
+                .setTier(2)
+                .setDescription(MachineType.MIXER.tooltipDescription())
+                .setRecipes(mixerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_MIXER)
+                .setOverlays("MIXER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Mixer.set(
-            new MTEBasicMachineWithRecipe(
-                MIXER_HV.ID,
-                "basicmachine.mixer.tier.03",
-                "Advanced Mixer II",
-                3,
-                MachineType.MIXER.tooltipDescription(),
-                RecipeMaps.mixerRecipes,
-                6,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_MIXER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MIXER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MIXER_HV.ID)
+                .setName("basicmachine.mixer.tier.03", "Advanced Mixer II")
+                .setTier(3)
+                .setDescription(MachineType.MIXER.tooltipDescription())
+                .setRecipes(mixerRecipes)
+                .setSlotsCount(6, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_MIXER)
+                .setOverlays("MIXER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Mixer.set(
-            new MTEBasicMachineWithRecipe(
-                MIXER_EV.ID,
-                "basicmachine.mixer.tier.04",
-                "Advanced Mixer III",
-                4,
-                MachineType.MIXER.tooltipDescription(),
-                RecipeMaps.mixerRecipes,
-                9,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_MIXER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MIXER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MIXER_EV.ID)
+                .setName("basicmachine.mixer.tier.04", "Advanced Mixer III")
+                .setTier(4)
+                .setDescription(MachineType.MIXER.tooltipDescription())
+                .setRecipes(mixerRecipes)
+                .setSlotsCount(9, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_MIXER)
+                .setOverlays("MIXER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Mixer.set(
-            new MTEBasicMachineWithRecipe(
-                MIXER_IV.ID,
-                "basicmachine.mixer.tier.05",
-                "Advanced Mixer IV",
-                5,
-                MachineType.MIXER.tooltipDescription(),
-                RecipeMaps.mixerRecipes,
-                9,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_MIXER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MIXER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MIXER_IV.ID)
+                .setName("basicmachine.mixer.tier.05", "Advanced Mixer IV")
+                .setTier(5)
+                .setDescription(MachineType.MIXER.tooltipDescription())
+                .setRecipes(mixerRecipes)
+                .setSlotsCount(9, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_MIXER)
+                .setOverlays("MIXER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MixerLuV.set(
-            new MTEBasicMachineWithRecipe(
-                MIXER_LuV.ID,
-                "basicmachine.mixer.tier.06",
-                "Elite Mixer",
-                6,
-                MachineType.MIXER.tooltipDescription(),
-                mixerRecipes,
-                9,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_MIXER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MIXER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MIXER_LuV.ID)
+                .setName("basicmachine.mixer.tier.06", "Elite Mixer")
+                .setTier(6)
+                .setDescription(MachineType.MIXER.tooltipDescription())
+                .setRecipes(mixerRecipes)
+                .setSlotsCount(9, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_MIXER)
+                .setOverlays("MIXER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MixerZPM.set(
-            new MTEBasicMachineWithRecipe(
-                MIXER_ZPM.ID,
-                "basicmachine.mixer.tier.07",
-                "Elite Mixer II",
-                7,
-                MachineType.MIXER.tooltipDescription(),
-                mixerRecipes,
-                9,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_MIXER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MIXER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MIXER_ZPM.ID)
+                .setName("basicmachine.mixer.tier.07", "Elite Mixer II")
+                .setTier(7)
+                .setDescription(MachineType.MIXER.tooltipDescription())
+                .setRecipes(mixerRecipes)
+                .setSlotsCount(9, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_MIXER)
+                .setOverlays("MIXER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MixerUV.set(
-            new MTEBasicMachineWithRecipe(
-                MIXER_UV.ID,
-                "basicmachine.mixer.tier.08",
-                "Ultimate Matter Organizer",
-                8,
-                MachineType.MIXER.tooltipDescription(),
-                mixerRecipes,
-                9,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_MIXER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MIXER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MIXER_UV.ID)
+                .setName("basicmachine.mixer.tier.08", "Ultimate Matter Organizer")
+                .setTier(8)
+                .setDescription(MachineType.MIXER.tooltipDescription())
+                .setRecipes(mixerRecipes)
+                .setSlotsCount(9, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_MIXER)
+                .setOverlays("MIXER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MixerUHV.set(
-            new MTEBasicMachineWithRecipe(
-                MIXER_UHV.ID,
-                "basicmachine.mixer.tier.09",
-                "Epic Matter Organizer",
-                9,
-                MachineType.MIXER.tooltipDescription(),
-                mixerRecipes,
-                9,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_MIXER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MIXER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MIXER_UHV.ID)
+                .setName("basicmachine.mixer.tier.09", "Epic Matter Organizer")
+                .setTier(9)
+                .setDescription(MachineType.MIXER.tooltipDescription())
+                .setRecipes(mixerRecipes)
+                .setSlotsCount(9, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_MIXER)
+                .setOverlays("MIXER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MixerUEV.set(
-            new MTEBasicMachineWithRecipe(
-                MIXER_UEV.ID,
-                "basicmachine.mixer.tier.10",
-                "Epic Matter Organizer II",
-                10,
-                MachineType.MIXER.tooltipDescription(),
-                mixerRecipes,
-                9,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_MIXER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MIXER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MIXER_UEV.ID)
+                .setName("basicmachine.mixer.tier.10", "Epic Matter Organizer II")
+                .setTier(10)
+                .setDescription(MachineType.MIXER.tooltipDescription())
+                .setRecipes(mixerRecipes)
+                .setSlotsCount(9, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_MIXER)
+                .setOverlays("MIXER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MixerUIV.set(
-            new MTEBasicMachineWithRecipe(
-                MIXER_UIV.ID,
-                "basicmachine.mixer.tier.11",
-                "Epic Matter Organizer III",
-                11,
-                MachineType.MIXER.tooltipDescription(),
-                mixerRecipes,
-                9,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_MIXER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MIXER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MIXER_UIV.ID)
+                .setName("basicmachine.mixer.tier.11", "Epic Matter Organizer III")
+                .setTier(11)
+                .setDescription(MachineType.MIXER.tooltipDescription())
+                .setRecipes(mixerRecipes)
+                .setSlotsCount(9, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_MIXER)
+                .setOverlays("MIXER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MixerUMV.set(
-            new MTEBasicMachineWithRecipe(
-                MIXER_UMV.ID,
-                "basicmachine.mixer.tier.12",
-                "Epic Matter Organizer IV",
-                12,
-                MachineType.MIXER.tooltipDescription(),
-                mixerRecipes,
-                9,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_MIXER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MIXER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MIXER_UMV.ID)
+                .setName("basicmachine.mixer.tier.12", "Epic Matter Organizer IV")
+                .setTier(12)
+                .setDescription(MachineType.MIXER.tooltipDescription())
+                .setRecipes(mixerRecipes)
+                .setSlotsCount(9, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_MIXER)
+                .setOverlays("MIXER")
+                .build()
+                .getStackForm(1L));
     }
 
     private void registerAutoclave() {
         ItemList.Machine_LV_Autoclave.set(
-            new MTEBasicMachineWithRecipe(
-                AUTOCLAVE_LV.ID,
-                "basicmachine.autoclave.tier.01",
-                "Basic Autoclave",
-                1,
-                MachineType.AUTOCLAVE.tooltipDescription(),
-                RecipeMaps.autoclaveRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AUTOCLAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(AUTOCLAVE_LV.ID)
+                .setName("basicmachine.autoclave.tier.01", "Basic Autoclave")
+                .setTier(1)
+                .setDescription(MachineType.AUTOCLAVE.tooltipDescription())
+                .setRecipes(autoclaveRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("AUTOCLAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Autoclave.set(
-            new MTEBasicMachineWithRecipe(
-                AUTOCLAVE_MV.ID,
-                "basicmachine.autoclave.tier.02",
-                "Advanced Autoclave",
-                2,
-                MachineType.AUTOCLAVE.tooltipDescription(),
-                RecipeMaps.autoclaveRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AUTOCLAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(AUTOCLAVE_MV.ID)
+                .setName("basicmachine.autoclave.tier.02", "Advanced Autoclave")
+                .setTier(2)
+                .setDescription(MachineType.AUTOCLAVE.tooltipDescription())
+                .setRecipes(autoclaveRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("AUTOCLAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Autoclave.set(
-            new MTEBasicMachineWithRecipe(
-                AUTOCLAVE_HV.ID,
-                "basicmachine.autoclave.tier.03",
-                "Advanced Autoclave II",
-                3,
-                MachineType.AUTOCLAVE.tooltipDescription(),
-                RecipeMaps.autoclaveRecipes,
-                2,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AUTOCLAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(AUTOCLAVE_HV.ID)
+                .setName("basicmachine.autoclave.tier.03", "Advanced Autoclave II")
+                .setTier(3)
+                .setDescription(MachineType.AUTOCLAVE.tooltipDescription())
+                .setRecipes(autoclaveRecipes)
+                .setSlotsCount(2, 3)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("AUTOCLAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Autoclave.set(
-            new MTEBasicMachineWithRecipe(
-                AUTOCLAVE_EV.ID,
-                "basicmachine.autoclave.tier.04",
-                "Advanced Autoclave III",
-                4,
-                MachineType.AUTOCLAVE.tooltipDescription(),
-                RecipeMaps.autoclaveRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AUTOCLAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(AUTOCLAVE_EV.ID)
+                .setName("basicmachine.autoclave.tier.04", "Advanced Autoclave III")
+                .setTier(4)
+                .setDescription(MachineType.AUTOCLAVE.tooltipDescription())
+                .setRecipes(autoclaveRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("AUTOCLAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Autoclave.set(
-            new MTEBasicMachineWithRecipe(
-                AUTOCLAVE_IV.ID,
-                "basicmachine.autoclave.tier.05",
-                "Advanced Autoclave IV",
-                5,
-                MachineType.AUTOCLAVE.tooltipDescription(),
-                RecipeMaps.autoclaveRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AUTOCLAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(AUTOCLAVE_IV.ID)
+                .setName("basicmachine.autoclave.tier.05", "Advanced Autoclave IV")
+                .setTier(5)
+                .setDescription(MachineType.AUTOCLAVE.tooltipDescription())
+                .setRecipes(autoclaveRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("AUTOCLAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AutoclaveLuV.set(
-            new MTEBasicMachineWithRecipe(
-                AUTOCLAVE_LuV.ID,
-                "basicmachine.autoclave.tier.06",
-                "Elite Autoclave",
-                6,
-                MachineType.AUTOCLAVE.tooltipDescription(),
-                autoclaveRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AUTOCLAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(AUTOCLAVE_LuV.ID)
+                .setName("basicmachine.autoclave.tier.06", "Elite Autoclave")
+                .setTier(6)
+                .setDescription(MachineType.AUTOCLAVE.tooltipDescription())
+                .setRecipes(autoclaveRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("AUTOCLAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AutoclaveZPM.set(
-            new MTEBasicMachineWithRecipe(
-                AUTOCLAVE_ZPM.ID,
-                "basicmachine.autoclave.tier.07",
-                "Elite Autoclave II",
-                7,
-                MachineType.AUTOCLAVE.tooltipDescription(),
-                autoclaveRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AUTOCLAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(AUTOCLAVE_ZPM.ID)
+                .setName("basicmachine.autoclave.tier.07", "Elite Autoclave II")
+                .setTier(7)
+                .setDescription(MachineType.AUTOCLAVE.tooltipDescription())
+                .setRecipes(autoclaveRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("AUTOCLAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AutoclaveUV.set(
-            new MTEBasicMachineWithRecipe(
-                AUTOCLAVE_UV.ID,
-                "basicmachine.autoclave.tier.08",
-                "Ultimate Pressure Cooker",
-                8,
-                MachineType.AUTOCLAVE.tooltipDescription(),
-                autoclaveRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AUTOCLAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(AUTOCLAVE_UV.ID)
+                .setName("basicmachine.autoclave.tier.08", "Ultimate Pressure Cooker")
+                .setTier(8)
+                .setDescription(MachineType.AUTOCLAVE.tooltipDescription())
+                .setRecipes(autoclaveRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("AUTOCLAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AutoclaveUHV.set(
-            new MTEBasicMachineWithRecipe(
-                AUTOCLAVE_UHV.ID,
-                "basicmachine.autoclave.tier.09",
-                "Epic Pressure Cooker",
-                9,
-                MachineType.AUTOCLAVE.tooltipDescription(),
-                autoclaveRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AUTOCLAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(AUTOCLAVE_UHV.ID)
+                .setName("basicmachine.autoclave.tier.09", "Epic Pressure Cooker")
+                .setTier(9)
+                .setDescription(MachineType.AUTOCLAVE.tooltipDescription())
+                .setRecipes(autoclaveRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("AUTOCLAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AutoclaveUEV.set(
-            new MTEBasicMachineWithRecipe(
-                AUTOCLAVE_UEV.ID,
-                "basicmachine.autoclave.tier.10",
-                "Epic Pressure Cooker II",
-                10,
-                MachineType.AUTOCLAVE.tooltipDescription(),
-                autoclaveRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AUTOCLAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(AUTOCLAVE_UEV.ID)
+                .setName("basicmachine.autoclave.tier.10", "Epic Pressure Cooker II")
+                .setTier(10)
+                .setDescription(MachineType.AUTOCLAVE.tooltipDescription())
+                .setRecipes(autoclaveRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("AUTOCLAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AutoclaveUIV.set(
-            new MTEBasicMachineWithRecipe(
-                AUTOCLAVE_UIV.ID,
-                "basicmachine.autoclave.tier.11",
-                "Epic Pressure Cooker III",
-                11,
-                MachineType.AUTOCLAVE.tooltipDescription(),
-                autoclaveRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AUTOCLAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(AUTOCLAVE_UIV.ID)
+                .setName("basicmachine.autoclave.tier.11", "Epic Pressure Cooker III")
+                .setTier(11)
+                .setDescription(MachineType.AUTOCLAVE.tooltipDescription())
+                .setRecipes(autoclaveRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("AUTOCLAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AutoclaveUMV.set(
-            new MTEBasicMachineWithRecipe(
-                AUTOCLAVE_UMV.ID,
-                "basicmachine.autoclave.tier.12",
-                "Epic Pressure Cooker IV",
-                12,
-                MachineType.AUTOCLAVE.tooltipDescription(),
-                autoclaveRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AUTOCLAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(AUTOCLAVE_UMV.ID)
+                .setName("basicmachine.autoclave.tier.12", "Epic Pressure Cooker IV")
+                .setTier(12)
+                .setDescription(MachineType.AUTOCLAVE.tooltipDescription())
+                .setRecipes(autoclaveRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("AUTOCLAVE")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerBendingMachine() {
         ItemList.Machine_LV_Bender.set(
-            new MTEBasicMachineWithRecipe(
-                BENDING_MACHINE_LV.ID,
-                "basicmachine.bender.tier.01",
-                "Basic Bending Machine",
-                1,
-                MachineType.BENDING_MACHINE.tooltipDescription(),
-                RecipeMaps.benderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "BENDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(BENDING_MACHINE_LV.ID)
+                .setName("basicmachine.bender.tier.01", "Basic Bending Machine")
+                .setTier(1)
+                .setDescription(MachineType.BENDING_MACHINE.tooltipDescription())
+                .setRecipes(benderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("BENDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Bender.set(
-            new MTEBasicMachineWithRecipe(
-                BENDING_MACHINE_MV.ID,
-                "basicmachine.bender.tier.02",
-                "Advanced Bending Machine",
-                2,
-                MachineType.BENDING_MACHINE.tooltipDescription(),
-                RecipeMaps.benderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "BENDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(BENDING_MACHINE_MV.ID)
+                .setName("basicmachine.bender.tier.02", "Advanced Bending Machine")
+                .setTier(2)
+                .setDescription(MachineType.BENDING_MACHINE.tooltipDescription())
+                .setRecipes(benderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("BENDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Bender.set(
-            new MTEBasicMachineWithRecipe(
-                BENDING_MACHINE_HV.ID,
-                "basicmachine.bender.tier.03",
-                "Advanced Bending Machine II",
-                3,
-                MachineType.BENDING_MACHINE.tooltipDescription(),
-                RecipeMaps.benderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "BENDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(BENDING_MACHINE_HV.ID)
+                .setName("basicmachine.bender.tier.03", "Advanced Bending Machine II")
+                .setTier(3)
+                .setDescription(MachineType.BENDING_MACHINE.tooltipDescription())
+                .setRecipes(benderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("BENDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Bender.set(
-            new MTEBasicMachineWithRecipe(
-                BENDING_MACHINE_EV.ID,
-                "basicmachine.bender.tier.04",
-                "Advanced Bending Machine III",
-                4,
-                MachineType.BENDING_MACHINE.tooltipDescription(),
-                RecipeMaps.benderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "BENDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(BENDING_MACHINE_EV.ID)
+                .setName("basicmachine.bender.tier.04", "Advanced Bending Machine III")
+                .setTier(4)
+                .setDescription(MachineType.BENDING_MACHINE.tooltipDescription())
+                .setRecipes(benderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("BENDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Bender.set(
-            new MTEBasicMachineWithRecipe(
-                BENDING_MACHINE_IV.ID,
-                "basicmachine.bender.tier.05",
-                "Advanced Bending Machine IV",
-                5,
-                MachineType.BENDING_MACHINE.tooltipDescription(),
-                RecipeMaps.benderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "BENDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(BENDING_MACHINE_IV.ID)
+                .setName("basicmachine.bender.tier.05", "Advanced Bending Machine IV")
+                .setTier(5)
+                .setDescription(MachineType.BENDING_MACHINE.tooltipDescription())
+                .setRecipes(benderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("BENDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.BendingMachineLuV.set(
-            new MTEBasicMachineWithRecipe(
-                BENDING_MACHINE_LuV.ID,
-                "basicmachine.bender.tier.06",
-                "Elite Bending Machine",
-                6,
-                MachineType.BENDING_MACHINE.tooltipDescription(),
-                benderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "BENDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(BENDING_MACHINE_LuV.ID)
+                .setName("basicmachine.bender.tier.06", "Elite Bending Machine")
+                .setTier(6)
+                .setDescription(MachineType.BENDING_MACHINE.tooltipDescription())
+                .setRecipes(benderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("BENDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.BendingMachineZPM.set(
-            new MTEBasicMachineWithRecipe(
-                BENDING_MACHINE_ZPM.ID,
-                "basicmachine.bender.tier.07",
-                "Elite Bending Machine II",
-                7,
-                MachineType.BENDING_MACHINE.tooltipDescription(),
-                benderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "BENDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(BENDING_MACHINE_ZPM.ID)
+                .setName("basicmachine.bender.tier.07", "Elite Bending Machine II")
+                .setTier(7)
+                .setDescription(MachineType.BENDING_MACHINE.tooltipDescription())
+                .setRecipes(benderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("BENDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.BendingMachineUV.set(
-            new MTEBasicMachineWithRecipe(
-                BENDING_MACHINE_UV.ID,
-                "basicmachine.bender.tier.08",
-                "Ultimate Bending Unit",
-                8,
-                MachineType.BENDING_MACHINE.tooltipDescription(),
-                benderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "BENDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(BENDING_MACHINE_UV.ID)
+                .setName("basicmachine.bender.tier.08", "Ultimate Bending Unit")
+                .setTier(8)
+                .setDescription(MachineType.BENDING_MACHINE.tooltipDescription())
+                .setRecipes(benderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("BENDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.BendingMachineUHV.set(
-            new MTEBasicMachineWithRecipe(
-                BENDING_MACHINE_UHV.ID,
-                "basicmachine.bender.tier.09",
-                "Epic Bending Unit",
-                9,
-                MachineType.BENDING_MACHINE.tooltipDescription(),
-                benderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "BENDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(BENDING_MACHINE_UHV.ID)
+                .setName("basicmachine.bender.tier.09", "Epic Bending Unit")
+                .setTier(9)
+                .setDescription(MachineType.BENDING_MACHINE.tooltipDescription())
+                .setRecipes(benderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("BENDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.BendingMachineUEV.set(
-            new MTEBasicMachineWithRecipe(
-                BENDING_MACHINE_UEV.ID,
-                "basicmachine.bender.tier.10",
-                "Epic Bending Unit II",
-                10,
-                MachineType.BENDING_MACHINE.tooltipDescription(),
-                benderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "BENDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(BENDING_MACHINE_UEV.ID)
+                .setName("basicmachine.bender.tier.10", "Epic Bending Unit II")
+                .setTier(10)
+                .setDescription(MachineType.BENDING_MACHINE.tooltipDescription())
+                .setRecipes(benderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("BENDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.BendingMachineUIV.set(
-            new MTEBasicMachineWithRecipe(
-                BENDING_MACHINE_UIV.ID,
-                "basicmachine.bender.tier.11",
-                "Epic Bending Unit III",
-                11,
-                MachineType.BENDING_MACHINE.tooltipDescription(),
-                benderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "BENDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(BENDING_MACHINE_UIV.ID)
+                .setName("basicmachine.bender.tier.11", "Epic Bending Unit III")
+                .setTier(11)
+                .setDescription(MachineType.BENDING_MACHINE.tooltipDescription())
+                .setRecipes(benderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("BENDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.BendingMachineUMV.set(
-            new MTEBasicMachineWithRecipe(
-                BENDING_MACHINE_UMV.ID,
-                "basicmachine.bender.tier.12",
-                "Epic Bending Unit IV",
-                12,
-                MachineType.BENDING_MACHINE.tooltipDescription(),
-                benderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "BENDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(BENDING_MACHINE_UMV.ID)
+                .setName("basicmachine.bender.tier.12", "Epic Bending Unit IV")
+                .setTier(12)
+                .setDescription(MachineType.BENDING_MACHINE.tooltipDescription())
+                .setRecipes(benderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("BENDER")
+                .build()
+                .getStackForm(1L));
     }
 
     private void registerCompressor() {
         ItemList.Machine_LV_Compressor.set(
-            new MTEBasicMachineWithRecipe(
-                COMPRESSOR_LV.ID,
-                "basicmachine.compressor.tier.01",
-                "Basic Compressor",
-                1,
-                MachineType.COMPRESSOR.tooltipDescription(),
-                RecipeMaps.compressorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_COMPRESSOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "COMPRESSOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(COMPRESSOR_LV.ID)
+                .setName("basicmachine.compressor.tier.01", "Basic Compressor")
+                .setTier(1)
+                .setDescription(MachineType.COMPRESSOR.tooltipDescription())
+                .setRecipes(compressorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
+                .setOverlays("COMPRESSOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Compressor.set(
-            new MTEBasicMachineWithRecipe(
-                COMPRESSOR_MV.ID,
-                "basicmachine.compressor.tier.02",
-                "Advanced Compressor",
-                2,
-                MachineType.COMPRESSOR.tooltipDescription(),
-                RecipeMaps.compressorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_COMPRESSOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "COMPRESSOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(COMPRESSOR_MV.ID)
+                .setName("basicmachine.compressor.tier.02", "Advanced Compressor")
+                .setTier(2)
+                .setDescription(MachineType.COMPRESSOR.tooltipDescription())
+                .setRecipes(compressorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
+                .setOverlays("COMPRESSOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Compressor.set(
-            new MTEBasicMachineWithRecipe(
-                COMPRESSOR_HV.ID,
-                "basicmachine.compressor.tier.03",
-                "Advanced Compressor II",
-                3,
-                MachineType.COMPRESSOR.tooltipDescription(),
-                RecipeMaps.compressorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_COMPRESSOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "COMPRESSOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(COMPRESSOR_HV.ID)
+                .setName("basicmachine.compressor.tier.03", "Advanced Compressor II")
+                .setTier(3)
+                .setDescription(MachineType.COMPRESSOR.tooltipDescription())
+                .setRecipes(compressorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
+                .setOverlays("COMPRESSOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Compressor.set(
-            new MTEBasicMachineWithRecipe(
-                COMPRESSOR_EV.ID,
-                "basicmachine.compressor.tier.04",
-                "Advanced Compressor III",
-                4,
-                MachineType.COMPRESSOR.tooltipDescription(),
-                RecipeMaps.compressorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_COMPRESSOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "COMPRESSOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(COMPRESSOR_EV.ID)
+                .setName("basicmachine.compressor.tier.04", "Advanced Compressor III")
+                .setTier(4)
+                .setDescription(MachineType.COMPRESSOR.tooltipDescription())
+                .setRecipes(compressorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
+                .setOverlays("COMPRESSOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Compressor.set(
-            new MTEBasicMachineWithRecipe(
-                COMPRESSOR_IV.ID,
-                "basicmachine.compressor.tier.05",
-                "Singularity Compressor",
-                5,
-                MachineType.COMPRESSOR.tooltipDescription(),
-                RecipeMaps.compressorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_COMPRESSOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "COMPRESSOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(COMPRESSOR_IV.ID)
+                .setName("basicmachine.compressor.tier.05", "Singularity Compressor")
+                .setTier(5)
+                .setDescription(MachineType.COMPRESSOR.tooltipDescription())
+                .setRecipes(compressorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
+                .setOverlays("COMPRESSOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CompressorLuV.set(
-            new MTEBasicMachineWithRecipe(
-                COMPRESSOR_LuV.ID,
-                "basicmachine.compressor.tier.06",
-                "Elite Compressor",
-                6,
-                MachineType.COMPRESSOR.tooltipDescription(),
-                compressorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_COMPRESSOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "COMPRESSOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(COMPRESSOR_LuV.ID)
+                .setName("basicmachine.compressor.tier.06", "Elite Compressor")
+                .setTier(6)
+                .setDescription(MachineType.COMPRESSOR.tooltipDescription())
+                .setRecipes(compressorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
+                .setOverlays("COMPRESSOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CompressorZPM.set(
-            new MTEBasicMachineWithRecipe(
-                COMPRESSOR_ZPM.ID,
-                "basicmachine.compressor.tier.07",
-                "Elite Compressor II",
-                7,
-                MachineType.COMPRESSOR.tooltipDescription(),
-                compressorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_COMPRESSOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "COMPRESSOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(COMPRESSOR_ZPM.ID)
+                .setName("basicmachine.compressor.tier.07", "Elite Compressor II")
+                .setTier(7)
+                .setDescription(MachineType.COMPRESSOR.tooltipDescription())
+                .setRecipes(compressorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
+                .setOverlays("COMPRESSOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CompressorUV.set(
-            new MTEBasicMachineWithRecipe(
-                COMPRESSOR_UV.ID,
-                "basicmachine.compressor.tier.08",
-                "Ultimate Matter Constrictor",
-                8,
-                MachineType.COMPRESSOR.tooltipDescription(),
-                compressorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_COMPRESSOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "COMPRESSOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(COMPRESSOR_UV.ID)
+                .setName("basicmachine.compressor.tier.08", "Ultimate Matter Constrictor")
+                .setTier(8)
+                .setDescription(MachineType.COMPRESSOR.tooltipDescription())
+                .setRecipes(compressorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
+                .setOverlays("COMPRESSOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CompressorUHV.set(
-            new MTEBasicMachineWithRecipe(
-                COMPRESSOR_UHV.ID,
-                "basicmachine.compressor.tier.09",
-                "Epic Matter Constrictor",
-                9,
-                MachineType.COMPRESSOR.tooltipDescription(),
-                compressorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_COMPRESSOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "COMPRESSOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(COMPRESSOR_UHV.ID)
+                .setName("basicmachine.compressor.tier.09", "Epic Matter Constrictor")
+                .setTier(9)
+                .setDescription(MachineType.COMPRESSOR.tooltipDescription())
+                .setRecipes(compressorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
+                .setOverlays("COMPRESSOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CompressorUEV.set(
-            new MTEBasicMachineWithRecipe(
-                COMPRESSOR_UEV.ID,
-                "basicmachine.compressor.tier.10",
-                "Epic Matter Constrictor II",
-                10,
-                MachineType.COMPRESSOR.tooltipDescription(),
-                compressorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_COMPRESSOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "COMPRESSOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(COMPRESSOR_UEV.ID)
+                .setName("basicmachine.compressor.tier.10", "Epic Matter Constrictor II")
+                .setTier(10)
+                .setDescription(MachineType.COMPRESSOR.tooltipDescription())
+                .setRecipes(compressorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
+                .setOverlays("COMPRESSOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CompressorUIV.set(
-            new MTEBasicMachineWithRecipe(
-                COMPRESSOR_UIV.ID,
-                "basicmachine.compressor.tier.11",
-                "Epic Matter Constrictor III",
-                11,
-                MachineType.COMPRESSOR.tooltipDescription(),
-                compressorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_COMPRESSOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "COMPRESSOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(COMPRESSOR_UIV.ID)
+                .setName("basicmachine.compressor.tier.11", "Epic Matter Constrictor III")
+                .setTier(11)
+                .setDescription(MachineType.COMPRESSOR.tooltipDescription())
+                .setRecipes(compressorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
+                .setOverlays("COMPRESSOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CompressorUMV.set(
-            new MTEBasicMachineWithRecipe(
-                COMPRESSOR_UMV.ID,
-                "basicmachine.compressor.tier.12",
-                "Epic Matter Constrictor IV",
-                12,
-                MachineType.COMPRESSOR.tooltipDescription(),
-                compressorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_COMPRESSOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "COMPRESSOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(COMPRESSOR_UMV.ID)
+                .setName("basicmachine.compressor.tier.12", "Epic Matter Constrictor IV")
+                .setTier(12)
+                .setDescription(MachineType.COMPRESSOR.tooltipDescription())
+                .setRecipes(compressorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
+                .setOverlays("COMPRESSOR")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerCuttingMachine() {
         ItemList.Machine_LV_Cutter.set(
-            new MTEBasicMachineWithRecipe(
-                CUTTING_MACHINE_LV.ID,
-                "basicmachine.cutter.tier.01",
-                "Basic Cutting Machine",
-                1,
-                MachineType.CUTTING_MACHINE.tooltipDescription(),
-                RecipeMaps.cutterRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CUTTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CUTTING_MACHINE_LV.ID)
+                .setName("basicmachine.cutter.tier.01", "Basic Cutting Machine")
+                .setTier(1)
+                .setDescription(MachineType.CUTTING_MACHINE.tooltipDescription())
+                .setRecipes(cutterRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("CUTTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Cutter.set(
-            new MTEBasicMachineWithRecipe(
-                CUTTING_MACHINE_MV.ID,
-                "basicmachine.cutter.tier.02",
-                "Advanced Cutting Machine",
-                2,
-                MachineType.CUTTING_MACHINE.tooltipDescription(),
-                RecipeMaps.cutterRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CUTTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CUTTING_MACHINE_MV.ID)
+                .setName("basicmachine.cutter.tier.02", "Advanced Cutting Machine")
+                .setTier(2)
+                .setDescription(MachineType.CUTTING_MACHINE.tooltipDescription())
+                .setRecipes(cutterRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("CUTTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Cutter.set(
-            new MTEBasicMachineWithRecipe(
-                CUTTING_MACHINE_HV.ID,
-                "basicmachine.cutter.tier.03",
-                "Advanced Cutting Machine II",
-                3,
-                MachineType.CUTTING_MACHINE.tooltipDescription(),
-                RecipeMaps.cutterRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CUTTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CUTTING_MACHINE_HV.ID)
+                .setName("basicmachine.cutter.tier.03", "Advanced Cutting Machine II")
+                .setTier(3)
+                .setDescription(MachineType.CUTTING_MACHINE.tooltipDescription())
+                .setRecipes(cutterRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("CUTTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Cutter.set(
-            new MTEBasicMachineWithRecipe(
-                CUTTING_MACHINE_EV.ID,
-                "basicmachine.cutter.tier.04",
-                "Advanced Cutting Machine III",
-                4,
-                MachineType.CUTTING_MACHINE.tooltipDescription(),
-                RecipeMaps.cutterRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CUTTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CUTTING_MACHINE_EV.ID)
+                .setName("basicmachine.cutter.tier.04", "Advanced Cutting Machine III")
+                .setTier(4)
+                .setDescription(MachineType.CUTTING_MACHINE.tooltipDescription())
+                .setRecipes(cutterRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("CUTTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Cutter.set(
-            new MTEBasicMachineWithRecipe(
-                CUTTING_MACHINE_IV.ID,
-                "basicmachine.cutter.tier.05",
-                "Advanced Cutting Machine IV",
-                5,
-                MachineType.CUTTING_MACHINE.tooltipDescription(),
-                RecipeMaps.cutterRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CUTTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CUTTING_MACHINE_IV.ID)
+                .setName("basicmachine.cutter.tier.05", "Advanced Cutting Machine IV")
+                .setTier(5)
+                .setDescription(MachineType.CUTTING_MACHINE.tooltipDescription())
+                .setRecipes(cutterRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("CUTTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CuttingMachineLuV.set(
-            new MTEBasicMachineWithRecipe(
-                CUTTING_MACHINE_LuV.ID,
-                "basicmachine.cutter.tier.06",
-                "Elite Cutting Machine",
-                6,
-                MachineType.CUTTING_MACHINE.tooltipDescription(),
-                cutterRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CUTTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CUTTING_MACHINE_LuV.ID)
+                .setName("basicmachine.cutter.tier.06", "Elite Cutting Machine")
+                .setTier(6)
+                .setDescription(MachineType.CUTTING_MACHINE.tooltipDescription())
+                .setRecipes(cutterRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("CUTTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CuttingMachineZPM.set(
-            new MTEBasicMachineWithRecipe(
-                CUTTING_MACHINE_ZPM.ID,
-                "basicmachine.cutter.tier.07",
-                "Elite Cutting Machine II",
-                7,
-                MachineType.CUTTING_MACHINE.tooltipDescription(),
-                cutterRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CUTTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CUTTING_MACHINE_ZPM.ID)
+                .setName("basicmachine.cutter.tier.07", "Elite Cutting Machine II")
+                .setTier(7)
+                .setDescription(MachineType.CUTTING_MACHINE.tooltipDescription())
+                .setRecipes(cutterRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("CUTTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CuttingMachineUV.set(
-            new MTEBasicMachineWithRecipe(
-                CUTTING_MACHINE_UV.ID,
-                "basicmachine.cutter.tier.08",
-                "Ultimate Object Divider",
-                8,
-                MachineType.CUTTING_MACHINE.tooltipDescription(),
-                cutterRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CUTTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CUTTING_MACHINE_UV.ID)
+                .setName("basicmachine.cutter.tier.08", "Ultimate Object Divider")
+                .setTier(8)
+                .setDescription(MachineType.CUTTING_MACHINE.tooltipDescription())
+                .setRecipes(cutterRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("CUTTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CuttingMachineUHV.set(
-            new MTEBasicMachineWithRecipe(
-                CUTTING_MACHINE_UHV.ID,
-                "basicmachine.cutter.tier.09",
-                "Epic Object Divider",
-                9,
-                MachineType.CUTTING_MACHINE.tooltipDescription(),
-                cutterRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CUTTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CUTTING_MACHINE_UHV.ID)
+                .setName("basicmachine.cutter.tier.09", "Epic Object Divider")
+                .setTier(9)
+                .setDescription(MachineType.CUTTING_MACHINE.tooltipDescription())
+                .setRecipes(cutterRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("CUTTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CuttingMachineUEV.set(
-            new MTEBasicMachineWithRecipe(
-                CUTTING_MACHINE_UEV.ID,
-                "basicmachine.cutter.tier.10",
-                "Epic Object Divider II",
-                10,
-                MachineType.CUTTING_MACHINE.tooltipDescription(),
-                cutterRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CUTTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CUTTING_MACHINE_UEV.ID)
+                .setName("basicmachine.cutter.tier.10", "Epic Object Divider II")
+                .setTier(10)
+                .setDescription(MachineType.CUTTING_MACHINE.tooltipDescription())
+                .setRecipes(cutterRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("CUTTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CuttingMachineUIV.set(
-            new MTEBasicMachineWithRecipe(
-                CUTTING_MACHINE_UIV.ID,
-                "basicmachine.cutter.tier.11",
-                "Epic Object Divider III",
-                11,
-                MachineType.CUTTING_MACHINE.tooltipDescription(),
-                cutterRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CUTTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CUTTING_MACHINE_UIV.ID)
+                .setName("basicmachine.cutter.tier.11", "Epic Object Divider III")
+                .setTier(11)
+                .setDescription(MachineType.CUTTING_MACHINE.tooltipDescription())
+                .setRecipes(cutterRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("CUTTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CuttingMachineUMV.set(
-            new MTEBasicMachineWithRecipe(
-                CUTTING_MACHINE_UMV.ID,
-                "basicmachine.cutter.tier.12",
-                "Epic Object Divider IV",
-                12,
-                MachineType.CUTTING_MACHINE.tooltipDescription(),
-                cutterRecipes,
-                2,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CUTTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CUTTING_MACHINE_UMV.ID)
+                .setName("basicmachine.cutter.tier.12", "Epic Object Divider IV")
+                .setTier(12)
+                .setDescription(MachineType.CUTTING_MACHINE.tooltipDescription())
+                .setRecipes(cutterRecipes)
+                .setSlotsCount(2, 4)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("CUTTER")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerDistillery() {
         ItemList.Machine_LV_Distillery.set(
-            new MTEBasicMachineWithRecipe(
-                DISTILLERY_LV.ID,
-                "basicmachine.distillery.tier.01",
-                "Basic Distillery",
-                1,
-                MachineType.DISTILLERY.tooltipDescription(),
-                RecipeMaps.distilleryRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "DISTILLERY").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(DISTILLERY_LV.ID)
+                .setName("basicmachine.distillery.tier.01", "Basic Distillery")
+                .setTier(1)
+                .setDescription(MachineType.DISTILLERY.tooltipDescription())
+                .setRecipes(distilleryRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
+                .setOverlays("DISTILLERY")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Distillery.set(
-            new MTEBasicMachineWithRecipe(
-                DISTILLERY_MV.ID,
-                "basicmachine.distillery.tier.02",
-                "Advanced Distillery",
-                2,
-                MachineType.DISTILLERY.tooltipDescription(),
-                RecipeMaps.distilleryRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "DISTILLERY").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(DISTILLERY_MV.ID)
+                .setName("basicmachine.distillery.tier.02", "Advanced Distillery")
+                .setTier(2)
+                .setDescription(MachineType.DISTILLERY.tooltipDescription())
+                .setRecipes(distilleryRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
+                .setOverlays("DISTILLERY")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Distillery.set(
-            new MTEBasicMachineWithRecipe(
-                DISTILLERY_HV.ID,
-                "basicmachine.distillery.tier.03",
-                "Advanced Distillery II",
-                3,
-                MachineType.DISTILLERY.tooltipDescription(),
-                RecipeMaps.distilleryRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "DISTILLERY").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(DISTILLERY_HV.ID)
+                .setName("basicmachine.distillery.tier.03", "Advanced Distillery II")
+                .setTier(3)
+                .setDescription(MachineType.DISTILLERY.tooltipDescription())
+                .setRecipes(distilleryRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
+                .setOverlays("DISTILLERY")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Distillery.set(
-            new MTEBasicMachineWithRecipe(
-                DISTILLERY_EV.ID,
-                "basicmachine.distillery.tier.04",
-                "Advanced Distillery III",
-                4,
-                MachineType.DISTILLERY.tooltipDescription(),
-                RecipeMaps.distilleryRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "DISTILLERY").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(DISTILLERY_EV.ID)
+                .setName("basicmachine.distillery.tier.04", "Advanced Distillery III")
+                .setTier(4)
+                .setDescription(MachineType.DISTILLERY.tooltipDescription())
+                .setRecipes(distilleryRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
+                .setOverlays("DISTILLERY")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Distillery.set(
-            new MTEBasicMachineWithRecipe(
-                DISTILLERY_IV.ID,
-                "basicmachine.distillery.tier.05",
-                "Advanced Distillery IV",
-                5,
-                MachineType.DISTILLERY.tooltipDescription(),
-                RecipeMaps.distilleryRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "DISTILLERY").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(DISTILLERY_IV.ID)
+                .setName("basicmachine.distillery.tier.05", "Advanced Distillery IV")
+                .setTier(5)
+                .setDescription(MachineType.DISTILLERY.tooltipDescription())
+                .setRecipes(distilleryRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
+                .setOverlays("DISTILLERY")
+                .build()
+                .getStackForm(1L));
 
         ItemList.DistilleryLuV.set(
-            new MTEBasicMachineWithRecipe(
-                DISTILLERY_LuV.ID,
-                "basicmachine.distillery.tier.06",
-                "Elite Distillery",
-                6,
-                MachineType.DISTILLERY.tooltipDescription(),
-                distilleryRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "DISTILLERY").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(DISTILLERY_LuV.ID)
+                .setName("basicmachine.distillery.tier.06", "Elite Distillery")
+                .setTier(6)
+                .setDescription(MachineType.DISTILLERY.tooltipDescription())
+                .setRecipes(distilleryRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
+                .setOverlays("DISTILLERY")
+                .build()
+                .getStackForm(1L));
 
         ItemList.DistilleryZPM.set(
-            new MTEBasicMachineWithRecipe(
-                DISTILLERY_ZPM.ID,
-                "basicmachine.distillery.tier.07",
-                "Elite Distillery II",
-                7,
-                MachineType.DISTILLERY.tooltipDescription(),
-                distilleryRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "DISTILLERY").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(DISTILLERY_ZPM.ID)
+                .setName("basicmachine.distillery.tier.07", "Elite Distillery II")
+                .setTier(7)
+                .setDescription(MachineType.DISTILLERY.tooltipDescription())
+                .setRecipes(distilleryRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
+                .setOverlays("DISTILLERY")
+                .build()
+                .getStackForm(1L));
 
         ItemList.DistilleryUV.set(
-            new MTEBasicMachineWithRecipe(
-                DISTILLERY_UV.ID,
-                "basicmachine.distillery.tier.08",
-                "Ultimate Fraction Splitter",
-                8,
-                MachineType.DISTILLERY.tooltipDescription(),
-                distilleryRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "DISTILLERY").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(DISTILLERY_UV.ID)
+                .setName("basicmachine.distillery.tier.08", "Ultimate Fraction Splitter")
+                .setTier(8)
+                .setDescription(MachineType.DISTILLERY.tooltipDescription())
+                .setRecipes(distilleryRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
+                .setOverlays("DISTILLERY")
+                .build()
+                .getStackForm(1L));
 
         ItemList.DistilleryUHV.set(
-            new MTEBasicMachineWithRecipe(
-                DISTILLERY_UHV.ID,
-                "basicmachine.distillery.tier.09",
-                "Epic Fraction Splitter",
-                9,
-                MachineType.DISTILLERY.tooltipDescription(),
-                distilleryRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "DISTILLERY").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(DISTILLERY_UHV.ID)
+                .setName("basicmachine.distillery.tier.09", "Epic Fraction Splitter")
+                .setTier(9)
+                .setDescription(MachineType.DISTILLERY.tooltipDescription())
+                .setRecipes(distilleryRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
+                .setOverlays("DISTILLERY")
+                .build()
+                .getStackForm(1L));
 
         ItemList.DistilleryUEV.set(
-            new MTEBasicMachineWithRecipe(
-                DISTILLERY_UEV.ID,
-                "basicmachine.distillery.tier.10",
-                "Epic Fraction Splitter II",
-                10,
-                MachineType.DISTILLERY.tooltipDescription(),
-                distilleryRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "DISTILLERY").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(DISTILLERY_UEV.ID)
+                .setName("basicmachine.distillery.tier.10", "Epic Fraction Splitter II")
+                .setTier(10)
+                .setDescription(MachineType.DISTILLERY.tooltipDescription())
+                .setRecipes(distilleryRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
+                .setOverlays("DISTILLERY")
+                .build()
+                .getStackForm(1L));
 
         ItemList.DistilleryUIV.set(
-            new MTEBasicMachineWithRecipe(
-                DISTILLERY_UIV.ID,
-                "basicmachine.distillery.tier.11",
-                "Epic Fraction Splitter III",
-                11,
-                MachineType.DISTILLERY.tooltipDescription(),
-                distilleryRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "DISTILLERY").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(DISTILLERY_UIV.ID)
+                .setName("basicmachine.distillery.tier.11", "Epic Fraction Splitter III")
+                .setTier(11)
+                .setDescription(MachineType.DISTILLERY.tooltipDescription())
+                .setRecipes(distilleryRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
+                .setOverlays("DISTILLERY")
+                .build()
+                .getStackForm(1L));
 
         ItemList.DistilleryUMV.set(
-            new MTEBasicMachineWithRecipe(
-                DISTILLERY_UMV.ID,
-                "basicmachine.distillery.tier.12",
-                "Epic Fraction Splitter IV",
-                12,
-                MachineType.DISTILLERY.tooltipDescription(),
-                distilleryRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "DISTILLERY").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(DISTILLERY_UMV.ID)
+                .setName("basicmachine.distillery.tier.12", "Epic Fraction Splitter IV")
+                .setTier(12)
+                .setDescription(MachineType.DISTILLERY.tooltipDescription())
+                .setRecipes(distilleryRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
+                .setOverlays("DISTILLERY")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerElectricFurnace() {
         ItemList.Machine_LV_E_Furnace.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTRIC_FURNACE_LV.ID,
-                "basicmachine.e_furnace.tier.01",
-                "Basic Electric Furnace",
-                1,
-                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
-                RecipeMaps.furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_FURNACE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_FURNACE").setProgressBarTextureName("E_Furnace")
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTRIC_FURNACE_LV.ID)
+                .setName("basicmachine.e_furnace.tier.01", "Basic Electric Furnace")
+                .setTier(1)
+                .setDescription(MachineType.ELECTRIC_FURNACE.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FURNACE)
+                .setOverlays("ELECTRIC_FURNACE")
+                .build()
+                .setProgressBarTextureName("E_Furnace")
+                .getStackForm(1L));
 
         ItemList.Machine_MV_E_Furnace.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTRIC_FURNACE_MV.ID,
-                "basicmachine.e_furnace.tier.02",
-                "Advanced Electric Furnace",
-                2,
-                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
-                RecipeMaps.furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_FURNACE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_FURNACE").setProgressBarTextureName("E_Furnace")
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTRIC_FURNACE_MV.ID)
+                .setName("basicmachine.e_furnace.tier.02", "Advanced Electric Furnace")
+                .setTier(2)
+                .setDescription(MachineType.ELECTRIC_FURNACE.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FURNACE)
+                .setOverlays("ELECTRIC_FURNACE")
+                .build()
+                .setProgressBarTextureName("E_Furnace")
+                .getStackForm(1L));
 
         ItemList.Machine_HV_E_Furnace.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTRIC_FURNACE_HV.ID,
-                "basicmachine.e_furnace.tier.03",
-                "Advanced Electric Furnace II",
-                3,
-                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
-                RecipeMaps.furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_FURNACE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_FURNACE").setProgressBarTextureName("E_Furnace")
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTRIC_FURNACE_HV.ID)
+                .setName("basicmachine.e_furnace.tier.03", "Advanced Electric Furnace II")
+                .setTier(3)
+                .setDescription(MachineType.ELECTRIC_FURNACE.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FURNACE)
+                .setOverlays("ELECTRIC_FURNACE")
+                .build()
+                .setProgressBarTextureName("E_Furnace")
+                .getStackForm(1L));
 
         ItemList.Machine_EV_E_Furnace.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTRIC_FURNACE_EV.ID,
-                "basicmachine.e_furnace.tier.04",
-                "Advanced Electric Furnace III",
-                4,
-                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
-                RecipeMaps.furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_FURNACE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_FURNACE").setProgressBarTextureName("E_Furnace")
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTRIC_FURNACE_EV.ID)
+                .setName("basicmachine.e_furnace.tier.04", "Advanced Electric Furnace III")
+                .setTier(4)
+                .setDescription(MachineType.ELECTRIC_FURNACE.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FURNACE)
+                .setOverlays("ELECTRIC_FURNACE")
+                .build()
+                .setProgressBarTextureName("E_Furnace")
+                .getStackForm(1L));
 
         ItemList.Machine_IV_E_Furnace.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTRIC_FURNACE_IV.ID,
-                "basicmachine.e_furnace.tier.05",
-                "Electron Excitement Processor",
-                5,
-                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
-                RecipeMaps.furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_FURNACE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_FURNACE").setProgressBarTextureName("E_Furnace")
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTRIC_FURNACE_IV.ID)
+                .setName("basicmachine.e_furnace.tier.05", "Electron Excitement Processor")
+                .setTier(5)
+                .setDescription(MachineType.ELECTRIC_FURNACE.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FURNACE)
+                .setOverlays("ELECTRIC_FURNACE")
+                .build()
+                .setProgressBarTextureName("E_Furnace")
+                .getStackForm(1L));
 
         ItemList.ElectricFurnaceLuV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTRIC_FURNACE_LuV.ID,
-                "basicmachine.e_furnace.tier.06",
-                "Elite Electric Furnace",
-                6,
-                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
-                furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_FURNACE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTRIC_FURNACE_LuV.ID)
+                .setName("basicmachine.e_furnace.tier.06", "Elite Electric Furnace")
+                .setTier(6)
+                .setDescription(MachineType.ELECTRIC_FURNACE.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FURNACE)
+                .setOverlays("ELECTRIC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectricFurnaceZPM.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTRIC_FURNACE_ZPM.ID,
-                "basicmachine.e_furnace.tier.07",
-                "Elite Electric Furnace II",
-                7,
-                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
-                furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_FURNACE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTRIC_FURNACE_ZPM.ID)
+                .setName("basicmachine.e_furnace.tier.07", "Elite Electric Furnace II")
+                .setTier(7)
+                .setDescription(MachineType.ELECTRIC_FURNACE.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FURNACE)
+                .setOverlays("ELECTRIC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectricFurnaceUV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTRIC_FURNACE_UV.ID,
-                "basicmachine.e_furnace.tier.08",
-                "Ultimate Atom Stimulator",
-                8,
-                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
-                furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_FURNACE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTRIC_FURNACE_UV.ID)
+                .setName("basicmachine.e_furnace.tier.08", "Ultimate Atom Stimulator")
+                .setTier(8)
+                .setDescription(MachineType.ELECTRIC_FURNACE.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FURNACE)
+                .setOverlays("ELECTRIC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectricFurnaceUHV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTRIC_FURNACE_UHV.ID,
-                "basicmachine.e_furnace.tier.09",
-                "Epic Atom Stimulator",
-                9,
-                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
-                furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_FURNACE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTRIC_FURNACE_UHV.ID)
+                .setName("basicmachine.e_furnace.tier.09", "Epic Atom Stimulator")
+                .setTier(9)
+                .setDescription(MachineType.ELECTRIC_FURNACE.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FURNACE)
+                .setOverlays("ELECTRIC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectricFurnaceUEV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTRIC_FURNACE_UEV.ID,
-                "basicmachine.e_furnace.tier.10",
-                "Epic Atom Stimulator II",
-                10,
-                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
-                furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_FURNACE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTRIC_FURNACE_UEV.ID)
+                .setName("basicmachine.e_furnace.tier.10", "Epic Atom Stimulator II")
+                .setTier(10)
+                .setDescription(MachineType.ELECTRIC_FURNACE.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FURNACE)
+                .setOverlays("ELECTRIC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectricFurnaceUIV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTRIC_FURNACE_UIV.ID,
-                "basicmachine.e_furnace.tier.11",
-                "Epic Atom Stimulator III",
-                11,
-                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
-                furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_FURNACE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTRIC_FURNACE_UIV.ID)
+                .setName("basicmachine.e_furnace.tier.11", "Epic Atom Stimulator III")
+                .setTier(11)
+                .setDescription(MachineType.ELECTRIC_FURNACE.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FURNACE)
+                .setOverlays("ELECTRIC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectricFurnaceUMV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTRIC_FURNACE_UMV.ID,
-                "basicmachine.e_furnace.tier.12",
-                "Epic Atom Stimulator IV",
-                12,
-                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
-                furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_FURNACE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTRIC_FURNACE_UMV.ID)
+                .setName("basicmachine.e_furnace.tier.12", "Epic Atom Stimulator IV")
+                .setTier(12)
+                .setDescription(MachineType.ELECTRIC_FURNACE.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FURNACE)
+                .setOverlays("ELECTRIC_FURNACE")
+                .build()
+                .getStackForm(1L));
     }
 
     private void registerElectrolyzer() {
         ItemList.Machine_LV_Electrolyzer.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROLYSER_LV.ID,
-                "basicmachine.electrolyzer.tier.01",
-                "Basic Electrolyzer",
-                1,
-                MachineType.ELECTROLYZER.tooltipDescription(),
-                RecipeMaps.electrolyzerRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROLYZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROLYSER_LV.ID)
+                .setName("basicmachine.electrolyzer.tier.01", "Basic Electrolyzer")
+                .setTier(1)
+                .setDescription(MachineType.ELECTROLYZER.tooltipDescription())
+                .setRecipes(electrolyzerRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("ELECTROLYZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Electrolyzer.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROLYSER_MV.ID,
-                "basicmachine.electrolyzer.tier.02",
-                "Advanced Electrolyzer",
-                2,
-                MachineType.ELECTROLYZER.tooltipDescription(),
-                RecipeMaps.electrolyzerRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROLYZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROLYSER_MV.ID)
+                .setName("basicmachine.electrolyzer.tier.02", "Advanced Electrolyzer")
+                .setTier(2)
+                .setDescription(MachineType.ELECTROLYZER.tooltipDescription())
+                .setRecipes(electrolyzerRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("ELECTROLYZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Electrolyzer.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROLYSER_HV.ID,
-                "basicmachine.electrolyzer.tier.03",
-                "Advanced Electrolyzer II",
-                3,
-                MachineType.ELECTROLYZER.tooltipDescription(),
-                RecipeMaps.electrolyzerRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROLYZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROLYSER_HV.ID)
+                .setName("basicmachine.electrolyzer.tier.03", "Advanced Electrolyzer II")
+                .setTier(3)
+                .setDescription(MachineType.ELECTROLYZER.tooltipDescription())
+                .setRecipes(electrolyzerRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("ELECTROLYZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Electrolyzer.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROLYSER_EV.ID,
-                "basicmachine.electrolyzer.tier.04",
-                "Advanced Electrolyzer III",
-                4,
-                MachineType.ELECTROLYZER.tooltipDescription(),
-                RecipeMaps.electrolyzerRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROLYZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROLYSER_EV.ID)
+                .setName("basicmachine.electrolyzer.tier.04", "Advanced Electrolyzer III")
+                .setTier(4)
+                .setDescription(MachineType.ELECTROLYZER.tooltipDescription())
+                .setRecipes(electrolyzerRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("ELECTROLYZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Electrolyzer.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROLYSER_IV.ID,
-                "basicmachine.electrolyzer.tier.05",
-                "Molecular Disintegrator E-4908",
-                5,
-                MachineType.ELECTROLYZER.tooltipDescription(),
-                RecipeMaps.electrolyzerRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROLYZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROLYSER_IV.ID)
+                .setName("basicmachine.electrolyzer.tier.05", "Molecular Disintegrator E-4908")
+                .setTier(5)
+                .setDescription(MachineType.ELECTROLYZER.tooltipDescription())
+                .setRecipes(electrolyzerRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("ELECTROLYZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectrolyzerLuV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROLYZER_LuV.ID,
-                "basicmachine.electrolyzer.tier.06",
-                "Elite Electrolyzer",
-                6,
-                MachineType.ELECTROLYZER.tooltipDescription(),
-                electrolyzerRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROLYZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROLYZER_LuV.ID)
+                .setName("basicmachine.electrolyzer.tier.06", "Elite Electrolyzer")
+                .setTier(6)
+                .setDescription(MachineType.ELECTROLYZER.tooltipDescription())
+                .setRecipes(electrolyzerRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("ELECTROLYZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectrolyzerZPM.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROLYZER_ZPM.ID,
-                "basicmachine.electrolyzer.tier.07",
-                "Elite Electrolyzer II",
-                7,
-                MachineType.ELECTROLYZER.tooltipDescription(),
-                electrolyzerRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROLYZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROLYZER_ZPM.ID)
+                .setName("basicmachine.electrolyzer.tier.07", "Elite Electrolyzer II")
+                .setTier(7)
+                .setDescription(MachineType.ELECTROLYZER.tooltipDescription())
+                .setRecipes(electrolyzerRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("ELECTROLYZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectrolyzerUV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROLYZER_UV.ID,
-                "basicmachine.electrolyzer.tier.08",
-                "Ultimate Ionizer",
-                8,
-                MachineType.ELECTROLYZER.tooltipDescription(),
-                electrolyzerRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROLYZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROLYZER_UV.ID)
+                .setName("basicmachine.electrolyzer.tier.08", "Ultimate Ionizer")
+                .setTier(8)
+                .setDescription(MachineType.ELECTROLYZER.tooltipDescription())
+                .setRecipes(electrolyzerRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("ELECTROLYZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectrolyzerUHV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROLYZER_UHV.ID,
-                "basicmachine.electrolyzer.tier.09",
-                "Epic Ionizer",
-                9,
-                MachineType.ELECTROLYZER.tooltipDescription(),
-                electrolyzerRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROLYZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROLYZER_UHV.ID)
+                .setName("basicmachine.electrolyzer.tier.09", "Epic Ionizer")
+                .setTier(9)
+                .setDescription(MachineType.ELECTROLYZER.tooltipDescription())
+                .setRecipes(electrolyzerRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("ELECTROLYZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectrolyzerUEV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROLYZER_UEV.ID,
-                "basicmachine.electrolyzer.tier.10",
-                "Epic Ionizer II",
-                10,
-                MachineType.ELECTROLYZER.tooltipDescription(),
-                electrolyzerRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROLYZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROLYZER_UEV.ID)
+                .setName("basicmachine.electrolyzer.tier.10", "Epic Ionizer II")
+                .setTier(10)
+                .setDescription(MachineType.ELECTROLYZER.tooltipDescription())
+                .setRecipes(electrolyzerRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("ELECTROLYZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectrolyzerUIV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROLYZER_UIV.ID,
-                "basicmachine.electrolyzer.tier.11",
-                "Epic Ionizer III",
-                11,
-                MachineType.ELECTROLYZER.tooltipDescription(),
-                electrolyzerRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROLYZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROLYZER_UIV.ID)
+                .setName("basicmachine.electrolyzer.tier.11", "Epic Ionizer III")
+                .setTier(11)
+                .setDescription(MachineType.ELECTROLYZER.tooltipDescription())
+                .setRecipes(electrolyzerRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("ELECTROLYZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectrolyzerUMV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROLYZER_UMV.ID,
-                "basicmachine.electrolyzer.tier.12",
-                "Epic Ionizer IV",
-                12,
-                MachineType.ELECTROLYZER.tooltipDescription(),
-                electrolyzerRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROLYZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROLYZER_UMV.ID)
+                .setName("basicmachine.electrolyzer.tier.12", "Epic Ionizer IV")
+                .setTier(12)
+                .setDescription(MachineType.ELECTROLYZER.tooltipDescription())
+                .setRecipes(electrolyzerRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("ELECTROLYZER")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerElectromagneticSeparator() {
         ItemList.Machine_LV_ElectromagneticSeparator.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROMAGNETIC_SEPARATOR_LV.ID,
-                "basicmachine.electromagneticseparator.tier.01",
-                "Basic Electromagnetic Separator",
-                1,
-                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
-                RecipeMaps.electroMagneticSeparatorRecipes,
-                1,
-                3,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROMAGNETIC_SEPARATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROMAGNETIC_SEPARATOR_LV.ID)
+                .setName("basicmachine.electromagneticseparator.tier.01", "Basic Electromagnetic Separator")
+                .setTier(1)
+                .setDescription(MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription())
+                .setRecipes(electroMagneticSeparatorRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("ELECTROMAGNETIC_SEPARATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_ElectromagneticSeparator.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROMAGNETIC_SEPARATOR_MV.ID,
-                "basicmachine.electromagneticseparator.tier.02",
-                "Advanced Electromagnetic Separator",
-                2,
-                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
-                RecipeMaps.electroMagneticSeparatorRecipes,
-                1,
-                3,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROMAGNETIC_SEPARATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROMAGNETIC_SEPARATOR_MV.ID)
+                .setName("basicmachine.electromagneticseparator.tier.02", "Advanced Electromagnetic Separator")
+                .setTier(2)
+                .setDescription(MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription())
+                .setRecipes(electroMagneticSeparatorRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("ELECTROMAGNETIC_SEPARATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_ElectromagneticSeparator.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROMAGNETIC_SEPARATOR_HV.ID,
-                "basicmachine.electromagneticseparator.tier.03",
-                "Advanced Electromagnetic Separator II",
-                3,
-                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
-                RecipeMaps.electroMagneticSeparatorRecipes,
-                1,
-                3,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROMAGNETIC_SEPARATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROMAGNETIC_SEPARATOR_HV.ID)
+                .setName("basicmachine.electromagneticseparator.tier.03", "Advanced Electromagnetic Separator II")
+                .setTier(3)
+                .setDescription(MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription())
+                .setRecipes(electroMagneticSeparatorRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("ELECTROMAGNETIC_SEPARATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_ElectromagneticSeparator.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROMAGNETIC_SEPARATOR_EV.ID,
-                "basicmachine.electromagneticseparator.tier.04",
-                "Advanced Electromagnetic Separator III",
-                4,
-                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
-                RecipeMaps.electroMagneticSeparatorRecipes,
-                1,
-                3,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROMAGNETIC_SEPARATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROMAGNETIC_SEPARATOR_EV.ID)
+                .setName("basicmachine.electromagneticseparator.tier.04", "Advanced Electromagnetic Separator III")
+                .setTier(4)
+                .setDescription(MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription())
+                .setRecipes(electroMagneticSeparatorRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("ELECTROMAGNETIC_SEPARATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_ElectromagneticSeparator.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROMAGNETIC_SEPARATOR_IV.ID,
-                "basicmachine.electromagneticseparator.tier.05",
-                "Advanced Electromagnetic Separator IV",
-                5,
-                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
-                RecipeMaps.electroMagneticSeparatorRecipes,
-                1,
-                3,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROMAGNETIC_SEPARATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROMAGNETIC_SEPARATOR_IV.ID)
+                .setName("basicmachine.electromagneticseparator.tier.05", "Advanced Electromagnetic Separator IV")
+                .setTier(5)
+                .setDescription(MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription())
+                .setRecipes(electroMagneticSeparatorRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("ELECTROMAGNETIC_SEPARATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectromagneticSeparatorLuV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROMAGNETIC_SEPARATOR_LuV.ID,
-                "basicmachine.electromagneticseparator.tier.06",
-                "Elite Electromagnetic Separator",
-                6,
-                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
-                electroMagneticSeparatorRecipes,
-                1,
-                3,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROMAGNETIC_SEPARATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROMAGNETIC_SEPARATOR_LuV.ID)
+                .setName("basicmachine.electromagneticseparator.tier.06", "Elite Electromagnetic Separator")
+                .setTier(6)
+                .setDescription(MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription())
+                .setRecipes(electroMagneticSeparatorRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("ELECTROMAGNETIC_SEPARATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectromagneticSeparatorZPM.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROMAGNETIC_SEPARATOR_ZPM.ID,
-                "basicmachine.electromagneticseparator.tier.07",
-                "Elite Electromagnetic Separator II",
-                7,
-                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
-                electroMagneticSeparatorRecipes,
-                1,
-                3,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROMAGNETIC_SEPARATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROMAGNETIC_SEPARATOR_ZPM.ID)
+                .setName("basicmachine.electromagneticseparator.tier.07", "Elite Electromagnetic Separator II")
+                .setTier(7)
+                .setDescription(MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription())
+                .setRecipes(electroMagneticSeparatorRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("ELECTROMAGNETIC_SEPARATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectromagneticSeparatorUV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROMAGNETIC_SEPARATOR_UV.ID,
-                "basicmachine.electromagneticseparator.tier.08",
-                "Ultimate Magnetar Separator",
-                8,
-                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
-                electroMagneticSeparatorRecipes,
-                1,
-                3,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROMAGNETIC_SEPARATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROMAGNETIC_SEPARATOR_UV.ID)
+                .setName("basicmachine.electromagneticseparator.tier.08", "Ultimate Magnetar Separator")
+                .setTier(8)
+                .setDescription(MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription())
+                .setRecipes(electroMagneticSeparatorRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("ELECTROMAGNETIC_SEPARATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectromagneticSeparatorUHV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROMAGNETIC_SEPARATOR_UHV.ID,
-                "basicmachine.electromagneticseparator.tier.09",
-                "Epic Magnetar Separator",
-                9,
-                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
-                electroMagneticSeparatorRecipes,
-                1,
-                3,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROMAGNETIC_SEPARATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROMAGNETIC_SEPARATOR_UHV.ID)
+                .setName("basicmachine.electromagneticseparator.tier.09", "Epic Magnetar Separator")
+                .setTier(9)
+                .setDescription(MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription())
+                .setRecipes(electroMagneticSeparatorRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("ELECTROMAGNETIC_SEPARATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectromagneticSeparatorUEV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROMAGNETIC_SEPARATOR_UEV.ID,
-                "basicmachine.electromagneticseparator.tier.10",
-                "Epic Magnetar Separator II",
-                10,
-                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
-                electroMagneticSeparatorRecipes,
-                1,
-                3,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROMAGNETIC_SEPARATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROMAGNETIC_SEPARATOR_UEV.ID)
+                .setName("basicmachine.electromagneticseparator.tier.10", "Epic Magnetar Separator II")
+                .setTier(10)
+                .setDescription(MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription())
+                .setRecipes(electroMagneticSeparatorRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("ELECTROMAGNETIC_SEPARATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectromagneticSeparatorUIV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROMAGNETIC_SEPARATOR_UIV.ID,
-                "basicmachine.electromagneticseparator.tier.11",
-                "Epic Magnetar Separator III",
-                11,
-                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
-                electroMagneticSeparatorRecipes,
-                1,
-                3,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROMAGNETIC_SEPARATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROMAGNETIC_SEPARATOR_UIV.ID)
+                .setName("basicmachine.electromagneticseparator.tier.11", "Epic Magnetar Separator III")
+                .setTier(11)
+                .setDescription(MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription())
+                .setRecipes(electroMagneticSeparatorRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("ELECTROMAGNETIC_SEPARATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ElectromagneticSeparatorUMV.set(
-            new MTEBasicMachineWithRecipe(
-                ELECTROMAGNETIC_SEPARATOR_UMV.ID,
-                "basicmachine.electromagneticseparator.tier.12",
-                "Epic Magnetar Separator IV",
-                12,
-                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
-                electroMagneticSeparatorRecipes,
-                1,
-                3,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTROMAGNETIC_SEPARATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ELECTROMAGNETIC_SEPARATOR_UMV.ID)
+                .setName("basicmachine.electromagneticseparator.tier.12", "Epic Magnetar Separator IV")
+                .setTier(12)
+                .setDescription(MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription())
+                .setRecipes(electroMagneticSeparatorRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("ELECTROMAGNETIC_SEPARATOR")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerExtractor() {
         ItemList.Machine_LV_Extractor.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRACTOR_LV.ID,
-                "basicmachine.extractor.tier.01",
-                "Basic Extractor",
-                1,
-                MachineType.EXTRACTOR.tooltipDescription(),
-                RecipeMaps.extractorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRACTOR_LV.ID)
+                .setName("basicmachine.extractor.tier.01", "Basic Extractor")
+                .setTier(1)
+                .setDescription(MachineType.EXTRACTOR.tooltipDescription())
+                .setRecipes(extractorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Extractor.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRACTOR_MV.ID,
-                "basicmachine.extractor.tier.02",
-                "Advanced Extractor",
-                2,
-                MachineType.EXTRACTOR.tooltipDescription(),
-                RecipeMaps.extractorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRACTOR_MV.ID)
+                .setName("basicmachine.extractor.tier.02", "Advanced Extractor")
+                .setTier(2)
+                .setDescription(MachineType.EXTRACTOR.tooltipDescription())
+                .setRecipes(extractorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Extractor.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRACTOR_HV.ID,
-                "basicmachine.extractor.tier.03",
-                "Advanced Extractor II",
-                3,
-                MachineType.EXTRACTOR.tooltipDescription(),
-                RecipeMaps.extractorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRACTOR_HV.ID)
+                .setName("basicmachine.extractor.tier.03", "Advanced Extractor II")
+                .setTier(3)
+                .setDescription(MachineType.EXTRACTOR.tooltipDescription())
+                .setRecipes(extractorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Extractor.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRACTOR_EV.ID,
-                "basicmachine.extractor.tier.04",
-                "Advanced Extractor III",
-                4,
-                MachineType.EXTRACTOR.tooltipDescription(),
-                RecipeMaps.extractorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRACTOR_EV.ID)
+                .setName("basicmachine.extractor.tier.04", "Advanced Extractor III")
+                .setTier(4)
+                .setDescription(MachineType.EXTRACTOR.tooltipDescription())
+                .setRecipes(extractorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Extractor.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRACTOR_IV.ID,
-                "basicmachine.extractor.tier.05",
-                "Vacuum Extractor",
-                5,
-                MachineType.EXTRACTOR.tooltipDescription(),
-                RecipeMaps.extractorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRACTOR_IV.ID)
+                .setName("basicmachine.extractor.tier.05", "Vacuum Extractor")
+                .setTier(5)
+                .setDescription(MachineType.EXTRACTOR.tooltipDescription())
+                .setRecipes(extractorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ExtractorLuV.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRACTOR_LuV.ID,
-                "basicmachine.extractor.tier.06",
-                "Elite Extractor",
-                6,
-                MachineType.EXTRACTOR.tooltipDescription(),
-                extractorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRACTOR_LuV.ID)
+                .setName("basicmachine.extractor.tier.06", "Elite Extractor")
+                .setTier(6)
+                .setDescription(MachineType.EXTRACTOR.tooltipDescription())
+                .setRecipes(extractorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ExtractorZPM.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRACTOR_ZPM.ID,
-                "basicmachine.extractor.tier.07",
-                "Elite Extractor II",
-                7,
-                MachineType.EXTRACTOR.tooltipDescription(),
-                extractorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRACTOR_ZPM.ID)
+                .setName("basicmachine.extractor.tier.07", "Elite Extractor II")
+                .setTier(7)
+                .setDescription(MachineType.EXTRACTOR.tooltipDescription())
+                .setRecipes(extractorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ExtractorUV.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRACTOR_UV.ID,
-                "basicmachine.extractor.tier.08",
-                "Ultimate Extractinator",
-                8,
-                MachineType.EXTRACTOR.tooltipDescription(),
-                extractorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRACTOR_UV.ID)
+                .setName("basicmachine.extractor.tier.08", "Ultimate Extractinator")
+                .setTier(8)
+                .setDescription(MachineType.EXTRACTOR.tooltipDescription())
+                .setRecipes(extractorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ExtractorUHV.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRACTOR_UHV.ID,
-                "basicmachine.extractor.tier.09",
-                "Epic Extractinator",
-                9,
-                MachineType.EXTRACTOR.tooltipDescription(),
-                extractorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRACTOR_UHV.ID)
+                .setName("basicmachine.extractor.tier.09", "Epic Extractinator")
+                .setTier(9)
+                .setDescription(MachineType.EXTRACTOR.tooltipDescription())
+                .setRecipes(extractorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ExtractorUEV.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRACTOR_UEV.ID,
-                "basicmachine.extractor.tier.10",
-                "Epic Extractinator II",
-                10,
-                MachineType.EXTRACTOR.tooltipDescription(),
-                extractorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRACTOR_UEV.ID)
+                .setName("basicmachine.extractor.tier.10", "Epic Extractinator II")
+                .setTier(10)
+                .setDescription(MachineType.EXTRACTOR.tooltipDescription())
+                .setRecipes(extractorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ExtractorUIV.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRACTOR_UIV.ID,
-                "basicmachine.extractor.tier.11",
-                "Epic Extractinator III",
-                11,
-                MachineType.EXTRACTOR.tooltipDescription(),
-                extractorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRACTOR_UIV.ID)
+                .setName("basicmachine.extractor.tier.11", "Epic Extractinator III")
+                .setTier(11)
+                .setDescription(MachineType.EXTRACTOR.tooltipDescription())
+                .setRecipes(extractorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ExtractorUMV.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRACTOR_UMV.ID,
-                "basicmachine.extractor.tier.12",
-                "Epic Extractinator IV",
-                12,
-                MachineType.EXTRACTOR.tooltipDescription(),
-                extractorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRACTOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRACTOR_UMV.ID)
+                .setName("basicmachine.extractor.tier.12", "Epic Extractinator IV")
+                .setTier(12)
+                .setDescription(MachineType.EXTRACTOR.tooltipDescription())
+                .setRecipes(extractorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("EXTRACTOR")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerExtruder() {
         ItemList.Machine_LV_Extruder.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRUDER_LV.ID,
-                "basicmachine.extruder.tier.01",
-                "Basic Extruder",
-                1,
-                MachineType.EXTRUDER.tooltipDescription(),
-                RecipeMaps.extruderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRUDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRUDER_LV.ID)
+                .setName("basicmachine.extruder.tier.01", "Basic Extruder")
+                .setTier(1)
+                .setDescription(MachineType.EXTRUDER.tooltipDescription())
+                .setRecipes(extruderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("EXTRUDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Extruder.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRUDER_MV.ID,
-                "basicmachine.extruder.tier.02",
-                "Advanced Extruder",
-                2,
-                MachineType.EXTRUDER.tooltipDescription(),
-                RecipeMaps.extruderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRUDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRUDER_MV.ID)
+                .setName("basicmachine.extruder.tier.02", "Advanced Extruder")
+                .setTier(2)
+                .setDescription(MachineType.EXTRUDER.tooltipDescription())
+                .setRecipes(extruderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("EXTRUDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Extruder.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRUDER_HV.ID,
-                "basicmachine.extruder.tier.03",
-                "Advanced Extruder II",
-                3,
-                MachineType.EXTRUDER.tooltipDescription(),
-                RecipeMaps.extruderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRUDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRUDER_HV.ID)
+                .setName("basicmachine.extruder.tier.03", "Advanced Extruder II")
+                .setTier(3)
+                .setDescription(MachineType.EXTRUDER.tooltipDescription())
+                .setRecipes(extruderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("EXTRUDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Extruder.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRUDER_EV.ID,
-                "basicmachine.extruder.tier.04",
-                "Advanced Extruder III",
-                4,
-                MachineType.EXTRUDER.tooltipDescription(),
-                RecipeMaps.extruderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRUDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRUDER_EV.ID)
+                .setName("basicmachine.extruder.tier.04", "Advanced Extruder III")
+                .setTier(4)
+                .setDescription(MachineType.EXTRUDER.tooltipDescription())
+                .setRecipes(extruderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("EXTRUDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Extruder.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRUDER_IV.ID,
-                "basicmachine.extruder.tier.05",
-                "Advanced Extruder IV",
-                5,
-                MachineType.EXTRUDER.tooltipDescription(),
-                RecipeMaps.extruderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRUDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRUDER_IV.ID)
+                .setName("basicmachine.extruder.tier.05", "Advanced Extruder IV")
+                .setTier(5)
+                .setDescription(MachineType.EXTRUDER.tooltipDescription())
+                .setRecipes(extruderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("EXTRUDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ExtruderLuV.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRUDER_LuV.ID,
-                "basicmachine.extruder.tier.06",
-                "Elite Extruder",
-                6,
-                MachineType.EXTRUDER.tooltipDescription(),
-                extruderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRUDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRUDER_LuV.ID)
+                .setName("basicmachine.extruder.tier.06", "Elite Extruder")
+                .setTier(6)
+                .setDescription(MachineType.EXTRUDER.tooltipDescription())
+                .setRecipes(extruderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("EXTRUDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ExtruderZPM.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRUDER_ZPM.ID,
-                "basicmachine.extruder.tier.07",
-                "Elite Extruder II",
-                7,
-                MachineType.EXTRUDER.tooltipDescription(),
-                extruderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRUDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRUDER_ZPM.ID)
+                .setName("basicmachine.extruder.tier.07", "Elite Extruder II")
+                .setTier(7)
+                .setDescription(MachineType.EXTRUDER.tooltipDescription())
+                .setRecipes(extruderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("EXTRUDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ExtruderUV.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRUDER_UV.ID,
-                "basicmachine.extruder.tier.08",
-                "Ultimate Shape Driver",
-                8,
-                MachineType.EXTRUDER.tooltipDescription(),
-                extruderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRUDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRUDER_UV.ID)
+                .setName("basicmachine.extruder.tier.08", "Ultimate Shape Driver")
+                .setTier(8)
+                .setDescription(MachineType.EXTRUDER.tooltipDescription())
+                .setRecipes(extruderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("EXTRUDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ExtruderUHV.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRUDER_UHV.ID,
-                "basicmachine.extruder.tier.09",
-                "Epic Shape Driver",
-                9,
-                MachineType.EXTRUDER.tooltipDescription(),
-                extruderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRUDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRUDER_UHV.ID)
+                .setName("basicmachine.extruder.tier.09", "Epic Shape Driver")
+                .setTier(9)
+                .setDescription(MachineType.EXTRUDER.tooltipDescription())
+                .setRecipes(extruderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("EXTRUDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ExtruderUEV.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRUDER_UEV.ID,
-                "basicmachine.extruder.tier.10",
-                "Epic Shape Driver II",
-                10,
-                MachineType.EXTRUDER.tooltipDescription(),
-                extruderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRUDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRUDER_UEV.ID)
+                .setName("basicmachine.extruder.tier.10", "Epic Shape Driver II")
+                .setTier(10)
+                .setDescription(MachineType.EXTRUDER.tooltipDescription())
+                .setRecipes(extruderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("EXTRUDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ExtruderUIV.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRUDER_UIV.ID,
-                "basicmachine.extruder.tier.11",
-                "Epic Shape Driver III",
-                11,
-                MachineType.EXTRUDER.tooltipDescription(),
-                extruderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRUDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRUDER_UIV.ID)
+                .setName("basicmachine.extruder.tier.11", "Epic Shape Driver III")
+                .setTier(11)
+                .setDescription(MachineType.EXTRUDER.tooltipDescription())
+                .setRecipes(extruderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("EXTRUDER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ExtruderUMV.set(
-            new MTEBasicMachineWithRecipe(
-                EXTRUDER_UMV.ID,
-                "basicmachine.extruder.tier.12",
-                "Epic Shape Driver IV",
-                12,
-                MachineType.EXTRUDER.tooltipDescription(),
-                extruderRecipes,
-                2,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "EXTRUDER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(EXTRUDER_UMV.ID)
+                .setName("basicmachine.extruder.tier.12", "Epic Shape Driver IV")
+                .setTier(12)
+                .setDescription(MachineType.EXTRUDER.tooltipDescription())
+                .setRecipes(extruderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("EXTRUDER")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerFluidSolidifier() {
         ItemList.Machine_LV_FluidSolidifier.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_SOLIDIFIER_LV.ID,
-                "basicmachine.fluidsolidifier.tier.01",
-                "Basic Fluid Solidifier",
-                1,
-                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
-                RecipeMaps.fluidSolidifierRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_SOLIDIFIER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_SOLIDIFIER_LV.ID)
+                .setName("basicmachine.fluidsolidifier.tier.01", "Basic Fluid Solidifier")
+                .setTier(1)
+                .setDescription(MachineType.FLUID_SOLIDIFIER.tooltipDescription())
+                .setRecipes(fluidSolidifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("FLUID_SOLIDIFIER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_FluidSolidifier.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_SOLIDIFIER_MV.ID,
-                "basicmachine.fluidsolidifier.tier.02",
-                "Advanced Fluid Solidifier",
-                2,
-                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
-                RecipeMaps.fluidSolidifierRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_SOLIDIFIER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_SOLIDIFIER_MV.ID)
+                .setName("basicmachine.fluidsolidifier.tier.02", "Advanced Fluid Solidifier")
+                .setTier(2)
+                .setDescription(MachineType.FLUID_SOLIDIFIER.tooltipDescription())
+                .setRecipes(fluidSolidifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("FLUID_SOLIDIFIER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_FluidSolidifier.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_SOLIDIFIER_HV.ID,
-                "basicmachine.fluidsolidifier.tier.03",
-                "Advanced Fluid Solidifier II",
-                3,
-                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
-                RecipeMaps.fluidSolidifierRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_SOLIDIFIER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_SOLIDIFIER_HV.ID)
+                .setName("basicmachine.fluidsolidifier.tier.03", "Advanced Fluid Solidifier II")
+                .setTier(3)
+                .setDescription(MachineType.FLUID_SOLIDIFIER.tooltipDescription())
+                .setRecipes(fluidSolidifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("FLUID_SOLIDIFIER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_FluidSolidifier.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_SOLIDIFIER_EV.ID,
-                "basicmachine.fluidsolidifier.tier.04",
-                "Advanced Fluid Solidifier III",
-                4,
-                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
-                RecipeMaps.fluidSolidifierRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_SOLIDIFIER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_SOLIDIFIER_EV.ID)
+                .setName("basicmachine.fluidsolidifier.tier.04", "Advanced Fluid Solidifier III")
+                .setTier(4)
+                .setDescription(MachineType.FLUID_SOLIDIFIER.tooltipDescription())
+                .setRecipes(fluidSolidifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("FLUID_SOLIDIFIER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_FluidSolidifier.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_SOLIDIFIER_IV.ID,
-                "basicmachine.fluidsolidifier.tier.05",
-                "Advanced Fluid Solidifier IV",
-                5,
-                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
-                RecipeMaps.fluidSolidifierRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_SOLIDIFIER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_SOLIDIFIER_IV.ID)
+                .setName("basicmachine.fluidsolidifier.tier.05", "Advanced Fluid Solidifier IV")
+                .setTier(5)
+                .setDescription(MachineType.FLUID_SOLIDIFIER.tooltipDescription())
+                .setRecipes(fluidSolidifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("FLUID_SOLIDIFIER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidSolidifierLuV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_SOLIDIFIER_LuV.ID,
-                "basicmachine.fluidsolidifier.tier.06",
-                "Elite Fluid Solidifier",
-                6,
-                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
-                fluidSolidifierRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_SOLIDIFIER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_SOLIDIFIER_LuV.ID)
+                .setName("basicmachine.fluidsolidifier.tier.06", "Elite Fluid Solidifier")
+                .setTier(6)
+                .setDescription(MachineType.FLUID_SOLIDIFIER.tooltipDescription())
+                .setRecipes(fluidSolidifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("FLUID_SOLIDIFIER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidSolidifierZPM.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_SOLIDIFIER_ZPM.ID,
-                "basicmachine.fluidsolidifier.tier.07",
-                "Elite Fluid Solidifier II",
-                7,
-                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
-                fluidSolidifierRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_SOLIDIFIER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_SOLIDIFIER_ZPM.ID)
+                .setName("basicmachine.fluidsolidifier.tier.07", "Elite Fluid Solidifier II")
+                .setTier(7)
+                .setDescription(MachineType.FLUID_SOLIDIFIER.tooltipDescription())
+                .setRecipes(fluidSolidifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("FLUID_SOLIDIFIER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidSolidifierUV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_SOLIDIFIER_UV.ID,
-                "basicmachine.fluidsolidifier.tier.08",
-                "Ultimate Fluid Petrificator",
-                8,
-                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
-                fluidSolidifierRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_SOLIDIFIER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_SOLIDIFIER_UV.ID)
+                .setName("basicmachine.fluidsolidifier.tier.08", "Ultimate Fluid Petrificator")
+                .setTier(8)
+                .setDescription(MachineType.FLUID_SOLIDIFIER.tooltipDescription())
+                .setRecipes(fluidSolidifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("FLUID_SOLIDIFIER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidSolidifierUHV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_SOLIDIFIER_UHV.ID,
-                "basicmachine.fluidsolidifier.tier.09",
-                "Epic Fluid Petrificator",
-                9,
-                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
-                fluidSolidifierRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_SOLIDIFIER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_SOLIDIFIER_UHV.ID)
+                .setName("basicmachine.fluidsolidifier.tier.09", "Epic Fluid Petrificator")
+                .setTier(9)
+                .setDescription(MachineType.FLUID_SOLIDIFIER.tooltipDescription())
+                .setRecipes(fluidSolidifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("FLUID_SOLIDIFIER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidSolidifierUEV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_SOLIDIFIER_UEV.ID,
-                "basicmachine.fluidsolidifier.tier.10",
-                "Epic Fluid Petrificator II",
-                10,
-                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
-                fluidSolidifierRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_SOLIDIFIER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_SOLIDIFIER_UEV.ID)
+                .setName("basicmachine.fluidsolidifier.tier.10", "Epic Fluid Petrificator II")
+                .setTier(10)
+                .setDescription(MachineType.FLUID_SOLIDIFIER.tooltipDescription())
+                .setRecipes(fluidSolidifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("FLUID_SOLIDIFIER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidSolidifierUIV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_SOLIDIFIER_UIV.ID,
-                "basicmachine.fluidsolidifier.tier.11",
-                "Epic Fluid Petrificator III",
-                11,
-                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
-                fluidSolidifierRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_SOLIDIFIER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_SOLIDIFIER_UIV.ID)
+                .setName("basicmachine.fluidsolidifier.tier.11", "Epic Fluid Petrificator III")
+                .setTier(11)
+                .setDescription(MachineType.FLUID_SOLIDIFIER.tooltipDescription())
+                .setRecipes(fluidSolidifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("FLUID_SOLIDIFIER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FluidSolidifierUMV.set(
-            new MTEBasicMachineWithRecipe(
-                FLUID_SOLIDIFIER_UMV.ID,
-                "basicmachine.fluidsolidifier.tier.12",
-                "Epic Fluid Petrificator IV",
-                12,
-                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
-                fluidSolidifierRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_COOLING,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "FLUID_SOLIDIFIER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FLUID_SOLIDIFIER_UMV.ID)
+                .setName("basicmachine.fluidsolidifier.tier.12", "Epic Fluid Petrificator IV")
+                .setTier(12)
+                .setDescription(MachineType.FLUID_SOLIDIFIER.tooltipDescription())
+                .setRecipes(fluidSolidifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("FLUID_SOLIDIFIER")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerFormingPress() {
         ItemList.Machine_LV_Press.set(
-            new MTEBasicMachineWithRecipe(
-                FORMING_PRESS_LV.ID,
-                "basicmachine.press.tier.01",
-                "Basic Forming Press",
-                1,
-                MachineType.FORMING_PRESS.tooltipDescription(),
-                RecipeMaps.formingPressRecipes,
-                2,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PRESS").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORMING_PRESS_LV.ID)
+                .setName("basicmachine.press.tier.01", "Basic Forming Press")
+                .setTier(1)
+                .setDescription(MachineType.FORMING_PRESS.tooltipDescription())
+                .setRecipes(formingPressRecipes)
+                .setSlotsCount(2, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("PRESS")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Press.set(
-            new MTEBasicMachineWithRecipe(
-                FORMING_PRESS_MV.ID,
-                "basicmachine.press.tier.02",
-                "Advanced Forming Press",
-                2,
-                MachineType.FORMING_PRESS.tooltipDescription(),
-                RecipeMaps.formingPressRecipes,
-                2,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PRESS").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORMING_PRESS_MV.ID)
+                .setName("basicmachine.press.tier.02", "Advanced Forming Press")
+                .setTier(2)
+                .setDescription(MachineType.FORMING_PRESS.tooltipDescription())
+                .setRecipes(formingPressRecipes)
+                .setSlotsCount(2, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("PRESS")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Press.set(
-            new MTEBasicMachineWithRecipe(
-                FORMING_PRESS_HV.ID,
-                "basicmachine.press.tier.03",
-                "Advanced Forming Press II",
-                3,
-                MachineType.FORMING_PRESS.tooltipDescription(),
-                RecipeMaps.formingPressRecipes,
-                4,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PRESS").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORMING_PRESS_HV.ID)
+                .setName("basicmachine.press.tier.03", "Advanced Forming Press II")
+                .setTier(3)
+                .setDescription(MachineType.FORMING_PRESS.tooltipDescription())
+                .setRecipes(formingPressRecipes)
+                .setSlotsCount(4, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("PRESS")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Press.set(
-            new MTEBasicMachineWithRecipe(
-                FORMING_PRESS_EV.ID,
-                "basicmachine.press.tier.04",
-                "Advanced Forming Press III",
-                4,
-                MachineType.FORMING_PRESS.tooltipDescription(),
-                RecipeMaps.formingPressRecipes,
-                4,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PRESS").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORMING_PRESS_EV.ID)
+                .setName("basicmachine.press.tier.04", "Advanced Forming Press III")
+                .setTier(4)
+                .setDescription(MachineType.FORMING_PRESS.tooltipDescription())
+                .setRecipes(formingPressRecipes)
+                .setSlotsCount(4, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("PRESS")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Press.set(
-            new MTEBasicMachineWithRecipe(
-                FORMING_PRESS_IV.ID,
-                "basicmachine.press.tier.05",
-                "Advanced Forming Press IV",
-                5,
-                MachineType.FORMING_PRESS.tooltipDescription(),
-                RecipeMaps.formingPressRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PRESS").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORMING_PRESS_IV.ID)
+                .setName("basicmachine.press.tier.05", "Advanced Forming Press IV")
+                .setTier(5)
+                .setDescription(MachineType.FORMING_PRESS.tooltipDescription())
+                .setRecipes(formingPressRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("PRESS")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FormingPressLuV.set(
-            new MTEBasicMachineWithRecipe(
-                FORMING_PRESS_LuV.ID,
-                "basicmachine.press.tier.06",
-                "Elite Forming Press",
-                6,
-                MachineType.FORMING_PRESS.tooltipDescription(),
-                formingPressRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PRESS").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORMING_PRESS_LuV.ID)
+                .setName("basicmachine.press.tier.06", "Elite Forming Press")
+                .setTier(6)
+                .setDescription(MachineType.FORMING_PRESS.tooltipDescription())
+                .setRecipes(formingPressRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("PRESS")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FormingPressZPM.set(
-            new MTEBasicMachineWithRecipe(
-                FORMING_PRESS_ZPM.ID,
-                "basicmachine.press.tier.07",
-                "Elite Forming Press II",
-                7,
-                MachineType.FORMING_PRESS.tooltipDescription(),
-                formingPressRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PRESS").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORMING_PRESS_ZPM.ID)
+                .setName("basicmachine.press.tier.07", "Elite Forming Press II")
+                .setTier(7)
+                .setDescription(MachineType.FORMING_PRESS.tooltipDescription())
+                .setRecipes(formingPressRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("PRESS")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FormingPressUV.set(
-            new MTEBasicMachineWithRecipe(
-                FORMING_PRESS_UV.ID,
-                "basicmachine.press.tier.08",
-                "Ultimate Surface Shifter",
-                8,
-                MachineType.FORMING_PRESS.tooltipDescription(),
-                formingPressRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PRESS").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORMING_PRESS_UV.ID)
+                .setName("basicmachine.press.tier.08", "Ultimate Surface Shifter")
+                .setTier(8)
+                .setDescription(MachineType.FORMING_PRESS.tooltipDescription())
+                .setRecipes(formingPressRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("PRESS")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FormingPressUHV.set(
-            new MTEBasicMachineWithRecipe(
-                FORMING_PRESS_UHV.ID,
-                "basicmachine.press.tier.09",
-                "Epic Surface Shifter",
-                9,
-                MachineType.FORMING_PRESS.tooltipDescription(),
-                formingPressRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PRESS").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORMING_PRESS_UHV.ID)
+                .setName("basicmachine.press.tier.09", "Epic Surface Shifter")
+                .setTier(9)
+                .setDescription(MachineType.FORMING_PRESS.tooltipDescription())
+                .setRecipes(formingPressRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("PRESS")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FormingPressUEV.set(
-            new MTEBasicMachineWithRecipe(
-                FORMING_PRESS_UEV.ID,
-                "basicmachine.press.tier.10",
-                "Epic Surface Shifter II",
-                10,
-                MachineType.FORMING_PRESS.tooltipDescription(),
-                formingPressRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PRESS").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORMING_PRESS_UEV.ID)
+                .setName("basicmachine.press.tier.10", "Epic Surface Shifter II")
+                .setTier(10)
+                .setDescription(MachineType.FORMING_PRESS.tooltipDescription())
+                .setRecipes(formingPressRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("PRESS")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FormingPressUIV.set(
-            new MTEBasicMachineWithRecipe(
-                FORMING_PRESS_UIV.ID,
-                "basicmachine.press.tier.11",
-                "Epic Surface Shifter III",
-                11,
-                MachineType.FORMING_PRESS.tooltipDescription(),
-                formingPressRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PRESS").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORMING_PRESS_UIV.ID)
+                .setName("basicmachine.press.tier.11", "Epic Surface Shifter III")
+                .setTier(11)
+                .setDescription(MachineType.FORMING_PRESS.tooltipDescription())
+                .setRecipes(formingPressRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("PRESS")
+                .build()
+                .getStackForm(1L));
 
         ItemList.FormingPressUMV.set(
-            new MTEBasicMachineWithRecipe(
-                FORMING_PRESS_UMV.ID,
-                "basicmachine.press.tier.12",
-                "Epic Surface Shifter IV",
-                12,
-                MachineType.FORMING_PRESS.tooltipDescription(),
-                formingPressRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PRESS").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORMING_PRESS_UMV.ID)
+                .setName("basicmachine.press.tier.12", "Epic Surface Shifter IV")
+                .setTier(12)
+                .setDescription(MachineType.FORMING_PRESS.tooltipDescription())
+                .setRecipes(formingPressRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("PRESS")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerForgeHammer() {
         ItemList.Machine_LV_Hammer.set(
-            new MTEBasicMachineWithRecipe(
-                FORGE_HAMMER_LV.ID,
-                "basicmachine.hammer.tier.01",
-                "Basic Forge Hammer",
-                1,
-                MachineType.FORGE_HAMMER.tooltipDescription(),
-                RecipeMaps.hammerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
-                "HAMMER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORGE_HAMMER_LV.ID)
+                .setName("basicmachine.hammer.tier.01", "Basic Forge Hammer")
+                .setTier(1)
+                .setDescription(MachineType.FORGE_HAMMER.tooltipDescription())
+                .setRecipes(hammerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS)
+                .setOverlays("HAMMER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Hammer.set(
-            new MTEBasicMachineWithRecipe(
-                FORGE_HAMMER_MV.ID,
-                "basicmachine.hammer.tier.02",
-                "Advanced Forge Hammer",
-                2,
-                MachineType.FORGE_HAMMER.tooltipDescription(),
-                RecipeMaps.hammerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
-                "HAMMER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORGE_HAMMER_MV.ID)
+                .setName("basicmachine.hammer.tier.02", "Advanced Forge Hammer")
+                .setTier(2)
+                .setDescription(MachineType.FORGE_HAMMER.tooltipDescription())
+                .setRecipes(hammerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS)
+                .setOverlays("HAMMER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Hammer.set(
-            new MTEBasicMachineWithRecipe(
-                FORGE_HAMMER_HV.ID,
-                "basicmachine.hammer.tier.03",
-                "Advanced Forge Hammer II",
-                3,
-                MachineType.FORGE_HAMMER.tooltipDescription(),
-                RecipeMaps.hammerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
-                "HAMMER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORGE_HAMMER_HV.ID)
+                .setName("basicmachine.hammer.tier.03", "Advanced Forge Hammer II")
+                .setTier(3)
+                .setDescription(MachineType.FORGE_HAMMER.tooltipDescription())
+                .setRecipes(hammerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS)
+                .setOverlays("HAMMER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Hammer.set(
-            new MTEBasicMachineWithRecipe(
-                FORGE_HAMMER_EV.ID,
-                "basicmachine.hammer.tier.04",
-                "Advanced Forge Hammer III",
-                4,
-                MachineType.FORGE_HAMMER.tooltipDescription(),
-                RecipeMaps.hammerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
-                "HAMMER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORGE_HAMMER_EV.ID)
+                .setName("basicmachine.hammer.tier.04", "Advanced Forge Hammer III")
+                .setTier(4)
+                .setDescription(MachineType.FORGE_HAMMER.tooltipDescription())
+                .setRecipes(hammerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS)
+                .setOverlays("HAMMER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Hammer.set(
-            new MTEBasicMachineWithRecipe(
-                FORGE_HAMMER_IV.ID,
-                "basicmachine.hammer.tier.05",
-                "Advanced Forge Hammer IV",
-                5,
-                MachineType.FORGE_HAMMER.tooltipDescription(),
-                RecipeMaps.hammerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
-                "HAMMER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORGE_HAMMER_IV.ID)
+                .setName("basicmachine.hammer.tier.05", "Advanced Forge Hammer IV")
+                .setTier(5)
+                .setDescription(MachineType.FORGE_HAMMER.tooltipDescription())
+                .setRecipes(hammerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS)
+                .setOverlays("HAMMER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ForgeHammerLuV.set(
-            new MTEBasicMachineWithRecipe(
-                FORGE_HAMMER_LuV.ID,
-                "basicmachine.hammer.tier.06",
-                "Elite Forge Hammer",
-                6,
-                MachineType.FORGE_HAMMER.tooltipDescription(),
-                hammerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "HAMMER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORGE_HAMMER_LuV.ID)
+                .setName("basicmachine.hammer.tier.06", "Elite Forge Hammer")
+                .setTier(6)
+                .setDescription(MachineType.FORGE_HAMMER.tooltipDescription())
+                .setRecipes(hammerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("HAMMER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ForgeHammerZPM.set(
-            new MTEBasicMachineWithRecipe(
-                FORGE_HAMMER_ZPM.ID,
-                "basicmachine.hammer.tier.07",
-                "Elite Forge Hammer II",
-                7,
-                MachineType.FORGE_HAMMER.tooltipDescription(),
-                hammerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "HAMMER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORGE_HAMMER_ZPM.ID)
+                .setName("basicmachine.hammer.tier.07", "Elite Forge Hammer II")
+                .setTier(7)
+                .setDescription(MachineType.FORGE_HAMMER.tooltipDescription())
+                .setRecipes(hammerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("HAMMER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ForgeHammerUV.set(
-            new MTEBasicMachineWithRecipe(
-                FORGE_HAMMER_UV.ID,
-                "basicmachine.hammer.tier.08",
-                "Ultimate Impact Modulator",
-                8,
-                MachineType.FORGE_HAMMER.tooltipDescription(),
-                hammerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "HAMMER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORGE_HAMMER_UV.ID)
+                .setName("basicmachine.hammer.tier.08", "Ultimate Impact Modulator")
+                .setTier(8)
+                .setDescription(MachineType.FORGE_HAMMER.tooltipDescription())
+                .setRecipes(hammerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("HAMMER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ForgeHammerUHV.set(
-            new MTEBasicMachineWithRecipe(
-                FORGE_HAMMER_UHV.ID,
-                "basicmachine.hammer.tier.09",
-                "Epic Impact Modulator",
-                9,
-                MachineType.FORGE_HAMMER.tooltipDescription(),
-                hammerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "HAMMER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORGE_HAMMER_UHV.ID)
+                .setName("basicmachine.hammer.tier.09", "Epic Impact Modulator")
+                .setTier(9)
+                .setDescription(MachineType.FORGE_HAMMER.tooltipDescription())
+                .setRecipes(hammerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("HAMMER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ForgeHammerUEV.set(
-            new MTEBasicMachineWithRecipe(
-                FORGE_HAMMER_UEV.ID,
-                "basicmachine.hammer.tier.10",
-                "Epic Impact Modulator II",
-                10,
-                MachineType.FORGE_HAMMER.tooltipDescription(),
-                hammerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "HAMMER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORGE_HAMMER_UEV.ID)
+                .setName("basicmachine.hammer.tier.10", "Epic Impact Modulator II")
+                .setTier(10)
+                .setDescription(MachineType.FORGE_HAMMER.tooltipDescription())
+                .setRecipes(hammerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("HAMMER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ForgeHammerUIV.set(
-            new MTEBasicMachineWithRecipe(
-                FORGE_HAMMER_UIV.ID,
-                "basicmachine.hammer.tier.11",
-                "Epic Impact Modulator III",
-                11,
-                MachineType.FORGE_HAMMER.tooltipDescription(),
-                hammerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "HAMMER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORGE_HAMMER_UIV.ID)
+                .setName("basicmachine.hammer.tier.11", "Epic Impact Modulator III")
+                .setTier(11)
+                .setDescription(MachineType.FORGE_HAMMER.tooltipDescription())
+                .setRecipes(hammerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("HAMMER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ForgeHammerUMV.set(
-            new MTEBasicMachineWithRecipe(
-                FORGE_HAMMER_UMV.ID,
-                "basicmachine.hammer.tier.12",
-                "Epic Impact Modulator IV",
-                12,
-                MachineType.FORGE_HAMMER.tooltipDescription(),
-                hammerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_FORGE_HAMMER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "HAMMER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(FORGE_HAMMER_UMV.ID)
+                .setName("basicmachine.hammer.tier.12", "Epic Impact Modulator IV")
+                .setTier(12)
+                .setDescription(MachineType.FORGE_HAMMER.tooltipDescription())
+                .setRecipes(hammerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("HAMMER")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerLathe() {
         ItemList.Machine_LV_Lathe.set(
-            new MTEBasicMachineWithRecipe(
-                LATHE_LV.ID,
-                "basicmachine.lathe.tier.01",
-                "Basic Lathe",
-                1,
-                MachineType.LATHE.tooltipDescription(),
-                RecipeMaps.latheRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LATHE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LATHE_LV.ID)
+                .setName("basicmachine.lathe.tier.01", "Basic Lathe")
+                .setTier(1)
+                .setDescription(MachineType.LATHE.tooltipDescription())
+                .setRecipes(latheRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("LATHE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Lathe.set(
-            new MTEBasicMachineWithRecipe(
-                LATHE_MV.ID,
-                "basicmachine.lathe.tier.02",
-                "Advanced Lathe",
-                2,
-                MachineType.LATHE.tooltipDescription(),
-                RecipeMaps.latheRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LATHE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LATHE_MV.ID)
+                .setName("basicmachine.lathe.tier.02", "Advanced Lathe")
+                .setTier(2)
+                .setDescription(MachineType.LATHE.tooltipDescription())
+                .setRecipes(latheRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("LATHE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Lathe.set(
-            new MTEBasicMachineWithRecipe(
-                LATHE_HV.ID,
-                "basicmachine.lathe.tier.03",
-                "Advanced Lathe II",
-                3,
-                MachineType.LATHE.tooltipDescription(),
-                RecipeMaps.latheRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LATHE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LATHE_HV.ID)
+                .setName("basicmachine.lathe.tier.03", "Advanced Lathe II")
+                .setTier(3)
+                .setDescription(MachineType.LATHE.tooltipDescription())
+                .setRecipes(latheRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("LATHE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Lathe.set(
-            new MTEBasicMachineWithRecipe(
-                LATHE_EV.ID,
-                "basicmachine.lathe.tier.04",
-                "Advanced Lathe III",
-                4,
-                MachineType.LATHE.tooltipDescription(),
-                RecipeMaps.latheRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LATHE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LATHE_EV.ID)
+                .setName("basicmachine.lathe.tier.04", "Advanced Lathe III")
+                .setTier(4)
+                .setDescription(MachineType.LATHE.tooltipDescription())
+                .setRecipes(latheRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("LATHE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Lathe.set(
-            new MTEBasicMachineWithRecipe(
-                LATHE_IV.ID,
-                "basicmachine.lathe.tier.05",
-                "Advanced Lathe IV",
-                5,
-                MachineType.LATHE.tooltipDescription(),
-                RecipeMaps.latheRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LATHE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LATHE_IV.ID)
+                .setName("basicmachine.lathe.tier.05", "Advanced Lathe IV")
+                .setTier(5)
+                .setDescription(MachineType.LATHE.tooltipDescription())
+                .setRecipes(latheRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("LATHE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.LatheLuV.set(
-            new MTEBasicMachineWithRecipe(
-                LATHE_LuV.ID,
-                "basicmachine.lathe.tier.06",
-                "Elite Lathe",
-                6,
-                MachineType.LATHE.tooltipDescription(),
-                latheRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LATHE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LATHE_LuV.ID)
+                .setName("basicmachine.lathe.tier.06", "Elite Lathe")
+                .setTier(6)
+                .setDescription(MachineType.LATHE.tooltipDescription())
+                .setRecipes(latheRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("LATHE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.LatheZPM.set(
-            new MTEBasicMachineWithRecipe(
-                LATHE_ZPM.ID,
-                "basicmachine.lathe.tier.07",
-                "Elite Lathe II",
-                7,
-                MachineType.LATHE.tooltipDescription(),
-                latheRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LATHE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LATHE_ZPM.ID)
+                .setName("basicmachine.lathe.tier.07", "Elite Lathe II")
+                .setTier(7)
+                .setDescription(MachineType.LATHE.tooltipDescription())
+                .setRecipes(latheRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("LATHE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.LatheUV.set(
-            new MTEBasicMachineWithRecipe(
-                LATHE_UV.ID,
-                "basicmachine.lathe.tier.08",
-                "Ultimate Turn-O-Matic",
-                8,
-                MachineType.LATHE.tooltipDescription(),
-                latheRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LATHE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LATHE_UV.ID)
+                .setName("basicmachine.lathe.tier.08", "Ultimate Turn-O-Matic")
+                .setTier(8)
+                .setDescription(MachineType.LATHE.tooltipDescription())
+                .setRecipes(latheRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("LATHE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.LatheUHV.set(
-            new MTEBasicMachineWithRecipe(
-                LATHE_UHV.ID,
-                "basicmachine.lathe.tier.09",
-                "Epic Turn-O-Matic",
-                9,
-                MachineType.LATHE.tooltipDescription(),
-                latheRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LATHE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LATHE_UHV.ID)
+                .setName("basicmachine.lathe.tier.09", "Epic Turn-O-Matic")
+                .setTier(9)
+                .setDescription(MachineType.LATHE.tooltipDescription())
+                .setRecipes(latheRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("LATHE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.LatheUEV.set(
-            new MTEBasicMachineWithRecipe(
-                LATHE_UEV.ID,
-                "basicmachine.lathe.tier.10",
-                "Epic Turn-O-Matic II",
-                10,
-                MachineType.LATHE.tooltipDescription(),
-                latheRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LATHE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LATHE_UEV.ID)
+                .setName("basicmachine.lathe.tier.10", "Epic Turn-O-Matic II")
+                .setTier(10)
+                .setDescription(MachineType.LATHE.tooltipDescription())
+                .setRecipes(latheRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("LATHE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.LatheUIV.set(
-            new MTEBasicMachineWithRecipe(
-                LATHE_UIV.ID,
-                "basicmachine.lathe.tier.11",
-                "Epic Turn-O-Matic III",
-                11,
-                MachineType.LATHE.tooltipDescription(),
-                latheRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LATHE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LATHE_UIV.ID)
+                .setName("basicmachine.lathe.tier.11", "Epic Turn-O-Matic III")
+                .setTier(11)
+                .setDescription(MachineType.LATHE.tooltipDescription())
+                .setRecipes(latheRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("LATHE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.LatheUMV.set(
-            new MTEBasicMachineWithRecipe(
-                LATHE_UMV.ID,
-                "basicmachine.lathe.tier.12",
-                "Epic Turn-O-Matic IV",
-                12,
-                MachineType.LATHE.tooltipDescription(),
-                latheRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_CUT,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LATHE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LATHE_UMV.ID)
+                .setName("basicmachine.lathe.tier.12", "Epic Turn-O-Matic IV")
+                .setTier(12)
+                .setDescription(MachineType.LATHE.tooltipDescription())
+                .setRecipes(latheRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("LATHE")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerPrecisionLaserEngraver() {
         ItemList.Machine_LV_LaserEngraver.set(
-            new MTEBasicMachineWithRecipe(
-                LASER_ENGRAVER_LV.ID,
-                "basicmachine.laserengraver.tier.01",
-                "Basic Precision Laser Engraver",
-                1,
-                MachineType.LASER_ENGRAVER.tooltipDescription(),
-                RecipeMaps.laserEngraverRecipes,
-                2,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LASER_ENGRAVER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LASER_ENGRAVER_LV.ID)
+                .setName("basicmachine.laserengraver.tier.01", "Basic Precision Laser Engraver")
+                .setTier(1)
+                .setDescription(MachineType.LASER_ENGRAVER.tooltipDescription())
+                .setRecipes(laserEngraverRecipes)
+                .setSlotsCount(2, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("LASER_ENGRAVER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_LaserEngraver.set(
-            new MTEBasicMachineWithRecipe(
-                LASER_ENGRAVER_MV.ID,
-                "basicmachine.laserengraver.tier.02",
-                "Advanced Precision Laser Engraver",
-                2,
-                MachineType.LASER_ENGRAVER.tooltipDescription(),
-                RecipeMaps.laserEngraverRecipes,
-                2,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LASER_ENGRAVER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LASER_ENGRAVER_MV.ID)
+                .setName("basicmachine.laserengraver.tier.02", "Advanced Precision Laser Engraver")
+                .setTier(2)
+                .setDescription(MachineType.LASER_ENGRAVER.tooltipDescription())
+                .setRecipes(laserEngraverRecipes)
+                .setSlotsCount(2, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("LASER_ENGRAVER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_LaserEngraver.set(
-            new MTEBasicMachineWithRecipe(
-                LASER_ENGRAVER_HV.ID,
-                "basicmachine.laserengraver.tier.03",
-                "Advanced Precision Laser Engraver II",
-                3,
-                MachineType.LASER_ENGRAVER.tooltipDescription(),
-                RecipeMaps.laserEngraverRecipes,
-                2,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LASER_ENGRAVER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LASER_ENGRAVER_HV.ID)
+                .setName("basicmachine.laserengraver.tier.03", "Advanced Precision Laser Engraver II")
+                .setTier(3)
+                .setDescription(MachineType.LASER_ENGRAVER.tooltipDescription())
+                .setRecipes(laserEngraverRecipes)
+                .setSlotsCount(2, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("LASER_ENGRAVER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_LaserEngraver.set(
-            new MTEBasicMachineWithRecipe(
-                LASER_ENGRAVER_EV.ID,
-                "basicmachine.laserengraver.tier.04",
-                "Advanced Precision Laser Engraver III",
-                4,
-                MachineType.LASER_ENGRAVER.tooltipDescription(),
-                RecipeMaps.laserEngraverRecipes,
-                4,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LASER_ENGRAVER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LASER_ENGRAVER_EV.ID)
+                .setName("basicmachine.laserengraver.tier.04", "Advanced Precision Laser Engraver III")
+                .setTier(4)
+                .setDescription(MachineType.LASER_ENGRAVER.tooltipDescription())
+                .setRecipes(laserEngraverRecipes)
+                .setSlotsCount(4, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("LASER_ENGRAVER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_LaserEngraver.set(
-            new MTEBasicMachineWithRecipe(
-                LASER_ENGRAVER_IV.ID,
-                "basicmachine.laserengraver.tier.05",
-                "Advanced Precision Laser Engraver IV",
-                5,
-                MachineType.LASER_ENGRAVER.tooltipDescription(),
-                RecipeMaps.laserEngraverRecipes,
-                4,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LASER_ENGRAVER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(LASER_ENGRAVER_IV.ID)
+                .setName("basicmachine.laserengraver.tier.05", "Advanced Precision Laser Engraver IV")
+                .setTier(5)
+                .setDescription(MachineType.LASER_ENGRAVER.tooltipDescription())
+                .setRecipes(laserEngraverRecipes)
+                .setSlotsCount(4, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("LASER_ENGRAVER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PrecisionLaserEngraverLuV.set(
-            new MTEBasicMachineWithRecipe(
-                PRECISION_LASER_ENGRAVER_LuV.ID,
-                "basicmachine.laserengraver.tier.06",
-                "Elite Precision Laser Engraver",
-                6,
-                MachineType.LASER_ENGRAVER.tooltipDescription(),
-                laserEngraverRecipes,
-                4,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LASER_ENGRAVER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PRECISION_LASER_ENGRAVER_LuV.ID)
+                .setName("basicmachine.laserengraver.tier.06", "Elite Precision Laser Engraver")
+                .setTier(6)
+                .setDescription(MachineType.LASER_ENGRAVER.tooltipDescription())
+                .setRecipes(laserEngraverRecipes)
+                .setSlotsCount(4, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("LASER_ENGRAVER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PrecisionLaserEngraverZPM.set(
-            new MTEBasicMachineWithRecipe(
-                PRECISION_LASER_ENGRAVER_ZPM.ID,
-                "basicmachine.laserengraver.tier.07",
-                "Elite Precision Laser Engraver II",
-                7,
-                MachineType.LASER_ENGRAVER.tooltipDescription(),
-                laserEngraverRecipes,
-                4,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LASER_ENGRAVER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PRECISION_LASER_ENGRAVER_ZPM.ID)
+                .setName("basicmachine.laserengraver.tier.07", "Elite Precision Laser Engraver II")
+                .setTier(7)
+                .setDescription(MachineType.LASER_ENGRAVER.tooltipDescription())
+                .setRecipes(laserEngraverRecipes)
+                .setSlotsCount(4, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("LASER_ENGRAVER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PrecisionLaserEngraverUV.set(
-            new MTEBasicMachineWithRecipe(
-                PRECISION_LASER_ENGRAVER_UV.ID,
-                "basicmachine.laserengraver.tier.08",
-                "Ultimate Exact Photon Cannon",
-                8,
-                MachineType.LASER_ENGRAVER.tooltipDescription(),
-                laserEngraverRecipes,
-                4,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LASER_ENGRAVER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PRECISION_LASER_ENGRAVER_UV.ID)
+                .setName("basicmachine.laserengraver.tier.08", "Ultimate Exact Photon Cannon")
+                .setTier(8)
+                .setDescription(MachineType.LASER_ENGRAVER.tooltipDescription())
+                .setRecipes(laserEngraverRecipes)
+                .setSlotsCount(4, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("LASER_ENGRAVER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PrecisionLaserEngraverUHV.set(
-            new MTEBasicMachineWithRecipe(
-                PRECISION_LASER_ENGRAVER_UHV.ID,
-                "basicmachine.laserengraver.tier.09",
-                "Epic Exact Photon Cannon",
-                9,
-                MachineType.LASER_ENGRAVER.tooltipDescription(),
-                laserEngraverRecipes,
-                4,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LASER_ENGRAVER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PRECISION_LASER_ENGRAVER_UHV.ID)
+                .setName("basicmachine.laserengraver.tier.09", "Epic Exact Photon Cannon")
+                .setTier(9)
+                .setDescription(MachineType.LASER_ENGRAVER.tooltipDescription())
+                .setRecipes(laserEngraverRecipes)
+                .setSlotsCount(4, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("LASER_ENGRAVER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PrecisionLaserEngraverUEV.set(
-            new MTEBasicMachineWithRecipe(
-                PRECISION_LASER_ENGRAVER_UEV.ID,
-                "basicmachine.laserengraver.tier.10",
-                "Epic Exact Photon Cannon II",
-                10,
-                MachineType.LASER_ENGRAVER.tooltipDescription(),
-                laserEngraverRecipes,
-                4,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LASER_ENGRAVER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PRECISION_LASER_ENGRAVER_UEV.ID)
+                .setName("basicmachine.laserengraver.tier.10", "Epic Exact Photon Cannon II")
+                .setTier(10)
+                .setDescription(MachineType.LASER_ENGRAVER.tooltipDescription())
+                .setRecipes(laserEngraverRecipes)
+                .setSlotsCount(4, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("LASER_ENGRAVER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PrecisionLaserEngraverUIV.set(
-            new MTEBasicMachineWithRecipe(
-                PRECISION_LASER_ENGRAVER_UIV.ID,
-                "basicmachine.laserengraver.tier.11",
-                "Epic Exact Photon Cannon III",
-                11,
-                MachineType.LASER_ENGRAVER.tooltipDescription(),
-                laserEngraverRecipes,
-                4,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LASER_ENGRAVER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PRECISION_LASER_ENGRAVER_UIV.ID)
+                .setName("basicmachine.laserengraver.tier.11", "Epic Exact Photon Cannon III")
+                .setTier(11)
+                .setDescription(MachineType.LASER_ENGRAVER.tooltipDescription())
+                .setRecipes(laserEngraverRecipes)
+                .setSlotsCount(4, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("LASER_ENGRAVER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PrecisionLaserEngraverUMV.set(
-            new MTEBasicMachineWithRecipe(
-                PRECISION_LASER_ENGRAVER_UMV.ID,
-                "basicmachine.laserengraver.tier.12",
-                "Epic Exact Photon Cannon IV",
-                12,
-                MachineType.LASER_ENGRAVER.tooltipDescription(),
-                laserEngraverRecipes,
-                4,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ELECTROLYZER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "LASER_ENGRAVER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PRECISION_LASER_ENGRAVER_UMV.ID)
+                .setName("basicmachine.laserengraver.tier.12", "Epic Exact Photon Cannon IV")
+                .setTier(12)
+                .setDescription(MachineType.LASER_ENGRAVER.tooltipDescription())
+                .setRecipes(laserEngraverRecipes)
+                .setSlotsCount(4, 1)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("LASER_ENGRAVER")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerMacerator() {
         ItemList.Machine_LV_Macerator.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_LV.ID,
-                "basicmachine.macerator.tier.01",
-                "Basic Macerator",
-                1,
-                MachineType.MACERATOR.tooltipDescription(),
-                RecipeMaps.maceratorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "MACERATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_LV.ID)
+                .setName("basicmachine.macerator.tier.01", "Basic Macerator")
+                .setTier(1)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("MACERATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Macerator.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_MV.ID,
-                "basicmachine.macerator.tier.02",
-                "Advanced Macerator",
-                2,
-                MachineType.MACERATOR.tooltipDescription(),
-                RecipeMaps.maceratorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "MACERATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_MV.ID)
+                .setName("basicmachine.macerator.tier.02", "Advanced Macerator")
+                .setTier(2)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("MACERATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Macerator.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_HV.ID,
-                "basicmachine.macerator.tier.03",
-                "Universal Macerator",
-                3,
-                MachineType.MACERATOR.tooltipDescription(),
-                RecipeMaps.maceratorRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_HV.ID)
+                .setName("basicmachine.macerator.tier.03", "Universal Macerator")
+                .setTier(3)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Macerator.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_EV.ID,
-                "basicmachine.macerator.tier.04",
-                "Universal Pulverizer",
-                4,
-                MachineType.MACERATOR.tooltipDescription(),
-                RecipeMaps.maceratorRecipes,
-                1,
-                3,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_EV.ID)
+                .setName("basicmachine.macerator.tier.04", "Universal Pulverizer")
+                .setTier(4)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Macerator.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_IV.ID,
-                "basicmachine.macerator.tier.05",
-                "Blend-O-Matic 9001",
-                5,
-                MachineType.MACERATOR.tooltipDescription(),
-                RecipeMaps.maceratorRecipes,
-                1,
-                4,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_IV.ID)
+                .setName("basicmachine.macerator.tier.05", "Blend-O-Matic 9001")
+                .setTier(5)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MaceratorLuV.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_LuV.ID,
-                "basicmachine.macerator.tier.06",
-                "Elite Pulverizer",
-                6,
-                MachineType.MACERATOR.tooltipDescription(),
-                maceratorRecipes,
-                1,
-                4,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_LuV.ID)
+                .setName("basicmachine.macerator.tier.06", "Elite Pulverizer")
+                .setTier(6)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MaceratorZPM.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_ZPM.ID,
-                "basicmachine.macerator.tier.07",
-                "Elite Pulverizer II",
-                7,
-                MachineType.MACERATOR.tooltipDescription(),
-                maceratorRecipes,
-                1,
-                4,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_ZPM.ID)
+                .setName("basicmachine.macerator.tier.07", "Elite Pulverizer II")
+                .setTier(7)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MaceratorUV.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_UV.ID,
-                "basicmachine.macerator.tier.08",
-                "Ultimate Shape Eliminator",
-                8,
-                MachineType.MACERATOR.tooltipDescription(),
-                maceratorRecipes,
-                1,
-                4,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_UV.ID)
+                .setName("basicmachine.macerator.tier.08", "Ultimate Shape Eliminator")
+                .setTier(8)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MaceratorUHV.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_UHV.ID,
-                "basicmachine.macerator.tier.09",
-                "Epic Shape Eliminator",
-                9,
-                MachineType.MACERATOR.tooltipDescription(),
-                maceratorRecipes,
-                1,
-                4,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_UHV.ID)
+                .setName("basicmachine.macerator.tier.09", "Epic Shape Eliminator")
+                .setTier(9)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MaceratorUEV.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_UEV.ID,
-                "basicmachine.macerator.tier.10",
-                "Epic Shape Eliminator II",
-                10,
-                MachineType.MACERATOR.tooltipDescription(),
-                maceratorRecipes,
-                1,
-                4,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_UEV.ID)
+                .setName("basicmachine.macerator.tier.10", "Epic Shape Eliminator II")
+                .setTier(10)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MaceratorUIV.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_UIV.ID,
-                "basicmachine.macerator.tier.11",
-                "Epic Shape Eliminator III",
-                11,
-                MachineType.MACERATOR.tooltipDescription(),
-                maceratorRecipes,
-                1,
-                4,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_UIV.ID)
+                .setName("basicmachine.macerator.tier.11", "Epic Shape Eliminator III")
+                .setTier(11)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MaceratorUMV.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_UMV.ID,
-                "basicmachine.macerator.tier.12",
-                "Epic Shape Eliminator IV",
-                12,
-                MachineType.MACERATOR.tooltipDescription(),
-                maceratorRecipes,
-                1,
-                4,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_UMV.ID)
+                .setName("basicmachine.macerator.tier.12", "Epic Shape Eliminator IV")
+                .setTier(12)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
     }
 
@@ -6736,2216 +6318,2014 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private void registerMicrowave() {
         ItemList.Machine_LV_Microwave.set(
-            new MTEBasicMachineWithRecipe(
-                MICROWAVE_OVEN_LV.ID,
-                "basicmachine.microwave.tier.01",
-                "Basic Microwave",
-                1,
-                MachineType.MICROWAVE.tooltipDescription(),
-                RecipeMaps.microwaveRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MICROWAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MICROWAVE_OVEN_LV.ID)
+                .setName("basicmachine.microwave.tier.01", "Basic Microwave")
+                .setTier(1)
+                .setDescription(MachineType.MICROWAVE.tooltipDescription())
+                .setRecipes(microwaveRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("MICROWAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Microwave.set(
-            new MTEBasicMachineWithRecipe(
-                MICROWAVE_OVEN_MV.ID,
-                "basicmachine.microwave.tier.02",
-                "Advanced Microwave",
-                2,
-                MachineType.MICROWAVE.tooltipDescription(),
-                RecipeMaps.microwaveRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MICROWAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MICROWAVE_OVEN_MV.ID)
+                .setName("basicmachine.microwave.tier.02", "Advanced Microwave")
+                .setTier(2)
+                .setDescription(MachineType.MICROWAVE.tooltipDescription())
+                .setRecipes(microwaveRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("MICROWAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Microwave.set(
-            new MTEBasicMachineWithRecipe(
-                MICROWAVE_OVEN_HV.ID,
-                "basicmachine.microwave.tier.03",
-                "Advanced Microwave II",
-                3,
-                MachineType.MICROWAVE.tooltipDescription(),
-                RecipeMaps.microwaveRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MICROWAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MICROWAVE_OVEN_HV.ID)
+                .setName("basicmachine.microwave.tier.03", "Advanced Microwave II")
+                .setTier(3)
+                .setDescription(MachineType.MICROWAVE.tooltipDescription())
+                .setRecipes(microwaveRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("MICROWAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Microwave.set(
-            new MTEBasicMachineWithRecipe(
-                MICROWAVE_OVEN_EV.ID,
-                "basicmachine.microwave.tier.04",
-                "Advanced Microwave III",
-                4,
-                MachineType.MICROWAVE.tooltipDescription(),
-                RecipeMaps.microwaveRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MICROWAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MICROWAVE_OVEN_EV.ID)
+                .setName("basicmachine.microwave.tier.04", "Advanced Microwave III")
+                .setTier(4)
+                .setDescription(MachineType.MICROWAVE.tooltipDescription())
+                .setRecipes(microwaveRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("MICROWAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Microwave.set(
-            new MTEBasicMachineWithRecipe(
-                MICROWAVE_OVEN_IV.ID,
-                "basicmachine.microwave.tier.05",
-                "Advanced Microwave IV",
-                5,
-                MachineType.MICROWAVE.tooltipDescription(),
-                RecipeMaps.microwaveRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MICROWAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MICROWAVE_OVEN_IV.ID)
+                .setName("basicmachine.microwave.tier.05", "Advanced Microwave IV")
+                .setTier(5)
+                .setDescription(MachineType.MICROWAVE.tooltipDescription())
+                .setRecipes(microwaveRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("MICROWAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MicrowaveLuV.set(
-            new MTEBasicMachineWithRecipe(
-                MICROWAVE_LuV.ID,
-                "basicmachine.microwave.tier.06",
-                "Elite Microwave",
-                6,
-                MachineType.MICROWAVE.tooltipDescription(),
-                microwaveRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MICROWAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MICROWAVE_LuV.ID)
+                .setName("basicmachine.microwave.tier.06", "Elite Microwave")
+                .setTier(6)
+                .setDescription(MachineType.MICROWAVE.tooltipDescription())
+                .setRecipes(microwaveRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("MICROWAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MicrowaveZPM.set(
-            new MTEBasicMachineWithRecipe(
-                MICROWAVE_ZPM.ID,
-                "basicmachine.microwave.tier.07",
-                "Elite Microwave II",
-                7,
-                MachineType.MICROWAVE.tooltipDescription(),
-                microwaveRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MICROWAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MICROWAVE_ZPM.ID)
+                .setName("basicmachine.microwave.tier.07", "Elite Microwave II")
+                .setTier(7)
+                .setDescription(MachineType.MICROWAVE.tooltipDescription())
+                .setRecipes(microwaveRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("MICROWAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MicrowaveUV.set(
-            new MTEBasicMachineWithRecipe(
-                MICROWAVE_UV.ID,
-                "basicmachine.microwave.tier.08",
-                "Ultimate UFO Engine",
-                8,
-                MachineType.MICROWAVE.tooltipDescription(),
-                microwaveRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MICROWAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MICROWAVE_UV.ID)
+                .setName("basicmachine.microwave.tier.08", "Ultimate UFO Engine")
+                .setTier(8)
+                .setDescription(MachineType.MICROWAVE.tooltipDescription())
+                .setRecipes(microwaveRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("MICROWAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MicrowaveUHV.set(
-            new MTEBasicMachineWithRecipe(
-                MICROWAVE_UHV.ID,
-                "basicmachine.microwave.tier.09",
-                "Epic UFO Engine",
-                9,
-                MachineType.MICROWAVE.tooltipDescription(),
-                microwaveRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MICROWAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MICROWAVE_UHV.ID)
+                .setName("basicmachine.microwave.tier.09", "Epic UFO Engine")
+                .setTier(9)
+                .setDescription(MachineType.MICROWAVE.tooltipDescription())
+                .setRecipes(microwaveRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("MICROWAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MicrowaveUEV.set(
-            new MTEBasicMachineWithRecipe(
-                MICROWAVE_UEV.ID,
-                "basicmachine.microwave.tier.10",
-                "Epic UFO Engine II",
-                10,
-                MachineType.MICROWAVE.tooltipDescription(),
-                microwaveRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MICROWAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MICROWAVE_UEV.ID)
+                .setName("basicmachine.microwave.tier.10", "Epic UFO Engine II")
+                .setTier(10)
+                .setDescription(MachineType.MICROWAVE.tooltipDescription())
+                .setRecipes(microwaveRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("MICROWAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MicrowaveUIV.set(
-            new MTEBasicMachineWithRecipe(
-                MICROWAVE_UIV.ID,
-                "basicmachine.microwave.tier.11",
-                "Epic UFO Engine III",
-                11,
-                MachineType.MICROWAVE.tooltipDescription(),
-                microwaveRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MICROWAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MICROWAVE_UIV.ID)
+                .setName("basicmachine.microwave.tier.11", "Epic UFO Engine III")
+                .setTier(11)
+                .setDescription(MachineType.MICROWAVE.tooltipDescription())
+                .setRecipes(microwaveRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("MICROWAVE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MicrowaveUMV.set(
-            new MTEBasicMachineWithRecipe(
-                MICROWAVE_UMV.ID,
-                "basicmachine.microwave.tier.12",
-                "Epic UFO Engine IV",
-                12,
-                MachineType.MICROWAVE.tooltipDescription(),
-                microwaveRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "MICROWAVE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MICROWAVE_UMV.ID)
+                .setName("basicmachine.microwave.tier.12", "Epic UFO Engine IV")
+                .setTier(12)
+                .setDescription(MachineType.MICROWAVE.tooltipDescription())
+                .setRecipes(microwaveRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("MICROWAVE")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private static void registerOven() {
         ItemList.Machine_LV_Oven.set(
-            new MTEBasicMachineWithRecipe(
-                OVEN_LV.ID,
-                "basicmachine.e_oven.tier.01",
-                "Basic Electric Oven",
-                1,
-                MachineType.OVEN.tooltipDescription(),
-                RecipeMaps.furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_OVEN").setProgressBarTextureName("E_Oven")
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(OVEN_LV.ID)
+                .setName("basicmachine.e_oven.tier.01", "Basic Electric Oven")
+                .setTier(1)
+                .setDescription(MachineType.OVEN.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("ELECTRIC_OVEN")
+                .build()
+                .setProgressBarTextureName("E_Oven")
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Oven.set(
-            new MTEBasicMachineWithRecipe(
-                OVEN_MV.ID,
-                "basicmachine.e_oven.tier.02",
-                "Advanced Electric Oven",
-                2,
-                MachineType.OVEN.tooltipDescription(),
-                RecipeMaps.furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_OVEN").setProgressBarTextureName("E_Oven")
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(OVEN_MV.ID)
+                .setName("basicmachine.e_oven.tier.02", "Advanced Electric Oven")
+                .setTier(2)
+                .setDescription(MachineType.OVEN.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("ELECTRIC_OVEN")
+                .build()
+                .setProgressBarTextureName("E_Oven")
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Oven.set(
-            new MTEBasicMachineWithRecipe(
-                OVEN_HV.ID,
-                "basicmachine.e_oven.tier.03",
-                "Advanced Electric Oven II",
-                3,
-                MachineType.OVEN.tooltipDescription(),
-                RecipeMaps.furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_OVEN").setProgressBarTextureName("E_Oven")
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(OVEN_HV.ID)
+                .setName("basicmachine.e_oven.tier.03", "Advanced Electric Oven II")
+                .setTier(3)
+                .setDescription(MachineType.OVEN.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("ELECTRIC_OVEN")
+                .build()
+                .setProgressBarTextureName("E_Oven")
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Oven.set(
-            new MTEBasicMachineWithRecipe(
-                OVEN_EV.ID,
-                "basicmachine.e_oven.tier.04",
-                "Advanced Electric Oven III",
-                4,
-                MachineType.OVEN.tooltipDescription(),
-                RecipeMaps.furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_OVEN").setProgressBarTextureName("E_Oven")
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(OVEN_EV.ID)
+                .setName("basicmachine.e_oven.tier.04", "Advanced Electric Oven III")
+                .setTier(4)
+                .setDescription(MachineType.OVEN.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("ELECTRIC_OVEN")
+                .build()
+                .setProgressBarTextureName("E_Oven")
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Oven.set(
-            new MTEBasicMachineWithRecipe(
-                OVEN_IV.ID,
-                "basicmachine.e_oven.tier.05",
-                "Advanced Electric Oven IV",
-                5,
-                MachineType.OVEN.tooltipDescription(),
-                RecipeMaps.furnaceRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_HUM,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ELECTRIC_OVEN").setProgressBarTextureName("E_Oven")
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(OVEN_IV.ID)
+                .setName("basicmachine.e_oven.tier.05", "Advanced Electric Oven IV")
+                .setTier(5)
+                .setDescription(MachineType.OVEN.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("ELECTRIC_OVEN")
+                .build()
+                .setProgressBarTextureName("E_Oven")
+                .getStackForm(1L));
     }
 
     private void registerOreWashingPlant() {
         ItemList.Machine_LV_OreWasher.set(
-            new MTEBasicMachineWithRecipe(
-                ORE_WASHER_LV.ID,
-                "basicmachine.orewasher.tier.01",
-                "Basic Ore Washing Plant",
-                1,
-                MachineType.ORE_WASHER.tooltipDescription(),
-                RecipeMaps.oreWasherRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ORE_WASHER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ORE_WASHER_LV.ID)
+                .setName("basicmachine.orewasher.tier.01", "Basic Ore Washing Plant")
+                .setTier(1)
+                .setDescription(MachineType.ORE_WASHER.tooltipDescription())
+                .setRecipes(oreWasherRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("ORE_WASHER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_OreWasher.set(
-            new MTEBasicMachineWithRecipe(
-                ORE_WASHER_MV.ID,
-                "basicmachine.orewasher.tier.02",
-                "Advanced Ore Washing Plant",
-                2,
-                MachineType.ORE_WASHER.tooltipDescription(),
-                RecipeMaps.oreWasherRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ORE_WASHER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ORE_WASHER_MV.ID)
+                .setName("basicmachine.orewasher.tier.02", "Advanced Ore Washing Plant")
+                .setTier(2)
+                .setDescription(MachineType.ORE_WASHER.tooltipDescription())
+                .setRecipes(oreWasherRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("ORE_WASHER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_OreWasher.set(
-            new MTEBasicMachineWithRecipe(
-                ORE_WASHER_HV.ID,
-                "basicmachine.orewasher.tier.03",
-                "Advanced Ore Washing Plant II",
-                3,
-                MachineType.ORE_WASHER.tooltipDescription(),
-                RecipeMaps.oreWasherRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ORE_WASHER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ORE_WASHER_HV.ID)
+                .setName("basicmachine.orewasher.tier.03", "Advanced Ore Washing Plant II")
+                .setTier(3)
+                .setDescription(MachineType.ORE_WASHER.tooltipDescription())
+                .setRecipes(oreWasherRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("ORE_WASHER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_OreWasher.set(
-            new MTEBasicMachineWithRecipe(
-                ORE_WASHER_EV.ID,
-                "basicmachine.orewasher.tier.04",
-                "Advanced Ore Washing Plant III",
-                4,
-                MachineType.ORE_WASHER.tooltipDescription(),
-                RecipeMaps.oreWasherRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ORE_WASHER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ORE_WASHER_EV.ID)
+                .setName("basicmachine.orewasher.tier.04", "Advanced Ore Washing Plant III")
+                .setTier(4)
+                .setDescription(MachineType.ORE_WASHER.tooltipDescription())
+                .setRecipes(oreWasherRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("ORE_WASHER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_OreWasher.set(
-            new MTEBasicMachineWithRecipe(
-                ORE_WASHER_IV.ID,
-                "basicmachine.orewasher.tier.05",
-                "Repurposed Laundry-Washer I-360",
-                5,
-                MachineType.ORE_WASHER.tooltipDescription(),
-                RecipeMaps.oreWasherRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ORE_WASHER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ORE_WASHER_IV.ID)
+                .setName("basicmachine.orewasher.tier.05", "Repurposed Laundry-Washer I-360")
+                .setTier(5)
+                .setDescription(MachineType.ORE_WASHER.tooltipDescription())
+                .setRecipes(oreWasherRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("ORE_WASHER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.OreWashingPlantLuV.set(
-            new MTEBasicMachineWithRecipe(
-                ORE_WASHING_PLANT_LuV.ID,
-                "basicmachine.orewasher.tier.06",
-                "Elite Ore Washing Plant",
-                6,
-                MachineType.ORE_WASHER.tooltipDescription(),
-                oreWasherRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ORE_WASHER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ORE_WASHING_PLANT_LuV.ID)
+                .setName("basicmachine.orewasher.tier.06", "Elite Ore Washing Plant")
+                .setTier(6)
+                .setDescription(MachineType.ORE_WASHER.tooltipDescription())
+                .setRecipes(oreWasherRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("ORE_WASHER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.OreWashingPlantZPM.set(
-            new MTEBasicMachineWithRecipe(
-                ORE_WASHING_PLANT_ZPM.ID,
-                "basicmachine.orewasher.tier.07",
-                "Elite Ore Washing Plant II",
-                7,
-                MachineType.ORE_WASHER.tooltipDescription(),
-                oreWasherRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ORE_WASHER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ORE_WASHING_PLANT_ZPM.ID)
+                .setName("basicmachine.orewasher.tier.07", "Elite Ore Washing Plant II")
+                .setTier(7)
+                .setDescription(MachineType.ORE_WASHER.tooltipDescription())
+                .setRecipes(oreWasherRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("ORE_WASHER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.OreWashingPlantUV.set(
-            new MTEBasicMachineWithRecipe(
-                ORE_WASHING_PLANT_UV.ID,
-                "basicmachine.orewasher.tier.08",
-                "Ultimate Ore Washing Machine",
-                8,
-                MachineType.ORE_WASHER.tooltipDescription(),
-                oreWasherRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ORE_WASHER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ORE_WASHING_PLANT_UV.ID)
+                .setName("basicmachine.orewasher.tier.08", "Ultimate Ore Washing Machine")
+                .setTier(8)
+                .setDescription(MachineType.ORE_WASHER.tooltipDescription())
+                .setRecipes(oreWasherRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("ORE_WASHER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.OreWashingPlantUHV.set(
-            new MTEBasicMachineWithRecipe(
-                ORE_WASHING_PLANT_UHV.ID,
-                "basicmachine.orewasher.tier.09",
-                "Epic Ore Washing Machine",
-                9,
-                MachineType.ORE_WASHER.tooltipDescription(),
-                oreWasherRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ORE_WASHER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ORE_WASHING_PLANT_UHV.ID)
+                .setName("basicmachine.orewasher.tier.09", "Epic Ore Washing Machine")
+                .setTier(9)
+                .setDescription(MachineType.ORE_WASHER.tooltipDescription())
+                .setRecipes(oreWasherRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("ORE_WASHER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.OreWashingPlantUEV.set(
-            new MTEBasicMachineWithRecipe(
-                ORE_WASHING_PLANT_UEV.ID,
-                "basicmachine.orewasher.tier.10",
-                "Epic Ore Washing Machine II",
-                10,
-                MachineType.ORE_WASHER.tooltipDescription(),
-                oreWasherRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ORE_WASHER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ORE_WASHING_PLANT_UEV.ID)
+                .setName("basicmachine.orewasher.tier.10", "Epic Ore Washing Machine II")
+                .setTier(10)
+                .setDescription(MachineType.ORE_WASHER.tooltipDescription())
+                .setRecipes(oreWasherRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("ORE_WASHER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.OreWashingPlantUIV.set(
-            new MTEBasicMachineWithRecipe(
-                ORE_WASHING_PLANT_UIV.ID,
-                "basicmachine.orewasher.tier.11",
-                "Epic Ore Washing Machine III",
-                11,
-                MachineType.ORE_WASHER.tooltipDescription(),
-                oreWasherRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ORE_WASHER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ORE_WASHING_PLANT_UIV.ID)
+                .setName("basicmachine.orewasher.tier.11", "Epic Ore Washing Machine III")
+                .setTier(11)
+                .setDescription(MachineType.ORE_WASHER.tooltipDescription())
+                .setRecipes(oreWasherRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("ORE_WASHER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.OreWashingPlantUMV.set(
-            new MTEBasicMachineWithRecipe(
-                ORE_WASHING_PLANT_UMV.ID,
-                "basicmachine.orewasher.tier.12",
-                "Epic Ore Washing Machine IV",
-                12,
-                MachineType.ORE_WASHER.tooltipDescription(),
-                oreWasherRecipes,
-                1,
-                3,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ORE_WASHER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ORE_WASHING_PLANT_UMV.ID)
+                .setName("basicmachine.orewasher.tier.12", "Epic Ore Washing Machine IV")
+                .setTier(12)
+                .setDescription(MachineType.ORE_WASHER.tooltipDescription())
+                .setRecipes(oreWasherRecipes)
+                .setSlotsCount(1, 3)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("ORE_WASHER")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerPolarizer() {
         ItemList.Machine_LV_Polarizer.set(
-            new MTEBasicMachineWithRecipe(
-                POLARIZER_LV.ID,
-                "basicmachine.polarizer.tier.01",
-                "Basic Polarizer",
-                1,
-                MachineType.POLARIZER.tooltipDescription(),
-                RecipeMaps.polarizerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "POLARIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(POLARIZER_LV.ID)
+                .setName("basicmachine.polarizer.tier.01", "Basic Polarizer")
+                .setTier(1)
+                .setDescription(MachineType.POLARIZER.tooltipDescription())
+                .setRecipes(polarizerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("POLARIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Polarizer.set(
-            new MTEBasicMachineWithRecipe(
-                POLARIZER_MV.ID,
-                "basicmachine.polarizer.tier.02",
-                "Advanced Polarizer",
-                2,
-                MachineType.POLARIZER.tooltipDescription(),
-                RecipeMaps.polarizerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "POLARIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(POLARIZER_MV.ID)
+                .setName("basicmachine.polarizer.tier.02", "Advanced Polarizer")
+                .setTier(2)
+                .setDescription(MachineType.POLARIZER.tooltipDescription())
+                .setRecipes(polarizerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("POLARIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Polarizer.set(
-            new MTEBasicMachineWithRecipe(
-                POLARIZER_HV.ID,
-                "basicmachine.polarizer.tier.03",
-                "Advanced Polarizer II",
-                3,
-                MachineType.POLARIZER.tooltipDescription(),
-                RecipeMaps.polarizerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "POLARIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(POLARIZER_HV.ID)
+                .setName("basicmachine.polarizer.tier.03", "Advanced Polarizer II")
+                .setTier(3)
+                .setDescription(MachineType.POLARIZER.tooltipDescription())
+                .setRecipes(polarizerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("POLARIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Polarizer.set(
-            new MTEBasicMachineWithRecipe(
-                POLARIZER_EV.ID,
-                "basicmachine.polarizer.tier.04",
-                "Advanced Polarizer III",
-                4,
-                MachineType.POLARIZER.tooltipDescription(),
-                RecipeMaps.polarizerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "POLARIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(POLARIZER_EV.ID)
+                .setName("basicmachine.polarizer.tier.04", "Advanced Polarizer III")
+                .setTier(4)
+                .setDescription(MachineType.POLARIZER.tooltipDescription())
+                .setRecipes(polarizerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("POLARIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Polarizer.set(
-            new MTEBasicMachineWithRecipe(
-                POLARIZER_IV.ID,
-                "basicmachine.polarizer.tier.05",
-                "Advanced Polarizer IV",
-                5,
-                MachineType.POLARIZER.tooltipDescription(),
-                RecipeMaps.polarizerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "POLARIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(POLARIZER_IV.ID)
+                .setName("basicmachine.polarizer.tier.05", "Advanced Polarizer IV")
+                .setTier(5)
+                .setDescription(MachineType.POLARIZER.tooltipDescription())
+                .setRecipes(polarizerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("POLARIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PolarizerLuV.set(
-            new MTEBasicMachineWithRecipe(
-                POLARIZER_LuV.ID,
-                "basicmachine.polarizer.tier.06",
-                "Elite Polarizer",
-                6,
-                MachineType.POLARIZER.tooltipDescription(),
-                polarizerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "POLARIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(POLARIZER_LuV.ID)
+                .setName("basicmachine.polarizer.tier.06", "Elite Polarizer")
+                .setTier(6)
+                .setDescription(MachineType.POLARIZER.tooltipDescription())
+                .setRecipes(polarizerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("POLARIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PolarizerZPM.set(
-            new MTEBasicMachineWithRecipe(
-                POLARIZER_ZPM.ID,
-                "basicmachine.polarizer.tier.07",
-                "Elite Polarizer II",
-                7,
-                MachineType.POLARIZER.tooltipDescription(),
-                polarizerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "POLARIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(POLARIZER_ZPM.ID)
+                .setName("basicmachine.polarizer.tier.07", "Elite Polarizer II")
+                .setTier(7)
+                .setDescription(MachineType.POLARIZER.tooltipDescription())
+                .setRecipes(polarizerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("POLARIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PolarizerUV.set(
-            new MTEBasicMachineWithRecipe(
-                POLARIZER_UV.ID,
-                "basicmachine.polarizer.tier.08",
-                "Ultimate Magnetism Inducer",
-                8,
-                MachineType.POLARIZER.tooltipDescription(),
-                polarizerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "POLARIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(POLARIZER_UV.ID)
+                .setName("basicmachine.polarizer.tier.08", "Ultimate Magnetism Inducer")
+                .setTier(8)
+                .setDescription(MachineType.POLARIZER.tooltipDescription())
+                .setRecipes(polarizerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("POLARIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PolarizerUHV.set(
-            new MTEBasicMachineWithRecipe(
-                POLARIZER_UHV.ID,
-                "basicmachine.polarizer.tier.09",
-                "Epic Magnetism Inducer",
-                9,
-                MachineType.POLARIZER.tooltipDescription(),
-                polarizerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "POLARIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(POLARIZER_UHV.ID)
+                .setName("basicmachine.polarizer.tier.09", "Epic Magnetism Inducer")
+                .setTier(9)
+                .setDescription(MachineType.POLARIZER.tooltipDescription())
+                .setRecipes(polarizerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("POLARIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PolarizerUEV.set(
-            new MTEBasicMachineWithRecipe(
-                POLARIZER_UEV.ID,
-                "basicmachine.polarizer.tier.10",
-                "Epic Magnetism Inducer II",
-                10,
-                MachineType.POLARIZER.tooltipDescription(),
-                polarizerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "POLARIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(POLARIZER_UEV.ID)
+                .setName("basicmachine.polarizer.tier.10", "Epic Magnetism Inducer II")
+                .setTier(10)
+                .setDescription(MachineType.POLARIZER.tooltipDescription())
+                .setRecipes(polarizerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("POLARIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PolarizerUIV.set(
-            new MTEBasicMachineWithRecipe(
-                POLARIZER_UIV.ID,
-                "basicmachine.polarizer.tier.11",
-                "Epic Magnetism Inducer III",
-                11,
-                MachineType.POLARIZER.tooltipDescription(),
-                polarizerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "POLARIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(POLARIZER_UIV.ID)
+                .setName("basicmachine.polarizer.tier.11", "Epic Magnetism Inducer III")
+                .setTier(11)
+                .setDescription(MachineType.POLARIZER.tooltipDescription())
+                .setRecipes(polarizerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("POLARIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PolarizerUMV.set(
-            new MTEBasicMachineWithRecipe(
-                POLARIZER_UMV.ID,
-                "basicmachine.polarizer.tier.12",
-                "Epic Magnetism Inducer IV",
-                12,
-                MachineType.POLARIZER.tooltipDescription(),
-                polarizerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "POLARIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(POLARIZER_UMV.ID)
+                .setName("basicmachine.polarizer.tier.12", "Epic Magnetism Inducer IV")
+                .setTier(12)
+                .setDescription(MachineType.POLARIZER.tooltipDescription())
+                .setRecipes(polarizerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("POLARIZER")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private static void registerPrinter() {
         ItemList.Machine_LV_Printer.set(
-            new MTEBasicMachineWithRecipe(
-                PRINTER_LV.ID,
-                "basicmachine.printer.tier.01",
-                "Basic Printer",
-                1,
-                MachineType.PRINTER.tooltipDescription(),
-                RecipeMaps.printerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PRINTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PRINTER_LV.ID)
+                .setName("basicmachine.printer.tier.01", "Basic Printer")
+                .setTier(1)
+                .setDescription(MachineType.PRINTER.tooltipDescription())
+                .setRecipes(RecipeMaps.printerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.IC2_MACHINES_COMPRESSOR_OP)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PRINTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Printer.set(
-            new MTEBasicMachineWithRecipe(
-                PRINTER_MV.ID,
-                "basicmachine.printer.tier.02",
-                "Advanced Printer",
-                2,
-                MachineType.PRINTER.tooltipDescription(),
-                RecipeMaps.printerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PRINTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PRINTER_MV.ID)
+                .setName("basicmachine.printer.tier.02", "Advanced Printer")
+                .setTier(2)
+                .setDescription(MachineType.PRINTER.tooltipDescription())
+                .setRecipes(RecipeMaps.printerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.IC2_MACHINES_COMPRESSOR_OP)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PRINTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Printer.set(
-            new MTEBasicMachineWithRecipe(
-                PRINTER_HV.ID,
-                "basicmachine.printer.tier.03",
-                "Advanced Printer II",
-                3,
-                MachineType.PRINTER.tooltipDescription(),
-                RecipeMaps.printerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PRINTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PRINTER_HV.ID)
+                .setName("basicmachine.printer.tier.03", "Advanced Printer II")
+                .setTier(3)
+                .setDescription(MachineType.PRINTER.tooltipDescription())
+                .setRecipes(RecipeMaps.printerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.IC2_MACHINES_COMPRESSOR_OP)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PRINTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Printer.set(
-            new MTEBasicMachineWithRecipe(
-                PRINTER_EV.ID,
-                "basicmachine.printer.tier.04",
-                "Advanced Printer III",
-                4,
-                MachineType.PRINTER.tooltipDescription(),
-                RecipeMaps.printerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PRINTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PRINTER_EV.ID)
+                .setName("basicmachine.printer.tier.04", "Advanced Printer III")
+                .setTier(4)
+                .setDescription(MachineType.PRINTER.tooltipDescription())
+                .setRecipes(RecipeMaps.printerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.IC2_MACHINES_COMPRESSOR_OP)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PRINTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Printer.set(
-            new MTEBasicMachineWithRecipe(
-                PRINTER_IV.ID,
-                "basicmachine.printer.tier.05",
-                "Advanced Printer IV",
-                5,
-                MachineType.PRINTER.tooltipDescription(),
-                RecipeMaps.printerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PRINTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PRINTER_IV.ID)
+                .setName("basicmachine.printer.tier.05", "Advanced Printer IV")
+                .setTier(5)
+                .setDescription(MachineType.PRINTER.tooltipDescription())
+                .setRecipes(RecipeMaps.printerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.IC2_MACHINES_COMPRESSOR_OP)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PRINTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_LuV_Printer.set(
-            new MTEBasicMachineWithRecipe(
-                PRINTER_LuV.ID,
-                "basicmachine.printer.tier.06",
-                "Advanced Printer V",
-                6,
-                MachineType.PRINTER.tooltipDescription(),
-                RecipeMaps.printerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PRINTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PRINTER_LuV.ID)
+                .setName("basicmachine.printer.tier.06", "Advanced Printer V")
+                .setTier(6)
+                .setDescription(MachineType.PRINTER.tooltipDescription())
+                .setRecipes(RecipeMaps.printerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.IC2_MACHINES_COMPRESSOR_OP)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PRINTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_ZPM_Printer.set(
-            new MTEBasicMachineWithRecipe(
-                PRINTER_ZPM.ID,
-                "basicmachine.printer.tier.07",
-                "Advanced Printer VI",
-                7,
-                MachineType.PRINTER.tooltipDescription(),
-                RecipeMaps.printerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PRINTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PRINTER_ZPM.ID)
+                .setName("basicmachine.printer.tier.07", "Advanced Printer VI")
+                .setTier(7)
+                .setDescription(MachineType.PRINTER.tooltipDescription())
+                .setRecipes(RecipeMaps.printerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.IC2_MACHINES_COMPRESSOR_OP)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PRINTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_UV_Printer.set(
-            new MTEBasicMachineWithRecipe(
-                PRINTER_UV.ID,
-                "basicmachine.printer.tier.08",
-                "Advanced Printer VII",
-                8,
-                MachineType.PRINTER.tooltipDescription(),
-                RecipeMaps.printerRecipes,
-                1,
-                1,
-                true,
-                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PRINTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PRINTER_UV.ID)
+                .setName("basicmachine.printer.tier.08", "Advanced Printer VII")
+                .setTier(8)
+                .setDescription(MachineType.PRINTER.tooltipDescription())
+                .setRecipes(RecipeMaps.printerRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.IC2_MACHINES_COMPRESSOR_OP)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PRINTER")
+                .build()
+                .getStackForm(1L));
     }
 
     private void registerRecycler() {
         ItemList.Machine_LV_Recycler.set(
-            new MTEBasicMachineWithRecipe(
-                RECYCLER_LV.ID,
-                "basicmachine.recycler.tier.01",
-                "Basic Recycler",
-                1,
-                MachineType.RECYCLER.tooltipDescription(),
-                RecipeMaps.recyclerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_RECYCLER_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "RECYCLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(RECYCLER_LV.ID)
+                .setName("basicmachine.recycler.tier.01", "Basic Recycler")
+                .setTier(1)
+                .setDescription(MachineType.RECYCLER.tooltipDescription())
+                .setRecipes(recyclerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_RECYCLER_OP)
+                .setOverlays("RECYCLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Recycler.set(
-            new MTEBasicMachineWithRecipe(
-                RECYCLER_MV.ID,
-                "basicmachine.recycler.tier.02",
-                "Advanced Recycler",
-                2,
-                MachineType.RECYCLER.tooltipDescription(),
-                RecipeMaps.recyclerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_RECYCLER_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "RECYCLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(RECYCLER_MV.ID)
+                .setName("basicmachine.recycler.tier.02", "Advanced Recycler")
+                .setTier(2)
+                .setDescription(MachineType.RECYCLER.tooltipDescription())
+                .setRecipes(recyclerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_RECYCLER_OP)
+                .setOverlays("RECYCLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Recycler.set(
-            new MTEBasicMachineWithRecipe(
-                RECYCLER_HV.ID,
-                "basicmachine.recycler.tier.03",
-                "Advanced Recycler II",
-                3,
-                MachineType.RECYCLER.tooltipDescription(),
-                RecipeMaps.recyclerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_RECYCLER_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "RECYCLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(RECYCLER_HV.ID)
+                .setName("basicmachine.recycler.tier.03", "Advanced Recycler II")
+                .setTier(3)
+                .setDescription(MachineType.RECYCLER.tooltipDescription())
+                .setRecipes(recyclerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_RECYCLER_OP)
+                .setOverlays("RECYCLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Recycler.set(
-            new MTEBasicMachineWithRecipe(
-                RECYCLER_EV.ID,
-                "basicmachine.recycler.tier.04",
-                "Advanced Recycler III",
-                4,
-                MachineType.RECYCLER.tooltipDescription(),
-                RecipeMaps.recyclerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_RECYCLER_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "RECYCLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(RECYCLER_EV.ID)
+                .setName("basicmachine.recycler.tier.04", "Advanced Recycler III")
+                .setTier(4)
+                .setDescription(MachineType.RECYCLER.tooltipDescription())
+                .setRecipes(recyclerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_RECYCLER_OP)
+                .setOverlays("RECYCLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Recycler.set(
-            new MTEBasicMachineWithRecipe(
-                RECYCLER_IV.ID,
-                "basicmachine.recycler.tier.05",
-                "The Oblitterator",
-                5,
-                MachineType.RECYCLER.tooltipDescription(),
-                RecipeMaps.recyclerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_RECYCLER_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "RECYCLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(RECYCLER_IV.ID)
+                .setName("basicmachine.recycler.tier.05", "The Oblitterator")
+                .setTier(5)
+                .setDescription(MachineType.RECYCLER.tooltipDescription())
+                .setRecipes(recyclerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_RECYCLER_OP)
+                .setOverlays("RECYCLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.RecyclerLuV.set(
-            new MTEBasicMachineWithRecipe(
-                RECYCLER_LuV.ID,
-                "basicmachine.recycler.tier.06",
-                "Elite Recycler",
-                6,
-                MachineType.RECYCLER.tooltipDescription(),
-                recyclerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_RECYCLER_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "RECYCLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(RECYCLER_LuV.ID)
+                .setName("basicmachine.recycler.tier.06", "Elite Recycler")
+                .setTier(6)
+                .setDescription(MachineType.RECYCLER.tooltipDescription())
+                .setRecipes(recyclerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_RECYCLER_OP)
+                .setOverlays("RECYCLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.RecyclerZPM.set(
-            new MTEBasicMachineWithRecipe(
-                RECYCLER_ZPM.ID,
-                "basicmachine.recycler.tier.07",
-                "Elite Recycler II",
-                7,
-                MachineType.RECYCLER.tooltipDescription(),
-                recyclerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_RECYCLER_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "RECYCLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(RECYCLER_ZPM.ID)
+                .setName("basicmachine.recycler.tier.07", "Elite Recycler II")
+                .setTier(7)
+                .setDescription(MachineType.RECYCLER.tooltipDescription())
+                .setRecipes(recyclerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_RECYCLER_OP)
+                .setOverlays("RECYCLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.RecyclerUV.set(
-            new MTEBasicMachineWithRecipe(
-                RECYCLER_UV.ID,
-                "basicmachine.recycler.tier.08",
-                "Ultimate Scrap-O-Matic",
-                8,
-                MachineType.RECYCLER.tooltipDescription(),
-                recyclerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_RECYCLER_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "RECYCLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(RECYCLER_UV.ID)
+                .setName("basicmachine.recycler.tier.08", "Ultimate Scrap-O-Matic")
+                .setTier(8)
+                .setDescription(MachineType.RECYCLER.tooltipDescription())
+                .setRecipes(recyclerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_RECYCLER_OP)
+                .setOverlays("RECYCLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.RecyclerUHV.set(
-            new MTEBasicMachineWithRecipe(
-                RECYCLER_UHV.ID,
-                "basicmachine.recycler.tier.09",
-                "Epic Scrap-O-Matic",
-                9,
-                MachineType.RECYCLER.tooltipDescription(),
-                recyclerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_RECYCLER_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "RECYCLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(RECYCLER_UHV.ID)
+                .setName("basicmachine.recycler.tier.09", "Epic Scrap-O-Matic")
+                .setTier(9)
+                .setDescription(MachineType.RECYCLER.tooltipDescription())
+                .setRecipes(recyclerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_RECYCLER_OP)
+                .setOverlays("RECYCLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.RecyclerUEV.set(
-            new MTEBasicMachineWithRecipe(
-                RECYCLER_UEV.ID,
-                "basicmachine.recycler.tier.10",
-                "Epic Scrap-O-Matic II",
-                10,
-                MachineType.RECYCLER.tooltipDescription(),
-                recyclerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_RECYCLER_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "RECYCLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(RECYCLER_UEV.ID)
+                .setName("basicmachine.recycler.tier.10", "Epic Scrap-O-Matic II")
+                .setTier(10)
+                .setDescription(MachineType.RECYCLER.tooltipDescription())
+                .setRecipes(recyclerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_RECYCLER_OP)
+                .setOverlays("RECYCLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.RecyclerUIV.set(
-            new MTEBasicMachineWithRecipe(
-                RECYCLER_UIV.ID,
-                "basicmachine.recycler.tier.11",
-                "Epic Scrap-O-Matic III",
-                11,
-                MachineType.RECYCLER.tooltipDescription(),
-                recyclerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_RECYCLER_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "RECYCLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(RECYCLER_UIV.ID)
+                .setName("basicmachine.recycler.tier.11", "Epic Scrap-O-Matic III")
+                .setTier(11)
+                .setDescription(MachineType.RECYCLER.tooltipDescription())
+                .setRecipes(recyclerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_RECYCLER_OP)
+                .setOverlays("RECYCLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.RecyclerUMV.set(
-            new MTEBasicMachineWithRecipe(
-                RECYCLER_UMV.ID,
-                "basicmachine.recycler.tier.12",
-                "Epic Scrap-O-Matic IV",
-                12,
-                MachineType.RECYCLER.tooltipDescription(),
-                recyclerRecipes,
-                1,
-                1,
-                false,
-                SoundResource.IC2_MACHINES_RECYCLER_OP,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "RECYCLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(RECYCLER_UMV.ID)
+                .setName("basicmachine.recycler.tier.12", "Epic Scrap-O-Matic IV")
+                .setTier(12)
+                .setDescription(MachineType.RECYCLER.tooltipDescription())
+                .setRecipes(recyclerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_RECYCLER_OP)
+                .setOverlays("RECYCLER")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerSiftingMachine() {
         ItemList.Machine_LV_Sifter.set(
-            new MTEBasicMachineWithRecipe(
-                SIFTER_LV.ID,
-                "basicmachine.sifter.tier.01",
-                "Basic Sifting Machine",
-                1,
-                MachineType.SIFTER.tooltipDescription(),
-                RecipeMaps.sifterRecipes,
-                1,
-                9,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SIFTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(SIFTER_LV.ID)
+                .setName("basicmachine.sifter.tier.01", "Basic Sifting Machine")
+                .setTier(1)
+                .setDescription(MachineType.SIFTER.tooltipDescription())
+                .setRecipes(sifterRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.NONE)
+                .setOverlays("SIFTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Sifter.set(
-            new MTEBasicMachineWithRecipe(
-                SIFTER_MV.ID,
-                "basicmachine.sifter.tier.02",
-                "Advanced Sifting Machine",
-                2,
-                MachineType.SIFTER.tooltipDescription(),
-                RecipeMaps.sifterRecipes,
-                1,
-                9,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SIFTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(SIFTER_MV.ID)
+                .setName("basicmachine.sifter.tier.02", "Advanced Sifting Machine")
+                .setTier(2)
+                .setDescription(MachineType.SIFTER.tooltipDescription())
+                .setRecipes(sifterRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.NONE)
+                .setOverlays("SIFTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Sifter.set(
-            new MTEBasicMachineWithRecipe(
-                SIFTER_HV.ID,
-                "basicmachine.sifter.tier.03",
-                "Advanced Sifting Machine II",
-                3,
-                MachineType.SIFTER.tooltipDescription(),
-                RecipeMaps.sifterRecipes,
-                1,
-                9,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SIFTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(SIFTER_HV.ID)
+                .setName("basicmachine.sifter.tier.03", "Advanced Sifting Machine II")
+                .setTier(3)
+                .setDescription(MachineType.SIFTER.tooltipDescription())
+                .setRecipes(sifterRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.NONE)
+                .setOverlays("SIFTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Sifter.set(
-            new MTEBasicMachineWithRecipe(
-                SIFTER_EV.ID,
-                "basicmachine.sifter.tier.04",
-                "Advanced Sifting Machine III",
-                4,
-                MachineType.SIFTER.tooltipDescription(),
-                RecipeMaps.sifterRecipes,
-                1,
-                9,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SIFTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(SIFTER_EV.ID)
+                .setName("basicmachine.sifter.tier.04", "Advanced Sifting Machine III")
+                .setTier(4)
+                .setDescription(MachineType.SIFTER.tooltipDescription())
+                .setRecipes(sifterRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.NONE)
+                .setOverlays("SIFTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Sifter.set(
-            new MTEBasicMachineWithRecipe(
-                SIFTER_IV.ID,
-                "basicmachine.sifter.tier.05",
-                "Advanced Sifting Machine IV",
-                5,
-                MachineType.SIFTER.tooltipDescription(),
-                RecipeMaps.sifterRecipes,
-                1,
-                9,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SIFTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(SIFTER_IV.ID)
+                .setName("basicmachine.sifter.tier.05", "Advanced Sifting Machine IV")
+                .setTier(5)
+                .setDescription(MachineType.SIFTER.tooltipDescription())
+                .setRecipes(sifterRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.NONE)
+                .setOverlays("SIFTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.SiftingMachineLuV.set(
-            new MTEBasicMachineWithRecipe(
-                SIFTING_MACHINE_LuV.ID,
-                "basicmachine.sifter.tier.06",
-                "Elite Sifting Machine",
-                6,
-                MachineType.SIFTER.tooltipDescription(),
-                sifterRecipes,
-                1,
-                9,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SIFTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(SIFTING_MACHINE_LuV.ID)
+                .setName("basicmachine.sifter.tier.06", "Elite Sifting Machine")
+                .setTier(6)
+                .setDescription(MachineType.SIFTER.tooltipDescription())
+                .setRecipes(sifterRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.NONE)
+                .setOverlays("SIFTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.SiftingMachineZPM.set(
-            new MTEBasicMachineWithRecipe(
-                SIFTING_MACHINE_ZPM.ID,
-                "basicmachine.sifter.tier.07",
-                "Elite Sifting Machine II",
-                7,
-                MachineType.SIFTER.tooltipDescription(),
-                sifterRecipes,
-                1,
-                9,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SIFTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(SIFTING_MACHINE_ZPM.ID)
+                .setName("basicmachine.sifter.tier.07", "Elite Sifting Machine II")
+                .setTier(7)
+                .setDescription(MachineType.SIFTER.tooltipDescription())
+                .setRecipes(sifterRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.NONE)
+                .setOverlays("SIFTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.SiftingMachineUV.set(
-            new MTEBasicMachineWithRecipe(
-                SIFTING_MACHINE_UV.ID,
-                "basicmachine.sifter.tier.08",
-                "Ultimate Pulsation Filter",
-                8,
-                MachineType.SIFTER.tooltipDescription(),
-                sifterRecipes,
-                1,
-                9,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SIFTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(SIFTING_MACHINE_UV.ID)
+                .setName("basicmachine.sifter.tier.08", "Ultimate Pulsation Filter")
+                .setTier(8)
+                .setDescription(MachineType.SIFTER.tooltipDescription())
+                .setRecipes(sifterRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.NONE)
+                .setOverlays("SIFTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.SiftingMachineUHV.set(
-            new MTEBasicMachineWithRecipe(
-                SIFTING_MACHINE_UHV.ID,
-                "basicmachine.sifter.tier.09",
-                "Epic Pulsation Filter",
-                9,
-                MachineType.SIFTER.tooltipDescription(),
-                sifterRecipes,
-                1,
-                9,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SIFTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(SIFTING_MACHINE_UHV.ID)
+                .setName("basicmachine.sifter.tier.09", "Epic Pulsation Filter")
+                .setTier(9)
+                .setDescription(MachineType.SIFTER.tooltipDescription())
+                .setRecipes(sifterRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.NONE)
+                .setOverlays("SIFTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.SiftingMachineUEV.set(
-            new MTEBasicMachineWithRecipe(
-                SIFTING_MACHINE_UEV.ID,
-                "basicmachine.sifter.tier.10",
-                "Epic Pulsation Filter II",
-                10,
-                MachineType.SIFTER.tooltipDescription(),
-                sifterRecipes,
-                1,
-                9,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SIFTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(SIFTING_MACHINE_UEV.ID)
+                .setName("basicmachine.sifter.tier.10", "Epic Pulsation Filter II")
+                .setTier(10)
+                .setDescription(MachineType.SIFTER.tooltipDescription())
+                .setRecipes(sifterRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.NONE)
+                .setOverlays("SIFTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.SiftingMachineUIV.set(
-            new MTEBasicMachineWithRecipe(
-                SIFTING_MACHINE_UIV.ID,
-                "basicmachine.sifter.tier.11",
-                "Epic Pulsation Filter III",
-                11,
-                MachineType.SIFTER.tooltipDescription(),
-                sifterRecipes,
-                1,
-                9,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SIFTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(SIFTING_MACHINE_UIV.ID)
+                .setName("basicmachine.sifter.tier.11", "Epic Pulsation Filter III")
+                .setTier(11)
+                .setDescription(MachineType.SIFTER.tooltipDescription())
+                .setRecipes(sifterRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.NONE)
+                .setOverlays("SIFTER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.SiftingMachineUMV.set(
-            new MTEBasicMachineWithRecipe(
-                SIFTING_MACHINE_UMV.ID,
-                "basicmachine.sifter.tier.12",
-                "Epic Pulsation Filter IV",
-                12,
-                MachineType.SIFTER.tooltipDescription(),
-                sifterRecipes,
-                1,
-                9,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SIFTER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(SIFTING_MACHINE_UMV.ID)
+                .setName("basicmachine.sifter.tier.12", "Epic Pulsation Filter IV")
+                .setTier(12)
+                .setDescription(MachineType.SIFTER.tooltipDescription())
+                .setRecipes(sifterRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.NONE)
+                .setOverlays("SIFTER")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerThermalCentrifuge() {
         ItemList.Machine_LV_ThermalCentrifuge.set(
-            new MTEBasicMachineWithRecipe(
-                THERMAL_CENTRIFUGE_LV.ID,
-                "basicmachine.thermalcentrifuge.tier.01",
-                "Basic Thermal Centrifuge",
-                1,
-                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
-                RecipeMaps.thermalCentrifugeRecipes,
-                1,
-                3,
-                false,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "THERMAL_CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(THERMAL_CENTRIFUGE_LV.ID)
+                .setName("basicmachine.thermalcentrifuge.tier.01", "Basic Thermal Centrifuge")
+                .setTier(1)
+                .setDescription(MachineType.THERMAL_CENTRIFUGE.tooltipDescription())
+                .setRecipes(thermalCentrifugeRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("THERMAL_CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_ThermalCentrifuge.set(
-            new MTEBasicMachineWithRecipe(
-                THERMAL_CENTRIFUGE_MV.ID,
-                "basicmachine.thermalcentrifuge.tier.02",
-                "Advanced Thermal Centrifuge",
-                2,
-                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
-                RecipeMaps.thermalCentrifugeRecipes,
-                1,
-                3,
-                false,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "THERMAL_CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(THERMAL_CENTRIFUGE_MV.ID)
+                .setName("basicmachine.thermalcentrifuge.tier.02", "Advanced Thermal Centrifuge")
+                .setTier(2)
+                .setDescription(MachineType.THERMAL_CENTRIFUGE.tooltipDescription())
+                .setRecipes(thermalCentrifugeRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("THERMAL_CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_ThermalCentrifuge.set(
-            new MTEBasicMachineWithRecipe(
-                THERMAL_CENTRIFUGE_HV.ID,
-                "basicmachine.thermalcentrifuge.tier.03",
-                "Advanced Thermal Centrifuge II",
-                3,
-                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
-                RecipeMaps.thermalCentrifugeRecipes,
-                1,
-                3,
-                false,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "THERMAL_CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(THERMAL_CENTRIFUGE_HV.ID)
+                .setName("basicmachine.thermalcentrifuge.tier.03", "Advanced Thermal Centrifuge II")
+                .setTier(3)
+                .setDescription(MachineType.THERMAL_CENTRIFUGE.tooltipDescription())
+                .setRecipes(thermalCentrifugeRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("THERMAL_CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_ThermalCentrifuge.set(
-            new MTEBasicMachineWithRecipe(
-                THERMAL_CENTRIFUGE_EV.ID,
-                "basicmachine.thermalcentrifuge.tier.04",
-                "Advanced Thermal Centrifuge III",
-                4,
-                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
-                RecipeMaps.thermalCentrifugeRecipes,
-                1,
-                3,
-                false,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "THERMAL_CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(THERMAL_CENTRIFUGE_EV.ID)
+                .setName("basicmachine.thermalcentrifuge.tier.04", "Advanced Thermal Centrifuge III")
+                .setTier(4)
+                .setDescription(MachineType.THERMAL_CENTRIFUGE.tooltipDescription())
+                .setRecipes(thermalCentrifugeRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("THERMAL_CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_ThermalCentrifuge.set(
-            new MTEBasicMachineWithRecipe(
-                THERMAL_CENTRIFUGE_IV.ID,
-                "basicmachine.thermalcentrifuge.tier.05",
-                "Blaze Sweatshop T-6350",
-                5,
-                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
-                RecipeMaps.thermalCentrifugeRecipes,
-                1,
-                3,
-                false,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "THERMAL_CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(THERMAL_CENTRIFUGE_IV.ID)
+                .setName("basicmachine.thermalcentrifuge.tier.05", "Blaze Sweatshop T-6350")
+                .setTier(5)
+                .setDescription(MachineType.THERMAL_CENTRIFUGE.tooltipDescription())
+                .setRecipes(thermalCentrifugeRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("THERMAL_CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ThermalCentrifugeLuV.set(
-            new MTEBasicMachineWithRecipe(
-                THERMAL_CENTRIFUGE_LuV.ID,
-                "basicmachine.thermalcentrifuge.tier.06",
-                "Elite Thermal Centrifuge",
-                6,
-                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
-                thermalCentrifugeRecipes,
-                1,
-                3,
-                false,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "THERMAL_CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(THERMAL_CENTRIFUGE_LuV.ID)
+                .setName("basicmachine.thermalcentrifuge.tier.06", "Elite Thermal Centrifuge")
+                .setTier(6)
+                .setDescription(MachineType.THERMAL_CENTRIFUGE.tooltipDescription())
+                .setRecipes(thermalCentrifugeRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("THERMAL_CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ThermalCentrifugeZPM.set(
-            new MTEBasicMachineWithRecipe(
-                THERMAL_CENTRIFUGE_ZPM.ID,
-                "basicmachine.thermalcentrifuge.tier.07",
-                "Elite Thermal Centrifuge II",
-                7,
-                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
-                thermalCentrifugeRecipes,
-                1,
-                3,
-                false,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "THERMAL_CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(THERMAL_CENTRIFUGE_ZPM.ID)
+                .setName("basicmachine.thermalcentrifuge.tier.07", "Elite Thermal Centrifuge II")
+                .setTier(7)
+                .setDescription(MachineType.THERMAL_CENTRIFUGE.tooltipDescription())
+                .setRecipes(thermalCentrifugeRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("THERMAL_CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ThermalCentrifugeUV.set(
-            new MTEBasicMachineWithRecipe(
-                THERMAL_CENTRIFUGE_UV.ID,
-                "basicmachine.thermalcentrifuge.tier.08",
-                "Ultimate Fire Cyclone",
-                8,
-                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
-                thermalCentrifugeRecipes,
-                1,
-                3,
-                false,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "THERMAL_CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(THERMAL_CENTRIFUGE_UV.ID)
+                .setName("basicmachine.thermalcentrifuge.tier.08", "Ultimate Fire Cyclone")
+                .setTier(8)
+                .setDescription(MachineType.THERMAL_CENTRIFUGE.tooltipDescription())
+                .setRecipes(thermalCentrifugeRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("THERMAL_CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ThermalCentrifugeUHV.set(
-            new MTEBasicMachineWithRecipe(
-                THERMAL_CENTRIFUGE_UHV.ID,
-                "basicmachine.thermalcentrifuge.tier.09",
-                "Epic Fire Cyclone",
-                9,
-                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
-                thermalCentrifugeRecipes,
-                1,
-                3,
-                false,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "THERMAL_CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(THERMAL_CENTRIFUGE_UHV.ID)
+                .setName("basicmachine.thermalcentrifuge.tier.09", "Epic Fire Cyclone")
+                .setTier(9)
+                .setDescription(MachineType.THERMAL_CENTRIFUGE.tooltipDescription())
+                .setRecipes(thermalCentrifugeRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("THERMAL_CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ThermalCentrifugeUEV.set(
-            new MTEBasicMachineWithRecipe(
-                THERMAL_CENTRIFUGE_UEV.ID,
-                "basicmachine.thermalcentrifuge.tier.10",
-                "Epic Fire Cyclone II",
-                10,
-                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
-                thermalCentrifugeRecipes,
-                1,
-                3,
-                false,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "THERMAL_CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(THERMAL_CENTRIFUGE_UEV.ID)
+                .setName("basicmachine.thermalcentrifuge.tier.10", "Epic Fire Cyclone II")
+                .setTier(10)
+                .setDescription(MachineType.THERMAL_CENTRIFUGE.tooltipDescription())
+                .setRecipes(thermalCentrifugeRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("THERMAL_CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ThermalCentrifugeUIV.set(
-            new MTEBasicMachineWithRecipe(
-                THERMAL_CENTRIFUGE_UIV.ID,
-                "basicmachine.thermalcentrifuge.tier.11",
-                "Epic Fire Cyclone III",
-                11,
-                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
-                thermalCentrifugeRecipes,
-                1,
-                3,
-                false,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "THERMAL_CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(THERMAL_CENTRIFUGE_UIV.ID)
+                .setName("basicmachine.thermalcentrifuge.tier.11", "Epic Fire Cyclone III")
+                .setTier(11)
+                .setDescription(MachineType.THERMAL_CENTRIFUGE.tooltipDescription())
+                .setRecipes(thermalCentrifugeRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("THERMAL_CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ThermalCentrifugeUMV.set(
-            new MTEBasicMachineWithRecipe(
-                THERMAL_CENTRIFUGE_UMV.ID,
-                "basicmachine.thermalcentrifuge.tier.12",
-                "Epic Fire Cyclone IV",
-                12,
-                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
-                thermalCentrifugeRecipes,
-                1,
-                3,
-                false,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "THERMAL_CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(THERMAL_CENTRIFUGE_UMV.ID)
+                .setName("basicmachine.thermalcentrifuge.tier.12", "Epic Fire Cyclone IV")
+                .setTier(12)
+                .setDescription(MachineType.THERMAL_CENTRIFUGE.tooltipDescription())
+                .setRecipes(thermalCentrifugeRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("THERMAL_CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
     }
 
     private void registerWiremill() {
         ItemList.Machine_LV_Wiremill.set(
-            new MTEBasicMachineWithRecipe(
-                WIREMILL_LV.ID,
-                "basicmachine.wiremill.tier.01",
-                "Basic Wiremill",
-                1,
-                MachineType.WIREMILL.tooltipDescription(),
-                RecipeMaps.wiremillRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "WIREMILL").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(WIREMILL_LV.ID)
+                .setName("basicmachine.wiremill.tier.01", "Basic Wiremill")
+                .setTier(1)
+                .setDescription(MachineType.WIREMILL.tooltipDescription())
+                .setRecipes(wiremillRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("WIREMILL")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Wiremill.set(
-            new MTEBasicMachineWithRecipe(
-                WIREMILL_MV.ID,
-                "basicmachine.wiremill.tier.02",
-                "Advanced Wiremill",
-                2,
-                MachineType.WIREMILL.tooltipDescription(),
-                RecipeMaps.wiremillRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "WIREMILL").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(WIREMILL_MV.ID)
+                .setName("basicmachine.wiremill.tier.02", "Advanced Wiremill")
+                .setTier(2)
+                .setDescription(MachineType.WIREMILL.tooltipDescription())
+                .setRecipes(wiremillRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("WIREMILL")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Wiremill.set(
-            new MTEBasicMachineWithRecipe(
-                WIREMILL_HV.ID,
-                "basicmachine.wiremill.tier.03",
-                "Advanced Wiremill II",
-                3,
-                MachineType.WIREMILL.tooltipDescription(),
-                RecipeMaps.wiremillRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "WIREMILL").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(WIREMILL_HV.ID)
+                .setName("basicmachine.wiremill.tier.03", "Advanced Wiremill II")
+                .setTier(3)
+                .setDescription(MachineType.WIREMILL.tooltipDescription())
+                .setRecipes(wiremillRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("WIREMILL")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Wiremill.set(
-            new MTEBasicMachineWithRecipe(
-                WIREMILL_EV.ID,
-                "basicmachine.wiremill.tier.04",
-                "Advanced Wiremill III",
-                4,
-                MachineType.WIREMILL.tooltipDescription(),
-                RecipeMaps.wiremillRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "WIREMILL").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(WIREMILL_EV.ID)
+                .setName("basicmachine.wiremill.tier.04", "Advanced Wiremill III")
+                .setTier(4)
+                .setDescription(MachineType.WIREMILL.tooltipDescription())
+                .setRecipes(wiremillRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("WIREMILL")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Wiremill.set(
-            new MTEBasicMachineWithRecipe(
-                WIREMILL_IV.ID,
-                "basicmachine.wiremill.tier.05",
-                "Advanced Wiremill IV",
-                5,
-                MachineType.WIREMILL.tooltipDescription(),
-                RecipeMaps.wiremillRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "WIREMILL").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(WIREMILL_IV.ID)
+                .setName("basicmachine.wiremill.tier.05", "Advanced Wiremill IV")
+                .setTier(5)
+                .setDescription(MachineType.WIREMILL.tooltipDescription())
+                .setRecipes(wiremillRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("WIREMILL")
+                .build()
+                .getStackForm(1L));
 
         ItemList.WiremillLuV.set(
-            new MTEBasicMachineWithRecipe(
-                WIREMILL_LuV.ID,
-                "basicmachine.wiremill.tier.06",
-                "Elite Wiremill",
-                6,
-                MachineType.WIREMILL.tooltipDescription(),
-                wiremillRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "WIREMILL").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(WIREMILL_LuV.ID)
+                .setName("basicmachine.wiremill.tier.06", "Elite Wiremill")
+                .setTier(6)
+                .setDescription(MachineType.WIREMILL.tooltipDescription())
+                .setRecipes(wiremillRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("WIREMILL")
+                .build()
+                .getStackForm(1L));
 
         ItemList.WiremillZPM.set(
-            new MTEBasicMachineWithRecipe(
-                WIREMILL_ZPM.ID,
-                "basicmachine.wiremill.tier.07",
-                "Elite Wiremill II",
-                7,
-                MachineType.WIREMILL.tooltipDescription(),
-                wiremillRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "WIREMILL").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(WIREMILL_ZPM.ID)
+                .setName("basicmachine.wiremill.tier.07", "Elite Wiremill II")
+                .setTier(7)
+                .setDescription(MachineType.WIREMILL.tooltipDescription())
+                .setRecipes(wiremillRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("WIREMILL")
+                .build()
+                .getStackForm(1L));
 
         ItemList.WiremillUV.set(
-            new MTEBasicMachineWithRecipe(
-                WIREMILL_UV.ID,
-                "basicmachine.wiremill.tier.08",
-                "Ultimate Wire Transfigurator",
-                8,
-                MachineType.WIREMILL.tooltipDescription(),
-                wiremillRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "WIREMILL").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(WIREMILL_UV.ID)
+                .setName("basicmachine.wiremill.tier.08", "Ultimate Wire Transfigurator")
+                .setTier(8)
+                .setDescription(MachineType.WIREMILL.tooltipDescription())
+                .setRecipes(wiremillRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("WIREMILL")
+                .build()
+                .getStackForm(1L));
 
         ItemList.WiremillUHV.set(
-            new MTEBasicMachineWithRecipe(
-                WIREMILL_UHV.ID,
-                "basicmachine.wiremill.tier.09",
-                "Epic Wire Transfigurator",
-                9,
-                MachineType.WIREMILL.tooltipDescription(),
-                wiremillRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "WIREMILL").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(WIREMILL_UHV.ID)
+                .setName("basicmachine.wiremill.tier.09", "Epic Wire Transfigurator")
+                .setTier(9)
+                .setDescription(MachineType.WIREMILL.tooltipDescription())
+                .setRecipes(wiremillRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("WIREMILL")
+                .build()
+                .getStackForm(1L));
 
         ItemList.WiremillUEV.set(
-            new MTEBasicMachineWithRecipe(
-                WIREMILL_UEV.ID,
-                "basicmachine.wiremill.tier.10",
-                "Epic Wire Transfigurator II",
-                10,
-                MachineType.WIREMILL.tooltipDescription(),
-                wiremillRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "WIREMILL").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(WIREMILL_UEV.ID)
+                .setName("basicmachine.wiremill.tier.10", "Epic Wire Transfigurator II")
+                .setTier(10)
+                .setDescription(MachineType.WIREMILL.tooltipDescription())
+                .setRecipes(wiremillRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("WIREMILL")
+                .build()
+                .getStackForm(1L));
 
         ItemList.WiremillUIV.set(
-            new MTEBasicMachineWithRecipe(
-                WIREMILL_UIV.ID,
-                "basicmachine.wiremill.tier.11",
-                "Epic Wire Transfigurator III",
-                11,
-                MachineType.WIREMILL.tooltipDescription(),
-                wiremillRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "WIREMILL").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(WIREMILL_UIV.ID)
+                .setName("basicmachine.wiremill.tier.11", "Epic Wire Transfigurator III")
+                .setTier(11)
+                .setDescription(MachineType.WIREMILL.tooltipDescription())
+                .setRecipes(wiremillRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("WIREMILL")
+                .build()
+                .getStackForm(1L));
 
         ItemList.WiremillUMV.set(
-            new MTEBasicMachineWithRecipe(
-                WIREMILL_UMV.ID,
-                "basicmachine.wiremill.tier.12",
-                "Epic Wire Transfigurator IV",
-                12,
-                MachineType.WIREMILL.tooltipDescription(),
-                wiremillRecipes,
-                2,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MOTOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "WIREMILL").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(WIREMILL_UMV.ID)
+                .setName("basicmachine.wiremill.tier.12", "Epic Wire Transfigurator IV")
+                .setTier(12)
+                .setDescription(MachineType.WIREMILL.tooltipDescription())
+                .setRecipes(wiremillRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("WIREMILL")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerArcFurnace() {
         ItemList.Machine_LV_ArcFurnace.set(
-            new MTEBasicMachineWithRecipe(
-                ARC_FURNACE_LV.ID,
-                "basicmachine.arcfurnace.tier.01",
-                "Basic Arc Furnace",
-                1,
-                MachineType.ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.arcFurnaceRecipes,
-                1,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ARC_FURNACE_LV.ID)
+                .setName("basicmachine.arcfurnace.tier.01", "Basic Arc Furnace")
+                .setTier(1)
+                .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(1, 4)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_ArcFurnace.set(
-            new MTEBasicMachineWithRecipe(
-                ARC_FURNACE_MV.ID,
-                "basicmachine.arcfurnace.tier.02",
-                "Advanced Arc Furnace",
-                2,
-                MachineType.ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.arcFurnaceRecipes,
-                1,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ARC_FURNACE_MV.ID)
+                .setName("basicmachine.arcfurnace.tier.02", "Advanced Arc Furnace")
+                .setTier(2)
+                .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(1, 4)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_ArcFurnace.set(
-            new MTEBasicMachineWithRecipe(
-                ARC_FURNACE_HV.ID,
-                "basicmachine.arcfurnace.tier.03",
-                "Advanced Arc Furnace II",
-                3,
-                MachineType.ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.arcFurnaceRecipes,
-                1,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ARC_FURNACE_HV.ID)
+                .setName("basicmachine.arcfurnace.tier.03", "Advanced Arc Furnace II")
+                .setTier(3)
+                .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(1, 4)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_ArcFurnace.set(
-            new MTEBasicMachineWithRecipe(
-                ARC_FURNACE_EV.ID,
-                "basicmachine.arcfurnace.tier.04",
-                "Advanced Arc Furnace III",
-                4,
-                MachineType.ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.arcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ARC_FURNACE_EV.ID)
+                .setName("basicmachine.arcfurnace.tier.04", "Advanced Arc Furnace III")
+                .setTier(4)
+                .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_ArcFurnace.set(
-            new MTEBasicMachineWithRecipe(
-                ARC_FURNACE_IV.ID,
-                "basicmachine.arcfurnace.tier.05",
-                "Advanced Arc Furnace IV",
-                5,
-                MachineType.ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.arcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ARC_FURNACE_IV.ID)
+                .setName("basicmachine.arcfurnace.tier.05", "Advanced Arc Furnace IV")
+                .setTier(5)
+                .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ArcFurnaceLuV.set(
-            new MTEBasicMachineWithRecipe(
-                ARC_FURNACE_LuV.ID,
-                "basicmachine.arcfurnace.tier.06",
-                "Elite Arc Furnace",
-                6,
-                MachineType.ARC_FURNACE.tooltipDescription(),
-                arcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ARC_FURNACE_LuV.ID)
+                .setName("basicmachine.arcfurnace.tier.06", "Elite Arc Furnace")
+                .setTier(6)
+                .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ArcFurnaceZPM.set(
-            new MTEBasicMachineWithRecipe(
-                ARC_FURNACE_ZPM.ID,
-                "basicmachine.arcfurnace.tier.07",
-                "Elite Arc Furnace II",
-                7,
-                MachineType.ARC_FURNACE.tooltipDescription(),
-                arcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ARC_FURNACE_ZPM.ID)
+                .setName("basicmachine.arcfurnace.tier.07", "Elite Arc Furnace II")
+                .setTier(7)
+                .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ArcFurnaceUV.set(
-            new MTEBasicMachineWithRecipe(
-                ARC_FURNACE_UV.ID,
-                "basicmachine.arcfurnace.tier.08",
-                "Ultimate Short Circuit Heater",
-                8,
-                MachineType.ARC_FURNACE.tooltipDescription(),
-                arcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ARC_FURNACE_UV.ID)
+                .setName("basicmachine.arcfurnace.tier.08", "Ultimate Short Circuit Heater")
+                .setTier(8)
+                .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ArcFurnaceUHV.set(
-            new MTEBasicMachineWithRecipe(
-                ARC_FURNACE_UHV.ID,
-                "basicmachine.arcfurnace.tier.09",
-                "Epic Short Circuit Heater",
-                9,
-                MachineType.ARC_FURNACE.tooltipDescription(),
-                arcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ARC_FURNACE_UHV.ID)
+                .setName("basicmachine.arcfurnace.tier.09", "Epic Short Circuit Heater")
+                .setTier(9)
+                .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ArcFurnaceUEV.set(
-            new MTEBasicMachineWithRecipe(
-                ARC_FURNACE_UEV.ID,
-                "basicmachine.arcfurnace.tier.10",
-                "Epic Short Circuit Heater II",
-                10,
-                MachineType.ARC_FURNACE.tooltipDescription(),
-                arcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ARC_FURNACE_UEV.ID)
+                .setName("basicmachine.arcfurnace.tier.10", "Epic Short Circuit Heater II")
+                .setTier(10)
+                .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ArcFurnaceUIV.set(
-            new MTEBasicMachineWithRecipe(
-                ARC_FURNACE_UIV.ID,
-                "basicmachine.arcfurnace.tier.11",
-                "Epic Short Circuit Heater III",
-                11,
-                MachineType.ARC_FURNACE.tooltipDescription(),
-                arcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ARC_FURNACE_UIV.ID)
+                .setName("basicmachine.arcfurnace.tier.11", "Epic Short Circuit Heater III")
+                .setTier(11)
+                .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.ArcFurnaceUMV.set(
-            new MTEBasicMachineWithRecipe(
-                ARC_FURNACE_UMV.ID,
-                "basicmachine.arcfurnace.tier.12",
-                "Epic Short Circuit Heater IV",
-                12,
-                MachineType.ARC_FURNACE.tooltipDescription(),
-                arcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ARC_FURNACE_UMV.ID)
+                .setName("basicmachine.arcfurnace.tier.12", "Epic Short Circuit Heater IV")
+                .setTier(12)
+                .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerCentrifuge() {
         ItemList.Machine_LV_Centrifuge.set(
-            new MTEBasicMachineWithRecipe(
-                CENTRIFUGE_LV.ID,
-                "basicmachine.centrifuge.tier.01",
-                "Basic Centrifuge",
-                1,
-                MachineType.CENTRIFUGE.tooltipDescription(),
-                RecipeMaps.centrifugeRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CENTRIFUGE_LV.ID)
+                .setName("basicmachine.centrifuge.tier.01", "Basic Centrifuge")
+                .setTier(1)
+                .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
+                .setRecipes(centrifugeRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Centrifuge.set(
-            new MTEBasicMachineWithRecipe(
-                CENTRIFUGE_MV.ID,
-                "basicmachine.centrifuge.tier.02",
-                "Advanced Centrifuge",
-                2,
-                MachineType.CENTRIFUGE.tooltipDescription(),
-                RecipeMaps.centrifugeRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CENTRIFUGE_MV.ID)
+                .setName("basicmachine.centrifuge.tier.02", "Advanced Centrifuge")
+                .setTier(2)
+                .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
+                .setRecipes(centrifugeRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Centrifuge.set(
-            new MTEBasicMachineWithRecipe(
-                CENTRIFUGE_HV.ID,
-                "basicmachine.centrifuge.tier.03",
-                "Turbo Centrifuge",
-                3,
-                MachineType.CENTRIFUGE.tooltipDescription(),
-                RecipeMaps.centrifugeRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CENTRIFUGE_HV.ID)
+                .setName("basicmachine.centrifuge.tier.03", "Turbo Centrifuge")
+                .setTier(3)
+                .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
+                .setRecipes(centrifugeRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Centrifuge.set(
-            new MTEBasicMachineWithRecipe(
-                CENTRIFUGE_EV.ID,
-                "basicmachine.centrifuge.tier.04",
-                "Molecular Separator",
-                4,
-                MachineType.CENTRIFUGE.tooltipDescription(),
-                RecipeMaps.centrifugeRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CENTRIFUGE_EV.ID)
+                .setName("basicmachine.centrifuge.tier.04", "Molecular Separator")
+                .setTier(4)
+                .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
+                .setRecipes(centrifugeRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Centrifuge.set(
-            new MTEBasicMachineWithRecipe(
-                CENTRIFUGE_IV.ID,
-                "basicmachine.centrifuge.tier.05",
-                "Molecular Cyclone",
-                5,
-                MachineType.CENTRIFUGE.tooltipDescription(),
-                RecipeMaps.centrifugeRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CENTRIFUGE_IV.ID)
+                .setName("basicmachine.centrifuge.tier.05", "Molecular Cyclone")
+                .setTier(5)
+                .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
+                .setRecipes(centrifugeRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CentrifugeLuV.set(
-            new MTEBasicMachineWithRecipe(
-                CENTRIFUGE_LuV.ID,
-                "basicmachine.centrifuge.tier.06",
-                "Elite Centrifuge",
-                6,
-                MachineType.CENTRIFUGE.tooltipDescription(),
-                centrifugeRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CENTRIFUGE_LuV.ID)
+                .setName("basicmachine.centrifuge.tier.06", "Elite Centrifuge")
+                .setTier(6)
+                .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
+                .setRecipes(centrifugeRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CentrifugeZPM.set(
-            new MTEBasicMachineWithRecipe(
-                CENTRIFUGE_ZPM.ID,
-                "basicmachine.centrifuge.tier.07",
-                "Elite Centrifuge II",
-                7,
-                MachineType.CENTRIFUGE.tooltipDescription(),
-                centrifugeRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CENTRIFUGE_ZPM.ID)
+                .setName("basicmachine.centrifuge.tier.07", "Elite Centrifuge II")
+                .setTier(7)
+                .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
+                .setRecipes(centrifugeRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CentrifugeUV.set(
-            new MTEBasicMachineWithRecipe(
-                CENTRIFUGE_UV.ID,
-                "basicmachine.centrifuge.tier.08",
-                "Ultimate Molecular Tornado",
-                8,
-                MachineType.CENTRIFUGE.tooltipDescription(),
-                centrifugeRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CENTRIFUGE_UV.ID)
+                .setName("basicmachine.centrifuge.tier.08", "Ultimate Molecular Tornado")
+                .setTier(8)
+                .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
+                .setRecipes(centrifugeRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CentrifugeUHV.set(
-            new MTEBasicMachineWithRecipe(
-                CENTRIFUGE_UHV.ID,
-                "basicmachine.centrifuge.tier.09",
-                "Epic Molecular Tornado",
-                9,
-                MachineType.CENTRIFUGE.tooltipDescription(),
-                centrifugeRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CENTRIFUGE_UHV.ID)
+                .setName("basicmachine.centrifuge.tier.09", "Epic Molecular Tornado")
+                .setTier(9)
+                .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
+                .setRecipes(centrifugeRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CentrifugeUEV.set(
-            new MTEBasicMachineWithRecipe(
-                CENTRIFUGE_UEV.ID,
-                "basicmachine.centrifuge.tier.10",
-                "Epic Molecular Tornado II",
-                10,
-                MachineType.CENTRIFUGE.tooltipDescription(),
-                centrifugeRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CENTRIFUGE_UEV.ID)
+                .setName("basicmachine.centrifuge.tier.10", "Epic Molecular Tornado II")
+                .setTier(10)
+                .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
+                .setRecipes(centrifugeRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CentrifugeUIV.set(
-            new MTEBasicMachineWithRecipe(
-                CENTRIFUGE_UIV.ID,
-                "basicmachine.centrifuge.tier.11",
-                "Epic Molecular Tornado III",
-                11,
-                MachineType.CENTRIFUGE.tooltipDescription(),
-                centrifugeRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CENTRIFUGE_UIV.ID)
+                .setName("basicmachine.centrifuge.tier.11", "Epic Molecular Tornado III")
+                .setTier(11)
+                .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
+                .setRecipes(centrifugeRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CentrifugeUMV.set(
-            new MTEBasicMachineWithRecipe(
-                CENTRIFUGE_UMV.ID,
-                "basicmachine.centrifuge.tier.12",
-                "Epic Molecular Tornado IV",
-                12,
-                MachineType.CENTRIFUGE.tooltipDescription(),
-                centrifugeRecipes,
-                2,
-                6,
-                true,
-                SoundResource.GTCEU_LOOP_CENTRIFUGE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CENTRIFUGE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CENTRIFUGE_UMV.ID)
+                .setName("basicmachine.centrifuge.tier.12", "Epic Molecular Tornado IV")
+                .setTier(12)
+                .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
+                .setRecipes(centrifugeRecipes)
+                .setSlotsCount(2, 6)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
 
     }
 
     private void registerPlasmaArcFurnace() {
         ItemList.Machine_LV_PlasmaArcFurnace.set(
-            new MTEBasicMachineWithRecipe(
-                PLASMA_ARC_FURNACE_LV.ID,
-                "basicmachine.plasmaarcfurnace.tier.01",
-                "Basic Plasma Arc Furnace",
-                1,
-                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.plasmaArcFurnaceRecipes,
-                1,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PLASMA_ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PLASMA_ARC_FURNACE_LV.ID)
+                .setName("basicmachine.plasmaarcfurnace.tier.01", "Basic Plasma Arc Furnace")
+                .setTier(1)
+                .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
+                .setRecipes(plasmaArcFurnaceRecipes)
+                .setSlotsCount(1, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("PLASMA_ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_PlasmaArcFurnace.set(
-            new MTEBasicMachineWithRecipe(
-                PLASMA_ARC_FURNACE_MV.ID,
-                "basicmachine.plasmaarcfurnace.tier.02",
-                "Advanced Plasma Arc Furnace",
-                2,
-                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.plasmaArcFurnaceRecipes,
-                1,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PLASMA_ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PLASMA_ARC_FURNACE_MV.ID)
+                .setName("basicmachine.plasmaarcfurnace.tier.02", "Advanced Plasma Arc Furnace")
+                .setTier(2)
+                .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
+                .setRecipes(plasmaArcFurnaceRecipes)
+                .setSlotsCount(1, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("PLASMA_ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_PlasmaArcFurnace.set(
-            new MTEBasicMachineWithRecipe(
-                PLASMA_ARC_FURNACE_HV.ID,
-                "basicmachine.plasmaarcfurnace.tier.03",
-                "Advanced Plasma Arc Furnace II",
-                3,
-                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.plasmaArcFurnaceRecipes,
-                1,
-                4,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PLASMA_ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PLASMA_ARC_FURNACE_HV.ID)
+                .setName("basicmachine.plasmaarcfurnace.tier.03", "Advanced Plasma Arc Furnace II")
+                .setTier(3)
+                .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
+                .setRecipes(plasmaArcFurnaceRecipes)
+                .setSlotsCount(1, 4)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("PLASMA_ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_PlasmaArcFurnace.set(
-            new MTEBasicMachineWithRecipe(
-                PLASMA_ARC_FURNACE_EV.ID,
-                "basicmachine.plasmaarcfurnace.tier.04",
-                "Advanced Plasma Arc Furnace III",
-                4,
-                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.plasmaArcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PLASMA_ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PLASMA_ARC_FURNACE_EV.ID)
+                .setName("basicmachine.plasmaarcfurnace.tier.04", "Advanced Plasma Arc Furnace III")
+                .setTier(4)
+                .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
+                .setRecipes(plasmaArcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("PLASMA_ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_PlasmaArcFurnace.set(
-            new MTEBasicMachineWithRecipe(
-                PLASMA_ARC_FURNACE_IV.ID,
-                "basicmachine.plasmaarcfurnace.tier.05",
-                "Advanced Plasma Arc Furnace IV",
-                5,
-                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.plasmaArcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PLASMA_ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PLASMA_ARC_FURNACE_IV.ID)
+                .setName("basicmachine.plasmaarcfurnace.tier.05", "Advanced Plasma Arc Furnace IV")
+                .setTier(5)
+                .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
+                .setRecipes(plasmaArcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("PLASMA_ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PlasmaArcFurnaceLuV.set(
-            new MTEBasicMachineWithRecipe(
-                PLASMA_ARC_FURNACE_LuV.ID,
-                "basicmachine.plasmaarcfurnace.tier.06",
-                "Elite Plasma Arc Furnace",
-                6,
-                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                plasmaArcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PLASMA_ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PLASMA_ARC_FURNACE_LuV.ID)
+                .setName("basicmachine.plasmaarcfurnace.tier.06", "Elite Plasma Arc Furnace")
+                .setTier(6)
+                .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
+                .setRecipes(plasmaArcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("PLASMA_ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PlasmaArcFurnaceZPM.set(
-            new MTEBasicMachineWithRecipe(
-                PLASMA_ARC_FURNACE_ZPM.ID,
-                "basicmachine.plasmaarcfurnace.tier.07",
-                "Elite Plasma Arc Furnace II",
-                7,
-                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                plasmaArcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PLASMA_ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PLASMA_ARC_FURNACE_ZPM.ID)
+                .setName("basicmachine.plasmaarcfurnace.tier.07", "Elite Plasma Arc Furnace II")
+                .setTier(7)
+                .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
+                .setRecipes(plasmaArcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("PLASMA_ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PlasmaArcFurnaceUV.set(
-            new MTEBasicMachineWithRecipe(
-                PLASMA_ARC_FURNACE_UV.ID,
-                "basicmachine.plasmaarcfurnace.tier.08",
-                "Ultimate Plasma Discharge Heater",
-                8,
-                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                plasmaArcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PLASMA_ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PLASMA_ARC_FURNACE_UV.ID)
+                .setName("basicmachine.plasmaarcfurnace.tier.08", "Ultimate Plasma Discharge Heater")
+                .setTier(8)
+                .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
+                .setRecipes(plasmaArcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("PLASMA_ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PlasmaArcFurnaceUHV.set(
-            new MTEBasicMachineWithRecipe(
-                PLASMA_ARC_FURNACE_UHV.ID,
-                "basicmachine.plasmaarcfurnace.tier.09",
-                "Epic Plasma Discharge Heater",
-                9,
-                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                plasmaArcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PLASMA_ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PLASMA_ARC_FURNACE_UHV.ID)
+                .setName("basicmachine.plasmaarcfurnace.tier.09", "Epic Plasma Discharge Heater")
+                .setTier(9)
+                .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
+                .setRecipes(plasmaArcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("PLASMA_ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PlasmaArcFurnaceUEV.set(
-            new MTEBasicMachineWithRecipe(
-                PLASMA_ARC_FURNACE_UEV.ID,
-                "basicmachine.plasmaarcfurnace.tier.10",
-                "Epic Plasma Discharge Heater II",
-                10,
-                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                plasmaArcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PLASMA_ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PLASMA_ARC_FURNACE_UEV.ID)
+                .setName("basicmachine.plasmaarcfurnace.tier.10", "Epic Plasma Discharge Heater II")
+                .setTier(10)
+                .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
+                .setRecipes(plasmaArcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("PLASMA_ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PlasmaArcFurnaceUIV.set(
-            new MTEBasicMachineWithRecipe(
-                PLASMA_ARC_FURNACE_UIV.ID,
-                "basicmachine.plasmaarcfurnace.tier.11",
-                "Epic Plasma Discharge Heater III",
-                11,
-                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                plasmaArcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PLASMA_ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PLASMA_ARC_FURNACE_UIV.ID)
+                .setName("basicmachine.plasmaarcfurnace.tier.11", "Epic Plasma Discharge Heater III")
+                .setTier(11)
+                .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
+                .setRecipes(plasmaArcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("PLASMA_ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
 
         ItemList.PlasmaArcFurnaceUMV.set(
-            new MTEBasicMachineWithRecipe(
-                PLASMA_ARC_FURNACE_UMV.ID,
-                "basicmachine.plasmaarcfurnace.tier.12",
-                "Epic Plasma Discharge Heater IV",
-                12,
-                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                plasmaArcFurnaceRecipes,
-                1,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_ARC,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "PLASMA_ARC_FURNACE").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(PLASMA_ARC_FURNACE_UMV.ID)
+                .setName("basicmachine.plasmaarcfurnace.tier.12", "Epic Plasma Discharge Heater IV")
+                .setTier(12)
+                .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
+                .setRecipes(plasmaArcFurnaceRecipes)
+                .setSlotsCount(1, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("PLASMA_ARC_FURNACE")
+                .build()
+                .getStackForm(1L));
     }
 
     private void registerCanningMachine() {
         ItemList.Machine_LV_Canner.set(
-            new MTEBasicMachineWithRecipe(
-                CANNER_LV.ID,
-                "basicmachine.canner.tier.01",
-                "Basic Canning Machine",
-                1,
-                MachineType.CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CANNER_LV.ID)
+                .setName("basicmachine.canner.tier.01", "Basic Canning Machine")
+                .setTier(1)
+                .setDescription(MachineType.CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Canner.set(
-            new MTEBasicMachineWithRecipe(
-                CANNER_MV.ID,
-                "basicmachine.canner.tier.02",
-                "Advanced Canning Machine",
-                2,
-                MachineType.CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CANNER_MV.ID)
+                .setName("basicmachine.canner.tier.02", "Advanced Canning Machine")
+                .setTier(2)
+                .setDescription(MachineType.CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Canner.set(
-            new MTEBasicMachineWithRecipe(
-                CANNER_HV.ID,
-                "basicmachine.canner.tier.03",
-                "Advanced Canning Machine II",
-                3,
-                MachineType.CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CANNER_HV.ID)
+                .setName("basicmachine.canner.tier.03", "Advanced Canning Machine II")
+                .setTier(3)
+                .setDescription(MachineType.CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Canner.set(
-            new MTEBasicMachineWithRecipe(
-                CANNER_EV.ID,
-                "basicmachine.canner.tier.04",
-                "Advanced Canning Machine III",
-                4,
-                MachineType.CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CANNER_EV.ID)
+                .setName("basicmachine.canner.tier.04", "Advanced Canning Machine III")
+                .setTier(4)
+                .setDescription(MachineType.CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Canner.set(
-            new MTEBasicMachineWithRecipe(
-                CANNER_IV.ID,
-                "basicmachine.canner.tier.05",
-                "Advanced Canning Machine IV",
-                5,
-                MachineType.CANNER.tooltipDescription(),
-                RecipeMaps.cannerRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CANNER_IV.ID)
+                .setName("basicmachine.canner.tier.05", "Advanced Canning Machine IV")
+                .setTier(5)
+                .setDescription(MachineType.CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CanningMachineLuV.set(
-            new MTEBasicMachineWithRecipe(
-                CANNING_MACHINE_LuV.ID,
-                "basicmachine.canner.tier.06",
-                "Elite Canning Machine",
-                6,
-                MachineType.CANNER.tooltipDescription(),
-                cannerRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CANNING_MACHINE_LuV.ID)
+                .setName("basicmachine.canner.tier.06", "Elite Canning Machine")
+                .setTier(6)
+                .setDescription(MachineType.CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CanningMachineZPM.set(
-            new MTEBasicMachineWithRecipe(
-                CANNING_MACHINE_ZPM.ID,
-                "basicmachine.canner.tier.07",
-                "Elite Canning Machine II",
-                7,
-                MachineType.CANNER.tooltipDescription(),
-                cannerRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CANNING_MACHINE_ZPM.ID)
+                .setName("basicmachine.canner.tier.07", "Elite Canning Machine II")
+                .setTier(7)
+                .setDescription(MachineType.CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CanningMachineUV.set(
-            new MTEBasicMachineWithRecipe(
-                CANNING_MACHINE_UV.ID,
-                "basicmachine.canner.tier.08",
-                "Ultimate Can Operator",
-                8,
-                MachineType.CANNER.tooltipDescription(),
-                cannerRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CANNING_MACHINE_UV.ID)
+                .setName("basicmachine.canner.tier.08", "Ultimate Can Operator")
+                .setTier(8)
+                .setDescription(MachineType.CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CanningMachineUHV.set(
-            new MTEBasicMachineWithRecipe(
-                CANNING_MACHINE_UHV.ID,
-                "basicmachine.canner.tier.09",
-                "Epic Can Operator",
-                9,
-                MachineType.CANNER.tooltipDescription(),
-                cannerRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CANNING_MACHINE_UHV.ID)
+                .setName("basicmachine.canner.tier.09", "Epic Can Operator")
+                .setTier(9)
+                .setDescription(MachineType.CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CanningMachineUEV.set(
-            new MTEBasicMachineWithRecipe(
-                CANNING_MACHINE_UEV.ID,
-                "basicmachine.canner.tier.10",
-                "Epic Can Operator II",
-                10,
-                MachineType.CANNER.tooltipDescription(),
-                cannerRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CANNING_MACHINE_UEV.ID)
+                .setName("basicmachine.canner.tier.10", "Epic Can Operator II")
+                .setTier(10)
+                .setDescription(MachineType.CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CanningMachineUIV.set(
-            new MTEBasicMachineWithRecipe(
-                CANNING_MACHINE_UIV.ID,
-                "basicmachine.canner.tier.11",
-                "Epic Can Operator III",
-                11,
-                MachineType.CANNER.tooltipDescription(),
-                cannerRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CANNING_MACHINE_UIV.ID)
+                .setName("basicmachine.canner.tier.11", "Epic Can Operator III")
+                .setTier(11)
+                .setDescription(MachineType.CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CANNER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CanningMachineUMV.set(
-            new MTEBasicMachineWithRecipe(
-                CANNING_MACHINE_UMV.ID,
-                "basicmachine.canner.tier.12",
-                "Epic Can Operator IV",
-                12,
-                MachineType.CANNER.tooltipDescription(),
-                cannerRecipes,
-                2,
-                2,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CANNER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CANNING_MACHINE_UMV.ID)
+                .setName("basicmachine.canner.tier.12", "Epic Can Operator IV")
+                .setTier(12)
+                .setDescription(MachineType.CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(2, 2)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CANNER")
+                .build()
+                .getStackForm(1L));
     }
 
     private static void registerDynamoHatch() {
@@ -9458,7 +8838,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Hatch_Input_Bus_Debug.set(
             new MTEHatchInputBusDebug(INPUT_BUS_DEBUG.ID, "hatch.input_bus.debug", "Debug Input Bus", 9)
-                .getStackForm(1l));
+                .getStackForm(1L));
     }
 
     private static void registerOutputBus() {
@@ -10164,214 +9544,200 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private void registerCircuitAssembler() {
         ItemList.Machine_LV_CircuitAssembler.set(
-            new MTEBasicMachineWithRecipe(
-                CIRCUIT_ASSEMBLER_LV.ID,
-                "basicmachine.circuitassembler.tier.01",
-                "Basic Circuit Assembler",
-                1,
-                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
-                RecipeMaps.circuitAssemblerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CIRCUITASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CIRCUIT_ASSEMBLER_LV.ID)
+                .setName("basicmachine.circuitassembler.tier.01", "Basic Circuit Assembler")
+                .setTier(1)
+                .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
+                .setRecipes(circuitAssemblerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("CIRCUITASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_CircuitAssembler.set(
-            new MTEBasicMachineWithRecipe(
-                CIRCUIT_ASSEMBLER_MV.ID,
-                "basicmachine.circuitassembler.tier.02",
-                "Advanced Circuit Assembler",
-                2,
-                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
-                RecipeMaps.circuitAssemblerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CIRCUITASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CIRCUIT_ASSEMBLER_MV.ID)
+                .setName("basicmachine.circuitassembler.tier.02", "Advanced Circuit Assembler")
+                .setTier(2)
+                .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
+                .setRecipes(circuitAssemblerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("CIRCUITASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_CircuitAssembler.set(
-            new MTEBasicMachineWithRecipe(
-                CIRCUIT_ASSEMBLER_HV.ID,
-                "basicmachine.circuitassembler.tier.03",
-                "Advanced Circuit Assembler II",
-                3,
-                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
-                RecipeMaps.circuitAssemblerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CIRCUITASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CIRCUIT_ASSEMBLER_HV.ID)
+                .setName("basicmachine.circuitassembler.tier.03", "Advanced Circuit Assembler II")
+                .setTier(3)
+                .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
+                .setRecipes(circuitAssemblerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("CIRCUITASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_CircuitAssembler.set(
-            new MTEBasicMachineWithRecipe(
-                CIRCUIT_ASSEMBLER_EV.ID,
-                "basicmachine.circuitassembler.tier.04",
-                "Advanced Circuit Assembler III",
-                4,
-                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
-                RecipeMaps.circuitAssemblerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CIRCUITASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CIRCUIT_ASSEMBLER_EV.ID)
+                .setName("basicmachine.circuitassembler.tier.04", "Advanced Circuit Assembler III")
+                .setTier(4)
+                .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
+                .setRecipes(circuitAssemblerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("CIRCUITASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_CircuitAssembler.set(
-            new MTEBasicMachineWithRecipe(
-                CIRCUIT_ASSEMBLER_IV.ID,
-                "basicmachine.circuitassembler.tier.05",
-                "Advanced Circuit Assembler IV",
-                5,
-                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
-                RecipeMaps.circuitAssemblerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CIRCUITASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CIRCUIT_ASSEMBLER_IV.ID)
+                .setName("basicmachine.circuitassembler.tier.05", "Advanced Circuit Assembler IV")
+                .setTier(5)
+                .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
+                .setRecipes(circuitAssemblerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("CIRCUITASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_LuV_CircuitAssembler.set(
-            new MTEBasicMachineWithRecipe(
-                CIRCUIT_ASSEMBLER_LuV.ID,
-                "basicmachine.circuitassembler.tier.06",
-                "Advanced Circuit Assembler V",
-                6,
-                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
-                RecipeMaps.circuitAssemblerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CIRCUITASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CIRCUIT_ASSEMBLER_LuV.ID)
+                .setName("basicmachine.circuitassembler.tier.06", "Advanced Circuit Assembler V")
+                .setTier(6)
+                .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
+                .setRecipes(circuitAssemblerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("CIRCUITASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_ZPM_CircuitAssembler.set(
-            new MTEBasicMachineWithRecipe(
-                CIRCUIT_ASSEMBLER_ZPM.ID,
-                "basicmachine.circuitassembler.tier.07",
-                "Advanced Circuit Assembler VI",
-                7,
-                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
-                RecipeMaps.circuitAssemblerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CIRCUITASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CIRCUIT_ASSEMBLER_ZPM.ID)
+                .setName("basicmachine.circuitassembler.tier.07", "Advanced Circuit Assembler VI")
+                .setTier(7)
+                .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
+                .setRecipes(circuitAssemblerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("CIRCUITASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_UV_CircuitAssembler.set(
-            new MTEBasicMachineWithRecipe(
-                CIRCUIT_ASSEMBLER_UV.ID,
-                "basicmachine.circuitassembler.tier.08",
-                "Advanced Circuit Assembler VII",
-                8,
-                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
-                RecipeMaps.circuitAssemblerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CIRCUITASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CIRCUIT_ASSEMBLER_UV.ID)
+                .setName("basicmachine.circuitassembler.tier.08", "Advanced Circuit Assembler VII")
+                .setTier(8)
+                .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
+                .setRecipes(circuitAssemblerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("CIRCUITASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CircuitAssemblerUHV.set(
-            new MTEBasicMachineWithRecipe(
-                CIRCUIT_ASSEMBLER_UHV.ID,
-                "basicmachine.circuitassembler.tier.09",
-                "Ultimate Circuit Assembling Machine",
-                9,
-                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
-                circuitAssemblerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CIRCUITASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CIRCUIT_ASSEMBLER_UHV.ID)
+                .setName("basicmachine.circuitassembler.tier.09", "Ultimate Circuit Assembling Machine")
+                .setTier(9)
+                .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
+                .setRecipes(circuitAssemblerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("CIRCUITASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CircuitAssemblerUEV.set(
-            new MTEBasicMachineWithRecipe(
-                CIRCUIT_ASSEMBLER_UEV.ID,
-                "basicmachine.circuitassembler.tier.10",
-                "Ultimate Circuit Assembling Machine II",
-                10,
-                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
-                circuitAssemblerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CIRCUITASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CIRCUIT_ASSEMBLER_UEV.ID)
+                .setName("basicmachine.circuitassembler.tier.10", "Ultimate Circuit Assembling Machine II")
+                .setTier(10)
+                .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
+                .setRecipes(circuitAssemblerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("CIRCUITASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CircuitAssemblerUIV.set(
-            new MTEBasicMachineWithRecipe(
-                CIRCUIT_ASSEMBLER_UIV.ID,
-                "basicmachine.circuitassembler.tier.11",
-                "Ultimate Circuit Assembling Machine III",
-                11,
-                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
-                circuitAssemblerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CIRCUITASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CIRCUIT_ASSEMBLER_UIV.ID)
+                .setName("basicmachine.circuitassembler.tier.11", "Ultimate Circuit Assembling Machine III")
+                .setTier(11)
+                .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
+                .setRecipes(circuitAssemblerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("CIRCUITASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CircuitAssemblerUMV.set(
-            new MTEBasicMachineWithRecipe(
-                CIRCUIT_ASSEMBLER_UMV.ID,
-                "basicmachine.circuitassembler.tier.12",
-                "Ultimate Circuit Assembling Machine IV",
-                12,
-                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
-                circuitAssemblerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CIRCUITASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CIRCUIT_ASSEMBLER_UMV.ID)
+                .setName("basicmachine.circuitassembler.tier.12", "Ultimate Circuit Assembling Machine IV")
+                .setTier(12)
+                .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
+                .setRecipes(circuitAssemblerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("CIRCUITASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CircuitAssemblerUXV.set(
-            new MTEBasicMachineWithRecipe(
-                CIRCUIT_ASSEMBLER_UXV.ID,
-                "basicmachine.circuitassembler.tier.13",
-                "Ultimate Circuit Assembling Machine V",
-                13,
-                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
-                circuitAssemblerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CIRCUITASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CIRCUIT_ASSEMBLER_UXV.ID)
+                .setName("basicmachine.circuitassembler.tier.13", "Ultimate Circuit Assembling Machine V")
+                .setTier(13)
+                .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
+                .setRecipes(circuitAssemblerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("CIRCUITASSEMBLER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.CircuitAssemblerMAX.set(
-            new MTEBasicMachineWithRecipe(
-                CIRCUIT_ASSEMBLER_MAX.ID,
-                "basicmachine.circuitassembler.tier.14",
-                "MAX Circuit Assembling Machine",
-                14,
-                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
-                circuitAssemblerRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CIRCUITASSEMBLER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(CIRCUIT_ASSEMBLER_MAX.ID)
+                .setName("basicmachine.circuitassembler.tier.14", "MAX Circuit Assembling Machine")
+                .setTier(14)
+                .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
+                .setRecipes(circuitAssemblerRecipes)
+                .setSlotsCount(6, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("CIRCUITASSEMBLER")
+                .build()
+                .getStackForm(1L));
     }
 
     private void registerWetTransformer() {
