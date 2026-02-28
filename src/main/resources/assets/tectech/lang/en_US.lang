@@ -754,6 +754,7 @@ gt.blockmachines.multimachine.em.scanner.desc.0=Controller block of the Elementa
 gt.blockmachines.multimachine.em.research.type=Research Station, Scanner
 gt.blockmachines.multimachine.em.research.hint.0=1 - Classic/Data Hatches or Computer casing
 gt.blockmachines.multimachine.em.research.hint.1=2 - Holder Hatch
+gt.blockmachines.multimachine.em.research.hint.2=3 - Output Bus, Input Hatch, or Advanced Computer Casing
 gt.blockmachines.multimachine.em.research.desc.1=Used to scan Data Sticks for Assembly Line Recipes
 gt.blockmachines.multimachine.em.research.desc.2=Needs to be fed with computation to work
 gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until the Data Stick is written
@@ -1006,7 +1007,7 @@ fog.upgrade.text.23=Multiplies maximum processing voltage by 4 per active ring, 
 fog.upgrade.text.24=Allows the Heliothermal Plasma Fabricator to process up to T5 plasmas.
 fog.upgrade.text.25=Allows the Heliofusion Exoticizer to be affected by other upgrade benefits, but those benefits are square rooted first. The overclock bonus is adjusted via the following formula: OC Factor = 2 + (Base OC Factor - 2)^2
 fog.upgrade.text.26=Allows construction of the second ring and adds 4 module slots.
-fog.upgrade.text.27=Uncaps maximum fuel consumption, but fuel consumption used in bonus calculations scales according to this formula: Actual FC = Current Max FC + (Current FC - Current Max FC)^0.4, where FC refers to fuel consumption and max FC refers to the max fuel consumption without this upgrade.
+fog.upgrade.text.27=Uncaps maximum fuel consumption, but fuel consumption used in bonus calculations scales according to this formula: Actual FC = Current Max FC + (Current FC - Current Max FC)^0.4, where FC refers to fuel consumption and max FC refers to the max fuel consumption without this upgrade. Note that fuel consumption cannot exceed 2^31 for technical reasons.
 fog.upgrade.text.28=Uncaps maximum processing voltage. Voltage can be set in each module's GUI.
 fog.upgrade.text.29=Unlocks Magmatter production in the Heliofusion Exoticizer and creation of exotic plasmas in the Heliothermal Plasma Fabricator.
 fog.upgrade.text.30=Allows construction of the third ring, adds 4 module slots and unlocks Graviton Shard ejection & injection.
@@ -1959,6 +1960,11 @@ tt.eoh.spacetime.standard.tooltip.1=§b§lCapable of running recipes up to tier 
 tt.infodata.multi.energy_hatches=Energy Hatches: %s EU / %s EU
 tt.infodata.multi.currently_generates=Currently generates: %s EU/t at %s A
 tt.infodata.multi.computation=Computation: §a%s §r/ §e%s
+tt.infodata.multi.connection_health=Quantum Computer Connection: %s
+tt.infodata.multi.connection_health.inactive=Inactive
+tt.infodata.multi.connection_health.established=Established
+tt.infodata.multi.connection_health.waiting=Waiting for Response
+tt.infodata.multi.connection_health.decoherence=Decoherence Detected
 tt.infodata.multi.max_parallel=Max Parallel: %s
 tt.infodata.multi.multiplier.recipe_time=Recipe time multiplier: %s
 tt.infodata.multi.multiplier.energy=Energy multiplier: %s
