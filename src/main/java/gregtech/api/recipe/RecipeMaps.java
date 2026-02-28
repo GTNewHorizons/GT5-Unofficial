@@ -1666,6 +1666,8 @@ public final class RecipeMaps {
                 .setHeight(100))
         .build();
 
+    public static final ScannerHandlerRegistry scannerHandlers = new ScannerHandlerRegistry();
+
     public static final RecipeMap<RecipeMapBackend> nanochipConversionRecipes = RecipeMapBuilder
         .of("gt.recipe.nanochip.conversion")
         .maxIO(1, 1, 0, 0)
