@@ -810,8 +810,8 @@ GT5U.MBTT.EuDiscountBase=Uses %s of the EU normally required
 GT5U.MBTT.EuDiscountTiered=Uses %s less EU per %s Tier
 GT5U.MBTT.Parallel_Multiplicative=%s Parallels per %s Tier
 GT5U.MBTT.StructureBy=Structure by
-gt.mbtt.info.l=L
-gt.mbtt.info.l_s=L/s
+gt.unit.liter=L
+gt.unit.liter_per_second=L/s
 
 GT5U.MBTT.Parallel.Base=%s Parallels
 GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier
