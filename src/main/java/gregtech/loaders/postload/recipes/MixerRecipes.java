@@ -1592,7 +1592,7 @@ public class MixerRecipes implements Runnable {
 
         if (Mods.CropsNH.isModLoaded()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(getModItem(Mods.CropsNH.ID, "weedEx", 1))
+                .itemInputs(getModItem(Mods.CropsNH.ID, "weedEX", 1))
                 .fluidInputs(Materials.NaphthenicAcid.getFluid(10))
                 .fluidOutputs(Materials.WeedEX9000.getFluid(750))
                 .duration(5 * SECONDS)
