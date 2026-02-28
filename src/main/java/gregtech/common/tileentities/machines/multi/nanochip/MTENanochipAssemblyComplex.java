@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -254,12 +255,30 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.2")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.3")))
-            .addStructureInfo(TOOLTIP_VCI_LONG + ": " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
-            .addStructureInfo(TOOLTIP_VCO_LONG + ": " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
+            .beginStructureBlock(63, 49, 63, false)
+            .addOtherStructurePart(
+                translateToLocal("GT5U.tooltip.nac.interface.nac_module"),
+                translateToLocal("GT5U.tooltip.nac.interface.structure_outer_ring_base_casing"))
+            // Nanochip Reinforcement Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 3956, false)
+            // Nanochip Complex Glass
+            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 2226, false)
+            // Nanochip Mesh Interface Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 1720, false)
+            // Nanochip Computational Matrix Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.3.name"), 721, false)
+            // Naquadah Frame Box
+            .addCasingInfoExactly(
+                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Naquadah.getLocalizedName()),
+                53,
+                false)
+            // Nanochip Firewall Projection Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.4.name"), 32, false)
+            .addStructureInfo(TOOLTIP_VCI_LONG + " " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
+            .addStructureInfo(TOOLTIP_VCO_LONG + " " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
             .addInputBus(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
             .addOutputBus(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
             .addEnergyHatch(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
-
             .toolTipFinisher();
     }
 
@@ -455,7 +474,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                     // Skip empty hatches
                     if (hatch.contents == null) continue;
                     Map<CircuitComponent, Long> contents = hatch.contents.getComponents();
-                    for (Map.Entry<CircuitComponent, Long> entry : contents.entrySet()) {
+                    // Use Iterator to protect against ConcurrentModificationException
+                    Iterator<Map.Entry<CircuitComponent, Long>> iterator = contents.entrySet()
+                        .iterator();
+                    while (iterator.hasNext()) {
+                        Map.Entry<CircuitComponent, Long> entry = iterator.next();
                         CircuitComponent component = entry.getKey();
                         long amount = entry.getValue();
                         if (component.realComponent != null) {
@@ -464,9 +487,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                                 long originalAmount = contents.get(component);
                                 long newAmount = originalAmount - ejected;
                                 if (newAmount == 0) {
-                                    contents.remove(component);
+                                    iterator.remove();
                                 } else {
-                                    contents.put(component, newAmount);
+                                    entry.setValue(newAmount);
                                 }
                             }
                         }
@@ -594,6 +617,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         BigInteger availableEnergy = BigInteger
                             .valueOf(Math.min(this.getHatchVar(), this.getMaxInputEu() * MODULE_CONNECT_INTERVAL));
                         if (availableEnergy.compareTo(BigInteger.ZERO) <= 0) return;
+                        BigInteger drainedEnergy = BigInteger.ZERO;
                         // iterate over the modules, sending EU to fill their internal buffers
                         for (MTENanochipAssemblyModuleBase<?> module : modules) {
                             module.connect(this);
@@ -606,9 +630,10 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                                 .min(availableEnergy);
                             BigInteger sentEnergy = module.increaseStoredEU(euToSend);
                             availableEnergy = availableEnergy.subtract(sentEnergy);
+                            drainedEnergy = drainedEnergy.add(sentEnergy);
                             if (availableEnergy.compareTo(BigInteger.ZERO) <= 0) break;
                         }
-                        setHatchVar(getHatchVar() - availableEnergy.longValue());
+                        setHatchVar(getHatchVar() - drainedEnergy.longValue());
                     }
                 }
             } else {

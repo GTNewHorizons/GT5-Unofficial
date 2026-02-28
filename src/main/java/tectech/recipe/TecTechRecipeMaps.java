@@ -3,6 +3,9 @@ package tectech.recipe;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import gregtech.api.gui.modularui.GTUITextures;
@@ -16,9 +19,43 @@ import tectech.thing.gui.TecTechUITextures;
 
 public class TecTechRecipeMaps {
 
+    public static class TTResearchStationALRecipe extends GTRecipe.RecipeAssemblyLine {
+
+        public long mComputation;
+        public long mAmperage;
+        public long mComputationRequiredPerSec;
+
+        public TTResearchStationALRecipe(ItemStack aResearchItem, int aResearchTime, int aResearchVoltage,
+            ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt,
+            long aComputation, int aAmperage, int aComputationRequiredPerSec) {
+            super(aResearchItem, aResearchTime, aResearchVoltage, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
+            this.mComputation = aComputation;
+            this.mAmperage = aAmperage;
+            this.mComputationRequiredPerSec = aComputationRequiredPerSec;
+        }
+
+        public TTResearchStationALRecipe(ItemStack aResearchItem, int aResearchTime, int aResearchVoltage,
+            ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt,
+            ItemStack[][] aAlt, long aComputation, int aAmperage, int aComputationRequiredPerSec) {
+            super(
+                aResearchItem,
+                aResearchTime,
+                aResearchVoltage,
+                aInputs,
+                aFluidInputs,
+                aOutput,
+                aDuration,
+                aEUt,
+                aAlt);
+            this.mComputation = aComputation;
+            this.mAmperage = aAmperage;
+            this.mComputationRequiredPerSec = aComputationRequiredPerSec;
+        }
+    }
+
     public static void init() {}
 
-    public static final List<GTRecipe.RecipeAssemblyLine> researchableALRecipeList = new ArrayList<>();
+    public static final List<TTResearchStationALRecipe> researchableALRecipeList = new ArrayList<>();
 
     public static final RecipeMap<RecipeMapBackend> eyeOfHarmonyRecipes = RecipeMapBuilder.of("gt.recipe.eyeofharmony")
         .maxIO(

@@ -55,7 +55,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         { " AAAAA ", "BBBCBBB", "ABD DBA", " BD DB ", " BD DB ", " BD DB ", "ABD DBA" },
         { " A   A ", "BBCCCBB", "AD   DA", " DCCCD ", " D   D ", " DCCCD ", "AD   DA" },
         { " A   A ", "CCCBCCC", "C  C  C", "C CCC C", "C     C", "C CCC C", "C  C  C" },
-        { " A   A ", "BBCCCBB", "AD   DA", " DCC D ", " D   D ", " DCCCD ", "AD   DA" },
+        { " A   A ", "BBCCCBB", "AD   DA", " DCCCD ", " D   D ", " DCCCD ", "AD   DA" },
         { " AAAAA ", "BBBCBBB", "ABD DBA", " BD DB ", " BD DB ", " BD DB ", "ABD DBA" },
         { "       ", " BBCBB ", " AACAA ", "   C   ", "   C   ", "   C   ", " AACAA " } };
     public static final IStructureDefinition<MTEOpticalOrganizerModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
@@ -159,9 +159,24 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             .addInfo(getWaterTooltipLine("8", WATER_LIST.get(5).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.7x"), TooltipHelper.EFF_COLOR))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.flavor.1")))
+            .beginStructureBlock(7, 10, 7, false)
+            .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
+            // Nanochip Reinforcement Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 56, false)
+            // Nanochip Mesh Interface Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 49, false)
+            // Awakened Draconium Frame Box
+            .addCasingInfoExactly(
+                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.DraconiumAwakened.getLocalizedName()),
+                48,
+                false)
+            // Nanochip Complex Glass
+            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 40, false)
             .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
+            .addStructureInfoSeparator()
+            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
             .toolTipFinisher();
         // spotless:on
     }
