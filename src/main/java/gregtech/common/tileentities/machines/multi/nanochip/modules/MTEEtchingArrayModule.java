@@ -188,8 +188,30 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.3"))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.etching_array.flavor.1")))
+            .beginStructureBlock(7, 7, 7, false)
+            .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
+            // Nanochip Reinforcement Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 28, false)
+            // Nanochip Mesh Interface Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 24, false)
+            // Enriched Holmium Frame Box
+            .addCasingInfoExactly(
+                translateToLocal("gt.blockframes.10.name")
+                    .replace("%material", Materials.EnrichedHolmium.getLocalizedName()),
+                17,
+                false)
+            // Nanochip Complex Glass
+            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 13, false)
+            // Shielded Accelerator Casing
+            .addCasingInfoExactly(translateToLocal("casing.shielded_accelerator.name"), 9, false)
+            // Non-Photonic Matter Exclusion Glass
+            .addCasingInfoExactly(translateToLocal("gt.blockglass1.3.name"), 4, false)
+            // Laser Source Hatch
+            .addCasingInfoExactly(translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), 1, true)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
+            .addStructureInfoSeparator()
+            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
             .toolTipFinisher();
     }
 

@@ -3,9 +3,11 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
@@ -104,7 +106,7 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
                 .addElement(
                     'D',
                     buildHatchAdder(MTEIndustrialElectrolyzer.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
                         .casingIndex(Casings.ElectrolyzerCasing.textureId)
                         .hint(1)
                         .buildAndChain(
@@ -152,15 +154,15 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
             .addController("Front Center")
             .addCasingInfoMin("Electrolyzer Casings", 6, false)
             .addCasingInfoExactly("Potin Frame Box", 12, false)
-            .addCasingInfoExactly("Tin Item Pipe Casing", 12, false)
-            .addCasingInfoExactly("Brass Item Pipe Casing", 12, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .addCasingInfoExactly("Tin Item Pipe Casing", 4, false)
+            .addCasingInfoExactly("Brass Item Pipe Casing", 4, false)
+            .addInputBus("Any Electrolyzer Casing", 1)
+            .addOutputBus("Any Electrolyzer Casing", 1)
+            .addInputHatch("Any Electrolyzer Casing", 1)
+            .addOutputHatch("Any Electrolyzer Casing", 1)
+            .addEnergyHatch("Any Electrolyzer Casing", 1)
+            .addMaintenanceHatch("Any Electrolyzer Casing", 1)
+            .addMufflerHatch("Any Electrolyzer Casing", 1)
             .addStructureAuthors("Vortex")
             .toolTipFinisher();
         return tt;
@@ -207,7 +209,8 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 6;
+        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 6
+            && !this.mMufflerHatches.isEmpty();
     }
 
     @Override
