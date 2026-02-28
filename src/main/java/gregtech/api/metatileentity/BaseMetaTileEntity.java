@@ -1497,13 +1497,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 1.0F, -1);
                         } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                             mStrongRedstone ^= wrenchingSide.flag;
-                            // FIXME: localize wrenchingSide
                             GTUtility.sendChatTrans(
                                 aPlayer,
                                 (mStrongRedstone & wrenchingSide.flag) != 0
                                     ? "GT5U.chat.machine.redstone_output_set.strong"
                                     : "GT5U.chat.machine.redstone_output_set.weak",
-                                wrenchingSide);
+                                new ChatComponentTranslation(GTUtility.getUnlocalizedSideName(wrenchingSide)));
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1);
                             issueBlockUpdate();
                         }

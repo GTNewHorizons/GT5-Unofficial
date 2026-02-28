@@ -1936,9 +1936,7 @@ public class GTModHandler {
                             (EntityPlayer) aPlayer);
                         return false;
                     } else {
-                        GTUtility.sendChatToPlayer(
-                            (EntityPlayer) aPlayer,
-                            GTUtility.trans("094.1", "Not enough soldering material!"));
+                        GTUtility.sendChatTrans((EntityPlayer) aPlayer, "GT5U.chat.soldering_iron.not_enough");
                     }
                 }
             } else {

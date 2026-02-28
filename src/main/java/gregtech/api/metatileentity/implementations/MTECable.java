@@ -386,8 +386,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                     .append("V")
                     .append(EnumChatFormatting.RESET);
             }
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.item.cable.swapped") + " " + message);
+            GTUtility.sendChatTrans(aPlayer, "GT5U.item.cable.swapped.s", message.toString());
         }
     }
 
@@ -398,10 +397,9 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             && GTModHandler.damageOrDechargeItem(aPlayer.inventory.getCurrentItem(), 1, 500, aPlayer)) {
             if (isConnectedAtSide(wrenchingSide)) {
                 disconnect(wrenchingSide);
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("215", "Disconnected"));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.disconnected");
             } else if (!GTMod.proxy.costlyCableConnection) {
-                if (connect(wrenchingSide) > 0)
-                    GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("214", "Connected"));
+                if (connect(wrenchingSide) > 0) GTUtility.sendChatTrans(aPlayer, "GT5U.chat.connected");
             }
             return true;
         }
@@ -415,10 +413,9 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             && GTModHandler.damageOrDechargeItem(aPlayer.inventory.getCurrentItem(), 1, 500, aPlayer)) {
             if (isConnectedAtSide(wrenchingSide)) {
                 disconnect(wrenchingSide);
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("215", "Disconnected"));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.disconnected");
             } else if (!GTMod.proxy.costlyCableConnection || GTModHandler.consumeSolderingMaterial(aPlayer)) {
-                if (connect(wrenchingSide) > 0)
-                    GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("214", "Connected"));
+                if (connect(wrenchingSide) > 0) GTUtility.sendChatTrans(aPlayer, "GT5U.chat.connected");
             }
             return true;
         }

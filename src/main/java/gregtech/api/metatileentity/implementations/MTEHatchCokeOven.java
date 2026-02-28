@@ -77,11 +77,7 @@ public class MTEHatchCokeOven extends MTEHatch {
 
         @Override
         public @NotNull String toString() {
-            return switch (this) {
-                case Input -> StatCollector.translateToLocal("GT5U.machines.coke_oven_hatch.mode.input");
-                case OutputItem -> StatCollector.translateToLocal("GT5U.machines.coke_oven_hatch.mode.output");
-                case OutputFluid -> StatCollector.translateToLocal("GT5U.machines.coke_oven_hatch.mode.output_fluid");
-            };
+            return StatCollector.translateToLocal(this.getUnlocalizedString());
         }
 
         public @NotNull String getLocalizedName() {
@@ -89,6 +85,14 @@ public class MTEHatchCokeOven extends MTEHatch {
                 case Input -> StatCollector.translateToLocal("GT5U.waila.coke_oven_hatch.mode.input");
                 case OutputItem -> StatCollector.translateToLocal("GT5U.waila.coke_oven_hatch.mode.output_item");
                 case OutputFluid -> StatCollector.translateToLocal("GT5U.waila.coke_oven_hatch.mode.output_fluid");
+            };
+        }
+
+        public @NotNull String getUnlocalizedString() {
+            return switch (this) {
+                case Input -> "GT5U.machines.coke_oven_hatch.mode.input";
+                case OutputItem -> "GT5U.machines.coke_oven_hatch.mode.output";
+                case OutputFluid -> "GT5U.machines.coke_oven_hatch.mode.output_fluid";
             };
         }
     }
@@ -282,7 +286,7 @@ public class MTEHatchCokeOven extends MTEHatch {
         if (baseMetaTileEntity.isClientSide()) return;
         mode = mode.next();
         baseMetaTileEntity.issueTileUpdate();
-        GTUtility.sendChatToPlayer(player, mode.toString());
+        GTUtility.sendChatTrans(player, mode.getUnlocalizedString());
     }
 
     private static final ITexture TEXTURE_CASING = Textures.BlockIcons

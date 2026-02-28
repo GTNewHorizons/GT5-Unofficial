@@ -239,9 +239,9 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
             final ForgeDirection tSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
             if (isConnectedAtSide(tSide)) {
                 disconnect(tSide);
-                GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("215", "Disconnected"));
+                GTUtility.sendChatTrans(entityPlayer, "GT5U.chat.disconnected");
             } else {
-                if (connect(tSide) > 0) GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("214", "Connected"));
+                if (connect(tSide) > 0) GTUtility.sendChatTrans(entityPlayer, "GT5U.chat.connected");
             }
             return true;
         }

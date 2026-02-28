@@ -2163,6 +2163,7 @@ GT5U.gui.text.contributors.playtesting=Playtesting
 GT5U.gui.chat.bindcentre=Successfully bind drone centre.
 GT5U.gui.chat.drone_level_low=Upgrade to T4 drone to active the teleport function
 # chats
+GT5U.chat.locser.error=<Deserialize error>
 GT5U.chat.void_miner.mode.black_list=Mode: Blacklist
 GT5U.chat.void_miner.mode.white_list=Mode: Whitelist
 GT5U.chat.machine.batch_mode.enable=Batch Mode: Enabled
@@ -2177,10 +2178,37 @@ GT5U.chat.machine.auto_input.disable=Auto-Input: Disabled
 GT5U.chat.machine.auto_input.enable=Auto-Input: Enabled
 GT5U.chat.machine.auto_output.disable=Auto-Output: Disabled
 GT5U.chat.machine.auto_output.enable=Auto-Output: Enabled
+GT5U.chat.machine.no_free_side=No free Side!
 GT5U.chat.buffer.sort_mode.enable=Sort mode: Enabled
 GT5U.chat.buffer.sort_mode.disable=Sort mode: Disabled
+GT5U.chat.buffer.not_regulate=Do not regulate Item Stack Size
+GT5U.chat.buffer.regulate=Regulate Item Stack Size to: %s
 GT5U.chat.worm_hole_generator.overclocks.enable=Overclocks: §aEnabled§r
 GT5U.chat.worm_hole_generator.overclocks.disable=Overclocks: §cDisabled§r
+GT5U.chat.connected=Connected
+GT5U.chat.disconnected=Disconnected
+GT5U.chat.pipe.input.enable=Input enabled
+GT5U.chat.pipe.input.disable=Input disabled
+
+GT5U.chat.hatch.output.fluid_steam_item=Outputs misc. Fluids, Steam and Items
+GT5U.chat.hatch.output.steam_item=Outputs Steam and Items
+GT5U.chat.hatch.output.steam_fluid=Outputs Steam and misc. Fluids
+GT5U.chat.hatch.output.steam=Outputs Steam
+GT5U.chat.hatch.output.fluid_item=Outputs misc. Fluids and Items
+GT5U.chat.hatch.output.item=Outputs only Items
+GT5U.chat.hatch.output.fluid=Outputs only misc. Fluids
+GT5U.chat.hatch.output.nothing=Output nothing
+GT5U.chat.hatch.output.in_brackets.none=currently none, will be locked to the next that is put in (or use fluid cell to lock)
+GT5U.chat.hatch.output.items_and_specific_fluid=Outputs items and 1 specific Fluid (%s)
+GT5U.chat.hatch.output.specific_fluid=Outputs 1 specific Fluid (%s)
+GT5U.chat.hatch.output.fluid.already_locked=Hatch is locked to a different fluid. To change the locking, empty it and made it locked to the next fluid with a screwdriver. Currently locked to %s
+GT5U.chat.hatch.output.fluid.locked_to=Successfully locked Fluid to %s
+
+GT5U.chat.wet_transformer.half_mode.enable=Transformer is now running at 8A:32A in/out Ratio.
+GT5U.chat.wet_transformer.half_mode.disable=Transformer is now running at 16A:64A in/out Ratio.
+
+GT5U.chat.soldering_iron.not_enough=Not enough soldering material!
+GT5U.chat.ore.set_ore_natural_flag=Set ore natural flag to %s
 
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
@@ -2198,7 +2226,7 @@ GT5U.item.cable.max_voltage=Max Voltage
 GT5U.item.cable.max_amperage=Max Amperage
 GT5U.item.cable.loss=Loss/Meter/Ampere
 GT5U.item.cable.eu_volt=EU-Volt
-GT5U.item.cable.swapped=Cable swapped:
+GT5U.item.cable.swapped.s=Cable swapped: %s
 GT5U.item.tank.locked_to=Content locked to %s
 
 GT5U.item.pipe.capacity=Capacity
@@ -2208,7 +2236,7 @@ GT5U.item.pipe.gas_proof.yes=Yes
 GT5U.item.pipe.gas_proof.no=No
 GT5U.item.pipe.amount=Pipe Amount
 GT5U.item.pipe.empty=Empty
-GT5U.item.pipe.swap=Pipe Swapped:
+GT5U.item.pipe.swap.s=Pipe Swapped: %s
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak + MMB to unlock.

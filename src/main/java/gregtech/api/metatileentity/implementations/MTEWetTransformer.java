@@ -118,9 +118,9 @@ public class MTEWetTransformer extends MTETransformer {
         ItemStack aTool) {
         this.mHalfMode = !mHalfMode;
         if (this.mHalfMode) {
-            GTUtility.sendChatToPlayer(aPlayer, "Transformer is now running at 8A:32A in/out Ratio.");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.wet_transformer.half_mode.enable");
         } else {
-            GTUtility.sendChatToPlayer(aPlayer, "Transformer is now running at 16A:64A in/out Ratio.");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.wet_transformer.half_mode.disable");
         }
     }
 }

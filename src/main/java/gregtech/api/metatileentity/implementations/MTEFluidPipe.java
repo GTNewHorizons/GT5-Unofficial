@@ -457,20 +457,20 @@ public class MTEFluidPipe extends MetaPipeEntity {
 
     public void connectPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer) {
         if (!isConnectedAtSide(side)) {
-            if (connect(side) > 0) GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("214", "Connected"));
+            if (connect(side) > 0) GTUtility.sendChatTrans(entityPlayer, "GT5U.chat.connected");
         } else {
             disconnect(side);
-            GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("215", "Disconnected"));
+            GTUtility.sendChatTrans(entityPlayer, "GT5U.chat.disconnected");
         }
     }
 
     public void blockPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer, byte mask) {
         if (isInputDisabledAtSide(side)) {
             mDisableInput &= ~mask;
-            GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("212", "Input enabled"));
+            GTUtility.sendChatTrans(entityPlayer, "GT5U.chat.pipe.input.enable");
         } else {
             mDisableInput |= mask;
-            GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("213", "Input disabled"));
+            GTUtility.sendChatTrans(entityPlayer, "GT5U.chat.pipe.input.disable");
         }
     }
 
@@ -559,9 +559,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
 
         // Send a chat message if anything changed
         if (message.length() > 0) {
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("GT5U.item.pipe.swap") + " " + message.toString());
+            GTUtility.sendChatTrans(aPlayer, "GT5U.item.pipe.swap.s", message.toString());
         }
 
         // Force updates to sync changes
