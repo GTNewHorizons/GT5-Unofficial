@@ -4083,7 +4083,6 @@ gtpp.gui.text.power_sub_station.power_loss=Powerloss: %s EU per tick
 gtpp.gui.text.power_sub_station.running_perfectly=Running perfectly
 gtpp.gui.text.power_sub_station.turn_on_with_mallet=Turn on with Mallet
 gtpp.gui.atmospheric_reconditioner.tooltip.reduction=Reduction: %s/s
-gtpp.gui.crop_harvestor.tooltip.water=Water: %sL / %sL
 
 gtpp.gui.multiblock.progress.text=Progress: %s s / %s s
 gtpp.gui.multiblock.eu_t_p.text=%s EU/t/parallel
