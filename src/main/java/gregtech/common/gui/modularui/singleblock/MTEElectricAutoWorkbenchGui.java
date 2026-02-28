@@ -144,8 +144,8 @@ public class MTEElectricAutoWorkbenchGui {
         bottomRow.child(modeButton);
 
         bottomRow.child(
-            new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, 18).accessibility(false, true))
-                .overlay(GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD));
+            new ItemSlot().background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD)
+                .slot(new ModularSlot(machine.inventoryHandler, 18).accessibility(false, true)));
 
         column.child(topRow);
         column.child(middleRow);
