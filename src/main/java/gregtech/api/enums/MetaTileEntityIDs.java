@@ -1275,33 +1275,61 @@ public enum MetaTileEntityIDs {
     OUTPUT_HATCH_MAX(12108),
     VOID_HATCH(12109),
     VOID_BUS(12110),
+    @Deprecated
     CropsPPCropGeneExtractorLV_retired(12501),
+    @Deprecated
     CropsPPCropGeneExtractorMV_retired(12502),
+    @Deprecated
     CropsPPCropGeneExtractorHV_retired(12503),
+    @Deprecated
     CropsPPCropGeneExtractorEV_retired(12504),
+    @Deprecated
     CropsPPCropGeneExtractorIV_retired(12505),
+    @Deprecated
     CropsPPCropGeneExtractorLuV_retired(12506),
+    @Deprecated
     CropsPPCropGeneExtractorZPM_retired(12507),
+    @Deprecated
     CropsPPCropGeneExtractorUV_retired(12508),
+    @Deprecated
     CropsPPCropGeneExtractorUHV_retired(12509),
+    @Deprecated
     CropsPPCropReplicatorLV_retired(12510),
+    @Deprecated
     CropsPPCropReplicatorMV_retired(12511),
+    @Deprecated
     CropsPPCropReplicatorHV_retired(12512),
+    @Deprecated
     CropsPPCropReplicatorEV_retired(12513),
+    @Deprecated
     CropsPPCropReplicatorIV_retired(12514),
+    @Deprecated
     CropsPPCropReplicatorLuV_retired(12515),
+    @Deprecated
     CropsPPCropReplicatorZPM_retired(12516),
+    @Deprecated
     CropsPPCropReplicatorUV_retired(12517),
+    @Deprecated
     CropsPPCropReplicatorUHV_retired(12518),
+    @Deprecated
     CropsPPCropSynthesiserLV_retired(12519),
+    @Deprecated
     CropsPPCropSynthesiserMV_retired(12520),
+    @Deprecated
     CropsPPCropSynthesiserHV_retired(12521),
+    @Deprecated
     CropsPPCropSynthesiserEV_retired(12522),
+    @Deprecated
     CropsPPCropSynthesiserIV_retired(12523),
+    @Deprecated
     CropsPPCropSynthesiserLuV_retired(12524),
+    @Deprecated
     CropsPPCropSynthesiserZPM_retired(12525),
+    @Deprecated
     CropsPPCropSynthesiserUV_retired(12526),
+    @Deprecated
     CropsPPCropSynthesiserUHV_retired(12527),
+    @Deprecated
     CropsPPCropWeedPicker_retired(12528),
     LESU(12600),
     EnergyDistributor_ULV(12601),
@@ -1941,13 +1969,21 @@ public enum MetaTileEntityIDs {
     GT4_Electric_Auto_Workbench_LuV(31096),
     GT4_Electric_Auto_Workbench_ZPM(31097),
     GT4_Electric_Auto_Workbench_UV(31098),
+    @Deprecated
     GT4_Crop_Harvester_LV_retired(31111),
+    @Deprecated
     GT4_Crop_Harvester_MV_retired(31112),
+    @Deprecated
     GT4_Crop_Harvester_HV_retired(31113),
+    @Deprecated
     GT4_Crop_Harvester_EV_retired(31114),
+    @Deprecated
     GT4_Crop_Harvester_IV_retired(31115),
+    @Deprecated
     GT4_Crop_Harvester_LuV_retired(31116),
+    @Deprecated
     GT4_Crop_Harvester_ZPM_retired(31117),
+    @Deprecated
     GT4_Crop_Harvester_UV_retired(31118),
     Mega_AlloyBlastSmelter(31150),
     QuantumForceTransformer(31151),
