@@ -39,6 +39,13 @@ public class ForgeOfGodsData {
     public static final double POWER_LOG_CONSTANT = Math.log(9);
     public static final double RECIPE_LOG_CONSTANT = Math.log(4);
     public static final double FUEL_LOG_CONSTANT = Math.log(3);
+    // These were calculated externally by taking the consumption formulae and solving for the max fuel factor
+    // that's still within max int fuel consumption (doing this here would be a bit annoying since they contain
+    // an ln(x) + x situation)
+    public static final int MAX_RESIDUE_FACTOR = 70;
+    public static final int MAX_RESIDUE_FACTOR_DISCOUNTED = 72;
+    public static final int MAX_STELLAR_PLASMA_FACTOR = 181;
+    public static final int MAX_STELLAR_PLASMA_FACTOR_DISCOUNTED = 184;
 
     private int fuelConsumptionFactor = DEFAULT_FUEL_CONSUMPTION_FACTOR;
     private int selectedFuelType;
