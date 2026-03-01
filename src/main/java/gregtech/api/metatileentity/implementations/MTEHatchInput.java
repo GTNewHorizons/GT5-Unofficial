@@ -44,8 +44,7 @@ public class MTEHatchInput extends MTEHatch {
             aNameRegional,
             aTier,
             4,
-            new String[] { "Fluid Input for Multiblocks", "Right click with screwdriver to toggle input filter",
-                String.format("Capacity: %sL", formatNumber(8000L * (1L << aTier))) });
+            new String[] { GTUtility.nestParams("gt.te.input_hatch.desc", formatNumber(8000L * (1L << aTier))) });
     }
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {

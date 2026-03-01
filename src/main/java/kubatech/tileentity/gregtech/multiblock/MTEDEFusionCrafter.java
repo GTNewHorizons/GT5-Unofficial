@@ -26,7 +26,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -138,27 +137,21 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Crafter, DEFC")
-            .addInfo(
-                "Gains 1 " + EnumChatFormatting.LIGHT_PURPLE
-                    + "perfect overclock"
-                    + EnumChatFormatting.GRAY
-                    + " per casing tier above recipe")
-            .addInfo("Normal EU OC still applies !")
+        tt.addMachineType("machtype.defc")
+            .addInfo("gt.defc.tips")
             .beginStructureBlock(5, 10, 5, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Naquadah Alloy Fusion Casing", 19, false)
-            .addOtherStructurePart("Fusion Coil Block", "Center pillar")
-            .addOtherStructurePart("Fusion Machine Casing", "Touching Fusion Coil Block at every side")
-            .addOtherStructurePart("Tiered Fusion Casing", "Rings (5x5 hollow) at layer 4 and 7")
-            .addStructureInfo("Bloody Ichorium for tier 1, Draconium for tier 2, etc")
-            .addStructureInfo("To use tier 3 + you have to use fusion casing MK II")
-            .addInputBus("Any bottom casing", 1)
-            .addInputHatch("Any bottom casing", 1)
-            .addOutputBus("Any bottom casing", 1)
-            .addOutputHatch("Any bottom casing", 1)
-            .addEnergyHatch("Any bottom casing", 1)
-            .addMaintenanceHatch("Any bottom casing", 1)
+            .addController("front_bottom_middle")
+            .addCasingInfoMin("defc.casing.7.name", 19)
+            .addStructurePart("gt.blockcasings4.7.name", "gt.defc.info.coil")
+            .addStructurePart("gt.blockcasings4.6.name", "gt.defc.info.casing")
+            .addStructurePart("GT5U.tooltip.structure.tiered_fusion_casing", "gt.defc.info.tiered_casing")
+            .addStructureInfo("gt.defc.info.tiers")
+            .addInputBus("<bottom casing>", 1)
+            .addInputHatch("<bottom casing>", 1)
+            .addOutputBus("<bottom casing>", 1)
+            .addOutputHatch("<bottom casing>", 1)
+            .addEnergyHatch("<bottom casing>", 1)
+            .addMaintenanceHatch("<bottom casing>", 1)
             .toolTipFinisher(GTValues.AuthorKuba, "Prometheus0000");
         return tt;
     }

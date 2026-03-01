@@ -46,6 +46,7 @@ import gregtech.api.util.ParallelHelper;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -124,18 +125,18 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Gas Sparge Tower")
-            .addInfo("Runs gases through depleted molten salts to extract precious fluids")
-            .addInfo("Works the same way as the Distillation Tower, but with a fixed height of 8")
-            .addInfo("Fluids are only put out at the correct height")
-            .addInfo("The correct height equals the slot number in the NEI recipe")
+        tt.addMachineType("machtype.sparge")
+            .addInfo("gt.sparge_tower.tips")
             .beginStructureBlock(3, 8, 3, true)
-            .addController("Front bottom")
-            .addOtherStructurePart("Sparge Tower Exterior Casing", "45 (minimum)")
-            .addEnergyHatch("Any casing", 1, 2)
-            .addMaintenanceHatch("Any casing", 1, 2, 3)
-            .addInputHatch("2x Input Hatches (Any bottom layer casing)", 1)
-            .addOutputHatch("6x Output Hatches (At least one per layer except bottom layer)", 2, 3)
+            .addController("front_bottom_middle")
+            .addCasingInfoMin(
+                GregtechItemList.Casing_Sparge_Tower_Exterior.get(1)
+                    .getDisplayName(),
+                45)
+            .addEnergyHatch("<casing>", 1, 2)
+            .addMaintenanceHatch("<casing>", 1, 2, 3)
+            .addInputHatch("gt.sparge_tower.info.i_hatch", 1)
+            .addOutputHatch("gt.sparge_tower.info.o_hatch", 2, 3)
             .toolTipFinisher();
         return tt;
     }

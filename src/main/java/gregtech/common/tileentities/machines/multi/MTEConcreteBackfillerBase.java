@@ -34,11 +34,13 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -96,25 +98,26 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
-        tt.addMachineType("Concrete Backfiller")
-            .addInfo("Will fill in areas below it with light concrete. This goes through walls")
-            .addInfo("Use it to remove any spawning locations beneath your base to reduce lag")
-            .addInfo("Will pull back the pipes after it finishes that layer")
-            .addInfo("Range is " + getRadius() + "x" + getRadius() + " blocks horizontally")
-            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
+        tt.addMachineType("machtype.backfiller")
             .addInfo(
-                "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
-                    : formatNumber(baseCycleTime / 20.0) + " seconds"))
+                "gt.backfiller.tips",
+                getRadius(),
+                GTUtility.getColoredTierNameFromTier((byte) getMinTier()),
+                baseCycleTime < 20 ? formatNumber(baseCycleTime) : formatNumber(baseCycleTime / 20.0),
+                baseCycleTime < 20 ? "gt.time.tick.plural" : "gt.time.second.plural")
             .beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom")
-            .addOtherStructurePart(casings, "form the 3x1x3 Base")
-            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-            .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any base casing", 1)
-            .addMaintenanceHatch("Any base casing", 1)
-            .addInputBus("Mining Pipes, optional, any base casing", 1)
-            .addInputHatch("GT Concrete, any base casing", 1)
-            .addOutputBus("Mining Pipes, optional, any base casing", 1)
+            .addController("front_bottom_middle")
+            .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.1")
+            .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.2")
+            .addStructurePart(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, getFrameMaterial(), 1)
+                    .getDisplayName(),
+                "gt.driller_shaped_mb.info.frame")
+            .addEnergyHatch(GTUtility.nestParams("gt.backfiller.info.energy", VN[getMinTier()]), 1)
+            .addMaintenanceHatch("gt.driller_shaped_mb.info.replace", 1)
+            .addInputBus("gt.backfiller.info.i_bus", 1)
+            .addInputHatch("gt.backfiller.info.i_hatch", 1)
+            .addOutputBus("gt.backfiller.info.o_bus", 1)
             .toolTipFinisher();
         return tt;
     }

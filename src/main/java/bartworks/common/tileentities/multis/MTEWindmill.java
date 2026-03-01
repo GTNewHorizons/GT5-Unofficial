@@ -236,16 +236,13 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Windmill")
-            .addInfo("A primitive Grinder powered by Kinetic energy")
-            .addInfo("Speed and output will be affected by wind speed, recipe and rotor")
-            .addInfo("Please use the Primitive Rotor")
-            .addInfo("Macerates 16 items at a time")
+        tt.addMachineType("machtype.windmill")
+            .addInfo("gt.windmill.tips.1")
             .beginStructureBlock(7, 12, 7, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Hardened Clay block", 40, false)
-            .addOtherStructurePart("Dispenser", "Any Hardened Clay block")
-            .addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay block")
+            .addController("front_bottom_middle")
+            .addCasingInfoMin("tile.clayHardened.name", 40)
+            .addStructurePart("tile.dispenser.name", "gt.windmill.info.1")
+            .addStructurePart("tile.doorWood.name", "gt.windmill.info.2")
             .addStructureHint("tile.BWRotorBlock.0.name", 1)
             .toolTipFinisher();
         return tt;

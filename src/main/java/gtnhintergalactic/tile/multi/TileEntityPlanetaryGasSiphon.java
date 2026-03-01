@@ -163,28 +163,18 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.type"));
+        tt.addMachineType("gt.blockmachines.multimachine.ig.siphon.type");
         if (TooltipUtil.siphonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.siphonLoreText);
-        tt.addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc1"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc2"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc3"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc4"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc5"))
+        tt.addInfo("gt.blockmachines.multimachine.ig.siphon.desc1")
             .beginStructureBlock(3, 7, 3, false)
-            .addController(GTUtility.translate("ig.siphon.structure.ControllerPos"))
-            .addOtherStructurePart(
-                GTUtility.translate("ig.siphon.structure.SiphonCasing"),
-                GTUtility.translate("ig.siphon.structure.Base"))
-            .addOtherStructurePart(
-                GTUtility.translate("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"),
-                GTUtility.translate("ig.siphon.structure.PillarMiddle"))
-            .addOtherStructurePart(
-                GTUtility.translate("ig.siphon.structure.FrameTungstensteel"),
-                GTUtility.translate("ig.siphon.structure.Sides"))
-            .addEnergyHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addMaintenanceHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addInputBus(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addOutputHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addController("front_bottom_middle")
+            .addStructurePart("ig.siphon.structure.SiphonCasing", "ig.siphon.structure.Base")
+            .addStructurePart("ig.siphon.structure.ReboltedRhodiumPalladiumCasing", "ig.siphon.structure.PillarMiddle")
+            .addStructurePart("ig.siphon.structure.FrameTungstensteel", "ig.siphon.structure.Sides")
+            .addEnergyHatch("ig.siphon.structure.AnySiphonCasing", 1)
+            .addMaintenanceHatch("ig.siphon.structure.AnySiphonCasing", 1)
+            .addInputBus("ig.siphon.structure.AnySiphonCasing", 1)
+            .addOutputHatch("ig.siphon.structure.AnySiphonCasing", 1)
             .toolTipFinisher();
         return tt;
     }

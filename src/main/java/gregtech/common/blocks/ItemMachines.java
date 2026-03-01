@@ -1,10 +1,13 @@
 package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
-import static gregtech.api.util.GTUtility.formatStringSafe;
+import static gregtech.api.util.GTUtility.translate;
+import static gregtech.api.util.tooltip.TooltipMarkupProcessor.INDENT_MARK;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+import static org.apache.commons.lang3.StringUtils.removeStart;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -26,12 +29,14 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -41,9 +46,9 @@ import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.metatileentity.implementations.MTEFrame;
 import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipMarkupProcessor;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
@@ -65,6 +70,42 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         return GregTechAPI.METATILEENTITIES[aStack.getItemDamage()];
     }
 
+    private String resolveJsonLocalization(String json) {
+        try {
+            JsonObject obj = new JsonParser().parse(json)
+                .getAsJsonObject();
+
+            String key = obj.get("k")
+                .getAsString();
+            JsonArray paramsArray = obj.getAsJsonArray("p");
+
+            boolean hasIndent = key.startsWith(INDENT_MARK);
+            String cleanKey = removeStart(key, INDENT_MARK);
+
+            List<Object> resolvedParams = new ArrayList<>();
+            for (JsonElement elem : paramsArray) {
+                if (elem.isJsonNull()) {
+                    resolvedParams.add("");
+                } else {
+                    String paramStr = elem.getAsString();
+                    if (paramStr.startsWith("{\"k\":")) {
+                        resolvedParams.add(resolveJsonLocalization(paramStr));
+                    } else {
+                        String translated = translateToLocal(paramStr);
+                        resolvedParams.add(translated.equals(paramStr) ? paramStr : translated);
+                    }
+                }
+            }
+
+            String result = translate(cleanKey, resolvedParams.toArray());
+            if (result.isEmpty()) return key;
+            return hasIndent ? INDENT_MARK + result : result;
+        } catch (Exception e) {
+            GT_FML_LOGGER.error("Failed to parse localization JSON: " + json, e);
+            return json;
+        }
+    }
+
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         try {
@@ -75,18 +116,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
             if (GregTechAPI.METATILEENTITIES[tDamage] != null) {
                 final IGregTechTileEntity tTileEntity = GregTechAPI.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
-                if (!GregTechAPI.sPostloadFinished
-                    && tTileEntity.getMetaTileEntity() instanceof ISecondaryDescribable) {
-                    final String[] tSecondaryDescription = ((ISecondaryDescribable) tTileEntity.getMetaTileEntity())
-                        .getSecondaryDescription();
-                    addDescription(null, tSecondaryDescription, tDamage, "_Secondary");
-                }
+                final IMetaTileEntity tMetaTileEntity = tTileEntity.getMetaTileEntity();
                 {
-                    final IMetaTileEntity tMetaTileEntity = tTileEntity.getMetaTileEntity();
-                    final String tSuffix = (tMetaTileEntity instanceof ISecondaryDescribable
-                        && ((ISecondaryDescribable) tMetaTileEntity).isDisplaySecondaryDescription()) ? "_Secondary"
-                            : "";
-                    addDescription(aList, tTileEntity.getDescription(), tDamage, tSuffix);
+                    addDescription(aList, tMetaTileEntity.getDescription());
                     tMetaTileEntity.addAdditionalTooltipInformation(aStack, aList);
                 }
                 if (tTileEntity.getEUCapacity() > 0L) {
@@ -115,6 +147,10 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 if (aNBT.getBoolean("mSteamConverter")) {
                     aList.add(translateToLocal("gt.tileentity.has_steam_upgrade"));
                 }
+                int tAmount;
+                if ((tAmount = aNBT.getByte("mSteamTanks")) > 0) {
+                    aList.add(translateToLocalFormatted("gt.tileentity.steamtanks", tAmount));
+                }
 
                 CoverableTileEntity.addInstalledCoversInformation(aNBT, aList);
                 if (aNBT.hasKey("mColor") && aNBT.getByte("mColor") != -1) {
@@ -132,47 +168,22 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         }
     }
 
-    private void addDescription(@Nullable List<String> aList, @Nullable String[] aDescription, int aDamage,
-        String aSuffix) {
+    private void addDescription(@Nullable List<String> aList, @Nullable String[] aDescription) {
         if (aDescription == null) return;
-        for (int i = 0, tLength = aDescription.length; i < tLength; i++) {
-            String tDescLine = aDescription[i];
+        for (String tDescLine : aDescription) {
             if (!GTUtility.isStringValid(tDescLine)) continue;
 
-            String tKey = String.format("TileEntity_DESCRIPTION_%05d%s_Index_%02d", aDamage, aSuffix, i);
-            if (tDescLine.contains("%%%")) {
-                final String[] tSplitStrings = tDescLine.split("%%%");
-                final StringBuilder tBuffer = new StringBuilder();
-                final String[] tRep = new String[tSplitStrings.length / 2];
-                for (int j = 0; j < tSplitStrings.length; j++) if (j % 2 == 0) tBuffer.append(tSplitStrings[j]);
-                else {
-                    tBuffer.append("%s");
-                    tRep[j / 2] = tSplitStrings[j];
-                }
-                final String tTranslated = formatStringSafe(
-                    GTLanguageManager.addStringLocalization(tKey, tBuffer.toString()),
-                    (Object[]) tRep);
-                if (aList != null) aList.add(tTranslated);
+            String translated;
+            if (tDescLine.startsWith("{\"k\":")) {
+                translated = resolveJsonLocalization(tDescLine);
             } else {
-                String tTranslated = GTLanguageManager.addStringLocalization(tKey, tDescLine);
-                if (aList != null) aList.add(tTranslated.isEmpty() ? tDescLine : tTranslated);
+                translated = translate(removeStart(tDescLine, INDENT_MARK));
             }
-        }
-    }
 
-    @SideOnly(Side.CLIENT)
-    public void registerDescription(int aDamage) {
-        if (aDamage >= GregTechAPI.METATILEENTITIES.length) return;
-        if (GregTechAPI.METATILEENTITIES[aDamage] != null) {
-            final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[aDamage].getBaseMetaTileEntity()
-                .getMetaTileEntity();
-            if (tMetaTileEntity instanceof ISecondaryDescribable) {
-                final String[] tSecondaryDescription = ((ISecondaryDescribable) tMetaTileEntity)
-                    .getSecondaryDescription();
-                addDescription(null, tSecondaryDescription, aDamage, "_Secondary");
-            }
-            addDescription(null, tMetaTileEntity.getDescription(), aDamage, "");
+            final String formatted = TooltipMarkupProcessor.formatTranslatedLine(tDescLine, translated);
+            if (aList != null) aList.add(formatted.isEmpty() ? tDescLine : formatted);
         }
+        TooltipMarkupProcessor.processTooltips(aList);
     }
 
     @Override

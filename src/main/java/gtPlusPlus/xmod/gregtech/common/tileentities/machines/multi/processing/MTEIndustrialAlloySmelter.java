@@ -43,11 +43,11 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -60,6 +60,10 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     private int mLevel = 0;
     private int mCasing;
     private static IStructureDefinition<MTEIndustrialAlloySmelter> STRUCTURE_DEFINITION = null;
+    private static final String anyCasing = GTUtility.nestParams(
+        "GT5U.MBTT.HatchInfo",
+        GregtechItemList.Casing_Extruder.get(1)
+            .getDisplayName());;
 
     public MTEIndustrialAlloySmelter(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -113,27 +117,34 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
 
     @Override
     public String getMachineType() {
-        return "Alloy Smelter";
+        return "gt.recipe.alloysmelter";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Processes " + TooltipHelper.parallelText("Voltage Tier * Coil Tier") + " items")
+            .addInfo("gt.zyngen.tips.1")
             .addDynamicSpeedBonusInfo(0.05f, TooltipTier.COIL)
-            .addInfo("Each 900K of heat upgrades an overclock to a perfect overclock")
+            .addInfo("gt.zyngen.tips.2")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
-            .addController("Bottom center")
-            .addCasingInfoMin("Inconel Reinforced Casings", 8, false)
-            .addOtherStructurePart("Integral Encasement V", "Middle Layer")
-            .addOtherStructurePart("Heating Coils", "Above and below Integral Encasements")
-            .addInputBus("Any Inconel Reinforced Casing", 1)
-            .addOutputBus("Any Inconel Reinforced Casing", 1)
-            .addEnergyHatch("Any Inconel Reinforced Casing", 1)
-            .addMaintenanceHatch("Any Inconel Reinforced Casing", 1)
-            .addMufflerHatch("Any Inconel Reinforced Casing", 1)
+            .addController("front_bottom_middle")
+            .addCasingInfoMin(
+                GregtechItemList.Casing_Extruder.get(1)
+                    .getDisplayName(),
+                8,
+                false)
+            .addStructurePart(
+                GregtechItemList.GTPP_Casing_EV.get(1)
+                    .getDisplayName(),
+                "gt.zyngen.info.1")
+            .addStructurePart("GT5U.tooltip.structure.heating_coil", "gt.zyngen.info.2")
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
+            .addMufflerHatch(anyCasing, 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;

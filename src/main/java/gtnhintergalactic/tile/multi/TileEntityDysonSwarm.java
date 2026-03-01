@@ -9,8 +9,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static net.minecraft.util.EnumChatFormatting.*;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.InputData;
 
@@ -40,6 +38,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -47,6 +46,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -424,52 +424,50 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.ig.dyson.type"));
+        tt.addMachineType("gt.blockmachines.multimachine.ig.dyson.type");
         if (TooltipUtil.dysonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.dysonLoreText);
 
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc1"))
-            .addInfo(
-                translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.ig.dyson.desc2",
-                    getDecimalFormat().format(IGConfig.dysonSwarm.euPerModule)))
-            .addInfo(
-                translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.ig.dyson.desc3",
-                    getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleChance),
-                    getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleA),
-                    getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleB)))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc4"))
-            .addInfo(
-                translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.ig.dyson.desc5",
-                    getDecimalFormat().format(IGConfig.dysonSwarm.coolantConsumption),
-                    IGConfig.dysonSwarm.getCoolantStack()
-                        .getLocalizedName()))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc6"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc7"))
+        tt.addInfo(
+            "gt.blockmachines.multimachine.ig.dyson.desc1",
+            getDecimalFormat().format(IGConfig.dysonSwarm.euPerModule),
+            getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleChance),
+            getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleA),
+            getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleB),
+            getDecimalFormat().format(IGConfig.dysonSwarm.coolantConsumption),
+            IGConfig.dysonSwarm.getCoolantStack()
+                .getLocalizedName())
             .addTecTechHatchInfo()
             .beginStructureBlock(16, 20, 16, false)
-            .addDynamoHatch(translateToLocal("ig.dyson.structure.dynamo"), 1)
+            .addDynamoHatch("ig.dyson.structure.dynamo", 1)
             .addInputBus("1 - 11", 2)
             .addInputHatch("1 - 11", 2)
-            .addOtherStructurePart(translateToLocal("ig.dyson.structure.optical"), "1 - 24", 4)
+            .addStructurePart("gt.blockmachines.hatch.datain.tier.07.name", "1 - 24", 4)
             .addStructureInfo("")
-            .addStructureInfo(ITALIC + translateToLocal("ig.dyson.structure.additionally"))
-            .addCasingInfoRange(translateToLocal("ig.dyson.structure.receiver.base"), 53, 64, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.receiver.dish"), 81, false)
-            .addCasingInfoRange(translateToLocal("ig.dyson.structure.deployment.base"), 62, 72, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.deployment.core"), 1, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.deployment.magnet"), 32, false)
-            .addCasingInfoRange(translateToLocal("ig.dyson.structure.control.base"), 115, 138, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.control.primary"), 20, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.control.secondary"), 12, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.control.toroid"), 128, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.floor"), 256, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.coil"), 9, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.hermetic"), 1, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.frameTitanium"), 16, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.frameHSSS"), 23, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.frameUHVBase"), 64, false)
+            .addStructureInfo("ig.dyson.structure.additionally")
+            .addCasingInfoRange("tile.DysonSwarmReceiverCasing.name", 53, 64, false)
+            .addCasingInfoExactly("tile.DysonSwarmReceiverDish.name", 81)
+            .addCasingInfoRange("tile.DysonSwarmDeploymentUnitCasing.name", 62, 72, false)
+            .addCasingInfoExactly("tile.DysonSwarmDeploymentUnitCore.name", 1)
+            .addCasingInfoExactly("tile.DysonSwarmDeploymentUnitMagnet.name", 32)
+            .addCasingInfoRange("tile.DysonSwarmControlCasing.name", 115, 138, false)
+            .addCasingInfoExactly("tile.DysonSwarmControlPrimary.name", 20)
+            .addCasingInfoExactly("tile.DysonSwarmControlSecondary.name", 12)
+            .addCasingInfoExactly("tile.DysonSwarmControlToroid.name", 128)
+            .addCasingInfoExactly("tile.DysonSwarmFloor.name", 256)
+            .addCasingInfoExactly("gt.blockcasings5.8.name", 9)
+            .addCasingInfoExactly("gt.blockcasings6.10.name", 1)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1)
+                    .getDisplayName(),
+                16)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1)
+                    .getDisplayName(),
+                23)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUHVBase, 1)
+                    .getDisplayName(),
+                64)
             .toolTipFinisher();
         return tt;
     }

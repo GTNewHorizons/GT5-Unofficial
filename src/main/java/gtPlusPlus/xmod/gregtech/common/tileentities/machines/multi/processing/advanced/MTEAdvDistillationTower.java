@@ -62,7 +62,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
@@ -183,30 +182,28 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Stats dictated by tower mode")
-            .addInfo("Right click the controller with screwdriver to change mode.")
+        tt.addMachineType("gt.recipe.distillery", "gt.recipe.distillationtower")
+            .addInfo("gt.advdistill.tips.1")
             .addSeparator()
-            .addInfo("Distillery Mode (requires full height tower)")
-            .addInfo(TooltipHelper.parallelText("8 * Voltage Tier") + " Parallels")
+            .addInfo("gt.advdistill.tips.2")
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(0.15f)
             .addSeparator()
-            .addInfo("Distillation Tower Mode")
+            .addInfo("gt.advdistill.tips.3")
             .addStaticParallelInfo(DT_MODE_MAX_PARALLELS)
             .addStaticSpeedInfo(3.5f)
             .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
-            .addController("Front bottom")
-            .addCasingInfoMin("Clean Stainless Steel Machine Casing", 7, false)
-            .addInputBus("Bottom Casing", 1)
-            .addOutputBus("Bottom Casing", 1)
-            .addInputHatch("Bottom Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addOutputHatch("One per layer except bottom", 2)
-            .addMufflerHatch("Top Casing", 3)
+            .addController("front_bottom_middle")
+            .addCasingInfoMin("gt.blockcasings4.1.name", 7, false)
+            .addInputBus("<bottom casing>", 1)
+            .addOutputBus("<bottom casing>", 1)
+            .addInputHatch("<bottom casing>", 1)
+            .addMaintenanceHatch("<casing>", 1)
+            .addEnergyHatch("<casing>", 1)
+            .addOutputHatch("gt.advdistill.info.1", 2)
+            .addMufflerHatch("gt.advdistill.info.2", 3)
             .toolTipFinisher();
         return tt;
     }
@@ -362,7 +359,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public String getMachineType() {
-        return "Distillery, Distillation Tower";
+        return "";
     }
 
     @Override

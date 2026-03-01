@@ -132,13 +132,11 @@ tooltip.rotor.3.name=Speed:
 tooltip.rotor.4.name=Output:
 tooltip.cp.0.name=Has Circuit inside?
 
-tooltip.bw.0.name=Added by
-tooltip.bw.1.name=Added by bartimaeusnek via
 tooltip.bw.yes.name=Yes
 tooltip.bw.no.name=No
 tooltip.bw.tier.name=Tier:
 tooltip.bw.empty.name=Empty
-tooltip.bw.mb_via.name=%s§7 via §2BartWorks
+tooltip.bw.author_bart_via_bw.name=Added by §abartimaeusnek§7 via §2BartWorks
 
 tooltip.bw.item.circuit.tagged.imprint=An imprint for: %s
 tooltip.bw.item.circuit.tagged.sliced=A sliced %s

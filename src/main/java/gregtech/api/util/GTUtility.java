@@ -132,6 +132,10 @@ import org.joml.Vector3i;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
@@ -2271,11 +2275,7 @@ public class GTUtility {
 
         String key = "gtnop.world." + name;
 
-        if (StatCollector.canTranslate(key)) {
-            return StatCollector.translateToLocal(key);
-        } else {
-            return name;
-        }
+        return tryTranslate(key, name);
     }
 
     public static boolean moveEntityToDimensionAtCoords(Entity entity, int aDimension, double aX, double aY,
@@ -2505,6 +2505,10 @@ public class GTUtility {
     public static String translate(String key, Object... parameters) {
         return parameters.length == 0 ? StatCollector.translateToLocal(key)
             : StatCollector.translateToLocalFormatted(key, parameters);
+    }
+
+    public static String tryTranslate(String key, String fallback, Object... parameters) {
+        return StatCollector.canTranslate(key) ? translate(key, parameters) : fallback;
     }
 
     /*
@@ -4098,6 +4102,34 @@ public class GTUtility {
         return entity instanceof EntityPlayer p && !p.getClass()
             .getName()
             .contains("Fake");
+    }
+
+    /**
+     * ONLY used in GT MTE tooltips<br>
+     *
+     * Different from translateToLocalFormatted, it's to make sure<br>
+     * nothing gets hardcoded on startup<br>
+     * for a seamless translation experience
+     */
+    public static String nestParams(String locKey, Object... params) {
+        if (params == null || params.length == 0) {
+            return locKey;
+        }
+
+        JsonObject json = new JsonObject();
+        json.addProperty("k", locKey);
+
+        JsonArray paramsArray = new JsonArray();
+        for (Object param : params) {
+            if (param == null) {
+                paramsArray.add(JsonNull.INSTANCE);
+            } else {
+                paramsArray.add(new JsonPrimitive(param.toString()));
+            }
+        }
+        json.add("p", paramsArray);
+
+        return json.toString();
     }
 
     /**

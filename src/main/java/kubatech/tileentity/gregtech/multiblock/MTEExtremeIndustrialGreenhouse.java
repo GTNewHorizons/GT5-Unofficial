@@ -134,6 +134,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import kubatech.api.EIGDynamicInventory;
 import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
@@ -357,42 +358,29 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         String fertilizerBoostMax = String.format("%.0f", EIG_BALANCE_MAX_FERTILIZER_BOOST * 100);
-        tt.addMachineType("Crop Farm, EIG")
-            .addInfo("Grow your crops like a chad!")
-            .addInfo("Use screwdriver to enable/change/disable setup mode")
-            .addInfo("Use screwdriver while sneaking to enable/disable IC2 mode")
-            .addInfo("Use wire cutters to give incoming IC2 seeds 0 humidity")
-            .addInfo("Uses " + EIG_BALANCE_WATER_USAGE_PER_SEED + "L of water per seed per operation")
+        tt.addMachineType("machtype.ei_greenhouse")
             .addInfo(
-                "Uses 1L of " + new FluidStack(WEEDEX_FLUID, 1).getLocalizedName()
-                    + " per operation per seed if it contains more than "
-                    + EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT
-                    + " seeds")
-            .addInfo("Otherwise, around 1% of seeds will be voided each operation")
-            .addInfo("You can insert fertilizer each operation to get more drops (max + " + fertilizerBoostMax + ")")
+                "gt.ei_greenhouse.tips.1",
+                new FluidStack(WEEDEX_FLUID, 1).getLocalizedName(),
+                EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT,
+                fertilizerBoostMax)
             .addGlassEnergyLimitInfo()
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + "Setup Mode:")
-            .addInfo("Does not take power")
-            .addInfo("There are two modes: input / output")
-            .addInfo("Input mode: machine will take seeds from input bus and plant them")
-            .addInfo("[IC2] You need to also input block that is required under the crop")
-            .addInfo("Output mode: machine will take planted seeds and output them");
+            .addInfo("gt.ei_greenhouse.tips.2");
         EIGModes.addTooltipInfo(tt);
         tt.beginStructureBlock(7, 7, 9, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Sterile Farm Casing", 70, false)
-            .addStructureInfo("Tiered glass")
-            .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addStructureInfo("The dirt is from RandomThings, must be tilled")
-            .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
-            .addStructureInfo("Purple lamps are from ProjectRedIllumination. They can be powered and/or inverted")
+            .addController("front_bottom_middle")
+            .addCasingInfoMin(
+                GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.get(1)
+                    .getDisplayName(),
+                70,
+                false)
+            .addStructureInfo("gt.ei_greenhouse.info.parts")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addMaintenanceHatch("Any casing", 1)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addInputHatch("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
+            .addMaintenanceHatch("<casing>", 1)
+            .addInputBus("<casing>", 1)
+            .addOutputBus("<casing>", 1)
+            .addInputHatch("<casing>", 1)
+            .addEnergyHatch("<casing>", 1)
             .addAuthors(GTValues.AuthorKuba)
             .addStructureAuthors("HydroCN")
             .toolTipFinisher();
