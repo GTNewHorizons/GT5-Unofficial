@@ -101,11 +101,11 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            preformMaintenance();
+            performMaintenance();
         }
     }
 
-    private void preformMaintenance() {
+    private void performMaintenance() {
         // Internal Buffer, Soft Caps at 50 vis
         airBuffer = fillIfBelowCap(airBuffer, Aspect.AIR);
         earthBuffer = fillIfBelowCap(earthBuffer, Aspect.EARTH);
