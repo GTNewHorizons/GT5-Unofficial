@@ -122,8 +122,26 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.smd_processor.action", TOOLTIP_CCs))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.smd_processor.flavor.1")))
+            .beginStructureBlock(7, 6, 7, false)
+            .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
+            // Nanochip Reinforcement Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 44, false)
+            // Nanochip Mesh Interface Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 20, false)
+            // Radox Polymer Frame Box
+            .addCasingInfoExactly(
+                translateToLocal("gt.blockframes.10.name")
+                    .replace("%material", Materials.RadoxPolymer.getLocalizedName()),
+                17,
+                false)
+            // Nanochip Complex Glass
+            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 8, false)
+            // UEV Machine Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasingsNH.10.name"), 4, false)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
+            .addStructureInfoSeparator()
+            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
             .toolTipFinisher();
     }
 

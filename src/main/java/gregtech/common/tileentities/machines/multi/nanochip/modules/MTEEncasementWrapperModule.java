@@ -127,8 +127,23 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
                     TOOLTIP_CCs))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.encasement_wrapper.flavor.1")))
+            .beginStructureBlock(7, 9, 7, false)
+            .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
+            // Nanochip Mesh Interface Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 47, false)
+            // Nanochip Complex Glass
+            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 40, false)
+            // Nanochip Reinforcement Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 32, false)
+            // Quantium Frame Box
+            .addCasingInfoExactly(
+                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Quantium.getLocalizedName()),
+                32,
+                false)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
+            .addStructureInfoSeparator()
+            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
             .toolTipFinisher();
     }
 
