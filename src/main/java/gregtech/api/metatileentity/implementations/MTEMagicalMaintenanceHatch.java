@@ -30,8 +30,8 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
     private int orderBuffer = 0;
     private int entropyBuffer = 0;
 
-    private final int visCap = 50;
-    private final int visCost = 25;
+    private final int centiVisCap = 5000;
+    private final int centiVisCost = 2500;
 
     private static final ResourceLocation focusMaintenanceSound = new ResourceLocation(
         "emt",
@@ -106,7 +106,7 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
     }
 
     private void performMaintenance() {
-        // Internal Buffer, Soft Caps at 50 vis
+        // Internal Buffer, Caps at 5000 vis
         airBuffer = fillIfBelowCap(airBuffer, Aspect.AIR);
         earthBuffer = fillIfBelowCap(earthBuffer, Aspect.EARTH);
         fireBuffer = fillIfBelowCap(fireBuffer, Aspect.FIRE);
@@ -121,31 +121,36 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
             || !this.mSoftMallet
             || !this.mHardHammer;
 
-        boolean canRepair = airBuffer >= visCost && earthBuffer >= visCost
-            && fireBuffer >= visCost
-            && waterBuffer >= visCost
-            && orderBuffer >= visCost
-            && entropyBuffer >= visCost;
+        boolean canRepair = airBuffer >= centiVisCost && earthBuffer >= centiVisCost
+            && fireBuffer >= centiVisCost
+            && waterBuffer >= centiVisCost
+            && orderBuffer >= centiVisCost
+            && entropyBuffer >= centiVisCost;
 
         if (canRepair && shouldRepair) {
             this.mWrench = this.mScrewdriver = this.mSolderingTool = this.mCrowbar = this.mSoftMallet = this.mHardHammer = true;
-            airBuffer -= visCost;
-            earthBuffer -= visCost;
-            fireBuffer -= visCost;
-            waterBuffer -= visCost;
-            orderBuffer -= visCost;
-            entropyBuffer -= visCost;
+            airBuffer -= centiVisCost;
+            earthBuffer -= centiVisCost;
+            fireBuffer -= centiVisCost;
+            waterBuffer -= centiVisCost;
+            orderBuffer -= centiVisCost;
+            entropyBuffer -= centiVisCost;
         }
     }
 
     private int fillIfBelowCap(int buffer, Aspect aspect) {
-        return buffer < visCap ? buffer + VisNetHandler.drainVis(
+        if (buffer >= centiVisCap) return buffer;
+
+        int space = centiVisCap - buffer;
+        int drained = VisNetHandler.drainVis(
             getBaseMetaTileEntity().getWorld(),
             getBaseMetaTileEntity().getXCoord(),
             getBaseMetaTileEntity().getYCoord(),
             getBaseMetaTileEntity().getZCoord(),
             aspect,
-            1) : buffer;
+            Math.min(space, 100));
+
+        return buffer + drained;
     }
 
     @Override
