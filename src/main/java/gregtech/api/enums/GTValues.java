@@ -6,6 +6,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_AQUA;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_BLUE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_GRAY;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_BLUE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_GREEN;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_PURPLE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_RED;
@@ -578,8 +579,6 @@ public class GTValues {
 
     public static final String AuthorEigenRaven = DARK_PURPLE + "Eigen" + BOLD + "Raven";
 
-    public static final String AuthorNotAPenguin = WHITE + BOLD + "Not" + AQUA + BOLD + "APenguin";
-
     public static final String AuthorPineapple = BLUE + "Recursive Pineapple";
 
     public static final Supplier<String> AuthorNoc = chain(
@@ -708,6 +707,37 @@ public class GTValues {
         return emptyAnimatedText(1, 1000, colorList);
     }
 
+    public static final String AuthorNotAPenguin = BOLD + WHITE + "Not"
+        + AQUA
+        + "APenguin";
+
+    public static final Supplier<String> AuthorNotAPenguinAnimated = chain(
+        createNotAPenguinLetter(0),
+        createNotAPenguinLetter(1),
+        createNotAPenguinLetter(2),
+        createNotAPenguinLetter(3),
+        createNotAPenguinLetter(4),
+        createNotAPenguinLetter(5),
+        createNotAPenguinLetter(6),
+        createNotAPenguinLetter(7),
+        createNotAPenguinLetter(8),
+        createNotAPenguinLetter(9),
+        createNotAPenguinLetter(10));
+
+    private static Supplier<String> createNotAPenguinLetter(int index) {
+        final String[] letters = new String[] { "N", "o", "t", "A", "P", "e", "n", "g", "u", "i", "n" };
+        String[] colorList = new String[letters.length];
+        for (int i = 0; i < letters.length; ++i) {
+            int[] whiteIndices = new int[] { (letters.length - index - 1 + letters.length) % letters.length,
+                (letters.length - index + letters.length) % letters.length,
+                (letters.length - index + 1 + letters.length) % letters.length };
+            if (i == whiteIndices[0] || i == whiteIndices[1] || i == whiteIndices[2]) {
+                colorList[i] = WHITE + ITALIC + letters[index];
+            } else colorList[i] = AQUA + letters[index];
+        }
+        return emptyAnimatedText(1, 100, colorList);
+    }
+
     public static final Supplier<String> AuthorSerenibyss = chain(
         getAuthorSerenibyssLetter("S", 3, LIGHT_PURPLE, 11, WHITE, 25, AQUA),
         getAuthorSerenibyssLetter("e", 12, AQUA, 18, LIGHT_PURPLE, 29, WHITE),
@@ -752,6 +782,8 @@ public class GTValues {
 
         return animatedText(letter, 1, 250, colorAlternator);
     }
+
+    public static final String AuthorJL2210 = "" + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + "JL2210";
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
         V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };

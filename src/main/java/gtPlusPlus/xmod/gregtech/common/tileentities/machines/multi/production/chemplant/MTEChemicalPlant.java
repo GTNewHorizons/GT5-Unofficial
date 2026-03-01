@@ -611,11 +611,11 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
             @NotNull
             @Override
-            public CheckRecipeResult process() {
+            public ItemStack[] prepareCatalyst(ItemStack[] inputItems) {
                 ArrayList<ItemStack> inputItemsList = new ArrayList<>(Arrays.asList(inputItems));
                 inputItemsList.addAll(getCatalystInputs());
                 inputItems = inputItemsList.toArray(new ItemStack[0]);
-                return super.process();
+                return inputItems;
             }
 
             @NotNull
@@ -627,6 +627,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 }
                 return super.onRecipeStart(recipe);
             }
+
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
 

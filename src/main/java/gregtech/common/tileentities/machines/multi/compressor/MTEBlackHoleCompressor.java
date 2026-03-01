@@ -81,7 +81,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
-import gregtech.common.tileentities.render.TileEntityBlackhole;
+import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.multi.base.SoundLoopAnyBlock;
@@ -746,7 +746,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     private boolean shouldRender = true;
-    private TileEntityBlackhole rendererTileEntity = null;
+    private RenderingTileEntityBlackhole rendererTileEntity = null;
 
     // Returns true if render was actually created
     private boolean createRenderBlock() {
@@ -761,7 +761,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .setBlock(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z, Blocks.air);
         base.getWorld()
             .setBlock(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z, GregTechAPI.sBlackholeRender);
-        rendererTileEntity = (TileEntityBlackhole) base.getWorld()
+        rendererTileEntity = (RenderingTileEntityBlackhole) base.getWorld()
             .getTileEntity(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z);
 
         rendererTileEntity.startScaleChange(true);

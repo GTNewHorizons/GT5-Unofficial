@@ -754,6 +754,7 @@ gt.blockmachines.multimachine.em.scanner.desc.0=Controller block of the Elementa
 gt.blockmachines.multimachine.em.research.type=Research Station, Scanner
 gt.blockmachines.multimachine.em.research.hint.0=1 - Classic/Data Hatches or Computer casing
 gt.blockmachines.multimachine.em.research.hint.1=2 - Holder Hatch
+gt.blockmachines.multimachine.em.research.hint.2=3 - Output Bus, Input Hatch, or Advanced Computer Casing
 gt.blockmachines.multimachine.em.research.desc.1=Used to scan Data Sticks for Assembly Line Recipes
 gt.blockmachines.multimachine.em.research.desc.2=Needs to be fed with computation to work
 gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until the Data Stick is written
@@ -976,8 +977,8 @@ fog.upgrade.lore.25=Further utilisation of the quantum entanglement-like propert
 fog.upgrade.lore.26=As additional rings are placed closer to the star at the centre of the Forge, the gravitational stress drastically increases on the structure. Graviton shards alleviate these stresses while also creating localized spacetime bridges to link the two rings and their modules’ respective upgrades.
 fog.upgrade.lore.27=A huge development in the capabilities of the Forge has been achieved with the use of large quantities of graviton shards – the ability to indefinitely feed the star with stellar fuel. While this has diminishing returns, the star can exist indefinitely despite the extremely accelerated energy expenditure from endless material processing.
 fog.upgrade.lore.28=The usage of graviton shards in electrical systems to create localised miniature energy wormholes has allowed for such efficient power transfer that effectively unlimited electricity may be utilized by the Forge. More power means faster processing, quicker material movement, and better utilization of graviton shard related upgrades.
-fog.upgrade.lore.29=The final external structural upgrade to the Forge requires the most advanced understanding of graviton shards and their applications in extreme environments. With this, the last 4 module slots of the Forge of the Gods are available to construct, ascending your operation to unseen heights of technological mastery.
-fog.upgrade.lore.30=With total mastery of the Forge of the Gods achieved, it is possible to begin a new universe-spanning initiative. It is now possible to quantize and extract graviton shards for use outside the Forge in powerful new technological endeavours; produce the most exotic plasmas beyond merely periodic elements; and most importantly, begin to understand the immense power of magmatter, a form of matter made entirely of magnetic monopoles with density and stability billions of times that of conventional bosonic matter. It is with this development you realise that the completion of the Forge was not the end goal, but merely a stepping stone to universal transcendence.
+fog.upgrade.lore.29=Further enrichment of the extreme spaces within the Plasma Fabricator & Exoticizer allows for the production of the most exotic plasmas beyond merely periodic elements and facilitates the creation of completely new kinds of subatomic particles, resulting in the creation of magmatter, a form of matter made entirely of magnetic monopoles with density and stability billions of times that of conventional bosonic matter.
+fog.upgrade.lore.30=With the construction of the third and final ring, total mastery of the Forge of the Gods has been achieved and it is now possible to quantize and extract graviton shards for use outside the Forge in powerful new technological endeavours. It is with this development you realise that the completion of the Forge was not the end goal, but merely a stepping stone to universal transcendence.
 
 fog.upgrade.text.0=Unlocks the base functionality of the Forge of the Gods, meaning 8 module slots, 1 ring, the Helioflare Power Forge module, 2 billion EU/t processing voltage and 15,000K heat bonus cap.
 fog.upgrade.text.1=Unlocks a recipe time reduction multiplier based on the current heat the multi is running at. This bonus is calculated via following formula: Multiplier = 1 / (Heat^0.01)
@@ -1006,10 +1007,10 @@ fog.upgrade.text.23=Multiplies maximum processing voltage by 4 per active ring, 
 fog.upgrade.text.24=Allows the Heliothermal Plasma Fabricator to process up to T5 plasmas.
 fog.upgrade.text.25=Allows the Heliofusion Exoticizer to be affected by other upgrade benefits, but those benefits are square rooted first. The overclock bonus is adjusted via the following formula: OC Factor = 2 + (Base OC Factor - 2)^2
 fog.upgrade.text.26=Allows construction of the second ring and adds 4 module slots.
-fog.upgrade.text.27=Uncaps maximum fuel consumption, but fuel consumption used in bonus calculations scales according to this formula: Actual FC = Current Max FC + (Current FC - Current Max FC)^0.4, where FC refers to fuel consumption and max FC refers to the max fuel consumption without this upgrade.
+fog.upgrade.text.27=Uncaps maximum fuel consumption, but fuel consumption used in bonus calculations scales according to this formula: Actual FC = Current Max FC + (Current FC - Current Max FC)^0.4, where FC refers to fuel consumption and max FC refers to the max fuel consumption without this upgrade. Note that fuel consumption cannot exceed 2^31 for technical reasons.
 fog.upgrade.text.28=Uncaps maximum processing voltage. Voltage can be set in each module's GUI.
-fog.upgrade.text.29=Allows construction of the third ring and adds 4 module slots.
-fog.upgrade.text.30=Unlocks Magmatter production in the Heliofusion Exoticizer, creation of exotic plasmas in the Heliothermal Plasma Fabricator and Graviton Shard ejection & injection.
+fog.upgrade.text.29=Unlocks Magmatter production in the Heliofusion Exoticizer and creation of exotic plasmas in the Heliothermal Plasma Fabricator.
+fog.upgrade.text.30=Allows construction of the third ring, adds 4 module slots and unlocks Graviton Shard ejection & injection.
 
 fog.debug.resetbutton.text=Reset
 fog.debug.resetbutton.tooltip=Resets all upgrades to zero
@@ -1451,9 +1452,9 @@ tt.keyword.Computation=Computation
 tt.keyword.Problems=Problems
 tt.keyword.Efficiency=Efficiency
 #Button that allows to pass power to other machines
-tt.keyword.PowerPass=PowerPass
+tt.keyword.PowerPass=PowerPass: §9%s
 #Button that vents EM
-tt.keyword.SafeVoid=SafeVoid
+tt.keyword.SafeVoid=SafeVoid: §9%s
 tt.keyword.Parametrizer=Parametrizer
 tt.keyword.Value=Value
 tt.keyword.Input=Input
@@ -1473,7 +1474,7 @@ tt.keyphrase.Energy_Hatches=Energy Hatches
 tt.keyphrase.Probably_uses=Currently uses
 tt.keyphrase.Probably_makes=Currently generates
 tt.keyphrase.Tier_Rating=Tier Rating
-tt.keyphrase.Amp_Rating=Amp Rating
+tt.keyphrase.Amp_Rating=Amp Rating §a%s A
 tt.keyphrase.Computation_Available=Computation Available
 tt.keyphrase.Computation_Remaining=Computation Remaining
 tt.keyphrase.AL_Recipe_Providing=Providing §6%s§7 Assembly Line Recipes
@@ -1958,7 +1959,12 @@ tt.eoh.spacetime.standard.tooltip.1=§b§lCapable of running recipes up to tier 
 
 tt.infodata.multi.energy_hatches=Energy Hatches: %s EU / %s EU
 tt.infodata.multi.currently_generates=Currently generates: %s EU/t at %s A
-tt.infodata.multi.computation=Computation: %s / %s
+tt.infodata.multi.computation=Computation: §a%s §r/ §e%s
+tt.infodata.multi.connection_health=Quantum Computer Connection: %s
+tt.infodata.multi.connection_health.inactive=Inactive
+tt.infodata.multi.connection_health.established=Established
+tt.infodata.multi.connection_health.waiting=Waiting for Response
+tt.infodata.multi.connection_health.decoherence=Decoherence Detected
 tt.infodata.multi.max_parallel=Max Parallel: %s
 tt.infodata.multi.multiplier.recipe_time=Recipe time multiplier: %s
 tt.infodata.multi.multiplier.energy=Energy multiplier: %s

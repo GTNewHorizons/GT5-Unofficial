@@ -121,9 +121,6 @@ MU-metaitem.01.0.name=MU-metaitem.01.0.name
 //Cells
 item.SulfurDioxide.name=优质二氧化硫单元
 item.mobessence.name=怪物精华液单元
-item.Fertiliser.name=流体肥料单元
-item.UN32Fertiliser.name=UN-32肥料单元
-item.UN18Fertiliser.name=UN-18肥料单元
 item.RaisinJuice.name=葡萄汁单元
 item.BerylliumHydroxide.name=氢氧化铍单元
 item.AmmoniumBifluoride.name=氟化氢铵单元
@@ -1472,12 +1469,6 @@ item.itemDustTinyZrCl4.name=小撮氯化锆粉
 item.itemDustCookedZrCl4.name=焙烧过的氯化锆粉
 item.itemDustSmallCookedZrCl4.name=小堆焙烧过的氯化锆粉
 item.itemDustTinyCookedZrCl4.name=小撮焙烧过的氯化锆粉
-item.itemDustUN18Fertiliser.name=流体肥料UN-18粉
-item.itemDustSmallUN18Fertiliser.name=小堆流体肥料UN-18粉
-item.itemDustTinyUN18Fertiliser.name=小撮流体肥料un-18粉
-item.itemDustUN32Fertiliser.name=流体肥料UN-32粉
-item.itemDustSmallUN32Fertiliser.name=小堆流体肥料UN-32粉
-item.itemDustTinyUN32Fertiliser.name=小撮流体肥料UN-32粉
 
 
 //Multitools
@@ -2924,9 +2915,6 @@ item.GTPP.bauble.fireprotection.0.name=超级披萨手套
 //Added 16/5/19
 item.itemCellSeleniumDioxide.name=二氧化硒单元
 item.itemCellSeleniousAcid.name=亚硒酸单元
-
-//Added 25/7/19
-container.pestkiller=害虫杀手
 
 //Added 15/8/19
 gtpp.nei.decayables=可衰变箱子(铅封盒)

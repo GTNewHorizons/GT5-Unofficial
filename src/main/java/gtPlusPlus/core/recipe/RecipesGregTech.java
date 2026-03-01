@@ -2,7 +2,6 @@ package gtPlusPlus.core.recipe;
 
 import static gregtech.api.enums.Mods.Backpack;
 import static gregtech.api.enums.Mods.Baubles;
-import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -1614,16 +1613,6 @@ public class RecipesGregTech {
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(fluidExtractionRecipes);
-
-        // Forestry fertilizer to GT++ liquid Fertilizer
-        if (Forestry.isModLoaded()) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.FR_Fertilizer.get(1))
-                .fluidOutputs(new FluidStack(GTPPFluids.BasicFertilizer, 36))
-                .duration(5 * TICKS)
-                .eut(TierEU.RECIPE_LV / 2)
-                .addTo(fluidExtractionRecipes);
-        }
     }
 
     private static void centrifugeRecipes() {

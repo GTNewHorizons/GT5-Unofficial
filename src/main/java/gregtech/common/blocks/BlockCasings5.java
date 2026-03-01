@@ -50,6 +50,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
 public class BlockCasings5 extends BlockCasingsAbstract
     implements IHeatingCoil, IBlockWithTextures, IBlockWithClientMeta, IBlockWithActiveOffset, IGregtechWailaProvider {
@@ -60,20 +62,20 @@ public class BlockCasings5 extends BlockCasingsAbstract
     public BlockCasings5() {
         super(ItemCasings.class, "gt.blockcasings5", MaterialCasings.INSTANCE, 16);
 
-        register(0, ItemList.Casing_Coil_Cupronickel, "Cupronickel Coil Block");
-        register(1, ItemList.Casing_Coil_Kanthal, "Kanthal Coil Block");
-        register(2, ItemList.Casing_Coil_Nichrome, "Nichrome Coil Block");
-        register(3, ItemList.Casing_Coil_TungstenSteel, "TPV-Alloy Coil Block");
-        register(4, ItemList.Casing_Coil_HSSG, "HSS-G Coil Block");
-        register(5, ItemList.Casing_Coil_Naquadah, "Naquadah Coil Block");
-        register(6, ItemList.Casing_Coil_NaquadahAlloy, "Naquadah Alloy Coil Block");
-        register(7, ItemList.Casing_Coil_ElectrumFlux, "Electrum Flux Coil Block");
-        register(8, ItemList.Casing_Coil_AwakenedDraconium, "Awakened Draconium Coil Block");
-        register(9, ItemList.Casing_Coil_HSSS, "HSS-S Coil Block");
-        register(10, ItemList.Casing_Coil_Trinium, "Trinium Coil Block");
-        register(11, ItemList.Casing_Coil_Infinity, "Infinity Coil Block");
-        register(12, ItemList.Casing_Coil_Hypogen, "Hypogen Coil Block");
-        register(13, ItemList.Casing_Coil_Eternal, "Eternal Coil Block");
+        register(0, ItemList.Casing_Coil_Cupronickel);
+        register(1, ItemList.Casing_Coil_Kanthal);
+        register(2, ItemList.Casing_Coil_Nichrome);
+        register(3, ItemList.Casing_Coil_TungstenSteel);
+        register(4, ItemList.Casing_Coil_HSSG);
+        register(5, ItemList.Casing_Coil_Naquadah);
+        register(6, ItemList.Casing_Coil_NaquadahAlloy);
+        register(7, ItemList.Casing_Coil_ElectrumFlux);
+        register(8, ItemList.Casing_Coil_AwakenedDraconium);
+        register(9, ItemList.Casing_Coil_HSSS);
+        register(10, ItemList.Casing_Coil_Trinium);
+        register(11, ItemList.Casing_Coil_Infinity);
+        register(12, ItemList.Casing_Coil_Hypogen);
+        register(13, ItemList.Casing_Coil_Eternal);
 
         for (int i = 0; i < 14; i++) {
             GTStructureChannels.HEATING_COIL

@@ -13,6 +13,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static org.apache.commons.lang3.StringUtils.removeEnd;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -74,10 +75,13 @@ public class MultiblockTooltipBuilder {
     private static final String[] TT_dots = IntStream.range(0, 16)
         .mapToObj(i -> translateToLocal("structurelib.blockhint." + i + ".name"))
         .toArray(String[]::new);
+    private static final String TT_StructureAuthor = StatCollector.translateToLocal("GT5U.MBTT.StructureBy");
 
     private final List<TooltipLine> iLines;
     private final List<TooltipLine> sLines;
     private List<String> hLines;
+    private List<String> authors;
+    private List<String> structureAuthors;
     private SetMultimap<Integer, String> hBlocks;
 
     private String[] hArray;
@@ -86,6 +90,8 @@ public class MultiblockTooltipBuilder {
         iLines = new LinkedList<>();
         sLines = new LinkedList<>();
         hLines = new LinkedList<>();
+        authors = new LinkedList<>();
+        structureAuthors = new LinkedList<>();
         hBlocks = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
         hBlocks.put(StructureLibAPI.HINT_BLOCK_META_AIR, TT_air);
     }
@@ -138,6 +144,31 @@ public class MultiblockTooltipBuilder {
 
     public MultiblockTooltipBuilder addShiftInfo(String text) {
         addShiftInfo(text, new Object[0]);
+        return this;
+    }
+
+    /**
+     * Add a deprecation line to the tooltip.
+     * The line is prefixed with a dark red {@code "DEPRECATED - "} label
+     * followed by the provided additional information.
+     *
+     * @param info additional explanation shown after the {@code DEPRECATED} label
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addDeprecatedLine(String info) {
+        addInfo("GT5U.MBTT.Deprecated", info);
+        return this;
+    }
+
+    /**
+     * Add a line that states this multi will be deprecated in next major version.
+     * Specifically for use with structure deprecation.
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addStructureDeprecatedLine() {
+        addDeprecatedLine(translateToLocal("GT5U.MBTT.Deprecated.Removal"));
+        addInfo("GT5U.MBTT.Deprecated.NEI");
         return this;
     }
 
@@ -951,6 +982,29 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
+     * Adds the given list of authors to the contributor list's author list, to be displayed at the end of the tooltip
+     *
+     * @param authors list of authors to add to tooltip
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addAuthors(String... authors) {
+        Collections.addAll(this.authors, authors);
+        return this;
+    }
+
+    /**
+     * Adds the given list of structure authors to the contributor list's structure author list,
+     * to be displayed at the end of the tooltip
+     *
+     * @param structureAuthors list of structure authors to add to tooltip
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addStructureAuthors(String... structureAuthors) {
+        Collections.addAll(this.structureAuthors, structureAuthors);
+        return this;
+    }
+
+    /**
      * Call at the very end.<br>
      * Adds a line jump.<br>
      * Adds information on how to display the structure guidelines.<br>
@@ -977,17 +1031,24 @@ public class MultiblockTooltipBuilder {
      */
 
     public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, String... authors) {
+        Collections.addAll(this.authors, authors);
 
         addInfo(separatorColor + FINISHER_MARK);
         addInfo("GT5U.MBTT.HoldDisplay");
-        if (authors.length > 0) {
-            if (authors.length == 1 && StatCollector.canTranslate(authors[0])) {
-                addInfo(authors[0]);
+
+        if (!this.authors.isEmpty()) {
+            if (this.authors.size() == 1 && canTranslate(this.authors.get(0))) {
+                addInfo(this.authors.get(0));
             } else {
                 addInfo(
                     "GT5U.MBTT.Authors",
-                    String.join(EnumChatFormatting.GRAY + " & " + EnumChatFormatting.GREEN, authors));
+                    String.join(EnumChatFormatting.GRAY + " & " + EnumChatFormatting.GREEN, this.authors));
             }
+        }
+        if (!this.structureAuthors.isEmpty()) {
+            addInfo(
+                TT_StructureAuthor + COLON
+                    + String.join(EnumChatFormatting.GRAY + " & " + EnumChatFormatting.GREEN, this.structureAuthors));
         }
 
         addStructureInfo(EnumChatFormatting.GRAY + STRUCTURE_SEPARATOR_MARK);
@@ -1004,6 +1065,8 @@ public class MultiblockTooltipBuilder {
             .toArray(String[]::new);
         // free memory
         hLines = null;
+        authors = null;
+        structureAuthors = null;
         hBlocks = null;
         return this;
     }

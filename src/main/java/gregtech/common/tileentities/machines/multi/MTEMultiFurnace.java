@@ -1,8 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.GTValues.VP;
@@ -25,6 +23,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -71,7 +70,12 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         .addShape(
             STRUCTURE_PIECE_MAIN,
             transpose(new String[][] { { "ccc", "cmc", "ccc" }, { "CCC", "C-C", "CCC" }, { "b~b", "bbb", "bbb" } }))
-        .addElement('c', ofBlock(GregTechAPI.sBlockCasings1, CASING_INDEX))
+        .addElement(
+            'c',
+            buildHatchAdder(MTEMultiFurnace.class).atLeast(Maintenance)
+                .casingIndex(CASING_INDEX)
+                .hint(3)
+                .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
         .addElement(
             'C',
@@ -79,12 +83,10 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
                 .use(activeCoils(ofCoil(MTEMultiFurnace::setCoilLevel, MTEMultiFurnace::getCoilLevel))))
         .addElement(
             'b',
-            ofChain(
-                buildHatchAdder(MTEMultiFurnace.class).atLeast(Maintenance, InputBus, OutputBus, Energy)
-                    .casingIndex(CASING_INDEX)
-                    .hint(1)
-                    .build(),
-                ofBlock(GregTechAPI.sBlockCasings1, CASING_INDEX)))
+            buildHatchAdder(MTEMultiFurnace.class).atLeast(Maintenance, InputBus, OutputBus, Energy)
+                .casingIndex(CASING_INDEX)
+                .hint(1)
+                .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .build();
 
     public MTEMultiFurnace(int aID, String aName, String aNameRegional) {
@@ -109,10 +111,10 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("front_bottom_middle")
-            .addCasingInfoRange("gt.blockcasings.11.name", 8, 14, false)
+            .addCasingInfoRange(ItemList.Casing_HeatProof.get(1).getDisplayName(), 8, 14, false)
             .addStructurePart("GT5U.tooltip.structure.heating_coil", "gt.multi_furnace.info.coil")
             .addEnergyHatch("<bottom casing>", 1)
-            .addMaintenanceHatch("<bottom casing>", 1)
+            .addMaintenanceHatch(GTUtility.nestParams("GT5U.MBTT.HatchInfo", ItemList.Casing_HeatProof.get(1).getDisplayName()), 1)
             .addMufflerHatch("gt.multi_furnace.info.muffler", 2)
             .addInputBus("<bottom casing>", 1)
             .addOutputBus("<bottom casing>", 1)

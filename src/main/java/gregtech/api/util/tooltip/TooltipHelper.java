@@ -5,7 +5,6 @@ import static gregtech.api.util.GTUtility.translate;
 import java.text.DecimalFormat;
 
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
@@ -29,6 +28,7 @@ public class TooltipHelper {
     public static final EnumChatFormatting EU_VOLT_COLOR = EnumChatFormatting.YELLOW;
     public static final EnumChatFormatting AMP_COLOR = EnumChatFormatting.AQUA;
     public static final EnumChatFormatting CABLE_LOSS_COLOR = EnumChatFormatting.RED;
+    public static final EnumChatFormatting L_COLOR = EnumChatFormatting.WHITE;
     public static final DecimalFormat percentageFormat = new DecimalFormat("0.##%");
 
     /**
@@ -153,7 +153,7 @@ public class TooltipHelper {
      * @return A formatted string representing the voltage tier.
      */
     public static String voltageTierText(int voltageIndex, boolean withTierSuffix) {
-        if (voltageIndex < VoltageIndex.ULV || voltageIndex >= VoltageIndex.MAX)
+        if (voltageIndex < VoltageIndex.ULV || voltageIndex > VoltageIndex.MAX)
             return translate("GT5U.MBTT.ErrorTier");
         return translate(
             withTierSuffix ? "GT5U.MBTT.Tier" : "%s",
@@ -190,6 +190,22 @@ public class TooltipHelper {
         return CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter)
             + " "
             + EnumChatFormatting.GRAY
-            + StatCollector.translateToLocal("GT5U.item.cable.eu_volt");
+            + GTUtility.translate("GT5U.item.cable.eu_volt");
+    }
+
+    /**
+     * @return The given number of L, formatted.
+     */
+    public static String fluidText(long liters) {
+        String text = NumberFormatUtil.formatNumber(liters) + GTUtility.translate("gt.unit.liter");
+        return coloredText(text, L_COLOR);
+    }
+
+    /**
+     * @return The given number of L per sec, formatted.
+     */
+    public static String fluidRateText(long litersPerSecond) {
+        String text = NumberFormatUtil.formatNumber(litersPerSecond) + GTUtility.translate("gt.unit.liter_per_second");
+        return coloredText(text, L_COLOR);
     }
 }

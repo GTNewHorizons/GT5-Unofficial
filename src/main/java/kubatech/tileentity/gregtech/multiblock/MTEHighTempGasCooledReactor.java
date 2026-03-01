@@ -89,7 +89,7 @@ import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
-import gregtech.common.tileentities.machines.MTEHatchOutputME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.HTGRLoader;
 

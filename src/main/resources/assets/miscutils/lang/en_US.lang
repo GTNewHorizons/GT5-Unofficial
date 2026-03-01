@@ -49,7 +49,6 @@ tile.blockCircuitProgrammer.name=Circuit Programmer
 tile.blockDecayablesChest.name=Lead Lined Box
 tile.blockVolumetricFlaskSetter.name=Volumetric Flask Configurator
 tile.blockSuperLight.name=Shining Star
-tile.blockPestKiller.name=Pest Killer
 tile.blockSuperJukebox.name=Sir Mixalot [Jukebox]
 tile.blockSuperJukebox.deprecated=§cDEPRECATED, Use the Electric Jukeboxes instead
 
@@ -275,9 +274,6 @@ MU-metaitem.01.0.name=MU-metaitem.01.0.name
 # Cells
 item.SulfurDioxide.name=High Quality Sulfur Dioxide Cell
 item.mobessence.name=Mob Essence Cell
-item.Fertiliser.name=Fertiliser Cell
-item.UN32Fertiliser.name=UN-32 Fertiliser Cell
-item.UN18Fertiliser.name=UN-18 Fertiliser Cell
 item.RaisinJuice.name=Raisin Juice Cell
 item.BerylliumHydroxide.name=Beryllium Hydroxide Cell
 item.AmmoniumBifluoride.name=Ammonium Bifluoride Cell
@@ -1678,12 +1674,6 @@ item.itemDustTinyZrCl4.name=Tiny Pile of ZrCl4 Dust
 item.itemDustCookedZrCl4.name=Cooked ZrCl4 Dust
 item.itemDustSmallCookedZrCl4.name=Small Pile of Cooked ZrCl4 Dust
 item.itemDustTinyCookedZrCl4.name=Tiny Pile of Cooked ZrCl4 Dust
-item.itemDustUN18Fertiliser.name=UN-18 Fertiliser Dust
-item.itemDustSmallUN18Fertiliser.name=Small Pile of UN-18 Fertiliser Dust
-item.itemDustTinyUN18Fertiliser.name=Tiny Pile of UN-18 Fertiliser Dust
-item.itemDustUN32Fertiliser.name=UN-32 Fertiliser Dust
-item.itemDustSmallUN32Fertiliser.name=Small Pile of UN-32 Fertiliser Dust
-item.itemDustTinyUN32Fertiliser.name=Tiny Pile of UN-32 Fertiliser Dust
 item.itemCustomMetaCover.miscutils.GtMachineCasings=%s Machine Plate Cover
 item.itemCustomMetaCover.miscutils.GtMachineCasings.name=Machine Plate Cover
 item.itemGregtechPump.tooltip.0=Cannot drain any other standard fluid container block
@@ -3518,9 +3508,6 @@ item.GTPP.bauble.fireprotection.0.name.name=Supreme Pizza Gloves
 item.itemCellSeleniumDioxide.name=Selenium Dioxide Cell
 item.itemCellSeleniousAcid.name=Selenious Acid Cell
 
-# Added 25/7/19
-container.pestkiller=Pest Killer
-
 # Added 15/8/19
 gtpp.nei.decayables=Decayables Chest
 entity.batKing.name=Bat King
@@ -4035,10 +4022,6 @@ gtpp.tooltip.wireless_charger.3=§aLocal Mode§7: Can supply 2A to each player w
 gtpp.tooltip.wireless_charger.4=§aMixed Mode§7: Can supply 1A up to %,dm away and more 1A within %,dm.
 
 #gtpp info data
-gtpp.infodata.multi_block.total_time=Total Time Since Built: %s Weeks, %s Days,
-gtpp.infodata.multi_block.total_time.0=%s Hours, %s Minutes, %s Seconds.
-gtpp.infodata.multi_block.total_time.in_ticks=Total Time in ticks: %s
-gtpp.infodata.multi_block.recipes_done=Recipes Finished: %s
 gtpp.infodata.tesseract_generator.name=Tesseract Generator
 gtpp.infodata.tesseract_generator.frequency=Frequency: %d
 gtpp.infodata.tesseract_generator.status.active=Active
@@ -4091,7 +4074,6 @@ gtpp.gui.text.power_sub_station.power_loss=Powerloss: %s EU per tick
 gtpp.gui.text.power_sub_station.running_perfectly=Running perfectly
 gtpp.gui.text.power_sub_station.turn_on_with_mallet=Turn on with Mallet
 gtpp.gui.atmospheric_reconditioner.tooltip.reduction=Reduction: %s/s
-gtpp.gui.crop_harvestor.tooltip.water=Water: %sL / %sL
 
 gtpp.gui.multiblock.progress.text=Progress: %s s / %s s
 gtpp.gui.multiblock.eu_t_p.text=%s EU/t/parallel

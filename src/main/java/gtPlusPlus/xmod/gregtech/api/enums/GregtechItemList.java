@@ -372,9 +372,9 @@ public enum GregtechItemList implements IItemContainer {
     Controller_SteamCentrifugeMulti,
     // Bit Steam Forge Hammer
     Controller_SteamForgeHammerMulti,
-    // Big Steam Compressor
-    Controller_SteamMixerMulti,
     // Big Steam Mixer
+    Controller_SteamMixerMulti,
+    // Big Steam Compressor
     Controller_SteamCompressorMulti,
     // Big Steam Alloy Smelter
     Controller_SteamAlloySmelterMulti,
@@ -543,16 +543,6 @@ public enum GregtechItemList implements IItemContainer {
     GT4_Electric_Auto_Workbench_LuV,
     GT4_Electric_Auto_Workbench_ZPM,
     GT4_Electric_Auto_Workbench_UV,
-
-    // GT4 Crop Harvester
-    GT4_Crop_Harvester_LV,
-    GT4_Crop_Harvester_MV,
-    GT4_Crop_Harvester_HV,
-    GT4_Crop_Harvester_EV,
-    GT4_Crop_Harvester_IV,
-    GT4_Crop_Harvester_LuV,
-    GT4_Crop_Harvester_ZPM,
-    GT4_Crop_Harvester_UV,
 
     // Geothermal Engines
     Geothermal_Engine_EV,
@@ -878,7 +868,6 @@ public enum GregtechItemList implements IItemContainer {
     AlkalusDisk,
     WitherGuard,
     MagicFeather,
-    PestKiller,
     FishTrap,
 
     // ----------------------------------------------------------------------------

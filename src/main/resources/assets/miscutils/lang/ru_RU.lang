@@ -49,7 +49,6 @@ tile.blockCircuitProgrammer.name=Программатор
 tile.blockDecayablesChest.name=Ящик со свинцовым покрытием
 tile.blockVolumetricFlaskSetter.name=Конфигуратор мерной колбы
 tile.blockSuperLight.name=Сияющая Звезда
-tile.blockPestKiller.name=Уничтожитель вредителей
 tile.blockSuperJukebox.name=Сэр Миксалот [Проигрыватель]
 tile.blockSuperJukebox.deprecated=§cУСТАРЕЛО, Используйте вместо этого Электрический проигрыватель
 
@@ -272,9 +271,6 @@ MU-metaitem.01.0.name=MU-metaitem.01.0.name
 # Cells
 item.SulfurDioxide.name=Капсула высококачественного диоксида серы
 item.mobessence.name=Капсула моб эссенции
-item.Fertiliser.name=Капсула удобрения
-item.UN32Fertiliser.name=Капсула удобрения UN-32
-item.UN18Fertiliser.name=Капсула удобрения UN-18
 item.RaisinJuice.name=Капсула изюмного сока
 item.BerylliumHydroxide.name=Капсула гидроксида бериллия
 item.AmmoniumBifluoride.name=Капсула гидрофторида аммония
@@ -1675,12 +1671,6 @@ item.itemDustTinyZrCl4.name=Крошечная кучка пыли тетрах�
 item.itemDustCookedZrCl4.name=Пыль прокалённого тетрахлорида циркония
 item.itemDustSmallCookedZrCl4.name=Маленькая кучка пыли прокалённого тетрахлорида циркония
 item.itemDustTinyCookedZrCl4.name=Крошечная кучка пыли прокалённого тетрахлорида циркония
-item.itemDustUN18Fertiliser.name=Пыль удобрения UN-18
-item.itemDustSmallUN18Fertiliser.name=Маленькая кучка пыли удобрения UN-18
-item.itemDustTinyUN18Fertiliser.name=Крошечная кучка пыли удобрения UN-18
-item.itemDustUN32Fertiliser.name=Пыль удобрения UN-32
-item.itemDustSmallUN32Fertiliser.name=Маленькая кучка пыли удобрения UN-32
-item.itemDustTinyUN32Fertiliser.name=Крошечная кучка пыли удобрения UN-32
 item.itemCustomMetaCover.miscutils.GtMachineCasings=%s Machine Plate Cover
 item.itemCustomMetaCover.miscutils.GtMachineCasings.name=Machine Plate Cover
 item.itemGregtechPump.tooltip.0=Cannot drain any other standard fluid container block
@@ -3516,9 +3506,6 @@ item.GTPP.bauble.fireprotection.0.name.name=Перчатка пицца "Суп�
 item.itemCellSeleniumDioxide.name=Капсула диоксида селена
 item.itemCellSeleniousAcid.name=Капсула селенистой кислоты
 
-# Added 25/7/19
-container.pestkiller=Уничтожитель вредителей
-
 # Added 15/8/19
 gtpp.nei.decayables=Decayables Chest
 entity.batKing.name=Король летучих мышей
@@ -4032,9 +4019,6 @@ gtpp.tooltip.wireless_charger.3=§aЛокальный§7: Может подав�
 gtpp.tooltip.wireless_charger.4=§aСмешанный режим§7: Может подавать 1A на расстоянии до %,dм и более 1A в пределах %,dм.
 
 #gtpp info data
-gtpp.infodata.multi_block.total_time=Общее время с момента постройки: %s Недель, %s Дней,
-gtpp.infodata.multi_block.total_time.0=%s Час(ы), %s Минут(ы), %s Секунд(ы).
-gtpp.infodata.multi_block.total_time.in_ticks=Total Time in ticks: %s
 gtpp.infodata.tesseract_generator.name=Тессеракт генератор
 gtpp.infodata.tesseract_generator.frequency=Частота: %d
 gtpp.infodata.tesseract_generator.status.active=Активен
