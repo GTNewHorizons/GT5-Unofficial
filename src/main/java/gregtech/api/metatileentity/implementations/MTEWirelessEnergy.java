@@ -16,6 +16,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.common.misc.WirelessEnergyHatchManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 public class MTEWirelessEnergy extends MTEHatchEnergy {
@@ -38,7 +39,7 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
     public String[] getDescription() {
         return new String[] { EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
             EnumChatFormatting.GRAY + "Does not connect to wires. This block withdraws EU from the network.",
-            AuthorColen };
+            EnumChatFormatting.GRAY + "Does not explode in rain!", AuthorColen };
     }
 
     @Override
@@ -53,6 +54,11 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
 
     @Override
     public boolean isEnetInput() {
+        return false;
+    }
+
+    @Override
+    public boolean willExplodeInRain() {
         return false;
     }
 
@@ -103,11 +109,15 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
             // Every ticks_between_energy_addition add eu_transferred_per_operation to internal EU storage from network.
             if (aTick % ticks_between_energy_addition == 0L) {
                 tryFetchingEnergy();
+                if (aTick > 100) {
+                    aBaseMetaTileEntity.disableTicking();
+                    WirelessEnergyHatchManager.addHatch(this);
+                }
             }
         }
     }
 
-    private void tryFetchingEnergy() {
+    public void tryFetchingEnergy() {
         long currentEU = getBaseMetaTileEntity().getStoredEU();
         long maxEU = maxEUStore();
         long euToTransfer = min(maxEU - currentEU, eu_transferred_per_operation_long);
