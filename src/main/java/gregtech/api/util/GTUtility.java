@@ -4101,7 +4101,7 @@ public class GTUtility {
     }
 
     /**
-     * A helper method that does rotation calculations for renderering.
+     * A helper method that does rotation calculations for rendering.
      *
      * @param extendedFacing - extendedFacing value of the MTE
      * @return AxisAngle4f that can be used directly with glRotate calls
