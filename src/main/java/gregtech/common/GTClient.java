@@ -158,7 +158,7 @@ public class GTClient extends GTProxy {
     private final List<Materials> mMoltenNegG;
     private final List<Materials> mMoltenNegB;
     private final List<Materials> mMoltenNegA = Collections.emptyList();
-    private static long mAnimationTick;
+    private long mAnimationTick;
     /**
      * This is the place to def the value used below
      **/
@@ -168,7 +168,7 @@ public class GTClient extends GTProxy {
     private GTClientPreference mPreference;
     private boolean mFirstTick = false;
     private int mReloadCount;
-    private static float renderTickTime;
+    private float renderTickTime;
 
     public GTClient() {
         mAnimationTick = 0L;
@@ -651,7 +651,7 @@ public class GTClient extends GTProxy {
         return (short) tmp;
     }
 
-    public static float getAnimationRenderTicks() {
+    public float getAnimationRenderTicks() {
         return mAnimationTick + renderTickTime;
     }
 
