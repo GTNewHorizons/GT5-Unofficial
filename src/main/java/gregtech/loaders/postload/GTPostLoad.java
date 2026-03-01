@@ -135,16 +135,6 @@ public class GTPostLoad {
             GTForestryCompat.populateFakeNeiRecipes();
         }
 
-        if (ItemList.IC2_Crop_Seeds.get(1L) != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.IC2_Crop_Seeds.getWildcard(1L))
-                .itemOutputs(ItemList.IC2_Crop_Seeds.getWithName(1L, "Scanned Seeds"))
-                .duration(8 * SECONDS)
-                .eut(8)
-                .ignoreCollision()
-                .fake()
-                .addTo(scannerFakeRecipes);
-        }
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.written_book, 1, 32767))
             .itemOutputs(ItemList.Tool_DataStick.getWithName(1L, "Scanned Book Data"))

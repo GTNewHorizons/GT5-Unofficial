@@ -40,7 +40,6 @@ import goodgenerator.blocks.tileEntity.MTESupercriticalFluidTurbine;
 import goodgenerator.blocks.tileEntity.MTEUniversalChemicalFuelEngine;
 import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
-import goodgenerator.crossmod.ic2.CropsLoader;
 import goodgenerator.crossmod.nei.NEIConfig;
 import goodgenerator.items.GGItem;
 import goodgenerator.items.GGItemBlocks;
@@ -127,10 +126,6 @@ public class Loaders {
         "highEnergyMixture",
         GoodGenerator.GG,
         new String[] { GoodGenerator.MOD_ID + ":highEnergyMixture" });
-    public static final Item saltyRoot = new GGItem(
-        "saltyRoot",
-        GoodGenerator.GG,
-        new String[] { GoodGenerator.MOD_ID + ":saltyRoot" });
     public static final Item huiCircuit = new GGItem(
         "huiCircuit",
         addText("huiCircuit.tooltip", 5),
@@ -440,7 +435,6 @@ public class Loaders {
         GameRegistry.registerItem(advancedFuelRod, "advancedFuelRod", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(fluidCore, "fluidCore", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highEnergyMixture, "highEnergyMixture", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(saltyRoot, "saltyRoot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(huiCircuit, "huiCircuit", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(circuitWrap, "circuitWrap", GoodGenerator.MOD_ID);
         GameRegistry.registerTileEntity(TileAntimatter.class, "AntimatterRender");
@@ -541,7 +535,6 @@ public class Loaders {
     public static void initLoad() {
         GTMetaTileRegister();
         initLoadRecipes();
-        CropsLoader.registerCrops();
     }
 
     public static void postInitLoad() {

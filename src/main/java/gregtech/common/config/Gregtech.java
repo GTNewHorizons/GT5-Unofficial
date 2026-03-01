@@ -290,11 +290,6 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean lowGravProcessing;
 
-        @Config.Comment("if true, crops need a block below to fully grow.")
-        @Config.DefaultBoolean(true)
-        @Config.RequiresMcRestart
-        public boolean cropNeedBlock;
-
         @Config.Comment("if yes, allows the automatic interactions with the maintenance hatches.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart

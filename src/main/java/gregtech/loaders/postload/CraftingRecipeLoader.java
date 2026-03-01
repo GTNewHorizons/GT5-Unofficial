@@ -126,7 +126,6 @@ public class CraftingRecipeLoader implements Runnable {
             }
         }
         GTModHandler.removeRecipeByOutputDelayed(ItemList.Bottle_Empty.get(1L));
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Spray_WeedEx.get(1L));
         GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("reBattery", 1L));
         GTModHandler.removeRecipeByOutputDelayed(new ItemStack(Blocks.tnt));
         GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("dynamite", 1L));
@@ -1570,12 +1569,6 @@ public class CraftingRecipeLoader implements Runnable {
             bits_no_remove_buffered,
             new Object[] { "CCC", "XWX", aTextIron2, 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'X',
                 OrePrefixes.plate.get(Materials.Iron), 'W', GTModHandler.getIC2Item("waterMill", 1L) });
-        GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("cropnalyzer", 1L),
-            bits_no_remove_buffered,
-            new Object[] { "CC ", "RGR", "RIR", 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'R',
-                OrePrefixes.dust.get(Materials.Redstone), 'G', OrePrefixes.block.get(Materials.Glass), 'I',
-                OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("coil", 1L),
             bits_no_remove_buffered,

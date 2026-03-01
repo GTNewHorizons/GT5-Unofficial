@@ -1275,34 +1275,62 @@ public enum MetaTileEntityIDs {
     OUTPUT_HATCH_MAX(12108),
     VOID_HATCH(12109),
     VOID_BUS(12110),
-    cropGeneExtractorLV(12501),
-    cropGeneExtractorMV(12502),
-    cropGeneExtractorHV(12503),
-    cropGeneExtractorEV(12504),
-    cropGeneExtractorIV(12505),
-    cropGeneExtractorLuV(12506),
-    cropGeneExtractorZPM(12507),
-    cropGeneExtractorUV(12508),
-    cropGeneExtractorUHV(12509),
-    cropReplicatorLV(12510),
-    cropReplicatorMV(12511),
-    cropReplicatorHV(12512),
-    cropReplicatorEV(12513),
-    cropReplicatorIV(12514),
-    cropReplicatorLuV(12515),
-    cropReplicatorZPM(12516),
-    cropReplicatorUV(12517),
-    cropReplicatorUHV(12518),
-    cropSynthesiserLV(12519),
-    cropSynthesiserMV(12520),
-    cropSynthesiserHV(12521),
-    cropSynthesiserEV(12522),
-    cropSynthesiserIV(12523),
-    cropSynthesiserLuV(12524),
-    cropSynthesiserZPM(12525),
-    cropSynthesiserUV(12526),
-    cropSynthesiserUHV(12527),
-    cropWeedPicker(12528),
+    @Deprecated
+    CropsPPCropGeneExtractorLV_retired(12501),
+    @Deprecated
+    CropsPPCropGeneExtractorMV_retired(12502),
+    @Deprecated
+    CropsPPCropGeneExtractorHV_retired(12503),
+    @Deprecated
+    CropsPPCropGeneExtractorEV_retired(12504),
+    @Deprecated
+    CropsPPCropGeneExtractorIV_retired(12505),
+    @Deprecated
+    CropsPPCropGeneExtractorLuV_retired(12506),
+    @Deprecated
+    CropsPPCropGeneExtractorZPM_retired(12507),
+    @Deprecated
+    CropsPPCropGeneExtractorUV_retired(12508),
+    @Deprecated
+    CropsPPCropGeneExtractorUHV_retired(12509),
+    @Deprecated
+    CropsPPCropReplicatorLV_retired(12510),
+    @Deprecated
+    CropsPPCropReplicatorMV_retired(12511),
+    @Deprecated
+    CropsPPCropReplicatorHV_retired(12512),
+    @Deprecated
+    CropsPPCropReplicatorEV_retired(12513),
+    @Deprecated
+    CropsPPCropReplicatorIV_retired(12514),
+    @Deprecated
+    CropsPPCropReplicatorLuV_retired(12515),
+    @Deprecated
+    CropsPPCropReplicatorZPM_retired(12516),
+    @Deprecated
+    CropsPPCropReplicatorUV_retired(12517),
+    @Deprecated
+    CropsPPCropReplicatorUHV_retired(12518),
+    @Deprecated
+    CropsPPCropSynthesiserLV_retired(12519),
+    @Deprecated
+    CropsPPCropSynthesiserMV_retired(12520),
+    @Deprecated
+    CropsPPCropSynthesiserHV_retired(12521),
+    @Deprecated
+    CropsPPCropSynthesiserEV_retired(12522),
+    @Deprecated
+    CropsPPCropSynthesiserIV_retired(12523),
+    @Deprecated
+    CropsPPCropSynthesiserLuV_retired(12524),
+    @Deprecated
+    CropsPPCropSynthesiserZPM_retired(12525),
+    @Deprecated
+    CropsPPCropSynthesiserUV_retired(12526),
+    @Deprecated
+    CropsPPCropSynthesiserUHV_retired(12527),
+    @Deprecated
+    CropsPPCropWeedPicker_retired(12528),
     LESU(12600),
     EnergyDistributor_ULV(12601),
     EnergyDistributor_LV(12602),
@@ -1808,6 +1836,48 @@ public enum MetaTileEntityIDs {
     UMV256ADynamoHatch(16034),
     UXV256ADynamoHatch(16035),
     FuelRefineFactory(16999),
+    CropsNHCropManagerLV(28001),
+    CropsNHCropManagerMV(28002),
+    CropsNHCropManagerHV(28003),
+    CropsNHCropManagerEV(28004),
+    CropsNHCropManagerIV(28005),
+    CropsNHCropManagerLUV(28006),
+    CropsNHCropManagerZPM(28007),
+    CropsNHCropManagerUV(28008),
+    CropsNHCropManagerUHV(28009),
+    CropsNHCropManagerUEV(28010),
+    CropsNHCropManagerUIV(28011),
+    CropsNHCropManagerUMV(28012),
+    CropsNHSeedGeneratorLV(28013),
+    CropsNHSeedGeneratorMV(28014),
+    CropsNHSeedGeneratorHV(28015),
+    CropsNHSeedGeneratorEV(28016),
+    CropsNHSeedGeneratorIV(28017),
+    CropsNHSeedGeneratorLUV(28018),
+    CropsNHSeedGeneratorZPM(28019),
+    CropsNHSeedGeneratorUV(28020),
+    CropsNHSeedGeneratorUHV(28021),
+    CropsNHSeedGeneratorUEV(28022),
+    CropsNHSeedGeneratorUIV(28023),
+    CropsNHSeedGeneratorUMV(28024),
+    CropsNHCropGeneExtractorEV(28037),
+    CropsNHCropGeneExtractorIV(28038),
+    CropsNHCropGeneExtractorLUV(28039),
+    CropsNHCropGeneExtractorZPM(28040),
+    CropsNHCropGeneExtractorUV(28041),
+    CropsNHCropGeneExtractorUHV(28042),
+    CropsNHCropGeneExtractorUEV(28043),
+    CropsNHCropGeneExtractorUIV(28044),
+    CropsNHCropGeneExtractorUMV(28045),
+    CropsNHCropSynthesizerEV(28046),
+    CropsNHCropSynthesizerIV(28047),
+    CropsNHCropSynthesizerLUV(28048),
+    CropsNHCropSynthesizerZPM(28049),
+    CropsNHCropSynthesizerUV(28050),
+    CropsNHCropSynthesizerUHV(28051),
+    CropsNHCropSynthesizerUEV(28052),
+    CropsNHCropSynthesizerUIV(28053),
+    CropsNHCropSynthesizerUMV(28054),
     MAGLEV_PYLON_MV(29990),
     MAGLEV_PYLON_HV(29991),
     MAGLEV_PYLON_EV(29992),
@@ -1899,14 +1969,22 @@ public enum MetaTileEntityIDs {
     GT4_Electric_Auto_Workbench_LuV(31096),
     GT4_Electric_Auto_Workbench_ZPM(31097),
     GT4_Electric_Auto_Workbench_UV(31098),
-    GT4_Crop_Harvester_LV(31111),
-    GT4_Crop_Harvester_MV(31112),
-    GT4_Crop_Harvester_HV(31113),
-    GT4_Crop_Harvester_EV(31114),
-    GT4_Crop_Harvester_IV(31115),
-    GT4_Crop_Harvester_LuV(31116),
-    GT4_Crop_Harvester_ZPM(31117),
-    GT4_Crop_Harvester_UV(31118),
+    @Deprecated
+    GT4_Crop_Harvester_LV_retired(31111),
+    @Deprecated
+    GT4_Crop_Harvester_MV_retired(31112),
+    @Deprecated
+    GT4_Crop_Harvester_HV_retired(31113),
+    @Deprecated
+    GT4_Crop_Harvester_EV_retired(31114),
+    @Deprecated
+    GT4_Crop_Harvester_IV_retired(31115),
+    @Deprecated
+    GT4_Crop_Harvester_LuV_retired(31116),
+    @Deprecated
+    GT4_Crop_Harvester_ZPM_retired(31117),
+    @Deprecated
+    GT4_Crop_Harvester_UV_retired(31118),
     Mega_AlloyBlastSmelter(31150),
     QuantumForceTransformer(31151),
     ChiselBus_LV(31778),
