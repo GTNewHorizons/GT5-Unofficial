@@ -1801,6 +1801,7 @@ public enum MetaTileEntityIDs {
     ENTROPIC_PROCESSOR(15750),
     DECAY_WAREHOUSE(15751),
     LATEX(15752),
+    MagicalMaintenanceHatch(15753),
     BasicTeslaTransceiver1by1(16000),
     AdvancedTeslaTransceiver1by1(16001),
     EpycTeslaTransceiver1by1(16002),
