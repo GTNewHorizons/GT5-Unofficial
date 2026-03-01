@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -112,6 +113,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -197,30 +199,13 @@ import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
  */
 public class GTUtility {
 
-    /*
-     * Forge screwed the Fluid Registry up again, so I make my own, which is also much more efficient than the stupid
-     * Stuff over there.
-     */
-
     /**
-     * All catched fluid container data.
+     * Forge Fluid Registry doesn't provide a convenient way to get all containers with given fluid,
+     * so we're making our own map.
+     * At the moment of writing we have 1329 fluids in the latest daily.
+     * The capacity is calculated as {@code Integer.highestOneBit(1.5 * size)}, so 1024 actually means 2048
      */
-    private static final List<FluidContainerData> sFluidContainerList = new ArrayList<>();
-
-    /**
-     * Associates the filled container item with the fluid container data.
-     */
-    private static final Map<GTItemStack, FluidContainerData> sFilledContainerToData = new /* Concurrent */ HashMap<>();
-
-    /**
-     * Associates the empty container item with a map mapping fluid names to the associated fluid container data.
-     */
-    private static final Map<GTItemStack, Map<String, FluidContainerData>> sEmptyContainerToFluidToData = new HashMap<>();
-
-    /**
-     * Associates the name of the fluid with all filled container items.
-     */
-    private static final Map<String, List<ItemStack>> sFluidToContainers = new HashMap<>();
+    private static final Map<Fluid, List<ItemStack>> fluidToContainersMap = new IdentityHashMap<>(1024);
 
     private static final Map<Integer, Boolean> sOreTable = new HashMap<>();
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
@@ -228,10 +213,6 @@ public class GTUtility {
     private static int sBookCount = 0;
     public static UUID defaultUuid = null; // maybe default non-null?
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
-
-    public static Map<GTItemStack, FluidContainerData> getFilledContainerToData() {
-        return sFilledContainerToData;
-    }
 
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
@@ -1091,75 +1072,49 @@ public class GTUtility {
         return getFluidName(aFluid.getFluid(), aLocalized);
     }
 
-    public static void reInit() {
-        sFilledContainerToData.clear();
-        sEmptyContainerToFluidToData.clear();
-        sFluidToContainers.clear();
-        for (FluidContainerData data : sFluidContainerList) {
-            String fluidName = data.fluid.getFluid()
-                .getName();
-            sFilledContainerToData.put(new GTItemStack(data.filledContainer), data);
-            sEmptyContainerToFluidToData.computeIfAbsent(new GTItemStack(data.emptyContainer), $ -> new HashMap<>())
-                .put(fluidName, data);
-            sFluidToContainers.computeIfAbsent(fluidName, $ -> new ArrayList<>())
-                .add(data.filledContainer);
-        }
-    }
-
-    public static void addFluidContainerData(FluidContainerData data) {
-        String fluidName = data.fluid.getFluid()
-            .getName();
-        sFluidContainerList.add(data);
-        sFilledContainerToData.put(new GTItemStack(data.filledContainer), data);
-        sEmptyContainerToFluidToData.computeIfAbsent(new GTItemStack(data.emptyContainer), $ -> new HashMap<>())
-            .put(fluidName, data);
-        sFluidToContainers.computeIfAbsent(fluidName, $ -> new ArrayList<>())
+    public static void insertInFluidToContainersMap(FluidContainerData data) {
+        fluidToContainersMap.computeIfAbsent(data.fluid.getFluid(), $ -> new ArrayList<>())
             .add(data.filledContainer);
     }
 
-    public static boolean isEmptyFluidContainer(ItemStack itemStack) {
-        return sEmptyContainerToFluidToData.containsKey(new GTItemStack(itemStack));
-    }
-
-    public static List<ItemStack> getContainersFromFluid(FluidStack tFluidStack) {
-        if (tFluidStack != null) {
-            List<ItemStack> tContainers = sFluidToContainers.get(
-                tFluidStack.getFluid()
-                    .getName());
-            if (tContainers == null) return new ArrayList<>();
-            return tContainers;
+    public static List<ItemStack> getContainersFromFluid(FluidStack fluidStack) {
+        if (fluidStack != null) {
+            List<ItemStack> containers = fluidToContainersMap.get(fluidStack.getFluid());
+            if (containers != null) return containers;
         }
         return new ArrayList<>();
     }
 
-    public static ItemStack fillFluidContainer(FluidStack aFluid, ItemStack aStack, boolean aRemoveFluidDirectly,
-        boolean aCheckIFluidContainerItems) {
-        if (isStackInvalid(aStack) || aFluid == null) return null;
-        if (GTModHandler.isWater(aFluid) && ItemList.Bottle_Empty.isStackEqual(aStack)) {
-            if (aFluid.amount >= 1000) {
+    public static ItemStack fillFluidContainer(FluidStack fluid, ItemStack stack, boolean removeFluidDirectly,
+        boolean checkIFluidContainerItems) {
+        if (isStackInvalid(stack) || fluid == null) return null;
+
+        if (GTModHandler.isWater(fluid) && ItemList.Bottle_Empty.isStackEqual(stack)) {
+            if (fluid.amount >= 1000) {
                 return new ItemStack(Items.potionitem, 1, 0);
             }
             return null;
         }
-        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem fluidContainerItem
-            && fluidContainerItem.getFluid(aStack) == null
-            && fluidContainerItem.getCapacity(aStack) > 0
-            && fluidContainerItem.getCapacity(aStack) <= aFluid.amount) {
-            if (aRemoveFluidDirectly) {
-                aFluid.amount -= fluidContainerItem.fill(aStack = copyAmount(1, aStack), aFluid, true);
-            } else {
-                fluidContainerItem.fill(aStack = copyAmount(1, aStack), aFluid, true);
+
+        if (checkIFluidContainerItems && stack.getItem() instanceof IFluidContainerItem container
+            && container.getFluid(stack) == null
+            && container.getCapacity(stack) > 0
+            && container.getCapacity(stack) <= fluid.amount) {
+
+            ItemStack stackCopy = copyAmount(1, stack);
+            int filled = container.fill(stackCopy, fluid, true);
+            if (removeFluidDirectly) {
+                fluid.amount -= filled;
             }
-            return aStack;
+            return stackCopy;
         }
-        Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new GTItemStack(aStack));
-        if (tFluidToContainer == null) return null;
-        FluidContainerData tData = tFluidToContainer.get(
-            aFluid.getFluid()
-                .getName());
-        if (tData == null || tData.fluid.amount > aFluid.amount) return null;
-        if (aRemoveFluidDirectly) aFluid.amount -= tData.fluid.amount;
-        return copyAmount(1, tData.filledContainer);
+
+        ItemStack fullContainer = FluidContainerRegistry.fillFluidContainer(fluid, stack);
+        if (fullContainer == null) return null;
+        if (removeFluidDirectly) {
+            fluid.amount -= FluidContainerRegistry.getContainerCapacity(fullContainer);
+        }
+        return fullContainer;
     }
 
     public static int calculateRecipeEU(Materials aMaterial, int defaultRecipeEUPerTick) {
@@ -1215,38 +1170,31 @@ public class GTUtility {
                 .getLong("mFluidDisplayAmount"));
     }
 
-    public static boolean containsFluid(ItemStack aStack, FluidStack aFluid, boolean aCheckIFluidContainerItems) {
-        if (isStackInvalid(aStack) || aFluid == null) return false;
-        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem
-            && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0)
-            return aFluid
-                .isFluidEqual(((IFluidContainerItem) aStack.getItem()).getFluid(aStack = copyAmount(1, aStack)));
-        FluidContainerData tData = sFilledContainerToData.get(new GTItemStack(aStack));
-        return tData != null && tData.fluid.isFluidEqual(aFluid);
-    }
+    public static FluidStack getFluidForFilledItem(ItemStack stack, boolean checkIFluidContainerItems) {
+        if (isStackInvalid(stack)) return null;
 
-    public static FluidStack getFluidForFilledItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
-        if (isStackInvalid(aStack)) return null;
-        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem
-            && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0)
-            return ((IFluidContainerItem) aStack.getItem()).drain(copyAmount(1, aStack), Integer.MAX_VALUE, false);
-        FluidContainerData tData = sFilledContainerToData.get(new GTItemStack(aStack));
-        return tData == null ? null : tData.fluid.copy();
+        if (checkIFluidContainerItems && stack.getItem() instanceof IFluidContainerItem container) {
+            return container.getFluid(stack);
+        }
+
+        return FluidContainerRegistry.getFluidForFilledItem(stack);
     }
 
     /**
      * Get empty fluid container from filled one.
      */
-    public static ItemStack getContainerForFilledItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
-        if (isStackInvalid(aStack)) return null;
-        FluidContainerData tData = sFilledContainerToData.get(new GTItemStack(aStack));
-        if (tData != null) return copyAmount(1, tData.emptyContainer);
-        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem
-            && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0) {
-            ((IFluidContainerItem) aStack.getItem()).drain(aStack = copyAmount(1, aStack), Integer.MAX_VALUE, true);
-            return aStack;
+    public static ItemStack getContainerForFilledItem(ItemStack stack, boolean checkIFluidContainerItems) {
+        if (isStackInvalid(stack)) return null;
+
+        if (checkIFluidContainerItems && stack.getItem() instanceof IFluidContainerItem container
+            && container.getCapacity(stack) > 0) {
+
+            ItemStack stackCopy = copyAmount(1, stack);
+            container.drain(stackCopy, Integer.MAX_VALUE, true);
+            return stackCopy;
         }
-        return null;
+
+        return FluidContainerRegistry.drainFluidContainer(stack);
     }
 
     /**
@@ -3589,9 +3537,10 @@ public class GTUtility {
      */
     public static FluidStack convertCellToFluid(ItemStack itemStack) {
         if (itemStack == null) return null;
-        if (getFluidForFilledItem(itemStack, true) != null) {
-            FluidStack fluidStack = getFluidForFilledItem(itemStack, true);
-            if (fluidStack != null) fluidStack.amount = fluidStack.amount * itemStack.stackSize;
+
+        FluidStack fluidStack = getFluidForFilledItem(itemStack, true);
+        if (fluidStack != null) {
+            fluidStack.amount = fluidStack.amount * itemStack.stackSize;
             return fluidStack;
         }
         return null;
