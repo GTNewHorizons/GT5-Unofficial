@@ -10,13 +10,17 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTELargeNeutralizationEngine;
@@ -68,34 +72,63 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         Flow rightPanelGapRow = super.createRightPanelGapRow(parent, syncManager);
-        rightPanelGapRow.child(createFluidPanelButton(syncManager, parent));
+        rightPanelGapRow.child(createFluidRegulationPanelButton(syncManager, parent));
         return rightPanelGapRow;
     }
 
-    protected IWidget createFluidPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler powerPanel = syncManager.syncedPanel(
-            "fluidPanel",
+    protected IWidget createFluidRegulationPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
+        IPanelHandler fluidRegulationPanel = syncManager.syncedPanel(
+            "fluidRegulationPanel",
             true,
-            (p_syncManager, syncHandler) -> openFluidControlPanel(p_syncManager, parent));
+            (p_syncManager, syncHandler) -> openFluidRegulationControlPanel(p_syncManager, parent));
         return new ButtonWidget<>().size(18, 18)
             .marginLeft(4)
-            .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/fluid_panel"))
+            .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/fluid_regulation_panel"))
             .onMousePressed(d -> {
-                if (!powerPanel.isPanelOpen()) {
-                    powerPanel.openPanel();
+                if (!fluidRegulationPanel.isPanelOpen()) {
+                    fluidRegulationPanel.openPanel();
                 } else {
-                    powerPanel.closePanel();
+                    fluidRegulationPanel.closePanel();
                 }
                 return true;
             })
-            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.fluid_panel")))
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.fluid_regulation_panel")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private ModularPanel openFluidControlPanel(PanelSyncManager syncManager, ModularPanel parent) {
-        return new ModularPanel("fluidPanel").relative(parent)
+    private ModularPanel openFluidRegulationControlPanel(PanelSyncManager syncManager, ModularPanel parent) {
+        return new ModularPanel("fluidRegulationPanel").relative(parent)
             .leftRel(1)
             .topRel(0)
-            .size(120, 130);
+            .size(120, 50)
+            .child(
+                new Column().sizeRel(1)
+                    .padding(3)
+                    .child(
+                        IKey.lang("GT5U.gui.button.max_fluid")
+                            .asWidget()
+                            .marginBottom(4))
+                    .child(makeMaxFluidConfigurator(syncManager)));
+
+    }
+
+    private IWidget makeMaxFluidConfigurator(PanelSyncManager syncManager) {
+        IntSyncValue maxFluidUseSyncer = new IntSyncValue(multiblock::getMaxFluidUse, multiblock::setMaxFluidUse);
+        return new Row().widthRel(1)
+            .marginBottom(4)
+            .height(18)
+            .paddingLeft(3)
+            .paddingRight(3)
+            .mainAxisAlignment(Alignment.MainAxis.CENTER)
+            .child(makeMaxFluidConfiguratorTextFieldWidget(maxFluidUseSyncer));
+    }
+
+    private IWidget makeMaxFluidConfiguratorTextFieldWidget(IntSyncValue maxFluidUseSyncer) {
+        return new TextFieldWidget().value(maxFluidUseSyncer)
+            .setTextAlignment(Alignment.Center)
+            .setNumbers(0, Integer.MAX_VALUE)
+            .size(70, 14)
+            .marginBottom(4)
+            .marginRight(16);
     }
 }

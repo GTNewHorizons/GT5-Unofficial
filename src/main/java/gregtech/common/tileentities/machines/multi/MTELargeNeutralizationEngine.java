@@ -87,7 +87,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     public int residueIncrease;
     private float robotArmDecayBoost;
 
-    private int maxFluidUse = 100000000;
+    private int maxFluidUse = 200;
 
     public MTELargeNeutralizationEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
