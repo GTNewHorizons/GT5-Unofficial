@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import gregtech.api.enums.ItemList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -40,6 +39,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -111,10 +111,20 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("front_bottom_middle")
-            .addCasingInfoRange(ItemList.Casing_HeatProof.get(1).getDisplayName(), 8, 14, false)
+            .addCasingInfoRange(
+                ItemList.Casing_HeatProof.get(1)
+                    .getDisplayName(),
+                8,
+                14,
+                false)
             .addStructurePart("GT5U.tooltip.structure.heating_coil", "gt.multi_furnace.info.coil")
             .addEnergyHatch("<bottom casing>", 1)
-            .addMaintenanceHatch(GTUtility.nestParams("GT5U.MBTT.HatchInfo", ItemList.Casing_HeatProof.get(1).getDisplayName()), 1)
+            .addMaintenanceHatch(
+                GTUtility.nestParams(
+                    "GT5U.MBTT.HatchInfo",
+                    ItemList.Casing_HeatProof.get(1)
+                        .getDisplayName()),
+                1)
             .addMufflerHatch("gt.multi_furnace.info.muffler", 2)
             .addInputBus("<bottom casing>", 1)
             .addOutputBus("<bottom casing>", 1)

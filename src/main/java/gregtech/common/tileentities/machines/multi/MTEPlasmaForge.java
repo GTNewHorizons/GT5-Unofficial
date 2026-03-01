@@ -584,15 +584,15 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             .addUnlimitedTierSkips()
             .beginStructureBlock(33, 24, 33, false)
             .addCasingInfoExactly("GT5U.tooltip.structure.heating_coil", 2112)
-            .addStructureInfo(
+            .addCasingInfoExactly(
                 ItemList.Casing_Dim_Bridge.get(1)
                     .getDisplayName(),
                 120)
-            .addStructureInfo(
+            .addCasingInfoExactly(
                 ItemList.Casing_Dim_Injector.get(1)
                     .getDisplayName(),
                 1270)
-            .addStructureInfo(
+            .addCasingInfoExactly(
                 ItemList.Casing_Dim_Trans.get(1)
                     .getDisplayName(),
                 2121)

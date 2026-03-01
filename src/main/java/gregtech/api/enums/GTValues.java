@@ -6,7 +6,6 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_AQUA;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_BLUE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_GRAY;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_BLUE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_GREEN;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_PURPLE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_RED;
@@ -702,14 +701,12 @@ public class GTValues {
         String[] colorList = new String[letters.length];
         final String letter = letters[index];
         for (int i = 0; i < letters.length; i++) {
-            colorList[i] = LIGHT_PURPLE + (i == (letters.length - index - 1) ? BOLD + "" + ITALIC + "<3" : letter);
+            colorList[i] = LIGHT_PURPLE + (i == (letters.length - index - 1) ? BOLD + ITALIC + "<3" : letter);
         }
         return emptyAnimatedText(1, 1000, colorList);
     }
 
-    public static final String AuthorNotAPenguin = BOLD + WHITE + "Not"
-        + AQUA
-        + "APenguin";
+    public static final String AuthorNotAPenguin = BOLD + WHITE + "Not" + AQUA + "APenguin";
 
     public static final Supplier<String> AuthorNotAPenguinAnimated = chain(
         createNotAPenguinLetter(0),
@@ -783,7 +780,7 @@ public class GTValues {
         return animatedText(letter, 1, 250, colorAlternator);
     }
 
-    public static final String AuthorJL2210 = "" + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + "JL2210";
+    public static final String AuthorJL2210 = GREEN + BOLD + "JL2210";
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
         V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };

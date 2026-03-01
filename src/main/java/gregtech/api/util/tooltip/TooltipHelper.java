@@ -153,8 +153,7 @@ public class TooltipHelper {
      * @return A formatted string representing the voltage tier.
      */
     public static String voltageTierText(int voltageIndex, boolean withTierSuffix) {
-        if (voltageIndex < VoltageIndex.ULV || voltageIndex > VoltageIndex.MAX)
-            return translate("GT5U.MBTT.ErrorTier");
+        if (voltageIndex < VoltageIndex.ULV || voltageIndex > VoltageIndex.MAX) return translate("GT5U.MBTT.ErrorTier");
         return translate(
             withTierSuffix ? "GT5U.MBTT.Tier" : "%s",
             GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex] + EnumChatFormatting.GRAY);
