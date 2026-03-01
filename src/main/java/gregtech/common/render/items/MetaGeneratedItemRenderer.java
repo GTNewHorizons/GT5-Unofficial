@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 
-import com.google.common.base.Objects;
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import gregtech.api.enums.ItemList;
@@ -111,7 +110,8 @@ public final class MetaGeneratedItemRenderer implements IItemRenderer {
 
         @Override
         public int hashCode() {
-            return Objects.hashCode(item, metadata);
+            final int hash = 31 + (item == null ? 0 : item.hashCode());
+            return hash * 31 + (int) metadata;
         }
     }
 }
