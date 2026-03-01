@@ -17,6 +17,7 @@ import java.util.Collections;
 
 import net.minecraft.item.ItemStack;
 
+import bartworks.API.recipe.BacterialVatFrontend;
 import bartworks.common.items.ItemLabParts;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiCraftingRecipe;
@@ -50,9 +51,10 @@ public class BioVatNEIHandler extends GTNEIDefaultHandler {
     private void loadLabPartRecipes(ItemStack aResult) {
         for (CachedDefaultRecipe recipe : this.getCache()) {
             // dirty way of finding the special slot item
-            // see constructor of CachedDefaultRecipe on why relx==120 and rely==52 means special slot
+            // see BacterialVatFrontend to know where special slot is and why this means special slot
             for (PositionedStack stack : recipe.mInputs) {
-                if (stack.relx == 120 && stack.rely == 52
+                if (stack.relx == BacterialVatFrontend.SPECIALSLOT_RELX
+                    && stack.rely == BacterialVatFrontend.SPECIALSLOT_RELY
                     && NEIBWConfig.checkRecipe(aResult, Collections.singletonList(stack))) this.arecipes.add(recipe);
             }
         }
