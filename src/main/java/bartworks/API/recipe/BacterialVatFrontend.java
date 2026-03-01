@@ -15,11 +15,13 @@ import net.minecraft.util.StatCollector;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import bartworks.common.loaders.BioItemList;
 import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.recipe.Sievert;
 import gregtech.nei.GTNEIDefaultHandler;
@@ -37,14 +39,12 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
     @Override
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
         GTNEIDefaultHandler.FixedPositionedStack pStack) {
-        // see constructor of CachedDefaultRecipe on why relx==SPECIALSLOT_RELX and rely==SPECIALSLOT_RELY means special
-        // slot
-        if (pStack.relx == SPECIALSLOT_RELX && pStack.rely == SPECIALSLOT_RELY) {
-            currentTip.add(GRAY + StatCollector.translateToLocal("GT5U.recipes.not_consume"));
-            return currentTip;
-        }
         if (pStack.isFluid()) {
             currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("nei.biovat.input.tooltip"));
+            return currentTip;
+        }
+        if (GTUtility.areStacksEqual(pStack.item, BioItemList.getPetriDish(null), true)) {
+            currentTip.add(GRAY + StatCollector.translateToLocal("GT5U.recipes.not_consume"));
             return currentTip;
         }
         return super.handleNEIItemInputTooltip(currentTip, pStack);
@@ -64,9 +64,7 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
     protected void drawNEIOverlayForInput(GTNEIDefaultHandler.FixedPositionedStack stack) {
         super.drawNEIOverlayForInput(stack);
         drawFluidOverlay(stack);
-        // see constructor of CachedDefaultRecipe on why relx==SPECIALSLOT_RELX and rely==SPECIALSLOT_RELY means special
-        // slot
-        if (stack.relx == SPECIALSLOT_RELX && stack.rely == SPECIALSLOT_RELY) {
+        if (!stack.isFluid() && GTUtility.areStacksEqual(stack.item, BioItemList.getPetriDish(null), true)) {
             drawNEIOverlayText("NC", stack);
         }
     }
@@ -114,15 +112,8 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
         }
     }
 
-    public final static int SPECIALSLOT_X = 16;
-    public final static int SPECIALSLOT_Y = 62;
-
-    // See GTNEIDefaultHandler.java WINDOW_OFFSET
-    public final static int SPECIALSLOT_RELX = SPECIALSLOT_X - 5 + 1;
-    public final static int SPECIALSLOT_RELY = SPECIALSLOT_Y - 11 + 1;
-
     @Override
     public final Pos2d getSpecialItemPosition() {
-        return new Pos2d(SPECIALSLOT_X, SPECIALSLOT_Y);
+        return new Pos2d(16, 62);
     }
 }

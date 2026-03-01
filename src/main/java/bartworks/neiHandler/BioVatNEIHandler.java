@@ -17,8 +17,8 @@ import java.util.Collections;
 
 import net.minecraft.item.ItemStack;
 
-import bartworks.API.recipe.BacterialVatFrontend;
 import bartworks.common.items.ItemLabParts;
+import bartworks.common.loaders.BioItemList;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
@@ -26,6 +26,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.GTMod;
 import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.util.GTUtility;
 import gregtech.nei.GTNEIDefaultHandler;
 
 public class BioVatNEIHandler extends GTNEIDefaultHandler {
@@ -50,11 +51,8 @@ public class BioVatNEIHandler extends GTNEIDefaultHandler {
 
     private void loadLabPartRecipes(ItemStack aResult) {
         for (CachedDefaultRecipe recipe : this.getCache()) {
-            // dirty way of finding the special slot item
-            // see BacterialVatFrontend to know where special slot is and why this means special slot
             for (PositionedStack stack : recipe.mInputs) {
-                if (stack.relx == BacterialVatFrontend.SPECIALSLOT_RELX
-                    && stack.rely == BacterialVatFrontend.SPECIALSLOT_RELY
+                if (GTUtility.areStacksEqual(stack.item, BioItemList.getPetriDish(null), true)
                     && NEIBWConfig.checkRecipe(aResult, Collections.singletonList(stack))) this.arecipes.add(recipe);
             }
         }
