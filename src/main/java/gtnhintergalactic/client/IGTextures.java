@@ -33,13 +33,14 @@ public class IGTextures implements Runnable {
     @Override
     public void run() {
         SIPHON_OVERLAY_FRONT = BlockIcons.custom("iconsets/OVERLAY_FRONT_PLANETARYSIPHON");
-        SIPHON_OVERLAY_FRONT_GLOW = BlockIcons.custom("iconsets/OVERLAY_FRONT_PLANETARYSIPHON_GLOW");
-        SIPHON_OVERLAY_FRONT_ACTIVE_GLOW = BlockIcons.custom("iconsets/OVERLAY_FRONT_PLANETARYSIPHON_ACTIVE_GLOW");
+        SIPHON_OVERLAY_FRONT_GLOW = BlockIcons.customOptional("iconsets/OVERLAY_FRONT_PLANETARYSIPHON_GLOW");
+        SIPHON_OVERLAY_FRONT_ACTIVE_GLOW = BlockIcons
+            .customOptional("iconsets/OVERLAY_FRONT_PLANETARYSIPHON_ACTIVE_GLOW");
 
         DYSON_OVERLAY_FRONT = BlockIcons.custom("iconsets/OVERLAY_FRONT_DYSONSPHERE");
         DYSON_OVERLAY_FRONT_ACTIVE = BlockIcons.custom("iconsets/OVERLAY_FRONT_DYSONSPHERE_ACTIVE");
-        DYSON_OVERLAY_FRONT_GLOW = BlockIcons.custom("iconsets/OVERLAY_FRONT_DYSONSPHERE_GLOW");
-        DYSON_OVERLAY_FRONT_ACTIVE_GLOW = BlockIcons.custom("iconsets/OVERLAY_FRONT_DYSONSPHERE_ACTIVE_GLOW");
+        DYSON_OVERLAY_FRONT_GLOW = BlockIcons.customOptional("iconsets/OVERLAY_FRONT_DYSONSPHERE_GLOW");
+        DYSON_OVERLAY_FRONT_ACTIVE_GLOW = BlockIcons.customOptional("iconsets/OVERLAY_FRONT_DYSONSPHERE_ACTIVE_GLOW");
 
         BlockIcons.setCasingTextureForId(CASING_INDEX_RECEIVER, TextureFactory.of(GregTechAPI.sBlockCasingsDyson, 0));
         BlockIcons.setCasingTextureForId(CASING_INDEX_LAUNCH, TextureFactory.of(GregTechAPI.sBlockCasingsDyson, 2));

@@ -90,10 +90,10 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
 
     private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("icons/NeutronActivator_On");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
-        .custom("icons/NeutronActivator_On_GLOW");
+        .customOptional("icons/NeutronActivator_On_GLOW");
     private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("icons/NeutronActivator_Off");
     private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
-        .custom("icons/NeutronActivator_Off_GLOW");
+        .customOptional("icons/NeutronActivator_Off_GLOW");
 
     protected final String NA_BOTTOM = mName + "buttom";
     protected final String NA_MID = mName + "mid";
