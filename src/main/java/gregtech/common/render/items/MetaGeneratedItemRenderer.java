@@ -17,24 +17,21 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
-public class MetaGeneratedItemRenderer implements IItemRenderer {
+public final class MetaGeneratedItemRenderer implements IItemRenderer {
 
+    private final Map<RendererKey, IItemRenderer> specialRenderers = new HashMap<>();
     private final IItemRenderer mItemRenderer = new GeneratedItemRenderer();
     private final IItemRenderer mMaterialRenderer = new GeneratedMaterialRenderer();
-
-    private static final Map<RendererKey, IItemRenderer> specialRenderers = new HashMap<>();
-
-    public MetaGeneratedItemRenderer() {}
 
     public <T extends Item & IGT_ItemWithMaterialRenderer> void registerItem(T item) {
         MinecraftForgeClient.registerItemRenderer(item, this);
     }
 
-    public static void registerSpecialRenderer(ItemList item, IItemRenderer renderer) {
+    public void registerSpecialRenderer(ItemList item, IItemRenderer renderer) {
         registerSpecialRenderer(item.getItem(), item.getInternalStack_unsafe(), renderer);
     }
 
-    public static void registerSpecialRenderer(Item aItem, ItemStack aStack, IItemRenderer renderer) {
+    public void registerSpecialRenderer(Item aItem, ItemStack aStack, IItemRenderer renderer) {
         specialRenderers.put(new RendererKey(aItem, (short) aStack.getItemDamage()), renderer);
     }
 
@@ -59,7 +56,6 @@ public class MetaGeneratedItemRenderer implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
         ItemRenderUtil.applyStandardItemTransform(type);
-
         IItemRenderer itemRenderer = getRendererForItemStack(aStack);
         itemRenderer.renderItem(type, aStack, data);
     }
@@ -68,8 +64,9 @@ public class MetaGeneratedItemRenderer implements IItemRenderer {
         final short aMetaData = (short) aStack.getItemDamage();
         final RendererKey key = new RendererKey(aStack.getItem(), aMetaData);
 
-        if (specialRenderers.containsKey(key)) {
-            return specialRenderers.get(key);
+        final IItemRenderer renderer = specialRenderers.get(key);
+        if (renderer != null) {
+            return renderer;
         }
 
         IGT_ItemWithMaterialRenderer aItem = (IGT_ItemWithMaterialRenderer) aStack.getItem();
