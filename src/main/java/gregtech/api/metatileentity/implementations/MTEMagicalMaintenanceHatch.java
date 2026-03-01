@@ -23,15 +23,15 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
 
     private static Textures.BlockIcons.CustomIcon face;
 
-    private int mAirBuffer = 0;
-    private int mEarthBuffer = 0;
-    private int mFireBuffer = 0;
-    private int mWaterBuffer = 0;
-    private int mOrderBuffer = 0;
-    private int mEntropyBuffer = 0;
+    private int airBuffer = 0;
+    private int earthBuffer = 0;
+    private int fireBuffer = 0;
+    private int waterBuffer = 0;
+    private int orderBuffer = 0;
+    private int entropyBuffer = 0;
 
-    private final int mVisCap = 50;
-    private final int mVisCost = 25;
+    private final int visCap = 50;
+    private final int visCost = 25;
 
     private static final ResourceLocation focusMaintenanceSound = new ResourceLocation(
         "emt",
@@ -78,23 +78,23 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
     @Override
     public void saveNBTData(NBTTagCompound nbt) {
         super.saveNBTData(nbt);
-        nbt.setInteger("mAirBuffer", this.mAirBuffer);
-        nbt.setInteger("mEarthBuffer", this.mEarthBuffer);
-        nbt.setInteger("mFireBuffer", this.mFireBuffer);
-        nbt.setInteger("mWaterBuffer", this.mWaterBuffer);
-        nbt.setInteger("mOrderBuffer", this.mOrderBuffer);
-        nbt.setInteger("mEntropyBuffer", this.mEntropyBuffer);
+        nbt.setInteger("airBuffer", this.airBuffer);
+        nbt.setInteger("earthBuffer", this.earthBuffer);
+        nbt.setInteger("fireBuffer", this.fireBuffer);
+        nbt.setInteger("waterBuffer", this.waterBuffer);
+        nbt.setInteger("orderBuffer", this.orderBuffer);
+        nbt.setInteger("entropyBuffer", this.entropyBuffer);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound nbt) {
         super.loadNBTData(nbt);
-        this.mAirBuffer = nbt.getInteger("mAirBuffer");
-        this.mEarthBuffer = nbt.getInteger("mEarthBuffer");
-        this.mFireBuffer = nbt.getInteger("mFireBuffer");
-        this.mWaterBuffer = nbt.getInteger("mWaterBuffer");
-        this.mOrderBuffer = nbt.getInteger("mOrderBuffer");
-        this.mEntropyBuffer = nbt.getInteger("mEntropyBuffer");
+        this.airBuffer = nbt.getInteger("airBuffer");
+        this.earthBuffer = nbt.getInteger("earthBuffer");
+        this.fireBuffer = nbt.getInteger("fireBuffer");
+        this.waterBuffer = nbt.getInteger("waterBuffer");
+        this.orderBuffer = nbt.getInteger("orderBuffer");
+        this.entropyBuffer = nbt.getInteger("entropyBuffer");
     }
 
     @Override
@@ -107,12 +107,12 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
 
     private void preformMaintenance() {
         // Internal Buffer, Soft Caps at 50 vis
-        mAirBuffer = fillIfBelowCap(mAirBuffer, Aspect.AIR);
-        mEarthBuffer = fillIfBelowCap(mEarthBuffer, Aspect.EARTH);
-        mFireBuffer = fillIfBelowCap(mFireBuffer, Aspect.FIRE);
-        mWaterBuffer = fillIfBelowCap(mWaterBuffer, Aspect.WATER);
-        mOrderBuffer = fillIfBelowCap(mOrderBuffer, Aspect.ORDER);
-        mEntropyBuffer = fillIfBelowCap(mEntropyBuffer, Aspect.ENTROPY);
+        airBuffer = fillIfBelowCap(airBuffer, Aspect.AIR);
+        earthBuffer = fillIfBelowCap(earthBuffer, Aspect.EARTH);
+        fireBuffer = fillIfBelowCap(fireBuffer, Aspect.FIRE);
+        waterBuffer = fillIfBelowCap(waterBuffer, Aspect.WATER);
+        orderBuffer = fillIfBelowCap(orderBuffer, Aspect.ORDER);
+        entropyBuffer = fillIfBelowCap(entropyBuffer, Aspect.ENTROPY);
 
         // Repair if needed + Drain
         boolean shouldRepair = !this.mWrench || !this.mScrewdriver
@@ -121,25 +121,25 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
             || !this.mSoftMallet
             || !this.mHardHammer;
 
-        boolean canRepair = mAirBuffer >= mVisCost && mEarthBuffer >= mVisCost
-            && mFireBuffer >= mVisCost
-            && mWaterBuffer >= mVisCost
-            && mOrderBuffer >= mVisCost
-            && mEntropyBuffer >= mVisCost;
+        boolean canRepair = airBuffer >= visCost && earthBuffer >= visCost
+            && fireBuffer >= visCost
+            && waterBuffer >= visCost
+            && orderBuffer >= visCost
+            && entropyBuffer >= visCost;
 
         if (canRepair && shouldRepair) {
             this.mWrench = this.mScrewdriver = this.mSolderingTool = this.mCrowbar = this.mSoftMallet = this.mHardHammer = true;
-            mAirBuffer -= mVisCost;
-            mEarthBuffer -= mVisCost;
-            mFireBuffer -= mVisCost;
-            mWaterBuffer -= mVisCost;
-            mOrderBuffer -= mVisCost;
-            mEntropyBuffer -= mVisCost;
+            airBuffer -= visCost;
+            earthBuffer -= visCost;
+            fireBuffer -= visCost;
+            waterBuffer -= visCost;
+            orderBuffer -= visCost;
+            entropyBuffer -= visCost;
         }
     }
 
     private int fillIfBelowCap(int buffer, Aspect aspect) {
-        return buffer < mVisCap ? buffer + VisNetHandler.drainVis(
+        return buffer < visCap ? buffer + VisNetHandler.drainVis(
             getBaseMetaTileEntity().getWorld(),
             getBaseMetaTileEntity().getXCoord(),
             getBaseMetaTileEntity().getYCoord(),
