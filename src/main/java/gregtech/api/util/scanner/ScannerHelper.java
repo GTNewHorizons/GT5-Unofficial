@@ -39,7 +39,6 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.util.GTLog;
 import gregtech.common.pollution.Pollution;
-import ic2.api.crops.ICropTile;
 import ic2.api.energy.tile.IEnergyConductor;
 import ic2.api.reactor.IReactor;
 import ic2.api.tile.IEnergyStorage;
@@ -107,10 +106,6 @@ public class ScannerHelper {
 
             if (ScannerConfig.showCustomInfo) {
                 addCustomInfo(resultList, tileEntity);
-            }
-
-            if (ScannerConfig.showIC2CropInfo) {
-                euAmount += addIC2CropInfo(resultList, tileEntity);
             }
 
             if (ScannerConfig.showForestryLeavesInfo) {
@@ -410,57 +405,6 @@ public class ScannerHelper {
             list.add(EnumChatFormatting.RED + trans("error_energy_info"));
             if (D1) e.printStackTrace(GTLog.err);
         }
-    }
-
-    private static int addIC2CropInfo(List<String> list, TileEntity tileEntity) {
-        int euAmount = 0;
-        try {
-            if (tileEntity instanceof ICropTile crop) {
-                list.add(addTitle("title_crop_info"));
-                if (crop.getScanLevel() < 4) crop.setScanLevel((byte) 4);
-                if (crop.getCrop() != null) {
-                    String cropName = crop.getCrop()
-                        .name();
-                    byte growth = crop.getGrowth();
-                    byte gain = crop.getGain();
-                    byte resist = crop.getResistance();
-
-                    list.add(trans("crop_info_1", cropName, growth, gain, resist));
-                }
-                int fertilizer = crop.getNutrientStorage();
-                int hydration = crop.getHydrationStorage();
-                int weedEx = crop.getWeedExStorage();
-                int scanLevel = crop.getScanLevel();
-
-                int nutrients = crop.getNutrients();
-                int humidity = crop.getHumidity();
-                int airQuality = crop.getAirQuality();
-
-                list.add(trans("crop_info_2", fertilizer, hydration, weedEx, scanLevel));
-                list.add(trans("crop_info_3", nutrients, humidity, airQuality));
-
-                if (crop.getCrop() != null) {
-                    list.add(
-                        trans(
-                            "crop_info_4",
-                            String.join(
-                                ", ",
-                                crop.getCrop()
-                                    .attributes())));
-
-                    list.add(
-                        trans(
-                            "crop_info_5",
-                            crop.getCrop()
-                                .discoveredBy()));
-                }
-                euAmount += 1000;
-            }
-        } catch (Exception e) {
-            list.add(EnumChatFormatting.RED + trans("error_crop_info"));
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return euAmount;
     }
 
     private static int addForestryLeavesInfo(List<String> list, TileEntity tileEntity) {

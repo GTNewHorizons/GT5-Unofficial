@@ -25,7 +25,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.AbstractCollection;
@@ -37,6 +36,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -113,6 +113,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -122,6 +123,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -198,34 +200,12 @@ import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 public class GTUtility {
 
     /**
-     * Formats a number with group separator and at most 2 fraction digits.
+     * Forge Fluid Registry doesn't provide a convenient way to get all containers with given fluid,
+     * so we're making our own map.
+     * At the moment of writing we have 1329 fluids in the latest daily.
+     * The capacity is calculated as {@code Integer.highestOneBit(1.5 * size)}, so 1024 actually means 2048
      */
-    private static final Map<Locale, DecimalFormat> decimalFormatters = new HashMap<>();
-
-    /*
-     * Forge screwed the Fluid Registry up again, so I make my own, which is also much more efficient than the stupid
-     * Stuff over there.
-     */
-
-    /**
-     * All catched fluid container data.
-     */
-    private static final List<FluidContainerData> sFluidContainerList = new ArrayList<>();
-
-    /**
-     * Associates the filled container item with the fluid container data.
-     */
-    private static final Map<GTItemStack, FluidContainerData> sFilledContainerToData = new /* Concurrent */ HashMap<>();
-
-    /**
-     * Associates the empty container item with a map mapping fluid names to the associated fluid container data.
-     */
-    private static final Map<GTItemStack, Map<String, FluidContainerData>> sEmptyContainerToFluidToData = new HashMap<>();
-
-    /**
-     * Associates the name of the fluid with all filled container items.
-     */
-    private static final Map<String, List<ItemStack>> sFluidToContainers = new HashMap<>();
+    private static final Map<Fluid, List<ItemStack>> fluidToContainersMap = new IdentityHashMap<>(1024);
 
     private static final Map<Integer, Boolean> sOreTable = new HashMap<>();
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
@@ -233,10 +213,6 @@ public class GTUtility {
     private static int sBookCount = 0;
     public static UUID defaultUuid = null; // maybe default non-null?
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
-
-    public static Map<GTItemStack, FluidContainerData> getFilledContainerToData() {
-        return sFilledContainerToData;
-    }
 
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
@@ -1096,75 +1072,49 @@ public class GTUtility {
         return getFluidName(aFluid.getFluid(), aLocalized);
     }
 
-    public static void reInit() {
-        sFilledContainerToData.clear();
-        sEmptyContainerToFluidToData.clear();
-        sFluidToContainers.clear();
-        for (FluidContainerData data : sFluidContainerList) {
-            String fluidName = data.fluid.getFluid()
-                .getName();
-            sFilledContainerToData.put(new GTItemStack(data.filledContainer), data);
-            sEmptyContainerToFluidToData.computeIfAbsent(new GTItemStack(data.emptyContainer), $ -> new HashMap<>())
-                .put(fluidName, data);
-            sFluidToContainers.computeIfAbsent(fluidName, $ -> new ArrayList<>())
-                .add(data.filledContainer);
-        }
-    }
-
-    public static void addFluidContainerData(FluidContainerData data) {
-        String fluidName = data.fluid.getFluid()
-            .getName();
-        sFluidContainerList.add(data);
-        sFilledContainerToData.put(new GTItemStack(data.filledContainer), data);
-        sEmptyContainerToFluidToData.computeIfAbsent(new GTItemStack(data.emptyContainer), $ -> new HashMap<>())
-            .put(fluidName, data);
-        sFluidToContainers.computeIfAbsent(fluidName, $ -> new ArrayList<>())
+    public static void insertInFluidToContainersMap(FluidContainerData data) {
+        fluidToContainersMap.computeIfAbsent(data.fluid.getFluid(), $ -> new ArrayList<>())
             .add(data.filledContainer);
     }
 
-    public static boolean isEmptyFluidContainer(ItemStack itemStack) {
-        return sEmptyContainerToFluidToData.containsKey(new GTItemStack(itemStack));
-    }
-
-    public static List<ItemStack> getContainersFromFluid(FluidStack tFluidStack) {
-        if (tFluidStack != null) {
-            List<ItemStack> tContainers = sFluidToContainers.get(
-                tFluidStack.getFluid()
-                    .getName());
-            if (tContainers == null) return new ArrayList<>();
-            return tContainers;
+    public static List<ItemStack> getContainersFromFluid(FluidStack fluidStack) {
+        if (fluidStack != null) {
+            List<ItemStack> containers = fluidToContainersMap.get(fluidStack.getFluid());
+            if (containers != null) return containers;
         }
         return new ArrayList<>();
     }
 
-    public static ItemStack fillFluidContainer(FluidStack aFluid, ItemStack aStack, boolean aRemoveFluidDirectly,
-        boolean aCheckIFluidContainerItems) {
-        if (isStackInvalid(aStack) || aFluid == null) return null;
-        if (GTModHandler.isWater(aFluid) && ItemList.Bottle_Empty.isStackEqual(aStack)) {
-            if (aFluid.amount >= 1000) {
+    public static ItemStack fillFluidContainer(FluidStack fluid, ItemStack stack, boolean removeFluidDirectly,
+        boolean checkIFluidContainerItems) {
+        if (isStackInvalid(stack) || fluid == null) return null;
+
+        if (GTModHandler.isWater(fluid) && ItemList.Bottle_Empty.isStackEqual(stack)) {
+            if (fluid.amount >= 1000) {
                 return new ItemStack(Items.potionitem, 1, 0);
             }
             return null;
         }
-        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem fluidContainerItem
-            && fluidContainerItem.getFluid(aStack) == null
-            && fluidContainerItem.getCapacity(aStack) > 0
-            && fluidContainerItem.getCapacity(aStack) <= aFluid.amount) {
-            if (aRemoveFluidDirectly) {
-                aFluid.amount -= fluidContainerItem.fill(aStack = copyAmount(1, aStack), aFluid, true);
-            } else {
-                fluidContainerItem.fill(aStack = copyAmount(1, aStack), aFluid, true);
+
+        if (checkIFluidContainerItems && stack.getItem() instanceof IFluidContainerItem container
+            && container.getFluid(stack) == null
+            && container.getCapacity(stack) > 0
+            && container.getCapacity(stack) <= fluid.amount) {
+
+            ItemStack stackCopy = copyAmount(1, stack);
+            int filled = container.fill(stackCopy, fluid, true);
+            if (removeFluidDirectly) {
+                fluid.amount -= filled;
             }
-            return aStack;
+            return stackCopy;
         }
-        Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new GTItemStack(aStack));
-        if (tFluidToContainer == null) return null;
-        FluidContainerData tData = tFluidToContainer.get(
-            aFluid.getFluid()
-                .getName());
-        if (tData == null || tData.fluid.amount > aFluid.amount) return null;
-        if (aRemoveFluidDirectly) aFluid.amount -= tData.fluid.amount;
-        return copyAmount(1, tData.filledContainer);
+
+        ItemStack fullContainer = FluidContainerRegistry.fillFluidContainer(fluid, stack);
+        if (fullContainer == null) return null;
+        if (removeFluidDirectly) {
+            fluid.amount -= FluidContainerRegistry.getContainerCapacity(fullContainer);
+        }
+        return fullContainer;
     }
 
     public static int calculateRecipeEU(Materials aMaterial, int defaultRecipeEUPerTick) {
@@ -1220,38 +1170,31 @@ public class GTUtility {
                 .getLong("mFluidDisplayAmount"));
     }
 
-    public static boolean containsFluid(ItemStack aStack, FluidStack aFluid, boolean aCheckIFluidContainerItems) {
-        if (isStackInvalid(aStack) || aFluid == null) return false;
-        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem
-            && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0)
-            return aFluid
-                .isFluidEqual(((IFluidContainerItem) aStack.getItem()).getFluid(aStack = copyAmount(1, aStack)));
-        FluidContainerData tData = sFilledContainerToData.get(new GTItemStack(aStack));
-        return tData != null && tData.fluid.isFluidEqual(aFluid);
-    }
+    public static FluidStack getFluidForFilledItem(ItemStack stack, boolean checkIFluidContainerItems) {
+        if (isStackInvalid(stack)) return null;
 
-    public static FluidStack getFluidForFilledItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
-        if (isStackInvalid(aStack)) return null;
-        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem
-            && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0)
-            return ((IFluidContainerItem) aStack.getItem()).drain(copyAmount(1, aStack), Integer.MAX_VALUE, false);
-        FluidContainerData tData = sFilledContainerToData.get(new GTItemStack(aStack));
-        return tData == null ? null : tData.fluid.copy();
+        if (checkIFluidContainerItems && stack.getItem() instanceof IFluidContainerItem container) {
+            return container.getFluid(stack);
+        }
+
+        return FluidContainerRegistry.getFluidForFilledItem(stack);
     }
 
     /**
      * Get empty fluid container from filled one.
      */
-    public static ItemStack getContainerForFilledItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
-        if (isStackInvalid(aStack)) return null;
-        FluidContainerData tData = sFilledContainerToData.get(new GTItemStack(aStack));
-        if (tData != null) return copyAmount(1, tData.emptyContainer);
-        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem
-            && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0) {
-            ((IFluidContainerItem) aStack.getItem()).drain(aStack = copyAmount(1, aStack), Integer.MAX_VALUE, true);
-            return aStack;
+    public static ItemStack getContainerForFilledItem(ItemStack stack, boolean checkIFluidContainerItems) {
+        if (isStackInvalid(stack)) return null;
+
+        if (checkIFluidContainerItems && stack.getItem() instanceof IFluidContainerItem container
+            && container.getCapacity(stack) > 0) {
+
+            ItemStack stackCopy = copyAmount(1, stack);
+            container.drain(stackCopy, Integer.MAX_VALUE, true);
+            return stackCopy;
         }
-        return null;
+
+        return FluidContainerRegistry.drainFluidContainer(stack);
     }
 
     /**
@@ -2531,19 +2474,6 @@ public class GTUtility {
         return UNKNOWN;
     }
 
-    private static DecimalFormat getDecimalFormat() {
-        return decimalFormatters.computeIfAbsent(Locale.getDefault(Locale.Category.FORMAT), locale -> {
-            DecimalFormat numberFormat = new DecimalFormat(); // uses the necessary locale inside anyway
-            numberFormat.setGroupingUsed(true);
-            numberFormat.setMaximumFractionDigits(2);
-            numberFormat.setRoundingMode(RoundingMode.HALF_UP);
-            DecimalFormatSymbols decimalFormatSymbols = numberFormat.getDecimalFormatSymbols();
-            decimalFormatSymbols.setGroupingSeparator(','); // Use sensible separator for best clarity.
-            numberFormat.setDecimalFormatSymbols(decimalFormatSymbols);
-            return numberFormat;
-        });
-    }
-
     public static String scientificFormat(long aNumber) {
         DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
         dfs.setExponentSeparator("e");
@@ -2849,6 +2779,7 @@ public class GTUtility {
             return tNBT.getString("author");
         }
 
+        @Deprecated
         public static void setProspectionData(ItemStack aStack, int aX, int aY, int aZ, int aDim, FluidStack aFluid,
             String... aOres) {
             NBTTagCompound tNBT = getNBT(aStack);
@@ -2868,18 +2799,18 @@ public class GTUtility {
         public static void setAdvancedProspectionData(byte aTier, ItemStack aStack, int aX, short aY, int aZ, int aDim,
             ArrayList<String> aOils, ArrayList<String> aOres, int aRadius) {
 
-            setBookTitle(aStack, "Raw Prospection Data");
+            setBookTitle(aStack, getRawProspectionDataName());
 
             NBTTagCompound tNBT = getNBT(aStack);
 
             tNBT.setByte("prospection_tier", aTier);
-            tNBT.setString("prospection_pos", "Dim: " + aDim + "\nX: " + aX + " Y: " + aY + " Z: " + aZ);
+            tNBT.setString("prospection_pos", getProspectionBookTitle(aDim, aX, aY, aZ));
 
             // ores
             Collections.sort(aOres);
             tNBT.setString("prospection_ores", joinListToString(aOres));
 
-            // oils
+            // oilsGT
             ArrayList<String> tOilsTransformed = new ArrayList<>(aOils.size());
             for (String aStr : aOils) {
                 String[] aStats = aStr.split(",");
@@ -2888,6 +2819,16 @@ public class GTUtility {
 
             tNBT.setString("prospection_oils", joinListToString(tOilsTransformed));
 
+            String tOilsPosStr = getProspectionOilPosStr(aX, aZ);
+
+            tNBT.setString("prospection_oils_pos", tOilsPosStr);
+
+            tNBT.setString("prospection_radius", String.valueOf(aRadius));
+
+            setNBT(aStack, tNBT);
+        }
+
+        public static @NotNull String getProspectionOilPosStr(int aX, int aZ) {
             String tOilsPosStr = "X: " + Math.floorDiv(aX, 16 * 8) * 16 * 8
                 + " Z: "
                 + Math.floorDiv(aZ, 16 * 8) * 16 * 8
@@ -2920,12 +2861,7 @@ public class GTUtility {
                 "            X: " + (Math.floorDiv(aX, 16 * 8) + 1) * 16 * 8
                     + " Z: "
                     + (Math.floorDiv(aZ, 16 * 8) + 1) * 16 * 8); // +1 oilfied to find bottomright of [5]
-
-            tNBT.setString("prospection_oils_pos", tOilsPosStr);
-
-            tNBT.setString("prospection_radius", String.valueOf(aRadius));
-
-            setNBT(aStack, tNBT);
+            return tOilsPosStr;
         }
 
         public static void convertProspectionData(ItemStack aStack) {
@@ -2938,13 +2874,7 @@ public class GTUtility {
                 if (tDataArray.length > 6) {
                     tNBT.setString(
                         "author",
-                        " Dim: " + tDataArray[3]
-                            + "X: "
-                            + tDataArray[0]
-                            + " Y: "
-                            + tDataArray[1]
-                            + " Z: "
-                            + tDataArray[2]);
+                        getProspectionBookTitle(tDataArray[3], tDataArray[0], tDataArray[1], tDataArray[2]));
                     NBTTagList tNBTList = new NBTTagList();
                     StringBuilder tOres = new StringBuilder(" Prospected Ores: ");
                     for (int i = 6; tDataArray.length > i; i++) {
@@ -2981,42 +2911,68 @@ public class GTUtility {
 
                 NBTTagList tNBTList = new NBTTagList();
 
-                String tPageText = "Prospector report\n" + tPos
-                    + "\n\n"
-                    + "Oils: "
-                    + (tOils != null ? tOils.length : 0)
-                    + "\n\n"
-                    + "Ores within "
-                    + tRadius
-                    + " blocks\n\n"
-                    + "Location is center of orevein\n\n"
-                    + "Check NEI to confirm orevein type";
+                String tPageText = getProspectionFrontPage(
+                    tPos,
+                    tOils == null ? "0" : formatNumber(tOils.length),
+                    tRadius);
                 tNBTList.appendTag(new NBTTagString(tPageText));
 
                 if (tOres != null) fillBookWithList(tNBTList, "Ores Found %s\n\n", "\n", 7, tOres);
 
                 if (tOils != null) fillBookWithList(tNBTList, "Oils%s\n\n", "\n", 9, tOils);
 
-                tPageText = """
-                    Oil notes
+                tNBTList.appendTag(new NBTTagString(getProspectionGridPage()));
+                tNBTList.appendTag(new NBTTagString(getProspectionOilLocationPage(tOilsPosStr)));
 
-                    Prospects from NW to SE 576 chunks(9 8x8 oilfields)
-                     around and gives min-max amount
-
-                    [1][2][3]
-                    [4][5][6]
-                    [7][8][9]
-
-                    [5] - Prospector in this 8x8 area""";
-                tNBTList.appendTag(new NBTTagString(tPageText));
-
-                tPageText = "Corners of [5] are \n" + tOilsPosStr + "\n" + "P - Prospector in 8x8 field";
-                tNBTList.appendTag(new NBTTagString(tPageText));
-
-                tNBT.setString("author", tPos.replace("\n", " "));
+                tNBT.setString("author", tPos);
                 tNBT.setTag("pages", tNBTList);
             }
             setNBT(aStack, tNBT);
+        }
+
+        public static String getProspectionFrontPage(String aPos, String aFieldCount, String aRadius) {
+            return String.format("""
+                Prospector report
+                %s
+
+                Oils: %s
+
+                Ores within %s blocks
+
+                Location is center of orevein
+                Check NEI to confirm orevein type""", aPos, aFieldCount, aRadius);
+        }
+
+        public static String getProspectionOilLocationPage(String aOilsPos) {
+            return "Corners of [5] are \n" + aOilsPos + "\n" + "P - Prospector in 8x8 field";
+        }
+
+        public static String getProspectionGridPage() {
+            return """
+                Oil notes
+
+                Prospects from NW to SE 576 chunks(9 8x8 oilfields)
+                 around and gives min-max amount
+
+                [1][2][3]
+                [4][5][6]
+                [7][8][9]
+
+                [5] - Prospector in this 8x8 area""";
+        }
+
+        public static String getRawProspectionDataName() {
+            // should probably stat collector this, but stuff already relies on this being unlocalized sooo
+            // don't break what ain't broke
+            return "Raw Prospection Data";
+        }
+
+        public static String getProspectionBookTitle(int aDim, int aX, int aY, int aZ) {
+            return getProspectionBookTitle(formatNumber(aDim), formatNumber(aX), formatNumber(aY), formatNumber(aZ));
+        }
+
+        public static String getProspectionBookTitle(String aDim, String aX, String aY, String aZ) {
+            return "Dim: " + aDim + "\nX: " + aX + " Y: " + aY + " Z: " + aZ;
         }
 
         public static void fillBookWithList(NBTTagList aBook, String aPageHeader, String aListDelimiter,
@@ -3581,9 +3537,10 @@ public class GTUtility {
      */
     public static FluidStack convertCellToFluid(ItemStack itemStack) {
         if (itemStack == null) return null;
-        if (getFluidForFilledItem(itemStack, true) != null) {
-            FluidStack fluidStack = getFluidForFilledItem(itemStack, true);
-            if (fluidStack != null) fluidStack.amount = fluidStack.amount * itemStack.stackSize;
+
+        FluidStack fluidStack = getFluidForFilledItem(itemStack, true);
+        if (fluidStack != null) {
+            fluidStack.amount = fluidStack.amount * itemStack.stackSize;
             return fluidStack;
         }
         return null;
