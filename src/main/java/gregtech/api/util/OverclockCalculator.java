@@ -4,75 +4,75 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
-public class OverclockCalculator {
+public final class OverclockCalculator {
 
     // Basic properties
     /** EUt the recipe originally runs at */
-    protected long recipeEUt = 0;
+    private long recipeEUt = 0;
     /** Voltage of the machine */
-    protected long machineVoltage = 0;
+    private long machineVoltage = 0;
     /** Amperage of the machine */
-    protected long machineAmperage = 1;
+    private long machineAmperage = 1;
     /** Duration of the recipe */
-    protected int duration = 0;
+    private int duration = 0;
     /** A supplier used for machines which have a custom way of calculating base duration, like Neutron Activator */
-    protected Supplier<Double> durationUnderOneTickSupplier;
+    private Supplier<Double> durationUnderOneTickSupplier;
     /** The parallel the machine has when trying to overclock */
-    protected int parallel = 1;
+    private int parallel = 1;
     /** The max amount of tiers above the machine voltage a recipe is valid */
-    protected int maxTierSkip = 1;
+    private int maxTierSkip = 1;
 
     // Modifiers
     /** Energy modifier that is applied at the start of calculating overclocks, like GT++ machines */
-    protected double eutModifier = 1.00;
+    private double eutModifier = 1.00;
     /** Duration modifier that is applied at the start of calculating overclocks, like GT++ machines */
-    protected double durationModifier = 1.00;
+    private double durationModifier = 1.00;
 
     // Overclock parameters
     /** How much the energy would be multiplied by per overclock available */
-    protected double eutIncreasePerOC = 4;
+    private double eutIncreasePerOC = 4;
     /** How much the duration would be divided by per overclock made that isn't an overclock from HEAT */
-    protected double durationDecreasePerOC = 2;
+    private double durationDecreasePerOC = 2;
     /** Whether the multi should use laser overclocks. */
-    protected boolean laserOC;
+    private boolean laserOC;
     /** Whether the multi should use amperage to overclock normally. */
-    protected boolean amperageOC;
+    private boolean amperageOC;
     /** Maximum number of overclocks to perform. Defaults to no limit. */
-    protected int maxOverclocks = Integer.MAX_VALUE;
+    private int maxOverclocks = Integer.MAX_VALUE;
     /** Maximum number of regular overclocks to perform before exotic (e.g. laser) overclocks. Defaults to no limit. */
-    protected int maxRegularOverclocks = Integer.MAX_VALUE;
+    private int maxRegularOverclocks = Integer.MAX_VALUE;
     /** How many overclocks have been performed */
-    protected int overclocks = 0;
+    private int overclocks = 0;
     /** Should we actually try to calculate overclocking */
-    protected boolean noOverclock;
+    private boolean noOverclock;
     /** The parallel the machine actually used. */
-    protected int currentParallel;
+    private int currentParallel;
 
     // Heat parameters
     /** The min heat required for the recipe */
-    protected int recipeHeat = 0;
+    private int recipeHeat = 0;
     /** The heat the machine has when starting the recipe */
-    protected int machineHeat = 0;
+    private int machineHeat = 0;
     /** How much the duration should be divided by for each 1800K above recipe heat */
-    protected final double durationDecreasePerHeatOC = 4;
+    private final double durationDecreasePerHeatOC = 4;
     /** Whether to enable overclocking with heat like the EBF every 1800 heat difference */
-    protected boolean heatOC;
+    private boolean heatOC;
     /** Whether to enable heat discounts every 900 heat difference */
-    protected boolean heatDiscount;
+    private boolean heatDiscount;
     /** The value used for discount final eut per 900 heat */
-    protected double heatDiscountExponent = 0.95;
+    private double heatDiscountExponent = 0.95;
 
     // Results
     /** variable to check whether the overclocks have been calculated */
-    protected boolean calculated;
+    private boolean calculated;
     /** The calculated duration result. */
-    protected int calculatedDuration;
+    private int calculatedDuration;
     /** The calculated energy consumption result. */
-    protected long calculatedConsumption;
+    private long calculatedConsumption;
 
     // Constants
-    protected static final int HEAT_DISCOUNT_THRESHOLD = 900;
-    protected static final int HEAT_OVERCLOCK_THRESHOLD = 1800;
+    private static final int HEAT_DISCOUNT_THRESHOLD = 900;
+    private static final int HEAT_OVERCLOCK_THRESHOLD = 1800;
 
     /** Creates calculator that doesn't do OC at all. Will use recipe duration. */
     public static OverclockCalculator ofNoOverclock(@Nonnull GTRecipe recipe) {
@@ -329,7 +329,7 @@ public class OverclockCalculator {
         return GTUtility.powInt(heatDiscountExponent, heatDiscounts);
     }
 
-    protected void calculateOverclock() {
+    private void calculateOverclock() {
         // Determine the base duration, using the custom supplier if available.
         double duration = durationUnderOneTickSupplier != null ? durationUnderOneTickSupplier.get()
             : this.duration * durationModifier;
