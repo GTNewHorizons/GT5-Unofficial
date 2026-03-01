@@ -84,6 +84,13 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
         nbt.setInteger("waterBuffer", this.waterBuffer);
         nbt.setInteger("orderBuffer", this.orderBuffer);
         nbt.setInteger("entropyBuffer", this.entropyBuffer);
+
+        nbt.setBoolean("wrench", this.mWrench);
+        nbt.setBoolean("screwdriver", this.mScrewdriver);
+        nbt.setBoolean("softMallet", this.mSoftMallet);
+        nbt.setBoolean("hardHammer", this.mHardHammer);
+        nbt.setBoolean("solderingTool", this.mSolderingTool);
+        nbt.setBoolean("crowbar", this.mCrowbar);
     }
 
     @Override
@@ -95,6 +102,13 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
         this.waterBuffer = nbt.getInteger("waterBuffer");
         this.orderBuffer = nbt.getInteger("orderBuffer");
         this.entropyBuffer = nbt.getInteger("entropyBuffer");
+
+        this.mWrench = nbt.getBoolean("wrench");
+        this.mScrewdriver = nbt.getBoolean("screwdriver");
+        this.mSoftMallet = nbt.getBoolean("softMallet");
+        this.mHardHammer = nbt.getBoolean("hardHammer");
+        this.mSolderingTool = nbt.getBoolean("solderingTool");
+        this.mCrowbar = nbt.getBoolean("crowbar");
     }
 
     @Override
@@ -114,7 +128,6 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
         orderBuffer = fillIfBelowCap(orderBuffer, Aspect.ORDER);
         entropyBuffer = fillIfBelowCap(entropyBuffer, Aspect.ENTROPY);
 
-        // Repair if needed + Drain
         boolean shouldRepair = !this.mWrench || !this.mScrewdriver
             || !this.mSolderingTool
             || !this.mCrowbar
@@ -127,6 +140,7 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
             && orderBuffer >= centiVisCost
             && entropyBuffer >= centiVisCost;
 
+        // Repair if needed + Drain
         if (canRepair && shouldRepair) {
             this.mWrench = this.mScrewdriver = this.mSolderingTool = this.mCrowbar = this.mSoftMallet = this.mHardHammer = true;
             airBuffer -= centiVisCost;
