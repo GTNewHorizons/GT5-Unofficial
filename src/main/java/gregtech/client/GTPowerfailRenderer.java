@@ -80,7 +80,7 @@ public class GTPowerfailRenderer {
             double size = dist * 0.25 * Client.render.powerfailIconSize;
 
             if (dist < 16d) {
-                size *= Math.max(0.25d ,GTUtility.linearCurve(dist, 2d, 0d, 16d, 1d));
+                size *= Math.max(0.25d, GTUtility.linearCurve(dist, 2d, 0d, 16d, 1d));
             }
 
             if (dist > 48) {
