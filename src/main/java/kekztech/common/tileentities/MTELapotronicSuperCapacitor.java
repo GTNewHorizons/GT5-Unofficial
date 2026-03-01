@@ -411,10 +411,10 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addStructurePart(
                 GTUtility.nestParams(
                     "gt.lapo_super_capacitor.info.caps",
-                    TooltipHelper.voltageText(4, false),
-                    TooltipHelper.voltageText(8, false),
-                    TooltipHelper.voltageText(9, false),
-                    TooltipHelper.voltageText(12, false)),
+                    TooltipHelper.voltageText(4),
+                    TooltipHelper.voltageText(8),
+                    TooltipHelper.voltageText(9),
+                    TooltipHelper.voltageText(12)),
                 "gt.lapo_super_capacitor.info.caps.pos")
             .addStructureInfo("gt.lapo_super_capacitor.info.caps.tip")
             .addCasingInfoRange("GT5U.MBTT.AnyGlass", 41, 777, true)
@@ -422,7 +422,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addDynamoHatch("<casing>")
             .addStructurePart(
                 "gt.lapo_super_capacitor.info.lasers",
-                GTUtility.nestParams("gt.lapo_super_capacitor.info.lasers.pos", TooltipHelper.voltageText(8, false)))
+                GTUtility.nestParams("gt.lapo_super_capacitor.info.lasers.pos", TooltipHelper.voltageText(8)))
             .addStructureInfo("gt.lapo_super_capacitor.info.energy.tips")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.LSC_CAPACITOR, "gt.lapo_super_capacitor.info.channel_purpose")
