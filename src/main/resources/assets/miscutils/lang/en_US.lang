@@ -4052,6 +4052,16 @@ gtpp.infodata.energy_buffer.eu_stored=%s EU stored
 gtpp.infodata.energy_buffer.eu_capacity=%s EU capacity
 gtpp.infodata.tiered_chest.name=Super Storage Chest
 gtpp.infodata.tiered_tank.name=%s Fluid Tank
+gtpp.tiered_tank.desc.capacity=Stores %s of fluid
+gtpp.tiered_tank.desc.portable=A portable tank.
+gtpp.tiered_tank.desc.fluid=Fluid: %s %s L
+gtpp.tiered_tank.tooltip.contains=Contains Fluid: 
+gtpp.tiered_tank.tooltip.amount=Fluid Amount: %s L
+gtpp.infodata.tiered_tank.name=%s Tank
+gtpp.tiered_tank.infodata.amount=%s L
+gtpp.tiered_tank.infodata.capacity=%s L
+GT5U.infodata.digital_tank.stored_fluid=Stored Fluid
+GT5U.infodata.digital_tank.stored_fluid.empty=Empty
 
 # GUI
 gtpp.gui.text.time_since_built=Total Time Since Built
