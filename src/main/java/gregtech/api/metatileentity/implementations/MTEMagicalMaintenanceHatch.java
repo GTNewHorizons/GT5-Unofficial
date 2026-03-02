@@ -49,8 +49,7 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
     public String[] getDescription() {
         return new String[] { translateToLocal("gt.blockmachines.magical.maintenance.desc.0"),
             translateToLocal("gt.blockmachines.magical.maintenance.desc.1"),
-            translateToLocal("gt.blockmachines.magical.maintenance.desc.2"),
-            translateToLocal("gt.blockmachines.magical.maintenance.desc.3") };
+            translateToLocal("gt.blockmachines.magical.maintenance.desc.2") };
     }
 
     @Override
