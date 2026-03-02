@@ -2168,18 +2168,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 false);
         }
 
-        try {
-            CropCard tCrop;
-            GTUtility.getField(tCrop = Crops.instance.getCropList()[13], "mDrop")
-                .set(tCrop, ItemList.Crop_Drop_Ferru.get(1L));
-            GTUtility.getField(tCrop = Crops.instance.getCropList()[14], "mDrop")
-                .set(tCrop, ItemList.Crop_Drop_Aurelia.get(1L));
-        } catch (Exception e) {
-            if (GTValues.D1) {
-                e.printStackTrace(GTLog.err);
-            }
-        }
-
         setAllFluidContainerStats();
         setBurnValues();
         registerCovers();
