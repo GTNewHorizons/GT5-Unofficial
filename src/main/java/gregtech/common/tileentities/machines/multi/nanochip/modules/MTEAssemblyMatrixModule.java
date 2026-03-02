@@ -272,8 +272,9 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         String[] origin = super.getInfoData();
         String[] ret = new String[origin.length + 1];
         System.arraycopy(origin, 0, ret, 0, origin.length);
-        ret[origin.length] = translateToLocal("scanner.info.CASS.tier")
-            + (machineTier >= 0 ? GTValues.VN[machineTier] : translateToLocal("scanner.info.CASS.tier.none"));
+        ret[origin.length] = translateToLocalFormatted(
+            "scanner.info.CASS.tier",
+            (machineTier >= 0 ? GTValues.VN[machineTier] : translateToLocal("scanner.info.CASS.tier.none")));
         return ret;
     }
 

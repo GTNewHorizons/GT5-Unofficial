@@ -142,6 +142,7 @@ import paulscode.sound.SoundSystemException;
 public class GTClient extends GTProxy {
 
     public final PollutionRenderer mPollutionRenderer = new PollutionRenderer();
+    public final MetaGeneratedItemRenderer metaItemRenderer = new MetaGeneratedItemRenderer();
     public GTPowerfailRenderer powerfailRenderer;
     public KeyBinding shakeLockKey;
     public final boolean fixedBottomFaceUV;
@@ -161,7 +162,7 @@ public class GTClient extends GTProxy {
     private final List<Materials> mMoltenNegG;
     private final List<Materials> mMoltenNegB;
     private final List<Materials> mMoltenNegA = Collections.emptyList();
-    private static long mAnimationTick;
+    private long mAnimationTick;
     /**
      * This is the place to def the value used below
      **/
@@ -171,7 +172,7 @@ public class GTClient extends GTProxy {
     private GTClientPreference mPreference;
     private boolean mFirstTick = false;
     private int mReloadCount;
-    private static float renderTickTime;
+    private float renderTickTime;
 
     public GTClient() {
         mAnimationTick = 0L;
@@ -282,7 +283,7 @@ public class GTClient extends GTProxy {
     }
 
     @Override
-    public boolean isClientSide() {
+    public final boolean isClientSide() {
         return true;
     }
 
@@ -330,7 +331,6 @@ public class GTClient extends GTProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityNanoForge.class, new NanoForgeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(BaseMetaTileEntity.class, new BaseMetaTileEntityRenderer());
 
-        MetaGeneratedItemRenderer metaItemRenderer = new MetaGeneratedItemRenderer();
         for (MetaGeneratedItem item : MetaGeneratedItem.sInstances.values()) {
             metaItemRenderer.registerItem(item);
         }
@@ -356,8 +356,8 @@ public class GTClient extends GTProxy {
         MinecraftForgeClient.registerItemRenderer(ItemList.ToolBox.getItem(), new ToolboxRenderer());
 
         MinecraftForgeClient.registerItemRenderer(ItemList.Display_Fluid.getItem(), new FluidDisplayStackRenderer());
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Tool_DataStick, new DataStickRenderer());
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Spray_Color_Infinite, new InfiniteSprayCanRenderer());
+        metaItemRenderer.registerSpecialRenderer(ItemList.Tool_DataStick, new DataStickRenderer());
+        metaItemRenderer.registerSpecialRenderer(ItemList.Spray_Color_Infinite, new InfiniteSprayCanRenderer());
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
         MinecraftForge.EVENT_BUS.register(mPollutionRenderer);
         FMLCommonHandler.instance().bus().register(mPollutionRenderer);
@@ -657,7 +657,7 @@ public class GTClient extends GTProxy {
         return (short) tmp;
     }
 
-    public static float getAnimationRenderTicks() {
+    public float getAnimationRenderTicks() {
         return mAnimationTick + renderTickTime;
     }
 
