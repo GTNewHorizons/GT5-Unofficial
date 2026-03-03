@@ -4017,9 +4017,9 @@ gtpp.tooltip.tool.mining_speed=Mining Speed:
 
 gtpp.tooltip.wireless_charger.0=Can be locked to the owner by sneaking with a screwdriver.
 gtpp.tooltip.wireless_charger.1=Use screwdriver to change mode.
-gtpp.tooltip.wireless_charger.2=§aLong-Range Mode§7: Can supply 1A of power to each player up to %,dm away.
-gtpp.tooltip.wireless_charger.3=§aLocal Mode§7: Can supply 2A to each player within %,dm.
-gtpp.tooltip.wireless_charger.4=§aMixed Mode§7: Can supply 1A up to %,dm away and more 1A within %,dm.
+gtpp.tooltip.wireless_charger.2=§aLong-Range Mode§7: Can supply 1A of power to each player up to %s m away.
+gtpp.tooltip.wireless_charger.3=§aLocal Mode§7: Can supply 2A to each player within %s m.
+gtpp.tooltip.wireless_charger.4=§aMixed Mode§7: Can supply 1A up to %s m away and more 1A within %s m.
 
 #gtpp info data
 gtpp.infodata.tesseract_generator.name=Tesseract Generator
@@ -4091,5 +4091,5 @@ gtpp.chat.wireless_charger.mode.mixed=Mixed
 gtpp.chat.wireless_charger.range=Range
 gtpp.chat.wireless_charger.lock=Locked to owner
 gtpp.chat.wireless_charger.unlock=Unlocked
-gtpp.chat.wireless_charger.enter=You have entered charging range. [%,dm - %s]
-gtpp.chat.wireless_charger.leave=You have left charging range. [%,dm - %s]
+gtpp.chat.wireless_charger.enter=You have entered charging range. [%s m - %s]
+gtpp.chat.wireless_charger.leave=You have left charging range. [%s m - %s]
