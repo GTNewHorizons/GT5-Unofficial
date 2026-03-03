@@ -5,7 +5,7 @@ import static tectech.rendering.EOH.EOHRenderingUtils.renderEOHStar;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
-import gregtech.common.GTClient;
+import gregtech.GTMod;
 
 public class ItemRenderEOH implements IItemRenderer {
 
@@ -21,7 +21,11 @@ public class ItemRenderEOH implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        renderEOHStar(type, GTClient.getAnimationRenderTicks(), 0.82);
+        renderEOHStar(
+            type,
+            GTMod.clientProxy()
+                .getAnimationRenderTicks(),
+            0.82);
     }
 
 }
