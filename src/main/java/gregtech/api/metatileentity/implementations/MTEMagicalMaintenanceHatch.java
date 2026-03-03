@@ -30,8 +30,8 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
     private int orderBuffer = 0;
     private int entropyBuffer = 0;
 
-    private final int centiVisCap = 5000;
-    private final int centiVisCost = 2500;
+    private static final int centiVisCap = 5000;
+    private static final int centiVisCost = 2500;
 
     private static final ResourceLocation focusMaintenanceSound = new ResourceLocation(
         "emt",
