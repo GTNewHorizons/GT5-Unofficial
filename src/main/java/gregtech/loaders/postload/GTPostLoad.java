@@ -135,16 +135,6 @@ public class GTPostLoad {
             GTForestryCompat.populateFakeNeiRecipes();
         }
 
-        if (ItemList.IC2_Crop_Seeds.get(1L) != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.IC2_Crop_Seeds.getWildcard(1L))
-                .itemOutputs(ItemList.IC2_Crop_Seeds.getWithName(1L, "Scanned Seeds"))
-                .duration(8 * SECONDS)
-                .eut(8)
-                .ignoreCollision()
-                .fake()
-                .addTo(scannerFakeRecipes);
-        }
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.written_book, 1, 32767))
             .itemOutputs(ItemList.Tool_DataStick.getWithName(1L, "Scanned Book Data"))
@@ -168,6 +158,7 @@ public class GTPostLoad {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tool_DataOrb.getWithName(1L, "Orb to overwrite"))
             .itemOutputs(ItemList.Tool_DataOrb.getWithName(1L, "Copy of the Orb"))
+            .special(ItemList.Tool_DataOrb.getWithName(0L, "Orb to copy"))
             .duration(25 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .ignoreCollision()

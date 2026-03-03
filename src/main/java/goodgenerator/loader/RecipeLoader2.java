@@ -1023,15 +1023,6 @@ public class RecipeLoader2 {
                 ItemList.Hull_IV.get(1), 'S', GGMaterial.marCeM200.get(OrePrefixes.plate, 1), 'E',
                 GTModHandler.getIC2Item("reactorHeatSwitchDiamond", 1L, 1) });
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemRefer.Salty_Root.get(1))
-            .fluidInputs(Materials.Water.getFluid(100))
-            .itemOutputs(Materials.Salt.getDust(1), Materials.RockSalt.getDust(1), Materials.Saltpeter.getDust(1))
-            .outputChances(9500, 8000, 5000)
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(chemicalBathRecipes);
-
         if (NewHorizonsCoreMod.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
