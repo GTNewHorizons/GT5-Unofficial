@@ -201,7 +201,7 @@ public class CircuitPartsItem extends Item {
             ItemStack slicedStack = new ItemStack(this, 1, imprint.id + CIRCUIT_SLICED_OFFSET);
             aList.add(slicedStack);
         }
-        for (CircuitWraps wrap : CircuitWraps.values()) {
+        for (CircuitWraps wrap : CircuitWraps.VALUES) {
             ItemStack wrapStack = new ItemStack(this, 1, wrap.id);
             aList.add(wrapStack);
         }
