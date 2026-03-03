@@ -112,10 +112,7 @@ public final class MainMod {
         });
 
         GregTechAPI.sAfterGTPostload.add(() -> {
-            for (CircuitWraps wrap : CircuitWraps.values()) {
-                wrap.registerWrap();
-                wrap.registerWrapRecipe();
-            }
+            CircuitWraps.registerWraps();
             CircuitImprintLoader.makeCuttingRecipes();
             CircuitImprintLoader.makeCraftingRecipes();
         });
