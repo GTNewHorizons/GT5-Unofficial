@@ -194,7 +194,7 @@ public class CircuitPartsItem extends Item {
     public void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         aList.add(getStack(2));
         aList.add(getStack(3));
-        for (CircuitImprint imprint : CircuitImprint.values()) {
+        for (CircuitImprint imprint : CircuitImprint.VALUES) {
             if (!imprint.sourceMod.isModLoaded()) continue;
             ItemStack imprintStack = new ItemStack(this, 1, imprint.id);
             aList.add(imprintStack);
