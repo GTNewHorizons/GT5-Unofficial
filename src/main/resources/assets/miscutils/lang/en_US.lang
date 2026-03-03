@@ -274,9 +274,6 @@ MU-metaitem.01.0.name=MU-metaitem.01.0.name
 # Cells
 item.SulfurDioxide.name=High Quality Sulfur Dioxide Cell
 item.mobessence.name=Mob Essence Cell
-item.Fertiliser.name=Fertiliser Cell
-item.UN32Fertiliser.name=UN-32 Fertiliser Cell
-item.UN18Fertiliser.name=UN-18 Fertiliser Cell
 item.RaisinJuice.name=Raisin Juice Cell
 item.BerylliumHydroxide.name=Beryllium Hydroxide Cell
 item.AmmoniumBifluoride.name=Ammonium Bifluoride Cell
@@ -1677,12 +1674,6 @@ item.itemDustTinyZrCl4.name=Tiny Pile of ZrCl4 Dust
 item.itemDustCookedZrCl4.name=Cooked ZrCl4 Dust
 item.itemDustSmallCookedZrCl4.name=Small Pile of Cooked ZrCl4 Dust
 item.itemDustTinyCookedZrCl4.name=Tiny Pile of Cooked ZrCl4 Dust
-item.itemDustUN18Fertiliser.name=UN-18 Fertiliser Dust
-item.itemDustSmallUN18Fertiliser.name=Small Pile of UN-18 Fertiliser Dust
-item.itemDustTinyUN18Fertiliser.name=Tiny Pile of UN-18 Fertiliser Dust
-item.itemDustUN32Fertiliser.name=UN-32 Fertiliser Dust
-item.itemDustSmallUN32Fertiliser.name=Small Pile of UN-32 Fertiliser Dust
-item.itemDustTinyUN32Fertiliser.name=Tiny Pile of UN-32 Fertiliser Dust
 item.itemCustomMetaCover.miscutils.GtMachineCasings=%s Machine Plate Cover
 item.itemCustomMetaCover.miscutils.GtMachineCasings.name=Machine Plate Cover
 item.itemGregtechPump.tooltip.0=Cannot drain any other standard fluid container block
@@ -4026,9 +4017,9 @@ gtpp.tooltip.tool.mining_speed=Mining Speed:
 
 gtpp.tooltip.wireless_charger.0=Can be locked to the owner by sneaking with a screwdriver.
 gtpp.tooltip.wireless_charger.1=Use screwdriver to change mode.
-gtpp.tooltip.wireless_charger.2=§aLong-Range Mode§7: Can supply 1A of power to each player up to %,dm away.
-gtpp.tooltip.wireless_charger.3=§aLocal Mode§7: Can supply 2A to each player within %,dm.
-gtpp.tooltip.wireless_charger.4=§aMixed Mode§7: Can supply 1A up to %,dm away and more 1A within %,dm.
+gtpp.tooltip.wireless_charger.2=§aLong-Range Mode§7: Can supply 1A of power to each player up to %s m away.
+gtpp.tooltip.wireless_charger.3=§aLocal Mode§7: Can supply 2A to each player within %s m.
+gtpp.tooltip.wireless_charger.4=§aMixed Mode§7: Can supply 1A up to %s m away and more 1A within %s m.
 
 #gtpp info data
 gtpp.infodata.tesseract_generator.name=Tesseract Generator
@@ -4110,5 +4101,5 @@ gtpp.chat.wireless_charger.mode.mixed=Mixed
 gtpp.chat.wireless_charger.range=Range
 gtpp.chat.wireless_charger.lock=Locked to owner
 gtpp.chat.wireless_charger.unlock=Unlocked
-gtpp.chat.wireless_charger.enter=You have entered charging range. [%,dm - %s]
-gtpp.chat.wireless_charger.leave=You have left charging range. [%,dm - %s]
+gtpp.chat.wireless_charger.enter=You have entered charging range. [%s m - %s]
+gtpp.chat.wireless_charger.leave=You have left charging range. [%s m - %s]
