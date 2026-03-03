@@ -252,11 +252,17 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
                     int consumedInput = consumeInput(tieredProduction);
                     int extraOutput = consumeCatalyst(tieredProduction, consumedInput);
                     int totalOutput = consumedInput + extraOutput;
+                    int totalWeight = getSaplingTotalWeight(sapling);
     
                     List<ItemStack> outputs = new ArrayList<>();
                     for (ItemStack output : outputMap){
                         ItemStack out = output.copy();
-                        out.stackSize = totalOutput * 100 / outputMap.get(output);
+                        //w???
+                        int chance = 10000 * totalWeight / outputMap.get(output)
+                        // non-random
+                        //out.stackSize = totalOutput * totalWeight / outputMap.get(output);
+                        // random - normal approximation
+                        out.stackSize
                         outputs.add(out);
                     }
     
@@ -355,7 +361,9 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
          * @param output     ItemStack to output
          * @param weight     proportional weight of output, these should add up to 100 across all outputs of a sapling
          */
+         
         public static void registerTreeProducts(ItemStack saplingIn, ItemStack output, int weight) {
+            // TODO normalize weight to 10k
             if (saplingIn == null) {
                 Logger.ERROR("Null sapling passed for registerTreeProducts()");
                 return;
@@ -404,13 +412,15 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
                 Logger.INFO("Invalid weight(" + totalWeight + ") for sapling: " + sapling.getDisplayName());
                 return False;
             }
-            ItemStack[] outputStacks = new ItemStack[outputMap.size()];
-            int[] outputChances = new int[outputMap.size()];
+            ItemStack[] outputStacks = new ItemStack[getOutputSlots()];
+            int[] outputChances = new int[getOutputSlots()];
             
             int i = 0;
             for (Map.Entry<ItemStack, Integer> o : outputMap.entrySet()) {
                 outputStacks[i] = o.getKey();
+                //w???
                 outputChances[i] = 10000*o.getValue()/totalWeight;
+                if (outputChances[i] == 0) outputChances[i] = 1;
                 i++;
             }
             
