@@ -4176,7 +4176,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Spinel")
             .setIconSet(TextureSet.SET_RUBY)
             .setColor(Dyes.dyeRed)
-            .setARGB(0x7fff6464)
+            .setARGB(0xcc740c48)
             .addDustItems()
             .addGemItems()
             .addOreItems()
