@@ -108,11 +108,11 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
                         IKey.lang("GT5U.gui.button.max_fluid")
                             .asWidget()
                             .marginBottom(4))
-                    .child(makeMaxFluidConfigurator(syncManager)));
+                    .child(makeMaxFluidConfigurator()));
 
     }
 
-    private IWidget makeMaxFluidConfigurator(PanelSyncManager syncManager) {
+    private IWidget makeMaxFluidConfigurator() {
         IntSyncValue maxFluidUseSyncer = new IntSyncValue(multiblock::getMaxFluidUse, multiblock::setMaxFluidUse);
         return new Row().widthRel(1)
             .marginBottom(4)

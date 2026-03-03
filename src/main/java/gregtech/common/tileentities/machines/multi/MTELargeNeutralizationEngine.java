@@ -89,6 +89,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private int maxFluidUse = 200;
 
+    private static final String SEPARATOR = EnumChatFormatting.GRAY + " : ";
+
     public MTELargeNeutralizationEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -218,13 +220,189 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return STRUCTURE_DEFINITION;
     }
 
+    private static String getAlkaliTextFormatted(String baseName, int efficiency, int frequency) {
+        return EnumChatFormatting.AQUA + baseName
+            + SEPARATOR
+            + EnumChatFormatting.LIGHT_PURPLE
+            + efficiency
+            + "%"
+            + SEPARATOR
+            + EnumChatFormatting.WHITE
+            + "1/"
+            + frequency
+            + " second"
+            + (frequency > 1 ? "s" : "");
+    }
+
+    private static String getTierInfoTextFormatted(int tier, String casingName, int baseDecay, int capacity) {
+        return EnumChatFormatting.WHITE + "T"
+            + tier
+            + SEPARATOR
+            + EnumChatFormatting.YELLOW
+            + casingName
+            + SEPARATOR
+            + EnumChatFormatting.BLUE
+            + baseDecay
+            + SEPARATOR
+            + EnumChatFormatting.DARK_AQUA
+            + capacity;
+    }
+
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Acid Generator, LNE")
             .addInfo("(Dis)solves all your problems!")
-            .addInfo("Provide an acid to burn, and a base to boost efficiency")
-            .addInfo("TBD: Finish residue/base info")
+            .addSeparator()
+            .addInfo(
+                "Can " + EnumChatFormatting.WHITE
+                    + "periodically "
+                    + EnumChatFormatting.GRAY
+                    + "use a "
+                    + EnumChatFormatting.AQUA
+                    + "base "
+                    + EnumChatFormatting.GRAY
+                    + "to boost "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "efficiency"
+                    + EnumChatFormatting.GRAY
+                    + ":")
+            .addInfo(getAlkaliTextFormatted("Sodium Hydroxide", 150, 1))
+            .addInfo(getAlkaliTextFormatted("Potassium Hydroxide", 190, 1))
+            .addInfo(getAlkaliTextFormatted("Caesium Hydroxide", 250, 10))
+            .addInfo(getAlkaliTextFormatted("Francium Hydroxide", 500, 30))
+            .addSeparator()
+            .addInfo(
+                "Produces " + EnumChatFormatting.RED
+                    + "Toxic Residue "
+                    + EnumChatFormatting.GRAY
+                    + "from burning acids")
+            .addInfo(
+                "If the " + EnumChatFormatting.RED
+                    + "Toxic Residue "
+                    + EnumChatFormatting.GRAY
+                    + "exceeds the "
+                    + EnumChatFormatting.DARK_AQUA
+                    + "Capacity"
+                    + EnumChatFormatting.GRAY
+                    + ", the multiblock will "
+                    + EnumChatFormatting.DARK_RED
+                    + "EXPLODE!")
+            .addInfo(
+                "Every " + EnumChatFormatting.GREEN
+                    + "tick"
+                    + EnumChatFormatting.GRAY
+                    + ", "
+                    + EnumChatFormatting.RED
+                    + "Toxic Residue "
+                    + EnumChatFormatting.GRAY
+                    + "will "
+                    + EnumChatFormatting.WHITE
+                    + "increase "
+                    + EnumChatFormatting.GRAY
+                    + "by "
+                    + EnumChatFormatting.GOLD
+                    + "Residue Rate"
+                    + EnumChatFormatting.GRAY
+                    + "*"
+                    + EnumChatFormatting.YELLOW
+                    + "Fuel Consumption(L/s)")
+            .addInfo(
+                EnumChatFormatting.GOLD + "Residue Rate "
+                    + EnumChatFormatting.GRAY
+                    + "is calculated as ("
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "Fuel Value (EU/L)"
+                    + EnumChatFormatting.GRAY
+                    + ")^"
+                    + EnumChatFormatting.WHITE
+                    + "0.8"
+                    + EnumChatFormatting.GRAY
+                    + "*"
+                    + EnumChatFormatting.WHITE
+                    + "0.05")
+            .addInfo(
+                "Every " + EnumChatFormatting.GREEN
+                    + "tick"
+                    + EnumChatFormatting.GRAY
+                    + ", "
+                    + EnumChatFormatting.RED
+                    + "Toxic Residue "
+                    + EnumChatFormatting.GRAY
+                    + "will "
+                    + EnumChatFormatting.WHITE
+                    + "decrease "
+                    + EnumChatFormatting.GRAY
+                    + "by "
+                    + EnumChatFormatting.BLUE
+                    + "Base Decay"
+                    + EnumChatFormatting.GRAY
+                    + "*"
+                    + EnumChatFormatting.YELLOW
+                    + "Decay Boost"
+                    + EnumChatFormatting.GRAY
+                    + "*("
+                    + EnumChatFormatting.RED
+                    + "Toxic Residue"
+                    + EnumChatFormatting.GRAY
+                    + "^"
+                    + EnumChatFormatting.WHITE
+                    + "0.08"
+                    + EnumChatFormatting.GRAY
+                    + ")")
+            .addInfo(
+                "Insert " + EnumChatFormatting.LIGHT_PURPLE
+                    + "Robot Arms "
+                    + EnumChatFormatting.GRAY
+                    + "to increase "
+                    + EnumChatFormatting.YELLOW
+                    + "Decay Boost"
+                    + EnumChatFormatting.GRAY
+                    + ":")
+            .addInfo(
+                EnumChatFormatting.YELLOW + "Decay Boost "
+                    + EnumChatFormatting.GRAY
+                    + "is calculated as "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Robot Arm Tier"
+                    + EnumChatFormatting.GRAY
+                    + "^"
+                    + EnumChatFormatting.WHITE
+                    + "1.2 "
+                    + EnumChatFormatting.GRAY
+                    + "if below "
+                    + EnumChatFormatting.GREEN
+                    + "IV"
+                    + EnumChatFormatting.GRAY
+                    + ", "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Robot Arm Tier"
+                    + EnumChatFormatting.GRAY
+                    + "^"
+                    + EnumChatFormatting.WHITE
+                    + "1.3 "
+                    + EnumChatFormatting.GRAY
+                    + "if above "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "LuV")
+            .addInfo(
+                "Structure has " + EnumChatFormatting.WHITE
+                    + "3 "
+                    + EnumChatFormatting.YELLOW
+                    + "Tiers"
+                    + EnumChatFormatting.GRAY
+                    + ", Tier determines "
+                    + EnumChatFormatting.BLUE
+                    + "Base Decay "
+                    + EnumChatFormatting.GRAY
+                    + "and "
+                    + EnumChatFormatting.DARK_AQUA
+                    + "Capacity"
+                    + EnumChatFormatting.GRAY
+                    + ":")
+            .addInfo(getTierInfoTextFormatted(1, "Strengthened Inanimate Machine Casing", 200, 375000))
+            .addInfo(getTierInfoTextFormatted(2, "Precise Stationary Machine Casing", 400, 1000000))
+            .addInfo(getTierInfoTextFormatted(3, "Ultimate Static Machine Casing", 700, 2500000))
             .beginStructureBlock(11, 7, 3, true)
             .addController("Top center")
             .addCasingInfoRange(
