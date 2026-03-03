@@ -133,7 +133,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         };
     }
 
-    private float getRandomDecayMultiplier() {
+    private float getRandomIncreaseMultiplier() {
         return (900 + getBaseMetaTileEntity().getRandomNumber(201)) / 1000F;
     }
 
@@ -147,11 +147,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private int getResidueDecay() {
-        return Math.max(
-            0,
-            (int) (getBaseResidueDecay() * getRandomDecayMultiplier()
-                * this.robotArmDecayBoost
-                * getResidueScaleDecayBoost()));
+        return Math.max(0, (int) (getBaseResidueDecay() * this.robotArmDecayBoost * getResidueScaleDecayBoost()));
     }
 
     private float getResidueRate() {
@@ -159,7 +155,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private int getResidueIncrease() {
-        return (int) (getResidueRate() * fuelConsumption);
+        return (int) (getResidueRate() * fuelConsumption * getRandomIncreaseMultiplier());
     }
 
     public int getNetResidue() {
@@ -228,7 +224,6 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             + "%"
             + SEPARATOR
             + EnumChatFormatting.WHITE
-            + "1/"
             + frequency
             + " second"
             + (frequency > 1 ? "s" : "");
@@ -238,7 +233,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return EnumChatFormatting.WHITE + "T"
             + tier
             + SEPARATOR
-            + EnumChatFormatting.YELLOW
+            + EnumChatFormatting.WHITE
             + casingName
             + SEPARATOR
             + EnumChatFormatting.BLUE
@@ -255,16 +250,16 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addInfo("(Dis)solves all your problems!")
             .addSeparator()
             .addInfo(
-                "Can " + EnumChatFormatting.WHITE
-                    + "periodically "
-                    + EnumChatFormatting.GRAY
-                    + "use a "
-                    + EnumChatFormatting.AQUA
+                "Can use a " + EnumChatFormatting.AQUA
                     + "base "
                     + EnumChatFormatting.GRAY
                     + "to boost "
                     + EnumChatFormatting.LIGHT_PURPLE
-                    + "efficiency"
+                    + "efficiency "
+                    + EnumChatFormatting.GRAY
+                    + "for a "
+                    + EnumChatFormatting.WHITE
+                    + "temporary period"
                     + EnumChatFormatting.GRAY
                     + ":")
             .addInfo(getAlkaliTextFormatted("Sodium Hydroxide", 150, 1))
@@ -289,7 +284,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.DARK_RED
                     + "EXPLODE!")
             .addInfo(
-                "Every " + EnumChatFormatting.GREEN
+                "Every " + EnumChatFormatting.WHITE
                     + "tick"
                     + EnumChatFormatting.GRAY
                     + ", "
@@ -306,23 +301,33 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.GRAY
                     + "*"
                     + EnumChatFormatting.YELLOW
-                    + "Fuel Consumption(L/s)")
+                    + "Fuel Consumption(L/s)"
+                    + EnumChatFormatting.GRAY
+                    + "*rand("
+                    + EnumChatFormatting.WHITE
+                    + "0.9"
+                    + EnumChatFormatting.GRAY
+                    + "-"
+                    + EnumChatFormatting.WHITE
+                    + "1.1"
+                    + EnumChatFormatting.GRAY
+                    + ")")
             .addInfo(
                 EnumChatFormatting.GOLD + "Residue Rate "
                     + EnumChatFormatting.GRAY
-                    + "is calculated as ("
-                    + EnumChatFormatting.DARK_PURPLE
+                    + "is calculated as "
+                    + EnumChatFormatting.WHITE
+                    + "0.05"
+                    + EnumChatFormatting.GRAY
+                    + "*("
+                    + EnumChatFormatting.LIGHT_PURPLE
                     + "Fuel Value (EU/L)"
                     + EnumChatFormatting.GRAY
                     + ")^"
                     + EnumChatFormatting.WHITE
-                    + "0.8"
-                    + EnumChatFormatting.GRAY
-                    + "*"
-                    + EnumChatFormatting.WHITE
-                    + "0.05")
+                    + "0.8")
             .addInfo(
-                "Every " + EnumChatFormatting.GREEN
+                "Every " + EnumChatFormatting.WHITE
                     + "tick"
                     + EnumChatFormatting.GRAY
                     + ", "
@@ -370,11 +375,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.WHITE
                     + "1.2 "
                     + EnumChatFormatting.GRAY
-                    + "if below "
+                    + "if "
                     + EnumChatFormatting.GREEN
                     + "IV"
                     + EnumChatFormatting.GRAY
-                    + ", "
+                    + " or below, "
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "Robot Arm Tier"
                     + EnumChatFormatting.GRAY
@@ -382,16 +387,21 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.WHITE
                     + "1.3 "
                     + EnumChatFormatting.GRAY
-                    + "if above "
+                    + "if "
                     + EnumChatFormatting.LIGHT_PURPLE
-                    + "LuV")
+                    + "LuV"
+                    + EnumChatFormatting.GRAY
+                    + " or above")
+            .addSeparator()
             .addInfo(
                 "Structure has " + EnumChatFormatting.WHITE
-                    + "3 "
-                    + EnumChatFormatting.YELLOW
-                    + "Tiers"
+                    + "3 Tiers"
                     + EnumChatFormatting.GRAY
-                    + ", Tier determines "
+                    + ", "
+                    + EnumChatFormatting.WHITE
+                    + "Tier "
+                    + EnumChatFormatting.GRAY
+                    + "determines "
                     + EnumChatFormatting.BLUE
                     + "Base Decay "
                     + EnumChatFormatting.GRAY
