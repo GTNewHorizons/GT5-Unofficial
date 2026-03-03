@@ -161,7 +161,7 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
             getBaseMetaTileEntity().getYCoord(),
             getBaseMetaTileEntity().getZCoord(),
             aspect,
-            Math.min(space, 100));
+            Math.min(space, 5));
 
         return buffer + drained;
     }
