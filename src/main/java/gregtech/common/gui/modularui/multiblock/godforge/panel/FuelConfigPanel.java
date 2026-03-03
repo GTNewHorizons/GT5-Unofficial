@@ -32,7 +32,7 @@ import tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath;
 public class FuelConfigPanel {
 
     private static final int SIZE_W = 78;
-    private static final int SIZE_H = 130;
+    private static final int SIZE_H = 138;
 
     public static ModularPanel openPanel(SyncHypervisor hypervisor) {
         ModularPanel panel = hypervisor.getModularPanel(Panels.FUEL_CONFIG);
@@ -137,8 +137,8 @@ public class FuelConfigPanel {
                 new FluidDisplayWidget().background(IDrawable.EMPTY)
                     .value(option.getFluid())
                     .displayAmount(false)
-                    .align(Alignment.CENTER)
-                    .size(16))
+                    .align(Alignment.TopLeft)
+                    .size(18))
             .child(
                 new SelectButton().value(LinkedBoolValue.of(syncer, option))
                     .background(IDrawable.EMPTY)

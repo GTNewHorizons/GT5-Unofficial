@@ -47,10 +47,6 @@ public class ScannerConfig {
     @Config.DefaultBoolean(true)
     public static boolean showCustomInfo;
 
-    @Config.Comment("If true, shows IC2 Crop Info in Scanner")
-    @Config.DefaultBoolean(true)
-    public static boolean showIC2CropInfo;
-
     @Config.Comment("If true, shows Forestry Leaves Info in Scanner")
     @Config.DefaultBoolean(true)
     public static boolean showForestryLeavesInfo;

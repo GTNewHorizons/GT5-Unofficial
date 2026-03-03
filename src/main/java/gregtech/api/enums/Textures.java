@@ -1836,6 +1836,7 @@ public class Textures {
         OVERLAY_HATCH_PH_SENSOR_GLOW,
         OVERLAY_HATCH_SPLITTER_REDSTONE,
         OVERLAY_HATCH_SPLITTER_REDSTONE_GLOW,
+        OVERLAY_HATCH_PATTERN_PROVIDER,
 
         STRUCTURE_MARK,
 
@@ -1981,6 +1982,7 @@ public class Textures {
         NANOCHIP_MESH_INTERFACE_CASING,
         NANOCHIP_REINFORCEMENT_CASING,
         NANOCHIP_FIREWALL_PROJECTION_CASING,
+        NANOCHIP_FIREWALL_PROJECTION_CASING_TOP,
         NANOCHIP_COMPUTATIONAL_MATRIX_CASING,
         NANOCHIP_GLASS,
 
@@ -2034,9 +2036,12 @@ public class Textures {
         OVERLAY_FRONT_BIOLOGICAL_COORDINATION_GLOW,
         OVERLAY_FRONT_BIOLOGICAL_COORDINATION_ACTIVE_GLOW,
 
-        OVERLAY_VACUUM_HATCH,
-        OVERLAY_VACUUM_HATCH_ACTIVE,
-        OVERLAY_VACUUM_PIPE_PORT,
+        OVERLAY_VACUUM_HATCH_INPUT,
+        OVERLAY_VACUUM_HATCH_INPUT_ACTIVE,
+        OVERLAY_VACUUM_PIPE_PORT_INPUT,
+        OVERLAY_VACUUM_HATCH_OUTPUT,
+        OVERLAY_VACUUM_HATCH_OUTPUT_ACTIVE,
+        OVERLAY_VACUUM_PIPE_PORT_OUTPUT,
         // semicolon after the comment to reduce merge conflicts
         ;
 
@@ -2435,6 +2440,7 @@ public class Textures {
          * page 8: 0-111 TecTech, 112-127 GT casing 6
          * page 12: 0-127 GlodBlock
          * page 16: 0-15 GT glass 1, 16-31 GT casing 9, 32-47 GT glass 2, 48-63 GT casing 10, 64-79 GT casing 11, 80-95 GT casing 12
+         * page 20: 0-15 CropsNH Casings
          * page 42: 0-126 glee8e, 127 KekzTech LSC base
          */
         // spotless:on

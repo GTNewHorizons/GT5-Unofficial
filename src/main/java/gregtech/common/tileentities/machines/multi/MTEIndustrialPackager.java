@@ -318,4 +318,9 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
     public boolean supportsVoidProtection() {
         return true;
     }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
 }
