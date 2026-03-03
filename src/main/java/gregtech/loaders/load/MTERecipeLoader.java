@@ -2,7 +2,6 @@ package gregtech.loaders.load;
 
 import static gregtech.api.enums.Mods.BuildCraftFactory;
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NotEnoughItems;
@@ -13,7 +12,9 @@ import static gregtech.api.util.GTModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GTModHandler.RecipeBits.DISMANTLEABLE;
 import static gregtech.api.util.GTModHandler.RecipeBits.NOT_REMOVABLE;
 import static gregtech.api.util.GTModHandler.RecipeBits.REVERSIBLE;
+import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.init.Blocks;
@@ -22,6 +23,7 @@ import net.minecraft.item.ItemStack;
 
 import com.jaquadro.minecraft.storagedrawers.StorageDrawers;
 
+import bartworks.common.loaders.ItemRegistry;
 import codechicken.nei.api.API;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -1616,6 +1618,21 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "PHP", "CMC", "PHP", 'P', OrePrefixes.plate.get(Materials.BlueSteel), 'H',
                 ItemList.Casing_IV, 'C', "circuitElite", 'M', ItemList.Machine_IV_Wiremill });
 
+        // Industrial Electrolyzer
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialElectrolyzer.get(1),
+            new Object[] { "PCP", "HMH", "PRP", 'P', MaterialsAlloy.STELLITE.getPlate(1), 'C', "circuitElite", 'H',
+                ItemList.Casing_IV, 'M', ItemList.Machine_IV_Electrolyzer, 'R', MaterialsAlloy.STELLITE.getRotor(1) });
+        // Mega Chemical Reactor
+        // todo: tweak this recipe
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Machine_Multi_LargeChemicalReactor.get(64))
+            .itemOutputs(ItemList.MegaChemicalReactor.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
+            .duration(1 * HOURS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
+
     }
 
     // This method is for all the structure rework shapeless crafing migration recipes
@@ -1638,6 +1655,16 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialCentrifuge.get(1),
             new Object[] { GregtechItemList.Industrial_Centrifuge });
+
+        // Industrial Electrolyzer Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialElectrolyzer.get(1),
+            new Object[] { GregtechItemList.Industrial_Electrolyzer });
+
+        // Mega Chemical Reactor Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.MegaChemicalReactor.get(1),
+            new Object[] { ItemRegistry.megaMachines[3] });
     }
 
     private static void registerSifter() {
@@ -3505,24 +3532,6 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BITS,
             new Object[] { " S ", "CMC", "RRR", 'M', ItemList.Hatch_Maintenance, 'S', ItemList.Sensor_IV, 'R',
                 new ItemStack(GregTechAPI.sBlockReinforced, 1, 9), 'C', ItemList.Conveyor_Module_EV });
-
-        // And Drone Centre
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Casing_Assembler.get(1),
-                ItemList.Cover_SolarPanel_HV.get(4),
-                ItemList.Conveyor_Module_IV.get(2),
-                ItemList.Robot_Arm_IV.get(2),
-                ItemList.Sensor_IV.get(2),
-                ItemList.Energy_LapotronicOrb.get(4),
-                ItemList.Cover_WirelessNeedsMaintainance.get(1),
-                GalacticraftCore.isModLoaded() ? GTModHandler.getModItem(GalacticraftCore.ID, "item.basicItem", 1, 19)
-                    : ItemList.Sensor_EV.get(4))
-            .itemOutputs(ItemList.Machine_Multi_DroneCentre.get(1L))
-            .fluidInputs(Materials.GlueAdvanced.getFluid(8_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
 
         GTModHandler.addCraftingRecipe(
             ItemList.MagLevPython_MV.get(1L),

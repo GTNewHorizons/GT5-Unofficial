@@ -30,6 +30,7 @@ import gregtech.api.util.recipe.Sievert;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.tileentities.machines.multi.foundry.FoundryModule;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
@@ -274,6 +275,9 @@ public class GTRecipeConstants {
         .create(Integer.class, "eu_multiplier");
 
     public static final RecipeMetadataKey<Double> HALF_LIFE = SimpleRecipeMetadataKey.create(Double.class, "half-life");
+
+    public static final RecipeMetadataKey<CircuitCalibration> CIRCUIT_CALIBRATION_TYPE = SimpleRecipeMetadataKey
+        .create(CircuitCalibration.class, "circuit-calibration");
 
     /**
      * Just some trivia to show in the decay recipes, since they don't have a lot of relevant info. Maybe this will come

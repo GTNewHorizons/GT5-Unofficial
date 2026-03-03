@@ -59,6 +59,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -72,11 +73,11 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
@@ -747,9 +748,9 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         .addElement(
             'H',
             buildHatchAdder(MTEEyeOfHarmony.class).atLeast(InputHatch, OutputHatch, InputBus, OutputBus)
-                .casingIndex(BlockGTCasingsTT.texturePage << 7)
+                .casingIndex(Casings.InfiniteSpacetimeEnergyBoundaryCasing.getTextureId())
                 .hint(1)
-                .buildAndChain(TTCasingsContainer.sBlockCasingsBA0, 12))
+                .buildAndChain(Casings.InfiniteSpacetimeEnergyBoundaryCasing.asElement()))
         .addElement(
             'E',
             GTStructureChannels.EOH_DILATION.use(
@@ -875,26 +876,14 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             return false;
         }
 
-        // Check if there is 1 output bus, and it is a ME output bus.
-        {
-            if (mOutputBusses.size() != 1) {
-                return false;
-            }
-
-            if (!(mOutputBusses.get(0) instanceof MTEHatchOutputBusME)) {
-                return false;
-            }
+        // Check if there are output busses
+        if (mOutputBusses.isEmpty()) {
+            return false;
         }
 
-        // Check if there is 1 output hatch, and they are ME output hatches.
-        {
-            if (mOutputHatches.size() != 1) {
-                return false;
-            }
-
-            if (!(mOutputHatches.get(0) instanceof MTEHatchOutputME)) {
-                return false;
-            }
+        // Check if there is 1 output hatch
+        if (mOutputHatches.size() != 1) {
+            return false;
         }
 
         // Check there is 1 input bus, and it is not a stocking input bus.
@@ -1542,17 +1531,15 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     private void outputItemToAENetwork(ItemStack item, long amount) {
         if (item == null || amount <= 0) return;
 
-        while (amount >= Integer.MAX_VALUE) {
-            ItemStack tmpItem = item.copy();
-            tmpItem.stackSize = Integer.MAX_VALUE;
-            mOutputBusses.get(0)
-                .storePartial(tmpItem);
-            amount -= Integer.MAX_VALUE;
+        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this);
+
+        for (long i = 0; i < amount; i += Integer.MAX_VALUE) {
+            int xfer = (int) Math.min(amount - i, Integer.MAX_VALUE);
+
+            ejectionHelper.ejectStack(GTUtility.copyAmountUnsafe(xfer, item));
         }
-        ItemStack tmpItem = item.copy();
-        tmpItem.stackSize = (int) amount;
-        mOutputBusses.get(0)
-            .storePartial(tmpItem);
+
+        ejectionHelper.commit();
     }
 
     private void outputFluidToAENetwork(FluidStack fluid, long amount) {

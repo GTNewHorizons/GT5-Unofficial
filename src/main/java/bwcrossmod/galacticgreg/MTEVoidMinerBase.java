@@ -368,6 +368,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         ItemStack dataStick = player.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
             super.onLeftclick(baseMetaTileEntity, player);
+            return;
         }
         dataStick.stackTagCompound = getCopiedData(player);
         dataStick.setStackDisplayName("Void Miner Filter Data");

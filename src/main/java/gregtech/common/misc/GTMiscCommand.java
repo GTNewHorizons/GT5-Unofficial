@@ -6,6 +6,7 @@ import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
 import static gregtech.common.misc.WirelessNetworkManager.setUserEU;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -251,19 +252,35 @@ public final class GTMiscCommand extends GTBaseCommand {
             amount);
     }
 
+    private static BigInteger parseEU(String eu) {
+        if (eu.contains("e")) {
+            String[] halves = eu.split("e");
+
+            double scalar = Double.parseDouble(halves[0]);
+            int exponent = Integer.parseInt(halves[1]);
+
+            return BigDecimal.valueOf(scalar)
+                .multiply(
+                    BigDecimal.valueOf(10)
+                        .pow(exponent))
+                .toBigInteger();
+        } else {
+            return new BigInteger(eu);
+        }
+    }
+
     private void processGlobalEnergyAddCommand(ICommandSender sender, String[] args) {
         String username = args[1];
         String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
         UUID uuid = SpaceProjectManager.getPlayerUUIDFromName(username);
 
-        String EU_String = args[2];
+        BigInteger eu = parseEU(args[2]);
 
         // Usage is /gt global_energy_add username EU
 
-        String EU_string_formatted = EnumChatFormatting.RED + formatNumber(new BigInteger(EU_String))
-            + EnumChatFormatting.RESET;
+        String EU_string_formatted = EnumChatFormatting.RED + formatNumber(eu) + EnumChatFormatting.RESET;
 
-        if (addEUToGlobalEnergyMap(uuid, new BigInteger(EU_String))) {
+        if (addEUToGlobalEnergyMap(uuid, eu)) {
             sendChatToPlayer(
                 sender,
                 "Successfully added " + EU_string_formatted
@@ -295,21 +312,21 @@ public final class GTMiscCommand extends GTBaseCommand {
         String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
         UUID uuid = SpaceProjectManager.getPlayerUUIDFromName(username);
 
-        String EU_String_0 = args[2];
+        BigInteger eu = parseEU(args[2]);
 
-        if ((new BigInteger(EU_String_0).compareTo(BigInteger.ZERO)) < 0) {
+        if ((eu.compareTo(BigInteger.ZERO)) < 0) {
             sendChatToPlayer(sender, "Cannot set a users energy network to a negative value.");
             return;
         }
 
-        setUserEU(uuid, new BigInteger(EU_String_0));
+        setUserEU(uuid, eu);
 
         sendChatToPlayer(
             sender,
             "Successfully set " + formatted_username
                 + "'s global energy network to "
                 + EnumChatFormatting.RED
-                + formatNumber(new BigInteger(EU_String_0))
+                + formatNumber(eu)
                 + EnumChatFormatting.RESET
                 + "EU.");
     }

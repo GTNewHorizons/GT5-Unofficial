@@ -8,6 +8,6 @@ public class TTRenderedExtendedFacingTexture extends GTRenderedTexture {
 
     // called from hydroenergy
     public TTRenderedExtendedFacingTexture(IIconContainer aIcon) {
-        super(aIcon, Dyes._NULL.getRGBA(), false, false, true);
+        super(aIcon, Dyes._NULL.getRGBA(), false, true);
     }
 }
