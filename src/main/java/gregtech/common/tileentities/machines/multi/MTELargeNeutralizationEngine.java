@@ -216,7 +216,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return STRUCTURE_DEFINITION;
     }
 
-    private static String getAlkaliTextFormatted(String baseName, int efficiency, int frequency) {
+    private static String getAlkaliTextFormatted(String baseName, int efficiency, int frequency, boolean useMinute) {
         return EnumChatFormatting.AQUA + baseName
             + SEPARATOR
             + EnumChatFormatting.LIGHT_PURPLE
@@ -225,8 +225,9 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             + SEPARATOR
             + EnumChatFormatting.WHITE
             + frequency
-            + " second"
-            + (frequency > 1 ? "s" : "");
+            + EnumChatFormatting.GRAY
+            + "/"
+            + (useMinute ? "minute" : "second");
     }
 
     private static String getTierInfoTextFormatted(int tier, String casingName, int baseDecay, int capacity) {
@@ -240,7 +241,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             + baseDecay
             + SEPARATOR
             + EnumChatFormatting.DARK_AQUA
-            + capacity;
+            + formatNumber(capacity);
     }
 
     @Override
@@ -250,22 +251,22 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addInfo("(Dis)solves all your problems!")
             .addSeparator()
             .addInfo(
-                "Can use a " + EnumChatFormatting.AQUA
+                "Can " + EnumChatFormatting.WHITE
+                    + "use "
+                    + EnumChatFormatting.GRAY
+                    + "a "
+                    + EnumChatFormatting.AQUA
                     + "base "
                     + EnumChatFormatting.GRAY
                     + "to boost "
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "efficiency "
                     + EnumChatFormatting.GRAY
-                    + "for a "
-                    + EnumChatFormatting.WHITE
-                    + "temporary period"
-                    + EnumChatFormatting.GRAY
-                    + ":")
-            .addInfo(getAlkaliTextFormatted("Sodium Hydroxide", 150, 1))
-            .addInfo(getAlkaliTextFormatted("Potassium Hydroxide", 190, 1))
-            .addInfo(getAlkaliTextFormatted("Caesium Hydroxide", 250, 10))
-            .addInfo(getAlkaliTextFormatted("Francium Hydroxide", 500, 30))
+                    + "(consumes one by one):")
+            .addInfo(getAlkaliTextFormatted("Sodium Hydroxide", 150, 1, false))
+            .addInfo(getAlkaliTextFormatted("Potassium Hydroxide", 190, 1, false))
+            .addInfo(getAlkaliTextFormatted("Caesium Hydroxide", 250, 6, true))
+            .addInfo(getAlkaliTextFormatted("Francium Hydroxide", 500, 2, true))
             .addSeparator()
             .addInfo(
                 "Produces " + EnumChatFormatting.RED
@@ -426,6 +427,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addInputHatch("Any Tiered Casing", 1)
             .addMaintenanceHatch("Any Tiered Casing", 1)
             .addDynamoHatch("Any Tiered Casing", 1)
+            .addTecTechHatchInfo()
             .toolTipFinisher(AuthorLeon);
         return tt;
     }

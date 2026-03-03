@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
@@ -48,9 +49,9 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
             IKey.dynamic(
                 () -> StatCollector.translateToLocalFormatted(
                     "GT5U.gui.text.toxic_residue",
-                    toxicResidueSyncer.getStringValue(),
-                    residueCapacitySyncer.getStringValue(),
-                    residuePercentageSyncer.getStringValue()))
+                    formatNumber(toxicResidueSyncer.getIntValue()),
+                    formatNumber(residueCapacitySyncer.getIntValue()),
+                    formatNumber(residuePercentageSyncer.getFloatValue())))
                 .asWidget());
         IntSyncValue residueDecaySyncer = new IntSyncValue(() -> multiblock.residueDecay);
         IntSyncValue residueIncreaseSyncer = new IntSyncValue(() -> multiblock.residueIncrease);
@@ -62,9 +63,9 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
             IKey.dynamic(
                 () -> StatCollector.translateToLocalFormatted(
                     "GT5U.gui.text.residue_change",
-                    residueIncreaseSyncer.getStringValue(),
-                    residueDecaySyncer.getStringValue(),
-                    netResidueSyncer.getStringValue()))
+                    formatNumber(residueIncreaseSyncer.getIntValue()),
+                    formatNumber(residueDecaySyncer.getIntValue()),
+                    formatNumber(netResidueSyncer.getIntValue())))
                 .asWidget());
         return terminalText;
     }
