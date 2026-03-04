@@ -271,10 +271,18 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.casingAmount = 0;
         if (!structureCheck_EM(NA_BOTTOM, 2, 0, 0)) return false;
-        height = 0;
-        while (structureCheck_EM(NA_MID, 2, height + 1, 0)) {
-            height++;
+
+        if (!mMachine) {
+            height = 0;
+            while (structureCheck_EM(NA_MID, 2, height + 1, 0)) {
+                height++;
+            }
+        } else {
+            for (int i = 0; i < height; i++) {
+                if (!structureCheck_EM(NA_MID, 2, i + 1, 0)) return false;
+            }
         }
+
         if (height < 4) return false;
         return structureCheck_EM(NA_TOP, 2, height + 1, 0) && casingAmount >= 7;
     }

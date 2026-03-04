@@ -1,6 +1,5 @@
 package gtPlusPlus.core.util.math;
 
-import java.text.NumberFormat;
 import java.util.Random;
 
 import gregtech.api.enums.GTValues;
@@ -10,13 +9,6 @@ import gtPlusPlus.core.util.Utils;
 public class MathUtils {
 
     private static final Random rand = GTPPCore.RANDOM;
-
-    /** Formats a number with group separator and at most 2 fraction digits. */
-    private static final NumberFormat sNumberFormat = NumberFormat.getInstance();
-
-    static {
-        sNumberFormat.setMaximumFractionDigits(2);
-    }
 
     /**
      * Returns a psuedo-random number between min and max, inclusive. The difference between min and max can be at most

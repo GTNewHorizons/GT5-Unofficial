@@ -42,8 +42,16 @@ public class GodforgeMath {
 
     public static int calculateMaxFuelFactor(ForgeOfGodsData data) {
         int fuelCap = 5;
+        int fuelType = data.getSelectedFuelType();
         if (data.isUpgradeActive(TSE)) {
-            fuelCap = Integer.MAX_VALUE;
+
+            if (fuelType == 0) {
+                fuelCap = data.isUpgradeActive(STEM) ? MAX_RESIDUE_FACTOR_DISCOUNTED : MAX_RESIDUE_FACTOR;
+            } else if (fuelType == 1) {
+                fuelCap = data.isUpgradeActive(STEM) ? MAX_STELLAR_PLASMA_FACTOR_DISCOUNTED : MAX_STELLAR_PLASMA_FACTOR;
+            } else {
+                fuelCap = Integer.MAX_VALUE;
+            }
         } else {
             if (data.isUpgradeActive(GEM)) {
                 fuelCap += data.getUpgrades()
