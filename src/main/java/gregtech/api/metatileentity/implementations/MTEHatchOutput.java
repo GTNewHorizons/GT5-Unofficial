@@ -461,6 +461,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                 return fluidStack != null ? fluidStack.getLocalizedName()
                     : StatCollector.translateToLocal("GT5U.machines.hatch_output.lockfluid.empty");
             })
+                .setSynced(false)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setTextAlignment(Alignment.CenterLeft)
                 .setMaxWidth(65)
