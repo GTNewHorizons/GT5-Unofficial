@@ -432,8 +432,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             if (this.mode == EIGModes.IC2) {
                 for (EIGMigrationHolder holder : toMigrate) {
                     // We will have to revalidate the seeds on the next cycle.
-                    this.buckets
-                        .add(new EIGIC2Bucket(holder.seed, holder.count, holder.supportBlock, holder.useNoHumidity));
+                    this.buckets.add(new EIGIC2Bucket(holder.seed, holder.count, holder.supportBlock));
                 }
             } else {
                 this.mode = EIGModes.Normal;
@@ -900,6 +899,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             this.mEfficiencyIncrease = 10000;
             return CheckRecipeResultRegistry.SUCCESSFUL;
         }
+        if (this.mode == EIGModes.IC2) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
         if (this.maxSeedTypes < this.buckets.size()) {
             return SimpleCheckRecipeResult.ofFailure("EIG_slotoverflow");
         }
@@ -955,7 +957,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
         // OVERCLOCK
         // FERTILIZER IDEA:
-        // IC2 +10% per fertilizer per crop per operation
         // NORMAL +200% per fertilizer per crop per operation
 
         int consumedFertilizer = 0;
@@ -977,17 +978,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
         // compute drops based on the drop tracker
         this.guiDropTracker = new EIGDropTable();
-        if (this.mode == EIGModes.IC2) {
-            if (glassTier < (EIG_BALANCE_IC2_ACCELERATOR_TIER + 1))
-                return SimpleCheckRecipeResult.ofFailure("EIG_ic2glass");
-            this.mMaxProgresstime = 100;
-            // determine the amount of time we are simulating on the seed.
-            double timeElapsed = ((double) this.mMaxProgresstime * (1 << EIG_BALANCE_IC2_ACCELERATOR_TIER));
-            // Add drops to the drop tracker for each seed bucket.
-            for (EIGBucket bucket : this.buckets) {
-                bucket.addProgress(timeElapsed * multiplier, this.guiDropTracker);
-            }
-        } else if (this.mode == EIGModes.Normal) {
+        if (this.mode == EIGModes.Normal) {
             this.mMaxProgresstime = Math.max(20, 100 / (tier - 3)); // Min 1 s
             for (EIGBucket bucket : this.buckets) {
                 bucket.addProgress(multiplier, this.guiDropTracker);

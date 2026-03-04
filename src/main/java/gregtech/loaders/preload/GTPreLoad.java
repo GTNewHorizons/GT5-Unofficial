@@ -388,7 +388,6 @@ public class GTPreLoad {
         GTMod.proxy.mExplosionItemDrop = Gregtech.general.explosionItemDrop;
         GTMod.proxy.mEnableCleanroom = Gregtech.general.enableCleanroom;
         GTMod.proxy.mLowGravProcessing = GalacticraftCore.isModLoaded() && Gregtech.general.lowGravProcessing;
-        GTMod.proxy.mCropNeedBlock = Gregtech.general.cropNeedBlock;
         GTMod.proxy.mAMHInteraction = Gregtech.general.autoMaintenaceHatchesInteraction;
         GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre = Gregtech.general.mixedOreOnlyYieldsTwoThirdsOfPureOre;
         GTMod.proxy.mRichOreYieldMultiplier = Gregtech.general.richOreYieldMultiplier;
