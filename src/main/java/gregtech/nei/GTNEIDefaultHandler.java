@@ -266,10 +266,14 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     private void addFluidStacks(ItemStack aStack, ArrayList<ItemStack> tResults) {
         FluidStack tFluid = GTUtility.getFluidForFilledItem(aStack, true);
         FluidStack tFluidStack;
+
         if (tFluid != null) {
             tFluidStack = tFluid;
             tResults.add(GTUtility.getFluidDisplayStack(tFluid, false));
-        } else tFluidStack = GTUtility.getFluidFromDisplayStack(aStack);
+        } else {
+            tFluidStack = GTUtility.getFluidFromDisplayStack(aStack);
+        }
+
         if (tFluidStack != null) {
             tResults.addAll(GTUtility.getContainersFromFluid(tFluidStack));
         }
