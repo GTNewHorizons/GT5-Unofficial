@@ -29,6 +29,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -48,8 +49,7 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
     private static final float SPEED = 2.8f;
     private static final float EU_EFFICIENCY = 0.9f;
 
-    private static final String ANY_CASING = GTUtility
-        .nestParams("GT5U.MBTT.HatchInfo", Casings.ElectrolyzerCasing.getLocalizedName());
+    private static final String ANY_CASING = TooltipHelper.anyCasingText(Casings.ElectrolyzerCasing.getLocalizedName());
 
     public MTEIndustrialElectrolyzer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

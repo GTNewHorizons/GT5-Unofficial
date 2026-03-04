@@ -48,6 +48,7 @@ import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -64,6 +65,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasingsAbstract;
 
 public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreezer> implements ISurvivalConstructable {
@@ -84,8 +86,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     private int mCasingFrostProof = 0;
     private int mTier = 1;
 
-    private static final String ANY_CASING = GTUtility.nestParams(
-        "GT5U.MBTT.HatchInfo",
+    private static final String ANY_CASING = TooltipHelper.anyCasingText(
         ItemList.Casing_FrostProof.get(1)
             .getDisplayName());
 
@@ -260,19 +261,10 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             .addInputBus(ANY_CASING, 1)
             .addOutputBus(ANY_CASING, 1)
             .addStructureInfo("gt.mvf.info.t1_multi")
-            .addCasingInfoMin(
-                ItemList.Casing_FrostProof.get(1)
-                    .getDisplayName(),
-                800)
+            .addCasingInfoMin(Casings.FrostProofMachineCasing.getLocalizedName(), 800)
             .addStructureInfo("gt.mvf.info.t2_multi")
-            .addCasingInfoMin(
-                ItemList.Casing_FrostProof.get(1)
-                    .getDisplayName(),
-                700)
-            .addCasingInfoExactly(
-                ItemList.InfinityCooledCasing.get(1)
-                    .getDisplayName(),
-                384)
+            .addCasingInfoMin(Casings.FrostProofMachineCasing.getLocalizedName(), 700)
+            .addCasingInfoExactly(Casings.InfinityCooledCasing.getLocalizedName(), 384)
             .toolTipFinisher();
         return tt;
     }

@@ -55,6 +55,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.MTECokeOvenGui;
 import gregtech.common.pollution.Pollution;
 
@@ -90,8 +91,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
             .addStructurePart(
                 ItemList.CokeOvenHatch.get(1)
                     .getDisplayName(),
-                GTUtility.nestParams(
-                    "GT5U.MBTT.HatchInfo",
+                TooltipHelper.anyCasingText(
                     ItemList.CokeOvenCasing.get(1)
                         .getDisplayName()))
             .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)

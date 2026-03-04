@@ -49,6 +49,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -67,6 +68,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
@@ -91,10 +93,8 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     protected int itemPipeTier = 0;
     protected int fluidPipeTier = 0;
 
-    private static final String ANY_CASING = GTUtility.nestParams(
-        "GT5U.MBTT.HatchInfo",
-        ItemList.Casing_Autoclave.get(0)
-            .getDisplayName());
+    private static final String ANY_CASING = TooltipHelper
+        .anyCasingText(Casings.PressureContainmentCasing.getLocalizedName());
 
     @Nullable
     private static Integer getItemPipeTierFromMeta(Block block, Integer metaID) {

@@ -26,6 +26,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -39,10 +40,10 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -70,11 +71,8 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
         return "gt.recipe.rockbreaker";
     }
 
-    private static final String casingBaseName = GregtechItemList.Casing_ThermalCentrifuge.get(0)
-        .getDisplayName();
-    private static final String casingMiddleName = GregtechItemList.Casing_ThermalContainment.get(0)
-        .getDisplayName();
-    private static final String anyBaseCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", casingBaseName);
+    private static final String ANY_CASING = TooltipHelper
+        .anyCasingText(Casings.ThermalProcessingCasing.getLocalizedName());
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
@@ -85,14 +83,14 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController("front_bottom_middle")
-            .addCasingInfoMin(casingBaseName, 9, false)
-            .addCasingInfoExactly(casingMiddleName, 16, false)
-            .addInputBus(anyBaseCasing, 1)
-            .addInputHatch(anyBaseCasing, 1)
-            .addOutputBus(anyBaseCasing, 1)
-            .addEnergyHatch(anyBaseCasing, 1)
-            .addMaintenanceHatch(anyBaseCasing, 1)
-            .addMufflerHatch(anyBaseCasing, 1)
+            .addCasingInfoMin(Casings.ThermalProcessingCasing.getLocalizedName(), 9, false)
+            .addCasingInfoExactly(Casings.ThermalContainmentCasing.getLocalizedName(), 16, false)
+            .addInputBus(ANY_CASING, 1)
+            .addInputHatch(ANY_CASING, 1)
+            .addOutputBus(ANY_CASING, 1)
+            .addEnergyHatch(ANY_CASING, 1)
+            .addMaintenanceHatch(ANY_CASING, 1)
+            .addMufflerHatch(ANY_CASING, 1)
             .toolTipFinisher();
         return tt;
     }

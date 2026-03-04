@@ -42,7 +42,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -70,6 +69,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.gui.modularui.multiblock.MTESpinmatronGui;
@@ -82,7 +82,6 @@ import gregtech.common.tools.ToolTurbineSmall;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 
 public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron> implements ISurvivalConstructable {
@@ -110,10 +109,8 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
         "iconsets/TFFT_ACTIVE_GLOW");
     public ArrayList<MTEHatchTurbine> turbineRotorHatchList = new ArrayList<>();
-    private static final String ANY_CASING = GTUtility.nestParams(
-        "GT5U.MBTT.HatchInfo",
-        ItemList.Spinmatron_Casing.get(1)
-            .getDisplayName());
+    private static final String ANY_CASING = TooltipHelper
+        .anyCasingText(Casings.VibrationSafeCasing.getLocalizedName());
 
     private boolean staticAnimations = false;
     // spotless:off
@@ -400,33 +397,15 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .beginStructureBlock(17, 17, 17, false)
             .addController("front_center")
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 81, true)
-            .addCasingInfoMin(
-                ItemList.Spinmatron_Casing.get(1)
-                    .getDisplayName(),
-                550)
-            .addCasingInfoExactly(
-                ItemList.Spinmatron_Chamber_Grate.get(1)
-                    .getDisplayName(),
-                144)
+            .addCasingInfoMin(Casings.VibrationSafeCasing.getLocalizedName(), 550)
+            .addCasingInfoExactly(Casings.ChamberGrate.getLocalizedName(), 144)
             .addCasingInfoExactly("gt.spinmatron.info.frame", 9, true)
             .addCasingInfoExactly("gt.spinmatron.info.rotor", 56, true)
-            .addCasingInfoExactly(
-                GregtechItemList.Casing_IsaMill_Gearbox.get(1)
-                    .getDisplayName(),
-                54)
-            .addCasingInfoExactly(
-                ItemList.Casing_Pipe_Polybenzimidazole.get(1)
-                    .getDisplayName(),
-                160)
-            .addCasingInfoExactly(
-                GregtechItemList.Casing_Turbine_Shaft.get(1)
-                    .getDisplayName(),
-                24)
+            .addCasingInfoExactly(Casings.IsaMillGearboxCasing.getLocalizedName(), 54)
+            .addCasingInfoExactly(Casings.PBIPipeCasing.getLocalizedName(), 160)
+            .addCasingInfoExactly(Casings.TurbineShaft.getLocalizedName(), 24)
             .addCasingInfoExactly("gt.blockmachines.hatch.turbine.name", 8)
-            .addCasingInfoExactly(
-                GregtechItemList.Casing_Turbine_SC.get(1)
-                    .getDisplayName(),
-                264)
+            .addCasingInfoExactly(Casings.TurbineShaft.getLocalizedName(), 264)
             .addInputBus(ANY_CASING, 1)
             .addOutputBus(ANY_CASING, 1)
             .addInputHatch(ANY_CASING, 1)

@@ -46,6 +46,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -211,16 +212,16 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInfo("gt.ore_factory.tips.3")
             .beginStructureBlock(6, 12, 11, false)
             .addController("gt.ore_factory.info.1")
-            .addCasingInfoExactly("gt.blockcasings8.7.name", 128, false)
-            .addCasingInfoExactly("gt.blockcasings4.1.name", 105, false)
+            .addCasingInfoExactly(Casings.AdvancedIridiumPlatedMachineCasing.getLocalizedName(), 128, false)
+            .addCasingInfoExactly(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 105, false)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 48, true)
-            .addCasingInfoExactly("gt.blockcasings2.15.name", 30, false)
+            .addCasingInfoExactly(Casings.TungstensteelPipeCasing.getLocalizedName(), 30, false)
             .addCasingInfoExactly(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1)
                     .getDisplayName(),
                 16,
                 false)
-            .addCasingInfoExactly("gt.blockcasings2.3.name", 16, false)
+            .addCasingInfoExactly(Casings.SteelGearBoxCasing.getLocalizedName(), 16, false)
             .addEnergyHatch("<bottom casing>", 1)
             .addMaintenanceHatch("<bottom casing>", 1)
             .addInputBus("gt.ore_factory.info.2", 2)

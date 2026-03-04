@@ -40,7 +40,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.ItemList;
+import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -53,19 +53,17 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.MTETranscendentPlasmaMixerGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETranscendentPlasmaMixer>
     implements ISurvivalConstructable {
 
-    private static final String ANY_CASING = GTUtility.nestParams(
-        "GT5U.MBTT.HatchInfo",
-        ItemList.Casing_Dim_Injector.get(1)
-            .getDisplayName());
+    private static final String ANY_CASING = TooltipHelper
+        .anyCasingText(Casings.DimensionalInjectionCasing.getLocalizedName());
 
     private static final String[][] structure = new String[][] {
         { " CAC ", " ABA ", " ABA ", " A~A ", " ABA ", " ABA ", " CAC " },
@@ -116,22 +114,9 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
             .addInfo("gt.tpm.tips")
             .beginStructureBlock(5, 7, 5, false)
             .addController("front_center")
-            .addCasingInfoExactly(
-                ItemList.Casing_Dim_Trans.get(1)
-                    .getDisplayName(),
-                48,
-                false)
-            .addCasingInfoExactly(
-                ItemList.Casing_Dim_Bridge.get(1)
-                    .getDisplayName(),
-                16,
-                false)
-            .addCasingInfoRange(
-                ItemList.Casing_Dim_Injector.get(1)
-                    .getDisplayName(),
-                0,
-                33,
-                false)
+            .addCasingInfoExactly(Casings.DimensionallyTranscendentCasing.getLocalizedName(), 48, false)
+            .addCasingInfoExactly(Casings.DimensionalBridge.getLocalizedName(), 16, false)
+            .addCasingInfoRange(Casings.DimensionalInjectionCasing.getLocalizedName(), 0, 33, false)
             .addInputBus(ANY_CASING, 1)
             .addInputHatch(ANY_CASING, 1)
             .addOutputHatch(ANY_CASING, 1)

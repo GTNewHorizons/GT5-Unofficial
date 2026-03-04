@@ -68,6 +68,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
@@ -85,6 +86,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEElectricImplosionCompressor>
@@ -111,8 +113,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         return new MTEElectricImplosionCompressor(this.mName);
     }
 
-    private static final String ANY_CASING = GTUtility.nestParams(
-        "GT5U.MBTT.HatchInfo",
+    private static final String ANY_CASING = TooltipHelper.anyCasingText(
         ItemList.Casing_SolidSteel.get(1)
             .getDisplayName());
 
@@ -224,10 +225,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 9, 3, false)
             .addController("gt.eic.info.controller")
-            .addCasingInfoMin(
-                ItemList.Casing_SolidSteel.get(1)
-                    .getDisplayName(),
-                8)
+            .addCasingInfoMin(Casings.SolidSteelMachineCasing.getLocalizedName(), 8)
             .addStructureInfo("gt.eic.info.replacement")
             .addStructurePart(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 1).getDisplayName(), "gt.eic.info.casing.a")
             .addStructurePart(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 0).getDisplayName(), "gt.eic.info.casing.b")

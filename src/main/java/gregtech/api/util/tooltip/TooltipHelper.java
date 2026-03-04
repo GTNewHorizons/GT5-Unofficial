@@ -207,4 +207,13 @@ public class TooltipHelper {
         String text = NumberFormatUtil.formatNumber(litersPerSecond) + GTUtility.translate("gt.unit.liter_per_second");
         return coloredText(text, L_COLOR);
     }
+
+    /**
+     * @return "Any [casing name]"
+     *         <br>
+     *         used as a more specific `Any Casing`
+     */
+    public static String anyCasingText(String casingName) {
+        return GTUtility.nestParams("GT5U.MBTT.HatchInfo", casingName);
+    }
 }

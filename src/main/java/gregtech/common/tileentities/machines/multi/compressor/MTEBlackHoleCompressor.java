@@ -54,6 +54,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -79,6 +80,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
@@ -89,10 +91,8 @@ import tectech.thing.metaTileEntity.multi.base.SoundLoopAnyBlock;
 public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBlackHoleCompressor>
     implements ISurvivalConstructable {
 
-    private static final String ANY_CASING = GTUtility.nestParams(
-        "GT5U.MBTT.HatchInfo",
-        ItemList.Background_Radiation_Casing.get(1)
-            .getDisplayName());
+    private static final String ANY_CASING = TooltipHelper
+        .anyCasingText(Casings.BackgroundRadiationAbsorbentCasing.getLocalizedName());
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEBlackHoleCompressor> STRUCTURE_DEFINITION = StructureDefinition
@@ -363,18 +363,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addTecTechHatchInfo()
             .addInfo("gt.bhc.tips.3")
             .beginStructureBlock(35, 33, 35, false)
-            .addCasingInfoMin(
-                ItemList.Background_Radiation_Casing.get(1)
-                    .getDisplayName(),
-                950)
-            .addCasingInfoExactly(
-                ItemList.Extreme_Density_Casing.get(1)
-                    .getDisplayName(),
-                3667)
-            .addCasingInfoExactly(
-                ItemList.Hawking_Glass.get(1)
-                    .getDisplayName(),
-                64)
+            .addCasingInfoMin(Casings.BackgroundRadiationAbsorbentCasing.getLocalizedName(), 950)
+            .addCasingInfoExactly(Casings.ExtremeDensitySpaceBendingCasing.getLocalizedName(), 3667)
+            .addCasingInfoExactly(Casings.HawkingRadiationRealignmentFocus.getLocalizedName(), 64)
             .addCasingInfoExactly(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1)
                     .getDisplayName(),

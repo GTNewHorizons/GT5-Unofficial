@@ -30,6 +30,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -43,11 +44,11 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -60,10 +61,8 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     private int mLevel = 0;
     private int mCasing;
     private static IStructureDefinition<MTEIndustrialAlloySmelter> STRUCTURE_DEFINITION = null;
-    private static final String ANY_CASING = GTUtility.nestParams(
-        "GT5U.MBTT.HatchInfo",
-        GregtechItemList.Casing_Extruder.get(1)
-            .getDisplayName());;
+    private static final String ANY_CASING = TooltipHelper
+        .anyCasingText(Casings.InconelReinforcedCasing.getLocalizedName());;
 
     public MTEIndustrialAlloySmelter(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -130,15 +129,8 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
             .addController("front_bottom_middle")
-            .addCasingInfoMin(
-                GregtechItemList.Casing_Extruder.get(1)
-                    .getDisplayName(),
-                8,
-                false)
-            .addStructurePart(
-                GregtechItemList.GTPP_Casing_EV.get(1)
-                    .getDisplayName(),
-                "gt.zyngen.info.1")
+            .addCasingInfoMin(Casings.InconelReinforcedCasing.getLocalizedName(), 8, false)
+            .addStructurePart(Casings.IntegralEncasementEV.getLocalizedName(), "gt.zyngen.info.1")
             .addStructurePart("GT5U.tooltip.structure.heating_coil", "gt.zyngen.info.2")
             .addInputBus(ANY_CASING, 1)
             .addOutputBus(ANY_CASING, 1)
