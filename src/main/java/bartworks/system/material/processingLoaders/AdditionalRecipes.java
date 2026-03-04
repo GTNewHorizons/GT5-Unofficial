@@ -79,7 +79,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gtPlusPlus.core.fluids.GTPPFluids;
 
@@ -235,8 +234,9 @@ public class AdditionalRecipes {
                         .itemInputs(
                             BioItemList.getPetriDish(null),
                             fluidStack.equals(Materials.Water.getFluid(1_000)) ? Materials.Water.getCells(1)
-                                : GTUtility.getContainersFromFluid(GTModHandler.getDistilledWater(1_000))
-                                    .get(0))
+                                : FluidContainerRegistry.fillFluidContainer(
+                                    GTModHandler.getDistilledWater(1_000),
+                                    ItemList.Cell_Empty.get(1)))
                         .itemOutputs(BioItemList.getPetriDish(bioCulture), Materials.Empty.getCells(1))
                         .outputChances(bioCulture.getChance(), 100_00)
                         .fluidInputs(new FluidStack(bioCulture.getFluid(), 1_000))
@@ -352,15 +352,6 @@ public class AdditionalRecipes {
             .itemOutputs(Materials.Thorium.getDust(1), Materials.Magnesia.getDust(4))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.Thorianit.get(crushed), ItemList.Crop_Drop_Thorium.get(9))
-            .itemOutputs(WerkstoffLoader.Thorianit.get(crushedPurified, 4))
-            .fluidInputs(Materials.Water.getFluid(1_000))
-            .fluidOutputs(Materials.Thorium.getMolten(1 * INGOTS))
-            .duration(4 * SECONDS + 16 * TICKS)
-            .eut(24)
             .addTo(UniversalChemical);
 
         // Prasiolite
