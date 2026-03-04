@@ -1,5 +1,6 @@
 package gregtech.api.gui.widgets;
 
+import gregtech.GTMod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -175,8 +176,11 @@ public class CommonWidgets {
                 }
             });
             selectedSyncHandler.setChangeListener(
-                () -> baseMachine.getBaseMetaTileEntity()
-                    .markInventoryBeenModified());
+                () ->
+                {
+                    if(GTMod.proxy.isClientSide()) return;
+                    baseMachine.getBaseMetaTileEntity().markInventoryBeenModified();
+                });
             syncManager.syncValue("selector_screen_selected", selectedSyncHandler);
             return new GhostCircuitSlotWidget(baseMachine, syncManager)
                 .slot(new ModularSlot(new GhostCircuitItemStackHandler(baseMachine), 0));
