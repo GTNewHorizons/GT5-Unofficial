@@ -1,6 +1,5 @@
 package gregtech.api.gui.widgets;
 
-import gregtech.GTMod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -18,6 +17,7 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.GTMod;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -175,12 +175,11 @@ public class CommonWidgets {
                     baseMachine.setInventorySlotContents(circuitEnabled.getCircuitSlot(), null);
                 }
             });
-            selectedSyncHandler.setChangeListener(
-                () ->
-                {
-                    if(GTMod.proxy.isClientSide()) return;
-                    baseMachine.getBaseMetaTileEntity().markInventoryBeenModified();
-                });
+            selectedSyncHandler.setChangeListener(() -> {
+                if (GTMod.proxy.isClientSide()) return;
+                baseMachine.getBaseMetaTileEntity()
+                    .markInventoryBeenModified();
+            });
             syncManager.syncValue("selector_screen_selected", selectedSyncHandler);
             return new GhostCircuitSlotWidget(baseMachine, syncManager)
                 .slot(new ModularSlot(new GhostCircuitItemStackHandler(baseMachine), 0));

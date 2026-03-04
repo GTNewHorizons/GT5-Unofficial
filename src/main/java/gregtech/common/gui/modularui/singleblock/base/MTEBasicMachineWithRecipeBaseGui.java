@@ -144,8 +144,9 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
-                    if(GTMod.proxy.isClientSide()) return;
-                    machine.getBaseMetaTileEntity().markInventoryBeenModified();
+                    if (GTMod.proxy.isClientSide()) return;
+                    machine.getBaseMetaTileEntity()
+                        .markInventoryBeenModified();
                 }
 
             }.slotGroup("item_inv"))
@@ -160,15 +161,16 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     protected ItemSlot createChargerSlot() {
 
-        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()){
+        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()) {
 
-                @Override
-                public void onSlotChanged() {
-                    super.onSlotChanged();
-                    if(GTMod.proxy.isClientSide()) return;
-                    machine.getBaseMetaTileEntity().markInventoryBeenModified();
-                }
-            })
+            @Override
+            public void onSlotChanged() {
+                super.onSlotChanged();
+                if (GTMod.proxy.isClientSide()) return;
+                machine.getBaseMetaTileEntity()
+                    .markInventoryBeenModified();
+            }
+        })
             .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER)
             .tooltip(this::createTooltipForChargerSlot)
             .tooltipShowUpTimer(TOOLTIP_DELAY);
@@ -215,8 +217,9 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
                         @Override
                         public void onSlotChanged() {
                             super.onSlotChanged();
-                            if(GTMod.proxy.isClientSide()) return;
-                            machine.getBaseMetaTileEntity().markInventoryBeenModified();
+                            if (GTMod.proxy.isClientSide()) return;
+                            machine.getBaseMetaTileEntity()
+                                .markInventoryBeenModified();
                         }
 
                     }.singletonSlotGroup(50 + i)))
@@ -231,8 +234,9 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
                 @Override
                 protected void onValueChanged() {
                     super.onValueChanged();
-                    if(GTMod.proxy.isClientSide()) return;
-                    machine.getBaseMetaTileEntity().markInventoryBeenModified();
+                    if (GTMod.proxy.isClientSide()) return;
+                    machine.getBaseMetaTileEntity()
+                        .markInventoryBeenModified();
                 }
 
             });
@@ -255,8 +259,9 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
                         @Override
                         public void onSlotChanged() {
                             super.onSlotChanged();
-                            if(GTMod.proxy.isClientSide()) return;
-                            machine.getBaseMetaTileEntity().markInventoryBeenModified();
+                            if (GTMod.proxy.isClientSide()) return;
+                            machine.getBaseMetaTileEntity()
+                                .markInventoryBeenModified();
                         }
 
                     }.accessibility(false, true)))
@@ -271,8 +276,9 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
                 @Override
                 protected void onValueChanged() {
                     super.onValueChanged();
-                    if(GTMod.proxy.isClientSide()) return;
-                    machine.getBaseMetaTileEntity().markInventoryBeenModified();
+                    if (GTMod.proxy.isClientSide()) return;
+                    machine.getBaseMetaTileEntity()
+                        .markInventoryBeenModified();
                 }
 
             }.canFillSlot(false));
