@@ -364,6 +364,11 @@ public class GTValues {
      */
     public static boolean debugWorldData = false;
     /**
+     * Debug parameter for multiblock tooltips. When enabled, bypasses tooltip cache so hot-reloaded
+     * createTooltip() changes are immediately visible. Toggle with: /gt toggle debugTooltips
+     */
+    public static boolean debugTooltips = false;
+    /**
      * Number of ticks between sending sound packets to clients for electric machines. Default is 1.5 seconds. Trying to
      * mitigate lag and FPS drops.
      */

@@ -69,6 +69,7 @@ public final class GTMiscCommand extends GTBaseCommand {
         list.add(new ChatComponentText("\"toggle debugBlockPump\" - Possible issues with pumps"));
         list.add(new ChatComponentText("\"toggle debugEntityCramming\" - How long it takes and how many entities it finds"));
         list.add(new ChatComponentText("\"toggle debugMulti\" - toggles structurelib debug"));
+        list.add(new ChatComponentText("\"toggle debugTooltips\" - bypasses multiblock tooltip cache for hot-reload"));
         list.add(new ChatComponentText("\"toggle debugOrevein\" - toggles worldgen ore vein debug"));
         list.add(new ChatComponentText("\"toggle debugSmallOres\" - toggles worldgen small vein debug"));
         list.add(new ChatComponentText("\"toggle debugStones\" - toggles worldgen stones debug"));
@@ -113,6 +114,7 @@ public final class GTMiscCommand extends GTBaseCommand {
                     "debugDriller",
                     "debugEntityCramming",
                     "debugMulti",
+                    "debugTooltips",
                     "debugOrevein",
                     "debugSmallOres",
                     "debugStones",
