@@ -40,9 +40,6 @@ public class ScannerHandlerLoader {
         if (Mods.Forestry.isModLoaded()) {
             RecipeMaps.scannerHandlers.addLast(ScannerHandlerLoader::scanForestryIndividual);
         }
-        if (Mods.IndustrialCraft2.isModLoaded()) {
-            RecipeMaps.scannerHandlers.addLast(ScannerHandlerLoader::scanIC2Seed);
-        }
         RecipeMaps.scannerHandlers.addLast(ScannerHandlerLoader::copyDataOrb);
         RecipeMaps.scannerHandlers.addLast(ScannerHandlerLoader::scanElement);
         RecipeMaps.scannerHandlers.addLast(ScannerHandlerLoader::copyDataStick);
@@ -123,30 +120,6 @@ public class ScannerHandlerLoader {
             }
         }
         return GTScannerResult.NOT_FOUND;
-    }
-
-    public static final int IC2_SEED_SCAN_EUT = (int) TierEU.ULV;
-    public static final int IC2_SEED_SCAN_DURATION = 8 * SECONDS;
-
-    public static @Nullable GTScannerResult scanIC2Seed(@Nonnull MetaTileEntity aScanner, @Nonnull ItemStack aInput,
-        @Nullable ItemStack aSpecialSlot, @Nullable FluidStack aFluid) {
-        if (!ItemList.IC2_Crop_Seeds.isStackEqual(aInput, true, true)) return null;
-        if (!aInput.hasTagCompound()) {
-            // should not be possible, abort recipe check entirely.
-            return GTScannerResult.NOT_MET;
-        }
-        ItemStack output = GTUtility.copyAmount(1, aInput);
-        NBTTagCompound tNBT = output.getTagCompound();
-        int duration, eut;
-        if (tNBT.getByte("scan") < 4) {
-            output.setTagCompound(tNBT);
-            duration = IC2_SEED_SCAN_DURATION;
-            eut = IC2_SEED_SCAN_EUT;
-        } else {
-            duration = 1;
-            eut = 1;
-        }
-        return new GTScannerResult(eut, duration, 1, 0, 0, output);
     }
 
     public static final int DATA_ORB_COPY_EUT = (int) TierEU.RECIPE_LV;

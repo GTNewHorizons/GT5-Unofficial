@@ -2294,12 +2294,6 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Sodium, 1L),
                 ItemList.Cell_Empty.get(1L));
 
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.poison.strong", 750),
-                ItemList.IC2_Spray_WeedEx.get(1L),
-                ItemList.Spray_Empty.get(1L)));
-
         if (!GTValues.D1) {
             if (Mods.NotEnoughItems.isModLoaded()) {
                 GTLog.out.println("GTMod: Hiding certain Items from NEI.");
@@ -2370,7 +2364,6 @@ public class LoaderGTBlockFluid implements Runnable {
             OrePrefixes.dust,
             Materials.Cocoa,
             GTModHandler.getModItem(PamsHarvestCraft.ID, "cocoapowderItem", 1L, 0));
-        GTOreDictUnificator.set(OrePrefixes.dust, Materials.Coffee, ItemList.IC2_CoffeePowder.get(1L));
 
         GregTechAPI.registerMachineBlock(GTUtility.getBlockFromStack(GTModHandler.getIC2Item("reinforcedGlass", 0)), 0);
 
