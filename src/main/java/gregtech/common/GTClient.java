@@ -349,10 +349,7 @@ public class GTClient extends GTProxy {
         MinecraftForgeClient.registerItemRenderer(GregtechItemList.VOLUMETRIC_FLASK_8k.getItem(), flaskRenderer);
         MinecraftForgeClient.registerItemRenderer(GregtechItemList.VOLUMETRIC_FLASK_32k.getItem(), flaskRenderer);
         MinecraftForgeClient.registerItemRenderer(GregtechItemList.KLEIN_BOTTLE.getItem(), flaskRenderer);
-
         MinecraftForgeClient.registerItemRenderer(ItemList.Display_Fluid.getItem(), new FluidDisplayStackRenderer());
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Tool_DataStick, new DataStickRenderer());
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Spray_Color_Infinite, new InfiniteSprayCanRenderer());
 
         final MechanicalArmorRenderer mechanicalArmorRenderer = new MechanicalArmorRenderer();
         MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Helmet.getItem(), mechanicalArmorRenderer);
