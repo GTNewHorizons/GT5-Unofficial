@@ -60,7 +60,7 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     private int mLevel = 0;
     private int mCasing;
     private static IStructureDefinition<MTEIndustrialAlloySmelter> STRUCTURE_DEFINITION = null;
-    private static final String anyCasing = GTUtility.nestParams(
+    private static final String ANY_CASING = GTUtility.nestParams(
         "GT5U.MBTT.HatchInfo",
         GregtechItemList.Casing_Extruder.get(1)
             .getDisplayName());;
@@ -140,11 +140,11 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
                     .getDisplayName(),
                 "gt.zyngen.info.1")
             .addStructurePart("GT5U.tooltip.structure.heating_coil", "gt.zyngen.info.2")
-            .addInputBus(anyCasing, 1)
-            .addOutputBus(anyCasing, 1)
-            .addEnergyHatch(anyCasing, 1)
-            .addMaintenanceHatch(anyCasing, 1)
-            .addMufflerHatch(anyCasing, 1)
+            .addInputBus(ANY_CASING, 1)
+            .addOutputBus(ANY_CASING, 1)
+            .addEnergyHatch(ANY_CASING, 1)
+            .addMaintenanceHatch(ANY_CASING, 1)
+            .addMufflerHatch(ANY_CASING, 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;

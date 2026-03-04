@@ -89,7 +89,7 @@ import tectech.thing.metaTileEntity.multi.base.SoundLoopAnyBlock;
 public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBlackHoleCompressor>
     implements ISurvivalConstructable {
 
-    private static final String anyCasing = GTUtility.nestParams(
+    private static final String ANY_CASING = GTUtility.nestParams(
         "GT5U.MBTT.HatchInfo",
         ItemList.Background_Radiation_Casing.get(1)
             .getDisplayName());
@@ -380,10 +380,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     .getDisplayName(),
                 144)
             .addInputHatch("gt.bhc.info.i_hatch", 2)
-            .addInputBus(anyCasing, 1)
-            .addOutputBus(anyCasing, 1)
-            .addInputHatch(anyCasing, 1)
-            .addEnergyHatch(anyCasing, 1)
+            .addInputBus(ANY_CASING, 1)
+            .addOutputBus(ANY_CASING, 1)
+            .addInputHatch(ANY_CASING, 1)
+            .addEnergyHatch(ANY_CASING, 1)
             .toolTipFinisher(Ollie, "BucketBrigade");
         return tt;
     }

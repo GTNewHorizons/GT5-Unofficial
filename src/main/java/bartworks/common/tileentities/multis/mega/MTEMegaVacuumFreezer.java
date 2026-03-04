@@ -84,7 +84,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     private int mCasingFrostProof = 0;
     private int mTier = 1;
 
-    private static final String anyCasing = GTUtility.nestParams(
+    private static final String ANY_CASING = GTUtility.nestParams(
         "GT5U.MBTT.HatchInfo",
         ItemList.Casing_FrostProof.get(1)
             .getDisplayName());
@@ -253,12 +253,12 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             .addInfo("gt.mvf.tips.3")
             .beginStructureBlock(15, 15, 15, true)
             .addController("front_center")
-            .addEnergyHatch(anyCasing, 1)
-            .addMaintenanceHatch(anyCasing, 1)
-            .addInputHatch(anyCasing, 1)
-            .addOutputHatch(anyCasing, 1)
-            .addInputBus(anyCasing, 1)
-            .addOutputBus(anyCasing, 1)
+            .addEnergyHatch(ANY_CASING, 1)
+            .addMaintenanceHatch(ANY_CASING, 1)
+            .addInputHatch(ANY_CASING, 1)
+            .addOutputHatch(ANY_CASING, 1)
+            .addInputBus(ANY_CASING, 1)
+            .addOutputBus(ANY_CASING, 1)
             .addStructureInfo("gt.mvf.info.t1_multi")
             .addCasingInfoMin(
                 ItemList.Casing_FrostProof.get(1)

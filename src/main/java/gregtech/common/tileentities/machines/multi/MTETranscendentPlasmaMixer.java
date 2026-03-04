@@ -62,7 +62,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETranscendentPlasmaMixer>
     implements ISurvivalConstructable {
 
-    private static final String anyCasing = GTUtility.nestParams(
+    private static final String ANY_CASING = GTUtility.nestParams(
         "GT5U.MBTT.HatchInfo",
         ItemList.Casing_Dim_Injector.get(1)
             .getDisplayName());
@@ -132,9 +132,9 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
                 0,
                 33,
                 false)
-            .addInputBus(anyCasing, 1)
-            .addInputHatch(anyCasing, 1)
-            .addOutputHatch(anyCasing, 1)
+            .addInputBus(ANY_CASING, 1)
+            .addInputHatch(ANY_CASING, 1)
+            .addOutputHatch(ANY_CASING, 1)
             .toolTipFinisher(AuthorColen);
         return tt;
     }

@@ -110,7 +110,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
         "iconsets/TFFT_ACTIVE_GLOW");
     public ArrayList<MTEHatchTurbine> turbineRotorHatchList = new ArrayList<>();
-    private static final String anyCasing = GTUtility.nestParams(
+    private static final String ANY_CASING = GTUtility.nestParams(
         "GT5U.MBTT.HatchInfo",
         ItemList.Spinmatron_Casing.get(1)
             .getDisplayName());
@@ -427,12 +427,12 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
                 GregtechItemList.Casing_Turbine_SC.get(1)
                     .getDisplayName(),
                 264)
-            .addInputBus(anyCasing, 1)
-            .addOutputBus(anyCasing, 1)
-            .addInputHatch(anyCasing, 1)
-            .addOutputHatch(anyCasing, 1)
-            .addEnergyHatch(anyCasing, 1)
-            .addMaintenanceHatch(anyCasing, 1)
+            .addInputBus(ANY_CASING, 1)
+            .addOutputBus(ANY_CASING, 1)
+            .addInputHatch(ANY_CASING, 1)
+            .addOutputHatch(ANY_CASING, 1)
+            .addEnergyHatch(ANY_CASING, 1)
+            .addMaintenanceHatch(ANY_CASING, 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
 
