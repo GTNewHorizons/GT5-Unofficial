@@ -70,6 +70,9 @@ import gregtech.api.objects.GTHashSet;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategories;
+import gregtech.common.items.ItemGTToolbox;
+import gregtech.common.items.toolbox.ToolboxDelegateInventory;
+import gregtech.common.items.toolbox.ToolboxUtil;
 import ic2.api.item.IBoxable;
 import ic2.api.item.IC2Items;
 import ic2.api.item.IElectricItem;
@@ -1925,8 +1928,8 @@ public class GTModHandler {
             if (aPlayer instanceof EntityPlayer tPlayer) {
                 if (tPlayer.capabilities.isCreativeMode) return true;
                 if (isElectricItem(aStack) && ic2.api.item.ElectricItem.manager.getCharge(aStack) > 1000.0d) {
-                    if (consumeSolderingMaterial(tPlayer)
-                        || (aExternalInventory != null && consumeSolderingMaterial(aExternalInventory))) {
+                    if ((aExternalInventory != null && consumeSolderingMaterial(aExternalInventory))
+                        || consumeSolderingMaterial(tPlayer)) {
                         if (canUseElectricItem(aStack, 10000)) {
                             return GTModHandler.useElectricItem(aStack, 10000, (EntityPlayer) aPlayer);
                         }
@@ -1950,6 +1953,13 @@ public class GTModHandler {
     }
 
     public static boolean useSolderingIron(ItemStack aStack, EntityLivingBase aPlayer) {
+        if (aStack != null && aStack.getItem() instanceof ItemGTToolbox) {
+            final ToolboxDelegateInventory delegateInventory = new ToolboxDelegateInventory(aStack);
+            final boolean result = useSolderingIron(aStack, aPlayer, delegateInventory);
+
+            ToolboxUtil.saveToolbox(aStack, delegateInventory.getHandler());
+            return result;
+        }
         return useSolderingIron(aStack, aPlayer, null);
     }
 

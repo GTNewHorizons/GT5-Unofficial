@@ -59,6 +59,8 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.TurbineStatCalculator;
+import gregtech.common.items.ItemGTToolbox;
+import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.tools.ToolTurbine;
 import mods.railcraft.api.core.items.IToolCrowbar;
 import mrtjp.projectred.api.IScrewdriver;
@@ -168,6 +170,15 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     }
 
     public static byte getToolMode(ItemStack aStack) {
+        if (aStack == null) {
+            return 0;
+        }
+        if (aStack.getItem() instanceof ItemGTToolbox) {
+            return ToolboxUtil.getSelectedTool(aStack)
+                .map(MetaGeneratedTool::getToolMode)
+                .orElse((byte) 0);
+        }
+
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -176,9 +187,13 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return 0;
     }
 
-    public static void switchToolMode(EntityPlayerMP player, SyncedKeybind keybind, boolean keyDown) {
+    public static void switchCurrentToolMode(EntityPlayerMP player, SyncedKeybind keybind, boolean keyDown) {
         if (!keyDown) return;
         ItemStack currentItem = player.inventory.getCurrentItem();
+        switchToolMode(currentItem);
+    }
+
+    public static void switchToolMode(final ItemStack currentItem) {
         if (currentItem == null || (!(currentItem.getItem() instanceof MetaGeneratedTool item))) return;
         byte maxMode = item.getToolMaxMode(currentItem);
         if (maxMode <= 1) return;
@@ -777,6 +792,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     }
 
     private IToolStats getToolStatsInternal(ItemStack aStack) {
+        if (aStack.getItem() instanceof ItemGTToolbox) {
+            aStack = ToolboxUtil.getSelectedTool(aStack)
+                .orElse(null);
+        }
         return aStack == null ? null : mToolStats.get((short) aStack.getItemDamage());
     }
 
@@ -964,20 +983,29 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-
         String result = super.getItemStackDisplayName(aStack);
-        IToolStats toolStats = getToolStats(aStack);
-        if (toolStats != null) {
-            String toolName = toolStats.getToolTypeName();
-            if (toolName == null) return result;
+        final String toolMode = getToolModeName(aStack);
 
-            String key = "gt." + toolName + ".mode." + getToolMode(aStack);
-            if (canTranslate(key)) {
-                result += " (" + translateToLocal(key) + ")";
-            }
+        if (toolMode != null) {
+            result += " (" + toolMode + ")";
         }
         return result;
 
+    }
+
+    public String getToolModeName(ItemStack aStack) {
+        IToolStats toolStats = getToolStats(aStack);
+        if (toolStats != null) {
+            String toolName = toolStats.getToolTypeName();
+            if (toolName != null) {
+                String key = "gt." + toolName + ".mode." + getToolMode(aStack);
+                if (canTranslate(key)) {
+                    return translateToLocal(key);
+                }
+            }
+        }
+
+        return null;
     }
 
     @Override
