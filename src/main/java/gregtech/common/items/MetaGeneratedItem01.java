@@ -615,29 +615,48 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             OrePrefixes.cellPlasma);
         INSTANCE = this;
 
-        ItemList.Credit_Greg_Copper
-            .set(addItem(IDMetaItem01.Credit_Greg_Copper.ID, "Copper GT Credit", "0.125 Credits"));
+        ItemList.Credit_Greg_Copper.set(
+            addItem(
+                IDMetaItem01.Credit_Greg_Copper.ID,
+                GTUtility.translate("gt.item.credit.copper.name"),
+                GTUtility.translate("gt.item.credit.copper.tooltip")));
         ItemList.Credit_Greg_Cupronickel.set(
             addItem(
                 IDMetaItem01.Credit_Greg_Cupronickel.ID,
-                "Cupronickel GT Credit",
-                "1 Credit",
+                GTUtility.translate("gt.item.credit.cupronickel.name"),
+                GTUtility.translate("gt.item.credit.cupronickel.tooltip"),
                 new ItemData(Materials.Cupronickel, 907200L)));
         ItemList.Credit_Greg_Silver.set(
             addItem(
                 IDMetaItem01.Credit_Greg_Silver.ID,
-                "Silver GT Credit",
-                "8 Credits",
+                GTUtility.translate("gt.item.credit.silver.name"),
+                GTUtility.translate("gt.item.credit.silver.tooltip"),
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
-        ItemList.Credit_Greg_Gold.set(addItem(IDMetaItem01.Credit_Greg_Gold.ID, "Gold GT Credit", "64 Credits"));
-        ItemList.Credit_Greg_Platinum
-            .set(addItem(IDMetaItem01.Credit_Greg_Platinum.ID, "Platinum GT Credit", "512 Credits"));
-        ItemList.Credit_Greg_Osmium
-            .set(addItem(IDMetaItem01.Credit_Greg_Osmium.ID, "Osmium GT Credit", "4,096 Credits"));
-        ItemList.Credit_Greg_Naquadah
-            .set(addItem(IDMetaItem01.Credit_Greg_Naquadah.ID, "Naquadah GT Credit", "32,768 Credits"));
-        ItemList.Credit_Greg_Neutronium
-            .set(addItem(IDMetaItem01.Credit_Greg_Neutronium.ID, "Neutronium GT Credit", "262,144 Credits"));
+        ItemList.Credit_Greg_Gold.set(
+            addItem(
+                IDMetaItem01.Credit_Greg_Gold.ID,
+                GTUtility.translate("gt.item.credit.gold.name"),
+                GTUtility.translate("gt.item.credit.gold.tooltip")));
+        ItemList.Credit_Greg_Platinum.set(
+            addItem(
+                IDMetaItem01.Credit_Greg_Platinum.ID,
+                GTUtility.translate("gt.item.credit.platinum.name"),
+                GTUtility.translate("gt.item.credit.platinum.tooltip")));
+        ItemList.Credit_Greg_Osmium.set(
+            addItem(
+                IDMetaItem01.Credit_Greg_Osmium.ID,
+                GTUtility.translate("gt.item.credit.osmium.name"),
+                GTUtility.translate("gt.item.credit.osmium.tooltip")));
+        ItemList.Credit_Greg_Naquadah.set(
+            addItem(
+                IDMetaItem01.Credit_Greg_Naquadah.ID,
+                GTUtility.translate("gt.item.credit.naquadah.name"),
+                GTUtility.translate("gt.item.credit.naquadah.tooltip")));
+        ItemList.Credit_Greg_Neutronium.set(
+            addItem(
+                IDMetaItem01.Credit_Greg_Neutronium.ID,
+                GTUtility.translate("gt.item.credit.neutronium.name"),
+                GTUtility.translate("gt.item.credit.neutronium.tooltip")));
         ItemList.Coin_Gold_Ancient.set(
             addItem(
                 IDMetaItem01.Coin_Gold_Ancient.ID,

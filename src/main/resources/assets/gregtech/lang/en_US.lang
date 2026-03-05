@@ -2504,6 +2504,26 @@ gt.interact.desc.Energy_Detector.average_out.tooltip=§fAverage Electric Output
 gt.interact.desc.Energy_Detector.eu_stored=§8EU stored
 gt.interact.desc.Energy_Detector.eu_stored.tooltip=§fElectricity Storage(Including Batteries)
 
+# Meta
+
+## GT Credit
+gt.item.credit.copper.name=Copper GT Credit
+gt.item.credit.copper.tooltip=0.125 Credits
+gt.item.credit.cupronickel.name=Cupronickel GT Credit
+gt.item.credit.cupronickel.tooltip=1 Credit
+gt.item.credit.silver.name=Silver GT Credit
+gt.item.credit.silver.tooltip=8 Credits
+gt.item.credit.gold.name=Gold GT Credit
+gt.item.credit.gold.tooltip=64 Credits
+gt.item.credit.platinum.name=Platinum GT Credit
+gt.item.credit.platinum.tooltip=512 Credits
+gt.item.credit.osmium.name=Osmium GT Credit
+gt.item.credit.osmium.tooltip=4,096 Credits
+gt.item.credit.naquadah.name=Naquadah GT Credit
+gt.item.credit.naquadah.tooltip=32,768 Credits
+gt.item.credit.neutronium.name=Neutronium GT Credit
+gt.item.credit.neutronium.tooltip=262,144 Credits
+
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
 GT5U.nei.display.steam_variant.steel=Steel
