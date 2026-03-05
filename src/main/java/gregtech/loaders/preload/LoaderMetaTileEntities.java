@@ -3,6 +3,7 @@ package gregtech.loaders.preload;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
+import static gregtech.api.enums.Mods.ElectroMagicTools;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.enums.Mods.Thaumcraft;
@@ -76,6 +77,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutputBusCompressed;
 import gregtech.api.metatileentity.implementations.MTEHatchQuadrupleHumongous;
 import gregtech.api.metatileentity.implementations.MTEHatchVoid;
 import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
+import gregtech.api.metatileentity.implementations.MTEMagicalMaintenanceHatch;
 import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.metatileentity.implementations.MTEWetTransformer;
 import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
@@ -111,6 +113,7 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
+import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 import gregtech.common.tileentities.machines.basic.MTEAdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
@@ -157,6 +160,7 @@ import gregtech.common.tileentities.machines.multi.MTEHeatExchanger;
 import gregtech.common.tileentities.machines.multi.MTEImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialBrewery;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialCentrifuge;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialElectrolyzer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
@@ -660,6 +664,16 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
         addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTValues.AuthorThree));
 
+        if (Thaumcraft.isModLoaded() && ElectroMagicTools.isModLoaded()) {
+            ItemList.MagicalMaintenanceHatch.set(
+                new MTEMagicalMaintenanceHatch(
+                    MagicalMaintenanceHatch.ID,
+                    "hatch.maintenance.magic",
+                    "Vis-Regulated Maintenance Hatch",
+                    5).getStackForm(1));
+            addItemTooltip(ItemList.MagicalMaintenanceHatch.get(1), chain(() -> "Author: ", GTValues.AuthorJude));
+        }
+
         ItemList.Machine_Multi_NanochipAssemblyComplex.set(
             new MTENanochipAssemblyComplex(
                 NANOCHIP_ASSEMBLY_CONTROLLER.ID,
@@ -778,6 +792,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 IndustrialCentrifuge.ID,
                 "industrialcentrifuge.controller.tier.single",
                 "Industrial Centrifuge").getStackForm(1));
+
+        ItemList.IndustrialElectrolyzer.set(
+            new MTEIndustrialElectrolyzer(
+                IndustrialElectrolyzer.ID,
+                "industrialelectrolyzer.controller.tier.single",
+                "Industrial Electrolyzer").getStackForm(1L));
 
         ItemList.MegaChemicalReactor.set(
             new MTEMegaChemicalReactor(
@@ -2250,7 +2270,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEItemDistributor(
                 ITEM_DISTRIBUTOR_UHV.ID,
                 "automation.itemdistributor.tier.09",
-                "MAX Voltage Item Distributor",
+                "Highly Ultimate Voltage Item Distributor",
                 9).getStackForm(1L));
     }
 
@@ -9414,6 +9434,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 CRAFTING_INPUT_SLAVE.ID,
                 "hatch.crafting_input.proxy",
                 "Crafting Input Proxy").getStackForm(1L));
+        ItemList.Hatch_PatternProvider_Crafting.set(
+            new MTEHatchPatternProvider(
+                INPUT_BUS_PATTERN_PROVIDER.ID,
+                "hatch.pattern_provider.crafting",
+                "Crafting Pattern Provider").getStackForm(1L));
     }
 
     private static void registerMagHatch() {

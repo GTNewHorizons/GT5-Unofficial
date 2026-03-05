@@ -680,6 +680,48 @@ public class GTValues {
             EnumChatFormatting.RED + BOLD,
             EnumChatFormatting.YELLOW + BOLD));
 
+    public static final Supplier<String> AuthorJude = chain(
+        createJudeOuterText(
+            "x",
+            EnumChatFormatting.DARK_PURPLE,
+            EnumChatFormatting.LIGHT_PURPLE,
+            EnumChatFormatting.DARK_PURPLE),
+        createJudeOuterText(
+            "X",
+            EnumChatFormatting.LIGHT_PURPLE,
+            EnumChatFormatting.DARK_PURPLE,
+            EnumChatFormatting.DARK_PURPLE),
+        createJudeCenterText("jude", EnumChatFormatting.DARK_BLUE, EnumChatFormatting.BLUE),
+        createJudeOuterText(
+            "X",
+            EnumChatFormatting.LIGHT_PURPLE,
+            EnumChatFormatting.DARK_PURPLE,
+            EnumChatFormatting.DARK_PURPLE),
+        createJudeOuterText(
+            "x",
+            EnumChatFormatting.DARK_PURPLE,
+            EnumChatFormatting.LIGHT_PURPLE,
+            EnumChatFormatting.DARK_PURPLE));
+
+    private static Supplier<String> createJudeOuterText(String text, EnumChatFormatting colorA,
+        EnumChatFormatting colorB, EnumChatFormatting colorC) {
+        return animatedText(text, 0, 200, colorA + BOLD, colorB + BOLD, colorC + BOLD);
+    }
+
+    private static Supplier<String> createJudeCenterText(String text, EnumChatFormatting colorA,
+        EnumChatFormatting colorB) {
+        return animatedText(
+            text,
+            0,
+            200,
+            colorA + BOLD,
+            colorA + BOLD,
+            colorA + BOLD,
+            colorB + OBFUSCATED + BOLD,
+            colorB + BOLD,
+            colorB + OBFUSCATED + BOLD);
+    }
+
     private static Supplier<String> createChromLetter(String letter, String... injectedUnicode) {
 
         XSTR random = XSTR.XSTR_INSTANCE;
@@ -833,6 +875,8 @@ public class GTValues {
 
         return animatedText(letter, 1, 250, colorAlternator);
     }
+
+    public static final String AuthorJL2210 = "" + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + "JL2210";
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
         V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };

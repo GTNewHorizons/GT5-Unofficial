@@ -64,41 +64,6 @@ import static gregtech.common.items.IDMetaItem02.Cover_WirelessActivityDetector;
 import static gregtech.common.items.IDMetaItem02.Cover_WirelessFluidDetector;
 import static gregtech.common.items.IDMetaItem02.Cover_WirelessItemDetector;
 import static gregtech.common.items.IDMetaItem02.Cover_WirelessNeedsMaintainance;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Argentia;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Aurelia;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Bauxite;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_BobsYerUncleRanks;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Chilly;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Coppon;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Cucumber;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Ferru;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Grapes;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Ilmenite;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Indigo;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Iridium;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Lemon;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_MTomato;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Manganese;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Mica;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_MilkWart;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Naquadah;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Nickel;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_OilBerry;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Onion;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Osmium;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Pitchblende;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Platinum;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Plumbilia;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Rape;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Scheelite;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_TeaLeaf;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Thorium;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Tine;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Tomato;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_UUABerry;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_UUMBerry;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Uraninite;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Zinc;
 import static gregtech.common.items.IDMetaItem02.Display_ITS_FREE;
 import static gregtech.common.items.IDMetaItem02.Dye_Color_00;
 import static gregtech.common.items.IDMetaItem02.Dye_Color_01;
@@ -232,7 +197,6 @@ import net.minecraft.potion.Potion;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -243,7 +207,6 @@ import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTFoodStat;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -255,8 +218,6 @@ import gregtech.common.covers.redstone.CoverWirelessDoesWorkDetector;
 import gregtech.common.covers.redstone.CoverWirelessFluidDetector;
 import gregtech.common.covers.redstone.CoverWirelessItemDetector;
 import gregtech.common.covers.redstone.CoverWirelessMaintenanceDetector;
-import ic2.api.crops.CropCard;
-import ic2.api.crops.Crops;
 
 public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
@@ -1957,226 +1918,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.SFMixture.set(addItem(SFMixture.ID, "Super Fuel Binder", "Raw Material"));
         ItemList.MSFMixture.set(addItem(MSFMixture.ID, "Magic Super Fuel Binder", "Raw Material"));
 
-        ItemList.Crop_Drop_Plumbilia.set(
-            addItem(
-                Crop_Drop_Plumbilia.ID,
-                "Plumbilia Leaf",
-                "Source of Lead",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 1L)));
-        ItemList.Crop_Drop_Argentia.set(
-            addItem(
-                Crop_Drop_Argentia.ID,
-                "Argentia Leaf",
-                "Source of Silver",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
-        ItemList.Crop_Drop_Indigo.set(
-            addItem(
-                Crop_Drop_Indigo.ID,
-                "Indigo Blossom",
-                "Used for making Blue Dye",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1L)));
-        ItemList.Crop_Drop_Ferru.set(
-            addItem(
-                Crop_Drop_Ferru.ID,
-                "Ferru Leaf",
-                "Source of Iron",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L)));
-        ItemList.Crop_Drop_Aurelia.set(
-            addItem(
-                Crop_Drop_Aurelia.ID,
-                "Aurelia Leaf",
-                "Source of Gold",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
-        ItemList.Crop_Drop_TeaLeaf.set(
-            addItem(
-                Crop_Drop_TeaLeaf.ID,
-                "Tea Leaf",
-                "Source of Tea",
-                "cropTea",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
-
-        ItemList.Crop_Drop_OilBerry.set(
-            addItem(
-                Crop_Drop_OilBerry.ID,
-                "Oil Berry",
-                "Oil in Berry form",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L)));
-        ItemList.Crop_Drop_BobsYerUncleRanks.set(
-            addItem(
-                Crop_Drop_BobsYerUncleRanks.ID,
-                "Bobs-Yer-Uncle-Berry",
-                "Source of Emeralds",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
-        ItemList.Crop_Drop_UUMBerry.set(
-            addItem(
-                Crop_Drop_UUMBerry.ID,
-                "UUM Berry",
-                "UUM in Berry form",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L)));
-        ItemList.Crop_Drop_UUABerry.set(
-            addItem(
-                Crop_Drop_UUABerry.ID,
-                "UUA Berry",
-                "UUA in Berry form",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L)));
-
-        ItemList.Crop_Drop_MilkWart.set(
-            addItem(
-                Crop_Drop_MilkWart.ID,
-                "Milk Wart",
-                "Source of Milk",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
-
-        ItemList.Crop_Drop_Coppon.set(
-            addItem(
-                Crop_Drop_Coppon.ID,
-                "Coppon Fiber",
-                "ORANGE WOOOOOOOL!!!",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 1L)));
-
-        ItemList.Crop_Drop_Tine.set(
-            addItem(
-                Crop_Drop_Tine.ID,
-                "Tine Twig",
-                "Source of Tin",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-
-        ItemList.Crop_Drop_Mica.set(
-            addItem(
-                Crop_Drop_Mica.ID,
-                "Micadia Twig",
-                "Source of Mica",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-
-        ItemList.Crop_Drop_Bauxite.set(addItem(Crop_Drop_Bauxite.ID, "Bauxia Leaf", "Source of Aluminium"));
-        ItemList.Crop_Drop_Ilmenite.set(addItem(Crop_Drop_Ilmenite.ID, "Titania Leaf", "Source of Titanium"));
-        ItemList.Crop_Drop_Pitchblende.set(addItem(Crop_Drop_Pitchblende.ID, "Reactoria Leaf", "Source of Uranium"));
-        ItemList.Crop_Drop_Uraninite.set(addItem(Crop_Drop_Uraninite.ID, "Uranium Leaf", "Source of Uranite"));
-        ItemList.Crop_Drop_Thorium.set(addItem(Crop_Drop_Thorium.ID, "Thunder Leaf", "Source of Thorium"));
-        ItemList.Crop_Drop_Nickel.set(addItem(Crop_Drop_Nickel.ID, "Nickelback Leaf", "Source of Nickel"));
-        ItemList.Crop_Drop_Zinc.set(addItem(Crop_Drop_Zinc.ID, "Galvania Leaf", "Source of Zinc"));
-        ItemList.Crop_Drop_Manganese.set(addItem(Crop_Drop_Manganese.ID, "Pyrolusium Leaf", "Source of Manganese"));
-        ItemList.Crop_Drop_Scheelite.set(addItem(Crop_Drop_Scheelite.ID, "Scheelinium Leaf", "Source of Tungsten"));
-        ItemList.Crop_Drop_Platinum.set(addItem(Crop_Drop_Platinum.ID, "Platina Leaf", "Source of Platinum"));
-        ItemList.Crop_Drop_Iridium.set(addItem(Crop_Drop_Iridium.ID, "Quantaria Leaf", "Source of Iridium"));
-        ItemList.Crop_Drop_Osmium.set(addItem(Crop_Drop_Osmium.ID, "Quantaria Leaf", "Source of Osmium"));
-        ItemList.Crop_Drop_Naquadah.set(addItem(Crop_Drop_Naquadah.ID, "Stargatium Leaf", "Source of Naquadah"));
-
-        ItemList.Crop_Drop_Chilly.set(
-            addItem(
-                Crop_Drop_Chilly.ID,
-                "Chilly Pepper",
-                "It is red and hot",
-                "cropChilipepper",
-                new GTFoodStat(1, 0.3F, EnumAction.eat, null, false, true, false, Potion.confusion.id, 200, 1, 40),
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
-        ItemList.Crop_Drop_Lemon.set(
-            addItem(
-                Crop_Drop_Lemon.ID,
-                "Lemon",
-                "Don't make Lemonade",
-                "cropLemon",
-                new GTFoodStat(1, 0.3F, EnumAction.eat, null, false, true, false),
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
-        ItemList.Crop_Drop_Tomato.set(
-            addItem(
-                Crop_Drop_Tomato.ID,
-                "Tomato",
-                "Solid Ketchup",
-                "cropTomato",
-                new GTFoodStat(1, 0.2F, EnumAction.eat, null, false, true, false),
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
-        ItemList.Crop_Drop_MTomato.set(
-            addItem(
-                Crop_Drop_MTomato.ID,
-                "Max Tomato",
-                "Full Health in one Tomato",
-                "cropTomato",
-                new GTFoodStat(
-                    9,
-                    1.0F,
-                    EnumAction.eat,
-                    null,
-                    false,
-                    true,
-                    false,
-                    Potion.regeneration.id,
-                    100,
-                    100,
-                    100),
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.SANO, 3L),
-                new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
-        ItemList.Crop_Drop_Grapes.set(
-            addItem(
-                Crop_Drop_Grapes.ID,
-                "Grapes",
-                "Source of Wine",
-                "cropGrape",
-                new GTFoodStat(2, 0.3F, EnumAction.eat, null, false, true, false),
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
-        ItemList.Crop_Drop_Onion.set(
-            addItem(
-                Crop_Drop_Onion.ID,
-                "Onion",
-                "Taking over the whole Taste",
-                "cropOnion",
-                new GTFoodStat(2, 0.2F, EnumAction.eat, null, false, true, false),
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
-        ItemList.Crop_Drop_Cucumber.set(
-            addItem(
-                Crop_Drop_Cucumber.ID,
-                "Cucumber",
-                "Not a Sea Cucumber!",
-                "cropCucumber",
-                new GTFoodStat(1, 0.2F, EnumAction.eat, null, false, true, false),
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
-        ItemList.Crop_Drop_Rape.set(
-            addItem(
-                Crop_Drop_Rape.ID,
-                "Rape",
-                "Also known as Canola.",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L)));
-
         ItemList.Food_Cheese.set(
             addItem(
                 Food_Cheese.ID,
@@ -2409,18 +2150,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.ChaosLocator
             .set(new ItemChaosLocator("Item_Chaos_Locator", "Chaos Locator", "Warps to areas with extreme entropy"));
 
-        try {
-            CropCard tCrop;
-            GTUtility.getField(tCrop = Crops.instance.getCropList()[13], "mDrop")
-                .set(tCrop, ItemList.Crop_Drop_Ferru.get(1L));
-            GTUtility.getField(tCrop = Crops.instance.getCropList()[14], "mDrop")
-                .set(tCrop, ItemList.Crop_Drop_Aurelia.get(1L));
-        } catch (Exception e) {
-            if (GTValues.D1) {
-                e.printStackTrace(GTLog.err);
-            }
-        }
-
         setAllFluidContainerStats();
         setBurnValues();
         registerCovers();
@@ -2511,8 +2240,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         setBurnValue(32000 + Plank_Maple.ID, 75);
         setBurnValue(32000 + Plank_Citrus.ID, 75);
         setBurnValue(32000 + Plank_Cherry_EFR.ID, 75);
-        setBurnValue(32000 + Crop_Drop_Tine.ID, 100);
-        setBurnValue(32000 + Crop_Drop_Mica.ID, 240);
     }
 
     public void initCraftingShapedRecipes() {
@@ -2687,116 +2414,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Plumbilia.get(9L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Argentia.get(9L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1L))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Indigo.get(1L))
-            .itemOutputs(ItemList.Dye_Indigo.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_MilkWart.get(1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Coppon.get(9L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1L))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Tine.get(9L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1L))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(extractorRecipes);
 
     }
 
     public void initCompressorRecipes() {
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Coppon.get(4L))
-            .itemOutputs(new ItemStack(Blocks.wool, 1, 1))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Plumbilia.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Argentia.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Indigo.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Ferru.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Aurelia.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_OilBerry.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_BobsYerUncleRanks.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Tine.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Rape.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
         RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.red_flower, 8, 32767))
             .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
@@ -2823,13 +2444,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         RA.stdBuilder()
             .itemInputs(ItemList.Dye_Cocoa.get(1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Tine.get(1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
