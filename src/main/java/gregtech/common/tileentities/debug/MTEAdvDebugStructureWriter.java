@@ -358,12 +358,6 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
             .doesAddGhostCircuitSlot(false)
             .doesBindPlayerInventory(false)
             .build()
-            .overlay(
-                GTGuiTextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY.asIcon()
-                    .size(17)
-                    .alignment(Alignment.BottomRight)
-                    .marginBottom(3)
-                    .marginRight(3))
             .child(getTopSection())
             .child(getBottomSection());
     }

@@ -1421,6 +1421,10 @@ public final class GTGuiTextures {
         .fullImage()
         .name(GTTextureIds.PICTURE_GT_LOGO_GRAY)
         .build();
+    public static final UITexture PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/gt_logo_17x17_transparent_gray")
+        .canApplyTheme()
+        .build();
     private static final SteamTextureRegisterer PICTURE_GT_LOGO_STEAM = SteamTextureRegisterer.builder()
         .location("gui/picture/gt_logo_%s")
         .fullImage()
@@ -1726,11 +1730,6 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
     public static final UITexture PICTURE_PLUS_RED = UITexture.fullImage(GregTech.ID, "gui/picture/plus_red");
-     public static final UITexture PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY = UITexture.builder()
-     .location(GregTech.ID, "gui/picture/gt_logo_17x17_transparent_gray")
-     .iconColorType()
-     // .canApplyTheme()
-     .build();
     public static final UITexture PICTURE_SCREEN_BLACK = UITexture.builder()
         .location(GregTech.ID, "gui/picture/screen_black")
         .adaptable(2)
