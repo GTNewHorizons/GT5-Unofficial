@@ -405,7 +405,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.GRAY
                     + "("
                     + EnumChatFormatting.WHITE
-                    + "16"
+                    + "64"
                     + EnumChatFormatting.GRAY
                     + " max) robot arms to multiply "
                     + EnumChatFormatting.YELLOW
