@@ -135,6 +135,10 @@ dependencies {
     // For testing
     //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.5.13:dev')
 
+    // For Magical Maintenance Hatch Testing
+    // runtimeOnlyNonPublishable("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Electro-Magic-Tools:1.7.17:dev") { transitive = false }
+
     // For testing ctm
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.0.0-alpha17:dev') { transitive = false }
 
