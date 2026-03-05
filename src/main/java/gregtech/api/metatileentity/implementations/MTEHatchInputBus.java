@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -228,10 +229,10 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
                     disableLimited = true;
                 }
             }
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatComp(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.hatch.disableSort." + disableSort) + "   "
-                    + StatCollector.translateToLocal("GT5U.hatch.disableLimited." + disableLimited));
+                new ChatComponentTranslation("GT5U.hatch.disableSort." + disableSort).appendText("   ")
+                    .appendSibling(new ChatComponentTranslation("GT5U.hatch.disableLimited." + disableLimited)));
         } else {
             disableFilter = !disableFilter;
             GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + disableFilter);
