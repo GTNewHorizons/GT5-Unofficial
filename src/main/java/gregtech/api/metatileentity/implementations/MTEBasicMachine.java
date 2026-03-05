@@ -477,7 +477,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 return true;
             }
         }
-        GTUtility.sendChatToPlayer(aPlayer, "No free Side!");
+        GTUtility.sendChatTrans(aPlayer, "GT5U.chat.machine.no_free_side");
         return true;
     }
 
@@ -928,10 +928,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + mDisableFilter);
             } else {
                 mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    mAllowInputFromOutputSide ? translateToLocal("gt.interact.desc.input_from_output_on")
-                        : translateToLocal("gt.interact.desc.input_from_output_off"));
+                    mAllowInputFromOutputSide ? "gt.interact.desc.input_from_output_on"
+                        : "gt.interact.desc.input_from_output_off");
             }
         }
     }

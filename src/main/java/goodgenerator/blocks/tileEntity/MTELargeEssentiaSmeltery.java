@@ -1,6 +1,16 @@
 package goodgenerator.blocks.tileEntity;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofSpecificTileAdder;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.Mods.ThaumicBases;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -20,8 +30,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -52,6 +64,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.Pollution;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import thaumcraft.api.aspects.Aspect;
@@ -129,7 +142,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     protected boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         this.mCasing = 0;
         this.mParallel = 0;
-        this.pTier = 0;
+        this.pTier = -1;
         this.nodePower = 0;
         this.nodePurificationEfficiency = 0;
         this.nodeIncrease = 0;
@@ -172,21 +185,24 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
                         : ofBlock(ConfigBlocks.blockStoneDevice, 0))
                 .addElement(
                     'E',
-                    ofChain(
-                        onElementPass(x -> x.onEssentiaCellFound(0), ofBlock(Loaders.essentiaCell, 0)),
-                        onElementPass(x -> x.onEssentiaCellFound(1), ofBlock(Loaders.essentiaCell, 1)),
-                        onElementPass(x -> x.onEssentiaCellFound(2), ofBlock(Loaders.essentiaCell, 2)),
-                        onElementPass(x -> x.onEssentiaCellFound(3), ofBlock(Loaders.essentiaCell, 3))))
+                    GTStructureChannels.LES_ESSENTIA_CELL.use(
+                        ofBlocksTiered(
+                            (block, meta) -> block == Loaders.essentiaCell ? meta : null,
+                            ImmutableList.of(
+                                Pair.of(Loaders.essentiaCell, 0),
+                                Pair.of(Loaders.essentiaCell, 1),
+                                Pair.of(Loaders.essentiaCell, 2),
+                                Pair.of(Loaders.essentiaCell, 3)),
+                            -1,
+                            (t, meta) -> t.pTier = meta,
+                            t -> t.pTier)))
                 .addElement(
                     'A',
                     ofChain(
                         buildHatchAdder(MTELargeEssentiaSmeltery.class)
-                            .atLeast(
-                                gregtech.api.enums.HatchElement.Maintenance,
-                                gregtech.api.enums.HatchElement.Energy,
-                                gregtech.api.enums.HatchElement.InputBus,
-                                gregtech.api.enums.HatchElement.InputHatch)
+                            .atLeast(Maintenance, Energy, InputBus, InputHatch)
                             .casingIndex(CASING_INDEX)
+                            .allowOnly(ForgeDirection.NORTH)
                             .hint(1)
                             .build(),
                         ofSpecificTileAdder(
@@ -195,7 +211,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
                             Loaders.essentiaOutputHatch,
                             0),
                         onElementPass(MTELargeEssentiaSmeltery::onCasingFound, ofBlock(Loaders.magicCasing, 0))))
-                .addElement('B', gregtech.api.enums.HatchElement.Muffler.newAny(CASING_INDEX, 2))
+                .addElement('B', Muffler.newAny(CASING_INDEX, 2, ForgeDirection.UP))
                 .build();
         }
         return this.multiDefinition;
@@ -281,10 +297,6 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
 
     protected void onCasingFound() {
         this.mCasing++;
-    }
-
-    protected void onEssentiaCellFound(int tier) {
-        this.pTier = tier;
     }
 
     private boolean addEssentiaOutputHatchToMachineList(MTEEssentiaOutputHatch aTileEntity) {
@@ -609,7 +621,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         int built = survivalBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 2, 2, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         int length = stackSize.stackSize + 2;
-        if (length > MAX_CONFIGURABLE_LENGTH) length = MAX_CONFIGURABLE_LENGTH + 2;
+        if (length > MAX_CONFIGURABLE_LENGTH + 2) length = MAX_CONFIGURABLE_LENGTH + 2;
         for (int i = 1; i <= length; i++) {
             built = survivalBuildPiece(STRUCTURE_PIECE_LATER, stackSize, 2, 2, -i, elementBudget, env, false, true);
             if (built >= 0) return built;
