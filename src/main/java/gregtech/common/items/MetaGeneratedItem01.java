@@ -660,22 +660,22 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Coin_Gold_Ancient.set(
             addItem(
                 IDMetaItem01.Coin_Gold_Ancient.ID,
-                "Ancient Gold Coin",
-                "Found in ancient Ruins",
+                GTUtility.translate("gt.item.coin.gold_ancient.name"),
+                GTUtility.translate("gt.item.coin.gold_ancient.tooltip"),
                 new ItemData(Materials.Gold, 907200L),
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 8L)));
         ItemList.Coin_Doge.set(
             addItem(
                 IDMetaItem01.Coin_Doge.ID,
-                "Doge Coin",
-                "wow much coin how money so crypto plz mine v rich very currency wow",
+                GTUtility.translate("gt.item.coin.doge.name"),
+                GTUtility.translate("gt.item.coin.doge.tooltip"),
                 new ItemData(Materials.Brass, 907200L),
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
         ItemList.Coin_Chocolate.set(
             addItem(
                 IDMetaItem01.Coin_Chocolate.ID,
-                "Chocolate Coin",
-                "Wrapped in Gold",
+                GTUtility.translate("gt.item.coin.chocolate.name"),
+                GTUtility.translate("gt.item.coin.chocolate.tooltip"),
                 new ItemData(Materials.Gold, OrePrefixes.foil.getMaterialAmount()),
                 new GTFoodStat(
                     1,

@@ -2524,6 +2524,14 @@ gt.item.credit.naquadah.tooltip=32,768 Credits
 gt.item.credit.neutronium.name=Neutronium GT Credit
 gt.item.credit.neutronium.tooltip=262,144 Credits
 
+## Coin
+gt.item.coin.gold_ancient.name=Ancient Gold Coin
+gt.item.coin.gold_ancient.tooltip=Found in ancient Ruins
+gt.item.coin.doge.name=Doge Coin
+gt.item.coin.doge.tooltip=wow much coin how money so crypto plz mine v rich very currency wow
+gt.item.coin.chocolate.name=Chocolate Coin
+gt.item.coin.chocolate.tooltip=Wrapped in Gold
+
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
 GT5U.nei.display.steam_variant.steel=Steel
