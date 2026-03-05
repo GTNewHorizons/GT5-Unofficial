@@ -764,6 +764,11 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
+    public ItemStack getSelfRep() {
+        return this.getStackForm(1L);
+    }
+
+    @Override
     public IGridNode getActionableNode() {
         return getProxy().getNode();
     }

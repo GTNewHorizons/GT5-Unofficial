@@ -13,23 +13,15 @@
 
 package bartworks.common.loaders;
 
-import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-
 import java.util.ArrayList;
-import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import bartworks.system.material.Werkstoff;
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.Element;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 
 public class StaticRecipeChangeLoaders {
 
@@ -39,21 +31,8 @@ public class StaticRecipeChangeLoaders {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             StaticRecipeChangeLoaders.runMaterialLinker(werkstoff);
             if (!werkstoff.getGenerationFeatures().enforceUnification) continue;
-            StaticRecipeChangeLoaders.runMoltenUnificationEnforcement(werkstoff);
             StaticRecipeChangeLoaders.runUnficationDeleter(werkstoff);
         }
-    }
-
-    private static void runMoltenUnificationEnforcement(Werkstoff werkstoff) {
-        if (!werkstoff.hasItemType(OrePrefixes.cellMolten)) return;
-
-        FluidContainerRegistry.FluidContainerData data = new FluidContainerRegistry.FluidContainerData(
-            new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 1 * INGOTS),
-            werkstoff.get(OrePrefixes.cellMolten),
-            Materials.Empty.getCells(1));
-
-        GTUtility.addFluidContainerData(data);
-
     }
 
     private static void runUnficationDeleter(Werkstoff werkstoff) {
