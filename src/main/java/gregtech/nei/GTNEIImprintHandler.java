@@ -60,8 +60,10 @@ public class GTNEIImprintHandler extends ShapelessRecipeHandler {
     }
 
     private void loadAllRecipes(@Nullable ItemStack cal) {
-        for (CircuitImprint entry : CircuitImprint.values()) {
-            if (entry.sourceMod.isModLoaded()) loadRecipe(cal, entry); // Avoid the handler to crash in dev
+        for (CircuitImprint entry : CircuitImprint.VALUES) {
+            if (entry.sourceMod.isModLoaded()) {
+                loadRecipe(cal, entry); // Avoid the handler to crash in dev
+            }
         }
     }
 

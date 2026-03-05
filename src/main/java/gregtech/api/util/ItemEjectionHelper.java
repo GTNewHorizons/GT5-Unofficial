@@ -102,7 +102,7 @@ public class ItemEjectionHelper {
 
             List<IOutputBusTransaction> transactions = new ArrayList<>(8);
 
-            for (OutputBusType busType : OutputBusType.values()) {
+            for (OutputBusType busType : OutputBusType.VALUES) {
                 List<IOutputBusTransaction> ofType = transactionsByType.get(busType);
 
                 if (ofType == null) continue;

@@ -99,19 +99,6 @@ public class RecipeRemover implements Runnable {
             GTModHandler.getCompressorRecipeList(),
             GTModHandler.getIC2Item("plantBall", 1L));
 
-        GTUtility.removeSimpleIC2MachineRecipe(
-            ItemList.Crop_Drop_BobsYerUncleRanks.get(1L),
-            GTModHandler.getExtractorRecipeList(),
-            null);
-        GTUtility.removeSimpleIC2MachineRecipe(
-            ItemList.Crop_Drop_Ferru.get(1L),
-            GTModHandler.getExtractorRecipeList(),
-            null);
-        GTUtility.removeSimpleIC2MachineRecipe(
-            ItemList.Crop_Drop_Aurelia.get(1L),
-            GTModHandler.getExtractorRecipeList(),
-            null);
-
         try {
             Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange = Recipes.liquidCooldownManager
                 .getHeatExchangeProperties();
