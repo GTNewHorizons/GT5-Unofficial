@@ -3,6 +3,7 @@ package gregtech.api.util;
 import static gregtech.api.util.GTRecipeMapUtil.SPECIAL_VALUE_ALIASES;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Contract;
 
@@ -88,6 +90,7 @@ public class GTRecipeBuilder {
     protected Object[] inputsOreDict;
     protected ItemStack[] outputs = GTValues.emptyItemStackArray;
     protected ItemStack[][] alts;
+    protected int[] altOreIds;
     protected FluidStack[] fluidInputs = GTValues.emptyFluidStackArray;
     protected FluidStack[] fluidOutputs = GTValues.emptyFluidStackArray;
     protected int[] inputChances, outputChances, fluidInputChances, fluidOutputChances;
@@ -117,7 +120,7 @@ public class GTRecipeBuilder {
     GTRecipeBuilder() {}
 
     private GTRecipeBuilder(ItemStack[] inputsBasic, Object[] inputsOreDict, ItemStack[] outputs, ItemStack[][] alts,
-        FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] inputChances, int[] outputChances,
+        int[] altOreIds, FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] inputChances, int[] outputChances,
         int[] fluidInputChances, int[] fluidOutputChances, Object special, int duration, int eut, int specialValue,
         boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered, boolean mNeedsEmptyOutput,
         boolean nbtSensitive, String[] neiDesc, RecipeCategory recipeCategory,
@@ -126,6 +129,7 @@ public class GTRecipeBuilder {
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
         this.alts = alts;
+        this.altOreIds = altOreIds;
         this.fluidInputs = fluidInputs;
         this.fluidOutputs = fluidOutputs;
         this.inputChances = inputChances;
@@ -367,6 +371,8 @@ public class GTRecipeBuilder {
         if (skip) return this;
         inputsOreDict = inputs;
         alts = new ItemStack[inputs.length][];
+        altOreIds = new int[inputs.length];
+        Arrays.fill(altOreIds, -1);
         for (int i = 0, inputsLength = inputs.length; i < inputsLength; i++) {
             Object input = inputs[i];
             if (input instanceof ItemStack) {
@@ -374,6 +380,7 @@ public class GTRecipeBuilder {
             } else if (input instanceof ItemStack[]) {
                 alts[i] = ((ItemStack[]) input).clone();
             } else if (input instanceof OreDictItemStack ods) {
+                altOreIds[i] = OreDictionary.getOreID(ods.mOreName);
                 ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(ods.mOreName);
                 if (ores.isEmpty()) continue;
                 ArrayList<ItemStack> list = new ArrayList<>(ores.size());
@@ -385,6 +392,7 @@ public class GTRecipeBuilder {
                 alts[i] = list.toArray(new ItemStack[0]);
             } else if (input instanceof Object[]arr) {
                 if (arr.length != 2) continue;
+                altOreIds[i] = OreDictionary.getOreID(arr[0].toString());
                 ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(arr[0]);
                 if (ores.isEmpty()) continue;
                 int size = ((Number) arr[1]).intValue();
@@ -679,6 +687,7 @@ public class GTRecipeBuilder {
             copy(inputsOreDict),
             ArrayExt.copyItemsIfNonEmpty(outputs),
             copy(alts),
+            copy(altOreIds),
             ArrayExt.copyFluidsIfNonEmpty(fluidInputs),
             ArrayExt.copyFluidsIfNonEmpty(fluidOutputs),
             copy(inputChances),
@@ -712,6 +721,7 @@ public class GTRecipeBuilder {
             copy(inputsOreDict),
             ArrayExt.copyItemsIfNonEmpty(outputs),
             copy(alts),
+            copy(altOreIds),
             ArrayExt.copyFluidsIfNonEmpty(fluidInputs),
             ArrayExt.copyFluidsIfNonEmpty(fluidOutputs),
             copy(inputChances),
@@ -1024,7 +1034,8 @@ public class GTRecipeBuilder {
                     neiDesc,
                     metadataStorage,
                     recipeCategory,
-                    alts)));
+                    alts,
+                    altOreIds)));
     }
 
     private void preBuildChecks() {
