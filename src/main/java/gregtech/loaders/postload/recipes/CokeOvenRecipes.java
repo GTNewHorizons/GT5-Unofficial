@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.cokeOvenRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import gregtech.api.objects.OreDictItemStack;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -79,14 +80,12 @@ public class CokeOvenRecipes implements Runnable {
             .eut(0)
             .addTo(cokeOvenRecipes);
 
-        for (ItemStack log : OreDictionary.getOres("logWood")) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, log))
-                .itemOutputs(Materials.Charcoal.getGems(1))
-                .fluidOutputs(Materials.Creosote.getFluid(250))
-                .duration(1 * MINUTES + 30 * SECONDS)
-                .eut(0)
-                .addTo(cokeOvenRecipes);
-        }
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("logWood", 1))
+            .itemOutputs(Materials.Charcoal.getGems(1))
+            .fluidOutputs(Materials.Creosote.getFluid(250))
+            .duration(1 * MINUTES + 30 * SECONDS)
+            .eut(0)
+            .addTo(cokeOvenRecipes);
     }
 }
