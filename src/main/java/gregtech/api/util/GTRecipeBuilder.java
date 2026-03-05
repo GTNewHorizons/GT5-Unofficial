@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Contract;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMetadataKey;
@@ -372,6 +373,16 @@ public class GTRecipeBuilder {
                 alts[i] = new ItemStack[] { (ItemStack) input };
             } else if (input instanceof ItemStack[]) {
                 alts[i] = ((ItemStack[]) input).clone();
+            } else if (input instanceof OreDictItemStack ods) {
+                ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(ods.mOreName);
+                if (ores.isEmpty()) continue;
+                ArrayList<ItemStack> list = new ArrayList<>(ores.size());
+                // noinspection ForLoopReplaceableByForEach
+                for (int j = 0, oresSize = ores.size(); j < oresSize; j++) {
+                    ItemStack itemStack = GTUtility.copyAmount(ods.mAmount, ores.get(j));
+                    if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
+                }
+                alts[i] = list.toArray(new ItemStack[0]);
             } else if (input instanceof Object[]arr) {
                 if (arr.length != 2) continue;
                 ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(arr[0]);
