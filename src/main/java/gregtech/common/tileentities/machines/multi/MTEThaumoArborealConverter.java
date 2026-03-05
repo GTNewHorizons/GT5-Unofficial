@@ -22,9 +22,18 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
     private static final int TICKS_PER_OPERATION = 100;
     private static final int BASE_PRODUCTION = 10;
     private static final int FRAME_NUM = 56;
+    private static final int[] FRAME_IDS = {
+        330, // Thaumium
+        368, // Shadow
+        978, // Ichorium
+        397  // Infinity
+    };
+    private static final int STONE_NUM = 24;
+    private static final int STONE_TIERS = 8;
     
     private int mCasing;
-    private int mFrame1, mFrame2, mFrame3, mFrame4;
+    private int[] mFrame = new int[FRAME_IDS.length];
+    private int[] mStone = new int[STONE_TIERS];
     public static String mCasingName = "Sterile Farm Casing";
     
     public MTEThaumoArborealConverter(final int aID, final String aName, final String aNameRegional) {
@@ -53,23 +62,26 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
         tt.addMachineType(getMachineType())
             .addInfo("Channels dimensional tree magic to convert rock and soil")
             .addInfo("Place a sapling in the controller slot")
-            .addInfo("Consumes relevant tree materials to boost production")
-            .addInfo("More advanced structural frames boost production and reduce tree material consumption")
+            .addInfo("Consumes relevant tree materials to boost conversion rate (CR)")
+            .addInfo("More advanced structural frames boost CR and reduce tree material consumption")
             .addInfo("  Thaumium: 1x, 100%")
             .addInfo("  Shadow Metal: 2x, 75%")
             .addInfo("  Ichorium: 4x, 50%")
             .addInfo("  Infinity: 8x, 25%")
+            .addInfo("Using using higher tiers of compressed cobblestone boosts CR up to 256x")
+            .addInfo("Multiplier = 2^(average compression tier - 1)")
             .addSeparator()
             .addInfo("Work time is fixed at 5 seconds")
             .addInfo("Energy hatch limited by glass tier")
-            .addInfo("Energy input tier multiplies output further")
-            .addInfo("Output multiplier is equal to: 2*tier^2 - 2*tier + 5")
+            .addInfo("Energy input tier multiplies CR further")
+            .addInfo("Multiplier = 2*tier^2 - 2*tier + 5")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 8, 9, true)
             .addController("Front center")
             .addCasingInfoMin(mCasingName, 70, false)
             .addCasingInfoExactly("Any Tiered Glass (tiered)", 145, true)
             .addCasingInfoExactly("Frame Box (tiered)", FRAME_NUM, true)
+            .addCasingInfoExactly("Compressed cobblestone (any)", STONE_NUM, true)
             .addInputBus("Any outer casing", 1)
             .addOutputBus("Any outer casing", 1)
             .addEnergyHatch("Any outer casing", 1)
@@ -100,9 +112,9 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.mCasing = 0;
-        this.frameTier = this.getFrameTier();
+        this.mFrameTier = this.getMultiFrameTier();
         this.glassTier = 0;
-        if (!this.checkPiece(mName, 4, 6, 0) || this.mCasing < 70 || !this.checkHatches() || this.frameTier == 0)
+        if (!this.checkPiece(mName, 4, 6, 0) || this.mCasing < 70 || !this.checkHatches() || this.mFrameTier == 0)
             return false;
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
             if (this.glassTier < mEnergyHatch.mTier) {
@@ -132,20 +144,64 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
         return PollutionConfig.pollutionPerSecondMultiTreeFarm;
     }
     
+    private static int getFrameTier(int id) {
+        for (int i = 0; i < FRAME_IDS.length; i++) {
+            if (FRAME_IDS[i] == id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    private static IStructureElement<MTEThaumoArborealConverter> frameElement(int id) {
+        int tier = getFrameTier(id);
+
+        return onElementPass(
+            t -> {
+                if (tier >= 0) {
+                    ++t.mFrame[tier];
+                }
+            },
+            ofBlock(GregTechAPI.sBlockFrames, id)
+        );
+    }
+    
+    private static IStructureElement<MTEThaumoArborealConverter>[] frameElements() {
+        IStructureElement<MTEThaumoArborealConverter>[] elements =
+            new IStructureElement[FRAME_IDS.length];
+
+        for (int i = 0; i < FRAME_IDS.length; i++) {
+            elements[i] = frameElement(FRAME_IDS[i]);
+        }
+
+        return elements;
+    }
+    
+    private static IStructureElement<MTEThaumoArborealConverter>[] stoneElements() {
+        IStructureElement<MTEThaumoArborealConverter>[] elements =
+            new IStructureElement[STONE_TIERS];
+
+        // allow compressed dirt and gravel too?
+        for (int i = 0; i < STONE_TIERS; i++) {
+            elements[i] = ofBlock(tile.extrautils:cobblestone_compressed, i);
+        }
+
+        return elements;
+    }
+    
     private static final IStructureDefinition<MTEThaumoArborealConverter> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEThaumoArborealConverter>builder()
         .addShape(
             mName,
             transpose(
                 new String[][] { // spotless:off
-                    { "ccccc", "ccccc", "ccccc", "ccccc", "ccccc" },
                     { "  fffff  ", " fgggggf ", "fgggggggf", "fgggggggf", "fgggggggf", "fgggggggf", "fgggggggf", " fgggggf ", "  fffff  "},
                     { "   ggg   ", " fg---gf ", " g-----g ", "g-------g", "g-------g", "g-------g", " g-----g ", " fg---gf ", "   ggg   "},
                     { "   ggg   ", " fg---gf ", " g-----g ", "g-------g", "g-------g", "g-------g", " g-----g ", " fg---gf ", "   ggg   "},
                     { "   ggg   ", " fg---gf ", " g-----g ", "g-------g", "g-------g", "g-------g", " g-----g ", " fg---gf ", "   ggg   "},
                     { "   ggg   ", " fg---gf ", " g-----g ", "g-------g", "g-------g", "g-------g", " g-----g ", " fg---gf ", "   ggg   "},
                     { "   ggg   ", " fg---gf ", " g-----g ", "g-------g", "g-------g", "g-------g", " g-----g ", " fg---gf ", "   ggg   "},
-                    { "   c~c   ", " cc-f-cc ", " c--f--c ", "c---f---c", "cfffdfffc", "c---f---c", " c--f--c ", " cc-f-cc ", "   ccc   "},
+                    { "   c~c   ", " ccsfscc ", " cssfssc ", "csssfsssc", "cfffdfffc", "csssfsssc", " cssfssc ", " ccsfscc ", "   ccc   "},
                     { "   ccc   ", " ccCCCcc ", " cCCCCCc ", "cCCCCCCCc", "cCCCCCCCc", "cCCCCCCCc", " cCCCCCc ", " ccCCCcc ", "   ccc   "},
                 })) // spotless:on
         .addElement(
@@ -155,17 +211,11 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
                 .casingIndex(CASING.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(t -> t.mCasing++, Casings.SterileFarmCasing.asElement())))
-        .addElement(
-            'f', 
-            ofChain(
-                onElementPass(t -> ++t.mFrame1, ofBlock(GregTechAPI.sBlockFrames, 330)), // thaumium
-                onElementPass(t -> ++t.mFrame2, ofBlock(GregTechAPI.sBlockFrames, 368)), // shadow metal
-                onElementPass(t -> ++t.mFrame3, ofBlock(GregTechAPI.sBlockFrames, 978)), // ichorium
-                onElementPass(t -> ++t.mFrame4, ofBlock(GregTechAPI.sBlockFrames, 397))  // infinity
-            ))
+        .addElement('f', ofChain(frameElements()))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t.byteValue(), te -> (int) te.glassTier))
         .addElement('d', ofChain(ofBlock(TILLED_DIRT_BLOCK, 0), ofBlock(DIRT_BLOCK, 0)))
         .addElement('C', onElementPass(t -> t.mCasing++, Casings.SterileFarmCasing.asElement()))
+        .addElement('s', ofChain(stoneElements()))
         .build();
         
         @Override
@@ -199,20 +249,33 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
             return (2 * (tier * tier)) - (2 * tier) + 5;
         }
         
-        private static getFrameTier(){
-            if (this.mFrame1 == FRAME_NUM) return 1;
-            if (this.mFrame2 == FRAME_NUM) return 2;
-            if (this.mFrame3 == FRAME_NUM) return 3;
-            if (this.mFrame4 == FRAME_NUM) return 4;
-            return 0;
+        private int getMultiFrameTier() {
+            for (int i = 0; i < FRAME_IDS.length; i++) {
+                if (mFrame[i] == FRAME_NUM) {
+                    return i;
+                }
+            }
+            return -1;
         }
         
         private static int getFrameMultiplier() {
-            return Math.pow(2, this.frameTier - 1);
+            return Math.pow(2, this.mFrameTier);
         }
         
         private static double getFrameConsumption() {
-            return 100 - ((this.frameTier - 1) * 25);
+            return 100 - ((this.mFrameTier) * 25);
+        }
+        
+        private double getStoneTier(){
+            double totalStoneWeight = 0;
+            for (int i = 0; i < STONE_TIERS; i++){
+                totalStoneWeight += mStone[i] * i;
+            }
+            return totalStoneWeight / STONE_NUM;
+        }
+        
+        private int getStoneMultiplier() {
+            return (int) Math.pow(2, getStoneTier());
         }
         
         /**
@@ -248,7 +311,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
                     
                     int tier = Math.max(1, GTUtility.getTier(availableVoltage * availableAmperage));
                     int tierMultiplier = getTierMultiplier(tier);
-                    int tieredProduction = BASE_PRODUCTION * getFrameMultiplier() * tierMultiplier;
+                    int tieredProduction = BASE_PRODUCTION * getFrameMultiplier() * tierMultiplier * getStoneMultiplier();
                     int consumedInput = consumeInput(tieredProduction);
                     int extraOutput = consumeCatalyst(tieredProduction, consumedInput);
                     int totalOutput = consumedInput + extraOutput;
