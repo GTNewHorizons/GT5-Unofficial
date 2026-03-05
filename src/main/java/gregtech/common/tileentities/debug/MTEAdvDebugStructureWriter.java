@@ -18,6 +18,22 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import com.cleanroommc.modularui.api.MCHelper;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.MathUtils;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ToggleButton;
+import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
@@ -42,7 +58,9 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 
 public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements IAddGregtechLogo, IAddUIWidgets {
 
@@ -327,6 +345,139 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
     @Override
     public boolean doesBindPlayerInventory() {
         return false;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new GTBaseGuiBuilder(this, data, syncManager, uiSettings).doesAddGregTechLogo(false)
+            .doesAddGhostCircuitSlot(false)
+            .doesBindPlayerInventory(false)
+            .build()
+            .overlay(
+                GTGuiTextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY.asIcon()
+                    .size(17)
+                    .alignment(Alignment.BottomRight)
+                    .marginBottom(3)
+                    .marginRight(3))
+            .child(getTopSection())
+            .child(getBottomSection());
+    }
+
+    private Flow getBottomSection() {
+        return new Row().child(
+            new com.cleanroommc.modularui.widgets.ButtonWidget<>().syncHandler(
+                new InteractionSyncHandler().setOnMousePressed(
+                    mouseData -> { if (getBaseMetaTileEntity().isServerSide()) printStructure(MCHelper.getPlayer()); }))
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_PRINT)
+                .tooltip(t -> t.add(IKey.lang("GT5U.machines.advdebugstructurewriter.gui.print.tooltip"))))
+            .child(
+                new ToggleButton().value(new BooleanSyncValue(() -> transpose, val -> transpose = val))
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_TRANSPOSE)
+                    .tooltip(t -> t.add(IKey.lang("GT5U.machines.advdebugstructurewriter.gui.transpose.tooltip"))))
+            .child(
+                new ToggleButton().value(new BooleanSyncValue(() -> showHighlightBox, val -> showHighlightBox = val))
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_BOUNDING_BOX)
+                    .tooltip(t -> t.add(IKey.lang("GT5U.machines.advdebugstructurewriter.gui.highlight.tooltip"))))
+            .coverChildren()
+            .align(Alignment.BottomLeft)
+            .marginBottom(15)
+            .marginLeft(15)
+            .childPadding(3);
+    }
+
+    private Flow getTopSection() {
+        return new Row().child(getButtonColumn(GTGuiTextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64))
+            .child(getButtonColumn(GTGuiTextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1))
+            .child(
+                new Column().child(getTextColumn(true))
+                    .child(getTextColumn(false))
+                    .crossAxisAlignment(Alignment.CrossAxis.START)
+                    .size(90, 112)
+                    .background(GTGuiTextures.PICTURE_SCREEN_BLACK)
+                    .overlay(
+                        GTGuiTextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY.asIcon()
+                            .size(17)
+                            .alignment(Alignment.BottomRight)
+                            .marginBottom(3)
+                            .marginRight(3)))
+            .child(getButtonColumn(GTGuiTextures.OVERLAY_BUTTON_PLUS_SMALL, 16, 1))
+            .child(getButtonColumn(GTGuiTextures.OVERLAY_BUTTON_PLUS_LARGE, 512, 64))
+            .coverChildren()
+            .margin(7, 4);
+    }
+
+    private Flow getTextColumn(boolean first) {
+        String langKey = first ? "GT5U.machines.advdebugstructurewriter.gui.origin"
+            : "GT5U.machines.advdebugstructurewriter.gui.size";
+        int offset = first ? 0 : 3;
+
+        Flow flow = new Column().child(
+            IKey.lang(langKey)
+                .color(0xFFF0F0FF)
+                .asWidget()
+                .marginBottom(3));
+
+        for (int i = 0; i < 3; i++) {
+            final int index = offset + i; // needed for the lambda
+            String axis = switch (i) {
+                case (1) -> "B";
+                case (2) -> "C";
+                default -> "A";
+            };
+
+            flow.child(
+                new Row().child(
+                    IKey.str(axis + ": ")
+                        .color(0xFFF0F0FF)
+                        .asWidget())
+                    .child(
+                        new TextFieldWidget()
+                            .value(
+                                new IntSyncValue(
+                                    () -> numbers[index],
+                                    val -> numbers[index] = (short) MathUtils
+                                        .clamp(val, Short.MIN_VALUE, Short.MAX_VALUE)))
+                            .size(50, 12)
+                            .setTextColor(0xFFF0F0FF))
+                    .coverChildren());
+        }
+
+        return flow.coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .margin(3, 0, 3, 7);
+    }
+
+    private Flow getButtonColumn(com.cleanroommc.modularui.api.drawable.IDrawable overlay, int addNumberShift,
+        int addNumber) {
+        Flow flow = new Column();
+
+        for (int i = 0; i < 6; i++) {
+            final int index = i;
+            com.cleanroommc.modularui.widgets.ButtonWidget<?> button = new com.cleanroommc.modularui.widgets.ButtonWidget<>()
+                .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
+                    int newNumber = numbers[index] + (mouseData.shift ? addNumberShift : addNumber);
+
+                    // Don't let the number under/overflow
+                    if (addNumber > 0) newNumber = Math.min(newNumber, Short.MAX_VALUE);
+                    else newNumber = Math.max(newNumber, Short.MIN_VALUE);
+
+                    // size should be nonnegative
+                    if (index >= 3) newNumber = Math.max(newNumber, 0);
+                    numbers[index] = (short) newNumber;
+                }))
+                .overlay(overlay);
+
+            if (i == 2) button.marginBottom(4);
+
+            flow.child(button);
+        }
+
+        return flow.coverChildren();
     }
 
     public static class EventHandler {
