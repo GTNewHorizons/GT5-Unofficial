@@ -462,7 +462,6 @@ import static gregtech.common.items.IDMetaItem01.ZPM3;
 import static gregtech.common.items.IDMetaItem01.ZPM4;
 import static gregtech.common.items.IDMetaItem01.ZPM5;
 import static gregtech.common.items.IDMetaItem01.ZPM6;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.HashMap;
 import java.util.List;
@@ -3648,7 +3647,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];
                 if ((aPrefix == OrePrefixes.dustImpure) || (aPrefix == OrePrefixes.dustPure)) {
-                    aList.add(translateToLocal("GT5U.tooltip.purify.1"));
+                    aList.add(GTUtility.translate("GT5U.tooltip.purify.1"));
                 }
             }
         }
