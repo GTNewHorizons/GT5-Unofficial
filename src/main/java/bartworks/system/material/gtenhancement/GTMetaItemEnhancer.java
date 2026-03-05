@@ -32,7 +32,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 
 public class GTMetaItemEnhancer {
 
@@ -57,12 +56,10 @@ public class GTMetaItemEnhancer {
         for (int i = 0, valuesLength = values.length; i < valuesLength; i++) {
             Materials m = values[i];
             if (m.mStandardMoltenFluid != null && GTOreDictUnificator.get(OrePrefixes.cellMolten, m, 1) != null) {
-                final FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(
+                FluidContainerRegistry.registerFluidContainer(
                     m.getMolten(1 * INGOTS),
                     new ItemStack(moltenCapsuls, 1, i),
                     GTModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1));
-                FluidContainerRegistry.registerFluidContainer(emptyData);
-                GTUtility.addFluidContainerData(emptyData);
             }
             if (m.getFluid(1) == null && m.getGas(1) == null || OreDictionary.doesOreNameExist("capsule" + m.mName))
                 continue;
@@ -86,12 +83,8 @@ public class GTMetaItemEnhancer {
             .getFluid()
             : m.getGas(1)
                 .getFluid();
-        final FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(
-            new FluidStack(f, amount),
-            new ItemStack(filled, 1, it),
-            container);
-        FluidContainerRegistry.registerFluidContainer(emptyData);
-        GTUtility.addFluidContainerData(emptyData);
+        FluidContainerRegistry
+            .registerFluidContainer(new FluidStack(f, amount), new ItemStack(filled, 1, it), container);
     }
 
     public static void addAdditionalOreDictToForestry() {

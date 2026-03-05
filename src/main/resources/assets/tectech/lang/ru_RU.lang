@@ -1423,9 +1423,9 @@ tt.keyword.Computation=Вычисление
 tt.keyword.Problems=Проблемы
 tt.keyword.Efficiency=Эффективность
 #Button that allows to pass power to other machines
-tt.keyword.PowerPass=Передача энергии
+tt.keyword.PowerPass=Передача энергии: §9%s
 #Button that vents EM
-tt.keyword.SafeVoid=Избавление от излишек
+tt.keyword.SafeVoid=Избавление от излишек: §9%s
 tt.keyword.Parametrizer=Параметрайзер
 tt.keyword.Value=Значение
 tt.keyword.Input=Вход
@@ -1445,7 +1445,7 @@ tt.keyphrase.Energy_Hatches=Энерговводы
 tt.keyphrase.Probably_uses=Сейчас используется
 tt.keyphrase.Probably_makes=Сейчас генерирует
 tt.keyphrase.Tier_Rating=Тир вольтажа
-tt.keyphrase.Amp_Rating=Кол-во ампер
+tt.keyphrase.Amp_Rating=Кол-во ампер §a%s A
 tt.keyphrase.Computation_Available=Доступно вычислений
 tt.keyphrase.Computation_Remaining=Вычислений осталось
 tt.keyphrase.AL_Recipe_Providing=Providing §6%s§7 Assembly Line Recipes

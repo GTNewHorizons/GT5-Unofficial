@@ -186,8 +186,6 @@ public class RecipeLoader {
 
         // Vanilla should always be loaded
         MTEExtremeIndustrialGreenhouse.addFertilizerItem(new ItemStack(Items.dye, 1, 15));
-        // will need to be updated when ic2 goes the way of the dodo
-        MTEExtremeIndustrialGreenhouse.addFertilizerItem(gregtech.api.enums.ItemList.IC2_Fertilizer.get(1));
 
         if (DraconicEvolution.isModLoaded()) {
             // Controller recipe added in TecTech

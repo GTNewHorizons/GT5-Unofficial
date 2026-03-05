@@ -45,7 +45,7 @@ import bartworks.common.tileentities.multis.MTEDeepEarthHeatingPump;
 import bartworks.common.tileentities.multis.MTEElectricImplosionCompressor;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import bartworks.common.tileentities.multis.mega.MTEMegaBlastFurnace;
-import bartworks.common.tileentities.multis.mega.MTEMegaChemicalReactor;
+import bartworks.common.tileentities.multis.mega.MTEMegaChemicalReactorLegacy;
 import bartworks.common.tileentities.multis.mega.MTEMegaDistillTower;
 import bartworks.common.tileentities.multis.mega.MTEMegaOilCracker;
 import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezer;
@@ -256,7 +256,7 @@ public class ItemRegistry {
             "Creative Debug Scanner",
             14);
         ItemRegistry.eic = new MTEElectricImplosionCompressor(
-            ElectricImplosionCompressor.ID,
+            LegacyElectricImplosionCompressor.ID,
             "ElectricImplosionCompressor",
             "Electric Implosion Compressor").getStackForm(1L);
 
@@ -376,11 +376,11 @@ public class ItemRegistry {
         ItemRegistry.dehp = new MTEDeepEarthHeatingPump(DeepEarthHeatingPump.ID, "DEHP", "Deep Earth Heating Pump")
             .getStackForm(1L);
         ItemRegistry.megaMachines[0] = new MTEMegaBlastFurnace(
-            MegaBlastFurnace.ID,
+            LegacyMegaBlastFurnace.ID,
             "MegaBlastFurnace",
             StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
         ItemRegistry.megaMachines[1] = new MTEMegaVacuumFreezer(
-            MegaVacuumFreezer.ID,
+            LegacyMegaVacuumFreezer.ID,
             "MegaVacuumFreezer",
             StatCollector.translateToLocal("tile.bw.mvf.name")).getStackForm(1L);
         ItemRegistry.cal = new MTECircuitAssemblyLine(
@@ -400,11 +400,11 @@ public class ItemRegistry {
             "HumongousInputHatch",
             "Humongous Input Hatch").getStackForm(1L);
         ItemRegistry.megaMachines[2] = new MTEMegaDistillTower(
-            MegaDistillationTower.ID,
+            LegacyMegaDistillationTower.ID,
             "MegaDistillationTower",
             "Mega Distillation Tower").getStackForm(1L);
-        ItemRegistry.megaMachines[3] = new MTEMegaChemicalReactor(
-            MegaChemicalReactor.ID,
+        ItemRegistry.megaMachines[3] = new MTEMegaChemicalReactorLegacy(
+            LegacyMegaChemicalReactor.ID,
             "MegaChemicalReactor",
             "Mega Chemical Reactor").getStackForm(1L);
         ItemRegistry.megaMachines[4] = new MTEMegaOilCracker(MegaOilCracker.ID, "MegaOilCracker", "Mega Oil Cracker")
