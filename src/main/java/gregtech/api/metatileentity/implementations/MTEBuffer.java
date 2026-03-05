@@ -32,6 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -343,11 +344,10 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
                 mTargetStackSize = mMaxStackSize;
             }
             if (mTargetStackSize == 0) {
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("098", "Do not regulate Item Stack Size"));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.buffer.not_regulate");
             } else {
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    GTUtility.trans("099", "Regulate Item Stack Size to: ") + mTargetStackSize);
+                GTUtility
+                    .sendChatTrans(aPlayer, "GT5U.chat.buffer.regulate", new ChatComponentNumber(mTargetStackSize));
             }
         }
     }
