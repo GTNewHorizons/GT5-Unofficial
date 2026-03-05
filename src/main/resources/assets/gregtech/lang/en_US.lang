@@ -2548,6 +2548,11 @@ gt.item.credit.industrial.osmium.tooltip=4096 Credits
 gt.item.nand_chip_array.name=NAND Chip Array
 gt.item.nand_chip_array.tooltip=Chips on Board
 
+## Minecart Wheels
+gt.item.minecart_wheels.iron.name=Iron Minecart Wheels
+gt.item.minecart_wheels.steel.name=Steel Minecart Wheels
+gt.item.minecart_wheels.tooltip=To get things rolling
+
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
 GT5U.nei.display.steam_variant.steel=Steel

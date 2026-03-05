@@ -726,15 +726,15 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Component_Minecart_Wheels_Iron.set(
             addItem(
                 Component_Minecraft_Wheels_Iron.ID,
-                "Iron Minecart Wheels",
-                "To get things rolling",
+                GTUtility.translate("gt.item.minecart_wheels.iron.name"),
+                GTUtility.translate("gt.item.minecart_wheels.tooltip"),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L)));
         ItemList.Component_Minecart_Wheels_Steel.set(
             addItem(
                 Component_Minecraft_Wheels_Steel.ID,
-                "Steel Minecart Wheels",
-                "To get things rolling",
+                GTUtility.translate("gt.item.minecart_wheels.steel.name"),
+                GTUtility.translate("gt.item.minecart_wheels.tooltip"),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L)));
 
