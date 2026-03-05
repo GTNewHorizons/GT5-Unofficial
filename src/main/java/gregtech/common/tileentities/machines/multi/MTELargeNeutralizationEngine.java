@@ -17,6 +17,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -134,7 +135,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private float getRandomIncreaseMultiplier() {
-        return (900 + getBaseMetaTileEntity().getRandomNumber(201)) / 1000F;
+        return (500 + getBaseMetaTileEntity().getRandomNumber(1001)) / 1000F;
     }
 
     private static float getRobotArmDecayBoost(int tier) {
@@ -166,11 +167,16 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return GregTechAPI.sBlockCasings12;
     }
 
-    private int getRobotArmTier() {
+    private Pair<ItemStack, Integer> getRobotArm() {
         for (int i = ItemList.ROBOT_ARMS.length - 1; i >= 0; i--) {
-            if (depleteInput(ItemList.ROBOT_ARMS[i].get(1L), true)) return i;
+            ArrayList<ItemStack> storedInputs = getStoredInputs();
+            for (ItemStack storedInput : storedInputs) {
+                if (GTUtility.areStacksEqual(storedInput, ItemList.ROBOT_ARMS[i].get(1L))) {
+                    return Pair.of(storedInput, i);
+                }
+            }
         }
-        return 0;
+        return null;
     }
 
     private static IStructureDefinition<MTELargeNeutralizationEngine> STRUCTURE_DEFINITION = null;
@@ -264,7 +270,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.GRAY
                     + "(consumes one by one):")
             .addInfo(getAlkaliTextFormatted("Sodium Hydroxide", 150, 1, false))
-            .addInfo(getAlkaliTextFormatted("Potassium Hydroxide", 190, 1, false))
+            .addInfo(getAlkaliTextFormatted("Potassium Hydroxide", 190, 24, true))
             .addInfo(getAlkaliTextFormatted("Caesium Hydroxide", 250, 6, true))
             .addInfo(getAlkaliTextFormatted("Francium Hydroxide", 500, 2, true))
             .addSeparator()
@@ -306,11 +312,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.GRAY
                     + "*rand("
                     + EnumChatFormatting.WHITE
-                    + "0.9"
+                    + "0.5"
                     + EnumChatFormatting.GRAY
                     + "-"
                     + EnumChatFormatting.WHITE
-                    + "1.1"
+                    + "1.5"
                     + EnumChatFormatting.GRAY
                     + ")")
             .addInfo(
@@ -369,30 +375,52 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                 EnumChatFormatting.YELLOW + "Decay Boost "
                     + EnumChatFormatting.GRAY
                     + "is calculated as "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Robot Arm Tier"
+                    + EnumChatFormatting.WHITE
+                    + "1.2"
                     + EnumChatFormatting.GRAY
                     + "^"
-                    + EnumChatFormatting.WHITE
-                    + "1.2 "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Robot Arm Tier "
                     + EnumChatFormatting.GRAY
                     + "if "
                     + EnumChatFormatting.GREEN
                     + "IV"
                     + EnumChatFormatting.GRAY
                     + " or below, "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Robot Arm Tier"
+                    + EnumChatFormatting.WHITE
+                    + "1.3"
                     + EnumChatFormatting.GRAY
                     + "^"
-                    + EnumChatFormatting.WHITE
-                    + "1.3 "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Robot Arm Tier "
                     + EnumChatFormatting.GRAY
                     + "if "
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "LuV"
                     + EnumChatFormatting.GRAY
                     + " or above")
+            .addInfo(
+                "Insert " + EnumChatFormatting.LIGHT_PURPLE
+                    + "multiple "
+                    + EnumChatFormatting.GRAY
+                    + "("
+                    + EnumChatFormatting.WHITE
+                    + "16"
+                    + EnumChatFormatting.GRAY
+                    + " max) robot arms to multiply "
+                    + EnumChatFormatting.YELLOW
+                    + "Decay Boost "
+                    + EnumChatFormatting.GRAY
+                    + "by sqrt("
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Robot Arm Amount).")
+            .addInfo("Every "+EnumChatFormatting.WHITE+"minute"+EnumChatFormatting.GRAY+", 1/"
+                    + EnumChatFormatting.WHITE
+                    + "90 "
+                    + EnumChatFormatting.GRAY
+                    + "chance for used robot arms to "
+                    + EnumChatFormatting.RED
+                    + "void")
             .addSeparator()
             .addInfo(
                 "Structure has " + EnumChatFormatting.WHITE
@@ -535,7 +563,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             this.boosterBoostTicks = 200;
         } else if (depleteInput(Materials.PotassiumHydroxide.getDust(1))) {
             this.boosterEUBoost = 1.9F;
-            this.boosterBoostTicks = 20;
+            this.boosterBoostTicks = 50;
         } else if (depleteInput(Materials.SodiumHydroxide.getDust(1))) {
             this.boosterEUBoost = 1.5F;
             this.boosterBoostTicks = 20;
@@ -633,12 +661,28 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             } else {
                 useBooster();
             }
-            int robotArmTier = getRobotArmTier();
-            if (robotArmTier > 0) {
-                int random = getBaseMetaTileEntity().getRandomNumber(108000);
-                if (random == 0) depleteInput(ItemList.ROBOT_ARMS[robotArmTier - 1].get(1L));
+            int robotArmTier = 0;
+            Pair<ItemStack, Integer> robotArm = getRobotArm();
+            if (robotArm != null) {
+                int amount = Math.min(robotArm.getLeft().stackSize, 64);
+                robotArm = Pair.of(
+                    new ItemStack(
+                        robotArm.getLeft()
+                            .getItem(),
+                        robotArm.getLeft()
+                            .getItemDamage(),
+                        amount),
+                    robotArm.getRight());
+                robotArmTier = robotArm.getRight();
+                this.robotArmDecayBoost = (float) (getRobotArmDecayBoost(robotArmTier) * Math.sqrt(amount));
+                if (getBaseMetaTileEntity().getWorld()
+                    .getWorldTime() % MINUTES == 0) {
+                    int random = getBaseMetaTileEntity().getRandomNumber(90);
+                    if (random == 0) depleteInput(robotArm.getLeft());
+                }
+            } else {
+                this.robotArmDecayBoost = 1;
             }
-            this.robotArmDecayBoost = getRobotArmDecayBoost(robotArmTier);
             this.mEUt = getEUOutput(fuelConsumption);
             this.mEfficiencyIncrease = 50;
             this.mProgresstime = 1;
