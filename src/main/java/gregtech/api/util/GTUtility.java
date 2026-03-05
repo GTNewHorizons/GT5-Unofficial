@@ -619,6 +619,7 @@ public class GTUtility {
             .isEmpty()) {
             tooltip.add("");
         }
+    }
     public static String wrapStack(String message) {
         return FORMAT_PUSH_STACK + message + FORMAT_POP_STACK;
     }
