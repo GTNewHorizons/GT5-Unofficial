@@ -719,8 +719,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.NandChipArray.set(
             addItem(
                 IDMetaItem01.NandChipArray.ID,
-                "NAND Chip Array",
-                "Chips on Board",
+                GTUtility.translate("gt.item.nand_chip_array.name"),
+                GTUtility.translate("gt.item.nand_chip_array.tooltip"),
                 "circuitPrimitiveArray",
                 SubTag.NO_UNIFICATION));
         ItemList.Component_Minecart_Wheels_Iron.set(

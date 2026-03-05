@@ -2544,6 +2544,10 @@ gt.item.credit.industrial.platinum.tooltip=512 Credits
 gt.item.credit.industrial.osmium.name=Industrial Osmium Credit
 gt.item.credit.industrial.osmium.tooltip=4096 Credits
 
+## NAND Chip Array
+gt.item.nand_chip_array.name=NAND Chip Array
+gt.item.nand_chip_array.tooltip=Chips on Board
+
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
 GT5U.nei.display.steam_variant.steel=Steel
