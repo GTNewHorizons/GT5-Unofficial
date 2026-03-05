@@ -317,16 +317,30 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
         int[] yPos = new int[] { 4, 22, 40, 62, 80, 98 };
         for (int i = 0; i < yPos.length; i++) {
             final int index = i; // needed for lambda
-            builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                numbers[index] += clickData.shift ? addNumberShift : addNumber;
-                if (index >= 3) {
-                    numbers[index] = (short) Math.max(numbers[index], 0);
-                }
-            })
-                .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
-                .setSize(18, 18)
-                .setPos(xPos, yPos[index]));
+            builder.widget(
+                new ButtonWidget()
+                    .setOnClick(
+                        (clickData,
+                            widget) -> numbers[index] = getNewNumber(
+                                numbers[index],
+                                (clickData.shift ? addNumberShift : addNumber),
+                                index >= 3))
+                    .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
+                    .setSize(18, 18)
+                    .setPos(xPos, yPos[index]));
         }
+    }
+
+    private short getNewNumber(short oldCoordinate, int offset, boolean isSize) {
+        int newNumber = oldCoordinate + offset;
+
+        // Don't let the number under/overflow
+        if (offset > 0) newNumber = Math.min(newNumber, Short.MAX_VALUE);
+        else newNumber = Math.max(newNumber, Short.MIN_VALUE);
+
+        // size should be nonnegative
+        if (isSize) newNumber = Math.max(newNumber, 0);
+        return (short) newNumber;
     }
 
     @Override
@@ -437,6 +451,7 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
                                     val -> numbers[index] = (short) MathUtils
                                         .clamp(val, Short.MIN_VALUE, Short.MAX_VALUE)))
                             .size(50, 12)
+                            .setMaxLength(6)
                             .setTextColor(0xFFF0F0FF))
                     .coverChildren());
         }
@@ -453,17 +468,12 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
         for (int i = 0; i < 6; i++) {
             final int index = i;
             com.cleanroommc.modularui.widgets.ButtonWidget<?> button = new com.cleanroommc.modularui.widgets.ButtonWidget<>()
-                .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
-                    int newNumber = numbers[index] + (mouseData.shift ? addNumberShift : addNumber);
-
-                    // Don't let the number under/overflow
-                    if (addNumber > 0) newNumber = Math.min(newNumber, Short.MAX_VALUE);
-                    else newNumber = Math.max(newNumber, Short.MIN_VALUE);
-
-                    // size should be nonnegative
-                    if (index >= 3) newNumber = Math.max(newNumber, 0);
-                    numbers[index] = (short) newNumber;
-                }))
+                .syncHandler(
+                    new InteractionSyncHandler().setOnMousePressed(
+                        mouseData -> numbers[index] = getNewNumber(
+                            numbers[index],
+                            (mouseData.shift ? addNumberShift : addNumber),
+                            index >= 3)))
                 .overlay(overlay);
 
             if (i == 2) button.marginBottom(4);
