@@ -229,9 +229,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_083", "Open if work disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_084", "Only Output allowed");
         addStringLocalization("Interaction_DESCRIPTION_Index_085", "Only Input allowed");
-        addStringLocalization("Interaction_DESCRIPTION_Index_094.1", "Not enough soldering material!");
-        addStringLocalization("Interaction_DESCRIPTION_Index_098", "Do not regulate Item Stack Size");
-        addStringLocalization("Interaction_DESCRIPTION_Index_099", "Regulate Item Stack Size to: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_100", "This is ");
         addStringLocalization("Interaction_DESCRIPTION_Index_101", " Ore.");
         addStringLocalization("Interaction_DESCRIPTION_Index_102", "There is Lava behind this Rock.");
@@ -240,14 +237,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_105", "Material is changing behind this Rock.");
         addStringLocalization("Interaction_DESCRIPTION_Index_106", "Found traces of ");
         addStringLocalization("Interaction_DESCRIPTION_Index_107", "No Ores found.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_108", "Outputs misc. Fluids, Steam and Items");
-        addStringLocalization("Interaction_DESCRIPTION_Index_109", "Outputs Steam and Items");
-        addStringLocalization("Interaction_DESCRIPTION_Index_110", "Outputs Steam and misc. Fluids");
-        addStringLocalization("Interaction_DESCRIPTION_Index_111", "Outputs Steam");
-        addStringLocalization("Interaction_DESCRIPTION_Index_112", "Outputs misc. Fluids and Items");
-        addStringLocalization("Interaction_DESCRIPTION_Index_113", "Outputs only Items");
-        addStringLocalization("Interaction_DESCRIPTION_Index_114", "Outputs only misc. Fluids");
-        addStringLocalization("Interaction_DESCRIPTION_Index_115", "Outputs nothing");
         // 116 moved to lang files
         // 117 obsolete
         // 118 moved to lang files
@@ -286,9 +275,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_148", "V ");
         addStringLocalization("Interaction_DESCRIPTION_Index_149", "A");
         addStringLocalization("Interaction_DESCRIPTION_Index_151", "Does not get consumed in the process");
-        addStringLocalization("Interaction_DESCRIPTION_Index_151.1", "Outputs items and 1 specific Fluid");
-        addStringLocalization("Interaction_DESCRIPTION_Index_151.2", "Outputs 1 specific Fluid");
-        addStringLocalization("Interaction_DESCRIPTION_Index_151.4", "Successfully locked Fluid to %s");
         addStringLocalization("Interaction_DESCRIPTION_Index_152", "Total: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_153", "Usage: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_154", "Voltage: ");
@@ -350,10 +336,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_209.1", " tick");
         addStringLocalization("Interaction_DESCRIPTION_Index_210", "Average: %.2f L/sec");
         addStringLocalization("Interaction_DESCRIPTION_Index_211", "Items per side: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_212", "Input enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_213", "Input disabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_214", "Connected");
-        addStringLocalization("Interaction_DESCRIPTION_Index_215", "Disconnected");
         addStringLocalization("Interaction_DESCRIPTION_Index_216", "Deprecated Recipe");
         addStringLocalization("Interaction_DESCRIPTION_Index_219", "Extended Facing: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_221", "Item threshold");
