@@ -688,18 +688,33 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     200,
                     1,
                     100)));
-        ItemList.Credit_Copper.set(addItem(IDMetaItem01.Credit_Copper.ID, "Industrial Copper Credit", "0.125 Credits"));
+        ItemList.Credit_Copper.set(
+            addItem(
+                IDMetaItem01.Credit_Copper.ID,
+                ("gt.item.credit.industrial.copper.name"),
+                ("gt.item.credit.industrial.copper.tooltip")));
 
         ItemList.Credit_Silver.set(
             addItem(
                 IDMetaItem01.Credit_Silver.ID,
-                "Industrial Silver Credit",
-                "8 Credits",
+                GTUtility.translate("gt.item.credit.industrial.silver.name"),
+                GTUtility.translate("gt.item.credit.industrial.silver.tooltip"),
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
-        ItemList.Credit_Gold.set(addItem(IDMetaItem01.Credit_Gold.ID, "Industrial Gold Credit", "64 Credits"));
-        ItemList.Credit_Platinum
-            .set(addItem(IDMetaItem01.Credit_Platinum.ID, "Industrial Platinum Credit", "512 Credits"));
-        ItemList.Credit_Osmium.set(addItem(IDMetaItem01.Credit_Osmium.ID, "Industrial Osmium Credit", "4096 Credits"));
+        ItemList.Credit_Gold.set(
+            addItem(
+                IDMetaItem01.Credit_Gold.ID,
+                GTUtility.translate("gt.item.credit.industrial.gold.name"),
+                GTUtility.translate("gt.item.credit.industrial.gold.tooltip")));
+        ItemList.Credit_Platinum.set(
+            addItem(
+                IDMetaItem01.Credit_Platinum.ID,
+                GTUtility.translate("gt.item.credit.industrial.platinum.name"),
+                GTUtility.translate("gt.item.credit.industrial.platinum.tooltip")));
+        ItemList.Credit_Osmium.set(
+            addItem(
+                IDMetaItem01.Credit_Osmium.ID,
+                GTUtility.translate("gt.item.credit.industrial.osmium.name"),
+                GTUtility.translate("gt.item.credit.industrial.osmium.tooltip")));
 
         ItemList.NandChipArray.set(
             addItem(

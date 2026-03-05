@@ -2532,6 +2532,18 @@ gt.item.coin.doge.tooltip=wow much coin how money so crypto plz mine v rich very
 gt.item.coin.chocolate.name=Chocolate Coin
 gt.item.coin.chocolate.tooltip=Wrapped in Gold
 
+## Industrial Credit
+gt.item.credit.industrial.copper.name=Industrial Copper Credit
+gt.item.credit.industrial.copper.tooltip=0.125 Credits
+gt.item.credit.industrial.silver.name=Industrial Silver Credit
+gt.item.credit.industrial.silver.tooltip=8 Credits
+gt.item.credit.industrial.gold.name=Industrial Gold Credit
+gt.item.credit.industrial.gold.tooltip=64 Credits
+gt.item.credit.industrial.platinum.name=Industrial Platinum Credit
+gt.item.credit.industrial.platinum.tooltip=512 Credits
+gt.item.credit.industrial.osmium.name=Industrial Osmium Credit
+gt.item.credit.industrial.osmium.tooltip=4096 Credits
+
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
 GT5U.nei.display.steam_variant.steel=Steel
