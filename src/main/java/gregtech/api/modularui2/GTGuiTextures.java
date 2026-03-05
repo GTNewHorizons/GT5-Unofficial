@@ -1734,6 +1734,7 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/picture/screen_black")
         .adaptable(2)
         .imageSize(16, 16)
+        .canApplyTheme()
         .build();
     // endregion picture
 
