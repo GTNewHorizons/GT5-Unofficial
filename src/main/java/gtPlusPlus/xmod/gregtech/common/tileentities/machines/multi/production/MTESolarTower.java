@@ -227,7 +227,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                             .casingIndex(1)
                             .hint(1)
                             .continueIfSuccess()
-                            .build()))
+                            .buildAndChain(ofBlock(t.getCasingBlock(), t.getCasingMeta()))))
                 .addElement(
                     't',
                     lazy(t -> onElementPass(x -> ++x.mCasing1, ofBlock(t.getCasingBlock(), t.getCasingMeta()))))
