@@ -11,7 +11,6 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cofh.api.energy.IEnergyContainerItem;
@@ -75,23 +74,20 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     @Override
     public String[] getDescription() {
-        return new String[] { StatCollector.translateToLocal("gtpp.tooltip.wireless_charger.0"),
-            StatCollector.translateToLocal("gtpp.tooltip.wireless_charger.1"),
-            StatCollector.translateToLocalFormatted("gtpp.tooltip.wireless_charger.2", this.getLongRange(false)),
-            StatCollector.translateToLocalFormatted("gtpp.tooltip.wireless_charger.3", this.getLocalRange(false)),
-            StatCollector.translateToLocalFormatted(
-                "gtpp.tooltip.wireless_charger.4",
-                this.getLongRange(true),
-                this.getLocalRange(true)),
+        return new String[] { GTUtility.translate("gtpp.tooltip.wireless_charger.0"),
+            GTUtility.translate("gtpp.tooltip.wireless_charger.1"),
+            GTUtility.translate("gtpp.tooltip.wireless_charger.2", this.getLongRange(false)),
+            GTUtility.translate("gtpp.tooltip.wireless_charger.3", this.getLocalRange(false)),
+            GTUtility.translate("gtpp.tooltip.wireless_charger.4", this.getLongRange(true), this.getLocalRange(true)),
             GTPPCore.GT_Tooltip.get() };
     }
 
     private static String translateChat(String key) {
-        return StatCollector.translateToLocal("gtpp.chat.wireless_charger." + key);
+        return GTUtility.translate("gtpp.chat.wireless_charger." + key);
     }
 
     private static String translateChat(String key, Object... args) {
-        return StatCollector.translateToLocalFormatted("gtpp.chat.wireless_charger." + key, args);
+        return GTUtility.translate("gtpp.chat.wireless_charger." + key, args);
     }
 
     @Override
@@ -176,7 +172,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
         if (player.isSneaking()) {
             locked = !locked;
-            GTUtility.sendChatToPlayer(player, translateChat(locked ? "lock" : "unlock"));
+            GTUtility.sendChatTrans(player, translateChat(locked ? "lock" : "unlock"));
             return;
         }
 
@@ -186,15 +182,14 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
         this.mode = this.mode.next();
 
         if (this.mode == ChargeMode.LONG_RANGE) {
-            GTUtility.sendChatToPlayer(
-                player,
-                translateChat("mode_change", translateChat("mode.long"), translateChat("mode")));
+            GTUtility
+                .sendChatTrans(player, translateChat("mode_change", translateChat("mode.long"), translateChat("mode")));
         } else if (this.mode == ChargeMode.LOCAL) {
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 player,
                 translateChat("mode_change", translateChat("mode.local"), translateChat("mode")));
         } else {
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 player,
                 translateChat("mode_change", translateChat("mode.mixed"), translateChat("mode")));
         }
@@ -427,7 +422,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                                     player.getGameProfile()
                                         .getName(),
                                     player.getPersistentID());
-                                GTUtility.sendChatToPlayer(
+                                GTUtility.sendChatTrans(
                                     player,
                                     translateChat("enter", (int) range, translateChat("mode.long")));
                             }
@@ -440,7 +435,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                                 player.getGameProfile()
                                     .getName())
                                 != null) {
-                                GTUtility.sendChatToPlayer(
+                                GTUtility.sendChatTrans(
                                     player,
                                     translateChat("leave", (int) range, translateChat("mode.long")));
                             }
@@ -491,39 +486,36 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
         float x, float y, float z) {
 
         if (this.mode == ChargeMode.LONG_RANGE) {
-            GTUtility.sendChatToPlayer(
-                player,
-                translateChat("mode_info", translateChat("mode.long"), translateChat("mode")));
-            GTUtility.sendChatToPlayer(
+            GTUtility
+                .sendChatTrans(player, translateChat("mode_info", translateChat("mode.long"), translateChat("mode")));
+            GTUtility.sendChatTrans(
                 player,
                 translateChat("range") + String.format(
                     ": %sm",
                     NumberFormat.getInstance()
                         .format(this.getLongRange(false))));
-            GTUtility.sendChatToPlayer(player, translateChat("mode_info_player"));
+            GTUtility.sendChatTrans(player, translateChat("mode_info_player"));
             for (String name : this.longRangeMap.keySet()) {
-                GTUtility.sendChatToPlayer(player, name);
+                GTUtility.sendChatTrans(player, name);
             }
         } else if (this.mode == ChargeMode.LOCAL) {
-            GTUtility.sendChatToPlayer(
-                player,
-                translateChat("mode_info", translateChat("mode.local"), translateChat("mode")));
-            GTUtility.sendChatToPlayer(
+            GTUtility
+                .sendChatTrans(player, translateChat("mode_info", translateChat("mode.local"), translateChat("mode")));
+            GTUtility.sendChatTrans(
                 player,
                 translateChat("range") + String.format(
                     ": %sm",
                     NumberFormat.getInstance()
                         .format(this.getLocalRange(false))));
-            GTUtility.sendChatToPlayer(player, translateChat("mode_info_player"));
+            GTUtility.sendChatTrans(player, translateChat("mode_info_player"));
             for (String name : this.localRangeMap.keySet()) {
-                GTUtility.sendChatToPlayer(player, name);
+                GTUtility.sendChatTrans(player, name);
             }
         } else {
-            GTUtility.sendChatToPlayer(
-                player,
-                translateChat("mode_info", translateChat("mode.mixed"), translateChat("mode")));
+            GTUtility
+                .sendChatTrans(player, translateChat("mode_info", translateChat("mode.mixed"), translateChat("mode")));
             NumberFormat numberFormat = NumberFormat.getInstance();
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 player,
                 String.format(
                     "%s: %sm (%s: %sm)",
@@ -531,12 +523,12 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                     numberFormat.format(this.getLongRange(true)),
                     translateChat("mode.local"),
                     numberFormat.format(this.getLocalRange(true))));
-            GTUtility.sendChatToPlayer(player, translateChat("mode_info_player"));
+            GTUtility.sendChatTrans(player, translateChat("mode_info_player"));
             for (String name : this.localRangeMap.keySet()) {
-                GTUtility.sendChatToPlayer(player, translateChat("mode.local") + ": " + name);
+                GTUtility.sendChatTrans(player, translateChat("mode.local") + ": " + name);
             }
             for (String name : this.longRangeMap.keySet()) {
-                GTUtility.sendChatToPlayer(player, translateChat("mode.long") + ": " + name);
+                GTUtility.sendChatTrans(player, translateChat("mode.long") + ": " + name);
             }
         }
 
