@@ -10,6 +10,7 @@ import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
 
 @EventBusSubscriber
@@ -31,6 +32,11 @@ public class WirelessEnergyHatchManager {
             MTEWirelessEnergy e = iterator.next()
                 .get();
             if (e == null || !e.isValid()) {
+                iterator.remove();
+                continue;
+            }
+            BaseMetaTileEntity base = (BaseMetaTileEntity) e.getBaseMetaTileEntity();
+            if (!base.isTickDisabled()) {
                 iterator.remove();
                 continue;
             }

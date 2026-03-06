@@ -69,6 +69,10 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
         return false;
     }
 
+    public boolean isTickDisabled() {
+        return mTickDisabled;
+    }
+
     @Override
     public void enableTicking() {
         if (!mTickDisabled) return;
