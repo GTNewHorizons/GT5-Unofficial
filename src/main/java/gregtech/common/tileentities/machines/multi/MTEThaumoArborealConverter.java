@@ -28,6 +28,12 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
         978, // Ichorium
         397  // Infinity
     };
+    private static final int[] FRAME_WEIGHTS = {
+        100, // Thaumium
+        150, // Shadow
+        200, // Ichorium
+        400  // Infinity
+    };
     private static final int STONE_NUM = 24;
     private static final int STONE_TIERS = 8;
     
@@ -63,12 +69,12 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
             .addInfo("Channels dimensional tree magic to convert rock and soil")
             .addInfo("Place a sapling in the controller slot")
             .addInfo("Consumes relevant tree materials to boost conversion rate (CR)")
-            .addInfo("More advanced structural frames boost CR and reduce tree material consumption")
+            .addInfo("More advanced structural frames boost CR and increase catalyst weight")
             .addInfo("  Thaumium: 1x, 100%")
-            .addInfo("  Shadow Metal: 2x, 75%")
-            .addInfo("  Ichorium: 4x, 50%")
-            .addInfo("  Infinity: 8x, 25%")
-            .addInfo("Using using higher tiers of compressed cobblestone boosts CR up to 256x")
+            .addInfo("  Shadow Metal: 2x, 150%")
+            .addInfo("  Ichorium: 4x, 200%")
+            .addInfo("  Infinity: 8x, 400%")
+            .addInfo("Using using higher tiers of compressed cobblestone boosts CR up to 128x")
             .addInfo("Multiplier = 2^(average compression tier - 1)")
             .addSeparator()
             .addInfo("Work time is fixed at 5 seconds")
@@ -262,8 +268,8 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
             return Math.pow(2, this.mFrameTier);
         }
         
-        private static double getFrameConsumption() {
-            return 100 - ((this.mFrameTier) * 25);
+        private static double getFrameWeightMul() {
+            return FRAME_WEIGHTS[this.mFrameTier];
         }
         
         private double getStoneTier(){
@@ -313,7 +319,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
                     int tierMultiplier = getTierMultiplier(tier);
                     int tieredProduction = BASE_PRODUCTION * getFrameMultiplier() * tierMultiplier * getStoneMultiplier();
                     int consumedInput = consumeInput(tieredProduction);
-                    int extraOutput = consumeCatalyst(tieredProduction, consumedInput);
+                    int extraOutput = consumeCatalyst(consumedInput);
                     int totalOutput = consumedInput + extraOutput;
                     int totalWeight = getSaplingTotalWeight(sapling);
     
@@ -325,7 +331,8 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
                         // non-random
                         //out.stackSize = totalOutput * totalWeight / outputMap.get(output);
                         // random - normal approximation
-                        out.stackSize
+                        // TODO
+                        out.stackSize;
                         outputs.add(out);
                     }
     
@@ -348,13 +355,51 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
         
         private static int consumeInput(int tieredProduction){
             // consume input stone and dirt up to tieredProduction
+            int remainingCapacity = tieredProduction;
+            for (ItemStack stack : getStoredInputs()){
+                if (!getValidInputsForSapling().contains(stack)) continue;
+                if (stack.stackSize <= remainingCapacity){
+                    remainingCapacity -= stack.stackSize;
+                    deleteInput(stack);
+                } else {
+                    deleteInput(new ItemStack(stack.getItem(), remainingCapacity));
+                    remainingCapacity = 0;
+                    break;
+                }
+            }
+            return remainingCapacity;
         }
         
-        private static int consumeCatalyst(int tieredProduction, int consumedInput){
+        private static ItemStack[] getValidInputsForSapling(){
+            // TODO use isOverworldBlock from thaumic bases?
+            ;
+        }
+        
+        private static int consumeCatalyst(int consumedInput){
             // consume input tree materials weighted up to consumedInput
-            int wgtLog = 4;
-            int wgtSapling = 2;
-            int wgtLeaves = 1;
+            int consumedCatalystWeight = 0;
+            int mult = getFrameWeightMul();
+            for (ItemStack stack : getStoredInputs()){
+                int wgt = getCatalystWeight(stack * mult / 100);
+                if (wgt <= 0) continue;
+                if (stack.stackSize * wgt <= consumedInput - consumedCatalystWeight){
+                    consumedCatalystWeight += stack.stackSize * wgt;
+                    deleteInput(stack);
+                } else {
+                    int remainingCapacity = consumedInput - consumedCatalystWeight;
+                    deleteInput(new ItemStack(stack.getItem(), (remainingCapacity / wgt) + (remainingCapacity % wgt > 0 ? 1 : 0)));
+                    consumedCatalystWeight = consumedInput;
+                    break;
+                }
+            }
+            return consumedCatalystWeight;
+        }
+        
+        private static int getCatalystWeight(ItemStack stack){
+            // TODO
+            const int wgtLog = 4;
+            const int wgtSapling = 2;
+            const int wgtLeaves = 1;
         }
         
         /**
