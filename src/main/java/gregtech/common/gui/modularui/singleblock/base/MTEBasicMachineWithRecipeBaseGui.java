@@ -139,17 +139,14 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
             tooltipKeys[1] = "GT5U.machines.unused_slot.tooltip.1";
         }
         return new ItemSlot().marginRight(9)
-            .slot(new ModularSlot(machine.inventoryHandler, machine.getSpecialSlotIndex()) {
-
-                @Override
-                public void onSlotChanged() {
-                    super.onSlotChanged();
-                    if (GTMod.proxy.isClientSide()) return;
-                    machine.getBaseMetaTileEntity()
-                        .markInventoryBeenModified();
-                }
-
-            }.slotGroup("item_inv"))
+            .slot(
+                new ModularSlot(machine.inventoryHandler, machine.getSpecialSlotIndex())
+                    .changeListener(
+                        (newItem, onlyAmountChanged, client, init) -> {
+                            if (!client && !init) machine.getBaseMetaTileEntity()
+                                .markInventoryBeenModified();
+                        })
+                    .slotGroup("item_inv"))
             .background(
                 GTGuiTextures.SLOT_ITEM_STANDARD,
                 properties.useSpecialSlot ? slotOverlayFunction.apply(0, false, false, true) : IDrawable.NONE)
@@ -161,16 +158,13 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     protected ItemSlot createChargerSlot() {
 
-        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()) {
-
-            @Override
-            public void onSlotChanged() {
-                super.onSlotChanged();
-                if (GTMod.proxy.isClientSide()) return;
-                machine.getBaseMetaTileEntity()
-                    .markInventoryBeenModified();
-            }
-        })
+        return new ItemSlot()
+            .slot(
+                new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()).changeListener(
+                    (newItem, onlyAmountChanged, client, init) -> {
+                        if (!client && !init) machine.getBaseMetaTileEntity()
+                            .markInventoryBeenModified();
+                    }))
             .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER)
             .tooltip(this::createTooltipForChargerSlot)
             .tooltipShowUpTimer(TOOLTIP_DELAY);
@@ -212,17 +206,14 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
                 'c',
                 i -> new ItemSlot()
                     .background(GTGuiTextures.SLOT_ITEM_STANDARD, slotOverlayFunction.apply(i, false, false, false))
-                    .slot(new ModularSlot(machine.inventoryHandler, machine.getInputSlot() + i) {
-
-                        @Override
-                        public void onSlotChanged() {
-                            super.onSlotChanged();
-                            if (GTMod.proxy.isClientSide()) return;
-                            machine.getBaseMetaTileEntity()
-                                .markInventoryBeenModified();
-                        }
-
-                    }.singletonSlotGroup(50 + i)))
+                    .slot(
+                        new ModularSlot(machine.inventoryHandler, machine.getInputSlot() + i)
+                            .changeListener(
+                                (newItem, onlyAmountChanged, client, init) -> {
+                                    if (!client && !init) machine.getBaseMetaTileEntity()
+                                        .markInventoryBeenModified();
+                                })
+                            .singletonSlotGroup(50 + i)))
             .build();
     }
 
@@ -254,17 +245,14 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
                 'c',
                 i -> new ItemSlot()
                     .background(GTGuiTextures.SLOT_ITEM_STANDARD, slotOverlayFunction.apply(i, false, true, false))
-                    .slot(new ModularSlot(machine.inventoryHandler, machine.getOutputSlot() + i) {
-
-                        @Override
-                        public void onSlotChanged() {
-                            super.onSlotChanged();
-                            if (GTMod.proxy.isClientSide()) return;
-                            machine.getBaseMetaTileEntity()
-                                .markInventoryBeenModified();
-                        }
-
-                    }.accessibility(false, true)))
+                    .slot(
+                        new ModularSlot(machine.inventoryHandler, machine.getOutputSlot() + i)
+                            .changeListener(
+                                (newItem, onlyAmountChanged, client, init) -> {
+                                    if (!client && !init) machine.getBaseMetaTileEntity()
+                                        .markInventoryBeenModified();
+                                })
+                            .accessibility(false, true)))
             .build();
     }
 
