@@ -469,6 +469,10 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
 
     @Override
     public boolean onPickBlock(final ItemStack toolbox, final EntityPlayer player) {
+        if (!(toolbox.getItem() instanceof ItemGTToolbox)) {
+            return false;
+        }
+
         final int inventorySlot = player.inventory.getCurrentItem() == toolbox ? player.inventory.currentItem
             : Backhand.getOffhandSlot(player);
         final Optional<ToolboxSlot> selectedToolType = ToolboxUtil.getSelectedToolType(toolbox);
@@ -476,22 +480,11 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         if (player.isSneaking()) {
             if (selectedToolType.isPresent()) {
                 sendChangeToolPacket(inventorySlot, NO_TOOL_SELECTED);
-            } else {
-                ToolboxSelectGuiFactory.INSTANCE.open(player);
-            }
-
-            return true;
-        }
-
-        final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
-
-        for (ToolboxSlot suggested : ToolboxPickBlockDecider.getSuggestedTool(player)) {
-            if (handler.getStackInSlot(suggested.getSlotID()) != null) {
-                sendChangeToolPacket(inventorySlot, suggested.getSlotID());
                 return true;
             }
         }
 
+        final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
         int toolCount = 0;
         int lastSlot = -1;
         for (ToolboxSlot slot : ToolboxSlot.TOOL_SLOTS) {
@@ -501,23 +494,31 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
             }
         }
 
-        switch (toolCount) {
-            case 0:
-                GTNHLib.proxy.printMessageAboveHotbar(
-                    StatCollector.translateToLocal("GT5U.gui.text.toolbox.error.no_tools"),
-                    120,
-                    true,
-                    true);
-                break;
-            case 1:
-                sendChangeToolPacket(inventorySlot, selectedToolType.isPresent() ? lastSlot : NO_TOOL_SELECTED);
-                return true;
-            default:
-                ToolboxSelectGuiFactory.INSTANCE.open(player);
-                return true;
+        if (toolCount == 0) {
+            GTNHLib.proxy.printMessageAboveHotbar(
+                StatCollector.translateToLocal("GT5U.gui.text.toolbox.error.no_tools"),
+                120,
+                true,
+                true);
+            return false;
         }
 
-        return false;
+        if (!player.isSneaking()) {
+            if (toolCount == 1) {
+                sendChangeToolPacket(inventorySlot, selectedToolType.isPresent() ? NO_TOOL_SELECTED : lastSlot);
+                return true;
+            } else {
+                for (ToolboxSlot suggested : ToolboxPickBlockDecider.getSuggestedTool(player)) {
+                    if (handler.getStackInSlot(suggested.getSlotID()) != null) {
+                        sendChangeToolPacket(inventorySlot, suggested.getSlotID());
+                        return true;
+                    }
+                }
+            }
+        }
+
+        ToolboxSelectGuiFactory.INSTANCE.open(player);
+        return true;
     }
 
     /**
