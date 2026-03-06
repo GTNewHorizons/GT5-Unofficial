@@ -258,6 +258,12 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return getCoverAtSide(side).asItemStack();
     }
 
+    protected byte getValidCoversMask() {
+        return validCoversMask;
+    }
+
+    abstract public void enableTicking();
+
     /**
      * @param cover the cover to apply. Not guaranteed to have a side.
      * @param side  the side to apply the cover to.
@@ -267,7 +273,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             covers[side.ordinal()] = cover;
 
             validCoversMask &= (byte) ~side.flag;
-            if (cover.isValid()) validCoversMask |= side.flag;
+            if (cover.isValid()) {
+                enableTicking();
+                validCoversMask |= side.flag;
+            }
         }
     }
 

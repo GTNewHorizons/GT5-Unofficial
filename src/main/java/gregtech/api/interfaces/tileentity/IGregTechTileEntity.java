@@ -173,7 +173,7 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
 
     void enableTicking();
 
-    void disableTicking();
+    void tryDisableTicking();
 
     /**
      * gets the time statistics used for CPU timing

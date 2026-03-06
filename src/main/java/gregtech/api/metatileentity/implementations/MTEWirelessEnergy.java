@@ -110,7 +110,7 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
             if (aTick % ticks_between_energy_addition == 0L) {
                 tryFetchingEnergy();
                 if (aTick > 100) {
-                    aBaseMetaTileEntity.disableTicking();
+                    aBaseMetaTileEntity.tryDisableTicking();
                     WirelessEnergyHatchManager.addHatch(this);
                 }
             }

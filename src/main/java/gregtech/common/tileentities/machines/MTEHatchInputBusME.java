@@ -21,7 +21,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -150,11 +149,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
-        return false;
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullItemList) {
@@ -163,7 +157,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             if (aTimer % 20 == 0) {
                 aBaseMetaTileEntity.setActive(isActive());
                 if (!autoPullAvailable) {
-                    aBaseMetaTileEntity.disableTicking();
+                    aBaseMetaTileEntity.tryDisableTicking();
                 }
             }
         }

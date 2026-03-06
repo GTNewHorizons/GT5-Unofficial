@@ -82,18 +82,13 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
-        return false;
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
         if (aBaseMetaTileEntity.isServerSide() && aTimer % 100 == 0) {
             if (getMaster() != null || !masterSet) {
-                aBaseMetaTileEntity.disableTicking();
+                aBaseMetaTileEntity.tryDisableTicking();
             } else if (trySetMasterFromCoord(masterX, masterY, masterZ) != null) {
-                aBaseMetaTileEntity.disableTicking();
+                aBaseMetaTileEntity.tryDisableTicking();
             }
         }
     }

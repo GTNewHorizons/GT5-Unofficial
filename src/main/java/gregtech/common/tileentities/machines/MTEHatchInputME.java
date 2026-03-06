@@ -158,11 +158,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
-        return false;
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullFluidList) {
@@ -171,7 +166,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             if (aTimer % 20 == 0) {
                 aBaseMetaTileEntity.setActive(isActive());
                 if (!autoPullAvailable) {
-                    aBaseMetaTileEntity.disableTicking();
+                    aBaseMetaTileEntity.tryDisableTicking();
                 }
             }
         }
