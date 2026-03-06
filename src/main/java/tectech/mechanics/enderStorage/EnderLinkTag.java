@@ -1,11 +1,10 @@
 package tectech.mechanics.enderStorage;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
-
-import com.google.common.base.Objects;
 
 public class EnderLinkTag implements Serializable {
 
@@ -31,12 +30,13 @@ public class EnderLinkTag implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EnderLinkTag that = (EnderLinkTag) o;
-        return Objects.equal(frequency, that.frequency) && Objects.equal(player, that.player);
+        return Objects.equals(frequency, that.frequency) && Objects.equals(player, that.player);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(frequency, player);
+        final int hash = 31 + (frequency == null ? 0 : frequency.hashCode());
+        return hash * 31 + (player == null ? 0 : player.hashCode());
     }
 
     public NBTTagCompound save() {

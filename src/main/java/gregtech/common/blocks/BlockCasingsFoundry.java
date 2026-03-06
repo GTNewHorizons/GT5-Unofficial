@@ -33,19 +33,19 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
 
     public BlockCasingsFoundry() {
         super(ItemCasingsFoundry.class, "gt.foundrycasings", MaterialCasings.INSTANCE, 16);
-        register(0, ItemList.Primary_Casing_ExoFoundry, "Primary Exo-Foundry Casing");
-        register(1, ItemList.Magnetic_Chassis_T1_ExoFoundry, "Infinite Magnetic Chassis");
-        register(2, ItemList.Magnetic_Chassis_T2_ExoFoundry, "Eternal Magnetic Chassis");
-        register(3, ItemList.Magnetic_Chassis_T3_ExoFoundry, "Celestial Magnetic Chassis");
-        register(4, ItemList.Universal_Collapser_ExoFoundry, "Universal Collapser Casing");
-        register(5, ItemList.Efficient_Overclocking_ExoFoundry, "Sentient Overclocker Casing");
-        register(6, ItemList.Power_Efficient_Subsystems_ExoFoundry, "Proto-Volt Stabilizer Casing");
-        register(7, ItemList.Heliocast_Reinforcement_ExoFoundry, "Heliocast Reinforcement Casing");
-        register(8, ItemList.Extra_Casting_Basins_ExoFoundry, "Superdense Casting Basin Casing");
-        register(9, ItemList.Hypercooler_ExoFoundry, "Hypercooler Casing");
-        register(10, ItemList.Streamlined_Casters_ExoFoundry, "Streamlined Casting Casing");
-        register(11, ItemList.Secondary_Casing_ExoFoundry, "Inner Exo-Foundry Siphon Casing");
-        register(12, ItemList.Central_Casing_ExoFoundry, "Central Exo-Foundry Regulation Casing");
+        register(0, ItemList.Primary_Casing_ExoFoundry);
+        register(1, ItemList.Magnetic_Chassis_T1_ExoFoundry);
+        register(2, ItemList.Magnetic_Chassis_T2_ExoFoundry);
+        register(3, ItemList.Magnetic_Chassis_T3_ExoFoundry);
+        register(4, ItemList.Universal_Collapser_ExoFoundry);
+        register(5, ItemList.Efficient_Overclocking_ExoFoundry);
+        register(6, ItemList.Power_Efficient_Subsystems_ExoFoundry);
+        register(7, ItemList.Heliocast_Reinforcement_ExoFoundry);
+        register(8, ItemList.Extra_Casting_Basins_ExoFoundry);
+        register(9, ItemList.Hypercooler_ExoFoundry);
+        register(10, ItemList.Streamlined_Casters_ExoFoundry);
+        register(11, ItemList.Secondary_Casing_ExoFoundry);
+        register(12, ItemList.Central_Casing_ExoFoundry);
         for (int i = 1; i <= 3; i++) {
             GTStructureChannels.MAGNETIC_CHASSIS.registerAsIndicator(new ItemStack(this, 1, i), i);
         }
