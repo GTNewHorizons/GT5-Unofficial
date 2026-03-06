@@ -122,7 +122,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
             .addInfo("  Shadow Metal: 2x, 150%")
             .addInfo("  Ichorium: 4x, 200%")
             .addInfo("  Infinity: 8x, 400%")
-            .addInfo("Using using higher tiers of compressed cobblestone boosts CR up to 128x")
+            .addInfo("Using higher tiers of compressed cobblestone boosts CR up to 128x")
             .addInfo("Multiplier = 2^(average compression tier - 1)")
             .addSeparator()
             .addInfo("Work time is fixed at 5 seconds")
@@ -233,7 +233,9 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
 
         // allow compressed dirt and gravel too?
         for (int i = 0; i < STONE_TIERS; i++) {
-            elements[i] = ofBlock(GameRegistry.findBlock(ExtraUtilities.ID, "cobblestone_compressed"), i);
+            elements[i] = onElementPass(
+                t -> t.mStone[i]++,
+                ofBlock(GameRegistry.findBlock(ExtraUtilities.ID, "cobblestone_compressed"), i));
         }
 
         return elements;
@@ -400,17 +402,18 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
                 remainingCapacity -= stack.stackSize;
                 stack.stackSize = 0;
             } else {
-                stack.stackSize = remainingCapacity;
+                stack.stackSize -= remainingCapacity;
                 remainingCapacity = 0;
                 break;
             }
         }
-        return remainingCapacity;
+        return tieredProduction - remainingCapacity;
     }
 
-    private static ItemStack[] getValidInputsForSapling() {
-        // TODO use isOverworldBlock from thaumic bases?
-        ;
+    private static List<ItemStack> getValidInputsForSapling() {
+        // TODO
+        // use isOverworldBlock from thaumic bases?
+        return new ArrayList<>(); // placeholder
     }
 
     private int consumeCatalyst(int consumedInput) {
@@ -438,6 +441,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
         final int wgtLog = 4;
         final int wgtSapling = 2;
         final int wgtLeaves = 1;
+        return 0; // placeholder
     }
 
     /**
@@ -551,8 +555,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
      *
      * @return True if the recipe was added successfully.
      */
-    public static boolean addFakeRecipeToNEI(ItemStack saplingIn, ItemStack inputStack,
-        HashMap<ItemStack, Integer> outputMap) {
+    public static boolean addFakeRecipeToNEI(ItemStack saplingIn) {
         int recipeCount = GTPPRecipeMaps.thaumoArborealConverterFakeRecipes.getAllRecipes()
             .size();
 
@@ -569,9 +572,11 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
         ItemStack[] outputStacks = new ItemStack[getOutputSlots()];
         int[] outputChances = new int[getOutputSlots()];
 
+        HashMap<ItemStack, Integer> outputMap = getOutputsForSapling(saplingIn);
+
         int i = 0;
         for (ItemStack s : getValidInputsForSapling()) {
-            inputStack[i++] = s;
+            inputStacks[i++] = s;
         }
         i = 0;
         for (Map.Entry<ItemStack, Integer> o : outputMap.entrySet()) {
