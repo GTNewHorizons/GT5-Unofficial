@@ -29,6 +29,7 @@ import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.util.GTRecipe;
+import gregtech.common.tileentities.machines.multi.MTEThaumoArborealConverter;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
