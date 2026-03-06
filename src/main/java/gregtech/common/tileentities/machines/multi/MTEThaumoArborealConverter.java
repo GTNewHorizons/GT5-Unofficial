@@ -8,6 +8,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.RandomThings;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -30,6 +31,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
@@ -231,10 +233,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
 
         // allow compressed dirt and gravel too?
         for (int i = 0; i < STONE_TIERS; i++) {
-            // elements[i] = ofBlock(getModItem(ExtraUtilities.ID, "cobblestone_compressed", 1).getItem(), i);
-            // elements[i] = ofBlock(tile.ExtraUtils2.CompressedCobblestone, i);
-            // elements[i] = ofBlock(BlockCompressed.compressed_cobblestone, i);
-            elements[i] = ofBlock((Block) com.rwtema.extrautils.block.BlockCobblestoneCompressed, i);
+            elements[i] = ofBlock(GameRegistry.findBlock(ExtraUtilities.ID, "cobblestone_compressed"), i);
         }
 
         return elements;
