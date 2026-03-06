@@ -62,9 +62,6 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETranscendentPlasmaMixer>
     implements ISurvivalConstructable {
 
-    private static final String ANY_CASING = TooltipHelper
-        .anyCasingText(Casings.DimensionalInjectionCasing.getLocalizedName());
-
     private static final String[][] structure = new String[][] {
         { " CAC ", " ABA ", " ABA ", " A~A ", " ABA ", " ABA ", " CAC " },
         { "CBBBC", "A   A", "A   A", "A   A", "A   A", "A   A", "CBBBC" },
@@ -109,6 +106,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(Casings.DimensionalInjectionCasing.getLocalizedName());
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.tpm")
             .addInfo("gt.tpm.tips")
@@ -117,9 +115,9 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
             .addCasingInfoExactly(Casings.DimensionallyTranscendentCasing.getLocalizedName(), 48, false)
             .addCasingInfoExactly(Casings.DimensionalBridge.getLocalizedName(), 16, false)
             .addCasingInfoRange(Casings.DimensionalInjectionCasing.getLocalizedName(), 0, 33, false)
-            .addInputBus(ANY_CASING, 1)
-            .addInputHatch(ANY_CASING, 1)
-            .addOutputHatch(ANY_CASING, 1)
+            .addInputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputHatch(anyCasing, 1)
             .toolTipFinisher(AuthorColen);
         return tt;
     }

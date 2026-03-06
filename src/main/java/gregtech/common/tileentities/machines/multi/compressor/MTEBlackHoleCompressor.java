@@ -91,9 +91,6 @@ import tectech.thing.metaTileEntity.multi.base.SoundLoopAnyBlock;
 public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBlackHoleCompressor>
     implements ISurvivalConstructable {
 
-    private static final String ANY_CASING = TooltipHelper
-        .anyCasingText(Casings.BackgroundRadiationAbsorbentCasing.getLocalizedName());
-
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEBlackHoleCompressor> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEBlackHoleCompressor>builder()
@@ -355,6 +352,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(Casings.BackgroundRadiationAbsorbentCasing.getLocalizedName());
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.compressor", "machtype.adv_nt_compressor", "BHC")
             .addInfo("gt.bhc.tips.1")
@@ -371,10 +369,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     .getDisplayName(),
                 144)
             .addInputHatch("gt.bhc.info.i_hatch", 2)
-            .addInputBus(ANY_CASING, 1)
-            .addOutputBus(ANY_CASING, 1)
-            .addInputHatch(ANY_CASING, 1)
-            .addEnergyHatch(ANY_CASING, 1)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
             .toolTipFinisher(Ollie, "BucketBrigade");
         return tt;
     }

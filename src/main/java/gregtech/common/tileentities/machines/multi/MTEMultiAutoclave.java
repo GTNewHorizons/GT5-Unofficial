@@ -93,9 +93,6 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     protected int itemPipeTier = 0;
     protected int fluidPipeTier = 0;
 
-    private static final String ANY_CASING = TooltipHelper
-        .anyCasingText(Casings.PressureContainmentCasing.getLocalizedName());
-
     @Nullable
     private static Integer getItemPipeTierFromMeta(Block block, Integer metaID) {
         if (block != GregTechAPI.sBlockCasings11) return null;
@@ -211,6 +208,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(Casings.PressureContainmentCasing.getLocalizedName());
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.autoclave")
             .addDynamicParallelInfo(12, TooltipTier.ITEM_PIPE_CASING)
@@ -230,12 +228,12 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Polytetrafluoroethylene, 1)
                     .getDisplayName(),
                 42)
-            .addInputBus(ANY_CASING, 1)
-            .addOutputBus(ANY_CASING, 1)
-            .addInputHatch(ANY_CASING, 1)
-            .addOutputHatch(ANY_CASING, 1)
-            .addEnergyHatch(ANY_CASING, 1)
-            .addMaintenanceHatch(ANY_CASING, 1)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputHatch(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
             .addSubChannelUsage(GTStructureChannels.PIPE_CASING)

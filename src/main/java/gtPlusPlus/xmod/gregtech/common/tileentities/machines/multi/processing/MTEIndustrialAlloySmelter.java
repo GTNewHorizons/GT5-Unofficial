@@ -61,8 +61,6 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     private int mLevel = 0;
     private int mCasing;
     private static IStructureDefinition<MTEIndustrialAlloySmelter> STRUCTURE_DEFINITION = null;
-    private static final String ANY_CASING = TooltipHelper
-        .anyCasingText(Casings.InconelReinforcedCasing.getLocalizedName());;
 
     public MTEIndustrialAlloySmelter(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -121,6 +119,7 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(Casings.InconelReinforcedCasing.getLocalizedName());
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("gt.zyngen.tips.1")
@@ -132,11 +131,11 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             .addCasingInfoMin(Casings.InconelReinforcedCasing.getLocalizedName(), 8, false)
             .addStructurePart(Casings.IntegralEncasementEV.getLocalizedName(), "gt.zyngen.info.1")
             .addStructurePart("GT5U.tooltip.structure.heating_coil", "gt.zyngen.info.2")
-            .addInputBus(ANY_CASING, 1)
-            .addOutputBus(ANY_CASING, 1)
-            .addEnergyHatch(ANY_CASING, 1)
-            .addMaintenanceHatch(ANY_CASING, 1)
-            .addMufflerHatch(ANY_CASING, 1)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
+            .addMufflerHatch(anyCasing, 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;

@@ -86,10 +86,6 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     private int mCasingFrostProof = 0;
     private int mTier = 1;
 
-    private static final String ANY_CASING = TooltipHelper.anyCasingText(
-        ItemList.Casing_FrostProof.get(1)
-            .getDisplayName());
-
     private static class SubspaceCoolingFluid {
 
         public Materials material;
@@ -237,6 +233,9 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(
+            ItemList.Casing_FrostProof.get(1)
+                .getDisplayName());
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.mvf")
             .addInfo("gt.mvf.tips.1")
@@ -254,12 +253,12 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             .addInfo("gt.mvf.tips.3")
             .beginStructureBlock(15, 15, 15, true)
             .addController("front_center")
-            .addEnergyHatch(ANY_CASING, 1)
-            .addMaintenanceHatch(ANY_CASING, 1)
-            .addInputHatch(ANY_CASING, 1)
-            .addOutputHatch(ANY_CASING, 1)
-            .addInputBus(ANY_CASING, 1)
-            .addOutputBus(ANY_CASING, 1)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputHatch(anyCasing, 1)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
             .addStructureInfo("gt.mvf.info.t1_multi")
             .addCasingInfoMin(Casings.FrostProofMachineCasing.getLocalizedName(), 800)
             .addStructureInfo("gt.mvf.info.t2_multi")

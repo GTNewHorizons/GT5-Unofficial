@@ -113,10 +113,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         return new MTEElectricImplosionCompressor(this.mName);
     }
 
-    private static final String ANY_CASING = TooltipHelper.anyCasingText(
-        ItemList.Casing_SolidSteel.get(1)
-            .getDisplayName());
-
     private static final int CASING_INDEX = 16;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_SUCCESSFUL = "main_successful";
@@ -218,6 +214,9 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(
+            ItemList.Casing_SolidSteel.get(1)
+                .getDisplayName());
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.eic")
             .addInfo("gt.eic.tips")
@@ -230,10 +229,10 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addStructurePart(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 1).getDisplayName(), "gt.eic.info.casing.a")
             .addStructurePart(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 0).getDisplayName(), "gt.eic.info.casing.b")
             .addStructurePart("GT5U.tooltip.structure.kaboom_containment", "gt.eic.info.casing.c")
-            .addMaintenanceHatch(ANY_CASING, 1)
-            .addInputBus(ANY_CASING, 1)
-            .addInputHatch(ANY_CASING, 1)
-            .addOutputBus(ANY_CASING, 1)
+            .addMaintenanceHatch(anyCasing, 1)
+            .addInputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
             .addEnergyHatch("gt.eic.info.e_hatch", 2)
             .addSubChannelUsage(GTStructureChannels.EIC_PISTON)
             .toolTipFinisher();

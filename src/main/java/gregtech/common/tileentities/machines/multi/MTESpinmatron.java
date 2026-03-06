@@ -109,8 +109,6 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
         "iconsets/TFFT_ACTIVE_GLOW");
     public ArrayList<MTEHatchTurbine> turbineRotorHatchList = new ArrayList<>();
-    private static final String ANY_CASING = TooltipHelper
-        .anyCasingText(Casings.VibrationSafeCasing.getLocalizedName());
 
     private boolean staticAnimations = false;
     // spotless:off
@@ -383,6 +381,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(Casings.VibrationSafeCasing.getLocalizedName());
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.centrifuge")
             .addInfo("gt.spinmatron.tips.1")
@@ -406,12 +405,12 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addCasingInfoExactly(Casings.TurbineShaft.getLocalizedName(), 24)
             .addCasingInfoExactly("gt.blockmachines.hatch.turbine.name", 8)
             .addCasingInfoExactly(Casings.TurbineShaft.getLocalizedName(), 264)
-            .addInputBus(ANY_CASING, 1)
-            .addOutputBus(ANY_CASING, 1)
-            .addInputHatch(ANY_CASING, 1)
-            .addOutputHatch(ANY_CASING, 1)
-            .addEnergyHatch(ANY_CASING, 1)
-            .addMaintenanceHatch(ANY_CASING, 1)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputHatch(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
 

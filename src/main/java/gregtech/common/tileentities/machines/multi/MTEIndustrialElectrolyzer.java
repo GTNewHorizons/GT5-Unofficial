@@ -49,8 +49,6 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
     private static final float SPEED = 2.8f;
     private static final float EU_EFFICIENCY = 0.9f;
 
-    private static final String ANY_CASING = TooltipHelper.anyCasingText(Casings.ElectrolyzerCasing.getLocalizedName());
-
     public MTEIndustrialElectrolyzer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -149,6 +147,7 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(Casings.ElectrolyzerCasing.getLocalizedName());
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.electrolyzer")
             .addBulkMachineInfo(PARALLEL_PER_TIER, SPEED, EU_EFFICIENCY)
@@ -163,13 +162,13 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
                 false)
             .addCasingInfoExactly(Casings.TinItemPipeCasing.getLocalizedName(), 4, false)
             .addCasingInfoExactly(Casings.BrassItemPipeCasing.getLocalizedName(), 4, false)
-            .addInputBus(ANY_CASING, 1)
-            .addOutputBus(ANY_CASING, 1)
-            .addInputHatch(ANY_CASING, 1)
-            .addOutputHatch(ANY_CASING, 1)
-            .addEnergyHatch(ANY_CASING, 1)
-            .addMaintenanceHatch(ANY_CASING, 1)
-            .addMufflerHatch(ANY_CASING, 1)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputHatch(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
+            .addMufflerHatch(anyCasing, 1)
             .addStructureAuthors("Vortex")
             .toolTipFinisher();
         return tt;

@@ -71,11 +71,9 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
         return "gt.recipe.rockbreaker";
     }
 
-    private static final String ANY_CASING = TooltipHelper
-        .anyCasingText(Casings.ThermalProcessingCasing.getLocalizedName());
-
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(Casings.ThermalProcessingCasing.getLocalizedName());
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addBulkMachineInfo(8, 3f, 0.75f)
@@ -85,12 +83,12 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
             .addController("front_bottom_middle")
             .addCasingInfoMin(Casings.ThermalProcessingCasing.getLocalizedName(), 9, false)
             .addCasingInfoExactly(Casings.ThermalContainmentCasing.getLocalizedName(), 16, false)
-            .addInputBus(ANY_CASING, 1)
-            .addInputHatch(ANY_CASING, 1)
-            .addOutputBus(ANY_CASING, 1)
-            .addEnergyHatch(ANY_CASING, 1)
-            .addMaintenanceHatch(ANY_CASING, 1)
-            .addMufflerHatch(ANY_CASING, 1)
+            .addInputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
+            .addMufflerHatch(anyCasing, 1)
             .toolTipFinisher();
         return tt;
     }
