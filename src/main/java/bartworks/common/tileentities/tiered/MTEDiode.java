@@ -29,6 +29,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -78,7 +82,7 @@ public class MTEDiode extends MTEBasicHull {
             ++this.aAmps;
             if (this.aAmps > this.maxAmps) this.aAmps = 0;
         }
-        GTUtility.sendChatTrans(aPlayer, "BW.chat.diode.max_amps", this.aAmps);
+        GTUtility.sendChatTrans(aPlayer, "BW.chat.diode.max_amps", new ChatComponentNumber(this.aAmps));
     }
 
     @Override
