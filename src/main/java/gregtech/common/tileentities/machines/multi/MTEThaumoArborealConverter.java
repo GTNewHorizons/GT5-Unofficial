@@ -1,10 +1,8 @@
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -16,37 +14,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.enums.TAE;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.TAE;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 
-public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArborealConverter> implements ISurvivalConstructable {
-    
+public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArborealConverter>
+    implements ISurvivalConstructable {
+
     private static final int TICKS_PER_OPERATION = 100;
     private static final int BASE_PRODUCTION = 10;
     private static final int FRAME_NUM = 56;
-    private static final int[] FRAME_IDS = {
-        330, // Thaumium
+    private static final int[] FRAME_IDS = { 330, // Thaumium
         368, // Shadow
         978, // Ichorium
-        397  // Infinity
+        397 // Infinity
     };
-    private static final int[] FRAME_WEIGHTS = {
-        100, // Thaumium
+    private static final int[] FRAME_WEIGHTS = { 100, // Thaumium
         150, // Shadow
         200, // Ichorium
-        400  // Infinity
+        400 // Infinity
     };
     private static final int STONE_NUM = 24;
     private static final int STONE_TIERS = 8;
-    
+
     private int mCasing;
     private int glassTier;
     private int[] mFrame = new int[FRAME_IDS.length];
     private int mFrameTier;
     private int[] mStone = new int[STONE_TIERS];
     public static String mCasingName = "Sterile Farm Casing";
-    
+
     public MTEThaumoArborealConverter(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
         CASING_TEXTURE_ID = TAE.getIndexFromPage(1, 15);
@@ -66,7 +63,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
     public String getMachineType() {
         return "Thaumo-Arboreal Converter, TACo";
     }
-    
+
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
@@ -134,7 +131,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
         }
         return true;
     }
-    
+
     @Override
     public boolean supportsCraftingMEBuffer() {
         return false;
@@ -155,7 +152,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiTreeFarm;
     }
-    
+
     private static int getFrameTier(int id) {
         for (int i = 0; i < FRAME_IDS.length; i++) {
             if (FRAME_IDS[i] == id) {
@@ -164,23 +161,19 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
         }
         return -1;
     }
-    
+
     private static IStructureElement<MTEThaumoArborealConverter> frameElement(int id) {
         int tier = getFrameTier(id);
 
-        return onElementPass(
-            t -> {
-                if (tier >= 0) {
-                    ++t.mFrame[tier];
-                }
-            },
-            ofBlock(GregTechAPI.sBlockFrames, id)
-        );
+        return onElementPass(t -> {
+            if (tier >= 0) {
+                ++t.mFrame[tier];
+            }
+        }, ofBlock(GregTechAPI.sBlockFrames, id));
     }
-    
+
     private static IStructureElement<MTEThaumoArborealConverter>[] frameElements() {
-        IStructureElement<MTEThaumoArborealConverter>[] elements =
-            new IStructureElement[FRAME_IDS.length];
+        IStructureElement<MTEThaumoArborealConverter>[] elements = new IStructureElement[FRAME_IDS.length];
 
         for (int i = 0; i < FRAME_IDS.length; i++) {
             elements[i] = frameElement(FRAME_IDS[i]);
@@ -188,10 +181,9 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
 
         return elements;
     }
-    
+
     private static IStructureElement<MTEThaumoArborealConverter>[] stoneElements() {
-        IStructureElement<MTEThaumoArborealConverter>[] elements =
-            new IStructureElement[STONE_TIERS];
+        IStructureElement<MTEThaumoArborealConverter>[] elements = new IStructureElement[STONE_TIERS];
 
         // allow compressed dirt and gravel too?
         for (int i = 0; i < STONE_TIERS; i++) {
@@ -200,7 +192,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
 
         return elements;
     }
-    
+
     private static final IStructureDefinition<MTEThaumoArborealConverter> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEThaumoArborealConverter>builder()
         .addShape(
@@ -218,8 +210,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
                 })) // spotless:on
         .addElement(
             'c',
-            buildHatchAdder(MTEThaumoArborealConverter.class)
-                .atLeast(InputBus, OutputBus, Energy, Maintenance)
+            buildHatchAdder(MTEThaumoArborealConverter.class).atLeast(InputBus, OutputBus, Energy, Maintenance)
                 .casingIndex(CASING.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(t -> t.mCasing++, Casings.SterileFarmCasing.asElement())))
@@ -229,330 +220,336 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
         .addElement('C', onElementPass(t -> t.mCasing++, Casings.SterileFarmCasing.asElement()))
         .addElement('s', ofChain(stoneElements()))
         .build();
-        
-        @Override
-        public void construct(ItemStack stackSize, boolean hintsOnly) {
-            buildPiece(mName, stackSize, hintsOnly, 4, 6, 0);
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(mName, stackSize, hintsOnly, 4, 6, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivalBuildPiece(mName, stackSize, 4, 6, 0, elementBudget, env, false, true);
+    }
+
+    /* Processing logic. */
+
+    @Override
+    public boolean isCorrectMachinePart(final ItemStack aStack) {
+        if (aStack == null) return false;
+        return isValidSapling(aStack);
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        // TODO
+        // Only for NEI, not used in processing logic.
+        return GTPPRecipeMaps.thaumoArborealConverterFakeRecipes;
+    }
+
+    private static int getTierMultiplier(int tier) {
+        return (2 * (tier * tier)) - (2 * tier) + 5;
+    }
+
+    private int getMultiFrameTier() {
+        for (int i = 0; i < FRAME_IDS.length; i++) {
+            if (mFrame[i] == FRAME_NUM) {
+                return i;
+            }
         }
-    
-        @Override
-        public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-            if (mMachine) return -1;
-            return survivalBuildPiece(mName, stackSize, 4, 6, 0, elementBudget, env, false, true);
+        return -1;
+    }
+
+    private int getFrameMultiplier() {
+        return Math.pow(2, this.mFrameTier);
+    }
+
+    private double getFrameWeightMul() {
+        return FRAME_WEIGHTS[this.mFrameTier];
+    }
+
+    private double getStoneTier() {
+        double totalStoneWeight = 0;
+        for (int i = 0; i < STONE_TIERS; i++) {
+            totalStoneWeight += this.mStone[i] * i;
         }
-        
-    
-        /* Processing logic. */
-    
-        @Override
-        public boolean isCorrectMachinePart(final ItemStack aStack) {
-            if (aStack == null) return false;
-            return isValidSapling(aStack);
-        }
-    
-        @Override
-        public RecipeMap<?> getRecipeMap() {
-            // TODO
-            // Only for NEI, not used in processing logic.
-            return GTPPRecipeMaps.thaumoArborealConverterFakeRecipes;
-        }
-        
-        private static int getTierMultiplier(int tier) {
-            return (2 * (tier * tier)) - (2 * tier) + 5;
-        }
-        
-        private int getMultiFrameTier() {
-            for (int i = 0; i < FRAME_IDS.length; i++) {
-                if (mFrame[i] == FRAME_NUM) {
-                    return i;
+        return totalStoneWeight / STONE_NUM;
+    }
+
+    private int getStoneMultiplier() {
+        return (int) Math.pow(2, getStoneTier());
+    }
+
+    /**
+     * Key of this map is the registry name of the sapling, followed by ":", and the sapling's metadata value.
+     * <p>
+     * The value of the map is a list of products and weights. Weights for a given sapling should add up to 100.
+     */
+    public static final HashMap<String, HashMap<ItemStack, Integer>> treeProductsMap = new HashMap<>();
+
+    @Override
+    public ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+            // TODO peaceful tree consumes plant matter instead of rocks
+
+            @Override
+            @Nonnull
+            public CheckRecipeResult process() {
+                if (inputItems == null) {
+                    inputItems = GTValues.emptyItemStackArray;
                 }
-            }
-            return -1;
-        }
-        
-        private int getFrameMultiplier() {
-            return Math.pow(2, this.mFrameTier);
-        }
-        
-        private double getFrameWeightMul() {
-            return FRAME_WEIGHTS[this.mFrameTier];
-        }
-        
-        private double getStoneTier(){
-            double totalStoneWeight = 0;
-            for (int i = 0; i < STONE_TIERS; i++){
-                totalStoneWeight += this.mStone[i] * i;
-            }
-            return totalStoneWeight / STONE_NUM;
-        }
-        
-        private int getStoneMultiplier() {
-            return (int) Math.pow(2, getStoneTier());
-        }
-        
-        /**
-         * Key of this map is the registry name of the sapling, followed by ":", and the sapling's metadata value.
-         * <p>
-         * The value of the map is a list of products and weights. Weights for a given sapling should add up to 100.
-         */
-        public static final HashMap<String, HashMap<ItemStack, Integer>> treeProductsMap = new HashMap<>();
-        
-        @Override
-        public ProcessingLogic createProcessingLogic() {
-            return new ProcessingLogic() {
-                // TODO peaceful tree consumes plant matter instead of rocks
-    
-                @Override
-                @Nonnull
-                public CheckRecipeResult process() {
-                    if (inputItems == null) {
-                        inputItems = GTValues.emptyItemStackArray;
-                    }
-                    if (inputFluids == null) {
-                        inputFluids = GTValues.emptyFluidStackArray;
-                    }
-    
-                    ItemStack sapling = findSapling();
-                    if (sapling == null) return SimpleCheckRecipeResult.ofFailure("no_sapling");
-    
-                    HashMap<ItemStack, Integer> outputMap = getOutputsForSapling(sapling);
-                    
-                    int tier = Math.max(1, GTUtility.getTier(availableVoltage * availableAmperage));
-                    int tierMultiplier = getTierMultiplier(tier);
-                    int tieredProduction = BASE_PRODUCTION * getFrameMultiplier() * tierMultiplier * getStoneMultiplier();
-                    int consumedInput = consumeInput(tieredProduction);
-                    int extraOutput = consumeCatalyst(consumedInput);
-                    int totalOutput = consumedInput + extraOutput;
-                    int totalWeight = getSaplingTotalWeight(sapling);
-    
-                    List<ItemStack> outputs = new ArrayList<>();
-                    for (ItemStack output : outputMap.keySet()){
-                        ItemStack out = output.copy();
-                        //w???
-                        int chance = 10000 * totalWeight / outputMap.get(output);
-                        // non-random
-                        //out.stackSize = totalOutput * totalWeight / outputMap.get(output);
-                        // random - normal approximation
-                        // TODO
-                        out.stackSize = 1;
-                        outputs.add(out);
-                    }
-    
-                    outputItems = outputs.toArray(new ItemStack[0]);
-    
-                    VoidProtectionHelper voidProtection = new VoidProtectionHelper().setMachine(machine)
-                        .setItemOutputs(outputItems)
-                        .build();
-                    if (voidProtection.isItemFull()) {
-                        return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
-                    }
-    
-                    duration = TICKS_PER_OPERATION;
-                    calculatedEut = GTValues.VP[tier];
-    
-                    return SimpleCheckRecipeResult.ofSuccess("growing_trees");
+                if (inputFluids == null) {
+                    inputFluids = GTValues.emptyFluidStackArray;
                 }
-            };
-        }
-        
-        private static int consumeInput(int tieredProduction){
-            // consume input stone and dirt up to tieredProduction
-            int remainingCapacity = tieredProduction;
-            for (ItemStack stack : getStoredInputs()){
-                if (!getValidInputsForSapling().contains(stack)) continue;
-                if (stack.stackSize <= remainingCapacity){
-                    remainingCapacity -= stack.stackSize;
-                    deleteInput(stack);
-                } else {
-                    deleteInput(new ItemStack(stack.getItem(), remainingCapacity));
-                    remainingCapacity = 0;
-                    break;
+
+                ItemStack sapling = findSapling();
+                if (sapling == null) return SimpleCheckRecipeResult.ofFailure("no_sapling");
+
+                HashMap<ItemStack, Integer> outputMap = getOutputsForSapling(sapling);
+
+                int tier = Math.max(1, GTUtility.getTier(availableVoltage * availableAmperage));
+                int tierMultiplier = getTierMultiplier(tier);
+                int tieredProduction = BASE_PRODUCTION * getFrameMultiplier() * tierMultiplier * getStoneMultiplier();
+                int consumedInput = consumeInput(tieredProduction);
+                int extraOutput = consumeCatalyst(consumedInput);
+                int totalOutput = consumedInput + extraOutput;
+                int totalWeight = getSaplingTotalWeight(sapling);
+
+                List<ItemStack> outputs = new ArrayList<>();
+                for (ItemStack output : outputMap.keySet()) {
+                    ItemStack out = output.copy();
+                    // w???
+                    int chance = 10000 * totalWeight / outputMap.get(output);
+                    // non-random
+                    // out.stackSize = totalOutput * totalWeight / outputMap.get(output);
+                    // random - normal approximation
+                    // TODO
+                    out.stackSize = 1;
+                    outputs.add(out);
                 }
-            }
-            return remainingCapacity;
-        }
-        
-        private static ItemStack[] getValidInputsForSapling(){
-            // TODO use isOverworldBlock from thaumic bases?
-            ;
-        }
-        
-        private static int consumeCatalyst(int consumedInput){
-            // consume input tree materials weighted up to consumedInput
-            int consumedCatalystWeight = 0;
-            int mult = getFrameWeightMul();
-            for (ItemStack stack : getStoredInputs()){
-                int wgt = getCatalystWeight(stack) * mult / 100;
-                if (wgt <= 0) continue;
-                if (stack.stackSize * wgt <= consumedInput - consumedCatalystWeight){
-                    consumedCatalystWeight += stack.stackSize * wgt;
-                    deleteInput(stack);
-                } else {
-                    int remainingCapacity = consumedInput - consumedCatalystWeight;
-                    deleteInput(new ItemStack(stack.getItem(), (remainingCapacity / wgt) + (remainingCapacity % wgt > 0 ? 1 : 0)));
-                    consumedCatalystWeight = consumedInput;
-                    break;
+
+                outputItems = outputs.toArray(new ItemStack[0]);
+
+                VoidProtectionHelper voidProtection = new VoidProtectionHelper().setMachine(machine)
+                    .setItemOutputs(outputItems)
+                    .build();
+                if (voidProtection.isItemFull()) {
+                    return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
                 }
+
+                duration = TICKS_PER_OPERATION;
+                calculatedEut = GTValues.VP[tier];
+
+                return SimpleCheckRecipeResult.ofSuccess("growing_trees");
             }
-            return consumedCatalystWeight;
+        };
+    }
+
+    private static int consumeInput(int tieredProduction) {
+        // consume input stone and dirt up to tieredProduction
+        int remainingCapacity = tieredProduction;
+        for (ItemStack stack : getStoredInputs()) {
+            if (!getValidInputsForSapling().contains(stack)) continue;
+            if (stack.stackSize <= remainingCapacity) {
+                remainingCapacity -= stack.stackSize;
+                deleteInput(stack);
+            } else {
+                deleteInput(new ItemStack(stack.getItem(), remainingCapacity));
+                remainingCapacity = 0;
+                break;
+            }
         }
-        
-        private static int getCatalystWeight(ItemStack stack){
-            // TODO
-            final int wgtLog = 4;
-            final int wgtSapling = 2;
-            final int wgtLeaves = 1;
+        return remainingCapacity;
+    }
+
+    private static ItemStack[] getValidInputsForSapling() {
+        // TODO use isOverworldBlock from thaumic bases?
+        ;
+    }
+
+    private static int consumeCatalyst(int consumedInput) {
+        // consume input tree materials weighted up to consumedInput
+        int consumedCatalystWeight = 0;
+        int mult = getFrameWeightMul();
+        for (ItemStack stack : getStoredInputs()) {
+            int wgt = getCatalystWeight(stack) * mult / 100;
+            if (wgt <= 0) continue;
+            if (stack.stackSize * wgt <= consumedInput - consumedCatalystWeight) {
+                consumedCatalystWeight += stack.stackSize * wgt;
+                deleteInput(stack);
+            } else {
+                int remainingCapacity = consumedInput - consumedCatalystWeight;
+                deleteInput(
+                    new ItemStack(stack.getItem(), (remainingCapacity / wgt) + (remainingCapacity % wgt > 0 ? 1 : 0)));
+                consumedCatalystWeight = consumedInput;
+                break;
+            }
         }
-        
-        /**
-         * Finds a valid sapling from input buses, and places it into the controller slot.
-         *
-         * @return The sapling that was found (now in the controller slot).
-         */
-        private ItemStack findSapling() {
-            ItemStack controllerSlot = getControllerSlot();
-    
-            if (isValidSapling(controllerSlot)) {
-                return controllerSlot;
-            }
-    
-            if (controllerSlot != null) {
-                // Non-sapling item in controller slot -> output
-                if (addOutputAtomic(controllerSlot)) {
-                    mInventory[1] = null;
-                } else {
-                    return null;
-                }
-            }
-    
-            // Here controller slot is empty, find a valid sapling to use.
-            for (ItemStack stack : getStoredInputs()) {
-                if (isValidSapling(stack)) {
-                    mInventory[1] = stack.splitStack(1);
-                    return mInventory[1];
-                }
-            }
-    
-            // No saplings were found.
-            return null;
+        return consumedCatalystWeight;
+    }
+
+    private static int getCatalystWeight(ItemStack stack) {
+        // TODO
+        final int wgtLog = 4;
+        final int wgtSapling = 2;
+        final int wgtLeaves = 1;
+    }
+
+    /**
+     * Finds a valid sapling from input buses, and places it into the controller slot.
+     *
+     * @return The sapling that was found (now in the controller slot).
+     */
+    private ItemStack findSapling() {
+        ItemStack controllerSlot = getControllerSlot();
+
+        if (isValidSapling(controllerSlot)) {
+            return controllerSlot;
         }
-        
-        private static String getSaplingName(ItemStack sapling){
-            return Item.itemRegistry.getNameForObject(sapling.getItem()) + ":" + sapling.getItemDamage();
+
+        if (controllerSlot != null) {
+            // Non-sapling item in controller slot -> output
+            if (addOutputAtomic(controllerSlot)) {
+                mInventory[1] = null;
+            } else {
+                return null;
+            }
         }
-        
-        /**
-         * Check if an ItemStack is a sapling that can be farmed.
-         *
-         * @param stack An ItemStack.
-         * @return True if stack is a valid sapling that can be farmed.
-         */
-        private boolean isValidSapling(ItemStack stack) {
-            if (stack == null) return false;
-            return treeProductsMap.containsKey(getSaplingName(stack));
+
+        // Here controller slot is empty, find a valid sapling to use.
+        for (ItemStack stack : getStoredInputs()) {
+            if (isValidSapling(stack)) {
+                mInventory[1] = stack.splitStack(1);
+                return mInventory[1];
+            }
         }
-        
-        /**
-         * Get a list of possible outputs for a sapling. This is recovered from
-         * {@link #treeProductsMap}.
-         *
-         * @param sapling A sapling to farm.
-         * @return A map of outputs for each mode. Outputs for some modes might be null.
-         */
-        private static EnumMap<Mode, ItemStack> getOutputsForSapling(ItemStack sapling) {
-            return treeProductsMap.get(getSaplingName(sapling));
+
+        // No saplings were found.
+        return null;
+    }
+
+    private static String getSaplingName(ItemStack sapling) {
+        return Item.itemRegistry.getNameForObject(sapling.getItem()) + ":" + sapling.getItemDamage();
+    }
+
+    /**
+     * Check if an ItemStack is a sapling that can be farmed.
+     *
+     * @param stack An ItemStack.
+     * @return True if stack is a valid sapling that can be farmed.
+     */
+    private boolean isValidSapling(ItemStack stack) {
+        if (stack == null) return false;
+        return treeProductsMap.containsKey(getSaplingName(stack));
+    }
+
+    /**
+     * Get a list of possible outputs for a sapling. This is recovered from
+     * {@link #treeProductsMap}.
+     *
+     * @param sapling A sapling to farm.
+     * @return A map of outputs for each mode. Outputs for some modes might be null.
+     */
+    private static EnumMap<Mode, ItemStack> getOutputsForSapling(ItemStack sapling) {
+        return treeProductsMap.get(getSaplingName(sapling));
+    }
+
+    /**
+     * Registers outputs for a sapling. Output amount is further modified by catalyst consumption and frame and power
+     * tier. Recipes
+     * are added in {@link RecipeLoaderTACo}.
+     *
+     * @param saplingIn The input sapling to farm.
+     * @param output    ItemStack to output
+     * @param weight    proportional weight of output, these should add up to 100 across all outputs of a sapling
+     */
+
+    public static void registerTreeProducts(ItemStack saplingIn, ItemStack output, int weight) {
+        // TODO normalize weight to 10k
+        if (saplingIn == null) {
+            Logger.ERROR("Null sapling passed for registerTreeProducts()");
+            return;
         }
-        
-        /**
-         * Registers outputs for a sapling. Output amount is further modified by catalyst consumption and frame and power tier. Recipes
-         * are added in {@link RecipeLoaderTACo}.
-         *
-         * @param saplingIn  The input sapling to farm.
-         * @param output     ItemStack to output
-         * @param weight     proportional weight of output, these should add up to 100 across all outputs of a sapling
-         */
-         
-        public static void registerTreeProducts(ItemStack saplingIn, ItemStack output, int weight) {
-            // TODO normalize weight to 10k
-            if (saplingIn == null) {
-                Logger.ERROR("Null sapling passed for registerTreeProducts()");
-                return;
-            }
-            if (weight <= 0 || weight > 100) {
-                Logger.ERROR("Invalid weight passed for registerTreeProducts()");
-                return;
-            }
-            String key = getSaplingName(saplingIn);
-            HashMap<ItemStack, Integer> map = treeProductsMap.get(key);
-            if (map == null) {
-                map = new HashMap<>();
-                treeProductsMap.put(key, map);
-            }
-            map.put(output, weight);
+        if (weight <= 0 || weight > 100) {
+            Logger.ERROR("Invalid weight passed for registerTreeProducts()");
+            return;
         }
-        
-        private static int getSaplingTotalWeight(ItemStack saplingIn){
-            int weight = 0;
-            HashMap<ItemStack, Integer> saplingMap = treeProductsMap.get(getSaplingName(saplingIn));
-            if (saplingMap == null) return 0;
-            for (int w : saplingMap.values()){
-                weight += w;
-            }
-            return weight;
+        String key = getSaplingName(saplingIn);
+        HashMap<ItemStack, Integer> map = treeProductsMap.get(key);
+        if (map == null) {
+            map = new HashMap<>();
+            treeProductsMap.put(key, map);
         }
-        
-        public static int getInputSlots() {return 1;}
-        public static int getOutputSlots() {return 10;}
-        
-        /**
-         * Add a recipe for this tree to NEI. These recipes are only used in NEI, they are never used for processing logic.
-         *
-         * @return True if the recipe was added successfully.
-         */
-        public static boolean addFakeRecipeToNEI(ItemStack saplingIn, ItemStack inputStack, HashMap<ItemStack, Integer> outputMap){
-            int recipeCount = GTPPRecipeMaps.thaumoArborealConverterFakeRecipes.getAllRecipes()
-                .size();
-            
-            // Sapling goes into the "special" slot.
-            ItemStack specialStack = saplingIn.copy();
-            specialStack.stackSize = 0;
-            
-            int totalWeight = getSaplingTotalWeight(saplingIn);
-            if (totalWeight <= 0){
-                Logger.INFO("Invalid weight(" + totalWeight + ") for sapling: " + sapling.getDisplayName());
-                return false;
-            }
-            ItemStack[] outputStacks = new ItemStack[getOutputSlots()];
-            int[] outputChances = new int[getOutputSlots()];
-            
-            int i = 0;
-            for (Map.Entry<ItemStack, Integer> o : outputMap.entrySet()) {
-                outputStacks[i] = o.getKey();
-                //w???
-                outputChances[i] = 10000*o.getValue()/totalWeight;
-                if (outputChances[i] == 0) outputChances[i] = 1;
-                i++;
-            }
-            
-            GTPPRecipeMaps.thaumoArborealConverterFakeRecipes.addFakeRecipe(
+        map.put(output, weight);
+    }
+
+    private static int getSaplingTotalWeight(ItemStack saplingIn) {
+        int weight = 0;
+        HashMap<ItemStack, Integer> saplingMap = treeProductsMap.get(getSaplingName(saplingIn));
+        if (saplingMap == null) return 0;
+        for (int w : saplingMap.values()) {
+            weight += w;
+        }
+        return weight;
+    }
+
+    public static int getInputSlots() {
+        return 1;
+    }
+
+    public static int getOutputSlots() {
+        return 10;
+    }
+
+    /**
+     * Add a recipe for this tree to NEI. These recipes are only used in NEI, they are never used for processing logic.
+     *
+     * @return True if the recipe was added successfully.
+     */
+    public static boolean addFakeRecipeToNEI(ItemStack saplingIn, ItemStack inputStack,
+        HashMap<ItemStack, Integer> outputMap) {
+        int recipeCount = GTPPRecipeMaps.thaumoArborealConverterFakeRecipes.getAllRecipes()
+            .size();
+
+        // Sapling goes into the "special" slot.
+        ItemStack specialStack = saplingIn.copy();
+        specialStack.stackSize = 0;
+
+        int totalWeight = getSaplingTotalWeight(saplingIn);
+        if (totalWeight <= 0) {
+            Logger.INFO("Invalid weight(" + totalWeight + ") for sapling: " + sapling.getDisplayName());
+            return false;
+        }
+        ItemStack[] outputStacks = new ItemStack[getOutputSlots()];
+        int[] outputChances = new int[getOutputSlots()];
+
+        int i = 0;
+        for (Map.Entry<ItemStack, Integer> o : outputMap.entrySet()) {
+            outputStacks[i] = o.getKey();
+            // w???
+            outputChances[i] = 10000 * o.getValue() / totalWeight;
+            if (outputChances[i] == 0) outputChances[i] = 1;
+            i++;
+        }
+
+        GTPPRecipeMaps.thaumoArborealConverterFakeRecipes.addFakeRecipe(
+            false,
+            new GTRecipe.GTRecipe_WithAlt(
                 false,
-                new GTRecipe.GTRecipe_WithAlt(
-                    false,
-                    saplingIn,
-                    outputStacks,
-                    specialStack,
-                    null,
-                    outputChances,
-                    null,
-                    null,
-                    null,
-                    null,
-                    TICKS_PER_OPERATION,
-                    0,
-                    recipeCount, // special value, also sorts recipes correctly in order of addition.
-                    null));
-            return GTPPRecipeMaps.thaumoArborealConverterFakeRecipes
-                .getAllRecipes()
-                .size() > recipeCount;
-        }
+                saplingIn,
+                outputStacks,
+                specialStack,
+                null,
+                outputChances,
+                null,
+                null,
+                null,
+                null,
+                TICKS_PER_OPERATION,
+                0,
+                recipeCount, // special value, also sorts recipes correctly in order of addition.
+                null));
+        return GTPPRecipeMaps.thaumoArborealConverterFakeRecipes.getAllRecipes()
+            .size() > recipeCount;
+    }
 }
