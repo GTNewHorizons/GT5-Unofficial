@@ -768,138 +768,318 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Shape_Empty.set(
             addItem(
                 Shape_Empty.ID,
-                "Empty Shape Plate",
-                "Raw Plate to make Molds and Extruder Shapes",
+                GTUtility.translate("gt.item.shape_empty.name"),
+                GTUtility.translate("gt.item.shape_empty.tooltip"),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L)));
 
-        ItemList.Shape_Mold_Plate.set(addItem(Shape_Mold_Plate.ID, "Mold (Plate)", "Mold for making Plates"));
-        ItemList.Shape_Mold_Casing.set(addItem(Shape_Mold_Casing.ID, "Mold (Casing)", "Mold for making Item Casings"));
-        ItemList.Shape_Mold_Gear.set(addItem(Shape_Mold_Gear.ID, "Mold (Gear)", "Mold for making Gears"));
-        ItemList.Shape_Mold_Credit
-            .set(addItem(Shape_Mold_Credit.ID, "Mold (Coinage)", "Secure Mold for making Coins (Don't lose it!)"));
-        ItemList.Shape_Mold_Bottle.set(addItem(Shape_Mold_Bottle.ID, "Mold (Bottle)", "Mold for making Bottles"));
-        ItemList.Shape_Mold_Ingot.set(addItem(Shape_Mold_Ingot.ID, "Mold (Ingot)", "Mold for making Ingots"));
-        ItemList.Shape_Mold_Ball.set(addItem(Shape_Mold_Ball.ID, "Mold (Ball)", "Mold for making Balls"));
-        ItemList.Shape_Mold_Block.set(addItem(Shape_Mold_Block.ID, "Mold (Block)", "Mold for making Blocks"));
-        ItemList.Shape_Mold_Nugget.set(addItem(Shape_Mold_Nugget.ID, "Mold (Nuggets)", "Mold for making Nuggets"));
-        ItemList.Shape_Mold_Bun.set(addItem(Shape_Mold_Bun.ID, "Mold (Buns)", "Mold for shaping Buns"));
-        ItemList.Shape_Mold_Bread.set(addItem(Shape_Mold_Bread.ID, "Mold (Bread)", "Mold for shaping Breads"));
-        ItemList.Shape_Mold_Baguette
-            .set(addItem(Shape_Mold_Baguette.ID, "Mold (Baguette)", "Mold for shaping Baguettes"));
-        ItemList.Shape_Mold_Cylinder
-            .set(addItem(Shape_Mold_Cylinder.ID, "Mold (Cylinder)", "Mold for shaping Cylinders"));
-        ItemList.Shape_Mold_Anvil.set(addItem(Shape_Mold_Anvil.ID, "Mold (Anvil)", "Mold for shaping Anvils"));
-        ItemList.Shape_Mold_Name
-            .set(addItem(Shape_Mold_Name.ID, "Mold (Name)", "Mold for naming Items (rename Mold with Anvil)"));
-        ItemList.Shape_Mold_Arrow.set(addItem(Shape_Mold_Arrow.ID, "Mold (Arrow Head)", "Mold for making Arrow Heads"));
-        ItemList.Shape_Mold_Gear_Small
-            .set(addItem(Shape_Mold_Gear_Small.ID, "Mold (Small Gear)", "Mold for making small Gears"));
-        ItemList.Shape_Mold_Rod.set(addItem(Shape_Mold_Rod.ID, "Mold (Rod)", "Mold for making Rods"));
-        ItemList.Shape_Mold_Bolt.set(addItem(Shape_Mold_Bolt.ID, "Mold (Bolt)", "Mold for making Bolts"));
-        ItemList.Shape_Mold_Round.set(addItem(Shape_Mold_Round.ID, "Mold (Round)", "Mold for making Rounds"));
-        ItemList.Shape_Mold_Screw.set(addItem(Shape_Mold_Screw.ID, "Mold (Screw)", "Mold for making Screws"));
-        ItemList.Shape_Mold_Ring.set(addItem(Shape_Mold_Ring.ID, "Mold (Ring)", "Mold for making Rings"));
-        ItemList.Shape_Mold_Rod_Long
-            .set(addItem(Shape_Mold_Rod_Long.ID, "Mold (Long Rod)", "Mold for making Long Rods"));
-        ItemList.Shape_Mold_Rotor.set(addItem(Shape_Mold_Rotor.ID, "Mold (Rotor)", "Mold for making a Rotor"));
-        ItemList.Shape_Mold_Turbine_Blade
-            .set(addItem(Shape_Mold_Turbine_Blade.ID, "Mold (Turbine Blade)", "Mold for making a Turbine Blade"));
-        ItemList.Shape_Mold_Pipe_Tiny
-            .set(addItem(Shape_Mold_Pipe_Tiny.ID, "Mold (Tiny Pipe)", "Mold for making tiny Pipes"));
-        ItemList.Shape_Mold_Pipe_Small
-            .set(addItem(Shape_Mold_Pipe_Small.ID, "Mold (Small Pipe)", "Mold for making small Pipes"));
-        ItemList.Shape_Mold_Pipe_Medium
-            .set(addItem(Shape_Mold_Pipe_Medium.ID, "Mold (Normal Pipe)", "Mold for making Pipes"));
-        ItemList.Shape_Mold_Pipe_Large
-            .set(addItem(Shape_Mold_Pipe_Large.ID, "Mold (Large Pipe)", "Mold for making large Pipes"));
-        ItemList.Shape_Mold_Pipe_Huge
-            .set(addItem(Shape_Mold_Pipe_Huge.ID, "Mold (Huge Pipe)", "Mold for making full Block Pipes"));
-        ItemList.Shape_Mold_ToolHeadDrill
-            .set(addItem(Shape_Mold_Tool_Head_Drill.ID, "Mold (Drill Head)", "Mold for making Drill Heads"));
+        ItemList.Shape_Mold_Plate.set(
+            addItem(
+                Shape_Mold_Plate.ID,
+                GTUtility.translate("gt.item.shape_mold.plate.name"),
+                GTUtility.translate("gt.item.shape_mold.plate.tooltip")));
+        ItemList.Shape_Mold_Casing.set(
+            addItem(
+                Shape_Mold_Casing.ID,
+                GTUtility.translate("gt.item.shape_mold.casing.name"),
+                GTUtility.translate("gt.item.shape_mold.casing.tooltip")));
+        ItemList.Shape_Mold_Gear.set(
+            addItem(
+                Shape_Mold_Gear.ID,
+                GTUtility.translate("gt.item.shape_mold.gear.name"),
+                GTUtility.translate("gt.item.shape_mold.gear.tooltip")));
+        ItemList.Shape_Mold_Credit.set(
+            addItem(
+                Shape_Mold_Credit.ID,
+                GTUtility.translate("gt.item.shape_mold.credit.name"),
+                GTUtility.translate("gt.item.shape_mold.credit.tooltip")));
+        ItemList.Shape_Mold_Bottle.set(
+            addItem(
+                Shape_Mold_Bottle.ID,
+                GTUtility.translate("gt.item.shape_mold.bottle.name"),
+                GTUtility.translate("gt.item.shape_mold.bottle.tooltip")));
+        ItemList.Shape_Mold_Ingot.set(
+            addItem(
+                Shape_Mold_Ingot.ID,
+                GTUtility.translate("gt.item.shape_mold.ingot.name"),
+                GTUtility.translate("gt.item.shape_mold.ingot.tooltip")));
+        ItemList.Shape_Mold_Ball.set(
+            addItem(
+                Shape_Mold_Ball.ID,
+                GTUtility.translate("gt.item.shape_mold.ball.name"),
+                GTUtility.translate("gt.item.shape_mold.ball.tooltip")));
+        ItemList.Shape_Mold_Block.set(
+            addItem(
+                Shape_Mold_Block.ID,
+                GTUtility.translate("gt.item.shape_mold.block.name"),
+                GTUtility.translate("gt.item.shape_mold.block.tooltip")));
+        ItemList.Shape_Mold_Nugget.set(
+            addItem(
+                Shape_Mold_Nugget.ID,
+                GTUtility.translate("gt.item.shape_mold.nugget.name"),
+                GTUtility.translate("gt.item.shape_mold.nugget.tooltip")));
+        ItemList.Shape_Mold_Bun.set(
+            addItem(
+                Shape_Mold_Bun.ID,
+                GTUtility.translate("gt.item.shape_mold.bun.name"),
+                GTUtility.translate("gt.item.shape_mold.bun.tooltip")));
+        ItemList.Shape_Mold_Bread.set(
+            addItem(
+                Shape_Mold_Bread.ID,
+                GTUtility.translate("gt.item.shape_mold.bread.name"),
+                GTUtility.translate("gt.item.shape_mold.bread.tooltip")));
+        ItemList.Shape_Mold_Baguette.set(
+            addItem(
+                Shape_Mold_Baguette.ID,
+                GTUtility.translate("gt.item.shape_mold.baguette.name"),
+                GTUtility.translate("gt.item.shape_mold.baguette.tooltip")));
+        ItemList.Shape_Mold_Cylinder.set(
+            addItem(
+                Shape_Mold_Cylinder.ID,
+                GTUtility.translate("gt.item.shape_mold.cylinder.name"),
+                GTUtility.translate("gt.item.shape_mold.cylinder.tooltip")));
+        ItemList.Shape_Mold_Anvil.set(
+            addItem(
+                Shape_Mold_Anvil.ID,
+                GTUtility.translate("gt.item.shape_mold.anvil.name"),
+                GTUtility.translate("gt.item.shape_mold.anvil.tooltip")));
+        ItemList.Shape_Mold_Name.set(
+            addItem(
+                Shape_Mold_Name.ID,
+                GTUtility.translate("gt.item.shape_mold.name.name"),
+                GTUtility.translate("gt.item.shape_mold.name.tooltip")));
+        ItemList.Shape_Mold_Arrow.set(
+            addItem(
+                Shape_Mold_Arrow.ID,
+                GTUtility.translate("gt.item.shape_mold.arrow.name"),
+                GTUtility.translate("gt.item.shape_mold.arrow.tooltip")));
+        ItemList.Shape_Mold_Gear_Small.set(
+            addItem(
+                Shape_Mold_Gear_Small.ID,
+                GTUtility.translate("gt.item.shape_mold.gear_small.name"),
+                GTUtility.translate("gt.item.shape_mold.gear_small.tooltip")));
+        ItemList.Shape_Mold_Rod.set(
+            addItem(
+                Shape_Mold_Rod.ID,
+                GTUtility.translate("gt.item.shape_mold.rod.name"),
+                GTUtility.translate("gt.item.shape_mold.rod.tooltip")));
+        ItemList.Shape_Mold_Bolt.set(
+            addItem(
+                Shape_Mold_Bolt.ID,
+                GTUtility.translate("gt.item.shape_mold.bolt.name"),
+                GTUtility.translate("gt.item.shape_mold.bolt.tooltip")));
+        ItemList.Shape_Mold_Round.set(
+            addItem(
+                Shape_Mold_Round.ID,
+                GTUtility.translate("gt.item.shape_mold.round.name"),
+                GTUtility.translate("gt.item.shape_mold.round.tooltip")));
+        ItemList.Shape_Mold_Screw.set(
+            addItem(
+                Shape_Mold_Screw.ID,
+                GTUtility.translate("gt.item.shape_mold.screw.name"),
+                GTUtility.translate("gt.item.shape_mold.screw.tooltip")));
+        ItemList.Shape_Mold_Ring.set(
+            addItem(
+                Shape_Mold_Ring.ID,
+                GTUtility.translate("gt.item.shape_mold.ring.name"),
+                GTUtility.translate("gt.item.shape_mold.ring.tooltip")));
+        ItemList.Shape_Mold_Rod_Long.set(
+            addItem(
+                Shape_Mold_Rod_Long.ID,
+                GTUtility.translate("gt.item.shape_mold.rod_long.name"),
+                GTUtility.translate("gt.item.shape_mold.rod_long.tooltip")));
+        ItemList.Shape_Mold_Rotor.set(
+            addItem(
+                Shape_Mold_Rotor.ID,
+                GTUtility.translate("gt.item.shape_mold.rotor.name"),
+                GTUtility.translate("gt.item.shape_mold.rotor.tooltip")));
+        ItemList.Shape_Mold_Turbine_Blade.set(
+            addItem(
+                Shape_Mold_Turbine_Blade.ID,
+                GTUtility.translate("gt.item.shape_mold.turbine_blade.name"),
+                GTUtility.translate("gt.item.shape_mold.turbine_blade.tooltip")));
+        ItemList.Shape_Mold_Pipe_Tiny.set(
+            addItem(
+                Shape_Mold_Pipe_Tiny.ID,
+                GTUtility.translate("gt.item.shape_mold.pipe_tiny.name"),
+                GTUtility.translate("gt.item.shape_mold.pipe_tiny.tooltip")));
+        ItemList.Shape_Mold_Pipe_Small.set(
+            addItem(
+                Shape_Mold_Pipe_Small.ID,
+                GTUtility.translate("gt.item.shape_mold.pipe_small.name"),
+                GTUtility.translate("gt.item.shape_mold.pipe_small.tooltip")));
+        ItemList.Shape_Mold_Pipe_Medium.set(
+            addItem(
+                Shape_Mold_Pipe_Medium.ID,
+                GTUtility.translate("gt.item.shape_mold.pipe_medium.name"),
+                GTUtility.translate("gt.item.shape_mold.pipe_medium.tooltip")));
+        ItemList.Shape_Mold_Pipe_Large.set(
+            addItem(
+                Shape_Mold_Pipe_Large.ID,
+                GTUtility.translate("gt.item.shape_mold.pipe_large.name"),
+                GTUtility.translate("gt.item.shape_mold.pipe_large.tooltip")));
+        ItemList.Shape_Mold_Pipe_Huge.set(
+            addItem(
+                Shape_Mold_Pipe_Huge.ID,
+                GTUtility.translate("gt.item.shape_mold.pipe_huge.name"),
+                GTUtility.translate("gt.item.shape_mold.pipe_huge.tooltip")));
+        ItemList.Shape_Mold_ToolHeadDrill.set(
+            addItem(
+                Shape_Mold_Tool_Head_Drill.ID,
+                GTUtility.translate("gt.item.shape_mold.tool_head_drill.name"),
+                GTUtility.translate("gt.item.shape_mold.tool_head_drill.tooltip")));
 
-        ItemList.Shape_Extruder_Plate
-            .set(addItem(Shape_Extruder_Plate.ID, "Extruder Shape (Plate)", "Extruder Shape for making Plates"));
-        ItemList.Shape_Extruder_Rod
-            .set(addItem(Shape_Extruder_Rod.ID, "Extruder Shape (Rod)", "Extruder Shape for making Rods"));
-        ItemList.Shape_Extruder_Bolt
-            .set(addItem(Shape_Extruder_Bolt.ID, "Extruder Shape (Bolt)", "Extruder Shape for making Bolts"));
-        ItemList.Shape_Extruder_Ring
-            .set(addItem(Shape_Extruder_Ring.ID, "Extruder Shape (Ring)", "Extruder Shape for making Rings"));
-        ItemList.Shape_Extruder_Cell
-            .set(addItem(Shape_Extruder_Cell.ID, "Extruder Shape (Cell)", "Extruder Shape for making Cells"));
+        ItemList.Shape_Extruder_Plate.set(
+            addItem(
+                Shape_Extruder_Plate.ID,
+                GTUtility.translate("gt.item.shape_extruder.plate.name"),
+                GTUtility.translate("gt.item.shape_extruder.plate.tooltip")));
+        ItemList.Shape_Extruder_Rod.set(
+            addItem(
+                Shape_Extruder_Rod.ID,
+                GTUtility.translate("gt.item.shape_extruder.rod.name"),
+                GTUtility.translate("gt.item.shape_extruder.rod.tooltip")));
+        ItemList.Shape_Extruder_Bolt.set(
+            addItem(
+                Shape_Extruder_Bolt.ID,
+                GTUtility.translate("gt.item.shape_extruder.bolt.name"),
+                GTUtility.translate("gt.item.shape_extruder.bolt.tooltip")));
+        ItemList.Shape_Extruder_Ring.set(
+            addItem(
+                Shape_Extruder_Ring.ID,
+                GTUtility.translate("gt.item.shape_extruder.ring.name"),
+                GTUtility.translate("gt.item.shape_extruder.ring.tooltip")));
+        ItemList.Shape_Extruder_Cell.set(
+            addItem(
+                Shape_Extruder_Cell.ID,
+                GTUtility.translate("gt.item.shape_extruder.cell.name"),
+                GTUtility.translate("gt.item.shape_extruder.cell.tooltip")));
         ItemList.Shape_Extruder_Ingot.set(
             addItem(
                 Shape_Extruder_Ingot.ID,
-                "Extruder Shape (Ingot)",
-                "Extruder Shape for, wait, can't we just use a Furnace?"));
+                GTUtility.translate("gt.item.shape_extruder.ingot.name"),
+                GTUtility.translate("gt.item.shape_extruder.ingot.tooltip")));
         ItemList.Shape_Extruder_Wire.set(
             addItem(
                 Shape_Extruder_Wire.ID,
-                "Extruder Shape (Wire)",
-                EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update."));
+                GTUtility.translate("gt.item.shape_extruder.wire.name"),
+                EnumChatFormatting.YELLOW + GTUtility.translate("gt.item.shape_extruder.wire.tooltip")));
         ItemList.Shape_Extruder_Casing.set(
-            addItem(Shape_Extruder_Casing.ID, "Extruder Shape (Casing)", "Extruder Shape for making Item Casings"));
+            addItem(
+                Shape_Extruder_Casing.ID,
+                GTUtility.translate("gt.item.shape_extruder.casing.name"),
+                GTUtility.translate("gt.item.shape_extruder.casing.tooltip")));
         ItemList.Shape_Extruder_Pipe_Tiny.set(
-            addItem(Shape_Extruder_Pipe_Tiny.ID, "Extruder Shape (Tiny Pipe)", "Extruder Shape for making tiny Pipes"));
+            addItem(
+                Shape_Extruder_Pipe_Tiny.ID,
+                GTUtility.translate("gt.item.shape_extruder.pipe_tiny.name"),
+                GTUtility.translate("gt.item.shape_extruder.pipe_tiny.tooltip")));
         ItemList.Shape_Extruder_Pipe_Small.set(
             addItem(
                 Shape_Extruder_Pipe_Small.ID,
-                "Extruder Shape (Small Pipe)",
-                "Extruder Shape for making small Pipes"));
+                GTUtility.translate("gt.item.shape_extruder.pipe_small.name"),
+                GTUtility.translate("gt.item.shape_extruder.pipe_small.tooltip")));
         ItemList.Shape_Extruder_Pipe_Medium.set(
-            addItem(Shape_Extruder_Pipe_Medium.ID, "Extruder Shape (Normal Pipe)", "Extruder Shape for making Pipes"));
+            addItem(
+                Shape_Extruder_Pipe_Medium.ID,
+                GTUtility.translate("gt.item.shape_extruder.pipe_medium.name"),
+                GTUtility.translate("gt.item.shape_extruder.pipe_medium.tooltip")));
         ItemList.Shape_Extruder_Pipe_Large.set(
             addItem(
                 Shape_Extruder_Pipe_Large.ID,
-                "Extruder Shape (Large Pipe)",
-                "Extruder Shape for making large Pipes"));
+                GTUtility.translate("gt.item.shape_extruder.pipe_large.name"),
+                GTUtility.translate("gt.item.shape_extruder.pipe_large.tooltip")));
         ItemList.Shape_Extruder_Pipe_Huge.set(
             addItem(
                 Shape_Extruder_Pipe_Huge.ID,
-                "Extruder Shape (Huge Pipe)",
-                "Extruder Shape for making full Block Pipes"));
-        ItemList.Shape_Extruder_Block
-            .set(addItem(Shape_Extruder_Block.ID, "Extruder Shape (Block)", "Extruder Shape for making Blocks"));
-        ItemList.Shape_Extruder_Sword
-            .set(addItem(Shape_Extruder_Sword.ID, "Extruder Shape (Sword Blade)", "Extruder Shape for making Swords"));
+                GTUtility.translate("gt.item.shape_extruder.pipe_huge.name"),
+                GTUtility.translate("gt.item.shape_extruder.pipe_huge.tooltip")));
+        ItemList.Shape_Extruder_Block.set(
+            addItem(
+                Shape_Extruder_Block.ID,
+                GTUtility.translate("gt.item.shape_extruder.block.name"),
+                GTUtility.translate("gt.item.shape_extruder.block.tooltip")));
+        ItemList.Shape_Extruder_Sword.set(
+            addItem(
+                Shape_Extruder_Sword.ID,
+                GTUtility.translate("gt.item.shape_extruder.sword.name"),
+                GTUtility.translate("gt.item.shape_extruder.sword.tooltip")));
         ItemList.Shape_Extruder_Pickaxe.set(
-            addItem(Shape_Extruder_Pickaxe.ID, "Extruder Shape (Pickaxe Head)", "Extruder Shape for making Pickaxes"));
+            addItem(
+                Shape_Extruder_Pickaxe.ID,
+                GTUtility.translate("gt.item.shape_extruder.pickaxe.name"),
+                GTUtility.translate("gt.item.shape_extruder.pickaxe.tooltip")));
         ItemList.Shape_Extruder_Shovel.set(
-            addItem(Shape_Extruder_Shovel.ID, "Extruder Shape (Shovel Head)", "Extruder Shape for making Shovels"));
-        ItemList.Shape_Extruder_Axe
-            .set(addItem(Shape_Extruder_Axe.ID, "Extruder Shape (Axe Head)", "Extruder Shape for making Axes"));
-        ItemList.Shape_Extruder_Hoe
-            .set(addItem(Shape_Extruder_Hoe.ID, "Extruder Shape (Hoe Head)", "Extruder Shape for making Hoes"));
+            addItem(
+                Shape_Extruder_Shovel.ID,
+                GTUtility.translate("gt.item.shape_extruder.shovel.name"),
+                GTUtility.translate("gt.item.shape_extruder.shovel.tooltip")));
+        ItemList.Shape_Extruder_Axe.set(
+            addItem(
+                Shape_Extruder_Axe.ID,
+                GTUtility.translate("gt.item.shape_extruder.axe.name"),
+                GTUtility.translate("gt.item.shape_extruder.axe.tooltip")));
+        ItemList.Shape_Extruder_Hoe.set(
+            addItem(
+                Shape_Extruder_Hoe.ID,
+                GTUtility.translate("gt.item.shape_extruder.hoe.name"),
+                GTUtility.translate("gt.item.shape_extruder.hoe.tooltip")));
         ItemList.Shape_Extruder_Hammer.set(
-            addItem(Shape_Extruder_Hammer.ID, "Extruder Shape (Hammer Head)", "Extruder Shape for making Hammers"));
-        ItemList.Shape_Extruder_File
-            .set(addItem(Shape_Extruder_File.ID, "Extruder Shape (File Head)", "Extruder Shape for making Files"));
-        ItemList.Shape_Extruder_Saw
-            .set(addItem(Shape_Extruder_Saw.ID, "Extruder Shape (Saw Blade)", "Extruder Shape for making Saws"));
-        ItemList.Shape_Extruder_Gear
-            .set(addItem(Shape_Extruder_Gear.ID, "Extruder Shape (Gear)", "Extruder Shape for making Gears"));
-        ItemList.Shape_Extruder_Bottle
-            .set(addItem(Shape_Extruder_Bottle.ID, "Extruder Shape (Bottle)", "Extruder Shape for making Bottles"));
-        ItemList.Shape_Extruder_Rotor
-            .set(addItem(Shape_Extruder_Rotor.ID, "Extruder Shape (Rotor)", "Extruder Shape for a Rotor"));
+            addItem(
+                Shape_Extruder_Hammer.ID,
+                GTUtility.translate("gt.item.shape_extruder.hammer.name"),
+                GTUtility.translate("gt.item.shape_extruder.hammer.tooltip")));
+        ItemList.Shape_Extruder_File.set(
+            addItem(
+                Shape_Extruder_File.ID,
+                GTUtility.translate("gt.item.shape_extruder.file.name"),
+                GTUtility.translate("gt.item.shape_extruder.file.tooltip")));
+        ItemList.Shape_Extruder_Saw.set(
+            addItem(
+                Shape_Extruder_Saw.ID,
+                GTUtility.translate("gt.item.shape_extruder.saw.name"),
+                GTUtility.translate("gt.item.shape_extruder.saw.tooltip")));
+        ItemList.Shape_Extruder_Gear.set(
+            addItem(
+                Shape_Extruder_Gear.ID,
+                GTUtility.translate("gt.item.shape_extruder.gear.name"),
+                GTUtility.translate("gt.item.shape_extruder.gear.tooltip")));
+        ItemList.Shape_Extruder_Bottle.set(
+            addItem(
+                Shape_Extruder_Bottle.ID,
+                GTUtility.translate("gt.item.shape_extruder.bottle.name"),
+                GTUtility.translate("gt.item.shape_extruder.bottle.tooltip")));
+        ItemList.Shape_Extruder_Rotor.set(
+            addItem(
+                Shape_Extruder_Rotor.ID,
+                GTUtility.translate("gt.item.shape_extruder.rotor.name"),
+                GTUtility.translate("gt.item.shape_extruder.rotor.tooltip")));
         ItemList.Shape_Extruder_Small_Gear.set(
-            addItem(Shape_Extruder_Small_Gear.ID, "Extruder Shape (Small Gear)", "Extruder Shape for a Small Gear"));
+            addItem(
+                Shape_Extruder_Small_Gear.ID,
+                GTUtility.translate("gt.item.shape_extruder.small_gear.name"),
+                GTUtility.translate("gt.item.shape_extruder.small_gear.tooltip")));
         ItemList.Shape_Extruder_Turbine_Blade.set(
             addItem(
                 Shape_Extruder_Turbine_Blade.ID,
-                "Extruder Shape (Turbine Blade)",
-                "Extruder Shape for a Turbine Blade"));
+                GTUtility.translate("gt.item.shape_extruder.turbine_blade.name"),
+                GTUtility.translate("gt.item.shape_extruder.turbine_blade.tooltip")));
         ItemList.Shape_Extruder_ToolHeadDrill.set(
             addItem(
                 Shape_Extruder_Tool_Head_Drill.ID,
-                "Extruder Shape (Drill Head)",
-                "Extruder Shape for a Drill Head"));
+                GTUtility.translate("gt.item.shape_extruder.tool_head_drill.name"),
+                GTUtility.translate("gt.item.shape_extruder.tool_head_drill.tooltip")));
 
-        ItemList.Shape_Slicer_Flat
-            .set(addItem(Shape_Slicer_Flat.ID, "Slicer Blade (Flat)", "Slicer Blade for cutting Flat"));
-        ItemList.Shape_Slicer_Stripes
-            .set(addItem(Shape_Slicer_Stripes.ID, "Slicer Blade (Stripes)", "Slicer Blade for cutting Stripes"));
+        ItemList.Shape_Slicer_Flat.set(
+            addItem(
+                Shape_Slicer_Flat.ID,
+                GTUtility.translate("gt.item.shape_slicer.flat.name"),
+                GTUtility.translate("gt.item.shape_slicer.flat.tooltip")));
+        ItemList.Shape_Slicer_Stripes.set(
+            addItem(
+                Shape_Slicer_Stripes.ID,
+                GTUtility.translate("gt.item.shape_slicer.stripes.name"),
+                GTUtility.translate("gt.item.shape_slicer.stripes.tooltip")));
 
         ItemList.Fuel_Can_Plastic_Empty.set(
             addItem(
@@ -3017,7 +3197,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.WIRELESS_ENERGY_COVERS[i - 1].set(
                 addItem(
                     Cover_Wireless_Energy_LV.ID + i - 1,
-                    GTValues.VN[i] + " Wireless Energy Cover",
+                    GTUtility.translate("gt.item.wireless_energy_cover.name", GTValues.VN[i]),
                     String.join(
                         "/n ",
                         "Stores energy globally in a network, up to 2^(2^31) EU.",
