@@ -1084,16 +1084,16 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Fuel_Can_Plastic_Empty.set(
             addItem(
                 Fuel_Can_Plastic_Empty.ID,
-                "Empty Plastic Fuel Can",
-                "Used to store Fuels",
+                GTUtility.translate("gt.item.fuel_can.plastic.empty.name"),
+                GTUtility.translate("gt.item.fuel_can.plastic.empty.tooltip"),
                 new ItemData(Materials.Polyethylene, OrePrefixes.plate.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L)));
         ItemList.Fuel_Can_Plastic_Filled.set(
             addItem(
                 Fuel_Can_Plastic_Filled.ID,
-                "Plastic Fuel Can",
-                "Burns well in Diesel Generators",
+                GTUtility.translate("gt.item.fuel_can.plastic.filled.name"),
+                GTUtility.translate("gt.item.fuel_can.plastic.filled.tooltip"),
                 new ItemData(Materials.Polyethylene, OrePrefixes.plate.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L)));
@@ -1101,8 +1101,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Spray_Empty.set(
             addItem(
                 Spray_Empty.ID,
-                "Empty Spray Can",
-                "Used for making Sprays",
+                GTUtility.translate("gt.item.spray.empty.name"),
+                GTUtility.translate("gt.item.spray.empty.tooltip"),
                 new ItemData(
                     Materials.Tin,
                     OrePrefixes.plate.getMaterialAmount() * 2L,
@@ -1114,8 +1114,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.ThermosCan_Empty.set(
             addItem(
                 Thermos_Can_Empty.ID,
-                "Empty Thermos Can",
-                "Keeping hot things hot and cold things cold",
+                GTUtility.translate("gt.item.thermos_can.empty.name"),
+                GTUtility.translate("gt.item.thermos_can.empty.tooltip"),
                 new ItemData(
                     Materials.Aluminium,
                     OrePrefixes.plateDouble.getMaterialAmount() + 2L * OrePrefixes.ring.getMaterialAmount()),
@@ -1126,8 +1126,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Large_Fluid_Cell_Steel.set(
             addItem(
                 Large_Fluid_Cell_Steel.ID,
-                "Large Steel Fluid Cell",
-                "",
+                GTUtility.translate("gt.item.large_fluid_cell.steel.name"),
+                GTUtility.translate("gt.item.large_fluid_cell.steel.tooltip"),
                 new ItemData(
                     Materials.Steel,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
@@ -1138,8 +1138,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Large_Fluid_Cell_TungstenSteel.set(
             addItem(
                 Large_Fluid_Cell_TungstenSteel.ID,
-                "Large Tungstensteel Fluid Cell",
-                "",
+                GTUtility.translate("gt.item.large_fluid_cell.tungstensteel.name"),
+                GTUtility.translate("gt.item.large_fluid_cell.tungstensteel.tooltip"),
                 new ItemData(
                     Materials.TungstenSteel,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
@@ -1150,8 +1150,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Large_Fluid_Cell_Aluminium.set(
             addItem(
                 Large_Fluid_Cell_Aluminium.ID,
-                "Large Aluminium Fluid Cell",
-                "",
+                GTUtility.translate("gt.item.large_fluid_cell.aluminium.name"),
+                GTUtility.translate("gt.item.large_fluid_cell.aluminium.tooltip"),
                 new ItemData(
                     Materials.Aluminium,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
@@ -1162,8 +1162,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Large_Fluid_Cell_StainlessSteel.set(
             addItem(
                 Large_Fluid_Cell_StainlessSteel.ID,
-                "Large Stainless Steel Fluid Cell",
-                "",
+                GTUtility.translate("gt.item.large_fluid_cell.stainless_steel.name"),
+                GTUtility.translate("gt.item.large_fluid_cell.stainless_steel.tooltip"),
                 new ItemData(
                     Materials.StainlessSteel,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
@@ -1174,8 +1174,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Large_Fluid_Cell_Titanium.set(
             addItem(
                 Large_Fluid_Cell_Titanium.ID,
-                "Large Titanium Fluid Cell",
-                "",
+                GTUtility.translate("gt.item.large_fluid_cell.titanium.name"),
+                GTUtility.translate("gt.item.large_fluid_cell.titanium.tooltip"),
                 new ItemData(
                     Materials.Titanium,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
@@ -1186,8 +1186,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Large_Fluid_Cell_Chrome.set(
             addItem(
                 Large_Fluid_Cell_Chrome.ID,
-                "Large Chrome Fluid Cell",
-                "",
+                GTUtility.translate("gt.item.large_fluid_cell.chrome.name"),
+                GTUtility.translate("gt.item.large_fluid_cell.chrome.tooltip"),
                 new ItemData(
                     Materials.Chrome,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
@@ -1198,8 +1198,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Large_Fluid_Cell_Iridium.set(
             addItem(
                 Large_Fluid_Cell_Iridium.ID,
-                "Large Iridium Fluid Cell",
-                "",
+                GTUtility.translate("gt.item.large_fluid_cell.iridium.name"),
+                GTUtility.translate("gt.item.large_fluid_cell.iridium.tooltip"),
                 new ItemData(
                     Materials.Iridium,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
@@ -1210,8 +1210,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Large_Fluid_Cell_Osmium.set(
             addItem(
                 Large_Fluid_Cell_Osmium.ID,
-                "Large Osmium Fluid Cell",
-                "",
+                GTUtility.translate("gt.item.large_fluid_cell.osmium.name"),
+                GTUtility.translate("gt.item.large_fluid_cell.osmium.tooltip"),
                 new ItemData(
                     Materials.Osmium,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
@@ -1222,8 +1222,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Large_Fluid_Cell_Neutronium.set(
             addItem(
                 Large_Fluid_Cell_Neutronium.ID,
-                "Large Neutronium Fluid Cell",
-                "",
+                GTUtility.translate("gt.item.large_fluid_cell.neutronium.name"),
+                GTUtility.translate("gt.item.large_fluid_cell.neutronium.tooltip"),
                 new ItemData(
                     Materials.Neutronium,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
@@ -1235,14 +1235,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.SPRAY_CAN_DYES[i].set(
                 addItem(
                     Spray_Colors[i],
-                    "Spray Can (" + Dyes.get(i).mName + ")",
-                    "Full",
+                    GTUtility.translate("gt.item.spray_can.dye.name", Dyes.get(i).mName),
+                    GTUtility.translate("gt.item.spray_can.dye.tooltip.full"),
                     new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4L)));
             ItemList.SPRAY_CAN_DYES_USED[i].set(
                 addItem(
                     Spray_Colors_Used[i],
-                    "Spray Can (" + Dyes.get(i).mName + ")",
-                    "Used",
+                    GTUtility.translate("gt.item.spray_can.dye.name", Dyes.get(i).mName),
+                    GTUtility.translate("gt.item.spray_can.dye.tooltip.used"),
                     new TCAspects.TC_AspectStack(TCAspects.SENSUS, 3L),
                     SubTag.INVISIBLE));
         }
@@ -1250,15 +1250,15 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Spray_Color_Remover.set(
             addItem(
                 Spray_Color_Remover.ID,
-                "Spray Can Solvent",
-                "Full",
+                GTUtility.translate("gt.item.spray_can.solvent.name"),
+                GTUtility.translate("gt.item.spray_can.solvent.tooltip.full"),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 8L)));
         ItemList.Spray_Color_Used_Remover.set(
             addItem(
                 Spray_Color_Used_Remover.ID,
-                "Spray Can Solvent",
-                "Used",
+                GTUtility.translate("gt.item.spray_can.solvent.name"),
+                GTUtility.translate("gt.item.spray_can.solvent.tooltip.used"),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 3L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 6L),
                 SubTag.INVISIBLE));
@@ -1266,8 +1266,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Spray_Color_Remover_Empty.set(
             addItem(
                 Spray_Color_Remover_Empty.ID,
-                "Empty Spray Can Solvent Canister",
-                "Used for making Spray Can Solvent",
+                GTUtility.translate("gt.item.spray_can.solvent.empty.name"),
+                GTUtility.translate("gt.item.spray_can.solvent.empty.tooltip"),
                 new ItemData(
                     Materials.Aluminium,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
@@ -1279,8 +1279,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Spray_Color_Infinite.set(
             addItem(
                 Spray_Color_Infinite.ID,
-                "Infinite Spray Can",
-                "Contains all sixteen colors, as well as solvent!",
+                GTUtility.translate("gt.item.spray_can.infinite.name"),
+                GTUtility.translate("gt.item.spray_can.infinite.tooltip"),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 16),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 8),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 8),

@@ -2691,6 +2691,53 @@ gt.item.shape_slicer.flat.tooltip=Slicer Blade (Flat)
 gt.item.shape_slicer.stripes.name=Slicer Blade (Stripes)
 gt.item.shape_slicer.stripes.tooltip=Slicer Blade for cutting Stripes
 
+## Fuel Can
+gt.item.fuel_can.plastic.empty.name=Empty Plastic Fuel Can
+gt.item.fuel_can.plastic.empty.tooltip=Used to store Fuels
+gt.item.fuel_can.plastic.filled.name=Plastic Fuel Can
+gt.item.fuel_can.plastic.filled.tooltip=Burns well in Diesel Generators
+
+## Thermos
+gt.item.thermos_can.empty.name=Empty Thermos Can
+gt.item.thermos_can.empty.tooltip=Keeping hot things hot and cold things cold
+
+## Large Fluid Cell
+gt.item.large_fluid_cell.steel.name=Large Steel Fluid Cell
+gt.item.large_fluid_cell.steel.tooltip=
+gt.item.large_fluid_cell.tungstensteel.name=Large Tungstensteel Fluid Cell
+gt.item.large_fluid_cell.tungstensteel.tooltip=
+gt.item.large_fluid_cell.aluminium.name=Large Aluminium Fluid Cell
+gt.item.large_fluid_cell.aluminium.tooltip=
+gt.item.large_fluid_cell.stainless_steel.name=Large Stainless Steel Fluid Cell
+gt.item.large_fluid_cell.stainless_steel.tooltip=
+gt.item.large_fluid_cell.titanium.name=Large Titanium Fluid Cell
+gt.item.large_fluid_cell.titanium.tooltip=
+gt.item.large_fluid_cell.chrome.name=Large Chrome Fluid Cell
+gt.item.large_fluid_cell.chrome.tooltip=
+gt.item.large_fluid_cell.iridium.name=Large Iridium Fluid Cell
+gt.item.large_fluid_cell.iridium.tooltip=
+gt.item.large_fluid_cell.osmium.name=Large Osmium Fluid Cell
+gt.item.large_fluid_cell.osmium.tooltip=
+gt.item.large_fluid_cell.neutronium.name=Large Neutronium Fluid Cell
+gt.item.large_fluid_cell.neutronium.tooltip=
+
+## Spray
+gt.item.spray.empty.name=Empty Spray Can
+gt.item.spray.empty.tooltip=Used for making Sprays
+
+gt.item.spray_can.dye.name=Spray Can (%s)
+gt.item.spray_can.dye.tooltip.full=Full
+gt.item.spray_can.dye.tooltip.used=Used
+
+gt.item.spray_can.solvent.name=Spray Can Solvent
+gt.item.spray_can.solvent.tooltip.full=Full
+gt.item.spray_can.solvent.tooltip.used=Used
+gt.item.spray_can.solvent.empty.name=Empty Spray Can Solvent Canister
+gt.item.spray_can.solvent.empty.tooltip=Used for making Spray Can Solvent
+
+gt.item.spray_can.infinite.name=Infinite Spray Can
+gt.item.spray_can.infinite.tooltip=Contains all sixteen colors, as well as solvent!
+
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
 GT5U.nei.display.steam_variant.steel=Steel
