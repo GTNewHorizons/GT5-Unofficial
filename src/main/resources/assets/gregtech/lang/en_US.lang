@@ -2738,6 +2738,28 @@ gt.item.spray_can.solvent.empty.tooltip=Used for making Spray Can Solvent
 gt.item.spray_can.infinite.name=Infinite Spray Can
 gt.item.spray_can.infinite.tooltip=Contains all sixteen colors, as well as solvent!
 
+## Match
+gt.item.matches.name=Match
+gt.item.matches.tooltip=
+gt.item.matchbox.used.name=Match Box
+gt.item.matchbox.used.tooltip=This is not a Car
+gt.item.matchbox.full.name=Match Box (Full)
+gt.item.matchbox.full.tooltip=This is not a Car
+
+## Lighter
+gt.item.lighter.invar.empty.name=Lighter (Empty)
+gt.item.lighter.invar.empty.tooltip=
+gt.item.lighter.invar.used.name=Lighter
+gt.item.lighter.invar.used.tooltip=
+gt.item.lighter.invar.full.name=Lighter (Full)
+gt.item.lighter.invar.full.tooltip=
+gt.item.lighter.platinum.empty.name=Platinum Lighter (Empty)
+gt.item.lighter.platinum.empty.tooltip=A known Prank Master is engraved on it
+gt.item.lighter.platinum.used.name=Platinum Lighter
+gt.item.lighter.platinum.used.tooltip=A known Prank Master is engraved on it
+gt.item.lighter.platinum.full.name=Platinum Lighter (Full)
+gt.item.lighter.platinum.full.tooltip=A known Prank Master is engraved on it
+
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
 GT5U.nei.display.steam_variant.steel=Steel

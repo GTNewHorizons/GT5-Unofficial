@@ -1289,16 +1289,16 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Tool_Matches.set(
             addItem(
                 Tool_Matches.ID,
-                "Match",
-                "",
+                GTUtility.translate("gt.item.matches.name"),
+                GTUtility.translate("gt.item.matches.tooltip"),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
 
         ItemList.Tool_MatchBox_Used.set(
             addItem(
                 Tool_MatchBox_Used.ID,
-                "Match Box",
-                "This is not a Car",
+                GTUtility.translate("gt.item.matchbox.used.name"),
+                GTUtility.translate("gt.item.matchbox.used.tooltip"),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L),
                 SubTag.INVISIBLE));
@@ -1306,24 +1306,24 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Tool_MatchBox_Full.set(
             addItem(
                 Tool_MatchBox_Full.ID,
-                "Match Box (Full)",
-                "This is not a Car",
+                GTUtility.translate("gt.item.matchbox.full.name"),
+                GTUtility.translate("gt.item.matchbox.full.tooltip"),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2L)));
 
         ItemList.Tool_Lighter_Invar_Empty.set(
             addItem(
                 Tool_Lighter_Invar_Empty.ID,
-                "Lighter (Empty)",
-                "",
+                GTUtility.translate("gt.item.lighter.invar.empty.name"),
+                GTUtility.translate("gt.item.lighter.invar.empty.tooltip"),
                 new ItemData(Materials.Invar, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
         ItemList.Tool_Lighter_Invar_Used.set(
             addItem(
                 Tool_Lighter_Invar_Used.ID,
-                "Lighter",
-                "",
+                GTUtility.translate("gt.item.lighter.invar.used.name"),
+                GTUtility.translate("gt.item.lighter.invar.used.tooltip"),
                 new ItemData(Materials.Invar, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L),
@@ -1331,8 +1331,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Tool_Lighter_Invar_Full.set(
             addItem(
                 Tool_Lighter_Invar_Full.ID,
-                "Lighter (Full)",
-                "",
+                GTUtility.translate("gt.item.lighter.invar.full.name"),
+                GTUtility.translate("gt.item.lighter.invar.full.tooltip"),
                 new ItemData(Materials.Invar, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2L)));
@@ -1340,8 +1340,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Tool_Lighter_Platinum_Empty.set(
             addItem(
                 Tool_Lighter_Platinum_Empty.ID,
-                "Platinum Lighter (Empty)",
-                "A known Prank Master is engraved on it",
+                GTUtility.translate("gt.item.lighter.platinum.empty.name"),
+                GTUtility.translate("gt.item.lighter.platinum.empty.tooltip"),
                 new ItemData(Materials.Platinum, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1L),
@@ -1349,8 +1349,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Tool_Lighter_Platinum_Used.set(
             addItem(
                 Tool_Lighter_Platinum_Used.ID,
-                "Platinum Lighter",
-                "A known Prank Master is engraved on it",
+                GTUtility.translate("gt.item.lighter.platinum.used.name"),
+                GTUtility.translate("gt.item.lighter.platinum.used.tooltip"),
                 new ItemData(Materials.Platinum, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1L),
@@ -1359,8 +1359,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Tool_Lighter_Platinum_Full.set(
             addItem(
                 Tool_Lighter_Platinum_Full.ID,
-                "Platinum Lighter (Full)",
-                "A known Prank Master is engraved on it",
+                GTUtility.translate("gt.item.lighter.platinum.full.name"),
+                GTUtility.translate("gt.item.lighter.platinum.full.tooltip"),
                 new ItemData(Materials.Platinum, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1L),
