@@ -179,9 +179,6 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
 
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-
-        this.updateCellArray();
-
         if (aPlayer.isSneaking()) {
             checkMode = !checkMode;
             GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.outputme.checkMode." + this.checkMode);
@@ -196,6 +193,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             }
             updateState();
             cellToCacheTransfer();
+            this.updateCellArray();
         }
         env.dispatchMarkDirty();
     }
