@@ -667,7 +667,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                     "hatch.maintenance.magic",
                     "Vis-Regulated Maintenance Hatch",
                     5).getStackForm(1));
-            addItemTooltip(ItemList.MagicalMaintenanceHatch.get(1), chain(() -> "Author: ", GTValues.AuthorJude));
+            addItemTooltip(
+                ItemList.MagicalMaintenanceHatch.get(1),
+                GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorJude));
         }
 
         ItemList.Machine_Multi_NanochipAssemblyComplex.set(

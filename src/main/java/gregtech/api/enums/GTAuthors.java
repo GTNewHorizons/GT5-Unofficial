@@ -166,6 +166,48 @@ public class GTAuthors {
         + EnumChatFormatting.DARK_BLUE
         + "ez";
 
+    public static final Supplier<String> AuthorJude = chain(
+        createJudeOuterText(
+            "x",
+            EnumChatFormatting.DARK_PURPLE,
+            EnumChatFormatting.LIGHT_PURPLE,
+            EnumChatFormatting.DARK_PURPLE),
+        createJudeOuterText(
+            "X",
+            EnumChatFormatting.LIGHT_PURPLE,
+            EnumChatFormatting.DARK_PURPLE,
+            EnumChatFormatting.DARK_PURPLE),
+        createJudeCenterText("jude", EnumChatFormatting.DARK_BLUE, EnumChatFormatting.BLUE),
+        createJudeOuterText(
+            "X",
+            EnumChatFormatting.LIGHT_PURPLE,
+            EnumChatFormatting.DARK_PURPLE,
+            EnumChatFormatting.DARK_PURPLE),
+        createJudeOuterText(
+            "x",
+            EnumChatFormatting.DARK_PURPLE,
+            EnumChatFormatting.LIGHT_PURPLE,
+            EnumChatFormatting.DARK_PURPLE));
+
+    private static Supplier<String> createJudeOuterText(String text, EnumChatFormatting colorA,
+        EnumChatFormatting colorB, EnumChatFormatting colorC) {
+        return animatedText(text, 0, 200, colorA + BOLD, colorB + BOLD, colorC + BOLD);
+    }
+
+    private static Supplier<String> createJudeCenterText(String text, EnumChatFormatting colorA,
+        EnumChatFormatting colorB) {
+        return animatedText(
+            text,
+            0,
+            200,
+            colorA + BOLD,
+            colorA + BOLD,
+            colorA + BOLD,
+            colorB + OBFUSCATED + BOLD,
+            colorB + BOLD,
+            colorB + OBFUSCATED + BOLD);
+    }
+
     public static final String AuthorNotAPenguin = EnumChatFormatting.WHITE + "Not"
         + EnumChatFormatting.AQUA
         + "APenguin";
