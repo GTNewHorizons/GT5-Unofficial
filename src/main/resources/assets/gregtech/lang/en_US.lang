@@ -2553,6 +2553,12 @@ gt.item.minecart_wheels.iron.name=Iron Minecart Wheels
 gt.item.minecart_wheels.steel.name=Steel Minecart Wheels
 gt.item.minecart_wheels.tooltip=To get things rolling
 
+## Firebrick
+gt.item.compressed_fireclay.name=Compressed Fireclay
+gt.item.compressed_fireclay.tooltip=Brick-shaped
+gt.item.firebrick.name=Firebrick
+gt.item.firebrick.tooltip=Heat resistant
+
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
 GT5U.nei.display.steam_variant.steel=Steel

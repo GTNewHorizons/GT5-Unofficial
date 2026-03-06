@@ -751,10 +751,18 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             new Object[] { " h ", "RSR", " w ", 'R', OrePrefixes.ring.get(Materials.Steel), 'S',
                 OrePrefixes.stick.get(Materials.Steel) });
 
-        ItemList.CompressedFireclay.set(addItem(Compressed_Fireclay.ID, "Compressed Fireclay", "Brick-shaped"));
+        ItemList.CompressedFireclay.set(
+            addItem(
+                Compressed_Fireclay.ID,
+                GTUtility.translate("gt.item.compressed_fireclay.name"),
+                GTUtility.translate("gt.item.compressed_fireclay.tooltip")));
         GTOreDictUnificator.addItemDataFromInputs(ItemList.CompressedFireclay.get(1), Materials.Fireclay.getDust(1));
 
-        ItemList.Firebrick.set(addItem(Firebrick.ID, "Firebrick", "Heat resistant"));
+        ItemList.Firebrick.set(
+            addItem(
+                Firebrick.ID,
+                GTUtility.translate("gt.item.firebrick.name"),
+                GTUtility.translate("gt.item.firebrick.tooltip")));
         GTOreDictUnificator.addItemDataFromInputs(ItemList.Firebrick.get(1), Materials.Fireclay.getDust(1));
 
         ItemList.Shape_Empty.set(
