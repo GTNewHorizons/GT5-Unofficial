@@ -2760,6 +2760,505 @@ gt.item.lighter.platinum.used.tooltip=A known Prank Master is engraved on it
 gt.item.lighter.platinum.full.name=Platinum Lighter (Full)
 gt.item.lighter.platinum.full.tooltip=A known Prank Master is engraved on it
 
+## Ingot Alloy
+gt.item.ingot.heavy_duty.t1.name=Heavy Duty Alloy Ingot T1
+gt.item.ingot.heavy_duty.t1.tooltip=Used to make Heavy Duty Plates T1
+gt.item.ingot.heavy_duty.t2.name=Heavy Duty Alloy Ingot T2
+gt.item.ingot.heavy_duty.t2.tooltip=Used to make Heavy Duty Plates T2
+gt.item.ingot.heavy_duty.t3.name=Heavy Duty Alloy Ingot T3
+gt.item.ingot.heavy_duty.t3.tooltip=Used to make Heavy Duty Plates T3
+gt.item.ingot.iridium_alloy.name=Iridium Alloy Ingot
+gt.item.ingot.iridium_alloy.tooltip=Used to make Iridium Plates
+
+## Paper
+gt.item.paper.printed_pages.name=Printed Pages
+gt.item.paper.printed_pages.tooltip=Used to make written Books
+gt.item.paper.magic.empty.name=Magic Paper
+gt.item.paper.magic.page.name=Enchanted Page
+gt.item.paper.magic.pages.name=Enchanted Pages
+gt.item.paper.punch_card.empty.name=Punch Card
+gt.item.paper.punch_card.encoded.name=Punched Card
+
+## Book
+gt.item.book.written.01.name=Book
+gt.item.book.written.02.name=Book
+gt.item.book.written.03.name=Book
+
+## Schematic
+gt.item.schematic.empty.name=Schematic
+gt.item.schematic.empty.tooltip=EMPTY
+gt.item.schematic.crafting.name=Schematic (Crafting)
+gt.item.schematic.crafting.tooltip=Crafts the Programmed Recipe
+gt.item.schematic.1x1.name=Schematic (1x1)
+gt.item.schematic.1x1.tooltip=Crafts 1 Items as 1x1 (use in Packager)
+gt.item.schematic.2x2.name=Schematic (2x2)
+gt.item.schematic.2x2.tooltip=Crafts 4 Items as 2x2 (use in Packager)
+gt.item.schematic.3x3.name=Schematic (3x3)
+gt.item.schematic.3x3.tooltip=Crafts 9 Items as 3x3 (use in Packager)
+gt.item.schematic.dust.name=Schematic (Dusts)
+gt.item.schematic.dust.tooltip=Combines Dusts (use in Packager)
+gt.item.schematic.dust_small.name=Schematic (Small Dusts)
+gt.item.schematic.dust_small.tooltip=Splits Dusts into 4 (use in Packager)
+
+## Battery
+### Battery Tooltip
+gt.item.battery.su.tooltip=Single use battery
+gt.item.battery.re.tooltip=Reusable battery
+
+### Battery Hull
+gt.item.battery_hull.lv.name=Small Battery Hull
+gt.item.battery_hull.lv.tooltip=An empty LV Battery Hull
+gt.item.battery_hull.mv.name=Medium Battery Hull
+gt.item.battery_hull.mv.tooltip=An empty MV Battery Hull
+gt.item.battery_hull.hv.name=Large Battery Hull
+gt.item.battery_hull.hv.tooltip=An empty HV Battery Hull
+gt.item.battery_hull.ev.name=Small Sunnarium Battery (Empty)
+gt.item.battery_hull.ev.tooltip=An empty EV Battery Container
+gt.item.battery_hull.iv.name=Medium Sunnarium Battery (Empty)
+gt.item.battery_hull.iv.tooltip=An empty IV Battery Container
+gt.item.battery_hull.luv.name=Large Sunnarium Battery (Empty)
+gt.item.battery_hull.luv.tooltip=An empty LuV Battery Container
+gt.item.battery_hull.zpm.name=Medium Naquadria Battery (Empty)
+gt.item.battery_hull.zpm.tooltip=An empty ZPM Energy Storage
+gt.item.battery_hull.uv.name=Large Naquadria Battery (Empty)
+gt.item.battery_hull.uv.tooltip=An empty UV Energy Storage
+gt.item.battery_hull.uhv.name=Small Neutronium Battery (Empty)
+gt.item.battery_hull.uhv.tooltip=An empty UHV Energy Storage
+gt.item.battery_hull.uev.name=Medium Neutronium Battery (Empty)
+gt.item.battery_hull.uev.tooltip=An empty UEV Energy Storage
+gt.item.battery_hull.uiv.name=Large Neutronium Battery (Empty)
+gt.item.battery_hull.uiv.tooltip=An empty UIV Energy Storage
+gt.item.battery_hull.umv.name=Medium Plasma Battery (Empty)
+gt.item.battery_hull.umv.tooltip=An empty UMV Energy Storage
+gt.item.battery_hull.uxv.name=Large Plasma Battery (Empty)
+gt.item.battery_hull.uxv.tooltip=An empty UXV Energy Storage
+
+### Small Battery
+gt.item.battery.re.ulv.tantalum.name=Tantalum Capacitor
+gt.item.battery.su.lv.sulfuric_acid.name=Small Acid Battery
+gt.item.battery.su.lv.mercury.name=Small Mercury Battery
+gt.item.battery.re.lv.cadmium.name=Small Cadmium Battery
+gt.item.battery.re.lv.lithium.name=Small Lithium Battery
+gt.item.battery.re.lv.sodium.name=Small Sodium Battery
+
+### Medium Battery
+gt.item.battery.su.mv.sulfuric_acid.name=Medium Acid Battery
+gt.item.battery.su.mv.mercury.name=Medium Mercury Battery
+gt.item.battery.re.mv.cadmium.name=Medium Cadmium Battery
+gt.item.battery.re.mv.lithium.name=Medium Lithium Battery
+gt.item.battery.re.mv.sodium.name=Medium Sodium Battery
+
+### Large Battery
+gt.item.battery.su.hv.sulfuric_acid.name=Large Acid Battery
+gt.item.battery.su.hv.mercury.name=Large Mercury Battery
+gt.item.battery.re.hv.cadmium.name=Large Cadmium Battery
+gt.item.battery.re.hv.lithium.name=Large Lithium Battery
+gt.item.battery.re.hv.sodium.name=Large Sodium Battery
+
+### High Tier Battery
+gt.item.battery.lapotronic_orb.name=Lapotronic Energy Orb
+gt.item.battery.zpm.name=Zero Point Module
+gt.item.battery.lapotronic_orb_cluster.name=Lapotronic Energy Orb Cluster
+gt.item.battery.ultimate.name=Ultimate Battery
+gt.item.battery.ultimate.tooltip=Fill this to win minecraft
+gt.item.battery.really_ultimate.name=Really Ultimate Battery
+gt.item.battery.really_ultimate.tooltip=Fill this to be way older
+gt.item.battery.extremely_ultimate.name=Extremely Ultimate Battery
+gt.item.battery.extremely_ultimate.tooltip=Fill this to be older
+gt.item.battery.insanely_ultimate.name=Insanely Ultimate Battery
+gt.item.battery.insanely_ultimate.tooltip=Fill this for fun
+gt.item.battery.mega_ultimate.name=Mega Ultimate Battery
+gt.item.battery.mega_ultimate.tooltip=Fill the capacitor to reach enlightenment
+gt.item.battery.energy_module.name=Energy Module
+gt.item.battery.energy_cluster.name=Energy Cluster
+gt.item.battery.ev.name=Small Sunnarium Battery
+gt.item.battery.iv.name=Medium Sunnarium Battery
+gt.item.battery.luv.name=Large Sunnarium Battery
+gt.item.battery.zpm.name=Medium Naquadria Battery
+gt.item.battery.uv.name=Large Naquadria Battery
+gt.item.battery.uhv.name=Small Neutronium Battery
+gt.item.battery.uev.name=Medium Neutronium Battery
+gt.item.battery.uiv.name=Large Neutronium Battery
+gt.item.battery.umv.name=Medium Infinity Battery
+gt.item.battery.uxv.name=Large Infinity Battery
+
+## Electric Motors
+gt.item.electric_motor.lv.name=Electric Motor (LV)
+gt.item.electric_motor.mv.name=Electric Motor (MV)
+gt.item.electric_motor.hv.name=Electric Motor (HV)
+gt.item.electric_motor.ev.name=Electric Motor (EV)
+gt.item.electric_motor.iv.name=Electric Motor (IV)
+gt.item.electric_motor.luv.name=Electric Motor (LuV)
+gt.item.electric_motor.zpm.name=Electric Motor (ZPM)
+gt.item.electric_motor.uv.name=Electric Motor (UV)
+gt.item.electric_motor.uhv.name=Electric Motor (UHV)
+gt.item.electric_motor.uev.name=Electric Motor (UEV)
+gt.item.electric_motor.uiv.name=Electric Motor (UIV)
+gt.item.electric_motor.umv.name=Electric Motor (UMV)
+gt.item.electric_motor.uxv.name=Electric Motor (UXV)
+gt.item.electric_motor.max.name=Electric Motor (MAX)
+
+## Electric Pistons
+gt.item.electric_piston.lv.name=Electric Piston (LV)
+gt.item.electric_piston.mv.name=Electric Piston (MV)
+gt.item.electric_piston.hv.name=Electric Piston (HV)
+gt.item.electric_piston.ev.name=Electric Piston (EV)
+gt.item.electric_piston.iv.name=Electric Piston (IV)
+gt.item.electric_piston.luv.name=Electric Piston (LuV)
+gt.item.electric_piston.zpm.name=Electric Piston (ZPM)
+gt.item.electric_piston.uv.name=Electric Piston (UV)
+gt.item.electric_piston.uhv.name=Electric Piston (UHV)
+gt.item.electric_piston.uev.name=Electric Piston (UEV)
+gt.item.electric_piston.uiv.name=Electric Piston (UIV)
+gt.item.electric_piston.umv.name=Electric Piston (UMV)
+gt.item.electric_piston.uxv.name=Electric Piston (UXV)
+gt.item.electric_piston.max.name=Electric Piston (MAX)
+
+## Electric Pumps
+gt.item.electric_pump.lv.name=Electric Pump (LV)
+gt.item.electric_pump.mv.name=Electric Pump (MV)
+gt.item.electric_pump.hv.name=Electric Pump (HV)
+gt.item.electric_pump.ev.name=Electric Pump (EV)
+gt.item.electric_pump.iv.name=Electric Pump (IV)
+gt.item.electric_pump.luv.name=Electric Pump (LuV)
+gt.item.electric_pump.zpm.name=Electric Pump (ZPM)
+gt.item.electric_pump.uv.name=Electric Pump (UV)
+gt.item.electric_pump.uhv.name=Electric Pump (UHV)
+gt.item.electric_pump.uev.name=Electric Pump (UEV)
+gt.item.electric_pump.uiv.name=Electric Pump (UIV)
+gt.item.electric_pump.umv.name=Electric Pump (UMV)
+gt.item.electric_pump.uxv.name=Electric Pump (UXV)
+gt.item.electric_pump.max.name=Electric Pump (MAX)
+gt.item.electric_pump.tooltip=%s L/t %s L
+
+## Other items
+gt.item.electronics_lump.name=Lump of Electronics
+gt.item.electronics_lump.tooltip=How did they even produce this?
+gt.item.tesseract.raw.name=Raw Tesseract
+gt.item.giga_chad_token.name=Giga Chad Token
+gt.item.giga_chad_token.tooltip=You are worthy
+gt.item.tesseract.energised.name=Energised Tesseract
+gt.item.tesseract.energised.tooltip=Higher dimensional engineering
+gt.item.component.sawblade.diamond.name=Diamond Sawblade
+gt.item.component.grinder.diamond.name=Diamond Grinding Head
+gt.item.component.grinder.tungsten.name=Tungsten Grinding Head
+gt.item.upgrade.lock.name=Lock Upgrade
+gt.item.upgrade.lock.tooltip=Protects your Machines
+gt.item.component.filter.name=Item Filter
+gt.item.mcguffium_239.name=Mc Guffium 239
+gt.item.mcguffium_239.tooltip=42% better than Phlebotnium
+gt.item.sengir_planks.name=The holy Planks of Sengir
+
+## Steam Valves
+gt.item.steam_valve.lv.name=Steam Valve (LV)
+gt.item.steam_valve.mv.name=Steam Valve (MV)
+gt.item.steam_valve.hv.name=Steam Valve (HV)
+gt.item.steam_valve.ev.name=Steam Valve (EV)
+gt.item.steam_valve.iv.name=Steam Valve (IV)
+gt.item.steam_valve.tooltip=%s L/t (%s L/s) as Cover
+
+## Fluid Regulators
+gt.item.fluid_regulator.lv.name=Fluid Regulator (LV)
+gt.item.fluid_regulator.mv.name=Fluid Regulator (MV)
+gt.item.fluid_regulator.hv.name=Fluid Regulator (HV)
+gt.item.fluid_regulator.ev.name=Fluid Regulator (EV)
+gt.item.fluid_regulator.iv.name=Fluid Regulator (IV)
+gt.item.fluid_regulator.luv.name=Fluid Regulator (LuV)
+gt.item.fluid_regulator.zpm.name=Fluid Regulator (ZPM)
+gt.item.fluid_regulator.uv.name=Fluid Regulator (UV)
+gt.item.fluid_regulator.uhv.name=Fluid Regulator (UHV)
+gt.item.fluid_regulator.uev.name=Fluid Regulator (UEV)
+gt.item.fluid_regulator.uiv.name=Fluid Regulator (UIV)
+gt.item.fluid_regulator.umv.name=Fluid Regulator (UMV)
+gt.item.fluid_regulator.uxv.name=Fluid Regulator (UXV)
+gt.item.fluid_regulator.max.name=Fluid Regulator (MAX)
+gt.item.fluid_regulator.tooltip=Configurable up to %s L/sec (as Cover)/n Rightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick/n to adjust the pump speed by 1/16/256 L/sec per click/n Can not transfer more than 2.1B L per Operation
+
+## Fluid Filter
+gt.item.fluid_filter.name=Fluid Filter Cover
+gt.item.fluid_filter.tooltip=Set with Fluid Container to only accept one Fluid Type
+
+## Item Filters
+gt.item.item_filter.export.name=Filtered Conveyor Cover (Export)
+gt.item.item_filter.export.tooltip=Right click with an item to set filter (Only supports Export Mode)
+gt.item.item_filter.import.name=Filtered Conveyor Cover (Import)
+gt.item.item_filter.import.tooltip=Right click with an item to set filter (Only supports Import Mode)
+
+## Fluid Limiter Cover
+gt.item.cover.fluid_limiter.name=Fluid Limiter Cover
+gt.item.cover.fluid_limiter.tooltip=Limits fluid input depending on fill level
+
+## Conveyor Modules
+gt.item.conveyor_module.lv.name=Conveyor Module (LV)
+gt.item.conveyor_module.lv.tooltip=1 stack of 16 items every 5 secs (as Cover)
+gt.item.conveyor_module.mv.name=Conveyor Module (MV)
+gt.item.conveyor_module.mv.tooltip=1 stack of 64 items every 5 secs (as Cover)
+gt.item.conveyor_module.hv.name=Conveyor Module (HV)
+gt.item.conveyor_module.hv.tooltip=1 stack of 64 items every 1 sec (as Cover)
+gt.item.conveyor_module.ev.name=Conveyor Module (EV)
+gt.item.conveyor_module.ev.tooltip=1 stack of 64 items every 1/5 sec (as Cover)
+gt.item.conveyor_module.iv.name=Conveyor Module (IV)
+gt.item.conveyor_module.iv.tooltip=1 stack of 64 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.luv.name=Conveyor Module (LuV)
+gt.item.conveyor_module.luv.tooltip=4 stacks of 64 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.zpm.name=Conveyor Module (ZPM)
+gt.item.conveyor_module.zpm.tooltip=16 stacks of 64 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.uv.name=Conveyor Module (UV)
+gt.item.conveyor_module.uv.tooltip=16 stacks of 256 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.uhv.name=Conveyor Module (UHV)
+gt.item.conveyor_module.uhv.tooltip=16 stacks of 1,024 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.uev.name=Conveyor Module (UEV)
+gt.item.conveyor_module.uev.tooltip=16 stacks of 4,096 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.uiv.name=Conveyor Module (UIV)
+gt.item.conveyor_module.uiv.tooltip=16 stacks of 16,384 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.umv.name=Conveyor Module (UMV)
+gt.item.conveyor_module.umv.tooltip=16 stacks of 65,536 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.uxv.name=Conveyor Module (UXV)
+gt.item.conveyor_module.uxv.tooltip=16 stacks of 262,144 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.max.name=Conveyor Module (MAX)
+gt.item.conveyor_module.max.tooltip=16 stacks of 2.1B items every 1/20 sec (as Cover)
+
+## Robot Arms
+gt.item.robot_arm.lv.name=Robot Arm (LV)
+gt.item.robot_arm.lv.tooltip=1 stack every 20 secs (as Cover)/n Grabs from and inserts into specific slots
+gt.item.robot_arm.mv.name=Robot Arm (MV)
+gt.item.robot_arm.mv.tooltip=1 stack every 5 secs (as Cover)/n Grabs from and inserts into specific slots
+gt.item.robot_arm.hv.name=Robot Arm (HV)
+gt.item.robot_arm.hv.tooltip=1 stack every 1 sec (as Cover)/n Grabs from and inserts into specific slots
+gt.item.robot_arm.ev.name=Robot Arm (EV)
+gt.item.robot_arm.ev.tooltip=1 stack every 1/5 sec (as Cover)/n Grabs from and inserts into specific slots
+gt.item.robot_arm.iv.name=Robot Arm (IV)
+gt.item.robot_arm.iv.tooltip=1 stack every 1/20 sec (as Cover)/n Grabs from and inserts into specific slots
+gt.item.robot_arm.luv.name=Robot Arm (LuV)
+gt.item.robot_arm.zpm.name=Robot Arm (ZPM)
+gt.item.robot_arm.uv.name=Robot Arm (UV)
+gt.item.robot_arm.uhv.name=Robot Arm (UHV)
+gt.item.robot_arm.uev.name=Robot Arm (UEV)
+gt.item.robot_arm.uiv.name=Robot Arm (UIV)
+gt.item.robot_arm.umv.name=Robot Arm (UMV)
+gt.item.robot_arm.uxv.name=Robot Arm (UXV)
+gt.item.robot_arm.max.name=Robot Arm (MAX)
+gt.item.part_not_cover.tooltip=Cannot be used as a Cover
+
+## Quantum items
+gt.item.quantum_eye.name=Quantum Eye
+gt.item.quantum_eye.tooltip=Improved Ender Eye
+gt.item.quantum_star.name=Quantum Star
+gt.item.quantum_star.tooltip=Improved Nether Star
+gt.item.gravistar.name=Gravi Star
+gt.item.gravistar.tooltip=Ultimate Nether Star
+
+## Emitters
+gt.item.emitter.lv.name=Emitter (LV)
+gt.item.emitter.mv.name=Emitter (MV)
+gt.item.emitter.hv.name=Emitter (HV)
+gt.item.emitter.ev.name=Emitter (EV)
+gt.item.emitter.iv.name=Emitter (IV)
+gt.item.emitter.luv.name=Emitter (LuV)
+gt.item.emitter.zpm.name=Emitter (ZPM)
+gt.item.emitter.uv.name=Emitter (UV)
+gt.item.emitter.uhv.name=Emitter (UHV)
+gt.item.emitter.uev.name=Emitter (UEV)
+gt.item.emitter.uiv.name=Emitter (UIV)
+gt.item.emitter.umv.name=Emitter (UMV)
+gt.item.emitter.uxv.name=Emitter (UXV)
+gt.item.emitter.max.name=Emitter (MAX)
+
+## Sensors
+gt.item.sensor.lv.name=Sensor (LV)
+gt.item.sensor.mv.name=Sensor (MV)
+gt.item.sensor.hv.name=Sensor (HV)
+gt.item.sensor.ev.name=Sensor (EV)
+gt.item.sensor.iv.name=Sensor (IV)
+gt.item.sensor.luv.name=Sensor (LuV)
+gt.item.sensor.zpm.name=Sensor (ZPM)
+gt.item.sensor.uv.name=Sensor (UV)
+gt.item.sensor.uhv.name=Sensor (UHV)
+gt.item.sensor.uev.name=Sensor (UEV)
+gt.item.sensor.uiv.name=Sensor (UIV)
+gt.item.sensor.umv.name=Sensor (UMV)
+gt.item.sensor.uxv.name=Sensor (UXV)
+gt.item.sensor.max.name=Sensor (MAX)
+
+## Field Generators
+gt.item.field_generator.lv.name=Field Generator (LV)
+gt.item.field_generator.mv.name=Field Generator (MV)
+gt.item.field_generator.hv.name=Field Generator (HV)
+gt.item.field_generator.ev.name=Field Generator (EV)
+gt.item.field_generator.iv.name=Field Generator (IV)
+gt.item.field_generator.luv.name=Field Generator (LuV)
+gt.item.field_generator.zpm.name=Field Generator (ZPM)
+gt.item.field_generator.uv.name=Field Generator (UV)
+gt.item.field_generator.uhv.name=Field Generator (UHV)
+gt.item.field_generator.uev.name=Field Generator (UEV)
+gt.item.field_generator.uiv.name=Field Generator (UIV)
+gt.item.field_generator.umv.name=Field Generator (UMV)
+gt.item.field_generator.uxv.name=Field Generator (UXV)
+gt.item.field_generator.max.name=Field Generator (MAX)
+
+## Advanced materials
+gt.item.material.stable_adhesive.name=Hyper-Stable Self-Healing Adhesive
+gt.item.material.stable_adhesive.tooltip=Complete and selective adhesion, even when torn or damaged
+gt.item.material.superconductor_composite.name=Superconductor Rare-Earth Composite
+gt.item.material.superconductor_composite.tooltip=Zero resistance to electrical and quantum flow, regardless of temperature
+gt.item.material.naquadria_supersolid.name=Black Body Naquadria Supersolid
+gt.item.material.naquadria_supersolid.tooltip=Flows like a fluid and reflects nothing, perfect absorption and transfer
+
+## Circuits
+gt.item.circuit.primitive.name=Vacuum Tube
+gt.item.circuit.primitive.tooltip=A very simple Circuit
+gt.item.circuit.basic.name=Integrated Logic Circuit
+gt.item.circuit.basic.tooltip=A Basic Circuit
+gt.item.circuit.good.name=Good Electronic Circuit
+gt.item.circuit.good.tooltip=A Good Circuit
+gt.item.circuit.advanced.name=Processor Assembly
+gt.item.circuit.advanced.tooltip=An Advanced Circuit
+gt.item.circuit.data.name=Workstation
+gt.item.circuit.data.tooltip=An Extreme Circuit
+gt.item.circuit.elite.name=Mainframe
+gt.item.circuit.elite.tooltip=An Elite Circuit
+gt.item.circuit.master.name=Nano Mainframe
+gt.item.circuit.master.tooltip=A Master Circuit
+
+## Circuit boards
+gt.item.circuit_board.basic.name=Coated Circuit Board
+gt.item.circuit_board.basic.tooltip=A Basic Board
+gt.item.circuit_board.advanced.name=Epoxy Circuit Board
+gt.item.circuit_board.advanced.tooltip=An Advanced Board
+gt.item.circuit_board.elite.name=Multilayer Fiber-Reinforced Circuit Board
+gt.item.circuit_board.elite.tooltip=An Elite Board
+gt.item.circuit_board.phenolic.name=Phenolic Circuit Board
+gt.item.circuit_board.phenolic.tooltip=A Good Board
+gt.item.circuit_board.fiberglass.name=Fiber-Reinforced Circuit Board
+gt.item.circuit_board.fiberglass.tooltip=An Extreme Board
+
+## Circuit parts
+gt.item.circuit_part.crystal_chip_elite.name=Engraved Crystal Chip
+gt.item.circuit_part.crystal_chip_elite.tooltip=Needed for Circuits
+gt.item.circuit_part.crystal_chip_master.name=Engraved Lapotron Chip
+gt.item.circuit_part.crystal_chip_master.tooltip=Needed for Circuits
+gt.item.circuit_part.crystal_chip_wetware.name=Living Crystal Chip
+gt.item.circuit_part.crystal_chip_wetware.tooltip=Needed for Circuits
+gt.item.circuit_part.diode.name=Diode
+gt.item.circuit_part.diode.tooltip=Basic Electronic Component
+gt.item.circuit_part.resistor.name=Resistor
+gt.item.circuit_part.resistor.tooltip=Basic Electronic Component
+gt.item.circuit_part.transistor.name=Transistor
+gt.item.circuit_part.transistor.tooltip=Basic Electronic Component
+gt.item.circuit_part.capacitor.name=Capacitor
+gt.item.circuit_part.capacitor.tooltip=Electronic Component
+
+## Tools
+gt.item.tool.data_orb.name=Data Orb
+gt.item.tool.data_orb.tooltip=A High Capacity Data Storage
+gt.item.tool.data_stick.name=Data Stick
+gt.item.tool.data_stick.tooltip=A Low Capacity Data Storage
+gt.item.tool.cover_copy_paste.name=Cover Copy/Paste tool
+gt.item.tool.cover_copy_paste.tooltip=Set Cover Massively.
+gt.item.tool.debug_scanner.name=Debug Scanner
+gt.item.tool.debug_scanner.tooltip=Also an Infinite Energy Source
+gt.item.tool.portable_scanner.name=Portable Scanner
+gt.item.tool.portable_scanner.tooltip=Tricorder
+gt.item.tool.sensor_kit.name=GregTech Sensor Kit
+gt.item.tool.duct_tape.name=BrainTech Aerospace Advanced Reinforced Duct Tape FAL-84
+gt.item.tool.duct_tape.tooltip=If you can't fix it with this, use more of it!
+
+## Cover
+gt.item.cover.controller.name=Machine Controller Cover
+gt.item.cover.controller.tooltip=Turns Machines ON/OFF
+gt.item.cover.activity_detector.name=Activity Detector Cover
+gt.item.cover.activity_detector.tooltip=Gives out Activity as Redstone
+gt.item.cover.fluid_detector.name=Fluid Detector Cover
+gt.item.cover.fluid_detector.tooltip=Gives out Fluid Amount as Redstone
+gt.item.cover.item_detector.name=Item Detector Cover
+gt.item.cover.item_detector.tooltip=Gives out Item Amount as Redstone
+gt.item.cover.energy_detector.name=Energy Detector Cover
+gt.item.cover.energy_detector.tooltip=Gives out Energy Amount as Redstone
+gt.item.cover.player_detector.name=Player Detector Cover
+gt.item.cover.player_detector.tooltip=Gives out close Players as Redstone
+gt.item.cover.fluid_storage_monitor.name=Fluid Storage Monitor Cover
+gt.item.cover.fluid_storage_monitor.tooltip=Displays the fluid stored in the Tank
+gt.item.cover.chest.basic.name=Basic Item Holder
+gt.item.cover.chest.basic.tooltip=Holds 9 item for use within machine GUI (as Cover)
+gt.item.cover.chest.good.name=Good Item Holder
+gt.item.cover.chest.good.tooltip=Holds 12 item for use within machine GUI (as Cover)
+gt.item.cover.chest.advanced.name=Advanced Item Holder
+gt.item.cover.chest.advanced.tooltip=Holds 15 item for use within machine GUI (as Cover)
+gt.item.cover.screen.name=Computer Monitor Cover
+gt.item.cover.screen.tooltip=Displays Data and GUI
+gt.item.cover.crafting.name=Crafting Table Cover
+gt.item.cover.crafting.tooltip=Better than a wooden Workbench
+gt.item.cover.drain.name=Drain Module Cover
+gt.item.cover.drain.tooltip=Absorbs Fluids and collects Rain
+gt.item.cover.shutter.name=Shutter Module Cover
+gt.item.cover.shutter.tooltip=Blocks Inventory/Tank Side. Use together with Machine Controller.
+
+### Solar Panels
+gt.item.cover.solar_panel.basic.name=Solar Panel
+gt.item.cover.solar_panel.basic.tooltip=May the Sun be with you (Needs cleaning with right click)
+gt.item.cover.solar_panel.8v.name=Solar Panel (8V)
+gt.item.cover.solar_panel.8v.tooltip=8 Volt Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.lv.name=Solar Panel (LV)
+gt.item.cover.solar_panel.lv.tooltip=Low Voltage Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.mv.name=Solar Panel (MV)
+gt.item.cover.solar_panel.mv.tooltip=Medium Voltage Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.hv.name=Solar Panel (HV)
+gt.item.cover.solar_panel.hv.tooltip=High Voltage Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.ev.name=Solar Panel (EV)
+gt.item.cover.solar_panel.ev.tooltip=Extreme Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.iv.name=Solar Panel (IV)
+gt.item.cover.solar_panel.iv.tooltip=Insane Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.luv.name=Solar Panel (LuV)
+gt.item.cover.solar_panel.luv.tooltip=Ludicrous Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.zpm.name=Solar Panel (ZPM)
+gt.item.cover.solar_panel.zpm.tooltip=ZPM Voltage Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.uv.name=Solar Panel (UV)
+gt.item.cover.solar_panel.uv.tooltip=Ultimate Solar Panel (Needs cleaning with right click)
+
+### Redstone Covers
+gt.item.cover.redstone_transmitter.name=Redstone Transmitter
+gt.item.cover.redstone_transmitter.tooltip=Transfers Redstone signals wireless
+gt.item.cover.redstone_transmitter_internal.name=Redstone Transmitter (Internal)
+gt.item.cover.redstone_transmitter_internal.tooltip=Transfers Redstone signals wireless/n §cDEPRECATED! This will be removed in the next major update.
+gt.item.cover.redstone_receiver.name=Redstone Receiver
+gt.item.cover.redstone_receiver.tooltip=Transfers Redstone signals wireless
+gt.item.cover.wireless_controller.name=Wireless Machine Controller Cover
+gt.item.cover.wireless_controller.tooltip=Turns Machines ON/OFF wirelessly/n Can only connect with advanced wireless covers
+
+### Maintenance Cover
+gt.item.cover.needs_maintenance.name=Needs Maintenance Cover
+gt.item.cover.needs_maintenance.tooltip=Attach to Multiblock Controller. Emits Redstone Signal if needs Maintenance
+
+## Wireless Energy Cover
+gt.item.wireless_energy_cover.name=%s Wireless Energy Cover
+gt.item.wireless_energy_cover.tooltip.0=Stores energy globally in a network, up to 2^(2^31) EU.
+gt.item.wireless_energy_cover.tooltip.1=Does not connect to wires. This cover withdraws EU from the network.
+gt.item.wireless_energy_cover.tooltip.2=Ignores voltage limitations (no explosions).
+gt.item.wireless_energy_cover_debug.name=Debug Wireless Energy Cover
+gt.item.wireless_energy_cover_debug.tooltip.0=Infinite Power. Ignores Voltage Limitations.
+
+## Steam Regulators (use same tooltip as steam valves)
+gt.item.steam_regulator.lv.name=Steam Regulator (LV)
+gt.item.steam_regulator.mv.name=Steam Regulator (MV)
+gt.item.steam_regulator.hv.name=Steam Regulator (HV)
+gt.item.steam_regulator.ev.name=Steam Regulator (EV)
+gt.item.steam_regulator.iv.name=Steam Regulator (IV)
+
+## Electromagnets
+gt.item.electromagnet.iron.name=Iron Electromagnet
+gt.item.electromagnet.steel.name=Steel Electromagnet
+gt.item.electromagnet.neodymium.name=Neodymium Electromagnet
+gt.item.electromagnet.samarium.name=§eSamarium Electromagnet
+gt.item.electromagnet.tengam.name=§aTengam Electromagnet
+
+## Black Hole items
+gt.item.black_hole.seed.name=Black Hole Seed
+gt.item.black_hole.seed.tooltip=Opens a pseudostable black hole
+gt.item.black_hole.collapser.name=Black Hole Collapser
+gt.item.black_hole.collapser.tooltip=Safely closes a pseudostable black hole
+gt.item.black_hole.stabilizer.name=Superstable Black Hole Seed
+gt.item.black_hole.stabilizer.tooltip=Opens a superstable black hole/n Black hole will never destabilize and will operate at maximum efficiency
+
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
 GT5U.nei.display.steam_variant.steel=Steel
