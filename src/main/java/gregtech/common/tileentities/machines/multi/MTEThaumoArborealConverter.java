@@ -11,7 +11,10 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import java.util.Lists
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import gregtech.api.enums.TAE;
 import gregtech.api.GregTechAPI;
@@ -38,7 +41,9 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
     private static final int STONE_TIERS = 8;
     
     private int mCasing;
+    private int glassTier;
     private int[] mFrame = new int[FRAME_IDS.length];
+    private int mFrameTier;
     private int[] mStone = new int[STONE_TIERS];
     public static String mCasingName = "Sterile Farm Casing";
     
@@ -127,6 +132,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
                 return false;
             }
         }
+        return true;
     }
     
     @Override
@@ -189,7 +195,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
 
         // allow compressed dirt and gravel too?
         for (int i = 0; i < STONE_TIERS; i++) {
-            elements[i] = ofBlock(tile.extrautils:cobblestone_compressed, i);
+            elements[i] = ofBlock(extrautils.block.cobblestone_compressed, i);
         }
 
         return elements;
@@ -264,18 +270,18 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
             return -1;
         }
         
-        private static int getFrameMultiplier() {
+        private int getFrameMultiplier() {
             return Math.pow(2, this.mFrameTier);
         }
         
-        private static double getFrameWeightMul() {
+        private double getFrameWeightMul() {
             return FRAME_WEIGHTS[this.mFrameTier];
         }
         
         private double getStoneTier(){
             double totalStoneWeight = 0;
             for (int i = 0; i < STONE_TIERS; i++){
-                totalStoneWeight += mStone[i] * i;
+                totalStoneWeight += this.mStone[i] * i;
             }
             return totalStoneWeight / STONE_NUM;
         }
@@ -310,10 +316,6 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
                     if (sapling == null) return SimpleCheckRecipeResult.ofFailure("no_sapling");
     
                     HashMap<ItemStack, Integer> outputMap = getOutputsForSapling(sapling);
-                    if (outputPerMode == null) {
-                        Logger.INFO("No output found for sapling: " + sapling.getDisplayName());
-                        return SimpleCheckRecipeResult.ofFailure("no_output_for_sapling");
-                    }
                     
                     int tier = Math.max(1, GTUtility.getTier(availableVoltage * availableAmperage));
                     int tierMultiplier = getTierMultiplier(tier);
@@ -324,15 +326,15 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
                     int totalWeight = getSaplingTotalWeight(sapling);
     
                     List<ItemStack> outputs = new ArrayList<>();
-                    for (ItemStack output : outputMap){
+                    for (ItemStack output : outputMap.keySet()){
                         ItemStack out = output.copy();
                         //w???
-                        int chance = 10000 * totalWeight / outputMap.get(output)
+                        int chance = 10000 * totalWeight / outputMap.get(output);
                         // non-random
                         //out.stackSize = totalOutput * totalWeight / outputMap.get(output);
                         // random - normal approximation
                         // TODO
-                        out.stackSize;
+                        out.stackSize = 1;
                         outputs.add(out);
                     }
     
@@ -380,7 +382,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
             int consumedCatalystWeight = 0;
             int mult = getFrameWeightMul();
             for (ItemStack stack : getStoredInputs()){
-                int wgt = getCatalystWeight(stack * mult / 100);
+                int wgt = getCatalystWeight(stack) * mult / 100;
                 if (wgt <= 0) continue;
                 if (stack.stackSize * wgt <= consumedInput - consumedCatalystWeight){
                     consumedCatalystWeight += stack.stackSize * wgt;
@@ -397,9 +399,9 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
         
         private static int getCatalystWeight(ItemStack stack){
             // TODO
-            const int wgtLog = 4;
-            const int wgtSapling = 2;
-            const int wgtLeaves = 1;
+            final int wgtLog = 4;
+            final int wgtSapling = 2;
+            final int wgtLeaves = 1;
         }
         
         /**
@@ -435,7 +437,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
             return null;
         }
         
-        private static string getSaplingName(ItemStack sapling){
+        private static String getSaplingName(ItemStack sapling){
             return Item.itemRegistry.getNameForObject(sapling.getItem()) + ":" + sapling.getItemDamage();
         }
         
@@ -483,7 +485,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
             String key = getSaplingName(saplingIn);
             HashMap<ItemStack, Integer> map = treeProductsMap.get(key);
             if (map == null) {
-                map = new HashMap<>(ItemStack.class);
+                map = new HashMap<>();
                 treeProductsMap.put(key, map);
             }
             map.put(output, weight);
@@ -499,8 +501,8 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
             return weight;
         }
         
-        public static int getInputSlots() return 1;
-        public static int getOutputSlots() return 10;
+        public static int getInputSlots() {return 1;}
+        public static int getOutputSlots() {return 10;}
         
         /**
          * Add a recipe for this tree to NEI. These recipes are only used in NEI, they are never used for processing logic.
@@ -518,7 +520,7 @@ public class MTEThaumoArborealConverter extends GTPPMultiBlockBase<MTEThaumoArbo
             int totalWeight = getSaplingTotalWeight(saplingIn);
             if (totalWeight <= 0){
                 Logger.INFO("Invalid weight(" + totalWeight + ") for sapling: " + sapling.getDisplayName());
-                return False;
+                return false;
             }
             ItemStack[] outputStacks = new ItemStack[getOutputSlots()];
             int[] outputChances = new int[getOutputSlots()];
