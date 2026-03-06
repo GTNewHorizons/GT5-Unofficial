@@ -31,7 +31,7 @@ public final class MetaGeneratedItemRenderer implements IItemRenderer {
     }
 
     public void registerSpecialRenderer(Item aItem, ItemStack aStack, IItemRenderer renderer) {
-        specialRenderers.put(pack(aItem, (short) aStack.getItemDamage()), renderer);
+        specialRenderers.put(pack(aItem, aStack.getItemDamage()), renderer);
     }
 
     @Override
@@ -60,7 +60,7 @@ public final class MetaGeneratedItemRenderer implements IItemRenderer {
     }
 
     private IItemRenderer getRendererForItemStack(ItemStack aStack) {
-        final short aMetaData = (short) aStack.getItemDamage();
+        final int aMetaData = aStack.getItemDamage();
         final IItemRenderer renderer = specialRenderers.get(pack(aStack.getItem(), aMetaData));
         if (renderer != null) {
             return renderer;
@@ -87,8 +87,8 @@ public final class MetaGeneratedItemRenderer implements IItemRenderer {
         return mItemRenderer;
     }
 
-    private static long pack(Item item, short meta) {
+    private static long pack(Item item, int meta) {
         final int a = Objects.hashCode(item);
-        return (long) a << 32 | meta & 0xFFFF;
+        return (long) a << 32 | meta & 0xFFFFFFFFL;
     }
 }
