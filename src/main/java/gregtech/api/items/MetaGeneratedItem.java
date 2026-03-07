@@ -193,14 +193,6 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         return null;
     }
 
-    public final ItemStack addItemWithTooltipKey(int aID, String aEnglish, String aToolTipKey, Object... aRandomData) {
-        ItemStack rStack = addItem(aID, aEnglish, aToolTipKey, aRandomData);
-        if (rStack != null && GTUtility.isStringValid(aToolTipKey)) {
-            mTooltipLocalizationKeys.put((short) (mOffset + aID), aToolTipKey);
-        }
-        return rStack;
-    }
-
     public final ItemStack addItemWithLocalizationKeys(int aID, String aNameKey, String aToolTipKey,
         Object... aRandomData) {
         ItemStack rStack = addItem(aID, aNameKey, aToolTipKey, aRandomData);
