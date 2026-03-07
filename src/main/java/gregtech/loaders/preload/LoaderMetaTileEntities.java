@@ -200,6 +200,7 @@ import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
 import gregtech.common.tileentities.machines.multi.MTESolarFactory;
 import gregtech.common.tileentities.machines.multi.MTESpinmatron;
+import gregtech.common.tileentities.machines.multi.MTEToxicResidueSensor;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
@@ -11141,6 +11142,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 8).getStackForm(1L));
         ItemList.Hatch_HeatSensor
             .set(new MTEHeatSensor(HEAT_DETECTOR_HATCH.ID, "hatch.heatsensor", "Heat Sensor Hatch", 7).getStackForm(1));
+        ItemList.Hatch_ToxicResidueSensor.set(
+            new MTEToxicResidueSensor(
+                TOXIC_RESIDUE_DETECTOR_HATCH.ID,
+                "hatch.toxicresiduesensor",
+                "Toxic Residue Sensor Hatch",
+                7).getStackForm(1));
         ItemList.Hatch_BlackHoleUtility.set(
             new MTEBlackHoleUtility(
                 HATCH_BLACK_HOLE_UTILITY.ID,

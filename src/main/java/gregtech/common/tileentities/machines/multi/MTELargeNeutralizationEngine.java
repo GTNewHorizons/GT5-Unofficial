@@ -23,6 +23,9 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -48,6 +51,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -62,6 +66,7 @@ import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTELargeNeutralizationEngineGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -91,6 +96,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private int maxFluidUse = 200;
 
     private static final String SEPARATOR = EnumChatFormatting.GRAY + " : ";
+
+    private final ArrayList<MTEToxicResidueSensor> sensorHatches = new ArrayList<>();
 
     public MTELargeNeutralizationEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -199,7 +206,12 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     'C',
                     ofChain(
                         buildHatchAdder(MTELargeNeutralizationEngine.class)
-                            .atLeast(Dynamo.or(ExoticDynamo), Maintenance, InputBus, InputHatch)
+                            .atLeast(
+                                Dynamo.or(ExoticDynamo),
+                                Maintenance,
+                                InputBus,
+                                InputHatch,
+                                SpecialHatchElement.ToxicResidueSensor)
                             .casingIndex(getCasingTextureId())
                             .allowOnly(ForgeDirection.NORTH)
                             .hint(1)
@@ -459,6 +471,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addInputHatch("Any Tiered Casing", 1)
             .addMaintenanceHatch("Any Tiered Casing", 1)
             .addDynamoHatch("Any Tiered Casing", 1)
+            .addOtherStructurePart("Toxic Residue Sensor Hatch", "Any Tiered Casing")
             .addTecTechHatchInfo()
             .toolTipFinisher(AuthorLeon);
         return tt;
@@ -485,6 +498,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         for (MTEHatch h : mInputHatches) h.updateTexture(getCasingTextureId());
         for (MTEHatch h : mExoticDynamoHatches) h.updateTexture(getCasingTextureId());
         for (MTEHatchDynamo h : mDynamoHatches) h.updateTexture(getCasingTextureId());
+        for (MTEToxicResidueSensor h : sensorHatches) h.updateTexture(getCasingTextureId());
     }
 
     /*
@@ -665,7 +679,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             } else {
                 useBooster();
             }
-            int robotArmTier = 0;
+
+            int robotArmTier; // Residue changing
             Pair<ItemStack, Integer> robotArm = getRobotArm();
             if (robotArm != null) {
                 int amount = Math.min(robotArm.getLeft().stackSize, 64);
@@ -698,6 +713,15 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         }
         this.shutDown();
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        for (MTEToxicResidueSensor toxicResidueSensorHatch : sensorHatches) { // done in onPostTick so it can update
+                                                                              // even when multi is off
+            toxicResidueSensorHatch.updateRedstoneOutput(toxicResidue);
+        }
     }
 
     private void shutDown() {
@@ -776,5 +800,45 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     public void setMaxFluidUse(int maxFluidUse) {
         this.maxFluidUse = maxFluidUse;
+    }
+
+    private boolean addSensorHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity instanceof MTEToxicResidueSensor sensor) {
+            sensor.updateTexture(aBaseCasingIndex);
+            return this.sensorHatches.add(sensor);
+        }
+        return false;
+    }
+
+    private enum SpecialHatchElement implements IHatchElement<MTELargeNeutralizationEngine> {
+
+        ToxicResidueSensor(MTELargeNeutralizationEngine::addSensorHatchToMachineList, MTEToxicResidueSensor.class) {
+
+            @Override
+            public long count(MTELargeNeutralizationEngine gtMetaTileEntityLargeNeutralizationEngine) {
+                return gtMetaTileEntityLargeNeutralizationEngine.sensorHatches.size();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTELargeNeutralizationEngine> adder;
+
+        @SafeVarargs
+        SpecialHatchElement(IGTHatchAdder<MTELargeNeutralizationEngine> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        public IGTHatchAdder<? super MTELargeNeutralizationEngine> adder() {
+            return adder;
+        }
     }
 }
