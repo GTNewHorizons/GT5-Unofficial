@@ -19,17 +19,19 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.gui.widgets.CommonWidgets;
+import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 
-public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
+// For singleblock MUI2 guis.
+public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
 
     protected final T machine;
     protected final IGregTechTileEntity baseMetaTileEntity;
 
-    public MTEBasicMachineBaseGui(T machine) {
+    public MTETieredMachineBlockBaseGui(T machine) {
         this.machine = machine;
         this.baseMetaTileEntity = machine.getBaseMetaTileEntity();
     }
@@ -183,7 +185,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
 
     // the base class is an instance of ICircuitConfiguration
     protected boolean doesAddCircuitSlot() {
-        return machine.allowSelectCircuit();
+        return machine instanceof IConfigurationCircuitSupport cc && cc.allowSelectCircuit();
     }
 
     protected Widget<? extends Widget<?>> createCircuitSlot(PanelSyncManager syncManager) {
