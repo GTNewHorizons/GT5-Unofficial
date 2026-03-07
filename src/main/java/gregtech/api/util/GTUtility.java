@@ -2515,8 +2515,11 @@ public class GTUtility {
 
     public static void translateInto(List<String> list, String key, Object... parameters) {
         int i = 0;
-        while (StatCollector.canTranslate(key + "." + i)) {
-            list.add(translate(key + "." + i));
+        while (true) {
+            String indexedKey = key + "." + i;
+            String translated = StatCollector.translateToLocal(indexedKey);
+            if (translated.equals(indexedKey)) break;
+            list.add(translate(indexedKey, parameters));
             i++;
         }
     }
