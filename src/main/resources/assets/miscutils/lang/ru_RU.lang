@@ -4014,9 +4014,9 @@ gtpp.tooltip.tool.mining_speed=Скорость добычи:
 
 gtpp.tooltip.wireless_charger.0=Можно заблокировать владельца ЛКМ+Shift отвёрткой
 gtpp.tooltip.wireless_charger.1=Используйте отвёртку для смены режима.
-gtpp.tooltip.wireless_charger.2=§aДальний диапазон§7: Может обеспечивать питание 1А для одного игрока на расстоянии до %,dм.
-gtpp.tooltip.wireless_charger.3=§aЛокальный§7: Может подавать 2A каждому игроку в пределах %,dм.
-gtpp.tooltip.wireless_charger.4=§aСмешанный режим§7: Может подавать 1A на расстоянии до %,dм и более 1A в пределах %,dм.
+gtpp.tooltip.wireless_charger.2=§aДальний диапазон§7: Может обеспечивать питание 1А для одного игрока на расстоянии до %s м.
+gtpp.tooltip.wireless_charger.3=§aЛокальный§7: Может подавать 2A каждому игроку в пределах %s м.
+gtpp.tooltip.wireless_charger.4=§aСмешанный режим§7: Может подавать 1A на расстоянии до %s м и более 1A в пределах %s м.
 
 #gtpp info data
 gtpp.infodata.tesseract_generator.name=Тессеракт генератор
@@ -4060,5 +4060,5 @@ gtpp.chat.wireless_charger.mode.mixed=Смешанный
 gtpp.chat.wireless_charger.range=Дальность
 gtpp.chat.wireless_charger.lock=Locked to owner
 gtpp.chat.wireless_charger.unlock=Разблокировано
-gtpp.chat.wireless_charger.enter=Вы вошли в радиус зарядки. [%,dм - %s]
-gtpp.chat.wireless_charger.leave=Вы покинули радиус зарядки. [%,dm - %s]
+gtpp.chat.wireless_charger.enter=Вы вошли в радиус зарядки. [%s м - %s]
+gtpp.chat.wireless_charger.leave=Вы покинули радиус зарядки. [%s м - %s]

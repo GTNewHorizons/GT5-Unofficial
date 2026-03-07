@@ -19,7 +19,7 @@ import gregtech.api.util.GTUtility;
 public enum CircuitWraps {
 
     // ID 0-10000 RESERVED FOR IMPRINTS
-
+    // spotless:off
     EngravedCrystalChips(32763, ItemList.Circuit_Parts_Crystal_Chip_Elite, ItemList.Wrap_EngravedCrystalChips),
     EngravedLapotrionChips(32762, ItemList.Circuit_Parts_Crystal_Chip_Master, ItemList.Wrap_EngravedLapotrionChips),
     CoatedCircuitBoards(32761, ItemList.Circuit_Board_Coated, ItemList.Wrap_CoatedCircuitBoards),
@@ -29,15 +29,11 @@ public enum CircuitWraps {
     EpoxyCircuitBoards(32757, ItemList.Circuit_Board_Epoxy, ItemList.Wrap_EpoxyCircuitBoards),
     AdvancedCircuitBoards(32756, ItemList.Circuit_Board_Epoxy_Advanced, ItemList.Wrap_AdvancedCircuitBoards),
     FiberReinforcedCircuitBoards(32755, ItemList.Circuit_Board_Fiberglass, ItemList.Wrap_FiberReinforcedCircuitBoards),
-    MoreAdvancedCircuitBoards(32754, ItemList.Circuit_Board_Fiberglass_Advanced,
-        ItemList.Wrap_MoreAdvancedCircuitBoards),
+    MoreAdvancedCircuitBoards(32754, ItemList.Circuit_Board_Fiberglass_Advanced, ItemList.Wrap_MoreAdvancedCircuitBoards),
     EliteCircuitBoards(32753, ItemList.Circuit_Board_Multifiberglass_Elite, ItemList.Wrap_EliteCircuitBoards),
-    MultilayerFiberReinforcedCircuitBoards(32752, ItemList.Circuit_Board_Multifiberglass,
-        ItemList.Wrap_MultilayerFiberReinforcedCircuitBoards),
-    WetwareLifesupportCircuitBoards(32751, ItemList.Circuit_Board_Wetware,
-        ItemList.Wrap_WetwareLifesupportCircuitBoards),
-    ExtremeWetwareLifesupportCircuitBoards(32750, ItemList.Circuit_Board_Wetware_Extreme,
-        ItemList.Wrap_ExtremeWetwareLifesupportCircuitBoards),
+    MultilayerFiberReinforcedCircuitBoards(32752, ItemList.Circuit_Board_Multifiberglass, ItemList.Wrap_MultilayerFiberReinforcedCircuitBoards),
+    WetwareLifesupportCircuitBoards(32751, ItemList.Circuit_Board_Wetware, ItemList.Wrap_WetwareLifesupportCircuitBoards),
+    ExtremeWetwareLifesupportCircuitBoards(32750, ItemList.Circuit_Board_Wetware_Extreme, ItemList.Wrap_ExtremeWetwareLifesupportCircuitBoards),
     PlasticCircuitBoards(32749, ItemList.Circuit_Board_Plastic, ItemList.Wrap_PlasticCircuitBoards),
     PlasticCircuitBoards2(32748, ItemList.Circuit_Board_Plastic_Advanced, ItemList.Wrap_PlasticCircuitBoards2),
     BioCircuitBoards(32747, ItemList.Circuit_Board_Bio, ItemList.Wrap_BioCircuitBoards),
@@ -67,8 +63,7 @@ public enum CircuitWraps {
     NanoPowerICs(32723, ItemList.Circuit_Chip_NPIC, ItemList.Wrap_NanoPowerICs),
     PikoPowerICs(32722, ItemList.Circuit_Chip_PPIC, ItemList.Wrap_PikoPowerICs),
     QuantumPowerICs(32721, ItemList.Circuit_Chip_QPIC, ItemList.Wrap_QuantumPowerICs),
-    NanocomponentCentralProcessingUnits(32720, ItemList.Circuit_Chip_NanoCPU,
-        ItemList.Wrap_NanocomponentCentralProcessingUnits),
+    NanocomponentCentralProcessingUnits(32720, ItemList.Circuit_Chip_NanoCPU, ItemList.Wrap_NanocomponentCentralProcessingUnits),
     QBitProcessingUnits(32719, ItemList.Circuit_Chip_QuantumCPU, ItemList.Wrap_QBitProcessingUnits),
     CrystalProcessingUnits(32718, ItemList.Circuit_Chip_CrystalCPU, ItemList.Wrap_CrystalProcessingUnits),
     CrystalSoCs(32717, ItemList.Circuit_Chip_CrystalSoC, ItemList.Wrap_CrystalSoCs),
@@ -86,14 +81,17 @@ public enum CircuitWraps {
     RawExposedOpticalChips(32705, ItemList.Circuit_Chip_Optical, ItemList.Wrap_RawExposedOpticalChips),
     OpticalCircuitBoards(32704, ItemList.Circuit_Board_Optical, ItemList.Wrap_OpticalCircuitBoards),
     OpticallyPerfectedCPUs(32703, ItemList.Optically_Perfected_CPU, ItemList.Wrap_OpticallyPerfectedCPUs),
-    OpticalCPUContainmentHousings(32702, ItemList.Optical_Cpu_Containment_Housing,
-        ItemList.Wrap_OpticalCPUContainmentHousings),
+    OpticalCPUContainmentHousings(32702, ItemList.Optical_Cpu_Containment_Housing, ItemList.Wrap_OpticalCPUContainmentHousings),
     OpticallyCompatibleMemories(32701, ItemList.Optically_Compatible_Memory, ItemList.Wrap_OpticallyCompatibleMemories),
     LivingCrystalChips(32700, ItemList.Circuit_Parts_Crystal_Chip_Wetware, ItemList.Wrap_LivingCrystalChips),
     LivingBioChips(32699, ItemList.Circuit_Parts_Chip_Bioware, ItemList.Wrap_LivingBioChips),
-
+    // spotless:on
     ;
 
+    /**
+     * Cached values() array for frequent read-only operations, the array should NOT be mutated.
+     */
+    public static final CircuitWraps[] VALUES = values();
     private static final HashMap<Integer, CircuitWraps> ID_MAP = new HashMap<>();
 
     public final int id;
@@ -108,6 +106,13 @@ public enum CircuitWraps {
         this.id = id;
         this.itemSingle = itemSingle;
         this.itemWrap = itemWrap;
+    }
+
+    public static void registerWraps() {
+        for (CircuitWraps wrap : VALUES) {
+            wrap.registerWrap();
+            wrap.registerWrapRecipe();
+        }
     }
 
     public void registerWrap() {
@@ -142,7 +147,7 @@ public enum CircuitWraps {
     public static int getMinimalID() {
         int min = Short.MAX_VALUE - 1;
 
-        for (CircuitWraps wrap : CircuitWraps.values()) {
+        for (CircuitWraps wrap : CircuitWraps.VALUES) {
             min = Math.min(min, wrap.id);
         }
         return min;

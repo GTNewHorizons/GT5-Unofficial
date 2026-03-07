@@ -11,13 +11,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.fluids.Fluid;
 
+import gregtech.GTMod;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.render.items.MetaGeneratedItemRenderer;
 
 /**
  * Class containing all non-OreDict Items of GregTech.
@@ -2180,6 +2180,7 @@ public enum ItemList implements IItemContainer {
     EntropicProcessor,
     DecayWarehouse,
     LATEX,
+    MagicalMaintenanceHatch,
     AcceleratorLV,
     AcceleratorMV,
     AcceleratorHV,
@@ -3183,7 +3184,9 @@ public enum ItemList implements IItemContainer {
 
     @Override
     public IItemContainer setRender(IItemRenderer aRenderer) {
-        MetaGeneratedItemRenderer.registerSpecialRenderer(this, aRenderer);
+        if (GTMod.proxy.isClientSide()) {
+            GTMod.clientProxy().metaItemRenderer.registerSpecialRenderer(this, aRenderer);
+        }
         return this;
     }
 

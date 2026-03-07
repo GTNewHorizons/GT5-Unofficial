@@ -138,7 +138,14 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
             tooltipKeys[1] = "GT5U.machines.unused_slot.tooltip.1";
         }
         return new ItemSlot().marginRight(9)
-            .slot(new ModularSlot(machine.inventoryHandler, machine.getSpecialSlotIndex()).slotGroup("item_inv"))
+            .slot(
+                new ModularSlot(machine.inventoryHandler, machine.getSpecialSlotIndex())
+                    .changeListener(
+                        (newItem, onlyAmountChanged, client, init) -> {
+                            if (!client && !init) machine.getBaseMetaTileEntity()
+                                .markInventoryBeenModified();
+                        })
+                    .slotGroup("item_inv"))
             .background(
                 GTGuiTextures.SLOT_ITEM_STANDARD,
                 properties.useSpecialSlot ? slotOverlayFunction.apply(0, false, false, true) : IDrawable.NONE)
@@ -150,7 +157,13 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     protected ItemSlot createChargerSlot() {
 
-        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()))
+        return new ItemSlot()
+            .slot(
+                new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()).changeListener(
+                    (newItem, onlyAmountChanged, client, init) -> {
+                        if (!client && !init) machine.getBaseMetaTileEntity()
+                            .markInventoryBeenModified();
+                    }))
             .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER)
             .tooltip(this::createTooltipForChargerSlot)
             .tooltipShowUpTimer(TOOLTIP_DELAY);
@@ -192,22 +205,32 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
                 'c',
                 i -> new ItemSlot()
                     .background(GTGuiTextures.SLOT_ITEM_STANDARD, slotOverlayFunction.apply(i, false, false, false))
-                    .slot(new ModularSlot(machine.inventoryHandler, machine.getInputSlot() + i) {
-
-                        @Override
-                        public void onSlotChanged() {
-                            super.onSlotChanged();
-                            machine.getBaseMetaTileEntity()
-                                .markInventoryBeenModified();
-                        }
-                    }.singletonSlotGroup(50 + i)))
+                    .slot(
+                        new ModularSlot(machine.inventoryHandler, machine.getInputSlot() + i)
+                            .changeListener(
+                                (newItem, onlyAmountChanged, client, init) -> {
+                                    if (!client && !init) machine.getBaseMetaTileEntity()
+                                        .markInventoryBeenModified();
+                                })
+                            .singletonSlotGroup(50 + i)))
             .build();
     }
 
     protected FluidSlot createFluidInputSlot() {
         return new FluidSlot().overlay(slotOverlayFunction.apply(0, true, false, false))
             .tooltipShowUpTimer(TOOLTIP_DELAY)
-            .syncHandler(machine.getFluidTank());
+            .syncHandler(new FluidSlotSyncHandler(machine.getFluidTank()) {
+
+                @Override
+                protected void onValueChanged() {
+                    super.onValueChanged();
+                    if (this.getSyncManager()
+                        .isClient()) return;
+                    machine.getBaseMetaTileEntity()
+                        .markInventoryBeenModified();
+                }
+
+            });
     }
 
     protected SlotGroupWidget createItemOutputSlots() {
@@ -224,6 +247,11 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
                     .background(GTGuiTextures.SLOT_ITEM_STANDARD, slotOverlayFunction.apply(i, false, true, false))
                     .slot(
                         new ModularSlot(machine.inventoryHandler, machine.getOutputSlot() + i)
+                            .changeListener(
+                                (newItem, onlyAmountChanged, client, init) -> {
+                                    if (!client && !init) machine.getBaseMetaTileEntity()
+                                        .markInventoryBeenModified();
+                                })
                             .accessibility(false, true)))
             .build();
     }
@@ -231,7 +259,18 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
     protected FluidSlot createFluidOutputSlot() {
         return new FluidSlot().overlay(slotOverlayFunction.apply(0, true, true, false))
             .tooltipShowUpTimer(TOOLTIP_DELAY)
-            .syncHandler(new FluidSlotSyncHandler(machine.getFluidOutputTank()).canFillSlot(false));
+            .syncHandler(new FluidSlotSyncHandler(machine.getFluidOutputTank()) {
+
+                @Override
+                protected void onValueChanged() {
+                    super.onValueChanged();
+                    if (this.getSyncManager()
+                        .isClient()) return;
+                    machine.getBaseMetaTileEntity()
+                        .markInventoryBeenModified();
+                }
+
+            }.canFillSlot(false));
     }
 
     protected String[] mapInSlotsToMatrix() {

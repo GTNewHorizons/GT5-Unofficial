@@ -268,7 +268,9 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             // Energy Hatch: Any Computer Casing on the backside of the main body
             .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1)
             // Maintenance Hatch: Any Computer Casing on the backside of the main body
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1)
+            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingsHint1or3"), 1, 3)
+            .addOutputBus(translateToLocal("tt.keyword.Structure.AnyComputerCasingsHint1or3"), 1, 3)
+            .addInputHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingsHint1or3"), 1, 3)
             .toolTipFinisher();
         return tt;
     }
