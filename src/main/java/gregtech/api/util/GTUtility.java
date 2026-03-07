@@ -2509,8 +2509,9 @@ public class GTUtility {
     }
 
     public static String translate(String key, Object... parameters) {
-        return parameters.length == 0 ? StatCollector.translateToLocal(key)
+        String translated = parameters.length == 0 ? StatCollector.translateToLocal(key)
             : StatCollector.translateToLocalFormatted(key, parameters);
+        return translated.replace("\\n", "/n ");
     }
 
     /*
