@@ -358,7 +358,10 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
     }
 
     public IAEItemStack loadStackFromNBT(NBTTagCompound t) {
-        return AEItemStack.create(GTUtility.loadItem(t));
+        final ItemStack is = GTUtility.loadItem(t.getCompoundTag("itemStack"));
+        if (is == null) return null;
+        return AEItemStack.create(is)
+            .setStackSize(t.getLong("size"));
     }
 
     @Override
