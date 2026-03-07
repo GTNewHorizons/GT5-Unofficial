@@ -29,7 +29,7 @@ public class CoverChestGui extends CoverBaseGui<CoverChest> {
 
     @Override
     protected String getGuiId() {
-        return String.format("cover.chest.%s", side);
+        return "cover.chest." + side;
     }
 
     @Override
