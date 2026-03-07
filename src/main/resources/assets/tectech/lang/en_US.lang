@@ -1405,6 +1405,7 @@ tt.keyword.Structure.AnyHighPowerCasingFront=Any High Power Casing on the front 
 tt.keyword.Structure.AnyTeslaBaseCasingOuter=Any outer Tesla Base Casing
 tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice=Any Computer Casing on the first or last slice
 tt.keyword.Structure.AnyComputerCasingBackMain=Any Computer Casing on the backside of the main body
+tt.keyword.Structure.AnyComputerCasingsHint1or3=Any Computer Casing with hint number 1 or 3
 tt.keyword.Structure.AnyAdvComputerCasing=Any Advanced Computer Casing
 tt.keyword.Structure.AnyAdvComputerCasingExceptOuter=Any Advanced Computer Casing, except the outer ones
 tt.keyword.Structure.AnyMolecularCasing=Any Molecular Casing
