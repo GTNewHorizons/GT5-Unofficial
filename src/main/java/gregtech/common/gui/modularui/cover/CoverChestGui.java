@@ -20,7 +20,7 @@ public class CoverChestGui extends CoverBaseGui<CoverChest> {
     /**
      * The side of the block this GUI is representing the cover for.
      */
-    protected ForgeDirection side;
+    protected final ForgeDirection side;
 
     public CoverChestGui(CoverChest cover) {
         super(cover);
