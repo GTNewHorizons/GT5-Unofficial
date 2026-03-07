@@ -96,15 +96,16 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
                             if (player != null) {
                                 lastPlayer = null;
                                 mPlayerNotified = true;
-                                GTUtility.sendChatToPlayer(
+                                GTUtility.sendChatTrans(
                                     player,
-                                    coverable.getInventoryName() + "at "
-                                        + String.format(
-                                            "(%d,%d,%d)",
-                                            coverable.getXCoord(),
-                                            coverable.getYCoord(),
-                                            coverable.getZCoord())
-                                        + " shut down.");
+                                    "GT5U.chat.cover.wireless_controller.shutdown_at",
+                                    // FIXME: getInventoryName returns a key
+                                    coverable.getInventoryName(),
+                                    String.format(
+                                        "(%d,%d,%d)",
+                                        coverable.getXCoord(),
+                                        coverable.getYCoord(),
+                                        coverable.getZCoord()));
                             }
                         }
                         handledShutdown = true;
