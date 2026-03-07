@@ -23,7 +23,6 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
-import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
@@ -225,7 +224,8 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
                 @Override
                 protected void onValueChanged() {
                     super.onValueChanged();
-                    if (GTMod.proxy.isClientSide()) return;
+                    if (this.getSyncManager()
+                        .isClient()) return;
                     machine.getBaseMetaTileEntity()
                         .markInventoryBeenModified();
                 }
@@ -264,7 +264,8 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
                 @Override
                 protected void onValueChanged() {
                     super.onValueChanged();
-                    if (GTMod.proxy.isClientSide()) return;
+                    if (this.getSyncManager()
+                        .isClient()) return;
                     machine.getBaseMetaTileEntity()
                         .markInventoryBeenModified();
                 }
