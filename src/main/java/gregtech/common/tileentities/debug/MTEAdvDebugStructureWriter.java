@@ -12,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -61,6 +60,7 @@ import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
+import tectech.thing.gui.DebugUIHelper;
 
 public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements IAddGregtechLogo, IAddUIWidgets {
 
@@ -69,7 +69,7 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
     private final short[] numbers = new short[6];
     private boolean transpose = false;
     private boolean showHighlightBox = true;
-    private String[] result = new String[] { StatCollector.translateToLocal("GT5U.infodata.undefined") };
+    private String[] result = new String[] { translateToLocal("GT5U.infodata.undefined") };
 
     public MTEAdvDebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
@@ -319,28 +319,24 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
             final int index = i; // needed for lambda
             builder.widget(
                 new ButtonWidget()
-                    .setOnClick(
-                        (clickData,
-                            widget) -> numbers[index] = getNewNumber(
-                                numbers[index],
-                                (clickData.shift ? addNumberShift : addNumber),
-                                index >= 3))
+                    .setOnClick((clickData, widget) -> setNumber(clickData.shift ? addNumberShift : addNumber, index))
                     .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
                     .setSize(18, 18)
                     .setPos(xPos, yPos[index]));
         }
     }
 
-    private short getNewNumber(short oldCoordinate, int offset, boolean isSize) {
-        int newNumber = oldCoordinate + offset;
+    private void setNumber(int val, int index) {
+        int newNumber = numbers[index] + val;
 
         // Don't let the number under/overflow
-        if (offset > 0) newNumber = Math.min(newNumber, Short.MAX_VALUE);
+        if (val > 0) newNumber = Math.min(newNumber, Short.MAX_VALUE);
         else newNumber = Math.max(newNumber, Short.MIN_VALUE);
 
         // size should be nonnegative
-        if (isSize) newNumber = Math.max(newNumber, 0);
-        return (short) newNumber;
+        if (index >= 3) newNumber = Math.max(newNumber, 0);
+
+        numbers[index] = (short) newNumber;
     }
 
     @Override
@@ -402,17 +398,9 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
         return new Row().child(getButtonColumn(GTGuiTextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64))
             .child(getButtonColumn(GTGuiTextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1))
             .child(
-                new Column().child(getTextColumn(true))
-                    .child(getTextColumn(false))
-                    .crossAxisAlignment(Alignment.CrossAxis.START)
-                    .size(90, 112)
-                    .background(GTGuiTextures.PICTURE_SCREEN_BLACK)
-                    .overlay(
-                        GTGuiTextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY.asIcon()
-                            .size(17)
-                            .alignment(Alignment.BottomRight)
-                            .marginBottom(3)
-                            .marginRight(3)))
+                DebugUIHelper.getScreen(0, 40, 10)
+                    .child(getTextColumn(true))
+                    .child(getTextColumn(false)))
             .child(getButtonColumn(GTGuiTextures.OVERLAY_BUTTON_PLUS_SMALL, 16, 1))
             .child(getButtonColumn(GTGuiTextures.OVERLAY_BUTTON_PLUS_LARGE, 512, 64))
             .coverChildren()
@@ -452,13 +440,14 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
                                         .clamp(val, Short.MIN_VALUE, Short.MAX_VALUE)))
                             .size(50, 12)
                             .setMaxLength(6)
+                            .setFormatAsInteger(true)
+                            .setNumbers()
                             .setTextColor(0xFFF0F0FF))
                     .coverChildren());
         }
 
         return flow.coverChildren()
-            .crossAxisAlignment(Alignment.CrossAxis.START)
-            .margin(3, 0, 3, 7);
+            .crossAxisAlignment(Alignment.CrossAxis.START);
     }
 
     private Flow getButtonColumn(com.cleanroommc.modularui.api.drawable.IDrawable overlay, int addNumberShift,
@@ -470,10 +459,7 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
             com.cleanroommc.modularui.widgets.ButtonWidget<?> button = new com.cleanroommc.modularui.widgets.ButtonWidget<>()
                 .syncHandler(
                     new InteractionSyncHandler().setOnMousePressed(
-                        mouseData -> numbers[index] = getNewNumber(
-                            numbers[index],
-                            (mouseData.shift ? addNumberShift : addNumber),
-                            index >= 3)))
+                        mouseData -> setNumber((mouseData.shift ? addNumberShift : addNumber), index)))
                 .overlay(overlay);
 
             if (i == 2) button.marginBottom(4);
