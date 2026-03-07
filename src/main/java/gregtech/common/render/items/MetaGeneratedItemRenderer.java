@@ -2,14 +2,12 @@ package gregtech.common.render.items;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 
-import com.gtnewhorizon.gtnhlib.hash.Fnv1a32;
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import gregtech.api.enums.ItemList;
@@ -112,9 +110,8 @@ public final class MetaGeneratedItemRenderer implements IItemRenderer {
 
         @Override
         public int hashCode() {
-            int hash = Fnv1a32.initialState();
-            hash = Fnv1a32.hashStep(hash, Objects.hashCode(item));
-            return Fnv1a32.hashStep(hash, metadata);
+            final int hash = 31 + (item == null ? 0 : item.hashCode());
+            return hash * 31 + (int) metadata;
         }
     }
 }
