@@ -784,11 +784,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         return "";
     }
 
-    // disable the entire inventory row (including corner column), for gui.
-    public boolean supportsInventoryRow() {
-        return this.doesBindPlayerInventory();
-    }
-
     @Override
     public GUITextureSet getGUITextureSet() {
         return GUITextureSet.DEFAULT;
