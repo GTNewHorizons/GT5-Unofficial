@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -24,16 +25,19 @@ public class MTEToxicResidueSensor extends MTEHatch {
     private int threshold = 0;
     private boolean inverted = false;
     private boolean isOn = false;
+    private ThresholdType thresholdType;
 
     private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_TOXIC_RESIDUE_SENSOR;
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_TOXIC_RESIDUE_SENSOR_GLOW;
 
     public MTEToxicResidueSensor(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Reads Toxic Residue from Large Neutralization Engine");
+        thresholdType = ThresholdType.FLAT;
     }
 
     public MTEToxicResidueSensor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
+        thresholdType = ThresholdType.FLAT;
     }
 
     @Override
@@ -85,6 +89,8 @@ public class MTEToxicResidueSensor extends MTEHatch {
     public void loadNBTData(NBTTagCompound aNBT) {
         threshold = aNBT.getInteger("mThreshold");
         inverted = aNBT.getBoolean("mInverted");
+        thresholdType = ThresholdType.values()[aNBT.getInteger("thresholdType")];
+        isOn = aNBT.getBoolean("isOn");
         super.loadNBTData(aNBT);
     }
 
@@ -92,13 +98,18 @@ public class MTEToxicResidueSensor extends MTEHatch {
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mThreshold", threshold);
         aNBT.setBoolean("mInverted", inverted);
+        aNBT.setInteger("thresholdType", thresholdType.ordinal());
+        aNBT.setBoolean("isOn", isOn);
         super.saveNBTData(aNBT);
     }
 
     /**
      * Updates redstone output strength based on the toxic residue of the LNE.
      */
-    public void updateRedstoneOutput(int toxicResidue) {
+    public void updateRedstoneOutput(int toxicResidue, int capacity) {
+        if (thresholdType == ThresholdType.PERCENTAGE) {
+            toxicResidue = (int) (((float) toxicResidue / capacity) * 100);
+        }
         isOn = (toxicResidue > threshold) ^ inverted;
     }
 
@@ -152,5 +163,44 @@ public class MTEToxicResidueSensor extends MTEHatch {
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEToxicResidueSensorGui(this).build(data, syncManager, uiSettings);
+    }
+
+    public ThresholdType getThresholdType() {
+        return thresholdType;
+    }
+
+    public void setThresholdType(ThresholdType thresholdType) {
+        this.thresholdType = thresholdType;
+    }
+
+    public enum ThresholdType {
+
+        FLAT(Integer.MAX_VALUE, "gt.interact.desc.toxic_residue_sensor.flat",
+            "gt.interact.desc.toxic_residue_sensor.flat.tooltip"),
+        PERCENTAGE(100, "gt.interact.desc.toxic_residue_sensor.percentage",
+            "gt.interact.desc.toxic_residue_sensor.percentage.tooltip");
+
+        final int maxCapacity;
+        final String name;
+        final String tooltip;
+
+        ThresholdType(int maxCapacity, String nameUntranslated, String tooltipUntranslated) {
+            this.maxCapacity = maxCapacity;
+            this.name = StatCollector.translateToLocal(nameUntranslated);
+            this.tooltip = StatCollector.translateToLocal(tooltipUntranslated);
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
+        public String getTooltip() {
+            return tooltip;
+        }
+
+        public int getMaxCapacity() {
+            return maxCapacity;
+        }
     }
 }

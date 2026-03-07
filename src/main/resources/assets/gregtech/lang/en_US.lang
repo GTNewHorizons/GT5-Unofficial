@@ -269,6 +269,12 @@ gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%%
 gt.interact.desc.filtering_fuild=Filtering Fluid: %s - %s
 gt.interact.desc.ban_screwdriver=Do not attempt to use a screwdriver!
 
+# Toxic Residue Sensor
+gt.interact.desc.toxic_residue_sensor.flat=§8Residue Amount
+gt.interact.desc.toxic_residue_sensor.flat.tooltip=§fResidue Amount in base units
+gt.interact.desc.toxic_residue_sensor.percentage=§8Residue Percentage
+gt.interact.desc.toxic_residue_sensor.percentage.tooltip=§fResidue Percentage in base units
+
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch
 item.GTPP.catalyst_housing.name=Catalyst Housing

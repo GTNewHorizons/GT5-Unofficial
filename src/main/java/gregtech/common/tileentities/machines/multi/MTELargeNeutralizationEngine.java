@@ -720,7 +720,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         super.onPostTick(aBaseMetaTileEntity, aTick);
         for (MTEToxicResidueSensor toxicResidueSensorHatch : sensorHatches) { // done in onPostTick so it can update
                                                                               // even when multi is off
-            toxicResidueSensorHatch.updateRedstoneOutput(toxicResidue);
+            toxicResidueSensorHatch.updateRedstoneOutput(toxicResidue, getResidueCapacity());
         }
     }
 
