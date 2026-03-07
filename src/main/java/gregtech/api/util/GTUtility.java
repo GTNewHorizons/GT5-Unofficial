@@ -2513,6 +2513,14 @@ public class GTUtility {
             : StatCollector.translateToLocalFormatted(key, parameters);
     }
 
+    public static void translateInto(List<String> list, String key, Object... parameters) {
+        int i = 0;
+        while (StatCollector.canTranslate(key + "." + i)) {
+            list.add(translate(key + "." + i));
+            i++;
+        }
+    }
+
     /*
      * Check if stack has enough items of given type and subtract from stack, if there's no creative or 111 stack.
      */

@@ -2,7 +2,6 @@ package gtPlusPlus.core.item.wearable.armor;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -79,10 +78,9 @@ public class ItemArmorTinFoilHat extends BaseItemWearable {
     @Override
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {}
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
-        Collections.addAll(aList, GTUtility.breakLines(StatCollector.translateToLocal("GTPP.tooltip.tin_foil_hat")));
+    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List<String> aList, boolean p_77624_4_) {
+        GTUtility.translateInto(aList, "GTPP.tooltip.tin_foil_hat");
     }
 
     @Override
