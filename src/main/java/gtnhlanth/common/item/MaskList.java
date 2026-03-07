@@ -39,7 +39,7 @@ public enum MaskList {
     // but with
     // ender
     // eye
-    CPU("cpu", "Central Processing Unit", 10, "", BLANK2, Dyes.dyeWhite, TierEU.RECIPE_MV, 6e-3f, 12e-3f, 45, 2,
+    CPU("cpu", "Central Processing Unit", 100, "", BLANK2, Dyes.dyeWhite, TierEU.RECIPE_MV, 6e-3f, 12e-3f, 45, 2,
         ItemList.Circuit_Wafer_CPU.get(1), null),
     PrCPU("prcpu", "Prepared Central Processing Unit", 0, "", CPU, null, TierEU.RECIPE_EV, 0, 0, 0, 0, null, null),
 

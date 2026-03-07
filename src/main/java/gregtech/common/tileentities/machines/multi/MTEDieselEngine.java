@@ -51,6 +51,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 
 public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> implements ISurvivalConstructable {
 
@@ -96,53 +97,38 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Combustion Generator, LCE")
-            .addInfo(
-                "Supply Diesel Fuels and " + EnumChatFormatting.WHITE
-                    + "1000L"
-                    + EnumChatFormatting.GRAY
-                    + " of Lubricant per hour to run")
-            .addInfo(
-                "Supply " + EnumChatFormatting.WHITE
-                    + "40L/s"
-                    + EnumChatFormatting.GRAY
-                    + " of Oxygen to boost output (optional)")
-            .addInfo(
-                "Default: Produces " + EnumChatFormatting.YELLOW
-                    + "2048EU/t"
-                    + EnumChatFormatting.GRAY
-                    + " at "
-                    + EnumChatFormatting.WHITE
-                    + "100%"
-                    + EnumChatFormatting.GRAY
-                    + " fuel efficiency")
-            .addInfo(
-                "Boosted: Produces " + EnumChatFormatting.YELLOW
-                    + "6144EU/t"
-                    + EnumChatFormatting.GRAY
-                    + " at "
-                    + EnumChatFormatting.WHITE
-                    + "150%"
-                    + EnumChatFormatting.GRAY
-                    + " fuel efficiency")
-            .addInfo(
-                "You need to wait for it to reach " + EnumChatFormatting.WHITE
-                    + "300%"
-                    + EnumChatFormatting.GRAY
-                    + " to output full power")
-            .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
+
+        String lubricantRate = TooltipHelper.fluidText(1000);
+        String oxygenRate = TooltipHelper.fluidRateText(40);
+        String defaultOutput = TooltipHelper.euText(2048);
+        String defaultEfficiency = TooltipHelper.effText(1.0f);
+        String boostedOutput = TooltipHelper.euText(6144);
+        String boostedEfficiency = TooltipHelper.effText(1.5f);
+        String waitPower = TooltipHelper.effText(3.0f);
+
+        tt.addMachineType(GTUtility.translate("gt.multiblock.DieselEngine.machine_type"))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc1", lubricantRate))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc2", oxygenRate))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.default_output", defaultOutput, defaultEfficiency))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.boosted_output", boostedOutput, boostedEfficiency))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.wait_power", waitPower))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.intake_warning"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 4, false)
-            .addController("Front center")
-            .addCasingInfoRange("Stable Titanium Machine Casing", 16, 22, false)
-            .addOtherStructurePart("Titanium Gear Box Machine Casing", "Inner 2 blocks")
-            .addOtherStructurePart("Engine Intake Machine Casing", "8x, ring around controller")
-            .addDynamoHatch("Back center", 2)
-            .addMaintenanceHatch("One of the casings next to a Gear Box", 1)
-            .addMufflerHatch("Top middle back, above the rear Gear Box", 1)
-            .addInputHatch("Diesel Fuel, next to a Gear Box", 1)
-            .addInputHatch("Lubricant, next to a Gear Box", 1)
-            .addInputHatch("Oxygen, optional, next to a Gear Box", 1)
+            .addController(GTUtility.translate("gt.mbtt.structure.front_center"))
+            .addCasingInfoRange(GTUtility.translate("gt.blockcasings4.Casing_StableTitanium"), 16, 22, false)
+            .addOtherStructurePart(
+                GTUtility.translate("gt.blockcasings2.Casing_Gearbox_Titanium"),
+                GTUtility.translate("gt.multiblock.DieselEngine.gear_box_inner"))
+            .addOtherStructurePart(
+                GTUtility.translate("gt.blockcasings4.Casing_EngineIntake"),
+                GTUtility.translate("gt.multiblock.DieselEngine.engine_intake_ring"))
+            .addDynamoHatch(GTUtility.translate("gt.mbtt.structure.back_center"), 2)
+            .addMaintenanceHatch(GTUtility.translate("gt.multiblock.DieselEngine.maintenance_hatch"), 1)
+            .addMufflerHatch(GTUtility.translate("gt.multiblock.DieselEngine.muffler_hatch"), 1)
+            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.diesel_fuel"), 1)
+            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.lubricant"), 1)
+            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.oxygen_optional"), 1)
             .toolTipFinisher();
         return tt;
     }

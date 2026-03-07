@@ -80,7 +80,6 @@ import tectech.loader.recipe.Godforge;
     dependencies = """
         required-after:IC2;\
         required-after:gregtech;\
-        after:berriespp;\
         after:tectech;\
         after:GalacticraftMars;\
         after:GalacticraftCore;\
@@ -112,10 +111,7 @@ public final class MainMod {
         });
 
         GregTechAPI.sAfterGTPostload.add(() -> {
-            for (CircuitWraps wrap : CircuitWraps.values()) {
-                wrap.registerWrap();
-                wrap.registerWrapRecipe();
-            }
+            CircuitWraps.registerWraps();
             CircuitImprintLoader.makeCuttingRecipes();
             CircuitImprintLoader.makeCraftingRecipes();
         });
