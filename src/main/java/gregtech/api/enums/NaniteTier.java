@@ -41,13 +41,13 @@ public enum NaniteTier {
             case Silver -> Materials.Silver;
             case Neutronium -> Materials.Neutronium;
             case Gold -> Materials.Gold;
-            case Transcendent -> MaterialsUEVplus.TranscendentMetal;
-            case WhiteDwarf -> MaterialsUEVplus.WhiteDwarfMatter;
-            case BlackDwarf -> MaterialsUEVplus.BlackDwarfMatter;
-            case SixPhasedCopper -> MaterialsUEVplus.SixPhasedCopper;
-            case Universium -> MaterialsUEVplus.Universium;
-            case MagMatter -> MaterialsUEVplus.MagMatter;
-            case Eternity -> MaterialsUEVplus.Eternity;
+            case Transcendent -> Materials.TranscendentMetal;
+            case WhiteDwarf -> Materials.WhiteDwarfMatter;
+            case BlackDwarf -> Materials.BlackDwarfMatter;
+            case SixPhasedCopper -> Materials.SixPhasedCopper;
+            case Universium -> Materials.Universium;
+            case MagMatter -> Materials.MagMatter;
+            case Eternity -> Materials.Eternity;
         };
     }
 
@@ -69,13 +69,13 @@ public enum NaniteTier {
         if (mat == Materials.Silver) return Silver;
         if (mat == Materials.Neutronium) return Neutronium;
         if (mat == Materials.Gold) return Gold;
-        if (mat == MaterialsUEVplus.TranscendentMetal) return Transcendent;
-        if (mat == MaterialsUEVplus.WhiteDwarfMatter) return WhiteDwarf;
-        if (mat == MaterialsUEVplus.BlackDwarfMatter) return BlackDwarf;
-        if (mat == MaterialsUEVplus.SixPhasedCopper) return SixPhasedCopper;
-        if (mat == MaterialsUEVplus.Universium) return Universium;
-        if (mat == MaterialsUEVplus.MagMatter) return MagMatter;
-        if (mat == MaterialsUEVplus.Eternity) return Eternity;
+        if (mat == Materials.TranscendentMetal) return Transcendent;
+        if (mat == Materials.WhiteDwarfMatter) return WhiteDwarf;
+        if (mat == Materials.BlackDwarfMatter) return BlackDwarf;
+        if (mat == Materials.SixPhasedCopper) return SixPhasedCopper;
+        if (mat == Materials.Universium) return Universium;
+        if (mat == Materials.MagMatter) return MagMatter;
+        if (mat == Materials.Eternity) return Eternity;
 
         return null;
     }

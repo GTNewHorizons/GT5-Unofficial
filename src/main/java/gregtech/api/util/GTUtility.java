@@ -130,9 +130,6 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
 
-import buildcraft.api.transport.IPipeTile;
-import cofh.api.energy.IEnergyReceiver;
-import cofh.api.transport.IItemDuct;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -195,11 +192,11 @@ import gregtech.api.threads.RunnableSound;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
+import gregtech.nei.FluidDisplayStackMode;
 import ic2.api.crops.ICropTile;
 import ic2.api.energy.tile.IEnergyConductor;
 import ic2.api.reactor.IReactor;
 import ic2.api.recipe.ICannerBottleRecipeManager;
-import gregtech.nei.FluidDisplayStackMode;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
@@ -1187,7 +1184,10 @@ public class GTUtility {
     }
 
     public static ItemStack getFluidDisplayStack(FluidStack fluid, FluidDisplayStackMode stackMode) {
-        return getFluidDisplayStack(fluid, stackMode == FluidDisplayStackMode.SHOWN, stackMode == FluidDisplayStackMode.HIDDEN);
+        return getFluidDisplayStack(
+            fluid,
+            stackMode == FluidDisplayStackMode.SHOWN,
+            stackMode == FluidDisplayStackMode.HIDDEN);
     }
 
     public static ItemStack getFluidDisplayStack(Fluid aFluid) {

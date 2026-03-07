@@ -123,7 +123,8 @@ public final class BasicUIPropertiesBuilder {
     @SuppressWarnings("MethodDoesntCallSuperMethod")
     @Override
     public BasicUIPropertiesBuilder clone() {
-        return this.build().toBuilder();
+        return this.build()
+            .toBuilder();
     }
 
     public BasicUIPropertiesBuilder maxItemInputs(int maxItemInputs) {
@@ -278,7 +279,7 @@ public final class BasicUIPropertiesBuilder {
         return this;
     }
 
-    public BasicUIPropertiesBuilder fluidDisplayFactory(FluidDisplayFactory fluidDisplayFactory){
+    public BasicUIPropertiesBuilder fluidDisplayFactory(FluidDisplayFactory fluidDisplayFactory) {
         this.fluidDisplayFactory = fluidDisplayFactory;
         return this;
     }

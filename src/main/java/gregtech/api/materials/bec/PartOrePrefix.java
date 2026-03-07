@@ -6,10 +6,12 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
+
 import gregtech.api.enums.OrePrefixes;
 
 /** A subset of the normal ore prefixes for use in EnumMaps. */
 public enum PartOrePrefix {
+
     plate(OrePrefixes.plate),
     foil(OrePrefixes.foil),
     stickLong(OrePrefixes.stickLong),

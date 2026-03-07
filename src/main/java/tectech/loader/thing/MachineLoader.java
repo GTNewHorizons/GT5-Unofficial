@@ -592,10 +592,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDataItemsOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessMulti;
 import tectech.thing.metaTileEntity.multi.MTEActiveTransformer;
-import tectech.thing.metaTileEntity.multi.bec.MTEBECAssembler;
-import tectech.thing.metaTileEntity.multi.bec.MTEBECDiode;
-import tectech.thing.metaTileEntity.multi.bec.MTEBECGenerator;
-import tectech.thing.metaTileEntity.multi.bec.MTEBECStorage;
 import tectech.thing.metaTileEntity.multi.MTEDataBank;
 import tectech.thing.metaTileEntity.multi.MTEEnergyInfuser;
 import tectech.thing.metaTileEntity.multi.MTEEyeOfHarmony;
@@ -605,7 +601,11 @@ import tectech.thing.metaTileEntity.multi.MTENetworkSwitchAdv;
 import tectech.thing.metaTileEntity.multi.MTEQuantumComputer;
 import tectech.thing.metaTileEntity.multi.MTEResearchStation;
 import tectech.thing.metaTileEntity.multi.MTETeslaTower;
+import tectech.thing.metaTileEntity.multi.bec.MTEBECAssembler;
+import tectech.thing.metaTileEntity.multi.bec.MTEBECDiode;
+import tectech.thing.metaTileEntity.multi.bec.MTEBECGenerator;
 import tectech.thing.metaTileEntity.multi.bec.MTEBECIONode;
+import tectech.thing.metaTileEntity.multi.bec.MTEBECStorage;
 import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.godforge.MTEMoltenModule;
@@ -1891,7 +1891,7 @@ public class MachineLoader implements Runnable {
             new MTEBECGenerator(
                 BoseEinsteinCondensateGenerator.ID,
                 "multimachine.em.bec-generator",
-                "Bose-Einstein Condensate Generation Apparatus").getStackForm(1L));
+                "Bose-Einstein Condensate Entanglement Apparatus").getStackForm(1L));
         Machine_Multi_BECStorage.set(
             new MTEBECStorage(
                 BoseEinsteinCondensateStorage.ID,

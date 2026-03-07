@@ -10,15 +10,19 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -39,6 +43,7 @@ import gregtech.api.structure.StructureWrapper;
 import gregtech.api.structure.StructureWrapperInstanceInfo;
 import gregtech.api.util.IGTHatchAdder;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -278,6 +283,31 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         super.onRemoval();
 
         BECFactoryGrid.INSTANCE.removeElement(this);
+    }
+
+    public static NBTTagCompound writeCondensateToTag(Object2LongOpenHashMap<Fluid> map) {
+        NBTTagCompound stacks = new NBTTagCompound();
+
+        for (var e : map.object2LongEntrySet()) {
+            stacks.setLong(FluidRegistry.getFluidName(e.getKey()), e.getLongValue());
+        }
+
+        return stacks;
+    }
+
+    public static Object2LongOpenHashMap<Fluid> readCondensateFromTag(NBTTagCompound tag) {
+        Object2LongOpenHashMap<Fluid> map = new Object2LongOpenHashMap<>();
+
+        //noinspection unchecked
+        for (Entry<String, NBTTagLong> e : (Set<Entry<String, NBTTagLong>>) tag.tagMap.entrySet()) {
+            Fluid fluid = FluidRegistry.getFluid(e.getKey());
+
+            if (fluid == null) continue;
+
+            map.put(fluid, e.getValue().func_150291_c());
+        }
+
+        return map;
     }
 
     public enum BECHatches implements IHatchElement<MTEBECMultiblockBase<?>> {

@@ -1,14 +1,12 @@
 package gregtech.api.recipe.maps;
 
-import static gregtech.api.util.GTUtility.formatNumbers;
-
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.loaders.load.BECRecipeLoader;
 import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
@@ -22,12 +20,13 @@ public class CondensateFrontend extends RecipeMapFrontend {
 
     @Override
     protected void drawDurationInfo(RecipeDisplayInfo recipeInfo) {
-
+        recipeInfo.drawText(
+            String.format("Entanglement Duration: %s ticks", NumberFormatUtil.formatNumber(recipeInfo.recipe.mDuration)));
     }
 
     @Override
     protected void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         recipeInfo.drawText(
-            String.format("Quota Required: %s EU", formatNumbers(BECRecipeLoader.getRecipeCost(recipeInfo.recipe))));
+            String.format("Quota Required: %s EU", NumberFormatUtil.formatEnergy(recipeInfo.recipe.mEUt)));
     }
 }

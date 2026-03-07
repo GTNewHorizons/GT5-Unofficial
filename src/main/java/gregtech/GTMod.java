@@ -51,6 +51,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentHazmat;
 import gregtech.api.enchants.EnchantmentRadioactivity;
+import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -102,8 +103,8 @@ import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
-import gregtech.loaders.load.FissionFuelLoader;
 import gregtech.loaders.load.BECRecipeLoader;
+import gregtech.loaders.load.FissionFuelLoader;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
 import gregtech.loaders.load.MTERecipeLoader;
@@ -340,6 +341,8 @@ public class GTMod {
 
         IBlockWithClientMeta.register();
 
+        CondensateType.registerFluids();
+
         for (Runnable tRunnable : GregTechAPI.sAfterGTPreload) {
             tRunnable.run();
         }
@@ -393,6 +396,8 @@ public class GTMod {
 
         GT_FML_LOGGER.debug("Registering SpaceDimensions");
         SpaceDimRegisterer.register();
+
+        CondensateType.registerRecipes();
 
         GregTechAPI.sLoadFinished = true;
         GTLog.out.println("GTMod: Load-Phase finished!");

@@ -7,8 +7,6 @@ import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
 import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTDataUtils.oneshot;
@@ -21,6 +19,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -32,10 +32,14 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import appeng.api.storage.data.IAEFluidStack;
+import appeng.util.item.AEFluidStack;
 import com.github.bsideup.jabel.Desugar;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -44,6 +48,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.NaniteTier;
@@ -59,20 +64,20 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
-import gregtech.api.util.GTBECRecipe;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.shutdown.ReasonBEC;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ReasonMissingCondensate;
 import gregtech.api.util.shutdown.ShutDownReason;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.ints.IntIterator;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import tectech.mechanics.boseEinsteinCondensate.CondensateStack;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.hatch.MTEHatchBECIONodeController;
@@ -86,11 +91,12 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     private @Nullable MTEBECAssembler assembler;
 
     private @Nullable NaniteTier[] requiredNanites;
-    private @Nullable Object2LongOpenHashMap<Object> requiredCondensate, consumedCondensate;
+    private @Nullable Object2LongOpenHashMap<Fluid> requiredCondensate, consumedCondensate;
 
     private @Nullable NaniteTier providedTier, requiredTier;
     private int availableNanites;
-    private int subtickCounter, slowdowns, parallels;
+    private int subtickCounter, slowdowns, parallelRecipesInProgress;
+    private long assemblerEUt;
 
     @Desugar
     record RecipeStep(NaniteTier nanite, int start, int end, int index) {}
@@ -121,7 +127,12 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     @Override
     public IStructureDefinition<MTEBECIONode> compile(String[][] definition) {
         structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
-        structure.addCasing('B', ElectromagneticallyIsolatedCasing).withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy, InputBus, OutputBus, NaniteHatch.INSTANCE, ControllerHatch.INSTANCE));
+        structure.addCasing('B', ElectromagneticallyIsolatedCasing)
+            .withHatches(
+                1,
+                16,
+                Arrays
+                    .asList(InputBus, OutputBus, NaniteHatch.INSTANCE, ControllerHatch.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', AdvancedFusionCoilII);
         structure.addCasing('E', ElectromagneticWaveguide);
@@ -182,25 +193,40 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
             @Override
             protected @NotNull CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
-                setCurrentRecipe((GTBECRecipe) recipe);
+                setCurrentRecipe(recipe);
 
                 return super.onRecipeStart(recipe);
             }
+
+
+            @Nonnull
+            @Override
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setNoOverclock(true);
+            }
         };
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAmperageOC(false);
+        logic.setAvailableVoltage(GTUtility.roundUpVoltage(assembler == null ? 0 : assembler.getMaxInputVoltage()));
+        logic.setAvailableAmperage(1);
+        logic.setMaxParallel(Math.max(1, availableNanites));
     }
 
     @Override
     public void stopMachine(@NotNull ShutDownReason reason) {
         super.stopMachine(reason);
 
-        setCurrentRecipe(null);
+        clearCurrentRecipe();
     }
 
     @Override
     public void outputAfterRecipe_EM() {
         super.outputAfterRecipe_EM();
 
-        setCurrentRecipe(null);
+        clearCurrentRecipe();
     }
 
     @Override
@@ -211,7 +237,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     private @Nullable MTEBECAssembler getAssembler() {
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
-        if (igte.isDead()) return null;
+        if (igte == null || igte.isDead()) return null;
 
         if (!isServerSide()) return null;
 
@@ -221,55 +247,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         return assembler2;
     }
-
-    // @Override
-    // public long getEUVar() {
-    //     if (assembler == null) return 0;
-
-    //     return assembler.getEUVar();
-    // }
-
-    // @Override
-    // public void setEUVar(long aEnergy) {
-    //     if (assembler == null) return;
-
-    //     assembler.setEUVar(aEnergy);
-    // }
-
-    // @Override
-    // public long maxEUStore() {
-    //     return super.maxEUStore();
-    // }
-
-    // @Override
-    // public long getMaxInputVoltage() {
-    //     return super.getMaxInputVoltage();
-    // }
-
-    // @Override
-    // public long getAverageInputVoltage() {
-    //     return super.getAverageInputVoltage();
-    // }
-
-    // @Override
-    // public long getMaxInputAmps() {
-    //     return super.getMaxInputAmps();
-    // }
-
-    // @Override
-    // public long getMaxInputEu() {
-    //     return super.getMaxInputEu();
-    // }
-
-    // @Override
-    // public boolean drainEnergyInput_EM(long EUtTierVoltage, long EUtEffective, long Amperes) {
-    //     return super.drainEnergyInput_EM(EUtTierVoltage, EUtEffective, Amperes);
-    // }
-
-    // @Override
-    // public boolean drainEnergyInput(long EUtEffective, long Amperes) {
-    //     return super.drainEnergyInput(EUtEffective, Amperes);
-    // }
 
     private static final CheckRecipeResult NO_ASSEMBLER = SimpleCheckRecipeResult.ofFailure("no_bec_assembler");
 
@@ -284,32 +261,48 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         return super.checkProcessing_EM();
     }
 
-    private void setCurrentRecipe(@Nullable GTBECRecipe recipe) {
-        requiredNanites = recipe == null ? null : recipe.mInputTiers;
+    @Override
+    protected void setEnergyUsage(ProcessingLogic processingLogic) {
+        super.setEnergyUsage(processingLogic);
 
-        if (recipe == null) {
-            requiredCondensate = null;
-            recipeSteps = null;
-            parallels = 0;
-            setRequiredTier(null);
-        } else {
-            requiredCondensate = new Object2LongOpenHashMap<>();
+        // Defer the EU/t consumption to the assembler. We allow the ProcessingLogic to set this multi's EU/t, then
+        // reset it and pass the number along to the assembler.
+        assemblerEUt = lEUt;
+        lEUt = 0;
+    }
 
-            for (CondensateStack stack : recipe.mCInput) {
-                requiredCondensate.put(stack.material, stack.amount);
-            }
+    private void setCurrentRecipe(@Nullable GTRecipe recipe) {
+        requiredCondensate = new Object2LongOpenHashMap<>();
+        consumedCondensate = new Object2LongOpenHashMap<>();
 
-            loadRequiredNanites(recipe.mDuration, Arrays.asList(recipe.mInputTiers));
-
-            parallels = processingLogic.getCurrentParallels();
+        //noinspection DataFlowIssue
+        for (FluidStack stack : recipe.getMetadata(GTRecipeConstants.CONDENSATE_INPUT)) {
+            requiredCondensate.addTo(stack.getFluid(), stack.amount);
         }
 
-        consumedCondensate = new Object2LongOpenHashMap<>();
+        requiredNanites = recipe.getMetadata(GTRecipeConstants.NANITE_TIERS);
+        assert requiredNanites != null;
+        loadRequiredNanites(recipe.mDuration, Arrays.asList(requiredNanites));
+
+        parallelRecipesInProgress = processingLogic.getCurrentParallels();
+    }
+
+    private void clearCurrentRecipe() {
+        requiredCondensate = null;
+        requiredNanites = null;
+        recipeSteps = null;
+        parallelRecipesInProgress = 0;
+        assemblerEUt = 0;
+        setRequiredTier(null);
+    }
+
+    public long getAssemblerEUt() {
+        return assemblerEUt;
     }
 
     public void setNaniteShare(NaniteTier providedTier, int nanites) {
         this.providedTier = providedTier;
-        availableNanites = nanites;
+        this.availableNanites = nanites;
     }
 
     private void setRequiredTier(NaniteTier tier) {
@@ -345,14 +338,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         }
 
         setRequiredTier(recipeSteps.get(0).nanite);
-    }
-
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAmperageOC(false);
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1);
-        logic.setMaxParallel(Math.max(1, availableNanites));
     }
 
     private RecipeStep getCurrentStep() {
@@ -408,7 +393,17 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             }
         }
 
-        int nextProgress = mProgresstime + availableNanites;
+        this.slowdowns = assembler.getSlowdowns(requiredCondensate.keySet());
+
+        int divisor = parallelRecipesInProgress * (1 + slowdowns);
+
+        subtickCounter += availableNanites;
+
+        int fullTicks = subtickCounter / divisor;
+
+        subtickCounter -= fullTicks * divisor;
+
+        int nextProgress = mProgresstime + fullTicks;
 
         RecipeStep nextGate = getNextProgressGate();
 
@@ -450,34 +445,23 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
             long initial = required.getLongValue();
 
-            CondensateStack toConsume = new CondensateStack(
-                required.getKey(),
-                initial);
+            IAEFluidStack toConsume = AEFluidStack.create(new FluidStack(required.getKey(), 1)).setStackSize(initial);
 
             assembler.drainCondensate(toConsume);
 
-            long consumed = initial - toConsume.amount;
+            long consumed = initial - toConsume.getStackSize();
 
             consumedCondensate.addTo(required.getKey(), consumed);
         }
 
-        this.slowdowns = assembler.getSlowdowns(requiredCondensate.keySet());
-
-        int divisor = parallels + slowdowns;
-
-        subtickCounter += nextProgress - mProgresstime;
-
-        int fullTicks = subtickCounter / divisor;
-
-        subtickCounter -= fullTicks * divisor;
-        mProgresstime += fullTicks;
+        mProgresstime = nextProgress;
 
         if (mProgresstime >= mMaxProgresstime) {
             for (var required : requiredCondensate.object2LongEntrySet()) {
                 long remainingCondensate = required.getLongValue() - consumedCondensate.getLong(required.getKey());
 
                 if (remainingCondensate > 0) {
-                    stopMachine(ReasonBEC.noCondensate(new CondensateStack(required.getKey(), remainingCondensate)));
+                    stopMachine(new ReasonMissingCondensate(AEFluidStack.create(new FluidStack(required.getKey(), 1)).setStackSize(remainingCondensate)));
                     return;
                 }
             }
@@ -615,11 +599,11 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     }
 
     private float getProcessingSpeed() {
-        if (parallels == 0) return 0;
+        if (parallelRecipesInProgress == 0) return 0;
 
         float slowdownMult = slowdowns == 0 ? 1f : 1f / slowdowns;
 
-        return availableNanites / (float) parallels * slowdownMult;
+        return availableNanites / (float) parallelRecipesInProgress * slowdownMult;
     }
 
     @Override
@@ -640,18 +624,22 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                 matId -> requiredTier = loadNanite(matId)));
 
         screenElements.widget(TextWidget.dynamicString(() -> {
-            StringBuffer ret = new StringBuffer();
+            StringBuilder ret = new StringBuilder();
 
-            ret.append(translate("GT5U.gui.text.provided", providedTier == null ? translate("GT5U.gui.text.nil") : translate("GT5U.gui.text.nanite_desc", availableNanites, providedTier.describe())));
+            ret.append(
+                translate(
+                    "GT5U.gui.text.provided_nanite",
+                    providedTier == null ? translate("GT5U.gui.text.nil")
+                        : translate("GT5U.gui.text.nanite_desc", availableNanites, providedTier.describe())));
             ret.append("\n");
 
-            ret.append(translate("GT5U.gui.text.required", requiredTier == null ? translate("GT5U.gui.text.nil") : (GOLD + requiredTier.describe() + WHITE)));
-            ret.append("\n");
-
-        ret.append(translate("GT5U.gui.text.required_condensate"));
+            ret.append(translate("GT5U.gui.text.required_nanite", requiredTier == null ? translate("GT5U.gui.text.nil") : (GOLD + requiredTier.describe() + WHITE)));
             ret.append("\n");
 
             boolean hasAny = false;
+
+            ret.append(translate("GT5U.gui.text.required_condensate"));
+            ret.append("\n");
 
             if (requiredCondensate != null && consumedCondensate != null && mMaxProgresstime > 0) {
                 for (var e : requiredCondensate.object2LongEntrySet()) {
@@ -659,18 +647,31 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
                     long consumed = consumedCondensate.getLong(e.getKey());
 
-                    String matName = new CondensateStack(e.getKey(), 0).getDisplayName();
+                    String name;
 
-                    ret.append(translate("GT5U.gui.text.remaining_condensate", matName, consumed, e.getLongValue()));
+                    CondensateType condensate = CondensateType.getCondensateType(e.getKey());
+
+                    if (condensate != null) {
+                        // Use the abbreviated name if we can. This should always be true, but in the future we might
+                        // want non-condensate here.
+                        name = condensate.getAbbrevName();
+                    } else {
+                        name = new FluidStack(e.getKey(), 1).getLocalizedName();
+                    }
+
+                    ret.append(translate("GT5U.gui.text.remaining_condensate", name, consumed, e.getLongValue()));
                 }
             }
 
             if (!hasAny) {
-                ret.append("None");
+                ret.append(translate("GT5U.gui.text.nil"));
             }
 
             return ret.toString();
-        }).setSynced(true).setTextAlignment(Alignment.CenterLeft).setDefaultColor(EnumChatFormatting.WHITE));
+        })
+            .setSynced(true)
+            .setTextAlignment(Alignment.CenterLeft)
+            .setDefaultColor(EnumChatFormatting.WHITE));
     }
 
     @Override
@@ -694,17 +695,9 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         return ret.toString();
     }
 
-    protected boolean showRecipeOutputTooltips() {
-        return false;
-    }
-
     @Override
     protected String appendRate(boolean isLiquid, Long amount, boolean isFormatShortened) {
         return "";
-    }
-
-    protected void generateRate(StringBuffer ret, double amount) {
-        // do nothing, rates can't be calculated easily
     }
 
     private static int saveNanite(NaniteTier tier) {
@@ -745,10 +738,12 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         NaniteTier required = loadNanite(tag.getInteger("nanite"));
         NaniteTier provided = loadNanite(tag.getInteger("provided"));
 
-        currenttip.add(MessageFormat.format("Required Tier: {0}", required == null ? "None" : required.describe()));
-        currenttip.add(MessageFormat.format("Provided Tier: {0}", provided == null ? "None" : provided.describe()));
+        currenttip.add(MessageFormat.format("Required Nanite: {0}", required == null ? "None" : required.describe()));
+        currenttip.add(MessageFormat.format("Provided Nanite: {0}", provided == null ? "None" : provided.describe()));
         currenttip.add(MessageFormat.format("Processing Speed: x{0}", tag.getFloat("speed")));
-        currenttip.add(MessageFormat.format("Slowdowns: {0}", tag.getInteger("slowdowns") > 0 ? tag.getInteger("slowdowns") - 1 : 0));
+        currenttip.add(
+            MessageFormat
+                .format("Slowdowns: {0}", tag.getInteger("slowdowns") > 0 ? tag.getInteger("slowdowns") - 1 : 0));
     }
 
     @Override
@@ -768,11 +763,11 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         }
 
         if (requiredCondensate != null) {
-            aNBT.setTag("required", CondensateStack.save(requiredCondensate));
+            aNBT.setTag("required", writeCondensateToTag(requiredCondensate));
         }
 
         if (consumedCondensate != null) {
-            aNBT.setTag("consumed", CondensateStack.save(consumedCondensate));
+            aNBT.setTag("consumed", writeCondensateToTag(consumedCondensate));
         }
 
         if (recipeSteps != null) {
@@ -787,7 +782,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             }
         }
 
-        aNBT.setInteger("parallels", parallels);
+        aNBT.setInteger("parallels", parallelRecipesInProgress);
     }
 
     @Override
@@ -806,8 +801,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             requiredNanites[i] = loadNanite(aNBT.getInteger("nanite" + i));
         }
 
-        requiredCondensate = CondensateStack.loadMap(aNBT.getTagList("required", Constants.NBT.TAG_COMPOUND));
-        consumedCondensate = CondensateStack.loadMap(aNBT.getTagList("consumed", Constants.NBT.TAG_COMPOUND));
+        requiredCondensate = readCondensateFromTag(aNBT.getCompoundTag("required"));
+        consumedCondensate = readCondensateFromTag(aNBT.getCompoundTag("consumed"));
 
         if (aNBT.hasKey("steps")) {
             NBTTagList steps = aNBT.getTagList("steps", Constants.NBT.TAG_COMPOUND);
@@ -816,7 +811,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
             List<NaniteTier> tiers = new ArrayList<>();
 
-            //noinspection unchecked
+            // noinspection unchecked
             for (NBTTagCompound tag : (List<NBTTagCompound>) steps.tagList) {
                 tiers.add(loadNanite(tag.getInteger("nanite")));
             }
@@ -826,7 +821,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             recipeSteps = null;
         }
 
-        parallels = aNBT.getInteger("parallels");
+        parallelRecipesInProgress = aNBT.getInteger("parallels");
     }
 
     /**

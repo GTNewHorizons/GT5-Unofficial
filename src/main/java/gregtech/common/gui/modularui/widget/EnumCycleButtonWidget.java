@@ -20,7 +20,9 @@ public class EnumCycleButtonWidget<T extends Enum<T>> extends VanillaButtonWidge
         this.getter = getter;
         this.setter = setter;
 
-        setDisplayString(getter.get().toString());
+        setDisplayString(
+            getter.get()
+                .toString());
 
         setOnClick((clickData, widget) -> {
             int offset = 0;

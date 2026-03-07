@@ -8,7 +8,8 @@ import gregtech.api.enums.OrePrefixes;
 
 public interface MaterialWithParts {
 
-    @Nullable ItemStack getPart(OrePrefixes prefix, int amount);
+    @Nullable
+    ItemStack getPart(OrePrefixes prefix, int amount);
 
     default ItemStack getIngotHot(int amount) {
         return getPart(OrePrefixes.ingotHot, amount);

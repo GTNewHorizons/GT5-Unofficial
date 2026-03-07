@@ -69,12 +69,10 @@ public enum Mixin implements IMixins {
             .setApplyIf(() -> Gregtech.general.changedWoodenVanillaTools)
             .setPhase(Phase.EARLY)),
 
-    RESOURCE_MANAGER_DEDUP_GET_ALL(new Builder("Deduplicates the results of FallbackResourceManager.getAllResources")
-        .addMixinClasses("minecraft.FallbackResourceManagerMixin")
-        .addTargetedMod(VANILLA)
+    RESOURCE_MANAGER_DEDUP_GET_ALL(new MixinBuilder("Deduplicates the results of FallbackResourceManager.getAllResources")
+        .addClientMixins("minecraft.FallbackResourceManagerMixin")
         .setApplyIf(() -> true)
-        .setPhase(Phase.EARLY)
-        .setSide(Side.CLIENT)),
+        .setPhase(Phase.EARLY)),
 
     GTWorldgenSortingFix(new MixinBuilder("Forces GTWorldgenerator to the end of the world gen list")
         .addCommonMixins("forge.GameRegistryMixin")
@@ -96,7 +94,7 @@ public enum Mixin implements IMixins {
             "ic2.MixinItemDropped")
         .addRequiredMod(TargetedMod.IC2)
         .setPhase(Phase.LATE)),
-        
+
     IC2_REINFORCED_GLASS_SILK(
         new MixinBuilder("Lets Reinforced Glass be harvested by silk touch")
             .addCommonMixins("ic2.MixinIc2ReinforcedGlass")

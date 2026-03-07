@@ -1,6 +1,5 @@
 package gregtech.api.materials.bec;
 
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,14 +7,10 @@ import java.util.Map;
 
 import net.minecraft.util.ResourceLocation;
 
-import org.lwjgl.util.Color;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import com.gtnewhorizon.gtnhlib.color.ImmutableColor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
@@ -40,13 +35,15 @@ public class BECMaterialList {
         }
     }
 
-    @SuppressWarnings("UnstableApiUsage")
-    private static final Gson GSON = new GsonBuilder()
-        .create();
+    private static final Gson GSON = new GsonBuilder().create();
 
     @SideOnly(Side.CLIENT)
     public static void loadResources() {
-        Map<String, MatResource> mats = GTDataUtils.loadResourceMerged(GSON, String.class, MatResource.class, Mods.GregTech.getResourceLocation("misc/materials/bec-materials.json"));
+        Map<String, MatResource> mats = GTDataUtils.loadResourceMerged(
+            GSON,
+            String.class,
+            MatResource.class,
+            Mods.GregTech.getResourceLocation("misc/materials/bec-materials.json"));
 
         BECTextureSet.startMaterialReload();
 
@@ -54,7 +51,8 @@ public class BECMaterialList {
             BECMaterial mat = BECMaterial.MATERIALS_BY_NAME.get(e.getKey());
 
             if (mat == null) {
-                GTMod.GT_FML_LOGGER.error("Could not find BEC material {}, which is referred to in a bec-materials.json", e.getKey());
+                GTMod.GT_FML_LOGGER
+                    .error("Could not find BEC material {}, which is referred to in a bec-materials.json", e.getKey());
                 continue;
             }
 
@@ -66,7 +64,10 @@ public class BECMaterialList {
                 String palettePath = e.getValue().prefixPalettes.getOrDefault(prefix, e.getValue().palette);
 
                 if (palettePath == null || palettePath.isEmpty()) {
-                    GTMod.GT_FML_LOGGER.warn("Colour palette for material {} (prefix {}) was undefined: it will be skipped", mat.name, prefix);
+                    GTMod.GT_FML_LOGGER.warn(
+                        "Colour palette for material {} (prefix {}) was undefined: it will be skipped",
+                        mat.name,
+                        prefix);
                     continue;
                 }
 
@@ -77,10 +78,14 @@ public class BECMaterialList {
 
                 ResourceLocation paletteLocation = Mods.GregTech.getResourceLocation(palettePath);
 
-                Int2ObjectMap<Color> palette = IndexedIcon.loadPalette(paletteLocation);
+                Int2ObjectMap<ImmutableColor> palette = IndexedIcon.loadPalette(paletteLocation);
 
                 if (palette == null) {
-                    GTMod.GT_FML_LOGGER.warn("Could not load palette {} for material {} (prefix {})", paletteLocation, mat.name, prefix);
+                    GTMod.GT_FML_LOGGER.warn(
+                        "Could not load palette {} for material {} (prefix {})",
+                        paletteLocation,
+                        mat.name,
+                        prefix);
                     continue;
                 }
 

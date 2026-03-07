@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 
 import net.minecraft.util.ResourceLocation;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTDataUtils;
@@ -22,7 +25,6 @@ public class BECTextureSet implements Closeable {
 
     private static final Object2ObjectMap<String, BECTextureSet> TEXTURE_SETS = new Object2ObjectOpenHashMap<>();
     private static final Set<String> UNUSED_SETS = new ObjectOpenHashSet<>();
-
 
     public final String root;
     public final PartOrePrefix.PrefixMap<List<IndexedIcon>> layers = new PartOrePrefix.PrefixMap<>();
@@ -60,6 +62,20 @@ public class BECTextureSet implements Closeable {
         UNUSED_SETS.clear();
     }
 
+    private static final Gson GSON = new GsonBuilder()
+        .registerTypeAdapter(
+            OrePrefixes.class, (JsonDeserializer<OrePrefixes>) (json, typeOfT, context) -> {
+                String name = context.deserialize(json, String.class);
+
+                OrePrefixes prefix = OrePrefixes.getPrefix(name);
+
+                if (prefix == null) {
+                    throw new IllegalStateException("Could not find prefix '" + name + "' in texture-set.json");
+                }
+
+                return prefix;
+            }).create();
+
     public void load() {
         if (!GTUtility.isClient()) return;
 
@@ -67,7 +83,8 @@ public class BECTextureSet implements Closeable {
 
         ResourceLocation resource = Mods.GregTech.getResourceLocation("textures/items/" + root + "/texture-set.json");
 
-        Map<OrePrefixes, TexturePrefixMeta> textureSetMeta = GTDataUtils.loadResourceMerged(OrePrefixes.class, TexturePrefixMeta.class, resource);
+        Map<OrePrefixes, TexturePrefixMeta> textureSetMeta = GTDataUtils
+            .loadResourceMerged(GSON, OrePrefixes.class, TexturePrefixMeta.class, resource);
 
         for (PartOrePrefix prefix : PartOrePrefix.values()) {
             TexturePrefixMeta meta = textureSetMeta.get(prefix.prefix);
@@ -75,7 +92,11 @@ public class BECTextureSet implements Closeable {
             if (meta == null) {
                 layers.put(prefix, Collections.emptyList());
             } else {
-                layers.put(prefix, meta.layers.stream().map(this::getIcon).collect(Collectors.toList()));
+                layers.put(
+                    prefix,
+                    meta.layers.stream()
+                        .map(this::getIcon)
+                        .collect(Collectors.toList()));
             }
         }
     }
@@ -94,7 +115,8 @@ public class BECTextureSet implements Closeable {
     }
 
     public static void reload() {
-        TEXTURE_SETS.values().forEach(BECTextureSet::load);
+        TEXTURE_SETS.values()
+            .forEach(BECTextureSet::load);
     }
 
     private IndexedIcon getIcon(String suffix) {
@@ -102,6 +124,7 @@ public class BECTextureSet implements Closeable {
     }
 
     private static class TexturePrefixMeta {
+
         public List<String> layers;
     }
 }

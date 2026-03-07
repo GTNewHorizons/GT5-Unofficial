@@ -7,46 +7,38 @@ import javax.annotation.Nullable;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.oredict.OreDictionary;
 
-import org.lwjgl.util.Color;
-
+import com.gtnewhorizon.gtnhlib.color.ImmutableColor;
+import com.gtnewhorizon.gtnhlib.itemrendering.IItemTexture;
+import com.gtnewhorizon.gtnhlib.itemrendering.ItemWithTextures;
+import com.gtnewhorizon.gtnhlib.itemrendering.TexturedItemRenderer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IItemTexture;
-import gregtech.api.materials.ItemWithTextures;
 import gregtech.api.util.GTDataUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 
 public class ItemBECMaterialPart extends Item implements ItemWithTextures {
 
-    public final OrePrefixes[] prefixes = {
-        OrePrefixes.plate,
-        OrePrefixes.foil,
-        OrePrefixes.stickLong,
-        OrePrefixes.stick,
-        OrePrefixes.bolt,
-        OrePrefixes.ring,
-        OrePrefixes.wireFine,
-        OrePrefixes.lens,
-    };
+    public final OrePrefixes[] prefixes = { OrePrefixes.plate, OrePrefixes.foil, OrePrefixes.stickLong,
+        OrePrefixes.stick, OrePrefixes.bolt, OrePrefixes.ring, OrePrefixes.wireFine, OrePrefixes.lens, };
 
     public ItemBECMaterialPart() {
         setHasSubtypes(true);
         setUnlocalizedName("gt.bec.part");
 
-        //noinspection ConstantValue
         if (prefixes.length > 32) throw new IllegalStateException("cannot have more than 32 prefixes");
     }
 
     public void register() {
         GameRegistry.registerItem(this, "gt.bec.part");
 
-        if (FMLCommonHandler.instance().getSide().isClient()) {
+        if (FMLCommonHandler.instance()
+            .getSide()
+            .isClient()) {
             registerRenderer();
         }
 
@@ -83,7 +75,7 @@ public class ItemBECMaterialPart extends Item implements ItemWithTextures {
 
     @SideOnly(Side.CLIENT)
     private void registerRenderer() {
-        MinecraftForgeClient.registerItemRenderer(this, GTTexturedItemRenderer.INSTANCE);
+        TexturedItemRenderer.register(this);
     }
 
     @Override
@@ -123,7 +115,7 @@ public class ItemBECMaterialPart extends Item implements ItemWithTextures {
         return new ItemStack(this, amount, material.id + i * 1000);
     }
 
-    private Int2ObjectMap<Color> getPalette(ItemStack stack) {
+    private Int2ObjectMap<ImmutableColor> getPalette(ItemStack stack) {
         BECMaterial mat = getMaterial(stack);
 
         if (mat == null) return null;
@@ -145,14 +137,13 @@ public class ItemBECMaterialPart extends Item implements ItemWithTextures {
 
         if (prefix == null) return null;
 
-        Int2ObjectMap<Color> palette = mat.palettesByPrefix.get(prefix);
+        Int2ObjectMap<ImmutableColor> palette = mat.palettesByPrefix.get(prefix);
 
         if (palette == null) return null;
 
         List<IndexedIcon> layers = mat.textureSet.layers.get(prefix);
 
-        return GTDataUtils.mapToArray(layers,
-            IItemTexture[]::new,
-            indexedIcon -> indexedIcon.asTexture(this::getPalette));
+        return GTDataUtils
+            .mapToArray(layers, IItemTexture[]::new, indexedIcon -> indexedIcon.asTexture(this::getPalette));
     }
 }

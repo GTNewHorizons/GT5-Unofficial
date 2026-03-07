@@ -305,8 +305,8 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<NaniteTier[]> NANITE_TIERS = SimpleRecipeMetadataKey
         .create(NaniteTier[].class, "nanite_tiers");
 
-    public static final RecipeMetadataKey<Long> CONDENSATE_EU_COST = SimpleRecipeMetadataKey
-        .create(Long.class, "condensate_eu_cost");
+    public static final RecipeMetadataKey<FluidStack[]> CONDENSATE_INPUT = SimpleRecipeMetadataKey
+        .create(FluidStack[].class, "condensate_input");
 
     /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace. Will override the fluid input

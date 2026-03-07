@@ -11,11 +11,7 @@ import it.unimi.dsi.fastutil.Pair;
  * Represents a pipe, hatch, multi, or any other machine in a factory pipe system. You should create a new interface
  * that extends this one, then specify your network and grid in the IFactoryElement generics.
  */
-public interface IFactoryElement<
-    TSelf extends IFactoryElement<TSelf, TNetwork, TGrid>,
-    TNetwork extends IFactoryNetwork<TNetwork, TSelf, TGrid>,
-    TGrid extends IFactoryGrid<TGrid, TSelf, TNetwork>
-> {
+public interface IFactoryElement<TSelf extends IFactoryElement<TSelf, TNetwork, TGrid>, TNetwork extends IFactoryNetwork<TNetwork, TSelf, TGrid>, TGrid extends IFactoryGrid<TGrid, TSelf, TNetwork>> {
 
     /**
      * Detects all adjacent elements, regardless of what network they're on.

@@ -24,14 +24,14 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.event.TextureStitchEvent;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.Color;
 
+import com.gtnewhorizon.gtnhlib.color.ImmutableColor;
+import com.gtnewhorizon.gtnhlib.color.RGBColor;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+import com.gtnewhorizon.gtnhlib.itemrendering.IItemTexture;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.GTMod;
 import gregtech.api.enums.Mods;
-import gregtech.api.interfaces.IItemTexture;
-import gregtech.common.render.GTRenderUtil;
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -45,7 +45,8 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 @EventBusSubscriber
 public class IndexedIcon implements Closeable {
 
-    public static final EnumMap<TextureMapType, Object2ObjectMap<String, IndexedIcon>> ICONS = new EnumMap<>(TextureMapType.class);
+    public static final EnumMap<TextureMapType, Object2ObjectMap<String, IndexedIcon>> ICONS = new EnumMap<>(
+        TextureMapType.class);
 
     static {
         ICONS.put(TextureMapType.ITEMS, new Object2ObjectOpenHashMap<>());
@@ -63,6 +64,7 @@ public class IndexedIcon implements Closeable {
     private final Int2ObjectMap<IndexedIconSprite> layers = new Int2ObjectLinkedOpenHashMap<>();
 
     public enum TextureMapType {
+
         BLOCKS("textures/blocks"),
         ITEMS("textures/items");
 
@@ -78,7 +80,8 @@ public class IndexedIcon implements Closeable {
         this.iconName = iconName;
         this.location = Mods.GregTech.getResourceLocation(mapType.root, iconName + ".png");
 
-        ICONS.get(mapType).put(iconName, this);
+        ICONS.get(mapType)
+            .put(iconName, this);
     }
 
     public static IndexedIcon getIcon(TextureMapType mapType, String iconName) {
@@ -87,7 +90,8 @@ public class IndexedIcon implements Closeable {
             case ITEMS -> IndexedIcon::createItemIcon;
         };
 
-        return ICONS.get(mapType).computeIfAbsent(iconName, mapper);
+        return ICONS.get(mapType)
+            .computeIfAbsent(iconName, mapper);
     }
 
     private static IndexedIcon createBlockIcon(String name) {
@@ -111,7 +115,8 @@ public class IndexedIcon implements Closeable {
         }
 
         if (!(image.getColorModel() instanceof IndexColorModel)) {
-            GTMod.GT_FML_LOGGER.error("Sprite {} is not an indexed image and cannot be loaded into an IndexedIcon", location);
+            GTMod.GT_FML_LOGGER
+                .error("Sprite {} is not an indexed image and cannot be loaded into an IndexedIcon", location);
             return;
         }
 
@@ -120,7 +125,8 @@ public class IndexedIcon implements Closeable {
         this.animation = (AnimationMetadataSection) resource.getMetadata("animation");
 
         int[] indices = new int[width * height];
-        image.getData().getPixels(0, 0, width, height, indices);
+        image.getData()
+            .getPixels(0, 0, width, height, indices);
 
         IntSet usedIndices = new IntOpenHashSet();
         usedIndices.addAll(IntArrayList.wrap(indices));
@@ -133,7 +139,12 @@ public class IndexedIcon implements Closeable {
         for (int index : usedIndices) {
             String iconName = location.toString() + ":" + index;
 
-            IndexedIconSprite icon = new IndexedIconSprite(iconName, indices, index, textureMap.mipmapLevels, textureMap.anisotropicFiltering > 1.0F);
+            IndexedIconSprite icon = new IndexedIconSprite(
+                iconName,
+                indices,
+                index,
+                textureMap.mipmapLevels,
+                textureMap.anisotropicFiltering > 1.0F);
 
             layers.put(index, icon);
             textureMap.setTextureEntry(iconName, icon);
@@ -142,12 +153,13 @@ public class IndexedIcon implements Closeable {
 
     @Override
     public void close() {
-        ICONS.get(mapType).remove(iconName, this);
+        ICONS.get(mapType)
+            .remove(iconName, this);
     }
 
-    public IItemTexture asTexture(Function<ItemStack, Int2ObjectFunction<Color>> paletteExtractor) {
+    public IItemTexture asTexture(Function<ItemStack, Int2ObjectFunction<ImmutableColor>> paletteExtractor) {
         return (type, stack) -> {
-            Int2ObjectFunction<Color> palette = paletteExtractor.apply(stack);
+            Int2ObjectFunction<ImmutableColor> palette = paletteExtractor.apply(stack);
 
             if (palette == null) return;
 
@@ -155,11 +167,11 @@ public class IndexedIcon implements Closeable {
         };
     }
 
-    public void render(IItemRenderer.ItemRenderType type, Int2ObjectFunction<Color> palette) {
+    public void render(IItemRenderer.ItemRenderType type, Int2ObjectFunction<ImmutableColor> palette) {
         Tessellator tessellator = Tessellator.instance;
 
         for (IndexedIconSprite icon : layers.values()) {
-            Color colour = palette.get(icon.paletteIndex);
+            ImmutableColor colour = palette.get(icon.paletteIndex);
 
             if (colour == null || colour.getAlpha() == 0) continue;
 
@@ -172,12 +184,14 @@ public class IndexedIcon implements Closeable {
         }
     }
 
-    public static Int2ObjectMap<Color> loadPalette(ResourceLocation paletteLocation) {
+    public static Int2ObjectMap<ImmutableColor> loadPalette(ResourceLocation paletteLocation) {
         IResource resource;
         BufferedImage image;
 
         try {
-            resource = Minecraft.getMinecraft().getResourceManager().getResource(paletteLocation);
+            resource = Minecraft.getMinecraft()
+                .getResourceManager()
+                .getResource(paletteLocation);
 
             image = ImageIO.read(resource.getInputStream());
         } catch (IOException e) {
@@ -190,22 +204,23 @@ public class IndexedIcon implements Closeable {
         }
 
         if (!(image.getColorModel() instanceof IndexColorModel model)) {
-            GTMod.GT_FML_LOGGER.error("Sprite {} is not an indexed image and cannot be loaded as a palette", paletteLocation);
+            GTMod.GT_FML_LOGGER
+                .error("Sprite {} is not an indexed image and cannot be loaded as a palette", paletteLocation);
             return null;
         }
 
         int[] colours = new int[model.getMapSize()];
         model.getRGBs(colours);
 
-        Int2ObjectMap<Color> palette = new Int2ObjectOpenHashMap<>();
-        palette.defaultReturnValue(GTRenderUtil.getColorFromARGB(0xFF000000));
+        Int2ObjectMap<ImmutableColor> palette = new Int2ObjectOpenHashMap<>();
+        palette.defaultReturnValue(RGBColor.fromARGB(0xFF000000));
 
         for (int i = 0; i < colours.length; i++) {
             int argb = colours[i];
 
             if (argb == 0xFF000000) continue;
 
-            palette.put(i, GTRenderUtil.getColorFromARGB(argb));
+            palette.put(i, RGBColor.fromARGB(argb));
         }
 
         return palette;
@@ -217,19 +232,19 @@ public class IndexedIcon implements Closeable {
         TextureMapType type;
 
         switch (event.map.getTextureType()) {
-            case 0:
-                type = TextureMapType.BLOCKS;
-                break;
-            case 1:
-                type = TextureMapType.ITEMS;
-                break;
-            default:
+            case 0 -> type = TextureMapType.BLOCKS;
+            case 1 -> type = TextureMapType.ITEMS;
+            default -> {
                 return;
+            }
         }
 
-        IResourceManager resourceManager = Minecraft.getMinecraft().getResourceManager();
+        IResourceManager resourceManager = Minecraft.getMinecraft()
+            .getResourceManager();
 
-        ICONS.get(type).values().forEach(indexedIcon -> indexedIcon.load(resourceManager, event.map));
+        ICONS.get(type)
+            .values()
+            .forEach(indexedIcon -> indexedIcon.load(resourceManager, event.map));
     }
 
     public class IndexedIconSprite extends TextureAtlasSprite {
@@ -239,7 +254,8 @@ public class IndexedIcon implements Closeable {
         private final int mipmapLevels;
         private final boolean useAnisotropicFiltering;
 
-        IndexedIconSprite(String iconName, int[] indices, int paletteIndex, int mipmapLevels, boolean useAnisotropicFiltering) {
+        IndexedIconSprite(String iconName, int[] indices, int paletteIndex, int mipmapLevels,
+            boolean useAnisotropicFiltering) {
             super(iconName);
             this.indices = indices;
             this.paletteIndex = paletteIndex;
@@ -269,17 +285,21 @@ public class IndexedIcon implements Closeable {
 
             BufferedImage[] images = new BufferedImage[1 + mipmapLevels];
 
-            BufferedImage image = new BufferedImage(IndexedIcon.this.width, IndexedIcon.this.height, BufferedImage.TYPE_INT_ARGB);
+            BufferedImage image = new BufferedImage(
+                IndexedIcon.this.width,
+                IndexedIcon.this.height,
+                BufferedImage.TYPE_INT_ARGB);
             images[0] = image;
 
-            image.getRaster().setPixels(0, 0, IndexedIcon.this.width, IndexedIcon.this.height, pixels);
+            image.getRaster()
+                .setPixels(0, 0, IndexedIcon.this.width, IndexedIcon.this.height, pixels);
 
             loadSprite(images, animation, useAnisotropicFiltering);
 
             return false;
         }
 
-        public void renderInWorld(Tessellator tessellator, Color colour) {
+        public void renderInWorld(Tessellator tessellator, ImmutableColor colour) {
             if (Minecraft.getMinecraft().gameSettings.fancyGraphics) {
                 render3d(tessellator, 0.0625F, colour);
             } else {
@@ -295,7 +315,8 @@ public class IndexedIcon implements Closeable {
             }
         }
 
-        public void render2d(Tessellator tessellator, double minX, double minY, double maxX, double maxY, double z, float nx, float ny, float nz, Color colour) {
+        public void render2d(Tessellator tessellator, double minX, double minY, double maxX, double maxY, double z,
+            float nx, float ny, float nz, ImmutableColor colour) {
             float minU = getMinU();
             float maxU = getMaxU();
             float minV = getMinV();
@@ -321,7 +342,7 @@ public class IndexedIcon implements Closeable {
             tessellator.draw();
         }
 
-        public void render3d(Tessellator tessellator, float thickness, Color colour) {
+        public void render3d(Tessellator tessellator, float thickness, ImmutableColor colour) {
             float minU = getMinU();
             float maxU = getMaxU();
             float minV = getMinV();

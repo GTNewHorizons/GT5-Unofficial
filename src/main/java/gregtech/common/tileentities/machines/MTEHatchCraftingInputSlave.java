@@ -341,11 +341,11 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     private Set<ProcessingLogic> pendingProcessingLogics = Collections.newSetFromMap(new WeakHashMap<>());
 
     @Override
-    public void addProcessingLogic(ProcessingLogic pl) {
+    public void setProcessingLogic(ProcessingLogic pl) {
         // store all ProcessingLogics, then set them to the master CRIB when the player bind/rebind one later
         pendingProcessingLogics.add(pl);
         if (getMaster() != null) {
-            getMaster().addProcessingLogic(pl);
+            getMaster().setProcessingLogic(pl);
         }
     }
 

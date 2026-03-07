@@ -247,8 +247,8 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
 
         if (base == null || base.getTimer() == 0) return;
 
-       if (oldColour == aColor) return;
-       oldColour = aColor;
+        if (oldColour == aColor) return;
+        oldColour = aColor;
 
         BECFactoryGrid.INSTANCE.addElement(this);
     }

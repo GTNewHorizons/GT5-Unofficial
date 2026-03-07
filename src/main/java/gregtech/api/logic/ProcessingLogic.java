@@ -160,7 +160,6 @@ public class ProcessingLogic {
         GTDualInputPattern inputs = inv.getPatternInputs();
         setInputItems(inputs.inputItems);
         setInputFluids(inputs.inputFluid);
-
         Set<GTRecipe> recipes = findRecipeMatches(recipeMap).collect(Collectors.toCollection(LinkedHashSet::new));
 
         // reset the status

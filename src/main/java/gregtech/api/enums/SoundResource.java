@@ -113,7 +113,6 @@ public enum SoundResource {
     TECTECH_MACHINES_FX_HIGH_FREQ(268, TecTech.ID, "fx_hi_freq"),
     TECTECH_MACHINES_NOISE(269, TecTech.ID, "fx_noise"),
     TECTECH_MACHINES_FX_WHOOUM(270, TecTech.ID, "fx_whooum"),
-    GT_MACHINES_BEC_GENERATOR(271, GregTech.ID, "machines.MTEBECGenerator"),
 
     GT_MAINTENANCE_TOOLBOX(271, GregTech.ID, "maintenance.MaintenanceToolbox"),
     GT_MAINTENANCE_DUCT_TAPE(272, GregTech.ID, "maintenance.MaintenanceDuctTape"),
@@ -123,6 +122,7 @@ public enum SoundResource {
 
     GT_MACHINES_SPINMATRON(276, GregTech.ID, "machines.MTESpinmatron"),
     GT_MACHINES_EXOFOUNDRY(277, GregTech.ID, "machines.MTEExoFoundry"),
+    GT_MACHINES_BEC_GENERATOR(278, GregTech.ID, "machines.MTEBECGenerator"),
 
     GUI_BUTTON_DOWN(-1, GregTech.ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, GregTech.ID, "gui.buttonUp"),

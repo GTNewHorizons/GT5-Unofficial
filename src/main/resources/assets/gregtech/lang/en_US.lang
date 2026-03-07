@@ -1090,10 +1090,8 @@ gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
 gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
 gt.recipe.foundry_modules=Foundry Module Components
-gt.recipe.create-condensate-item=Condensate Generation (Items)
-gt.recipe.create-condensate-fluid=Condensate Generation (Fluids)
+gt.recipe.create-condensate=Condensate Entanglement
 gt.recipe.assemble-condensate=Condensate Assembling
-gt.recipe.liquify-condensate=Condensate Liquification
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
@@ -1116,7 +1114,7 @@ GT5U.recipes.chance.output=Output Chance: %s
 
 # Misc Tooltips
 gt.tooltip.nanite-tier=Nanite Tier: %s
-gt.tooltip.required-nanite=Required Nanite: %s
+gt.tooltip.max-nanite=Max Nanite Tier: %s
 
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
@@ -1595,11 +1593,11 @@ GT5U.gui.text.ticks_between_refill=Ticks Between Refills
 GT5U.gui.text.no_bec_assembler=Condensate Observation Array Offline
 GT5U.gui.text.nanite_threshold=Nanite Tier
 GT5U.gui.text.nil=None
-GT5U.gui.text.provided=Provided: %s§f
-GT5U.gui.text.required=Required: %s§f
-GT5U.gui.text.nanite_desc=§b%s§f x §6%s§f
-GT5U.gui.text.required_condensate=Required Condensate:
-GT5U.gui.text.remaining_condensate=%s Condensate §b%sL§f / §6%sL§f
+GT5U.gui.text.provided_nanite=§7Provided Nanite: %s§f
+GT5U.gui.text.nanite_desc=§b%s§7 x §6%s§7
+GT5U.gui.text.required_nanite=§7Required Nanite: %s
+GT5U.gui.text.required_condensate=§7Required Condensate:
+GT5U.gui.text.remaining_condensate=  §7%s §6%sL / %sL§f
 
 
 GT5U.gui.hoverable.runningfine=Running Fine.
@@ -3888,6 +3886,14 @@ item.gt.depletedRodNaquadah32.name=The Core (Depleted)
 item.gt.depletedRodNaquadria.name=Fuel Rod (Depleted Naquadria)
 item.gt.depletedRodNaquadria2.name=Dual Fuel Rod (Depleted Naquadria)
 item.gt.depletedRodNaquadria4.name=Quad Fuel Rod (Depleted Naquadria)
+
+# Condensate Fluid and Cells
+fluid.prepared_quantium.name=Prepared Quantium Bose-Einstein Condensate
+fluid.entangled_quantium.name=Entangled Quantium Bose-Einstein Condensate
+abbrev.entangled_quantium.name=Quantium
+
+item.gt.cell.prepared_quantium.name=Prepared Quantium Bose-Einstein Condensate Cell
+item.gt.cell.entangled_quantium.name=Entangled Quantium Bose-Einstein Condensate Cell
 
 # Entities
 entity.gregtech.PowderBarrelPrimed.name=Lit Powder Barrel

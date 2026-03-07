@@ -9,7 +9,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
 
-import gregtech.api.interfaces.IItemTexture;
+import com.gtnewhorizon.gtnhlib.itemrendering.IItemTexture;
 
 public class GTItemTexture implements IItemTexture {
 
@@ -28,7 +28,10 @@ public class GTItemTexture implements IItemTexture {
 
         if (colour == null || icon == null) return;
 
-        GL11.glColor3f(Byte.toUnsignedInt(colour.getRedByte()) / 256f, Byte.toUnsignedInt(colour.getGreenByte()) / 256f, Byte.toUnsignedInt(colour.getBlueByte()) / 256f);
+        GL11.glColor3f(
+            Byte.toUnsignedInt(colour.getRedByte()) / 256f,
+            Byte.toUnsignedInt(colour.getGreenByte()) / 256f,
+            Byte.toUnsignedInt(colour.getBlueByte()) / 256f);
         GTRenderUtil.renderItem(type, icon);
     }
 }

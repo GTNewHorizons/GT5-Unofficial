@@ -491,7 +491,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
         return this;
     }
 
-    public RecipeMapBuilder<B> fluidDisplayFactory(FluidDisplayFactory fluidDisplayFactory){
+    public RecipeMapBuilder<B> fluidDisplayFactory(FluidDisplayFactory fluidDisplayFactory) {
         uiPropertiesBuilder.fluidDisplayFactory(fluidDisplayFactory);
         return this;
     }

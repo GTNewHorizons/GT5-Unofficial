@@ -34,8 +34,13 @@ public class FallbackResourceManagerMixin {
         visitedJars = null;
     }
 
-    @WrapOperation(method = "getAllResources", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resources/IResourcePack;resourceExists(Lnet/minecraft/util/ResourceLocation;)Z"))
-    public boolean gt5u$preventDuplicateDiscovery(IResourcePack iresourcepack, ResourceLocation loc, Operation<Boolean> exists) {
+    @WrapOperation(
+        method = "getAllResources",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/resources/IResourcePack;resourceExists(Lnet/minecraft/util/ResourceLocation;)Z"))
+    public boolean gt5u$preventDuplicateDiscovery(IResourcePack iresourcepack, ResourceLocation loc,
+        Operation<Boolean> exists) {
 
         if (iresourcepack instanceof AbstractResourcePack abstractPack) {
             if (!visitedJars.add(abstractPack.resourcePackFile)) {

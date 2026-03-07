@@ -14,9 +14,10 @@ public class BECResourceHotswapper implements IResourceManagerReloadListener {
     public static final BECResourceHotswapper INSTANCE = new BECResourceHotswapper();
 
     public BECResourceHotswapper() {
-        SimpleReloadableResourceManager manager = (SimpleReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
+        SimpleReloadableResourceManager manager = (SimpleReloadableResourceManager) Minecraft.getMinecraft()
+            .getResourceManager();
 
-        //noinspection unchecked
+        // noinspection unchecked
         manager.reloadListeners.add(0, this);
 
         onResourceManagerReload(null);

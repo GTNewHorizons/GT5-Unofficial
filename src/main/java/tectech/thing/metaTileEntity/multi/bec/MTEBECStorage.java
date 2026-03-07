@@ -8,21 +8,20 @@ import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3f;
 
+import appeng.api.storage.data.IAEFluidStack;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
@@ -45,39 +44,28 @@ import gregtech.api.util.IntFraction;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.client.GTSoundLoop;
-import gregtech.client.ISoundLoopAware;
 import gregtech.client.volumetric.CircularSound;
 import gregtech.client.volumetric.LinearSound;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import tectech.mechanics.boseEinsteinCondensate.BECInventory;
-import tectech.mechanics.boseEinsteinCondensate.CondensateStack;
 import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
-public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implements BECInventory, ISoundLoopAware {
+public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implements BECInventory {
 
-    private final Object2LongOpenHashMap<Object> mStoredCondensate = new Object2LongOpenHashMap<>();
-
-    private final LinearSound pillarPos;
-    private final CircularSound torusPos;
+    private final Object2LongOpenHashMap<Fluid> mStoredCondensate = new Object2LongOpenHashMap<>();
 
     public MTEBECStorage(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-
-        pillarPos = new LinearSound().setCoords(0, 2, 7, 0, 14, 7);
-        torusPos = new CircularSound().setCoords(0, 8, 7, 0, 1, 0, 17);
     }
 
     protected MTEBECStorage(MTEBECStorage prototype) {
         super(prototype);
-
-        this.pillarPos = prototype.pillarPos;
-        this.torusPos = prototype.torusPos;
     }
 
     @Override
@@ -93,11 +81,13 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     @Override
     public IStructureDefinition<MTEBECStorage> compile(String[][] definition) {
         structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
-        structure.addCasing('B', ElectromagneticallyIsolatedCasing).withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy));
+        structure.addCasing('B', ElectromagneticallyIsolatedCasing)
+            .withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy));
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ElectromagneticWaveguide);
         structure.addCasing('E', AdvancedFusionCoilII);
-        structure.addCasing('1', FineStructureConstantManipulator).withHatches(2, 4, Arrays.asList(BECHatches.Hatch));
+        structure.addCasing('1', FineStructureConstantManipulator)
+            .withHatches(2, 4, Arrays.asList(BECHatches.Hatch));
 
         return structure.buildStructure(definition);
     }
@@ -126,16 +116,10 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         numberFormat.setMinimumFractionDigits(0);
         numberFormat.setMaximumFractionDigits(2);
 
-        CondensateStack stack = new CondensateStack();
-
         for (var e : mStoredCondensate.object2LongEntrySet()) {
-            stack.material = e.getKey();
-            stack.amount = 1;
-
             ret.append(EnumChatFormatting.AQUA)
                 .append(
-                    stack.getPreview()
-                        .getDisplayName())
+                    e.getKey().getLocalizedName(new FluidStack(e.getKey(), 1)))
                 .append(EnumChatFormatting.WHITE)
                 .append(" x ")
                 .append(EnumChatFormatting.GOLD);
@@ -208,25 +192,15 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 
-        List<CondensateStack> stacks = new ArrayList<>();
-
-        for (var e : mStoredCondensate.object2LongEntrySet()) {
-            stacks.add(new CondensateStack(e.getKey(), e.getLongValue()));
-        }
-
-        aNBT.setTag("condensate", CondensateStack.save(stacks));
+        aNBT.setTag("condensate", writeCondensateToTag(mStoredCondensate));
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
 
-        List<CondensateStack> loaded = CondensateStack.load((NBTTagList) aNBT.getTag("condensate"));
-
         mStoredCondensate.clear();
-        for (CondensateStack stack : loaded) {
-            mStoredCondensate.put(stack.material, stack.amount);
-        }
+        mStoredCondensate.putAll(readCondensateFromTag(aNBT.getCompoundTag("condensate")));
     }
 
     @Override
@@ -282,16 +256,14 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     }
 
     @Override
-    public @NotNull Object2LongMap<Object> getContents() {
+    public @NotNull Object2LongMap<Fluid> getContents() {
         return mStoredCondensate;
     }
 
     @Override
-    public void addCondensate(Collection<CondensateStack> stacks) {
-        for (CondensateStack stack : stacks) {
-            mStoredCondensate.addTo(stack.material, stack.amount);
-            stack.amount = 0;
-        }
+    public void addCondensate(IAEFluidStack stack) {
+        mStoredCondensate.addTo(stack.getFluid(), stack.getStackSize());
+        stack.setStackSize(0);
 
         double stored = 0;
 
@@ -303,40 +275,33 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     }
 
     @Override
-    public boolean removeCondensate(Collection<CondensateStack> stacks) {
-        boolean consumedEverything = true;
+    public boolean removeCondensate(IAEFluidStack stack) {
+        long stored = mStoredCondensate.getLong(stack.getFluid());
 
-        for (CondensateStack stack : stacks) {
-            long stored = mStoredCondensate.getLong(stack.material);
-
-            if (stored == 0) {
-                consumedEverything = false;
-                continue;
-            }
-
-            long toConsume = Math.min(stored, stack.amount);
-
-            stack.amount -= toConsume;
-            stored -= toConsume;
-
-            if (stored == 0) {
-                mStoredCondensate.removeLong(stack.material);
-            } else {
-                mStoredCondensate.put(stack.material, stored);
-            }
-
-            if (stack.amount > 0) consumedEverything = false;
+        if (stored <= 0) {
+            return false;
         }
 
-        double stored = 0;
+        long toConsume = Math.min(stored, stack.getStackSize());
+
+        stack.decStackSize(toConsume);
+        stored -= toConsume;
+
+        if (stored == 0) {
+            mStoredCondensate.removeLong(stack.getFluid());
+        } else {
+            mStoredCondensate.put(stack.getFluid(), stored);
+        }
+
+        double storedTotal = 0;
 
         for (long l : mStoredCondensate.values()) {
-            stored += l;
+            storedTotal += l;
         }
 
-        amountStored.set(stored);
+        amountStored.set(storedTotal);
 
-        return consumedEverything;
+        return stack.getStackSize() == 0;
     }
 
     private GTSoundLoop pillar, torus, torusFar;
@@ -344,19 +309,6 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     @SideOnly(Side.CLIENT)
     protected void doActivitySound(SoundResource activitySound) {
         if (getBaseMetaTileEntity().isActive()) {
-            // if (pillar == null) {
-            // pillar = new GTSoundLoop(
-            // SoundResource.GT_MACHINES_BEC_GENERATOR.resourceLocation,
-            // getBaseMetaTileEntity(),
-            // false,
-            // true);
-            // pillar.setVolume(2);
-
-            // Minecraft.getMinecraft()
-            // .getSoundHandler()
-            // .playSound(pillar);
-            // }
-
             if (torus == null) {
                 torus = new GTSoundLoop(
                     SoundResource.GT_MACHINES_BEC_GENERATOR.resourceLocation,
@@ -365,6 +317,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                     true,
                     GTSoundLoop.VOLUME_RAMP * 4);
                 torus.setVolume(2);
+                torus.setPosition(new CircularSound(this, 0, 8, 7, 0, 1, 0, 17, 90));
 
                 Minecraft.getMinecraft()
                     .getSoundHandler()
@@ -379,42 +332,35 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                     true,
                     GTSoundLoop.VOLUME_RAMP * 4);
                 torusFar.setVolume(2);
+                torus.setPosition(new CircularSound(this, 0, 8, 7, 0, 1, 0, 17, -90));
 
                 Minecraft.getMinecraft()
                     .getSoundHandler()
                     .playSound(torusFar);
             }
+
+            if (pillar == null) {
+                pillar = new GTSoundLoop(
+                    SoundResource.GT_MACHINES_ARC_FURNACE_LOOP.resourceLocation,
+                    getBaseMetaTileEntity(),
+                    false,
+                    true,
+                    GTSoundLoop.VOLUME_RAMP * 4);
+                pillar.setVolume(2);
+                torus.setPosition(new LinearSound(this, 0, 2, 7, 0, 14, 7, 64));
+
+                Minecraft.getMinecraft()
+                    .getSoundHandler()
+                    .playSound(pillar);
+            }
         } else {
-            if (pillar != null) pillar.setDonePlaying(true);
-            if (torus != null) torus.setDonePlaying(true);
-            if (torusFar != null) torusFar.setDonePlaying(true);
+            if (pillar != null) pillar.stop();
+            if (torus != null) torus.stop();
+            if (torusFar != null) torusFar.stop();
 
             pillar = null;
             torus = null;
             torusFar = null;
         }
-    }
-
-    @Override
-    public void modifySoundLoop(GTSoundLoop loop) {
-        if (pillar == loop) {
-            Vector3f v = pillarPos.getPosition(this);
-            if (v != null) loop.setPosition(v);
-        }
-
-        if (torus == loop) {
-            Vector3f v = torusPos.getPosition(this, false);
-            if (v != null) loop.setPosition(v);
-        }
-
-        if (torusFar == loop) {
-            Vector3f v = torusPos.getPosition(this, true);
-            if (v != null) loop.setPosition(v);
-        }
-    }
-
-    @Override
-    public void onSoundLoopTicked(GTSoundLoop loop) {
-        modifySoundLoop(loop);
     }
 }

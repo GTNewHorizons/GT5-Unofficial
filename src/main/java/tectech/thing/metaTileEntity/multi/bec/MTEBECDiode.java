@@ -14,6 +14,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
@@ -57,11 +58,14 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
     @Override
     public IStructureDefinition<MTEBECDiode> compile(String[][] definition) {
         structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
-        structure.addCasing('B', ElectromagneticallyIsolatedCasing).withHatches(1, 8, Arrays.asList(Energy, ExoticEnergy));
+        structure.addCasing('B', ElectromagneticallyIsolatedCasing)
+            .withHatches(1, 8, Arrays.asList(Energy, ExoticEnergy));
         structure.addCasing('C', CyclotronCoil);
         structure.addCasing('D', AdvancedFusionCoilII);
-        structure.addCasing('1', ElectromagneticallyIsolatedCasing).withHatches(2, 1, Arrays.asList(INPUT_HATCH));
-        structure.addCasing('2', ElectromagneticallyIsolatedCasing).withHatches(3, 1, Arrays.asList(BECHatches.Hatch));
+        structure.addCasing('1', ElectromagneticallyIsolatedCasing)
+            .withHatches(2, 1, Arrays.asList(INPUT_HATCH));
+        structure.addCasing('2', ElectromagneticallyIsolatedCasing)
+            .withHatches(3, 1, Arrays.asList(BECHatches.Hatch));
 
         return structure.buildStructure(definition);
     }
@@ -115,7 +119,9 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
         return SimpleCheckRecipeResult.ofSuccess("routing");
     }
 
-    private static final IHatchElement<MTEBECMultiblockBase<?>> INPUT_HATCH = new GTStructureUtility.ProxyHatchElement<>(BECHatches.Hatch) {
+    private static final IHatchElement<MTEBECMultiblockBase<?>> INPUT_HATCH = new GTStructureUtility.ProxyHatchElement<>(
+        BECHatches.Hatch) {
+
         @Override
         public IGTHatchAdder<? super MTEBECMultiblockBase<?>> adder() {
             var adder = super.adder();

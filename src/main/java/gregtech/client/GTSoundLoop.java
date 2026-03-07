@@ -33,32 +33,29 @@ public class GTSoundLoop extends MovingSound {
      * Constructs a GTSoundLoop.
      *
      * @param soundResource    the sound file location
-     * @param tileEntity       the tile entity associated with this sound
+     * @param base       the tile entity associated with this sound
      * @param stopWhenActive   flag to stop the sound when the block is active
      * @param stopWhenInactive flag to stop the sound when the block is inactive
      * @param soundX           positional sound X coordinate
      * @param soundY           positional sound Y coordinate
      * @param soundZ           positional sound Z coordinate
      */
-    public GTSoundLoop(ResourceLocation soundResource, IGregTechTileEntity tileEntity, boolean stopWhenActive,
+    public GTSoundLoop(ResourceLocation soundResource, IGregTechTileEntity base, boolean stopWhenActive,
         boolean stopWhenInactive, float soundX, float soundY, float soundZ) {
 
         super(soundResource);
         this.whileActive = stopWhenActive;
         this.whileInactive = stopWhenInactive;
-        tileX = tileEntity.getXCoord();
-        tileY = tileEntity.getYCoord();
-        tileZ = tileEntity.getZCoord();
+        tileX = base.getXCoord();
+        tileY = base.getYCoord();
+        tileZ = base.getZCoord();
         xPosF = soundX;
         yPosF = soundY;
         zPosF = soundZ;
-        worldID = tileEntity.getWorld().provider.dimensionId;
+        worldID = base.getWorld().provider.dimensionId;
         repeat = true;
-        volumeRamp = VOLUME_RAMP;
+        targetVolume = VOLUME_RAMP;
         volume = VOLUME_RAMP;
-        if (base.getMetaTileEntity() instanceof ISoundLoopAware loopAware) {
-            loopAware.modifySoundLoop(this);
-        }
     }
 
     public GTSoundLoop(ResourceLocation p_i45104_1_, IGregTechTileEntity base, boolean stopWhenActive,
@@ -66,38 +63,13 @@ public class GTSoundLoop extends MovingSound {
         super(p_i45104_1_);
         this.whileActive = stopWhenActive;
         this.whileInactive = stopWhenInactive;
-        xPosF = machineX = base.getXCoord();
-        yPosF = machineY = base.getYCoord();
-        zPosF = machineZ = base.getZCoord();
+        xPosF = tileX = base.getXCoord();
+        yPosF = tileY = base.getYCoord();
+        zPosF = tileZ = base.getZCoord();
         worldID = base.getWorld().provider.dimensionId;
         repeat = true;
-        this.volumeRamp = volumeRamp;
+        this.targetVolume = volumeRamp;
         volume = volumeRamp;
-        if (base.getMetaTileEntity() instanceof ISoundLoopAware loopAware) {
-            loopAware.modifySoundLoop(this);
-        }
-    }
-
-    /**
-     * Constructs a GTSoundLoop.
-     *
-     * @param soundResource    the sound file location
-     * @param tileEntity       the tile entity associated with this sound
-     * @param stopWhenActive   flag to stop the sound when the block is active
-     * @param stopWhenInactive flag to stop the sound when the block is inactive
-     *
-     * @implNote positional sound coordinates centred on tile
-     */
-    public GTSoundLoop(ResourceLocation soundResource, IGregTechTileEntity tileEntity, boolean stopWhenActive,
-        boolean stopWhenInactive) {
-        this(
-            soundResource,
-            tileEntity,
-            stopWhenActive,
-            stopWhenInactive,
-            tileEntity.getXCoord() + .5f,
-            tileEntity.getYCoord() + .5f,
-            tileEntity.getZCoord() + .5f);
     }
 
     /**

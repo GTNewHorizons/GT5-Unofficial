@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.util.Color;
 
+import com.gtnewhorizon.gtnhlib.color.ImmutableColor;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.materials.MaterialWithParts;
 import gregtech.api.util.GTUtility;
@@ -28,7 +28,7 @@ public class BECMaterial implements MaterialWithParts {
     public final String name;
 
     public BECTextureSet textureSet;
-    public final PartOrePrefix.PrefixMap<Int2ObjectMap<Color>> palettesByPrefix = new PartOrePrefix.PrefixMap<>();
+    public final PartOrePrefix.PrefixMap<Int2ObjectMap<ImmutableColor>> palettesByPrefix = new PartOrePrefix.PrefixMap<>();
 
     public final EnumSet<PartOrePrefix> presentParts;
 
@@ -38,11 +38,12 @@ public class BECMaterial implements MaterialWithParts {
         this.presentParts = EnumSet.copyOf(presentParts);
 
         if (MATERIALS[id] != null) {
-            throw new IllegalArgumentException(MessageFormat.format(
-                "cannot register material {0} with id {1} because this id is already taken by material {2}",
-                name,
-                id,
-                MATERIALS[id].name));
+            throw new IllegalArgumentException(
+                MessageFormat.format(
+                    "cannot register material {0} with id {1} because this id is already taken by material {2}",
+                    name,
+                    id,
+                    MATERIALS[id].name));
         }
 
         MATERIALS[id] = this;

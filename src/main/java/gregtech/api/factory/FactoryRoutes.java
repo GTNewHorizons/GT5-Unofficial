@@ -9,7 +9,8 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class FactoryRoutes<TNotable, TRouteInfo extends IRouteInfo<TRouteInfo>> implements Iterable<FactoryPath<TNotable, TRouteInfo>> {
+public class FactoryRoutes<TNotable, TRouteInfo extends IRouteInfo<TRouteInfo>>
+    implements Iterable<FactoryPath<TNotable, TRouteInfo>> {
 
     public final TNotable start;
     public final Map<TNotable, GraphRouteTracker.From<TNotable, TRouteInfo>> dijkstra;

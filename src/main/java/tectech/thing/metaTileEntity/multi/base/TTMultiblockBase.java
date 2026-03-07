@@ -1056,30 +1056,31 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
                                         addClassicOutputs_EM();
 
-                                    updateSlots();
-                                    mProgresstime = 0;
-                                    mMaxProgresstime = 0;
-                                    mEfficiencyIncrease = 0;
-                                    mLastWorkingTick = mTotalRunTime;
-                                    if (processingLogic != null) {
-                                        recipesDone += Math.max(processingLogic.getCurrentParallels(), lastParallel);
-                                    } else {
-                                        recipesDone += 1;
-                                    }
-                                    if (aBaseMetaTileEntity.isAllowedToWork()) {
-                                        if (checkRecipe()) {
-                                            mEfficiency = Math.max(
-                                                0,
-                                                min(
-                                                    mEfficiency + mEfficiencyIncrease,
-                                                    getMaxEfficiency(mInventory[1])
-                                                        - (getIdealStatus() - getRepairStatus()) * 1000));
-                                        } else {
-                                            afterRecipeCheckFailed();
-                                        }
                                         updateSlots();
-                                    } else {
-                                        notAllowedToWork_stopMachine_EM();
+                                        mProgresstime = 0;
+                                        mMaxProgresstime = 0;
+                                        mEfficiencyIncrease = 0;
+                                        mLastWorkingTick = mTotalRunTime;
+                                        if (processingLogic != null) {
+                                            recipesDone += Math.max(processingLogic.getCurrentParallels(), lastParallel);
+                                        } else {
+                                            recipesDone += 1;
+                                        }
+                                        if (aBaseMetaTileEntity.isAllowedToWork()) {
+                                            if (checkRecipe()) {
+                                                mEfficiency = Math.max(
+                                                    0,
+                                                    min(
+                                                        mEfficiency + mEfficiencyIncrease,
+                                                        getMaxEfficiency(mInventory[1])
+                                                            - (getIdealStatus() - getRepairStatus()) * 1000));
+                                            } else {
+                                                afterRecipeCheckFailed();
+                                            }
+                                            updateSlots();
+                                        } else {
+                                            notAllowedToWork_stopMachine_EM();
+                                        }
                                     }
                                 }
                             } // else {//failed to consume power/resources - inside on running tick
@@ -1133,15 +1134,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         mOutputItems = null;
 
         if (mOutputFluids != null) {
-            if (mOutputFluids.length == 1) {
-                for (FluidStack tStack : mOutputFluids) {
-                    if (tStack != null) {
-                        addOutput(tStack);
-                    }
-                }
-            } else if (mOutputFluids.length > 1) {
-                addFluidOutputs(mOutputFluids);
-            }
+            addFluidOutputs(mOutputFluids);
         }
         mOutputFluids = null;
     }

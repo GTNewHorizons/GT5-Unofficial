@@ -10,9 +10,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
@@ -25,19 +27,16 @@ import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import it.unimi.dsi.fastutil.Pair;
-
-import org.jetbrains.annotations.Nullable;
-
-import com.google.common.collect.Multimap;
-import com.google.common.collect.MultimapBuilder;
-
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntLinkedOpenHashSet;
@@ -46,6 +45,7 @@ import it.unimi.dsi.fastutil.objects.ObjectIterators;
 /**
  * Various util methods for managing raw data structures that are minecraft/gt agnostic.
  */
+@SuppressWarnings({ "UnstableApiUsage", "unused" })
 public class GTDataUtils {
 
     public static <S, T> List<T> mapToList(Collection<S> in, Function<S, T> mapper) {
@@ -81,9 +81,8 @@ public class GTDataUtils {
         int l = array.length;
         int count = 0;
 
-        // noinspection ForLoopReplaceableByForEach
-        for (int i = 0; i < l; i++) {
-            if (array[i] != null) count++;
+        for (Object o : array) {
+            if (o != null) count++;
         }
 
         return count;
@@ -100,9 +99,7 @@ public class GTDataUtils {
 
         int j = 0, l = array.length;
 
-        for (int i = 0; i < l; i++) {
-            T t = array[i];
-
+        for (T t : array) {
             if (t != null) out[j++] = t;
         }
 
@@ -162,14 +159,6 @@ public class GTDataUtils {
         return -1;
     }
 
-    public static <T> int findIndex(T[] array, Predicate<T> matcher) {
-        for (int i = 0; i < array.length; i++) {
-            if (matcher.test(array[i])) return i;
-        }
-
-        return -1;
-    }
-
     @Nullable
     public static <T> T getIndexSafe(@Nullable T @Nullable [] array, int index) {
         return array == null || index < 0 || index >= array.length ? null : array[index];
@@ -198,13 +187,14 @@ public class GTDataUtils {
         return value == null ? Stream.empty() : Stream.of(value);
     }
 
+    @SafeVarargs
     public static <T> T[] concat(T[]... arrays) {
         int totalLength = 0;
 
         int l = arrays.length;
 
-        for (int i = 0; i < l; i++) {
-            totalLength += arrays[i].length;
+        for (T[] array : arrays) {
+            totalLength += array.length;
         }
 
         T[] out = Arrays.copyOf(arrays[0], totalLength);
@@ -253,7 +243,7 @@ public class GTDataUtils {
 
             @Override
             public BiConsumer<M, P> accumulator() {
-                return (map, pair) -> { map.put(pair.left(), pair.right()); };
+                return (map, pair) -> map.put(pair.left(), pair.right());
             }
 
             @Override
@@ -279,14 +269,16 @@ public class GTDataUtils {
     }
 
     public static <L, R> Iterator<Pair<L, R>> zip(Iterator<L> left, Iterator<R> right) {
-        return new Iterator<Pair<L, R>>() {
+        return new Iterator<>() {
 
             @Override
             public boolean hasNext() {
                 boolean l = left.hasNext();
                 boolean r = right.hasNext();
 
-                if (l != r) throw new IllegalStateException("zipped iterators did not have the same length: " + (l ? "left had more than right" : "right had more than left"));
+                if (l != r) throw new IllegalStateException("zipped iterators did not have the same length: " + (l
+                    ? "left had more than right"
+                    : "right had more than left"));
 
                 return l && r;
             }
@@ -310,10 +302,11 @@ public class GTDataUtils {
     }
 
     @SideOnly(Side.CLIENT)
-    public static <K, V> Map<K, V> loadResourceMerged(Gson gson, Class<K> key, Class<V> value, ResourceLocation resource) {
+    public static <K, V> Map<K, V> loadResourceMerged(Gson gson, Class<K> key, Class<V> value,
+        ResourceLocation resource) {
         Map<String, JsonElement> temp = new HashMap<>();
 
-        loadResourceMerged(gson, new TypeToken<Map<String, JsonElement>>(){}.getType(), resource, temp::putAll);
+        loadResourceMerged(gson, new TypeToken<Map<String, JsonElement>>() {}.getType(), resource, temp::putAll);
 
         Map<K, V> out = new HashMap<>();
 
@@ -326,7 +319,8 @@ public class GTDataUtils {
 
     @SideOnly(Side.CLIENT)
     public static <T> void loadResourceMerged(Gson gson, Type type, ResourceLocation resource, Consumer<T> fn) {
-        IResourceManager manager = Minecraft.getMinecraft().getResourceManager();
+        IResourceManager manager = Minecraft.getMinecraft()
+            .getResourceManager();
 
         try {
             for (IResource colourMap : manager.getAllResources(resource)) {
@@ -339,7 +333,8 @@ public class GTDataUtils {
 
     @SideOnly(Side.CLIENT)
     public static <T> T loadResource(Gson gson, Type type, ResourceLocation location) {
-        IResourceManager manager = Minecraft.getMinecraft().getResourceManager();
+        IResourceManager manager = Minecraft.getMinecraft()
+            .getResourceManager();
 
         try {
             IResource resource = manager.getResource(location);

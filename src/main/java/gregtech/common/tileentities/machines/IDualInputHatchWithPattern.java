@@ -17,7 +17,7 @@ public interface IDualInputHatchWithPattern extends IDualInputHatch {
      *
      * @param pl the processing logic
      */
-    void addProcessingLogic(ProcessingLogic pl);
+    void setProcessingLogic(ProcessingLogic pl);
 
     default void resetCraftingInputRecipeMap() {}
 

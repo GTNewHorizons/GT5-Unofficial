@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -93,14 +94,16 @@ public class TimedLRUCache<K, V> {
         Iterator<WeakReference<TimedLRUCache<?, ?>>> cacheIter = CACHES.iterator();
 
         while (cacheIter.hasNext()) {
-            TimedLRUCache<?, ?> cache = cacheIter.next().get();
+            TimedLRUCache<?, ?> cache = cacheIter.next()
+                .get();
 
             if (cache == null) {
                 cacheIter.remove();
                 continue;
             }
 
-            var entryIter = cache.cache.object2ObjectEntrySet().fastIterator();
+            var entryIter = cache.cache.object2ObjectEntrySet()
+                .fastIterator();
 
             while (entryIter.hasNext()) {
                 var entry = entryIter.next();

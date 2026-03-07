@@ -5,7 +5,8 @@ import java.util.Objects;
 
 import org.jetbrains.annotations.NotNull;
 
-public class FactoryPath<TNotable, TRouteInfo extends IRouteInfo<TRouteInfo>> implements Comparable<FactoryPath<TNotable, TRouteInfo>> {
+public class FactoryPath<TNotable, TRouteInfo extends IRouteInfo<TRouteInfo>>
+    implements Comparable<FactoryPath<TNotable, TRouteInfo>> {
 
     public final TNotable start, end;
     public final TRouteInfo routeInfo;
@@ -35,9 +36,10 @@ public class FactoryPath<TNotable, TRouteInfo extends IRouteInfo<TRouteInfo>> im
 
     @Override
     public final boolean equals(Object o) {
-        if (!(o instanceof FactoryPath<?, ?> that)) return false;
+        if (!(o instanceof FactoryPath<?, ?>that)) return false;
 
-        return Objects.equals(start, that.start) && Objects.equals(end, that.end) && Objects.equals(routeInfo, that.routeInfo);
+        return Objects.equals(start, that.start) && Objects.equals(end, that.end)
+            && Objects.equals(routeInfo, that.routeInfo);
     }
 
     @Override

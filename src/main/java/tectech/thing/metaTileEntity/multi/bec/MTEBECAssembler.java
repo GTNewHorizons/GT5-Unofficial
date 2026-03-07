@@ -25,9 +25,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
 
+import appeng.api.storage.data.IAEFluidStack;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -46,9 +48,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReason;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import tectech.mechanics.boseEinsteinCondensate.CondensateStack;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
@@ -84,12 +86,14 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     @Override
     public IStructureDefinition<MTEBECAssembler> compile(String[][] definition) {
         structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
-        structure.addCasing('B', ElectromagneticallyIsolatedCasing).withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy, NaniteHatchElement.INSTANCE));
+        structure.addCasing('B', ElectromagneticallyIsolatedCasing)
+            .withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy, NaniteHatchElement.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ElectromagneticWaveguide);
         structure.addCasing('E', CyclotronCoil);
         structure.addCasing('F', AdvancedFusionCoilII);
-        structure.addCasing('G', ElectromagneticallyIsolatedCasing).withHatches(2, 2, Arrays.asList(BECHatches.Hatch));
+        structure.addCasing('G', ElectromagneticallyIsolatedCasing)
+            .withHatches(2, 2, Arrays.asList(BECHatches.Hatch));
 
         return structure.buildStructure(definition);
     }
@@ -149,6 +153,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
 
         mMaxProgresstime = 20;
         mEfficiency = 10_000;
+        useLongPower = true;
 
         return active ? CheckRecipeResultRegistry.SUCCESSFUL : CheckRecipeResultRegistry.NONE;
     }
@@ -200,11 +205,44 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
                     }
 
                     // Intentionally share the same nanite count between every io node even though it doesn't make
-                    // physical sense so that proper automation is incentivized even more.
+                    // physical sense, so that proper automation is incentivized even more.
                     node.setNaniteShare(currentNaniteTier, availableNanites);
                 }
 
                 igte.setActive(!ioNodes.isEmpty());
+            }
+
+            lEUt = 0;
+
+            Iterator<MTEBECIONode> iter = ioNodes.iterator();
+
+            while (iter.hasNext()) {
+                MTEBECIONode node = iter.next();
+
+                if (node == null) {
+                    iter.remove();
+                    continue;
+                }
+
+                if (!node.isValid()) {
+                    node.setNaniteShare(null, 0);
+                    iter.remove();
+                    continue;
+                }
+
+                lEUt += node.getAssemblerEUt();
+            }
+        }
+    }
+
+    @Override
+    public void stopMachine(@NotNull ShutDownReason reason) {
+        super.stopMachine(reason);
+
+        if (reason.wasCritical()) {
+            for (MTEBECIONode node : ioNodes) {
+                // you really don't want to powerfail :tootroll:
+                node.stopMachine(reason);
             }
         }
     }
@@ -219,15 +257,15 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         node.setNaniteShare(null, 0);
     }
 
-    public void drainCondensate(CondensateStack stack) {
+    public void drainCondensate(IAEFluidStack stack) {
         if (network == null) return;
 
-        if (stack.amount > 0) {
+        if (stack.getStackSize() > 0) {
             network.drainCondensate(this, Collections.singletonList(stack));
         }
     }
 
-    public int getSlowdowns(Collection<Object> validMaterials) {
+    public int getSlowdowns(Collection<Fluid> validMaterials) {
         return network.getSlowdowns(this, validMaterials);
     }
 

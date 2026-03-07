@@ -663,7 +663,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                         mInputs.add(
                                             new FixedPositionedStack(
                                                 this,
-                                                uiProperties.fluidDisplayFactory.getFluidDisplay(inputs[i], FluidDisplayStackMode.SHOWN),
+                                                uiProperties.fluidDisplayFactory
+                                                    .getFluidDisplay(inputs[i], FluidDisplayStackMode.SHOWN),
                                                 GTNEIDefaultHandler.this.neiProperties.renderRealStackSizes,
                                                 widget.getPos().x + 1,
                                                 widget.getPos().y + 1,
@@ -682,7 +683,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                             mOutputs.add(
                                                 new FixedPositionedStack(
                                                     this,
-                                                    uiProperties.fluidDisplayFactory.getFluidDisplay(outputs[i], FluidDisplayStackMode.SHOWN),
+                                                    uiProperties.fluidDisplayFactory
+                                                        .getFluidDisplay(outputs[i], FluidDisplayStackMode.SHOWN),
                                                     GTNEIDefaultHandler.this.neiProperties.renderRealStackSizes,
                                                     widget.getPos().x + 1,
                                                     widget.getPos().y + 1,
@@ -727,7 +729,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                     mInputs.add(
                         new FixedPositionedStack(
                             this,
-                            uiProperties.fluidDisplayFactory.getFluidDisplay(aRecipe.mFluidInputs[i], FluidDisplayStackMode.SHOWN),
+                            uiProperties.fluidDisplayFactory
+                                .getFluidDisplay(aRecipe.mFluidInputs[i], FluidDisplayStackMode.SHOWN),
                             GTNEIDefaultHandler.this.neiProperties.renderRealStackSizes,
                             pos.x + 1,
                             pos.y + 1,
@@ -741,7 +744,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                     mOutputs.add(
                         new FixedPositionedStack(
                             this,
-                            uiProperties.fluidDisplayFactory.getFluidDisplay(aRecipe.mFluidOutputs[i], FluidDisplayStackMode.SHOWN),
+                            uiProperties.fluidDisplayFactory
+                                .getFluidDisplay(aRecipe.mFluidOutputs[i], FluidDisplayStackMode.SHOWN),
                             GTNEIDefaultHandler.this.neiProperties.renderRealStackSizes,
                             pos.x + 1,
                             pos.y + 1,

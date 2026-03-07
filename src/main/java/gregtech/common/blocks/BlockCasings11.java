@@ -41,9 +41,21 @@ public class BlockCasings11 extends BlockCasingsAbstract {
         register(6, ItemList.Casing_Item_Pipe_Fluxed_Electrum, "Fluxed Electrum Item Pipe Casing");
         register(7, ItemList.Casing_Item_Pipe_Black_Plutonium, "Black Plutonium Item Pipe Casing");
 
-        register(8, ItemList.Casing_Item_BEC1, "Coherence-preserving Plasma Conduit", translatedText("gt.casing11.8.tooltip"));
-        register(9, ItemList.Casing_Item_BEC2, "Electromagnetically-isolated Casing", translatedText("gt.casing11.9.tooltip"));
-        register(10, ItemList.Casing_Item_BEC3, "Fine-structure Constant Manipulator", translatedText("gt.casing11.10.tooltip"));
+        register(
+            8,
+            ItemList.Casing_Item_BEC1,
+            "Coherence-preserving Plasma Conduit",
+            translatedText("gt.casing11.8.tooltip"));
+        register(
+            9,
+            ItemList.Casing_Item_BEC2,
+            "Electromagnetically-isolated Casing",
+            translatedText("gt.casing11.9.tooltip"));
+        register(
+            10,
+            ItemList.Casing_Item_BEC3,
+            "Fine-structure Constant Manipulator",
+            translatedText("gt.casing11.10.tooltip"));
 
         for (int i = 0; i < 8; i++) {
             GTStructureChannels.ITEM_PIPE_CASING.registerAsIndicator(new ItemStack(this, 1, i), i + 1);
@@ -103,40 +115,35 @@ public class BlockCasings11 extends BlockCasingsAbstract {
             IconType.NORMAL, // south
             IconType.NONE, // west
             IconType.NONE, // east
-        },
-        { // facing_y
+        }, { // facing_y
             IconType.NONE, // down
             IconType.NONE, // up
             IconType.ROTATED, // north
             IconType.ROTATED, // south
             IconType.ROTATED, // west
             IconType.ROTATED, // east
-        },
-        { // facing_z
+        }, { // facing_z
             IconType.ROTATED, // down
             IconType.ROTATED, // up
             IconType.NONE, // north
             IconType.NONE, // south
             IconType.NORMAL, // west
             IconType.NORMAL, // east
-        },
-        { // plane_x
+        }, { // plane_x
             IconType.ROTATED, // down
             IconType.ROTATED, // up
             IconType.ROTATED, // north
             IconType.ROTATED, // south
             IconType.NONE, // west
             IconType.NONE, // east
-        },
-        { // plane_y
+        }, { // plane_y
             IconType.NONE, // down
             IconType.NONE, // up
             IconType.NORMAL, // north
             IconType.NORMAL, // south
             IconType.NORMAL, // west
             IconType.NORMAL, // east
-        },
-        { // plane_z
+        }, { // plane_z
             IconType.NORMAL, // down
             IconType.NORMAL, // up
             IconType.NONE, // north
@@ -160,6 +167,7 @@ public class BlockCasings11 extends BlockCasingsAbstract {
     private static final ForgeDirection[] HALF = { SOUTH, UP, EAST };
 
     private enum Orientation {
+
         FACING_X,
         FACING_Y,
         FACING_Z,
@@ -168,7 +176,7 @@ public class BlockCasings11 extends BlockCasingsAbstract {
         PLANE_Z;
 
         public static Orientation facing(ForgeDirection dir) {
-            return switch(dir) {
+            return switch (dir) {
                 case DOWN, UP -> FACING_Y;
                 case NORTH, SOUTH -> FACING_Z;
                 case EAST, WEST -> FACING_X;
@@ -177,7 +185,7 @@ public class BlockCasings11 extends BlockCasingsAbstract {
         }
 
         public static Orientation plane(ForgeDirection normal) {
-            return switch(normal) {
+            return switch (normal) {
                 case DOWN, UP -> PLANE_Y;
                 case NORTH, SOUTH -> PLANE_Z;
                 case EAST, WEST -> PLANE_X;
@@ -186,13 +194,12 @@ public class BlockCasings11 extends BlockCasingsAbstract {
         }
     }
 
-    private static final ForgeDirection[][] SIDES = {
-        {}, // down
-        {EAST, SOUTH, WEST, NORTH}, // up
+    private static final ForgeDirection[][] SIDES = { {}, // down
+        { EAST, SOUTH, WEST, NORTH }, // up
         {}, // north
-        {UP, EAST, DOWN, WEST}, // south
+        { UP, EAST, DOWN, WEST }, // south
         {}, // west
-        {UP, SOUTH, DOWN, NORTH}, // east
+        { UP, SOUTH, DOWN, NORTH }, // east
     };
 
     private Orientation getConduitOrientation(IBlockAccess world, int x, int y, int z) {
@@ -217,7 +224,9 @@ public class BlockCasings11 extends BlockCasingsAbstract {
                 ForgeDirection a = SIDES[normal.ordinal()][i];
                 ForgeDirection b = SIDES[normal.ordinal()][(i + 1) % 4];
 
-                v.set(x, y, z).add(vec(a)).add(vec(b));
+                v.set(x, y, z)
+                    .add(vec(a))
+                    .add(vec(b));
 
                 Block block = world.getBlock(v.x, v.y, v.z);
 

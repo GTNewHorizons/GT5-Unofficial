@@ -7,16 +7,11 @@ import java.util.Set;
 
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.SetMultimap;
+
 import gregtech.api.objects.TimedLRUCache;
 import it.unimi.dsi.fastutil.Pair;
 
-public class GraphRouteTracker<
-    TElement extends IFactoryElement<TElement, TNetwork, TGrid>,
-    TNetwork extends IFactoryNetwork<TNetwork, TElement, TGrid>,
-    TGrid extends IFactoryGrid<TGrid, TElement, TNetwork>,
-    TNotable extends INotableFactoryElement<TNotable, TRouteInfo>,
-    TRouteInfo extends IRouteInfo<TRouteInfo>
-> {
+public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwork, TGrid>, TNetwork extends IFactoryNetwork<TNetwork, TElement, TGrid>, TGrid extends IFactoryGrid<TGrid, TElement, TNetwork>, TNotable extends INotableFactoryElement<TNotable, TRouteInfo>, TRouteInfo extends IRouteInfo<TRouteInfo>> {
 
     public final SetMultimap<TNotable, RoutedNode<TNotable, TRouteInfo>> edges = MultimapBuilder.hashKeys()
         .hashSetValues()
@@ -27,7 +22,10 @@ public class GraphRouteTracker<
 
     private final TRouteInfo zero;
 
-    private final TimedLRUCache<TNotable, FactoryRoutes<TNotable, TRouteInfo>> routeCache = new TimedLRUCache<>(this::dijkstraUncached, 20 * 60, 1024);
+    private final TimedLRUCache<TNotable, FactoryRoutes<TNotable, TRouteInfo>> routeCache = new TimedLRUCache<>(
+        this::dijkstraUncached,
+        20 * 60,
+        1024);
 
     public GraphRouteTracker(Class<TNotable> notableType, TRouteInfo zero) {
         this.notableType = notableType;
@@ -69,6 +67,7 @@ public class GraphRouteTracker<
     }
 
     public static class From<TNotable, TRouteInfo> {
+
         public TNotable previousNode;
         public TRouteInfo routeInfo;
 
@@ -80,7 +79,7 @@ public class GraphRouteTracker<
 
     public FactoryRoutes<TNotable, TRouteInfo> dijkstra(TNotable start) {
         return dijkstraUncached(start);
-//        return routeCache.get(start);
+        // return routeCache.get(start);
     }
 
     private FactoryRoutes<TNotable, TRouteInfo> dijkstraUncached(TNotable start) {

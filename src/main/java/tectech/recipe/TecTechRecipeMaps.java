@@ -1,25 +1,23 @@
 package tectech.recipe;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
-import net.minecraftforge.fluids.FluidStack;
+import javax.annotation.Nonnull;
 
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import gregtech.api.enums.CondensateType;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.NaniteTier;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.items.ItemCondensate;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.maps.CondensateFrontend;
-import gregtech.api.recipe.maps.LiquidCondensateFrontend;
-import gregtech.api.util.GTBECRecipe;
-import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTRecipe;
-import gregtech.loaders.load.BECRecipeLoader;
+import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
-import tectech.mechanics.boseEinsteinCondensate.CondensateStack;
 import tectech.thing.CustomItemList;
 import tectech.thing.gui.TecTechUITextures;
 
@@ -106,30 +104,33 @@ public class TecTechRecipeMaps {
                 .setHeight(100))
         .build();
 
-    public static final RecipeMap<BECRecipeMapBackend> condensateCreationFromItemRecipes = RecipeMapBuilder
-        .of("gt.recipe.create-condensate-item", BECRecipeMapBackend::new)
-        .maxIO(1, 1, 0, 0)
-        .logo(TecTechUITextures.PICTURE_TECTECH_LOGO)
-        .logoSize(18, 18)
-        .logoPos(151, 63)
-        .neiRecipeBackgroundSize(170, 90)
-        .frontend(CondensateFrontend::new)
-        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemCondensate.getForMaterial("Steel", 0)))
-        .neiRecipeComparator(Comparator.comparingLong(BECRecipeLoader::getRecipeCost))
-        .build();
-    public static final RecipeMap<BECRecipeMapBackend> condensateCreationFromFluidRecipes = RecipeMapBuilder
-        .of("gt.recipe.create-condensate-fluid", BECRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> condensateGeneratorRecipes = RecipeMapBuilder
+        .of("gt.recipe.create-condensate", RecipeMapBackend::new)
         .maxIO(0, 1, 1, 0)
         .logo(TecTechUITextures.PICTURE_TECTECH_LOGO)
         .logoSize(18, 18)
         .logoPos(151, 63)
         .neiRecipeBackgroundSize(170, 90)
-        .frontend(LiquidCondensateFrontend::new)
-        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemCondensate.getForMaterial("Deuterium", 0)))
-        .neiRecipeComparator(Comparator.comparingLong(BECRecipeLoader::getRecipeCost))
+        .frontend(CondensateFrontend::new)
+        .neiHandlerInfo(builder -> builder.setDisplayStack(GTUtility.getFluidDisplayStack(CondensateType.Quantium.getPrepared(1).getFluid())))
         .build();
-    public static final RecipeMap<BECRecipeMapBackend> condensateAssemblingRecipes = RecipeMapBuilder
-        .of("gt.recipe.assemble-condensate", BECRecipeMapBackend::new)
+
+    public static final RecipeMap<RecipeMapBackend> condensateAssemblingRecipes = RecipeMapBuilder
+        .<RecipeMapBackend>of("gt.recipe.assemble-condensate", props -> new RecipeMapBackend(props) {
+            @Override
+            public @Nonnull GTRecipe compileRecipe(@Nonnull GTRecipe recipe) {
+                NaniteTier[] tiers = recipe.getMetadata(GTRecipeConstants.NANITE_TIERS);
+
+                if (tiers != null && tiers.length != recipe.mInputs.length) {
+                    throw new IllegalArgumentException("nanite tiers length must match item input length");
+                }
+
+                recipe.getMetadataStorage().store(GTRecipeConstants.CONDENSATE_INPUT, recipe.mFluidInputs);
+                recipe.mFluidInputs = GTValues.emptyFluidStackArray;
+
+                return super.compileRecipe(recipe);
+            }
+        })
         .maxIO(16, 1, 4, 0)
         .logo(TecTechUITextures.PICTURE_TECTECH_LOGO)
         .logoSize(18, 18)
@@ -139,14 +140,8 @@ public class TecTechRecipeMaps {
         .neiTransferRect(124, 8, 18, 72)
         .neiTransferRect(142, 26, 18, 18)
         .frontend(BECRecipeMapFrontend::new)
-        .fluidDisplayFactory(BECRecipeMapFrontend.CONDENSATE_FLUID_DISPLAY)
-        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemCondensate.getForMaterial("Water", 0)))
-        .neiRecipeComparator(Comparator.comparingLong(BECRecipeLoader::getRecipeCost))
-        .neiFluidInputsGetter((r) -> {
-            GTBECRecipe recipe = (GTBECRecipe) r;
-
-            return GTDataUtils.mapToArray(recipe.mCInput, FluidStack[]::new, CondensateStack.FakeCondensateFluidStack::new);
-        })
+        .neiHandlerInfo(builder -> builder.setDisplayStack(GTUtility.getFluidDisplayStack(CondensateType.Quantium.getEntangled(1).getFluid())))
+        .neiFluidInputsGetter(recipe -> recipe.getMetadata(GTRecipeConstants.CONDENSATE_INPUT))
         .build();
 
 }

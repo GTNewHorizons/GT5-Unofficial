@@ -26,9 +26,7 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements ITexture, IBlockC
 
     private IIcon getIcon(int ordinalSide, int aX, int aY, int aZ, RenderBlocks aRenderer) {
         final int tSide = mSide == 6 ? ordinalSide : mSide;
-        IIcon icon = mBlock.getIcon(getBlockAccess(aRenderer), aX, aY, aZ, tSide);
-
-        return icon;
+        return mBlock.getIcon(getBlockAccess(aRenderer), aX, aY, aZ, tSide);
     }
 
     private GTRenderingWorld getBlockAccess(RenderBlocks aRenderer) {
