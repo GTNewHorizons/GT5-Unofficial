@@ -146,6 +146,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         fluidStack -> mFluidOut = fluidStack,
         this::getCapacity);
 
+    public FluidStackTank getFluidOutputTank() {
+        return this.fluidOutputTank;
+    }
+
     /**
      * Registers machine with single-line description.
      *
@@ -473,7 +477,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 return true;
             }
         }
-        GTUtility.sendChatToPlayer(aPlayer, "No free Side!");
+        GTUtility.sendChatTrans(aPlayer, "GT5U.chat.machine.no_free_side");
         return true;
     }
 
@@ -558,8 +562,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
             if (isActive && (mProgresstime >= 0 || aBaseMetaTileEntity.isAllowedToWork())) {
                 markDirty();
-                if (mProgresstime > 0) aBaseMetaTileEntity.setActive(true);
                 if (mProgresstime < 0 || drainEnergyForProcess(mEUt)) {
+                    aBaseMetaTileEntity.setActive(mProgresstime >= 0);
                     if (++mProgresstime >= mMaxProgresstime) {
                         for (int i = 0; i < mOutputItems.length; i++)
                             for (int j = 0; j < mOutputItems.length; j++) if (aBaseMetaTileEntity
@@ -924,10 +928,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + mDisableFilter);
             } else {
                 mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    mAllowInputFromOutputSide ? translateToLocal("gt.interact.desc.input_from_output_on")
-                        : translateToLocal("gt.interact.desc.input_from_output_off"));
+                    mAllowInputFromOutputSide ? "gt.interact.desc.input_from_output_on"
+                        : "gt.interact.desc.input_from_output_off");
             }
         }
     }

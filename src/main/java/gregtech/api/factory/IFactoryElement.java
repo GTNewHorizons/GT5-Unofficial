@@ -22,15 +22,15 @@ public interface IFactoryElement<TSelf extends IFactoryElement<TSelf, TNetwork, 
 
     void setNetwork(TNetwork network);
 
-    default void onNeighbourAdded(TSelf neighbour) {
-        onNeighbourChanged(neighbour);
+    default void onEdgeAdded(TSelf adjacent) {
+        onEdgeChanged(adjacent);
     }
 
-    default void onNeighbourRemoved(TSelf neighbour) {
-        onNeighbourChanged(neighbour);
+    default void onEdgeRemoved(TSelf adjacent) {
+        onEdgeChanged(adjacent);
     }
 
-    default void onNeighbourChanged(TSelf neighbour) {
+    default void onEdgeChanged(TSelf adjacent) {
 
     }
 

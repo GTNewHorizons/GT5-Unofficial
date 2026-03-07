@@ -197,7 +197,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         GTSoundLoop loop = super.createSoundLoop(activitySound);
 
         // 16 blocks = 1f volume, doubled so that you can hear the sound outside of large multis
-        loop.setVolume(Math.max(1f, structureRadius / 16f * 2f));
+        loop.setVolume(Math.max(1f, structureRadius / 16f * 4f));
 
         return loop;
     }

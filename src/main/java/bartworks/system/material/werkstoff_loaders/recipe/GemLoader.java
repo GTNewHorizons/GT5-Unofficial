@@ -199,7 +199,7 @@ public class GemLoader implements IWerkstoffRunnable {
 
             final ITexture texture = TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[2][0],
-                TextureFactory.of(Textures.BlockIcons.OVERLAY_LENS, werkstoff.getRGBA(), false));
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_LENS, werkstoff.getRGBA()));
             CoverRegistry.registerDecorativeCover(werkstoff.get(lens), texture);
 
             for (ItemStack is : OreDictionary

@@ -57,6 +57,8 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 
 public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> implements ISurvivalConstructable {
 
@@ -240,7 +242,8 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                 Block block = aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j);
 
                 boolean isCOFHCoreWater = Mods.COFHCore.isModLoaded() && (block instanceof BlockWater);
-                boolean isWater = (block == Blocks.water) || isCOFHCoreWater;
+                boolean isWater = (block == Blocks.water) || isCOFHCoreWater
+                    || (block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater));
                 boolean isAir = block == Blocks.air || block == Blocks.flowing_water;
                 if (isWater) continue;
 

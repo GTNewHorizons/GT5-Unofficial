@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.common.tileentities.machines.MTEHatchOutputME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;

@@ -61,7 +61,6 @@ public class RecipesMachinesMulti {
         multiWiremill();
         multiSifter();
         multiThermalCentrifuge();
-        multiWiremill();
         multiWasher();
         multiCutter();
         multiExtruder();
@@ -328,12 +327,6 @@ public class RecipesMachinesMulti {
     }
 
     public static void multiCentrifuge() {
-        // Industrial Centrifuge
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_Centrifuge.get(1),
-            new Object[] { "ABA", "CDC", "EFE", 'A', "circuitData", 'B',
-                OrePrefixes.pipeHuge.get(Materials.StainlessSteel), 'C', MaterialsAlloy.MARAGING250.getPlate(1), 'D',
-                ItemList.Machine_EV_Centrifuge, 'E', MaterialsAlloy.INCONEL_792.getPlate(1), 'F', ItemList.Casing_EV });
 
         // Centrifuge Casing
         GTModHandler.addCraftingRecipe(
@@ -409,12 +402,6 @@ public class RecipesMachinesMulti {
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
-
-        // Industrial Electrolyzer
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_Electrolyzer.get(1),
-            new Object[] { "PCP", "HMH", "PRP", 'P', MaterialsAlloy.STELLITE.getPlate(1), 'C', "circuitElite", 'H',
-                ItemList.Casing_IV, 'M', ItemList.Machine_IV_Electrolyzer, 'R', MaterialsAlloy.STELLITE.getRotor(1) });
     }
 
     private static void multiBender() {
@@ -497,11 +484,6 @@ public class RecipesMachinesMulti {
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
-        // Industrial Wire Factory
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_WireFactory.get(1),
-            new Object[] { "PHP", "CMC", "PHP", 'P', OrePrefixes.plate.get(Materials.BlueSteel), 'H',
-                ItemList.Casing_IV, 'C', "circuitElite", 'M', ItemList.Machine_IV_Wiremill });
     }
 
     private static void multiMassFabricator() {
@@ -831,11 +813,6 @@ public class RecipesMachinesMulti {
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
-        // Amazon Warehousing Depot
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Amazon_Warehouse_Controller.get(1),
-            new Object[] { "DCD", "PMP", "ODO", 'D', GregtechItemList.Casing_AmazonWarehouse, 'C', "circuitElite", 'P',
-                ItemList.Electric_Piston_IV, 'M', ItemList.Machine_IV_Boxinator, 'O', ItemList.Conveyor_Module_IV });
     }
 
     private static void multiMixer() {
@@ -951,7 +928,7 @@ public class RecipesMachinesMulti {
                 MaterialsAlloy.EGLIN_STEEL.getRod(4))
             .circuit(14)
             .itemOutputs(GregtechItemList.Casing_IndustrialAutoChisel.get(1))
-            .fluidInputs(MaterialsAlloy.EGLIN_STEEL_BASE.getFluidStack(2 * INGOTS))
+            .fluidInputs(MaterialsAlloy.EGLIN_STEEL.getFluidStack(2 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

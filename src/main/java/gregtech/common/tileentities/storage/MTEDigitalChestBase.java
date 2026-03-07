@@ -19,6 +19,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
@@ -26,6 +27,7 @@ import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
 import com.gtnewhorizon.gtnhlib.item.AbstractInventoryIterator;
 import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
 import com.gtnewhorizon.gtnhlib.item.InventoryIterator;
+import com.gtnewhorizon.gtnhlib.item.SimpleItemIO;
 import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -45,7 +47,6 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.implementation.items.SimpleItemIO;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -514,33 +515,49 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
         @Override
         protected @NotNull InventoryIterator iterator(int[] allowedSlots) {
-            return new AbstractInventoryIterator(SLOTS, allowedSlots) {
+            return new MTEDigitalChestBaseInventoryIterator(ItemIOImpl.SLOTS, allowedSlots, false);
+        }
 
-                @Override
-                protected ItemStack getStackInSlot(int slot) {
-                    switch (slot) {
-                        case 0 -> {
-                            return GTUtility.copyAmountUnsafe(getItemCount(), getItemStack());
-                        }
-                        case 1 -> {
-                            return GTUtility.copy(mInventory[1]);
-                        }
-                        default -> {
-                            return null;
-                        }
+        @Override
+        public @Nullable InventoryIterator simulatedSinkIterator() {
+            return new MTEDigitalChestBaseInventoryIterator(ItemIOImpl.SLOTS, allowedSinkSlots, true);
+        }
+
+        private class MTEDigitalChestBaseInventoryIterator extends AbstractInventoryIterator {
+
+            private final boolean simulated;
+
+            public MTEDigitalChestBaseInventoryIterator(int[] slots, int[] allowedSlots, boolean simulated) {
+                super(slots, allowedSlots);
+                this.simulated = simulated;
+            }
+
+            @Override
+            protected ItemStack getStackInSlot(int slot) {
+                switch (slot) {
+                    case 0 -> {
+                        return GTUtility.copyAmountUnsafe(getItemCount(), getItemStack());
+                    }
+                    case 1 -> {
+                        return GTUtility.copy(mInventory[1]);
+                    }
+                    default -> {
+                        return null;
                     }
                 }
+            }
 
-                @Override
-                public ItemStack extract(int amount, boolean forced) {
-                    switch (getCurrentSlot()) {
-                        case 0 -> {
-                            int toExtract = Math.min(amount, getItemCount());
+            @Override
+            public ItemStack extract(int amount, boolean forced) {
+                switch (getCurrentSlot()) {
+                    case 0 -> {
+                        int toExtract = Math.min(amount, getItemCount());
 
-                            if (toExtract <= 0) return null;
+                        if (toExtract <= 0) return null;
 
-                            ItemStack extracted = GTUtility.copyAmountUnsafe(toExtract, getItemStack());
+                        ItemStack extracted = GTUtility.copyAmountUnsafe(toExtract, getItemStack());
 
+                        if (!simulated) {
                             setItemCount(getItemCount() - toExtract);
 
                             if (getItemCount() <= 0) {
@@ -550,68 +567,80 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                             meInventoryHandler.notifyListeners(-toExtract, extracted);
 
                             MTEDigitalChestBase.this.markDirty();
-
-                            return extracted;
                         }
-                        case 1 -> {
-                            ItemStack inSlot = mInventory[1];
 
-                            if (inSlot == null) return null;
+                        return extracted;
+                    }
+                    case 1 -> {
+                        ItemStack inSlot = mInventory[1];
 
-                            int toExtract = Math.min(amount, inSlot.stackSize);
+                        if (inSlot == null) return null;
 
-                            ItemStack extracted = decrStackSize(1, toExtract);
+                        int toExtract = Math.min(amount, inSlot.stackSize);
+
+                        ItemStack extracted;
+                        if (!simulated) {
+                            extracted = decrStackSize(1, toExtract);
 
                             MTEDigitalChestBase.this.markDirty();
+                        } else {
+                            extracted = GTUtility.copyOrNull(getStackInSlot(1));
 
-                            return extracted;
+                            if (extracted != null && extracted.stackSize > toExtract) {
+                                extracted.stackSize = toExtract;
+                            }
                         }
-                        default -> {
-                            return null;
-                        }
+
+                        return extracted;
+                    }
+                    default -> {
+                        return null;
                     }
                 }
+            }
 
-                @Override
-                public int insert(ImmutableItemStack stack, boolean forced) {
-                    int remaining = stack.getStackSize();
+            @Override
+            public int insert(ImmutableItemStack stack, boolean forced) {
+                int remaining = stack.getStackSize();
 
-                    if (getCurrentSlot() == 1) {
-                        int max = getStackSizeLimit(1, stack.toStackFast());
+                if (getCurrentSlot() == 1) {
+                    int max = getStackSizeLimit(1, stack.toStackFast());
 
-                        ItemStack stored = mInventory[1];
+                    ItemStack stored = mInventory[1];
 
-                        int storedAmount = stored == null ? 0 : stored.stackSize;
+                    int storedAmount = stored == null ? 0 : stored.stackSize;
 
-                        int toInsert = Math.min(stack.getStackSize(), max - storedAmount);
+                    int toInsert = Math.min(stack.getStackSize(), max - storedAmount);
 
+                    if (!simulated) {
                         if (stored == null) mInventory[1] = stack.toStackFast(0);
 
                         mInventory[1].stackSize += toInsert;
-                        remaining -= toInsert;
                     }
+                    remaining -= toInsert;
+                }
 
-                    if (!ItemUtil.isStackEmpty(getItemStack()) && !stack.matches(getItemStack())) {
-                        return remaining;
-                    }
+                if (!ItemUtil.isStackEmpty(getItemStack()) && !stack.matches(getItemStack())) {
+                    return remaining;
+                }
 
-                    int insertable = Math
-                        .min((forced ? Integer.MAX_VALUE : getItemCapacity()) - getItemCount(), remaining);
+                int insertable = Math.min((forced ? Integer.MAX_VALUE : getItemCapacity()) - getItemCount(), remaining);
 
-                    if (ItemUtil.isStackEmpty(getItemStack())) {
+                if (!simulated) {
+                    if (getItemCount() <= 0) {
                         setItemStack(stack.toStack(0));
                     }
 
                     setItemCount(getItemCount() + insertable);
-                    remaining -= insertable;
 
                     meInventoryHandler.notifyListeners(insertable, getItemStack());
 
                     MTEDigitalChestBase.this.markDirty();
-
-                    return remaining;
                 }
-            };
+                remaining -= insertable;
+
+                return remaining;
+            }
         }
     }
 }

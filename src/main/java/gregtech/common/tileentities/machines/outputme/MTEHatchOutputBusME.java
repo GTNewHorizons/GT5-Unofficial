@@ -64,8 +64,9 @@ import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChannelState, IMEConnectable,
-    ICellContainer, IGridProxyable, IPriorityHost, MTEHatchOutputMEBase.Environment<IAEItemStack> {
+public class MTEHatchOutputBusME extends MTEHatchOutputBus
+    implements IPowerChannelState, IMEConnectable, ICellContainer, IGridProxyable, IPriorityHost,
+    MTEHatchOutputMEBase.Environment<IAEItemStack, MEFilterItem, ItemStack> {
 
     public MTEHatchOutputBusME(int aID, String aName, String aNameRegional) {
         super(
@@ -214,7 +215,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         }
 
         public boolean canStore(GTUtility.ItemId id, ItemStack stack) {
-            if (provider.getCheckMode()) {
+            if (provider.shouldCheck()) {
                 return provider.canStore(stack, stack.stackSize + cache.get(id));
             }
             return hasAvailableSpace() && provider.getFilter()
@@ -357,7 +358,10 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     public IAEItemStack loadStackFromNBT(NBTTagCompound t) {
-        return AEItemStack.create(GTUtility.loadItem(t));
+        final ItemStack is = GTUtility.loadItem(t.getCompoundTag("itemStack"));
+        if (is == null) return null;
+        return AEItemStack.create(is)
+            .setStackSize(t.getLong("size"));
     }
 
     @Override
@@ -608,5 +612,9 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     public void dispatchMarkDirty() {
         this.markDirty();
+    }
+
+    public MTEHatchOutputMEBase<IAEItemStack, MEFilterItem, ItemStack> getProvider() {
+        return provider;
     }
 }

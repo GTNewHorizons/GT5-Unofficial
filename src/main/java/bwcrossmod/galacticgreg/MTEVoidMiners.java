@@ -32,7 +32,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -82,31 +81,8 @@ public class MTEVoidMiners {
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType("Miner, VM")
-                .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + " EU/t")
-                .addInfo(
-                    "Can be supplied with " + EnumChatFormatting.AQUA
-                        + "2 L/s"
-                        + EnumChatFormatting.GRAY
-                        + " of Noble gases to boost "
-                        + EnumChatFormatting.GOLD
-                        + "output")
-                .addInfo(createGasString(EnumChatFormatting.LIGHT_PURPLE, "Neon", 4))
-                .addInfo(createGasString(EnumChatFormatting.AQUA, "Krypton", 8))
-                .addInfo(createGasString(EnumChatFormatting.DARK_AQUA, "Xenon", 16))
-                .addInfo(createGasString(EnumChatFormatting.BLUE, "Oganesson", 64))
-                .addInfo(
-                    "Will output " + 2 * this.TIER_MULTIPLIER
-                        + " Ores per Second depending on the Dimension it is build in")
-                .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
-                .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
-                .addInfo(
-                    "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
-                        + "VOIDED"
-                        + EnumChatFormatting.RESET
-                        + ".")
-                .beginStructureBlock(7, 9, 7, false)
+            final MultiblockTooltipBuilder tt = super.createTooltip();
+            tt.beginStructureBlock(7, 9, 7, false)
                 .addStructureInfo(
                     EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Mining Osmiridium Casing")
                 .addStructureInfo(EnumChatFormatting.GOLD + "42x" + EnumChatFormatting.GRAY + " Osmiridium Frame Box")
@@ -212,31 +188,8 @@ public class MTEVoidMiners {
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType("Miner")
-                .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + "EU/t")
-                .addInfo(
-                    "Can be supplied with " + EnumChatFormatting.AQUA
-                        + "2 L/s"
-                        + EnumChatFormatting.GRAY
-                        + " of Noble gases to boost "
-                        + EnumChatFormatting.GOLD
-                        + "output")
-                .addInfo(createGasString(EnumChatFormatting.LIGHT_PURPLE, "Neon", 4))
-                .addInfo(createGasString(EnumChatFormatting.AQUA, "Krypton", 8))
-                .addInfo(createGasString(EnumChatFormatting.DARK_AQUA, "Xenon", 16))
-                .addInfo(createGasString(EnumChatFormatting.BLUE, "Oganesson", 64))
-                .addInfo(
-                    "Will output " + 2 * this.TIER_MULTIPLIER
-                        + " Ores per Second depending on the Dimension it is build in")
-                .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
-                .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
-                .addInfo(
-                    "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
-                        + "VOIDED"
-                        + EnumChatFormatting.RESET
-                        + ".")
-                .beginStructureBlock(9, 13, 8, false)
+            final MultiblockTooltipBuilder tt = super.createTooltip();
+            tt.beginStructureBlock(9, 13, 8, false)
                 .addStructureInfo(
                     EnumChatFormatting.GOLD + "29x" + EnumChatFormatting.GRAY + " Mining Black Plutonium Casing")
                 .addStructureInfo(
@@ -340,31 +293,8 @@ public class MTEVoidMiners {
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType("Miner")
-                .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + " EU/t")
-                .addInfo(
-                    "Can be supplied with " + EnumChatFormatting.AQUA
-                        + "2 L/s"
-                        + EnumChatFormatting.GRAY
-                        + " of Noble gases to boost "
-                        + EnumChatFormatting.GOLD
-                        + "output")
-                .addInfo(createGasString(EnumChatFormatting.LIGHT_PURPLE, "Neon", 4))
-                .addInfo(createGasString(EnumChatFormatting.AQUA, "Krypton", 8))
-                .addInfo(createGasString(EnumChatFormatting.DARK_AQUA, "Xenon", 16))
-                .addInfo(createGasString(EnumChatFormatting.BLUE, "Oganesson", 64))
-                .addInfo(
-                    "Will output " + 2 * this.TIER_MULTIPLIER
-                        + " Ores per Second depending on the Dimension it is build in")
-                .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
-                .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
-                .addInfo(
-                    "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
-                        + "VOIDED"
-                        + EnumChatFormatting.RESET
-                        + ".")
-                .beginStructureBlock(9, 16, 9, false)
+            final MultiblockTooltipBuilder tt = super.createTooltip();
+            tt.beginStructureBlock(9, 16, 9, false)
                 .addStructureInfo(
                     EnumChatFormatting.GOLD + "47x" + EnumChatFormatting.GRAY + " Mining Neutronium Casing")
                 .addStructureInfo(

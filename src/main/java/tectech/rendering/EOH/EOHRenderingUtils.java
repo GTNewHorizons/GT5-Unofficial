@@ -4,8 +4,6 @@ import static tectech.Reference.MODID;
 import static tectech.rendering.EOH.EOHTileEntitySR.STAR_LAYER_0;
 import static tectech.rendering.EOH.EOHTileEntitySR.STAR_LAYER_1;
 import static tectech.rendering.EOH.EOHTileEntitySR.STAR_LAYER_2;
-import static tectech.rendering.EOH.EOHTileEntitySR.spaceModel;
-import static tectech.rendering.EOH.EOHTileEntitySR.starModel;
 
 import java.awt.Color;
 
@@ -17,12 +15,27 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
+
 import cpw.mods.fml.client.FMLClientHandler;
-import gregtech.api.util.GTUtility;
 
 public abstract class EOHRenderingUtils {
 
-    public static void renderStar(IItemRenderer.ItemRenderType type, Color color, int size) {
+    private static final Color EOHStarColour = new Color(1.0f, 0.4f, 0.05f, 1.0f);
+
+    public static void renderEOHStar(IItemRenderer.ItemRenderType type, float partialTicks, double starRadius) {
+        renderStar(type, EOHStarColour, partialTicks, starRadius);
+    }
+
+    // Used for GORGE item renderer only.
+    private static final Color GORGEStarColour = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+    public static void renderGORGEStar(IItemRenderer.ItemRenderType type, float partialTicks, double starRadius) {
+        renderStar(type, GORGEStarColour, partialTicks, starRadius);
+    }
+
+    private static void renderStar(IItemRenderer.ItemRenderType type, Color color, float partialTicks,
+        double starRadius) {
         GL11.glPushMatrix();
 
         if (type == IItemRenderer.ItemRenderType.INVENTORY) GL11.glRotated(180, 0, 1, 0);
@@ -33,73 +46,56 @@ public abstract class EOHRenderingUtils {
             }
 
         // Render star stuff.
-        renderStarLayer(0, STAR_LAYER_0, color, 1.0f, size);
-        renderStarLayer(1, STAR_LAYER_1, color, 0.4f, size);
-        renderStarLayer(2, STAR_LAYER_2, color, 0.2f, size);
+        renderStarLayer(0, STAR_LAYER_0, color, 1.0f, partialTicks, starRadius);
+        renderStarLayer(1, STAR_LAYER_1, color, 0.4f, partialTicks, starRadius);
+        renderStarLayer(2, STAR_LAYER_2, color, 0.2f, partialTicks, starRadius);
 
         GL11.glPopMatrix();
     }
 
-    public static void renderStar(IItemRenderer.ItemRenderType type, int size) {
-        renderStar(type, new Color(1.0f, 0.4f, 0.05f, 1.0f), size);
-    }
+    private static void renderStarLayer(int layer, ResourceLocation texture, Color color, float alpha,
+        float partialTicks, double starRadius) {
 
-    public static void renderStarLayer(int layer, ResourceLocation texture, Color color, float alpha, int size) {
+        if (layer >= 3) throw new IllegalArgumentException("Star rendering only supports three layers.");
 
-        // Begin animation.
         GL11.glPushMatrix();
 
-        // OpenGL settings, not sure exactly what these do.
-
-        // Disables lighting, so star is always lit (I think).
         GL11.glDisable(GL11.GL_LIGHTING);
-        // Culls triangles/quads facing away from the camera
         GL11.glEnable(GL11.GL_CULL_FACE);
-        // Allows alpha blending to occur (transparency-based color mixing)
         GL11.glEnable(GL11.GL_BLEND);
-        // ???
         if (alpha < 1.0f) {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         } else {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         }
 
-        // Bind image to layer of star.
         FMLClientHandler.instance()
             .getClient()
             .getTextureManager()
             .bindTexture(texture);
 
-        // 0.01f magic number to shrink sphere obj down.
-        // Size obtained from the multis current recipe.
-        float scale = 0.01f * size;
+        float[] rotationSpeeds = { 1.5f, 1.2f, 1.6f };
+        float[] baseRotations = { 130f, -49f, 67f };
 
-        // Put each subsequent layer further out.
-        scale *= GTUtility.powInt(1.04f, layer);
-
-        // Scale the star up in the x, y and z directions.
-        GL11.glScalef(scale, scale, scale);
+        float rotation = (baseRotations[layer] + rotationSpeeds[layer] * partialTicks) % 360f;
 
         switch (layer) {
-            case 0 -> GL11.glRotatef(130 + (System.currentTimeMillis() / 64) % 360, 0F, 1F, 1F);
-            case 1 -> GL11.glRotatef(-49 + (System.currentTimeMillis() / 64) % 360, 1F, 1F, 0F);
-            case 2 -> GL11.glRotatef(67 + (System.currentTimeMillis() / 64) % 360, 1F, 0F, 1F);
+            case 0 -> GL11.glRotatef(rotation, 0F, 1F, 1F);
+            case 1 -> GL11.glRotatef(rotation, 1F, 1F, 0F);
+            case 2 -> GL11.glRotatef(rotation, 1F, 0F, 1F);
         }
 
-        // Set colour and alpha (transparency) of the star layer.
-        final float red = color.getRed() / 255.0f;
-        final float green = color.getGreen() / 255.0f;
-        final float blue = color.getBlue() / 255.0f;
+        GL11.glColor4f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, alpha);
 
-        GL11.glColor4f(red, green, blue, alpha);
+        int maxLayer = 2;
+        double scale = starRadius * Math.pow(0.95f, maxLayer - layer);
+        renderTessellatedSphere(64, 64, scale);
 
-        starModel.renderAll();
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDepthMask(true);
         GL11.glEnable(GL11.GL_LIGHTING);
-
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        // Finish animation.
+
         GL11.glPopMatrix();
     }
 
@@ -233,7 +229,15 @@ public abstract class EOHRenderingUtils {
         endRenderingBlocksInWorld();
     }
 
-    public static void renderOuterSpaceShell() {
+    public static void renderTessellatedSphere(int slices, int stacks, double radiusInBlocks) {
+        renderCachedSphereVBO(slices, stacks, radiusInBlocks, false);
+    }
+
+    private static void renderTessellatedSphereWithInvertedNormals(int slices, int stacks, double radiusInBlocks) {
+        renderCachedSphereVBO(slices, stacks, radiusInBlocks, true);
+    }
+
+    public static void renderOuterSpaceShell(double playerDistance) {
 
         // Save current OpenGL state.
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
@@ -258,13 +262,44 @@ public abstract class EOHRenderingUtils {
 
         GL11.glColor4f(1, 1, 1, 1);
 
-        spaceModel.renderAll();
+        // Render the sphere object itself dynamically.
+        renderTessellatedSphereWithInvertedNormals(64, 64, 74);
 
         // Finish animation.
         GL11.glPopMatrix();
 
         // Restore previous OpenGL state.
         GL11.glPopAttrib();
+    }
+
+    private static void renderCachedSphereVBO(int slices, int stacks, double radiusInBlocks, boolean invertFrontFace) {
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+        boolean wasCull = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        int oldCullMode = GL11.glGetInteger(GL11.GL_CULL_FACE_MODE);
+        int oldFrontFace = GL11.glGetInteger(GL11.GL_FRONT_FACE);
+
+        GL11.glEnable(GL11.GL_CULL_FACE);
+
+        if (invertFrontFace) {
+            GL11.glFrontFace(GL11.GL_CW);
+            GL11.glCullFace(GL11.GL_BACK);
+        } else {
+            GL11.glFrontFace(oldFrontFace);
+            GL11.glCullFace(GL11.GL_FRONT);
+        }
+
+        IVertexArrayObject vbo = SphereVBOCache.getOrCreate(slices, stacks);
+
+        GL11.glPushMatrix();
+        int inversionMultiplier = invertFrontFace ? -1 : 1;
+        GL11.glScaled(inversionMultiplier * radiusInBlocks, radiusInBlocks, radiusInBlocks);
+        vbo.render();
+        GL11.glPopMatrix();
+
+        GL11.glFrontFace(oldFrontFace);
+        GL11.glCullFace(oldCullMode);
+        if (!wasCull) GL11.glDisable(GL11.GL_CULL_FACE);
     }
 
 }

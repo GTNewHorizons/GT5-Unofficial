@@ -70,7 +70,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         for (int i = 0, validDirectionsLength = validDirections.length; i < validDirectionsLength; i++) {
             ForgeDirection tFace = validDirections[i];
             if (noCoord) {
-                textureArray[i][0] = TextureFactory.builder()
+                textureArray[i][0] = TextureFactory.blockBuilder()
                     .setFromBlock(aBlock, aMeta)
                     .setFromSide(tFace)
                     .noWorldCoord()

@@ -66,7 +66,7 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
-import gregtech.common.tileentities.machines.MTEHatchOutputME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillationTower>
