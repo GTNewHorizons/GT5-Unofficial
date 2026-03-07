@@ -1734,7 +1734,6 @@ public enum MetaTileEntityIDs {
     DebugDataHatch(15496),
     AutoTapingMaintenanceHatch(15497),
     DebugPowerGenerator(15498),
-    DebugStructureWriter(15499),
     UXV256AWirelessEnergyHatch(15500),
     UXV1024AWirelessEnergyHatch(15501),
     UXV4096AWirelessEnergyHatch(15502),
