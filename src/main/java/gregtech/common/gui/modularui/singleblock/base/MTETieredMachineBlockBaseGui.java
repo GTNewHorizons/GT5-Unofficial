@@ -183,7 +183,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
             .marginLeft(2);
     }
 
-    // the base class is an instance of ICircuitConfiguration
+    // will add if the machine is an instance of IConfigurationCircuitSupport
     protected boolean doesAddCircuitSlot() {
         return machine instanceof IConfigurationCircuitSupport cc && cc.allowSelectCircuit();
     }
