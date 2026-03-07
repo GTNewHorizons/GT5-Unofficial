@@ -605,10 +605,7 @@ GTPP.tooltip.volumetric_flask_setter.0=Easy Flask Configuration
 GTPP.tooltip.volumetric_flask_setter.1=Configure default input slot with a screwdriver
 
 # Tin Foil Hat
-GTPP.tooltip.tin_foil_hat.0=DoomSquirter's protection against cosmic radiation!
-GTPP.tooltip.tin_foil_hat.1=General paranoia makes the wearer unable to collect xp
-GTPP.tooltip.tin_foil_hat.2=Movement speed is also reduced, to keep you safe.
-GTPP.tooltip.tin_foil_hat.3=This hat may also have other strange powers
+GTPP.tooltip.tin_foil_hat=DoomSquirter's protection against cosmic radiation!\nGeneral paranoia makes the wearer unable to collect xp\nMovement speed is also reduced, to keep you safe.\nThis hat may also have other strange powers
 
 GTPP.tooltip.bad_tooltip_id=Bad Tooltip ID - %d
 

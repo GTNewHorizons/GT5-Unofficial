@@ -2513,14 +2513,8 @@ public class GTUtility {
             : StatCollector.translateToLocalFormatted(key, parameters);
     }
 
-    public static void translateInto(List<String> list, String key, Object... parameters) {
-        int i = 0;
-        while (true) {
-            String indexedKey = key + "." + i;
-            if (!StatCollector.canTranslate(indexedKey)) break;
-            list.add(translate(indexedKey, parameters));
-            i++;
-        }
+    public static String[] translateMultiline(String key, Object... parameters) {
+        return translate(key, parameters).split("\\\\n");
     }
 
     /*
