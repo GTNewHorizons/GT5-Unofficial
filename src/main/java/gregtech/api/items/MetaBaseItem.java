@@ -81,6 +81,10 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     public abstract Long[] getFluidContainerStats(ItemStack aStack);
 
+    protected String getToolTipLocalizationKey(ItemStack aStack) {
+        return null;
+    }
+
     @Override
     public boolean hasProjectile(SubTag aProjectileType, ItemStack aStack) {
         ArrayList<IItemBehaviour<MetaBaseItem>> tList = mItemBehaviors.get((short) getDamage(aStack));
@@ -234,8 +238,14 @@ public abstract class MetaBaseItem extends GTGenericItem
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         if (Client.tooltip.showFormula) {
             String tKey = getUnlocalizedName(aStack) + ".tooltip";
-            String[] tStrings = GTLanguageManager.getTranslation(tKey)
-                .split("/n ");
+            String tTooltip = GTLanguageManager.getTranslation(tKey);
+            String tTooltipKey = getToolTipLocalizationKey(aStack);
+            if (GTUtility.isStringValid(tTooltipKey)) {
+                tTooltip = GTUtility.translate(tTooltipKey);
+            } else if (net.minecraft.util.StatCollector.canTranslate(tTooltip)) {
+                tTooltip = GTUtility.translate(tTooltip);
+            }
+            String[] tStrings = tTooltip.split("/n ");
             for (String tString : tStrings)
                 if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) aList.add(tString);
         }
