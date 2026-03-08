@@ -207,14 +207,6 @@ public class GTLanguageManager {
     }
 
     public static void writePlaceholderStrings() {
-        addStringLocalization("Interaction_DESCRIPTION_Index_100", "This is ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_101", " Ore.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_102", "There is Lava behind this Rock.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_103", "There is a Liquid behind this Rock.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_104", "There is an Air Pocket behind this Rock.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_105", "Material is changing behind this Rock.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_106", "Found traces of ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_107", "No Ores found.");
         // 116 moved to lang files
         // 117 obsolete
         // 118 moved to lang files

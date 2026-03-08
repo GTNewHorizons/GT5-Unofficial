@@ -2185,6 +2185,8 @@ GT5U.gui.text.contributors.textures=Textures
 GT5U.gui.text.contributors.rendering=Rendering
 GT5U.gui.text.contributors.structure=Structure
 GT5U.gui.text.contributors.playtesting=Playtesting
+GT5U.gui.tooltip.bahaviour.cover_tool.data=Stored Cover Data:
+GT5U.gui.tooltip.bahaviour.cover_tool.cover_copy_paste=Can copy/paste cover data.
 
 GT5U.gui.chat.bindcentre=Successfully bind drone centre.
 GT5U.gui.chat.drone_level_low=Upgrade to T4 drone to active the teleport function
@@ -2317,6 +2319,21 @@ GT5U.chat.cover.shutter.input.allowed=Only Input allowed
 GT5U.chat.cover.solar_panel.cleaned=Cleaned solar panel from %s%% dirt
 GT5U.chat.cover.solar_panel.cleaned.require=You need water bucket in inventory to clean the panel.
 GT5U.chat.cover.wireless_controller.shutdown_at=%s at (%s, %s, %s) shut down.
+GT5U.chat.behaviour.cover_tool.position=§m-----§r X: §b%s§r Y: §b%s§r Z: §b%s§r D: §b%s§r §m-----
+GT5U.chat.behaviour.cover_tool.side=Block Side: §b%s§r
+GT5U.chat.behaviour.cover_tool.type=Cover Type: §a%s§r
+GT5U.chat.behaviour.cover_tool.unavailable=Copy unavailable for this cover type
+GT5U.chat.behaviour.cover_tool.invalid_cover=Please Copy a Valid Cover First.
+GT5U.chat.behaviour.cover_tool.pasted=Cover Data Pasted.
+GT5U.chat.behaviour.cover_tool.not_match=Not Matched Cover.
+GT5U.chat.behaviour.cover_tool.no_cover=No Cover Found.
+GT5U.chat.behaviour.prospecting.ore=This is %s Ore.
+GT5U.chat.behaviour.prospecting.lava=There is Lava behind this Rock.
+GT5U.chat.behaviour.prospecting.liquid=There is a Liquid behind this Rock.
+GT5U.chat.behaviour.prospecting.air=There is an Air Pocket behind this Rock.
+GT5U.chat.behaviour.prospecting.changing=Material is changing behind this Rock.
+GT5U.chat.behaviour.prospecting.traces_of=Found traces of %s Ore.
+GT5U.chat.behaviour.prospecting.no_ores=No Ores found.
 
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
