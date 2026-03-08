@@ -1723,20 +1723,6 @@ GT5U.tooltip.nac.interface.structure.module_controller=Middle of the Mesh Interf
 GT5U.tooltip.nac.interface.structure.module_description=§fMaterial Count§r §c§lNOT§r §fIncluding Mesh Interface Platform§r
 
 GT5U.tooltip.nac.main.machine_type=NAC, Nanochip-Assembly-Complex
-GT5U.tooltip.nac.main.action=Uses Circuit Components (%s) to create circuits at unimaginable speeds
-GT5U.tooltip.nac.main.logo=Click the Logo Icon in the GUI for more information
-GT5U.tooltip.nac.main.flavor.1=Home of the Gestalt Rapidly Evolving Genesis Optimization System (GREGOS),
-GT5U.tooltip.nac.main.flavor.2=a pseudo-sentient program overseeing circuit production in the NAC
-GT5U.tooltip.nac.main.flavor.3=It seems to be eager to learn more, maybe you can become friends?
-GT5U.tooltip.nac.main.body.1=%s can only exist in the perfect environment present in %s
-GT5U.tooltip.nac.main.body.2=Convert items to %s in the control room by placing them in a %s input bus
-GT5U.tooltip.nac.main.body.3=Every §45§7 seconds, all items in %s input buses are placed
-GT5U.tooltip.nac.main.body.4=in Vacuum Conveyor Outputs (%s) of the same %s
-GT5U.tooltip.nac.main.body.5=Finished circuit %s are converted back into circuits by routing them to a %s in the control room
-GT5U.tooltip.nac.main.body.6=%s in a %s %s are placed in an output bus of the same %s
-GT5U.tooltip.nac.main.body.7=%s must be processed into a refined version by §f§nmodules§r§7 before they
-GT5U.tooltip.nac.main.body.8=can be assembled into a circuit in the §aNanochip Assembly Matrix
-GT5U.tooltip.nac.main.body.9=All power from the energy hatch is distributed to the modules as they need it
 GT5U.tooltip.nac.module.assembly_matrix.name=Assembly Matrix
 GT5U.tooltip.nac.module.assembly_matrix.flavor.1=After processing your CCs through an intricate pipeline, they are finally
 GT5U.tooltip.nac.module.assembly_matrix.flavor.2=ready to be assembled into a circuit. This circuit can be converted into a real
@@ -4333,6 +4319,11 @@ gt.mb.corepos.front_bottom_middle=Front bottom middle
 gt.mb.corepos.top_center=Top center
 
 # Multiblock Tooltip lines
+gt.nac.tips.1=Uses Circuit Components (%1$s) to create circuits at unimaginable speeds\nClick the Logo Icon in the GUI for more information<SEPARATOR>%1$s can only exist in the perfect environment present in %2$s\nConvert items to %1$s in the control room by placing them in a %3$s input bus\nEvery §45§7 seconds, all items in %3$s input buses are placed\nin Vacuum Conveyor Outputs (%4$s) of the same %5$s\nFinished circuit %1$s are converted back into circuits by routing them to a %6$s in the control room\n%1$s in a %3$s %6$s are placed in an output bus of the same %5$s<SEPARATOR>%1$s must be processed into a refined version by §f§nmodules§r§7 before they\ncan be assembled into a circuit in the §aNanochip Assembly Matrix\nAll power from the energy hatch is distributed to the modules as they need it
+gt.nac.tips.2=<SEPARATOR>§d§oHome of the Gestalt Rapidly Evolving Genesis Optimization System (GREGOS),\n§d§oa pseudo-sentient program overseeing circuit production in the NAC\n§d§oIt seems to be eager to learn more, maybe you can become friends?
+
+gt.turbocan.tips=§9It's uncanny!
+
 gt.thermal_boiler.tips=Converts Water & Heat into Steam\nFilters raw materials from lava\nRequires a Lava Filter in the controller slot for some byproducts\nExplodes if water is not supplied\nConsult user manual for more information
 
 gt.dtpf.tips=Transcending Dimensional Boundaries.\nTakes §c%s§7 hours of continuous run time to fully breach dimensional\nboundaries and achieve maximum efficiency, reducing fuel consumption by up to §c%s%%\nWhen no recipe is running, fuel discount decays x§c%s§7 as fast as it builds up, draining\nthe total amount of stored runtime<SEPARATOR>Multidimensional spaces can be perfectly aligned and synchronized in this state,\nallowing §6Dimensional Convergence§7 to occur. To reach the required stability threshold,\na §bTransdimensional Alignment Matrix§7 must be placed in the controller\nWhen §6Convergence§7 is active, it allows the forge to perform §cPerfect Overclocks§7,\nbut the extra power cost is instead added in form of increased catalyst amounts
