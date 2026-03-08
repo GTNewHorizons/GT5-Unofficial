@@ -11112,7 +11112,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerDrawerFramer();
 
         ItemList.DebugStructureWriter.set(
-            new MTEDebugStructureWriter(DEBUG_STRUCTURE_WRITTER.ID, "debugstructurewriter", "Debug Structure Writer", 5)
+            new MTEDebugStructureWriter(DEBUG_STRUCTURE_WRITER.ID, "debugstructurewriter", "Debug Structure Writer", 5)
                 .getStackForm(1L));
         ItemList.Hatch_Maintenance.set(
             new MTEHatchMaintenance(MAINTENANCE_HATCH.ID, "hatch.maintenance", "Maintenance Hatch", 1)
