@@ -194,15 +194,17 @@ public class TooltipHelper {
      * @return The given number of L, formatted.
      */
     public static String fluidText(long liters) {
-        String text = NumberFormatUtil.formatNumber(liters) + GTUtility.translate("gt.unit.liter");
-        return coloredText(text, L_COLOR);
+        return L_COLOR + NumberFormatUtil.formatNumber(liters)
+            + GTUtility.translate("gt.unit.liter")
+            + EnumChatFormatting.GRAY;
     }
 
     /**
      * @return The given number of L per sec, formatted.
      */
     public static String fluidRateText(long litersPerSecond) {
-        String text = NumberFormatUtil.formatNumber(litersPerSecond) + GTUtility.translate("gt.unit.liter_per_second");
-        return coloredText(text, L_COLOR);
+        return L_COLOR + NumberFormatUtil.formatNumber(litersPerSecond)
+            + GTUtility.translate("gt.unit.liter_per_second")
+            + EnumChatFormatting.GRAY;
     }
 }
