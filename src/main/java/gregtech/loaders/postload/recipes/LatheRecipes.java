@@ -52,5 +52,15 @@ public class LatheRecipes implements Runnable {
             .duration(8 * SECONDS)
             .eut(7)
             .addTo(latheRecipes);
+
+        // From ProcessingSaplings
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("treeSapling", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Wood, 1L))
+            .duration(16 * TICKS)
+            .eut(8)
+            .addTo(latheRecipes);
     }
 }

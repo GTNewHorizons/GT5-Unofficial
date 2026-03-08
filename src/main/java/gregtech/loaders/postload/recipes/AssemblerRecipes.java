@@ -6933,5 +6933,23 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
+        // From ProcessingStone - stone (NULL) to comparator
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneNULL", 3), new ItemStack(Blocks.redstone_torch, 2))
+            .itemOutputs(new ItemStack(Items.comparator, 1))
+            .fluidInputs(Materials.Redstone.getMolten(1 * INGOTS))
+            .duration(5 * SECONDS)
+            .eut(48)
+            .addTo(assemblerRecipes);
+
+        // From ProcessingStone - NetherBrick to nether brick fence
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneNetherBrick", 1))
+            .circuit(1)
+            .itemOutputs(new ItemStack(Blocks.nether_brick_fence, 1))
+            .duration(5 * SECONDS)
+            .eut(4)
+            .addTo(assemblerRecipes);
+
     }
 }
