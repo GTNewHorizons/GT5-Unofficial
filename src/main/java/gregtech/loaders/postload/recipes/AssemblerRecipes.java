@@ -50,6 +50,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -3009,6 +3010,14 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(GTModHandler.getIC2Item("carbonMesh", 1))
             .duration(8 * SECONDS)
             .eut(20)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("cobblestone", 1))
+            .circuit(8)
+            .itemOutputs(new ItemStack(Blocks.furnace, 1))
+            .duration(20 * SECONDS)
+            .eut(4)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()

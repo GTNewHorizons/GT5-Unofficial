@@ -45,7 +45,6 @@ import gregtech.loaders.oreprocessing.ProcessingSlab;
 import gregtech.loaders.oreprocessing.ProcessingStick;
 import gregtech.loaders.oreprocessing.ProcessingStickLong;
 import gregtech.loaders.oreprocessing.ProcessingStone;
-import gregtech.loaders.oreprocessing.ProcessingStoneCobble;
 import gregtech.loaders.oreprocessing.ProcessingStoneVarious;
 import gregtech.loaders.oreprocessing.ProcessingToolHead;
 import gregtech.loaders.oreprocessing.ProcessingToolOther;
@@ -103,7 +102,6 @@ public class LoaderOreProcessing implements Runnable {
         new ProcessingStick();
         new ProcessingStickLong();
         new ProcessingStone();
-        new ProcessingStoneCobble();
         new ProcessingStoneVarious();
         new ProcessingToolHead();
         new ProcessingToolOther();
