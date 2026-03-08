@@ -2514,7 +2514,7 @@ public class GTUtility {
     }
 
     public static String[] translateMultiline(String key, Object... parameters) {
-        return translate(key, parameters).split("\\\\n");
+        return translate(key, parameters).split("\n");
     }
 
     /*
