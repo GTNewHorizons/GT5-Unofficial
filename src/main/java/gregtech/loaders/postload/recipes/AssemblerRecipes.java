@@ -579,12 +579,30 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
+            .itemInputs(new OreDictItemStack("stickWood", 1))
             .circuit(2)
             .itemOutputs(ItemList.FR_Stick.get(1L))
             .fluidInputs(Materials.SeedOil.getFluid(50L))
             .duration(16 * TICKS)
             .eut(8)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("logWood", 1))
+            .circuit(2)
+            .itemOutputs(ItemList.FR_Stick.get(1L))
+            .fluidInputs(Materials.SeedOil.getFluid(50L))
+            .duration(16 * TICKS)
+            .eut(7)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("logWood", 8))
+            .circuit(8)
+            .itemOutputs(ItemList.FR_Casing_Impregnated.get(1L))
+            .fluidInputs(Materials.SeedOil.getFluid(250))
+            .duration(3 * SECONDS + 4 * TICKS)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -3017,6 +3035,14 @@ public class AssemblerRecipes implements Runnable {
             .circuit(8)
             .itemOutputs(new ItemStack(Blocks.furnace, 1))
             .duration(20 * SECONDS)
+            .eut(4)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("plankWood", 8))
+            .circuit(8)
+            .itemOutputs(new ItemStack(Blocks.chest, 1))
+            .duration(40 * SECONDS)
             .eut(4)
             .addTo(assemblerRecipes);
 

@@ -83,33 +83,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, aStack))
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
-            .duration(8 * SECONDS)
-            .eut(7)
-            .addTo(latheRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
-            .circuit(2)
-            .itemOutputs(ItemList.FR_Stick.get(1L))
-            .fluidInputs(Materials.SeedOil.getFluid(50L))
-            .duration(16 * TICKS)
-            .eut(7)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(8, aStack))
-            .circuit(8)
-            .itemOutputs(ItemList.FR_Casing_Impregnated.get(1L))
-            .fluidInputs(Materials.SeedOil.getFluid(250))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
             .itemOutputs(GTModHandler.getModItem(Railcraft.ID, "cube", 1L, 8))
             .fluidInputs(Materials.Creosote.getFluid(750L))
             .duration(16 * TICKS)
