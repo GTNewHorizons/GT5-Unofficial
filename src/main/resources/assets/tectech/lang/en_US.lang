@@ -1326,10 +1326,6 @@ gt.blockmachines.debug.tt.genny.desc.0=Power from nothing
 gt.blockmachines.debug.tt.genny.desc.1=Infinite Producer/Consumer
 gt.blockmachines.debug.tt.genny.desc.2=Since i wanted one...
 gt.blockmachines.debug.tt.genny.desc.3=Change it to Laser mode with a screwdriver.
-gt.blockmachines.debug.tt.writer.name=Debug Structure Writer
-gt.blockmachines.debug.tt.writer.desc.0=Scans Blocks Around
-gt.blockmachines.debug.tt.writer.desc.1=Prints Multiblock NonTE structure check code
-gt.blockmachines.debug.tt.writer.desc.2=ABC axises aligned to machine front
 gt.blockmachines.debug.tt.certain.desc.0=Feeling certain, for sure
 gt.blockmachines.debug.tt.certain.desc.1=Schrödinger's cat escaped the box
 
@@ -2028,11 +2024,6 @@ tt.gui.text.debug.sum=SUM: %s
 tt.gui.text.debug.tier=TIER: %s
 
 tt.gui.text.debug_pollutor.pollution=Pollution
-
-tt.gui.text.debug_structure_writer.structure_size=Structure size
-tt.gui.text.debug_structure_writer.my_position=My position
-tt.gui.text.debug_structure_writer.changing_scan_size=(Changing scan size)
-tt.gui.text.debug_structure_writer.moving_origin=(Moving origin)
 
 tt.gui.text.hatch.uncertainty.status.ok=Status: OK
 tt.gui.text.hatch.uncertainty.status.ng=Status: NG
