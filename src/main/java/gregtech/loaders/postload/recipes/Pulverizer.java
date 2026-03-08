@@ -32,6 +32,24 @@ public class Pulverizer implements Runnable {
 
     @Override
     public void run() {
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("logWood", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+            .outputChances(10000, 8000)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("logRubber", 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L), ItemList.IC2_Resin.get(1L))
+            .outputChances(10000, 3300)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
         // recycling Long Distance Pipes
         {
             GTValues.RA.stdBuilder()

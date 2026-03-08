@@ -4,7 +4,6 @@ import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import gregtech.api.util.GTUtility;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 

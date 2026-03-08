@@ -26,6 +26,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -35,6 +36,27 @@ public class CentrifugeRecipes implements Runnable {
 
     @Override
     public void run() {
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("logWood", 1))
+            .circuit(1)
+            .fluidOutputs(Materials.Methane.getGas(60L))
+            .duration(10 * SECONDS)
+            .eut(20)
+            .addTo(centrifugeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("logRubber", 1))
+            .circuit(2)
+            .itemOutputs(
+                ItemList.IC2_Resin.get(1L),
+                ItemList.IC2_Plantball.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+            .outputChances(5000, 3750, 2500, 2500)
+            .fluidOutputs(Materials.Methane.getGas(60L))
+            .duration(10 * SECONDS)
+            .eut(20)
+            .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfusedGold, 1))
