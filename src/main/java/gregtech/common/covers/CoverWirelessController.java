@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
@@ -99,13 +100,12 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
                                 GTUtility.sendChatTrans(
                                     player,
                                     "GT5U.chat.cover.wireless_controller.shutdown_at",
-                                    // FIXME: getInventoryName returns a key
+                                    // FIXME: getInventoryName returns a key.
+                                    // For example, the "Vacuum Freezer" returns "multimachine.vacuumfreezer"
                                     coverable.getInventoryName(),
-                                    String.format(
-                                        "(%d,%d,%d)",
-                                        coverable.getXCoord(),
-                                        coverable.getYCoord(),
-                                        coverable.getZCoord()));
+                                    new ChatComponentNumber(coverable.getXCoord()),
+                                    new ChatComponentNumber(coverable.getYCoord()),
+                                    new ChatComponentNumber(coverable.getZCoord()));
                             }
                         }
                         handledShutdown = true;

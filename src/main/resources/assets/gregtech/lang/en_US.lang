@@ -2173,7 +2173,7 @@ GT5U.chat.cover.shutter.output.allowed=Only Output allowed
 GT5U.chat.cover.shutter.input.allowed=Only Input allowed
 GT5U.chat.cover.solar_panel.cleaned=Cleaned solar panel from %s%% dirt
 GT5U.chat.cover.solar_panel.cleaned.require=You need water bucket in inventory to clean the panel.
-GT5U.chat.cover.wireless_controller.shutdown_at=%s at %s shut down.
+GT5U.chat.cover.wireless_controller.shutdown_at=%s at (%s,%s,%s) shut down.
 
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
