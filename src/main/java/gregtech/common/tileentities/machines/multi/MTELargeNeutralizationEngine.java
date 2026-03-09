@@ -692,7 +692,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                 robotArmTier = robotArm.getRight();
                 this.robotArmDecayBoost = (float) (getRobotArmDecayBoost(robotArmTier) * Math.sqrt(amount));
                 if (getBaseMetaTileEntity().getWorld()
-                    .getWorldTime() % MINUTES == 0) {
+                    .getTotalWorldTime() % MINUTES == 0) {
                     int random = getBaseMetaTileEntity().getRandomNumber(90);
                     if (random == 0) depleteInput(robotArm.getLeft());
                 }
