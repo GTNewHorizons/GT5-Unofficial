@@ -45,6 +45,20 @@ public class CentrifugeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("logRubber", 1))
+            .circuit(2)
+            .itemOutputs(
+                ItemList.IC2_Resin.get(1L),
+                ItemList.IC2_Plantball.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+            .outputChances(5000, 3750, 2500, 2500)
+            .fluidOutputs(Materials.Methane.getGas(60L))
+            .duration(10 * SECONDS)
+            .eut(20)
+            .addTo(centrifugeRecipes);
+
+        GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfusedGold, 1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1),
