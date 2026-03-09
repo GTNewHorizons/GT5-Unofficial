@@ -19,8 +19,15 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
+import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeHatch;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -34,6 +41,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -45,12 +53,15 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.api.util.tooltip.TooltipHelper;
 import kubatech.loaders.ArcFurnaceElectrode;
+import kubatech.tileentity.gregtech.hatch.MTEElectrodeHatch;
 
 public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEIndustrialArcFurnace>
     implements ISurvivalConstructable {
@@ -69,6 +80,7 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     private int mCasing = 0;
+    private MTEElectrodeHatch electrodeHatch;
 
     private static final int OFFSET_H = 10;
     private static final int OFFSET_V = 7;
@@ -97,14 +109,23 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
         .addElement(
             'A',
             buildHatchAdder(MTEIndustrialArcFurnace.class)
-                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Muffler, Energy, ExoticEnergy)
+                .atLeast(
+                    ElectrodeHatch,
+                    InputBus,
+                    OutputBus,
+                    InputHatch,
+                    OutputHatch,
+                    Maintenance,
+                    Muffler,
+                    Energy,
+                    ExoticEnergy)
                 .casingIndex(Casings.SolidSteelMachineCasing.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(e -> e.mCasing++, Casings.SolidSteelMachineCasing.asElement())))
         .addElement('B', Casings.SteelPipeCasing.asElement())
         .addElement('C', Casings.CupronickelCoilBlock.asElement())
         .addElement('D', ofBlock(GregTechAPI.sBlockFrames, 305))
-        .addElement('E', Casings.CleanStainlessSteelCasing.asElement())
+        .addElement('E', Casings.CleanStainlessSteelMachineCasing.asElement())
         .addElement('F', Casings.InsulatedFluidPipeCasing.asElement())
         .addElement('G', Casings.HeatProofCokeOvenCasing.asElement())
         .addElement('H', ofBlock(GregTechAPI.sBlockCasings13, 4)) // Block.getBlockFromName(Mods.NewHorizonsCoreMod.ID +
@@ -145,6 +166,45 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && f.isNotFlipped();
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        electrodeHatch = null;
+    }
+
+    private boolean addElectrodeHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (electrodeHatch != null) return false;
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEElectrodeHatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            electrodeHatch = hatch;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        phase = ArcFurnacePhase.values()[aNBT.getInteger("phase")];
+        int electrodeOrdinal = aNBT.getInteger("electrode");
+        if (electrodeOrdinal >= 0) {
+            electrode = ArcFurnaceElectrode.getById(electrodeOrdinal);
+        } else {
+            electrode = null;
+        }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("phase", phase.ordinal());
+        aNBT.setInteger("electrode", electrode == null ? -1 : electrode.ordinal());
     }
 
     @Override
@@ -206,12 +266,11 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
         ArcIgnition,
         Processing,
         ArcShutdown
-
     }
 
     ArcFurnacePhase phase = ArcFurnacePhase.Standby;
 
-    ArcFurnaceElectrode electrode = ArcFurnaceElectrode.TritaniumElectrode;
+    ArcFurnaceElectrode electrode = null;
 
     @Override
     public RecipeMap<?> getRecipeMap() {
@@ -221,6 +280,7 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
     // GTUtility.getTier(this.getMaxInputVoltage())
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
+        if (electrode == null) return;
         logic.setSpeedBonus(1d / electrode.speedModifier);
         logic.setMaxParallel(electrode.parallelLimit);
         logic.setOverclock(electrode.OCSpeedFactor, electrode.OCPowerFactor);
@@ -232,6 +292,15 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
         logic.noRecipeCaching();
     }
 
+    private void electrodeChanged() {
+        if (phase == ArcFurnacePhase.Processing || phase == ArcFurnacePhase.ArcIgnition) {
+            stopMachine(SimpleShutDownReason.ofCritical("electrode_changed"));
+            phase = ArcFurnacePhase.Standby;
+        }
+        ItemStack electrodeStack = electrodeHatch.getStackInSlot(0);
+        electrode = ArcFurnaceElectrode.getByStack(electrodeStack);
+    }
+
     @Override
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.runMachine(aBaseMetaTileEntity, aTick);
@@ -241,6 +310,11 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
             lEUt = 0;
             checkRecipeResult = SimpleCheckRecipeResult.ofSuccess("arc_shutdown");
         }
+        // if (phase != ArcFurnacePhase.Standby && phase != ArcFurnacePhase.ArcShutdown) {
+        if (electrodeHatch != null && electrodeHatch.hasJustBeenUpdated()) {
+            electrodeChanged();
+        }
+        // }
     }
 
     @Override
@@ -250,17 +324,35 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
             phase = ArcFurnacePhase.Processing;
         } else if (phase == ArcFurnacePhase.ArcShutdown) {
             phase = ArcFurnacePhase.Standby;
+        } else if (phase == ArcFurnacePhase.Processing) {
+            if (electrode != null) {
+                ItemStack electrodeStack = electrodeHatch.getStackInSlot(0);
+                if (electrodeStack != null) {
+                    boolean shouldRemove = ARC_FURNACE_ELECTRODE.damageElectrode(electrodeStack, 1);
+                    if (shouldRemove) {
+                        phase = ArcFurnacePhase.ArcShutdown;
+                        mMaxProgresstime = 20 * 6;
+                        lEUt = 0;
+                        checkRecipeResult = SimpleCheckRecipeResult.ofSuccess("arc_shutdown");
+                        electrodeHatch.setInventorySlotContents(0, null);
+                        electrodeChanged();
+                    } else {
+                        electrodeHatch.markDirty();
+                    }
+                }
+            }
         }
     }
 
     @Override
     public void stopMachine(@NotNull ShutDownReason reason) {
         super.stopMachine(reason);
-        if (phase == ArcFurnacePhase.ArcIgnition) {
-            phase = ArcFurnacePhase.Standby;
-        } else if (phase == ArcFurnacePhase.Processing) {
-            phase = ArcFurnacePhase.ArcShutdown;
-        }
+        phase = ArcFurnacePhase.Standby;
+        // if (phase == ArcFurnacePhase.ArcIgnition) {
+        // phase = ArcFurnacePhase.Standby;
+        // } else if (phase == ArcFurnacePhase.Processing) {
+        // phase = ArcFurnacePhase.ArcShutdown;
+        // }
     }
 
     @Override
@@ -308,6 +400,7 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
 
             @Override
             protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                if (electrode == null) return SimpleCheckRecipeResult.ofFailure("no_electrode");
                 if (phase == ArcFurnacePhase.ArcIgnition) return SimpleCheckRecipeResult.ofSuccess("arc_ignition");
                 return super.validateRecipe(recipe);
             }
@@ -337,4 +430,37 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
 
         };
     }
+
+    enum ArcFurnaceHatches implements IHatchElement<MTEIndustrialArcFurnace> {
+
+        ElectrodeHatch(MTEIndustrialArcFurnace::addElectrodeHatchToMachineList, MTEElectrodeHatch.class) {
+
+            @Override
+            public long count(MTEIndustrialArcFurnace t) {
+                if (t.electrodeHatch == null) return 0;
+                return 1;
+            }
+        },;
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTEIndustrialArcFurnace> adder;
+
+        @SafeVarargs
+        ArcFurnaceHatches(IGTHatchAdder<MTEIndustrialArcFurnace> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        @Override
+        public IGTHatchAdder<? super MTEIndustrialArcFurnace> adder() {
+            return adder;
+        }
+    }
+
 }

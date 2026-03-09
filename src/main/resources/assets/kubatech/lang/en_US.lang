@@ -207,21 +207,6 @@ item.arc_furnace_electrode.NeutroniumNaniteElectrode.name=Neutronium Nanite Elec
 item.arc_furnace_electrode.TranscendentNaniteElectrode.name=Transcendent Nanite Electrode
 item.arc_furnace_electrode.UniversiumNaniteElectrode.name=Universium Nanite Electrode
 
-item.arc_furnace_electrode_set.GraphiteElectrode.name=Graphite Electrode Set
-item.arc_furnace_electrode_set.TantalumElectrode.name=Tantalum Electrode Set
-item.arc_furnace_electrode_set.MolybdenumElectrode.name=Molybdenum Electrode Set
-item.arc_furnace_electrode_set.TungstenElectrode.name=Tungsten Electrode Set
-item.arc_furnace_electrode_set.TungstenSteelElectrode.name=Tungsten Steel Electrode Set
-item.arc_furnace_electrode_set.GrapheneElectrode.name=Graphene Electrode Set
-item.arc_furnace_electrode_set.YBCOElectrode.name=YBCO Electrode Set
-item.arc_furnace_electrode_set.NetheriteElectrode.name=Netherite Electrode Set
-item.arc_furnace_electrode_set.TritaniumElectrode.name=Tritanium Electrode Set
-item.arc_furnace_electrode_set.InfinityElectrode.name=Infinity Electrode Set
-item.arc_furnace_electrode_set.HypogenElectrode.name=Hypogen Electrode Set
-item.arc_furnace_electrode_set.NeutroniumNaniteElectrode.name=Neutronium Nanite Electrode Set
-item.arc_furnace_electrode_set.TranscendentNaniteElectrode.name=Transcendent Nanite Electrode Set
-item.arc_furnace_electrode_set.UniversiumNaniteElectrode.name=Universium Nanite Electrode Set
-
 #Tea
 kubaitem.tea.black_tea.name=Black Tea
 kubaitem.tea.earl_gray_tea.name=Earl Gray Tea
