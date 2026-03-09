@@ -501,9 +501,6 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         for (MTEToxicResidueSensor h : sensorHatches) h.updateTexture(getCasingTextureId());
     }
 
-    /*
-     * NOTE!!!! CONTROLLER TEXTURE IS STILL CURRENTLY NULL!!!!!!!!!!!!!!
-     */
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
