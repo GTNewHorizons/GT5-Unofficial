@@ -1,6 +1,9 @@
 package kubatech.tileentity.gregtech.hatch;
 
 import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
+import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
+
+import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -18,14 +21,10 @@ import gregtech.client.GTTooltipHandler;
 
 public class MTEElectrodeHatch extends MTEHatchInputBus {
 
+    private boolean hasBeenUpdated = false;
+
     public MTEElectrodeHatch(int id, String name, String nameRegional) {
-        super(
-            id,
-            name,
-            nameRegional,
-            GTTooltipHandler.Tier.IV.ordinal(),
-            1,
-            new String[] { "Holds an electrode." });
+        super(id, name, nameRegional, GTTooltipHandler.Tier.IV.ordinal(), 1, new String[] { "Holds an electrode." });
     }
 
     public MTEElectrodeHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -49,6 +48,25 @@ public class MTEElectrodeHatch extends MTEHatchInputBus {
 
     @Override
     public boolean allowSelectCircuit() {
+        return false;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        if (itemStack == null) return true;
+        return itemStack.getItem() == ARC_FURNACE_ELECTRODE;
+    }
+
+    @Override
+    protected void onContentsChanged(int slot) {
+        hasBeenUpdated = true;
+    }
+
+    public boolean hasJustBeenUpdated() {
+        if (hasBeenUpdated) {
+            hasBeenUpdated = false;
+            return true;
+        }
         return false;
     }
 

@@ -804,7 +804,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MegaChemicalReactor.ID,
                 "multimachine.mega-chemical-reactor",
                 "Mega Chemical Reactor").getStackForm(1));
-                
+
         ItemList.IndustrialArcFurnace.set(
             new MTEIndustrialArcFurnace(
                 IndustrialArcFurnace.ID,
