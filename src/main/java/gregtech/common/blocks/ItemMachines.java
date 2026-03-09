@@ -92,18 +92,21 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 if (tTileEntity.getEUCapacity() > 0L) {
                     if (tTileEntity.getInputVoltage() > 0L) {
                         aList.add(
-                            translateToLocal("gt.tileentity.eup_in") + " "
-                                + TooltipHelper.voltageText(tTileEntity.getInputVoltage()));
+                            translate(
+                                "gt.tileentity.eup_in",
+                                TooltipHelper.voltageText(tTileEntity.getInputVoltage())));
                     }
                     if (tTileEntity.getOutputVoltage() > 0L) {
                         aList.add(
-                            translateToLocal("gt.tileentity.eup_out") + " "
-                                + TooltipHelper.voltageText(tTileEntity.getOutputVoltage()));
+                            translate(
+                                "gt.tileentity.eup_out",
+                                TooltipHelper.voltageText(tTileEntity.getOutputVoltage())));
                     }
                     if (tTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
-                            translateToLocal("gt.tileentity.eup_amount") + " "
-                                + TooltipHelper.ampText(tTileEntity.getOutputAmperage()));
+                            translate(
+                                "gt.tileentity.eup_amount",
+                                TooltipHelper.ampText(tTileEntity.getOutputAmperage())));
                     }
                 }
             }
