@@ -5,6 +5,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.HashSet;
 
+import net.minecraft.item.ItemMultiTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -83,9 +84,15 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 return;
             }
 
+            int metaCount = 64;
+            // vanilla planks
+            if (aStack.getItem() instanceof ItemMultiTexture imt) {
+                metaCount = imt.field_150942_c.length;
+            }
+
             // Gregify slab recipes
             if (tIsWildcard) {
-                for (byte i = 0; i < 64; i = (byte) (i + 1)) {
+                for (byte i = 0; i < metaCount; i = (byte) (i + 1)) {
                     ItemStack tStack = GTUtility.copyMetaData(i, aStack);
                     if (tStack == null && i >= 16) break;
 
