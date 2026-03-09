@@ -10,7 +10,6 @@ import static gregtech.api.util.GTUtility.areStacksEqualOrNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -413,7 +412,6 @@ public class RecipeMapBackend {
                 .flatMap(item -> Stream.of(new GTItemStack(item), new GTItemStack(item, true)))
                 .map(itemIndex::get)
                 .flatMap(Collection::stream)
-                .sorted(Comparator.comparingInt(r -> r instanceof GTRecipe.GTRecipe_WithAlt ? 1 : 0))
                 .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
                 .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
                 .filter(Objects::nonNull),
