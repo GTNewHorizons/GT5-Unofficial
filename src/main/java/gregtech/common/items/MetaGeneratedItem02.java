@@ -1832,221 +1832,221 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                         .name(),
                     new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1L)));
         }
-        final String plankOredict = "sidingWood";
+        final String plankOredict = "coverPlank";
         ItemList.Plank_Oak.set(
             addItem(
                 Plank_Oak.ID,
-                "Oak Plank",
+                "Oak Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Spruce.set(
             addItem(
                 Plank_Spruce.ID,
-                "Spruce Plank",
+                "Spruce Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Birch.set(
             addItem(
                 Plank_Birch.ID,
-                "Birch Plank",
+                "Birch Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Jungle.set(
             addItem(
                 Plank_Jungle.ID,
-                "Jungle Plank",
+                "Jungle Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Acacia.set(
             addItem(
                 Plank_Acacia.ID,
-                "Acacia Plank",
+                "Acacia Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_DarkOak.set(
             addItem(
                 Plank_DarkOak.ID,
-                "Dark Oak Plank",
+                "Dark Oak Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Larch.set(
             addItem(
                 Plank_Larch.ID,
-                "Larch Plank",
+                "Larch Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Teak.set(
             addItem(
                 Plank_Teak.ID,
-                "Teak Plank",
+                "Teak Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Acacia_Green.set(
             addItem(
                 Plank_Acacia_Green.ID,
-                "Green Acacia Plank",
+                "Green Acacia Plank Cover",
                 plankOredict,
                 aTextCover,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Lime.set(
             addItem(
                 Plank_Lime.ID,
-                "Lime Plank",
+                "Lime Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Chestnut.set(
             addItem(
                 Plank_Chestnut.ID,
-                "Chestnut Plank",
+                "Chestnut Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Wenge.set(
             addItem(
                 Plank_Wenge.ID,
-                "Wenge Plank",
+                "Wenge Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Baobab.set(
             addItem(
                 Plank_Baobab.ID,
-                "Baobab Plank",
+                "Baobab Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Sequoia.set(
             addItem(
                 Plank_Sequoia.ID,
-                "Sequoia Plank",
+                "Sequoia Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Kapok.set(
             addItem(
                 Plank_Kapok.ID,
-                "Kapok Plank",
+                "Kapok Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Ebony.set(
             addItem(
                 Plank_Ebony.ID,
-                "Ebony Plank",
+                "Ebony Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Mahagony.set(
             addItem(
                 Plank_Mahagony.ID,
-                "Mahagony Plank",
+                "Mahagony Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Balsa.set(
             addItem(
                 Plank_Balsa.ID,
-                "Balsa Plank",
+                "Balsa Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Willow.set(
             addItem(
                 Plank_Willow.ID,
-                "Willow Plank",
+                "Willow Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Walnut.set(
             addItem(
                 Plank_Walnut.ID,
-                "Walnut Plank",
+                "Walnut Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Greenheart.set(
             addItem(
                 Plank_Greenheart.ID,
-                "Greenheart Plank",
+                "Greenheart Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Cherry.set(
             addItem(
                 Plank_Cherry.ID,
-                "Cherry Plank",
+                "Cherry Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Mahoe.set(
             addItem(
                 Plank_Mahoe.ID,
-                "Mahoe Plank",
+                "Mahoe Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Poplar.set(
             addItem(
                 Plank_Poplar.ID,
-                "Poplar Plank",
+                "Poplar Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Palm.set(
             addItem(
                 Plank_Palm.ID,
-                "Palm Plank",
+                "Palm Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Papaya.set(
             addItem(
                 Plank_Papaya.ID,
-                "Papaya Plank",
+                "Papaya Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Pine.set(
             addItem(
                 Plank_Pine.ID,
-                "Pine Plank",
+                "Pine Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Plum.set(
             addItem(
                 Plank_Plum.ID,
-                "Plum Plank",
+                "Plum Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Maple.set(
             addItem(
                 Plank_Maple.ID,
-                "Maple Plank",
+                "Maple Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Citrus.set(
             addItem(
                 Plank_Citrus.ID,
-                "Citrus Plank",
+                "Citrus Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Cherry_EFR.set(
             addItem(
                 Plank_Cherry_EFR.ID,
-                "Cherry Plank",
+                "Cherry Plank Cover",
                 aTextCover,
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
