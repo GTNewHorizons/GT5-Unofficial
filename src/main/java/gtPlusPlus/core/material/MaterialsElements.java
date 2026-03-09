@@ -526,7 +526,7 @@ public final class MaterialsElements {
             "Hypogen",
             MaterialState.SOLID,
             TextureSet.SET_HYPOGEN,
-            new short[] { 220, 120, 75, 2 },
+            new short[] { 255, 255, 255 },
             11255,
             19377,
             240,
