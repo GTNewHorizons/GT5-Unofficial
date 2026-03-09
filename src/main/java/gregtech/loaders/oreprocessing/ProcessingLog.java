@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -24,6 +25,37 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (aOreDictName.equals("logRubber")) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, aStack))
+                .circuit(2)
+                .itemOutputs(
+                    ItemList.IC2_Resin.get(1L),
+                    ItemList.IC2_Plantball.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+                .outputChances(5000, 3750, 2500, 2500)
+                .fluidOutputs(Materials.Methane.getGas(60L))
+                .duration(10 * SECONDS)
+                .eut(20)
+                .addTo(centrifugeRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, aStack))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 1L))
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(extractorRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, aStack))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L), ItemList.IC2_Resin.get(1L))
+                .outputChances(10000, 3300)
+                .duration(20 * SECONDS)
+                .eut(2)
+                .addTo(maceratorRecipes);
+        }
+
         GTModHandler.addCraftingRecipe(
             GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 2L),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
