@@ -2,6 +2,8 @@ package gregtech.common.gui.modularui.cover;
 
 import java.util.Arrays;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -15,8 +17,19 @@ import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 
 public class CoverChestGui extends CoverBaseGui<CoverChest> {
 
+    /**
+     * The side of the block this GUI is representing the cover for.
+     */
+    protected final ForgeDirection side;
+
     public CoverChestGui(CoverChest cover) {
         super(cover);
+        side = cover.getSide();
+    }
+
+    @Override
+    protected String getGuiId() {
+        return "cover.chest." + side;
     }
 
     @Override

@@ -1306,10 +1306,6 @@ gt.blockmachines.debug.tt.genny.desc.0=Энергия из ниоткуда
 gt.blockmachines.debug.tt.genny.desc.1=Безграничный производитель/потребитель
 gt.blockmachines.debug.tt.genny.desc.2=Просто потому что я хочу...
 gt.blockmachines.debug.tt.genny.desc.3=С помощью отвертки переключите его в режим лазера
-gt.blockmachines.debug.tt.writer.name=Отладочный сканер структуры
-gt.blockmachines.debug.tt.writer.desc.0=Сканирует блоки вокруг
-gt.blockmachines.debug.tt.writer.desc.1=Печатает код не-ТЕ структуры мультиблоков
-gt.blockmachines.debug.tt.writer.desc.2=Оси ABC выровнены относительно лицевой части
 gt.blockmachines.debug.tt.certain.desc.0=Чувствуя себя уверенным, наверняка
 gt.blockmachines.debug.tt.certain.desc.1=Кот Шрёдингера сбежал из коробки
 
