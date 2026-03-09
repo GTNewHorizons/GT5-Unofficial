@@ -95,7 +95,7 @@ import gregtech.common.tileentities.boilers.MTEBoilerLava;
 import gregtech.common.tileentities.boilers.MTEBoilerSolar;
 import gregtech.common.tileentities.boilers.MTEBoilerSolarSteel;
 import gregtech.common.tileentities.boilers.MTEBoilerSteel;
-import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
+import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
 import gregtech.common.tileentities.generators.MTEDieselGenerator;
 import gregtech.common.tileentities.generators.MTEGasTurbine;
 import gregtech.common.tileentities.generators.MTELightningRod;
@@ -10991,12 +10991,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerNacHatches();
         registerDrawerFramer();
 
-        ItemList.AdvDebugStructureWriter.set(
-            new MTEAdvDebugStructureWriter(
-                ADVANCED_DEBUG_STRUCTURE_WRITTER.ID,
-                "advdebugstructurewriter",
-                "Advanced Debug Structure Writer",
-                5).getStackForm(1L));
+        ItemList.DebugStructureWriter.set(
+            new MTEDebugStructureWriter(DEBUG_STRUCTURE_WRITER.ID, "debugstructurewriter", "Debug Structure Writer", 5)
+                .getStackForm(1L));
         ItemList.Hatch_Maintenance.set(
             new MTEHatchMaintenance(MAINTENANCE_HATCH.ID, "hatch.maintenance", "Maintenance Hatch", 1)
                 .getStackForm(1L));

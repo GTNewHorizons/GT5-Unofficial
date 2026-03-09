@@ -31,7 +31,7 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 
-public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTEBasicMachineWithRecipe> {
+public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseGui<MTEBasicMachineWithRecipe> {
 
     BasicUIProperties properties;
     BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlayFunction;
