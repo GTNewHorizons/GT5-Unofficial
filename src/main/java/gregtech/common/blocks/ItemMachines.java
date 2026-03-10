@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.util.GTUtility.formatStringSafe;
+import static gregtech.api.util.GTUtility.translate;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
