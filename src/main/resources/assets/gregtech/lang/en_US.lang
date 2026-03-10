@@ -37,9 +37,10 @@ gt.component.platesuperdense=Superdense %s Plate
 gt.component.sheetmetal=%s Sheetmetal
 
 # Tooltip info of tile-entities
-gt.tileentity.eup_in=Voltage IN:
-gt.tileentity.eup_out=Voltage OUT:
-gt.tileentity.eup_amount=Amperage:
+gt.tileentity.eup_in=Voltage IN: %s
+gt.tileentity.eup_out=Voltage OUT: %s
+gt.tileentity.amperage=Amperage: %s
+gt.tileentity.throughput=Throughput: %s
 gt.tileentity.has_muffler=is Muffled
 gt.tileentity.has_steam_upgrade=has Steam Upgrade
 gt.tileentity.colored=Colored (%s%s§7)

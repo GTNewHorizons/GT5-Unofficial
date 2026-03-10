@@ -15,29 +15,21 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 16.12.2016.
  */
-public class MTEHatchDynamoMulti extends MTEHatch {
+public class MTEHatchDynamoMulti extends MTEHatch implements IHideTooltipEnergyInfo {
 
     public final int maxAmperes;
-
-    public int getAmperes() {
-        return Amperes;
-    }
-
-    public void setAmperes(int amperes) {
-        Amperes = amperes;
-    }
-
     public int Amperes;
 
     public MTEHatchDynamoMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
@@ -47,9 +39,11 @@ public class MTEHatchDynamoMulti extends MTEHatch {
             aNameRegional,
             aTier,
             0,
-            new String[] { CommonValues.TEC_MARK_GENERAL,
-                translateToLocal("gt.blockmachines.hatch.dynamomulti.desc.0") }); // Multiple Ampere Energy
-                                                                                  // Extractor for Multiblocks
+            MTEHatch.formatEnergyInfoDesc(
+                true,
+                aTier,
+                aAmp,
+                translateToLocal("gt.blockmachines.hatch.dynamomulti.desc.0")));
         Amperes = maxAmperes = aAmp;
     }
 
@@ -62,6 +56,14 @@ public class MTEHatchDynamoMulti extends MTEHatch {
         int aAmp) {
         super(aID, aName, aNameRegional, aTier, 0, description);
         Amperes = maxAmperes = aAmp;
+    }
+
+    public int getAmperes() {
+        return Amperes;
+    }
+
+    public void setAmperes(int amperes) {
+        Amperes = amperes;
     }
 
     @Override
@@ -158,22 +160,20 @@ public class MTEHatchDynamoMulti extends MTEHatch {
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(
+            GTUtility.translate(
+                "gt.tileentity.throughput",
+                EnumChatFormatting.YELLOW + formatNumber(
                     accessor.getNBTData()
                         .getLong("amperage") * V[mTier])
-                + EnumChatFormatting.RESET
-                + " EU/t");
+                    + EnumChatFormatting.RESET
+                    + " EU/t"));
     }
 
     @Override
     public String[] getInfoData() {
-        return new String[] { translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
-            + EnumChatFormatting.YELLOW
-            + formatNumber(Amperes * V[mTier])
-            + EnumChatFormatting.RESET
-            + " EU/t" };
+        return new String[] { GTUtility.translate(
+            "gt.tileentity.throughput",
+            EnumChatFormatting.YELLOW + formatNumber(Amperes * V[mTier]) + EnumChatFormatting.RESET + " EU/t") };
     }
 
     @Override
