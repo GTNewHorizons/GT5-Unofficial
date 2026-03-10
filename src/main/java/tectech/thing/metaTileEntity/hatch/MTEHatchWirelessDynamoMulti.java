@@ -1,13 +1,9 @@
 package tectech.thing.metaTileEntity.hatch;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.UUID;
 
@@ -21,7 +17,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.util.GTSplit;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
@@ -121,4 +116,14 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
         }
     }
 
+    @Override
+    public String[] getDescription() {
+        return MTEHatch.formatEnergyInfoDesc(
+            new String[] { GTAuthors.AuthorColen, GTAuthors.AuthorChrom },
+            null,
+            true,
+            mTier,
+            maxAmperes,
+            "gt.blockmachines.dynamo_hatch.wireless");
+    }
 }

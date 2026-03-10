@@ -30,19 +30,7 @@ import tectech.util.CommonValues;
 public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnectsToEnergyTunnel {
 
     public MTEHatchEnergyTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            MTEHatch.formatEnergyInfoDesc(
-                false,
-                aTier,
-                aAmp,
-                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.0"),
-                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip")),
-            aAmp); // Energy injecting terminal for Multiblocks
+        super(aID, aName, aNameRegional, aTier, 0, null, aAmp); // Energy injecting terminal for Multiblocks
     }
 
     public MTEHatchEnergyTunnel(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
@@ -141,5 +129,15 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
     @Override
     protected boolean useMui2() {
         return true;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return MTEHatch.formatEnergyInfoDesc(
+            translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
+            false,
+            mTier,
+            maxAmperes,
+            "gt.blockmachines.hatch.energytunnel.desc");
     }
 }

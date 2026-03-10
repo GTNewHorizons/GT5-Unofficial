@@ -1,9 +1,5 @@
 package tectech.thing.metaTileEntity.hatch;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
@@ -35,7 +31,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTSplit;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -60,21 +55,6 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
     public UUID owner_uuid;
 
     public MTEHatchWirelessMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            MTEHatch.formatEnergyInfoDesc(
-                AuthorColen + GRAY + BOLD + " & " + BLUE + BOLD + "Cloud",
-                false,
-                aTier,
-                aAmp,
-                GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-                GRAY + "Does not connect to wires. This block withdraws EU from the network.",
-                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip")),
-            aAmp);
         super(aID, aName, aNameRegional, aTier, 0, null, aAmp);
     }
 
@@ -245,14 +225,12 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalizedWithSuffix(
-            "gt.blockmachines.energy_hatch.wireless",
-            new String[] { GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorColen, GTAuthors.AuthorCloud.get()),
-                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                    + YELLOW
-                    + formatNumber(maxAmperes * V[mTier])
-                    + GRAY
-                    + " EU/t",
-                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip") });
+        return MTEHatch.formatEnergyInfoDesc(
+            new String[] { GTAuthors.AuthorColen, GTAuthors.AuthorCloud.get() },
+            translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
+            false,
+            mTier,
+            maxAmperes,
+            "gt.blockmachines.energy_hatch.wireless");
     }
 }

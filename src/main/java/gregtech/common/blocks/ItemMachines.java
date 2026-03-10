@@ -37,7 +37,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.metatileentity.IConnectable;
@@ -79,15 +78,15 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             }
 
             if (GregTechAPI.METATILEENTITIES[tDamage] != null) {
-                final IGregTechTileEntity tTileEntity = GregTechAPI.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
-                final IMetaTileEntity tMetaTileEntity = tTileEntity.getMetaTileEntity();
-                if (tMetaTileEntity instanceof ILocalizedMetaPipeEntity localizedMetaPipeEntity) {
+                final IGregTechTileEntity gtTileEntity = GregTechAPI.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
+                final IMetaTileEntity metaTileEntity = gtTileEntity.getMetaTileEntity();
+                if (metaTileEntity instanceof ILocalizedMetaPipeEntity localizedMetaPipeEntity) {
                     localizedMetaPipeEntity.addMaterialTooltip(aList);
                 }
-                addDescription(aList, tMetaTileEntity);
-                tMetaTileEntity.addAdditionalTooltipInformation(aStack, aList);
-                if (tTileEntity.getEUCapacity() > 0L  && !(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
-                    if (tTileEntity.getInputVoltage() > 0L) {
+                addDescription(aList, metaTileEntity);
+                metaTileEntity.addAdditionalTooltipInformation(aStack, aList);
+                if (gtTileEntity.getEUCapacity() > 0L && !(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
+                    if (gtTileEntity.getInputVoltage() > 0L) {
                         aList.add(
                             translate(
                                 "gt.tileentity.eup_in",
