@@ -51,7 +51,7 @@ public class CoverTabButton extends ButtonWidget<CoverTabButton> {
                         .marginTop(1)))
             .tooltipBuilder(this::buildTooltip)
             .tooltipAutoUpdate(true)
-            .size(18, 20);
+            .size(20, 20);
     }
 
     private void buildTooltip(RichTooltip builder) {

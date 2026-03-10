@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.util.GTUtility.formatStringSafe;
+import static gregtech.api.util.GTUtility.translate;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -89,18 +90,21 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 if (gtTileEntity.getEUCapacity() > 0L && !(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
                     if (gtTileEntity.getInputVoltage() > 0L) {
                         aList.add(
-                            translateToLocal("gt.tileentity.eup_in") + " "
-                                + TooltipHelper.voltageText(gtTileEntity.getInputVoltage()));
+                            translate(
+                                "gt.tileentity.eup_in",
+                                TooltipHelper.voltageText(gtTileEntity.getInputVoltage())));
                     }
                     if (gtTileEntity.getOutputVoltage() > 0L) {
                         aList.add(
-                            translateToLocal("gt.tileentity.eup_out") + " "
-                                + TooltipHelper.voltageText(gtTileEntity.getOutputVoltage()));
+                            translate(
+                                "gt.tileentity.eup_out",
+                                TooltipHelper.voltageText(gtTileEntity.getOutputVoltage())));
                     }
                     if (gtTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
-                            translateToLocal("gt.tileentity.amperage") + " "
-                                + TooltipHelper.ampText(gtTileEntity.getOutputAmperage()));
+                            translate(
+                                "gt.tileentity.eup_amount",
+                                TooltipHelper.ampText(gtTileEntity.getOutputAmperage())));
                     }
                 }
             }
