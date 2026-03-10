@@ -80,7 +80,6 @@ import tectech.loader.recipe.Godforge;
     dependencies = """
         required-after:IC2;\
         required-after:gregtech;\
-        after:berriespp;\
         after:tectech;\
         after:GalacticraftMars;\
         after:GalacticraftCore;\
