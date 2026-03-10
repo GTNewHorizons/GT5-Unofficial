@@ -120,7 +120,7 @@ import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
 import gregtech.common.render.items.MechanicalArmorRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
-import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
+import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import gregtech.common.tileentities.render.RenderingTileEntityDrone;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
@@ -364,7 +364,7 @@ public class GTClient extends GTProxy {
         FMLCommonHandler.instance().bus().register(mPollutionRenderer);
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
         MinecraftForge.EVENT_BUS.register(new BlockOverlayRenderer());
-        MinecraftForge.EVENT_BUS.register(new MTEAdvDebugStructureWriter.EventHandler());
+        MinecraftForge.EVENT_BUS.register(new MTEDebugStructureWriter.EventHandler());
         powerfailRenderer = new GTPowerfailRenderer();
         MinecraftForge.EVENT_BUS.register(powerfailRenderer);
         shakeLockKey = new KeyBinding("GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK", Keyboard.KEY_NONE, "Gregtech");
