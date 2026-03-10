@@ -79,7 +79,7 @@ dependencies {
 
     implementation("com.github.GTNewHorizons:TinkersConstruct:1.14.30-GTNH:dev")
     compileOnly("com.github.GTNewHorizons:StorageDrawers:2.2.16-GTNH:dev") { transitive = false }
-
+    compileOnly("com.github.GTNewHorizons:ArchitectureCraft:1.12.7:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Chisel:2.17.18-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.4.3:dev") { transitive = false }
     compileOnly rfg.deobf("curse.maven:cofh-core-69162:2388751")
