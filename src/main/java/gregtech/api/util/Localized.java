@@ -21,7 +21,7 @@ import io.netty.buffer.ByteBuf;
 /**
  * A data structure that represents an unlocalized message. This can be sent over the network easily. The use
  * of {@link gregtech.api.net.GTPacketChat} is recommended.
- * 
+ *
  * @see GTPacketChat
  * @see ChatMessage
  * @see GTUtility#processFormatStacks(String)
@@ -112,7 +112,7 @@ public class Localized {
 
     /**
      * Localizes this object into a string. Most of the time you'll just want to call {@link #toString()}.
-     * 
+     *
      * @see GTUtility#processFormatStacks(String)
      */
     public String localize(ArgProcessor argProcessor) {

@@ -416,7 +416,10 @@ public class MTEHatchOutputME extends MTEHatchOutput
 
     @Override
     public IAEFluidStack loadStackFromNBT(NBTTagCompound tag) {
-        return AEFluidStack.create(GTUtility.loadFluid(tag));
+        final FluidStack fluid = GTUtility.loadFluid(tag.getCompoundTag("fluidStack"));
+        if (fluid == null) return null;
+        return AEFluidStack.create(fluid)
+            .setStackSize(tag.getLong("size"));
     }
 
     public static final String COPIED_DATA_IDENTIFIER = "outputHatchME";
