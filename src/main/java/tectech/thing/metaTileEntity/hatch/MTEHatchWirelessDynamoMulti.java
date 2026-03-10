@@ -20,6 +20,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.util.GTSplit;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -120,15 +121,4 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
         }
     }
 
-    @Override
-    public String[] getDescription() {
-        return GTSplit.splitLocalizedWithSuffix(
-            "gt.blockmachines.dynamo_hatch.wireless",
-            new String[] { GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorColen, GTAuthors.AuthorChrom),
-                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                    + YELLOW
-                    + formatNumber(maxAmperes * V[mTier])
-                    + GRAY
-                    + " EU/t" });
-    }
 }

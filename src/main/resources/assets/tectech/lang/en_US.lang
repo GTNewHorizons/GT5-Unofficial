@@ -374,7 +374,6 @@ gt.blockmachines.hatch.energytunnel6.tier.13.name=UXV 262,144A Laser Target Hatc
 gt.blockmachines.hatch.energytunnel7.tier.13.name=UXV 1,048,576A Laser Target Hatch
 gt.blockmachines.hatch.energytunnel.tier.14.name=Legendary Laser Target Hatch
 gt.blockmachines.hatch.energytunnel.desc.0=Energy injecting terminal for Multiblocks
-gt.blockmachines.hatch.energytunnel.desc.1=Throughput
 
 gt.blockmachines.hatch.dynamomulti04.tier.05.name=IV 4A Dynamo Hatch
 gt.blockmachines.hatch.dynamomulti16.tier.05.name=IV 16A Dynamo Hatch
@@ -450,7 +449,6 @@ gt.blockmachines.hatch.dynamotunnel6.tier.13.name=UXV 262,144A Laser Source Hatc
 gt.blockmachines.hatch.dynamotunnel7.tier.13.name=UXV 1,048,576A Laser Source Hatch
 gt.blockmachines.hatch.dynamotunnel.tier.14.name=Legendary Laser Source Hatch
 gt.blockmachines.hatch.dynamotunnel.desc.0=Energy extracting terminal for Multiblocks
-gt.blockmachines.hatch.dynamotunnel.desc.1=Throughput
 gt.blockmachines.hatch.screwdrivertooltip=Use screwdriver to adjust amperage
 
 gt.blockmachines.emin.tier.08.name=UV Elemental Input Hatch

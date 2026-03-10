@@ -37,6 +37,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -84,24 +86,24 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 }
                 addDescription(aList, tMetaTileEntity);
                 tMetaTileEntity.addAdditionalTooltipInformation(aStack, aList);
-                if (tTileEntity.getEUCapacity() > 0L) {
+                if (tTileEntity.getEUCapacity() > 0L  && !(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
                     if (tTileEntity.getInputVoltage() > 0L) {
                         aList.add(
                             translate(
                                 "gt.tileentity.eup_in",
-                                TooltipHelper.voltageText(tTileEntity.getInputVoltage())));
+                                TooltipHelper.voltageText(gtTileEntity.getInputVoltage())));
                     }
-                    if (tTileEntity.getOutputVoltage() > 0L) {
+                    if (gtTileEntity.getOutputVoltage() > 0L) {
                         aList.add(
                             translate(
                                 "gt.tileentity.eup_out",
-                                TooltipHelper.voltageText(tTileEntity.getOutputVoltage())));
+                                TooltipHelper.voltageText(gtTileEntity.getOutputVoltage())));
                     }
-                    if (tTileEntity.getOutputAmperage() > 1L) {
+                    if (gtTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
                             translate(
-                                "gt.tileentity.eup_amount",
-                                TooltipHelper.ampText(tTileEntity.getOutputAmperage())));
+                                "gt.tileentity.amperage",
+                                TooltipHelper.ampText(gtTileEntity.getOutputAmperage())));
                     }
                 }
             }
