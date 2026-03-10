@@ -66,9 +66,10 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         });
         syncManager.syncValue("powerSwitch", powerSwitchSyncer);
 
-        BooleanSyncValue mufflerSyncer = new BooleanSyncValue(
-            baseMetaTileEntity::isMuffled,
-            baseMetaTileEntity::setMuffler);
+        BooleanSyncValue mufflerSyncer = new BooleanSyncValue(baseMetaTileEntity::isMuffled, bool -> {
+            if (isMufflerDisabled()) return;
+            baseMetaTileEntity.setMuffler(bool);
+        });
         syncManager.syncValue("mufflerSyncer", mufflerSyncer);
 
     }
@@ -178,6 +179,10 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return false;
     }
 
+    protected boolean isMufflerDisabled() {
+        return false;
+    }
+
     protected IDrawable.DrawableWidget createLogo() {
         return new IDrawable.DrawableWidget(getLogoTexture()).size(18)
             .marginLeft(2);
@@ -197,8 +202,8 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return Flow.column()
             .coverChildren()
             .align(Alignment.TopRight)
-            .child(createMufflerButton())
-            .child(createPowerSwitchButton());
+            .childIf(!isMufflerDisabled(), this::createMufflerButton)
+            .childIf(!isPowerSwitchDisabled(), this::createPowerSwitchButton);
     }
 
     protected ToggleButton createMufflerButton() {
