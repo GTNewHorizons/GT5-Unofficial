@@ -35,6 +35,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -248,9 +249,25 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                             ItemStack trigger) {
                             ItemStack stack = GregtechItemList.Solar_Tower_Reflector.get(1);
                             if (stack == null) return false;
-                            if (!(stack.getItem() instanceof ItemBlock)) return false;
-                            ItemBlock itemBlock = (ItemBlock) stack.getItem();
-                            return itemBlock.placeBlockAt(stack, null, world, x, y, z, 0, 0, 0, 0, 0);
+                            if (!(stack.getItem() instanceof ItemBlock itemBlock)) return false;
+                            boolean success = itemBlock.placeBlockAt(stack, null, world, x, y, z, 0, 0, 0, 0, 0);
+                            if (!success) return false;
+                            if (world.getTileEntity(x, y, z) instanceof ITurnable turnable) {
+                                IGregTechTileEntity base = t.getBaseMetaTileEntity();
+                                int dx = x - base.getXCoord();
+                                int dz = z - base.getZCoord();
+                                ForgeDirection facing;
+                                if (Math.abs(dx) > Math.abs(dz)) {
+                                    facing = dx > 0 ? ForgeDirection.EAST : ForgeDirection.WEST;
+                                } else if (Math.abs(dz) > Math.abs(dx)) {
+                                    facing = dz > 0 ? ForgeDirection.SOUTH : ForgeDirection.NORTH;
+                                } else {
+                                    // Corner: pick horizontal based on dx
+                                    facing = dx > 0 ? ForgeDirection.EAST : ForgeDirection.WEST;
+                                }
+                                turnable.setFrontFacing(facing);
+                            }
+                            return true;
                         }
 
                         @Override
