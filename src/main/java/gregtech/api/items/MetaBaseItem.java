@@ -236,10 +236,7 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     /** Returns null for item damage out of bounds. */
     public Materials getMaterial(int damage) {
-        if (damage < 0) {
-            return null;
-        }
-        if (damage >= 32000) {
+        if (!Materials.isMaterialItem(damage)) {
             return null;
         }
         return GregTechAPI.sGeneratedMaterials[damage % 1_000];
@@ -247,20 +244,12 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     @Override
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        if (!Materials.isMaterialItem(aStack)) {
         final String key = getUnlocalizedName() + "." + aStack.getItemDamage() + ".tooltip";
         if (StatCollector.canTranslate(key)) Collections.addAll(
             aList,
             Arrays.stream(GTSplit.splitLocalized(key))
                 .filter(GTUtility::isStringValid)
                 .toArray(String[]::new));
-        }
-        else {
-            Materials material = getMaterial(aStack.getItemDamage());
-            if (material != null) {
-                material.addTooltips(aList);
-            }
-        }
         Long[] tStats = getElectricStats(aStack);
         if (tStats != null) {
             if (tStats[3] > 0) {

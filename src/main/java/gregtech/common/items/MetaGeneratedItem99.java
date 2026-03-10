@@ -24,7 +24,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.common.config.Client;
 
 public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
