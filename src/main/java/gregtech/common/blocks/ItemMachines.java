@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.util.GTUtility.formatStringSafe;
+import static gregtech.api.util.GTUtility.translate;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -31,6 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -73,37 +75,36 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 return;
             }
 
-            if (GregTechAPI.METATILEENTITIES[tDamage] != null) {
-                final IGregTechTileEntity tTileEntity = GregTechAPI.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
-                if (!GregTechAPI.sPostloadFinished
-                    && tTileEntity.getMetaTileEntity() instanceof ISecondaryDescribable) {
-                    final String[] tSecondaryDescription = ((ISecondaryDescribable) tTileEntity.getMetaTileEntity())
-                        .getSecondaryDescription();
-                    addDescription(null, tSecondaryDescription, tDamage, "_Secondary");
+            final IMetaTileEntity mte = GregTechAPI.METATILEENTITIES[tDamage];
+            if (mte != null) {
+                final IGregTechTileEntity gtTileEntity = mte.getBaseMetaTileEntity();
+                final IMetaTileEntity metaTileEntity = gtTileEntity.getMetaTileEntity();
+                if (!GregTechAPI.sPostloadFinished && metaTileEntity instanceof ISecondaryDescribable) {
+                    final String[] desc = ((ISecondaryDescribable) metaTileEntity).getSecondaryDescription();
+                    addDescription(null, desc, tDamage, "_Secondary");
                 }
-                {
-                    final IMetaTileEntity tMetaTileEntity = tTileEntity.getMetaTileEntity();
-                    final String tSuffix = (tMetaTileEntity instanceof ISecondaryDescribable
-                        && ((ISecondaryDescribable) tMetaTileEntity).isDisplaySecondaryDescription()) ? "_Secondary"
-                            : "";
-                    addDescription(aList, tTileEntity.getDescription(), tDamage, tSuffix);
-                    tMetaTileEntity.addAdditionalTooltipInformation(aStack, aList);
-                }
-                if (tTileEntity.getEUCapacity() > 0L) {
-                    if (tTileEntity.getInputVoltage() > 0L) {
+                final String tSuffix = (metaTileEntity instanceof ISecondaryDescribable
+                    && ((ISecondaryDescribable) metaTileEntity).isDisplaySecondaryDescription()) ? "_Secondary" : "";
+                addDescription(aList, gtTileEntity.getDescription(), tDamage, tSuffix);
+                metaTileEntity.addAdditionalTooltipInformation(aStack, aList);
+                if (gtTileEntity.getEUCapacity() > 0L && !(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
+                    if (gtTileEntity.getInputVoltage() > 0L) {
                         aList.add(
-                            translateToLocal("gt.tileentity.eup_in") + " "
-                                + TooltipHelper.voltageText(tTileEntity.getInputVoltage()));
+                            translate(
+                                "gt.tileentity.eup_in",
+                                TooltipHelper.voltageText(gtTileEntity.getInputVoltage())));
                     }
-                    if (tTileEntity.getOutputVoltage() > 0L) {
+                    if (gtTileEntity.getOutputVoltage() > 0L) {
                         aList.add(
-                            translateToLocal("gt.tileentity.eup_out") + " "
-                                + TooltipHelper.voltageText(tTileEntity.getOutputVoltage()));
+                            translate(
+                                "gt.tileentity.eup_out",
+                                TooltipHelper.voltageText(gtTileEntity.getOutputVoltage())));
                     }
-                    if (tTileEntity.getOutputAmperage() > 1L) {
+                    if (gtTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
-                            translateToLocal("gt.tileentity.eup_amount") + " "
-                                + TooltipHelper.ampText(tTileEntity.getOutputAmperage()));
+                            translate(
+                                "gt.tileentity.amperage",
+                                TooltipHelper.ampText(gtTileEntity.getOutputAmperage())));
                     }
                 }
             }
