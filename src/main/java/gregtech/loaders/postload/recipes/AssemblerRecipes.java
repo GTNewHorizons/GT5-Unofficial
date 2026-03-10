@@ -3031,7 +3031,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new OreDictItemStack("cobblestone", 1))
+            .itemInputs(new OreDictItemStack("cobblestone", 8))
             .circuit(8)
             .itemOutputs(new ItemStack(Blocks.furnace, 1))
             .duration(20 * SECONDS)
@@ -6935,7 +6935,7 @@ public class AssemblerRecipes implements Runnable {
 
         // From ProcessingStone - stone (NULL) to comparator
         GTValues.RA.stdBuilder()
-            .itemInputs(new OreDictItemStack("stoneNULL", 3), new ItemStack(Blocks.redstone_torch, 2))
+            .itemInputs(new OreDictItemStack("stone", 3), new ItemStack(Blocks.redstone_torch, 2))
             .itemOutputs(new ItemStack(Items.comparator, 1))
             .fluidInputs(Materials.Redstone.getMolten(1 * INGOTS))
             .duration(5 * SECONDS)
