@@ -156,15 +156,23 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             GTUtility.sendChatTrans(aPlayer, "GT5U.machines.workarea_fail");
         } else {
             adjustChunkRadius(!aPlayer.isSneaking());
-            final String sideLength = formatNumber((long) chunkRadiusConfig << 4);
-            GTUtility.sendChatToPlayer(
+            final String chunkDiameter = formatNumber(chunkRadiusConfig * 2L);
+            final String blockDiameter = formatNumber(chunkRadiusConfig * 32L);
+            GTUtility.sendChatTrans(
                 aPlayer,
                 StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
-                    + sideLength
+                    + chunkDiameter
                     + "x"
-                    + sideLength
+                    + chunkDiameter
                     + " "
-                    + StatCollector.translateToLocal("GT5U.machines.blocks"));
+                    + StatCollector.translateToLocal("GT5U.machines.chunks")
+                    + " ("
+                    + blockDiameter
+                    + "x"
+                    + blockDiameter
+                    + " "
+                    + StatCollector.translateToLocal("GT5U.machines.blocks")
+                    + ")");
         }
     }
 
@@ -172,7 +180,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         replaceWithCobblestone = !replaceWithCobblestone;
-        GTUtility.sendChatToPlayer(aPlayer, "Replace with cobblestone " + replaceWithCobblestone);
+        GTUtility.sendChatTrans(aPlayer, "Replace with cobblestone " + replaceWithCobblestone);
         return true;
     }
 
@@ -629,13 +637,22 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
-        final String side = formatNumber((long) getRadiusInChunks() << 4);
+        final String chunkDiameter = formatNumber(chunkRadiusConfig * 2L);
+        final String blockDiameter = formatNumber(chunkRadiusConfig * 32L);
         tt.addMachineType("Miner, MBM")
             .addInfo("Use a Screwdriver to configure working area")
-            .addInfo("Maximum area is " + side + "x" + side + " blocks")
+            .addInfo(
+                "Maximum area is " + chunkDiameter
+                    + "x"
+                    + chunkDiameter
+                    + " chunks ("
+                    + blockDiameter
+                    + "x"
+                    + blockDiameter
+                    + " blocks)")
+            .addInfo("In chunk mode, working area center is the chunk corner nearest to the drill")
             .addInfo("Use Soldering iron to turn off chunk mode")
             .addInfo("Use Wire Cutter to toggle replacing mined blocks with cobblestone")
-            .addInfo("In chunk mode, working area center is the chunk corner nearest to the drill")
             .addInfo("Gives ~3x as much crushed ore vs normal processing")
             .addInfo("Fortune bonus of " + formatNumber(mTier + 3) + ". Only works on small ores")
             .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
