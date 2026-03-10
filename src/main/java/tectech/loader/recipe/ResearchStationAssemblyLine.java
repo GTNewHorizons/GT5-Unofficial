@@ -15,7 +15,6 @@ import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.enums.Mods.SGCraft;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TinkersGregworks;
@@ -613,115 +612,6 @@ public class ResearchStationAssemblyLine implements Runnable {
             ItemList.Machine_Multi_TranscendentPlasmaMixer.get(1),
             5 * MINUTES,
             (int) TierEU.RECIPE_UIV);
-
-        // Stargate Recipes
-        if (EternalSingularity.isModLoaded() && SGCraft.isModLoaded()) {
-
-            // spotless:off
-
-            final int baseStargateTime = 125_000 * SECONDS;
-
-            // Stargate-Radiation-Containment-Plate
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 1L),
-                (int) TierEU.RECIPE_MAX,
-                32768,
-                (int) TierEU.RECIPE_UXV,
-                64,
-                new Object[] {
-                    CustomItemList.Godforge_MagneticConfinementCasing.get(64),
-                    CustomItemList.StabilisationFieldGeneratorTier8.get(64),
-                    CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(32),
-                    GTOreDictUnificator.get(OrePrefixes.block, Materials.MagMatter, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MagMatter, 8L),
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Universium, 8L),
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Eternity, 8L),
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SpaceTime, 8L),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 16L },
-                    ItemList.Sensor_UXV.get(16L),
-                    ItemList.Emitter_UXV.get(16L),
-                    getModItem(EternalSingularity.ID, "combined_singularity", 64, 15), // chronic singularity
-                    Materials.Universium.getNanite(16),
-                    Materials.BlackDwarfMatter.getNanite(16),
-                    Materials.WhiteDwarfMatter.getNanite(16),
-                    Materials.SixPhasedCopper.getNanite(16) },
-                new FluidStack[] {
-                    Materials.QuarkGluonPlasma.getFluid(1_024_000),
-                    Materials.PhononMedium.getFluid(256_000),
-                    Materials.SuperconductorUMVBase.getMolten(64 * STACKS),
-                    Materials.ExcitedDTSC.getFluid(512_000) },
-                getNHCoreModItem("StargateShieldingFoil", 1),
-                baseStargateTime,
-                (int) TierEU.RECIPE_UXV);
-
-            // Stargate Chevron
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                getNHCoreModItem("StargateShieldingFoil", 1),
-                (int) TierEU.RECIPE_MAX,
-                32768,
-                (int) TierEU.RECIPE_UXV,
-                64,
-                new Object[] {
-                    CustomItemList.EOH_Reinforced_Spatial_Casing.get(64),
-                    CustomItemList.EOH_Reinforced_Temporal_Casing.get(64),
-                    new ItemStack(BlockGodforgeGlass.INSTANCE, 64),
-                    GTOreDictUnificator.get(OrePrefixes.block, Materials.MagMatter, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MagMatter, 16L),
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MagMatter, 8L),
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MHDCSM, 8L),
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MHDCSM, 16L),
-                    GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Ruby, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Jasper, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Opal, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Sapphire, 64L),
-                    ItemList.Electric_Motor_UXV.get(64L),
-                    ItemList.Electric_Piston_UXV.get(64L),
-                    ItemList.Field_Generator_UXV.get(16L),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 32L } },
-                new FluidStack[] {
-                    Materials.QuarkGluonPlasma.getFluid(1_024_000L),
-                    Materials.PhononMedium.getFluid(256_000L),
-                    Materials.MagMatter.getMolten(128 * STACKS),
-                    Materials.ExcitedDTSC.getFluid(512_000L) },
-                getNHCoreModItem("StargateChevron", 1),
-                baseStargateTime,
-                (int) TierEU.RECIPE_UXV);
-
-            // Stargate Frame Part
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1L),
-                (int) TierEU.RECIPE_MAX,
-                32_768,
-                (int) TierEU.RECIPE_UXV,
-                64,
-                new ItemStack[] {
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Infinity, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Mellion, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Universium, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Eternity, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Creon, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SpaceTime, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SuperconductorUMVBase, 64L),
-                    GGMaterial.shirabon.get(OrePrefixes.stickLong, 64),
-                    HYPOGEN.getLongRod(64),
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SixPhasedCopper, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.MHDCSM, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.ProtoHalkonite, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.WhiteDwarfMatter, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.MagMatter, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.BlackDwarfMatter, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.TranscendentMetal, 64L) },
-                new FluidStack[] {
-                    Materials.QuarkGluonPlasma.getFluid(1_024_000L),
-                    Materials.PhononMedium.getFluid(256_000L),
-                    Materials.Universium.getMolten(16 * STACKS),
-                    Materials.ExcitedDTSC.getFluid(512_000L) },
-                getNHCoreModItem("StargateFramePart", 1),
-                baseStargateTime,
-                (int) TierEU.RECIPE_UXV);
-
-            // spotless:on
-        }
 
         // Dimensionally Transcendent Plasma Forge (DTPF)
         if (EternalSingularity.isModLoaded()) {
@@ -3717,6 +3607,93 @@ public class ResearchStationAssemblyLine implements Runnable {
 
     public void runLateRecipes() {
         if (EternalSingularity.isModLoaded()) {
+
+            final int baseStargateTime = 125_000 * SECONDS;
+
+            // Stargate-Radiation-Containment-Plate
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 1L),
+                (int) TierEU.RECIPE_MAX,
+                32768,
+                (int) TierEU.RECIPE_UXV,
+                64,
+                new Object[] { CustomItemList.Godforge_MagneticConfinementCasing.get(64),
+                    CustomItemList.StabilisationFieldGeneratorTier8.get(64),
+                    CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(32),
+                    GTOreDictUnificator.get(OrePrefixes.block, Materials.MagMatter, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MagMatter, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Universium, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Eternity, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SpaceTime, 8L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 16L }, ItemList.Sensor_UXV.get(16L),
+                    ItemList.Emitter_UXV.get(16L), getModItem(EternalSingularity.ID, "combined_singularity", 64, 15),
+                    Materials.Universium.getNanite(16), Materials.BlackDwarfMatter.getNanite(16),
+                    Materials.WhiteDwarfMatter.getNanite(16), Materials.SixPhasedCopper.getNanite(16) },
+                new FluidStack[] { Materials.QuarkGluonPlasma.getFluid(1_024_000),
+                    Materials.PhononMedium.getFluid(256_000), Materials.SuperconductorUMVBase.getMolten(64 * STACKS),
+                    Materials.ExcitedDTSC.getFluid(512_000) },
+                getNHCoreModItem("StargateShieldingFoil", 1),
+                baseStargateTime,
+                (int) TierEU.RECIPE_UXV);
+
+            // Stargate Chevron
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
+                getNHCoreModItem("StargateShieldingFoil", 1),
+                (int) TierEU.RECIPE_MAX,
+                32768,
+                (int) TierEU.RECIPE_UXV,
+                64,
+                new Object[] { CustomItemList.EOH_Reinforced_Spatial_Casing.get(64),
+                    CustomItemList.EOH_Reinforced_Temporal_Casing.get(64),
+                    new ItemStack(BlockGodforgeGlass.INSTANCE, 64),
+                    GTOreDictUnificator.get(OrePrefixes.block, Materials.MagMatter, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MagMatter, 16L),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MagMatter, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MHDCSM, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MHDCSM, 16L),
+                    GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Ruby, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Jasper, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Opal, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Sapphire, 64L),
+                    ItemList.Electric_Motor_UXV.get(64L), ItemList.Electric_Piston_UXV.get(64L),
+                    ItemList.Field_Generator_UXV.get(16L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 32L } },
+                new FluidStack[] { Materials.QuarkGluonPlasma.getFluid(1_024_000L),
+                    Materials.PhononMedium.getFluid(256_000L), Materials.MagMatter.getMolten(128 * STACKS),
+                    Materials.ExcitedDTSC.getFluid(512_000L) },
+                getNHCoreModItem("StargateChevron", 1),
+                baseStargateTime,
+                (int) TierEU.RECIPE_UXV);
+
+            // Stargate Frame Part
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1L),
+                (int) TierEU.RECIPE_MAX,
+                32_768,
+                (int) TierEU.RECIPE_UXV,
+                64,
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Infinity, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Mellion, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Universium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Eternity, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Creon, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SpaceTime, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SuperconductorUMVBase, 64L),
+                    GGMaterial.shirabon.get(OrePrefixes.stickLong, 64), HYPOGEN.getLongRod(64),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SixPhasedCopper, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.MHDCSM, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.ProtoHalkonite, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.WhiteDwarfMatter, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.MagMatter, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.BlackDwarfMatter, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.TranscendentMetal, 64L) },
+                new FluidStack[] { Materials.QuarkGluonPlasma.getFluid(1_024_000L),
+                    Materials.PhononMedium.getFluid(256_000L), Materials.Universium.getMolten(16 * STACKS),
+                    Materials.ExcitedDTSC.getFluid(512_000L) },
+                getNHCoreModItem("StargateFramePart", 1),
+                baseStargateTime,
+                (int) TierEU.RECIPE_UXV);
+
             // Shielding Casing
             TTRecipeAdder.addResearchableAssemblylineRecipe(
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.TranscendentMetal, 1),
