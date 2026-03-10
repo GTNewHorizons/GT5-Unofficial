@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.util.GTUtility.formatStringSafe;
+import static gregtech.api.util.GTUtility.translate;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -92,18 +93,21 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 if (tTileEntity.getEUCapacity() > 0L) {
                     if (tTileEntity.getInputVoltage() > 0L) {
                         aList.add(
-                            translateToLocal("gt.tileentity.eup_in") + " "
-                                + TooltipHelper.voltageText(tTileEntity.getInputVoltage()));
+                            translate(
+                                "gt.tileentity.eup_in",
+                                TooltipHelper.voltageText(tTileEntity.getInputVoltage())));
                     }
                     if (tTileEntity.getOutputVoltage() > 0L) {
                         aList.add(
-                            translateToLocal("gt.tileentity.eup_out") + " "
-                                + TooltipHelper.voltageText(tTileEntity.getOutputVoltage()));
+                            translate(
+                                "gt.tileentity.eup_out",
+                                TooltipHelper.voltageText(tTileEntity.getOutputVoltage())));
                     }
                     if (tTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
-                            translateToLocal("gt.tileentity.eup_amount") + " "
-                                + TooltipHelper.ampText(tTileEntity.getOutputAmperage()));
+                            translate(
+                                "gt.tileentity.eup_amount",
+                                TooltipHelper.ampText(tTileEntity.getOutputAmperage())));
                     }
                 }
             }
