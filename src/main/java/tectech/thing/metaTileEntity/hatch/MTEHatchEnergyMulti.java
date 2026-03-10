@@ -21,6 +21,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -164,22 +165,20 @@ public class MTEHatchEnergyMulti extends MTEHatch implements IHideTooltipEnergyI
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            translateToLocal("gt.tileentity.throughput") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(
+            GTUtility.translate(
+                "gt.tileentity.throughput",
+                EnumChatFormatting.YELLOW + formatNumber(
                     accessor.getNBTData()
                         .getLong("amperage") * V[mTier])
-                + EnumChatFormatting.RESET
-                + " EU/t");
+                    + EnumChatFormatting.RESET
+                    + " EU/t"));
     }
 
     @Override
     public String[] getInfoData() {
-        return new String[] { translateToLocal("gt.tileentity.throughput") + ": "
-            + EnumChatFormatting.YELLOW
-            + formatNumber(Amperes * V[mTier])
-            + EnumChatFormatting.RESET
-            + " EU/t" };
+        return new String[] { GTUtility.translate(
+            "gt.tileentity.throughput",
+            EnumChatFormatting.YELLOW + formatNumber(Amperes * V[mTier]) + EnumChatFormatting.RESET + " EU/t") };
     }
 
     @Override

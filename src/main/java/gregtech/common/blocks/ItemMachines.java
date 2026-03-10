@@ -103,7 +103,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     if (gtTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
                             translate(
-                                "gt.tileentity.eup_amount",
+                                "gt.tileentity.amperage",
                                 TooltipHelper.ampText(gtTileEntity.getOutputAmperage())));
                     }
                 }
