@@ -24,8 +24,8 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -350,10 +350,7 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
             .addInfo("gt.completer.tips")
             .beginVariableStructureBlock(3, 3, 3, 3, 3, MAX_LENGTH, true)
             .addController("front_center")
-            .addStructurePart(
-                ItemList.Casing_Magical.get(1)
-                    .getDisplayName(),
-                "gt.completer.info.casing")
+            .addStructurePart(Casings.MagicalMachineCasing.getLocalizedName(), "gt.completer.info.casing")
             .addStructurePart("tile.blockCosmeticOpaque.2.name", "gt.completer.info.glass")
             .addEnergyHatch("<casing>")
             .addMaintenanceHatch("<casing>")

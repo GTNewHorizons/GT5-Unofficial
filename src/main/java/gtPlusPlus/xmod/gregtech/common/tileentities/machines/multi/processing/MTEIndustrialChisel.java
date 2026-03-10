@@ -30,10 +30,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.casing.Casings;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gcewing.architecture.common.item.ArchitectureItemBlock;
 import gcewing.architecture.common.shape.Shape;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -90,7 +90,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("front_center")
-            .addCasingInfoMin(Casings.SturdyPrinterCasing.getLocalizedName(), 6, false)
+            .addCasingInfoMin(Casings.SturdyPrinterCasing.getLocalizedName(), 6)
             .addInputBus("<casing>", 1)
             .addOutputBus("<casing>", 1)
             .addEnergyHatch("<casing>", 1)

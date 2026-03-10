@@ -4320,7 +4320,12 @@ gt.mb.corepos.front_bottom_middle=Front bottom middle
 gt.mb.corepos.top_center=Top center
 
 # Multiblock Tooltip lines
-gt.i_chisel.tips=Factory Grade Auto Chisel\nTarget block goes in Controller slot for common Input Buses\nYou can also set a target block in each Chisel Bus and use them as an Input Bus\nIf no target is provided for common buses, the result of the first chisel is used
+gt.les.tips=Necessary evil\nAdvanced Essentia smelting technology\nMaximum parallel = 2^Tier * (Length - 1)\nDiffusion Cell Tiers start from 0, Length is full multi length\nEnergy Hatch tier: HV+\nYou can find more information about this machine in the Thaumonomicon
+
+gt.mass_solidifier.tips.1=Speeds up to a maximum of %s\nDecays at double the rate that it speeds up at
+gt.mass_solidifier.tips.2=Can use §eSolidifier Hatches§7 to hold fluids and molds in the same hatch\n§9Pretty Ⱄⱁⰾⰻⰴ, isn't it
+
+gt.i_chisel.tips=Factory Grade Auto Chisel\nTarget block goes in Controller slot for common Input Buses\nYou can also set a target block in each Chisel Input Bus and use them as an Input Bus\nIf no target is provided for common buses, the result of the first chisel is used
 
 gt.nac.tips.1=Uses Circuit Components (%1$s) to create circuits at unimaginable speeds\nClick the Logo Icon in the GUI for more information<SEPARATOR>%1$s can only exist in the perfect environment present in %2$s\nConvert items to %1$s in the control room by placing them in a %3$s input bus\nEvery §45§7 seconds, all items in %3$s input buses are placed\nin Vacuum Conveyor Outputs (%4$s) of the same %5$s\nFinished circuit %1$s are converted back into circuits by routing them to a %6$s in the control room\n%1$s in a %3$s %6$s are placed in an output bus of the same %5$s<SEPARATOR>%1$s must be processed into a refined version by §f§nmodules§r§7 before they\ncan be assembled into a circuit in the §aNanochip Assembly Matrix\nAll power from the energy hatch is distributed to the modules as they need it
 gt.nac.tips.2=<SEPARATOR>§d§oHome of the Gestalt Rapidly Evolving Genesis Optimization System (GREGOS),\n§d§oa pseudo-sentient program overseeing circuit production in the NAC\n§d§oIt seems to be eager to learn more, maybe you can become friends?
