@@ -84,6 +84,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private static final int VERTICAL_OFF_SET = 1;
     private static final int DEPTH_OFF_SET = 0;
 
+    // LNE information
     private int fuelValue = 0;
     private int fuelConsumption = 0;
     private float boosterEUBoost = 1.0F;
@@ -92,6 +93,12 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     public int residueDecay;
     public int residueIncrease;
     private float robotArmDecayBoost;
+    private int lastRobotArmTier;
+
+    // random number generation
+    private int randomFactor;
+    private int randomGoal;
+    private boolean isApproachingFromHigher;
 
     private int maxFluidUse = 200;
 
@@ -141,8 +148,34 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         };
     }
 
+    private static int normalizeIntoRange(int random) {
+        return Math.max(Math.min(random, 1500), 500);
+    }
+
+    private int getDistanceFromGoal() {
+        return ((randomFactor - randomGoal) * (isApproachingFromHigher ? 1 : -1));
+    }
+
+    /*
+     * This algorithm basically just picks a random number (randomGoal)
+     * for the randomFactor to "walk" to (it will walk randomly but tend to the randomGoal)
+     * Once it reaches the randomGoal it will find a new value to walk towards
+     */
+    private void randomWalk() {
+        if (getDistanceFromGoal() <= 0) {
+            do {
+                randomGoal = getBaseMetaTileEntity().getRandomNumber(1001) + 500;
+            } while (Math.abs(randomFactor - randomGoal) <= 50);
+            isApproachingFromHigher = randomFactor > randomGoal;
+        }
+        int randomChange = getBaseMetaTileEntity().getRandomNumber(33) - 7;
+        randomFactor = normalizeIntoRange(randomFactor + (isApproachingFromHigher ? -1 : 1) * randomChange);
+    }
+
     private float getRandomIncreaseMultiplier() {
-        return (500 + getBaseMetaTileEntity().getRandomNumber(1001)) / 1000F;
+        float randomIncreaseMultiplier = randomFactor / 1000F;
+        randomWalk();
+        return randomIncreaseMultiplier;
     }
 
     private static float getRobotArmDecayBoost(int tier) {
@@ -175,12 +208,20 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private Pair<ItemStack, Integer> getRobotArm() {
-        for (int i = ItemList.ROBOT_ARMS.length - 1; i >= 0; i--) {
+        boolean didOldTier = false;
+        for (int i = lastRobotArmTier >= 0 && lastRobotArmTier < ItemList.ROBOT_ARMS.length
+            ? ItemList.ROBOT_ARMS.length - 1
+            : lastRobotArmTier; i >= 0; i--) {// checks last robot arm tier for optimization
+            if (i == lastRobotArmTier && didOldTier) continue;
             ArrayList<ItemStack> storedInputs = getStoredInputs();
             for (ItemStack storedInput : storedInputs) {
                 if (GTUtility.areStacksEqual(storedInput, ItemList.ROBOT_ARMS[i].get(1L))) {
                     return Pair.of(storedInput, i);
                 }
+            }
+            if (!didOldTier && i == lastRobotArmTier) {
+                didOldTier = true;
+                i = ItemList.ROBOT_ARMS.length;
             }
         }
         return null;
@@ -600,6 +641,10 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         aNBT.setInteger("residueDecay", residueDecay);
         aNBT.setFloat("robotArmDecayBoost", robotArmDecayBoost);
         aNBT.setInteger("maxFluidUse", maxFluidUse);
+        aNBT.setInteger("randomFactor", randomFactor);
+        aNBT.setInteger("nextRandomGoal", randomGoal);
+        aNBT.setBoolean("isApproachingFromHigher", isApproachingFromHigher);
+        aNBT.setInteger("lastRobotArmTier", lastRobotArmTier);
     }
 
     @Override
@@ -615,6 +660,12 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         residueDecay = aNBT.getInteger("residueDecay");
         robotArmDecayBoost = aNBT.getFloat("robotArmDecayBoost");
         maxFluidUse = aNBT.getInteger("maxFluidUse");
+        randomFactor = aNBT.getInteger("randomFactor");
+        randomFactor = normalizeIntoRange(randomFactor);
+        randomGoal = aNBT.getInteger("nextRandomGoal");
+        randomGoal = normalizeIntoRange(randomGoal);
+        isApproachingFromHigher = aNBT.getBoolean("isApproachingFromHigher");
+        lastRobotArmTier = aNBT.getInteger("lastRobotArmTier");
     }
 
     @Override
@@ -677,7 +728,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                 useBooster();
             }
 
-            int robotArmTier; // Residue changing
+            // Residue changing
             Pair<ItemStack, Integer> robotArm = getRobotArm();
             if (robotArm != null) {
                 int amount = Math.min(robotArm.getLeft().stackSize, 64);
@@ -689,8 +740,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                             .getItemDamage(),
                         amount),
                     robotArm.getRight());
-                robotArmTier = robotArm.getRight();
-                this.robotArmDecayBoost = (float) (getRobotArmDecayBoost(robotArmTier) * Math.sqrt(amount));
+                lastRobotArmTier = robotArm.getRight();
+                this.robotArmDecayBoost = (float) (getRobotArmDecayBoost(lastRobotArmTier) * Math.sqrt(amount));
                 if (getBaseMetaTileEntity().getWorld()
                     .getTotalWorldTime() % MINUTES == 0) {
                     int random = getBaseMetaTileEntity().getRandomNumber(90);
