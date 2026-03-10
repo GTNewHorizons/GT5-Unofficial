@@ -637,7 +637,7 @@ public final class MaterialsElements {
         public static final Material DRAGON_METAL = new Material(
             "Dragonblood",
             MaterialState.SOLID,
-            TextureSet.SET_SHINY,
+            TextureSet.SET_HYPOGEN,
             new short[] { 220, 40, 20, 2 },
             10160,
             17850,
