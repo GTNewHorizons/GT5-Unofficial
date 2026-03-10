@@ -24,6 +24,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.config.Client;
 
 public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
@@ -109,14 +110,6 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
             offset += 1_000;
         }
-    }
-
-    /** Returns null for item damage out of bounds. */
-    private Materials getMaterial(int damage) {
-        if (!Materials.isMaterialItem(damage)) {
-            return null;
-        }
-        return GregTechAPI.sGeneratedMaterials[damage % 1_000];
     }
 
     /** Returns null for item damage out of bounds. */
