@@ -293,9 +293,9 @@ gt.runfastertooltip=You can walk faster on this Block
 gt.laserplatingtooltip=Engineered to withstand extreme temperatures
 
 # Tooltip info of tile-entities
-gt.tileentity.eup_in=Voltage IN:
-gt.tileentity.eup_out=Voltage OUT:
-gt.tileentity.eup_amount=Amperage:
+gt.tileentity.eup_in=Voltage IN: %s
+gt.tileentity.eup_out=Voltage OUT: %s
+gt.tileentity.eup_amount=Amperage: %s
 gt.tileentity.tank_info=Contains Fluid: §e%s§7
 gt.tileentity.tank_amount=Fluid Amount: §a%s L§7
 gt.tileentity.chest_info=Contains Item: §e%s§7
