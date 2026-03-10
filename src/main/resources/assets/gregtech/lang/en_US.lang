@@ -4311,6 +4311,7 @@ machtype.tpm=Transcendent Mixer, TPM
 machtype.dtpf=Plasma Forge, DTPF
 machtype.thermal_boiler=Boiler
 machtype.iwf=Wiremill, IWF
+machtype.chisel=Chisel
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -4319,6 +4320,8 @@ gt.mb.corepos.front_bottom_middle=Front bottom middle
 gt.mb.corepos.top_center=Top center
 
 # Multiblock Tooltip lines
+gt.i_chisel.tips=Factory Grade Auto Chisel\nTarget block goes in Controller slot for common Input Buses\nYou can also set a target block in each Chisel Bus and use them as an Input Bus\nIf no target is provided for common buses, the result of the first chisel is used
+
 gt.nac.tips.1=Uses Circuit Components (%1$s) to create circuits at unimaginable speeds\nClick the Logo Icon in the GUI for more information<SEPARATOR>%1$s can only exist in the perfect environment present in %2$s\nConvert items to %1$s in the control room by placing them in a %3$s input bus\nEvery §45§7 seconds, all items in %3$s input buses are placed\nin Vacuum Conveyor Outputs (%4$s) of the same %5$s\nFinished circuit %1$s are converted back into circuits by routing them to a %6$s in the control room\n%1$s in a %3$s %6$s are placed in an output bus of the same %5$s<SEPARATOR>%1$s must be processed into a refined version by §f§nmodules§r§7 before they\ncan be assembled into a circuit in the §aNanochip Assembly Matrix\nAll power from the energy hatch is distributed to the modules as they need it
 gt.nac.tips.2=<SEPARATOR>§d§oHome of the Gestalt Rapidly Evolving Genesis Optimization System (GREGOS),\n§d§oa pseudo-sentient program overseeing circuit production in the NAC\n§d§oIt seems to be eager to learn more, maybe you can become friends?
 
@@ -4618,7 +4621,6 @@ gt.adv_assline.info.dataaccess=Any Grate Machine Casing NOT on the first slice
 gt.ebf.tips=You can use some fluids to reduce recipe time. Place the circuit in the Input Bus\nIncreases Heat by §c100K §7for every §fVoltage §7tier past §bMV\nReduces §bEU Usage §7by §f5% §7every §c900K §7above the recipe requirement\nEvery §c1800K §7over the recipe requirement grants 1 §dPerfect Overclock\nThat means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)
 gt.ebf.info.hatches=Any bottom layer casing
 gt.ebf.info.muffler=Top middle
-gt.ebf.info.o_hatch=Any Heat Proof Machine Casing
 
 gt.mfe.tips.1=Use screwdriver to switch mode\nInsert an electromagnet into the electromagnet housing to use\nBetter electromagnets give further bonuses\nWith Tengam electromagnet, multi-amp (NOT laser) hatches are allowed
 gt.mfe.info.1=1 Block Above/Behind Controller

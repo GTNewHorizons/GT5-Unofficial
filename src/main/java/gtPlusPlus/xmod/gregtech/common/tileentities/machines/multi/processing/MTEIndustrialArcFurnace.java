@@ -43,6 +43,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -65,7 +66,6 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     // 862
     private static final int mCasingTextureID = TAE.getIndexFromPage(3, 3);
-    public static String mCasingName = "Tempered Arc Furnace Casing";
 
     final static int MACHINE_MODE_ARC = 0;
     final static int MACHINE_MODE_PLASMA = 1;
@@ -105,7 +105,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
             .addShiftInfo("gt.iaf.info.1")
             .addShiftInfo("GT5U.MBTT.Structure")
             .addController("top_center")
-            .addCasingInfoMin(mCasingName, 10, false)
+            .addCasingInfoMin(Casings.TemperedArcFurnaceCasing.getLocalizedName(), 10, false)
             .addInputBus("<casing>", 1)
             .addOutputBus("<casing>", 1)
             .addInputHatch("<casing>", 1)

@@ -38,6 +38,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
@@ -54,6 +55,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectricBlastFurnace>
@@ -119,7 +121,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addInputBus("gt.ebf.info.hatches", 1)
             .addInputHatch("gt.ebf.info.hatches", 1)
             .addOutputBus("gt.ebf.info.hatches", 1)
-            .addOutputHatch("gt.ebf.info.o_hatch", 3)
+            .addOutputHatch(TooltipHelper.anyCasingText(Casings.HeatProofMachineCasing.getLocalizedName()), 3)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
