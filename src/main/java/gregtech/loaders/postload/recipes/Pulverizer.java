@@ -744,14 +744,6 @@ public class Pulverizer implements Runnable {
                 .addTo(maceratorRecipes);
         }
 
-        // From ProcessingBeans
-        GTValues.RA.stdBuilder()
-            .itemInputs(new OreDictItemStack("beansCocoa", 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
         // From ProcessingSaplings
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("treeSapling", 1))

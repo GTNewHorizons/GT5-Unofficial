@@ -348,13 +348,5 @@ public class CompressorRecipes implements Runnable {
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
-
-        // From ProcessingCrop
-        GTValues.RA.stdBuilder()
-            .itemInputs(new OreDictItemStack("crop", 8))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
     }
 }
