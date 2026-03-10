@@ -770,7 +770,7 @@ GT5U.MBTT.SpeedTiered=%s faster than single block machines of the same voltage, 
 GT5U.MBTT.EuDiscountBase=Uses %s of the EU normally required
 GT5U.MBTT.EuDiscountTiered=Uses %s less EU per %s Tier
 GT5U.MBTT.Parallel_Multiplicative=%s Parallels per %s Tier
-GT5U.MBTT.StructureBy=Structure by
+GT5U.MBTT.StructureBy=Structure by: %s
 gt.unit.liter=L
 gt.unit.liter_per_second=L/s
 

@@ -1047,8 +1047,9 @@ public class MultiblockTooltipBuilder {
         }
         if (!this.structureAuthors.isEmpty()) {
             addInfo(
-                TT_StructureAuthor + COLON
-                    + String.join(EnumChatFormatting.GRAY + " & " + EnumChatFormatting.GREEN, this.structureAuthors));
+                translate(
+                    TT_StructureAuthor,
+                    String.join(EnumChatFormatting.GRAY + " & " + EnumChatFormatting.GREEN, this.structureAuthors)));
         }
 
         addStructureInfo(EnumChatFormatting.GRAY + STRUCTURE_SEPARATOR_MARK);
