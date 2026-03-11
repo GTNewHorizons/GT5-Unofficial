@@ -264,8 +264,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.ThermosCan_Coffee.set(
             addItem(
                 ThermosCan_Coffee.ID,
-                "Coffee",
-                "Coffee, dark, without anything else",
+                "gt.item.thermos_can.coffee.name",
+                "gt.item.thermos_can.coffee.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -289,8 +289,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.ThermosCan_Sweet_Coffee.set(
             addItem(
                 ThermosCan_Sweet_Coffee.ID,
-                "Sweet coffee",
-                "Keeping you awake the whole night",
+                "gt.item.thermos_can.sweet_coffee.name",
+                "gt.item.thermos_can.sweet_coffee.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -314,8 +314,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.ThermosCan_Latte.set(
             addItem(
                 ThermosCan_Latte.ID,
-                "Latte",
-                "Just the regular morning Coffee, with milk",
+                "gt.item.thermos_can.latte.name",
+                "gt.item.thermos_can.latte.tooltip",
                 new GTFoodStat(
                     3,
                     0.4F,
@@ -339,8 +339,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.ThermosCan_Sweet_Latte.set(
             addItem(
                 ThermosCan_Sweet_Latte.ID,
-                "Sweet Latte",
-                "A little bit of sugar goes a long way",
+                "gt.item.thermos_can.sweet_latte.name",
+                "gt.item.thermos_can.sweet_latte.tooltip",
                 new GTFoodStat(
                     3,
                     0.4F,
@@ -364,8 +364,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.ThermosCan_Sweet_Jesus_Latte.set(
             addItem(
                 ThermosCan_Sweet_Jesus_Latte.ID,
-                "Sweet Jesus Latte",
-                "You want some Coffee to your Sugar?",
+                "gt.item.thermos_can.sweet_jesus_latte.name",
+                "gt.item.thermos_can.sweet_jesus_latte.tooltip",
                 new GTFoodStat(
                     3,
                     0.4F,
@@ -389,8 +389,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.ThermosCan_Dark_Chocolate_Milk.set(
             addItem(
                 ThermosCan_Dark_Chocolate_Milk.ID,
-                "Dark Chocolate Milk",
-                "A bit bitter, better add a bit Sugar",
+                "gt.item.thermos_can.dark_chocolate_milk.name",
+                "gt.item.thermos_can.dark_chocolate_milk.tooltip",
                 new GTFoodStat(
                     3,
                     0.4F,
@@ -410,8 +410,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.ThermosCan_Chocolate_Milk.set(
             addItem(
                 ThermosCan_Chocolate_Milk.ID,
-                "Chocolate Milk",
-                "Sweet Goodness",
+                "gt.item.thermos_can.chocolate_milk.name",
+                "gt.item.thermos_can.chocolate_milk.tooltip",
                 new GTFoodStat(
                     3,
                     0.4F,
@@ -431,8 +431,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.ThermosCan_Tea.set(
             addItem(
                 ThermosCan_Tea.ID,
-                "Tea",
-                "Keep calm and carry on",
+                "gt.item.thermos_can.tea.name",
+                "gt.item.thermos_can.tea.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -451,8 +451,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.ThermosCan_Sweet_Tea.set(
             addItem(
                 ThermosCan_Sweet_Tea.ID,
-                "Sweet Tea",
-                "How about a Tea Party? In Boston?",
+                "gt.item.thermos_can.sweet_tea.name",
+                "gt.item.thermos_can.sweet_tea.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -467,8 +467,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.ThermosCan_Ice_Tea.set(
             addItem(
                 ThermosCan_Ice_Tea.ID,
-                "Ice Tea",
-                "Better than this purple Junk Drink from failed Potions",
+                "gt.item.thermos_can.ice_tea.name",
+                "gt.item.thermos_can.ice_tea.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -485,13 +485,14 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
 
-        ItemList.GelledToluene.set(addItem(GelledToluene.ID, "Gelled Toluene", "Raw Explosive"));
+        ItemList.GelledToluene
+            .set(addItem(GelledToluene.ID, "gt.item.gelled_toluene.name", "gt.item.gelled_toluene.tooltip"));
 
         ItemList.Bottle_Purple_Drink.set(
             addItem(
                 Bottle_Purple_Drink.ID,
-                "Purple Drink",
-                "How about Lemonade. Or some Ice Tea? I got Purple Drink!",
+                "gt.item.bottle.purple_drink.name",
+                "gt.item.bottle.purple_drink.tooltip",
                 new GTFoodStat(
                     8,
                     0.2F,
@@ -510,8 +511,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Grape_Juice.set(
             addItem(
                 Bottle_Grape_Juice.ID,
-                "Grape Juice",
-                "This has a cleaning effect on your internals.",
+                "gt.item.bottle.grape_juice.name",
+                "gt.item.bottle.grape_juice.tooltip",
                 new GTFoodStat(
                     4,
                     0.2F,
@@ -530,8 +531,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Wine.set(
             addItem(
                 Bottle_Wine.ID,
-                "Wine",
-                "Ordinary",
+                "gt.item.bottle.wine.name",
+                "gt.item.bottle.wine.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -558,8 +559,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Vinegar.set(
             addItem(
                 Bottle_Vinegar.ID,
-                "Vinegar",
-                "Exquisite",
+                "gt.item.bottle.vinegar.name",
+                "gt.item.bottle.vinegar.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -590,8 +591,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Potato_Juice.set(
             addItem(
                 Bottle_Potato_Juice.ID,
-                "Potato Juice",
-                "Ever seen Potato Juice in stores? No? That has a reason.",
+                "gt.item.bottle.potato_juice.name",
+                "gt.item.bottle.potato_juice.tooltip",
                 new GTFoodStat(
                     3,
                     0.3F,
@@ -606,8 +607,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Vodka.set(
             addItem(
                 Bottle_Vodka.ID,
-                "Vodka",
-                "Not to confuse with Water",
+                "gt.item.bottle.vodka.name",
+                "gt.item.bottle.vodka.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -634,8 +635,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Leninade.set(
             addItem(
                 Bottle_Leninade.ID,
-                "Leninade",
-                "Let the Communism flow through you!",
+                "gt.item.bottle.leninade.name",
+                "gt.item.bottle.leninade.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -666,8 +667,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Mineral_Water.set(
             addItem(
                 Bottle_Mineral_Water.ID,
-                "Mineral Water",
-                "The best Stuff you can drink to stay healthy",
+                "gt.item.bottle.mineral_water.name",
+                "gt.item.bottle.mineral_water.tooltip",
                 new GTFoodStat(
                     1,
                     0.1F,
@@ -686,8 +687,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Salty_Water.set(
             addItem(
                 Bottle_Salty_Water.ID,
-                "Salty Water",
-                "Like Sea Water but less dirty",
+                "gt.item.bottle.salty_water.name",
+                "gt.item.bottle.salty_water.tooltip",
                 SubTag.INVISIBLE,
                 new GTFoodStat(
                     1,
@@ -707,8 +708,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Reed_Water.set(
             addItem(
                 Bottle_Reed_Water.ID,
-                "Reed Water",
-                "I guess this tastes better when fermented",
+                "gt.item.bottle.reed_water.name",
+                "gt.item.bottle.reed_water.tooltip",
                 new GTFoodStat(
                     1,
                     0.1F,
@@ -723,8 +724,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Rum.set(
             addItem(
                 Bottle_Rum.ID,
-                "Rum",
-                "A buddle o' rum",
+                "gt.item.bottle.rum.name",
+                "gt.item.bottle.rum.tooltip",
                 new GTFoodStat(
                     4,
                     0.4F,
@@ -751,8 +752,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Pirate_Brew.set(
             addItem(
                 Bottle_Pirate_Brew.ID,
-                "Pirate Brew",
-                "Set the Sails, we are going to Torrentuga!",
+                "gt.item.bottle.pirate_brew.name",
+                "gt.item.bottle.pirate_brew.tooltip",
                 new GTFoodStat(
                     4,
                     0.4F,
@@ -783,8 +784,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Hops_Juice.set(
             addItem(
                 Bottle_Hops_Juice.ID,
-                "Hops Juice",
-                "Every Beer has a start",
+                "gt.item.bottle.hops_juice.name",
+                "gt.item.bottle.hops_juice.tooltip",
                 new GTFoodStat(
                     1,
                     0.1F,
@@ -799,8 +800,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Dark_Beer.set(
             addItem(
                 Bottle_Dark_Beer.ID,
-                "Dark Beer",
-                "Dark Beer, for the real Men",
+                "gt.item.bottle.dark_beer.name",
+                "gt.item.bottle.dark_beer.tooltip",
                 new GTFoodStat(
                     4,
                     0.4F,
@@ -827,8 +828,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Dragon_Blood.set(
             addItem(
                 Bottle_Dragon_Blood.ID,
-                "Dragon Blood",
-                "FUS RO DAH!",
+                "gt.item.bottle.dragon_blood.name",
+                "gt.item.bottle.dragon_blood.tooltip",
                 new GTFoodStat(
                     4,
                     0.4F,
@@ -859,8 +860,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Wheaty_Juice.set(
             addItem(
                 Bottle_Wheaty_Juice.ID,
-                "Wheaty Juice",
-                "Is this liquefied Bread or what?",
+                "gt.item.bottle.wheaty_juice.name",
+                "gt.item.bottle.wheaty_juice.tooltip",
                 new GTFoodStat(
                     2,
                     0.1F,
@@ -875,8 +876,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Scotch.set(
             addItem(
                 Bottle_Scotch.ID,
-                "Scotch",
-                "Technically this is just a Whisky",
+                "gt.item.bottle.scotch.name",
+                "gt.item.bottle.scotch.tooltip",
                 new GTFoodStat(
                     2,
                     0.1F,
@@ -903,8 +904,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Glen_McKenner.set(
             addItem(
                 Bottle_Glen_McKenner.ID,
-                "Glen McKenner",
-                "Don't hand to easily surprised people, they will shatter it.",
+                "gt.item.bottle.glen_mckenner.name",
+                "gt.item.bottle.glen_mckenner.tooltip",
                 new GTFoodStat(
                     2,
                     0.1F,
@@ -935,8 +936,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Wheaty_Hops_Juice.set(
             addItem(
                 Bottle_Wheaty_Hops_Juice.ID,
-                "Wheaty Hops Juice",
-                "Also known as 'Duff-Lite'",
+                "gt.item.bottle.wheaty_hops_juice.name",
+                "gt.item.bottle.wheaty_hops_juice.tooltip",
                 new GTFoodStat(
                     1,
                     0.1F,
@@ -951,8 +952,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Beer.set(
             addItem(
                 Bottle_Beer.ID,
-                "Beer",
-                "Good old Beer",
+                "gt.item.bottle.beer.name",
+                "gt.item.bottle.beer.tooltip",
                 new GTFoodStat(
                     6,
                     0.4F,
@@ -979,8 +980,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Chilly_Sauce.set(
             addItem(
                 Bottle_Chilly_Sauce.ID,
-                "Chilly Sauce",
-                "Spicy",
+                "gt.item.bottle.chilly_sauce.name",
+                "gt.item.bottle.chilly_sauce.tooltip",
                 new GTFoodStat(
                     2,
                     0.1F,
@@ -1003,8 +1004,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Hot_Sauce.set(
             addItem(
                 Bottle_Hot_Sauce.ID,
-                "Hot Sauce",
-                "Very Spicy, I guess?",
+                "gt.item.bottle.hot_sauce.name",
+                "gt.item.bottle.hot_sauce.tooltip",
                 new GTFoodStat(
                     2,
                     0.1F,
@@ -1027,8 +1028,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Diabolo_Sauce.set(
             addItem(
                 Bottle_Diabolo_Sauce.ID,
-                "Diabolo Sauce",
-                "As if the Devil made this Sauce",
+                "gt.item.bottle.diabolo_sauce.name",
+                "gt.item.bottle.diabolo_sauce.tooltip",
                 new GTFoodStat(
                     2,
                     0.1F,
@@ -1051,8 +1052,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Diablo_Sauce.set(
             addItem(
                 Bottle_Diablo_Sauce.ID,
-                "Diablo Sauce",
-                "Diablo always comes back!",
+                "gt.item.bottle.diablo_sauce.name",
+                "gt.item.bottle.diablo_sauce.tooltip",
                 new GTFoodStat(
                     2,
                     0.1F,
@@ -1075,8 +1076,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Snitches_Glitch_Sauce.set(
             addItem(
                 Bottle_Snitches_Glitch_Sauce.ID,
-                "Old Man Snitches glitched Diablo Sauce",
-                "[Missing No]",
+                "gt.item.bottle.snitches_glitch_sauce.name",
+                "gt.item.bottle.snitches_glitch_sauce.tooltip",
                 SubTag.INVISIBLE,
                 new GTFoodStat(
                     2,
@@ -1100,8 +1101,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Apple_Juice.set(
             addItem(
                 Bottle_Apple_Juice.ID,
-                "Apple Juice",
-                "Made of the Apples from our best Oak Farms",
+                "gt.item.bottle.apple_juice.name",
+                "gt.item.bottle.apple_juice.tooltip",
                 new GTFoodStat(
                     4,
                     0.2F,
@@ -1120,8 +1121,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Cider.set(
             addItem(
                 Bottle_Cider.ID,
-                "Cider",
-                "If you have nothing better to do with your Apples",
+                "gt.item.bottle.cider.name",
+                "gt.item.bottle.cider.tooltip",
                 new GTFoodStat(
                     4,
                     0.2F,
@@ -1148,8 +1149,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Golden_Apple_Juice.set(
             addItem(
                 Bottle_Golden_Apple_Juice.ID,
-                "Golden Apple Juice",
-                "A golden Apple in liquid form",
+                "gt.item.bottle.golden_apple_juice.name",
+                "gt.item.bottle.golden_apple_juice.tooltip",
                 new GTFoodStat(
                     4,
                     0.2F,
@@ -1176,8 +1177,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Golden_Cider.set(
             addItem(
                 Bottle_Golden_Cider.ID,
-                "Golden Cider",
-                "More Resistance, less Regeneration",
+                "gt.item.bottle.golden_cider.name",
+                "gt.item.bottle.golden_cider.tooltip",
                 new GTFoodStat(
                     4,
                     0.2F,
@@ -1204,8 +1205,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Iduns_Apple_Juice.set(
             addItem(
                 Bottle_Iduns_Apple_Juice.ID,
-                "Idun's Apple Juice",
-                "So you got the Idea of using Notch Apples for a drink?",
+                "gt.item.bottle.iduns_apple_juice.name",
+                "gt.item.bottle.iduns_apple_juice.tooltip",
                 new GTFoodStat(
                     4,
                     0.2F,
@@ -1236,8 +1237,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Notches_Brew.set(
             addItem(
                 Bottle_Notches_Brew.ID,
-                "Notches Brew",
-                "This is just overpowered",
+                "gt.item.bottle.notches_brew.name",
+                "gt.item.bottle.notches_brew.tooltip",
                 new GTFoodStat(
                     4,
                     0.2F,
@@ -1272,8 +1273,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Lemon_Juice.set(
             addItem(
                 Bottle_Lemon_Juice.ID,
-                "Lemon Juice",
-                "Maybe adding Sugar will make it less sour",
+                "gt.item.bottle.lemon_juice.name",
+                "gt.item.bottle.lemon_juice.tooltip",
                 new GTFoodStat(
                     2,
                     0.4F,
@@ -1292,8 +1293,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Limoncello.set(
             addItem(
                 Bottle_Limoncello.ID,
-                "Limoncello",
-                "An alcoholic Drink which tastes like Lemons",
+                "gt.item.bottle.limoncello.name",
+                "gt.item.bottle.limoncello.tooltip",
                 new GTFoodStat(
                     2,
                     0.4F,
@@ -1316,8 +1317,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Lemonade.set(
             addItem(
                 Bottle_Lemonade.ID,
-                "Lemonade",
-                "Cold and refreshing Lemonade",
+                "gt.item.bottle.lemonade.name",
+                "gt.item.bottle.lemonade.tooltip",
                 new GTFoodStat(
                     4,
                     0.3F,
@@ -1336,8 +1337,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Alcopops.set(
             addItem(
                 Bottle_Alcopops.ID,
-                "Alcopops",
-                "Don't let your Children drink this junk!",
+                "gt.item.bottle.alcopops.name",
+                "gt.item.bottle.alcopops.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -1360,8 +1361,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Cave_Johnsons_Grenade_Juice.set(
             addItem(
                 Bottle_Cave_Johnsons_Grenade_Juice.ID,
-                "Cave Johnson's Grenade Juice",
-                "When life gives you Lemons, make Life take them Lemons back!",
+                "gt.item.bottle.cave_johnsons_grenade_juice.name",
+                "gt.item.bottle.cave_johnsons_grenade_juice.tooltip",
                 new GTFoodStat(
                     0,
                     0.0F,
@@ -1376,8 +1377,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Milk.set(
             addItem(
                 Bottle_Milk.ID,
-                "Milk",
-                "Got Milk?",
+                "gt.item.bottle.milk.name",
+                "gt.item.bottle.milk.tooltip",
                 OrePrefixes.bottle.get(Materials.Milk),
                 new GTFoodStat(
                     0,
@@ -1393,8 +1394,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Bottle_Holy_Water.set(
             addItem(
                 Bottle_Holy_Water.ID,
-                "Holy Water",
-                "May the holy Planks be with you",
+                "gt.item.bottle.holy_water.name",
+                "gt.item.bottle.holy_water.tooltip",
                 OrePrefixes.bottle.get(Materials.HolyWater),
                 new GTFoodStat(
                     0,
@@ -1415,8 +1416,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Potato_On_Stick.set(
             addItem(
                 Food_Potato_On_Stick.ID,
-                "Potato on a Stick",
-                "Totally looks like a Crab Claw",
+                "gt.item.food.potato_on_stick.name",
+                "gt.item.food.potato_on_stick.tooltip",
                 new GTFoodStat(1, 0.3F, EnumAction.eat, new ItemStack(Items.stick, 1), false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
@@ -1424,8 +1425,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Potato_On_Stick_Roasted.set(
             addItem(
                 Food_Potato_On_Stick_Roasted.ID,
-                "Roasted Potato on a Stick",
-                "Still looks like a Crab Claw",
+                "gt.item.food.potato_on_stick_roasted.name",
+                "gt.item.food.potato_on_stick_roasted.tooltip",
                 new GTFoodStat(6, 0.6F, EnumAction.eat, new ItemStack(Items.stick, 1), false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
@@ -1434,8 +1435,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Raw_Fries.set(
             addItem(
                 Food_Raw_Fries.ID,
-                "Potato Strips",
-                "It's Potato in Stripe Form",
+                "gt.item.food.raw_fries.name",
+                "gt.item.food.raw_fries.tooltip",
                 new GTFoodStat(1, 0.3F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
@@ -1443,8 +1444,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Fries.set(
             addItem(
                 Food_Fries.ID,
-                "Fries",
-                "Not to confuse with Fry the Delivery Boy",
+                "gt.item.food.fries.name",
+                "gt.item.food.fries.tooltip",
                 new GTFoodStat(7, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
@@ -1453,8 +1454,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Packaged_Fries.set(
             addItem(
                 Food_Packaged_Fries.ID,
-                "Fries",
-                "Ketchup not included",
+                "gt.item.food.packaged_fries.name",
+                "gt.item.food.packaged_fries.tooltip",
                 new GTFoodStat(
                     7,
                     0.5F,
@@ -1470,8 +1471,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Raw_PotatoChips.set(
             addItem(
                 Food_Raw_PotatoChips.ID,
-                "Potato Chips (Raw)",
-                "Just like a Potato",
+                "gt.item.food.raw_potato_chips.name",
+                "gt.item.food.raw_potato_chips.tooltip",
                 new GTFoodStat(1, 0.3F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
@@ -1479,8 +1480,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_PotatoChips.set(
             addItem(
                 Food_PotatoChips.ID,
-                "Potato Chips",
-                "Crunchy",
+                "gt.item.food.potato_chips.name",
+                "gt.item.food.potato_chips.tooltip",
                 new GTFoodStat(7, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
@@ -1489,8 +1490,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_ChiliChips.set(
             addItem(
                 Food_ChiliChips.ID,
-                "Chili Chips",
-                "Spicy",
+                "gt.item.food.chili_chips.name",
+                "gt.item.food.chili_chips.tooltip",
                 new GTFoodStat(7, 0.6F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
@@ -1499,8 +1500,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Packaged_PotatoChips.set(
             addItem(
                 Food_Packaged_PotatoChips.ID,
-                "Bag of Potato Chips",
-                "Full of delicious Air",
+                "gt.item.food.packaged_potato_chips.name",
+                "gt.item.food.packaged_potato_chips.tooltip",
                 new GTFoodStat(
                     7,
                     0.5F,
@@ -1516,8 +1517,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Packaged_ChiliChips.set(
             addItem(
                 Food_Packaged_ChiliChips.ID,
-                "Bag of Chili Chips",
-                "Stop making noises Baj!",
+                "gt.item.food.packaged_chili_chips.name",
+                "gt.item.food.packaged_chili_chips.tooltip",
                 new GTFoodStat(
                     7,
                     0.6F,
@@ -1533,8 +1534,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Chum.set(
             addItem(
                 Food_Chum.ID,
-                "Chum",
-                "Chum is Fum!",
+                "gt.item.food.chum.name",
+                "gt.item.food.chum.tooltip",
                 new GTFoodStat(
                     5,
                     0.2F,
@@ -1557,8 +1558,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Chum_On_Stick.set(
             addItem(
                 Food_Chum_On_Stick.ID,
-                "Chum on a Stick",
-                "Don't forget to try our Chum-balaya",
+                "gt.item.food.chum_on_stick.name",
+                "gt.item.food.chum_on_stick.tooltip",
                 new GTFoodStat(
                     5,
                     0.2F,
@@ -1581,24 +1582,24 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Dough_Sugar.set(
             addItem(
                 Food_Dough_Sugar.ID,
-                "Sugary Dough",
-                "Don't eat the Dough before it is baken",
+                "gt.item.food.dough_sugar.name",
+                "gt.item.food.dough_sugar.tooltip",
                 new GTFoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Dough_Chocolate.set(
             addItem(
                 Food_Dough_Chocolate.ID,
-                "Chocolate Dough",
-                "I said don't eat the Dough!",
+                "gt.item.food.dough_chocolate.name",
+                "gt.item.food.dough_chocolate.tooltip",
                 new GTFoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Raw_Cookie.set(
             addItem(
                 Food_Raw_Cookie.ID,
-                "Cookie shaped Dough",
-                "For baking Cookies",
+                "gt.item.food.raw_cookie.name",
+                "gt.item.food.raw_cookie.tooltip",
                 new GTFoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
@@ -1606,8 +1607,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Sliced_Buns.set(
             addItem(
                 Food_Sliced_Buns.ID,
-                "Buns",
-                "Pre Sliced",
+                "gt.item.food.sliced_buns.name",
+                "gt.item.food.sliced_buns.tooltip",
                 new GTFoodStat(3, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -1615,8 +1616,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Burger_Veggie.set(
             addItem(
                 Food_Burger_Veggie.ID,
-                "Veggieburger",
-                "No matter how you call this, this is NOT a Burger!",
+                "gt.item.food.burger_veggie.name",
+                "gt.item.food.burger_veggie.tooltip",
                 new GTFoodStat(3, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -1624,8 +1625,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Burger_Cheese.set(
             addItem(
                 Food_Burger_Cheese.ID,
-                "Cheeseburger",
-                "Cheesy!",
+                "gt.item.food.burger_cheese.name",
+                "gt.item.food.burger_cheese.tooltip",
                 new GTFoodStat(3, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 2L),
@@ -1634,8 +1635,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Burger_Meat.set(
             addItem(
                 Food_Burger_Meat.ID,
-                "Hamburger",
-                "The Mc Burger Queen Burger",
+                "gt.item.food.burger_meat.name",
+                "gt.item.food.burger_meat.tooltip",
                 new GTFoodStat(3, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -1643,8 +1644,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Burger_Chum.set(
             addItem(
                 Food_Burger_Chum.ID,
-                "Chumburger",
-                "Fum is Chum!",
+                "gt.item.food.burger_chum.name",
+                "gt.item.food.burger_chum.tooltip",
                 new GTFoodStat(
                     5,
                     0.2F,
@@ -1668,8 +1669,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Sliced_Breads.set(
             addItem(
                 Food_Sliced_Breads.ID,
-                "Breads",
-                "Pre Sliced",
+                "gt.item.food.sliced_breads.name",
+                "gt.item.food.sliced_breads.tooltip",
                 new GTFoodStat(5, 0.6F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -1677,8 +1678,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Sandwich_Veggie.set(
             addItem(
                 Food_Sandwich_Veggie.ID,
-                "Veggie Sandwich",
-                "Meatless",
+                "gt.item.food.sandwich_veggie.name",
+                "gt.item.food.sandwich_veggie.tooltip",
                 new GTFoodStat(7, 0.6F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -1686,8 +1687,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Sandwich_Cheese.set(
             addItem(
                 Food_Sandwich_Cheese.ID,
-                "Cheese Sandwich",
-                "Say Cheese!",
+                "gt.item.food.sandwich_cheese.name",
+                "gt.item.food.sandwich_cheese.tooltip",
                 new GTFoodStat(7, 0.6F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 2L),
@@ -1695,8 +1696,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Sandwich_Bacon.set(
             addItem(
                 Food_Sandwich_Bacon.ID,
-                "Bacon Sandwich",
-                "The best Sandwich ever!",
+                "gt.item.food.sandwich_bacon.name",
+                "gt.item.food.sandwich_bacon.tooltip",
                 new GTFoodStat(10, 0.8F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -1704,8 +1705,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Sandwich_Steak.set(
             addItem(
                 Food_Sandwich_Steak.ID,
-                "Steak Sandwich",
-                "Not a 'Steam Sandwich'",
+                "gt.item.food.sandwich_steak.name",
+                "gt.item.food.sandwich_steak.tooltip",
                 new GTFoodStat(10, 0.8F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -1713,8 +1714,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Sliced_Baguettes.set(
             addItem(
                 Food_Sliced_Baguettes.ID,
-                "Baguettes",
-                "Pre Sliced",
+                "gt.item.food.sliced_baguettes.name",
+                "gt.item.food.sliced_baguettes.tooltip",
                 new GTFoodStat(8, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -1722,8 +1723,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Large_Sandwich_Veggie.set(
             addItem(
                 Food_Large_Sandwich_Veggie.ID,
-                "Large Veggie Sandwich",
-                "Just not worth it",
+                "gt.item.food.large_sandwich_veggie.name",
+                "gt.item.food.large_sandwich_veggie.tooltip",
                 new GTFoodStat(15, 0.8F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 3L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -1731,8 +1732,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Large_Sandwich_Cheese.set(
             addItem(
                 Food_Large_Sandwich_Cheese.ID,
-                "Large Cheese Sandwich",
-                "I need another cheesy tooltip for this",
+                "gt.item.food.large_sandwich_cheese.name",
+                "gt.item.food.large_sandwich_cheese.tooltip",
                 new GTFoodStat(15, 0.8F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 3L),
@@ -1740,8 +1741,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Large_Sandwich_Bacon.set(
             addItem(
                 Food_Large_Sandwich_Bacon.ID,
-                "Large Bacon Sandwich",
-                "For Men! (and manly Women)",
+                "gt.item.food.large_sandwich_bacon.name",
+                "gt.item.food.large_sandwich_bacon.tooltip",
                 new GTFoodStat(20, 1.0F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -1749,8 +1750,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Large_Sandwich_Steak.set(
             addItem(
                 Food_Large_Sandwich_Steak.ID,
-                "Large Steak Sandwich",
-                "Yes, I once accidentally called it 'Steam Sandwich'",
+                "gt.item.food.large_sandwich_steak.name",
+                "gt.item.food.large_sandwich_steak.tooltip",
                 new GTFoodStat(20, 1.0F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -1758,8 +1759,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Raw_Pizza_Veggie.set(
             addItem(
                 Food_Raw_Pizza_Veggie.ID,
-                "Raw Veggie Pizza",
-                "Into the Oven with it!",
+                "gt.item.food.raw_pizza_veggie.name",
+                "gt.item.food.raw_pizza_veggie.tooltip",
                 new GTFoodStat(1, 0.2F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -1767,8 +1768,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Raw_Pizza_Cheese.set(
             addItem(
                 Food_Raw_Pizza_Cheese.ID,
-                "Raw Cheese Pizza",
-                "Into the Oven with it!",
+                "gt.item.food.raw_pizza_cheese.name",
+                "gt.item.food.raw_pizza_cheese.tooltip",
                 new GTFoodStat(2, 0.2F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 2L),
@@ -1776,8 +1777,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Raw_Pizza_Meat.set(
             addItem(
                 Food_Raw_Pizza_Meat.ID,
-                "Raw Mince Meat Pizza",
-                "Into the Oven with it!",
+                "gt.item.food.raw_pizza_meat.name",
+                "gt.item.food.raw_pizza_meat.tooltip",
                 new GTFoodStat(2, 0.2F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -1786,8 +1787,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Baked_Pizza_Veggie.set(
             addItem(
                 Food_Baked_Pizza_Veggie.ID,
-                "Veggie Pizza",
-                "The next they want is Gluten Free Pizzas...",
+                "gt.item.food.baked_pizza_veggie.name",
+                "gt.item.food.baked_pizza_veggie.tooltip",
                 new GTFoodStat(3, 0.3F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -1795,8 +1796,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Baked_Pizza_Cheese.set(
             addItem(
                 Food_Baked_Pizza_Cheese.ID,
-                "Cheese Pizza",
-                "Pizza Magarita",
+                "gt.item.food.baked_pizza_cheese.name",
+                "gt.item.food.baked_pizza_cheese.tooltip",
                 new GTFoodStat(4, 0.4F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 2L),
@@ -1804,8 +1805,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Baked_Pizza_Meat.set(
             addItem(
                 Food_Baked_Pizza_Meat.ID,
-                "Mince Meat Pizza",
-                "Emo Pizza, it cuts itself!",
+                "gt.item.food.baked_pizza_meat.name",
+                "gt.item.food.baked_pizza_meat.tooltip",
                 new GTFoodStat(5, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -1814,8 +1815,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Dye_Indigo.set(
             addItem(
                 Dye_Indigo.ID,
-                "Indigo Dye",
-                "Blue Dye",
+                "gt.item.dye.indigo.name",
+                "gt.item.dye.indigo.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1L),
                 Dyes.dyeBlue));
 
@@ -1823,10 +1824,12 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             Dye_Color_04.ID, Dye_Color_05.ID, Dye_Color_06.ID, Dye_Color_07.ID, Dye_Color_08.ID, Dye_Color_09.ID,
             Dye_Color_10.ID, Dye_Color_11.ID, Dye_Color_12.ID, Dye_Color_13.ID, Dye_Color_14.ID, Dye_Color_15.ID };
         for (int i = 0; i < 16; i = i + 1) {
+            String dyeKey = "gt.item.dye." + Dyes.get(i).mName.toLowerCase()
+                .replace(" ", "_") + ".name";
             ItemList.DYE_ONLY_ITEMS[i].set(
                 addItem(
                     Dye_Colors[i],
-                    Dyes.get(i).mName + " Dye",
+                    dyeKey,
                     "",
                     Dyes.get(i)
                         .name(),
@@ -1836,236 +1839,236 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Plank_Oak.set(
             addItem(
                 Plank_Oak.ID,
-                "Oak Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.oak.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Spruce.set(
             addItem(
                 Plank_Spruce.ID,
-                "Spruce Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.spruce.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Birch.set(
             addItem(
                 Plank_Birch.ID,
-                "Birch Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.birch.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Jungle.set(
             addItem(
                 Plank_Jungle.ID,
-                "Jungle Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.jungle.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Acacia.set(
             addItem(
                 Plank_Acacia.ID,
-                "Acacia Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.acacia.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_DarkOak.set(
             addItem(
                 Plank_DarkOak.ID,
-                "Dark Oak Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.dark_oak.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Larch.set(
             addItem(
                 Plank_Larch.ID,
-                "Larch Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.larch.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Teak.set(
             addItem(
                 Plank_Teak.ID,
-                "Teak Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.teak.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Acacia_Green.set(
             addItem(
                 Plank_Acacia_Green.ID,
-                "Green Acacia Plank Cover",
+                "gt.item.plank_cover.green_acacia.name",
                 plankOredict,
-                aTextCover,
+                "gt.item.plank_cover.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Lime.set(
             addItem(
                 Plank_Lime.ID,
-                "Lime Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.lime.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Chestnut.set(
             addItem(
                 Plank_Chestnut.ID,
-                "Chestnut Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.chestnut.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Wenge.set(
             addItem(
                 Plank_Wenge.ID,
-                "Wenge Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.wenge.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Baobab.set(
             addItem(
                 Plank_Baobab.ID,
-                "Baobab Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.baobab.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Sequoia.set(
             addItem(
                 Plank_Sequoia.ID,
-                "Sequoia Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.sequoia.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Kapok.set(
             addItem(
                 Plank_Kapok.ID,
-                "Kapok Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.kapok.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Ebony.set(
             addItem(
                 Plank_Ebony.ID,
-                "Ebony Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.ebony.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Mahagony.set(
             addItem(
                 Plank_Mahagony.ID,
-                "Mahagony Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.mahagony.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Balsa.set(
             addItem(
                 Plank_Balsa.ID,
-                "Balsa Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.balsa.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Willow.set(
             addItem(
                 Plank_Willow.ID,
-                "Willow Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.willow.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Walnut.set(
             addItem(
                 Plank_Walnut.ID,
-                "Walnut Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.walnut.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Greenheart.set(
             addItem(
                 Plank_Greenheart.ID,
-                "Greenheart Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.greenheart.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Cherry.set(
             addItem(
                 Plank_Cherry.ID,
-                "Cherry Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.cherry.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Mahoe.set(
             addItem(
                 Plank_Mahoe.ID,
-                "Mahoe Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.mahoe.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Poplar.set(
             addItem(
                 Plank_Poplar.ID,
-                "Poplar Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.poplar.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Palm.set(
             addItem(
                 Plank_Palm.ID,
-                "Palm Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.palm.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Papaya.set(
             addItem(
                 Plank_Papaya.ID,
-                "Papaya Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.papaya.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Pine.set(
             addItem(
                 Plank_Pine.ID,
-                "Pine Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.pine.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Plum.set(
             addItem(
                 Plank_Plum.ID,
-                "Plum Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.plum.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Maple.set(
             addItem(
                 Plank_Maple.ID,
-                "Maple Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.maple.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Citrus.set(
             addItem(
                 Plank_Citrus.ID,
-                "Citrus Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.citrus.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Cherry_EFR.set(
             addItem(
                 Plank_Cherry_EFR.ID,
-                "Cherry Plank Cover",
-                aTextCover,
+                "gt.item.plank_cover.cherry_efr.name",
+                "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.SFMixture.set(addItem(SFMixture.ID, "Super Fuel Binder", "Raw Material"));
-        ItemList.MSFMixture.set(addItem(MSFMixture.ID, "Magic Super Fuel Binder", "Raw Material"));
+        ItemList.SFMixture.set(addItem(SFMixture.ID, "gt.item.sf_mixture.name", "gt.item.sf_mixture.tooltip"));
+        ItemList.MSFMixture.set(addItem(MSFMixture.ID, "gt.item.msf_mixture.name", "gt.item.msf_mixture.tooltip"));
 
         ItemList.Food_Cheese.set(
             addItem(
                 Food_Cheese.ID,
-                "Cheese",
-                "Click the Cheese",
+                "gt.item.food.cheese.name",
+                "gt.item.food.cheese.tooltip",
                 "foodCheese",
                 new GTFoodStat(3, 0.6F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 2L)));
         ItemList.Food_Dough.set(
             addItem(
                 Food_Dough.ID,
-                "Dough",
-                "For making Breads",
+                "gt.item.food.dough.name",
+                "gt.item.food.dough.tooltip",
                 "foodDough",
                 new GTFoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
@@ -2073,40 +2076,40 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Flat_Dough.set(
             addItem(
                 Food_Flat_Dough.ID,
-                "Flattened Dough",
-                "For making Pizza",
+                "gt.item.food.flat_dough.name",
+                "gt.item.food.flat_dough.tooltip",
                 new GTFoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Raw_Bread.set(
             addItem(
                 Food_Raw_Bread.ID,
-                "Dough",
-                "In Bread Shape",
+                "gt.item.food.raw_bread.name",
+                "gt.item.food.raw_bread.tooltip",
                 new GTFoodStat(1, 0.2F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Raw_Bun.set(
             addItem(
                 Food_Raw_Bun.ID,
-                "Dough",
-                "In Bun Shape",
+                "gt.item.food.raw_bun.name",
+                "gt.item.food.raw_bun.tooltip",
                 new GTFoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Raw_Baguette.set(
             addItem(
                 Food_Raw_Baguette.ID,
-                "Dough",
-                "In Baguette Shape",
+                "gt.item.food.raw_baguette.name",
+                "gt.item.food.raw_baguette.tooltip",
                 new GTFoodStat(1, 0.3F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Baked_Bun.set(
             addItem(
                 Food_Baked_Bun.ID,
-                "Bun",
-                "Do not teleport Bread!",
+                "gt.item.food.baked_bun.name",
+                "gt.item.food.baked_bun.tooltip",
                 new GTFoodStat(3, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -2114,8 +2117,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Baked_Baguette.set(
             addItem(
                 Food_Baked_Baguette.ID,
-                "Baguette",
-                "I teleported nothing BUT Bread!!!",
+                "gt.item.food.baked_baguette.name",
+                "gt.item.food.baked_baguette.tooltip",
                 new GTFoodStat(8, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -2123,8 +2126,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Sliced_Bread.set(
             addItem(
                 Food_Sliced_Bread.ID,
-                "Sliced Bread",
-                "Just half a Bread",
+                "gt.item.food.sliced_bread.name",
+                "gt.item.food.sliced_bread.tooltip",
                 new GTFoodStat(2, 0.3F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -2132,8 +2135,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Sliced_Bun.set(
             addItem(
                 Food_Sliced_Bun.ID,
-                "Sliced Bun",
-                "Just half a Bun",
+                "gt.item.food.sliced_bun.name",
+                "gt.item.food.sliced_bun.tooltip",
                 new GTFoodStat(1, 0.3F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -2141,8 +2144,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Sliced_Baguette.set(
             addItem(
                 Food_Sliced_Baguette.ID,
-                "Sliced Baguette",
-                "Just half a Baguette",
+                "gt.item.food.sliced_baguette.name",
+                "gt.item.food.sliced_baguette.tooltip",
                 new GTFoodStat(4, 0.3F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -2150,90 +2153,90 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Food_Raw_Cake.set(
             addItem(
                 Food_Raw_Cake.ID,
-                "Cake Bottom",
-                "For making Cake",
+                "gt.item.food.raw_cake.name",
+                "gt.item.food.raw_cake.tooltip",
                 new GTFoodStat(2, 0.2F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Baked_Cake.set(
             addItem(
                 Food_Baked_Cake.ID,
-                "Baked Cake Bottom",
-                "I know I promised you an actual Cake, but well...",
+                "gt.item.food.baked_cake.name",
+                "gt.item.food.baked_cake.tooltip",
                 new GTFoodStat(3, 0.3F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Sliced_Lemon.set(
             addItem(
                 Food_Sliced_Lemon.ID,
-                "Lemon Slice",
-                "Ideal to put on your Drink",
+                "gt.item.food.sliced_lemon.name",
+                "gt.item.food.sliced_lemon.tooltip",
                 new GTFoodStat(1, 0.075F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Food_Sliced_Tomato.set(
             addItem(
                 Food_Sliced_Tomato.ID,
-                "Tomato Slice",
-                "Solid Ketchup",
+                "gt.item.food.sliced_tomato.name",
+                "gt.item.food.sliced_tomato.tooltip",
                 new GTFoodStat(1, 0.05F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Food_Sliced_Onion.set(
             addItem(
                 Food_Sliced_Onion.ID,
-                "Onion Slice",
-                "ONIONS, UNITE!",
+                "gt.item.food.sliced_onion.name",
+                "gt.item.food.sliced_onion.tooltip",
                 new GTFoodStat(1, 0.05F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Food_Sliced_Cucumber.set(
             addItem(
                 Food_Sliced_Cucumber.ID,
-                "Cucumber Slice",
-                "QUEWWW-CUMMM-BERRR!!!",
+                "gt.item.food.sliced_cucumber.name",
+                "gt.item.food.sliced_cucumber.tooltip",
                 new GTFoodStat(1, 0.05F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
 
         ItemList.Food_Sliced_Cheese.set(
             addItem(
                 Food_Sliced_Cheese.ID,
-                "Cheese Slice",
-                "ALIEN ATTACK!!!, throw the CHEEEEESE!!!",
+                "gt.item.food.sliced_cheese.name",
+                "gt.item.food.sliced_cheese.tooltip",
                 new GTFoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
 
         ItemList.Cover_AdvancedRedstoneTransmitter.set(
             addItem(
                 Cover_AdvancedRedstoneTransmitter.ID,
-                "Advanced Redstone Transmitter",
-                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
+                "gt.item.cover.advanced_redstone_transmitter.name",
+                "gt.item.cover.advanced_redstone_transmitter.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneTransmitterInternal.set(
             addItem(
                 Cover_AdvancedRedstoneTransmitterInternal.ID,
-                "Advanced Redstone Transmitter (Internal)",
-                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers/n §cDEPRECATED! This will be removed in the next major update.",
+                "gt.item.cover.advanced_redstone_transmitter_internal.name",
+                "gt.item.cover.advanced_redstone_transmitter_internal.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneReceiver.set(
             addItem(
                 Cover_AdvancedRedstoneReceiver.ID,
-                "Advanced Redstone Receiver",
-                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
+                "gt.item.cover.advanced_redstone_receiver.name",
+                "gt.item.cover.advanced_redstone_receiver.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneReceiverInternal.set(
             addItem(
                 Cover_AdvancedRedstoneReceiverInternal.ID,
-                "Advanced Redstone Receiver (Internal)",
-                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers/n §cDEPRECATED! This will be removed in the next major update.",
+                "gt.item.cover.advanced_redstone_receiver_internal.name",
+                "gt.item.cover.advanced_redstone_receiver_internal.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
 
         ItemList.Cover_WirelessFluidDetector.set(
             addItem(
                 Cover_WirelessFluidDetector.ID,
-                "Wireless Fluid Detector Cover",
-                "Transfers Fluid Amount as Redstone wirelessly/n Can only connect with advanced wireless covers",
+                "gt.item.cover.wireless_fluid_detector.name",
+                "gt.item.cover.wireless_fluid_detector.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
@@ -2241,8 +2244,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Cover_WirelessItemDetector.set(
             addItem(
                 Cover_WirelessItemDetector.ID,
-                "Wireless Item Detector Cover",
-                "Transfers Item Amount as Redstone wirelessly/n Can only connect with advanced wireless covers",
+                "gt.item.cover.wireless_item_detector.name",
+                "gt.item.cover.wireless_item_detector.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
@@ -2251,16 +2254,16 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Cover_WirelessNeedsMaintainance.set(
             addItem(
                 Cover_WirelessNeedsMaintainance.ID,
-                "Wireless Needs Maintenance Cover",
-                "Transfers Maintenance Issues as Redstone wirelessly/n Can only connect with advanced wireless covers",
+                "gt.item.cover.wireless_needs_maintenance.name",
+                "gt.item.cover.wireless_needs_maintenance.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 3L)));
 
         ItemList.Cover_WirelessActivityDetector.set(
             addItem(
                 Cover_WirelessActivityDetector.ID,
-                "Wireless Activity Detector Cover",
-                "Transfers Activity as Redstone wirelessly/n Can only connect with advanced wireless covers",
+                "gt.item.cover.wireless_activity_detector.name",
+                "gt.item.cover.wireless_activity_detector.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
@@ -2269,21 +2272,24 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Display_ITS_FREE.set(
             addItem(
                 Display_ITS_FREE.ID,
-                "ITS FREE",
-                "(or at least almost free)",
+                "gt.item.display.its_free.name",
+                "gt.item.display.its_free.tooltip",
                 SubTag.INVISIBLE,
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
-        ItemList.Item_Redstone_Sniffer
-            .set(new ItemRedstoneSniffer("Item_Redstone_Sniffer", "Redstone Sniffer", "What are these frequencies?!"));
+        ItemList.Item_Redstone_Sniffer.set(
+            new ItemRedstoneSniffer(
+                "Item_Redstone_Sniffer",
+                "gt.item.redstone_sniffer.name",
+                "gt.item.redstone_sniffer.tooltip"));
         ItemList.DroneRemoteInterface.set(
             new ItemDroneRemoteInterface(
                 "Item_Drone_Remote_Interface",
-                "Drone Remote Interface",
-                "Built-in super powerful navigation beacon!!"));
-        ItemList.Vajra_Core.set(addItem(Vajra_Core.ID, "Vajra Core", ""));
-        ItemList.Magnetron.set(addItem(Magnetron.ID, "Magnetron", ""));
-        ItemList.ChaosLocator
-            .set(new ItemChaosLocator("Item_Chaos_Locator", "Chaos Locator", "Warps to areas with extreme entropy"));
+                "gt.item.drone_remote_interface.name",
+                "gt.item.drone_remote_interface.tooltip"));
+        ItemList.Vajra_Core.set(addItem(Vajra_Core.ID, "gt.item.vajra_core.name", ""));
+        ItemList.Magnetron.set(addItem(Magnetron.ID, "gt.item.magnetron.name", ""));
+        ItemList.ChaosLocator.set(
+            new ItemChaosLocator("Item_Chaos_Locator", "gt.item.chaos_locator.name", "gt.item.chaos_locator.tooltip"));
 
         setAllFluidContainerStats();
         setBurnValues();

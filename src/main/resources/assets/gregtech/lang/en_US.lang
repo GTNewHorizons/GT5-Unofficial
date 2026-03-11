@@ -2506,8 +2506,7 @@ gt.interact.desc.Energy_Detector.average_out.tooltip=§fAverage Electric Output
 gt.interact.desc.Energy_Detector.eu_stored=§8EU stored
 gt.interact.desc.Energy_Detector.eu_stored.tooltip=§fElectricity Storage(Including Batteries)
 
-# Meta
-
+# MetaItem01
 ## GT Credit
 gt.item.credit.copper.name=Copper GT Credit
 gt.item.credit.copper.tooltip=0.125 Credits
@@ -2974,7 +2973,7 @@ gt.item.fluid_regulator.uiv.name=Fluid Regulator (UIV)
 gt.item.fluid_regulator.umv.name=Fluid Regulator (UMV)
 gt.item.fluid_regulator.uxv.name=Fluid Regulator (UXV)
 gt.item.fluid_regulator.max.name=Fluid Regulator (MAX)
-gt.item.fluid_regulator.tooltip=Configurable up to %s L/sec (as Cover)/n Rightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick/n to adjust the pump speed by 1/16/256 L/sec per click/n Can not transfer more than 2.1B L per Operation
+gt.item.fluid_regulator.tooltip=Configurable up to %s L/sec (as Cover)\nRightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick\nto adjust the pump speed by 1/16/256 L/sec per click\nCan not transfer more than 2.1B L per Operation
 
 ## Fluid Filter
 gt.item.fluid_filter.name=Fluid Filter Cover
@@ -3022,15 +3021,15 @@ gt.item.conveyor_module.max.tooltip=16 stacks of 2.1B items every 1/20 sec (as C
 
 ## Robot Arms
 gt.item.robot_arm.lv.name=Robot Arm (LV)
-gt.item.robot_arm.lv.tooltip=1 stack every 20 secs (as Cover)/n Grabs from and inserts into specific slots
+gt.item.robot_arm.lv.tooltip=1 stack every 20 secs (as Cover)\nGrabs from and inserts into specific slots
 gt.item.robot_arm.mv.name=Robot Arm (MV)
-gt.item.robot_arm.mv.tooltip=1 stack every 5 secs (as Cover)/n Grabs from and inserts into specific slots
+gt.item.robot_arm.mv.tooltip=1 stack every 5 secs (as Cover)\nGrabs from and inserts into specific slots
 gt.item.robot_arm.hv.name=Robot Arm (HV)
-gt.item.robot_arm.hv.tooltip=1 stack every 1 sec (as Cover)/n Grabs from and inserts into specific slots
+gt.item.robot_arm.hv.tooltip=1 stack every 1 sec (as Cover)\nGrabs from and inserts into specific slots
 gt.item.robot_arm.ev.name=Robot Arm (EV)
-gt.item.robot_arm.ev.tooltip=1 stack every 1/5 sec (as Cover)/n Grabs from and inserts into specific slots
+gt.item.robot_arm.ev.tooltip=1 stack every 1/5 sec (as Cover)\nGrabs from and inserts into specific slots
 gt.item.robot_arm.iv.name=Robot Arm (IV)
-gt.item.robot_arm.iv.tooltip=1 stack every 1/20 sec (as Cover)/n Grabs from and inserts into specific slots
+gt.item.robot_arm.iv.tooltip=1 stack every 1/20 sec (as Cover)\nGrabs from and inserts into specific slots
 gt.item.robot_arm.luv.name=Robot Arm (LuV)
 gt.item.robot_arm.zpm.name=Robot Arm (ZPM)
 gt.item.robot_arm.uv.name=Robot Arm (UV)
@@ -3221,11 +3220,11 @@ gt.item.cover.solar_panel.uv.tooltip=Ultimate Solar Panel (Needs cleaning with r
 gt.item.cover.redstone_transmitter.name=Redstone Transmitter
 gt.item.cover.redstone_transmitter.tooltip=Transfers Redstone signals wireless
 gt.item.cover.redstone_transmitter_internal.name=Redstone Transmitter (Internal)
-gt.item.cover.redstone_transmitter_internal.tooltip=Transfers Redstone signals wireless/n §cDEPRECATED! This will be removed in the next major update.
+gt.item.cover.redstone_transmitter_internal.tooltip=Transfers Redstone signals wireless\n§cDEPRECATED! This will be removed in the next major update.
 gt.item.cover.redstone_receiver.name=Redstone Receiver
 gt.item.cover.redstone_receiver.tooltip=Transfers Redstone signals wireless
 gt.item.cover.wireless_controller.name=Wireless Machine Controller Cover
-gt.item.cover.wireless_controller.tooltip=Turns Machines ON/OFF wirelessly/n Can only connect with advanced wireless covers
+gt.item.cover.wireless_controller.tooltip=Turns Machines ON/OFF wirelessly\nCan only connect with advanced wireless covers
 
 ### Maintenance Cover
 gt.item.cover.needs_maintenance.name=Needs Maintenance Cover
@@ -3259,7 +3258,7 @@ gt.item.black_hole.seed.tooltip=Opens a pseudostable black hole
 gt.item.black_hole.collapser.name=Black Hole Collapser
 gt.item.black_hole.collapser.tooltip=Safely closes a pseudostable black hole
 gt.item.black_hole.stabilizer.name=Superstable Black Hole Seed
-gt.item.black_hole.stabilizer.tooltip=Opens a superstable black hole/n Black hole will never destabilize and will operate at maximum efficiency
+gt.item.black_hole.stabilizer.tooltip=Opens a superstable black hole\nBlack hole will never destabilize and will operate at maximum efficiency
 
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
@@ -5578,3 +5577,332 @@ gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
 gt.blocktintedglass.3.name=Tinted Industrial Glass (Black)
+
+# MetaItem02
+## Thermos Can drinks
+gt.item.thermos_can.coffee.name=Coffee
+gt.item.thermos_can.coffee.tooltip=Coffee, dark, without anything else
+gt.item.thermos_can.sweet_coffee.name=Sweet coffee
+gt.item.thermos_can.sweet_coffee.tooltip=Keeping you awake the whole night
+gt.item.thermos_can.latte.name=Latte
+gt.item.thermos_can.latte.tooltip=Just the regular morning Coffee, with milk
+gt.item.thermos_can.sweet_latte.name=Sweet Latte
+gt.item.thermos_can.sweet_latte.tooltip=A little bit of sugar goes a long way
+gt.item.thermos_can.sweet_jesus_latte.name=Sweet Jesus Latte
+gt.item.thermos_can.sweet_jesus_latte.tooltip=You want some Coffee to your Sugar?
+gt.item.thermos_can.dark_chocolate_milk.name=Dark Chocolate Milk
+gt.item.thermos_can.dark_chocolate_milk.tooltip=A bit bitter, better add a bit Sugar
+gt.item.thermos_can.chocolate_milk.name=Chocolate Milk
+gt.item.thermos_can.chocolate_milk.tooltip=Sweet Goodness
+gt.item.thermos_can.tea.name=Tea
+gt.item.thermos_can.tea.tooltip=Keep calm and carry on
+gt.item.thermos_can.sweet_tea.name=Sweet Tea
+gt.item.thermos_can.sweet_tea.tooltip=How about a Tea Party? In Boston?
+gt.item.thermos_can.ice_tea.name=Ice Tea
+gt.item.thermos_can.ice_tea.tooltip=Better than this purple Junk Drink from failed Potions
+
+## Gelled Toluene
+gt.item.gelled_toluene.name=Gelled Toluene
+gt.item.gelled_toluene.tooltip=Raw Explosive
+
+## Bottle drinks
+gt.item.bottle.purple_drink.name=Purple Drink
+gt.item.bottle.purple_drink.tooltip=How about Lemonade. Or some Ice Tea? I got Purple Drink!
+gt.item.bottle.grape_juice.name=Grape Juice
+gt.item.bottle.grape_juice.tooltip=This has a cleaning effect on your internals.
+gt.item.bottle.wine.name=Wine
+gt.item.bottle.wine.tooltip=Ordinary
+gt.item.bottle.vinegar.name=Vinegar
+gt.item.bottle.vinegar.tooltip=Exquisite
+gt.item.bottle.potato_juice.name=Potato Juice
+gt.item.bottle.potato_juice.tooltip=Ever seen Potato Juice in stores? No? That has a reason.
+gt.item.bottle.vodka.name=Vodka
+gt.item.bottle.vodka.tooltip=Not to confuse with Water
+gt.item.bottle.leninade.name=Leninade
+gt.item.bottle.leninade.tooltip=Let the Communism flow through you!
+gt.item.bottle.mineral_water.name=Mineral Water
+gt.item.bottle.mineral_water.tooltip=The best Stuff you can drink to stay healthy
+gt.item.bottle.salty_water.name=Salty Water
+gt.item.bottle.salty_water.tooltip=Like Sea Water but less dirty
+gt.item.bottle.reed_water.name=Reed Water
+gt.item.bottle.reed_water.tooltip=I guess this tastes better when fermented
+gt.item.bottle.rum.name=Rum
+gt.item.bottle.rum.tooltip=A buddle o' rum
+gt.item.bottle.pirate_brew.name=Pirate Brew
+gt.item.bottle.pirate_brew.tooltip=Set the Sails, we are going to Torrentuga!
+gt.item.bottle.hops_juice.name=Hops Juice
+gt.item.bottle.hops_juice.tooltip=Every Beer has a start
+gt.item.bottle.dark_beer.name=Dark Beer
+gt.item.bottle.dark_beer.tooltip=Dark Beer, for the real Men
+gt.item.bottle.dragon_blood.name=Dragon Blood
+gt.item.bottle.dragon_blood.tooltip=FUS RO DAH!
+gt.item.bottle.wheaty_juice.name=Wheaty Juice
+gt.item.bottle.wheaty_juice.tooltip=Is this liquefied Bread or what?
+gt.item.bottle.scotch.name=Scotch
+gt.item.bottle.scotch.tooltip=Technically this is just a Whisky
+gt.item.bottle.glen_mckenner.name=Glen McKenner
+gt.item.bottle.glen_mckenner.tooltip=Don't hand to easily surprised people, they will shatter it.
+gt.item.bottle.wheaty_hops_juice.name=Wheaty Hops Juice
+gt.item.bottle.wheaty_hops_juice.tooltip=Also known as 'Duff-Lite'
+gt.item.bottle.beer.name=Beer
+gt.item.bottle.beer.tooltip=Good old Beer
+gt.item.bottle.chilly_sauce.name=Chilly Sauce
+gt.item.bottle.chilly_sauce.tooltip=Spicy
+gt.item.bottle.hot_sauce.name=Hot Sauce
+gt.item.bottle.hot_sauce.tooltip=Very Spicy, I guess?
+gt.item.bottle.diabolo_sauce.name=Diabolo Sauce
+gt.item.bottle.diabolo_sauce.tooltip=As if the Devil made this Sauce
+gt.item.bottle.diablo_sauce.name=Diablo Sauce
+gt.item.bottle.diablo_sauce.tooltip=Diablo always comes back!
+gt.item.bottle.snitches_glitch_sauce.name=Old Man Snitches glitched Diablo Sauce
+gt.item.bottle.snitches_glitch_sauce.tooltip=[Missing No]
+gt.item.bottle.apple_juice.name=Apple Juice
+gt.item.bottle.apple_juice.tooltip=Made of the Apples from our best Oak Farms
+gt.item.bottle.cider.name=Cider
+gt.item.bottle.cider.tooltip=If you have nothing better to do with your Apples
+gt.item.bottle.golden_apple_juice.name=Golden Apple Juice
+gt.item.bottle.golden_apple_juice.tooltip=A golden Apple in liquid form
+gt.item.bottle.golden_cider.name=Golden Cider
+gt.item.bottle.golden_cider.tooltip=More Resistance, less Regeneration
+gt.item.bottle.iduns_apple_juice.name=Idun's Apple Juice
+gt.item.bottle.iduns_apple_juice.tooltip=So you got the Idea of using Notch Apples for a drink?
+gt.item.bottle.notches_brew.name=Notches Brew
+gt.item.bottle.notches_brew.tooltip=This is just overpowered
+gt.item.bottle.lemon_juice.name=Lemon Juice
+gt.item.bottle.lemon_juice.tooltip=Maybe adding Sugar will make it less sour
+gt.item.bottle.limoncello.name=Limoncello
+gt.item.bottle.limoncello.tooltip=An alcoholic Drink which tastes like Lemons
+gt.item.bottle.lemonade.name=Lemonade
+gt.item.bottle.lemonade.tooltip=Cold and refreshing Lemonade
+gt.item.bottle.alcopops.name=Alcopops
+gt.item.bottle.alcopops.tooltip=Don't let your Children drink this junk!
+gt.item.bottle.cave_johnsons_grenade_juice.name=Cave Johnson's Grenade Juice
+gt.item.bottle.cave_johnsons_grenade_juice.tooltip=When life gives you Lemons, make Life take them Lemons back!
+gt.item.bottle.milk.name=Milk
+gt.item.bottle.milk.tooltip=Got Milk?
+gt.item.bottle.holy_water.name=Holy Water
+gt.item.bottle.holy_water.tooltip=May the holy Planks be with you
+
+## Potato on a Stick
+gt.item.food.potato_on_stick.name=Potato on a Stick
+gt.item.food.potato_on_stick.tooltip=Totally looks like a Crab Claw
+gt.item.food.potato_on_stick_roasted.name=Roasted Potato on a Stick
+gt.item.food.potato_on_stick_roasted.tooltip=Still looks like a Crab Claw
+
+## Fries
+gt.item.food.raw_fries.name=Potato Strips
+gt.item.food.raw_fries.tooltip=It's Potato in Stripe Form
+gt.item.food.fries.name=Fries
+gt.item.food.fries.tooltip=Not to confuse with Fry the Delivery Boy
+gt.item.food.packaged_fries.name=Fries
+gt.item.food.packaged_fries.tooltip=Ketchup not included
+
+## Chips
+gt.item.food.raw_potato_chips.name=Potato Chips (Raw)
+gt.item.food.raw_potato_chips.tooltip=Just like a Potato
+gt.item.food.potato_chips.name=Potato Chips
+gt.item.food.potato_chips.tooltip=Crunchy
+gt.item.food.chili_chips.name=Chili Chips
+gt.item.food.chili_chips.tooltip=Spicy
+gt.item.food.packaged_potato_chips.name=Bag of Potato Chips
+gt.item.food.packaged_potato_chips.tooltip=Full of delicious Air
+gt.item.food.packaged_chili_chips.name=Bag of Chili Chips
+gt.item.food.packaged_chili_chips.tooltip=Stop making noises Baj!
+
+## Chum
+gt.item.food.chum.name=Chum
+gt.item.food.chum.tooltip=Chum is Fum!
+gt.item.food.chum_on_stick.name=Chum on a Stick
+gt.item.food.chum_on_stick.tooltip=Don't forget to try our Chum-balaya
+
+## Dough and Cookies
+gt.item.food.dough_sugar.name=Sugary Dough
+gt.item.food.dough_sugar.tooltip=Don't eat the Dough before it is baken
+gt.item.food.dough_chocolate.name=Chocolate Dough
+gt.item.food.dough_chocolate.tooltip=I said don't eat the Dough!
+gt.item.food.raw_cookie.name=Cookie shaped Dough
+gt.item.food.raw_cookie.tooltip=For baking Cookies
+
+## Buns and Burgers
+gt.item.food.sliced_buns.name=Buns
+gt.item.food.sliced_buns.tooltip=Pre Sliced
+gt.item.food.burger_veggie.name=Veggieburger
+gt.item.food.burger_veggie.tooltip=No matter how you call this, this is NOT a Burger!
+gt.item.food.burger_cheese.name=Cheeseburger
+gt.item.food.burger_cheese.tooltip=Cheesy!
+gt.item.food.burger_meat.name=Hamburger
+gt.item.food.burger_meat.tooltip=The Mc Burger Queen Burger
+gt.item.food.burger_chum.name=Chumburger
+gt.item.food.burger_chum.tooltip=Fum is Chum!
+
+## Breads and Sandwiches
+gt.item.food.sliced_breads.name=Breads
+gt.item.food.sliced_breads.tooltip=Pre Sliced
+gt.item.food.sandwich_veggie.name=Veggie Sandwich
+gt.item.food.sandwich_veggie.tooltip=Meatless
+gt.item.food.sandwich_cheese.name=Cheese Sandwich
+gt.item.food.sandwich_cheese.tooltip=Say Cheese!
+gt.item.food.sandwich_bacon.name=Bacon Sandwich
+gt.item.food.sandwich_bacon.tooltip=The best Sandwich ever!
+gt.item.food.sandwich_steak.name=Steak Sandwich
+gt.item.food.sandwich_steak.tooltip=Not a 'Steam Sandwich'
+
+## Baguettes and Large Sandwiches
+gt.item.food.sliced_baguettes.name=Baguettes
+gt.item.food.sliced_baguettes.tooltip=Pre Sliced
+gt.item.food.large_sandwich_veggie.name=Large Veggie Sandwich
+gt.item.food.large_sandwich_veggie.tooltip=Just not worth it
+gt.item.food.large_sandwich_cheese.name=Large Cheese Sandwich
+gt.item.food.large_sandwich_cheese.tooltip=I need another cheesy tooltip for this
+gt.item.food.large_sandwich_bacon.name=Large Bacon Sandwich
+gt.item.food.large_sandwich_bacon.tooltip=For Men! (and manly Women)
+gt.item.food.large_sandwich_steak.name=Large Steak Sandwich
+gt.item.food.large_sandwich_steak.tooltip=Yes, I once accidentally called it 'Steam Sandwich'
+
+## Pizzas
+gt.item.food.raw_pizza_veggie.name=Raw Veggie Pizza
+gt.item.food.raw_pizza_veggie.tooltip=Into the Oven with it!
+gt.item.food.raw_pizza_cheese.name=Raw Cheese Pizza
+gt.item.food.raw_pizza_cheese.tooltip=Into the Oven with it!
+gt.item.food.raw_pizza_meat.name=Raw Mince Meat Pizza
+gt.item.food.raw_pizza_meat.tooltip=Into the Oven with it!
+gt.item.food.baked_pizza_veggie.name=Veggie Pizza
+gt.item.food.baked_pizza_veggie.tooltip=The next they want is Gluten Free Pizzas...
+gt.item.food.baked_pizza_cheese.name=Cheese Pizza
+gt.item.food.baked_pizza_cheese.tooltip=Pizza Magarita
+gt.item.food.baked_pizza_meat.name=Mince Meat Pizza
+gt.item.food.baked_pizza_meat.tooltip=Emo Pizza, it cuts itself!
+
+## Indigo Dye
+gt.item.dye.indigo.name=Indigo Dye
+gt.item.dye.indigo.tooltip=Blue Dye
+
+## 16 Standard Dyes
+gt.item.dye.black.name=Black Dye
+gt.item.dye.red.name=Red Dye
+gt.item.dye.green.name=Green Dye
+gt.item.dye.brown.name=Brown Dye
+gt.item.dye.blue.name=Blue Dye
+gt.item.dye.purple.name=Purple Dye
+gt.item.dye.cyan.name=Cyan Dye
+gt.item.dye.light_gray.name=Light Gray Dye
+gt.item.dye.gray.name=Gray Dye
+gt.item.dye.pink.name=Pink Dye
+gt.item.dye.lime.name=Lime Dye
+gt.item.dye.yellow.name=Yellow Dye
+gt.item.dye.light_blue.name=Light Blue Dye
+gt.item.dye.magenta.name=Magenta Dye
+gt.item.dye.orange.name=Orange Dye
+gt.item.dye.white.name=White Dye
+
+## Plank Covers (common tooltip)
+gt.item.plank_cover.tooltip=Can be used as Cover
+
+## Plank Cover names
+gt.item.plank_cover.oak.name=Oak Plank Cover
+gt.item.plank_cover.spruce.name=Spruce Plank Cover
+gt.item.plank_cover.birch.name=Birch Plank Cover
+gt.item.plank_cover.jungle.name=Jungle Plank Cover
+gt.item.plank_cover.acacia.name=Acacia Plank Cover
+gt.item.plank_cover.dark_oak.name=Dark Oak Plank Cover
+gt.item.plank_cover.larch.name=Larch Plank Cover
+gt.item.plank_cover.teak.name=Teak Plank Cover
+gt.item.plank_cover.green_acacia.name=Green Acacia Plank Cover
+gt.item.plank_cover.lime.name=Lime Plank Cover
+gt.item.plank_cover.chestnut.name=Chestnut Plank Cover
+gt.item.plank_cover.wenge.name=Wenge Plank Cover
+gt.item.plank_cover.baobab.name=Baobab Plank Cover
+gt.item.plank_cover.sequoia.name=Sequoia Plank Cover
+gt.item.plank_cover.kapok.name=Kapok Plank Cover
+gt.item.plank_cover.ebony.name=Ebony Plank Cover
+gt.item.plank_cover.mahagony.name=Mahagony Plank Cover
+gt.item.plank_cover.balsa.name=Balsa Plank Cover
+gt.item.plank_cover.willow.name=Willow Plank Cover
+gt.item.plank_cover.walnut.name=Walnut Plank Cover
+gt.item.plank_cover.greenheart.name=Greenheart Plank Cover
+gt.item.plank_cover.cherry.name=Cherry Plank Cover
+gt.item.plank_cover.mahoe.name=Mahoe Plank Cover
+gt.item.plank_cover.poplar.name=Poplar Plank Cover
+gt.item.plank_cover.palm.name=Palm Plank Cover
+gt.item.plank_cover.papaya.name=Papaya Plank Cover
+gt.item.plank_cover.pine.name=Pine Plank Cover
+gt.item.plank_cover.plum.name=Plum Plank Cover
+gt.item.plank_cover.maple.name=Maple Plank Cover
+gt.item.plank_cover.citrus.name=Citrus Plank Cover
+gt.item.plank_cover.cherry_efr.name=Cherry Plank Cover
+
+## Super Fuel Binder
+gt.item.sf_mixture.name=Super Fuel Binder
+gt.item.sf_mixture.tooltip=Raw Material
+gt.item.msf_mixture.name=Magic Super Fuel Binder
+gt.item.msf_mixture.tooltip=Raw Material
+
+# Food items
+gt.item.food.cheese.name=Cheese
+gt.item.food.cheese.tooltip=Click the Cheese
+gt.item.food.dough.name=Dough
+gt.item.food.dough.tooltip=For making Breads
+gt.item.food.flat_dough.name=Flattened Dough
+gt.item.food.flat_dough.tooltip=For making Pizza
+gt.item.food.raw_bread.name=Dough
+gt.item.food.raw_bread.tooltip=In Bread Shape
+gt.item.food.raw_bun.name=Dough
+gt.item.food.raw_bun.tooltip=In Bun Shape
+gt.item.food.raw_baguette.name=Dough
+gt.item.food.raw_baguette.tooltip=In Baguette Shape
+gt.item.food.baked_bun.name=Bun
+gt.item.food.baked_bun.tooltip=Do not teleport Bread!
+gt.item.food.baked_baguette.name=Baguette
+gt.item.food.baked_baguette.tooltip=I teleported nothing BUT Bread!!!
+gt.item.food.sliced_bread.name=Sliced Bread
+gt.item.food.sliced_bread.tooltip=Just half a Bread
+gt.item.food.sliced_bun.name=Sliced Bun
+gt.item.food.sliced_bun.tooltip=Just half a Bun
+gt.item.food.sliced_baguette.name=Sliced Baguette
+gt.item.food.sliced_baguette.tooltip=Just half a Baguette
+gt.item.food.raw_cake.name=Cake Bottom
+gt.item.food.raw_cake.tooltip=For making Cake
+gt.item.food.baked_cake.name=Baked Cake Bottom
+gt.item.food.baked_cake.tooltip=I know I promised you an actual Cake, but well...
+gt.item.food.sliced_lemon.name=Lemon Slice
+gt.item.food.sliced_lemon.tooltip=Ideal to put on your Drink
+gt.item.food.sliced_tomato.name=Tomato Slice
+gt.item.food.sliced_tomato.tooltip=Solid Ketchup
+gt.item.food.sliced_onion.name=Onion Slice
+gt.item.food.sliced_onion.tooltip=ONIONS, UNITE!
+gt.item.food.sliced_cucumber.name=Cucumber Slice
+gt.item.food.sliced_cucumber.tooltip=QUEWWW-CUMMM-BERRR!!!
+gt.item.food.sliced_cheese.name=Cheese Slice
+gt.item.food.sliced_cheese.tooltip=ALIEN ATTACK!!!, throw the CHEEEEESE!!!
+
+# Advanced wireless covers
+gt.item.cover.advanced_redstone_transmitter.name=Advanced Redstone Transmitter
+gt.item.cover.advanced_redstone_transmitter.tooltip=Transfers Redstone signals wirelessly\nCan only connect with advanced wireless covers
+gt.item.cover.advanced_redstone_transmitter_internal.name=Advanced Redstone Transmitter (Internal)
+gt.item.cover.advanced_redstone_transmitter_internal.tooltip=Transfers Redstone signals wirelessly\nCan only connect with advanced wireless covers\n§cDEPRECATED! This will be removed in the next major update.
+gt.item.cover.advanced_redstone_receiver.name=Advanced Redstone Receiver
+gt.item.cover.advanced_redstone_receiver.tooltip=Transfers Redstone signals wirelessly\nCan only connect with advanced wireless covers
+gt.item.cover.advanced_redstone_receiver_internal.name=Advanced Redstone Receiver (Internal)
+gt.item.cover.advanced_redstone_receiver_internal.tooltip=Transfers Redstone signals wirelessly\nCan only connect with advanced wireless covers\n§cDEPRECATED! This will be removed in the next major update.
+
+# Wireless detector covers
+gt.item.cover.wireless_fluid_detector.name=Wireless Fluid Detector Cover
+gt.item.cover.wireless_fluid_detector.tooltip=Transfers Fluid Amount as Redstone wirelessly\nCan only connect with advanced wireless covers
+gt.item.cover.wireless_item_detector.name=Wireless Item Detector Cover
+gt.item.cover.wireless_item_detector.tooltip=Transfers Item Amount as Redstone wirelessly\nCan only connect with advanced wireless covers
+gt.item.cover.wireless_needs_maintenance.name=Wireless Needs Maintenance Cover
+gt.item.cover.wireless_needs_maintenance.tooltip=Transfers Maintenance Issues as Redstone wirelessly\nCan only connect with advanced wireless covers
+gt.item.cover.wireless_activity_detector.name=Wireless Activity Detector Cover
+gt.item.cover.wireless_activity_detector.tooltip=Transfers Activity as Redstone wirelessly\nCan only connect with advanced wireless covers
+
+# Special items
+gt.item.display.its_free.name=ITS FREE
+gt.item.display.its_free.tooltip=(or at least almost free)
+gt.item.redstone_sniffer.name=Redstone Sniffer
+gt.item.redstone_sniffer.tooltip=What are these frequencies?!
+gt.item.drone_remote_interface.name=Drone Remote Interface
+gt.item.drone_remote_interface.tooltip=Built-in super powerful navigation beacon!!
+gt.item.vajra_core.name=Vajra Core
+gt.item.magnetron.name=Magnetron
+gt.item.chaos_locator.name=Chaos Locator
+gt.item.chaos_locator.tooltip=Warps to areas with extreme entropy

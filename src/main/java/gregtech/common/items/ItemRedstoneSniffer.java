@@ -19,14 +19,39 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverPosition;
 import gregtech.common.gui.modularui.item.RedstoneSnifferGui;
 
 public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
-    public ItemRedstoneSniffer(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
-        super(aUnlocalized, aEnglish, aEnglishTooltip);;
+    private final String nameKey;
+    private final String tooltipKey;
+
+    public ItemRedstoneSniffer(String aUnlocalized, String nameKey, String tooltipKey) {
+        super(aUnlocalized, "", "");
         setMaxStackSize(1);
+        this.nameKey = nameKey;
+        this.tooltipKey = tooltipKey;
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        return GTUtility.translate(nameKey);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean f3) {
+        if (tooltipKey != null && !tooltipKey.isEmpty()) {
+            String translated = GTUtility.translate(tooltipKey);
+            for (String line : translated.split("\\\\n")) {
+                if (GTUtility.isStringValid(line)) {
+                    list.add(line);
+                }
+            }
+        }
+
+        addAdditionalToolTips(list, stack, player);
     }
 
     @Override

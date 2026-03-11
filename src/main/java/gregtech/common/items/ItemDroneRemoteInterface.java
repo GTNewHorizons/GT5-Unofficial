@@ -9,7 +9,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
@@ -28,6 +27,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTModularScreen;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.item.DroneRemoteInterfaceGUI;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 
@@ -35,9 +35,19 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
 
     ItemStackGuiFactory factory = new ItemStackGuiFactory("mui2:itemstack", this);
 
-    public ItemDroneRemoteInterface(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
-        super(aUnlocalized, aEnglish, aEnglishTooltip);
+    private final String nameKey;
+    private final String tooltipKey;
+
+    public ItemDroneRemoteInterface(String aUnlocalized, String nameKey, String tooltipKey) {
+        super(aUnlocalized, "", "");
         setMaxStackSize(1);
+        this.nameKey = nameKey;
+        this.tooltipKey = tooltipKey;
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        return GTUtility.translate(nameKey);
     }
 
     @Override
@@ -51,8 +61,15 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        super.addInformation(aStack, aPlayer, aList, aF3_H);
+    public void addInformation(ItemStack aStack, EntityPlayer player, List<String> aList, boolean f3) {
+        if (tooltipKey != null && !tooltipKey.isEmpty()) {
+            String translated = GTUtility.translate(tooltipKey);
+            for (String line : translated.split("\\\\n")) {
+                if (GTUtility.isStringValid(line)) {
+                    aList.add(line);
+                }
+            }
+        }
         if (aStack.hasTagCompound() && aStack.getTagCompound()
             .hasKey("droneCentre")) {
             NBTTagCompound centreNbt = aStack.getTagCompound()
@@ -61,8 +78,8 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
             int y = centreNbt.getInteger("y");
             int z = centreNbt.getInteger("z");
             int dim = centreNbt.getInteger("dim");
-            aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.drone_remote_connected", x, y, z, dim));
-        } else aList.add(StatCollector.translateToLocal("GT5U.tooltip.drone_remote_disconnected"));
+            aList.add(GTUtility.translate("GT5U.tooltip.drone_remote_connected", x, y, z, dim));
+        } else aList.add(GTUtility.translate("GT5U.tooltip.drone_remote_disconnected"));
     }
 
     @Override
