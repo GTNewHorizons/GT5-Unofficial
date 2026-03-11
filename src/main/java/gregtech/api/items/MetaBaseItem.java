@@ -35,7 +35,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -251,8 +250,8 @@ public abstract class MetaBaseItem extends GTGenericItem
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         if (aStack.getItemDamage() < 0 || aStack.getItemDamage() >= 32000) {
             String tKey = getUnlocalizedName(aStack) + ".tooltip";
-            String[] tStrings = GTLanguageManager.getTranslation(tKey)
-                .split("/n ");
+            String[] tStrings = GTUtility.translate(tKey)
+                .split("\\\\n");
             for (String tString : tStrings) if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) {
                 aList.add(tString);
             }
