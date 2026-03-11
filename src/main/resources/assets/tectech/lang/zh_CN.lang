@@ -260,7 +260,6 @@ gt.blockmachines.hatch.energytunnel6.tier.13.name=UXV 262144A/t 激光靶仓
 gt.blockmachines.hatch.energytunnel7.tier.13.name=UXV 1048576A/t 激光靶仓
 gt.blockmachines.hatch.energytunnel.tier.14.name=传奇激光靶仓
 gt.blockmachines.hatch.energytunnel.desc.0=多方块机器的能量输入端
-gt.blockmachines.hatch.energytunnel.desc.1=通量
 
 gt.blockmachines.hatch.dynamomulti04.tier.05.name=4安IV动力仓
 gt.blockmachines.hatch.dynamomulti16.tier.05.name=16安IV动力仓
@@ -336,7 +335,6 @@ gt.blockmachines.hatch.dynamotunnel6.tier.13.name=UXV 262144A/t 激光源仓
 gt.blockmachines.hatch.dynamotunnel7.tier.13.name=UXV 1048576A/t 激光源仓
 gt.blockmachines.hatch.dynamotunnel.tier.14.name=传奇激光源仓
 gt.blockmachines.hatch.dynamotunnel.desc.0=多方块机器的能量输出端
-gt.blockmachines.hatch.dynamotunnel.desc.1=通量
 
 gt.blockmachines.emin.tier.08.name=UV元物质输入仓
 gt.blockmachines.emin.tier.09.name=UHV元物质输入仓
