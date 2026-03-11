@@ -37,6 +37,7 @@ import com.google.gson.JsonParser;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -101,7 +102,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             if (result.isEmpty()) return key;
             return hasIndent ? INDENT_MARK + result : result;
         } catch (Exception e) {
-            GT_FML_LOGGER.error("Failed to parse localization JSON: " + json, e);
+            GT_FML_LOGGER.error("Failed to parse localization JSON: {}", json, e);
             return json;
         }
     }
@@ -114,31 +115,32 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 return;
             }
 
-            if (GregTechAPI.METATILEENTITIES[tDamage] != null) {
-                final IGregTechTileEntity tTileEntity = GregTechAPI.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
-                final IMetaTileEntity tMetaTileEntity = tTileEntity.getMetaTileEntity();
+            final IMetaTileEntity mte = GregTechAPI.METATILEENTITIES[tDamage];
+            if (mte != null) {
+                final IGregTechTileEntity gtTileEntity = mte.getBaseMetaTileEntity();
+                final IMetaTileEntity metaTileEntity = gtTileEntity.getMetaTileEntity();
                 {
-                    addDescription(aList, tMetaTileEntity.getDescription());
-                    tMetaTileEntity.addAdditionalTooltipInformation(aStack, aList);
+                    addDescription(aList, metaTileEntity.getDescription());
+                    metaTileEntity.addAdditionalTooltipInformation(aStack, aList);
                 }
-                if (tTileEntity.getEUCapacity() > 0L) {
-                    if (tTileEntity.getInputVoltage() > 0L) {
+                if (gtTileEntity.getEUCapacity() > 0L && !(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
+                    if (gtTileEntity.getInputVoltage() > 0L) {
                         aList.add(
                             translate(
                                 "gt.tileentity.eup_in",
-                                TooltipHelper.voltageText(tTileEntity.getInputVoltage())));
+                                TooltipHelper.voltageText(gtTileEntity.getInputVoltage())));
                     }
-                    if (tTileEntity.getOutputVoltage() > 0L) {
+                    if (gtTileEntity.getOutputVoltage() > 0L) {
                         aList.add(
                             translate(
                                 "gt.tileentity.eup_out",
-                                TooltipHelper.voltageText(tTileEntity.getOutputVoltage())));
+                                TooltipHelper.voltageText(gtTileEntity.getOutputVoltage())));
                     }
-                    if (tTileEntity.getOutputAmperage() > 1L) {
+                    if (gtTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
                             translate(
-                                "gt.tileentity.eup_amount",
-                                TooltipHelper.ampText(tTileEntity.getOutputAmperage())));
+                                "gt.tileentity.amperage",
+                                TooltipHelper.ampText(gtTileEntity.getOutputAmperage())));
                     }
                 }
             }
