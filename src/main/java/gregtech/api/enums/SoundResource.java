@@ -126,6 +126,10 @@ public enum SoundResource {
 
     GT_MACHINES_LHC_SPIN_UP(278, GregTech.ID, "machines.LHCSpinUp"),
 
+    GT_TOOLBOX_OPEN(281, GregTech.ID, "items.ToolboxOpen"),
+    GT_TOOLBOX_CLOSE(282, GregTech.ID, "items.ToolboxClose"),
+    GT_TOOLBOX_DRAW(283, GregTech.ID, "items.ToolboxDraw"),
+
     GUI_BUTTON_DOWN(-1, GregTech.ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, GregTech.ID, "gui.buttonUp"),
 

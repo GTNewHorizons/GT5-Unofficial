@@ -67,6 +67,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.hazards.Hazard;
@@ -99,6 +100,8 @@ import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
 import gregtech.common.entity.EntityPowderBarrelPrimed;
+import gregtech.common.items.ItemGTToolbox;
+import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.misc.GTCapeCommand;
 import gregtech.common.misc.GTPowerfailCommandClient;
 import gregtech.common.pollution.Pollution;
@@ -120,6 +123,7 @@ import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
 import gregtech.common.render.items.MechanicalArmorRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
+import gregtech.common.render.items.ToolboxRenderer;
 import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import gregtech.common.tileentities.render.RenderingTileEntityDrone;
@@ -357,6 +361,9 @@ public class GTClient extends GTProxy {
         MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Leggings.getItem(), mechanicalArmorRenderer);
         MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Boots.getItem(), mechanicalArmorRenderer);
 
+        MinecraftForgeClient.registerItemRenderer(ItemList.ToolBox.getItem(), new ToolboxRenderer());
+
+        MinecraftForgeClient.registerItemRenderer(ItemList.Display_Fluid.getItem(), new FluidDisplayStackRenderer());
         metaItemRenderer.registerSpecialRenderer(ItemList.Tool_DataStick, new DataStickRenderer());
         metaItemRenderer.registerSpecialRenderer(ItemList.Spray_Color_Infinite, new InfiniteSprayCanRenderer());
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
@@ -688,6 +695,11 @@ public class GTClient extends GTProxy {
         if (player == null) return false;
         final ItemStack tCurrentItem = player.getCurrentEquippedItem();
         if (tCurrentItem == null) return false;
+        if (tCurrentItem.getItem() instanceof ItemGTToolbox && ToolboxUtil.getSelectedToolType(tCurrentItem)
+            .map(toolboxSlot -> toolboxSlot == ToolboxSlot.SOLDERING_IRON)
+            .orElse(false)) {
+            return true;
+        }
         final int[] ids = OreDictionary.getOreIDs(tCurrentItem);
         for (int i : ids) {
             String oreName = OreDictionary.getOreName(i);
@@ -732,6 +744,7 @@ public class GTClient extends GTProxy {
             || GTUtility.isStackInList(stack, GregTechAPI.sSolderingToolList)
             || GTUtility.isStackInList(stack, GregTechAPI.sCrowbarList)
             || CoverRegistry.isCover(stack)
+            || stack.getItem() instanceof ItemGTToolbox
             || (stack.getItem() instanceof ItemMachines
                 && GregTechAPI.METATILEENTITIES[stack.getItemDamage()] instanceof MetaPipeEntity
                 && player.isSneaking());
