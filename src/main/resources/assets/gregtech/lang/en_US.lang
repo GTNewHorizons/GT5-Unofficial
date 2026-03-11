@@ -4314,6 +4314,8 @@ machtype.dtpf=Plasma Forge, DTPF
 machtype.thermal_boiler=Boiler
 machtype.iwf=Wiremill, IWF
 machtype.chisel=Chisel
+machtype.les=Essentia Smeltery, LES
+machtype.cpi=Charcoal Pile Igniter, CPI
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
