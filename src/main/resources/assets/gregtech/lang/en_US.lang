@@ -2974,7 +2974,7 @@ gt.item.fluid_regulator.uiv.name=Fluid Regulator (UIV)
 gt.item.fluid_regulator.umv.name=Fluid Regulator (UMV)
 gt.item.fluid_regulator.uxv.name=Fluid Regulator (UXV)
 gt.item.fluid_regulator.max.name=Fluid Regulator (MAX)
-gt.item.fluid_regulator.tooltip=Configurable up to %s L/sec (as Cover)\nRightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick\nto adjust the pump speed by 1/16/256 L/sec per click\nCan not transfer more than 2.1B L per Operation
+gt.item.fluid_regulator.tooltip=Configurable up to %s L/sec (as Cover)/n Rightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick/n to adjust the pump speed by 1/16/256 L/sec per click/n Can not transfer more than 2.1B L per Operation
 
 ## Fluid Filter
 gt.item.fluid_filter.name=Fluid Filter Cover
@@ -3022,15 +3022,15 @@ gt.item.conveyor_module.max.tooltip=16 stacks of 2.1B items every 1/20 sec (as C
 
 ## Robot Arms
 gt.item.robot_arm.lv.name=Robot Arm (LV)
-gt.item.robot_arm.lv.tooltip=1 stack every 20 secs (as Cover)\nGrabs from and inserts into specific slots
+gt.item.robot_arm.lv.tooltip=1 stack every 20 secs (as Cover)/n Grabs from and inserts into specific slots
 gt.item.robot_arm.mv.name=Robot Arm (MV)
-gt.item.robot_arm.mv.tooltip=1 stack every 5 secs (as Cover)\nGrabs from and inserts into specific slots
+gt.item.robot_arm.mv.tooltip=1 stack every 5 secs (as Cover)/n Grabs from and inserts into specific slots
 gt.item.robot_arm.hv.name=Robot Arm (HV)
-gt.item.robot_arm.hv.tooltip=1 stack every 1 sec (as Cover)\nGrabs from and inserts into specific slots
+gt.item.robot_arm.hv.tooltip=1 stack every 1 sec (as Cover)/n Grabs from and inserts into specific slots
 gt.item.robot_arm.ev.name=Robot Arm (EV)
-gt.item.robot_arm.ev.tooltip=1 stack every 1/5 sec (as Cover)\nGrabs from and inserts into specific slots
+gt.item.robot_arm.ev.tooltip=1 stack every 1/5 sec (as Cover)/n Grabs from and inserts into specific slots
 gt.item.robot_arm.iv.name=Robot Arm (IV)
-gt.item.robot_arm.iv.tooltip=1 stack every 1/20 sec (as Cover)\nGrabs from and inserts into specific slots
+gt.item.robot_arm.iv.tooltip=1 stack every 1/20 sec (as Cover)/n Grabs from and inserts into specific slots
 gt.item.robot_arm.luv.name=Robot Arm (LuV)
 gt.item.robot_arm.zpm.name=Robot Arm (ZPM)
 gt.item.robot_arm.uv.name=Robot Arm (UV)
@@ -3221,11 +3221,11 @@ gt.item.cover.solar_panel.uv.tooltip=Ultimate Solar Panel (Needs cleaning with r
 gt.item.cover.redstone_transmitter.name=Redstone Transmitter
 gt.item.cover.redstone_transmitter.tooltip=Transfers Redstone signals wireless
 gt.item.cover.redstone_transmitter_internal.name=Redstone Transmitter (Internal)
-gt.item.cover.redstone_transmitter_internal.tooltip=Transfers Redstone signals wireless\n§cDEPRECATED! This will be removed in the next major update.
+gt.item.cover.redstone_transmitter_internal.tooltip=Transfers Redstone signals wireless/n §cDEPRECATED! This will be removed in the next major update.
 gt.item.cover.redstone_receiver.name=Redstone Receiver
 gt.item.cover.redstone_receiver.tooltip=Transfers Redstone signals wireless
 gt.item.cover.wireless_controller.name=Wireless Machine Controller Cover
-gt.item.cover.wireless_controller.tooltip=Turns Machines ON/OFF wirelessly\nCan only connect with advanced wireless covers
+gt.item.cover.wireless_controller.tooltip=Turns Machines ON/OFF wirelessly/n Can only connect with advanced wireless covers
 
 ### Maintenance Cover
 gt.item.cover.needs_maintenance.name=Needs Maintenance Cover
@@ -3259,7 +3259,7 @@ gt.item.black_hole.seed.tooltip=Opens a pseudostable black hole
 gt.item.black_hole.collapser.name=Black Hole Collapser
 gt.item.black_hole.collapser.tooltip=Safely closes a pseudostable black hole
 gt.item.black_hole.stabilizer.name=Superstable Black Hole Seed
-gt.item.black_hole.stabilizer.tooltip=Opens a superstable black hole\nBlack hole will never destabilize and will operate at maximum efficiency
+gt.item.black_hole.stabilizer.tooltip=Opens a superstable black hole/n Black hole will never destabilize and will operate at maximum efficiency
 
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
