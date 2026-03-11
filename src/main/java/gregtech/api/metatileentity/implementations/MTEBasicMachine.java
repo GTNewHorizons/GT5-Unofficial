@@ -99,7 +99,7 @@ import gregtech.api.util.GTWaila;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
+import gregtech.common.gui.modularui.singleblock.base.MTETieredMachineBlockBaseGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -1311,12 +1311,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEBasicMachineBaseGui(this).build(data, syncManager, uiSettings);
-    }
-
-    // disable the entire inventory row (including corner column)
-    public boolean supportsInventoryRow() {
-        return this.doesBindPlayerInventory();
+        return new MTETieredMachineBlockBaseGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override

@@ -2508,6 +2508,10 @@ public class GTUtility {
         }
     }
 
+    public static String translate(String key) {
+        return StatCollector.translateToLocal(key);
+    }
+
     public static String translate(String key, Object... parameters) {
         String translated = parameters.length == 0 ? StatCollector.translateToLocal(key)
             : StatCollector.translateToLocalFormatted(key, parameters);
@@ -4108,7 +4112,7 @@ public class GTUtility {
     }
 
     /**
-     * A helper method that does rotation calculations for renderering.
+     * A helper method that does rotation calculations for rendering.
      *
      * @param extendedFacing - extendedFacing value of the MTE
      * @return AxisAngle4f that can be used directly with glRotate calls
