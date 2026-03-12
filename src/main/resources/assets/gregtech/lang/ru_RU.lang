@@ -116,8 +116,6 @@ gt.item.desc.steam_eut=Энергия от оптимального потока
 gt.item.desc.steam_eut_loose=Энергия от оптимального потока пара (Форсированный): %s EU/t
 
 # GT Interaction Descriptions
-gt.interact.desc.out_slot=Выкладывается в соседний слот #
-gt.interact.desc.in_slot=Захватывает собственный слот #
 gt.interact.desc.signal_on=Включить с помощью сигнала
 gt.interact.desc.signal_inverted=Отключить с помощью сигнала
 gt.interact.desc.signal_off=Отключено
