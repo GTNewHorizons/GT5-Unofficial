@@ -3,32 +3,35 @@ package gregtech.common.tileentities.machines.multi.drone.production;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class ProductionRecord {
 
+    private static final long[] DURATIONS = { 10000, 60000, 600000, 3600000, 86400000 };
+    private static final int[] LIMITS = { 6, 10, 6, 24 };
+    private static final String[] NAMES = { "10s", "1m", "10m", "1h", "24h" };
+
     private boolean active;
     private long revision = 0;
     private long lastUpdateTime = 0;
+    private long lastPromotionTime = 0;
+
+    private final StatsBundle[] display = IntStream.range(0, 5)
+        .mapToObj(i -> new StatsBundle())
+        .toArray(StatsBundle[]::new);
+    private final StatsBundle[] acc = IntStream.range(0, 4)
+        .mapToObj(i -> new StatsBundle())
+        .toArray(StatsBundle[]::new);
+    private final int[] counters = new int[4];
     private final StatsBundle currentTotal = new StatsBundle();
-    private final LinkedList<Snapshot> history = new LinkedList<>();
 
     public static ProductionRecord deserialize(PacketBuffer packetBuffer) throws IOException {
         return new ProductionRecord().readFromNBT(packetBuffer.readNBTTagCompoundFromBuffer());
@@ -39,60 +42,43 @@ public class ProductionRecord {
     }
 
     public void clear() {
+        for (StatsBundle b : display) b.clear();
+        for (StatsBundle b : acc) b.clear();
+        Arrays.fill(counters, 0);
         currentTotal.clear();
-        history.clear();
-    }
-
-    private static class Snapshot {
-
-        long timestamp;
-        StatsBundle data;
-
-        public Snapshot(long t, StatsBundle d) {
-            this.timestamp = t;
-            this.data = d.copy();
-        }
     }
 
     public void addStack(ItemStack[] stack) {
-        Arrays.stream(stack)
+        if (stack != null) Arrays.stream(stack)
             .forEach(this::addStack);
     }
 
     public void addStack(ItemStack stack) {
-        if (stack == null || stack.stackSize == 0) return;
-        addStack(stack, stack.stackSize);
-    }
-
-    public void addStack(ItemStack stack, long amount) {
-        if (stack == null || amount == 0) return;
-        currentTotal.merge(RecordUtil.packItem(stack), amount);
+        if (stack != null && stack.stackSize > 0) addValue(RecordUtil.packItem(stack), stack.stackSize);
     }
 
     public void addFluid(FluidStack[] stack) {
-        Arrays.stream(stack)
+        if (stack != null) Arrays.stream(stack)
             .forEach(this::addFluid);
     }
 
     public void addFluid(FluidStack stack) {
-        if (stack == null || stack.amount == 0) return;
-        addFluid(stack, stack.amount);
-    }
-
-    public void addFluid(FluidStack stack, long amount) {
-        if (stack == null || amount == 0) return;
-        currentTotal.merge(RecordUtil.packFluid(stack), amount);
+        if (stack != null && stack.amount > 0) addValue(RecordUtil.packFluid(stack), stack.amount);
     }
 
     public void addEnergy(long amount) {
-        if (amount == 0) return;
-        currentTotal.merge(RecordUtil.packEnergy(), amount);
+        if (amount != 0) addValue(RecordUtil.packEnergy(), amount);
+    }
+
+    private void addValue(long key, long amount) {
+        currentTotal.merge(key, amount);
+        display[0].merge(key, amount);
     }
 
     public void addRecord(long energy, ItemStack[] items, FluidStack[] fluids) {
         addEnergy(energy);
-        if (items != null && items.length > 0) addStack(items);
-        if (fluids != null && fluids.length > 0) addFluid(fluids);
+        addStack(items);
+        addFluid(fluids);
     }
 
     public boolean isActive() {
@@ -106,157 +92,102 @@ public class ProductionRecord {
     public void update() {
         long now = System.currentTimeMillis();
         lastUpdateTime = now;
-
-        history.addFirst(new Snapshot(now, currentTotal));
-
-        revision++;
-
-        pruneHistory(now);
-    }
-
-    private void pruneHistory(long now) {
-        Iterator<Snapshot> it = history.iterator();
-
-        long lastMinuteBucket = -1;
-        long lastTenMinBucket = -1;
-
-        while (it.hasNext()) {
-            Snapshot curr = it.next();
-            long age = now - curr.timestamp;
-
-            if (age < 0) {
-                it.remove();
-                continue;
-            }
-
-            boolean keep = false;
-
-            if (age < 60 * 1000) {
-                keep = true;
-
-                lastMinuteBucket = curr.timestamp / 60000;
-                lastTenMinBucket = curr.timestamp / (10 * 60 * 1000);
-            }
-
-            else if (age < 60 * 60 * 1000) {
-
-                long currMinuteBucket = curr.timestamp / 60000;
-
-                if (currMinuteBucket != lastMinuteBucket) {
-                    keep = true;
-                    lastMinuteBucket = currMinuteBucket;
-
-                    lastTenMinBucket = curr.timestamp / (10 * 60 * 1000);
-                }
-            }
-
-            else if (age < 24 * 60 * 60 * 1000) {
-
-                long currTenMinBucket = curr.timestamp / (10 * 60 * 1000);
-
-                if (currTenMinBucket != lastTenMinBucket) {
-                    keep = true;
-                    lastTenMinBucket = currTenMinBucket;
-                }
-            }
-
-            if (!keep) {
-                it.remove();
-            }
+        if (lastPromotionTime == 0) {
+            lastPromotionTime = now;
+            return;
+        }
+        if (now - lastPromotionTime >= 10000) {
+            promote();
+            lastPromotionTime = now;
+            revision++;
         }
     }
 
-    public boolean areEqual(ProductionRecord other) {
-        return other != null && this.revision == other.revision;
+    private void promote() {
+        acc[0].merge(display[0]);
+        for (int i = 0; i < LIMITS.length; i++) {
+            counters[i]++;
+            if (counters[i] < LIMITS[i]) break;
+            display[i + 1].clear();
+            display[i + 1].merge(acc[i]);
+            if (i + 1 < acc.length) acc[i + 1].merge(acc[i]);
+            acc[i].clear();
+            counters[i] = 0;
+        }
+        display[0].clear();
     }
 
     public NBTTagCompound writeToNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setLong("Rev", revision);
         nbt.setLong("LastUp", lastUpdateTime);
+        nbt.setLong("LastProm", lastPromotionTime);
         nbt.setBoolean("Active", active);
+        nbt.setIntArray("Cnt", counters);
 
         List<Long> dictionary = new ArrayList<>();
         Set<Long> seen = new HashSet<>();
-
         collectKeys(currentTotal, seen, dictionary);
-        for (Snapshot snap : history) collectKeys(snap.data, seen, dictionary);
+        for (StatsBundle b : display) collectKeys(b, seen, dictionary);
+        for (StatsBundle b : acc) collectKeys(b, seen, dictionary);
 
-        long[] dictArr = new long[dictionary.size()];
-        for (int i = 0; i < dictionary.size(); i++) dictArr[i] = dictionary.get(i);
+        long[] dictArr = dictionary.stream()
+            .mapToLong(l -> l)
+            .toArray();
         writeIntArrayFromLongs(nbt, "Dict", dictArr);
 
-        nbt.setTag("Now", writeBundleCompressed(currentTotal, dictionary));
-
-        NBTTagList histList = new NBTTagList();
-        for (Snapshot snap : history) {
-            NBTTagCompound s = new NBTTagCompound();
-            s.setLong("T", snap.timestamp);
-            s.setTag("D", writeBundleCompressed(snap.data, dictionary));
-            histList.appendTag(s);
-        }
-        nbt.setTag("Hist", histList);
+        nbt.setTag("Total", writeBundleCompressed(currentTotal, dictionary));
+        for (int i = 0; i < display.length; i++)
+            nbt.setTag("D" + NAMES[i], writeBundleCompressed(display[i], dictionary));
+        for (int i = 0; i < acc.length; i++) nbt.setTag("A" + NAMES[i], writeBundleCompressed(acc[i], dictionary));
         return nbt;
     }
 
     public ProductionRecord readFromNBT(NBTTagCompound nbt) {
         this.revision = nbt.getLong("Rev");
         this.lastUpdateTime = nbt.getLong("LastUp");
+        this.lastPromotionTime = nbt.getLong("LastProm");
         this.active = nbt.getBoolean("Active");
+        int[] savedCounters = nbt.getIntArray("Cnt");
+        if (savedCounters.length == counters.length) System.arraycopy(savedCounters, 0, counters, 0, counters.length);
 
         long[] dictArr = readIntArrayToLongs(nbt, "Dict");
-
-        this.currentTotal.data.clear();
-        readBundleCompressed(nbt.getCompoundTag("Now"), dictArr, this.currentTotal);
-
-        this.history.clear();
-        NBTTagList histList = nbt.getTagList("Hist", 10);
-        for (int i = 0; i < histList.tagCount(); i++) {
-            NBTTagCompound s = histList.getCompoundTagAt(i);
-            long ts = s.getLong("T");
-            StatsBundle b = new StatsBundle();
-            readBundleCompressed(s.getCompoundTag("D"), dictArr, b);
-            this.history.add(new Snapshot(ts, b));
-        }
+        readBundleCompressed(nbt.getCompoundTag("Total"), dictArr, currentTotal);
+        for (int i = 0; i < display.length; i++)
+            readBundleCompressed(nbt.getCompoundTag("D" + NAMES[i]), dictArr, display[i]);
+        for (int i = 0; i < acc.length; i++) readBundleCompressed(nbt.getCompoundTag("A" + NAMES[i]), dictArr, acc[i]);
         return this;
     }
 
     private void collectKeys(StatsBundle b, Set<Long> seen, List<Long> dict) {
-        for (long k : b.data.keys()) {
-            if (seen.add(k)) dict.add(k);
-        }
+        for (long k : b.data.keys()) if (seen.add(k)) dict.add(k);
     }
 
     private NBTTagCompound writeBundleCompressed(StatsBundle b, List<Long> dict) {
         NBTTagCompound tag = new NBTTagCompound();
-        int size = b.data.size();
-        int[] keys = new int[size];
-        long[] values = new long[size];
-
-        int idx = 0;
-        for (long key : b.data.keys()) {
-            keys[idx] = dict.indexOf(key);
-            values[idx] = b.data.get(key);
-            idx++;
+        long[] keys = b.data.keys();
+        int[] kIdx = new int[keys.length];
+        long[] values = new long[keys.length];
+        for (int i = 0; i < keys.length; i++) {
+            kIdx[i] = dict.indexOf(keys[i]);
+            values[i] = b.data.get(keys[i]);
         }
-        tag.setIntArray("K", keys);
+        tag.setIntArray("K", kIdx);
         writeIntArrayFromLongs(tag, "V", values);
         return tag;
     }
 
     private void readBundleCompressed(NBTTagCompound tag, long[] dict, StatsBundle target) {
+        target.clear();
         int[] keys = tag.getIntArray("K");
         long[] values = readIntArrayToLongs(tag, "V");
         for (int i = 0; i < keys.length; i++) {
-            if (keys[i] >= 0 && keys[i] < dict.length) {
-                target.data.put(dict[keys[i]], values[i]);
-            }
+            if (keys[i] >= 0 && keys[i] < dict.length) target.data.put(dict[keys[i]], values[i]);
         }
     }
 
     private void writeIntArrayFromLongs(NBTTagCompound tag, String baseName, long[] data) {
-        int[] high = new int[data.length];
-        int[] low = new int[data.length];
+        int[] high = new int[data.length], low = new int[data.length];
         for (int i = 0; i < data.length; i++) {
             high[i] = (int) (data[i] >>> 32);
             low[i] = (int) (data[i] & 0xFFFFFFFFL);
@@ -266,94 +197,29 @@ public class ProductionRecord {
     }
 
     private long[] readIntArrayToLongs(NBTTagCompound tag, String baseName) {
-        int[] high = tag.getIntArray(baseName + "H");
-        int[] low = tag.getIntArray(baseName + "L");
+        int[] high = tag.getIntArray(baseName + "H"), low = tag.getIntArray(baseName + "L");
         long[] res = new long[high.length];
-        for (int i = 0; i < high.length; i++) {
-            res[i] = (((long) high[i]) << 32) | (low[i] & 0xFFFFFFFFL);
-        }
+        for (int i = 0; i < high.length; i++) res[i] = (((long) high[i]) << 32) | (low[i] & 0xFFFFFFFFL);
         return res;
+    }
+
+    public StatsBundle getStatsInDuration(long durationMillis) {
+        if (durationMillis <= 0) return currentTotal.copy();
+        for (int i = DURATIONS.length - 1; i >= 0; i--) {
+            if (durationMillis >= DURATIONS[i]) {
+                StatsBundle res = display[i].copy();
+                res.setRevision(revision ^ durationMillis);
+                return res;
+            }
+        }
+        return display[0].copy();
     }
 
     public long getRevision() {
         return revision;
     }
 
-    public StatsBundle getStatsInDuration(long durationMillis) {
-        StatsBundle res;
-        if (durationMillis <= 0) {
-            res = currentTotal.copy();
-        } else {
-            long targetTime = lastUpdateTime - durationMillis;
-
-            Snapshot closest = null;
-            for (Snapshot snap : history) {
-                if (snap.timestamp <= targetTime) {
-                    closest = snap;
-                    break;
-                }
-            }
-            StatsBundle startData = (closest != null) ? closest.data : new StatsBundle();
-            res = currentTotal.diff(startData);
-        }
-        res.setRevision(revision ^ durationMillis);
-        return res;
-    }
-
-    public Map<ItemStack, Long> getItemStatsIn(long durationMillis) {
-        Map<ItemStack, Long> result = new HashMap<>();
-        StatsBundle bundle = getStatsInDuration(durationMillis);
-
-        for (long key : bundle.data.keys()) {
-            long value = bundle.data.get(key);
-            if (RecordUtil.isItem(key)) {
-                Item item = Item.getItemById(RecordUtil.getId(key));
-                if (item != null) {
-                    ItemStack is = new ItemStack(item, 1, RecordUtil.getMeta(key));
-                    result.put(is, value);
-                }
-            }
-        }
-
-        return result.entrySet()
-            .stream()
-            .sorted(
-                Map.Entry.<ItemStack, Long>comparingByValue()
-                    .reversed())
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-    }
-
-    public Map<FluidStack, Long> getFluidStatsIn(long durationMillis) {
-        Map<FluidStack, Long> result = new HashMap<>();
-        StatsBundle bundle = getStatsInDuration(durationMillis);
-
-        for (long key : bundle.data.keys()) {
-            long value = bundle.data.get(key);
-            if (RecordUtil.isFluid(key)) {
-                Fluid fluid = FluidRegistry.getFluid(RecordUtil.getId(key));
-                if (fluid != null) {
-                    FluidStack fs = new FluidStack(fluid, 1);
-                    result.put(fs, value);
-                }
-            }
-        }
-        return result.entrySet()
-            .stream()
-            .sorted(
-                Map.Entry.<FluidStack, Long>comparingByValue()
-                    .reversed())
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-    }
-
-    public Long getEnergyStatsIn(long durationMillis) {
-        long result = 0;
-        StatsBundle bundle = getStatsInDuration(durationMillis);
-        for (long key : bundle.data.keys()) {
-            long value = bundle.data.get(key);
-            if (RecordUtil.isEnergy(key)) {
-                result += value;
-            }
-        }
-        return -result;
+    public boolean areEqual(ProductionRecord other) {
+        return other != null && this.revision == other.revision;
     }
 }
