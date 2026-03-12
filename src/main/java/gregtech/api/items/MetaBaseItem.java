@@ -249,11 +249,9 @@ public abstract class MetaBaseItem extends GTGenericItem
     @Override
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         if (aStack.getItemDamage() < 0 || aStack.getItemDamage() >= 32000) {
-            String tKey = getUnlocalizedName(aStack) + ".tooltip";
+            String tooltipKey = getToolTipLocalizationKey(aStack);
+            String tKey = tooltipKey != null ? tooltipKey : getUnlocalizedName(aStack) + ".tooltip";
             String tTranslated = GTUtility.translate(tKey);
-            if (!tTranslated.equals(tKey)) {
-                tTranslated = GTUtility.translate(tTranslated);
-            }
             String[] tStrings = tTranslated.split("\\\\n");
             for (String tString : tStrings) if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) {
                 aList.add(tString);

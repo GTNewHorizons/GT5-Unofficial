@@ -35,19 +35,9 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
 
     ItemStackGuiFactory factory = new ItemStackGuiFactory("mui2:itemstack", this);
 
-    private final String nameKey;
-    private final String tooltipKey;
-
-    public ItemDroneRemoteInterface(String aUnlocalized, String nameKey, String tooltipKey) {
-        super(aUnlocalized, "", "");
+    public ItemDroneRemoteInterface(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
+        super(aUnlocalized, aEnglish, aEnglishTooltip);
         setMaxStackSize(1);
-        this.nameKey = nameKey;
-        this.tooltipKey = tooltipKey;
-    }
-
-    @Override
-    public String getItemStackDisplayName(ItemStack stack) {
-        return GTUtility.translate(nameKey);
     }
 
     @Override
@@ -61,15 +51,8 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer player, List<String> aList, boolean f3) {
-        if (tooltipKey != null && !tooltipKey.isEmpty()) {
-            String translated = GTUtility.translate(tooltipKey);
-            for (String line : translated.split("\\\\n")) {
-                if (GTUtility.isStringValid(line)) {
-                    aList.add(line);
-                }
-            }
-        }
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
+        super.addInformation(aStack, aPlayer, aList, aF3_H);
         if (aStack.hasTagCompound() && aStack.getTagCompound()
             .hasKey("droneCentre")) {
             NBTTagCompound centreNbt = aStack.getTagCompound()
