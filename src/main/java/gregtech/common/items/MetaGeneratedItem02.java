@@ -262,7 +262,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         INSTANCE = this;
 
         ItemList.ThermosCan_Coffee.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Coffee.ID,
                 "gt.item.thermos_can.coffee.name",
                 "gt.item.thermos_can.coffee.tooltip",
@@ -287,7 +287,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2L)));
         ItemList.ThermosCan_Sweet_Coffee.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Sweet_Coffee.ID,
                 "gt.item.thermos_can.sweet_coffee.name",
                 "gt.item.thermos_can.sweet_coffee.tooltip",
@@ -312,7 +312,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 3L)));
         ItemList.ThermosCan_Latte.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Latte.ID,
                 "gt.item.thermos_can.latte.name",
                 "gt.item.thermos_can.latte.tooltip",
@@ -337,7 +337,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
         ItemList.ThermosCan_Sweet_Latte.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Sweet_Latte.ID,
                 "gt.item.thermos_can.sweet_latte.name",
                 "gt.item.thermos_can.sweet_latte.tooltip",
@@ -362,7 +362,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2L)));
         ItemList.ThermosCan_Sweet_Jesus_Latte.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Sweet_Jesus_Latte.ID,
                 "gt.item.thermos_can.sweet_jesus_latte.name",
                 "gt.item.thermos_can.sweet_jesus_latte.tooltip",
@@ -387,7 +387,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 3L)));
         ItemList.ThermosCan_Dark_Chocolate_Milk.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Dark_Chocolate_Milk.ID,
                 "gt.item.thermos_can.dark_chocolate_milk.name",
                 "gt.item.thermos_can.dark_chocolate_milk.tooltip",
@@ -408,7 +408,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
         ItemList.ThermosCan_Chocolate_Milk.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Chocolate_Milk.ID,
                 "gt.item.thermos_can.chocolate_milk.name",
                 "gt.item.thermos_can.chocolate_milk.tooltip",
@@ -429,7 +429,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 2L)));
         ItemList.ThermosCan_Tea.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Tea.ID,
                 "gt.item.thermos_can.tea.name",
                 "gt.item.thermos_can.tea.tooltip",
@@ -449,7 +449,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
         ItemList.ThermosCan_Sweet_Tea.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Sweet_Tea.ID,
                 "gt.item.thermos_can.sweet_tea.name",
                 "gt.item.thermos_can.sweet_tea.tooltip",
@@ -465,7 +465,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
         ItemList.ThermosCan_Ice_Tea.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Ice_Tea.ID,
                 "gt.item.thermos_can.ice_tea.name",
                 "gt.item.thermos_can.ice_tea.tooltip",
@@ -485,11 +485,14 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
 
-        ItemList.GelledToluene
-            .set(addItem(GelledToluene.ID, "gt.item.gelled_toluene.name", "gt.item.gelled_toluene.tooltip"));
+        ItemList.GelledToluene.set(
+            addItemWithLocalizationKeys(
+                GelledToluene.ID,
+                "gt.item.gelled_toluene.name",
+                "gt.item.gelled_toluene.tooltip"));
 
         ItemList.Bottle_Purple_Drink.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Purple_Drink.ID,
                 "gt.item.bottle.purple_drink.name",
                 "gt.item.bottle.purple_drink.tooltip",
@@ -509,7 +512,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VINCULUM, 1L)));
         ItemList.Bottle_Grape_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Grape_Juice.ID,
                 "gt.item.bottle.grape_juice.name",
                 "gt.item.bottle.grape_juice.tooltip",
@@ -529,7 +532,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
         ItemList.Bottle_Wine.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Wine.ID,
                 "gt.item.bottle.wine.name",
                 "gt.item.bottle.wine.tooltip",
@@ -557,7 +560,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
         ItemList.Bottle_Vinegar.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Vinegar.ID,
                 "gt.item.bottle.vinegar.name",
                 "gt.item.bottle.vinegar.tooltip",
@@ -589,7 +592,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
         ItemList.Bottle_Potato_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Potato_Juice.ID,
                 "gt.item.bottle.potato_juice.name",
                 "gt.item.bottle.potato_juice.tooltip",
@@ -605,7 +608,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L)));
         ItemList.Bottle_Vodka.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Vodka.ID,
                 "gt.item.bottle.vodka.name",
                 "gt.item.bottle.vodka.tooltip",
@@ -633,7 +636,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.TELUM, 1L)));
         ItemList.Bottle_Leninade.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Leninade.ID,
                 "gt.item.bottle.leninade.name",
                 "gt.item.bottle.leninade.tooltip",
@@ -665,7 +668,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.TELUM, 2L)));
         ItemList.Bottle_Mineral_Water.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Mineral_Water.ID,
                 "gt.item.bottle.mineral_water.name",
                 "gt.item.bottle.mineral_water.tooltip",
@@ -685,7 +688,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
         ItemList.Bottle_Salty_Water.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Salty_Water.ID,
                 "gt.item.bottle.salty_water.name",
                 "gt.item.bottle.salty_water.tooltip",
@@ -706,7 +709,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.TEMPESTAS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Bottle_Reed_Water.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Reed_Water.ID,
                 "gt.item.bottle.reed_water.name",
                 "gt.item.bottle.reed_water.tooltip",
@@ -722,7 +725,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Bottle_Rum.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Rum.ID,
                 "gt.item.bottle.rum.name",
                 "gt.item.bottle.rum.tooltip",
@@ -750,7 +753,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
         ItemList.Bottle_Pirate_Brew.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Pirate_Brew.ID,
                 "gt.item.bottle.pirate_brew.name",
                 "gt.item.bottle.pirate_brew.tooltip",
@@ -782,7 +785,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 2L)));
         ItemList.Bottle_Hops_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Hops_Juice.ID,
                 "gt.item.bottle.hops_juice.name",
                 "gt.item.bottle.hops_juice.tooltip",
@@ -798,7 +801,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L)));
         ItemList.Bottle_Dark_Beer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Dark_Beer.ID,
                 "gt.item.bottle.dark_beer.name",
                 "gt.item.bottle.dark_beer.tooltip",
@@ -826,7 +829,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L)));
         ItemList.Bottle_Dragon_Blood.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Dragon_Blood.ID,
                 "gt.item.bottle.dragon_blood.name",
                 "gt.item.bottle.dragon_blood.tooltip",
@@ -858,7 +861,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2L)));
         ItemList.Bottle_Wheaty_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Wheaty_Juice.ID,
                 "gt.item.bottle.wheaty_juice.name",
                 "gt.item.bottle.wheaty_juice.tooltip",
@@ -874,7 +877,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L)));
         ItemList.Bottle_Scotch.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Scotch.ID,
                 "gt.item.bottle.scotch.name",
                 "gt.item.bottle.scotch.tooltip",
@@ -902,7 +905,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1L)));
         ItemList.Bottle_Glen_McKenner.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Glen_McKenner.ID,
                 "gt.item.bottle.glen_mckenner.name",
                 "gt.item.bottle.glen_mckenner.tooltip",
@@ -934,7 +937,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 2L)));
         ItemList.Bottle_Wheaty_Hops_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Wheaty_Hops_Juice.ID,
                 "gt.item.bottle.wheaty_hops_juice.name",
                 "gt.item.bottle.wheaty_hops_juice.tooltip",
@@ -950,7 +953,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 2L)));
         ItemList.Bottle_Beer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Beer.ID,
                 "gt.item.bottle.beer.name",
                 "gt.item.bottle.beer.tooltip",
@@ -978,7 +981,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 1L)));
         ItemList.Bottle_Chilly_Sauce.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Chilly_Sauce.ID,
                 "gt.item.bottle.chilly_sauce.name",
                 "gt.item.bottle.chilly_sauce.tooltip",
@@ -1002,7 +1005,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Bottle_Hot_Sauce.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Hot_Sauce.ID,
                 "gt.item.bottle.hot_sauce.name",
                 "gt.item.bottle.hot_sauce.tooltip",
@@ -1026,7 +1029,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2L)));
         ItemList.Bottle_Diabolo_Sauce.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Diabolo_Sauce.ID,
                 "gt.item.bottle.diabolo_sauce.name",
                 "gt.item.bottle.diabolo_sauce.tooltip",
@@ -1050,7 +1053,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 3L)));
         ItemList.Bottle_Diablo_Sauce.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Diablo_Sauce.ID,
                 "gt.item.bottle.diablo_sauce.name",
                 "gt.item.bottle.diablo_sauce.tooltip",
@@ -1074,7 +1077,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 4L)));
         ItemList.Bottle_Snitches_Glitch_Sauce.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Snitches_Glitch_Sauce.ID,
                 "gt.item.bottle.snitches_glitch_sauce.name",
                 "gt.item.bottle.snitches_glitch_sauce.tooltip",
@@ -1099,7 +1102,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 3L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 5L)));
         ItemList.Bottle_Apple_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Apple_Juice.ID,
                 "gt.item.bottle.apple_juice.name",
                 "gt.item.bottle.apple_juice.tooltip",
@@ -1119,7 +1122,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Bottle_Cider.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Cider.ID,
                 "gt.item.bottle.cider.name",
                 "gt.item.bottle.cider.tooltip",
@@ -1147,7 +1150,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1L)));
         ItemList.Bottle_Golden_Apple_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Golden_Apple_Juice.ID,
                 "gt.item.bottle.golden_apple_juice.name",
                 "gt.item.bottle.golden_apple_juice.tooltip",
@@ -1175,7 +1178,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
         ItemList.Bottle_Golden_Cider.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Golden_Cider.ID,
                 "gt.item.bottle.golden_cider.name",
                 "gt.item.bottle.golden_cider.tooltip",
@@ -1203,7 +1206,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1L)));
         ItemList.Bottle_Iduns_Apple_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Iduns_Apple_Juice.ID,
                 "gt.item.bottle.iduns_apple_juice.name",
                 "gt.item.bottle.iduns_apple_juice.tooltip",
@@ -1235,7 +1238,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 9L)));
         ItemList.Bottle_Notches_Brew.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Notches_Brew.ID,
                 "gt.item.bottle.notches_brew.name",
                 "gt.item.bottle.notches_brew.tooltip",
@@ -1271,7 +1274,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 9L)));
         ItemList.Bottle_Lemon_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Lemon_Juice.ID,
                 "gt.item.bottle.lemon_juice.name",
                 "gt.item.bottle.lemon_juice.tooltip",
@@ -1291,7 +1294,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 1L)));
         ItemList.Bottle_Limoncello.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Limoncello.ID,
                 "gt.item.bottle.limoncello.name",
                 "gt.item.bottle.limoncello.tooltip",
@@ -1315,7 +1318,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 1L)));
         ItemList.Bottle_Lemonade.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Lemonade.ID,
                 "gt.item.bottle.lemonade.name",
                 "gt.item.bottle.lemonade.tooltip",
@@ -1335,7 +1338,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 1L)));
         ItemList.Bottle_Alcopops.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Alcopops.ID,
                 "gt.item.bottle.alcopops.name",
                 "gt.item.bottle.alcopops.tooltip",
@@ -1359,7 +1362,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VINCULUM, 1L)));
         ItemList.Bottle_Cave_Johnsons_Grenade_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Cave_Johnsons_Grenade_Juice.ID,
                 "gt.item.bottle.cave_johnsons_grenade_juice.name",
                 "gt.item.bottle.cave_johnsons_grenade_juice.tooltip",
@@ -1375,7 +1378,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.MORTUUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 1L)));
         ItemList.Bottle_Milk.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Milk.ID,
                 "gt.item.bottle.milk.name",
                 "gt.item.bottle.milk.tooltip",
@@ -1392,7 +1395,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
         ItemList.Bottle_Holy_Water.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Holy_Water.ID,
                 "gt.item.bottle.holy_water.name",
                 "gt.item.bottle.holy_water.tooltip",
@@ -1414,7 +1417,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AURAM, 1L)));
 
         ItemList.Food_Potato_On_Stick.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Potato_On_Stick.ID,
                 "gt.item.food.potato_on_stick.name",
                 "gt.item.food.potato_on_stick.tooltip",
@@ -1423,7 +1426,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Food_Potato_On_Stick_Roasted.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Potato_On_Stick_Roasted.ID,
                 "gt.item.food.potato_on_stick_roasted.name",
                 "gt.item.food.potato_on_stick_roasted.tooltip",
@@ -1433,7 +1436,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Raw_Fries.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Fries.ID,
                 "gt.item.food.raw_fries.name",
                 "gt.item.food.raw_fries.tooltip",
@@ -1442,7 +1445,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Food_Fries.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Fries.ID,
                 "gt.item.food.fries.name",
                 "gt.item.food.fries.tooltip",
@@ -1452,7 +1455,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Packaged_Fries.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Packaged_Fries.ID,
                 "gt.item.food.packaged_fries.name",
                 "gt.item.food.packaged_fries.tooltip",
@@ -1469,7 +1472,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Raw_PotatoChips.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_PotatoChips.ID,
                 "gt.item.food.raw_potato_chips.name",
                 "gt.item.food.raw_potato_chips.tooltip",
@@ -1478,7 +1481,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Food_PotatoChips.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_PotatoChips.ID,
                 "gt.item.food.potato_chips.name",
                 "gt.item.food.potato_chips.tooltip",
@@ -1488,7 +1491,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_ChiliChips.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_ChiliChips.ID,
                 "gt.item.food.chili_chips.name",
                 "gt.item.food.chili_chips.tooltip",
@@ -1498,7 +1501,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Packaged_PotatoChips.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Packaged_PotatoChips.ID,
                 "gt.item.food.packaged_potato_chips.name",
                 "gt.item.food.packaged_potato_chips.tooltip",
@@ -1515,7 +1518,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Packaged_ChiliChips.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Packaged_ChiliChips.ID,
                 "gt.item.food.packaged_chili_chips.name",
                 "gt.item.food.packaged_chili_chips.tooltip",
@@ -1532,7 +1535,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Chum.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Chum.ID,
                 "gt.item.food.chum.name",
                 "gt.item.food.chum.tooltip",
@@ -1556,7 +1559,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Chum_On_Stick.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Chum_On_Stick.ID,
                 "gt.item.food.chum_on_stick.name",
                 "gt.item.food.chum_on_stick.tooltip",
@@ -1580,7 +1583,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Dough_Sugar.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Dough_Sugar.ID,
                 "gt.item.food.dough_sugar.name",
                 "gt.item.food.dough_sugar.tooltip",
@@ -1588,7 +1591,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Dough_Chocolate.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Dough_Chocolate.ID,
                 "gt.item.food.dough_chocolate.name",
                 "gt.item.food.dough_chocolate.tooltip",
@@ -1596,7 +1599,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Raw_Cookie.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Cookie.ID,
                 "gt.item.food.raw_cookie.name",
                 "gt.item.food.raw_cookie.tooltip",
@@ -1605,7 +1608,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
 
         ItemList.Food_Sliced_Buns.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Buns.ID,
                 "gt.item.food.sliced_buns.name",
                 "gt.item.food.sliced_buns.tooltip",
@@ -1614,7 +1617,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Burger_Veggie.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Burger_Veggie.ID,
                 "gt.item.food.burger_veggie.name",
                 "gt.item.food.burger_veggie.tooltip",
@@ -1623,7 +1626,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Burger_Cheese.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Burger_Cheese.ID,
                 "gt.item.food.burger_cheese.name",
                 "gt.item.food.burger_cheese.tooltip",
@@ -1633,7 +1636,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new ItemData(Materials.Cheese, 907200L)));
         ItemList.Food_Burger_Meat.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Burger_Meat.ID,
                 "gt.item.food.burger_meat.name",
                 "gt.item.food.burger_meat.tooltip",
@@ -1642,7 +1645,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Burger_Chum.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Burger_Chum.ID,
                 "gt.item.food.burger_chum.name",
                 "gt.item.food.burger_chum.tooltip",
@@ -1667,7 +1670,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
 
         ItemList.Food_Sliced_Breads.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Breads.ID,
                 "gt.item.food.sliced_breads.name",
                 "gt.item.food.sliced_breads.tooltip",
@@ -1676,7 +1679,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Sandwich_Veggie.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sandwich_Veggie.ID,
                 "gt.item.food.sandwich_veggie.name",
                 "gt.item.food.sandwich_veggie.tooltip",
@@ -1685,7 +1688,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Sandwich_Cheese.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sandwich_Cheese.ID,
                 "gt.item.food.sandwich_cheese.name",
                 "gt.item.food.sandwich_cheese.tooltip",
@@ -1694,7 +1697,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Sandwich_Bacon.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sandwich_Bacon.ID,
                 "gt.item.food.sandwich_bacon.name",
                 "gt.item.food.sandwich_bacon.tooltip",
@@ -1703,7 +1706,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Sandwich_Steak.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sandwich_Steak.ID,
                 "gt.item.food.sandwich_steak.name",
                 "gt.item.food.sandwich_steak.tooltip",
@@ -1712,7 +1715,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Sliced_Baguettes.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Baguettes.ID,
                 "gt.item.food.sliced_baguettes.name",
                 "gt.item.food.sliced_baguettes.tooltip",
@@ -1721,7 +1724,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Large_Sandwich_Veggie.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Large_Sandwich_Veggie.ID,
                 "gt.item.food.large_sandwich_veggie.name",
                 "gt.item.food.large_sandwich_veggie.tooltip",
@@ -1730,7 +1733,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Large_Sandwich_Cheese.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Large_Sandwich_Cheese.ID,
                 "gt.item.food.large_sandwich_cheese.name",
                 "gt.item.food.large_sandwich_cheese.tooltip",
@@ -1739,7 +1742,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 3L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Large_Sandwich_Bacon.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Large_Sandwich_Bacon.ID,
                 "gt.item.food.large_sandwich_bacon.name",
                 "gt.item.food.large_sandwich_bacon.tooltip",
@@ -1748,7 +1751,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Large_Sandwich_Steak.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Large_Sandwich_Steak.ID,
                 "gt.item.food.large_sandwich_steak.name",
                 "gt.item.food.large_sandwich_steak.tooltip",
@@ -1757,7 +1760,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Raw_Pizza_Veggie.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Pizza_Veggie.ID,
                 "gt.item.food.raw_pizza_veggie.name",
                 "gt.item.food.raw_pizza_veggie.tooltip",
@@ -1766,7 +1769,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Raw_Pizza_Cheese.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Pizza_Cheese.ID,
                 "gt.item.food.raw_pizza_cheese.name",
                 "gt.item.food.raw_pizza_cheese.tooltip",
@@ -1775,7 +1778,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Raw_Pizza_Meat.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Pizza_Meat.ID,
                 "gt.item.food.raw_pizza_meat.name",
                 "gt.item.food.raw_pizza_meat.tooltip",
@@ -1785,7 +1788,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
 
         ItemList.Food_Baked_Pizza_Veggie.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Baked_Pizza_Veggie.ID,
                 "gt.item.food.baked_pizza_veggie.name",
                 "gt.item.food.baked_pizza_veggie.tooltip",
@@ -1794,7 +1797,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Baked_Pizza_Cheese.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Baked_Pizza_Cheese.ID,
                 "gt.item.food.baked_pizza_cheese.name",
                 "gt.item.food.baked_pizza_cheese.tooltip",
@@ -1803,7 +1806,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Baked_Pizza_Meat.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Baked_Pizza_Meat.ID,
                 "gt.item.food.baked_pizza_meat.name",
                 "gt.item.food.baked_pizza_meat.tooltip",
@@ -1813,7 +1816,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
 
         ItemList.Dye_Indigo.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Dye_Indigo.ID,
                 "gt.item.dye.indigo.name",
                 "gt.item.dye.indigo.tooltip",
@@ -1827,7 +1830,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             String dyeKey = "gt.item.dye." + Dyes.get(i).mName.toLowerCase()
                 .replace(" ", "_") + ".name";
             ItemList.DYE_ONLY_ITEMS[i].set(
-                addItem(
+                addItemWithLocalizationKeys(
                     Dye_Colors[i],
                     dyeKey,
                     "",
@@ -1837,227 +1840,229 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         }
         final String plankOredict = "coverPlank";
         ItemList.Plank_Oak.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Oak.ID,
                 "gt.item.plank_cover.oak.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Spruce.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Spruce.ID,
                 "gt.item.plank_cover.spruce.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Birch.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Birch.ID,
                 "gt.item.plank_cover.birch.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Jungle.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Jungle.ID,
                 "gt.item.plank_cover.jungle.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Acacia.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Acacia.ID,
                 "gt.item.plank_cover.acacia.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_DarkOak.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_DarkOak.ID,
                 "gt.item.plank_cover.dark_oak.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Larch.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Larch.ID,
                 "gt.item.plank_cover.larch.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Teak.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Teak.ID,
                 "gt.item.plank_cover.teak.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Acacia_Green.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Acacia_Green.ID,
                 "gt.item.plank_cover.green_acacia.name",
                 plankOredict,
                 "gt.item.plank_cover.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Lime.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Lime.ID,
                 "gt.item.plank_cover.lime.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Chestnut.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Chestnut.ID,
                 "gt.item.plank_cover.chestnut.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Wenge.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Wenge.ID,
                 "gt.item.plank_cover.wenge.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Baobab.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Baobab.ID,
                 "gt.item.plank_cover.baobab.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Sequoia.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Sequoia.ID,
                 "gt.item.plank_cover.sequoia.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Kapok.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Kapok.ID,
                 "gt.item.plank_cover.kapok.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Ebony.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Ebony.ID,
                 "gt.item.plank_cover.ebony.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Mahagony.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Mahagony.ID,
                 "gt.item.plank_cover.mahagony.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Balsa.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Balsa.ID,
                 "gt.item.plank_cover.balsa.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Willow.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Willow.ID,
                 "gt.item.plank_cover.willow.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Walnut.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Walnut.ID,
                 "gt.item.plank_cover.walnut.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Greenheart.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Greenheart.ID,
                 "gt.item.plank_cover.greenheart.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Cherry.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Cherry.ID,
                 "gt.item.plank_cover.cherry.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Mahoe.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Mahoe.ID,
                 "gt.item.plank_cover.mahoe.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Poplar.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Poplar.ID,
                 "gt.item.plank_cover.poplar.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Palm.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Palm.ID,
                 "gt.item.plank_cover.palm.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Papaya.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Papaya.ID,
                 "gt.item.plank_cover.papaya.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Pine.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Pine.ID,
                 "gt.item.plank_cover.pine.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Plum.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Plum.ID,
                 "gt.item.plank_cover.plum.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Maple.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Maple.ID,
                 "gt.item.plank_cover.maple.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Citrus.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Citrus.ID,
                 "gt.item.plank_cover.citrus.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Cherry_EFR.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Cherry_EFR.ID,
                 "gt.item.plank_cover.cherry_efr.name",
                 "gt.item.plank_cover.tooltip",
                 plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.SFMixture.set(addItem(SFMixture.ID, "gt.item.sf_mixture.name", "gt.item.sf_mixture.tooltip"));
-        ItemList.MSFMixture.set(addItem(MSFMixture.ID, "gt.item.msf_mixture.name", "gt.item.msf_mixture.tooltip"));
+        ItemList.SFMixture
+            .set(addItemWithLocalizationKeys(SFMixture.ID, "gt.item.sf_mixture.name", "gt.item.sf_mixture.tooltip"));
+        ItemList.MSFMixture
+            .set(addItemWithLocalizationKeys(MSFMixture.ID, "gt.item.msf_mixture.name", "gt.item.msf_mixture.tooltip"));
 
         ItemList.Food_Cheese.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Cheese.ID,
                 "gt.item.food.cheese.name",
                 "gt.item.food.cheese.tooltip",
@@ -2065,7 +2070,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new GTFoodStat(3, 0.6F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 2L)));
         ItemList.Food_Dough.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Dough.ID,
                 "gt.item.food.dough.name",
                 "gt.item.food.dough.tooltip",
@@ -2074,7 +2079,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Flat_Dough.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Flat_Dough.ID,
                 "gt.item.food.flat_dough.name",
                 "gt.item.food.flat_dough.tooltip",
@@ -2082,7 +2087,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Raw_Bread.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Bread.ID,
                 "gt.item.food.raw_bread.name",
                 "gt.item.food.raw_bread.tooltip",
@@ -2090,7 +2095,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Raw_Bun.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Bun.ID,
                 "gt.item.food.raw_bun.name",
                 "gt.item.food.raw_bun.tooltip",
@@ -2098,7 +2103,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Raw_Baguette.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Baguette.ID,
                 "gt.item.food.raw_baguette.name",
                 "gt.item.food.raw_baguette.tooltip",
@@ -2106,7 +2111,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Baked_Bun.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Baked_Bun.ID,
                 "gt.item.food.baked_bun.name",
                 "gt.item.food.baked_bun.tooltip",
@@ -2115,7 +2120,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Baked_Baguette.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Baked_Baguette.ID,
                 "gt.item.food.baked_baguette.name",
                 "gt.item.food.baked_baguette.tooltip",
@@ -2124,7 +2129,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Sliced_Bread.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Bread.ID,
                 "gt.item.food.sliced_bread.name",
                 "gt.item.food.sliced_bread.tooltip",
@@ -2133,7 +2138,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Sliced_Bun.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Bun.ID,
                 "gt.item.food.sliced_bun.name",
                 "gt.item.food.sliced_bun.tooltip",
@@ -2142,7 +2147,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Sliced_Baguette.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Baguette.ID,
                 "gt.item.food.sliced_baguette.name",
                 "gt.item.food.sliced_baguette.tooltip",
@@ -2151,7 +2156,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Raw_Cake.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Cake.ID,
                 "gt.item.food.raw_cake.name",
                 "gt.item.food.raw_cake.tooltip",
@@ -2159,7 +2164,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Baked_Cake.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Baked_Cake.ID,
                 "gt.item.food.baked_cake.name",
                 "gt.item.food.baked_cake.tooltip",
@@ -2167,28 +2172,28 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Sliced_Lemon.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Lemon.ID,
                 "gt.item.food.sliced_lemon.name",
                 "gt.item.food.sliced_lemon.tooltip",
                 new GTFoodStat(1, 0.075F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Food_Sliced_Tomato.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Tomato.ID,
                 "gt.item.food.sliced_tomato.name",
                 "gt.item.food.sliced_tomato.tooltip",
                 new GTFoodStat(1, 0.05F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Food_Sliced_Onion.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Onion.ID,
                 "gt.item.food.sliced_onion.name",
                 "gt.item.food.sliced_onion.tooltip",
                 new GTFoodStat(1, 0.05F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Food_Sliced_Cucumber.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Cucumber.ID,
                 "gt.item.food.sliced_cucumber.name",
                 "gt.item.food.sliced_cucumber.tooltip",
@@ -2196,7 +2201,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
 
         ItemList.Food_Sliced_Cheese.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Cheese.ID,
                 "gt.item.food.sliced_cheese.name",
                 "gt.item.food.sliced_cheese.tooltip",
@@ -2204,28 +2209,28 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
 
         ItemList.Cover_AdvancedRedstoneTransmitter.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_AdvancedRedstoneTransmitter.ID,
                 "gt.item.cover.advanced_redstone_transmitter.name",
                 "gt.item.cover.advanced_redstone_transmitter.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneTransmitterInternal.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_AdvancedRedstoneTransmitterInternal.ID,
                 "gt.item.cover.advanced_redstone_transmitter_internal.name",
                 "gt.item.cover.advanced_redstone_transmitter_internal.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneReceiver.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_AdvancedRedstoneReceiver.ID,
                 "gt.item.cover.advanced_redstone_receiver.name",
                 "gt.item.cover.advanced_redstone_receiver.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneReceiverInternal.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_AdvancedRedstoneReceiverInternal.ID,
                 "gt.item.cover.advanced_redstone_receiver_internal.name",
                 "gt.item.cover.advanced_redstone_receiver_internal.tooltip",
@@ -2233,7 +2238,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
 
         ItemList.Cover_WirelessFluidDetector.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_WirelessFluidDetector.ID,
                 "gt.item.cover.wireless_fluid_detector.name",
                 "gt.item.cover.wireless_fluid_detector.tooltip",
@@ -2242,7 +2247,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L)));
         ItemList.Cover_WirelessItemDetector.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_WirelessItemDetector.ID,
                 "gt.item.cover.wireless_item_detector.name",
                 "gt.item.cover.wireless_item_detector.tooltip",
@@ -2252,7 +2257,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.TERRA, 1L)));
 
         ItemList.Cover_WirelessNeedsMaintainance.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_WirelessNeedsMaintainance.ID,
                 "gt.item.cover.wireless_needs_maintenance.name",
                 "gt.item.cover.wireless_needs_maintenance.tooltip",
@@ -2260,7 +2265,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 3L)));
 
         ItemList.Cover_WirelessActivityDetector.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_WirelessActivityDetector.ID,
                 "gt.item.cover.wireless_activity_detector.name",
                 "gt.item.cover.wireless_activity_detector.tooltip",
@@ -2270,7 +2275,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.TERRA, 1L)));
 
         ItemList.Display_ITS_FREE.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Display_ITS_FREE.ID,
                 "gt.item.display.its_free.name",
                 "gt.item.display.its_free.tooltip",
@@ -2286,8 +2291,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 "Item_Drone_Remote_Interface",
                 "gt.item.drone_remote_interface.name",
                 "gt.item.drone_remote_interface.tooltip"));
-        ItemList.Vajra_Core.set(addItem(Vajra_Core.ID, "gt.item.vajra_core.name", ""));
-        ItemList.Magnetron.set(addItem(Magnetron.ID, "gt.item.magnetron.name", ""));
+        ItemList.Vajra_Core.set(addItemWithLocalizationKeys(Vajra_Core.ID, "gt.item.vajra_core.name", ""));
+        ItemList.Magnetron.set(addItemWithLocalizationKeys(Magnetron.ID, "gt.item.magnetron.name", ""));
         ItemList.ChaosLocator.set(
             new ItemChaosLocator("Item_Chaos_Locator", "gt.item.chaos_locator.name", "gt.item.chaos_locator.tooltip"));
 
