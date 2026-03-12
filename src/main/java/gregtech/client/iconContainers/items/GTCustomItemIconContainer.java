@@ -30,10 +30,12 @@ public class GTCustomItemIconContainer extends AbstractItemIconContainer impleme
         mOverlayName = mIconName + "_OVERLAY";
         overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(mOverlayName);
         GregTechAPI.sGTItemIconload.add(this);
-        if (Gregtech.debug.logRegisterIcons) {
-            GTLog.ico.println("R " + iconResource);
-            GTLog.ico.println("O " + overlayResource);
-        }
+        if (Gregtech.debug.logRegisterIcons) logRegisterIcons();
+    }
+
+    protected void logRegisterIcons() {
+        GTLog.ico.println("R " + iconResource);
+        GTLog.ico.println("O " + overlayResource);
     }
 
     // 2026-02-03: Counted 1928 unique Item CustomIcons, so 3K will avoid resize until 2304 entries
