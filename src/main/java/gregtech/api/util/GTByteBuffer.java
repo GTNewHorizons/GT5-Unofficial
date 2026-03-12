@@ -22,7 +22,7 @@ public class GTByteBuffer {
         ItemStack stack = null;
         int id = aBuf.readInt();
         if (id >= 0) {
-            int size = aBuf.readInt();
+            int size = aBuf.readByte();
             short meta = aBuf.readShort();
             stack = new ItemStack(Item.getItemById(id), size, meta);
             stack.stackTagCompound = readCompoundTagFromGreggyByteBuf(aBuf);
