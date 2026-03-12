@@ -588,15 +588,6 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new OreDictItemStack("logWood", 1))
-            .circuit(2)
-            .itemOutputs(ItemList.FR_Stick.get(1L))
-            .fluidInputs(Materials.SeedOil.getFluid(50L))
-            .duration(16 * TICKS)
-            .eut(7)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("logWood", 8))
             .circuit(8)
             .itemOutputs(ItemList.FR_Casing_Impregnated.get(1L))

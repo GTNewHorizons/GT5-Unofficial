@@ -22,6 +22,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipeBuilder;
 
 public class LaserEngraverRecipes implements Runnable {
 
@@ -71,7 +72,7 @@ public class LaserEngraverRecipes implements Runnable {
         // From ProcessingCrafting - craftingQuartz
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new net.minecraft.item.ItemStack(Blocks.redstone_torch, 3, 32767),
+                new net.minecraft.item.ItemStack(Blocks.redstone_torch, 3, GTRecipeBuilder.WILDCARD),
                 new OreDictItemStack("craftingQuartz", 1))
             .itemOutputs(new net.minecraft.item.ItemStack(Items.comparator, 1, 0))
             .fluidInputs(Materials.Concrete.getMolten(1 * INGOTS))
