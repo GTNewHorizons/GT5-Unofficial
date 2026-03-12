@@ -4267,6 +4267,7 @@ machtype.vf=Vacuum Freezer, VF
 machtype.mvf=Vacuum Freezer, MVF
 machtype.lcr=Chemical Reactor, LCR
 machtype.purif_plant=Purification Plant, WPP
+machtype.purif_unit=Purification Unit
 machtype.fluid_tank=Fluid Tank
 machtype.mega_apiary=Mega Apiary, Mapiary
 machtype.isamill=Grinding Machine, IGM
@@ -4684,6 +4685,9 @@ gt.purification_plant.tips.3=Every recipe has a base chance of success. Success 
 gt.purification_plant.tips.4=Every purification unit has a configuration window to configure maximum parallel amount\nThis will only scale purified water input, ALL fluid output and power usage\nOther catalysts and outputs are unchanged.\nToggle debug mode to reduce cycle time to 30s but disable water I/O
 gt.purification_plant.tips.5=§b§oContaminants and ionized particles in water can cause significant imperfections in delicate\n§b§oprocesses related to the cutting and engraving of silicon wafers and chips. It is crucial that\n§b§othe water is systematically purified through a series of increasingly precise and complex\n§b§opurification processes, and this multiblock is the heart of the operation.
 gt.purification_plant.info.1=Requires water to be placed in the tank
+
+gt.pu_clarifier.tips=§b§lWater Tier: §f%s\nMust be linked to a Purification Plant using a data stick to work<SEPARATOR>Requires a filter made of Activated Carbon to work\nEvery cycle, has a §c%s%%§7 chance to destroy the filter<SEPARATOR>§b§oThe first step to acquiring purified water is to filter out macroscopic contaminants through the\n§b§ouse of large physical filters. As more contaminants are captured, the efficacy of the filter\n§b§odecreases so continual replacements must be supplied to maintain full function of the Clarifier.
+gt.pu_clarifier.info=Requires water to be placed in the structure.
 
 gt.isamill.tips.1=§aG.O.G, Grinds Ores Good
 gt.isamill.tips.2=§aIt'sa mill!
