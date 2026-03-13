@@ -3,7 +3,6 @@ package gregtech.common.items;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.GregTech;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 import java.util.List;
@@ -286,11 +285,24 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                 "GT5U.item.toolbox.tooltip.select_tool",
                 I18n.format(settings.keyBindPickBlock.getKeyDescription())));
 
+        double charge = 0d;
+        double maxCharge = 0d;
+        int voltageTier = -1;
+
         if (selectedToolType.isPresent()) {
             // noinspection OptionalGetWithoutIsPresent
             final ItemStack tool = ToolboxUtil.getSelectedTool(toolbox)
                 .get();
             final long maxDamage = MetaGeneratedTool.getToolMaxDamage(tool);
+
+            if (tool.getItem() instanceof final MetaGeneratedTool toolItem) {
+                final Long[] electricStats = toolItem.getElectricStats(tool);
+                if (electricStats != null) {
+                    charge += toolItem.getRealCharge(tool);
+                    maxCharge += Math.abs(electricStats[0]);
+                    voltageTier = (int) GTUtility.clamp(electricStats[2], 0, V.length - 1);
+                }
+            }
 
             tooltipList.add(
                 StatCollector.translateToLocalFormatted(
@@ -301,30 +313,41 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                     "gt.behaviour.switch_mode.tooltip",
                     GameSettings.getKeyDisplayString(GTMod.proxy.TOOL_MODE_SWITCH_KEYBIND.getKeyCode())));
             tooltipList.add(
-                EnumChatFormatting.WHITE
-                    + translateToLocalFormatted(
-                        "gt.item.desc.durability",
-                        EnumChatFormatting.GREEN + formatNumber(maxDamage - MetaGeneratedTool.getToolDamage(tool))
-                            + " ",
-                        " " + formatNumber(maxDamage))
-                    + EnumChatFormatting.GRAY);
+                EnumChatFormatting.WHITE +
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.item.toolbox.tooltip.tool_durability",
+                        StatCollector.translateToLocalFormatted(
+                            "gt.item.desc.durability",
+                            EnumChatFormatting.GREEN + formatNumber(
+                                maxDamage - MetaGeneratedTool.getToolDamage(tool)
+                            ) + " ", " " + formatNumber(maxDamage))) + EnumChatFormatting.GRAY);
         }
 
-        ToolboxUtil.withBatteryAndManager(toolbox, (battery, manager) -> {
-            final IElectricItem batteryItem = Objects.requireNonNull((IElectricItem) battery.getItem());
-            final int voltageTier = GTUtility.clamp(batteryItem.getTier(battery), 0, V.length - 1);
+        final Optional<ItemStack> battery = ToolboxUtil.getBattery(toolbox);
+        if (battery.isPresent()) {
+            final ItemStack batteryStack = battery.get();
+            final Optional<IElectricItemManager> manager = getElectricManager(batteryStack);
+            if (manager.isPresent()) {
+                final IElectricItem batteryItem = Objects.requireNonNull((IElectricItem) batteryStack.getItem());
+                voltageTier = GTUtility.clamp(batteryItem.getTier(batteryStack), 0, V.length - 1);
+                charge += manager.get().getCharge(batteryStack);
+                maxCharge += batteryItem.getMaxCharge(batteryStack);
+            }
+        }
 
+        if (voltageTier > -1) {
             tooltipList.add(
                 EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                     "gt.item.desc.eu_info",
-                    formatNumber(manager.getCharge(battery)),
-                    formatNumber(batteryItem.getMaxCharge(battery)),
+                    formatNumber(charge),
+                    formatNumber(maxCharge),
                     formatNumber(V[voltageTier])));
-        });
+        }
+
 
         tooltipList.addAll(
             Arrays.asList(
-                translateToLocalFormatted(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.item.toolbox.byline.format",
                     StatCollector.translateToLocal(
                         "GT5U.item.toolbox.byline." + selectedToolType.map(

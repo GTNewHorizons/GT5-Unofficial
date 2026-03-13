@@ -2171,6 +2171,8 @@ GT5U.gui.text.toolbox.error.no_tools=§eToolbox has no tools! Right click to ope
 GT5U.item.toolbox.tooltip.select_tool=%s: Select active tool
 GT5U.item.toolbox.tooltip.deselect_tool=%s (while sneaking): Deselect active tool
 GT5U.item.toolbox.tooltip.open_toolbox=%s: Open toolbox
+# This inserts gt.item.desc.durability into the %s
+GT5U.item.toolbox.tooltip.tool_durability=Tool %s
 
 GT5U.item.toolbox.byline.closed=Your stalwart ally for an epic\n §oengineering journey.
 # The tool-specific bylines are pretty much all jokes. Accuracy in translation isn't important.
