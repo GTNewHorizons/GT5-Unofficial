@@ -50,6 +50,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -578,12 +579,21 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
+            .itemInputs(new OreDictItemStack("stickWood", 1))
             .circuit(2)
             .itemOutputs(ItemList.FR_Stick.get(1L))
             .fluidInputs(Materials.SeedOil.getFluid(50L))
             .duration(16 * TICKS)
             .eut(8)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("logWood", 8))
+            .circuit(8)
+            .itemOutputs(ItemList.FR_Casing_Impregnated.get(1L))
+            .fluidInputs(Materials.SeedOil.getFluid(250))
+            .duration(3 * SECONDS + 4 * TICKS)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -3009,6 +3019,22 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(GTModHandler.getIC2Item("carbonMesh", 1))
             .duration(8 * SECONDS)
             .eut(20)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("cobblestone", 8))
+            .circuit(8)
+            .itemOutputs(new ItemStack(Blocks.furnace, 1))
+            .duration(20 * SECONDS)
+            .eut(4)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("plankWood", 8))
+            .circuit(8)
+            .itemOutputs(new ItemStack(Blocks.chest, 1))
+            .duration(40 * SECONDS)
+            .eut(4)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -6910,6 +6936,24 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(GTModHandler.getIC2Item("electronicCircuit", 3))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
+            .addTo(assemblerRecipes);
+
+        // From ProcessingStone - stone (NULL) to comparator
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stone", 3), new ItemStack(Blocks.redstone_torch, 2))
+            .itemOutputs(new ItemStack(Items.comparator, 1))
+            .fluidInputs(Materials.Redstone.getMolten(1 * INGOTS))
+            .duration(5 * SECONDS)
+            .eut(48)
+            .addTo(assemblerRecipes);
+
+        // From ProcessingStone - NetherBrick to nether brick fence
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneNetherBrick", 1))
+            .circuit(1)
+            .itemOutputs(new ItemStack(Blocks.nether_brick_fence, 1))
+            .duration(5 * SECONDS)
+            .eut(4)
             .addTo(assemblerRecipes);
 
     }
