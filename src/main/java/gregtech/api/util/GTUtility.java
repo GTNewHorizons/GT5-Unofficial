@@ -2516,10 +2516,25 @@ public class GTUtility {
         }
     }
 
+    /**
+     * Translates a localization key to a localized string.
+     *
+     * @param key the localization key to translate
+     * @return the translated string
+     */
     public static String translate(String key) {
         return StatCollector.translateToLocal(key);
     }
 
+    /**
+     * Translates a localization key to a localized string.
+     * If parameters are provided, they are substituted into the translated string via
+     * {@link StatCollector#translateToLocalFormatted(String, Object...)}.
+     *
+     * @param key        the localization key to translate
+     * @param parameters optional substitution arguments for the translated string
+     * @return the translated string
+     */
     public static String translate(String key, Object... parameters) {
         return parameters.length == 0 ? StatCollector.translateToLocal(key)
             : StatCollector.translateToLocalFormatted(key, parameters);
