@@ -36,9 +36,10 @@ gt.component.platedense=Плотная пластина %s
 gt.component.platesuperdense=Сверхплотная пластина %s
 
 # Tooltip info of tile-entities
-gt.tileentity.eup_in=Входной вольтаж:
-gt.tileentity.eup_out=Выходной вольтаж:
-gt.tileentity.eup_amount=Ампераж:
+gt.tileentity.eup_in=Входной вольтаж: %s
+gt.tileentity.eup_out=Выходной вольтаж: %s
+gt.tileentity.amperage=Ампераж: %s
+gt.tileentity.throughput=Пропускная способность: %s
 gt.tileentity.has_muffler=есть улучшение глушитель
 gt.tileentity.has_steam_upgrade=есть улучшение пар
 gt.tileentity.colored=Colored (%s%s§7)
