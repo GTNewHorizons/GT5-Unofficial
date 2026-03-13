@@ -151,11 +151,11 @@ public abstract class MetaBaseItem extends GTGenericItem
         try {
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
                 if (tBehavior.onLeftClickEntity(this, aStack, aPlayer, aEntity)) {
-                    if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+                    if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
                     return true;
                 }
             if (aStack.stackSize <= 0) {
-                aPlayer.destroyCurrentEquippedItem();
+                GTUtility.destroyCurrentItem(aPlayer);
                 return false;
             }
         } catch (Exception e) {
@@ -173,11 +173,11 @@ public abstract class MetaBaseItem extends GTGenericItem
         try {
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
                 if (tBehavior.onItemUse(this, aStack, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ)) {
-                    if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+                    if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
                     return true;
                 }
             if (aStack.stackSize <= 0) {
-                aPlayer.destroyCurrentEquippedItem();
+                GTUtility.destroyCurrentItem(aPlayer);
                 return false;
             }
         } catch (Exception e) {
@@ -205,11 +205,11 @@ public abstract class MetaBaseItem extends GTGenericItem
                 hitX,
                 hitY,
                 hitZ)) {
-                    if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+                    if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
                     return true;
                 }
             if (aStack.stackSize <= 0) {
-                aPlayer.destroyCurrentEquippedItem();
+                GTUtility.destroyCurrentItem(aPlayer);
                 return false;
             }
         } catch (Exception e) {

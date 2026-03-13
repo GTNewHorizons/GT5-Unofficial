@@ -2733,6 +2733,16 @@ public class GTUtility {
         return ForgeDirection.getOrientation(facing);
     }
 
+    public static void destroyCurrentItem(final EntityPlayer player) {
+        final ItemStack currentItem = player.getCurrentEquippedItem();
+        if (currentItem == null) {
+            return;
+        }
+        if (!(currentItem.getItem() instanceof ItemGTToolbox)) {
+            player.destroyCurrentEquippedItem();
+        }
+    }
+
     public static class ItemNBT {
 
         public static void setNBT(ItemStack aStack, NBTTagCompound aNBT) {

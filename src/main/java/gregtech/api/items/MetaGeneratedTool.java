@@ -394,7 +394,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 }
             }
         }
-        if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+        if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
         return true;
     }
 
