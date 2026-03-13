@@ -53,6 +53,7 @@ import appeng.api.AEApi;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
@@ -73,6 +74,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.render.RenderingTileEntityWormhole;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import tectech.thing.CustomItemList;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
@@ -965,32 +967,40 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
 
-        // spotless:off
-        tt.addMachineType("Wormhole Generator, MWG")
-            .addInfo("Transfers EU between two wormhole generators")
-            .addInfo("Wormholes are linked by placing an AE2 Entangled Singularity in each controller slot")
-            .addInfo("The transfer rate is limited by the wormhole size, and the wormhole size is governed by the transfer rate")
-            .addInfo("If the transfer rate is completely stable, the transfer efficiency is " + String.format("%.1f", TRANSFER_EFFICIENCY * 100.0) + "%")
-            .addInfo("EU will only be transferred if there is space in the laser source hatch")
-            .addInfo("Each laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side")
-            .addInfo("Consumes an AE2 Singularity from an input bus each time the wormhole is kick-started")
-            .addInfo("Right click the controller with a screwdriver to disable overclocking")
+        tt.addMachineType("machtype.wormhole_gen")
+            .addInfo("gt.wormhole_gen.tips", String.format("%.1f", TRANSFER_EFFICIENCY * 100.0))
             .addGlassEnergyLimitInfo()
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 9, 7, false)
-            .addController("Front center")
-            .addCasingInfoExactly("Molecular Casing", 2 * 12, false)
-            .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 4, false)
-            .addCasingInfoExactly("Fusion Coil Block", 3 * 4 + 5 * 2, false)
-            .addCasingInfoRange("High Power Casing", 8 * 6 + 1, 8 * 6 + 1 + 4, false)
-            .addCasingInfoExactly("Any Tiered Glass", 9 * 4, true)
-            .addMaintenanceHatch("§61§r (Hint Block Number 1)")
-            .addInputBus("§61§r (Hint Block Number 1)")
-            .addDynamoHatch("§60§r - §64§r (Laser Only, Hint Block Number 2)")
-            .addEnergyHatch("§60§r - §64§r (Laser Only, Hint Block Number 2)")
+            .addController("front_center")
+            .addCasingInfoExactly(
+                CustomItemList.eM_Containment.get(1)
+                    .getDisplayName(),
+                2 * 12,
+                false)
+            .addCasingInfoExactly(
+                ItemList.Casing_AdvancedRadiationProof.get(1)
+                    .getDisplayName(),
+                4,
+                false)
+            .addCasingInfoExactly(
+                ItemList.Casing_Fusion_Coil.get(1)
+                    .getDisplayName(),
+                3 * 4 + 5 * 2,
+                false)
+            .addCasingInfoRange(
+                CustomItemList.eM_Power.get(1)
+                    .getDisplayName(),
+                8 * 6 + 1,
+                8 * 6 + 1 + 4,
+                false)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 9 * 4, true)
+            .addMaintenanceHatch("gt.wormhole_gen.info.1", 1)
+            .addInputBus("gt.wormhole_gen.info.1", 1)
+            .addDynamoHatch("gt.wormhole_gen.info.2", 2)
+            .addEnergyHatch("gt.wormhole_gen.info.2", 2)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTValues.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
-        // spotless:on
+            .toolTipFinisher(GTValues.AuthorPineapple + GTUtility.translate("gt.wormhole_gen.extra_author_info"));
 
         return tt;
     }

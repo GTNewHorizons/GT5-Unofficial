@@ -375,14 +375,14 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.contributors.projectlead",
-                createContributorEntry(GTValues.StandaloneNotAPenguin, -1)));
+                createContributorEntry(GTValues.AuthorNotAPenguin, -1)));
 
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.contributors.programming",
                 createContributorEntry("JurreJelle", Color.INDIGO.brighterSafe(2)),
                 createContributorEntry("FourIsTheNumber", Color.PURPLE.brighterSafe(1)),
-                createContributorEntry(GTValues.StandalonePureBluez, -1),
+                createContributorEntry(GTValues.AuthorPureBluez, -1),
                 createContributorEntry("TheEpicGamer274", 0xFF2BCAD9),
                 createContributorEntry("Nockyx", Color.YELLOW.brighterSafe(1)),
                 createContributorEntry("Serenibyss", 0xFFFFA3FB),

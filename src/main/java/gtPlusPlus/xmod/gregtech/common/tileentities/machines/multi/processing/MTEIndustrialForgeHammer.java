@@ -52,7 +52,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -83,43 +82,39 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
 
     @Override
     public String getMachineType() {
-        return "Forge Hammer";
+        return "gt.recipe.hammer";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo(TooltipHelper.parallelText("Voltage Tier * Anvil Tier * 8") + " Parallels")
+            .addInfo("gt.sledgehammer.tips.1")
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(1f)
-            .addInfo("T1 - Vanilla Anvil");
+            .addInfo("gt.sledgehammer.tips.2");
         if (Railcraft.isModLoaded()) {
-            tt.addInfo("T2 - Steel Anvil");
+            tt.addInfo("gt.sledgehammer.tips.3");
         }
         if (EnderIO.isModLoaded()) {
-            tt.addInfo("T3 - Dark Steel Anvil");
+            tt.addInfo("gt.sledgehammer.tips.4");
         }
         if (ThaumicBases.isModLoaded()) {
-            tt.addInfo("T3 - Thaumium Anvil");
-            tt.addInfo("T4 - Void Metal Anvil");
+            tt.addInfo("gt.sledgehammer.tips.5");
         }
 
         tt.addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Forge Casing", 6, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GTPP.tooltip.structure.anvil"),
-                "In the center of 3x3x3 structure",
-                2)
+            .addController("front_center")
+            .addCasingInfoMin("gtplusplus.blockcasings.5.6.name", 6, false)
+            .addInputBus("<casing>", 1)
+            .addOutputBus("<casing>", 1)
+            .addInputHatch("<casing>", 1)
+            .addOutputHatch("<casing>", 1)
+            .addEnergyHatch("<casing>", 1)
+            .addMaintenanceHatch("<casing>", 1)
+            .addMufflerHatch("<casing>", 1)
+            .addStructurePart("GTPP.tooltip.structure.anvil", "gt.sledgehammer.info.1", 2)
             .toolTipFinisher();
         return tt;
     }

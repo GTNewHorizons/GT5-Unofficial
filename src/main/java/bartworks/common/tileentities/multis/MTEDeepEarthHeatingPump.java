@@ -13,16 +13,13 @@
 
 package bartworks.common.tileentities.multis;
 
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static gregtech.api.enums.GTValues.VN;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.Arrays;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -33,6 +30,7 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -40,6 +38,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -85,48 +84,22 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         String casings = this.getCasingBlockItem()
             .get(0)
             .getDisplayName();
-        tt.addMachineType("Geothermal Heat Pump, DEHP")
-            .addInfo("Consumes " + TierEU.RECIPE_HV + "EU/t")
-            .addInfo("Has 2 Modes, use the Screwdriver to change them:");
-
-        tt.addInfo("Direct Steam and Coolant Heating")
-            .addInfo(
-                "Direct Steam Mode: Consumes " + EnumChatFormatting.BLUE
-                    + "Distilled Water"
-                    + EnumChatFormatting.GRAY
-                    + " to produce "
-                    + EnumChatFormatting.WHITE
-                    + (long) (25600 * 20)
-                    + EnumChatFormatting.GRAY
-                    + "L/s of "
-                    + EnumChatFormatting.WHITE
-                    + "Superheated Steam")
-            .addInfo(
-                "Coolant Heating Mode: Converts " + (long) (192 * 20)
-                    + "L/s "
-                    + EnumChatFormatting.AQUA
-                    + "Coolant"
-                    + EnumChatFormatting.GRAY
-                    + " to "
-                    + EnumChatFormatting.RED
-                    + "Hot Coolant")
-            .addInfo("Each maintenance issue lowers output efficiency by " + EnumChatFormatting.GREEN + "10%")
-            .addInfo("Explodes when it runs out of Distilled Water/Coolant")
-            .addInfo("Base cycle time: 1 tick");
-
-        tt.beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom")
-            .addOtherStructurePart(casings, "form the 3x1x3 Base")
-            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-            .addOtherStructurePart(
-                this.getFrameMaterial().mName + " Frame Boxes",
-                "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
-            .addMaintenanceHatch("Any base casing")
-            .addInputBus("Mining Pipes, optional, any base casing")
-            .addInputHatch("Any base casing")
-            .addOutputHatch("Any base casing")
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
+        tt.addMachineType("machtype.dehp")
+            .addInfo("gt.dehp.tips", (long) (25600 * 20), (long) (192 * 20), TierEU.RECIPE_HV)
+            .beginStructureBlock(3, 7, 3, false)
+            .addController("front_bottom_middle")
+            .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.1")
+            .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.2")
+            .addStructurePart(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, this.getFrameMaterial(), 1)
+                    .getDisplayName(),
+                "gt.driller_shaped_mb.info.frame")
+            .addEnergyHatch(GTUtility.nestParams("gt.dehp.info.energy", VN[this.getMinTier()]))
+            .addMaintenanceHatch("gt.driller_shaped_mb.info.replace")
+            .addInputBus("gt.dehp.info.i_bus")
+            .addInputHatch("gt.driller_shaped_mb.info.replace")
+            .addOutputHatch("gt.driller_shaped_mb.info.replace")
+            .toolTipFinisher("tooltip.bw.author_bart_via_bw.name");
         return tt;
     }
 
@@ -163,7 +136,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
     @Override
     public String getMachineModeName() {
-        return translateToLocal("GT5U.DEHP.mode." + machineMode);
+        return GTUtility.translate("GT5U.DEHP.mode." + machineMode);
     }
 
     @Override

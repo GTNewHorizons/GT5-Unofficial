@@ -12,10 +12,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.copyAmount;
 import static gregtech.api.util.GTUtility.copyAmountUnsafe;
-import static net.minecraft.util.EnumChatFormatting.AQUA;
-import static net.minecraft.util.EnumChatFormatting.BOLD;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
-import static net.minecraft.util.EnumChatFormatting.WHITE;
 
 import javax.annotation.Nonnull;
 
@@ -40,6 +37,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -54,13 +52,13 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.metadata.SolarFactoryRecipeDataKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.SolarFactoryRecipeData;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
@@ -377,54 +375,65 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Solar Factory")
-            .addInfo("Controller block for the Solar Factory")
-            .addInfo("Produces solar panels in bulk")
-            .addInfo("The structure has 3 tiers, each allowing greater production than the last")
-            .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "2" + WHITE + BOLD + " and above:")
-            .addInfo(GREEN + "  Supports Multi-Amp energy hatches")
-            .addInfo("  25% more outputs for every Wafer tier used above the minimum required")
-            .addInfo("  The bonus to output occurs after parallels, and cannot be greater than 100%")
-            .addInfo("  The recipes shown in NEI display the minimum wafer tier required")
-            .addInfo("  LV-LuV Solar Panels can be made without the previous panel, but at a higher cost")
+        tt.addMachineType("machtype.solar_factory")
             .addInfo(
-                "  " + EnumChatFormatting.WHITE
-                    + "Precise Casing"
-                    + EnumChatFormatting.GRAY
-                    + " Tier determines "
-                    + TooltipHelper.parallelText("Parallels"))
-            .addInfo(
-                "  " + tieredTextLine("Mk-I", "MK-II", "MK-III", "MK-IV")
-                    + "->"
-                    + tieredTextLine("8", "16", "32", "64")
-                    + " Parallels")
-            .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3" + WHITE + BOLD + ":")
-            .addInfo(GREEN + "  Supports Laser energy hatches")
-            .addInfo("  ZPM-UV Solar Panels can be made without the previous panel, but at a higher cost")
-            .addInfo("  Bonus per increased wafer tier is raised to 50%")
+                "gt.solar_factory.tips",
+                tieredTextLine("Mk-I", "MK-II", "MK-III", "MK-IV"),
+                tieredTextLine("8", "16", "32", "64"))
             .beginStructureBlock(7, 10, 9, false)
-            .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "1:")
-            .addCasingInfoRange("Clean Stainless Steel Machine Casing", 15, 41, false)
-            .addCasingInfoExactly("Any Tiered Glass", 24, false)
-            .addCasingInfoExactly("Damascus Steel Frame Box", 20, false)
-            .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "2:")
-            .addCasingInfoRange("Tungstensteel Machine Casing", 35, 101, false)
-            .addCasingInfoExactly("Any Tiered Glass", 74, false)
-            .addCasingInfoExactly("Tungsten Frame Box", 75, false)
-            .addCasingInfoExactly("Precise Electronic Unit Casing", 20, true)
-            .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3:")
-            .addCasingInfoRange("Advanced Iridium Machine Casing", 50, 140, false)
-            .addCasingInfoExactly("Any Tiered Glass", 67, false)
-            .addCasingInfoExactly("Tungsten Frame Box", 24, false)
-            .addCasingInfoExactly("Precise Electronic Unit Casing", 26, true)
-            .addCasingInfoExactly("Black Plutonium Item Pipe", 6, false)
-            .addStructureInfo(WHITE + "" + BOLD + "All Tiers: ")
-            .addStructureInfo(WHITE + "Imprecise Unit Casings cannot be used")
-            .addInputHatch("Any Machine Casing")
-            .addInputBus("Any Machine Casing")
-            .addOutputBus("Any Machine Casing")
-            .addEnergyHatch("Any Machine Casing")
-            .addMaintenanceHatch("Any Machine Casing")
+            .addStructureInfo("gt.solar_factory.tier_head", "1")
+            .addCasingInfoRange(
+                ItemList.Casing_CleanStainlessSteel.get(1)
+                    .getDisplayName(),
+                15,
+                41,
+                false)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 24, true)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.DamascusSteel, 1)
+                    .getDisplayName(),
+                20,
+                false)
+            .addStructureInfo("gt.solar_factory.tier_head", "2")
+            .addCasingInfoRange(
+                ItemList.Casing_RobustTungstenSteel.get(1)
+                    .getDisplayName(),
+                35,
+                101,
+                false)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 74, true)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tungsten, 1)
+                    .getDisplayName(),
+                75,
+                false)
+            .addCasingInfoExactly("GT5U.tooltip.structure.peuc", 20, true)
+            .addStructureInfo("gt.solar_factory.tier_head", "3")
+            .addCasingInfoRange(
+                ItemList.Casing_Advanced_Iridium.get(1)
+                    .getDisplayName(),
+                50,
+                140,
+                false)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 67, true)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tungsten, 1)
+                    .getDisplayName(),
+                24,
+                false)
+            .addCasingInfoExactly("GT5U.tooltip.structure.peuc", 26, true)
+            .addCasingInfoExactly(
+                ItemList.Casing_Item_Pipe_Black_Plutonium.get(1)
+                    .getDisplayName(),
+                6,
+                false)
+            .addStructureInfo("gt.solar_factory.tier_head.all")
+            .addStructureInfo("")
+            .addInputHatch("<casing>")
+            .addInputBus("<casing>")
+            .addOutputBus("<casing>")
+            .addEnergyHatch("<casing>")
+            .addMaintenanceHatch("<casing>")
             .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
             .toolTipFinisher(GTValues.AuthorPureBluez);
         return tt;

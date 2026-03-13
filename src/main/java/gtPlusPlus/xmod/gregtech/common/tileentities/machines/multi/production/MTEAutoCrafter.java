@@ -49,7 +49,7 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
 
     @Override
     public String getMachineType() {
-        return "Assembler, LSAA";
+        return "machtype.lsaa";
     }
 
     @Override
@@ -66,18 +66,18 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Highly Advanced Assembling Machine")
+            .addInfo("gt.lsaa.tips")
             .addBulkMachineInfo(2, 3f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
-            .addCasingInfoRange("Bulk Production Frame", 10, 25, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .addController("front_center")
+            .addCasingInfoRange("gtplusplus.blockcasings.2.12.name", 10, 25, false)
+            .addInputBus("<casing>", 1)
+            .addOutputBus("<casing>", 1)
+            .addInputHatch("<casing>", 1)
+            .addEnergyHatch("<casing>", 1)
+            .addMaintenanceHatch("<casing>", 1)
+            .addMufflerHatch("<casing>", 1)
             .toolTipFinisher();
         return tt;
     }
