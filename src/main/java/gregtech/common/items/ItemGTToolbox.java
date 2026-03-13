@@ -13,6 +13,7 @@ import java.util.Optional;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -126,7 +127,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
             // If the tool being used has a very bad mining speed, it's possible for it to not be able to finish mining
             // a block because the equipped stack changes. We can, after a fashion, check to see if the tool is
             // currently being used by checking the arm swing animation.
-            if (isInHand && player.ticksExisted % CHARGE_TICK == 0 && ToolboxUtil.canCharge(toolbox) && !player.isSwingInProgress) {
+            if (player.ticksExisted % CHARGE_TICK == 0 && ToolboxUtil.canCharge(toolbox) && !player.isSwingInProgress) {
                 final ItemStack battery = handler.extractItem(ToolboxSlot.BATTERY.getSlotID(), 1, true);
                 if (battery != null && battery.getItem() instanceof final IElectricItem batteryItem) {
                     shouldUpdate = getElectricManager(battery).map(batteryManager -> {
@@ -277,13 +278,13 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
             tooltipList.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.item.toolbox.tooltip.open_toolbox",
-                    GameSettings.getKeyDisplayString(settings.keyBindUseItem.getKeyCode())));
+                    I18n.format(settings.keyBindUseItem.getKeyDescription())));
         }
 
         tooltipList.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.item.toolbox.tooltip.select_tool",
-                GameSettings.getKeyDisplayString(settings.keyBindPickBlock.getKeyCode())));
+                I18n.format(settings.keyBindPickBlock.getKeyDescription())));
 
         if (selectedToolType.isPresent()) {
             // noinspection OptionalGetWithoutIsPresent
@@ -294,7 +295,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
             tooltipList.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.item.toolbox.tooltip.deselect_tool",
-                    GameSettings.getKeyDisplayString(settings.keyBindPickBlock.getKeyCode())));
+                    I18n.format(settings.keyBindPickBlock.getKeyDescription())));
             tooltipList.add(
                 StatCollector.translateToLocalFormatted(
                     "gt.behaviour.switch_mode.tooltip",

@@ -41,7 +41,8 @@ public enum ToolboxSlot {
 
     // Charges any item in the toolbox.
     BATTERY(7, OrePrefixes.battery::containsUnCached, GTGuiTextures.OVERLAY_TOOLBOX_BATTERY),
-    HARD_HAMMER(8, isItemInToolSet(GregTechAPI.sHardHammerList), GTGuiTextures.OVERLAY_TOOLBOX_HARD_HAMMER),
+    HARD_HAMMER(8, isItemInToolSet(GregTechAPI.sHardHammerList, GregTechAPI.sJackhammerList),
+        GTGuiTextures.OVERLAY_TOOLBOX_HARD_HAMMER),
     CROWBAR(9, isItemInToolSet(GregTechAPI.sCrowbarList), GTGuiTextures.OVERLAY_TOOLBOX_CROWBAR),
     SOLDERING_IRON(10, isItemInToolSet(GregTechAPI.sSolderingToolList), GTGuiTextures.OVERLAY_TOOLBOX_SOLDERING_IRON),
 
@@ -142,13 +143,19 @@ public enum ToolboxSlot {
             .orElse(false);
     }
 
-    private static Predicate<ItemStack> isItemInToolSet(GTHashSet toolSet) {
+    private static Predicate<ItemStack> isItemInToolSet(GTHashSet... toolSet) {
         return (ItemStack itemStack) -> {
             if (!(itemStack.getItem() instanceof MetaGeneratedTool)) {
                 return false;
             }
 
-            return GTUtility.isStackInList(itemStack, toolSet);
+            for (final GTHashSet toolType : toolSet) {
+                if (GTUtility.isStackInList(itemStack, toolType)) {
+                    return true;
+                }
+            }
+
+            return false;
         };
     }
 }

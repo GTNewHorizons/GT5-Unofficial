@@ -2169,7 +2169,7 @@ GT5U.gui.text.toolbox.radial.unselect=Deselect Tool
 GT5U.gui.text.toolbox.error.no_tools=§eToolbox has no tools! Right click to open and add tools.
 
 GT5U.item.toolbox.tooltip.select_tool=%s: Select active tool
-GT5U.item.toolbox.tooltip.deselect_tool=Sneak-%s: Deselect active tool
+GT5U.item.toolbox.tooltip.deselect_tool=%s (while sneaking): Deselect active tool
 GT5U.item.toolbox.tooltip.open_toolbox=%s: Open toolbox
 
 GT5U.item.toolbox.byline.closed=Your stalwart ally for an epic\n §oengineering journey.
