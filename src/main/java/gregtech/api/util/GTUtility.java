@@ -130,7 +130,9 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 import com.google.auto.value.AutoValue;
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
@@ -213,6 +215,7 @@ public class GTUtility {
     private static int sBookCount = 0;
     public static UUID defaultUuid = null; // maybe default non-null?
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
+    private static final Splitter NEWLINE_SPLITTER = Splitter.on("\\n");
 
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
@@ -2514,7 +2517,7 @@ public class GTUtility {
     }
 
     public static String[] translateMultiline(String key, Object... parameters) {
-        return translate(key, parameters).split("\n");
+        return Iterables.toArray(NEWLINE_SPLITTER.split(translate(key, parameters)), String.class);
     }
 
     /*
