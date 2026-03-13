@@ -2516,6 +2516,16 @@ public class GTUtility {
             : StatCollector.translateToLocalFormatted(key, parameters);
     }
 
+    /**
+     * Translates a localization key and splits the result into multiple lines.
+     * Lines are split on the literal {@code \n} sequence (backslash + n),
+     * as used in Minecraft lang files.
+     *
+     * @param key        the localization key to translate
+     * @param parameters optional substitution arguments for the translated string
+     * @return an array of lines from the translated string
+     * @see #translate(String, Object...)
+     */
     public static String[] translateMultiline(String key, Object... parameters) {
         return Iterables.toArray(NEWLINE_SPLITTER.split(translate(key, parameters)), String.class);
     }
