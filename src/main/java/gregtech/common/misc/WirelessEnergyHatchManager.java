@@ -13,24 +13,22 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
 
-@EventBusSubscriber
 public class WirelessEnergyHatchManager {
 
-    private static final ArrayList<WeakReference<MTEWirelessEnergy>> HATCHES = new ArrayList<>();
-    private static long tickTimer = 0;
+    private final ArrayList<MTEWirelessEnergy> HATCHES = new ArrayList<>();
+    private long tickTimer = 0;
 
-    public static void addHatch(MTEWirelessEnergy e) {
-        HATCHES.add(new WeakReference<>(e));
+    public void addHatch(MTEWirelessEnergy e) {
+        HATCHES.add(e);
     }
 
     @SubscribeEvent
-    public static void onTick(TickEvent.ServerTickEvent event) {
+    public void onTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) return;
         if (++tickTimer % ticks_between_energy_addition != 0) return;
-        Iterator<WeakReference<MTEWirelessEnergy>> iterator = HATCHES.iterator();
+        Iterator<MTEWirelessEnergy> iterator = HATCHES.iterator();
         while (iterator.hasNext()) {
-            MTEWirelessEnergy e = iterator.next()
-                .get();
+            MTEWirelessEnergy e = iterator.next();
             if (e == null || !e.isValid()) {
                 iterator.remove();
                 continue;

@@ -10,6 +10,8 @@ import static java.lang.Long.min;
 import java.math.BigInteger;
 import java.util.UUID;
 
+import gregtech.GTMod;
+import gregtech.common.GTProxy;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.Textures;
@@ -111,7 +113,7 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
                 tryFetchingEnergy();
                 if (aTick > 100) {
                     aBaseMetaTileEntity.tryDisableTicking();
-                    WirelessEnergyHatchManager.addHatch(this);
+                    GTMod.proxy.wirelessEnergyHatchManager.addHatch(this);
                 }
             }
         }

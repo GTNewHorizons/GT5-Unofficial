@@ -84,6 +84,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     public void tryDisableTicking() {
         if (mTickDisabled) return;
         if (getValidCoversMask() != 0) return;
+        if (mIgnoreNextUnload) return;
         getWorld().func_147457_a(this);
         mIgnoreNextUnload = true;
         hasTimeStatisticsStarted = false;
