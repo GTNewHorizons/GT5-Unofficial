@@ -832,7 +832,7 @@ public class AssemblyLineRecipes implements Runnable {
                     ItemList.Component_Grinder_Diamond.get(64) },
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.StainlessSteel, 32),
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Chrome, 16))
-            .itemOutputs(ItemList.Ore_Processor.get(1))
+            .itemOutputs(ItemList.IntegratedOreFactory.get(1))
             .fluidInputs(
                 MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
                 Materials.Naquadria.getMolten(10 * INGOTS))
