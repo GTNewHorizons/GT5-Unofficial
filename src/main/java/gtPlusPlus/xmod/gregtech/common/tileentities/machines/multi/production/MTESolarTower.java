@@ -11,6 +11,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -22,7 +23,9 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
@@ -32,6 +35,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -41,6 +45,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialMisc;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.misc.MTESolarHeater;
@@ -218,16 +223,60 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                         " g                           g ", "  g                         g  ",
                         "   g                       g   ", "    g                     g    ",
                         "     ggggggggggggggggggggg     ", } }))
-                .addElement(
-                    'g',
-                    lazy(
-                        t -> buildHatchAdder(MTESolarTower.class).hatchClass(MTESolarHeater.class)
-                            .adder(MTESolarTower::addSolarHeater)
-                            // Use a positive casing index to make adder builder happy
-                            .casingIndex(1)
-                            .hint(1)
-                            .continueIfSuccess()
-                            .build()))
+                .addElement('g', lazy(t -> {
+                    IStructureElement<MTESolarTower> delegate = buildHatchAdder(MTESolarTower.class)
+                        .hatchClass(MTESolarHeater.class)
+                        .adder(MTESolarTower::addSolarHeater)
+                        // Use a positive casing index to make adder builder happy
+                        .casingIndex(1)
+                        .hint(1)
+                        .continueIfSuccess()
+                        .build();
+                    return new IStructureElement<MTESolarTower>() {
+
+                        @Override
+                        public boolean check(MTESolarTower t, World world, int x, int y, int z) {
+                            return delegate.check(t, world, x, y, z);
+                        }
+
+                        @Override
+                        public boolean spawnHint(MTESolarTower t, World world, int x, int y, int z, ItemStack trigger) {
+                            return delegate.spawnHint(t, world, x, y, z, trigger);
+                        }
+
+                        @Override
+                        public boolean placeBlock(MTESolarTower t, World world, int x, int y, int z,
+                            ItemStack trigger) {
+                            ItemStack stack = GregtechItemList.Solar_Tower_Reflector.get(1);
+                            if (stack == null) return false;
+                            if (!(stack.getItem() instanceof ItemBlock itemBlock)) return false;
+                            boolean success = itemBlock.placeBlockAt(stack, null, world, x, y, z, 0, 0, 0, 0, 0);
+                            if (!success) return false;
+                            if (world.getTileEntity(x, y, z) instanceof ITurnable turnable) {
+                                IGregTechTileEntity base = t.getBaseMetaTileEntity();
+                                int dx = x - base.getXCoord();
+                                int dz = z - base.getZCoord();
+                                ForgeDirection facing;
+                                if (Math.abs(dx) > Math.abs(dz)) {
+                                    facing = dx > 0 ? ForgeDirection.EAST : ForgeDirection.WEST;
+                                } else if (Math.abs(dz) > Math.abs(dx)) {
+                                    facing = dz > 0 ? ForgeDirection.SOUTH : ForgeDirection.NORTH;
+                                } else {
+                                    // Corner: pick horizontal based on dx
+                                    facing = dx > 0 ? ForgeDirection.EAST : ForgeDirection.WEST;
+                                }
+                                turnable.setFrontFacing(facing);
+                            }
+                            return true;
+                        }
+
+                        @Override
+                        public PlaceResult survivalPlaceBlock(MTESolarTower t, World world, int x, int y, int z,
+                            ItemStack trigger, AutoPlaceEnvironment env) {
+                            return delegate.survivalPlaceBlock(t, world, x, y, z, trigger, env);
+                        }
+                    };
+                }))
                 .addElement(
                     't',
                     lazy(t -> onElementPass(x -> ++x.mCasing1, ofBlock(t.getCasingBlock(), t.getCasingMeta()))))

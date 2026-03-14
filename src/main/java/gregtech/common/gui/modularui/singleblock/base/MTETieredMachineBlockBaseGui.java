@@ -55,7 +55,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
 
     protected void registerSyncValues(PanelSyncManager syncManager) {
 
-        syncManager.registerSlotGroup("item_inv", 1);
+        syncManager.registerSlotGroup("item_inv", 1, false);
 
         BooleanSyncValue powerSwitchSyncer = new BooleanSyncValue(baseMetaTileEntity::isAllowedToWork, bool -> {
             if (bool) baseMetaTileEntity.enableWorking();
