@@ -1,14 +1,11 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
-import static gregtech.api.recipe.RecipeMaps.latheRecipes;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.HashSet;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemMultiTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -19,7 +16,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -80,20 +76,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             // Also skip this plank if it's wildcard equivalent was already processed
             if (!tIsWildcard && sProcessedPlanks.contains(tHashPrefix + ":" + OreDictionary.WILDCARD_VALUE)) return;
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, aStack))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L))
-                .duration(10 * TICKS)
-                .eut(8)
-                .addTo(latheRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(8, aStack))
-                .circuit(8)
-                .itemOutputs(new ItemStack(Blocks.chest, 1))
-                .duration(40 * SECONDS)
-                .eut(4)
-                .addTo(assemblerRecipes);
-
             if (aStack.getItem() instanceof MetaGeneratedItem) {
                 // https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/19273
                 // "plankWood" from GT are also having other recipes in cutters, which causing recipe conflicts.
@@ -102,9 +84,15 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 return;
             }
 
+            int metaCount = 64;
+            // vanilla planks
+            if (aStack.getItem() instanceof ItemMultiTexture imt) {
+                metaCount = imt.field_150942_c.length;
+            }
+
             // Gregify slab recipes
             if (tIsWildcard) {
-                for (byte i = 0; i < 64; i = (byte) (i + 1)) {
+                for (byte i = 0; i < metaCount; i = (byte) (i + 1)) {
                     ItemStack tStack = GTUtility.copyMetaData(i, aStack);
                     if (tStack == null && i >= 16) break;
 
