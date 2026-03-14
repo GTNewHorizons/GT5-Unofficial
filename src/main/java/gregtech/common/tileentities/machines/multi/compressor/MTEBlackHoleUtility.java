@@ -1,31 +1,23 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.hatch.MTEBlackHoleUtilityGui;
 
 public class MTEBlackHoleUtility extends MTEHatch {
 
@@ -81,7 +73,17 @@ public class MTEBlackHoleUtility extends MTEHatch {
         return true;
     }
 
+    // 1 -> static
+    // 2 -> pulse
     public int mode = 1;
+
+    public boolean getMode() {
+        return mode == 1;
+    }
+
+    public void setMode(boolean mode) {
+        this.mode = mode ? 1 : 2;
+    }
 
     @Override
     public String[] getDescription() {
@@ -154,24 +156,13 @@ public class MTEBlackHoleUtility extends MTEHatch {
         return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont) };
     }
 
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new ButtonWidget().setOnClick((clickData, widget) -> mode = (mode == 1) ? 2 : 1)
-                .setPlayClickSound(true)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    ret.add((mode == 1) ? GTUITextures.OVERLAY_BUTTON_REDSTONE_ON : GTUITextures.OVERLAY_BUTTON_ANALOG);
-                    return ret.toArray(new IDrawable[0]);
-                })
-                .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> mode, (val) -> mode = val), builder)
-                .setPos(10, 8)
-                .setSize(16, 16))
-            .widget(
-                new DynamicTextWidget(
-                    () -> new Text(
-                        StatCollector
-                            .translateToLocal((mode == 1) ? "GT5U.gui.text.static_mode" : "GT5U.gui.text.pulse_mode")))
-                                .setPos(31, 13));
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBlackHoleUtilityGui(this).build(data, syncManager, uiSettings);
     }
 }

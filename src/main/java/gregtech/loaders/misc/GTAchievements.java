@@ -29,7 +29,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTLog;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.common.items.IDMetaTool01;
@@ -63,15 +62,6 @@ public class GTAchievements {
         GTLog.out.println(
             "Registration finished. If you see some langfile entries above, feel free to add them to your lang file to fix the unlocalised entries in the GT Achievements.");
         registerAchievement("gettingstartedwithgt", 0, 0, new ItemStack(Items.wooden_pickaxe), "", false);
-        registerAchievement("crops", -4, 0, GTModHandler.getIC2Item("crop", 1L), "gettingstartedwithgt", false);
-        registerAchievement("havestlead", -4, 2, ItemList.Crop_Drop_Plumbilia.get(1), "crops", false);
-        registerAchievement("havestcopper", -2, 1, ItemList.Crop_Drop_Coppon.get(1), "crops", false);
-        registerAchievement("havesttin", -2, -1, ItemList.Crop_Drop_Tine.get(1), "crops", false);
-        registerAchievement("havestoil", -4, -4, ItemList.Crop_Drop_OilBerry.get(1), "crops", false);
-        registerAchievement("havestiron", -2, -3, ItemList.Crop_Drop_Ferru.get(1), "crops", false);
-        registerAchievement("havestgold", -2, -6, ItemList.Crop_Drop_Aurelia.get(1), "havestiron", false);
-        registerAchievement("havestsilver", -4, -5, ItemList.Crop_Drop_Argentia.get(1), "havestiron", false);
-        registerAchievement("havestemeralds", -2, -8, ItemList.Crop_Drop_BobsYerUncleRanks.get(1), "havestgold", false);
 
         registerAchievement(
             "tools",
@@ -548,7 +538,6 @@ public class GTAchievements {
             case "gt.metaitem.01.32630" -> issueAchievement(player, "transport");
             case "gt.metaitem.01.32650" -> issueAchievement(player, "complexmachines");
             case "gt.metaitem.01.32670" -> issueAchievement(player, "hightech");
-            case "ic2.blockCrop" -> issueAchievement(player, "crops");
             case "ic2.itemPartCircuit" -> issueAchievement(player, "gtbasiccircuit");
             case "ic2.itemPartCircuitAdv" -> issueAchievement(player, "stepforward");
             case "gt.blockmachines.boiler.solar" -> issueAchievement(player, "simplyeco");
@@ -742,14 +731,6 @@ public class GTAchievements {
         }
         // GT_FML_LOGGER.info(stack.getUnlocalizedName());
         switch (stack.getUnlocalizedName()) {
-            case "gt.metaitem.02.32500" -> issueAchievement(player, "havestlead");
-            case "gt.metaitem.02.32501" -> issueAchievement(player, "havestsilver");
-            case "gt.metaitem.02.32503" -> issueAchievement(player, "havestiron");
-            case "gt.metaitem.02.32504" -> issueAchievement(player, "havestgold");
-            case "gt.metaitem.02.32530" -> issueAchievement(player, "havestcopper");
-            case "gt.metaitem.02.32540" -> issueAchievement(player, "havesttin");
-            case "gt.metaitem.02.32510" -> issueAchievement(player, "havestoil");
-            case "gt.metaitem.02.32511" -> issueAchievement(player, "havestemeralds");
             case "gt.metaitem.03.32082" -> issueAchievement(player, "energyflow");
             case "gt.metaitem.01.32702" -> issueAchievement(player, "bettercircuits");
             case "gt.metaitem.01.32707" -> issueAchievement(player, "datasaving");

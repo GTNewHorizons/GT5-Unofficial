@@ -28,6 +28,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -205,7 +206,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
     @Override
     public boolean canExtractItem(int index, ItemStack item, int side) {
         // allow extracting leftover items of fuels like buckets
-        return GTUtility.isEmptyFluidContainer(item);
+        return FluidContainerRegistry.isEmptyContainer(item);
     }
 
     @Override

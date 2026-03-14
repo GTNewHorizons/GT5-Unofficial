@@ -857,6 +857,30 @@ public final class GTGuiTextures {
         .collect(Collectors.toList())
         .toArray(new UITexture[0]);
 
+    public static final UITexture OVERLAY_TOOLBOX_WRENCH = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_wrench")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_WIRE_CUTTER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_wire_cutter")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_SCREWDRIVER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_screwdriver")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_SOFT_MALLET = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_soft_mallet")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_HARD_HAMMER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_hard_hammer")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_CROWBAR = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_crowbar")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_SOLDERING_IRON = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_soldering_iron")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_BATTERY = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_battery")
+        .build();
     // endregion slot overlay
 
     // region progressbar
@@ -888,6 +912,11 @@ public final class GTGuiTextures {
         .location(MainMod.MOD_ID, "GUI/progressbar/sievert")
         .fullImage()
         .name(GTTextureIds.PROGRESSBAR_SIEVERT)
+        .build();
+    public static final UITexture PROGRESSBAR_PURIFICATION_UNIT = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/water_purification_unit")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_WATER_PURIFICATION)
         .build();
     public static final UITexture PROGRESSBAR_GODFORGE_PLASMA = UITexture
         .fullImage(MODID, "gui/progressbar/godforge_plasma");
@@ -1512,6 +1541,26 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_EXOFOUNDRY_HR)
         .build();
+
+    public static final UITexture WATER_PURIFICATION_ONLINE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/water_purification_online")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_WATER_PURIFICATION_ONLINE)
+        .build();
+    public static final UITexture WATER_PURIFICATION_IDLE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/water_purification_idle")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_WATER_PURIFICATION_IDLE)
+        .build();
+    public static final UITexture WATER_PURIFICATION_OFFLINE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/water_purification_offline")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_WATER_PURIFICATION_OFFLINE)
+        .build();
+
     public static final UITexture EXOFOUNDRY_HC = UITexture.builder()
         .location(GregTech.ID, "gui/picture/exofoundry_hypercooler")
         .fullImage()
