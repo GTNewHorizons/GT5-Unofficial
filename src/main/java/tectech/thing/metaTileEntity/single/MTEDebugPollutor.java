@@ -2,16 +2,22 @@ package tectech.thing.metaTileEntity.single;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.MathUtils;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -31,8 +37,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.pollution.Pollution;
 import tectech.TecTech;
+import tectech.thing.gui.DebugUIHelper;
 import tectech.util.CommonValues;
 
 /**
@@ -43,6 +51,13 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
     private static ITexture POLLUTOR;
     public int pollution = 0;
     private static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
+    // I assume pollution can be negative since it wasn't checked before
+    private final IntConsumer[] subDiv = new IntConsumer[] {
+        val -> pollution = (int) Math.max(Integer.MIN_VALUE, (long) pollution - val), val -> pollution /= val };
+    private final IntConsumer[] addMult = new IntConsumer[] {
+        val -> pollution = (int) Math.min(Integer.MAX_VALUE, (long) pollution + val),
+        val -> pollution = (int) MathUtils.clamp((long) pollution * val, Integer.MIN_VALUE, Integer.MAX_VALUE) };
 
     public MTEDebugPollutor(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -155,47 +170,26 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> StatCollector.translateToLocal("tt.gui.text.debug_pollutor.pollution") + ": "
+                        () -> translateToLocal("tt.gui.text.debug_pollutor.pollution") + ": "
                             + numberFormat.format(pollution))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 8));
 
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> pollution -= val, 512, 64, 7, 4);
-        addChangeNumberButton(
-            builder,
-            GTUITextures.OVERLAY_BUTTON_MINUS_LARGE,
-            val -> pollution /= val,
-            512,
-            64,
-            7,
-            22);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, subDiv[0], 512, 64, 7, 4);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, subDiv[1], 512, 64, 7, 22);
 
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> pollution -= val, 16, 1, 25, 4);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> pollution /= val, 16, 2, 25, 22);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, subDiv[0], 16, 1, 25, 4);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, subDiv[1], 16, 2, 25, 22);
 
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> pollution += val, 16, 1, 133, 4);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> pollution *= val, 16, 2, 133, 22);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, addMult[0], 16, 1, 133, 4);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, addMult[1], 16, 2, 133, 22);
 
-        addChangeNumberButton(
-            builder,
-            GTUITextures.OVERLAY_BUTTON_PLUS_LARGE,
-            val -> pollution += val,
-            512,
-            64,
-            151,
-            4);
-        addChangeNumberButton(
-            builder,
-            GTUITextures.OVERLAY_BUTTON_PLUS_LARGE,
-            val -> pollution *= val,
-            512,
-            64,
-            151,
-            22);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, addMult[0], 512, 64, 151, 4);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, addMult[1], 512, 64, 151, 22);
 
     }
 
-    private void addChangeNumberButton(ModularWindow.Builder builder, IDrawable overlay, Consumer<Integer> setter,
+    private void addChangeNumberButton(ModularWindow.Builder builder, IDrawable overlay, IntConsumer setter,
         int changeNumberShift, int changeNumber, int xPos, int yPos) {
         builder.widget(
             new ButtonWidget()
@@ -203,5 +197,30 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
                 .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
                 .setSize(18, 18)
                 .setPos(xPos, yPos));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new GTBaseGuiBuilder(this, data, syncManager, uiSettings).doesAddGregTechLogo(false)
+            .doesAddGhostCircuitSlot(false)
+            .build()
+            .child(DebugUIHelper.getContentSection(getScreen(), subDiv, addMult, 12, 64, 16, new int[] { 1, 2 }));
+    }
+
+    private Flow getScreen() {
+        return DebugUIHelper.getScreen(0, 0, 0)
+            .child(
+                IKey.lang(translateToLocal("tt.gui.text.debug_pollutor.pollution") + ": ")
+                    .asWidget()
+                    .color(COLOR_TEXT_WHITE.get()))
+            .child(
+                IKey.dynamic(() -> numberFormat.format(pollution))
+                    .asWidget()
+                    .color(COLOR_TEXT_WHITE.get()));
     }
 }

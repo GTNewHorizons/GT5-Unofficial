@@ -2,19 +2,26 @@ package tectech.thing.metaTileEntity.single;
 
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.Textures.BlockIcons.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -24,6 +31,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import bartworks.util.MathUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -36,6 +44,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
+import tectech.thing.gui.DebugUIHelper;
 import tectech.util.CommonValues;
 
 public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWidgets, IAddGregtechLogo {
@@ -184,6 +194,19 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
         return (int) getBaseMetaTileEntity().getUniversalEnergyCapacity();
     }
 
+    public void setEUT(int EUT) {
+        // Same as maxEUOutput
+        this.EUT = MathUtils.clamp(EUT, 0, (int) maxEUInput());
+        setAMP(AMP); // refresh AMP since it might be too high for current EUT
+        getBaseMetaTileEntity().setActive((long) this.AMP * this.EUT >= 0);
+    }
+
+    public void setAMP(int AMP) {
+        // Max AMP should be limited to what the machine can theoretically output at current EUT
+        this.AMP = MathUtils.clamp(AMP, 0, Math.min((int) (maxEUInput() / Math.max(EUT, 1)) * 2, 64));
+        getBaseMetaTileEntity().setActive((long) this.AMP * this.EUT >= 0);
+    }
+
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
@@ -203,60 +226,106 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
                 .setPos(43, 4))
             .widget(
                 new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("tt.gui.text.debug.eut") + " " + numberFormat.format(EUT))
+                    .setStringSupplier(() -> translateToLocal("tt.gui.text.debug.eut") + " " + numberFormat.format(EUT))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 8))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> StatCollector
-                            .translateToLocalFormatted("tt.gui.text.debug.tier", VN[GTUtility.getTier(Math.abs(EUT))]))
+                        () -> translateToLocalFormatted("tt.gui.text.debug.tier", VN[GTUtility.getTier(Math.abs(EUT))]))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 16))
             .widget(
                 new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("tt.gui.text.debug.amp") + " " + numberFormat.format(AMP))
+                    .setStringSupplier(() -> translateToLocal("tt.gui.text.debug.amp") + " " + numberFormat.format(AMP))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 24))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> StatCollector
-                            .translateToLocalFormatted("tt.gui.text.debug.sum", numberFormat.format((long) AMP * EUT)))
+                        () -> translateToLocalFormatted("tt.gui.text.debug.sum", numberFormat.format((long) AMP * EUT)))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 32));
 
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT -= val, 512, 64, 7, 4);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT /= val, 512, 64, 7, 22);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> AMP -= val, 512, 64, 7, 40);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> AMP /= val, 512, 64, 7, 58);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, subDiv[0], 512, 64, 7, 4);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, subDiv[1], 512, 64, 7, 22);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, subDiv[2], 512, 64, 7, 40);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, subDiv[3], 512, 64, 7, 58);
 
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> EUT -= val, 16, 1, 25, 4);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> EUT /= val, 16, 2, 25, 22);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> AMP -= val, 16, 1, 25, 40);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> AMP /= val, 16, 2, 25, 58);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, subDiv[0], 16, 1, 25, 4);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, subDiv[1], 16, 2, 25, 22);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, subDiv[2], 16, 1, 25, 40);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, subDiv[3], 16, 2, 25, 58);
 
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> EUT += val, 16, 1, 133, 4);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> EUT *= val, 16, 2, 133, 22);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> AMP += val, 16, 1, 133, 40);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> AMP *= val, 16, 2, 133, 58);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, addMult[0], 16, 1, 133, 4);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, addMult[1], 16, 2, 133, 22);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, addMult[2], 16, 1, 133, 40);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, addMult[3], 16, 2, 133, 58);
 
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> EUT += val, 512, 64, 151, 4);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> EUT *= val, 512, 64, 151, 22);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> AMP += val, 512, 64, 151, 40);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> AMP *= val, 512, 64, 151, 58);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, addMult[0], 512, 64, 151, 4);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, addMult[1], 512, 64, 151, 22);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, addMult[2], 512, 64, 151, 40);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, addMult[3], 512, 64, 151, 58);
     }
 
-    private void addChangeNumberButton(ModularWindow.Builder builder, IDrawable overlay, Consumer<Integer> setter,
+    private void addChangeNumberButton(ModularWindow.Builder builder, IDrawable overlay, IntConsumer setter,
         int changeNumberShift, int changeNumber, int xPos, int yPos) {
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            setter.accept(clickData.shift ? changeNumberShift : changeNumber);
-            getBaseMetaTileEntity().setActive((long) AMP * EUT >= 0);
-        })
-            .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
-            .setSize(18, 18)
-            .setPos(xPos, yPos));
+        builder.widget(
+            new ButtonWidget()
+                .setOnClick(
+                    (clickData, widget) -> { setter.accept(clickData.shift ? changeNumberShift : changeNumber); })
+                .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
+                .setSize(18, 18)
+                .setPos(xPos, yPos));
+    }
+
+    private static final int extraGuiWidth = 10;
+    private final IntConsumer[] subDiv = new IntConsumer[] { val -> setEUT(EUT - val), val -> setEUT(EUT / val),
+        val -> setAMP(AMP - val), val -> setAMP(AMP / val) };
+    private final IntConsumer[] addMult = new IntConsumer[] { val -> setEUT(EUT + val),
+        val -> setEUT((int) Math.min((long) EUT * val, Integer.MAX_VALUE)), val -> setAMP(AMP + val),
+        val -> setAMP(AMP * val) };
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new GTBaseGuiBuilder(this, data, syncManager, uiSettings).doesAddGregTechLogo(false)
+            .doesAddGhostCircuitSlot(false)
+            .setWidth(176 + extraGuiWidth)
+            .build()
+            .child(
+                DebugUIHelper.getContentSection(getScreen(), subDiv, addMult, 512, 64, 16, new int[] { 1, 2, 1, 2 }));
+    }
+
+    private Flow getScreen() {
+        return DebugUIHelper.getScreen(extraGuiWidth, 0, 3)
+            .child(
+                IKey.dynamic(() -> translateToLocal("tt.gui.text.debug.eut") + " " + numberFormat.format(EUT))
+                    .asWidget()
+                    .color(COLOR_TEXT_WHITE.get()))
+            .child(
+                IKey.dynamic(
+                    () -> translateToLocalFormatted("tt.gui.text.debug.tier", VN[GTUtility.getTier(Math.abs(EUT))]))
+                    .asWidget()
+                    .color(COLOR_TEXT_WHITE.get()))
+            .child(
+                IKey.dynamic(() -> translateToLocal("tt.gui.text.debug.amp") + " " + numberFormat.format(AMP))
+                    .asWidget()
+                    .color(COLOR_TEXT_WHITE.get()))
+            .child(
+                new Column().child(
+                    IKey.lang(translateToLocalFormatted("tt.gui.text.debug.sum", ""))
+                        .asWidget()
+                        .color(COLOR_TEXT_WHITE.get()))
+                    .child(
+                        IKey.dynamic(() -> numberFormat.format((long) AMP * EUT))
+                            .asWidget()
+                            .color(COLOR_TEXT_WHITE.get()))
+                    .coverChildren()
+                    .crossAxisAlignment(Alignment.CrossAxis.START));
     }
 }
