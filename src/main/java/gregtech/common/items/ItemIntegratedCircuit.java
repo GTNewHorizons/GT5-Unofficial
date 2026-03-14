@@ -6,6 +6,7 @@ import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -35,14 +36,17 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
+import gregtech.common.items.toolbox.ToolboxUtil;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
 import ic2.core.item.ItemToolbox;
@@ -350,6 +354,16 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
                             return potentialStack; // return the toolbox for display
                         }
                     }
+                }
+            } else if (potentialStack.getItem() instanceof ItemGTToolbox) {
+                final Optional<ItemStack> potentialScrewdriver = ToolboxUtil.getItemInside(potentialStack, ToolboxSlot.SCREWDRIVER);
+                if (potentialScrewdriver.isPresent() && potentialScrewdriver.get().getItem() instanceof final MetaGeneratedTool mgTool) {
+                    final ItemStack screwdriver = potentialScrewdriver.get();
+                    if (doDamage && mgTool.doDamageToItem(screwdriver, 1)) {
+                        ToolboxUtil.saveItemInside(potentialStack, screwdriver, ToolboxSlot.SCREWDRIVER);
+                    }
+
+                    return potentialStack;
                 }
             }
 

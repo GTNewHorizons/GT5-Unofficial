@@ -17,7 +17,7 @@ import com.google.common.collect.ImmutableList;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
 
-public class BehaviorTrowel extends BehaviourNone {
+public class BehaviourTrowel extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(final MetaBaseItem aItem, final List<String> aList,
