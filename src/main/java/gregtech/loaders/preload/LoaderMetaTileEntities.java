@@ -3,6 +3,7 @@ package gregtech.loaders.preload;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
+import static gregtech.api.enums.Mods.ElectroMagicTools;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.enums.Mods.Thaumcraft;
@@ -76,6 +77,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutputBusCompressed;
 import gregtech.api.metatileentity.implementations.MTEHatchQuadrupleHumongous;
 import gregtech.api.metatileentity.implementations.MTEHatchVoid;
 import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
+import gregtech.api.metatileentity.implementations.MTEMagicalMaintenanceHatch;
 import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.metatileentity.implementations.MTEWetTransformer;
 import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
@@ -93,7 +95,7 @@ import gregtech.common.tileentities.boilers.MTEBoilerLava;
 import gregtech.common.tileentities.boilers.MTEBoilerSolar;
 import gregtech.common.tileentities.boilers.MTEBoilerSolarSteel;
 import gregtech.common.tileentities.boilers.MTEBoilerSteel;
-import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
+import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
 import gregtech.common.tileentities.generators.MTEDieselGenerator;
 import gregtech.common.tileentities.generators.MTEGasTurbine;
 import gregtech.common.tileentities.generators.MTELightningRod;
@@ -661,6 +663,16 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
         addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTValues.AuthorThree));
+
+        if (Thaumcraft.isModLoaded() && ElectroMagicTools.isModLoaded()) {
+            ItemList.MagicalMaintenanceHatch.set(
+                new MTEMagicalMaintenanceHatch(
+                    MagicalMaintenanceHatch.ID,
+                    "hatch.maintenance.magic",
+                    "Vis-Regulated Maintenance Hatch",
+                    5).getStackForm(1));
+            addItemTooltip(ItemList.MagicalMaintenanceHatch.get(1), chain(() -> "Author: ", GTValues.AuthorJude));
+        }
 
         ItemList.Machine_Multi_NanochipAssemblyComplex.set(
             new MTENanochipAssemblyComplex(
@@ -11099,12 +11111,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerNacHatches();
         registerDrawerFramer();
 
-        ItemList.AdvDebugStructureWriter.set(
-            new MTEAdvDebugStructureWriter(
-                ADVANCED_DEBUG_STRUCTURE_WRITTER.ID,
-                "advdebugstructurewriter",
-                "Advanced Debug Structure Writer",
-                5).getStackForm(1L));
+        ItemList.DebugStructureWriter.set(
+            new MTEDebugStructureWriter(DEBUG_STRUCTURE_WRITER.ID, "debugstructurewriter", "Debug Structure Writer", 5)
+                .getStackForm(1L));
         ItemList.Hatch_Maintenance.set(
             new MTEHatchMaintenance(MAINTENANCE_HATCH.ID, "hatch.maintenance", "Maintenance Hatch", 1)
                 .getStackForm(1L));

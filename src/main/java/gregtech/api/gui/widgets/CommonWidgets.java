@@ -174,6 +174,12 @@ public class CommonWidgets {
                     baseMachine.setInventorySlotContents(circuitEnabled.getCircuitSlot(), null);
                 }
             });
+            selectedSyncHandler.setChangeListener(() -> {
+                if (selectedSyncHandler.getSyncManager()
+                    .isClient()) return;
+                baseMachine.getBaseMetaTileEntity()
+                    .markInventoryBeenModified();
+            });
             syncManager.syncValue("selector_screen_selected", selectedSyncHandler);
             return new GhostCircuitSlotWidget(baseMachine, syncManager)
                 .slot(new ModularSlot(new GhostCircuitItemStackHandler(baseMachine), 0));

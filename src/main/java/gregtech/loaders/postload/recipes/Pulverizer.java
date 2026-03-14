@@ -15,13 +15,13 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -32,6 +32,16 @@ public class Pulverizer implements Runnable {
 
     @Override
     public void run() {
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("logWood", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+            .outputChances(10000, 8000)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
         // recycling Long Distance Pipes
         {
             GTValues.RA.stdBuilder()
@@ -105,14 +115,12 @@ public class Pulverizer implements Runnable {
 
         // marble dust, stone dust
 
-        for (ItemStack marble : OreDictionary.getOres("blockMarble")) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(marble)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Marble, 1))
-                .duration(8 * SECONDS)
-                .eut(4)
-                .addTo(maceratorRecipes);
-        }
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("blockMarble", 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Marble, 1))
+            .duration(8 * SECONDS)
+            .eut(4)
+            .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Thaumcraft.ID, "ItemResource", 1, 18))
@@ -725,6 +733,130 @@ public class Pulverizer implements Runnable {
                 .eut(4)
                 .addTo(maceratorRecipes);
         }
+
+        // From ProcessingSaplings
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("treeSapling", 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        // From ProcessingStone (macerator recipes)
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneSand", 1))
+            .itemOutputs(new ItemStack(Blocks.sand, 1, 0))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneEndstone", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Endstone, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tungstate, 1L))
+            .outputChances(10000, 500)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneNetherrack", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Netherrack, 1L),
+                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Gold, 1L))
+            .outputChances(10000, 500)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneConcrete", 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Concrete, 1L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneAndesite", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 1L))
+            .outputChances(10000, 2000)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneSoapstone", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Talc, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Chromite, 1L))
+            .outputChances(10000, 1000)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneMigmatite", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.GraniteBlack, 1L))
+            .outputChances(10000, 5000)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneQuartzite", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Quartzite, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Quartzite, 1L))
+            .outputChances(10000, 1000)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        // Basalt falls through to the Quartzite macerator case in the original ProcessingStone
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneBasalt", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Basalt, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Basalt, 1L))
+            .outputChances(10000, 1000)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneFlint", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Flint, 2L),
+                new ItemStack(Items.flint, 1))
+            .outputChances(10000, 5000)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneGraniteBlack", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.GraniteBlack, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L))
+            .outputChances(10000, 100)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneGraniteRed", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.GraniteRed, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium, 1L))
+            .outputChances(10000, 100)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
 
         // LUAG gems
         GTValues.RA.stdBuilder()
