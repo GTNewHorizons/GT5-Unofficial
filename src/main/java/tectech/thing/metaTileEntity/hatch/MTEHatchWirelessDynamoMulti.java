@@ -3,14 +3,11 @@ package tectech.thing.metaTileEntity.hatch;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.UUID;
 
@@ -21,6 +18,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 
 public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
 
@@ -37,14 +35,13 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
             aNameRegional,
             aTier,
             0,
-            new String[] { GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-                GRAY + "Does not connect to wires. This block accepts EU into the network.",
+            MTEHatch.formatEnergyInfoDesc(
                 AuthorColen + GRAY + BOLD + " & " + GREEN + BOLD + "Chrom",
-                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                    + YELLOW
-                    + formatNumber(aAmp * V[aTier])
-                    + GRAY
-                    + " EU/t" },
+                true,
+                aTier,
+                aAmp,
+                GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
+                GRAY + "Does not connect to wires. This block accepts EU into the network."),
             aAmp);
     }
 
