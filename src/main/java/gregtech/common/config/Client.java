@@ -135,6 +135,10 @@ public class Client {
         @Config.Comment("Which style should tooltip finisher separator lines have? 0: no line, 1: empty line, 2: dashed line, 3+: continuous line.")
         @Config.DefaultInt(3)
         public int tooltipFinisherStyle;
+
+        @Config.Comment("If true, uses color indicator mode (square indicator) instead of full GUI recoloring.")
+        @Config.DefaultBoolean(true)
+        public boolean showGuiColorIndicator;
     }
 
     @Config.LangKey("GT5U.gui.config.client.preference")

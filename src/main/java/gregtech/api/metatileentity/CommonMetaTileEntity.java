@@ -52,6 +52,7 @@ import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 import gregtech.common.covers.Cover;
 
 /**
@@ -668,9 +669,17 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     private GTGuiTheme getColoredTheme() {
         GTGuiTheme baseTheme = getGuiTheme();
         if (baseTheme != GTGuiThemes.STANDARD) return baseTheme;
+        if (Client.iface.showGuiColorIndicator) return baseTheme;
         byte color = this.getBaseMetaTileEntity()
             .getColorization();
         Dyes dye = Dyes.get(color);
         return dye.mui2Theme.get();
+    }
+
+    /**
+     * Returns the effective MUI2 theme for this machine (including dye-derived theme for STANDARD machines).
+     */
+    public GTGuiTheme getEffectiveGuiTheme() {
+        return getColoredTheme();
     }
 }
