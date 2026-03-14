@@ -130,7 +130,9 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 import com.google.auto.value.AutoValue;
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
@@ -215,6 +217,7 @@ public class GTUtility {
     private static int sBookCount = 0;
     public static UUID defaultUuid = null; // maybe default non-null?
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
+    private static final Splitter NEWLINE_SPLITTER = Splitter.on("\\n");
 
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
@@ -2538,6 +2541,20 @@ public class GTUtility {
     public static String translate(String key, Object... parameters) {
         return parameters.length == 0 ? StatCollector.translateToLocal(key)
             : StatCollector.translateToLocalFormatted(key, parameters);
+    }
+
+    /**
+     * Translates a localization key and splits the result into multiple lines.
+     * Lines are split on the literal {@code \n} sequence (backslash + n),
+     * as used in Minecraft lang files.
+     *
+     * @param key        the localization key to translate
+     * @param parameters optional substitution arguments for the translated string
+     * @return an array of lines from the translated string
+     * @see #translate(String, Object...)
+     */
+    public static String[] translateMultiline(String key, Object... parameters) {
+        return Iterables.toArray(NEWLINE_SPLITTER.split(translate(key, parameters)), String.class);
     }
 
     /*
