@@ -1,3 +1,7 @@
+# Components
+gt.oreprefix.bolted_material_casing=Bolted %s Casing
+gt.oreprefix.rebolted_material_casing=Rebolted %s Casing
+
 itemGroup.GT2C=Gregtech 2 Compat
 item.GT_Rockcutter_Item_LV.name=Rockcutter LV
 item.GT_Rockcutter_Item_MV.name=Rockcutter MV
@@ -288,3 +292,7 @@ BW.chat.thtr.cannot_change_mode=THTR mode cannot be changed while the machine is
 BW.chat.thtr.running_in.emptying=THTR is now running in emptying mode.
 BW.chat.thtr.running_in.normal=THTR is now running in normal Operation.
 BW.chat.diode.max_amps=Max Amps: %s
+
+# Tooltip for Material
+gt.bwMetaGenerateddust.4.tooltip=§3Check Flawed Crystal recipe in EBF
+gt.bwMetaGeneratedgem.4.tooltip=§3Check Flawed Crystal recipe in EBF

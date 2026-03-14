@@ -28,22 +28,11 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 16.12.2016.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnectsToEnergyTunnel {
 
     public MTEHatchDynamoTunnel(int ID, String unlocalisedName, String localisedName, int tier, int amps) {
-        super(
-            ID,
-            unlocalisedName,
-            localisedName,
-            tier,
-            0,
-            MTEHatch.formatEnergyInfoDesc(
-                true,
-                tier,
-                amps,
-                translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.0"),
-                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip")),
-            amps);
+        super(ID, unlocalisedName, localisedName, tier, 0, null, amps);
     }
 
     public MTEHatchDynamoTunnel(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
@@ -207,4 +196,13 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
         return true;
     }
 
+    @Override
+    public String[] getDescription() {
+        return MTEHatch.formatEnergyInfoDesc(
+            translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
+            true,
+            mTier,
+            maxAmperes,
+            "gt.blockmachines.hatch.dynamotunnel.desc");
+    }
 }

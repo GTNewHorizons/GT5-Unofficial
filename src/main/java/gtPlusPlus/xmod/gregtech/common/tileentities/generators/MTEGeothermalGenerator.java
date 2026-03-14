@@ -33,10 +33,11 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
 
     @Override
     public String[] getDescription() {
-        String aPollution = "Causes " + this.getPollution() + " Pollution per second";
+        String aPollution = "Causes " + addFormattedString(String.valueOf(this.getPollution()))
+            + " Pollution per second";
         return ArrayUtils.addAll(
             this.mDescriptionArray,
-            "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
+            "Generates power at " + addFormattedString(String.valueOf(this.getEfficiency())) + "%% Efficiency per tick",
             aPollution,
             GTPPCore.GT_Tooltip.get());
     }

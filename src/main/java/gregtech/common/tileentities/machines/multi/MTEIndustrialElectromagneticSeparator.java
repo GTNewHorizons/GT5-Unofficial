@@ -34,7 +34,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -52,6 +52,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
@@ -82,22 +83,26 @@ public class MTEIndustrialElectromagneticSeparator
         }
 
         public static String buildMagnetTooltip(MagnetTiers m) {
-            String tooltip = "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
+            String tooltip = "Used in Magnetic Flux Exhibitor" + GTSplit.LB
+                + EnumChatFormatting.LIGHT_PURPLE
                 + "Speed: +"
                 + Math.round((1F / m.speedBoost * 100) - 100)
-                + "%/n "
+                + "%"
+                + GTSplit.LB
                 + EnumChatFormatting.DARK_PURPLE
                 + "EU Usage: "
                 + Math.round(m.euModifier * 100)
-                + "%/n "
+                + "%"
+                + GTSplit.LB
                 + EnumChatFormatting.AQUA
                 + "Parallel: "
                 + m.maxParallel;
 
-            if (m.supportsExotic) tooltip = tooltip + "/n "
+            if (m.supportsExotic) tooltip = tooltip + GTSplit.LB
                 + EnumChatFormatting.BOLD
                 + EnumChatFormatting.GREEN
-                + "Can Use Multi-Amp Hatches/n "
+                + "Can Use Multi-Amp Hatches"
+                + GTSplit.LB
                 + EnumChatFormatting.RED
                 + "Limit to one energy hatch if using Multi-Amp";
 
@@ -226,7 +231,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTValues.authorBaps);
+            .toolTipFinisher(GTAuthors.authorBaps);
         return tt;
     }
 

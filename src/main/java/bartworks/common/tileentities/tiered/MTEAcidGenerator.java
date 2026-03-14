@@ -28,6 +28,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEAcidGenerator extends MTEBasicGenerator {
 
     private final int efficiency;

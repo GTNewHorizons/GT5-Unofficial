@@ -52,7 +52,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         final ItemStack foil_SingleFour = material.getFoil(4);
         final ItemStack block = material.getBlock(1);
 
-        Logger.WARNING("Generating Plate recipes for " + material.getLocalizedName());
+        Logger.WARNING("Generating Plate recipes for " + material.getDefaultLocalName());
 
         // Forge Hammer
         if (ingotStackTwo != null && plate_Single != null) {
@@ -63,7 +63,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(hammerRecipes);
 
-            Logger.WARNING("Forge Hammer Recipe: " + material.getLocalizedName() + " - Success");
+            Logger.WARNING("Forge Hammer Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         // Bender
@@ -76,7 +76,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(benderRecipes);
 
-            Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+            Logger.WARNING("Bender Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         if (ingotStackOne != null && foil_SingleFour != null) {
@@ -88,7 +88,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(benderRecipes);
 
-            Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+            Logger.WARNING("Bender Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         // Alloy Smelter
@@ -100,7 +100,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(alloySmelterRecipes);
 
-            Logger.WARNING("Alloy Smelter Recipe: " + material.getLocalizedName() + " - Success");
+            Logger.WARNING("Alloy Smelter Recipe: " + material.getDefaultLocalName() + " - Success");
         }
         // Cutting Machine
         if (block != null && plate_Single != null) {
@@ -111,7 +111,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(cutterRecipes);
 
-            Logger.WARNING("Cutting Machine Recipe: " + material.getLocalizedName() + " - Success");
+            Logger.WARNING("Cutting Machine Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         // Making Double Plates
@@ -124,7 +124,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(benderRecipes);
 
-            Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+            Logger.WARNING("Bender Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         if (plate_SingleTwo != null && plate_Double != null) {
@@ -135,7 +135,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)
                 .addTo(benderRecipes);
-            Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+            Logger.WARNING("Bender Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         // Bender
@@ -151,7 +151,7 @@ public class RecipeGenPlates extends RecipeGenBase {
             CoverRegistry.registerDecorativeCover(
                 material.getFoil(1),
                 TextureFactory.of(material.getTextureSet().mTextures[70], material.getRGBA()));
-            Logger.WARNING("Bender Foil Recipe: " + material.getLocalizedName() + " - Success");
+            Logger.WARNING("Bender Foil Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         // Making Dense Plates
@@ -164,7 +164,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(benderRecipes);
 
-            Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+            Logger.WARNING("Bender Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         if (plate_SingleNine != null && plate_Dense != null) {
@@ -176,7 +176,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(benderRecipes);
 
-            Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+            Logger.WARNING("Bender Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
     }

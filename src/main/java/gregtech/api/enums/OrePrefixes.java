@@ -14,15 +14,16 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.ICondition;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GTArrayList;
@@ -1107,7 +1108,7 @@ public class OrePrefixes {
     /** A decorative sheet metal block. */
     public static final OrePrefixes sheetmetal = new OrePrefixBuilder("sheetmetal")
         .withDefaultLocalName("Sheetmetal Blocks")
-        .withNameKey("gt.component.sheetmetal")
+        .withSuffix(" Sheetmetal")
         .unifiable()
         .recyclable()
         .materialBased()
@@ -2098,7 +2099,6 @@ public class OrePrefixes {
     private final @NotNull String defaultLocalName;
     private final @NotNull String materialPrefix;
     private final @NotNull String materialPostfix;
-    private final @Nullable String nameKey;
     private final boolean isUnifiable;
     private final boolean isMaterialBased;
     private final boolean isSelfReferencing;
@@ -2117,7 +2117,6 @@ public class OrePrefixes {
         @NotNull String defaultLocalName,
         @NotNull String materialPrefix,
         @NotNull String materialPostfix,
-        @Nullable String nameKey,
         boolean isUnifiable,
         boolean isMaterialBased,
         boolean isSelfReferencing,
@@ -2135,7 +2134,6 @@ public class OrePrefixes {
         this.defaultLocalName = defaultLocalName;
         this.materialPrefix = materialPrefix;
         this.materialPostfix = materialPostfix;
-        this.nameKey = nameKey;
         this.isUnifiable = isUnifiable;
         this.isMaterialBased = isMaterialBased;
         this.isSelfReferencing = isSelfReferencing;
@@ -2735,9 +2733,9 @@ public class OrePrefixes {
     }
 
     @SuppressWarnings("incomplete-switch")
-    public String getDefaultLocalNameFormatForItem(Materials aMaterial) {
+    public String getDefaultLocalNameFormatForItem(IOreMaterial aMaterial) {
         // Certain Materials have slightly different Localizations.
-        switch (aMaterial.mName) {
+        switch (aMaterial.getInternalName()) {
             case "Glass", "BorosilicateGlass" -> {
                 if (name.startsWith("gem")) return materialPrefix + "%material" + " Crystal";
                 if (name.startsWith("plate")) return materialPrefix + "%material" + " Pane";
@@ -2824,7 +2822,7 @@ public class OrePrefixes {
             }
         }
         if (ProcessingModSupport.aEnableThaumcraftMats) {
-            switch (aMaterial.mName) {
+            switch (aMaterial.getInternalName()) {
                 case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> {
                     if (name.startsWith("gem")) return materialPrefix + "Shard of " + "%material";
                     if (name.startsWith("crystal")) return materialPrefix + "Shard of " + "%material";
@@ -2844,19 +2842,51 @@ public class OrePrefixes {
         }
 
         if (this == ore) {
-            return switch (aMaterial.mName) {
+            return switch (aMaterial.getInternalName()) {
                 case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
                 case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
                 default -> materialPrefix + "%material" + materialPostfix;
             };
         }
 
-        if (nameKey != null) {
-            // Replace the %s with %material so that it works with the existing system.
-            return GTUtility.translate(nameKey, "%material");
-        }
-
         // Use Standard Localization
         return materialPrefix + "%material" + materialPostfix;
+    }
+
+    public String getDefaultLocalNameFormatForItem() {
+        return getDefaultLocalNameForItem(Materials._NULL);
+    }
+
+    public static String getOreprefixKey(String prefix, String formatString) {
+        return "gt.oreprefix." + prefix.toLowerCase()
+            .replace(" ", "_")
+            .replace(formatString, "material");
+    }
+
+    public static String getOreprefixKey(String prefix) {
+        return getOreprefixKey(prefix, "%material");
+    }
+
+    public String getOreprefixKey(IOreMaterial materials) {
+        return "gt.oreprefix." + this.getDefaultLocalNameFormatForItem(materials)
+            .toLowerCase()
+            .replace(" ", "_")
+            .replace("%material", "material");
+    }
+
+    public String getOreprefixKey() {
+        return getOreprefixKey(Materials._NULL);
+    }
+
+    public String getLocalizedNameForItem(IOreMaterial materials) {
+        return StatCollector.translateToLocalFormatted(getOreprefixKey(materials), materials.getLocalizedName());
+    }
+
+    public static String getLocalizedNameForItem(String prefix, String materialName) {
+        return StatCollector.translateToLocalFormatted(getOreprefixKey(prefix), materialName);
+    }
+
+    public static String getLocalizedNameForItem(String prefix, String formatString, String materialName) {
+        return StatCollector.translateToLocalFormatted(getOreprefixKey(prefix, formatString), materialName);
     }
 }

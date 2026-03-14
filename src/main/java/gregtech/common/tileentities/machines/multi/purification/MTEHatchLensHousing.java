@@ -2,6 +2,8 @@ package gregtech.common.tileentities.machines.multi.purification;
 
 import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -12,22 +14,18 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.client.GTTooltipHandler;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchLensHousing extends MTEHatchInputBus {
 
     public MTEHatchLensHousing(int id, String name, String nameRegional) {
-        super(
-            id,
-            name,
-            nameRegional,
-            GTTooltipHandler.Tier.UV.ordinal(),
-            1,
-            new String[] { "Holds a lens for UV laser focusing." });
+        super(id, name, nameRegional, GTTooltipHandler.Tier.UV.ordinal(), 1, null);
     }
 
     public MTEHatchLensHousing(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -67,5 +65,10 @@ public class MTEHatchLensHousing extends MTEHatchInputBus {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         getBaseMetaTileEntity().add1by1Slot(builder);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] { StatCollector.translateToLocal("gt.blockmachines.input_bus_lens.desc") };
     }
 }
