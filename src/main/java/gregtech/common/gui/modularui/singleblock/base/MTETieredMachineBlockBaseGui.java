@@ -19,17 +19,19 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.gui.widgets.CommonWidgets;
+import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 
-public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
+// For singleblock MUI2 guis.
+public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
 
     protected final T machine;
     protected final IGregTechTileEntity baseMetaTileEntity;
 
-    public MTEBasicMachineBaseGui(T machine) {
+    public MTETieredMachineBlockBaseGui(T machine) {
         this.machine = machine;
         this.baseMetaTileEntity = machine.getBaseMetaTileEntity();
     }
@@ -53,14 +55,11 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
 
     protected void registerSyncValues(PanelSyncManager syncManager) {
 
-        syncManager.registerSlotGroup("item_inv", 1);
+        syncManager.registerSlotGroup("item_inv", 1, false);
 
         BooleanSyncValue powerSwitchSyncer = new BooleanSyncValue(baseMetaTileEntity::isAllowedToWork, bool -> {
-            if (isPowerSwitchDisabled()) return;
             if (bool) baseMetaTileEntity.enableWorking();
-            else {
-                baseMetaTileEntity.disableWorking();
-            }
+            else baseMetaTileEntity.disableWorking();
         });
         syncManager.syncValue("powerSwitch", powerSwitchSyncer);
 
@@ -172,8 +171,12 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
             .marginTop(4);
     }
 
-    protected boolean isPowerSwitchDisabled() {
-        return false;
+    protected boolean supportsPowerSwitch() {
+        return true;
+    }
+
+    protected boolean supportsMuffler() {
+        return true;
     }
 
     protected IDrawable.DrawableWidget createLogo() {
@@ -181,9 +184,9 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
             .marginLeft(2);
     }
 
-    // the base class is an instance of ICircuitConfiguration
+    // will add if the machine is an instance of IConfigurationCircuitSupport
     protected boolean doesAddCircuitSlot() {
-        return machine.allowSelectCircuit();
+        return machine instanceof IConfigurationCircuitSupport cc && cc.allowSelectCircuit();
     }
 
     protected Widget<? extends Widget<?>> createCircuitSlot(PanelSyncManager syncManager) {
@@ -195,8 +198,8 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
         return Flow.column()
             .coverChildren()
             .align(Alignment.TopRight)
-            .child(createMufflerButton())
-            .child(createPowerSwitchButton());
+            .childIf(supportsMuffler(), this::createMufflerButton)
+            .childIf(supportsPowerSwitch(), this::createPowerSwitchButton);
     }
 
     protected ToggleButton createMufflerButton() {

@@ -46,7 +46,7 @@ public class ThermalBoilerFrontend extends LargeNEIFrontend {
             result.add("Steam output shown");
             result.add("at maximum efficiency.");
 
-            if (recipeInfo.recipe.mSpecialValue == -1) {
+            if (recipeInfo.recipe.mOutputs != null && recipeInfo.recipe.mOutputs.length > 0) {
                 result.add("Without a Lava Filter,");
                 result.add("only Obsidian is produced.");
             }
