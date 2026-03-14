@@ -58,7 +58,9 @@ public class MTEImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEIm
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 16 && mMaintenanceHatches.size() == 1 && !mMufflerHatches.isEmpty();
+        return checkPiece(mName, 1, 1, 0) && mCasing >= 16
+            && mMaintenanceHatches.size() == 1
+            && !mMufflerHatches.isEmpty();
     }
 
     @Override
