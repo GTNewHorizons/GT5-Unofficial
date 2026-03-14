@@ -44,8 +44,22 @@ public class BeamInformation {
             + ",Rate="
             + this.getRate()
             + ",Particle="
+            + Particle.getParticleFromId(this.getParticleId())
+            + "("
             + this.getParticleId()
+            + ")"
             + ",Focus="
             + this.getFocus();
     }
+
+    public BeamInformation copy() {
+        return new BeamInformation(this.energy, this.rate, this.particleId, this.focus);
+    }
+
+    public boolean isEqual(BeamInformation other) {
+        return (this.energy == other.energy) && (this.rate == other.rate)
+            && (this.particleId == other.particleId)
+            && (this.focus == other.focus);
+    }
+
 }
