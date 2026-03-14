@@ -84,6 +84,8 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final ConcurrentHashMap<Short, Long[]> mElectricStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Long[]> mFluidContainerStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Short> mBurnValues = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, String> mNameLocalizationKeys = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, String> mTooltipLocalizationKeys = new ConcurrentHashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -191,6 +193,21 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         return null;
     }
 
+    public final ItemStack addItemWithLocalizationKeys(int aID, String aNameKey, String aToolTipKey,
+        Object... aRandomData) {
+        ItemStack rStack = addItem(aID, aNameKey, aToolTipKey, aRandomData);
+        if (rStack != null) {
+            short meta = (short) (mOffset + aID);
+            if (GTUtility.isStringValid(aNameKey)) {
+                mNameLocalizationKeys.put(meta, aNameKey);
+            }
+            if (GTUtility.isStringValid(aToolTipKey)) {
+                mTooltipLocalizationKeys.put(meta, aToolTipKey);
+            }
+        }
+        return rStack;
+    }
+
     /**
      * Sets a Food Behavior for the Item.
      *
@@ -262,6 +279,24 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         if (aCapacity < 0) mElectricStats.remove((short) aMetaValue);
         else mFluidContainerStats.put((short) aMetaValue, new Long[] { aCapacity, Math.max(1, aStacksize) });
         return this;
+    }
+
+    @Override
+    protected String getToolTipLocalizationKey(ItemStack aStack) {
+        return mTooltipLocalizationKeys.get((short) getDamage(aStack));
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack aStack) {
+        String tName = super.getItemStackDisplayName(aStack);
+        String tNameKey = mNameLocalizationKeys.get((short) getDamage(aStack));
+        if (GTUtility.isStringValid(tNameKey)) {
+            return GTUtility.translate(tNameKey);
+        }
+        if (net.minecraft.util.StatCollector.canTranslate(tName)) {
+            return GTUtility.translate(tName);
+        }
+        return tName;
     }
 
     /**
