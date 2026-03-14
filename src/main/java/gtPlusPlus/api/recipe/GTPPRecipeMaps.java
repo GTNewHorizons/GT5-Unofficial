@@ -29,6 +29,7 @@ import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.util.GTRecipe;
+import gregtech.common.tileentities.machines.multi.MTEThaumoArborealConverter;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
@@ -295,5 +296,11 @@ public class GTPPRecipeMaps {
         .maxIO(3, 1, 2, 0)
         .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
         .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { Materials.Water.getFluid(0), Materials.Lava.getFluid(0) })
+        .build();
+    public static final RecipeMap<RecipeMapBackend> thaumoArborealConverterFakeRecipes = RecipeMapBuilder
+        .of("gtpp.recipe.thaumoarborealconverter")
+        .maxIO(MTEThaumoArborealConverter.getInputSlots(), MTEThaumoArborealConverter.getOutputSlots(), 0, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
+        .useSpecialSlot()
         .build();
 }
