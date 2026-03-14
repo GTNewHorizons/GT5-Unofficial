@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.gtnewhorizon.gtnhlib.hash.Fnv1a32;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 public class EnderLinkTank implements Serializable {
@@ -53,10 +54,11 @@ public class EnderLinkTank implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 31 + X;
-        hash = hash * 31 + Y;
-        hash = hash * 31 + Z;
-        return hash * 31 + D;
+        int hash = Fnv1a32.initialState();
+        hash = Fnv1a32.hashStep(hash, X);
+        hash = Fnv1a32.hashStep(hash, Y);
+        hash = Fnv1a32.hashStep(hash, Z);
+        return Fnv1a32.hashStep(hash, D);
     }
 
     public NBTTagCompound save() {
