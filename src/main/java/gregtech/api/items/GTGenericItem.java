@@ -28,7 +28,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.util.GTConfig;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
@@ -43,9 +42,7 @@ public class GTGenericItem extends Item implements IProjectileItem {
     public GTGenericItem(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super();
         mName = "gt." + aUnlocalized;
-        GTLanguageManager.addStringLocalization(mName + ".name", aEnglish);
-        if (GTUtility.isStringValid(aEnglishTooltip))
-            GTLanguageManager.addStringLocalization(mTooltip = mName + ".tooltip_main", aEnglishTooltip);
+        if (GTUtility.isStringValid(aEnglishTooltip)) mTooltip = mName + ".tooltip_main";
         else mTooltip = null;
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
         GameRegistry.registerItem(this, mName, GregTech.ID);
@@ -91,7 +88,7 @@ public class GTGenericItem extends Item implements IProjectileItem {
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         if (getMaxDamage() > 0 && !getHasSubtypes())
             aList.add((aStack.getMaxDamage() - getDamage(aStack)) + " / " + aStack.getMaxDamage());
-        if (mTooltip != null) aList.add(GTLanguageManager.getTranslation(mTooltip));
+        if (mTooltip != null) aList.add(GTUtility.translate(mTooltip));
         if (GTModHandler.isElectricItem(aStack))
             aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier", getTier(aStack)));
         addAdditionalToolTips(aList, aStack, aPlayer);
