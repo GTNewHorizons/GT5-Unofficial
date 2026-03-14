@@ -1633,6 +1633,18 @@ public class MTERecipeLoader implements Runnable {
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
+        // Industrial Mixer
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialMixer.get(1),
+            new Object[] { "PCP", "ZMZ", "PCP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'C', "circuitElite", 'Z',
+                MaterialsAlloy.MARAGING250.getPlate(1), 'M', ItemList.Machine_IV_Mixer });
+
+        // Mixer casing, move if there is a better place for it
+        GTModHandler.addCraftingRecipe(
+            ItemList.CasingMixer.get(1),
+            new Object[] { "PhP", "SFS", "PwP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'S',
+                MaterialsAlloy.MARAGING250.getPlate(1), 'F',
+                OrePrefixes.frameGt.get(Materials.Polytetrafluoroethylene) });
     }
 
     // This method is for all the structure rework shapeless crafing migration recipes
@@ -1665,6 +1677,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.MegaChemicalReactor.get(1),
             new Object[] { ItemRegistry.megaMachines[3] });
+
+        // Industrial Mixer Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialMixer.get(1),
+            new Object[] { GregtechItemList.Industrial_Mixer });
     }
 
     private static void registerSifter() {
