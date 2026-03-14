@@ -911,6 +911,18 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials FranciumHydroxide;
     public static Materials UraniumInfusedAcidicSolution;
 
+    // Chlorosulfonic Acid Line
+    public static Materials PhosphorusDichloride;
+    public static Materials PhosphorusPentachloride;
+    public static Materials ToxicAir;
+    public static Materials ToxicSlurry;
+    public static Materials DestabilizationSlurry;
+    public static Materials AgitatingSlurry;
+    public static Materials UltraContaminatedGas;
+    public static Materials StagnantWasteWater;
+    public static Materials ActivatedWasteWater;
+    public static Materials ChlorosulfonicAcid;
+
     // Magic Materials
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;

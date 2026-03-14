@@ -55,7 +55,7 @@ public class MaterialsInit {
         loadRadoxLine();
         loadNetheriteLine();
         loadPrismaticAcidLine();
-        loadFranciumLine();
+        loadAcidRecipes();
         loadMagicMaterials();
         loadBotaniaMaterials();
         loadKevlarLine();
@@ -14023,11 +14023,21 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static void loadFranciumLine() {
+    private static void loadAcidRecipes() {
         Materials.CrudeFrancium = loadCrudeFrancium();
         Materials.DepletedUraniumResidue = loadDepletedUraniumResidue();
         Materials.FranciumHydroxide = loadFranciumHydroxide();
         Materials.UraniumInfusedAcidicSolution = loadUraniumInfusedAcidicSolution();
+        Materials.PhosphorusDichloride = loadPhosphorusDichloride();
+        Materials.PhosphorusPentachloride = loadPhosphorusPentachloride();
+        Materials.ToxicAir = loadToxicAir();
+        Materials.ToxicSlurry = loadToxicSlurry();
+        Materials.DestabilizationSlurry = loadDestabilizationSlurry();
+        Materials.AgitatingSlurry = loadAgitatingSlurry();
+        Materials.UltraContaminatedGas = loadUltraContaminatedGas();
+        Materials.StagnantWasteWater = loadStagnantWasteWater();
+        Materials.ActivatedWasteWater = loadActivatedWasteWater();
+        Materials.ChlorosulfonicAcid = loadChlorosulfonicAcid();
     }
 
     private static Materials loadCrudeFrancium() {
@@ -14071,6 +14081,131 @@ public class MaterialsInit {
             .setARGB(0x0014f78a)
             .addCell()
             .addFluid()
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static Materials loadPhosphorusDichloride() {
+        return new MaterialBuilder().setName("PhosphorusDichloride")
+            .setDefaultLocalName("Phosphorus Dichloride")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x00f7f3b8)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Phosphorus, 1)
+            .addMaterial(Materials.Chlorine, 2)
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static Materials loadPhosphorusPentachloride() {
+        return new MaterialBuilder().setName("PhosphorusPentachloride")
+            .setDefaultLocalName("Phosphorus Pentachloride")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x00ebf2b3)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Phosphorus, 1)
+            .addMaterial(Materials.Chlorine, 5)
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static Materials loadToxicAir() {
+        return new MaterialBuilder().setName("ToxicAir")
+            .setDefaultLocalName("Toxic Air")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0x004d5f3e)
+            .addCell()
+            .addGas()
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static Materials loadToxicSlurry() {
+        return new MaterialBuilder().setName("ToxicSlurry")
+            .setDefaultLocalName("Toxic Slurry")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0x00425f1f)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadDestabilizationSlurry() {
+        return new MaterialBuilder().setName("DestabilizationSlurry")
+            .setDefaultLocalName("Destabilization Slurry")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0x00284309)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadAgitatingSlurry() {
+        return new MaterialBuilder().setName("AgitatingSlurry")
+            .setDefaultLocalName("Agitating Slurry")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setARGB(0x0081a558)
+            .addCell()
+            .addFluid()
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static Materials loadUltraContaminatedGas() {
+        return new MaterialBuilder().setName("UltraContaminatedGas")
+            .setDefaultLocalName("Ultra Contaminated Gas")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGray)
+            .setARGB(0x00343434)
+            .addCell()
+            .addGas()
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static Materials loadStagnantWasteWater() {
+        return new MaterialBuilder().setName("StagnantWasteWater")
+            .setDefaultLocalName("Stagnant Waste Water")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0x00206332)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadActivatedWasteWater() {
+        return new MaterialBuilder().setName("ActivatedWasteWater")
+            .setDefaultLocalName("Activated Waste Water")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x000f37a4)
+            .addCell()
+            .addFluid()
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static Materials loadChlorosulfonicAcid() {
+        return new MaterialBuilder().setName("ChlorosulfonicAcid")
+            .setDefaultLocalName("Chlorosulfonic Acid")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setARGB(0xabff00)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .addMaterial(Materials.Chlorine, 1)
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
@@ -14985,6 +15120,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeWhite)
             .addCell()
             .addFluid()
+            .addDustItems()
             .setMeltingPoint(179)
             .addMaterial(Materials.Phosphorus, 1)
             .addMaterial(Materials.Chlorine, 3)
