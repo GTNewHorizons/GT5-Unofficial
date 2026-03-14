@@ -10,15 +10,13 @@ import static java.lang.Long.min;
 import java.math.BigInteger;
 import java.util.UUID;
 
-import gregtech.GTMod;
-import gregtech.common.GTProxy;
 import net.minecraft.util.EnumChatFormatting;
 
+import gregtech.GTMod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.common.misc.WirelessEnergyHatchManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 public class MTEWirelessEnergy extends MTEHatchEnergy {
