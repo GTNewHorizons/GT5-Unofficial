@@ -154,11 +154,11 @@ public abstract class MetaBaseItem extends GTGenericItem
         try {
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
                 if (tBehavior.onLeftClickEntity(this, aStack, aPlayer, aEntity)) {
-                    if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+                    if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
                     return true;
                 }
             if (aStack.stackSize <= 0) {
-                aPlayer.destroyCurrentEquippedItem();
+                GTUtility.destroyCurrentItem(aPlayer);
                 return false;
             }
         } catch (Exception e) {
@@ -176,11 +176,11 @@ public abstract class MetaBaseItem extends GTGenericItem
         try {
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
                 if (tBehavior.onItemUse(this, aStack, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ)) {
-                    if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+                    if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
                     return true;
                 }
             if (aStack.stackSize <= 0) {
-                aPlayer.destroyCurrentEquippedItem();
+                GTUtility.destroyCurrentItem(aPlayer);
                 return false;
             }
         } catch (Exception e) {
@@ -208,11 +208,11 @@ public abstract class MetaBaseItem extends GTGenericItem
                 hitX,
                 hitY,
                 hitZ)) {
-                    if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+                    if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
                     return true;
                 }
             if (aStack.stackSize <= 0) {
-                aPlayer.destroyCurrentEquippedItem();
+                GTUtility.destroyCurrentItem(aPlayer);
                 return false;
             }
         } catch (Exception e) {
@@ -705,4 +705,26 @@ public abstract class MetaBaseItem extends GTGenericItem
         return false;
     }
 
+    @Override
+    public String getItemStackDisplayName(final ItemStack itemStack) {
+        final String base = super.getItemStackDisplayName(itemStack);
+
+        ArrayList<IItemBehaviour<MetaBaseItem>> behaviorList = mItemBehaviors.get((short) getDamage(itemStack));
+        if (behaviorList == null) {
+            return base;
+        }
+
+        try {
+            for (IItemBehaviour<MetaBaseItem> behavior : behaviorList) {
+                final String newName = behavior.getNameOverride(base, itemStack);
+                if (newName != null) {
+                    return newName;
+                }
+            }
+        } catch (Exception e) {
+            if (D1) e.printStackTrace(GTLog.err);
+        }
+
+        return base;
+    }
 }

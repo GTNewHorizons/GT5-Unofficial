@@ -194,6 +194,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 
+import com.google.common.collect.ImmutableList;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
@@ -2295,6 +2297,22 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Magnetron.set(addItemWithLocalizationKeys(Magnetron.ID, "gt.item.magnetron.name", ""));
         ItemList.ChaosLocator.set(
             new ItemChaosLocator("Item_Chaos_Locator", "gt.item.chaos_locator.name", "gt.item.chaos_locator.tooltip"));
+
+        final ItemGTToolbox itemToolbox = new ItemGTToolbox(
+            "Item_Toolbox",
+            "Field Engineer's Toolbox",
+            "A container to hold your tools!");
+        ItemList.ToolBox.set(itemToolbox);
+
+        if (GregTechAPI.sThaumcraftCompat != null) {
+            GregTechAPI.sThaumcraftCompat.registerThaumcraftAspectsToItem(
+                new ItemStack(itemToolbox),
+                ImmutableList.of(
+                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 4),
+                    new TCAspects.TC_AspectStack(TCAspects.VACUOS, 4),
+                    new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 2)),
+                false);
+        }
 
         setAllFluidContainerStats();
         setBurnValues();

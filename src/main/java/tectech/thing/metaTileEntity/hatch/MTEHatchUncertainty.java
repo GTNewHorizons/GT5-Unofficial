@@ -33,6 +33,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
@@ -50,8 +51,8 @@ import tectech.util.CommonValues;
  */
 public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, IAddUIWidgets {
 
-    private static Textures.BlockIcons.CustomIcon ScreenON;
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
+    private static IIconContainer ScreenON;
+    private static IIconContainer ScreenOFF;
     public short[] matrix = new short[] { 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
         500 };
     public byte selection = -1, mode = 0, status = (byte) 0b11111111; // all 8 bits set
@@ -72,8 +73,8 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/UC");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/UC_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom("iconsets/UC");
+        ScreenON = Textures.BlockIcons.custom("iconsets/UC_ACTIVE");
     }
 
     @Override
