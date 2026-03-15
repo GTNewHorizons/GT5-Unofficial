@@ -53,7 +53,6 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
                 final TileEntity tTileEntity;
 
                 // we don't want to go over cables that are in unloaded chunks
-                // keeping the lock just to make sure no CME happens
                 if (world.blockExists(posX, posY, posZ)) {
                     tTileEntity = world.getTileEntity(posX, posY, posZ);
                 } else {
