@@ -2557,6 +2557,32 @@ public class GTUtility {
         return Iterables.toArray(NEWLINE_SPLITTER.split(translate(key, parameters)), String.class);
     }
 
+    /**
+     * Translates a localization key, splits the result into multiple lines,
+     * and adds each line directly into the provided collection.
+     * Lines are split on the literal {@code \n} sequence (backslash + n),
+     * as used in Minecraft lang files.
+     *
+     * <p>
+     * This overload avoids allocating an intermediate array and is preferred
+     * when the caller already holds a {@link Collection}, such as the tooltip
+     * list in {@code addInformation}.
+     *
+     * <p>
+     * Note: the literal text {@code \n} cannot appear in tooltip lines,
+     * as it is used as the line separator.
+     *
+     * @param tooltip the collection to add translated lines into
+     * @param key     the localization key to translate
+     * @param args    optional substitution arguments for the translated string
+     * @see #translateMultiline(String, Object...)
+     */
+    public static void translateMultiline(Collection<String> tooltip, String key, Object... args) {
+        for (String line : NEWLINE_SPLITTER.split(translate(key, args))) {
+            tooltip.add(line);
+        }
+    }
+
     /*
      * Check if stack has enough items of given type and subtract from stack, if there's no creative or 111 stack.
      */
