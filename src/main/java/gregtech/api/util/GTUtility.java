@@ -3784,7 +3784,11 @@ public class GTUtility {
 
     public static String[] breakLines(String... lines) {
         return Arrays.stream(lines)
-            .flatMap(s -> Arrays.stream(s.split("\\\\n")))
+            .flatMap(
+                s -> StreamSupport.stream(
+                    NEWLINE_SPLITTER.split(s)
+                        .spliterator(),
+                    false))
             .toArray(String[]::new);
     }
 
