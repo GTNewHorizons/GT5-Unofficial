@@ -56,7 +56,7 @@ public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksA
             case 1 -> Textures.BlockIcons.MACHINE_CASING_FROST_PROOF.getIcon();
             case 2 -> TexturesGtBlock.Casing_Material_Laurenium.getIcon();
             case 3 -> TexturesGtBlock.Casing_Material_Botmium.getIcon();
-            default -> Textures.BlockIcons.RENDERING_ERROR.getIcon();
+            default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
         };
     }
 }

@@ -52,8 +52,8 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     private final HashMap<String, String> savedNameList = new HashMap<>();
     private final HashMap<String, Integer> savedGroupList = new HashMap<>();
 
-    private static final IIconContainer moduleActive = new Textures.BlockIcons.CustomIcon(
-        "iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
+    private static final IIconContainer moduleActive = Textures.BlockIcons
+        .custom("iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
 
     public MTEHatchDroneDownLink(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
