@@ -366,8 +366,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         String tNameKey = mNameLocalizationKeys.get(meta);
         if (GTUtility.isStringValid(tNameKey)) {
             Object[] tArgs = mNameLocalizationArgs.get(meta);
-            return hasArgs(tArgs) ? GTUtility.translate(tNameKey, tArgs)
-                : GTUtility.translate(tNameKey);
+            return hasArgs(tArgs) ? GTUtility.translate(tNameKey, tArgs) : GTUtility.translate(tNameKey);
         }
         if (net.minecraft.util.StatCollector.canTranslate(tName)) {
             return GTUtility.translate(tName);
