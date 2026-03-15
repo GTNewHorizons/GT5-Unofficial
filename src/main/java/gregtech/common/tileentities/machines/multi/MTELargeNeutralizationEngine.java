@@ -465,7 +465,9 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.GRAY
                     + "by sqrt("
                     + EnumChatFormatting.LIGHT_PURPLE
-                    + "Robot Arm Amount"+EnumChatFormatting.GRAY+").")
+                    + "Robot Arm Amount"
+                    + EnumChatFormatting.GRAY
+                    + ").")
             .addInfo(
                 "Every " + EnumChatFormatting.WHITE
                     + "minute"
