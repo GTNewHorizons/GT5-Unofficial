@@ -37,9 +37,10 @@ gt.component.platesuperdense=Superdense %s Plate
 gt.component.sheetmetal=%s Sheetmetal
 
 # Tooltip info of tile-entities
-gt.tileentity.eup_in=Voltage IN:
-gt.tileentity.eup_out=Voltage OUT:
-gt.tileentity.eup_amount=Amperage:
+gt.tileentity.eup_in=Voltage IN: %s
+gt.tileentity.eup_out=Voltage OUT: %s
+gt.tileentity.amperage=Amperage: %s
+gt.tileentity.throughput=Throughput: %s
 gt.tileentity.has_muffler=is Muffled
 gt.tileentity.has_steam_upgrade=has Steam Upgrade
 gt.tileentity.colored=Colored (%s%s§7)
@@ -605,7 +606,7 @@ GTPP.tooltip.volumetric_flask_setter.0=Easy Flask Configuration
 GTPP.tooltip.volumetric_flask_setter.1=Configure default input slot with a screwdriver
 
 # Tin Foil Hat
-GTPP.tooltip.tin_foil_hat=DoomSquirter's protection against cosmic radiation!\nGeneral paranoia makes the wearer unable to collect xp\nMovement speed is also reduced, to keep you safe\nThis hat may also have other strange powers
+GTPP.tooltip.tin_foil_hat=DoomSquirter's protection against cosmic radiation!\nGeneral paranoia makes the wearer unable to collect XP.\nMovement speed is also reduced, to keep you safe.\nThis hat may also have other strange powers.
 
 GTPP.tooltip.bad_tooltip_id=Bad Tooltip ID - %d
 
@@ -1273,15 +1274,15 @@ GT5U.machines.industrialapiary.upgradeslot.tooltip=Upgrade slot
 GT5U.machines.industrialapiary.autoqueen.tooltip=Automatically put the queen after breeding in the input slot
 GT5U.machines.industrialapiary.autoqueen.tooltip.1=§7Doesn't require automation upgrade
 GT5U.machines.industrialapiary.autoqueen.tooltip.2=§7§oThis option is ignored if automation upgrade is installed
-GT5U.machines.advdebugstructurewriter.tooltip=Scans Blocks Around
-GT5U.machines.advdebugstructurewriter.tooltip.1=Prints Multiblock NonTE structure check code
-GT5U.machines.advdebugstructurewriter.tooltip.2=ABC axes aligned to machine front
-GT5U.machines.advdebugstructurewriter.printed=Printed structure to console
-GT5U.machines.advdebugstructurewriter.gui.origin=Origin
-GT5U.machines.advdebugstructurewriter.gui.size=Structure Size
-GT5U.machines.advdebugstructurewriter.gui.print.tooltip=Print Structure
-GT5U.machines.advdebugstructurewriter.gui.highlight.tooltip=Show Bounding Box
-GT5U.machines.advdebugstructurewriter.gui.transpose.tooltip=Transpose
+GT5U.machines.debugstructurewriter.tooltip=Scans Blocks Around
+GT5U.machines.debugstructurewriter.tooltip.1=Prints Multiblock NonTE structure check code
+GT5U.machines.debugstructurewriter.tooltip.2=ABC axes aligned to machine front
+GT5U.machines.debugstructurewriter.printed=Printed structure to console
+GT5U.machines.debugstructurewriter.gui.origin=Origin
+GT5U.machines.debugstructurewriter.gui.size=Structure Size
+GT5U.machines.debugstructurewriter.gui.print.tooltip=Print Structure
+GT5U.machines.debugstructurewriter.gui.highlight.tooltip=Show Bounding Box
+GT5U.machines.debugstructurewriter.gui.transpose.tooltip=Transpose
 GT5U.machines.nei_transfer.steam.tooltip=%s steam recipes
 GT5U.machines.nei_transfer.voltage.tooltip=Recipes available in %s
 GT5U.machines.emit_energy.tooltip=Emit energy to output side
@@ -1421,8 +1422,8 @@ GT5U.gui.button.ore_drill_cobblestone_off=§7Replace with cobblestone: §4OFF
 GT5U.gui.button.drill_retract_pipes=§7Abort and retract mining pipes
 GT5U.gui.button.drill_retract_pipes_active=§4Cannot interrupt abort procedure
 GT5U.gui.button.drone_setname=Set custom name for machine
-GT5U.gui.button.drone_highlight=Highlighting machine in the world
-GT5U.gui.button.drone_teleport=Press shift to teleport to the machine
+GT5U.gui.button.drone_highlight=Left click to highlighting machine in the world
+GT5U.gui.button.drone_teleport=Right click to teleport to the machine
 GT5U.gui.button.drone_open_list=Open Machine List
 GT5U.gui.button.drone_poweron_all=Turn on all machines in selected group
 GT5U.gui.button.drone_poweroff_all=Turn on all machines in selected group (Press Shift to disable machine control covers)
@@ -1525,6 +1526,7 @@ GT5U.gui.text.drone_title=Drone Control Centre
 GT5U.gui.text.drone_custom_name=Custom Machine Name
 GT5U.gui.text.drone_search=Search machine name
 GT5U.gui.text.drone_no_connection=No any connection
+GT5U.gui.text.drone_no_data=No data
 GT5U.gui.text.drone_active_production=Active production recorder
 GT5U.gui.text.drone_maxrecord=Max record：
 GT5U.gui.text.drone_production_connection=Connection
@@ -2138,6 +2140,52 @@ GT5U.chat.wet_transformer.half_mode.disable=Transformer is now running at 16A:64
 GT5U.chat.soldering_iron.not_enough=Not enough soldering material!
 GT5U.chat.ore.set_ore_natural_flag=Set ore natural flag to %s
 
+GT5U.gui.text.toolbox.title=Field Engineer's Toolbox
+GT5U.gui.text.toolbox.slot_title.wrench=Wrench
+GT5U.gui.text.toolbox.slot_title.wire_cutter=Wire Cutter
+GT5U.gui.text.toolbox.slot_title.screwdriver=Screwdriver
+GT5U.gui.text.toolbox.slot_title.soft_mallet=Soft Mallet
+GT5U.gui.text.toolbox.slot_title.battery=Battery
+GT5U.gui.text.toolbox.slot_title.hard_hammer=Hard Hammer
+GT5U.gui.text.toolbox.slot_title.crowbar=Crowbar
+GT5U.gui.text.toolbox.slot_title.soldering_iron=Soldering Iron
+GT5U.gui.text.toolbox.slot_title.generic=Generic
+
+GT5U.gui.text.toolbox.tooltip.base=§2%s Slot§r\n§o%s§r
+GT5U.gui.text.toolbox.tooltip.wrench=Connect pipes, break pipes, rotate stuff
+GT5U.gui.text.toolbox.tooltip.wire_cutter=Connect and break wires
+GT5U.gui.text.toolbox.tooltip.screwdriver=Configure machines and covers
+GT5U.gui.text.toolbox.tooltip.soft_mallet=Enable and disable machines
+GT5U.gui.text.toolbox.tooltip.battery=Add battery to charge all electric tools inside\nOnly works when toolbox is closed\nBattery can receive wireless charge
+GT5U.gui.text.toolbox.tooltip.hard_hammer=Toggle auto input/output
+GT5U.gui.text.toolbox.tooltip.crowbar=Remove covers when sneaking
+GT5U.gui.text.toolbox.tooltip.soldering_iron=Needs soldering wire, will pull from toolbox
+GT5U.gui.text.toolbox.tooltip.generic=Holds whatever you want
+GT5U.gui.text.toolbox.tooltip.no_charge_while_open=§l§cNOTE: §rCharging disabled while open
+
+GT5U.gui.text.toolbox.radial.title=Select Active Tool
+GT5U.gui.text.toolbox.radial.unselect=Deselect Tool
+
+GT5U.gui.text.toolbox.error.no_tools=§eToolbox has no tools! Right click to open and add tools.
+
+GT5U.item.toolbox.tooltip.select_tool=%s: Select active tool
+GT5U.item.toolbox.tooltip.deselect_tool=%s (while sneaking): Deselect active tool
+GT5U.item.toolbox.tooltip.open_toolbox=%s: Open toolbox
+# This inserts gt.item.desc.durability into the %s
+GT5U.item.toolbox.tooltip.tool_durability=Tool %s
+
+GT5U.item.toolbox.byline.closed=Your stalwart ally for an epic\n §oengineering journey.
+# The tool-specific bylines are pretty much all jokes. Accuracy in translation isn't important.
+GT5U.item.toolbox.byline.wrench=The solution? Use a machine. And if\n §othat don't work? Use more machine.
+# Translator note: A horrible English pun. "Wire" -> "Why are". Don't feel obligated to preserve it ;)
+GT5U.item.toolbox.byline.wire_cutter=WIRE you reading this? Cut it out.\n §oThere's work to do!
+GT5U.item.toolbox.byline.screwdriver=Contains 0% vodka and 0% orange juice.
+GT5U.item.toolbox.byline.soft_mallet=Wait, isn't this just a clown hammer?
+GT5U.item.toolbox.byline.hard_hammer=This performs the Forge Hammer recipe\n §oon anything you mine with it!
+GT5U.item.toolbox.byline.crowbar=You thought I was going to put a Half-Life\n §oreference here, didn't you?
+GT5U.item.toolbox.byline.soldering_iron=Put some fine soldering alloy wire\n §oin the generic slots!
+GT5U.item.toolbox.byline.format=§o"%s"§r -§cQuerns§r
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3
@@ -2165,6 +2213,9 @@ GT5U.item.pipe.gas_proof.no=No
 GT5U.item.pipe.amount=Pipe Amount
 GT5U.item.pipe.empty=Empty
 GT5U.item.pipe.swap.s=Pipe swapped: %s
+
+GT5U.item.toolbox.name_template=%s (%s)
+GT5U.item.toolbox.name_template.mode=%s (%s, %s)
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak + MMB to unlock.
@@ -3772,7 +3823,7 @@ GT5U.tooltip.structure.lens_housing=Lens Housing
 GT5U.tooltip.structure.lens_indicator=Lens Indicator
 
 GT5U.tooltip.fluid.registry=Registry: %s
-GT5U.tooltip.fluid.amount=Amount: %s L
+GT5U.tooltip.fluid.amount=Amount: %s
 GT5U.tooltip.fluid.temperature=Temperature: %s K
 GT5U.tooltip.fluid.stat=State: %s
 GT5U.tooltip.fluid.stat.gas=Gas
