@@ -193,6 +193,24 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         return null;
     }
 
+    /**
+     * Adds a Custom Item, storing the provided localization keys for deferred translation.
+     * Unlike {@link #addItem}, which resolves names and tooltips eagerly at registration time,
+     * this method stores {@code aNameKey} and {@code aToolTipKey} so they are translated at
+     * render time — allowing the displayed text to reflect the player's current language.
+     *
+     * <p>
+     * Use this method when the item name and tooltip are static localization keys.
+     * For dynamic content assembled at runtime (e.g. formatted strings with per-item data),
+     * use {@link #addItem} directly and build the string manually.
+     *
+     * @param aID         The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
+     * @param aNameKey    The localization key for the item's display name
+     * @param aToolTipKey The localization key for the item's tooltip, or null for no tooltip.
+     *                    The translated value may contain {@code \n} to separate tooltip lines.
+     * @param aRandomData The OreDict Names you want to give the Item. Also used for TC Aspects and some other things.
+     * @return An ItemStack containing the newly created Item.
+     */
     public final ItemStack addItemWithLocalizationKeys(int aID, String aNameKey, String aToolTipKey,
         Object... aRandomData) {
         ItemStack rStack = addItem(aID, aNameKey, aToolTipKey, aRandomData);

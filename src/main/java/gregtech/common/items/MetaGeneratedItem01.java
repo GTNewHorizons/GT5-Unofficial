@@ -3289,31 +3289,27 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         for (int i = 1; i < 15; i++) {
             ItemList.WIRELESS_ENERGY_COVERS[i - 1].set(
-                addItemWithLocalizationKeys(
+                addItem(
                     Cover_Wireless_Energy_LV.ID + i - 1,
                     GTUtility.translate("gt.item.wireless_energy_cover.name", GTValues.VN[i]),
                     String.join(
-                        "/n ",
-                        GTUtility.translate("gt.item.wireless_energy_cover.tooltip.0"),
-                        GTUtility.translate("gt.item.wireless_energy_cover.tooltip.1"),
-                        GTUtility.translate("gt.item.wireless_energy_cover.tooltip.2"),
-                        GTUtility.translate("gt.tileentity.eup_amount") + EnumChatFormatting.YELLOW
-                            + " 2"
-                            + EnumChatFormatting.GRAY,
-                        GTUtility.translate("gt.tileentity.eup_in") + " "
-                            + EnumChatFormatting.GREEN
-                            + formatNumber(GTValues.V[i])
-                            + " ("
-                            + GTUtility.getColoredTierNameFromTier((byte) (i))
-                            + EnumChatFormatting.GREEN
-                            + ")"),
+                        "\\n",
+                        GTUtility.translate("gt.item.wireless_energy_cover.tooltip"),
+                        GTUtility.translate("gt.tileentity.amperage", EnumChatFormatting.YELLOW + "2"),
+                        GTUtility.translate(
+                            "gt.tileentity.eup_in",
+                            EnumChatFormatting.GREEN + formatNumber(GTValues.V[i])
+                                + " ("
+                                + GTUtility.getColoredTierNameFromTier((byte) i)
+                                + EnumChatFormatting.GREEN
+                                + ")")),
                     new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
         }
         ItemList.Cover_Wireless_Energy_Debug.set(
             addItemWithLocalizationKeys(
                 Cover_Wireless_Energy_Debug.ID,
                 GTUtility.translate("gt.item.wireless_energy_cover_debug.name"),
-                GTUtility.translate("gt.item.wireless_energy_cover_debug.tooltip.0"),
+                GTUtility.translate("gt.item.wireless_energy_cover_debug.tooltip"),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 9999L)));
 
         ItemList.Cover_Screen.set(

@@ -56,7 +56,7 @@ public abstract class MetaBaseItem extends GTGenericItem
      * @param aUnlocalized The Unlocalized Name of this Item.
      */
     public MetaBaseItem(String aUnlocalized) {
-        super(aUnlocalized, "Generated Item", null);
+        super(aUnlocalized, null, null);
         setHasSubtypes(true);
         setMaxDamage(0);
     }

@@ -3281,11 +3281,9 @@ gt.item.cover.needs_maintenance.tooltip=Attach to Multiblock Controller. Emits R
 
 ## Wireless Energy Cover
 gt.item.wireless_energy_cover.name=%s Wireless Energy Cover
-gt.item.wireless_energy_cover.tooltip.0=Stores energy globally in a network, up to 2^(2^31) EU.
-gt.item.wireless_energy_cover.tooltip.1=Does not connect to wires. This cover withdraws EU from the network.
-gt.item.wireless_energy_cover.tooltip.2=Ignores voltage limitations (no explosions).
+gt.item.wireless_energy_cover.tooltip=Stores energy globally in a network, up to 2^(2^31) EU.\nDoes not connect to wires. This cover withdraws EU from the network.\nIgnores voltage limitations (no explosions).
 gt.item.wireless_energy_cover_debug.name=Debug Wireless Energy Cover
-gt.item.wireless_energy_cover_debug.tooltip.0=Infinite Power. Ignores Voltage Limitations.
+gt.item.wireless_energy_cover_debug.tooltip=Infinite Power. Ignores Voltage Limitations.
 
 ## Steam Regulators (use same tooltip as steam valves)
 gt.item.steam_regulator.lv.name=Steam Regulator (LV)

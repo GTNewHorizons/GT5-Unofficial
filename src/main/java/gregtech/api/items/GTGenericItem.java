@@ -95,10 +95,7 @@ public class GTGenericItem extends Item implements IProjectileItem {
         if (getMaxDamage() > 0 && !getHasSubtypes())
             aList.add((aStack.getMaxDamage() - getDamage(aStack)) + " / " + aStack.getMaxDamage());
         if (mTooltip != null) {
-            String translated = GTUtility.translate(mTooltip);
-            for (String line : translated.split("\\\\n")) {
-                if (GTUtility.isStringValid(line)) aList.add(line);
-            }
+            GTUtility.translateMultiline(aList, mTooltip);
         }
         if (GTModHandler.isElectricItem(aStack))
             aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier", getTier(aStack)));
