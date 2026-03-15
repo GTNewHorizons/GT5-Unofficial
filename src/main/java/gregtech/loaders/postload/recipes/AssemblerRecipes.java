@@ -3359,7 +3359,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 2),
                 new ItemStack(Blocks.chest, 1),
                 new OreDictItemStack("dyeRed", 4),
-                new OreDictItemStack("dyeOrange", 4))
+                new OreDictItemStack("dyeOrange", 1))
             .fluidInputs(Materials.Polyethylene.getMolten(4 * INGOTS))
             .itemOutputs(ItemList.ToolBox.get(1L))
             .duration(30 * SECONDS)
