@@ -95,7 +95,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addCasingInfoMin("gtplusplus.blockspecialcasings.1.12.name", 20)
             .addCasingInfoMin("gtplusplus.blockspecialcasings.3.2.name", 24)
             .addCasingInfoMin("gtplusplus.blockspecialcasings.3.6.name", 16)
-            .addStructurePart("GTPP.tooltip.structure.data_orb_repository", "<hint>", "x1", 1)
+            .addStructurePart("GTPP.tooltip.structure.data_orb_repository", "x1", true, 1)
             .addInputHatch("<hint>", 1)
             .addOutputBus("<hint>", 1)
             .addOutputHatch("<hint>", 1)

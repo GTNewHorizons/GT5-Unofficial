@@ -606,26 +606,36 @@ public class MultiblockTooltipBuilder {
         return this;
     }
 
-    public MultiblockTooltipBuilder addStructurePart(String partLocKey, String info, String desc, int... hintDots) {
-        if (hintDots.length == 0) {
-            addStructureInfo(
-                desc.isEmpty() ? "GT5U.MBTT.PartInfo" : "GT5U.MBTT.PartInfo_X",
-                partLocKey,
-                switch (info.toLowerCase()) {
+    public MultiblockTooltipBuilder addStructurePart(String partLocKey, String info, boolean addHintInfo,
+        int... hintDots) {
+        String dotStr = (hintDots.length == 0) ? "???"
+            : Joiner.on(SEPARATOR)
+                .join(Ints.asList(hintDots));
+
+        if (info.equalsIgnoreCase("<hint>")) {
+            addStructureInfo("GT5U.MBTT.PartInfo", partLocKey, translate("GT5U.MBTT.PartHintDesc", dotStr));
+        } else {
+            String resolvedInfo = switch (info.toLowerCase()) {
                 case "<casing>", "any casing" -> "GT5U.MBTT.AnyCasing";
                 case "<bottom casing>", "bottom casing" -> "GT5U.MBTT.AnyBottomCasing";
                 default -> info;
-                },
-                desc);
-        } else {
-            addStructurePart(partLocKey, hintLine(info, hintDots), desc);
+            };
+            if (addHintInfo) {
+                addStructureInfo("GT5U.MBTT.PartInfoWithHint", partLocKey, resolvedInfo, dotStr);
+            } else {
+                addStructureInfo("GT5U.MBTT.PartInfo", partLocKey, resolvedInfo);
+            }
+        }
+
+        if (hintDots.length > 0) {
             addStructureHint(partLocKey, hintDots);
         }
+
         return this;
     }
 
     public MultiblockTooltipBuilder addStructurePart(String partLocKey, String info, int... hintDots) {
-        addStructurePart(partLocKey, info, "", hintDots);
+        addStructurePart(partLocKey, info, false, hintDots);
         return this;
     }
 
@@ -1082,16 +1092,6 @@ public class MultiblockTooltipBuilder {
 
     public String[] getStructureHint() {
         return hArray;
-    }
-
-    private String hintLine(String info, int... dots) {
-        if (!info.equals("<hint>")) {
-            return info;
-        }
-        String dotStr = (dots.length == 0) ? "???"
-            : Joiner.on(SEPARATOR)
-                .join(Ints.asList(dots));
-        return translate("GT5U.MBTT.PartHintDesc", dotStr);
     }
 
     @Desugar

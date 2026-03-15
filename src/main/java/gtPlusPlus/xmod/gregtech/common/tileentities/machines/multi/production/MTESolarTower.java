@@ -94,8 +94,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             .addCasingInfoMin("gtplusplus.blockspecialcasings.1.8.name", 60)
             .addCasingInfoMin("gtplusplus.blockspecialcasings.1.7.name", 66)
             .addCasingInfoMin("gtplusplus.blockcasings.2.11.name", 60)
-            .addStructurePart("GT5U.MBTT.InputHatch", "<hint>", "gt.solar_tower.info.hatch", 2)
-            .addStructurePart("GT5U.MBTT.OutputHatch", "<hint>", "gt.solar_tower.info.hatch", 2)
+            .addStructurePart("GT5U.MBTT.InputHatch", "gt.solar_tower.info.hatch", true, 2)
+            .addStructurePart("GT5U.MBTT.OutputHatch", "gt.solar_tower.info.hatch", true, 2)
             .addMaintenanceHatch("<hint>", 2)
             .toolTipFinisher();
         return tt;
