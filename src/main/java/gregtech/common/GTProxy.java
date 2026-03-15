@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -51,6 +52,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
@@ -85,6 +87,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import org.lwjgl.input.Keyboard;
 
+import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -692,6 +695,8 @@ public class GTProxy implements IFuelHandler {
     public int wailaProgressBorderColor1 = 0xFF505050;
     /** Second color of the waila progress bar's border (bottom and right). */
     public int wailaProgressBorderColor2 = 0xFF505050;
+
+    public Set<Item> toolboxBans = ImmutableSet.of();
 
     public static final int GUI_ID_COVER_SIDE_BASE = 10; // Takes GUI ID 10 - 15
 
