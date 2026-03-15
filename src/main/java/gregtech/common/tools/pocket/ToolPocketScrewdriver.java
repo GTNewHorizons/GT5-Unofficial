@@ -27,7 +27,7 @@ public class ToolPocketScrewdriver extends ToolScrewdriver {
         return aIsToolHead
             ? MetaGeneratedTool
                 .getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_pocketMultiToolScrewdriver]
-            : Textures.ItemIcons.VOID;
+            : Textures.GlobalIcons.VOID;
     }
 
     @Override
