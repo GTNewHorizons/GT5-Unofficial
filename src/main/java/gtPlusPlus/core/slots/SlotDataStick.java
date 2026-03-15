@@ -4,8 +4,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.recipe.common.CI;
 
 public class SlotDataStick extends Slot {
 
@@ -20,10 +20,10 @@ public class SlotDataStick extends Slot {
         boolean isValid = false;
         if (itemstack != null) {
             if (mDataItems[0] == null) {
-                mDataItems[0] = CI.getDataStick();
+                mDataItems[0] = ItemList.Tool_DataStick.get(1);
             }
             if (mDataItems[1] == null) {
-                mDataItems[1] = CI.getDataOrb();
+                mDataItems[1] = ItemList.Tool_DataOrb.get(1);
             }
             if (mDataItems[0] != null && mDataItems[1] != null) {
                 if (GTUtility.areStacksEqual(itemstack, mDataItems[0], true)

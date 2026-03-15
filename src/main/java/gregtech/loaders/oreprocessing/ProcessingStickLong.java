@@ -79,6 +79,21 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
                     .addTo(cutterRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L))
+                    .fluidInputs(
+                        Materials.DimensionallyShiftedSuperfluid.getFluid(
+                            Math.max(
+                                1,
+                                Math.min(
+                                    10,
+                                    ((int) Math.max(aMaterial.getMass(), 1L)) * calculateRecipeEU(aMaterial, 4)
+                                        / 4000))))
+                    .duration((int) ((Math.max(aMaterial.getMass() / 2.5, 1L)) * TICKS))
+                    .eut(calculateRecipeEU(aMaterial, 4))
+                    .addTo(cutterRecipes);
             }
 
             if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {

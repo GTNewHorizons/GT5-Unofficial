@@ -69,7 +69,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
@@ -174,20 +173,6 @@ public class RecipesGeneral {
             .fluidInputs(Materials.Silver.getMolten(32 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-
-        // Pest Killer
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Casing_LV.get(1),
-                ItemList.Pump_MV.get(1),
-                MaterialsAlloy.EGLIN_STEEL.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ULV, 2))
-            .circuit(16)
-            .itemOutputs(GregtechItemList.PestKiller.get(1))
-            .fluidInputs(FluidUtils.getFluidStack("ic2hotwater", 500))
-            .duration(1 * MINUTES)
-            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         addCompressedCactusCharcoal();
@@ -344,21 +329,6 @@ public class RecipesGeneral {
     }
 
     private static void migratedRecipes() {
-        // Cryotheum Cooling Hatch
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Hatch_Input_Cryotheum.get(1L),
-            new Object[] { "MGM", "CBC", "PHP", 'M', MaterialsAlloy.MARAGING250.getPlate(1), 'G',
-                MaterialsAlloy.MARAGING250.getGear(1), 'C', "circuitData", 'B',
-                GregtechItemList.Casing_AdvancedVacuum.get(1), 'P', Materials.Aluminium.getPlates(1), 'H',
-                ItemList.Hatch_Input_IV.get(1) });
-
-        // Pyrotheum Heating Vent
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Hatch_Input_Pyrotheum.get(1L),
-            new Object[] { "MGM", "CBC", "MHM", 'M', MaterialsAlloy.MARAGING250.getPlate(1), 'G',
-                MaterialsAlloy.MARAGING300.getGear(1), 'C', "circuitElite", 'B',
-                GregtechItemList.Casing_Adv_BlastFurnace.get(1), 'H', ItemList.Hatch_Input_IV.get(1) });
-
         if (GTMod.proxy.mPollution) {
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Hatch_Muffler_Adv_LV.get(1L),

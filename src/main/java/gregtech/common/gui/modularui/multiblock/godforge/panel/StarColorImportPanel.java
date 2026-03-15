@@ -145,7 +145,7 @@ public class StarColorImportPanel {
                 return GTGuiTextures.UNSELECTED_OPTION;
             }
             StarColorSetting setting = starColor.getColor(index);
-            return new Rectangle().setColor(Color.rgb(setting.getColorR(), setting.getColorG(), setting.getColorB()))
+            return new Rectangle().color(Color.rgb(setting.getColorR(), setting.getColorG(), setting.getColorB()))
                 .asIcon()
                 .size(16)
                 .margin(1);

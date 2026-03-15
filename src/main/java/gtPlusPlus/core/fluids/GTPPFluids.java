@@ -21,15 +21,13 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.core.init.InternalName;
 import ic2.core.item.resources.ItemCell;
 
 public class GTPPFluids {
 
     // Agricultural Chem
-    public static Fluid PoopJuice;
-    public static Fluid ManureSlurry;
-    public static Fluid FertileManureSlurry;
     public static Fluid RedMud;
     public static Fluid PropionicAcid;
     public static Fluid FermentationBase;
@@ -96,6 +94,7 @@ public class GTPPFluids {
     public static Fluid BurntLiFBeF2ZrF4UF4Salt;
     public static Fluid BurntLiFBeF2ZrF4U235Salt;
     public static Fluid ImpureMoltenSaltBase;
+    public static Fluid NuclearWaste;
 
     // Misc Fluids
     public static Fluid GeneticMutagen;
@@ -108,41 +107,13 @@ public class GTPPFluids {
     public static Fluid IndustrialStrengthHydrogenChloride;
     public static Fluid SulfuricLithiumMix;
     public static Fluid LithiumHydroxide;
+    public static Fluid RaisinJuice;
+    public static Fluid MobEssence;
 
     // Custom Blood Support
     private static final List<FluidStack> bloodFluids = new ArrayList<>();
 
     public static void init() {
-        PoopJuice = FluidUtils.generateFluidNonMolten(
-            "raw.waste",
-            "Raw Animal Waste",
-            32 + 175,
-            new short[] { 100, 70, 30, 100 },
-            null,
-            null,
-            0,
-            true);
-
-        ManureSlurry = FluidUtils.generateFluidNonMolten(
-            "manure.slurry",
-            "Manure Slurry",
-            39 + 175,
-            new short[] { 75, 45, 15, 100 },
-            null,
-            null,
-            0,
-            true);
-
-        FertileManureSlurry = FluidUtils.generateFluidNonMolten(
-            "fertile.manure.slurry",
-            "Fertile Manure Slurry",
-            45 + 175,
-            new short[] { 65, 50, 15, 100 },
-            null,
-            null,
-            0,
-            true);
-
         RedMud = FluidUtils.generateFluidNoPrefix(
             "mud.red.slurry",
             "Red Mud Slurry",
@@ -462,6 +433,17 @@ public class GTPPFluids {
             null,
             null);
 
+        NuclearWaste = FluidUtils.addGTFluidNoPrefix(
+            "nuclear.waste",
+            "Nuclear Waste",
+            new short[] { 10, 250, 10, 100 },
+            0,
+            1000,
+            null,
+            ItemList.Cell_Empty.get(1),
+            1000,
+            true);
+
         GeneticMutagen = FluidUtils.generateFluidNonMolten(
             "GeneticMutagen",
             "Genetic Mutagen",
@@ -571,6 +553,19 @@ public class GTPPFluids {
             1000,
             false);
         generateIC2FluidCell(20, "LithiumHydroxide");
+
+        RaisinJuice = FluidUtils.generateFluidNonMolten(
+            "RaisinJuice",
+            "Raisin Juice",
+            2,
+            new short[] { 51, 0, 51, 100 },
+            ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foodRaisins", 1),
+            ItemUtils.getItemStackOfAmountFromOreDictNoBroken("fruitRaisins", 1),
+            50,
+            true);
+
+        MobEssence = FluidUtils
+            .generateFluidNoPrefix("mobessence", "Mob Essence", 0, new short[] { 125, 175, 125, 100 });
 
         handleBlood();
     }

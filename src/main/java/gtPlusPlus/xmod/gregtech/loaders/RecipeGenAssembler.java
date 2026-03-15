@@ -9,10 +9,10 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenAssembler extends RecipeGenBase {
@@ -63,21 +63,21 @@ public class RecipeGenAssembler extends RecipeGenBase {
         GTValues.RA.stdBuilder()
             .itemInputs(input1, input2)
             .itemOutputs(output1)
-            .fluidInputs(FluidUtils.getFluidStack("molten.solderingalloy", 16))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(16))
             .duration(seconds)
             .eut(euCost)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(input1, input2)
             .itemOutputs(output1)
-            .fluidInputs(FluidUtils.getFluidStack("molten.tin", 32))
+            .fluidInputs(Materials.Tin.getMolten(32))
             .duration(seconds)
             .eut(euCost)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(input1, input2)
             .itemOutputs(output1)
-            .fluidInputs(FluidUtils.getFluidStack("molten.lead", 48))
+            .fluidInputs(Materials.Lead.getMolten(48))
             .duration(seconds)
             .eut(euCost)
             .addTo(assemblerRecipes);

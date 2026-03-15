@@ -1,8 +1,8 @@
 package gtPlusPlus.core.material.nuclear;
 
+import gregtech.api.enums.TextureSet;
 import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -13,7 +13,7 @@ public final class MaterialsNuclides {
     public static final Material Li2BeF4 = new Material(
         "Lithium Tetrafluoroberyllate (LFTB)", // Material Name
         MaterialState.LIQUID, // State
-        TextureSets.NUCLEAR.get(),
+        TextureSet.SET_NUCLEAR,
         null, // Material Colour
         566, // Melting Point in C
         870, // Boiling Point in C
@@ -29,7 +29,7 @@ public final class MaterialsNuclides {
     public static final Material LiFBeF2ThF4UF4 = new Material(
         "LFTR Fuel 3", // Material Name
         MaterialState.LIQUID, // State
-        TextureSets.NUCLEAR.get(),
+        TextureSet.SET_NUCLEAR,
         null, // Material Colour
         566, // Melting Point in C
         870, // Boiling Point in C
@@ -47,7 +47,7 @@ public final class MaterialsNuclides {
     public static final Material LiFBeF2ZrF4UF4 = new Material(
         "LFTR Fuel 2", // Material Name
         MaterialState.LIQUID, // State
-        TextureSets.NUCLEAR.get(),
+        TextureSet.SET_NUCLEAR,
         null, // Material Colour
         650, // Melting Point in C
         940, // Boiling Point in C
@@ -65,7 +65,7 @@ public final class MaterialsNuclides {
     public static final Material LiFBeF2ZrF4U235 = new Material(
         "LFTR Fuel 1", // Material Name
         MaterialState.LIQUID, // State
-        TextureSets.NUCLEAR.get(),
+        TextureSet.SET_NUCLEAR,
         null, // Material Colour
         590, // Melting Point in C
         890, // Boiling Point in C

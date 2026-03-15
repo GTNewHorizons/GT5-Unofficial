@@ -70,6 +70,9 @@ import gregtech.api.objects.GTHashSet;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategories;
+import gregtech.common.items.ItemGTToolbox;
+import gregtech.common.items.toolbox.ToolboxDelegateInventory;
+import gregtech.common.items.toolbox.ToolboxUtil;
 import ic2.api.item.IBoxable;
 import ic2.api.item.IC2Items;
 import ic2.api.item.IElectricItem;
@@ -255,6 +258,34 @@ public class GTModHandler {
     }
 
     /**
+     * Returns a Liquid Stack with given amount of IC2 Hot Water
+     */
+    public static FluidStack getHotWater(final int amount) {
+        return FluidRegistry.getFluidStack("ic2hotwater", amount);
+    }
+
+    /**
+     * Returns a Liquid Stack with given amount of IC2 Pahoehoe Lava
+     */
+    public static FluidStack getPahoehoeLava(final int amount) {
+        return FluidRegistry.getFluidStack("ic2pahoehoelava", amount);
+    }
+
+    /**
+     * Returns a Liquid Stack with given amount of IC2 Superheated Steam
+     */
+    public static FluidStack getSuperHeatedSteam(final int amount) {
+        return FluidRegistry.getFluidStack("ic2superheatedsteam", amount);
+    }
+
+    /**
+     * Returns a Liquid Stack with given amount of IC2 Hot Coolant
+     */
+    public static FluidStack getHotCoolant(final int amount) {
+        return FluidRegistry.getFluidStack("ic2hotcoolant", amount);
+    }
+
+    /**
      * @return the Value of this Stack, when burning inside a Furnace (200 = 1 Burn Process = 500 EU, max = 32767 (that
      *         is 81917.5 EU)), limited to Short because the vanilla Furnace otherwise can't handle it properly, stupid
      *         Mojang...
@@ -407,11 +438,18 @@ public class GTModHandler {
     /**
      * Just simple Furnace smelting. Unbelievable how Minecraft fails at making a simple ItemStack->ItemStack mapping...
      */
-    public static boolean addSmeltingRecipe(ItemStack aInput, ItemStack aOutput) {
-        aOutput = GTOreDictUnificator.get(true, aOutput);
-        if (aInput == null || aOutput == null) return false;
+    public static boolean addSmeltingRecipe(ItemStack input, ItemStack output) {
+        return addSmeltingRecipe(input, output, 0.0F);
+    }
+
+    /**
+     * Just simple Furnace smelting. Unbelievable how Minecraft fails at making a simple ItemStack->ItemStack mapping...
+     */
+    public static boolean addSmeltingRecipe(ItemStack input, ItemStack output, float xp) {
+        output = GTOreDictUnificator.get(true, output);
+        if (input == null || output == null) return false;
         FurnaceRecipes.smelting()
-            .func_151394_a(aInput, GTUtility.copyOrNull(aOutput), 0.0F);
+            .func_151394_a(input, GTUtility.copyOrNull(output), xp);
         return true;
     }
 
@@ -1890,8 +1928,8 @@ public class GTModHandler {
             if (aPlayer instanceof EntityPlayer tPlayer) {
                 if (tPlayer.capabilities.isCreativeMode) return true;
                 if (isElectricItem(aStack) && ic2.api.item.ElectricItem.manager.getCharge(aStack) > 1000.0d) {
-                    if (consumeSolderingMaterial(tPlayer)
-                        || (aExternalInventory != null && consumeSolderingMaterial(aExternalInventory))) {
+                    if ((aExternalInventory != null && consumeSolderingMaterial(aExternalInventory))
+                        || consumeSolderingMaterial(tPlayer)) {
                         if (canUseElectricItem(aStack, 10000)) {
                             return GTModHandler.useElectricItem(aStack, 10000, (EntityPlayer) aPlayer);
                         }
@@ -1901,9 +1939,7 @@ public class GTModHandler {
                             (EntityPlayer) aPlayer);
                         return false;
                     } else {
-                        GTUtility.sendChatToPlayer(
-                            (EntityPlayer) aPlayer,
-                            GTUtility.trans("094.1", "Not enough soldering material!"));
+                        GTUtility.sendChatTrans((EntityPlayer) aPlayer, "GT5U.chat.soldering_iron.not_enough");
                     }
                 }
             } else {
@@ -1915,6 +1951,13 @@ public class GTModHandler {
     }
 
     public static boolean useSolderingIron(ItemStack aStack, EntityLivingBase aPlayer) {
+        if (aStack != null && aStack.getItem() instanceof ItemGTToolbox) {
+            final ToolboxDelegateInventory delegateInventory = new ToolboxDelegateInventory(aStack);
+            final boolean result = useSolderingIron(aStack, aPlayer, delegateInventory);
+
+            ToolboxUtil.saveToolbox(aStack, delegateInventory.getHandler());
+            return result;
+        }
         return useSolderingIron(aStack, aPlayer, null);
     }
 

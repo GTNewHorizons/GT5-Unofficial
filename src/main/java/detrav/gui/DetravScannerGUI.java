@@ -1,5 +1,7 @@
 package detrav.gui;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,8 +110,7 @@ public class DetravScannerGUI extends GuiScreen {
 
                     info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_name") + object.left());
                     info.add(
-                        StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_amount")
-                            + GTUtility.formatNumbers(amount)
+                        StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_amount") + formatNumber(amount)
                             + " L");
                 } else {
                     info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.no_fluid"));
@@ -130,7 +131,7 @@ public class DetravScannerGUI extends GuiScreen {
                 if (amount > 0) {
                     info.add(
                         StatCollector.translateToLocal("gui.detrav.scanner.pollution") + ": "
-                            + GTUtility.formatNumbers(amount)
+                            + formatNumber(amount)
                             + GTUtility.trans("203", " gibbl"));
                 }
 

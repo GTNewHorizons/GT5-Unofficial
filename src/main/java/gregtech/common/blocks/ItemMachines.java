@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.util.GTUtility.formatStringSafe;
+import static gregtech.api.util.GTUtility.translate;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -31,6 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -43,6 +45,7 @@ import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
@@ -72,49 +75,37 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 return;
             }
 
-            if (GregTechAPI.METATILEENTITIES[tDamage] != null) {
-                final IGregTechTileEntity tTileEntity = GregTechAPI.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
-                if (!GregTechAPI.sPostloadFinished
-                    && tTileEntity.getMetaTileEntity() instanceof ISecondaryDescribable) {
-                    final String[] tSecondaryDescription = ((ISecondaryDescribable) tTileEntity.getMetaTileEntity())
-                        .getSecondaryDescription();
-                    addDescription(null, tSecondaryDescription, tDamage, "_Secondary");
+            final IMetaTileEntity mte = GregTechAPI.METATILEENTITIES[tDamage];
+            if (mte != null) {
+                final IGregTechTileEntity gtTileEntity = mte.getBaseMetaTileEntity();
+                final IMetaTileEntity metaTileEntity = gtTileEntity.getMetaTileEntity();
+                if (!GregTechAPI.sPostloadFinished && metaTileEntity instanceof ISecondaryDescribable) {
+                    final String[] desc = ((ISecondaryDescribable) metaTileEntity).getSecondaryDescription();
+                    addDescription(null, desc, tDamage, "_Secondary");
                 }
-                {
-                    final IMetaTileEntity tMetaTileEntity = tTileEntity.getMetaTileEntity();
-                    final String tSuffix = (tMetaTileEntity instanceof ISecondaryDescribable
-                        && ((ISecondaryDescribable) tMetaTileEntity).isDisplaySecondaryDescription()) ? "_Secondary"
-                            : "";
-                    addDescription(aList, tTileEntity.getDescription(), tDamage, tSuffix);
-                    tMetaTileEntity.addAdditionalTooltipInformation(aStack, aList);
-                }
-                if (tTileEntity.getEUCapacity() > 0L) {
-                    if (tTileEntity.getInputVoltage() > 0L) {
-                        final byte inputTier = GTUtility.getTier(tTileEntity.getInputVoltage());
+                final String tSuffix = (metaTileEntity instanceof ISecondaryDescribable
+                    && ((ISecondaryDescribable) metaTileEntity).isDisplaySecondaryDescription()) ? "_Secondary" : "";
+                addDescription(aList, gtTileEntity.getDescription(), tDamage, tSuffix);
+                metaTileEntity.addAdditionalTooltipInformation(aStack, aList);
+                if (gtTileEntity.getEUCapacity() > 0L && !(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
+                    if (gtTileEntity.getInputVoltage() > 0L) {
                         aList.add(
-                            translateToLocalFormatted(
+                            translate(
                                 "gt.tileentity.eup_in",
-                                GTUtility.formatNumbers(tTileEntity.getInputVoltage()),
-                                GTUtility.getColoredTierNameFromTier(inputTier)));
+                                TooltipHelper.voltageText(gtTileEntity.getInputVoltage())));
                     }
-                    if (tTileEntity.getOutputVoltage() > 0L) {
-                        final byte outputTier = GTUtility.getTier(tTileEntity.getOutputVoltage());
+                    if (gtTileEntity.getOutputVoltage() > 0L) {
                         aList.add(
-                            translateToLocalFormatted(
+                            translate(
                                 "gt.tileentity.eup_out",
-                                GTUtility.formatNumbers(tTileEntity.getOutputVoltage()),
-                                GTUtility.getColoredTierNameFromTier(outputTier)));
+                                TooltipHelper.voltageText(gtTileEntity.getOutputVoltage())));
                     }
-                    if (tTileEntity.getOutputAmperage() > 1L) {
+                    if (gtTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
-                            translateToLocalFormatted(
-                                "gt.tileentity.eup_amount",
-                                GTUtility.formatNumbers(tTileEntity.getOutputAmperage())));
+                            translate(
+                                "gt.tileentity.amperage",
+                                TooltipHelper.ampText(gtTileEntity.getOutputAmperage())));
                     }
-                    aList.add(
-                        translateToLocalFormatted(
-                            "gt.tileentity.eup_store",
-                            GTUtility.formatNumbers(tTileEntity.getEUCapacity())));
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();
@@ -135,7 +126,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                             Dyes.get(aNBT.getByte("mColor") - 1).mName));
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             aList.add("§cAn exception was thrown while getting this item's info.§r");
             aList.add(e.getLocalizedMessage());
             GT_FML_LOGGER.error("addInformation", e);

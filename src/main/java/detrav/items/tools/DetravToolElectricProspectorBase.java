@@ -16,11 +16,11 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
-import detrav.enums.Textures01;
 import detrav.items.behaviours.BehaviourDetravToolElectricProspector;
 import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
@@ -29,6 +29,10 @@ import gregtech.api.items.MetaGeneratedTool;
  * Created by wital_000 on 19.03.2016. modified by bartimaeusnek on 05.06.2018
  */
 public class DetravToolElectricProspectorBase implements IToolStats {
+
+    public static final short[] mProspectorTextures = new short[] { TextureSet.INDEX_prospector,
+        TextureSet.INDEX_prospectorElectricLuV, TextureSet.INDEX_prospectorElectricZPM,
+        TextureSet.INDEX_prospectorElectricUV, TextureSet.INDEX_prospectorElectricUHV };
 
     public int getToolDamagePerBlockBreak() {
         return 100;
@@ -165,7 +169,8 @@ public class DetravToolElectricProspectorBase implements IToolStats {
     }
 
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return Textures01.mTextures[0];
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[mProspectorTextures[0]]
+            : null;
     }
 
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {

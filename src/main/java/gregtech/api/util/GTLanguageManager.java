@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.api.enums.GTValues.E;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -22,6 +23,8 @@ import gregtech.api.GregTechAPI;
  */
 @Deprecated
 public class GTLanguageManager {
+
+    public static final String ANY_SUB_BLOCK = "Any Sub Block of this";
 
     /**
      * Buffer to reduce memory allocation when injecting data to LanguageRegistry.
@@ -113,6 +116,10 @@ public class GTLanguageManager {
             return storeTranslation(trimmedKey, aEnglish);
         }
         return LANGMAP.get(trimmedKey);
+    }
+
+    public static synchronized String addAnySubBlockLocalization(String unlocalizedName) {
+        return addStringLocalization(unlocalizedName + "." + WILDCARD + ".name", ANY_SUB_BLOCK);
     }
 
     private static synchronized String storeTranslation(String trimmedKey, String english) {
@@ -222,18 +229,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_083", "Open if work disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_084", "Only Output allowed");
         addStringLocalization("Interaction_DESCRIPTION_Index_085", "Only Input allowed");
-        addStringLocalization("Interaction_DESCRIPTION_Index_086", "Auto-Input: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_087", "Disabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_088", "Enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_089", "  Auto-Output: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_090", "Machine Processing: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_091", "Redstone Output at Side ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_092", " set to: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_093", "Strong");
-        addStringLocalization("Interaction_DESCRIPTION_Index_094", "Weak");
-        addStringLocalization("Interaction_DESCRIPTION_Index_094.1", "Not enough soldering material!");
-        addStringLocalization("Interaction_DESCRIPTION_Index_098", "Do not regulate Item Stack Size");
-        addStringLocalization("Interaction_DESCRIPTION_Index_099", "Regulate Item Stack Size to: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_100", "This is ");
         addStringLocalization("Interaction_DESCRIPTION_Index_101", " Ore.");
         addStringLocalization("Interaction_DESCRIPTION_Index_102", "There is Lava behind this Rock.");
@@ -242,14 +237,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_105", "Material is changing behind this Rock.");
         addStringLocalization("Interaction_DESCRIPTION_Index_106", "Found traces of ");
         addStringLocalization("Interaction_DESCRIPTION_Index_107", "No Ores found.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_108", "Outputs misc. Fluids, Steam and Items");
-        addStringLocalization("Interaction_DESCRIPTION_Index_109", "Outputs Steam and Items");
-        addStringLocalization("Interaction_DESCRIPTION_Index_110", "Outputs Steam and misc. Fluids");
-        addStringLocalization("Interaction_DESCRIPTION_Index_111", "Outputs Steam");
-        addStringLocalization("Interaction_DESCRIPTION_Index_112", "Outputs misc. Fluids and Items");
-        addStringLocalization("Interaction_DESCRIPTION_Index_113", "Outputs only Items");
-        addStringLocalization("Interaction_DESCRIPTION_Index_114", "Outputs only misc. Fluids");
-        addStringLocalization("Interaction_DESCRIPTION_Index_115", "Outputs nothing");
         // 116 moved to lang files
         // 117 obsolete
         // 118 moved to lang files
@@ -280,7 +267,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_137", "That doesn't belong there. (Crowbar)");
         addStringLocalization("Interaction_DESCRIPTION_Index_138", "Incomplete Structure.");
         // NOTE: the below key is used in HydroEnergy, take care to fix it there when this line is removed
-        addStringLocalization("Interaction_DESCRIPTION_Index_142", "Running perfectly.");
         addStringLocalization("Interaction_DESCRIPTION_Index_143", "Missing Mining Pipe");
         addStringLocalization("Interaction_DESCRIPTION_Index_144", "Missing Turbine Rotor");
         addStringLocalization("Interaction_DESCRIPTION_Index_145", "Step Down, In: ");
@@ -288,11 +274,7 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_147", "A, Out: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_148", "V ");
         addStringLocalization("Interaction_DESCRIPTION_Index_149", "A");
-        addStringLocalization("Interaction_DESCRIPTION_Index_150", "Chance: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_151", "Does not get consumed in the process");
-        addStringLocalization("Interaction_DESCRIPTION_Index_151.1", "Outputs items and 1 specific Fluid");
-        addStringLocalization("Interaction_DESCRIPTION_Index_151.2", "Outputs 1 specific Fluid");
-        addStringLocalization("Interaction_DESCRIPTION_Index_151.4", "Successfully locked Fluid to %s");
         addStringLocalization("Interaction_DESCRIPTION_Index_152", "Total: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_153", "Usage: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_154", "Voltage: ");
@@ -340,7 +322,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_197", "  Air-Quality: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_198", "Attributes:");
         addStringLocalization("Interaction_DESCRIPTION_Index_199", "Discovered by: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_200", "Sort mode: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_200.1", "Automatic Item Shuffling: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_201", "Nothing");
         addStringLocalization("Interaction_DESCRIPTION_Index_202", "Pollution in Chunk: ");
@@ -355,10 +336,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_209.1", " tick");
         addStringLocalization("Interaction_DESCRIPTION_Index_210", "Average: %.2f L/sec");
         addStringLocalization("Interaction_DESCRIPTION_Index_211", "Items per side: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_212", "Input enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_213", "Input disabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_214", "Connected");
-        addStringLocalization("Interaction_DESCRIPTION_Index_215", "Disconnected");
         addStringLocalization("Interaction_DESCRIPTION_Index_216", "Deprecated Recipe");
         addStringLocalization("Interaction_DESCRIPTION_Index_219", "Extended Facing: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_221", "Item threshold");
@@ -449,8 +426,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_343.1", "Use Inverted Machine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_344", "Input Blocking");
         addStringLocalization("Interaction_DESCRIPTION_Index_344.1", "Output Blocking");
-        addStringLocalization("Interaction_DESCRIPTION_Index_500", "Fitting: Loose - More Flow");
-        addStringLocalization("Interaction_DESCRIPTION_Index_501", "Fitting: Tight - More Efficiency");
         addStringLocalization("Interaction_DESCRIPTION_Index_502", "Mining chunk loading enabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_503", "Mining chunk loading disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_505", "Enable with Signal (Safe)");

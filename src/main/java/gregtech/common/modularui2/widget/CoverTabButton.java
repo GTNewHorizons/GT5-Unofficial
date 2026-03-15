@@ -21,13 +21,10 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 
 public class CoverTabButton extends ButtonWidget<CoverTabButton> {
-
-    private static final String[] COVER_DIRECTION_NAMES = new String[] { "GT5U.interface.coverTabs.down",
-        "GT5U.interface.coverTabs.up", "GT5U.interface.coverTabs.north", "GT5U.interface.coverTabs.south",
-        "GT5U.interface.coverTabs.west", "GT5U.interface.coverTabs.east" };
 
     private final ICoverable coverable;
     private final ForgeDirection side;
@@ -39,7 +36,11 @@ public class CoverTabButton extends ButtonWidget<CoverTabButton> {
             .onMousePressed(mouseButton -> {
                 if (coverable.getCoverAtSide(side)
                     .hasCoverGUI()) {
-                    panel.openPanel();
+                    if (panel.isPanelOpen()) {
+                        panel.closePanel();
+                    } else {
+                        panel.openPanel();
+                    }
                 }
                 return true;
             })
@@ -50,7 +51,7 @@ public class CoverTabButton extends ButtonWidget<CoverTabButton> {
                         .marginTop(1)))
             .tooltipBuilder(this::buildTooltip)
             .tooltipAutoUpdate(true)
-            .size(18, 20);
+            .size(20, 20);
     }
 
     private void buildTooltip(RichTooltip builder) {
@@ -63,7 +64,7 @@ public class CoverTabButton extends ButtonWidget<CoverTabButton> {
         builder
             .add(
                 (coverHasGui ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
-                    + StatCollector.translateToLocal(COVER_DIRECTION_NAMES[side.ordinal()])
+                    + StatCollector.translateToLocal(GTUtility.getUnlocalizedSideName(side))
                     + (coverHasGui ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
                     + tooltips.get(0))
             .newLine()

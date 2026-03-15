@@ -51,6 +51,6 @@ public class GregtechAlgaeContent {
         // Laurenium
         MTEChemicalPlant.registerMachineCasingForTier(6, ModBlocks.blockCustomMachineCasings, 2, 84);
         // Botmium
-        MTEChemicalPlant.registerMachineCasingForTier(7, ModBlocks.blockCustomMachineCasings, 3, 11);
+        MTEChemicalPlant.registerMachineCasingForTier(7, ModBlocks.blockCustomMachineCasings, 3, 100);
     }
 }

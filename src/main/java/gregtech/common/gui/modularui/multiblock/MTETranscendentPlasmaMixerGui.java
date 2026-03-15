@@ -36,10 +36,10 @@ public class MTETranscendentPlasmaMixerGui extends MTEMultiBlockBaseGui<MTETrans
     }
 
     protected IWidget createParallelButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler parallelSelectPanel = syncManager.panel(
+        IPanelHandler parallelSelectPanel = syncManager.syncedPanel(
             "parallelSelectPanel",
-            (p_syncManager, syncHandler) -> openParallelSelectPanel(syncManager, parent),
-            true);
+            true,
+            (p_syncManager, syncHandler) -> openParallelSelectPanel(syncManager, parent));
 
         return new ButtonWidget<>().size(18)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON)

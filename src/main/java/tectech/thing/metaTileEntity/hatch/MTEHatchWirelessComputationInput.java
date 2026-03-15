@@ -1,6 +1,7 @@
 package tectech.thing.metaTileEntity.hatch;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 
@@ -11,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -31,10 +31,10 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTUtility;
 import gregtech.common.WirelessComputationPacket;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.thing.gui.TecTechUITextures;
 
 public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
@@ -78,11 +78,17 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && q == null) {
-            q = WirelessComputationPacket.downloadData(
+            long received = WirelessComputationPacket.downloadData(
                 aBaseMetaTileEntity.getOwnerUuid(),
                 requiredComputation,
                 MinecraftServer.getServer()
                     .getTickCounter());
+            if (received > 0) {
+                q = new QuantumDataPacket(received);
+                updateComputationHistory(received);
+            } else {
+                updateComputationHistory(0);
+            }
         }
 
     }
@@ -172,11 +178,11 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            translateToLocal("GT5U.machines.computation_hatch.computation") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(
+            translateToLocalFormatted(
+                "GT5U.machines.computation_hatch.computation.amount",
+                formatNumber(
                     accessor.getNBTData()
-                        .getLong("requiredComputation")));
+                        .getLong("requiredComputation"))));
     }
 
     @Override

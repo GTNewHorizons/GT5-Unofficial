@@ -71,7 +71,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.render.TileEntityWormhole;
+import gregtech.common.tileentities.render.RenderingTileEntityWormhole;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
@@ -402,7 +402,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     @Nullable
-    private TileEntityWormhole createRenderBlock() {
+    private RenderingTileEntityWormhole createRenderBlock() {
 
         IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
         World world = gregTechTileEntity.getWorld();
@@ -426,11 +426,11 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         world.setBlock(xTarget, yTarget, zTarget, Blocks.air);
         world.setBlock(xTarget, yTarget, zTarget, GregTechAPI.sWormholeRender);
 
-        return (TileEntityWormhole) world.getTileEntity(xTarget, yTarget, zTarget);
+        return (RenderingTileEntityWormhole) world.getTileEntity(xTarget, yTarget, zTarget);
     }
 
     @Nullable
-    private TileEntityWormhole getRenderBlock() {
+    private RenderingTileEntityWormhole getRenderBlock() {
         IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
 
         int x = gregTechTileEntity.getXCoord();
@@ -448,7 +448,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         TileEntity tile = Optional.ofNullable(gregTechTileEntity.getWorld())
             .map(w -> w.getTileEntity(wX, wY, wZ))
             .orElse(null);
-        if (tile instanceof TileEntityWormhole wormhole) return wormhole;
+        if (tile instanceof RenderingTileEntityWormhole wormhole) return wormhole;
         return null;
 
     }
@@ -460,7 +460,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .map(IHasWorldObjectAndCoords::getWorld)
             .orElse(null);
 
-        TileEntityWormhole hole = getRenderBlock();
+        RenderingTileEntityWormhole hole = getRenderBlock();
         if (hole == null) hole = createRenderBlock();
 
         if (hole != null) {
@@ -469,7 +469,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     public void updateRenderRadius(double radius) {
-        TileEntityWormhole hole = getRenderBlock();
+        RenderingTileEntityWormhole hole = getRenderBlock();
         if (hole == null) hole = createRenderBlock();
 
         if (hole != null) {
@@ -500,14 +500,10 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
             mAllowOverclocks = !mAllowOverclocks;
-
-            if (mAllowOverclocks) {
-                GTUtility
-                    .sendChatToPlayer(aPlayer, String.format("Overclocks: §a%s§r", GTUtility.trans("088", "Enabled")));
-            } else {
-                GTUtility
-                    .sendChatToPlayer(aPlayer, String.format("Overclocks: §c%s§r", GTUtility.trans("087", "Disabled")));
-            }
+            GTUtility.sendChatTrans(
+                aPlayer,
+                mAllowOverclocks ? "GT5U.chat.worm_hole_generator.overclocks.enable"
+                    : "GT5U.chat.worm_hole_generator.overclocks.disable");
         } else {
             super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         }
@@ -707,7 +703,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
                 aNBT.setTag("mLink", link);
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             GTMod.GT_FML_LOGGER.error("Could not save MTEWormholeGenerator", t);
         }
     }
@@ -758,7 +754,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                         0,
                         Math.min(send_amounts.length, mLink.mSendAmounts.length));
                 }
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 GTMod.GT_FML_LOGGER.error("Could not load MTEWormholeGenerator", t);
             }
         }
@@ -970,7 +966,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
 
         // spotless:off
-        tt.addMachineType("Wormhole Generator")
+        tt.addMachineType("Wormhole Generator, MWG")
             .addInfo("Transfers EU between two wormhole generators")
             .addInfo("Wormholes are linked by placing an AE2 Entangled Singularity in each controller slot")
             .addInfo("The transfer rate is limited by the wormhole size, and the wormhole size is governed by the transfer rate")

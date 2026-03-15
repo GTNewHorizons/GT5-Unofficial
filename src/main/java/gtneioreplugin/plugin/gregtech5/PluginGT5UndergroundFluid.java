@@ -101,12 +101,10 @@ public class PluginGT5UndergroundFluid extends PluginBase {
         int y = 50;
         CachedUndergroundFluidRecipe recipe = (CachedUndergroundFluidRecipe) this.arecipes.get(recipeIndex);
         for (int i = 0; i < recipe.dimensionDisplayItems.size(); i++) {
-            GuiDraw.drawStringC(format.format((double) recipe.chances.get(i) / 100) + "%", xChance, y, black, false);
+            String chanceValue = format.format((double) recipe.chances.get(i) / 100);
+            GuiDraw.drawStringC(I18n.format("gtnop.gui.nei.chance.value", chanceValue), xChance, y, black, false);
             GuiDraw.drawStringC(
-                recipe.minAmounts.get(i)
-                    .toString() + "-"
-                    + recipe.maxAmounts.get(i)
-                        .toString(),
+                I18n.format("gtnop.gui.nei.fluidAmount.value", recipe.minAmounts.get(i), recipe.maxAmounts.get(i)),
                 xAmount,
                 y,
                 black,

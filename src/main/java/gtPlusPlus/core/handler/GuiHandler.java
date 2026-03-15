@@ -11,26 +11,20 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.container.ContainerCircuitProgrammer;
 import gtPlusPlus.core.container.ContainerFishTrap;
-import gtPlusPlus.core.container.ContainerPestKiller;
-import gtPlusPlus.core.container.ContainerProjectTable;
 import gtPlusPlus.core.container.ContainerVolumetricFlaskSetter;
 import gtPlusPlus.core.gui.beta.GUIIDRegistry;
 import gtPlusPlus.core.gui.beta.MUGuild;
 import gtPlusPlus.core.gui.machine.GUICircuitProgrammer;
 import gtPlusPlus.core.gui.machine.GUIFishTrap;
-import gtPlusPlus.core.gui.machine.GUIPestKiller;
-import gtPlusPlus.core.gui.machine.GUIProjectTable;
 import gtPlusPlus.core.gui.machine.GUIVolumetricFlaskSetter;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
-import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
-import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 
 public class GuiHandler implements IGuiHandler {
 
-    public static final int GUI1 = 0; // Project Table
+    public static final int GUI1 = 0; // None
     public static final int GUI2 = 1; // None
     public static final int GUI3 = 2; // None
     public static final int GUI4 = 3; // None
@@ -43,7 +37,7 @@ public class GuiHandler implements IGuiHandler {
     public static final int GUI11 = 10; // None
     public static final int GUI12 = 11; // None
     public static final int GUI14 = 13; // None
-    public static final int GUI15 = 14; // Pest Killer
+    public static final int GUI15 = 14; // None
     public static final int GUI16 = 15; // None
     public static final int GUI17 = 16; // None
     public static final int GUI18 = 17; // Volumetric Flask Setter
@@ -60,14 +54,12 @@ public class GuiHandler implements IGuiHandler {
         if (te == null) return null;
 
         return switch (ID) {
-            case GUI1 -> new ContainerProjectTable(player.inventory, (TileEntityProjectTable) te);
             case GUI5 -> {
                 Logger.INFO("sad");
                 yield null;
             }
             case GUI6 -> new ContainerFishTrap(player.inventory, (TileEntityFishTrap) te);
             case GUI8 -> new ContainerCircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
-            case GUI15 -> new ContainerPestKiller(player.inventory, (TileEntityPestKiller) te);
             case GUI18 -> new ContainerVolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te);
             default -> null;
         };
@@ -89,10 +81,8 @@ public class GuiHandler implements IGuiHandler {
         if (te == null) return null;
 
         return switch (ID) {
-            case GUI1 -> new GUIProjectTable(player.inventory, (TileEntityProjectTable) te);
             case GUI6 -> new GUIFishTrap(player.inventory, (TileEntityFishTrap) te);
             case GUI8 -> new GUICircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
-            case GUI15 -> new GUIPestKiller(player.inventory, (TileEntityPestKiller) te);
             case GUI18 -> new GUIVolumetricFlaskSetter(
                 new ContainerVolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te));
             default -> null;

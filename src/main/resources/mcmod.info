@@ -1,7 +1,7 @@
 {
-	"modListVersion": 2,
-	"modList": [
-  {
+  "modListVersion": 2,
+  "modList": [
+    {
       "modid": "gregtech",
       "name": "GregTech",
       "description": "This Mod adds the awesome Technology of GregTech-Intergalactical to your World!",
@@ -10,17 +10,11 @@
       "logoFile": "/assets/gregtech_addon/textures/LogoGTI_Long.png",
       "url": "http://forum.industrial-craft.net/index.php?page=Thread&threadID=11488",
       "updateUrl": "",
-      "authors": [
-        "Gregorius Techneticies",
-        "Blood Asp"
-      ],
+      "authors": ["Gregorius Techneticies", "Blood Asp"],
       "credits": "Notch and Mojang for Minecraft, Alblaka and his Team for IndustrialCraft, Mr. Brain for many of the Crop Textures, OvermindDL for helping me with Code, TheSirusKing and matix for a few Textures",
       "parent": "",
       "screenshots": [],
-      "dependencies": [
-        "Industrialcraft",
-        "structurelib"
-      ]
+      "dependencies": ["Industrialcraft", "structurelib"]
     },
     {
       "modid": "gregtech_nh",
@@ -37,15 +31,11 @@
       "mcversion": "${minecraftVersion}",
       "url": "https://glease.github.io/GigaGramFab",
       "updateUrl": "",
-      "authorList": [
-        "glee8e"
-      ],
+      "authorList": ["glee8e"],
       "credits": "",
       "logoFile": "",
       "screenshots": [],
-      "dependencies": [
-        "gregtech"
-      ]
+      "dependencies": ["gregtech"]
     },
     {
       "modid": "bartworks",
@@ -55,9 +45,7 @@
       "mcversion": "${minecraftVersion}",
       "url": "https://github.com/bartimaeusnek/bartworks",
       "updateUrl": "",
-      "authorList": [
-        "bartimaeusnek"
-      ],
+      "authorList": ["bartimaeusnek"],
       "credits": "Gregorius Techneticies for making gregtech and allowing me to port his old stuff.\n Austin Appleby and Yonik Seeley for creating and putting the MurmurHash3 into the public domain.\n Spluff and EmeraldsEmerald for the Awesome Textures aswell.",
       "logoFile": "",
       "screenshots": [],
@@ -75,9 +63,7 @@
       "mcversion": "${minecraftVersion}",
       "url": "https://github.com/bartimaeusnek/bartworks",
       "updateUrl": "",
-      "authorList": [
-        "bartimaeusnek"
-      ],
+      "authorList": ["bartimaeusnek"],
       "credits": "",
       "logoFile": "",
       "screenshots": [],
@@ -95,9 +81,7 @@
       "mcversion": "${minecraftVersion}",
       "url": "https://github.com/bartimaeusnek/bartworks",
       "updateUrl": "",
-      "authorList": [
-        "bartimaeusnek"
-      ],
+      "authorList": ["bartimaeusnek"],
       "credits": "",
       "logoFile": "",
       "screenshots": [],
@@ -115,9 +99,7 @@
       "mcversion": "${minecraftVersion}",
       "url": "http://forum.industrial-craft.net/index.php?page=Thread&threadID=11039",
       "updateUrl": "",
-      "authorList": [
-        "Blood Asp, Namikon"
-      ],
+      "authorList": ["Blood Asp, Namikon"],
       "credits": "To GregoriusT and micdoodle8 for making such good Mods",
       "logoFile": "assets/galacticgreg/galacticgreg.png",
       "screenshots": [],
@@ -133,15 +115,9 @@
       "mcversion": "${minecraftVersion}",
       "url": "https://github.com/draknyte1/GTplusplus/wiki",
       "updateUrl": "",
-      "authorList": [
-        "Alkalus/Draknyte1"
-      ],
-      "screenshots": [
-        ""
-      ],
-      "requiredMods": [
-        "Forge"
-      ],
+      "authorList": ["Alkalus/Draknyte1"],
+      "screenshots": [""],
+      "requiredMods": ["Forge"],
       "dependencies": [
         "Forge",
         "TConstruct",
@@ -186,12 +162,8 @@
       "mcversion": "${minecraftVersion}",
       "url": "https://github.com/draknyte1/GTplusplus/wiki",
       "updateUrl": "",
-      "authorList": [
-        "Alkalus/Draknyte1"
-      ],
-      "screenshots": [
-        ""
-      ],
+      "authorList": ["Alkalus/Draknyte1"],
+      "screenshots": [""],
       "parent": "miscutils",
       "requiredMods": [],
       "dependencies": []
@@ -204,9 +176,7 @@
       "mcversion": "${minecraftVersion}",
       "url": "",
       "updateUrl": "",
-      "authorList": [
-        "_Technus_"
-      ],
+      "authorList": ["_Technus_"],
       "credits": "The Forge and FML guys, for making this example",
       "logoFile": "TecTechIcon.png",
       "screenshots": [],
@@ -220,17 +190,11 @@
       "mcversion": "${minecraftVersion}",
       "url": "",
       "updateUrl": "",
-      "authorList": [
-        "Shinkuri"
-      ],
+      "authorList": ["Shinkuri"],
       "credits": "",
       "logoFile": "",
       "screenshots": [],
-      "requiredMods": [
-        "IC2",
-        "gregtech",
-        "tectech"
-      ],
+      "requiredMods": ["IC2", "gregtech", "tectech"],
       "dependencies": [
         "IC2",
         "gregtech",
@@ -250,28 +214,12 @@
       "mcversion": "${minecraftVersion}",
       "url": "",
       "updateUrl": "",
-      "authorList": [
-        "GlodBlock"
-      ],
+      "authorList": ["GlodBlock"],
       "credits": "",
       "logoFile": "",
       "screenshots": [],
-      "requiredMods": [
-        "Forge",
-        "IC2",
-        "gregtech",
-        "bartworks",
-        "tectech",
-        "structurelib"
-      ],
-      "dependencies": [
-        "IC2",
-        "gregtech",
-        "bartworks",
-        "tectech",
-        "structurelib",
-        "dreamcraft"
-      ],
+      "requiredMods": ["Forge", "IC2", "gregtech", "bartworks", "tectech", "structurelib"],
+      "dependencies": ["IC2", "gregtech", "bartworks", "tectech", "structurelib", "dreamcraft"],
       "useDependencyInformation": true
     },
     {
@@ -282,9 +230,7 @@
       "mcversion": "${minecraftVersion}",
       "url": "https://github.com/GTNewHorizons/KubaTech/",
       "updateUrl": "",
-      "authorList": [
-        "kuba6000"
-      ],
+      "authorList": ["kuba6000"],
       "credits": "",
       "logoFile": "assets/kubatech/textures/gui/logo.jpg",
       "screenshots": [],
@@ -302,9 +248,7 @@
       "mcversion": "${minecraftVersion}",
       "url": "",
       "updateUrl": "",
-      "authorList": [
-        "Elisis"
-      ],
+      "authorList": ["Elisis"],
       "credits": "",
       "logoFile": "",
       "screenshots": [],
@@ -325,7 +269,8 @@
     },
     {
       "modid": "detravscannermod",
-      "name": "GT Scanner Mod", "description": "To locate ores deep underground.",
+      "name": "GT Scanner Mod",
+      "description": "To locate ores deep underground.",
       "version": "${modVersion}",
       "mcversion": "${minecraftVersion}",
       "url": "https://github.com/GTNewHorizons/GTScannerMod",
@@ -350,5 +295,5 @@
       "screenshots": [],
       "parent": ""
     }
-    ]
+  ]
 }

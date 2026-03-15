@@ -1,7 +1,5 @@
 package goodgenerator.blocks.tileEntity;
 
-import static gregtech.api.util.GTUtility.trans;
-
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
@@ -30,9 +28,9 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
 
     private boolean looseFit = false;
 
-    private static final IIconContainer turbineOn = new Textures.BlockIcons.CustomIcon("icons/turbines/TURBINE_05");
-    private static final IIconContainer turbineOff = new Textures.BlockIcons.CustomIcon("icons/turbines/TURBINE_15");
-    private static final IIconContainer turbineEmpty = new Textures.BlockIcons.CustomIcon("icons/turbines/TURBINE_25");
+    private static final IIconContainer turbineOn = Textures.BlockIcons.custom("icons/turbines/TURBINE_05");
+    private static final IIconContainer turbineOff = Textures.BlockIcons.custom("icons/turbines/TURBINE_15");
+    private static final IIconContainer turbineEmpty = Textures.BlockIcons.custom("icons/turbines/TURBINE_25");
 
     public MTESupercriticalFluidTurbine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -93,10 +91,9 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
         ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 aPlayer,
-                looseFit ? trans("500", "Fitting: Loose - More Flow")
-                    : trans("501", "Fitting: Tight - More Efficiency"));
+                looseFit ? "GT5U.chat.turbine.fitting.loose" : "GT5U.chat.turbine.fitting.tight");
         }
     }
 

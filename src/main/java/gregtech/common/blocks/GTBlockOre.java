@@ -180,10 +180,19 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+        return getDropsForPlayer(world, x, y, z, metadata, fortune, this.harvesters.get());
+    }
+
+    /**
+     * Functions as getDrops(), but the player entity can be specified directly in cases where the action is done by
+     * player, but gets called without harvest method.
+     *
+     * @implNote Requires extra casting to GTBlockOre and mod load checks.
+     */
+    public ArrayList<ItemStack> getDropsForPlayer(World world, int x, int y, int z, int metadata, int fortune,
+        EntityPlayer harvester) {
         try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
             if (info == null) return new ArrayList<>();
-
-            EntityPlayer harvester = this.harvesters.get();
 
             boolean doFortune = GTUtility.isRealPlayer(harvester);
             boolean doSilktouch = harvester != null && EnchantmentHelper.getSilkTouchModifier(harvester);
@@ -366,7 +375,8 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
                         GTOreAdapter.INSTANCE.getBlock(info)
                             .getBlockMeta(),
                         3);
-                    GTUtility.sendChatToPlayer(player, "Set ore natural flag to " + info.isNatural);
+                    GTUtility
+                        .sendChatTrans(player, "GT5U.chat.ore.set_ore_natural_flag", String.valueOf(info.isNatural));
                 }
 
                 return true;

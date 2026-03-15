@@ -17,6 +17,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -120,7 +121,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public void writeToNBT(NBTTagCompound nbt) {
         try {
             super.writeToNBT(nbt);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity", e);
         }
         try {
@@ -129,7 +130,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             nbt.setByte("mConnections", mConnections);
             nbt.setByte("mColor", mColor);
             nbt.setBoolean("mWorks", !mWorks);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity", e);
         }
         saveMetaTileNBT(nbt);
@@ -351,7 +352,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         if (hasValidMetaTileEntity()) {
             try {
                 mMetaTileEntity.receiveClientEvent((byte) aEventID, (byte) aValue);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 GT_FML_LOGGER.error("Encountered Exception while receiving Data from the Server", e);
             }
         }
@@ -735,7 +736,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    protected boolean hasValidMetaTileEntity() {
+    protected final boolean hasValidMetaTileEntity() {
         return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
     }
 
@@ -820,11 +821,10 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         if (mWorks) disableWorking();
                         else enableWorking();
                         mMetaTileEntity.markDirty();
-                        GTUtility.sendChatToPlayer(
+                        GTUtility.sendChatTrans(
                             aPlayer,
-                            GTUtility.trans("090", "Machine Processing: ")
-                                + (isAllowedToWork() ? GTUtility.trans("088", "Enabled")
-                                    : GTUtility.trans("087", "Disabled")));
+                            isAllowedToWork() ? "GT5U.chat.machine.processing.enable"
+                                : "GT5U.chat.machine.processing.disable");
                         sendSoundToPlayers(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1);
                     }
                     return true;
@@ -850,12 +850,11 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                         mMetaTileEntity.markDirty();
                         mStrongRedstone ^= wrenchingSide.flag;
-                        GTUtility.sendChatToPlayer(
+                        GTUtility.sendChatTrans(
                             aPlayer,
-                            GTUtility.trans("091", "Redstone Output at Side ") + wrenchingSide
-                                + GTUtility.trans("092", " set to: ")
-                                + ((mStrongRedstone & wrenchingSide.flag) != 0 ? GTUtility.trans("093", "Strong")
-                                    : GTUtility.trans("094", "Weak")));
+                            (mStrongRedstone & wrenchingSide.flag) != 0 ? "GT5U.chat.machine.redstone_output_set.strong"
+                                : "GT5U.chat.machine.redstone_output_set.weak",
+                            new ChatComponentTranslation(GTUtility.getUnlocalizedSideName(wrenchingSide)));
                         sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1);
                         issueBlockUpdate();
                     }
@@ -902,7 +901,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 mMetaTileEntity.markDirty();
                 return value;
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered Exception while right clicking TileEntity", e);
         }
 
@@ -913,7 +912,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public void onLeftclick(EntityPlayer aPlayer) {
         try {
             if (aPlayer != null && hasValidMetaTileEntity()) mMetaTileEntity.onLeftclick(this, aPlayer);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered Exception while left clicking TileEntity", e);
         }
     }
@@ -988,7 +987,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public IMetaTileEntity getMetaTileEntity() {
+    public final IMetaTileEntity getMetaTileEntity() {
         return hasValidMetaTileEntity() ? mMetaTileEntity : null;
     }
 

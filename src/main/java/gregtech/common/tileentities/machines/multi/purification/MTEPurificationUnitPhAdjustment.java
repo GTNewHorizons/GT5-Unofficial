@@ -1,9 +1,9 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
@@ -51,7 +51,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
@@ -319,7 +318,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.BOLD
                     + "Water Tier: "
                     + EnumChatFormatting.WHITE
-                    + GTUtility.formatNumbers(getWaterTier())
+                    + formatNumber(getWaterTier())
                     + EnumChatFormatting.RESET)
             .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
@@ -445,7 +444,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_hydrochloric_acid"),
                 EnumChatFormatting.GOLD + "1",
                 4)
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 

@@ -341,7 +341,7 @@ public class HTGRLoader {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Titanium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1L),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 16),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MicaInsulatorFoil", 16),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 4L),
                 ItemList.Alumina_Support_Ring.get(2L))
             .itemOutputs(ItemList.Casing_Insulated_Fluid_Pipe.get(1L))

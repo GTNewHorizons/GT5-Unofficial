@@ -8,7 +8,6 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
-import ggfab.api.GGFabRecipeMaps;
 import ggfab.api.GigaGramFabAPI;
 import ggfab.items.SingleUseTool;
 import gregtech.api.enums.GTValues;
@@ -22,13 +21,7 @@ import gregtech.api.util.GTUtility;
 
 class SingleUseToolRecipeLoader implements Runnable {
 
-    /*
-     * MARKED FOR DEPRECATION, will be moved to just the fluid solidifer. REMOVE TOOLCAST SEGMENT IN NEXT MAJOR UPDATE
-     */
-    public static final int RECIPE_DURATION = 6 * SECONDS;
-    public static final int OUTPUT_QUANTITY_MIN = 2 * 64;
-    public static final int OUTPUT_QUANTITY_MAX = 4 * 64;
-    public static final int SOLIDIFER_RECIPE_DURATION = 2 * SECONDS;
+    public static final int SOLIDIFIER_RECIPE_DURATION = 2 * SECONDS;
     public static final int SOLIDIFIER_QUANTITY_MIN = 32;
     public static final int SOLIDIFIER_QUANTITY_MAX = 64;
 
@@ -52,15 +45,6 @@ class SingleUseToolRecipeLoader implements Runnable {
                 singleUseTool.mold.get(1L),
                 new Object[] { "h", "P", "I", 'P', ItemList.Shape_Empty, 'I', singleUseTool.toolDictName });
         }
-    }
-
-    /** Finds a common divisor of fluid and output so that output / divisor ≤ max, or falls back to an approximation. */
-    private static double findDivisor(long fluidPerCraft, long outputQuantity) {
-        for (long i = outputQuantity / OUTPUT_QUANTITY_MAX; i < Math.min(fluidPerCraft, outputQuantity); i++) {
-            if (fluidPerCraft % i == 0 && outputQuantity % i == 0 && outputQuantity / i <= OUTPUT_QUANTITY_MAX)
-                return (double) i;
-        }
-        return (double) outputQuantity / (long) OUTPUT_QUANTITY_MAX;
     }
 
     private static double findDivisorSolidifier(long fluidPerCraft, long outputQuantity) {
@@ -88,10 +72,9 @@ class SingleUseToolRecipeLoader implements Runnable {
             int damagePerCraft = toolStats.getToolDamagePerContainerCraft();
 
             long fluidPerCraft = toolCost * INGOTS / GTValues.M;
-            long recipeDuration = RECIPE_DURATION;
             long outputQuantity = (long) (material.mDurability * durabilityMultiplier * 100 / damagePerCraft);
             long solidifierFluidPerCraft = toolCost * INGOTS / GTValues.M;
-            long solidifierRecipeDuration = SOLIDIFER_RECIPE_DURATION;
+            long solidifierRecipeDuration = SOLIDIFIER_RECIPE_DURATION;
             long solidifierOutputQuantity = (long) (material.mDurability * durabilityMultiplier * 100 / damagePerCraft);
 
             if (solidifierOutputQuantity > SOLIDIFIER_QUANTITY_MAX) {
@@ -109,21 +92,6 @@ class SingleUseToolRecipeLoader implements Runnable {
                 solidifierOutputQuantity *= multiplier;
             }
 
-            // MARKED FOR DEPRECATION, REMOVE IN NEXT MAJOR UPDATE
-            if (outputQuantity > OUTPUT_QUANTITY_MAX) {
-                // Too much output — scale down.
-                double divisor = findDivisor(fluidPerCraft, outputQuantity);
-                fluidPerCraft = Math.max((long) (fluidPerCraft / divisor), 1L);
-                recipeDuration = Math.max((long) (recipeDuration / divisor), 1L);
-                outputQuantity = Math.min((long) (outputQuantity / divisor), OUTPUT_QUANTITY_MAX);
-            } else if (outputQuantity < OUTPUT_QUANTITY_MIN) {
-                // Too little output — scale up.
-                long multiplier = GTUtility.ceilDiv(OUTPUT_QUANTITY_MIN, outputQuantity);
-                fluidPerCraft *= multiplier;
-                recipeDuration *= multiplier;
-                outputQuantity *= multiplier;
-            }
-
             // Split into stacks
             ItemStack output = singleUseTool.tool.get(0L);
             output.stackSize = (int) outputQuantity; // This is a safe cast since it is between 128 and 256
@@ -132,14 +100,6 @@ class SingleUseToolRecipeLoader implements Runnable {
             int maxStackSize = output.getMaxStackSize();
             while (output.stackSize > maxStackSize) outputs.add(output.splitStack(maxStackSize));
             outputs.add(output);
-
-            GTValues.RA.stdBuilder()
-                .fluidInputs(material.getMolten(fluidPerCraft))
-                .itemInputs(singleUseTool.mold.get(0L))
-                .itemOutputs(outputs.toArray(new ItemStack[0]))
-                .eut(TierEU.RECIPE_MV)
-                .duration(recipeDuration)
-                .addTo(GGFabRecipeMaps.toolCastRecipes);
 
             ItemStack solidifierOutput = singleUseTool.tool.get(0L);
             solidifierOutput.stackSize = (int) solidifierOutputQuantity;

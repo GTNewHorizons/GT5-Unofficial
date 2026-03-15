@@ -61,7 +61,7 @@ public class SaplingBase extends BlockSapling {
         // return this.saplingTextures[meta % this.saplingTextures.length];
         try {
             return this.saplingTextures[meta];
-        } catch (Throwable T) {
+        } catch (Exception T) {
             Logger.WARNING("Invalid Sapling meta is " + meta);
             return this.saplingTextures[0];
         }

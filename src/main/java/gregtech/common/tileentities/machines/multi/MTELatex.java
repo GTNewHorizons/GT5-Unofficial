@@ -277,7 +277,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
                     + TooltipHelper.coloredText("Multi-Amp energy hatch", GREEN))
             .addSeparator()
             .addInfo(DARK_AQUA + "Make sure to cover up!")
-            .beginStructureBlock(3, 5, 3, true)
+            .beginStructureBlock(5, 8, 5, false)
             .addController("Front Center")
             .addCasingInfoMin("Chemically Inert Machine Casing", 14, false)
             .addCasingInfoExactly("Any Tiered Glass", 24, false)

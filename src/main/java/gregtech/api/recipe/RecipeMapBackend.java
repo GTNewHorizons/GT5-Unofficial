@@ -32,7 +32,6 @@ import org.jetbrains.annotations.Unmodifiable;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.SetMultimap;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -79,7 +78,6 @@ public class RecipeMapBackend {
 
     public RecipeMapBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         this.properties = propertiesBuilder.build();
-        GregTechAPI.itemStackMultiMaps.add(itemIndex);
     }
 
     void setRecipeMap(RecipeMap<?> recipeMap) {

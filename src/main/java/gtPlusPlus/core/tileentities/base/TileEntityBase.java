@@ -89,7 +89,7 @@ public class TileEntityBase extends TileEntity
             if (this.isServerSide()) {
                 onPreTick(aTick);
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             Logger.ERROR("Tile Entity Encountered an error in it's pre-tick stage.");
             t.printStackTrace();
         }
@@ -97,7 +97,7 @@ public class TileEntityBase extends TileEntity
             if (this.isServerSide()) {
                 onTick(aTick);
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             Logger.ERROR("Tile Entity Encountered an error in it's tick stage.");
             t.printStackTrace();
         }
@@ -105,7 +105,7 @@ public class TileEntityBase extends TileEntity
             if (this.isServerSide()) {
                 onPostTick(aTick);
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             Logger.ERROR("Tile Entity Encountered an error in it's post-tick stage.");
             t.printStackTrace();
         }
@@ -120,7 +120,7 @@ public class TileEntityBase extends TileEntity
             if (this.isServerSide()) {
                 processRecipe();
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             Logger.ERROR("Tile Entity Encountered an error in it's processing of a recipe stage.");
             t.printStackTrace();
         }

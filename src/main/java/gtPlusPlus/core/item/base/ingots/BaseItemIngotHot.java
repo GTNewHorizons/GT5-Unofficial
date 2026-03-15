@@ -17,8 +17,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 
@@ -74,27 +72,20 @@ public class BaseItemIngotHot extends BaseItemIngot {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
-        return Configuration.visual.useGregtechTextures;
+        return true;
     }
 
     @Override
     public void registerIcons(final IIconRegister i) {
-
-        if (Configuration.visual.useGregtechTextures) {
-            this.base = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "ingotHot");
-            this.overlay = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "ingotHot_OVERLAY");
-        } else {
-            this.base = i
-                .registerIcon(GTPlusPlus.ID + ":" + "item" + BaseItemComponent.ComponentTypes.HOTINGOT.getComponent());
-        }
-        // this.overlay = cellMaterial.getFluid(1_000).getFluid().get
+        this.base = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "ingotHot");
+        this.overlay = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "ingotHot_OVERLAY");
     }
 
     @Override
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
-        if (pass == 0 && Configuration.visual.useGregtechTextures) {
+        if (pass == 0) {
             return this.base;
-        } else if (pass == 1 && Configuration.visual.useGregtechTextures) {
+        } else if (pass == 1) {
             return this.overlay;
         } else {
             return this.overlay;

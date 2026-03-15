@@ -13,16 +13,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
+import gregtech.api.util.client.ResourceUtils;
+import gregtech.common.config.Client;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
@@ -113,14 +116,20 @@ public class BaseOreComponent extends Item {
         final boolean bool) {
         if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
-                if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                    list.add(StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
-                } else {
-                    list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
+                if (Client.tooltip.showFormula) {
+                    if (this.componentMaterial.vChemicalFormula.contains("?")) {
+                        list.add(
+                            StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
+                    } else {
+                        list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
+                    }
                 }
-                if (this.componentMaterial.isRadioactive) {
-                    list.add(
-                        GTPPCore.GT_Tooltip_Radioactive.get() + " | Level: " + this.componentMaterial.vRadiationLevel);
+                if (Client.tooltip.showRadioactiveText) {
+                    if (this.componentMaterial.isRadioactive) {
+                        list.add(
+                            GTPPCore.GT_Tooltip_Radioactive.get() + " | Level: "
+                                + this.componentMaterial.vRadiationLevel);
+                    }
                 }
             } else {
                 String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
@@ -165,24 +174,20 @@ public class BaseOreComponent extends Item {
                 this.overlay = par1IconRegister
                     .registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
             }
-        } else if (Configuration.visual.useGregtechTextures) {
-            // Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+"
-            // is using `"+GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME+"' as the
-            // layer 0 texture path.");
+        } else {
             this.base = par1IconRegister
                 .registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME);
             if (this.componentType.hasOverlay()) {
-                // Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+"
-                // is using `"+GregTech.ID + ":" + "materialicons/METALLIC/" +
-                // this.componentType.COMPONENT_NAME+"_OVERLAY"+"' as the layer 1 texture path.");
-                this.overlay = par1IconRegister.registerIcon(
-                    GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME + "_OVERLAY");
-            }
-        } else {
-            this.base = par1IconRegister.registerIcon(GTPlusPlus.ID + ":" + "item" + this.componentType.getComponent());
-            if (this.componentType.hasOverlay()) {
-                this.overlay = par1IconRegister
-                    .registerIcon(GTPlusPlus.ID + ":" + "item" + this.componentType.getComponent() + "_Overlay");
+                final String overlayPath = GregTech.ID + ":"
+                    + "materialicons/METALLIC/"
+                    + this.componentType.COMPONENT_NAME
+                    + "_OVERLAY";
+                final ResourceLocation overlayResource = ResourceUtils
+                    .getCompleteItemTextureResourceLocation(overlayPath);
+
+                this.overlay = ResourceUtils.resourceExists(overlayResource)
+                    ? par1IconRegister.registerIcon(overlayPath)
+                    : Textures.InvisibleIcon.INVISIBLE_ICON;
             }
         }
     }
@@ -194,10 +199,7 @@ public class BaseOreComponent extends Item {
                 return Utils.rgbtoHexValue(230, 230, 230);
             }
         } else {
-            if (renderPass == 0 && !Configuration.visual.useGregtechTextures) {
-                return this.componentColour;
-            }
-            if (renderPass == 1 && Configuration.visual.useGregtechTextures) {
+            if (renderPass == 1) {
                 return Utils.rgbtoHexValue(230, 230, 230);
             }
         }

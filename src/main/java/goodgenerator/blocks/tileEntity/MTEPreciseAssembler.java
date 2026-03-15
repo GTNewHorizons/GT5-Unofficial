@@ -88,12 +88,12 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreciseAssembler>
     implements IConstructable, ISurvivalConstructable {
 
-    private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK");
-    private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon(
-        "iconsets/OVERLAY_QTANK_GLOW");
-    private static final IIconContainer textureFontOff = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QCHEST");
-    private static final IIconContainer textureFontOff_Glow = new Textures.BlockIcons.CustomIcon(
-        "iconsets/OVERLAY_QCHEST_GLOW");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK");
+    private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
+        .customOptional("iconsets/OVERLAY_QTANK_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("iconsets/OVERLAY_QCHEST");
+    private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
+        .customOptional("iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<MTEPreciseAssembler> multiDefinition = null;
     protected int casingAmount;
@@ -195,8 +195,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             this.machineMode = (this.machineMode + 1) % 2;
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("preciseassembler.chat." + this.machineMode));
+            GTUtility.sendChatTrans(aPlayer, "preciseassembler.chat." + this.machineMode);
         }
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
@@ -534,9 +533,9 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }
@@ -573,7 +572,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             + "/"
             + EnumChatFormatting.GOLD
             + mk3
-            + EnumChatFormatting.LIGHT_PURPLE
+            + EnumChatFormatting.GRAY
             + "/"
             + EnumChatFormatting.RED
             + mk4

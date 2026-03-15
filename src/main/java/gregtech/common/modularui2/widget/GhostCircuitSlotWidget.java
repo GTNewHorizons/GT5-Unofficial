@@ -83,8 +83,7 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
     @Override
     public PhantomItemSlot slot(ModularSlot slot) {
         ItemSlotSH sh = new GhostCircuitSyncHandler(slot);
-        isValidSyncHandler(sh);
-        setSyncHandler(sh);
+        this.setSyncOrValue(sh);
         return this;
     }
 
@@ -128,7 +127,7 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
 
     private IPanelHandler buildSelectorPanel(IntSyncValue selectedSyncHandler) {
 
-        return syncManager.panel("ghostCircuitPanel", (mainPanel, player) -> {
+        return syncManager.syncedPanel("ghostCircuitPanel", true, (mainPanel, player) -> {
             ModularPanel panel = GTGuis.createPopUpPanel(GUI_ID);
             return new SelectItemGuiBuilder(panel, GTUtility.getAllIntegratedCircuits()) //
                 .setHeaderItem(mte.getStackForm(1))
@@ -147,6 +146,6 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
                 .setCurrentItemSlotOverlay(GTGuiTextures.OVERLAY_SLOT_INT_CIRCUIT)
                 .setAllowDeselected(true)
                 .build();
-        }, true);
+        });
     }
 }

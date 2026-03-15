@@ -394,7 +394,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                             oreLayer,
                             placementResult);
                         MinecraftForge.EVENT_BUS.post(event);
-                    } catch (Throwable e) {
+                    } catch (Exception e) {
                         if (debugOrevein) GTLog.out.println(
                             "Exception occurred on oreVein" + oreLayer
                                 + " oreveinSeed="
@@ -519,7 +519,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                         this.mChunkGenerator,
                         this.mChunkProvider);
                 }
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 e.printStackTrace(GTLog.err);
             }
 

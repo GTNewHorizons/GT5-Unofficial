@@ -30,7 +30,6 @@ import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -40,7 +39,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -455,12 +453,6 @@ public class MTEBoilerLava extends MTEBoiler {
     @Override
     public com.cleanroommc.modularui.widget.Widget<?> createAshSlot() {
         return super.createAshSlot().widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_BLOCK);
-    }
-
-    @Override
-    protected IDrawable[] getAshSlotBackground() {
-        return new IDrawable[] { getGUITextureSet().getItemSlot(),
-            GTUITextures.OVERLAY_SLOT_BLOCK_STEAM.get(getSteamVariant()) };
     }
 
     static class LavaTank extends FluidTank {

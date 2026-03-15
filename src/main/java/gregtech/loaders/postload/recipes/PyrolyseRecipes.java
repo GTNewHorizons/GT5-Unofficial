@@ -13,6 +13,8 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
@@ -23,6 +25,102 @@ public class PyrolyseRecipes implements Runnable {
 
     @Override
     public void run() {
+        var logWood16 = new OreDictItemStack("logWood", 16);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(logWood16)
+            .circuit(1)
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidOutputs(Materials.Creosote.getFluid(4_000))
+            .duration(32 * SECONDS)
+            .eut(TierEU.RECIPE_MV / 2)
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(logWood16)
+            .circuit(2)
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidInputs(Materials.Nitrogen.getGas(1_000))
+            .fluidOutputs(Materials.Creosote.getFluid(4_000))
+            .duration(16 * SECONDS)
+            .eut(96)
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(logWood16)
+            .circuit(3)
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidOutputs(Materials.CharcoalByproducts.getGas(4_000))
+            .duration(32 * SECONDS)
+            .eut(TierEU.RECIPE_MV / 2)
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(logWood16)
+            .circuit(4)
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidInputs(Materials.Nitrogen.getGas(1_000))
+            .fluidOutputs(Materials.CharcoalByproducts.getGas(4_000))
+            .duration(16 * SECONDS)
+            .eut(96)
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(logWood16)
+            .circuit(5)
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidOutputs(Materials.WoodGas.getGas(1_500))
+            .duration(32 * SECONDS)
+            .eut(TierEU.RECIPE_MV / 2)
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(logWood16)
+            .circuit(6)
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidInputs(Materials.Nitrogen.getGas(1_000))
+            .fluidOutputs(Materials.WoodGas.getGas(1_500))
+            .duration(16 * SECONDS)
+            .eut(96)
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(logWood16)
+            .circuit(7)
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidOutputs(Materials.WoodVinegar.getFluid(3_000))
+            .duration(32 * SECONDS)
+            .eut(TierEU.RECIPE_MV / 2)
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(logWood16)
+            .circuit(8)
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidInputs(Materials.Nitrogen.getGas(1_000))
+            .fluidOutputs(Materials.WoodVinegar.getFluid(3_000))
+            .duration(16 * SECONDS)
+            .eut(96)
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(logWood16)
+            .circuit(9)
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidOutputs(Materials.WoodTar.getFluid(1_500))
+            .duration(32 * SECONDS)
+            .eut(TierEU.RECIPE_MV / 2)
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(logWood16)
+            .circuit(10)
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidInputs(Materials.Nitrogen.getGas(1_000))
+            .fluidOutputs(Materials.WoodTar.getFluid(1_500))
+            .duration(16 * SECONDS)
+            .eut(96)
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(logWood16)
+            .circuit(11)
+            .itemOutputs(Materials.Ash.getDust(4))
+            .fluidOutputs(Materials.OilHeavy.getFluid(200))
+            .duration(16 * SECONDS)
+            .eut(192)
+            .addTo(pyrolyseRecipes);
+
         if (Railcraft.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16))
@@ -30,7 +128,7 @@ public class PyrolyseRecipes implements Runnable {
                 .itemOutputs(RailcraftToolItems.getCoalCoke(16))
                 .fluidOutputs(Materials.Creosote.getFluid(8_000))
                 .duration(32 * SECONDS)
-                .eut(64)
+                .eut(TierEU.RECIPE_MV / 2)
                 .addTo(pyrolyseRecipes);
 
             GTValues.RA.stdBuilder()
@@ -49,7 +147,7 @@ public class PyrolyseRecipes implements Runnable {
                 .itemOutputs(EnumCube.COKE_BLOCK.getItem(8))
                 .fluidOutputs(Materials.Creosote.getFluid(32_000))
                 .duration(2 * MINUTES + 8 * SECONDS)
-                .eut(64)
+                .eut(TierEU.RECIPE_MV / 2)
                 .addTo(pyrolyseRecipes);
 
             GTValues.RA.stdBuilder()
@@ -123,7 +221,7 @@ public class PyrolyseRecipes implements Runnable {
             .itemOutputs(Materials.Charcoal.getDust(12))
             .fluidOutputs(Materials.Water.getFluid(1_500))
             .duration(16 * SECONDS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(pyrolyseRecipes);
 
         GTValues.RA.stdBuilder()

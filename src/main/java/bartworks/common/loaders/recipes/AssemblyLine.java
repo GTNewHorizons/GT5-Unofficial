@@ -7,9 +7,6 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
@@ -75,12 +72,8 @@ public class AssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.DamascusSteel, 16),
                 ItemList.Electric_Pump_UV.get(1L),
                 ItemList.Sensor_UV.get(4L),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 16),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 16))
-            .fluidInputs(
-                MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
-                Materials.SuperCoolant.getFluid(8000))
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 32))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS), Materials.SuperCoolant.getFluid(8000))
             .itemOutputs(ItemList.PCBCoolingTower.get(1L))
             .eut(TierEU.UV)
             .duration(300 * SECONDS)
@@ -88,22 +81,19 @@ public class AssemblyLine implements Runnable {
 
         // PCB Bio Chamber
         GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.Circuit_Chip_Biocell.get(1L))
+            .metadata(RESEARCH_ITEM, ItemList.Circuit_Board_Wetware_Extreme.get(1L))
             .metadata(SCANNING, new Scanning(3 * MINUTES + 20 * SECONDS, TierEU.ZPM))
             .itemInputs(
                 ItemList.Casing_CleanStainlessSteel.get(4L),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 2L },
                 ItemList.Circuit_Chip_Stemcell.get(64L),
-                ItemList.Circuit_Chip_Biocell.get(16),
                 ItemList.FluidRegulator_ZPM.get(1L),
                 ItemList.Electric_Pump_ZPM.get(1L),
                 ItemList.Sensor_ZPM.get(4L),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Holmium, 16),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Holmium, 16))
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Holmium, 32))
             .fluidInputs(
                 MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
-                Materials.GrowthMediumSterilized.getFluid(27648),
-                Materials.BioMediumSterilized.getFluid(27648))
+                Materials.GrowthMediumSterilized.getFluid(27648))
             .itemOutputs(ItemList.PCBBioChamber.get(1L))
             .eut(TierEU.UV)
             .duration(300 * SECONDS)

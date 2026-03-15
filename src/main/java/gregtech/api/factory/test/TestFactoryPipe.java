@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -43,8 +44,10 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            "Network: " + accessor.getNBTData()
-                .getString("network"));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.network",
+                accessor.getNBTData()
+                    .getString("network")));
     }
 
     @Override
@@ -69,11 +72,6 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
                 }
             }
         }
-    }
-
-    @Override
-    public void onNeighbourChanged(TestFactoryElement neighbour) {
-        mCheckConnections = true;
     }
 
     @Override
@@ -116,10 +114,15 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
     }
 
     @Override
+    public void onEdgeChanged(TestFactoryElement adjacent) {
+        mCheckConnections = true;
+    }
+
+    @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
 
-        TestFactoryGrid.INSTANCE.addElement(this);
+        TestFactoryGrid.INSTANCE.updateElement(this);
     }
 
     @Override
@@ -131,6 +134,6 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
 
     @Override
     public void onColorChangeServer(byte aColor) {
-        TestFactoryGrid.INSTANCE.addElement(this);
+        TestFactoryGrid.INSTANCE.updateElement(this);
     }
 }

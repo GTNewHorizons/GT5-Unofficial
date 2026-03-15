@@ -7,6 +7,10 @@ import static gregtech.api.enums.MetaTileEntityIDs.ChiselBus_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake_Atmospheric;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake_Extreme;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Extrusion_I;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Extrusion_II;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Extrusion_III;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Extrusion_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Cryotheum;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Debug_Steam;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Pyrotheum;
@@ -57,6 +61,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntakeAtmosphere;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntakeExtreme;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChiselBus;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchExtrusion;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchMufflerAdvanced;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchReservoir;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
@@ -78,6 +83,7 @@ public class GregtechCustomHatches {
         run3();
         run4(); // Chisel buses
         run6(); // Solidifier hatches
+        run7(); // Extrusion hatches
     }
 
     private static void run1() {
@@ -364,4 +370,18 @@ public class GregtechCustomHatches {
                 .getStackForm(1L));
     }
 
+    private static void run7() {
+        GregtechItemList.Hatch_Extrusion_I.set(
+            new MTEHatchExtrusion(Hatch_Extrusion_I.ID, "hatch.extrusion.tier.05", "Extrusion Bus I", 5)
+                .getStackForm(1L));
+        GregtechItemList.Hatch_Extrusion_II.set(
+            new MTEHatchExtrusion(Hatch_Extrusion_II.ID, "hatch.extrusion.tier.06", "Extrusion Bus II", 6)
+                .getStackForm(1L));
+        GregtechItemList.Hatch_Extrusion_III.set(
+            new MTEHatchExtrusion(Hatch_Extrusion_III.ID, "hatch.extrusion.tier.07", "Extrusion Bus III", 7)
+                .getStackForm(1L));
+        GregtechItemList.Hatch_Extrusion_IV.set(
+            new MTEHatchExtrusion(Hatch_Extrusion_IV.ID, "hatch.extrusion.tier.08", "Extrusion Bus IV", 8)
+                .getStackForm(1L));
+    }
 }

@@ -40,8 +40,6 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
     implements ISurvivalConstructable {
 
     private int mCasing;
-    private static final int MACHINEMODE_CUTTER = 0;
-    private static final int MACHINEMODE_SLICER = 1;
 
     private static IStructureDefinition<MTEIndustrialCuttingMachine> STRUCTURE_DEFINITION = null;
 

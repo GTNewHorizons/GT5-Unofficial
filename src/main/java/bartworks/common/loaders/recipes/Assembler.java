@@ -69,14 +69,6 @@ public class Assembler implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Machine_Multi_LargeChemicalReactor.get(64))
-            .itemOutputs(ItemRegistry.megaMachines[3])
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
-            .duration(1 * HOURS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(ItemList.OilCracker.get(64))
             .itemOutputs(ItemRegistry.megaMachines[4])
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
@@ -126,7 +118,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 2))
             .itemOutputs(ItemList.Distillation_Tower.get(1))
             .duration(10 * SECONDS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()

@@ -179,7 +179,7 @@ public class ChunkProviderModded implements IChunkProvider {
                                     try {
                                         p_147424_3_[j3 += short1] = DimensionEverglades.blockFluidLakes; // River Fluid
                                                                                                          // .
-                                    } catch (Throwable t) {
+                                    } catch (Exception t) {
                                         p_147424_3_[j3 += short1] = Blocks.water; // River Fluid Fallback
                                     }
                                 } else {

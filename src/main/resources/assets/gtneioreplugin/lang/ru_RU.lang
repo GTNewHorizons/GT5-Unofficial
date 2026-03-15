@@ -19,6 +19,9 @@ gtnop.gui.nei.dimension=Измерение
 gtnop.gui.nei.chance=Шанс
 gtnop.gui.nei.fluidAmount=Количество
 
+gtnop.gui.nei.chance.value=%s%%
+gtnop.gui.nei.fluidAmount.value=%s-%s
+
 gtnop.gui.nei.asteroidPrimary=Основное поколение 1
 gtnop.gui.nei.asteroidSecondary=Основное поколение 2
 gtnop.gui.nei.asteroidBetween=Второстепенное поколение 1
@@ -36,7 +39,6 @@ gtnop.gui.nei.vein= 
 gtnop.gui.nei.oreOthers=Другая руда
 gtnop.nei.genPosition=Позиция
 gtnop.nei.genPositionInfo=В центре каждого чанка
-
 
 # world names
 gtnop.world.Overworld=Обычный мир
@@ -83,14 +85,11 @@ gtnop.world.Neper=Непер
 gtnop.world.Seth=Сиф
 gtnop.world.Underdark=Deep Dark
 
-
 # biome names
 gtnop.biome.none.name=Нет
 
-
 # ore names extra
 gtnop.ore.null.name=Нет
-
 
 # vein types
 gtnop.ore.vein.name=Жила 

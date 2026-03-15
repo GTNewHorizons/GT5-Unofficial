@@ -55,7 +55,6 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.api.util.GTBaseCrop;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
@@ -190,8 +189,13 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
             default -> ForgeDirection.UNKNOWN;
         };
         final TileEntity machineEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return machineEntity instanceof BaseMetaTileEntity bmte
-            && (bmte.hasCoverAtSide(forgeSide) || bmte.getMetaTileEntity() instanceof MTERedstoneBase);
+        if (machineEntity instanceof BaseMetaTileEntity bmte) {
+            return bmte.hasCoverAtSide(forgeSide) || bmte.getMetaTileEntity() instanceof MTERedstoneBase;
+        }
+        if (machineEntity instanceof BaseMetaPipeEntity bmpe) {
+            return bmpe.hasCoverAtSide(forgeSide);
+        }
+        return false;
     }
 
     /**
@@ -348,14 +352,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 if (GregTechAPI.METATILEENTITIES[i] != null) {
                     GregTechAPI.METATILEENTITIES[i].registerIcons(aIconRegister);
                 }
-            }
-        } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
-        }
-        GTLog.out.println("GTMod: Registering Crop specific Textures");
-        try {
-            for (GTBaseCrop tCrop : GTBaseCrop.sCropList) {
-                tCrop.registerSprites(aIconRegister);
             }
         } catch (Exception e) {
             e.printStackTrace(GTLog.err);

@@ -120,7 +120,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
                 }
                 this.tickCount++;
             }
-        } catch (final Throwable ignored) {}
+        } catch (final Exception ignored) {}
     }
 
     public boolean anyPlayerInRange() {
@@ -284,7 +284,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
             }
             GTUtility.sendChatToPlayer(player, "Now configuring units for type " + aCurrentMode + ".");
             return true;
-        } catch (Throwable t) {
+        } catch (Exception t) {
             return false;
         }
     }

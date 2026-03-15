@@ -1,7 +1,5 @@
 package gregtech.common.covers;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import java.lang.ref.WeakReference;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,11 +35,14 @@ public class CoverControlsWork extends CoverLegacyData {
     }
 
     private enum State {
+
         ENABLE_WITH_SIGNAL,
         DISABLE_WITH_SIGNAL,
         DISABLED,
         ENABLE_WITH_SIGNAL_SAFE,
         DISABLE_WITH_SIGNAL_SAFE;
+
+        static final State[] VALUES = values();
     }
 
     private boolean handledShutdown = false;
@@ -95,7 +96,7 @@ public class CoverControlsWork extends CoverLegacyData {
     public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable instanceof IMachineProgress machine) {
-            State state = this.coverData < State.values().length ? State.values()[this.coverData] : State.DISABLED;
+            State state = this.coverData < State.VALUES.length ? State.VALUES[this.coverData] : State.DISABLED;
             switch (state) {
                 case ENABLE_WITH_SIGNAL, DISABLE_WITH_SIGNAL -> {
                     if ((aInputRedstone > 0) == (state == State.ENABLE_WITH_SIGNAL)) {
@@ -179,19 +180,19 @@ public class CoverControlsWork extends CoverLegacyData {
             newCoverData = 2;
         }
         if (newCoverData == 0) {
-            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_on"));
+            GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.signal_on");
         }
         if (newCoverData == 1) {
-            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_inverted"));
+            GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.signal_inverted");
         }
         if (newCoverData == 2) {
-            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_off"));
+            GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.signal_off");
         }
         if (newCoverData == 3) {
-            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_on_safe"));
+            GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.signal_on_safe");
         }
         if (newCoverData == 4) {
-            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_inverted_safe"));
+            GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.signal_inverted_safe");
         }
         // TODO: Set lastPlayer
         coverData = newCoverData;

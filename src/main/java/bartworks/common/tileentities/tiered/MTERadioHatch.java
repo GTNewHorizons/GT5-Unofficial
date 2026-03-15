@@ -39,7 +39,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -51,7 +50,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTERadioHatchGui;
 
-public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGregtechLogo {
+public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
 
     public int sievert;
     private long timer = 1;

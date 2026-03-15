@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 
 import java.util.List;
@@ -70,16 +71,16 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     public final void updateEntity() {
         super.updateEntity();
 
-        long tTime;
+        final long timeStart;
         if (hasTimeStatisticsStarted) {
-            tTime = System.nanoTime();
+            timeStart = System.nanoTime();
         } else {
-            tTime = 0;
+            timeStart = 0;
         }
 
         try {
             updateEntityProfiled();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER.error(
                 "Error ticking meta tile entity {} at ({}, {}, {}) in world {}",
                 getMetaTileID(),
@@ -90,7 +91,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
                 e);
             try {
                 onTickFail();
-            } catch (Throwable ex) {
+            } catch (Exception ex) {
                 GT_FML_LOGGER.error(
                     "Error calling tick fail on meta tile entity {} at ({}, {}, {}) in world {}",
                     getMetaTileID(),
@@ -102,26 +103,22 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             }
         }
 
-        if (isServerSide() && hasTimeStatisticsStarted && hasValidMetaTileEntity()) {
-            tTime = System.nanoTime() - tTime;
+        if (hasTimeStatisticsStarted && isServerSide() && hasValidMetaTileEntity()) {
+            final long duration = System.nanoTime() - timeStart;
             mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length;
-            mTimeStatistics[mTimeStatisticsIndex] = (int) tTime;
-            if (tTime > 0 && tTime > (GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1_000_000L)
+            mTimeStatistics[mTimeStatisticsIndex] = (int) duration;
+            if (duration > 0 && duration > (GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1_000_000L)
                 && mTickTimer > 1000
                 && getMetaTileEntity().doTickProfilingMessageDuringThisTick()
                 && mLagWarningCount++ < 10)
                 GT_FML_LOGGER.warn(
-                    "WARNING: Possible Lag Source at [" + xCoord
-                        + ", "
-                        + yCoord
-                        + ", "
-                        + zCoord
-                        + "] in Dimension "
-                        + worldObj.provider.dimensionId
-                        + " with "
-                        + tTime
-                        + " ns caused by an instance of "
-                        + getMetaTileEntity().getClass());
+                    "WARNING: Possible Lag Source at [{}, {}, {}] in Dimension {} with {} ns caused by an instance of {}",
+                    xCoord,
+                    yCoord,
+                    zCoord,
+                    worldObj.provider.dimensionId,
+                    duration,
+                    getMetaTileEntity().getClass());
         }
 
     }
@@ -139,6 +136,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
                         final NBTTagCompound tTag = new NBTTagCompound();
                         tTag.setInteger("IntSlot", i);
                         tStack.writeToNBT(tTag);
+                        if (tStack.stackSize > Byte.MAX_VALUE) {
+                            tTag.setInteger("Count", tStack.stackSize);
+                        }
                         tItemList.appendTag(tTag);
                     }
                 }
@@ -146,12 +146,12 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
 
                 try {
                     getMetaTileEntity().saveNBTData(aNBT);
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
                     GTMod.logStackTrace(e);
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
             GTMod.logStackTrace(e);
         }
@@ -176,7 +176,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
 
             try {
                 getMetaTileEntity().loadNBTData(aNBT);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 GT_FML_LOGGER.error("Encountered Exception while loading MetaTileEntity.");
                 GTMod.logStackTrace(e);
             }
@@ -227,11 +227,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             int samples = mTimeStatistics.length - amountOfZero;
             if (samples > 0) {
                 tList.add(
-                    "Average CPU load of ~" + GTUtility.formatNumbers(tAverageTime / samples)
+                    "Average CPU load of ~" + formatNumber(tAverageTime / samples)
                         + "ns over "
-                        + GTUtility.formatNumbers(samples)
+                        + formatNumber(samples)
                         + " ticks with worst time of "
-                        + GTUtility.formatNumbers(tWorstTime)
+                        + formatNumber(tWorstTime)
                         + "ns.");
             }
         } else {
@@ -320,7 +320,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     }
 
     @Override
-    public boolean canAccessData() {
+    public final boolean canAccessData() {
         return !isDead && hasValidMetaTileEntity();
     }
 

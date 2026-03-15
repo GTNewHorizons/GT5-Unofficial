@@ -1,8 +1,8 @@
 package gtPlusPlus.core.item.tool.misc;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -25,6 +25,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
@@ -48,8 +49,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -89,7 +88,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     public final HashMap<Short, Long[]> mElectricStats = new LinkedHashMap<>();
 
     public void registerPumpType(final int aID, final String aPumpName, final int aEuMax, final int aTier) {
-        ModItems.toolGregtechPump.registerItem(
+        registerItem(
             aID, // ID
             aPumpName, // Name
             aEuMax, // Eu Storage
@@ -161,10 +160,10 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             EnumChatFormatting.BLUE + (f != null ? f.getLocalizedName()
                 : StatCollector.translateToLocal("item.itemGregtechPump.tooltip.3")));
         aList.add(
-            EnumChatFormatting.BLUE + (f != null ? "" + formatNumbers(f.amount) : "" + 0)
+            EnumChatFormatting.BLUE + (f != null ? "" + formatNumber(f.amount) : "" + 0)
                 + "L"
                 + " / "
-                + formatNumbers(getCapacity(aStack))
+                + formatNumber(getCapacity(aStack))
                 + "L");
 
         final Long[] tStats = this.getElectricStats(aStack);
@@ -173,7 +172,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                 aList.add(
                     EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                         "item.itemBaseEuItem.tooltip.1",
-                        formatNumbers(tStats[3]),
+                        formatNumber(tStats[3]),
                         (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
             } else {
                 final long tCharge = this.getRealCharge(aStack);
@@ -186,9 +185,9 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                         EnumChatFormatting.AQUA
                             + StatCollector.translateToLocalFormatted(
                                 "item.itemBaseEuItem.tooltip.3",
-                                formatNumbers(tCharge),
-                                formatNumbers(Math.abs(tStats[0])),
-                                formatNumbers(
+                                formatNumber(tCharge),
+                                formatNumber(Math.abs(tStats[0])),
+                                formatNumber(
                                     V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)]))
                             + EnumChatFormatting.GRAY);
                 }
@@ -678,7 +677,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             fluidname = NBTUtils.getString(container, "mFluid");
             amount = NBTUtils.getInteger(container, "mFluidAmount");
             if (fluidname != null && amount > 0) {
-                return FluidUtils.getFluidStack(fluidname, amount);
+                return FluidRegistry.getFluidStack(fluidname, amount);
             } else {
                 return null;
             }
@@ -739,7 +738,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                 Logger.INFO("Pump is empty, filling with tank fluids.");
                 FluidStack toConsume;
                 int amountToConsume = Math.min(resource.amount, aCapacity);
-                toConsume = FluidUtils.getFluidStack(resource, amountToConsume);
+                toConsume = new FluidStack(resource, amountToConsume);
                 if (toConsume != null && amountToConsume > 0) {
                     storeFluid(container, toConsume);
                     return amountToConsume;
@@ -761,7 +760,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                         Logger.INFO("Less fluid than container space");
                     }
                     Logger.INFO("Amount to consume: " + amountToConsume);
-                    toConsume = FluidUtils.getFluidStack(resource, (aStoredAmount + amountToConsume));
+                    toConsume = new FluidStack(resource, (aStoredAmount + amountToConsume));
                     if (toConsume != null && amountToConsume > 0) {
                         Logger.INFO("Storing Fluid");
                         storeFluid(container, toConsume);
@@ -809,8 +808,8 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             } else {
                 // Handle Partial removal
                 int amountRemaining = (aStoredAmount - maxDrain);
-                FluidStack newAmount = FluidUtils.getFluidStack(aStoredFluid, amountRemaining);
-                FluidStack drained = FluidUtils.getFluidStack(aStoredFluid, maxDrain);
+                FluidStack newAmount = new FluidStack(aStoredFluid, amountRemaining);
+                FluidStack drained = new FluidStack(aStoredFluid, maxDrain);
                 storeFluid(container, newAmount);
                 return drained;
             }
@@ -894,7 +893,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                     }
                 }
             }
-        } catch (Throwable t) {}
+        } catch (Exception t) {}
         return false;
     }
 
@@ -926,8 +925,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                             if (mAmountInserted == aStored.amount) {
                                 newStackRemainingInTank = null;
                             } else {
-                                newStackRemainingInTank = FluidUtils
-                                    .getFluidStack(aStored, (aStored.amount - mAmountInserted));
+                                newStackRemainingInTank = new FluidStack(aStored, (aStored.amount - mAmountInserted));
                             }
                             boolean b = setStoredFluidOfGTMachine(
                                 (IGregTechTileEntity) tTileEntity,
@@ -1007,7 +1005,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             aTileEntity.mFluid = aSetFluid;
             Logger.INFO("Trying to set Tile's tank. - Behaviour Class. [3] success.");
             return true;
-        } catch (Throwable t) {
+        } catch (Exception t) {
             Logger.INFO("Trying to clear Tile's tank. FAILED - Behaviour Class. [x]");
             return false;
         }

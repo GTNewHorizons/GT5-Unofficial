@@ -77,10 +77,10 @@ public class CustomStarColorSelector {
                             end = Color.withBlue(colorHex, 0xFF);
                         }
                     }
-                    return new Rectangle().setHorizontalGradient(start, end);
+                    return new Rectangle().horizontalGradient(start, end);
                 }))
                 .bounds(0, 255)
-                .sliderTexture(new Rectangle().setColor(Color.WHITE.main))
+                .sliderTexture(new Rectangle().color(Color.WHITE.main))
                 .sliderSize(2, 8)
                 // spotless:off
                 .value(new DoubleValue.Dynamic(
@@ -167,12 +167,12 @@ public class CustomStarColorSelector {
             case SATURATION -> new DynamicDrawable(() -> {
                 int start = Color.withHSVSaturation(colorData.getColor(), 0.0f);
                 int end = Color.withHSVSaturation(colorData.getColor(), 1.0f);
-                return new Rectangle().setHorizontalGradient(start, end);
+                return new Rectangle().horizontalGradient(start, end);
             });
             case VALUE -> new DynamicDrawable(() -> {
                 int start = Color.withValue(colorData.getColor(), 0.0f);
                 int end = Color.withValue(colorData.getColor(), 1.0f);
-                return new Rectangle().setHorizontalGradient(start, end);
+                return new Rectangle().horizontalGradient(start, end);
             });
         };
 
@@ -180,7 +180,7 @@ public class CustomStarColorSelector {
             new SliderWidget().size(118, 8)
                 .background(background)
                 .bounds(0, maxValue)
-                .sliderTexture(new Rectangle().setColor(Color.WHITE.main))
+                .sliderTexture(new Rectangle().color(Color.WHITE.main))
                 .sliderSize(2, 8)
                 // spotless:off
                 .value(new DoubleValue.Dynamic(
@@ -253,9 +253,9 @@ public class CustomStarColorSelector {
         // Slider
         row.child(
             new SliderWidget().size(118, 8)
-                .background(new Rectangle().setColor(Color.GREY.main))
+                .background(new Rectangle().color(Color.GREY.main))
                 .bounds(0, 100)
-                .sliderTexture(new Rectangle().setColor(Color.WHITE.main))
+                .sliderTexture(new Rectangle().color(Color.WHITE.main))
                 .sliderSize(2, 8)
                 .value(new DoubleValue.Dynamic(colorData::getGamma, val -> colorData.setGamma((float) val)))
                 .tooltipDynamic(t -> t.addLine(StarColors.Extra.GAMMA.getTooltip(colorData.getGamma())))
@@ -352,7 +352,7 @@ public class CustomStarColorSelector {
 
         // Color preview
         colorRow.child(
-            new DynamicDrawable(() -> new Rectangle().setColor(colorData.getColor())).asWidget()
+            new DynamicDrawable(() -> new Rectangle().color(colorData.getColor())).asWidget()
                 .size(32, 15));
 
         row.child(colorRow);

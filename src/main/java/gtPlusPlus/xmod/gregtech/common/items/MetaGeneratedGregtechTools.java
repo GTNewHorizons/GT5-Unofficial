@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.items;
 
+import net.minecraft.util.EnumChatFormatting;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.ToolDictNames;
@@ -28,7 +30,7 @@ public class MetaGeneratedGregtechTools extends MetaGeneratedTool {
         this.addTool(
             ANGLE_GRINDER,
             "Angle Grinder",
-            "Hand-held electric filing device",
+            EnumChatFormatting.RED + "DEPRECATED, Removal In Next Major Update",
             new ToolAngleGrinder(),
             ToolDictNames.craftingToolAngleGrinder,
             ToolDictNames.craftingToolFile,
@@ -41,7 +43,7 @@ public class MetaGeneratedGregtechTools extends MetaGeneratedTool {
             this.addTool(
                 ELECTRIC_SNIPS,
                 "Automatic Snips",
-                "Hand-held electric wire cutter",
+                EnumChatFormatting.RED + "DEPRECATED, Removal In Next Major Update",
                 new ToolElectricSnips(),
                 ToolDictNames.craftingToolElectricSnips,
                 ToolDictNames.craftingToolWireCutter,

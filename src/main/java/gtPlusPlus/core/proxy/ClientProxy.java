@@ -19,7 +19,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import gregtech.common.powergoggles.gui.PowerGogglesGuiOverlay;
 import gregtech.common.powergoggles.handlers.PowerGogglesHudHandler;
@@ -85,9 +84,6 @@ public class ClientProxy extends CommonProxy {
     public int addArmor(final String armor) {
         return RenderingRegistry.addNewArmourRendererPrefix(armor);
     }
-
-    @Override
-    public void serverStarting(final FMLServerStartingEvent e) {}
 
     @Override
     public void onLoadComplete(FMLLoadCompleteEvent event) {

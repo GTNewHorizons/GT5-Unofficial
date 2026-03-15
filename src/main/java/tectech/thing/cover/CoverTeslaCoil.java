@@ -3,6 +3,7 @@ package tectech.thing.cover;
 import static ic2.api.info.Info.DMG_ELECTRIC;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.covers.CoverContext;
@@ -57,7 +58,7 @@ public class CoverTeslaCoil extends Cover {
 
     @Override
     public String getDescription() {
-        return "Do not attempt to use screwdriver!"; // TODO Translation support
+        return StatCollector.translateToLocal("gt.interact.desc.ban_screwdriver");
     }
 
     @Override

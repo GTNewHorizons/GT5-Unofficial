@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -87,13 +88,12 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     }
     final XSTR R = new XSTR();
 
-    private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("icons/NeutronActivator_On");
-    private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon(
-        "icons/NeutronActivator_On_GLOW");
-    private static final IIconContainer textureFontOff = new Textures.BlockIcons.CustomIcon(
-        "icons/NeutronActivator_Off");
-    private static final IIconContainer textureFontOff_Glow = new Textures.BlockIcons.CustomIcon(
-        "icons/NeutronActivator_Off_GLOW");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("icons/NeutronActivator_On");
+    private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
+        .customOptional("icons/NeutronActivator_On_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("icons/NeutronActivator_Off");
+    private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
+        .customOptional("icons/NeutronActivator_Off_GLOW");
 
     protected final String NA_BOTTOM = mName + "buttom";
     protected final String NA_MID = mName + "mid";
@@ -152,10 +152,10 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
         float aX, float aY, float aZ, ItemStack aTool) {
         if (getMaxBatchSize() == 1) {
             parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 128);
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
         } else {
             parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 1);
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
         }
         return true;
     }
@@ -270,10 +270,18 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.casingAmount = 0;
         if (!structureCheck_EM(NA_BOTTOM, 2, 0, 0)) return false;
-        height = 0;
-        while (structureCheck_EM(NA_MID, 2, height + 1, 0)) {
-            height++;
+
+        if (!mMachine) {
+            height = 0;
+            while (structureCheck_EM(NA_MID, 2, height + 1, 0)) {
+                height++;
+            }
+        } else {
+            for (int i = 0; i < height; i++) {
+                if (!structureCheck_EM(NA_MID, 2, i + 1, 0)) return false;
+            }
         }
+
         if (height < 4) return false;
         return structureCheck_EM(NA_TOP, 2, height + 1, 0) && casingAmount >= 7;
     }
@@ -417,12 +425,16 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                 EnumChatFormatting.YELLOW + Integer.toString(this.mMaxProgresstime / 20) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "gg.scanner.info.neutron_activator.input",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(currentNKEInput) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(currentNKEInput) + EnumChatFormatting.RESET),
             StatCollector.translateToLocal("scanner.info.NA") + " "
                 + EnumChatFormatting.LIGHT_PURPLE
-                + GTUtility.formatNumbers(getCurrentNeutronKineticEnergy())
+                + formatNumber(getCurrentNeutronKineticEnergy())
                 + EnumChatFormatting.RESET
-                + "eV" };
+                + "eV",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override

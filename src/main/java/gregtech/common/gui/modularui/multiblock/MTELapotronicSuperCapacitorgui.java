@@ -1,9 +1,8 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-
-import java.math.BigInteger;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
@@ -17,6 +16,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.value.sync.BigIntSyncValue;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -26,7 +26,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 import kekztech.util.Util;
@@ -70,15 +69,14 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
                 .asWidget())
 
             .child(IKey.dynamic(() -> {
-                String avgString = EnumChatFormatting.GREEN + GTUtility.formatNumbers(avgIn.getValue())
-                    .toString() + EnumChatFormatting.WHITE;
+                String avgString = EnumChatFormatting.GREEN + formatNumber(avgIn.getValue()).toString()
+                    + EnumChatFormatting.WHITE;
                 return EnumChatFormatting.WHITE + StatCollector
                     .translateToLocalFormatted("kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in", avgString);
             })
                 .asWidget())
             .child(IKey.dynamic(() -> {
-                String euOut = EnumChatFormatting.RED + GTUtility.formatNumbers(avgOut.getValue())
-                    + EnumChatFormatting.WHITE;
+                String euOut = EnumChatFormatting.RED + formatNumber(avgOut.getValue()) + EnumChatFormatting.WHITE;
                 return EnumChatFormatting.WHITE + StatCollector
                     .translateToLocalFormatted("kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out", euOut);
             })
@@ -96,8 +94,7 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
             })
                 .asWidget())
             .child(IKey.dynamic(() -> {
-                String lost = EnumChatFormatting.RED + GTUtility.formatNumbers(loss.getValue())
-                    .toString();
+                String lost = EnumChatFormatting.RED + formatNumber(loss.getValue()).toString();
                 return EnumChatFormatting.WHITE + StatCollector
                     .translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.passive_loss", lost);
             })
@@ -118,7 +115,7 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
         BooleanSyncValue canRebalance = syncManager.findSyncHandler("canRebalance", BooleanSyncValue.class);
         BooleanSyncValue rebalanced = syncManager.findSyncHandler("rebalanced", BooleanSyncValue.class);
         BooleanSyncValue wireless = syncManager.findSyncHandler("wirelessMode", BooleanSyncValue.class);
-        IPanelHandler warningPanel = syncManager.panel("warning panel", ((a, b) -> warningPanel()), true);
+        IPanelHandler warningPanel = syncManager.syncedPanel("warning panel", true, ((a, b) -> warningPanel()));
 
         return super.createLeftPanelGapRow(parent, syncManager)
             .child(new ButtonWidget<>().overlay(new DynamicDrawable(() -> {
@@ -162,12 +159,13 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
                     .tooltip(
                         new RichTooltip().add(
                             StatCollector.translateToLocal("gui.kekztech_lapotronicenergyunit.wireless_rebalance")))
-                    .onMousePressed((a) -> {
-                        multiblock.setCounter(multiblock.rebalance());
-                        canRebalance.setBoolValue(false);
-                        rebalanced.setBoolValue(true);
-                        return true;
-                    })
+                    .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
+                        if (!mouseData.isClient()) {
+                            multiblock.setCounter(multiblock.rebalance());
+                            canRebalance.setBoolValue(false);
+                            rebalanced.setBoolValue(true);
+                        }
+                    }))
                     .setEnabledIf((w) -> canRebalance.getBoolValue()));
     }
 
@@ -195,13 +193,6 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
                         IKey.str(
                             StatCollector.translateToLocalFormatted("gui.kekztech_lapotronicenergyunit.warning.text"))
                             .asWidget()));
-    }
-
-    private String formatNumber(BigInteger aNumber) {
-        // lol random random number thats big (pulled from old ui)
-        return aNumber.compareTo(BigInteger.valueOf(1_000_000_000L)) > 0 ? GTUtility.scientificFormat(aNumber)
-            : GTUtility.formatNumbers(aNumber);
-
     }
 
     public String getTimeTo(double avgIn, double avgOut, double passLoss, double cap, double sto) {
@@ -243,7 +234,8 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
 
-        IPanelHandler EnergyPanel = syncManager.panel("energy panel", ((a, b) -> createEnergyPopup(syncManager)), true);
+        IPanelHandler EnergyPanel = syncManager
+            .syncedPanel("energy panel", true, ((a, b) -> createEnergyPopup(syncManager)));
 
         return super.createButtonColumn(panel, syncManager).child(
             new ButtonWidget<>().setEnabledIf((w) -> Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)

@@ -20,7 +20,7 @@ public abstract class MixinIC2IronFurnacePollution extends TileEntity {
     @Shadow
     public abstract boolean isBurning();
 
-    @Inject(method = "updateEntityServer", at = @At("TAIL"))
+    @Inject(method = "updateEntityServer", at = @At("RETURN"))
     private void gt5u$updateEntityServer(CallbackInfo ci) {
         if (isBurning()) {
             furnaceAddPollutionOnUpdate(

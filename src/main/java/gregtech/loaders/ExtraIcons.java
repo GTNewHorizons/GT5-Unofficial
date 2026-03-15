@@ -20,6 +20,7 @@ public class ExtraIcons {
     public static IIcon iridiumLargeCellInner;
     public static IIcon osmiumLargeCellInner;
     public static IIcon neutroniumLargeCellInner;
+    public static IIcon circuitComponentOverlay;
 
     @SubscribeEvent
     public void regIcons(TextureStitchEvent.Pre event) {
@@ -41,6 +42,8 @@ public class ExtraIcons {
             osmiumLargeCellInner = reg.registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "osmium_inner"));
             neutroniumLargeCellInner = reg
                 .registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "neutronium_inner"));
+            circuitComponentOverlay = reg
+                .registerIcon(GregTech.getResourcePath("gt.circuitcomponent", "circuit_component_overlay"));
         }
     }
 }

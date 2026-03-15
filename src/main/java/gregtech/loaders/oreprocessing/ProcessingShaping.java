@@ -411,7 +411,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Extruder_Bottle.get(0L))
                             .itemOutputs(new ItemStack(Items.glass_bottle, 1))
                             .duration((tAmount * 32) * TICKS)
-                            .eut(16)
+                            .eut(TierEU.RECIPE_LV / 2)
                             .addTo(extruderRecipes);
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Mold_Bottle.get(0L))

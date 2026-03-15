@@ -20,6 +20,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -80,7 +81,6 @@ import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.config.ASMConfiguration;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
@@ -127,156 +127,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public abstract String getMachineType();
 
-    public String getMachineTooltip() {
-        return "Machine Type: " + EnumChatFormatting.YELLOW + getMachineType() + EnumChatFormatting.RESET;
-    }
-
     public String[] getExtraInfoData() {
         return GTValues.emptyStringArray;
-    }
-
-    @Override
-    public String[] getInfoData() {
-        ArrayList<String> mInfo = new ArrayList<>();
-        if (!this.getMetaName()
-            .isEmpty()) {
-            mInfo.add(this.getMetaName());
-        }
-
-        String[] extra = getExtraInfoData();
-
-        if (extra == null) {
-            extra = GTValues.emptyStringArray;
-        }
-        mInfo.addAll(Arrays.asList(extra));
-
-        long seconds = (this.mTotalRunTime / 20);
-        int weeks = (int) (TimeUnit.SECONDS.toDays(seconds) / 7);
-        int days = (int) (TimeUnit.SECONDS.toDays(seconds) - 7 * weeks);
-        long hours = TimeUnit.SECONDS.toHours(seconds) - TimeUnit.DAYS.toHours(days)
-            - TimeUnit.DAYS.toHours(7L * weeks);
-        long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
-        long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) * 60);
-
-        mInfo.add(getMachineTooltip());
-
-        // Lets borrow the GTNH handling
-
-        mInfo.add(
-            StatCollector.translateToLocal("GTPP.multiblock.progress") + ": "
-                + EnumChatFormatting.GREEN
-                + mProgresstime / 20
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + mMaxProgresstime / 20
-                + EnumChatFormatting.RESET
-                + " s");
-
-        if (!this.mAllEnergyHatches.isEmpty()) {
-            long storedEnergy = getStoredEnergyInAllEnergyHatches();
-            long maxEnergy = getMaxEnergyStorageOfAllEnergyHatches();
-            mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.energy") + ":");
-            mInfo.add(
-                StatCollector.translateToLocal(
-                    EnumChatFormatting.GREEN.toString() + storedEnergy
-                        + EnumChatFormatting.RESET
-                        + " EU / "
-                        + EnumChatFormatting.YELLOW
-                        + maxEnergy
-                        + EnumChatFormatting.RESET
-                        + " EU"));
-
-            mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.mei") + ":");
-            mInfo.add(
-                StatCollector.translateToLocal(
-                    EnumChatFormatting.YELLOW.toString() + getMaxInputVoltage()
-                        + EnumChatFormatting.RESET
-                        + " EU/t(*2A) "
-                        + StatCollector.translateToLocal("GTPP.machines.tier")
-                        + ": "
-                        + EnumChatFormatting.YELLOW
-                        + GTValues.VN[GTUtility.getTier(getMaxInputVoltage())]
-                        + EnumChatFormatting.RESET));
-        }
-        if (!this.mAllDynamoHatches.isEmpty()) {
-            long storedEnergy = getStoredEnergyInAllDynamoHatches();
-            long maxEnergy = getMaxEnergyStorageOfAllDynamoHatches();
-            mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.energy") + " In Dynamos:");
-            mInfo.add(
-                StatCollector.translateToLocal(
-                    EnumChatFormatting.GREEN.toString() + storedEnergy
-                        + EnumChatFormatting.RESET
-                        + " EU / "
-                        + EnumChatFormatting.YELLOW
-                        + maxEnergy
-                        + EnumChatFormatting.RESET
-                        + " EU"));
-        }
-
-        if (-lEUt > 0) {
-            mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.usage") + ":");
-            mInfo.add(
-                StatCollector
-                    .translateToLocal("" + EnumChatFormatting.RED + (-lEUt) + EnumChatFormatting.RESET + " EU/t"));
-        } else {
-            mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.generation") + ":");
-            mInfo.add(
-                StatCollector
-                    .translateToLocal("" + EnumChatFormatting.GREEN + lEUt + EnumChatFormatting.RESET + " EU/t"));
-        }
-
-        mInfo.add(
-            StatCollector.translateToLocal("GTPP.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GTPP.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %");
-
-        if (this.getPollutionPerSecond(null) > 0) {
-            mInfo.add(
-                StatCollector.translateToLocal("GTPP.multiblock.pollution") + ": "
-                    + EnumChatFormatting.RED
-                    + this.getPollutionPerSecond(null)
-                    + EnumChatFormatting.RESET
-                    + "/sec");
-            mInfo.add(
-                StatCollector.translateToLocal("GTPP.multiblock.pollutionreduced") + ": "
-                    + EnumChatFormatting.GREEN
-                    + getAveragePollutionPercentage()
-                    + EnumChatFormatting.RESET
-                    + " %");
-        }
-
-        mInfo.add(
-            StatCollector.translateToLocal("GTPP.CC.parallel") + ": "
-                + EnumChatFormatting.GREEN
-                + (getMaxParallelRecipes())
-                + EnumChatFormatting.RESET);
-
-        mInfo.add(
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.multi_block.total_time",
-                "" + EnumChatFormatting.DARK_GREEN + weeks + EnumChatFormatting.RESET,
-                "" + EnumChatFormatting.DARK_GREEN + days + EnumChatFormatting.RESET));
-        mInfo.add(
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.multi_block.total_time.0",
-                EnumChatFormatting.DARK_GREEN + Long.toString(hours) + EnumChatFormatting.RESET,
-                EnumChatFormatting.DARK_GREEN + Long.toString(minutes) + EnumChatFormatting.RESET,
-                EnumChatFormatting.DARK_GREEN + Long.toString(second) + EnumChatFormatting.RESET));
-        mInfo.add(
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.multi_block.total_time.in_ticks",
-                "" + EnumChatFormatting.DARK_GREEN + this.mTotalRunTime));
-
-        return mInfo.toArray(new String[0]);
     }
 
     public long getStoredEnergyInAllEnergyHatches() {
@@ -507,7 +359,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             if (aTileEntity instanceof MTEHatchInputBus) {
                 resetRecipeMapForHatch((MTEHatch) aTileEntity, getRecipeMap());
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
         }
 
@@ -728,7 +580,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             } else {
                 return false;
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
             return false;
         }
@@ -973,9 +825,9 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }
@@ -1556,8 +1408,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             MetaGeneratedTool01.INSTANCE
                 .getToolWithStats(IDMetaTool01.SOLDERING_IRON_LV.ID, 1, BAD, Materials.Tungsten, null));
 
-        ItemStack aGlassPane1 = ItemUtils.getItemStackOfAmountFromOreDict("paneGlassRed", 1);
-        ItemStack aGlassPane2 = ItemUtils.getItemStackOfAmountFromOreDict("paneGlassLime", 1);
+        ItemStack aGlassPane1 = new ItemStack(Blocks.glass_pane, 1, 14); // Red
+        ItemStack aGlassPane2 = new ItemStack(Blocks.glass_pane, 1, 5); // Lime
         mToolStacks.put("falseGLASS", aGlassPane1);
         mToolStacks.put("trueGLASS", aGlassPane2);
     }

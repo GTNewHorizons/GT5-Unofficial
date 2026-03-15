@@ -17,9 +17,9 @@ import gregtech.common.GTClient;
 
 public class RainbowOverlayMetaItemRenderer implements IItemRenderer {
 
-    private float baseR = 1;
-    private float baseG = 1;
-    private float baseB = 1;
+    private final float baseR;
+    private final float baseG;
+    private final float baseB;
 
     public RainbowOverlayMetaItemRenderer(short[] rgba) {
         baseR = rgba[0] / 255.0F;
@@ -45,17 +45,14 @@ public class RainbowOverlayMetaItemRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(final ItemRenderType type, final ItemStack item, final Object... data) {
-        GL11.glPushMatrix();
-
         if (item.getItem() instanceof MetaGeneratedItem mgItem) {
             IIcon[] icons = mgItem.mIconList[item.getItemDamage() - mgItem.mOffset];
             if (icons != null && icons.length > 0 && icons[0] != null) {
 
                 final GTClient clientProxy = GTMod.clientProxy();
-                long animationTicks = clientProxy.getAnimationTicks();
-                float partialTicks = clientProxy.getPartialRenderTicks();
+                float animationTicks = clientProxy.getAnimationRenderTicks();
 
-                Color color = Color.getHSBColor((animationTicks % 180 + partialTicks) % 90 / 90f, 0.4f, 0.9f);
+                Color color = Color.getHSBColor((animationTicks % 90) / 90f, 0.4f, 0.9f);
 
                 float modR = color.getRed() / 255.0F;
                 float modG = color.getGreen() / 255.0F;
@@ -68,8 +65,6 @@ public class RainbowOverlayMetaItemRenderer implements IItemRenderer {
 
             }
         }
-
-        GL11.glPopMatrix();
     }
 
 }

@@ -249,8 +249,8 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
                 resource = mrmp.getMusicRecordResource(mInventory[getInputSlot() + playbackSlot]);
                 playPath = resource;
             } else {
-                resource = record.getRecordResource(record.recordName);
-                playPath = new ResourceLocation(resource.getResourceDomain(), "records." + resource.getResourcePath());
+                resource = record.getRecordResource("records." + record.recordName);
+                playPath = resource;
             }
             currentlyPlaying = record;
             // Assume a safe disc duration of 500 seconds if not known in the registry
@@ -341,10 +341,8 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
                         resource = mrmp.getMusicRecordResource(mInventory[getInputSlot() + playbackSlot]);
                         playPath = resource;
                     } else {
-                        resource = record.getRecordResource(record.recordName);
-                        playPath = new ResourceLocation(
-                            resource.getResourceDomain(),
-                            "records." + resource.getResourcePath());
+                        resource = record.getRecordResource("records." + record.recordName);
+                        playPath = resource;
                     }
                     currentlyPlaying = record;
                     musicSource.setRecord(playPath);

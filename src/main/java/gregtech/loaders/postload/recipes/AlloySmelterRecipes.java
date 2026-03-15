@@ -2,15 +2,20 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import bartworks.common.loaders.ItemRegistry;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class AlloySmelterRecipes implements Runnable {
@@ -72,14 +77,14 @@ public class AlloySmelterRecipes implements Runnable {
                         .itemInputs(ingot1, dust2)
                         .itemOutputs(outputIngot)
                         .duration((int) materials[2].mAmount * 50)
-                        .eut(16)
+                        .eut(TierEU.RECIPE_LV / 2)
                         .addTo(alloySmelterRecipes);
                     if (ingot2 != null) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ingot1, ingot2)
                             .itemOutputs(outputIngot)
                             .duration((int) materials[2].mAmount * 50)
-                            .eut(16)
+                            .eut(TierEU.RECIPE_LV / 2)
                             .addTo(alloySmelterRecipes);
                     }
                 }
@@ -89,7 +94,7 @@ public class AlloySmelterRecipes implements Runnable {
                         .itemInputs(dust1, ingot2)
                         .itemOutputs(outputIngot)
                         .duration((int) materials[2].mAmount * 50)
-                        .eut(16)
+                        .eut(TierEU.RECIPE_LV / 2)
                         .addTo(alloySmelterRecipes);
                 }
 
@@ -97,7 +102,7 @@ public class AlloySmelterRecipes implements Runnable {
                     .itemInputs(dust1, dust2)
                     .itemOutputs(outputIngot)
                     .duration((int) materials[2].mAmount * 50)
-                    .eut(16)
+                    .eut(TierEU.RECIPE_LV / 2)
                     .addTo(alloySmelterRecipes);
 
             }
@@ -122,5 +127,26 @@ public class AlloySmelterRecipes implements Runnable {
             .duration(15 * SECONDS)
             .eut(8)
             .addTo(alloySmelterRecipes);
+
+        // From ProcessingDye - glass dyeing
+        for (Dyes dye : Dyes.VALUES) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 8L),
+                    new OreDictItemStack(dye.name(), 1))
+                .itemOutputs(new net.minecraft.item.ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
+                .duration(10 * SECONDS)
+                .eut(8)
+                .addTo(alloySmelterRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    new net.minecraft.item.ItemStack(Blocks.glass, 8, WILDCARD),
+                    new OreDictItemStack(dye.name(), 1))
+                .itemOutputs(new net.minecraft.item.ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
+                .duration(10 * SECONDS)
+                .eut(8)
+                .addTo(alloySmelterRecipes);
+        }
     }
 }

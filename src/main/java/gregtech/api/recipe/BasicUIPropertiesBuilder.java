@@ -12,6 +12,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.cleanroommc.modularui.drawable.UITexture;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -22,6 +24,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 
@@ -71,6 +74,14 @@ public final class BasicUIPropertiesBuilder {
 
     private int amperage = 1;
 
+    private BasicUIProperties.SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2 = (
+        index, isFluid, isOutput, isSpecial) -> com.cleanroommc.modularui.api.drawable.IDrawable.NONE;
+
+    private UITexture progressBarTextureMUI2 = GTGuiTextures.PROGRESSBAR_ARROW_STANDARD;
+    private ProgressWidget.Direction progressBarDirectionMUI2 = ProgressWidget.Direction.RIGHT;
+    private int progressBarWidthMUI2 = 20;
+    private int progressBarHeightMUI2 = 36;
+
     BasicUIPropertiesBuilder() {}
 
     public BasicUIProperties build() {
@@ -112,7 +123,12 @@ public final class BasicUIPropertiesBuilder {
             specialItemPositionGetter,
             fluidInputPositionsGetter,
             fluidOutputPositionsGetter,
-            amperage);
+            amperage,
+            slotOverlaysMUI2,
+            progressBarTextureMUI2,
+            progressBarDirectionMUI2,
+            progressBarWidthMUI2,
+            progressBarHeightMUI2);
     }
 
     public BasicUIPropertiesBuilder maxItemInputs(int maxItemInputs) {
@@ -259,6 +275,28 @@ public final class BasicUIPropertiesBuilder {
 
     public BasicUIPropertiesBuilder amperage(int amperage) {
         this.amperage = amperage;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder slotOverlaysMUI2(
+        BasicUIProperties.SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2) {
+        this.slotOverlaysMUI2 = slotOverlaysMUI2;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder progressBarTextureMUI2(UITexture progressBarTextureMUI2) {
+        this.progressBarTextureMUI2 = progressBarTextureMUI2;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder progressBarDirectionMUI2(ProgressWidget.Direction progressBarDirectionMUI2) {
+        this.progressBarDirectionMUI2 = progressBarDirectionMUI2;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder progressBarSizeMUI2(int progressBarWidthMUI2, int progressBarHeightMUI2) {
+        this.progressBarWidthMUI2 = progressBarWidthMUI2;
+        this.progressBarHeightMUI2 = progressBarHeightMUI2;
         return this;
     }
 }

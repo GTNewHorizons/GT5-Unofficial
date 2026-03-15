@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
@@ -15,7 +16,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
@@ -30,6 +30,10 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
     private boolean delDelay = true;
 
     private long history;
+
+    protected void updateComputationHistory(long value) {
+        this.history = value;
+    }
 
     public MTEHatchDataInput(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -118,7 +122,6 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
         super.getWailaBody(itemStack, currenttip, accessor, config);
 
         NBTTagCompound tag = accessor.getNBTData();
-        currenttip
-            .add(translate("tt.keyphrase.Computation_Receiving", GTUtility.formatNumbers(tag.getLong("computation"))));
+        currenttip.add(translate("tt.keyphrase.Computation_Receiving", formatNumber(tag.getLong("computation"))));
     }
 }

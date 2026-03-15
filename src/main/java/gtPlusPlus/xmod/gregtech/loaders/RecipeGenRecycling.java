@@ -2,10 +2,13 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.RA;
+import static gregtech.api.enums.GTValues.VP;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.RECYCLE;
+import static gregtech.api.util.GTRecipeConstants.UniversalArcFurnace;
 
 import java.util.ArrayList;
 
@@ -19,6 +22,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
@@ -54,6 +59,12 @@ public class RecipeGenRecycling implements Runnable {
     public static void generateRecipes(final Material material) {
         if (material == null) return;
 
+        final Materials gtMaterial = material.getGTMaterial();
+        if (gtMaterial != null
+            && (gtMaterial.contains(SubTag.NO_RECYCLING) || gtMaterial.contains(SubTag.NO_RECYCLING_RECIPES))) {
+            return;
+        }
+
         Logger.WARNING("Generating Recycling recipes for " + material.getLocalizedName());
 
         final OrePrefixes[] mValidPrefixesAsString = { OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.nugget,
@@ -64,7 +75,8 @@ public class RecipeGenRecycling implements Runnable {
             OrePrefixes.cableGt04, OrePrefixes.cableGt08, OrePrefixes.cableGt12, OrePrefixes.wireFine,
             OrePrefixes.wireGt01, OrePrefixes.wireGt02, OrePrefixes.wireGt04, OrePrefixes.wireGt08,
             OrePrefixes.wireGt12, OrePrefixes.wireGt16, OrePrefixes.foil, OrePrefixes.frameGt, OrePrefixes.pipeHuge,
-            OrePrefixes.pipeLarge, OrePrefixes.pipeMedium, OrePrefixes.pipeSmall, OrePrefixes.pipeTiny, };
+            OrePrefixes.pipeLarge, OrePrefixes.pipeMedium, OrePrefixes.pipeSmall, OrePrefixes.pipeTiny,
+            OrePrefixes.dust, };
 
         int mSlotIndex = 0;
         Pair<OrePrefixes, ItemStack>[] mValidPairs = new Pair[mValidPrefixesAsString.length];
@@ -111,15 +123,20 @@ public class RecipeGenRecycling implements Runnable {
             if (orePrefix == OrePrefixes.ingotHot) continue;
 
             final ItemStack tempStack = validPrefix.getValue();
-            final ItemStack mDust = getDust(material, orePrefix);
+            final boolean isDustInput = orePrefix == OrePrefixes.dust;
+            final ItemStack mDust = isDustInput ? null : getDust(material, orePrefix);
 
             // Maceration
-            if (tempStack != null && mDust != null) {
+            if (!isDustInput && tempStack != null && mDust != null) {
+                final long materialAmount = orePrefix.getMaterialAmount();
+                final int aMaceratorDuration = (int) Math
+                    .max(16L, (materialAmount * Math.max(1L, material.getMass())) / M);
                 RA.stdBuilder()
                     .itemInputs(tempStack)
                     .itemOutputs(mDust)
-                    .eut(2)
-                    .duration(20 * SECONDS)
+                    .duration(aMaceratorDuration * TICKS)
+                    .eut(4)
+                    .recipeCategory(RecipeCategories.maceratorRecycling)
                     .addTo(maceratorRecipes);
 
                 Logger.WARNING(
@@ -130,13 +147,47 @@ public class RecipeGenRecycling implements Runnable {
                         + mDust.getDisplayName());
             }
 
+            // Arc Furnace (recycling output must stay ingot/nugget only)
+            if (!isDustInput && tempStack != null) {
+                final long materialAmount = orePrefix.getMaterialAmount();
+                ItemStack arcOutput = null;
+                final long ingotAmount = materialAmount / M;
+                if (ingotAmount > 0) {
+                    arcOutput = get(OrePrefixes.ingot, material, ingotAmount);
+                }
+                if (arcOutput == null) {
+                    final long nuggetAmount = (materialAmount * 9) / M;
+                    if (nuggetAmount > 0) {
+                        arcOutput = get(OrePrefixes.nugget, material, nuggetAmount);
+                    }
+                }
+                if (arcOutput != null) {
+                    final long tAmount = materialAmount * Math.max(1L, material.getMass());
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(GTUtility.copyAmount(1, tempStack))
+                        .itemOutputs(arcOutput)
+                        .duration((int) Math.max(16L, tAmount / M))
+                        .eut((int) Math.max(30L, Math.min(120L, tAmount / 64L)))
+                        .metadata(RECYCLE, true)
+                        .addTo(UniversalArcFurnace);
+                }
+            }
+
             // Fluid Extractor
             if (tempStack == null) continue;
+            if (isDustInput && material.requiresBlastFurnace()) {
+                continue;
+            }
 
             final long materialAmount = orePrefix.getMaterialAmount();
             final int aFluidAmount = (int) ((materialAmount * INGOTS) / (M * tempStack.stackSize));
             final int aDuration = (int) Math.max(1, (24 * materialAmount) / M);
             final FluidStack fluidOutput = material.getFluidStack(aFluidAmount);
+            long powerUsage = Math.max(8L, (long) Math.sqrt(2L * Math.max(1, material.getMeltingPointK())));
+            final int powerTier = GTUtility.getTier(powerUsage);
+            if (powerTier > 0 && powerTier < VP.length && powerUsage > VP[powerTier]) {
+                powerUsage = VP[powerTier];
+            }
 
             if (fluidOutput == null) continue;
 
@@ -144,7 +195,8 @@ public class RecipeGenRecycling implements Runnable {
                 .itemInputs(tempStack)
                 .fluidOutputs(fluidOutput)
                 .duration(aDuration)
-                .eut(material.vVoltageMultiplier)
+                .eut((int) Math.min(Integer.MAX_VALUE, powerUsage))
+                .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .addTo(fluidExtractionRecipes);
 
             Logger.WARNING(
@@ -159,7 +211,7 @@ public class RecipeGenRecycling implements Runnable {
                     + ". Time: "
                     + aDuration
                     + ", Voltage: "
-                    + material.vVoltageMultiplier);
+                    + powerUsage);
         }
 
     }

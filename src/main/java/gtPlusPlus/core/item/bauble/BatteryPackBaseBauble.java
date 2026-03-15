@@ -127,7 +127,7 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
                         chargeInventory(inv, InventoryPlayer.getHotbarSize(), aBaubleStack);
                     }
                 }
-            } catch (Throwable ignored) {}
+            } catch (Exception ignored) {}
         }
     }
 

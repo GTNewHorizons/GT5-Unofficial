@@ -1,8 +1,8 @@
 package tectech.thing.metaTileEntity.multi.godforge;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
@@ -204,7 +204,9 @@ public class MTEExoticModule extends MTEBaseModule {
         }
 
         return new GTRecipe(
-            false,
+            null,
+            null,
+            null,
             null,
             null,
             null,
@@ -228,7 +230,9 @@ public class MTEExoticModule extends MTEBaseModule {
             Materials.Space.getMolten(spaceAmount * 1000L) };
 
         return new GTRecipe(
-            false,
+            null,
+            null,
+            null,
             null,
             null,
             null,
@@ -428,7 +432,9 @@ public class MTEExoticModule extends MTEBaseModule {
 
             setPlasmaRecipe(
                 new GTRecipe(
-                    false,
+                    null,
+                    null,
+                    null,
                     null,
                     null,
                     null,
@@ -526,32 +532,32 @@ public class MTEExoticModule extends MTEBaseModule {
         str.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.progress",
-                GREEN + formatNumbers(mProgresstime / 20) + RESET,
-                YELLOW + formatNumbers(mMaxProgresstime / 20) + RESET));
+                GREEN + formatNumber(mProgresstime / 20) + RESET,
+                YELLOW + formatNumber(mMaxProgresstime / 20) + RESET));
         str.add(
             StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.currently_using",
-                RED + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt * actualParallel) : "0") + RESET));
+                RED + (getBaseMetaTileEntity().isActive() ? formatNumber(EUt * actualParallel) : "0") + RESET));
         str.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.max_parallel",
-                RESET + formatNumbers(getActualParallel())));
+                RESET + formatNumber(getActualParallel())));
         str.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.parallel.current",
-                RESET + (getBaseMetaTileEntity().isActive() ? formatNumbers(getActualParallel()) : "0")));
+                RESET + (getBaseMetaTileEntity().isActive() ? formatNumber(getActualParallel()) : "0")));
         str.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.multiplier.recipe_time",
-                RESET + formatNumbers(getSpeedBonus())));
+                RESET + formatNumber(getSpeedBonus())));
         str.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.multiplier.energy",
-                RESET + formatNumbers(getEnergyDiscount())));
+                RESET + formatNumber(getEnergyDiscount())));
         str.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.divisor.recipe_time.non_perfect_oc",
-                RESET + formatNumbers(getOverclockTimeFactor())));
+                RESET + formatNumber(getOverclockTimeFactor())));
         return str.toArray(new String[0]);
     }
 

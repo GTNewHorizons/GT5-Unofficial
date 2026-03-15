@@ -1,9 +1,7 @@
 package ggfab.mte;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -257,35 +255,8 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
 
     @Override
     protected void fillStacksIntoFirstSlots() {
-        // sanity check
         if (mRealInventory == null) return;
-        final int L = SIZE_INVENTORY;
-        HashMap<GTUtility.ItemId, Integer> slots = new HashMap<>(L);
-        HashMap<GTUtility.ItemId, ItemStack> stacks = new HashMap<>(L);
-        List<GTUtility.ItemId> order = new ArrayList<>(L);
-        List<Integer> validSlots = new ArrayList<>(L);
-        for (int i = 0; i < L; i++) {
-            validSlots.add(i);
-            ItemStack s = mRealInventory.stacks[i];
-            if (s == null) continue;
-            GTUtility.ItemId sID = GTUtility.ItemId.createNoCopy(s);
-            slots.merge(sID, s.stackSize, Integer::sum);
-            if (!stacks.containsKey(sID)) stacks.put(sID, s);
-            order.add(sID);
-            mRealInventory.stacks[i] = null;
-        }
-        int slotindex = 0;
-        for (GTUtility.ItemId sID : order) {
-            int toSet = slots.get(sID);
-            if (toSet == 0) continue;
-            int slot = validSlots.get(slotindex);
-            slotindex++;
-            mRealInventory.stacks[slot] = stacks.get(sID)
-                .copy();
-            toSet = Math.min(toSet, mRealInventory.stacks[slot].getMaxStackSize());
-            mRealInventory.stacks[slot].stackSize = toSet;
-            slots.merge(sID, toSet, (a, b) -> a - b);
-        }
+        GTUtility.compactInventory(Arrays.asList(mRealInventory.stacks), 0, SIZE_INVENTORY);
     }
 
     private void dropItems(ItemStack[] aStacks) {
@@ -367,15 +338,14 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
                     mRealInventory.disableLimited = true;
                 }
             }
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatComp(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.hatch.disableSort." + mRealInventory.disableSort) + "   "
-                    + StatCollector.translateToLocal("GT5U.hatch.disableLimited." + mRealInventory.disableLimited));
+                new ChatComponentTranslation("GT5U.hatch.disableSort." + mRealInventory.disableSort).appendText("   ")
+                    .appendSibling(
+                        new ChatComponentTranslation("GT5U.hatch.disableLimited." + mRealInventory.disableLimited)));
         } else {
             this.disableFilter = !this.disableFilter;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("GT5U.hatch.disableFilter." + this.disableFilter));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + this.disableFilter);
         }
     }
 

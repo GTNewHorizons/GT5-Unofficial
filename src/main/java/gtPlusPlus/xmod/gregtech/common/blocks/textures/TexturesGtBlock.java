@@ -111,6 +111,7 @@ public class TexturesGtBlock {
     public static final CustomIcon Casing_Material_Fluid_IncoloyDS = new CustomIcon(
         "TileEntities/MACHINE_CASING_FLUID_INCOLOY_DS");
     public static final CustomIcon Casing_Material_Laurenium = new CustomIcon("TileEntities/MACHINE_CASING_LAURENIUM");
+    public static final CustomIcon Casing_Material_Botmium = new CustomIcon("TileEntities/MACHINE_CASING_BOTMIUM");
 
     // Trinium Alloys
     public static final CustomIcon Casing_Trinium_Titanium = new CustomIcon(
@@ -595,8 +596,6 @@ public class TexturesGtBlock {
     // Crafting Overlays
     public static final CustomIcon Casing_Adv_Workbench_Crafting_Overlay = new CustomIcon(
         "TileEntities/gt4/machine_top_crafting");
-    public static final CustomIcon Casing_CropHarvester_Cutter = new CustomIcon("TileEntities/gt4/OVERLAY_CROP");
-    public static final CustomIcon Casing_CropHarvester_Boxes = new CustomIcon("TileEntities/gt4/OVERLAY_BOXES");
 
     // Covers
     public static final CustomIcon Overlay_Overflow_Valve = new CustomIcon("iconsets/OVERLAY_OVERFLOW_VALVE");

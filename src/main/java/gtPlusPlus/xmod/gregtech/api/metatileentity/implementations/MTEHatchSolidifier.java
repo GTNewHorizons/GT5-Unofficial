@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,8 +65,10 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     @Override
     public String[] getDescription() {
         return new String[] {
-            "Fluid Input with Mold for " + EnumChatFormatting.YELLOW + "Fluid Shaper" + EnumChatFormatting.RESET,
-            "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
+            "Fluid Input with Mold for " + EnumChatFormatting.YELLOW
+                + "Fluid Solidifier Multiblocks"
+                + EnumChatFormatting.RESET,
+            "Capacity: " + formatNumber(getCapacity()) + "L",
             "Added by: " + EnumChatFormatting.AQUA
                 + "Quetz4l - "
                 + EnumChatFormatting.RED
@@ -117,9 +121,8 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
         }
         try {
             this.setInventorySlotContents(moldSlot, phantom);
-        } catch (Throwable ignored) {}
+        } catch (Exception ignored) {}
         markDirty();
-        GTValues.NW.sendToServer(new GTPacketSetMold(this, selected));
     }
 
     @Override
@@ -144,7 +147,9 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
                     else if (clickData.mouseButton == 1) newIndex--;
                     newIndex = Math.floorMod(newIndex, solidifierMolds.length);
                     newMold = solidifierMolds[newIndex];
+                    inventoryHandler.setStackInSlot(moldSlot, solidifierMolds[newIndex].copy());
                 }
+
                 setMold(newMold);
             }
 
@@ -186,7 +191,10 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
             player -> new ItemSelectBaseGui(
                 GTUtility.translate("GT5U.machines.select_mold"),
                 getStackForm(0),
-                this::onMoldSelected,
+                (ItemStack selected) -> {
+                    this.onMoldSelected(selected);
+                    GTValues.NW.sendToServer(new GTPacketSetMold(this, selected));
+                },
                 Arrays.asList(solidifierMolds),
                 findMatchingMoldIndex(inv.getStackInSlot(moldSlot))).setAnotherWindow(true, dialogOpened)
                     .setGuiTint(getGUIColorization())

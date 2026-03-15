@@ -19,10 +19,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,7 +30,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
@@ -508,16 +504,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         return SteamVariant.BRONZE;
     }
 
-    protected IDrawable[] getFuelSlotBackground() {
-        return new IDrawable[] { getGUITextureSet().getItemSlot(),
-            GTUITextures.OVERLAY_SLOT_COAL_STEAM.get(getSteamVariant()) };
-    }
-
-    protected IDrawable[] getAshSlotBackground() {
-        return new IDrawable[] { getGUITextureSet().getItemSlot(),
-            GTUITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()) };
-    }
-
     public boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
         return GTUtility.fillFluidContainer(Materials.Steam.getGas(getSteamCapacity()), stack, false, true) != null
             || isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));
@@ -525,12 +511,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
 
     protected boolean isItemValidFuel(@NotNull ItemStack stack) {
         return true;
-    }
-
-    protected SlotWidget createAshSlotMui1() {
-        return (SlotWidget) new SlotWidget(inventoryHandler, 3).setAccess(true, false)
-            .setPos(115, 25)
-            .setBackground(getAshSlotBackground());
     }
 
     @Override
@@ -541,27 +521,5 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     @Override
     public int getTitleColor() {
         return getSteamVariant() == SteamVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
-    }
-
-    // for GT++
-
-    protected IDrawable getOverlaySlotIn() {
-        return GTUITextures.OVERLAY_SLOT_IN_STEAM.get(getSteamVariant());
-    }
-
-    protected IDrawable getOverlaySlotOut() {
-        return GTUITextures.OVERLAY_SLOT_OUT_STEAM.get(getSteamVariant());
-    }
-
-    protected IDrawable getOverlaySlotCanister() {
-        return GTUITextures.OVERLAY_SLOT_CANISTER_STEAM.get(getSteamVariant());
-    }
-
-    protected UITexture getProgressbarEmpty() {
-        return GTUITextures.PROGRESSBAR_BOILER_EMPTY_STEAM.get(getSteamVariant());
-    }
-
-    protected UITexture getProgressbarFuel() {
-        return GTUITextures.PROGRESSBAR_FUEL_STEAM.get(getSteamVariant());
     }
 }

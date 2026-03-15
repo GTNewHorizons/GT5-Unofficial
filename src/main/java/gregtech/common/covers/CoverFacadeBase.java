@@ -273,7 +273,7 @@ public abstract class CoverFacadeBase extends Cover {
         if (block == null) return Textures.BlockIcons.ERROR_RENDERING[0];
         // TODO: change this when *someone* made the block render in both pass
         if (block.getRenderBlockPass() != 0) return Textures.BlockIcons.ERROR_RENDERING[0];
-        return TextureFactory.builder()
+        return TextureFactory.blockBuilder()
             .setFromBlock(block, getTargetMeta(mStack))
             .useWorldCoord()
             .setFromSide(coverSide)

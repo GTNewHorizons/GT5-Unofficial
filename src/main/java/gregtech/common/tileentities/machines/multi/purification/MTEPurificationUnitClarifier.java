@@ -1,9 +1,9 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
@@ -181,14 +181,14 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                     + EnumChatFormatting.BOLD
                     + "Water Tier: "
                     + EnumChatFormatting.WHITE
-                    + GTUtility.formatNumbers(getWaterTier())
+                    + formatNumber(getWaterTier())
                     + EnumChatFormatting.RESET)
             .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
             .addInfo("Requires a filter made of Activated Carbon to work")
             .addInfo(
                 "Every cycle, has a " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(FILTER_DAMAGE_RATE)
+                    + formatNumber(FILTER_DAMAGE_RATE)
                     + "%"
                     + EnumChatFormatting.GRAY
                     + " chance to destroy the filter")
@@ -238,7 +238,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addStructureInfo("Requires water to be placed in the structure.")
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 

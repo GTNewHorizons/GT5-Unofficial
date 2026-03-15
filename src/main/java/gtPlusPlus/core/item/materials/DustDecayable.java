@@ -14,6 +14,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
 import gtPlusPlus.core.item.base.BaseItemTickable;
@@ -47,8 +48,10 @@ public class DustDecayable extends BaseItemTickable {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
         super.addInformation(stack, player, list, bool);
-        if (this.radLevel > 0) {
-            list.add(GTPPCore.GT_Tooltip_Radioactive.get());
+        if (Client.tooltip.showRadioactiveText) {
+            if (this.radLevel > 0) {
+                list.add(GTPPCore.GT_Tooltip_Radioactive.get());
+            }
         }
         list.add(
             GTUtility.translate(

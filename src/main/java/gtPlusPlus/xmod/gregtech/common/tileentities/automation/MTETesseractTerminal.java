@@ -148,7 +148,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
                         try {
                             GTPPCore.sTesseractTerminalOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Throwable t) {}
+                        } catch (Exception t) {}
                         this.mFrequency -= 1;
                         break;
                     case 1:
@@ -156,14 +156,14 @@ public class MTETesseractTerminal extends MTEBasicTank {
                         try {
                             GTPPCore.sTesseractTerminalOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Throwable t) {}
+                        } catch (Exception t) {}
                         this.mFrequency += 1;
                     default:
                         // Utils.LOG_WARNING("Did not click the correct place.");
                         try {
                             GTPPCore.sTesseractTerminalOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Throwable t) {}
+                        } catch (Exception t) {}
                         break;
                 }
                 GTUtility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency);
@@ -191,28 +191,28 @@ public class MTETesseractTerminal extends MTEBasicTank {
                         try {
                             GTPPCore.sTesseractTerminalOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Throwable t) {}
+                        } catch (Exception t) {}
                         this.mFrequency -= 64;
                     }
                     case 1 -> {
                         try {
                             GTPPCore.sTesseractTerminalOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Throwable t) {}
+                        } catch (Exception t) {}
                         this.mFrequency += 64;
                     }
                     case 2 -> {
                         try {
                             GTPPCore.sTesseractTerminalOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Throwable t) {}
+                        } catch (Exception t) {}
                         this.mFrequency -= 512;
                     }
                     case 3 -> {
                         try {
                             GTPPCore.sTesseractTerminalOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Throwable t) {}
+                        } catch (Exception t) {}
                         this.mFrequency += 512;
                     }
                 }
@@ -551,7 +551,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
             ? new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
                 TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
             : new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
-                TextureFactory.of(Textures.BlockIcons.VOID) };
+                TextureFactory.of(Textures.GlobalIcons.VOID) };
     }
 
     // To-Do?
@@ -594,7 +594,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
         try {
             GTPPCore.sTesseractTerminalOwnershipMap.get(mOwner)
                 .remove(this.mFrequency);
-        } catch (Throwable t) {}
+        } catch (Exception t) {}
         super.onRemoval();
     }
 }

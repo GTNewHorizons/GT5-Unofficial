@@ -30,7 +30,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -56,7 +55,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.MTEHatchOutputME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 
 public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower> implements ISurvivalConstructable {
 
@@ -380,9 +379,9 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
         if (aPlayer.isSneaking()) {
             this.batchMode = !this.batchMode;
             if (this.batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }

@@ -73,7 +73,9 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         this.batchMode = !this.batchMode;
-        GTUtility.sendChatToPlayer(aPlayer, "Batch Mode: " + (this.batchMode ? "Enabled" : "Disabled"));
+        GTUtility.sendChatTrans(
+            aPlayer,
+            this.batchMode ? "GT5U.chat.machine.batch_mode.enable" : "GT5U.chat.machine.batch_mode.disable");
         return true;
     }
 

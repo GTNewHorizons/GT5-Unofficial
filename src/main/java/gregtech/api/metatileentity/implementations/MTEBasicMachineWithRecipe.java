@@ -18,6 +18,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
@@ -25,7 +29,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
+import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -36,6 +40,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineWithRecipeBaseGui;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -92,74 +97,81 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             aOutputSlots,
             TextureFactory.of(
                 TextureFactory.of(
-                    new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE")),
+                    Textures.BlockIcons.customOptional(
+                        "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
-                        (new CustomIcon(
+                        (Textures.BlockIcons.customOptional(
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE_GLOW")))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory
-                    .of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE")),
                 TextureFactory.builder()
                     .addIcon(
-                        (new CustomIcon(
+                        (Textures.BlockIcons.customOptional(
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_GLOW")))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory.of(
-                    new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE")),
+                    Textures.BlockIcons.customOptional(
+                        "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
-                        (new CustomIcon(
+                        (Textures.BlockIcons.customOptional(
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE_GLOW")))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory
-                    .of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT")),
                 TextureFactory.builder()
                     .addIcon(
-                        (new CustomIcon(
+                        (Textures.BlockIcons.customOptional(
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_GLOW")))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory.of(
-                    new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE")),
+                    Textures.BlockIcons.customOptional(
+                        "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
-                        (new CustomIcon(
+                        (Textures.BlockIcons.customOptional(
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE_GLOW")))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory
-                    .of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP")),
                 TextureFactory.builder()
                     .addIcon(
-                        (new CustomIcon(
+                        (Textures.BlockIcons.customOptional(
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_GLOW")))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory.of(
-                    new CustomIcon(
+                    Textures.BlockIcons.customOptional(
                         "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
-                        (new CustomIcon(
+                        (Textures.BlockIcons.customOptional(
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_ACTIVE_GLOW")))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory
-                    .of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM")),
                 TextureFactory.builder()
                     .addIcon(
-                        (new CustomIcon(
+                        (Textures.BlockIcons.customOptional(
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_GLOW")))
                     .glow()
                     .build()));
@@ -476,6 +488,16 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
     public MTEBasicMachineWithRecipe setRecipeCatalystPriority(int recipeCatalystPriority) {
         this.recipeCatalystPriority = recipeCatalystPriority;
         return this;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicMachineWithRecipeBaseGui(this, this.getUIProperties()).build(data, syncManager, uiSettings);
     }
 
     @Override
