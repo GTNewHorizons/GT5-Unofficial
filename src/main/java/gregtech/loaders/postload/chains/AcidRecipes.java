@@ -3,7 +3,6 @@ package gregtech.loaders.postload.chains;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
-import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
@@ -15,6 +14,7 @@ import static gregtech.api.util.GTRecipeConstants.DISSOLUTION_TANK_RATIO;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.mixerNonCellRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.digesterRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionTankRecipes;
 
@@ -82,9 +82,8 @@ public class AcidRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.CrudeFrancium.getDust(10), GGMaterial.vanadiumPentoxide.get(OrePrefixes.dust, 1))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(4000L))
-            .itemOutputs(Materials.Francium.getDust(1))
+            .itemOutputs(Materials.Francium.getDust(3))
             .fluidOutputs(Materials.HypochlorousAcid.getFluid(4000L))
-            .outputChances(3000)
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(UniversalChemical);
@@ -124,7 +123,7 @@ public class AcidRecipes {
             .circuit(1)// Necessary to exceed properties.minItemInputs threshold
             .eut(1440)
             .duration(10 * SECONDS)
-            .addTo(mixerRecipes);
+            .addTo(mixerNonCellRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(10),

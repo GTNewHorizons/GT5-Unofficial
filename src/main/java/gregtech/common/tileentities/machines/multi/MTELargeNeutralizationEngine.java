@@ -275,7 +275,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return STRUCTURE_DEFINITION;
     }
 
-    private static String getAlkaliTextFormatted(String baseName, int efficiency, int frequency, boolean useMinute) {
+    private static String getAlkaliTextFormatted(String baseName, int efficiency, int frequency) {
         return EnumChatFormatting.AQUA + baseName
             + SEPARATOR
             + EnumChatFormatting.LIGHT_PURPLE
@@ -285,8 +285,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             + EnumChatFormatting.WHITE
             + frequency
             + EnumChatFormatting.GRAY
-            + "/"
-            + (useMinute ? "minute" : "second");
+            + "/minute";
     }
 
     private static String getTierInfoTextFormatted(int tier, String casingName, int baseDecay, int capacity) {
@@ -322,10 +321,10 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + "efficiency "
                     + EnumChatFormatting.GRAY
                     + "(consumes one by one):")
-            .addInfo(getAlkaliTextFormatted("Sodium Hydroxide", 150, 1, false))
-            .addInfo(getAlkaliTextFormatted("Potassium Hydroxide", 190, 24, true))
-            .addInfo(getAlkaliTextFormatted("Caesium Hydroxide", 250, 6, true))
-            .addInfo(getAlkaliTextFormatted("Francium Hydroxide", 500, 2, true))
+            .addInfo(getAlkaliTextFormatted("Sodium Hydroxide", 150, 60))
+            .addInfo(getAlkaliTextFormatted("Potassium Hydroxide", 190, 24))
+            .addInfo(getAlkaliTextFormatted("Caesium Hydroxide", 250, 6))
+            .addInfo(getAlkaliTextFormatted("Francium Hydroxide", 500, 2))
             .addSeparator()
             .addInfo(
                 "Produces " + EnumChatFormatting.RED
@@ -466,7 +465,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.GRAY
                     + "by sqrt("
                     + EnumChatFormatting.LIGHT_PURPLE
-                    + "Robot Arm Amount).")
+                    + "Robot Arm Amount"+EnumChatFormatting.GRAY+").")
             .addInfo(
                 "Every " + EnumChatFormatting.WHITE
                     + "minute"
