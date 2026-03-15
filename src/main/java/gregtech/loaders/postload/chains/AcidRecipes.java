@@ -74,7 +74,7 @@ public class AcidRecipes {
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.UraniumInfusedAcidicSolution.getFluid(6000L))
             .itemOutputs(Materials.Thorium.getDust(1), Materials.Lead.getDust(2), Materials.CrudeFrancium.getDust(1))
-            .fluidOutputs(Materials.NitrogenDioxide.getFluid(1000L))
+            .fluidOutputs(Materials.NitrogenDioxide.getGas(1000L))
             .outputChances(9000, 8000, 6000)
             .duration(15 * SECONDS)
             .eut(1200)
