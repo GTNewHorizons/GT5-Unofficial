@@ -5008,9 +5008,6 @@ gt.fakecircuitcomponent.name=Fake Circuit Component Item
 # ItemIntegratedCircuit
 gt.integrated_circuit.name=Programmed Circuit
 
-# ItemFluidDisplay
-gt.GregTech_FluidDisplay.name=Fluid Display
-
 # ItemWirelessHeadphones
 gt.WirelessHeadphones.name=Wireless Headphones
 
