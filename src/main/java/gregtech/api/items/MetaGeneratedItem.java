@@ -86,6 +86,8 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final ConcurrentHashMap<Short, Short> mBurnValues = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, String> mNameLocalizationKeys = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, String> mTooltipLocalizationKeys = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, Object[]> mNameLocalizationArgs = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, Object[]> mTooltipLocalizationArgs = new ConcurrentHashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -227,6 +229,59 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     }
 
     /**
+     * Adds a Custom Item, storing the provided localization keys and their format arguments for
+     * deferred translation. Combines the deferred-render behaviour of
+     * {@link #addItemWithLocalizationKeys} with support for parameterised keys (e.g. keys containing
+     * {@code %s}), so the displayed text is both localisation-aware and formatted correctly.
+     *
+     * <p>
+     * At registration time the keys are eagerly resolved once (for {@link #addItem}), and the keys
+     * plus arguments are stored for re-translation at render time, so language changes are reflected
+     * without a restart.
+     *
+     * <p>
+     * Pass {@code null} or an empty array for either argument array when no substitution is needed
+     * for that string.
+     *
+     * @param aID          The Id of the assigned Item [0 - mItemAmount] (The MetaData gets
+     *                     auto-shifted by +mOffset)
+     * @param aNameKey     The localization key for the item's display name
+     * @param aNameArgs    Format arguments for {@code aNameKey}, or {@code null} if none
+     * @param aToolTipKey  The localization key for the item's tooltip, or {@code null} for no tooltip
+     * @param aToolTipArgs Format arguments for {@code aToolTipKey}, or {@code null} if none
+     * @param aRandomData  The OreDict Names you want to give the Item. Also used for TC Aspects and
+     *                     some other things.
+     * @return An ItemStack containing the newly created Item.
+     */
+    public final ItemStack addItemWithLocalizationKeysFormatted(int aID, String aNameKey, Object[] aNameArgs,
+        String aToolTipKey, Object[] aToolTipArgs, Object... aRandomData) {
+
+        String eagerName = hasArgs(aNameArgs) ? GTUtility.translate(aNameKey, aNameArgs)
+            : GTUtility.translate(aNameKey);
+        String eagerTooltip = hasArgs(aToolTipArgs) ? GTUtility.translate(aToolTipKey, aToolTipArgs)
+            : GTUtility.translate(aToolTipKey);
+
+        ItemStack rStack = addItem(aID, eagerName, eagerTooltip, aRandomData);
+        if (rStack != null) {
+            short meta = (short) (mOffset + aID);
+            if (GTUtility.isStringValid(aNameKey)) {
+                mNameLocalizationKeys.put(meta, aNameKey);
+                if (hasArgs(aNameArgs)) mNameLocalizationArgs.put(meta, aNameArgs);
+            }
+            if (GTUtility.isStringValid(aToolTipKey)) {
+                mTooltipLocalizationKeys.put(meta, aToolTipKey);
+                if (hasArgs(aToolTipArgs)) mTooltipLocalizationArgs.put(meta, aToolTipArgs);
+            }
+        }
+        return rStack;
+    }
+
+    /** Returns {@code true} if the array is non-null and non-empty. */
+    private static boolean hasArgs(Object[] args) {
+        return args != null && args.length > 0;
+    }
+
+    /**
      * Sets a Food Behavior for the Item.
      *
      * @param aMetaValue    the Meta Value of the Item you want to set it to. [0 - 32765]
@@ -307,14 +362,22 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
         String tName = super.getItemStackDisplayName(aStack);
-        String tNameKey = mNameLocalizationKeys.get((short) getDamage(aStack));
+        short meta = (short) getDamage(aStack);
+        String tNameKey = mNameLocalizationKeys.get(meta);
         if (GTUtility.isStringValid(tNameKey)) {
-            return GTUtility.translate(tNameKey);
+            Object[] tArgs = mNameLocalizationArgs.get(meta);
+            return hasArgs(tArgs) ? GTUtility.translate(tNameKey, tArgs)
+                : GTUtility.translate(tNameKey);
         }
         if (net.minecraft.util.StatCollector.canTranslate(tName)) {
             return GTUtility.translate(tName);
         }
         return tName;
+    }
+
+    @Override
+    protected Object[] getToolTipLocalizationArgs(ItemStack aStack) {
+        return mTooltipLocalizationArgs.get((short) getDamage(aStack));
     }
 
     /**

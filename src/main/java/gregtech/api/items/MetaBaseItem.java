@@ -251,7 +251,8 @@ public abstract class MetaBaseItem extends GTGenericItem
         if (aStack.getItemDamage() < 0 || aStack.getItemDamage() >= 32000) {
             String tooltipKey = getToolTipLocalizationKey(aStack);
             String tKey = tooltipKey != null ? tooltipKey : getUnlocalizedName(aStack) + ".tooltip";
-            GTUtility.translateMultiline(aList, tKey);
+            Object[] tooltipArgs = getToolTipLocalizationArgs(aStack);
+            GTUtility.translateMultiline(aList, tKey, tooltipArgs != null ? tooltipArgs : new Object[0]);
         } else {
             Materials material = getMaterial(aStack.getItemDamage());
             if (material != null) {
@@ -331,6 +332,21 @@ public abstract class MetaBaseItem extends GTGenericItem
         }
 
         addAdditionalToolTips(aList, aStack, aPlayer);
+    }
+
+    /**
+     * Returns the format arguments to substitute into the tooltip localization key for the given stack,
+     * or {@code null} if the tooltip requires no formatting.
+     *
+     * <p>
+     * Subclasses may override this to supply per-item arguments when the tooltip key contains
+     * {@code %s} or other format specifiers.
+     *
+     * @param aStack the item stack being rendered
+     * @return an array of format arguments, or {@code null}
+     */
+    protected Object[] getToolTipLocalizationArgs(ItemStack aStack) {
+        return null;
     }
 
     @Override

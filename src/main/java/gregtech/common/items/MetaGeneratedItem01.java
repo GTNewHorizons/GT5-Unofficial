@@ -3507,46 +3507,46 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
 
         ItemList.Steam_Regulator_LV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysFormatted(
                 Steam_Regulator_LV.ID,
-                GTUtility.translate("gt.item.steam_regulator.lv.name"),
-                GTUtility.translate("gt.item.steam_valve.tooltip", formatNumber(1024), formatNumber(1024 * 20)),
+                "gt.item.steam_regulator.name", new Object[]{"LV"},
+                "gt.item.steam_valve.tooltip",  new Object[]{formatNumber(1024), formatNumber(1024 * 20)},
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L)));
         ItemList.Steam_Regulator_MV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysFormatted(
                 Steam_Regulator_MV.ID,
-                GTUtility.translate("gt.item.steam_regulator.mv.name"),
-                GTUtility.translate("gt.item.steam_valve.tooltip", formatNumber(2048), formatNumber(2048 * 20)),
+                "gt.item.steam_regulator.name", new Object[]{"MV"},
+                "gt.item.steam_valve.tooltip",  new Object[]{formatNumber(2048), formatNumber(2048 * 20)},
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
         ItemList.Steam_Regulator_HV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysFormatted(
                 Steam_Regulator_HV.ID,
-                GTUtility.translate("gt.item.steam_regulator.hv.name"),
-                GTUtility.translate("gt.item.steam_valve.tooltip", formatNumber(4096), formatNumber(4096 * 20)),
+                "gt.item.steam_regulator.name", new Object[]{"HV"},
+                "gt.item.steam_valve.tooltip",  new Object[]{formatNumber(4096), formatNumber(4096 * 20)},
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L)));
         ItemList.Steam_Regulator_EV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysFormatted(
                 Steam_Regulator_EV.ID,
-                GTUtility.translate("gt.item.steam_regulator.ev.name"),
-                GTUtility.translate("gt.item.steam_valve.tooltip", formatNumber(8192), formatNumber(8192 * 20)),
+                "gt.item.steam_regulator.name", new Object[]{"EV"},
+                "gt.item.steam_valve.tooltip",  new Object[]{formatNumber(8192), formatNumber(8192 * 20)},
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 8L)));
         ItemList.Steam_Regulator_IV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysFormatted(
                 Steam_Regulator_IV.ID,
-                GTUtility.translate("gt.item.steam_regulator.iv.name"),
-                GTUtility.translate("gt.item.steam_valve.tooltip", formatNumber(16384), formatNumber(16384 * 20)),
+                "gt.item.steam_regulator.name", new Object[]{"IV"},
+                "gt.item.steam_valve.tooltip",  new Object[]{formatNumber(16384), formatNumber(16384 * 20)},
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 16L),

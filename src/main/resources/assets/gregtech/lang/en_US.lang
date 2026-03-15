@@ -3286,11 +3286,12 @@ gt.item.wireless_energy_cover_debug.name=Debug Wireless Energy Cover
 gt.item.wireless_energy_cover_debug.tooltip=Infinite Power. Ignores Voltage Limitations.
 
 ## Steam Regulators (use same tooltip as steam valves)
-gt.item.steam_regulator.lv.name=Steam Regulator (LV)
-gt.item.steam_regulator.mv.name=Steam Regulator (MV)
-gt.item.steam_regulator.hv.name=Steam Regulator (HV)
-gt.item.steam_regulator.ev.name=Steam Regulator (EV)
-gt.item.steam_regulator.iv.name=Steam Regulator (IV)
+gt.item.steam_regulator.name=Steam Regulator (%s)
+#gt.item.steam_regulator.lv.name=Steam Regulator (LV)
+#gt.item.steam_regulator.mv.name=Steam Regulator (MV)
+#gt.item.steam_regulator.hv.name=Steam Regulator (HV)
+#gt.item.steam_regulator.ev.name=Steam Regulator (EV)
+#gt.item.steam_regulator.iv.name=Steam Regulator (IV)
 
 ## Electromagnets
 gt.item.electromagnet.iron.name=Iron Electromagnet
