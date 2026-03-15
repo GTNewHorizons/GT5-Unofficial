@@ -251,11 +251,7 @@ public abstract class MetaBaseItem extends GTGenericItem
         if (aStack.getItemDamage() < 0 || aStack.getItemDamage() >= 32000) {
             String tooltipKey = getToolTipLocalizationKey(aStack);
             String tKey = tooltipKey != null ? tooltipKey : getUnlocalizedName(aStack) + ".tooltip";
-            String tTranslated = GTUtility.translate(tKey);
-            String[] tStrings = tTranslated.split("\\\\n");
-            for (String tString : tStrings) if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) {
-                aList.add(tString);
-            }
+            GTUtility.translateMultiline(aList, tKey);
         } else {
             Materials material = getMaterial(aStack.getItemDamage());
             if (material != null) {
