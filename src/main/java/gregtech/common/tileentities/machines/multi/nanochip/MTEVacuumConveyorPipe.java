@@ -18,6 +18,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolModes;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -33,8 +34,8 @@ import tectech.thing.metaTileEntity.pipe.MTEBaseFactoryPipe;
 
 public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumFactoryElement {
 
-    private static Textures.BlockIcons.CustomIcon CCPipe;
-    private static Textures.BlockIcons.CustomIcon CCBarOverlay, CCBarOverlayActive;
+    private static IIconContainer CCPipe;
+    private static IIconContainer CCBarOverlay, CCBarOverlayActive;
     public VacuumFactoryNetwork network;
 
     public MTEVacuumConveyorPipe(int aID, String aName, String aNameRegional) {
@@ -57,9 +58,9 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        CCPipe = new Textures.BlockIcons.CustomIcon("iconsets/CC_PIPE");
-        CCBarOverlay = new Textures.BlockIcons.CustomIcon("iconsets/CC_BAR_OVERLAY");
-        CCBarOverlayActive = new Textures.BlockIcons.CustomIcon("iconsets/CC_BAR_OVERLAY_ACTIVE");
+        CCPipe = Textures.BlockIcons.custom("iconsets/CC_PIPE");
+        CCBarOverlay = Textures.BlockIcons.customOptional("iconsets/CC_BAR_OVERLAY");
+        CCBarOverlayActive = Textures.BlockIcons.customOptional("iconsets/CC_BAR_OVERLAY_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 
