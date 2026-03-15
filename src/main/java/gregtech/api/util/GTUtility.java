@@ -3783,13 +3783,13 @@ public class GTUtility {
     }
 
     public static String[] breakLines(String... lines) {
-        return Arrays.stream(lines)
-            .flatMap(
-                s -> StreamSupport.stream(
-                    NEWLINE_SPLITTER.split(s)
-                        .spliterator(),
-                    false))
-            .toArray(String[]::new);
+        List<String> result = new ArrayList<>();
+        for (String line : lines) {
+            for (String part : NEWLINE_SPLITTER.split(line)) {
+                result.add(part);
+            }
+        }
+        return result.toArray(new String[0]);
     }
 
     @AutoValue
