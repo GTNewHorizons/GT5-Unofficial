@@ -84,8 +84,14 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
 
     protected static DecimalFormat standardFormat = createDecimalFormat();
 
-    private static final NavigableMap<Long, String> suffixes = new TreeMap<>(
-        ImmutableMap.of(1_000L, "k", 1_000_000L, "M", 1_000_000_000L, "G", 1_000_000_000_000L, "T"));
+    private static final NavigableMap<Long, String> suffixes = new TreeMap<>(ImmutableMap.<Long,String>builder()
+        .put(1_000L, "k")
+        .put(1_000_000L, "M")
+        .put(1_000_000_000L, "G")
+        .put(1_000_000_000_000L, "T")
+        .put(1_000_000_000_000_000L, "P")
+        .put(1_000_000_000_000_000_000L,"E")
+        .build());
 
     public static String format(long value) {
         // This formats so that we use the nearest metric prefix. If the 3-digit number before the prefix is under 10
@@ -246,7 +252,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                         new Column().size(160, 60)
                             .paddingLeft(40)
                             .child(
-                                new TextWidget<>(IKey.dynamic(() -> "Target Beam Energy (eV):")).size(160, 20)
+                                new TextWidget<>(IKey.dynamic(() -> StatCollector.translateToLocalFormatted("GT5U.gui.text.LHC.targetbeamenergyeV"))).size(160, 20)
                                     .alignment(Alignment.CENTER))
                             .child(
                                 new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
@@ -257,7 +263,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                                     .value(playerTargetBeamEnergyeVSync)
                                     .setDefaultNumber(1_000_000_000))
                             .child(
-                                new TextWidget<>(IKey.dynamic(() -> "Max Acceleration Cycles:")).size(160, 20)
+                                new TextWidget<>(IKey.dynamic(() -> StatCollector.translateToLocalFormatted("GT5U.gui.text.LHC.maxaccelerationcycles"))).size(160, 20)
                                     .alignment(Alignment.CENTER))
                             .child(
                                 new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
