@@ -54,7 +54,14 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
 
-    private static final IStructureDefinition<MTEBeamCrafter> STRUCTURE_DEFINITION = StructureDefinition.<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter>builder()
+    private int currentRecipeCurrentAmountA = 0;
+    private int currentRecipeCurrentAmountB = 0;
+    private int currentRecipeMaxAmountA = 0;
+    private int currentRecipeMaxAmountB = 0;
+
+    private GTRecipe lastRecipe;
+
+    private static final IStructureDefinition<MTEBeamCrafter> STRUCTURE_DEFINITION = StructureDefinition.<MTEBeamCrafter>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
@@ -307,10 +314,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     }
 
-    private int currentRecipeCurrentAmountA = 0;
-    private int currentRecipeCurrentAmountB = 0;
-    private int currentRecipeMaxAmountA = 0;
-    private int currentRecipeMaxAmountB = 0;
 
     @Override
     protected void incrementProgressTime() {
@@ -318,20 +321,21 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         BeamInformation inputParticle_A = this.getNthInputParticle(0);
         BeamInformation inputParticle_B = this.getNthInputParticle(1);
 
-        int particleRateA = inputParticle_A.getRate();
-        int particleRateB = inputParticle_B.getRate();
+        if (inputParticle_A != null && inputParticle_B != null){
+            int particleRateA = inputParticle_A.getRate();
+            int particleRateB = inputParticle_B.getRate();
 
-        this.currentRecipeCurrentAmountA += particleRateA;
-        if (this.currentRecipeCurrentAmountA <= currentRecipeMaxAmountA) {
-            mProgresstime += particleRateA;
-        }
-        this.currentRecipeCurrentAmountB += particleRateB;
-        if (this.currentRecipeCurrentAmountB <= currentRecipeMaxAmountB) {
-            mProgresstime += particleRateB;
+            this.currentRecipeCurrentAmountA += particleRateA;
+            if (this.currentRecipeCurrentAmountA <= currentRecipeMaxAmountA) {
+                mProgresstime += particleRateA;
+            }
+            this.currentRecipeCurrentAmountB += particleRateB;
+            if (this.currentRecipeCurrentAmountB <= currentRecipeMaxAmountB) {
+                mProgresstime += particleRateB;
+            }
         }
     }
 
-    private GTRecipe lastRecipe;
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
@@ -359,7 +363,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 BeamInformation inputParticle_A = this.getNthInputParticle(0);
                 BeamInformation inputParticle_B = this.getNthInputParticle(1);
 
-                if ((inputParticle_A != null) || (inputParticle_B != null)) {
+                if ((inputParticle_A != null) && (inputParticle_B != null)) {
                     return isInputParticleInRecipe(inputParticle_A, inputParticle_B, metadata);
                 }
                 return false;
@@ -388,15 +392,13 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 
-        tRecipe.consumeInput(1, GTValues.emptyFluidStackArray, inputItems);
-        ItemStack[] itemOutputArray = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
-        this.mOutputItems = itemOutputArray;
+        tRecipe.consumeInput(1, inputFluids, inputItems);
+        this.mOutputItems = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
 
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
         mEUt = (int) -tVoltageActual;
-        if (this.mEUt > 0) this.mEUt = (-this.mEUt);
 
         this.updateSlots();
         return CheckRecipeResultRegistry.SUCCESSFUL;
