@@ -161,7 +161,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(3)
                 .adder(MTEBeamStabilizer::addBeamLineOutputHatch)
-                .build()) // beamline input hatch
+                .build()) // beamline output hatch
         .build();
 
     public MTEBeamStabilizer(final int aID, final String aName, final String aNameRegional) {

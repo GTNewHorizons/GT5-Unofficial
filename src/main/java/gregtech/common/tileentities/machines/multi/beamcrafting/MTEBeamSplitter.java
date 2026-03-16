@@ -94,7 +94,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
                 .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings13, 10))
-        .addElement('A', chainAllGlasses()) // new glass type todo: (?)
+        .addElement('A', chainAllGlasses())
         .addElement(
             'C',
             buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchInputBeamline.class)
@@ -108,7 +108,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(3)
                 .adder((splitter, te, casingIndex) -> splitter.addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.All))
-                .build()) // beamline input hatch
+                .build()) // adv beamline output hatch
         .build();
 
     public MTEBeamSplitter(final int aID, final String aName, final String aNameRegional) {
@@ -196,9 +196,6 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered"),
                 4,
                 false)
-            .addEnergyHatch(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addTecTechHatchInfo()
             .toolTipFinisher(GTValues.AuthorHamCorp);
@@ -238,15 +235,13 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
         int numValidOutputs = 0;
         if (!this.mAdvancedOutputBeamline.isEmpty()) {
             for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
-                if (o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(inputInfo.getParticleId()), false)
-                    == true) {
+                if (o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(inputInfo.getParticleId()), false)) {
                     numValidOutputs++;
                 }
             }
             if (numValidOutputs > 0) {
                 for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
-                    if (o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(inputInfo.getParticleId()), false)
-                        == true) {
+                    if (o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(inputInfo.getParticleId()), false)) {
                         BeamInformation outputInfo = new BeamInformation(
                             inputInfo.getEnergy(),
                             inputInfo.getRate() / numValidOutputs,
