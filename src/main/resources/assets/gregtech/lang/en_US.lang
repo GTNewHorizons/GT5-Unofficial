@@ -2117,7 +2117,7 @@ gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip1=Takes in particle
 gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip2=§6That's literally it.
 
 gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetype=Beam Splitter
-gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetypefake=Bean Splitter
+gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetypefake=Beam Splitter, Bean Splitter
 gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip1=Select which particles to blacklist in the output hatches
 gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip2=Input particles will be split evenly among all valid output hatches
 
