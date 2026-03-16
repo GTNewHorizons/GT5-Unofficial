@@ -39,7 +39,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
 
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
 
-    private static final IStructureDefinition<MTEBeamMirror> STRUCTURE_DEFINITION = StructureDefinition.<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror>builder()
+    private static final IStructureDefinition<MTEBeamMirror> STRUCTURE_DEFINITION = StructureDefinition.<MTEBeamMirror>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
