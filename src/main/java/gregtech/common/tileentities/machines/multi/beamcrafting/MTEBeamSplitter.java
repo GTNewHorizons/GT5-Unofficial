@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_SPLITTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_SPLITTER_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -88,10 +87,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
         //spotless:on
         .addElement(
             'B', // collider casing
-            buildHatchAdder(MTEBeamSplitter.class).atLeast(Energy, ExoticEnergy)
-                .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
-                .hint(1)
-                .buildAndChain(GregTechAPI.sBlockCasings13, 10))
+            ofBlock(GregTechAPI.sBlockCasings13, 10))
         .addElement('A', chainAllGlasses())
         .addElement(
             'C',

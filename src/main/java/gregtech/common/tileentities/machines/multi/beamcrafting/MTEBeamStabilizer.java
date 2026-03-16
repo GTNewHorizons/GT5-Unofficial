@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_STABILIZER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_STABILIZER_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -168,10 +167,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         //spotless:on
         .addElement(
             'B', // collider casing
-            buildHatchAdder(MTEBeamStabilizer.class).atLeast(Energy, ExoticEnergy)
-                .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
-                .hint(1)
-                .buildAndChain(GregTechAPI.sBlockCasings13, 10))
+            ofBlock(GregTechAPI.sBlockCasings13, 10))
         .addElement('A', chainAllGlasses())
         .addElement(
             'C',
@@ -283,9 +279,6 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch"),
                 1,
                 false)
-            .addEnergyHatch(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTValues.AuthorHamCorp, GTValues.Authorzub);
         return tt;
