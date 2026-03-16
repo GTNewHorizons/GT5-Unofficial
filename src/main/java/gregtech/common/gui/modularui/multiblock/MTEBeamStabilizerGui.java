@@ -20,6 +20,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamStabilizer;
+import net.minecraft.util.StatCollector;
 
 public class MTEBeamStabilizerGui extends MTEMultiBlockBaseGui<MTEBeamStabilizer> {
 
@@ -78,7 +79,7 @@ public class MTEBeamStabilizerGui extends MTEMultiBlockBaseGui<MTEBeamStabilizer
                         new Column().size(160, 60)
                             .paddingLeft(40)
                             .child(
-                                new TextWidget<>(IKey.dynamic(() -> "Target Beam Rate:")).size(160, 20)
+                                new TextWidget<>(IKey.dynamic(() -> StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.gui.targetbeamrate") )).size(160, 20)
                                     .alignment(Alignment.CENTER))
                             .child(
                                 new TextFieldWidget().setTextAlignment(Alignment.CenterRight)

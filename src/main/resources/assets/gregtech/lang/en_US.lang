@@ -2173,6 +2173,8 @@ gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch=Beamline Output Hatch
 gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered=Filtered Beamline Output Hatch
 gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description1=Allows blacklisting of specific particle types in the Large Hadron Collider
 gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description2=Right click to open the GUI and change selections
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.gui.targetbeamrate=Target Beam Rate:
+
 GT5U.gui.text.contributors.panel.open=Open Contributor List
 GT5U.gui.text.contributors.header=Contributors
 GT5U.gui.text.contributors.projectlead=Project Lead
