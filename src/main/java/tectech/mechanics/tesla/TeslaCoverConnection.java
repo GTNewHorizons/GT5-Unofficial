@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.hash.Fnv1a32;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -77,6 +78,6 @@ public class TeslaCoverConnection implements ITeslaConnectableSimple {
 
     @Override
     public int hashCode() {
-        return 31 + (IGT == null ? 0 : IGT.hashCode());
+        return Fnv1a32.hashStep(Fnv1a32.initialState(), Objects.hash(IGT));
     }
 }
