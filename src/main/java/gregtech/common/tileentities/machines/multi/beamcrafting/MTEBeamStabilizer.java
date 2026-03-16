@@ -10,6 +10,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -54,6 +55,24 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
     private float storedBeamFocus = 0;
     private int MAX_STORED_PARTICLES = 100_000;
 
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("storedParticleID",storedParticleID);
+        aNBT.setFloat("storedBeamEnergy",storedBeamEnergy);
+        aNBT.setInteger("cumulativeBeamRate",cumulativeBeamRate);
+        aNBT.setFloat("storedBeamFocus",storedBeamFocus);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        storedParticleID = aNBT.getInteger("storedParticleID");
+        storedBeamEnergy = aNBT.getFloat("storedBeamEnergy");
+        cumulativeBeamRate = aNBT.getInteger("cumulativeBeamRate");
+        storedBeamFocus = aNBT.getFloat("storedBeamFocus");
+    }
+    
     private static final IStructureDefinition<MTEBeamStabilizer> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEBeamStabilizer>builder()
         .addShape(
