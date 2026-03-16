@@ -29,7 +29,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -189,8 +188,16 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return (float) Math.pow(toxicResidue, 0.08F);
     }
 
+    private float getMachineActiveDecayBoost() {
+        return this.isAllowedToWork() ? 1F : 0.1F;
+    }
+
     private int getResidueDecay() {
-        return Math.max(0, (int) (getBaseResidueDecay() * this.robotArmDecayBoost * getResidueScaleDecayBoost()));
+        return Math.max(
+            0,
+            (int) (getBaseResidueDecay() * this.robotArmDecayBoost
+                * getResidueScaleDecayBoost()
+                * getMachineActiveDecayBoost()));
     }
 
     private float getResidueRate() {
@@ -212,18 +219,18 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private int getRobotArmTier() {
         for (int i = ItemList.ROBOT_ARMS.length - 1; i >= 0; i--) {
             ArrayList<ItemStack> storedInputs = getStoredInputs();
-            int currentStackSize=0;
+            int currentStackSize = 0;
             for (ItemStack storedInput : storedInputs) {
                 if (GTUtility.areStacksEqual(storedInput, ItemList.ROBOT_ARMS[i].get(1L))) {
-                    currentStackSize=Math.max(currentStackSize,storedInput.stackSize);
+                    currentStackSize = Math.max(currentStackSize, storedInput.stackSize);
                 }
             }
-            if(currentStackSize>0){
-                robotArmAmount=currentStackSize;
+            if (currentStackSize > 0) {
+                robotArmAmount = currentStackSize;
                 return i;
             }
         }
-        robotArmAmount=0;
+        robotArmAmount = 0;
         return -1;
     }
 
@@ -415,6 +422,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.GRAY
                     + ")")
             .addInfo(
+                "Residue will decay " + EnumChatFormatting.WHITE
+                    + "10 "
+                    + EnumChatFormatting.GRAY
+                    + "times slower when multiblock is disabled")
+            .addInfo(
                 "Insert " + EnumChatFormatting.LIGHT_PURPLE
                     + "Robot Arms "
                     + EnumChatFormatting.GRAY
@@ -467,7 +479,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "Robot Arm Amount"
                     + EnumChatFormatting.GRAY
-                    + ").")
+                    + ")")
             .addInfo(
                 "Every " + EnumChatFormatting.WHITE
                     + "minute"
@@ -645,8 +657,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         aNBT.setInteger("randomFactor", randomFactor);
         aNBT.setInteger("nextRandomGoal", randomGoal);
         aNBT.setBoolean("isApproachingFromHigher", isApproachingFromHigher);
-        aNBT.setInteger("robotArmTier",robotArmTier);
-        aNBT.setInteger("robotArmAmount",robotArmAmount);
+        aNBT.setInteger("robotArmTier", robotArmTier);
+        aNBT.setInteger("robotArmAmount", robotArmAmount);
     }
 
     @Override
@@ -667,8 +679,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         randomGoal = aNBT.getInteger("nextRandomGoal");
         randomGoal = normalizeIntoRange(randomGoal);
         isApproachingFromHigher = aNBT.getBoolean("isApproachingFromHigher");
-        robotArmTier=aNBT.getInteger("robotArmTier");
-        robotArmAmount=aNBT.getInteger("robotArmAmount");
+        robotArmTier = aNBT.getInteger("robotArmTier");
+        robotArmAmount = aNBT.getInteger("robotArmAmount");
     }
 
     @Override
@@ -730,28 +742,13 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             } else {
                 useBooster();
             }
-
-            // Residue changing
-            robotArmTier=getRobotArmTier();
-            if (robotArmTier != -1) {
-                int amount = Math.min(robotArmAmount, 64);
-                this.robotArmDecayBoost = (float) (getRobotArmDecayBoost(robotArmTier) * Math.sqrt(amount));
-                if (getBaseMetaTileEntity().getWorld()
-                    .getTotalWorldTime() % MINUTES == 0) {
-                    int random = getBaseMetaTileEntity().getRandomNumber(90);
-                    ItemStack robotArmItemStack=ItemList.ROBOT_ARMS[robotArmTier].get(amount);
-                    if (random == 0) depleteInput(robotArmItemStack);
-                }
-            } else {
-                this.robotArmDecayBoost = 1;
-            }
             this.mEUt = getEUOutput(fuelConsumption);
             this.mEfficiencyIncrease = 50;
             this.mProgresstime = 1;
             this.mMaxProgresstime = 1;
-            residueIncrease = getResidueIncrease();
-            residueDecay = getResidueDecay();
-            this.toxicResidue = Math.max(0, this.toxicResidue + residueIncrease - residueDecay);
+            residueIncrease = getResidueIncrease(); // Residue decrease is in onPostTick so decay can still happen when
+                                                    // multi is off
+            this.toxicResidue += residueIncrease;
             return CheckRecipeResultRegistry.GENERATING;
         }
         this.shutDown();
@@ -760,11 +757,27 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        this.residueIncrease = 0;
         super.onPostTick(aBaseMetaTileEntity, aTick);
         for (MTEToxicResidueSensor toxicResidueSensorHatch : sensorHatches) { // done in onPostTick so it can update
                                                                               // even when multi is off
             toxicResidueSensorHatch.updateRedstoneOutput(toxicResidue, getResidueCapacity());
         }
+        robotArmTier = getRobotArmTier();
+        if (robotArmTier != -1) {
+            int amount = Math.min(robotArmAmount, 64);
+            this.robotArmDecayBoost = (float) (getRobotArmDecayBoost(robotArmTier) * Math.sqrt(amount));
+            if (getBaseMetaTileEntity().getWorld()
+                .getTotalWorldTime() % MINUTES == 0) {
+                int random = getBaseMetaTileEntity().getRandomNumber(90);
+                ItemStack robotArmItemStack = ItemList.ROBOT_ARMS[robotArmTier].get(amount);
+                if (random == 0) depleteInput(robotArmItemStack);
+            }
+        } else {
+            this.robotArmDecayBoost = 1;
+        }
+        residueDecay = getResidueDecay();
+        this.toxicResidue = Math.max(0, this.toxicResidue - residueDecay);
     }
 
     private void shutDown() {
