@@ -55,11 +55,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
             aNameRegional,
             11,
             0,
-            new String[] {
-                StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                    + EnumChatFormatting.YELLOW
-                    + "CRIB, CRIBUS",
-                "Proxy for Crafting Input Buffer/Bus", "Hatch Tier: " + TIER_COLORS[11] + VN[11],
+            new String[] { "Proxy for Crafting Input Buffer/Bus (CRIB)", "Hatch Tier: " + TIER_COLORS[11] + VN[11],
                 "Link with Crafting Input Buffer/Bus using Data Stick to share inventory",
                 "Left click on the Crafting Input Buffer/Bus, then right click on this block to link them" });
         disableSort = true;

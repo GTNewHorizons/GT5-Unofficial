@@ -1101,12 +1101,16 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     protected static String[] getDescriptionArray(boolean autoPullAvailable) {
-        List<String> strings = new ArrayList<>(8);
+        List<String> strings = new ArrayList<>(autoPullAvailable ? 12 : 6);
         if (autoPullAvailable) {
             strings.add(
                 StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": " + EnumChatFormatting.YELLOW + "ASIB");
+            strings.add("Advanced item input for Multiblocks");
+        } else {
+            strings.add(
+                StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": " + EnumChatFormatting.YELLOW + "SIB");
+            strings.add("Next-gen item input for Multiblocks");
         }
-        strings.add("Next-gen item input for Multiblocks");
         strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 6 : 4] + VN[autoPullAvailable ? 6 : 4]);
         strings.add("Retrieves directly from ME");
         strings.add("Keeps 16 item types in stock");
