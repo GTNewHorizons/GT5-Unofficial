@@ -145,8 +145,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             else if (name.startsWith("crushed")) registerOrePrefix(name, isCrushedOre);
             else if (name.startsWith("dustImpure")) registerOrePrefix(name, isImpureDust);
             else if (name.startsWith("dustPure")) registerOrePrefix(name, isPureDust);
-            else if (name.startsWith("ore")) registerOrePrefix(name, isOre);
-            else if (name.startsWith("rawOre")) registerOrePrefix(name, isOre);
+            else if (name.startsWith("ore") || name.startsWith("rawOre")) registerOrePrefix(name, isOre);
         }
     }
 
