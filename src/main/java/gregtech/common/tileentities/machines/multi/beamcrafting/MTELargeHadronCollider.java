@@ -90,7 +90,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public boolean strongEnabled;
     public boolean gravEnabled;
 
-
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);

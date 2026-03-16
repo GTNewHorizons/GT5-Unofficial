@@ -85,12 +85,10 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
     }
 
     public BeamInformation getNthInputParticle(int n) {
-
         if (this.mInputBeamline.isEmpty()) return new BeamInformation(0, 0, 0, 0);
         MTEHatchInputBeamline in = this.mInputBeamline.get(n);
         if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
         return in.dataPacket.getContent();
-
     }
 
     @Override

@@ -30,7 +30,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.gui.modularui.multiblock.MTEBeamStabilizerGui;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
@@ -338,7 +337,6 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         }
         return true;
     }
-
 
     private void outputPacketAfterRecipe(int rate) {
         if (!this.mOutputBeamline.isEmpty()) {
