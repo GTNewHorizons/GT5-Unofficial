@@ -843,19 +843,10 @@ gt.multiblock.min_energy_hatch_tier=Minimum energy hatch tier: %s
 gt.multiblock.base_cycle_time=Base cycle time: %s
 
 gt.multiblock.ore_drill.machine_type=Miner, MBM
-gt.multiblock.ore_drill.desc1=Use a Screwdriver to configure working area
-gt.multiblock.ore_drill.desc2=Maximum area is %s blocks
-gt.multiblock.ore_drill.desc3=Use Soldering iron to turn off chunk mode
-gt.multiblock.ore_drill.desc4=Use Wire Cutter to toggle replacing mined blocks with cobblestone
-gt.multiblock.ore_drill.desc5=In chunk mode, working area center is the chunk corner nearest to the drill
-gt.multiblock.ore_drill.desc6=Gives ~%sx as much crushed ore vs normal processing
-gt.multiblock.ore_drill.desc7=Fortune bonus of %s. Only works on small ores
+gt.multiblock.ore_drill.desc=Use a Screwdriver to configure working area\nMaximum area is %s blocks\nUse Soldering iron to turn off chunk mode\nUse Wire Cutter to toggle replacing mined blocks with cobblestone\nIn chunk mode, working area center is the chunk corner nearest to the drill\nGives %s as much crushed ore vs normal processing\nFortune bonus of %s. Only works on small ores
 
 gt.multiblock.oil_drill.machine_type=Pump, FDR
-gt.multiblock.oil_drill.desc1=Works on %s chunks
-gt.multiblock.oil_drill.desc2=Use a Screwdriver to configure range
-gt.multiblock.oil_drill.desc3=Use Programmed Circuits to ignore near exhausted oil field
-gt.multiblock.oil_drill.desc4=If total circuit # is greater than output per operation, the machine will halt.
+gt.multiblock.oil_drill.desc=Works on %s chunks\nUse a Screwdriver to configure range\nUse Programmed Circuits to ignore near exhausted oil field\nIf total circuit # is greater than output per operation, the machine will halt.
 
 gt.multiblock.DieselEngine.machine_type=Combustion Generator, LCE
 gt.multiblock.DieselEngine.desc1=Supply Diesel Fuels and %s of Lubricant per hour to run

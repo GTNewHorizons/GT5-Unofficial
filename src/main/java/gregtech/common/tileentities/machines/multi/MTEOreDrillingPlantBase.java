@@ -639,22 +639,11 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             : getFrameMaterial().getLocalizedName();
 
         tt.addMachineType(GTUtility.translate("gt.multiblock.ore_drill.machine_type"))
-            .addInfo(GTUtility.translate("gt.multiblock.ore_drill.desc1"))
-            .addInfo(
-                GTUtility.translate(
-                    "gt.multiblock.ore_drill.desc2",
-                    EnumChatFormatting.WHITE + side + "x" + side + EnumChatFormatting.GRAY))
-            .addInfo(GTUtility.translate("gt.multiblock.ore_drill.desc3"))
-            .addInfo(GTUtility.translate("gt.multiblock.ore_drill.desc4"))
-            .addInfo(GTUtility.translate("gt.multiblock.ore_drill.desc5"))
-            .addInfo(
-                GTUtility.translate(
-                    "gt.multiblock.ore_drill.desc6",
-                    EnumChatFormatting.WHITE + "3" + EnumChatFormatting.GRAY))
-            .addInfo(
-                GTUtility.translate(
-                    "gt.multiblock.ore_drill.desc7",
-                    EnumChatFormatting.WHITE + formatNumber(mTier + 3) + EnumChatFormatting.GRAY))
+            .addInfoMultilineTranslated(
+                "gt.multiblock.ore_drill.desc",
+                EnumChatFormatting.WHITE + side + "x" + side + EnumChatFormatting.GRAY,
+                EnumChatFormatting.WHITE + "~3x" + EnumChatFormatting.GRAY,
+                EnumChatFormatting.WHITE + formatNumber(mTier + 3) + EnumChatFormatting.GRAY)
             .addInfo(
                 GTUtility.translate(
                     "gt.multiblock.min_energy_hatch_tier",

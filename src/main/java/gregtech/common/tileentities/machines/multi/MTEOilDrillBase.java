@@ -136,14 +136,9 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             : getFrameMaterial().getLocalizedName();
 
         tt.addMachineType(GTUtility.translate("gt.multiblock.oil_drill.machine_type"))
-            .addInfo(
-                GTUtility.translate(
-                    "gt.multiblock.oil_drill.desc1",
-                    EnumChatFormatting.WHITE + side + "x" + side + EnumChatFormatting.GRAY))
-            .addInfo(GTUtility.translate("gt.multiblock.oil_drill.desc2"))
-            .addInfo(GTUtility.translate("gt.multiblock.oil_drill.desc3"))
-            .addInfo(GTUtility.translate("gt.multiblock.oil_drill.desc4")) // doesn't
-            // work
+            .addInfoMultilineTranslated(
+                "gt.multiblock.oil_drill.desc",
+                EnumChatFormatting.WHITE + side + "x" + side + EnumChatFormatting.GRAY)
             .addInfo(
                 GTUtility.translate(
                     "gt.multiblock.min_energy_hatch_tier",

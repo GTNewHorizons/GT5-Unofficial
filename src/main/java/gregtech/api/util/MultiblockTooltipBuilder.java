@@ -334,6 +334,20 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
+     * Translate a localization key and add each line to info
+     *
+     * @param key        The localization key
+     * @param parameters Optional substitution arguments
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addInfoMultilineTranslated(String key, Object... parameters) {
+        for (String line : GTUtility.translateMultiline(key, parameters)) {
+            iLines.add(line);
+        }
+        return this;
+    }
+
+    /**
      * Add a separator line
      *
      * @return Instance this method was called on.
