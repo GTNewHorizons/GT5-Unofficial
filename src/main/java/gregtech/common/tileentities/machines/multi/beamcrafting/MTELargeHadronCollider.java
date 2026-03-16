@@ -547,6 +547,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 cachedOutputParticle = inputInfo.copy();
                 initialParticleInfo = inputInfo.copy();
                 accelerationCycleCounter = 0;
+                lEUt = calculateEnergyCostAccelerator(cachedOutputParticle);
             } else {
                 if (!cachedOutputParticle.getParticle()
                     .canAccelerate()) {
