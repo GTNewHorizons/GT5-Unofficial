@@ -29,6 +29,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -169,7 +170,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             } while (Math.abs(randomFactor - randomGoal) <= 50);
             isApproachingFromHigher = randomFactor > randomGoal;
         }
-        int randomChange = getBaseMetaTileEntity().getRandomNumber(28) - 7;
+        int randomChange = getBaseMetaTileEntity().getRandomNumber(23) - 7;
         randomFactor = normalizeIntoRange(randomFactor + (isApproachingFromHigher ? -1 : 1) * randomChange);
     }
 
@@ -211,18 +212,18 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private int getRobotArmTier() {
         for (int i = ItemList.ROBOT_ARMS.length - 1; i >= 0; i--) {
             ArrayList<ItemStack> storedInputs = getStoredInputs();
-            int currentStackSize = 0;
+            int currentStackSize=0;
             for (ItemStack storedInput : storedInputs) {
                 if (GTUtility.areStacksEqual(storedInput, ItemList.ROBOT_ARMS[i].get(1L))) {
-                    currentStackSize = Math.max(currentStackSize, storedInput.stackSize);
+                    currentStackSize=Math.max(currentStackSize,storedInput.stackSize);
                 }
             }
-            if (currentStackSize > 0) {
-                robotArmAmount = currentStackSize;
+            if(currentStackSize>0){
+                robotArmAmount=currentStackSize;
                 return i;
             }
         }
-        robotArmAmount = 0;
+        robotArmAmount=0;
         return -1;
     }
 
@@ -644,8 +645,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         aNBT.setInteger("randomFactor", randomFactor);
         aNBT.setInteger("nextRandomGoal", randomGoal);
         aNBT.setBoolean("isApproachingFromHigher", isApproachingFromHigher);
-        aNBT.setInteger("robotArmTier", robotArmTier);
-        aNBT.setInteger("robotArmAmount", robotArmAmount);
+        aNBT.setInteger("robotArmTier",robotArmTier);
+        aNBT.setInteger("robotArmAmount",robotArmAmount);
     }
 
     @Override
@@ -666,8 +667,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         randomGoal = aNBT.getInteger("nextRandomGoal");
         randomGoal = normalizeIntoRange(randomGoal);
         isApproachingFromHigher = aNBT.getBoolean("isApproachingFromHigher");
-        robotArmTier = aNBT.getInteger("robotArmTier");
-        robotArmAmount = aNBT.getInteger("robotArmAmount");
+        robotArmTier=aNBT.getInteger("robotArmTier");
+        robotArmAmount=aNBT.getInteger("robotArmAmount");
     }
 
     @Override
@@ -731,14 +732,14 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             }
 
             // Residue changing
-            robotArmTier = getRobotArmTier();
+            robotArmTier=getRobotArmTier();
             if (robotArmTier != -1) {
                 int amount = Math.min(robotArmAmount, 64);
                 this.robotArmDecayBoost = (float) (getRobotArmDecayBoost(robotArmTier) * Math.sqrt(amount));
                 if (getBaseMetaTileEntity().getWorld()
                     .getTotalWorldTime() % MINUTES == 0) {
                     int random = getBaseMetaTileEntity().getRandomNumber(90);
-                    ItemStack robotArmItemStack = ItemList.ROBOT_ARMS[robotArmTier].get(amount);
+                    ItemStack robotArmItemStack=ItemList.ROBOT_ARMS[robotArmTier].get(amount);
                     if (random == 0) depleteInput(robotArmItemStack);
                 }
             } else {
