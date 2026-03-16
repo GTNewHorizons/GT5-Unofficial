@@ -1175,16 +1175,14 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 9 : 8] + VN[autoPullAvailable ? 9 : 8]);
         strings.add("Retrieves directly from ME");
         strings.add("Keeps 16 fluid types in stock");
-
         if (autoPullAvailable) {
-            strings.add(
-                "Auto-Pull from ME mode will automatically stock the first 16 fluid in the ME system, updated every 5 seconds.");
+            strings.add("Auto-Pull from ME mode will automatically stock the first");
+            strings.add("16 fluid in the ME system, updated every 5 seconds.");
             strings.add("Toggle by right-clicking with screwdriver, or use the GUI.");
-            strings.add(
-                "Use the GUI to limit the minimum stack size for Auto-Pulling, adjust the slot refresh timer and enable fast recipe checks.");
+            strings.add("Use the GUI to limit the minimum stack size for Auto-Pulling,");
+            strings.add("adjust the slot refresh timer and enable fast recipe checks.");
             strings.add("WARNING: Fast recipe checks can be laggy. Use with caution.");
         }
-
         strings.add("Change ME connection behavior by right-clicking with wire cutter.");
         strings.add("Configuration data can be copy/pasted using a data stick.");
         return strings.toArray(new String[0]);
