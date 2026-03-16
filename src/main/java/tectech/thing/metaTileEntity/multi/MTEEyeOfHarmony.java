@@ -64,6 +64,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -103,8 +104,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     private static final double SPACETIME_FAILURE_BASE = 2;
 
     // Region variables.
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
-    private static Textures.BlockIcons.CustomIcon ScreenON;
+    private static IIconContainer ScreenOFF;
+    private static IIconContainer ScreenON;
 
     private int spacetimeCompressionFieldMetadata = -1;
     private int timeAccelerationFieldMetadata = -1;
@@ -1123,8 +1124,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_BHG");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_BHG_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom("iconsets/EM_BHG");
+        ScreenON = Textures.BlockIcons.custom("iconsets/EM_BHG_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 

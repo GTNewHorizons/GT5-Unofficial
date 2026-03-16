@@ -176,7 +176,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
             }
         }
         if (aStack.stackSize <= 0) {
-            aPlayer.destroyCurrentEquippedItem();
+            GTUtility.destroyCurrentItem(aPlayer);
         }
         return true;
     }
