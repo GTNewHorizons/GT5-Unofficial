@@ -616,7 +616,7 @@ GTPP.tooltip.volumetric_flask_setter.0=Easy Flask Configuration
 GTPP.tooltip.volumetric_flask_setter.1=Configure default input slot with a screwdriver
 
 # Tin Foil Hat
-GTPP.tooltip.tin_foil_hat=DoomSquirter's protection against cosmic radiation!\nGeneral paranoia makes the wearer unable to collect xp\nMovement speed is also reduced, to keep you safe\nThis hat may also have other strange powers
+GTPP.tooltip.tin_foil_hat=DoomSquirter's protection against cosmic radiation!\nGeneral paranoia makes the wearer unable to collect XP.\nMovement speed is also reduced, to keep you safe.\nThis hat may also have other strange powers.
 
 GTPP.tooltip.bad_tooltip_id=Bad Tooltip ID - %d
 
@@ -1570,7 +1570,7 @@ GT5U.gui.text.pollution_fail=§4Failed to output the pollution.
 GT5U.gui.text.structure_incomplete=§4Shut down due to incomplete structure.
 GT5U.gui.text.no_repair=§4Shut down due to machine damage.
 GT5U.gui.text.no_machine_part=No correct machine part in controller slot.
-GT5U.gui.text.insufficient=§4Shut down due to insufficient dynamo size
+GT5U.gui.text.insufficient_dynamo=§4Shut down due to insufficient dynamo size
 GT5U.gui.text.computation_loss=§4Shut down due to computation loss.
 GT5U.gui.text.missing_item=§7Missing required item: §b%s§f
 GT5U.gui.text.ph_sensor=pH threshold
@@ -3718,7 +3718,7 @@ GTPP.battpack.tooltip.4=Also charges items on the hotbar
 # Tooltips for the Personal Healing Bauble
 GTPP.nanohealer.tooltip.1=Worn as a Necklace within Baubles
 GTPP.nanohealer.tooltip.2=Drains
-GTPP.nanohealer.tooltip.3= EU per operation.
+GTPP.nanohealer.tooltip.3=EU per operation.
 GTPP.nanohealer.tooltip.4=Can restore HP, Hunger and Saturation.
 GTPP.nanohealer.tooltip.5=Will not prevent death.
 GTPP.nanohealer.tooltip.6=Shift+RMB to toggle notifications.
