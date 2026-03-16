@@ -495,7 +495,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             aNameRegional,
             supportFluids ? 10 : 6,
             MAX_INV_COUNT,
-            new String[] { "Advanced item input for Multiblocks",
+            new String[] {
+                StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
+                    + EnumChatFormatting.YELLOW
+                    + (supportFluids ? "CRIB" : "CRIBUS"),
+                "Advanced item input for Multiblocks",
                 "Hatch Tier: " + TIER_COLORS[supportFluids ? 10 : 6] + VN[supportFluids ? 10 : 6],
                 "Processes patterns directly from ME",
                 supportFluids ? "It supports patterns including fluids"
@@ -511,17 +515,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         super(aName, aTier, MAX_INV_COUNT, aDescription, aTextures);
         this.supportFluids = supportFluids;
         disableSort = true;
-    }
-
-    @Override
-    public String[] getDescription() {
-        String blockTypeLine = StatCollector.translateToLocal("GT5U.MBTT.BlockType") + ": "
-            + EnumChatFormatting.GOLD
-            + (supportFluids ? "CRIB" : "CRIBUS");
-        String[] result = new String[1 + mDescriptionArray.length];
-        result[0] = blockTypeLine;
-        System.arraycopy(mDescriptionArray, 0, result, 1, mDescriptionArray.length);
-        return result;
     }
 
     @Override

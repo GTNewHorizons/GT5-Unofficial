@@ -133,18 +133,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     @Override
-    public String[] getDescription() {
-        if (!autoPullAvailable) return mDescriptionArray;
-        String blockTypeLine = StatCollector.translateToLocal("GT5U.MBTT.BlockType") + ": "
-            + EnumChatFormatting.GOLD
-            + "ASIB";
-        String[] result = new String[1 + mDescriptionArray.length];
-        result[0] = blockTypeLine;
-        System.arraycopy(mDescriptionArray, 0, result, 1, mDescriptionArray.length);
-        return result;
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchInputBusME(mName, autoPullAvailable, mTier, mDescriptionArray, mTextures);
     }
@@ -1114,6 +1102,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     protected static String[] getDescriptionArray(boolean autoPullAvailable) {
         List<String> strings = new ArrayList<>(8);
+        if (autoPullAvailable) {
+            strings.add(
+                StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": " + EnumChatFormatting.YELLOW + "ASIB");
+        }
         strings.add("Next-gen item input for Multiblocks");
         strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 6 : 4] + VN[autoPullAvailable ? 6 : 4]);
         strings.add("Retrieves directly from ME");

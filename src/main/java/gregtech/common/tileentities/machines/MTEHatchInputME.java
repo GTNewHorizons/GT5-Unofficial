@@ -143,18 +143,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     @Override
-    public String[] getDescription() {
-        if (!autoPullAvailable) return mDescriptionArray;
-        String blockTypeLine = StatCollector.translateToLocal("GT5U.MBTT.BlockType") + ": "
-            + EnumChatFormatting.GOLD
-            + "ASIH";
-        String[] result = new String[1 + mDescriptionArray.length];
-        result[0] = blockTypeLine;
-        System.arraycopy(mDescriptionArray, 0, result, 1, mDescriptionArray.length);
-        return result;
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchInputME(mName, autoPullAvailable, mTier, mDescriptionArray, mTextures);
     }
@@ -1179,6 +1167,10 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     private static String[] getDescriptionArray(boolean autoPullAvailable) {
         List<String> strings = new ArrayList<>(8);
+        if (autoPullAvailable) {
+            strings.add(
+                StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": " + EnumChatFormatting.YELLOW + "ASIH");
+        }
         strings.add("Advanced fluid input for Multiblocks");
         strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 9 : 8] + VN[autoPullAvailable ? 9 : 8]);
         strings.add("Retrieves directly from ME");
