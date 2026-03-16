@@ -1101,7 +1101,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     protected static String[] getDescriptionArray(boolean autoPullAvailable) {
-        List<String> strings = new ArrayList<>(autoPullAvailable ? 14 : 8);
+        List<String> strings = new ArrayList<>(autoPullAvailable ? 13 : 7);
         if (autoPullAvailable) {
             strings.add(
                 StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": " + EnumChatFormatting.YELLOW + "ASIB");
