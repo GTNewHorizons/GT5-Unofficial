@@ -76,9 +76,14 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public double playerTargetBeamEnergyeV = 1_000_000_000;
     public int playerTargetAccelerationCycles = 10;
 
-    BeamInformation initialParticleInfo = null;
-    BeamInformation cachedOutputParticle = null;
+    public BeamInformation initialParticleInfo = null;
+    public BeamInformation cachedOutputParticle = null;
     public int accelerationCycleCounter = 0;
+
+    public boolean emEnabled;
+    public boolean weakEnabled;
+    public boolean strongEnabled;
+    public boolean gravEnabled;
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -136,7 +141,10 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
     @Override
     public String getMachineModeName() {
-        return translateToLocal("GT5U.MULTI_LHC.mode." + machineMode);
+        if (machineMode == 0) {
+            return translateToLocal("GT5U.MULTI_LHC.mode.0");
+        }
+        return translateToLocal("GT5U.MULTI_LHC.mode.1");
     }
 
     @Override
@@ -167,7 +175,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 .buildAndChain(GregTechAPI.sBlockCasings13, 10))
         .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
         .addElement('D', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
-        .addElement('E', lazy(t -> { // neonite saffron mango or whatever
+        .addElement('E', lazy(t -> { // any neonite variant
             if (Mods.Chisel.isModLoaded()) {
                 Block neonite = GameRegistry.findBlock(Mods.Chisel.ID, "neonite");
                 return ofBlockAnyMeta(neonite, 1);
@@ -409,10 +417,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         return built;
     }
 
-    public boolean emEnabled;
-    public boolean weakEnabled;
-    public boolean strongEnabled;
-    public boolean gravEnabled;
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -438,10 +442,10 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         return new String[] {
             StatCollector.translateToLocalFormatted("tt.keyword.Content") + ": "
                 + EnumChatFormatting.AQUA
-                + (dataPacket != null ? dataPacket.getContentString() : 0),
+                + dataPacket.getContentString(),
             StatCollector.translateToLocalFormatted("tt.keyword.PacketHistory") + ": "
                 + EnumChatFormatting.RED
-                + (dataPacket != null ? dataPacket.getTraceSize() : 0), };
+                + dataPacket.getTraceSize(), };
     }
 
     public double getCachedBeamEnergy() {
