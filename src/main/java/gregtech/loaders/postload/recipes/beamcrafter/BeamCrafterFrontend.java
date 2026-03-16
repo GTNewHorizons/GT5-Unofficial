@@ -44,7 +44,6 @@ public class BeamCrafterFrontend extends RecipeMapFrontend {
 
     }
 
-    // items
     @Override
     public List<Pos2d> getItemInputPositions(int itemInputCount) {
         return Util.getGridPositions(itemInputCount, 24, 20, 2, 2, 1);
@@ -55,7 +54,6 @@ public class BeamCrafterFrontend extends RecipeMapFrontend {
         return UIHelper.getGridPositions(itemOutputCount, 128, 20, 2, 1);
     }
 
-    // fluids
     @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
         return Util.getGridPositions(fluidInputCount, 24, 60, 2, 1, 1);

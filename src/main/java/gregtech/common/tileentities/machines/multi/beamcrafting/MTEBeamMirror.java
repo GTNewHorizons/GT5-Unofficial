@@ -105,7 +105,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
     }
 
     @Override
-    public IStructureDefinition<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror> getStructureDefinition() {
+    public IStructureDefinition<MTEBeamMirror> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -132,7 +132,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror(this.mName);
+        return new MTEBeamMirror(this.mName);
     }
 
     @Override

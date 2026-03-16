@@ -23,9 +23,9 @@ import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
 
     // specifically for the Particle value in the input map, will save with id
-    private static String NBT_KEY_DESCRIPTOR = "KEY";
+    private static final String NBT_KEY_DESCRIPTOR = "KEY";
     // specifically for the Boolean value in the input map
-    private static String NBT_VALUE_DESCRIPTOR = "VALUE";
+    private static final String NBT_VALUE_DESCRIPTOR = "VALUE";
 
     private boolean initialized = false;
     public Map<Particle, Boolean> acceptedInputMap = new HashMap<>();

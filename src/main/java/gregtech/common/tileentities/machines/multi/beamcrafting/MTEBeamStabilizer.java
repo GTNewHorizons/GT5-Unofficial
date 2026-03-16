@@ -44,6 +44,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
 
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
 
+    public int playerTargetBeamRate = 100;
     private int storedParticleID = 0;
     private float storedBeamEnergy = 0;
     // Stored particle Amount
@@ -338,7 +339,6 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         return true;
     }
 
-    public int playerTargetBeamRate = 100;
 
     private void outputPacketAfterRecipe(int rate) {
         if (!this.mOutputBeamline.isEmpty()) {
