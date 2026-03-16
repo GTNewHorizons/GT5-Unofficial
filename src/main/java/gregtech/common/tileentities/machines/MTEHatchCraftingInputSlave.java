@@ -57,13 +57,24 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
             0,
             new String[] { "Proxy for Crafting Input Buffer/Bus", "Hatch Tier: " + TIER_COLORS[11] + VN[11],
                 "Link with Crafting Input Buffer/Bus using Data Stick to share inventory",
-                "Left click on the Crafting Input Buffer/Bus, then right click on this block to link them", });
+                "Left click on the Crafting Input Buffer/Bus, then right click on this block to link them" });
         disableSort = true;
     }
 
     public MTEHatchCraftingInputSlave(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         disableSort = true;
+    }
+
+    @Override
+    public String[] getDescription() {
+        String blockTypeLine = StatCollector.translateToLocal("GT5U.MBTT.BlockType") + ": "
+            + EnumChatFormatting.GOLD
+            + "CRIB, CRIBUS";
+        String[] result = new String[1 + mDescriptionArray.length];
+        result[0] = blockTypeLine;
+        System.arraycopy(mDescriptionArray, 0, result, 1, mDescriptionArray.length);
+        return result;
     }
 
     @Override

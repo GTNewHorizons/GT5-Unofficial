@@ -7,7 +7,9 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
@@ -47,6 +49,20 @@ import ic2.api.item.ISpecialElectricItem;
 
 public abstract class MetaBaseItem extends GTGenericItem
     implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
+
+    /** Material name -> tooltip tag (e.g. PVC, PS) for "Material Type:" line in orange. */
+    private static final Map<String, String> MATERIAL_TYPE_TAGS = new HashMap<>();
+
+    static {
+        MATERIAL_TYPE_TAGS.put("PolyvinylChloride", "PVC");
+        MATERIAL_TYPE_TAGS.put("Polytetrafluoroethylene", "PTFE");
+        MATERIAL_TYPE_TAGS.put("Polyethylene", "PE");
+        MATERIAL_TYPE_TAGS.put("Polybenzimidazole", "PBI");
+        MATERIAL_TYPE_TAGS.put("Polystyrene", "PS");
+        MATERIAL_TYPE_TAGS.put("PolyphenyleneSulfide", "PPS");
+        MATERIAL_TYPE_TAGS.put("Polycaprolactam", "PCL");
+        MATERIAL_TYPE_TAGS.put("StyreneButadieneRubber", "SBR");
+    }
 
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
     private final ConcurrentHashMap<Short, ArrayList<IItemBehaviour<MetaBaseItem>>> mItemBehaviors = new ConcurrentHashMap<>();
@@ -262,6 +278,12 @@ public abstract class MetaBaseItem extends GTGenericItem
                     if (formula != null && !formula.isEmpty()) {
                         aList.add(formula);
                     }
+                }
+
+                String materialTypeTag = MATERIAL_TYPE_TAGS.get(material.mName);
+                if (materialTypeTag != null) {
+                    aList.add(
+                        translateToLocal("GT5U.MBTT.MaterialType") + ": " + EnumChatFormatting.GOLD + materialTypeTag);
                 }
 
                 if (Client.tooltip.showFlavorText) {

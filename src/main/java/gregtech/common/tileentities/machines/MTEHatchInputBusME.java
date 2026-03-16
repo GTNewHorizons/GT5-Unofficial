@@ -133,6 +133,18 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     @Override
+    public String[] getDescription() {
+        if (!autoPullAvailable) return mDescriptionArray;
+        String blockTypeLine = StatCollector.translateToLocal("GT5U.MBTT.BlockType") + ": "
+            + EnumChatFormatting.GOLD
+            + "ASIB";
+        String[] result = new String[1 + mDescriptionArray.length];
+        result[0] = blockTypeLine;
+        System.arraycopy(mDescriptionArray, 0, result, 1, mDescriptionArray.length);
+        return result;
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchInputBusME(mName, autoPullAvailable, mTier, mDescriptionArray, mTextures);
     }

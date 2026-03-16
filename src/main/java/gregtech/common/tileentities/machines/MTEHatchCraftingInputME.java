@@ -514,6 +514,17 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     }
 
     @Override
+    public String[] getDescription() {
+        String blockTypeLine = StatCollector.translateToLocal("GT5U.MBTT.BlockType") + ": "
+            + EnumChatFormatting.GOLD
+            + (supportFluids ? "CRIB" : "CRIBUS");
+        String[] result = new String[1 + mDescriptionArray.length];
+        result[0] = blockTypeLine;
+        System.arraycopy(mDescriptionArray, 0, result, 1, mDescriptionArray.length);
+        return result;
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchCraftingInputME(mName, mTier, mDescriptionArray, mTextures, supportFluids);
     }
