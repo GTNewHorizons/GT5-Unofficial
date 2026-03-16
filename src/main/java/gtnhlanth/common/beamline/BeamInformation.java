@@ -14,6 +14,9 @@ public class BeamInformation {
         this.energy = energy;
         this.rate = rate;
         this.particleId = particleId;
+        if (particleId >= Particle.values().length || particleId < 0){
+            throw new IllegalArgumentException("Invalid particleId");
+        }
         this.particle = Particle.values()[particleId];
         this.focus = focus;
     }
@@ -57,7 +60,7 @@ public class BeamInformation {
     }
 
     public boolean isEqual(BeamInformation other) {
-        return (this.energy == other.energy) && (this.rate == other.rate)
+        return (Float.compare(this.energy, other.energy) == 0) && (Float.compare(this.rate, other.rate) == 0)
             && (this.particleId == other.particleId)
             && (this.focus == other.focus);
     }

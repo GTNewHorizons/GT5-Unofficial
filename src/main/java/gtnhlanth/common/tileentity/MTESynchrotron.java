@@ -668,7 +668,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         float voltageFactor = getVoltageFactor(voltage);
         this.outputEnergy = (float) calculateOutputParticleEnergy(voltage, inputEnergy, this.antennaeTier);
 
-        this.outputParticleID = 0; // Photon
+        this.outputParticleID = Particle.PHOTON.getId(); // Photon
 
         /*
          * If input focus > machine focus, divide their sum by 2.5, else weigh the former by the latter. This punishes

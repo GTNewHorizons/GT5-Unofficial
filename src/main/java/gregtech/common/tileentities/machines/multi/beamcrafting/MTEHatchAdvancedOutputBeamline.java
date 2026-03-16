@@ -140,5 +140,4 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
             StatCollector.translateToLocalFormatted(
                 "gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description2") };
     }
-
 }

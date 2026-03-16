@@ -13,7 +13,7 @@ public enum Particle {
     // restMass is in MeV/c^2
     // maxSourceEnergy is in keV/c^2
 
-    // Gauge Boso, GTGuiTextures.ns
+    // Gauge Bosons
     PHOTON(false, 0, 0, 0, "photon", "\u03B3", 0, null, 1000, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_PHOTON),
     ZBOSON(false, 1, 91188.00f, 0, "zboson", "Z\u2070", 0, null, 15, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ZBOSON),
     WBOSON(true, 2, 80369.20f, 0, "wboson", "W\u207B", 0, null, 20, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_WBOSON),
@@ -117,10 +117,11 @@ public enum Particle {
         return StatCollector.translateToLocal("particle." + this.name) + " (" + this.shortName + ")";
     }
 
-    private static final Particle[] ParticleArray = values();
-
     public static Particle getParticleFromId(int id) {
-        return ParticleArray[id];
+        if (id >= Particle.values().length || id < 0){
+            throw new IllegalArgumentException("Invalid particleId");
+        }
+        return Particle.values()[id];
     }
 
     public final UITexture getTexture() {
