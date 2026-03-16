@@ -68,6 +68,10 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     private static final String STRUCTURE_PIECE_STRONG = "Strong";
     private static final String STRUCTURE_PIECE_GRAV = "Grav";
 
+    public static final float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
+    public static final double keV_EU_RATIO = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
+    public static final float RATE_SCALE_FACTOR = 1.1F;
+
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
 
     private float outputEnergy;
@@ -86,9 +90,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public boolean strongEnabled;
     public boolean gravEnabled;
 
-    public static float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
-    public static double keV_EU_RATIO = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
-    public static float RATE_SCALE_FACTOR = 1.1F;
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -146,7 +147,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
     @Override
     public String getMachineModeName() {
-        if (machineMode == 0) {
+        if (machineMode == MACHINEMODE_ACCELERATOR) {
             return translateToLocal("GT5U.MULTI_LHC.mode.0");
         }
         return translateToLocal("GT5U.MULTI_LHC.mode.1");
@@ -261,7 +262,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
-            if ((aActive) && (this.machineMode == 0)) {
+            if ((aActive) && (this.machineMode == MACHINEMODE_ACCELERATOR)) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
@@ -274,7 +275,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                         .extFacing()
                         .glow()
                         .build() };
-            } else if ((aActive) && (this.machineMode == 1)) {
+            } else if ((aActive) && (this.machineMode == MACHINEMODE_COLLIDER)) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
