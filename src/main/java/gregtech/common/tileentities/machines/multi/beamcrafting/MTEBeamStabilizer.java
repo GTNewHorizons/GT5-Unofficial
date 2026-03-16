@@ -46,6 +46,14 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
 
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
 
+    private int storedParticleID = 0;
+    private float storedBeamEnergy = 0;
+    // Stored particle Amount
+    private int cumulativeBeamRate = 0;
+    // for completeness. not used anywhere but beamline
+    private float storedBeamFocus = 0;
+    private int MAX_STORED_PARTICLES = 100_000;
+
     private static final IStructureDefinition<MTEBeamStabilizer> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEBeamStabilizer>builder()
         .addShape(
@@ -288,47 +296,33 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
     @Override
     public CheckRecipeResult checkProcessing() {
         this.mMaxProgresstime = TickTime.SECOND;
-        BeamInformation inputInfo = this.getNthInputParticle(0);
-
         cumulateStoredBeamPacket();
         outputPacketAfterRecipe(this.playerTargetBeamRate);
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    int storedParticleID = 0;
-    float storedBeamEnergy = 0;
-    // Stored particle Amount
-    int cumulativeBeamRate = 0;
-    // for completeness. not used anywhere but beamline
-    float storedBeamFocus = 0;
 
     private void cumulateStoredBeamPacket() {
         BeamInformation inputParticle = getNthInputParticle(0);
 
-        // if input particle energy == 0, do nothing
         if (inputParticle.getEnergy() == 0) {
             return;
         }
-        // if we reach this point, input particle energy is > 0, and is therefore a meaningful packet
-        // if the same particle AND energy appear, add to accumulation
+
         if (this.storedBeamEnergy == inputParticle.getEnergy()
             && this.storedParticleID == inputParticle.getParticleId()) {
             this.cumulativeBeamRate += inputParticle.getRate();
-            this.cumulativeBeamRate = Math.min(this.cumulativeBeamRate, 100000); // capped at 100_000 particles
+            this.cumulativeBeamRate = Math.min(this.cumulativeBeamRate, MAX_STORED_PARTICLES);
             return;
         }
-        // if the stored cumulativeBeamRate is 0, then update all cached values
+
         if (this.cumulativeBeamRate == 0) {
             this.storedBeamEnergy = inputParticle.getEnergy();
             this.storedBeamFocus = inputParticle.getFocus();
             this.storedParticleID = inputParticle.getParticleId();
             this.cumulativeBeamRate += inputParticle.getRate();
-            this.cumulativeBeamRate = Math.min(this.cumulativeBeamRate, 100000); // capped at 100_000 particles
+            this.cumulativeBeamRate = Math.min(this.cumulativeBeamRate, MAX_STORED_PARTICLES);
         }
-        // if we reach this point, then the incoming packet is a different particle-energy combo than what is stored,
-        // and there are still particles being output by the machine. therefore the input packet is just ignored
-        // (voided)
-
     }
 
     public int playerTargetBeamRate = 100;
