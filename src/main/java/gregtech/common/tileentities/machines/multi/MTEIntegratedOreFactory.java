@@ -1,10 +1,10 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Muffler;
-import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_FACTORY;
@@ -49,6 +49,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.XSTR;
@@ -60,7 +61,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -69,7 +69,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEIntegratedOreFactory>
     implements ISurvivalConstructable {
 
-    private static final int MAX_PARALLEL = 1024;
     private static final long RECIPE_EUT = 30;
     private static final int MODE_AMOUNT = 7;
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -104,7 +103,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         .addElement(
             'D',
             buildHatchAdder(MTEIntegratedOreFactory.class)
-                .atLeast(Energy, MultiAmpEnergy, InputBus, InputHatch, Muffler, OutputBus, OutputHatch)
+                .atLeast(Energy, ExoticEnergy, InputBus, InputHatch, Muffler, OutputBus, OutputHatch)
                 .casingIndex(Casings.CleanStainlessSteelMachineCasing.textureId)
                 .hint(1)
                 .buildAndChain(Casings.CleanStainlessSteelMachineCasing.asElement()))
@@ -217,21 +216,16 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         if (tInput.isEmpty() || tInputFluid.isEmpty()) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        long availableEUt = GTUtility.roundUpVoltage(getMaxInputVoltage());
+        long availableEUt = getMaxInputVoltage() * getMaxInputAmps();
         if (availableEUt < RECIPE_EUT) {
             return CheckRecipeResultRegistry.insufficientPower(RECIPE_EUT);
         }
 
-        OverclockCalculator calculator = new OverclockCalculator().setEUt(availableEUt)
-            .setRecipeEUt(RECIPE_EUT)
-            .setDuration(getTime(sMode))
-            .setParallel(MAX_PARALLEL);
-
-        int maxParallel = GTUtility.safeInt((long) (MAX_PARALLEL * calculator.calculateMultiplierUnderOneTick()), 0);
-        int maxParallelBeforeBatchMode = maxParallel;
+        int maxParallelBeforeBatchMode = GTUtility.safeInt(availableEUt / RECIPE_EUT);
+        int maxParallel = maxParallelBeforeBatchMode;
 
         if (isBatchModeEnabled()) {
-            maxParallel = GTUtility.safeInt((long) maxParallel * getMaxBatchSize(), 0);
+            maxParallel = GTUtility.safeInt((long) maxParallelBeforeBatchMode * getMaxBatchSize());
         }
 
         int tLube = 0;
@@ -242,16 +236,15 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             else if (fluid.equals(Materials.Lubricant.getFluid(1L))) tLube += fluid.amount;
         }
 
-        int currentParallel = (int) Math.min(maxParallel, availableEUt / RECIPE_EUT);
-        currentParallel = Math.min(currentParallel, tLube / 2);
-        currentParallel = Math.min(currentParallel, tWater / 200);
+        int currentParallel = maxParallel;
+        currentParallel = (int) Math.min((long) currentParallel, tLube / 2);
+        currentParallel = (int) Math.min((long) currentParallel, tWater / 200);
         if (currentParallel <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         int itemParallel = 0;
-        for (int i = 0, size = tInput.size(); i < size; i++) {
-            ItemStack ore = tInput.get(i);
+        for (ItemStack ore : tInput) {
             int tID = GTUtility.stackToInt(ore);
             if (tID == 0) continue;
             if (isValidOreInput(tID)) {
@@ -269,12 +262,19 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         }
 
         int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
-        calculator.setCurrentParallel(currentParallelBeforeBatchMode)
-            .calculate();
+
+        long eutPerParallel = availableEUt / currentParallelBeforeBatchMode;
+        int overclockedDuration = getTime(sMode);
+        long overclockedEUt = RECIPE_EUT;
+        while (overclockedEUt * 4 <= eutPerParallel && overclockedDuration > 1) {
+            overclockedEUt *= 4;
+            overclockedDuration = Math.max(1, overclockedDuration / 2);
+        }
 
         double batchMultiplier = 1;
-        if (currentParallel > maxParallelBeforeBatchMode && calculator.getDuration() < getMaxBatchSize()) {
-            batchMultiplier = (double) getMaxBatchSize() / calculator.getDuration();
+        if (isBatchModeEnabled() && currentParallel > maxParallelBeforeBatchMode
+            && overclockedDuration < getMaxBatchSize()) {
+            batchMultiplier = (double) getMaxBatchSize() / overclockedDuration;
             batchMultiplier = Math.min(batchMultiplier, (double) currentParallel / maxParallelBeforeBatchMode);
         }
 
@@ -352,8 +352,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         this.mEfficiencyIncrease = 10000;
         this.mOutputItems = sMidProduct;
-        this.mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplier);
-        this.lEUt = -Math.abs(calculator.getConsumption());
+        this.mMaxProgresstime = (int) (overclockedDuration * batchMultiplier);
+        this.lEUt = -overclockedEUt * currentParallelBeforeBatchMode;
         this.updateSlots();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
@@ -364,6 +364,12 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             || isThermal.contains(id)
             || isCrushedOre.contains(id)
             || isOre.contains(id);
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
+            .setUnlimitedTierSkips();
     }
 
     @Override
@@ -594,13 +600,13 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Ore Processor, IOF")
             .addInfo("Does all ore processing in one step")
-            .addStaticParallelInfo(1024)
+            .addInfo("Parallel count scales with total input power: EU/t / 30")
             .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water")
             .addInfo("Recipes that need extra input require their extra inputs on top of the normal costs")
             .addInfo("Processing time is dependent on mode")
             .addInfo("Use a screwdriver to switch mode")
             .addInfo("Sneak click with screwdriver to void the stone dust")
-            .addMultiAmpHatchInfo()
+            .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
             .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
