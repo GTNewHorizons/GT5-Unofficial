@@ -72,7 +72,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         cumulativeBeamRate = aNBT.getInteger("cumulativeBeamRate");
         storedBeamFocus = aNBT.getFloat("storedBeamFocus");
     }
-    
+
     private static final IStructureDefinition<MTEBeamStabilizer> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEBeamStabilizer>builder()
         .addShape(

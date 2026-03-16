@@ -15,6 +15,7 @@ import static java.lang.Math.max;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -84,6 +85,10 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public boolean weakEnabled;
     public boolean strongEnabled;
     public boolean gravEnabled;
+
+    public static float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
+    public static double keV_EU_RATIO = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
+    public static float RATE_SCALE_FACTOR = 1.1F;
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -456,9 +461,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         return cachedOutputParticle != null ? cachedOutputParticle.getRate() : 0;
     }
 
-    public final float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
-    public final double keVEURatio = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
-    public final float rateScaleFactor = 1.1F;
 
     public BeamInformation accelerateParticle(BeamInformation particle) {
 
@@ -469,12 +471,11 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         int outRate = inputRate;
 
         long machineVoltage = getAverageInputVoltage();
-        // inputEnergy is in keV, playerTargetBeamEnergyeV is in eV did this so player can type '2G eV' instead of '2M
-        // keV'
+        // inputEnergy is in keV, playerTargetBeamEnergyeV is in eV so player can type '2G eV' instead of '2M keV'
         if (inputEnergy <= playerTargetBeamEnergyeV / 1000) {
             outEnergy += (float) (Math.pow(accelerationCycleCounter + 1, 2) * this.mMaxProgresstime
                 * machineVoltage
-                * keVEURatio);
+                * keV_EU_RATIO);
             if (outEnergy >= MAXIMUM_PARTICLE_ENERGY_keV) {
                 return new BeamInformation(
                     MAXIMUM_PARTICLE_ENERGY_keV,
@@ -484,7 +485,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             }
 
         } else {
-            outRate = (int) Math.ceil(outRate * rateScaleFactor);
+            outRate = (int) Math.ceil(outRate * RATE_SCALE_FACTOR);
         }
 
         return new BeamInformation(outEnergy, outRate, particle.getParticleId(), particle.getFocus());
@@ -509,17 +510,17 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     @Override
     public void onValueUpdate(byte aValue) {
         int oldMachineMode = machineMode;
-        if (aValue == 0) {
-            machineMode = 0;
+        if (aValue == MACHINEMODE_ACCELERATOR) {
+            machineMode = MACHINEMODE_ACCELERATOR;
         } else {
-            machineMode = 1;
+            machineMode = MACHINEMODE_COLLIDER;
         }
         if (oldMachineMode != machineMode) getBaseMetaTileEntity().issueTextureUpdate();
     }
 
     @Override
     public byte getUpdateData() {
-        return (byte) ((machineMode == 1) ? 1 : 0);
+        return (byte) ((machineMode == MACHINEMODE_COLLIDER) ? MACHINEMODE_COLLIDER : MACHINEMODE_ACCELERATOR);
     }
 
     @NotNull
@@ -537,21 +538,16 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             this.mMaxProgresstime = TickTime.SECOND;
 
             if (cachedOutputParticle == null) {
-                // assign cachedOutputParticle, which will be accelerated in consequent processing cycles
-                // also assign initialParticleInfo, which inputInfo is compared against every cycle
                 cachedOutputParticle = inputInfo.copy();
                 initialParticleInfo = inputInfo.copy();
                 accelerationCycleCounter = 0;
             } else {
-                // if cachedOutputParticle exists, then apply acceleration cycle logic
                 if (!cachedOutputParticle.getParticle()
                     .canAccelerate()) {
-                    // if the input beam is not charged particles, crash
                     stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 }
                 if (!initialParticleInfo.isEqual(inputInfo)) {
-                    // if the input beam is ever modified or interrupted, crash the LHC
                     stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inputinterrupt"));
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 } else {
@@ -584,24 +580,19 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             this.mEfficiencyIncrease = 10000;
             this.mMaxProgresstime = TickTime.SECOND;
 
-            // Generate output particle:
 
-            // 1. Determine output energy (= collision energy)
             this.outputEnergy = (inputEnergy) * 2; // output energy = collision energy = input energy * 2
 
-            // 2. Use collision energy to generate particle ID
-            this.outputParticleID = GenerateOutputParticleID(this.outputEnergy);
+            this.outputParticleID = generateOutputParticleID(this.outputEnergy);
 
-            // 3. Use input rate and output particle rest mass to determine output rate
             Particle outputParticle = Particle.getParticleFromId(this.outputParticleID);
             float outputMass = outputParticle.getMass();
             this.outputRate = (int) max(0, (1 - (outputMass / this.outputEnergy)) * (inputRate));
 
-            // 4. Focus is unused
-            this.outputFocus = (int) (inputFocus);
+            this.outputFocus = inputFocus;
 
             if (this.outputRate == 0) {
-                stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.low_input_eut"));
+                stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noparticle"));
                 return CheckRecipeResultRegistry.NO_RECIPE;
             }
 
@@ -610,7 +601,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    private int GenerateOutputParticleID(float collisionEnergy) {
+    private int generateOutputParticleID(float collisionEnergy) {
 
         // restMass is in MeV
         // beamline energies are in keV
@@ -644,7 +635,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             run += weights[i];
             cumulative[i] = run;
         }
-        double r = Math.random() * totalWeight;
+        double r = XSTR_INSTANCE.nextFloat() * totalWeight;
         int idx = java.util.Arrays.binarySearch(cumulative, r);
         if (idx < 0) idx = -idx - 1; // insertion point
         if (idx >= n) idx = n - 1; // safety clamp
@@ -658,8 +649,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(this.outputEnergy, this.outputRate, this.outputParticleID, this.outputFocus));
             for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
-                if (o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(this.outputParticleID), false)
-                    == false) {
+                if (!o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(this.outputParticleID), false)) {
                     o.dataPacket = null;
                     continue;
                 }

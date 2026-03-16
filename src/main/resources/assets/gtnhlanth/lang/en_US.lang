@@ -18,6 +18,7 @@ GT5U.gui.text.gtnhlanth.scerror=Math error, broken recipe?
 GT5U.gui.text.gtnhlanth.inputinterrupt=Input Beam must not be interrupted or changed!
 GT5U.gui.text.gtnhlanth.wrongparticle=Incorrect Particle!
 GT5U.gui.text.gtnhlanth.toolowenergy=Below Required Energy!
+GT5U.gui.text.gtnhlanth.noparticle=Particle absent (rate is 0)!
 
 # NEI
 value.disstank=Ratio: %s:1
