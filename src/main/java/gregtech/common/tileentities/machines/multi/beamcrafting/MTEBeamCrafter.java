@@ -61,7 +61,8 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     private GTRecipe lastRecipe;
 
-    private static final IStructureDefinition<MTEBeamCrafter> STRUCTURE_DEFINITION = StructureDefinition.<MTEBeamCrafter>builder()
+    private static final IStructureDefinition<MTEBeamCrafter> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEBeamCrafter>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
@@ -314,14 +315,13 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     }
 
-
     @Override
     protected void incrementProgressTime() {
 
         BeamInformation inputParticle_A = this.getNthInputParticle(0);
         BeamInformation inputParticle_B = this.getNthInputParticle(1);
 
-        if (inputParticle_A != null && inputParticle_B != null){
+        if (inputParticle_A != null && inputParticle_B != null) {
             int particleRateA = inputParticle_A.getRate();
             int particleRateB = inputParticle_B.getRate();
 
@@ -335,7 +335,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             }
         }
     }
-
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {

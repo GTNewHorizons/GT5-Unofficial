@@ -118,7 +118,7 @@ public enum Particle {
     }
 
     public static Particle getParticleFromId(int id) {
-        if (id >= Particle.values().length || id < 0){
+        if (id >= Particle.values().length || id < 0) {
             throw new IllegalArgumentException("Invalid particleId");
         }
         return Particle.values()[id];

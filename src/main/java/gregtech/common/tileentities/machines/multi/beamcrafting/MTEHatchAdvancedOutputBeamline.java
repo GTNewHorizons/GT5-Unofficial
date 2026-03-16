@@ -66,7 +66,6 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         }
     }
 
-
     public void setInitialParticleList(List<Particle> initialParticleList) {
 
         if (initialized) return;

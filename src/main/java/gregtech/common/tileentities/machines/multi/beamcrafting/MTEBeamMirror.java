@@ -39,7 +39,8 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
 
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
 
-    private static final IStructureDefinition<MTEBeamMirror> STRUCTURE_DEFINITION = StructureDefinition.<MTEBeamMirror>builder()
+    private static final IStructureDefinition<MTEBeamMirror> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEBeamMirror>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
@@ -111,7 +112,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
-        this.mMaxProgresstime=1;
+        this.mMaxProgresstime = 1;
         BeamInformation inputInfo = this.getNthInputParticle(0);
 
         if (inputInfo == null || inputInfo.getRate() == 0) return CheckRecipeResultRegistry.NO_RECIPE;

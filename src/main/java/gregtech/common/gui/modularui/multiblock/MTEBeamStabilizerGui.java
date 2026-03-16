@@ -3,6 +3,8 @@ package gregtech.common.gui.modularui.multiblock;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -20,7 +22,6 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamStabilizer;
-import net.minecraft.util.StatCollector;
 
 public class MTEBeamStabilizerGui extends MTEMultiBlockBaseGui<MTEBeamStabilizer> {
 
@@ -79,8 +80,12 @@ public class MTEBeamStabilizerGui extends MTEMultiBlockBaseGui<MTEBeamStabilizer
                         new Column().size(160, 60)
                             .paddingLeft(40)
                             .child(
-                                new TextWidget<>(IKey.dynamic(() -> StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.gui.targetbeamrate") )).size(160, 20)
-                                    .alignment(Alignment.CENTER))
+                                new TextWidget<>(
+                                    IKey.dynamic(
+                                        () -> StatCollector.translateToLocalFormatted(
+                                            "gt.blockmachines.multimachine.beamcrafting.beamstabilizer.gui.targetbeamrate")))
+                                                .size(160, 20)
+                                                .alignment(Alignment.CENTER))
                             .child(
                                 new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
                                     .setNumbersLong(() -> 1L, () -> Long.MAX_VALUE)

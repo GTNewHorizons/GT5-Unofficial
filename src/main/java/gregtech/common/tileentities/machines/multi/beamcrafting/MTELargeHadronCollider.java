@@ -10,12 +10,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_ACCELERAT
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_ACCELERATOR_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_COLLIDER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_COLLIDER_GLOW;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static java.lang.Math.max;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -200,28 +200,36 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(3)
-                .adder((collider, te, casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.EM))
+                .adder(
+                    (collider, te, casingIndex) -> collider
+                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.EM))
                 .build()) // EM beam output hatch
         .addElement(
             '2',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(4)
-                .adder((collider, te, casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Weak))
+                .adder(
+                    (collider, te, casingIndex) -> collider
+                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Weak))
                 .build()) // Weak beam output hatch
         .addElement(
             '3',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(5)
-                .adder((collider, te, casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Strong))
+                .adder(
+                    (collider, te, casingIndex) -> collider
+                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Strong))
                 .build()) // Strong beam output hatch
         .addElement(
             '4',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(6)
-                .adder((collider, te, casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Gravity))
+                .adder(
+                    (collider, te, casingIndex) -> collider
+                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Gravity))
                 .build()) // Grav beam output hatch
 
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings13, 11)) // CMS Casing (EM)
@@ -422,7 +430,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         return built;
     }
 
-
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 
@@ -460,7 +467,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public int getCachedBeamRate() {
         return cachedOutputParticle != null ? cachedOutputParticle.getRate() : 0;
     }
-
 
     public BeamInformation accelerateParticle(BeamInformation particle) {
 
@@ -579,7 +585,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             this.mEfficiency = 10000;
             this.mEfficiencyIncrease = 10000;
             this.mMaxProgresstime = TickTime.SECOND;
-
 
             this.outputEnergy = (inputEnergy) * 2; // output energy = collision energy = input energy * 2
 

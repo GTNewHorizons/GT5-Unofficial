@@ -2,23 +2,13 @@ package gregtech.common.tileentities.machines.multi.beamcrafting;
 
 import java.util.ArrayList;
 
-import javax.annotation.Nullable;
-
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_MIRROR;
 
 public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {
@@ -61,7 +51,7 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
         return false;
     }
 
-    public enum FundamentalForce{
+    public enum FundamentalForce {
         EM,
         Weak,
         Strong,
@@ -76,7 +66,7 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
         IMetaTileEntity aMetaTileEntity = te.getMetaTileEntity();
         if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline hatch) {
             ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
-            switch (forceType){
+            switch (forceType) {
                 case EM:
                     hatch.setInitialParticleList(LHCModule.EM.acceptedParticles);
                 case Weak:
@@ -97,19 +87,19 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
     public BeamInformation getNthInputParticle(int n) {
 
         MTEHatchInputBeamline in = this.mInputBeamline.get(n);
-        if (in.dataPacket == null) return new BeamInformation(0,0,0,0);
+        if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
         return in.dataPacket.getContent();
 
     }
 
     @Override
-    public boolean doRandomMaintenanceDamage(){
+    public boolean doRandomMaintenanceDamage() {
         // cannot have maintenance issues, so do nothing
         return true;
     }
 
     @Override
-    public boolean getDefaultHasMaintenanceChecks(){
+    public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
 

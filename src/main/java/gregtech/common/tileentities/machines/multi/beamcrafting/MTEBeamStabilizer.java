@@ -7,8 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_STABILIZ
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -58,10 +56,10 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("storedParticleID",storedParticleID);
-        aNBT.setFloat("storedBeamEnergy",storedBeamEnergy);
-        aNBT.setInteger("cumulativeBeamRate",cumulativeBeamRate);
-        aNBT.setFloat("storedBeamFocus",storedBeamFocus);
+        aNBT.setInteger("storedParticleID", storedParticleID);
+        aNBT.setFloat("storedBeamEnergy", storedBeamEnergy);
+        aNBT.setInteger("cumulativeBeamRate", cumulativeBeamRate);
+        aNBT.setFloat("storedBeamFocus", storedBeamFocus);
     }
 
     @Override
@@ -319,7 +317,6 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         outputPacketAfterRecipe(this.playerTargetBeamRate);
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
-
 
     private void cumulateStoredBeamPacket() {
         BeamInformation inputParticle = getNthInputParticle(0);

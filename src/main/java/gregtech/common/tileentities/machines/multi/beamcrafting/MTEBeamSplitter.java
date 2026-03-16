@@ -7,8 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_SPLITTER
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -107,7 +105,9 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
             buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(3)
-                .adder((splitter, te, casingIndex) -> splitter.addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.All))
+                .adder(
+                    (splitter, te, casingIndex) -> splitter
+                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.All))
                 .build()) // adv beamline output hatch
         .build();
 

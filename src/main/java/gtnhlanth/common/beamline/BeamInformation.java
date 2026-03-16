@@ -14,7 +14,7 @@ public class BeamInformation {
         this.energy = energy;
         this.rate = rate;
         this.particleId = particleId;
-        if (particleId >= Particle.values().length || particleId < 0){
+        if (particleId >= Particle.values().length || particleId < 0) {
             throw new IllegalArgumentException("Invalid particleId");
         }
         this.particle = Particle.values()[particleId];
