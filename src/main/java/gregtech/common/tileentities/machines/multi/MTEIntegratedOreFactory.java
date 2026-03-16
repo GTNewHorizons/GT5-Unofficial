@@ -23,8 +23,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -53,6 +51,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -129,6 +128,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private int sMode = 0;
     private boolean sVoidStone = false;
     private int currentParallelism = 0;
+    private final XSTR random = new XSTR();
 
     private static void registerOrePrefix(String prefix, IntOpenHashSet target) {
         for (ItemStack stack : OreDictionary.getOres(prefix)) {
@@ -528,14 +528,14 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 double p = chance / 10000.0;
                 double mean = aTime * p;
                 double std = Math.sqrt(aTime * p * (1 - p));
-                quantity = (int) Math.ceil(std * new Random().nextGaussian() + mean);
+                quantity = (int) Math.ceil(std * random.nextGaussian() + mean);
                 quantity *= template.stackSize;
             }
-            outputs.add(GTUtility.copyAmountUnsafe(quantity, template));
+            if (quantity > 0) {
+                outputs.add(GTUtility.copyAmountUnsafe(quantity, template));
+            }
         }
-        return outputs.stream()
-            .filter(s -> s != null && s.stackSize > 0)
-            .collect(Collectors.toList());
+        return outputs;
     }
 
     private void doCompress(List<ItemStack> aList) {
