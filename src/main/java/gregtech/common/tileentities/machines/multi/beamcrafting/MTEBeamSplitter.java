@@ -125,17 +125,6 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
     }
 
     @Override
-    public boolean doRandomMaintenanceDamage() {
-        // Cannot have maintenance issues, so do nothing.
-        return true;
-    }
-
-    @Override
-    public boolean getDefaultHasMaintenanceChecks() {
-        return false;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEBeamSplitter(this.mName);
     }
@@ -234,19 +223,10 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
         return checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0);
     }
 
-    @Nullable
-    private BeamInformation getInputParticle() {
-        for (MTEHatchInputBeamline in : this.mInputBeamline) {
-            if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
-            return in.dataPacket.getContent();
-        }
-        return null;
-    }
-
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         this.mMaxProgresstime = TickTime.SECOND;
-        BeamInformation inputInfo = this.getInputParticle();
+        BeamInformation inputInfo = this.getNthInputParticle(0);
 
         if (inputInfo == null || inputInfo.getRate() == 0) return CheckRecipeResultRegistry.NO_RECIPE;
 

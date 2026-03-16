@@ -129,17 +129,6 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
     }
 
     @Override
-    public boolean doRandomMaintenanceDamage() {
-        // Cannot have maintenance issues, so do nothing.
-        return true;
-    }
-
-    @Override
-    public boolean getDefaultHasMaintenanceChecks() {
-        return false;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror(this.mName);
     }

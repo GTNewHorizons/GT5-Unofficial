@@ -431,17 +431,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     }
 
     @Override
-    public boolean doRandomMaintenanceDamage() {
-        // Cannot have maintenance issues, so do nothing.
-        return true;
-    }
-
-    @Override
-    public boolean getDefaultHasMaintenanceChecks() {
-        return false;
-    }
-
-    @Override
     public String[] getInfoData() {
 
         BeamLinePacket dataPacket = new BeamLinePacket(cachedOutputParticle);
@@ -533,7 +522,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     @Override
     public CheckRecipeResult checkProcessing() {
 
-        BeamInformation inputInfo = this.getInputInformation();
+        BeamInformation inputInfo = this.getNthInputParticle(0);
 
         if (inputInfo == null || inputInfo.getRate() == 0) return CheckRecipeResultRegistry.NO_RECIPE;
 
@@ -658,14 +647,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
         return idx;
 
-    }
-
-    private BeamInformation getInputInformation() {
-        for (MTEHatchInputBeamline in : this.mInputBeamline) {
-            if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
-            return in.dataPacket.getContent();
-        }
-        return null;
     }
 
     private void outputPacketAfterRecipe() {

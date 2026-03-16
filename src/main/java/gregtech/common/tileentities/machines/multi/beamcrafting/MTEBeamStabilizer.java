@@ -178,17 +178,6 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
     }
 
     @Override
-    public boolean doRandomMaintenanceDamage() {
-        // Cannot have maintenance issues, so do nothing.
-        return true;
-    }
-
-    @Override
-    public boolean getDefaultHasMaintenanceChecks() {
-        return false;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEBeamStabilizer(this.mName);
     }
@@ -295,20 +284,11 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         return checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0);
     }
 
-    @Nullable
-    private BeamInformation getInputParticle() {
-        for (MTEHatchInputBeamline in : this.mInputBeamline) {
-            if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
-            return in.dataPacket.getContent();
-        }
-        return null;
-    }
-
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
         this.mMaxProgresstime = TickTime.SECOND;
-        BeamInformation inputInfo = this.getInputParticle();
+        BeamInformation inputInfo = this.getNthInputParticle(0);
 
         cumulateStoredBeamPacket();
         outputPacketAfterRecipe(this.playerTargetBeamRate);
@@ -323,7 +303,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
     float storedBeamFocus = 0;
 
     private void cumulateStoredBeamPacket() {
-        BeamInformation inputParticle = getInputParticle();
+        BeamInformation inputParticle = getNthInputParticle(0);
 
         // if input particle energy == 0, do nothing
         if (inputParticle.getEnergy() == 0) {
@@ -373,7 +353,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
     }
 
     public int getCachedBeamRate() {
-        BeamInformation inputParticle = getInputParticle();
+        BeamInformation inputParticle = getNthInputParticle(0);
         return inputParticle != null ? inputParticle.getRate() : 0;
     }
 
