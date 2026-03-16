@@ -111,6 +111,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
+        this.mMaxProgresstime=1;
         BeamInformation inputInfo = this.getNthInputParticle(0);
 
         if (inputInfo == null || inputInfo.getRate() == 0) return CheckRecipeResultRegistry.NO_RECIPE;
