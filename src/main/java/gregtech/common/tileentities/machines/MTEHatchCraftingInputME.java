@@ -498,7 +498,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             new String[] {
                 StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
                     + EnumChatFormatting.YELLOW
-                    + (supportFluids ? "CRIB" : "CRIBUS"),
+                    + "CRIB",
                 "Advanced item input for Multiblocks",
                 "Hatch Tier: " + TIER_COLORS[supportFluids ? 10 : 6] + VN[supportFluids ? 10 : 6],
                 "Processes patterns directly from ME",
