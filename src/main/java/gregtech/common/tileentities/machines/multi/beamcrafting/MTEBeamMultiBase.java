@@ -29,7 +29,7 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
 
     public final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
     public final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
-    public ArrayList<MTEHatchAdvancedOutputBeamline> mAdvancedOutputBeamline = new ArrayList<>();
+    public final ArrayList<MTEHatchAdvancedOutputBeamline> mAdvancedOutputBeamline = new ArrayList<>();
 
     public MTEBeamMultiBase(String aName) {
         super(aName);
@@ -61,27 +61,32 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
         return false;
     }
 
-    public boolean addAdvancedBeamlineOutputHatch(IGregTechTileEntity te, int casingIndex, int fundamentalForce) {
+    public enum FundamentalForce{
+        EM,
+        Weak,
+        Strong,
+        Gravity,
+        All
+    }
+
+    public boolean addAdvancedBeamlineOutputHatch(IGregTechTileEntity te, int casingIndex, FundamentalForce forceType) {
         // 0 = EM; 1 = Weak; 2 = Strong; 3 = Gravity; 4 = All
         // might be nice to add combinations of output sets from various forces. currently not needed
         if (te == null) return false;
         IMetaTileEntity aMetaTileEntity = te.getMetaTileEntity();
         if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline hatch) {
             ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
-            if (fundamentalForce == 0) {
-                hatch.setInitialParticleList(LHCModule.EM.acceptedParticles);
-            }
-            if (fundamentalForce == 1) {
-                hatch.setInitialParticleList(LHCModule.Weak.acceptedParticles);
-            }
-            if (fundamentalForce == 2) {
-                hatch.setInitialParticleList(LHCModule.Strong.acceptedParticles);
-            }
-            if (fundamentalForce == 3) {
-                hatch.setInitialParticleList(LHCModule.Grav.acceptedParticles);
-            }
-            if (fundamentalForce == 4) {
-                hatch.setInitialParticleList(LHCModule.AllParticles.acceptedParticles);
+            switch (forceType){
+                case EM:
+                    hatch.setInitialParticleList(LHCModule.EM.acceptedParticles);
+                case Weak:
+                    hatch.setInitialParticleList(LHCModule.Weak.acceptedParticles);
+                case Strong:
+                    hatch.setInitialParticleList(LHCModule.Strong.acceptedParticles);
+                case Gravity:
+                    hatch.setInitialParticleList(LHCModule.Grav.acceptedParticles);
+                case All:
+                    hatch.setInitialParticleList(LHCModule.AllParticles.acceptedParticles);
             }
             this.mAdvancedOutputBeamline.add(hatch);
             return true;
@@ -89,17 +94,12 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
         return false;
     }
 
-    @Nullable
     public BeamInformation getNthInputParticle(int n) {
-        int i = 0;
-        for (MTEHatchInputBeamline in : this.mInputBeamline) {
-            if (i == n) {
-                if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
-                return in.dataPacket.getContent();
-            }
-            i += 1;
-        }
-        return null;
+
+        MTEHatchInputBeamline in = this.mInputBeamline.get(n);
+        if (in.dataPacket == null) return new BeamInformation(0,0,0,0);
+        return in.dataPacket.getContent();
+
     }
 
     @Override

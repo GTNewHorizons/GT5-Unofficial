@@ -187,28 +187,28 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(3)
-                .adder((collider, te, casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te, casingIndex, 0))
+                .adder((collider, te, casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.EM))
                 .build()) // EM beam output hatch
         .addElement(
             '2',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(4)
-                .adder((collider, te, casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te, casingIndex, 1))
+                .adder((collider, te, casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Weak))
                 .build()) // Weak beam output hatch
         .addElement(
             '3',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(5)
-                .adder((collider, te, casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te, casingIndex, 2))
+                .adder((collider, te, casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Strong))
                 .build()) // Strong beam output hatch
         .addElement(
             '4',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(6)
-                .adder((collider, te, casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te, casingIndex, 3))
+                .adder((collider, te, casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Gravity))
                 .build()) // Grav beam output hatch
 
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings13, 11)) // CMS Casing (EM)

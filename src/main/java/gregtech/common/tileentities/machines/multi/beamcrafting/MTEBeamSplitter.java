@@ -107,7 +107,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
             buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(3)
-                .adder((splitter, te, casingIndex) -> splitter.addAdvancedBeamlineOutputHatch(te, casingIndex, 4))
+                .adder((splitter, te, casingIndex) -> splitter.addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.All))
                 .build()) // beamline input hatch
         .build();
 
