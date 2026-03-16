@@ -8,13 +8,6 @@ import static ic2.core.util.LiquidUtil.placeFluid;
 
 import java.util.List;
 
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.VanillaButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
-import gregtech.api.gui.modularui.GTUITextures;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -38,14 +31,21 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.IItemWithModularUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.VanillaButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTUtility;
 import ic2.core.util.LiquidUtil;
@@ -333,17 +333,17 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
 
             NumericWidget capacityWidget = new NumericWidget();
             builder.widget(
-                    capacityWidget.setGetter(() -> capacity)
-                        .setSetter(value -> setCapacity(getCurrentItem(), capacity = (int) value))
-                        .setBounds(1, maxCapacity)
-                        .setScrollValues(1, 144, 1000)
-                        .setDefaultValue(capacity)
-                        .setTextColor(Color.WHITE.dark(1))
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setFocusOnGuiOpen(true)
-                        .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                        .setPos(8, 8)
-                        .setSize(77, 12))
+                capacityWidget.setGetter(() -> capacity)
+                    .setSetter(value -> setCapacity(getCurrentItem(), capacity = (int) value))
+                    .setBounds(1, maxCapacity)
+                    .setScrollValues(1, 144, 1000)
+                    .setDefaultValue(capacity)
+                    .setTextColor(Color.WHITE.dark(1))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setFocusOnGuiOpen(true)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                    .setPos(8, 8)
+                    .setSize(77, 12))
                 .widget(
                     new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.volumetric_flask.capacity"))
                         .setPos(88, 10))
