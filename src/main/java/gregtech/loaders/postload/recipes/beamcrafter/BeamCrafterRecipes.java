@@ -37,7 +37,7 @@ public class BeamCrafterRecipes implements Runnable {
     public void run() {
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Hydrogen.getGas(2000L))
-            .itemOutputs(new ItemStack(ModItems.itemStandarParticleBase, 1, 24)) // typo >:(
+            .itemOutputs(new ItemStack(ModItems.itemStandarParticleBase, 1, 24))
             // unknown particle
             .metadata(
                 BEAMCRAFTER_METADATA,

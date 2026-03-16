@@ -41,8 +41,8 @@ public class BeamCrafterMetadata {
         if (particleID_B != that.particleID_B) return false;
         if (amount_A != that.amount_A) return false;
         if (amount_B != that.amount_B) return false;
-        if (minEnergy_A != that.minEnergy_A) return false;
-        if (minEnergy_B != that.minEnergy_B) return false;
+        if (Float.compare(minEnergy_A, that.minEnergy_A) != 0) return false;
+        if (Float.compare(minEnergy_B, that.minEnergy_B) != 0) return false;
         return true;
     }
 
@@ -99,13 +99,13 @@ public class BeamCrafterMetadata {
         }
 
         public Builder energy_A(float minEnergy_A) {
-            if (minEnergy_A < 0) throw new IllegalArgumentException("'minEnergy_A' must be greater than zero!");
+            if (minEnergy_A <= 0) throw new IllegalArgumentException("'minEnergy_A' must be greater than zero!");
             this.minEnergy_A = minEnergy_A;
             return this;
         }
 
         public Builder energy_B(float minEnergy_B) {
-            if (minEnergy_B < 0) throw new IllegalArgumentException("'minEnergy_B' must be greater than zero!");
+            if (minEnergy_B <= 0) throw new IllegalArgumentException("'minEnergy_B' must be greater than zero!");
             this.minEnergy_B = minEnergy_B;
             return this;
         }

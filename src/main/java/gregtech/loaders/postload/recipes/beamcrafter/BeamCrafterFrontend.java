@@ -28,9 +28,9 @@ public class BeamCrafterFrontend extends RecipeMapFrontend {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
+    @Override
     public void drawDescription(RecipeDisplayInfo recipeInfo) {
         drawEnergyInfo(recipeInfo);
-        // drawDurationInfo(recipeInfo);
         drawSpecialInfo(recipeInfo);
         drawMetadataInfo(recipeInfo);
         drawRecipeOwnerInfo(recipeInfo);
