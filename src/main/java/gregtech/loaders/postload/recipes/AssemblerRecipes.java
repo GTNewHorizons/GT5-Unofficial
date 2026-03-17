@@ -3253,6 +3253,16 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                ItemList.Hull_MAX.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Bedrockium, 4))
+            .itemOutputs(ItemRegistry.energyDistributor[9])
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
                 ItemList.Hull_UIV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.NetherStar, 4))
