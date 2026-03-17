@@ -30,7 +30,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.DataBankMasterConnector;
 import static gregtech.api.enums.MetaTileEntityIDs.DebugDataHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.DebugPollutionGenerator;
 import static gregtech.api.enums.MetaTileEntityIDs.DebugPowerGenerator;
-import static gregtech.api.enums.MetaTileEntityIDs.DebugStructureWriter;
 import static gregtech.api.enums.MetaTileEntityIDs.EV16ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.EV16AEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.EV16AWirelessEnergyHatch;
@@ -295,7 +294,6 @@ import static tectech.thing.CustomItemList.Machine_BuckConverter_UXV;
 import static tectech.thing.CustomItemList.Machine_BuckConverter_ZPM;
 import static tectech.thing.CustomItemList.Machine_DebugGenny;
 import static tectech.thing.CustomItemList.Machine_DebugPollutor;
-import static tectech.thing.CustomItemList.Machine_DebugWriter;
 import static tectech.thing.CustomItemList.Machine_Multi_BECAssembler;
 import static tectech.thing.CustomItemList.Machine_Multi_BECDiode;
 import static tectech.thing.CustomItemList.Machine_Multi_BECGenerator;
@@ -624,7 +622,6 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeLaserMirror;
 import tectech.thing.metaTileEntity.single.MTEBuckConverter;
 import tectech.thing.metaTileEntity.single.MTEDebugPollutor;
 import tectech.thing.metaTileEntity.single.MTEDebugPowerGenerator;
-import tectech.thing.metaTileEntity.single.MTEDebugStructureWriter;
 import tectech.thing.metaTileEntity.single.MTEOwnerDetector;
 import tectech.thing.metaTileEntity.single.MTETeslaCoil;
 
@@ -2001,6 +1998,7 @@ public class MachineLoader implements Runnable {
         LASERpipeSmart.set(
             new MTEPipeLaserMirror(LaserVacuumMirror.ID, "pipe.energymirror", "Laser Vacuum Mirror").getStackForm(1L));
         DATApipe.set(new MTEPipeData(OpticalFiberCable.ID, "pipe.datastream", "Optical Fiber Cable").getStackForm(1L));
+
         if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
             TestPipe.set(new TestFactoryPipe(TestFactoryPipe.ID, "pipe.test", "Test Factory Pipe").getStackForm(1));
             TestHatch
@@ -2181,9 +2179,6 @@ public class MachineLoader implements Runnable {
                 8).getStackForm(1L));
         Machine_DebugGenny.set(
             new MTEDebugPowerGenerator(DebugPowerGenerator.ID, "debug.tt.genny", "Debug Power Generator", 14)
-                .getStackForm(1L));
-        Machine_DebugWriter.set(
-            new MTEDebugStructureWriter(DebugStructureWriter.ID, "debug.tt.writer", "Debug Structure Writer", 14)
                 .getStackForm(1L));
         UnusedStuff.set(new ItemStack(Blocks.air));
         hatch_CreativeUncertainty.set(

@@ -2111,7 +2111,7 @@ public enum ItemList implements IItemContainer {
     Hatch_CraftingInput_Bus_ME_ItemOnly,
     Hatch_CraftingInput_Bus_Slave,
     Hatch_PatternProvider_Crafting,
-    AdvDebugStructureWriter,
+    DebugStructureWriter,
 
     Superconducting_Magnet_Solenoid_MV,
     Superconducting_Magnet_Solenoid_HV,
@@ -2727,6 +2727,25 @@ public enum ItemList implements IItemContainer {
 
     MagLevHarness,
 
+    LargeHadronCollider,
+    ColliderCasing,
+    CMSCasing,
+    ATLASCasing,
+    ALICECasing,
+    LHCbCasing,
+    AdvancedBeamlineOutputHatch,
+
+    BeamCrafter,
+    BeamMirror,
+    BeamSplitter,
+    BeamStabilizer,
+
+    StableBaryonContainmentUnit,
+    StableLeptonContainmentUnit,
+    StableMesonContainmentUnit,
+    StableBosonContainmentUnit,
+    StableEmptyContainmentUnit,
+
     ManaFly,
     DebugEnergyHatch,
 
@@ -2966,6 +2985,7 @@ public enum ItemList implements IItemContainer {
     Wrap_OpticallyCompatibleMemories,
     Wrap_LivingCrystalChips,
     Wrap_LivingBioChips,
+    ToolBox,
     MeshInterfaceNanochipCasing,
     ReinforcementNanochipCasing,
     ComputationalMatrixNanochipCasing,

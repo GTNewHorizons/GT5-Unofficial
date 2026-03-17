@@ -58,7 +58,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.materials.bec.BECMaterialList;
@@ -240,11 +239,6 @@ public class GTMod {
         for (int i = 4; i < 12; i++) {
             GregTechAPI.registerTileEntityConstructor(i, i2 -> new BaseMetaPipeEntity());
         }
-
-        // noinspection ResultOfMethodCallIgnored// Suspicious likely pointless
-        Textures.BlockIcons.VOID.name();
-        // noinspection ResultOfMethodCallIgnored// Suspicious likely pointless
-        Textures.ItemIcons.VOID.name();
 
         UnificationOreAdapter.load();
     }
@@ -572,6 +566,7 @@ public class GTMod {
         GTPostLoad.addSolidFakeLargeBoilerFuels();
         GTPostLoad.addCauldronRecipe();
         GTPostLoad.identifyAnySteam();
+        GTPostLoad.processToolboxBans();
 
         VoidMinerLoader.init();
         BECRecipeLoader.run();

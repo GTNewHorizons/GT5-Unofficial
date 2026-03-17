@@ -382,7 +382,12 @@ public class GTRecipeBuilder {
             } else if (input instanceof OreDictItemStack ods) {
                 altOreIds[i] = OreDictionary.getOreID(ods.mOreName);
                 ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(ods.mOreName);
-                if (ores.isEmpty()) continue;
+                if (ores.isEmpty()) {
+                    GTLog.err
+                        .println("Warning: OreDict entry \"" + ods.mOreName + "\" is empty; recipe will be skipped.");
+                    alts[i] = GTValues.emptyItemStackArray;
+                    continue;
+                }
                 ArrayList<ItemStack> list = new ArrayList<>(ores.size());
                 // noinspection ForLoopReplaceableByForEach
                 for (int j = 0, oresSize = ores.size(); j < oresSize; j++) {
@@ -394,7 +399,11 @@ public class GTRecipeBuilder {
                 if (arr.length != 2) continue;
                 altOreIds[i] = OreDictionary.getOreID(arr[0].toString());
                 ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(arr[0]);
-                if (ores.isEmpty()) continue;
+                if (ores.isEmpty()) {
+                    GTLog.err.println("Warning: OreDict entry \"" + arr[0] + "\" is empty; recipe will be skipped.");
+                    alts[i] = GTValues.emptyItemStackArray;
+                    continue;
+                }
                 int size = ((Number) arr[1]).intValue();
                 ArrayList<ItemStack> list = new ArrayList<>(ores.size());
                 // noinspection ForLoopReplaceableByForEach

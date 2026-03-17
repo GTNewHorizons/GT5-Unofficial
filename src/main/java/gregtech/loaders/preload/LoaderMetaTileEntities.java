@@ -95,7 +95,7 @@ import gregtech.common.tileentities.boilers.MTEBoilerLava;
 import gregtech.common.tileentities.boilers.MTEBoilerSolar;
 import gregtech.common.tileentities.boilers.MTEBoilerSolarSteel;
 import gregtech.common.tileentities.boilers.MTEBoilerSteel;
-import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
+import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
 import gregtech.common.tileentities.generators.MTEDieselGenerator;
 import gregtech.common.tileentities.generators.MTEGasTurbine;
 import gregtech.common.tileentities.generators.MTELightningRod;
@@ -204,6 +204,12 @@ import gregtech.common.tileentities.machines.multi.MTESpinmatron;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamSplitter;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamStabilizer;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTELargeHadronCollider;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleUtility;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHIPCompressor;
@@ -659,6 +665,24 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.DecayWarehouse.set(
             new MTEDecayWarehouse(DECAY_WAREHOUSE.ID, "multimachine.decay-warehouse", "Decay Warehouse")
+                .getStackForm(1));
+
+        ItemList.LargeHadronCollider.set(
+            new MTELargeHadronCollider(
+                LARGE_HADRON_COLLIDER.ID,
+                "multimachine.large-hadron-collider",
+                "Large Hadron Collider").getStackForm(1));
+
+        ItemList.BeamCrafter
+            .set(new MTEBeamCrafter(BEAM_CRAFTER.ID, "multimachine.beam-crafter", "Beam Crafter").getStackForm(1));
+
+        ItemList.BeamMirror
+            .set(new MTEBeamMirror(BEAM_MIRROR.ID, "multimachine.beam-mirror", "Beam Mirror").getStackForm(1));
+
+        ItemList.BeamSplitter
+            .set(new MTEBeamSplitter(BEAM_SPLITTER.ID, "multimachine.beam-splitter", "Beam Splitter").getStackForm(1));
+        ItemList.BeamStabilizer.set(
+            new MTEBeamStabilizer(BEAM_STABILIZER.ID, "multimachine.beam-stabilizer", "Beam Stabilizer")
                 .getStackForm(1));
 
         ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
@@ -11111,12 +11135,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerNacHatches();
         registerDrawerFramer();
 
-        ItemList.AdvDebugStructureWriter.set(
-            new MTEAdvDebugStructureWriter(
-                ADVANCED_DEBUG_STRUCTURE_WRITTER.ID,
-                "advdebugstructurewriter",
-                "Advanced Debug Structure Writer",
-                5).getStackForm(1L));
+        ItemList.DebugStructureWriter.set(
+            new MTEDebugStructureWriter(DEBUG_STRUCTURE_WRITER.ID, "debugstructurewriter", "Debug Structure Writer", 5)
+                .getStackForm(1L));
         ItemList.Hatch_Maintenance.set(
             new MTEHatchMaintenance(MAINTENANCE_HATCH.ID, "hatch.maintenance", "Maintenance Hatch", 1)
                 .getStackForm(1L));
@@ -11168,6 +11189,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Bulk Catalyst Housing",
                 10,
                 Integer.MAX_VALUE).getStackForm(1));
+        ItemList.AdvancedBeamlineOutputHatch.set(
+            new MTEHatchAdvancedOutputBeamline(
+                HATCH_ADVANCED_BEAMLINE_OUTPUT.ID,
+                "hatch.advancedbeamlineoutput",
+                "Filtered Beamline Output Hatch",
+                8).getStackForm(1));
 
         ItemList.LargeMolecularAssembler.set(
             new MTELargeMolecularAssembler(

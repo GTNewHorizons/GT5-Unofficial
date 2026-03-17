@@ -26,7 +26,6 @@ public enum CustomItemList implements IItemContainer {
     Machine_BuckConverter_UIV,
     Machine_BuckConverter_UMV,
     Machine_BuckConverter_UXV,
-    Machine_DebugWriter,
     Machine_DebugGenny,
     UnusedStuff,
     Machine_DebugPollutor,

@@ -25,6 +25,14 @@ public class StatsBundle {
         }
     }
 
+    public void merge(StatsBundle other) {
+        if (other == null) return;
+        other.data.forEachEntry((k, v) -> {
+            merge(k, v);
+            return true;
+        });
+    }
+
     public StatsBundle copy() {
         StatsBundle n = new StatsBundle();
         n.data.putAll(this.data);
