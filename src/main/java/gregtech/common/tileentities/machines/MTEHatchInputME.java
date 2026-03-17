@@ -1166,10 +1166,14 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     private static String[] getDescriptionArray(boolean autoPullAvailable) {
-        List<String> strings = new ArrayList<>(autoPullAvailable ? 12 : 6);
+        List<String> strings = new ArrayList<>(autoPullAvailable ? 13 : 7);
         if (autoPullAvailable) {
+            strings.add(
+                StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": " + EnumChatFormatting.YELLOW + "ASIH");
             strings.add("Advanced fluid input for Multiblocks");
         } else {
+            strings.add(
+                StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": " + EnumChatFormatting.YELLOW + "SIH");
             strings.add("Next-gen fluid input for Multiblocks");
         }
         strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 9 : 8] + VN[autoPullAvailable ? 9 : 8]);
