@@ -143,7 +143,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECStorage> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC Machine, Entangled Condensate Storage")
+        tt.addMachineType("BEC Storage, Entangled Condensate Storage")
             .addMarkdown(new ResourceLocation("gregtech", "bec-storage"));
 
         tt.beginStructureBlock();
@@ -158,7 +158,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                 AdvancedFusionCoilII),
             null);
 
-        tt.toolTipFinisher(EnumChatFormatting.WHITE, 0, GTValues.AuthorPineapple);
+        tt.toolTipFinisher(GTValues.AuthorPineapple);
 
         return tt;
     }

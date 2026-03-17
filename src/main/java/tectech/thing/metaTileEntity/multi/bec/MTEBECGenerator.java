@@ -83,7 +83,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECGenerator> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC Machine, Condensate Entangler")
+        tt.addMachineType("BEC Generator, Condensate Entangler")
             .addMarkdown(new ResourceLocation("gregtech", "bec-generator"));
 
         tt.beginStructureBlock();

@@ -124,7 +124,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECAssembler> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC, Observation Array")
+        tt.addMachineType("BEC Assembler, Observation Array")
             .addMarkdown(new ResourceLocation("gregtech", "bec-assembler"));
 
         tt.beginStructureBlock();
@@ -412,7 +412,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
                 .dynamic(
                     () -> GRAY + "Providing Nanites:\n  "
                         + AQUA
-                        + currentNaniteTier.describe()
+                        + (currentNaniteTier == null ? "None" : currentNaniteTier.describe())
                         + GRAY
                         + " x "
                         + GOLD

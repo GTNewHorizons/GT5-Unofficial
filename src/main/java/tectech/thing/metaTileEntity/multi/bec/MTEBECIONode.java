@@ -178,7 +178,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECIONode> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC Machine, Input bus, Output bus")
+        tt.addMachineType("BEC I/O Node, Input bus, Output bus")
             .addMarkdown(new ResourceLocation("gregtech", "bec-ionode"));
 
         tt.beginStructureBlock();

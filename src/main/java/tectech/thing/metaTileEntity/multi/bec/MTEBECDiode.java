@@ -163,7 +163,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECDiode> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC, Storage Bus")
+        tt.addMachineType("BEC Diode, Storage Bus")
             .addMarkdown(new ResourceLocation("gregtech", "bec-diode"));
 
         tt.beginStructureBlock();

@@ -7,4 +7,4 @@ Different types of nanites can be mixed, but the effective tier will be the {und
 A recipe's condensate can be supplied at any time during its crafting.
 The recipe will fail if condensate is not supplied by the end.
 Crafting speed will be reduced if the network contains condensate that is not requested by the recipe.
-If there are more than {red:3} unrequested condensates in the network while an I/O node is running, the craft will {red:{underline:immediately fail}}.
+If there are more than {red:3} unrequested condensates in the network while a teleportation node is running, the craft will {red:{underline:immediately fail}}.
