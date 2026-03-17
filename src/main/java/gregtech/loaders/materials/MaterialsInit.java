@@ -6862,7 +6862,7 @@ public class MaterialsInit {
 
     private static Materials loadPolycaprolactam() {
         return new MaterialBuilder().setName("Polycaprolactam")
-            .setDefaultLocalName("Polycaprolactam")
+            .setDefaultLocalName("Polycaprolactam (PCL)")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeWhite)
             .setARGB(0x00323232)
@@ -6899,7 +6899,7 @@ public class MaterialsInit {
 
     private static Materials loadPolyethylene() {
         return new MaterialBuilder().setName("Plastic")
-            .setDefaultLocalName("Polyethylene")
+            .setDefaultLocalName("Polyethylene (PE)")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeWhite)
             .setARGB(0x00c8c8c8)
@@ -6922,7 +6922,7 @@ public class MaterialsInit {
 
     private static Materials loadPolytetrafluoroethylene() {
         return new MaterialBuilder().setName("Polytetrafluoroethylene")
-            .setDefaultLocalName("Polytetrafluoroethylene")
+            .setDefaultLocalName("Polytetrafluoroethylene (PTFE)")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeWhite)
             .setARGB(0x00646464)
@@ -8376,7 +8376,7 @@ public class MaterialsInit {
 
     private static Materials loadPolyphenyleneSulfide() {
         return new MaterialBuilder().setName("PolyphenyleneSulfide")
-            .setDefaultLocalName("Polyphenylene Sulfide")
+            .setDefaultLocalName("Polyphenylene Sulfide (PPS)")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeBrown)
             .setARGB(0x00aa8800)
@@ -8396,7 +8396,7 @@ public class MaterialsInit {
 
     private static Materials loadPolystyrene() {
         return new MaterialBuilder().setName("Polystyrene")
-            .setDefaultLocalName("Polystyrene")
+            .setDefaultLocalName("Polystyrene (PS)")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeLightGray)
             .setARGB(0x00beb4aa)
@@ -8431,7 +8431,7 @@ public class MaterialsInit {
 
     private static Materials loadPolyvinylChloride() {
         return new MaterialBuilder().setName("PolyvinylChloride")
-            .setDefaultLocalName("Polyvinyl Chloride")
+            .setDefaultLocalName("Polyvinyl Chloride (PVC)")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeLightGray)
             .setARGB(0x00d7e6e6)
@@ -8563,7 +8563,7 @@ public class MaterialsInit {
 
     private static Materials loadStyreneButadieneRubber() {
         return new MaterialBuilder().setName("StyreneButadieneRubber")
-            .setDefaultLocalName("Styrene-Butadiene Rubber")
+            .setDefaultLocalName("Styrene-Butadiene Rubber (SBR)")
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeBlack)
             .setARGB(0x00211a18)
@@ -12412,7 +12412,7 @@ public class MaterialsInit {
 
     private static Materials loadPolybenzimidazole() {
         return new MaterialBuilder().setName("Polybenzimidazole")
-            .setDefaultLocalName("Polybenzimidazole")
+            .setDefaultLocalName("Polybenzimidazole (PBI)")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeBlack)
             .setARGB(0x002d2d2d)
