@@ -30,8 +30,12 @@ public enum NaniteTier {
 
     private ItemStack stack = null;
 
-    private NaniteTier(int tier) {
+    NaniteTier(int tier) {
         this.tier = tier;
+    }
+
+    public int getTier() {
+        return tier;
     }
 
     public Materials getMaterial() {

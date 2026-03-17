@@ -45,18 +45,15 @@ public class BlockCasings11 extends BlockCasingsAbstract {
 
         register(
             8,
-            ItemList.Casing_Item_BEC1,
-            "Coherence-preserving Plasma Conduit",
+            ItemList.SuperconductivePlasmaEnergyConduit,
             translatedText("gt.casing11.8.tooltip"));
         register(
             9,
-            ItemList.Casing_Item_BEC2,
-            "Electromagnetically-isolated Casing",
+            ItemList.ElectromagneticallyIsolatedCasing,
             translatedText("gt.casing11.9.tooltip"));
         register(
             10,
-            ItemList.Casing_Item_BEC3,
-            "Fine-structure Constant Manipulator",
+            ItemList.FineStructureConstantManipulator,
             translatedText("gt.casing11.10.tooltip"));
 
         for (int i = 0; i < 8; i++) {
@@ -66,6 +63,7 @@ public class BlockCasings11 extends BlockCasingsAbstract {
 
     @Override
     public int getRenderType() {
+        // Don't use the casing ISBRH, render as a normal block
         return 0;
     }
 
@@ -96,9 +94,9 @@ public class BlockCasings11 extends BlockCasingsAbstract {
             case 5 -> Textures.BlockIcons.MACHINE_CASING_ITEM_PIPE_QUANTIUM.getIcon();
             case 6 -> Textures.BlockIcons.MACHINE_CASING_ITEM_PIPE_FLUXED_ELECTRUM.getIcon();
             case 7 -> Textures.BlockIcons.MACHINE_CASING_ITEM_PIPE_BLACK_PLUTONIUM.getIcon();
-            case 8 -> Textures.BlockIcons.BEC1.getIcon();
-            case 9 -> Textures.BlockIcons.BEC2.getIcon();
-            case 10 -> Textures.BlockIcons.BEC3.getIcon();
+            case 8 -> Textures.BlockIcons.BEC_CONDUIT.getIcon();
+            case 9 -> Textures.BlockIcons.BEC_CASING.getIcon();
+            case 10 -> Textures.BlockIcons.BEC_MANIPULATOR.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ITEM_PIPE_TIN.getIcon();
         };
     }
@@ -160,9 +158,9 @@ public class BlockCasings11 extends BlockCasingsAbstract {
         Orientation orientation = getConduitOrientation(world, x, y, z);
 
         return switch (ICONS[orientation.ordinal()][side.ordinal()]) {
-            case NONE -> Textures.BlockIcons.BEC1_BLANK.getIcon();
-            case NORMAL -> Textures.BlockIcons.BEC1.getIcon();
-            case ROTATED -> Textures.BlockIcons.BEC1_90.getIcon();
+            case NONE -> Textures.BlockIcons.BEC_CONDUIT_BLANK.getIcon();
+            case NORMAL -> Textures.BlockIcons.BEC_CONDUIT.getIcon();
+            case ROTATED -> Textures.BlockIcons.BEC_CONDUIT_90.getIcon();
         };
     }
 
@@ -260,7 +258,9 @@ public class BlockCasings11 extends BlockCasingsAbstract {
             int meta = world.getBlockMetadata(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
 
             int value = switch (meta) {
+                // Adjacent to a EM isolated casing
                 case 9 -> 1;
+                // Adjacent to a fine structure manipulator
                 case 10 -> 2;
                 default -> 0;
             };

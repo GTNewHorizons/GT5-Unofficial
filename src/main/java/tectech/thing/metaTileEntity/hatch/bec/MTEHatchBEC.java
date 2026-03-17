@@ -1,32 +1,27 @@
-package tectech.thing.metaTileEntity.hatch;
+package tectech.thing.metaTileEntity.hatch.bec;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
+import gregtech.api.util.GTUtility;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryElement;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryNetwork;
-import tectech.mechanics.boseEinsteinCondensate.BECInventory;
+import tectech.thing.metaTileEntity.hatch.MTEBaseFactoryHatch;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
 
 public class MTEHatchBEC extends MTEBaseFactoryHatch implements BECFactoryElement {
 
     private BECFactoryNetwork network;
 
-    private MTEBECMultiblockBase<?> controller;
+    private final HashSet<MTEBECMultiblockBase<?>> controllers = new HashSet<>();
 
     protected MTEHatchBEC(MTEHatchBEC prototype) {
         super(prototype);
@@ -42,22 +37,6 @@ public class MTEHatchBEC extends MTEBaseFactoryHatch implements BECFactoryElemen
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("network", network == null ? "null" : network.toString());
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        currenttip.add(
-            "Network: " + accessor.getNBTData()
-                .getString("network"));
-    }
-
-    @Override
     public boolean isGivingInformation() {
         return true;
     }
@@ -66,15 +45,7 @@ public class MTEHatchBEC extends MTEBaseFactoryHatch implements BECFactoryElemen
     public String[] getInfoData() {
         List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
-        if (network == null) {
-            data.add("No network");
-        } else {
-            for (BECInventory inv : network.getComponents(BECInventory.class)) {
-                data.add(
-                    inv.getContents()
-                        .toString());
-            }
-        }
+        data.add("Network: " + (network == null ? "None" : network.id));
 
         return data.toArray(new String[0]);
     }
@@ -99,7 +70,7 @@ public class MTEHatchBEC extends MTEBaseFactoryHatch implements BECFactoryElemen
             }
         }
 
-        if (controller != null) neighbours.add(controller);
+        neighbours.addAll(controllers);
     }
 
     @Override
@@ -116,31 +87,43 @@ public class MTEHatchBEC extends MTEBaseFactoryHatch implements BECFactoryElemen
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
 
-        BECFactoryGrid.INSTANCE.addElement(this);
+        if (GTUtility.isServer()) {
+            BECFactoryGrid.INSTANCE.updateElement(this);
+        }
     }
 
     @Override
     public void onRemoval() {
         super.onRemoval();
 
-        BECFactoryGrid.INSTANCE.removeElement(this);
+        if (GTUtility.isServer()) {
+            BECFactoryGrid.INSTANCE.removeElement(this);
+        }
     }
 
     @Override
     public void onFacingChange() {
         super.onFacingChange();
 
-        BECFactoryGrid.INSTANCE.addElement(this);
+        if (GTUtility.isServer()) {
+            BECFactoryGrid.INSTANCE.updateElement(this);
+        }
     }
 
     @Override
     public void onColorChangeServer(byte aColor) {
-        BECFactoryGrid.INSTANCE.addElement(this);
+        if (GTUtility.isServer()) {
+            BECFactoryGrid.INSTANCE.updateElement(this);
+        }
     }
 
-    public void setController(MTEBECMultiblockBase<?> controller) {
-        if (controller != this.controller) {
-            this.controller = controller;
-        }
+    public void addController(MTEBECMultiblockBase<?> controller) {
+        controllers.add(controller);
+        // multiblock is responsible for updating the network
+    }
+
+    public void removeController(MTEBECMultiblockBase<?> controller) {
+        controllers.remove(controller);
+        // multiblock is responsible for updating the network
     }
 }

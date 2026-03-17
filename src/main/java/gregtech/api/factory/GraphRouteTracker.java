@@ -4,28 +4,22 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 
-import com.google.common.collect.MultimapBuilder;
-import com.google.common.collect.SetMultimap;
-
-import gregtech.api.objects.TimedLRUCache;
+import gregtech.api.factory.routing.NetworkStep;
+import gregtech.api.factory.routing.NetworkVisitor;
+import gregtech.api.factory.routing.StepQueue;
+import gregtech.api.factory.routing.VisitorResult;
 import it.unimi.dsi.fastutil.Pair;
 
 public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwork, TGrid>, TNetwork extends IFactoryNetwork<TNetwork, TElement, TGrid>, TGrid extends IFactoryGrid<TGrid, TElement, TNetwork>, TNotable extends INotableFactoryElement<TNotable, TRouteInfo>, TRouteInfo extends IRouteInfo<TRouteInfo>> {
 
-    public final SetMultimap<TNotable, RoutedNode<TNotable, TRouteInfo>> edges = MultimapBuilder.hashKeys()
-        .hashSetValues()
-        .build();
+    public final HashMap<TNotable, RoutedNode<TNotable, TRouteInfo>[]> edges = new HashMap<>();
 
     private final Class<TNotable> notableType;
     private final Set<TNotable> notableElements = new HashSet<>();
 
     private final TRouteInfo zero;
-
-    private final TimedLRUCache<TNotable, FactoryRoutes<TNotable, TRouteInfo>> routeCache = new TimedLRUCache<>(
-        this::dijkstraUncached,
-        20 * 60,
-        1024);
 
     public GraphRouteTracker(Class<TNotable> notableType, TRouteInfo zero) {
         this.notableType = notableType;
@@ -33,36 +27,29 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
     }
 
     public void onElementAdded(TElement element) {
-        if (!(notableType.isAssignableFrom(element.getClass()))) return;
+        if (!notableType.isAssignableFrom(element.getClass())) return;
 
         TNotable notableElement = notableType.cast(element);
 
         notableElements.add(notableElement);
-
-        invalidateRoutes();
     }
 
     public void onElementRemoved(TElement element) {
-        if (!(notableType.isAssignableFrom(element.getClass()))) return;
+        if (!notableType.isAssignableFrom(element.getClass())) return;
 
         TNotable notableElement = notableType.cast(element);
 
         notableElements.remove(notableElement);
-
-        invalidateRoutes();
     }
 
-    public void invalidateRoutes() {
-        routeCache.clear();
-    }
+    private static final RoutedNode[] EMPTY_NODE_ARRAY = new RoutedNode[0];
 
     public void updateEdges() {
         edges.clear();
 
         for (TNotable notableElement : notableElements) {
-            for (RoutedNode<TNotable, TRouteInfo> edge : notableElement.getRoutedNeighbours()) {
-                edges.put(notableElement, edge);
-            }
+            //noinspection unchecked
+            edges.put(notableElement, notableElement.getRoutedNeighbours().toArray(EMPTY_NODE_ARRAY));
         }
     }
 
@@ -77,12 +64,32 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
         }
     }
 
-    public FactoryRoutes<TNotable, TRouteInfo> dijkstra(TNotable start) {
-        return dijkstraUncached(start);
-        // return routeCache.get(start);
+    public void iterateNetworkBFS(TNotable start, NetworkVisitor<TNotable, TRouteInfo> visitor) {
+        StepQueue<TNotable, TRouteInfo> queue = new StepQueue<>();
+
+        queue.add(new NetworkStep<>(start, zero, null));
+
+        NetworkStep<TNotable, TRouteInfo> step;
+
+        while ((step = queue.takeFront()) != null) {
+            VisitorResult result = visitor.visit(step);
+
+            if (result == VisitorResult.Break) break;
+            if (result == VisitorResult.SkipNode) continue;
+
+            for (var edge : edges.get(step.node())) {
+                if (!step.contains(edge.element())) {
+                    queue.add(new NetworkStep<>(edge.element(), step.route().copy().merge(edge.routeInfo()), step));
+                }
+            }
+        }
     }
 
-    private FactoryRoutes<TNotable, TRouteInfo> dijkstraUncached(TNotable start) {
+    public FactoryRoutes<TNotable, TRouteInfo> dijkstra(TNotable start) {
+        return dijkstra(start, null);
+    }
+
+    public FactoryRoutes<TNotable, TRouteInfo> dijkstra(TNotable start, Predicate<RoutedNode<TNotable, TRouteInfo>> filter) {
         ArrayDeque<Pair<TNotable, TRouteInfo>> queue = new ArrayDeque<>();
         HashSet<TNotable> visited = new HashSet<>();
         HashMap<TNotable, From<TNotable, TRouteInfo>> result = new HashMap<>();
@@ -98,6 +105,8 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
             if (!visited.add(current)) continue;
 
             for (var edge : edges.get(current)) {
+                if (filter != null && !filter.test(edge)) continue;
+
                 var totalRoute = route == null ? edge.routeInfo() : route.merge(edge.routeInfo());
 
                 From<TNotable, TRouteInfo> existing = result.get(edge.element());

@@ -9,20 +9,15 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.mutable.MutableLong;
 import org.jetbrains.annotations.NotNull;
 
-import appeng.api.storage.data.IAEFluidStack;
 import appeng.util.item.AEFluidStack;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
@@ -33,21 +28,16 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
-import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.client.volumetric.ISoundPosition;
 import gregtech.client.volumetric.LinearSound;
-import it.unimi.dsi.fastutil.objects.Object2LongMaps;
-import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
-import tectech.mechanics.boseEinsteinCondensate.BECInventory;
+import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
@@ -92,8 +82,8 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECGenerator> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC Generator")
-            .addInfo("Makes fancy atoms");
+        tt.addMachineType("BEC Machine, Condensate Entangler")
+            .addMarkdown(new ResourceLocation("gregtech", "bec-generator"));
 
         tt.beginStructureBlock();
         tt.addController("Front Center");
@@ -101,7 +91,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         tt.addHatchLocationOverride(
             Arrays.asList(InputBus, InputHatch, Energy, ExoticEnergy),
             "Any " + ElectromagneticallyIsolatedCasing.getLocalizedName() + " in the first slice");
-        tt.addHatchLocationOverride(BECHatches.Hatch, "The centre casing in the last slice");
+        tt.addHatchLocationOverride(BECHatches.Hatch, "The center casing in the last slice");
         tt.addAllCasingInfo(
             Arrays.asList(
                 ElectromagneticallyIsolatedCasing,
@@ -110,7 +100,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
                 ElectromagneticWaveguide),
             null);
 
-        tt.toolTipFinisher(EnumChatFormatting.WHITE, 0, GTValues.AuthorPineapple);
+        tt.toolTipFinisher(GTValues.AuthorPineapple);
 
         return tt;
     }
@@ -134,12 +124,8 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
     @Override
     protected void addFluidOutputs(FluidStack[] outputFluids) {
         if (network != null) {
-            IAEFluidStack[] outputs = GTDataUtils.mapToArray(outputFluids, IAEFluidStack[]::new, AEFluidStack::create);
-
-            for (BECInventory inv : network.getComponents(BECInventory.class)) {
-                for (IAEFluidStack stack : outputs) {
-                    inv.addCondensate(stack);
-                }
+            for (FluidStack output : outputFluids) {
+                network.injectCondensate(this, AEFluidStack.create(output));
             }
         }
     }
@@ -154,6 +140,11 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         return SoundResource.GT_MACHINES_BEC_GENERATOR;
     }
 
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     protected ISoundPosition getSoundPosition() {
@@ -162,47 +153,23 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
 
     @Override
     protected @NotNull CheckRecipeResult checkProcessing_EM() {
-        MutableLong euQuota = new MutableLong(0);
-
-        int baseProcessingTime = 1 * SECONDS;
-
-        for (MTEHatch hatch : filterValidMTEs(getExoticAndNormalEnergyHatchList())) {
-            euQuota.add(hatch.maxEUInput() * hatch.maxAmperesIn() * baseProcessingTime);
-        }
+        MutableLong euQuota = new MutableLong(getMaxInputEu());
 
         long startingQuota = euQuota.longValue();
 
-        ArrayList<FluidStack> outputs = new ArrayList<>();
+        CondensateList outputs = new CondensateList();
+
+        // Clear the recipe time here. It's mutated in tryDrainFluid.
+        mMaxProgresstime = 0;
 
         for (FluidStack input : getStoredFluids()) {
             tryDrainFluid(outputs, euQuota, input);
         }
 
         if (outputs.isEmpty()) {
-            mMaxProgresstime = 0;
-
             return CheckRecipeResultRegistry.NO_RECIPE;
         } else {
-            Object2LongOpenHashMap<Fluid> fluids = new Object2LongOpenHashMap<>();
-
-            for (FluidStack output : outputs) {
-                fluids.addTo(output.getFluid(), output.amount);
-            }
-
-            outputs.clear();
-
-            Object2LongMaps.fastForEach(fluids, e -> {
-                while (e.getLongValue() > 0) {
-                    int amount = GTUtility.longToInt(e.getLongValue());
-
-                    outputs.add(new FluidStack(e.getKey(), amount));
-
-                    e.setValue(e.getLongValue() - amount);
-                }
-            });
-
-            mOutputFluids = outputs.toArray(GTValues.emptyFluidStackArray);
-            mMaxProgresstime = baseProcessingTime;
+            mOutputFluids = outputs.toFluidStacks().toArray(GTValues.emptyFluidStackArray);
             mEfficiency = 10_000;
             useLongPower = true;
             lEUt = -(startingQuota - euQuota.longValue()) / mMaxProgresstime;
@@ -211,7 +178,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         }
     }
 
-    private void tryDrainFluid(ArrayList<FluidStack> outputs, MutableLong euQuota, FluidStack fluidStack) {
+    private void tryDrainFluid(CondensateList outputs, MutableLong euQuota, FluidStack fluidStack) {
          GTRecipe recipe = TecTechRecipeMaps.condensateGeneratorRecipes.findRecipeQuery()
             .fluids(new FluidStack(fluidStack.getFluid(), fluidStack.amount))
             .find();
@@ -237,9 +204,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
 
         euQuota.subtract(toDrain.amount / recipe.mFluidInputs[0].amount * (long) recipe.mEUt);
 
-        FluidStack output = recipe.mFluidOutputs[0].copy();
-        output.amount *= parallels;
-        outputs.add(output);
+        outputs.addTo(recipe.mFluidOutputs[0].getFluid(), recipe.mFluidOutputs[0].amount * (long) parallels);
 
         this.mMaxProgresstime = Math.max(this.mMaxProgresstime, recipe.mDuration);
     }

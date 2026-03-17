@@ -12,7 +12,6 @@ import static gregtech.api.enums.Materials.FLUID_MAP;
 import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
-import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
@@ -21,11 +20,11 @@ import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.util.ForgeDirection.UNKNOWN;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
 import static net.minecraftforge.common.util.ForgeDirection.WEST;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.AbstractCollection;
@@ -37,6 +36,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -57,8 +57,10 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
@@ -101,7 +103,6 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
@@ -112,36 +113,36 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
+
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.gtnewhorizon.structurelib.alignment.IAlignment;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.mojang.authlib.GameProfile;
+
 import buildcraft.api.transport.IPipeTile;
 import codechicken.translocator.TileItemTranslocator;
 import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ModAPIManager;
 import cpw.mods.fml.common.registry.GameRegistry;
-import forestry.api.arboriculture.ITree;
-import forestry.arboriculture.tiles.TileLeaves;
 import fox.spiteful.avaritia.items.ItemMatterCluster;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -157,21 +158,14 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IBlockContainer;
-import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.IHasIndexedTexture;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.item.ItemStackSizeCalculator;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.interfaces.tileentity.IUpgradableMachine;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.ItemEnergyArmor;
 import gregtech.api.items.MetaGeneratedTool;
@@ -185,18 +179,12 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.ores.OreManager;
-import gregtech.common.pollution.Pollution;
 import gregtech.nei.FluidDisplayStackMode;
-import ic2.api.crops.ICropTile;
-import ic2.api.energy.tile.IEnergyConductor;
-import ic2.api.reactor.IReactor;
 import ic2.api.recipe.ICannerBottleRecipeManager;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
-import ic2.api.tile.IEnergyStorage;
-import ic2.api.tile.IWrenchable;
 import ic2.core.IC2Potion;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
@@ -204,9 +192,6 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
-import java.util.IdentityHashMap;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -3326,6 +3311,11 @@ public class GTUtility {
             if (l > first) first = l;
         }
         return first;
+    }
+
+    public static long ceil(double k) {
+        long l = (long)k;
+        return k > (double)l ? l + 1 : l;
     }
 
     public static int ceilDiv(int lhs, int rhs) {

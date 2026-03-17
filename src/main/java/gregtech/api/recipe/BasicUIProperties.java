@@ -1,6 +1,6 @@
 package gregtech.api.recipe;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.util.List;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
@@ -22,7 +22,6 @@ import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.FluidDisplayFactory;
 
 /**
  * Data object to store properties, used to draw both basic machine GUI and NEI recipe GUI, mainly GUI widgets. Not all
@@ -183,8 +182,6 @@ public final class BasicUIProperties {
     public final int progressBarWidthMUI2;
     public final int progressBarHeightMUI2;
 
-    public final FluidDisplayFactory fluidDisplayFactory;
-
     /**
      * Amperage for the recipemap. Even though this is placed at frontend because backend logic doesn't need it, some
      * machine logic also use this variable.
@@ -200,7 +197,7 @@ public final class BasicUIProperties {
         List<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTexturesSteam, IDrawable logo, Size logoSize, Pos2d logoPos,
         IntFunction<List<Pos2d>> itemInputPositionsGetter, IntFunction<List<Pos2d>> itemOutputPositionsGetter,
         Supplier<Pos2d> specialItemPositionGetter, IntFunction<List<Pos2d>> fluidInputPositionsGetter,
-        IntFunction<List<Pos2d>> fluidOutputPositionsGetter, int amperage, FluidDisplayFactory fluidDisplayFactory,
+        IntFunction<List<Pos2d>> fluidOutputPositionsGetter, int amperage,
         SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2,
         com.cleanroommc.modularui.drawable.UITexture progressBarMUI2, ProgressWidget.Direction progressBarDirectionMUI2,
         int progressBarWidthMUI2, int progressBarHeightMUI2) {
@@ -242,7 +239,6 @@ public final class BasicUIProperties {
         this.progressBarDirectionMUI2 = progressBarDirectionMUI2;
         this.progressBarWidthMUI2 = progressBarWidthMUI2;
         this.progressBarHeightMUI2 = progressBarHeightMUI2;
-        this.fluidDisplayFactory = fluidDisplayFactory;
 
         this.progressBarImageSize = switch (progressBarDirection) {
             case UP, DOWN -> progressBarSize.height;

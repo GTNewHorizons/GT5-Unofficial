@@ -11,9 +11,9 @@ import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class CondensateFrontend extends RecipeMapFrontend {
+public class BECCreationFrontend extends RecipeMapFrontend {
 
-    public CondensateFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
+    public BECCreationFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
@@ -27,6 +27,6 @@ public class CondensateFrontend extends RecipeMapFrontend {
     @Override
     protected void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         recipeInfo.drawText(
-            String.format("Quota Required: %s EU", NumberFormatUtil.formatEnergy(recipeInfo.recipe.mEUt)));
+            String.format("Quota Required: %s", NumberFormatUtil.formatEnergy(recipeInfo.recipe.mEUt)));
     }
 }

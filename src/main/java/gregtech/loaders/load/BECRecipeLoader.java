@@ -26,7 +26,7 @@ public class BECRecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 2L),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 2L),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 2L))
-            .fluidInputs(CondensateType.Quantium.getEntangled(144))
+            .fluidInputs(CondensateType.Quantium.getEntangled(1_000_000))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2L))
             .metadata(
                 GTRecipeConstants.NANITE_TIERS,

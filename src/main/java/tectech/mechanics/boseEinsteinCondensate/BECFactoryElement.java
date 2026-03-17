@@ -8,7 +8,6 @@ public interface BECFactoryElement extends IFactoryElement<BECFactoryElement, BE
 
     enum ConnectionType {
         CONNECTABLE,
-        VISUAL_ONLY,
         NONE,
     }
 

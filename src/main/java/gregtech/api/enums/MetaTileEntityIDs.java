@@ -1812,6 +1812,7 @@ public enum MetaTileEntityIDs {
     HatchNaniteDetector(15758),
     HatchIOController(15759),
     BoseEinsteinCondensateDiode(15760),
+    HatchCondensateDetector(15761),
     BasicTeslaTransceiver1by1(16000),
     AdvancedTeslaTransceiver1by1(16001),
     EpycTeslaTransceiver1by1(16002),

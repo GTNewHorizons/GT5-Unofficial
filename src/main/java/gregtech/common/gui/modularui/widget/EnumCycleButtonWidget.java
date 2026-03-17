@@ -1,52 +1,56 @@
 package gregtech.common.gui.modularui.widget;
 
-import java.util.Arrays;
-import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
-import com.gtnewhorizons.modularui.common.widget.VanillaButtonWidget;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.value.IIntValue;
+import com.cleanroommc.modularui.screen.RichTooltip;
+import com.cleanroommc.modularui.value.EnumValue;
+import com.cleanroommc.modularui.widgets.AbstractCycleButtonWidget;
+import gregtech.api.util.GTDataUtils;
 
-import gregtech.api.util.GTUtility;
+public class EnumCycleButtonWidget<E extends Enum<E>> extends AbstractCycleButtonWidget<EnumCycleButtonWidget<E>> {
 
-public class EnumCycleButtonWidget<T extends Enum<T>> extends VanillaButtonWidget {
+    private final Class<E> clazz;
 
-    private final T[] values;
-    private final Supplier<T> getter;
-    private final Consumer<T> setter;
+    public EnumCycleButtonWidget(Class<E> clazz) {
+        this.clazz = clazz;
 
-    public EnumCycleButtonWidget(Class<T> clazz, Supplier<T> getter, Consumer<T> setter) {
-        this.values = clazz.getEnumConstants();
-        this.getter = getter;
-        this.setter = setter;
-
-        setDisplayString(
-            getter.get()
-                .toString());
-
-        setOnClick((clickData, widget) -> {
-            int offset = 0;
-
-            if (clickData.mouseButton == 0) {
-                offset = 1;
-            } else if (clickData.mouseButton == 1) {
-                offset = -1;
-            }
-
-            T current = getter.get();
-
-            T value = values[GTUtility.mod(current.ordinal() + offset, values.length)];
-
-            setter.accept(value);
-
-            ((VanillaButtonWidget) widget).setDisplayString(value.toString());
-            widget.notifyTooltipChange();
-        });
+        overlay(e -> IKey.str(e.toString()));
     }
 
-    public EnumCycleButtonWidget<T> setTooltip(Function<T, String> tooltip) {
-        dynamicTooltip(() -> Arrays.asList(tooltip.apply(getter.get())));
+    @Override
+    public EnumCycleButtonWidget<E> value(IIntValue<?> value) {
+        return super.value(value);
+    }
 
+    public EnumCycleButtonWidget<E> value(EnumValue<E> value) {
+        return super.value(value);
+    }
+
+    public EnumCycleButtonWidget<E> overlay(Function<E, IDrawable> overlay) {
+        this.overlay = GTDataUtils.mapToArray(clazz.getEnumConstants(), IDrawable[]::new, overlay);
+        return this;
+    }
+
+    public EnumCycleButtonWidget<E> hoverOverlay(Function<E, IDrawable> overlay) {
+        this.hoverOverlay = GTDataUtils.mapToArray(clazz.getEnumConstants(), IDrawable[]::new, overlay);
+        return this;
+    }
+
+    public EnumCycleButtonWidget<E> background(Function<E, IDrawable> overlay) {
+        this.background = GTDataUtils.mapToArray(clazz.getEnumConstants(), IDrawable[]::new, overlay);
+        return this;
+    }
+
+    public EnumCycleButtonWidget<E> hoverBackground(Function<E, IDrawable> overlay) {
+        this.hoverBackground = GTDataUtils.mapToArray(clazz.getEnumConstants(), IDrawable[]::new, overlay);
+        return this;
+    }
+
+    public EnumCycleButtonWidget<E> tooltip(Function<E, RichTooltip> overlay) {
+        this.tooltip = GTDataUtils.mapToArray(clazz.getEnumConstants(), RichTooltip[]::new, overlay);
         return this;
     }
 }

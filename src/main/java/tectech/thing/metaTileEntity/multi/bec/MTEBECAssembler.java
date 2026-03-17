@@ -8,12 +8,14 @@ import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
 import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static net.minecraft.util.EnumChatFormatting.AQUA;
+import static net.minecraft.util.EnumChatFormatting.GOLD;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,16 +23,24 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
 
 import appeng.api.storage.data.IAEFluidStack;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.value.sync.GenericSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.TextWidget;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.NaniteTier;
@@ -46,11 +56,15 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
+import gregtech.common.gui.modularui.adapter.CondensateListAdapter;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
+import gregtech.common.modularui2.sync.NaniteTierSyncValue;
+import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
@@ -109,14 +123,14 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECAssembler> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC Assembler")
-            .addInfo("Prints fancy atoms");
+        tt.addMachineType("BEC, Observation Array")
+            .addMarkdown(new ResourceLocation("gregtech", "bec-assembler"));
 
         tt.beginStructureBlock();
         tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.becConnectorHatch.get(1));
         tt.addAllCasingInfo();
 
-        tt.toolTipFinisher(EnumChatFormatting.WHITE, 0, GTValues.AuthorPineapple);
+        tt.toolTipFinisher(GTValues.AuthorPineapple);
 
         return tt;
     }
@@ -141,28 +155,29 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     }
 
     @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new Gui();
+    }
+
+    @Override
     protected @NotNull CheckRecipeResult checkProcessing_EM() {
-        boolean active = false;
-
-        for (var node : ioNodes) {
-            if (node.mMaxProgresstime > 0) {
-                active = true;
-                break;
-            }
-        }
-
         mMaxProgresstime = 20;
         mEfficiency = 10_000;
         useLongPower = true;
 
-        return active ? CheckRecipeResultRegistry.SUCCESSFUL : CheckRecipeResultRegistry.NONE;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity igte, long aTick) {
         super.onPostTick(igte, aTick);
 
-        if (isServerSide()) {
+        if (GTUtility.isServer()) {
             boolean nanitesChanged = false;
 
             for (MTEHatchNanite hatch : naniteHatches) {
@@ -214,6 +229,8 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
 
             lEUt = 0;
 
+            long euInput = getMaxInputEu();
+
             Iterator<MTEBECIONode> iter = ioNodes.iterator();
 
             while (iter.hasNext()) {
@@ -224,13 +241,21 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
                     continue;
                 }
 
+                node.setPowered(false);
+
                 if (!node.isValid()) {
                     node.setNaniteShare(null, 0);
                     iter.remove();
                     continue;
                 }
 
-                lEUt += node.getAssemblerEUt();
+                long request = node.getAssemblerEUt();
+
+                if (euInput >= request) {
+                    lEUt -= request;
+                    euInput -= request;
+                    node.setPowered(true);
+                }
             }
         }
     }
@@ -240,9 +265,11 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         super.stopMachine(reason);
 
         if (reason.wasCritical()) {
+            // you really don't want to powerfail :tootroll:
             for (MTEBECIONode node : ioNodes) {
-                // you really don't want to powerfail :tootroll:
-                node.stopMachine(reason);
+                if (node.isPowered()) {
+                    node.stopMachine(reason);
+                }
             }
         }
     }
@@ -260,9 +287,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     public void drainCondensate(IAEFluidStack stack) {
         if (network == null) return;
 
-        if (stack.getStackSize() > 0) {
-            network.drainCondensate(this, Collections.singletonList(stack));
-        }
+        network.drainCondensate(this, stack);
     }
 
     public int getSlowdowns(Collection<Fluid> validMaterials) {
@@ -273,7 +298,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     public void onUnload() {
         super.onUnload();
 
-        if (isServerSide()) {
+        if (GTUtility.isServer()) {
             // copy list to prevent CMEs
             List<MTEBECIONode> nodes = new ArrayList<>(ioNodes);
             ioNodes.clear();
@@ -292,13 +317,12 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         if (!ItemList.Tool_DataStick.isStackEqual(heldItem, false, true)) return;
 
         heldItem.setTagCompound(getCopiedData(player));
-        heldItem.setStackDisplayName(
-            MessageFormat.format(
-                "{0} Link Data Stick ({1}, {2}, {3})",
-                getStackForm(1).getDisplayName(),
-                igte.getXCoord(),
-                igte.getYCoord(),
-                igte.getZCoord()));
+        heldItem.setStackDisplayName(MessageFormat.format(
+            "{0} Link Data Stick ({1}, {2}, {3})",
+            getStackForm(1).getDisplayName(),
+            igte.getXCoord(),
+            igte.getYCoord(),
+            igte.getZCoord()));
         player.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
     }
 
@@ -324,33 +348,6 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     @Override
     public String getCopiedDataIdentifier(EntityPlayer player) {
         return "bec-assembler";
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-
-        tag.setInteger("nanite", currentNaniteTier == null ? -1 : currentNaniteTier.ordinal());
-        tag.setInteger("count", availableNanites);
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-
-        NBTTagCompound tag = accessor.getNBTData();
-
-        NaniteTier tier = tag.getInteger("nanite") == -1 ? null : NaniteTier.values()[tag.getInteger("nanite")];
-
-        currenttip.add(
-            MessageFormat.format(
-                "Nanite Tier: {0}",
-                tier == null ? "None"
-                    : tier.getStack()
-                        .getDisplayName()));
-        currenttip.add(MessageFormat.format("Available Nanites: {0}", tag.getInteger("count")));
     }
 
     private enum NaniteHatchElement implements IHatchElement<MTEBECAssembler> {
@@ -387,6 +384,75 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         @Override
         public long count(MTEBECAssembler assembler) {
             return assembler.naniteHatches.size();
+        }
+    }
+
+    private class Gui extends TTMultiblockBaseGui<MTEBECAssembler> {
+
+        public Gui() {
+            super(MTEBECAssembler.this);
+        }
+
+        @Override
+        protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
+            GenericSyncValue<CondensateList> condensate = GenericSyncValue.builder(CondensateList.class)
+                .getter(() -> network == null
+                    ? new CondensateList()
+                    : network.getStoredCondensate(MTEBECAssembler.this))
+                .adapter(new CondensateListAdapter())
+                .build();
+
+            syncManager.syncValue("condensate", condensate);
+            syncManager.syncValue(
+                "naniteTier",
+                new NaniteTierSyncValue(() -> currentNaniteTier, t -> currentNaniteTier = t));
+            syncManager.syncValue("naniteCount", new IntSyncValue(() -> availableNanites, i -> availableNanites = i));
+
+            TextWidget<?> naniteWidget = IKey.dynamic(() -> GRAY
+                    + "Providing Nanites:\n  "
+                    + AQUA
+                    + currentNaniteTier.describe()
+                    + GRAY
+                    + " x "
+                    + GOLD
+                    + NumberFormatUtil.formatNumber(availableNanites)
+                    + GRAY)
+                .asWidget()
+                .widthRel(1);
+
+            TextWidget<?> contentsWidget = IKey.dynamic(() -> {
+                    StringBuilder ret = new StringBuilder();
+
+                    ret.append(GRAY)
+                        .append("Available Condensate:\n");
+
+                    if (condensate.getValue()
+                        .isEmpty()) {
+                        ret.append(GRAY)
+                            .append("None");
+                    }
+
+                    for (var e : condensate.getValue()
+                        .object2LongEntrySet()) {
+                        ret.append("  ")
+                            .append(AQUA)
+                            .append(CondensateType.getCondensateName(e.getKey()))
+                            .append(GRAY)
+                            .append(" x ")
+                            .append(GOLD)
+                            .append(NumberFormatUtil.formatFluid(e.getLongValue()))
+                            .append(GRAY)
+                            .append('\n');
+                    }
+
+                    return ret.toString();
+                })
+                .asWidget()
+                .widthRel(1);
+
+            return super.createTerminalTextWidget(syncManager, parent)
+                .child(naniteWidget)
+                .child(contentsWidget);
         }
     }
 }

@@ -57,7 +57,7 @@ public class ItemBECMaterialPart extends Item implements ItemWithTextures {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return "gt.bec.part." + stack.itemDamage;
+        return "gt.bec.part." + stack.getItemDamage();
     }
 
     @Override
@@ -94,15 +94,11 @@ public class ItemBECMaterialPart extends Item implements ItemWithTextures {
     }
 
     public @Nullable BECMaterial getMaterial(ItemStack stack) {
-        int damage = stack.itemDamage;
-
-        return GTDataUtils.getIndexSafe(BECMaterial.MATERIALS, damage % 1000);
+        return GTDataUtils.getIndexSafe(BECMaterial.MATERIALS, stack.getItemDamage() % 1000);
     }
 
     public @Nullable OrePrefixes getPrefix(ItemStack stack) {
-        int damage = stack.itemDamage;
-
-        return GTDataUtils.getIndexSafe(prefixes, damage / 1000);
+        return GTDataUtils.getIndexSafe(prefixes, stack.getItemDamage() / 1000);
     }
 
     public ItemStack getPart(BECMaterial material, OrePrefixes prefix, int amount) {

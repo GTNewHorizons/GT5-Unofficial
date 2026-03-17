@@ -20,6 +20,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTUtility;
 
+/// A simple fluid cell that maps to a single fluid. The fluid texture must be pre-cropped, though the fluid color will be applied to it.
 public class GTItemCell extends Item implements ItemWithTextures {
 
     private final String name, iconName;

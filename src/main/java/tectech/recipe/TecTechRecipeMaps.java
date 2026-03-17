@@ -15,7 +15,7 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
-import gregtech.api.recipe.maps.CondensateFrontend;
+import gregtech.api.recipe.maps.BECCreationFrontend;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -142,12 +142,12 @@ public class TecTechRecipeMaps {
 
     public static final RecipeMap<RecipeMapBackend> condensateGeneratorRecipes = RecipeMapBuilder
         .of("gt.recipe.create-condensate", RecipeMapBackend::new)
-        .maxIO(0, 1, 1, 0)
+        .maxIO(0, 0, 1, 1)
         .logo(TecTechUITextures.PICTURE_TECTECH_LOGO)
         .logoSize(18, 18)
         .logoPos(151, 63)
         .neiRecipeBackgroundSize(170, 90)
-        .frontend(CondensateFrontend::new)
+        .frontend(BECCreationFrontend::new)
         .neiHandlerInfo(builder -> builder.setDisplayStack(GTUtility.getFluidDisplayStack(CondensateType.Quantium.getPrepared(1).getFluid())))
         .build();
 
@@ -175,7 +175,7 @@ public class TecTechRecipeMaps {
         .neiTransferRect(88, 8, 18, 72)
         .neiTransferRect(124, 8, 18, 72)
         .neiTransferRect(142, 26, 18, 18)
-        .frontend(BECRecipeMapFrontend::new)
+        .frontend(BECAssemblyFrontend::new)
         .neiHandlerInfo(builder -> builder.setDisplayStack(GTUtility.getFluidDisplayStack(CondensateType.Quantium.getEntangled(1).getFluid())))
         .neiFluidInputsGetter(recipe -> recipe.getMetadata(GTRecipeConstants.CONDENSATE_INPUT))
         .build();

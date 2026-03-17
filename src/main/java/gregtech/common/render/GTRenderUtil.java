@@ -13,7 +13,6 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.Color;
 
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
@@ -90,14 +89,5 @@ public class GTRenderUtil {
             }
             default -> {}
         }
-    }
-
-    public static Color getColorFromARGB(int argb) {
-        int a = (argb >> 24) & 0xFF;
-        int r = (argb >> 16) & 0xFF;
-        int g = (argb >> 8) & 0xFF;
-        int b = argb & 0xFF;
-
-        return new Color(r, g, b, a);
     }
 }

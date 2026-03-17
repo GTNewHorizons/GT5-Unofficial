@@ -10,25 +10,19 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.factory.RoutedNode;
@@ -41,9 +35,9 @@ import gregtech.api.structure.IStructureInstance;
 import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.StructureWrapper;
 import gregtech.api.structure.StructureWrapperInstanceInfo;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -53,7 +47,7 @@ import tectech.mechanics.boseEinsteinCondensate.BECFactoryNetwork;
 import tectech.mechanics.boseEinsteinCondensate.BECRouteInfo;
 import tectech.mechanics.boseEinsteinCondensate.NotableBECFactoryElement;
 import tectech.thing.CustomItemList;
-import tectech.thing.metaTileEntity.hatch.MTEHatchBEC;
+import tectech.thing.metaTileEntity.hatch.bec.MTEHatchBEC;
 
 public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TSelf>> extends TTMultiblockBase
     implements ISurvivalConstructable, BECFactoryElement, NotableBECFactoryElement, IStructureProvider<TSelf> {
@@ -143,6 +137,8 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         super.clearHatches_EM();
 
         mPreviousBECHatches = new ArrayList<>(mBECHatches);
+
+        mBECHatches.forEach(h -> h.removeController(this));
         mBECHatches.clear();
     }
 
@@ -164,7 +160,7 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         boolean success = structure.checkStructure((TSelf) this);
 
         if (!Objects.equals(mPreviousBECHatches, mBECHatches)) {
-            BECFactoryGrid.INSTANCE.addElement(this);
+            BECFactoryGrid.INSTANCE.updateElement(this);
         }
 
         return success;
@@ -185,7 +181,7 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("network", network == null ? "null" : network.toString());
+        tag.setString("network", network == null ? "None" : String.valueOf(network.id));
     }
 
     @Override
@@ -262,52 +258,22 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         return ConnectionType.NONE;
     }
 
-    protected boolean isServerSide() {
-        IGregTechTileEntity igte = getBaseMetaTileEntity();
-
-        if (igte == null || igte.isDead()) return FMLCommonHandler.instance()
-            .getSide() == Side.SERVER;
-
-        return igte.isServerSide();
-    }
-
     @Override
     public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick_EM(aBaseMetaTileEntity);
 
-        BECFactoryGrid.INSTANCE.addElement(this);
+        if (GTUtility.isServer()) {
+            BECFactoryGrid.INSTANCE.updateElement(this);
+        }
     }
 
     @Override
     public void onRemoval() {
         super.onRemoval();
 
-        BECFactoryGrid.INSTANCE.removeElement(this);
-    }
-
-    public static NBTTagCompound writeCondensateToTag(Object2LongOpenHashMap<Fluid> map) {
-        NBTTagCompound stacks = new NBTTagCompound();
-
-        for (var e : map.object2LongEntrySet()) {
-            stacks.setLong(FluidRegistry.getFluidName(e.getKey()), e.getLongValue());
+        if (GTUtility.isServer()) {
+            BECFactoryGrid.INSTANCE.removeElement(this);
         }
-
-        return stacks;
-    }
-
-    public static Object2LongOpenHashMap<Fluid> readCondensateFromTag(NBTTagCompound tag) {
-        Object2LongOpenHashMap<Fluid> map = new Object2LongOpenHashMap<>();
-
-        //noinspection unchecked
-        for (Entry<String, NBTTagLong> e : (Set<Entry<String, NBTTagLong>>) tag.tagMap.entrySet()) {
-            Fluid fluid = FluidRegistry.getFluid(e.getKey());
-
-            if (fluid == null) continue;
-
-            map.put(fluid, e.getValue().func_150291_c());
-        }
-
-        return map;
     }
 
     public enum BECHatches implements IHatchElement<MTEBECMultiblockBase<?>> {
@@ -348,7 +314,7 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
                     hatch.updateTexture(id);
                     hatch.updateCraftingIcon(self.getMachineCraftingIcon());
                     self.mBECHatches.add(hatch);
-                    hatch.setController(self);
+                    hatch.addController(self);
                     return true;
                 } else {
                     return false;

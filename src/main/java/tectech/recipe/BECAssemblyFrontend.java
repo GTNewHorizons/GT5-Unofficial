@@ -19,9 +19,9 @@ import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class BECRecipeMapFrontend extends AssemblyLineFrontend {
+public class BECAssemblyFrontend extends AssemblyLineFrontend {
 
-    public BECRecipeMapFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
+    public BECAssemblyFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }

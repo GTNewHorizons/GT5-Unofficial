@@ -58,9 +58,9 @@ public class GTSoundLoop extends MovingSound {
         volume = VOLUME_RAMP;
     }
 
-    public GTSoundLoop(ResourceLocation p_i45104_1_, IGregTechTileEntity base, boolean stopWhenActive,
+    public GTSoundLoop(ResourceLocation soundResource, IGregTechTileEntity base, boolean stopWhenActive,
         boolean stopWhenInactive, float volumeRamp) {
-        super(p_i45104_1_);
+        super(soundResource);
         this.whileActive = stopWhenActive;
         this.whileInactive = stopWhenInactive;
         xPosF = tileX = base.getXCoord();

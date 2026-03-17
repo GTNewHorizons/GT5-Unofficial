@@ -3,23 +3,22 @@ package tectech.thing.metaTileEntity.pipe;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.covers.CoverShutter;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryElement;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryNetwork;
@@ -30,18 +29,29 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     private BECFactoryNetwork network;
     private int oldColour;
 
+    private final List<String> tooltip;
+
     public MTEPipeBEC(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
         mThickness = 3f / 4f;
+
+        tooltip = MarkdownTooltipLoader.STANDARD.loadStandardPath(new ResourceLocation("gregtech", "bec-pipe"), new HashMap<>());
     }
 
     public MTEPipeBEC(MTEPipeBEC prototype) {
         super(prototype);
+
+        tooltip = prototype.tooltip;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new MTEPipeBEC(this);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return ArrayUtils.addAll(super.getDescription(), tooltip.toArray(GTValues.emptyStringArray));
     }
 
     @Override
@@ -67,42 +77,6 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
         return textures.toArray(new ITexture[0]);
     }
 
-    private boolean wasAllowedToWork = false;
-
-    @Override
-    public void onPostTick(IGregTechTileEntity base, long aTick) {
-        super.onPostTick(base, aTick);
-
-        if (base.isAllowedToWork() != wasAllowedToWork) {
-            wasAllowedToWork = base.isAllowedToWork();
-
-            boolean hasShutter = false;
-
-            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                if (base.getCoverAtSide(side) instanceof CoverShutter) {
-                    hasShutter = true;
-                    break;
-                }
-            }
-
-            if (hasShutter) {
-                BECFactoryGrid.INSTANCE.addElement(this);
-            }
-        }
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound nbtTagCompound) {
-        super.loadNBTData(nbtTagCompound);
-        wasAllowedToWork = nbtTagCompound.getBoolean("wasAllowedToWork");
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound nbtTagCompound) {
-        super.saveNBTData(nbtTagCompound);
-        nbtTagCompound.setBoolean("wasAllowedToWork", wasAllowedToWork);
-    }
-
     @Override
     protected void checkActive() {
         mIsActive = network != null && !network.getComponents(BECInventory.class)
@@ -111,19 +85,7 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
 
     @Override
     public ConnectionType getConnectionOnSide(ForgeDirection side) {
-        if (getBaseMetaTileEntity().getCoverAtSide(side) instanceof CoverShutter shutter) {
-            if (shutter.letsEnergyIn()) {
-                return ConnectionType.CONNECTABLE;
-            }
-
-            if (shutter.alwaysLookConnected()) {
-                return ConnectionType.VISUAL_ONLY;
-            }
-
-            return ConnectionType.NONE;
-        } else {
-            return ConnectionType.CONNECTABLE;
-        }
+        return ConnectionType.CONNECTABLE;
     }
 
     @Override
@@ -153,7 +115,7 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     }
 
     @Override
-    public void onNeighbourChanged(BECFactoryElement neighbour) {
+    public void onEdgeChanged(BECFactoryElement adjacent) {
         mCheckConnections = true;
     }
 
@@ -179,41 +141,12 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("network", network == null ? "null" : network.toString());
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        currenttip.add(
-            "Network: " + accessor.getNBTData()
-                .getString("network"));
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public String[] getInfoData() {
         List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
-        if (network == null) {
-            data.add("No network");
-        } else {
-            for (BECInventory inv : network.getComponents(BECInventory.class)) {
-                data.add(
-                    inv.getContents()
-                        .toString());
-            }
-        }
+        data.add("Network: " + (network == null ? "None" : network.id));
 
-        return data.toArray(new String[data.size()]);
+        return data.toArray(new String[0]);
     }
 
     @Override
@@ -230,7 +163,9 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
 
-        BECFactoryGrid.INSTANCE.addElement(this);
+        if (GTUtility.isServer()) {
+            BECFactoryGrid.INSTANCE.updateElement(this);
+        }
         oldColour = aBaseMetaTileEntity.getColorization();
     }
 
@@ -238,7 +173,9 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     public void onRemoval() {
         super.onRemoval();
 
-        BECFactoryGrid.INSTANCE.removeElement(this);
+        if (GTUtility.isServer()) {
+            BECFactoryGrid.INSTANCE.removeElement(this);
+        }
     }
 
     @Override
@@ -250,6 +187,8 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
         if (oldColour == aColor) return;
         oldColour = aColor;
 
-        BECFactoryGrid.INSTANCE.addElement(this);
+        if (GTUtility.isServer()) {
+            BECFactoryGrid.INSTANCE.updateElement(this);
+        }
     }
 }

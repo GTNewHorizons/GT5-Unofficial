@@ -574,6 +574,7 @@ public class GTMod {
         GTPostLoad.identifyAnySteam();
 
         VoidMinerLoader.init();
+        BECRecipeLoader.run();
 
         achievements = new GTAchievements();
 
@@ -585,7 +586,6 @@ public class GTMod {
         GregTechAPI.sAfterGTLoad = null;
         GregTechAPI.sBeforeGTPostload = null;
         GregTechAPI.sAfterGTPostload = null;
-        BECRecipeLoader.run();
     }
 
     @Mod.EventHandler

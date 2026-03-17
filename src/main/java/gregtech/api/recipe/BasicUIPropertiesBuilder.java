@@ -28,7 +28,6 @@ import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.nei.FluidDisplayFactory;
 
 /**
  * Builder class for {@link BasicUIProperties}.
@@ -84,8 +83,6 @@ public final class BasicUIPropertiesBuilder {
     private int progressBarWidthMUI2 = 20;
     private int progressBarHeightMUI2 = 36;
 
-    private FluidDisplayFactory fluidDisplayFactory = FluidDisplayFactory.STANDARD_FLUID_DISPLAY;
-
     BasicUIPropertiesBuilder() {}
 
     public BasicUIProperties build() {
@@ -127,7 +124,12 @@ public final class BasicUIPropertiesBuilder {
             specialItemPositionGetter,
             fluidInputPositionsGetter,
             fluidOutputPositionsGetter,
-            amperage);
+            amperage,
+            slotOverlaysMUI2,
+            progressBarTextureMUI2,
+            progressBarDirectionMUI2,
+            progressBarWidthMUI2,
+            progressBarHeightMUI2);
     }
 
     public BasicUIPropertiesBuilder maxItemInputs(int maxItemInputs) {
@@ -279,6 +281,28 @@ public final class BasicUIPropertiesBuilder {
 
     public BasicUIPropertiesBuilder amperage(int amperage) {
         this.amperage = amperage;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder slotOverlaysMUI2(
+        BasicUIProperties.SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2) {
+        this.slotOverlaysMUI2 = slotOverlaysMUI2;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder progressBarTextureMUI2(UITexture progressBarTextureMUI2) {
+        this.progressBarTextureMUI2 = progressBarTextureMUI2;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder progressBarDirectionMUI2(ProgressWidget.Direction progressBarDirectionMUI2) {
+        this.progressBarDirectionMUI2 = progressBarDirectionMUI2;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder progressBarSizeMUI2(int progressBarWidthMUI2, int progressBarHeightMUI2) {
+        this.progressBarWidthMUI2 = progressBarWidthMUI2;
+        this.progressBarHeightMUI2 = progressBarHeightMUI2;
         return this;
     }
 }
