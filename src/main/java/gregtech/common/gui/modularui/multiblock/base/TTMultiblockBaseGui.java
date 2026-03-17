@@ -20,6 +20,7 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Column;
@@ -113,9 +114,13 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             .onMousePressed(onEditParametersPressed(infoPanel));
     }
 
+    protected boolean isParametrized() {
+        return multiblock instanceof IParametrized;
+    }
+
     private IDrawable createEditParametersOverlay() {
         return new DynamicDrawable(() -> {
-            if (multiblock instanceof IParametrized) {
+            if (isParametrized()) {
                 return GTGuiTextures.OVERLAY_BUTTON_EDIT_PARAMETERS_ENABLED.asIcon()
                     .size(16, 16);
             } else {
@@ -127,7 +132,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
 
     private IGuiAction.MousePressed onEditParametersPressed(IPanelHandler infoPanel) {
         return mouseData -> {
-            if (!(multiblock instanceof IParametrized)) return false;
+            if (!isParametrized()) return false;
             if (!infoPanel.isPanelOpen()) {
                 infoPanel.openPanel();
             } else {
@@ -151,6 +156,10 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             .topRel(0)
             .padding(4);
 
+        return panel.child(getParameterEditor(panel, syncManager));
+    }
+
+    protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager) {
         Flow column = Flow.column()
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START);
@@ -175,8 +184,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
                 return true;
             }));
         });
-
-        return panel.child(column);
+        return column;
     }
 
     private @NotNull ModularPanel openParameterEditPanel(ButtonWidget<?> parameterEditButton, Parameter<?> parameter,

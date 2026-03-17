@@ -720,6 +720,7 @@ GT5U.MBTT.Tiered=(tiered)
 GT5U.MBTT.MaintenanceHatch=Maintenance Hatch
 GT5U.MBTT.MufflerHatch=Muffler Hatch
 GT5U.MBTT.EnergyHatch=Energy Hatch
+GT5U.MBTT.ExoticEnergyHatch=Multi-Amp Energy Hatch
 GT5U.MBTT.DynamoHatch=Dynamo Hatch
 GT5U.MBTT.MultiampEnergyHatch=Multi-Amp Energy Hatch
 GT5U.MBTT.MultiampEnergyDynamo=Multi-Amp Dynamo Hatch
@@ -925,6 +926,10 @@ gt.casing.chemical-resistant=Able to resist the most extreme chemical conditions
 gt.casing.hawking-focus=Controls the outward flow of Hawking Radiation to stabilize a black hole.
 gt.casings.advanced-filter=Less than five 0.1μm particles per m^3
 
+gt.casing11.8.tooltip=§b§lPrevents observation. Just don't look at it too hard.
+gt.casing11.9.tooltip=§b§lPulsar-proof!
+gt.casing11.10.tooltip=§b§lVacuum decay not included.
+
 # Machine types
 gt.recipe.alloysmelter=Alloy Smelter
 gt.recipe.alloysmelter.description=HighTech combination Smelter
@@ -1076,6 +1081,8 @@ gt.recipe.quantumcomputer=QC Components
 gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
 gt.recipe.beamcrafter=Beam Crafter
 gt.recipe.foundry_modules=Foundry Module Components
+gt.recipe.create-condensate=Condensate Entanglement
+gt.recipe.assemble-condensate=Condensate Assembling
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
@@ -1095,6 +1102,10 @@ GT5U.recipes.not_consume=Does not get consumed in the process
 GT5U.recipes.not_consume_parallel=Considered in parallel calculation, but not get consumed
 GT5U.recipes.chance.consume=Consume Chance: %s
 GT5U.recipes.chance.output=Output Chance: %s
+
+# Misc Tooltips
+gt.tooltip.nanite-tier=Nanite Tier: %s
+gt.tooltip.max-nanite=Max Nanite Tier: %s
 
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
@@ -1328,6 +1339,8 @@ GT5U.machines.stocking_bus.saved=Saved Config to Data Stick
 GT5U.machines.stocking_bus.loaded=Loaded Config From Data Stick
 GT5U.machines.output_bus.saved=Saved Config to Data Stick
 GT5U.machines.output_bus.loaded=Loaded Config From Data Stick
+GT5U.machines.controller_hatch.saved=Saved Config to Data Stick
+GT5U.machines.controller_hatch.loaded=Loaded Config From Data Stick
 GT5U.machines.output_bus.invalid=Invalid Data Stick config
 GT5U.machines.dronecentre.shutdown=You cannot control machine when drone centre shut down!
 GT5U.machines.dronecentre.turnon=Successfully turn on all machines in group: %s
@@ -1558,6 +1571,7 @@ GT5U.gui.text.no_machine_part=No correct machine part in controller slot.
 GT5U.gui.text.insufficient_dynamo=§4Shut down due to insufficient dynamo size
 GT5U.gui.text.computation_loss=§4Shut down due to computation loss.
 GT5U.gui.text.missing_item=§7Missing required item: §b%s§f
+GT5U.gui.text.no_condensate=§4Insufficient condensate: §b%s§f x §6%s
 GT5U.gui.text.ph_sensor=pH threshold
 GT5U.gui.text.critical_ph_value=pH exceeded critical value.
 GT5U.gui.text.heat_sensor=Heat threshold
@@ -1605,6 +1619,25 @@ GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
 GT5U.gui.text.amperage=Amperage
 GT5U.gui.text.voltagetier=Voltage Tier
 GT5U.gui.text.ticks_between_refill=Ticks Between Refills
+GT5U.gui.text.no_bec_assembler=Condensate Observation Array Offline
+GT5U.gui.text.not_enough_parallels=Insufficient Parallels (Min Parallels Too Low)
+GT5U.gui.text.bec_clogged=More Than 3 Condensates Present
+GT5U.gui.text.nanite_threshold=Nanite Tier
+GT5U.gui.text.nil=None
+GT5U.gui.text.provided_nanite=§7Provided Nanite: %s§f
+GT5U.gui.text.nanite_desc=§b%s§7 x §6%s§7
+GT5U.gui.text.required_nanite=§7Required Nanite: %s
+GT5U.gui.text.required_condensate=§7Required Condensate:
+GT5U.gui.text.remaining_condensate=  §7%s §6%sL / %sL§f
+GT5U.gui.text.ionode_status=§7Status: %s
+GT5U.gui.text.ionode_status.Idle=Idle
+GT5U.gui.text.ionode_status.Unpowered=§cUnpowered
+GT5U.gui.text.ionode_status.AssemblerOffline=§cObservation Array Offline
+GT5U.gui.text.ionode_status.NaniteTierTooLow=§eInsufficient Nanite Tier
+GT5U.gui.text.ionode_status.PausedImmediate=Paused (Immediate)
+GT5U.gui.text.ionode_status.PausedStep=Paused (Step)
+GT5U.gui.text.ionode_status.Crafting=Crafting
+GT5U.gui.text.condensate_threshold=Condensate Amount
 GT5U.gui.text.stack_capacity=Stack Capacity
 GT5U.gui.text.bus_settings=Bus Settings
 GT5U.gui.text.amount_out_of=§9Amount: %,d / %,d
@@ -4435,11 +4468,38 @@ item.gt.depletedRodNaquadria.name=Fuel Rod (Depleted Naquadria)
 item.gt.depletedRodNaquadria2.name=Dual Fuel Rod (Depleted Naquadria)
 item.gt.depletedRodNaquadria4.name=Quad Fuel Rod (Depleted Naquadria)
 
+# Condensate Fluid and Cells
+fluid.prepared_quantium.name=Prepared Quantium Bose-Einstein Condensate
+fluid.entangled_quantium.name=Entangled Quantium Bose-Einstein Condensate
+abbrev.entangled_quantium.name=Quantium
+fluid.prepared_infinity.name=Prepared Infinity Bose-Einstein Condensate
+fluid.entangled_infinity.name=Entangled Infinity Bose-Einstein Condensate
+abbrev.entangled_infinity.name=Infinity
+
+item.gt.cell.prepared_quantium.name=Prepared Quantium Bose-Einstein Condensate Cell
+item.gt.cell.entangled_quantium.name=Entangled Quantium Bose-Einstein Condensate Cell
+item.gt.cell.prepared_infinity.name=Prepared Infinity Bose-Einstein Condensate Cell
+item.gt.cell.entangled_infinity.name=Entangled Infinity Bose-Einstein Condensate Cell
+
 # Entities
 entity.gregtech.PowderBarrelPrimed.name=Lit Powder Barrel
 
 #mui1
 mui.button.close=x
+
+# BEC Material System
+prefix.plate.name=%s Plate
+prefix.foil.name=%s Foil
+prefix.stickLong.name=Long %s Rod
+prefix.stick.name=%s Rod
+prefix.bolt.name=%s Bolt
+prefix.ring.name=%s Ring
+prefix.wireFine.name=Fire %s Wire
+prefix.lens.name=%s Lens
+
+material.ThermalCont1.name=UHV-Q-624 Thermal Containment
+
+#override.plateTest2.name=Test 2 Overrided Plate
 
 # Thaumcraft Aspects
 tc.aspect.custom1.name=Aequalitas
@@ -4898,6 +4958,9 @@ gt.blockcasings11.4.name=Osmium Item Pipe Casing
 gt.blockcasings11.5.name=Quantium Item Pipe Casing
 gt.blockcasings11.6.name=Fluxed Electrum Item Pipe Casing
 gt.blockcasings11.7.name=Black Plutonium Item Pipe Casing
+gt.blockcasings11.8.name=Coherence-preserving Plasma Conduit
+gt.blockcasings11.9.name=Electromagnetically-isolated Casing
+gt.blockcasings11.10.name=Fine-structure Constant Manipulator
 gt.blockcasings12.0.name=Coke Oven Bricks
 gt.blockcasings12.1.name=Nanochip Mesh Interface Casing
 gt.blockcasings12.2.name=Nanochip Reinforcement Casing
@@ -4968,6 +5031,7 @@ gt.blockglass1.5.name=Nanite Shielding Glass
 gt.blockglass1.6.name=Chamber Grate
 gt.blockglass1.7.name=Exo-Foundry Containment Glass
 gt.blockglass1.8.name=Nanochip Complex Glass
+gt.blockglass1.9.name=Electromagnetic Waveguide
 gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
