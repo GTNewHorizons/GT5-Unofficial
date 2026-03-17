@@ -16,6 +16,7 @@ import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
+
 import gregtech.api.enums.Comparison;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -65,9 +66,11 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
         long amount = 0;
 
         if (condensateFilter != null) {
-            amount = inv.getContents().getLong(condensateFilter);
+            amount = inv.getContents()
+                .getLong(condensateFilter);
         } else {
-            for (var e : inv.getContents().object2LongEntrySet()) {
+            for (var e : inv.getContents()
+                .object2LongEntrySet()) {
                 amount += e.getLongValue();
             }
         }

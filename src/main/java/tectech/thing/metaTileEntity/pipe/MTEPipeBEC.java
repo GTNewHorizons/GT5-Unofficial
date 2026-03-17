@@ -35,7 +35,8 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
         super(aID, aName, aNameRegional);
         mThickness = 3f / 4f;
 
-        tooltip = MarkdownTooltipLoader.STANDARD.loadStandardPath(new ResourceLocation("gregtech", "bec-pipe"), new HashMap<>());
+        tooltip = MarkdownTooltipLoader.STANDARD
+            .loadStandardPath(new ResourceLocation("gregtech", "bec-pipe"), new HashMap<>());
     }
 
     public MTEPipeBEC(MTEPipeBEC prototype) {

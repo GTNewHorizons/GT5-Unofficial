@@ -30,7 +30,9 @@ import tectech.recipe.TecTechRecipeMaps;
 /// but it can be produced by anything if the mechanics warrant it. The entangled condensate cell isn't obtainable, it's
 /// just used to tell the player that the fluid exists. Prepared condensate is a real fluid that can be used in any way.
 public enum CondensateType {
+
     // Both of these condensates are temporary
+    // spotless:off
     Quantium(
         "quantium",
         () -> Materials.Quantium,
@@ -43,7 +45,7 @@ public enum CondensateType {
         144,
         prepare -> prepare.fluidInputs(Materials.Infinity.getMolten(144)),
         generate -> generate.duration(40).eut(TierEU.RECIPE_UEV)),
-    //
+    // spotless:on
     ;
 
     private final String id;
@@ -54,7 +56,8 @@ public enum CondensateType {
     private Fluid preparedFluid, entangledFluid;
     private GTItemCell preparedCell, entangledCell;
 
-    CondensateType(String id, Supplier<IOreMaterial> mat, int unit, Consumer<GTRecipeBuilder> preparation, Consumer<GTRecipeBuilder> entanglement) {
+    CondensateType(String id, Supplier<IOreMaterial> mat, int unit, Consumer<GTRecipeBuilder> preparation,
+        Consumer<GTRecipeBuilder> entanglement) {
         this.id = id;
         this.material = new Lazy<>(mat);
         this.unit = unit;
@@ -83,7 +86,9 @@ public enum CondensateType {
             type.preparedFluid = GTFluidFactory.builder("prepared_" + type.id)
                 .withTextures(new ResourceLocation("gregtech:fluids/condensate/fluid." + type.id + "_prepared"), null)
                 .withLocalizedName(GTUtility.translate("fluid.prepared_" + type.id + ".name"))
-                .withColorRGBA(type.getMaterial().getRGBA())
+                .withColorRGBA(
+                    type.getMaterial()
+                        .getRGBA())
                 .withStateAndTemperature(FluidState.GAS, 1)
                 .buildAndRegister()
                 .asFluid();
@@ -91,7 +96,9 @@ public enum CondensateType {
             type.entangledFluid = GTFluidFactory.builder("entangled_" + type.id)
                 .withTextures(new ResourceLocation("gregtech:fluids/condensate/fluid." + type.id + "_entangled"), null)
                 .withLocalizedName(GTUtility.translate("fluid.entangled_" + type.id + ".name"))
-                .withColorRGBA(type.getMaterial().getRGBA())
+                .withColorRGBA(
+                    type.getMaterial()
+                        .getRGBA())
                 .withStateAndTemperature(FluidState.GAS, 0)
                 .buildAndRegister()
                 .asFluid();

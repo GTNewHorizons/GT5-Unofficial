@@ -18,8 +18,9 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.mutable.MutableLong;
 import org.jetbrains.annotations.NotNull;
 
-import appeng.util.item.AEFluidStack;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
+import appeng.util.item.AEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
@@ -169,7 +170,8 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         if (outputs.isEmpty()) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         } else {
-            mOutputFluids = outputs.toFluidStacks().toArray(GTValues.emptyFluidStackArray);
+            mOutputFluids = outputs.toFluidStacks()
+                .toArray(GTValues.emptyFluidStackArray);
             mEfficiency = 10_000;
             useLongPower = true;
             lEUt = -(startingQuota - euQuota.longValue()) / mMaxProgresstime;
@@ -179,7 +181,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
     }
 
     private void tryDrainFluid(CondensateList outputs, MutableLong euQuota, FluidStack fluidStack) {
-         GTRecipe recipe = TecTechRecipeMaps.condensateGeneratorRecipes.findRecipeQuery()
+        GTRecipe recipe = TecTechRecipeMaps.condensateGeneratorRecipes.findRecipeQuery()
             .fluids(new FluidStack(fluidStack.getFluid(), fluidStack.amount))
             .find();
 
@@ -187,7 +189,10 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             return;
         }
 
-        int parallels = (int) recipe.maxParallelCalculatedByInputs(Integer.MAX_VALUE, new FluidStack[]{ fluidStack }, GTValues.emptyItemStackArray);
+        int parallels = (int) recipe.maxParallelCalculatedByInputs(
+            Integer.MAX_VALUE,
+            new FluidStack[] { fluidStack },
+            GTValues.emptyItemStackArray);
 
         parallels = Math.min(parallels, (int) (euQuota.longValue() / recipe.mEUt));
 

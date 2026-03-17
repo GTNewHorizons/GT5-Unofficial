@@ -697,7 +697,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                             mOutputs.add(
                                                 new FixedPositionedStack(
                                                     this,
-                                                    GTUtility.getFluidDisplayStack(outputs[i], FluidDisplayStackMode.SHOWN),
+                                                    GTUtility
+                                                        .getFluidDisplayStack(outputs[i], FluidDisplayStackMode.SHOWN),
                                                     GTNEIDefaultHandler.this.neiProperties.renderRealStackSizes,
                                                     widget.getPos().x + 1,
                                                     widget.getPos().y + 1,

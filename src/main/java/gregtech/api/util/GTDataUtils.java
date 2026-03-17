@@ -35,6 +35,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import it.unimi.dsi.fastutil.Pair;
@@ -276,9 +277,9 @@ public class GTDataUtils {
                 boolean l = left.hasNext();
                 boolean r = right.hasNext();
 
-                if (l != r) throw new IllegalStateException("zipped iterators did not have the same length: " + (l
-                    ? "left had more than right"
-                    : "right had more than left"));
+                if (l != r) throw new IllegalStateException(
+                    "zipped iterators did not have the same length: "
+                        + (l ? "left had more than right" : "right had more than left"));
 
                 return l && r;
             }

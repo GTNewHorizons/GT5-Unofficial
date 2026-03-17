@@ -33,7 +33,7 @@ public class GTSoundLoop extends MovingSound {
      * Constructs a GTSoundLoop.
      *
      * @param soundResource    the sound file location
-     * @param base       the tile entity associated with this sound
+     * @param base             the tile entity associated with this sound
      * @param stopWhenActive   flag to stop the sound when the block is active
      * @param stopWhenInactive flag to stop the sound when the block is inactive
      * @param soundX           positional sound X coordinate

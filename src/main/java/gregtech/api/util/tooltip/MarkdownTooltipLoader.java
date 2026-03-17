@@ -66,7 +66,8 @@ public class MarkdownTooltipLoader {
         commands.put(name, command);
     }
 
-    /// Loads a markdown document at `assets/[mod id]/lang/[language id]/tooltip/[path].md`. On the client, resource packs are scanned. On the server, the file is loaded directly from the current jar.
+    /// Loads a markdown document at `assets/[mod id]/lang/[language id]/tooltip/[path].md`. On the client, resource
+    /// packs are scanned. On the server, the file is loaded directly from the current jar.
     public List<String> loadStandardPath(ResourceLocation markdown, Map<String, Object> vars) {
         try {
             return loadStandardPath(markdown, getCurrentLanguage(), vars);
@@ -79,10 +80,8 @@ public class MarkdownTooltipLoader {
                 return loadStandardPath(markdown, "en_US", vars);
             } catch (IOException e) {
                 throw new RuntimeException(
-                    "Could not load the "
-                        + getCurrentLanguage()
-                        + " or en_US version of "
-                        + markdown, e);
+                    "Could not load the " + getCurrentLanguage() + " or en_US version of " + markdown,
+                    e);
             }
         }
     }
@@ -92,7 +91,8 @@ public class MarkdownTooltipLoader {
         return loadExactPath(
             new ResourceLocation(
                 markdown.getResourceDomain(),
-                "lang/" + language + "/tooltip/" + markdown.getResourcePath() + ".md"), vars);
+                "lang/" + language + "/tooltip/" + markdown.getResourcePath() + ".md"),
+            vars);
     }
 
     public List<String> loadExactPath(ResourceLocation markdown, Map<String, Object> vars) throws IOException {
@@ -155,16 +155,16 @@ public class MarkdownTooltipLoader {
                     char[] spaces = new char[i];
                     Arrays.fill(spaces, ' ');
 
-                    throw new IllegalStateException("Unclosed open brace in line:\n" + unparsed + "\n" + new String(
-                        spaces) + "^");
+                    throw new IllegalStateException(
+                        "Unclosed open brace in line:\n" + unparsed + "\n" + new String(spaces) + "^");
                 }
 
                 String command = unparsed.substring(i, end + 1);
 
                 if (command.length() <= 2) {
-                    throw new IllegalStateException("Invalid command: '"
-                        + command
-                        + "': expected open + close brace that contains the command name and (optional) arguments");
+                    throw new IllegalStateException(
+                        "Invalid command: '" + command
+                            + "': expected open + close brace that contains the command name and (optional) arguments");
                 }
 
                 command = command.substring(1, command.length() - 1);
@@ -201,7 +201,9 @@ public class MarkdownTooltipLoader {
 
     public static List<String> loadGeneric(ResourceLocation loc) throws IOException {
         // Returns server only for dedicated servers
-        if (FMLCommonHandler.instance().getSide().isClient()) {
+        if (FMLCommonHandler.instance()
+            .getSide()
+            .isClient()) {
             return loadResource(loc);
         } else {
             return loadFile(loc);

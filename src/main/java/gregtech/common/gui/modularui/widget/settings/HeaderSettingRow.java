@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.github.bsideup.jabel.Desugar;
+
 import it.unimi.dsi.fastutil.Pair;
 
 @Desugar
@@ -21,8 +22,9 @@ record HeaderSettingRow(IKey header) implements ISettingRow<Void> {
                 .mainAxisAlignment(MainAxis.CENTER)
                 .widthRel(1f)
                 .height(20)
-                .child(header.asWidget()
-                    .textAlign(Alignment.BottomCenter)));
+                .child(
+                    header.asWidget()
+                        .textAlign(Alignment.BottomCenter)));
     }
 
     @Override

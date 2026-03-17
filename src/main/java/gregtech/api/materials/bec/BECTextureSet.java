@@ -13,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
+
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTDataUtils;
@@ -63,18 +64,18 @@ public class BECTextureSet implements Closeable {
     }
 
     private static final Gson GSON = new GsonBuilder()
-        .registerTypeAdapter(
-            OrePrefixes.class, (JsonDeserializer<OrePrefixes>) (json, typeOfT, context) -> {
-                String name = context.deserialize(json, String.class);
+        .registerTypeAdapter(OrePrefixes.class, (JsonDeserializer<OrePrefixes>) (json, typeOfT, context) -> {
+            String name = context.deserialize(json, String.class);
 
-                OrePrefixes prefix = OrePrefixes.getPrefix(name);
+            OrePrefixes prefix = OrePrefixes.getPrefix(name);
 
-                if (prefix == null) {
-                    throw new IllegalStateException("Could not find prefix '" + name + "' in texture-set.json");
-                }
+            if (prefix == null) {
+                throw new IllegalStateException("Could not find prefix '" + name + "' in texture-set.json");
+            }
 
-                return prefix;
-            }).create();
+            return prefix;
+        })
+        .create();
 
     public void load() {
         if (!GTUtility.isClient()) return;

@@ -13,12 +13,11 @@ public class NullableEnumSyncValue<E extends Enum<E>> extends IntSyncValue {
     private final E[] values;
 
     public NullableEnumSyncValue(Class<E> clazz, @NotNull Supplier<E> getter, @Nullable Consumer<E> setter) {
-        super(
-            () -> {
-                E value = getter.get();
+        super(() -> {
+            E value = getter.get();
 
-                return value == null ? -1 : value.ordinal();
-            }, setter == null ? null : (i -> setter.accept(i < 0 ? null : clazz.getEnumConstants()[i])));
+            return value == null ? -1 : value.ordinal();
+        }, setter == null ? null : (i -> setter.accept(i < 0 ? null : clazz.getEnumConstants()[i])));
         values = clazz.getEnumConstants();
     }
 

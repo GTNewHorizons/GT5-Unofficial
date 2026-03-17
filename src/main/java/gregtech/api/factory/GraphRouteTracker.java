@@ -48,8 +48,11 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
         edges.clear();
 
         for (TNotable notableElement : notableElements) {
-            //noinspection unchecked
-            edges.put(notableElement, notableElement.getRoutedNeighbours().toArray(EMPTY_NODE_ARRAY));
+            // noinspection unchecked
+            edges.put(
+                notableElement,
+                notableElement.getRoutedNeighbours()
+                    .toArray(EMPTY_NODE_ARRAY));
         }
     }
 
@@ -79,7 +82,13 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
 
             for (var edge : edges.get(step.node())) {
                 if (!step.contains(edge.element())) {
-                    queue.add(new NetworkStep<>(edge.element(), step.route().copy().merge(edge.routeInfo()), step));
+                    queue.add(
+                        new NetworkStep<>(
+                            edge.element(),
+                            step.route()
+                                .copy()
+                                .merge(edge.routeInfo()),
+                            step));
                 }
             }
         }
@@ -89,7 +98,8 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
         return dijkstra(start, null);
     }
 
-    public FactoryRoutes<TNotable, TRouteInfo> dijkstra(TNotable start, Predicate<RoutedNode<TNotable, TRouteInfo>> filter) {
+    public FactoryRoutes<TNotable, TRouteInfo> dijkstra(TNotable start,
+        Predicate<RoutedNode<TNotable, TRouteInfo>> filter) {
         ArrayDeque<Pair<TNotable, TRouteInfo>> queue = new ArrayDeque<>();
         HashSet<TNotable> visited = new HashSet<>();
         HashMap<TNotable, From<TNotable, TRouteInfo>> result = new HashMap<>();

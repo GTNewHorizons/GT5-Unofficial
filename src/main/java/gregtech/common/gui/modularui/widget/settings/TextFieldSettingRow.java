@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.github.bsideup.jabel.Desugar;
+
 import gregtech.common.gui.modularui.widget.WidgetConfigurator;
 import it.unimi.dsi.fastutil.Pair;
 

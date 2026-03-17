@@ -30,6 +30,7 @@ import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
+
 import gregtech.common.gui.modularui.widget.EnumCycleButtonWidget;
 import gregtech.common.gui.modularui.widget.WidgetConfigurator;
 
@@ -77,13 +78,12 @@ public class SettingsPanelBuilder {
 
     public SettingsPanelBuilder addIntEditor(IKey label, IntSupplier getter, IntConsumer setter,
         WidgetConfigurator<TextFieldWidget> configure) {
-        addTextField(
-            label, (panel, syncManager, textField) -> {
-                textField.value(new IntSyncValue(getter, setter));
-                textField.setFormatAsInteger(true);
-                textField.setNumbers();
-                if (configure != null) configure.configure(panel, syncManager, textField);
-            });
+        addTextField(label, (panel, syncManager, textField) -> {
+            textField.value(new IntSyncValue(getter, setter));
+            textField.setFormatAsInteger(true);
+            textField.setNumbers();
+            if (configure != null) configure.configure(panel, syncManager, textField);
+        });
 
         return this;
     }
@@ -96,13 +96,12 @@ public class SettingsPanelBuilder {
 
     public SettingsPanelBuilder addLongEditor(IKey label, LongSupplier getter, LongConsumer setter,
         WidgetConfigurator<TextFieldWidget> configure) {
-        addTextField(
-            label, (panel, syncManager, textField) -> {
-                textField.value(new LongSyncValue(getter, setter));
-                textField.setFormatAsInteger(true);
-                textField.setNumbers();
-                if (configure != null) configure.configure(panel, syncManager, textField);
-            });
+        addTextField(label, (panel, syncManager, textField) -> {
+            textField.value(new LongSyncValue(getter, setter));
+            textField.setFormatAsInteger(true);
+            textField.setNumbers();
+            if (configure != null) configure.configure(panel, syncManager, textField);
+        });
 
         return this;
     }
@@ -115,18 +114,17 @@ public class SettingsPanelBuilder {
 
     public SettingsPanelBuilder addDoubleEditor(IKey label, DoubleSupplier getter, DoubleConsumer setter,
         WidgetConfigurator<TextFieldWidget> configure) {
-        addTextField(
-            label, (panel, syncManager, textField) -> {
-                textField.value(new DoubleSyncValue(getter, setter) {
+        addTextField(label, (panel, syncManager, textField) -> {
+            textField.value(new DoubleSyncValue(getter, setter) {
 
-                    @Override
-                    public String getStringValue() {
-                        return NumberFormatUtil.formatNumber(this.getValue());
-                    }
-                });
-                textField.setNumbers();
-                if (configure != null) configure.configure(panel, syncManager, textField);
+                @Override
+                public String getStringValue() {
+                    return NumberFormatUtil.formatNumber(this.getValue());
+                }
             });
+            textField.setNumbers();
+            if (configure != null) configure.configure(panel, syncManager, textField);
+        });
 
         return this;
     }
@@ -139,20 +137,21 @@ public class SettingsPanelBuilder {
 
     public SettingsPanelBuilder addStringEditor(IKey label, Supplier<String> getter, Consumer<String> setter,
         WidgetConfigurator<TextFieldWidget> configure) {
-        addTextField(
-            label, (panel, syncManager, textField) -> {
-                textField.value(new StringSyncValue(getter, setter));
-                if (configure != null) configure.configure(panel, syncManager, textField);
-            });
+        addTextField(label, (panel, syncManager, textField) -> {
+            textField.value(new StringSyncValue(getter, setter));
+            if (configure != null) configure.configure(panel, syncManager, textField);
+        });
 
         return this;
     }
 
     public SettingsPanelBuilder addTextField(IKey label, WidgetConfigurator<TextFieldWidget> configure) {
-        rows.add(new TextFieldSettingRow(
-            label, (panel, syncManager, textField) -> {
-            if (configure != null) configure.configure(panel, syncManager, textField);
-        }));
+        rows.add(
+            new TextFieldSettingRow(
+                label,
+                (panel, syncManager, textField) -> {
+                    if (configure != null) configure.configure(panel, syncManager, textField);
+                }));
 
         return this;
     }
@@ -220,11 +219,12 @@ public class SettingsPanelBuilder {
             }
         };
 
-        rows.add(new PhantomFluidSettingRow(
-            label,
-            configure,
-            new FluidSlotSyncHandler(fakeTank).phantom(true)
-                .controlsAmount(false)));
+        rows.add(
+            new PhantomFluidSettingRow(
+                label,
+                configure,
+                new FluidSlotSyncHandler(fakeTank).phantom(true)
+                    .controlsAmount(false)));
 
         return this;
     }

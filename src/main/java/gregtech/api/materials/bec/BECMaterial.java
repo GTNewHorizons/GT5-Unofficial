@@ -11,6 +11,7 @@ import net.minecraft.util.StatCollector;
 import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.gtnhlib.color.ImmutableColor;
+
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.materials.MaterialWithParts;
 import gregtech.api.util.GTUtility;

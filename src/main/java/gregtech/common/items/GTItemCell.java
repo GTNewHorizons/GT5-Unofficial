@@ -13,6 +13,7 @@ import com.gtnewhorizon.gtnhlib.itemrendering.IItemTexture;
 import com.gtnewhorizon.gtnhlib.itemrendering.ItemTexture;
 import com.gtnewhorizon.gtnhlib.itemrendering.ItemWithTextures;
 import com.gtnewhorizon.gtnhlib.itemrendering.TexturedItemRenderer;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -20,7 +21,8 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTUtility;
 
-/// A simple fluid cell that maps to a single fluid. The fluid texture must be pre-cropped, though the fluid color will be applied to it.
+/// A simple fluid cell that maps to a single fluid. The fluid texture must be pre-cropped, though the fluid color will
+/// be applied to it.
 public class GTItemCell extends Item implements ItemWithTextures {
 
     private final String name, iconName;
@@ -56,9 +58,9 @@ public class GTItemCell extends Item implements ItemWithTextures {
 
     @Override
     public IItemTexture[] getTextures(ItemStack stack) {
-        return new IItemTexture[] {
-            new ItemTexture(ItemList.Cell_Empty.get(1).getIconIndex(), RGBColor.WHITE),
-            new ItemTexture(fluidIcon, RGBColor.fromRGB(fluid.getColor(new FluidStack(fluid, 1)))),
-        };
+        return new IItemTexture[] { new ItemTexture(
+            ItemList.Cell_Empty.get(1)
+                .getIconIndex(),
+            RGBColor.WHITE), new ItemTexture(fluidIcon, RGBColor.fromRGB(fluid.getColor(new FluidStack(fluid, 1)))), };
     }
 }

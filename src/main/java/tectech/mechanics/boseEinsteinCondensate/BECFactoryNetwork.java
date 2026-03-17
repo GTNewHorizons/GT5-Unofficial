@@ -20,7 +20,8 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
 
     public final int id = NETWORK_ID.getAndAdd(1);
 
-    public final GraphRouteTracker<BECFactoryElement, BECFactoryNetwork, BECFactoryGrid, NotableBECFactoryElement, BECRouteInfo> routeTracker = new GraphRouteTracker<>(NotableBECFactoryElement.class,
+    public final GraphRouteTracker<BECFactoryElement, BECFactoryNetwork, BECFactoryGrid, NotableBECFactoryElement, BECRouteInfo> routeTracker = new GraphRouteTracker<>(
+        NotableBECFactoryElement.class,
         new BECRouteInfo(0));
 
     private boolean networkChanged = false;
@@ -62,31 +63,31 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
 
     /// Drains condensate from the network and decrements the sizes in the request stacks as condensate is extracted.
     public void drainCondensate(NotableBECFactoryElement drainer, IAEFluidStack request) {
-        routeTracker.iterateNetworkBFS(
-            drainer, step -> {
-                if (!step.node().allowsCondensateThrough(request.getFluid())) return VisitorResult.SkipNode;
+        routeTracker.iterateNetworkBFS(drainer, step -> {
+            if (!step.node()
+                .allowsCondensateThrough(request.getFluid())) return VisitorResult.SkipNode;
 
-                if (step.node() instanceof BECInventory inv) {
-                    inv.removeCondensate(request);
-                }
+            if (step.node() instanceof BECInventory inv) {
+                inv.removeCondensate(request);
+            }
 
-                return request.getStackSize() > 0 ? VisitorResult.Continue : VisitorResult.Break;
-            });
+            return request.getStackSize() > 0 ? VisitorResult.Continue : VisitorResult.Break;
+        });
     }
 
     public void injectCondensate(NotableBECFactoryElement start, IAEFluidStack input) {
         HashSet<BECInventory> inventories = new HashSet<>();
 
-        routeTracker.iterateNetworkBFS(
-            start, step -> {
-                if (!step.node().allowsCondensateThrough(input.getFluid())) return VisitorResult.SkipNode;
+        routeTracker.iterateNetworkBFS(start, step -> {
+            if (!step.node()
+                .allowsCondensateThrough(input.getFluid())) return VisitorResult.SkipNode;
 
-                if (step.node() instanceof BECInventory inv) {
-                    inventories.add(inv);
-                }
+            if (step.node() instanceof BECInventory inv) {
+                inventories.add(inv);
+            }
 
-                return VisitorResult.Continue;
-            });
+            return VisitorResult.Continue;
+        });
 
         if (inventories.isEmpty()) return;
 
@@ -125,16 +126,16 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
     public long getStoredCondensate(NotableBECFactoryElement start, Fluid condensate) {
         HashSet<BECInventory> inventories = new HashSet<>();
 
-        routeTracker.iterateNetworkBFS(
-            start, step -> {
-                if (!step.node().allowsCondensateThrough(condensate)) return VisitorResult.SkipNode;
+        routeTracker.iterateNetworkBFS(start, step -> {
+            if (!step.node()
+                .allowsCondensateThrough(condensate)) return VisitorResult.SkipNode;
 
-                if (step.node() instanceof BECInventory inv) {
-                    inventories.add(inv);
-                }
+            if (step.node() instanceof BECInventory inv) {
+                inventories.add(inv);
+            }
 
-                return VisitorResult.Continue;
-            });
+            return VisitorResult.Continue;
+        });
 
         long sum = 0;
 
@@ -150,8 +151,9 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
         HashSet<Fluid> contained = new HashSet<>();
 
         for (BECInventory inv : getComponents(BECInventory.class)) {
-            contained.addAll(inv.getContents()
-                .keySet());
+            contained.addAll(
+                inv.getContents()
+                    .keySet());
         }
 
         CondensateList storedCondensate = new CondensateList();
@@ -173,8 +175,9 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
 
         // Find all fluids in the network (dumb scan, we don't care if we can actually access them)
         for (BECInventory inv : getComponents(BECInventory.class)) {
-            contained.addAll(inv.getContents()
-                .keySet());
+            contained.addAll(
+                inv.getContents()
+                    .keySet());
         }
 
         // Don't bother checking for the presence of valid condensate
@@ -192,19 +195,20 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
 
             // Scan the network until we find a storage that contains the current condensate
             // If we find it, it's a contaminant, and it should slow assembling down
-            routeTracker.iterateNetworkBFS(
-                drainer, step -> {
-                    if (!step.node().allowsCondensateThrough(condensate)) return VisitorResult.SkipNode;
+            routeTracker.iterateNetworkBFS(drainer, step -> {
+                if (!step.node()
+                    .allowsCondensateThrough(condensate)) return VisitorResult.SkipNode;
 
-                    if (step.node() instanceof BECInventory inv) {
-                        if (inv.getContents().getLong(condensate) > 0) {
-                            found.setValue(true);
-                            return VisitorResult.Break;
-                        }
+                if (step.node() instanceof BECInventory inv) {
+                    if (inv.getContents()
+                        .getLong(condensate) > 0) {
+                        found.setValue(true);
+                        return VisitorResult.Break;
                     }
+                }
 
-                    return VisitorResult.Continue;
-                });
+                return VisitorResult.Continue;
+            });
 
             if (found.booleanValue()) {
                 // Use a set to prevent several storages with contaminant from slowing processing down excessively

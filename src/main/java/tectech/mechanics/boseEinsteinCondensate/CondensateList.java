@@ -26,7 +26,8 @@ public class CondensateList extends Object2LongOpenHashMap<Fluid> {
     public NBTTagCompound saveToNBT() {
         NBTTagCompound tag = new NBTTagCompound();
 
-        Iterator<Object2LongMap.Entry<Fluid>> iter = this.object2LongEntrySet().fastIterator();
+        Iterator<Object2LongMap.Entry<Fluid>> iter = this.object2LongEntrySet()
+            .fastIterator();
 
         while (iter.hasNext()) {
             var e = iter.next();
@@ -40,20 +41,24 @@ public class CondensateList extends Object2LongOpenHashMap<Fluid> {
     public void loadFromNBT(NBTTagCompound tag) {
         clear();
 
-        //noinspection unchecked
+        // noinspection unchecked
         for (Map.Entry<String, NBTTagLong> e : (Set<Map.Entry<String, NBTTagLong>>) tag.tagMap.entrySet()) {
             Fluid fluid = FluidRegistry.getFluid(e.getKey());
 
             if (fluid == null) continue;
 
-            this.put(fluid, e.getValue().func_150291_c());
+            this.put(
+                fluid,
+                e.getValue()
+                    .func_150291_c());
         }
     }
 
     public void writeToPacketBuffer(PacketBuffer buffer) throws IOException {
         buffer.writeInt(this.size());
 
-        Iterator<Object2LongMap.Entry<Fluid>> iter = this.object2LongEntrySet().fastIterator();
+        Iterator<Object2LongMap.Entry<Fluid>> iter = this.object2LongEntrySet()
+            .fastIterator();
 
         while (iter.hasNext()) {
             var e = iter.next();
@@ -91,9 +96,13 @@ public class CondensateList extends Object2LongOpenHashMap<Fluid> {
     public List<IAEFluidStack> toAEFluidStacks() {
         ArrayList<IAEFluidStack> out = new ArrayList<>();
 
-        Object2LongMaps.fastForEach(this, e -> {
-            out.add(AEFluidStack.create(new FluidStack(e.getKey(), 1)).setStackSize(e.getLongValue()));
-        });
+        Object2LongMaps.fastForEach(
+            this,
+            e -> {
+                out.add(
+                    AEFluidStack.create(new FluidStack(e.getKey(), 1))
+                        .setStackSize(e.getLongValue()));
+            });
 
         return out;
     }

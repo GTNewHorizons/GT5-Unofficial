@@ -29,6 +29,7 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
@@ -140,7 +141,8 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
 
-        condensateFilter = aNBT.hasKey("condensateFilter") ? FluidRegistry.getFluid(aNBT.getString("condensateFilter")) : null;
+        condensateFilter = aNBT.hasKey("condensateFilter") ? FluidRegistry.getFluid(aNBT.getString("condensateFilter"))
+            : null;
     }
 
     @Override
@@ -244,33 +246,36 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
             syncManager.syncValue("contents", contents);
 
             TextWidget<?> contentsWidget = IKey.dynamic(() -> {
-                    StringBuilder ret = new StringBuilder();
+                StringBuilder ret = new StringBuilder();
 
-                    ret.append(EnumChatFormatting.GRAY).append("Available Condensate:\n");
+                ret.append(EnumChatFormatting.GRAY)
+                    .append("Available Condensate:\n");
 
-                    if (contents.getValue().isEmpty()) {
-                        ret.append(EnumChatFormatting.GRAY).append("None");
-                    }
+                if (contents.getValue()
+                    .isEmpty()) {
+                    ret.append(EnumChatFormatting.GRAY)
+                        .append("None");
+                }
 
-                    for (var e : contents.getValue().object2LongEntrySet()) {
-                        ret.append("  ")
-                            .append(EnumChatFormatting.AQUA)
-                            .append(CondensateType.getCondensateName(e.getKey()))
-                            .append(EnumChatFormatting.GRAY)
-                            .append(" x ")
-                            .append(EnumChatFormatting.GOLD)
-                            .append(NumberFormatUtil.formatFluid(e.getLongValue()))
-                            .append(EnumChatFormatting.GRAY)
-                            .append('\n');
-                    }
+                for (var e : contents.getValue()
+                    .object2LongEntrySet()) {
+                    ret.append("  ")
+                        .append(EnumChatFormatting.AQUA)
+                        .append(CondensateType.getCondensateName(e.getKey()))
+                        .append(EnumChatFormatting.GRAY)
+                        .append(" x ")
+                        .append(EnumChatFormatting.GOLD)
+                        .append(NumberFormatUtil.formatFluid(e.getLongValue()))
+                        .append(EnumChatFormatting.GRAY)
+                        .append('\n');
+                }
 
-                    return ret.toString();
-                })
+                return ret.toString();
+            })
                 .asWidget()
                 .widthRel(1);
 
-            return super.createTerminalTextWidget(syncManager, parent)
-                .child(contentsWidget);
+            return super.createTerminalTextWidget(syncManager, parent).child(contentsWidget);
         }
 
         @Override
@@ -283,10 +288,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
             return SettingsPanel.builder()
                 .setDividerPosition(35)
                 .addHeader(IKey.str("Parameters"))
-                .addPhantomFluidSlot(
-                    IKey.str("Filter"),
-                    () -> condensateFilter,
-                    f -> condensateFilter = f)
+                .addPhantomFluidSlot(IKey.str("Filter"), () -> condensateFilter, f -> condensateFilter = f)
                 .build(panel, syncManager)
                 .size(100, 50);
         }

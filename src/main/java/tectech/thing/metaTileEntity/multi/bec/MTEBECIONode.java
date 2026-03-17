@@ -37,8 +37,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import appeng.api.storage.data.IAEFluidStack;
-import appeng.util.item.AEFluidStack;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -51,6 +49,9 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.github.bsideup.jabel.Desugar;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
+import appeng.api.storage.data.IAEFluidStack;
+import appeng.util.item.AEFluidStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
@@ -226,19 +227,16 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe)
-                    .setNoOverclock(true);
+                return super.createOverclockCalculator(recipe).setNoOverclock(true);
             }
 
-            private static final CheckRecipeResult NOT_ENOUGH_PARALLELS = SimpleCheckRecipeResult.ofFailure(
-                "not_enough_parallels");
+            private static final CheckRecipeResult NOT_ENOUGH_PARALLELS = SimpleCheckRecipeResult
+                .ofFailure("not_enough_parallels");
 
             @Override
             protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                double parallels = recipe.maxParallelCalculatedByInputs(
-                    MTEBECIONode.this.maxParallel,
-                    this.inputFluids,
-                    this.inputItems);
+                double parallels = recipe
+                    .maxParallelCalculatedByInputs(MTEBECIONode.this.maxParallel, this.inputFluids, this.inputItems);
 
                 if (parallels >= minParallel) {
                     return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -324,7 +322,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         this.parallelRecipesInProgress = processingLogic.getCurrentParallels();
 
-        //noinspection DataFlowIssue
+        // noinspection DataFlowIssue
         for (FluidStack stack : recipe.getMetadata(GTRecipeConstants.CONDENSATE_INPUT)) {
             this.requiredCondensate.addTo(stack.getFluid(), stack.amount * (long) this.parallelRecipesInProgress);
         }
@@ -381,7 +379,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         }
     }
 
-    /// Divides the duration into roughly equal chunks so that we can easily determine which step we're in, given a specific tick (see [#getCurrentStep()])
+    /// Divides the duration into roughly equal chunks so that we can easily determine which step we're in, given a
+    /// specific tick (see [#getCurrentStep()])
     private void loadRequiredNanites(int duration, List<NaniteTier> tiers) {
         IntDivisionIterator iter = new IntDivisionIterator(duration, tiers.size());
         Iterator<NaniteTier> nanites = tiers.iterator();
@@ -557,8 +556,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                 long remainingCondensate = required.getLongValue() - this.consumedCondensate.getLong(required.getKey());
 
                 if (remainingCondensate > 0) {
-                    stopMachine(new ReasonMissingCondensate(AEFluidStack.create(new FluidStack(required.getKey(), 1))
-                        .setStackSize(remainingCondensate)));
+                    stopMachine(
+                        new ReasonMissingCondensate(
+                            AEFluidStack.create(new FluidStack(required.getKey(), 1))
+                                .setStackSize(remainingCondensate)));
                     return;
                 }
             }
@@ -626,12 +627,13 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         if (!ItemList.Tool_DataStick.isStackEqual(heldItem, false, true)) return;
 
         heldItem.setTagCompound(getCopiedData(player));
-        heldItem.setStackDisplayName(MessageFormat.format(
-            "{0} Link Data Stick ({1}, {2}, {3})",
-            getStackForm(1).getDisplayName(),
-            igte.getXCoord(),
-            igte.getYCoord(),
-            igte.getZCoord()));
+        heldItem.setStackDisplayName(
+            MessageFormat.format(
+                "{0} Link Data Stick ({1}, {2}, {3})",
+                getStackForm(1).getDisplayName(),
+                igte.getXCoord(),
+                igte.getYCoord(),
+                igte.getZCoord()));
         player.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
     }
 
@@ -645,15 +647,17 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         // intentionally run on the client so that the player's arm swings
         if (pasteCopiedData(player, heldItem.getTagCompound())) {
             if (GTUtility.isServer()) {
-                player.addChatMessage(new ChatComponentText("Successfully connected to "
-                    + CustomItemList.Machine_Multi_BECAssembler.getDisplayName()));
+                player.addChatMessage(
+                    new ChatComponentText(
+                        "Successfully connected to " + CustomItemList.Machine_Multi_BECAssembler.getDisplayName()));
             }
 
             return true;
         } else {
             if (GTUtility.isServer()) {
-                player.addChatMessage(new ChatComponentText("Could not connect to "
-                    + CustomItemList.Machine_Multi_BECAssembler.getDisplayName()));
+                player.addChatMessage(
+                    new ChatComponentText(
+                        "Could not connect to " + CustomItemList.Machine_Multi_BECAssembler.getDisplayName()));
             }
 
             return false;
@@ -799,9 +803,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         @Override
         protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-            syncManager.syncValue(
-                "availableNanites",
-                new IntSyncValue(() -> availableNanites, i -> availableNanites = i));
+            syncManager
+                .syncValue("availableNanites", new IntSyncValue(() -> availableNanites, i -> availableNanites = i));
             syncManager.syncValue("state", new EnumSyncValue<>(NodeState.class, () -> state, s -> state = s));
             syncManager.syncValue("providedTier", new NaniteTierSyncValue(() -> providedTier, t -> providedTier = t));
             syncManager.syncValue("requiredTier", new NaniteTierSyncValue(() -> requiredTier, t -> requiredTier = t));
@@ -823,55 +826,56 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     .build());
 
             TextWidget<?> contentsWidget = IKey.dynamic(() -> {
-                    StringBuilder ret = new StringBuilder();
+                StringBuilder ret = new StringBuilder();
 
-                    ret.append(translate(
-                        "GT5U.gui.text.ionode_status",
-                        translate("GT5U.gui.text.ionode_status." + state.name())));
-                    ret.append("\n");
+                ret.append(
+                    translate("GT5U.gui.text.ionode_status", translate("GT5U.gui.text.ionode_status." + state.name())));
+                ret.append("\n");
 
-                    ret.append(translate(
+                ret.append(
+                    translate(
                         "GT5U.gui.text.provided_nanite",
-                        providedTier == null
-                            ? translate("GT5U.gui.text.nil")
+                        providedTier == null ? translate("GT5U.gui.text.nil")
                             : translate("GT5U.gui.text.nanite_desc", availableNanites, providedTier.describe())));
-                    ret.append("\n");
+                ret.append("\n");
 
-                    ret.append(translate(
+                ret.append(
+                    translate(
                         "GT5U.gui.text.required_nanite",
-                        requiredTier == null ? translate("GT5U.gui.text.nil") : GOLD + requiredTier.describe() + WHITE));
-                    ret.append("\n");
+                        requiredTier == null ? translate("GT5U.gui.text.nil")
+                            : GOLD + requiredTier.describe() + WHITE));
+                ret.append("\n");
 
-                    boolean hasAny = false;
+                boolean hasAny = false;
 
-                    ret.append(translate("GT5U.gui.text.required_condensate"));
-                    ret.append("\n");
+                ret.append(translate("GT5U.gui.text.required_condensate"));
+                ret.append("\n");
 
-                    if (requiredCondensate != null && consumedCondensate != null && mMaxProgresstime > 0) {
-                        for (var e : requiredCondensate.object2LongEntrySet()) {
-                            hasAny = true;
+                if (requiredCondensate != null && consumedCondensate != null && mMaxProgresstime > 0) {
+                    for (var e : requiredCondensate.object2LongEntrySet()) {
+                        hasAny = true;
 
-                            long consumed = consumedCondensate.getLong(e.getKey());
+                        long consumed = consumedCondensate.getLong(e.getKey());
 
-                            ret.append(translate(
+                        ret.append(
+                            translate(
                                 "GT5U.gui.text.remaining_condensate",
                                 CondensateType.getCondensateName(e.getKey()),
                                 consumed,
                                 e.getLongValue()));
-                        }
                     }
+                }
 
-                    if (!hasAny) {
-                        ret.append(translate("GT5U.gui.text.nil"));
-                    }
+                if (!hasAny) {
+                    ret.append(translate("GT5U.gui.text.nil"));
+                }
 
-                    return ret.toString();
-                })
+                return ret.toString();
+            })
                 .asWidget()
                 .widthRel(1);
 
-            return super.createTerminalTextWidget(syncManager, parent)
-                .child(contentsWidget);
+            return super.createTerminalTextWidget(syncManager, parent).child(contentsWidget);
         }
 
         @Override
@@ -897,18 +901,28 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                 .setDividerPosition(75)
                 .addHeader(IKey.str("Parameters"))
                 .addIntEditor(
-                    IKey.str("Min Parallels"), () -> minParallel, f -> minParallel = f, (panel2, sync, widget) -> {
+                    IKey.str("Min Parallels"),
+                    () -> minParallel,
+                    f -> minParallel = f,
+                    (panel2, sync, widget) -> {
                         widget.setNumbers(1, Integer.MAX_VALUE);
-                        widget.tooltip(t -> t.addStringLines(MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                            new ResourceLocation("gregtech",
-                                "bec-ionode/min-parallels"), Collections.emptyMap())));
+                        widget.tooltip(
+                            t -> t.addStringLines(
+                                MarkdownTooltipLoader.STANDARD.loadStandardPath(
+                                    new ResourceLocation("gregtech", "bec-ionode/min-parallels"),
+                                    Collections.emptyMap())));
                     })
                 .addIntEditor(
-                    IKey.str("Max Parallels"), () -> maxParallel, f -> maxParallel = f, (panel2, sync, widget) -> {
+                    IKey.str("Max Parallels"),
+                    () -> maxParallel,
+                    f -> maxParallel = f,
+                    (panel2, sync, widget) -> {
                         widget.setNumbers(1, Integer.MAX_VALUE);
-                        widget.tooltip(t -> t.addStringLines(MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                            new ResourceLocation("gregtech",
-                                "bec-ionode/max-parallels"), Collections.emptyMap())));
+                        widget.tooltip(
+                            t -> t.addStringLines(
+                                MarkdownTooltipLoader.STANDARD.loadStandardPath(
+                                    new ResourceLocation("gregtech", "bec-ionode/max-parallels"),
+                                    Collections.emptyMap())));
                     })
                 .addIntEditor(
                     IKey.str("Speed Divisor"),
@@ -916,9 +930,11 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     i -> manualSlowdown = i,
                     (panel2, sync, widget) -> {
                         widget.setNumbers(0, Integer.MAX_VALUE);
-                        widget.tooltip(t -> t.addStringLines(MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                            new ResourceLocation("gregtech",
-                                "bec-ionode/speed-divisor"), Collections.emptyMap())));
+                        widget.tooltip(
+                            t -> t.addStringLines(
+                                MarkdownTooltipLoader.STANDARD.loadStandardPath(
+                                    new ResourceLocation("gregtech", "bec-ionode/speed-divisor"),
+                                    Collections.emptyMap())));
                     })
                 .build(panel, syncManager)
                 .size(150, 90);

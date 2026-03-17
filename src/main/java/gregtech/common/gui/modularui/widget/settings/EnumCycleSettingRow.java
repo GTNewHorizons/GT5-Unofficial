@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.github.bsideup.jabel.Desugar;
+
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.EnumCycleButtonWidget;
 import gregtech.common.gui.modularui.widget.WidgetConfigurator;
@@ -21,11 +22,11 @@ import gregtech.common.gui.modularui.widget.settings.EnumCycleSettingRow.EnumCyc
 import it.unimi.dsi.fastutil.Pair;
 
 @Desugar
-record EnumCycleSettingRow<E extends Enum<E>>(IKey label, Class<E> clazz, Supplier<E> getter, Consumer<E> setter,
+record EnumCycleSettingRow<E extends Enum<E>> (IKey label, Class<E> clazz, Supplier<E> getter, Consumer<E> setter,
     WidgetConfigurator<EnumCycleButtonWidget<E>> configure) implements ISettingRow<EnumCycleWidgets<E>> {
 
     @Desugar
-    public record EnumCycleWidgets<E extends Enum<E>>(TextWidget<?> labelWidget, EnumCycleButtonWidget<E> button) {
+    public record EnumCycleWidgets<E extends Enum<E>> (TextWidget<?> labelWidget, EnumCycleButtonWidget<E> button) {
 
     }
 

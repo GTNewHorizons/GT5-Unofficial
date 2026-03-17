@@ -10,8 +10,7 @@ import gregtech.api.enums.NaniteTier;
 
 public class NaniteTierSyncValue extends NullableEnumSyncValue<NaniteTier> {
 
-    public NaniteTierSyncValue(@NotNull Supplier<NaniteTier> getter,
-        @Nullable Consumer<NaniteTier> setter) {
+    public NaniteTierSyncValue(@NotNull Supplier<NaniteTier> getter, @Nullable Consumer<NaniteTier> setter) {
         super(NaniteTier.class, getter, setter);
     }
 

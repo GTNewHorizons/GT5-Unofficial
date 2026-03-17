@@ -30,6 +30,7 @@ public abstract class MTEHatchConfigurableBase extends MTEBaseFactoryHatch imple
     public abstract MetaTileEntity newMetaEntity(IGregTechTileEntity igte);
 
     protected abstract void saveConfig(NBTTagCompound tag);
+
     protected abstract void loadConfig(@Nullable NBTTagCompound tag);
 
     @Override
@@ -101,8 +102,8 @@ public abstract class MTEHatchConfigurableBase extends MTEBaseFactoryHatch imple
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity igte, EntityPlayer player, ForgeDirection side,
-        float aX, float aY, float aZ) {
+    public boolean onRightclick(IGregTechTileEntity igte, EntityPlayer player, ForgeDirection side, float aX, float aY,
+        float aZ) {
         ItemStack heldItem = player.getHeldItem();
         if (!ItemList.Tool_DataStick.isStackEqual(heldItem, false, true)) {
             openGui(player);

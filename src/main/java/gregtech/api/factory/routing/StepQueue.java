@@ -23,9 +23,11 @@ public class StepQueue<N, R extends IRouteInfo<R>> extends Object2ObjectRBTreeMa
             // Remove the front and shift all later elements down one.
             // This is more correct than removing the last element and the chances of a NetworkStepList existing are
             // very low.
-            NetworkStep<N, R> step = list.steps().remove(0);
+            NetworkStep<N, R> step = list.steps()
+                .remove(0);
 
-            if (list.steps().isEmpty()) {
+            if (list.steps()
+                .isEmpty()) {
                 this.remove(firstKey);
             }
 
@@ -49,7 +51,8 @@ public class StepQueue<N, R extends IRouteInfo<R>> extends Object2ObjectRBTreeMa
             this.put(step.route(), new NetworkStepList<>(steps));
         } else if (existing instanceof NetworkStepList) {
             NetworkStepList<N, R> list = (NetworkStepList<N, R>) existing;
-            list.steps().add(step);
+            list.steps()
+                .add(step);
 
             this.put(step.route(), list);
         } else {

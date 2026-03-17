@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.api.value.IIntValue;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.value.EnumValue;
 import com.cleanroommc.modularui.widgets.AbstractCycleButtonWidget;
+
 import gregtech.api.util.GTDataUtils;
 
 public class EnumCycleButtonWidget<E extends Enum<E>> extends AbstractCycleButtonWidget<EnumCycleButtonWidget<E>> {

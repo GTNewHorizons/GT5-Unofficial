@@ -32,7 +32,8 @@ public class BECAssemblyFrontend extends AssemblyLineFrontend {
 
         int slot = pStack.recipe.mInputs.indexOf(pStack);
 
-        NaniteTier tier = GTDataUtils.getIndexSafe(pStack.recipe.mRecipe.getMetadata(GTRecipeConstants.NANITE_TIERS), slot);
+        NaniteTier tier = GTDataUtils
+            .getIndexSafe(pStack.recipe.mRecipe.getMetadata(GTRecipeConstants.NANITE_TIERS), slot);
 
         if (tier != null) {
             currentTip.add(GRAY + GTUtility.translate("gt.tooltip.nanite-tier", tier.describe()));

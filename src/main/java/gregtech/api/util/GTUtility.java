@@ -3314,8 +3314,8 @@ public class GTUtility {
     }
 
     public static long ceil(double k) {
-        long l = (long)k;
-        return k > (double)l ? l + 1 : l;
+        long l = (long) k;
+        return k > (double) l ? l + 1 : l;
     }
 
     public static int ceilDiv(int lhs, int rhs) {

@@ -13,15 +13,16 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.github.bsideup.jabel.Desugar;
+
 import gregtech.common.gui.modularui.widget.settings.ReadoutSettingRow.ReadoutWidgets;
 import it.unimi.dsi.fastutil.Pair;
 
 @Desugar
-public record ReadoutSettingRow<S extends SyncHandler & IValueSyncHandler<T>, T>(IKey label, S value, Function<T, IKey> format)
-    implements ISettingRow<ReadoutWidgets> {
+public record ReadoutSettingRow<S extends SyncHandler & IValueSyncHandler<T>, T> (IKey label, S value,
+    Function<T, IKey> format) implements ISettingRow<ReadoutWidgets> {
 
     @Desugar
-    public  record ReadoutWidgets(TextWidget<?> labelWidget, TextWidget<?> readout) {
+    public record ReadoutWidgets(TextWidget<?> labelWidget, TextWidget<?> readout) {
 
     }
 

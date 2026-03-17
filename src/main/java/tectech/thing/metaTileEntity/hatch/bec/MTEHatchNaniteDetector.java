@@ -15,6 +15,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+
 import gregtech.api.enums.Comparison;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures;

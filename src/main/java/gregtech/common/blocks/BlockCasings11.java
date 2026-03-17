@@ -43,18 +43,9 @@ public class BlockCasings11 extends BlockCasingsAbstract {
         register(6, ItemList.Casing_Item_Pipe_Fluxed_Electrum);
         register(7, ItemList.Casing_Item_Pipe_Black_Plutonium);
 
-        register(
-            8,
-            ItemList.SuperconductivePlasmaEnergyConduit,
-            translatedText("gt.casing11.8.tooltip"));
-        register(
-            9,
-            ItemList.ElectromagneticallyIsolatedCasing,
-            translatedText("gt.casing11.9.tooltip"));
-        register(
-            10,
-            ItemList.FineStructureConstantManipulator,
-            translatedText("gt.casing11.10.tooltip"));
+        register(8, ItemList.SuperconductivePlasmaEnergyConduit, translatedText("gt.casing11.8.tooltip"));
+        register(9, ItemList.ElectromagneticallyIsolatedCasing, translatedText("gt.casing11.9.tooltip"));
+        register(10, ItemList.FineStructureConstantManipulator, translatedText("gt.casing11.10.tooltip"));
 
         for (int i = 0; i < 8; i++) {
             GTStructureChannels.ITEM_PIPE_CASING.registerAsIndicator(new ItemStack(this, 1, i), i + 1);
@@ -107,14 +98,13 @@ public class BlockCasings11 extends BlockCasingsAbstract {
         ROTATED
     }
 
-    private static final IconType[][] ICONS = {
-        { // facing_x
-            IconType.NORMAL, // down
-            IconType.NORMAL, // up
-            IconType.NORMAL, // north
-            IconType.NORMAL, // south
-            IconType.NONE, // west
-            IconType.NONE, // east
+    private static final IconType[][] ICONS = { { // facing_x
+        IconType.NORMAL, // down
+        IconType.NORMAL, // up
+        IconType.NORMAL, // north
+        IconType.NORMAL, // south
+        IconType.NONE, // west
+        IconType.NONE, // east
         }, { // facing_y
             IconType.NONE, // down
             IconType.NONE, // up
@@ -150,8 +140,7 @@ public class BlockCasings11 extends BlockCasingsAbstract {
             IconType.NONE, // south
             IconType.ROTATED, // west
             IconType.ROTATED, // east
-        },
-    };
+        }, };
 
     @SideOnly(Side.CLIENT)
     private IIcon getCTMIcon(IBlockAccess world, int x, int y, int z, ForgeDirection side) {

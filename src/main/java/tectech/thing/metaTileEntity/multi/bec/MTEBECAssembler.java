@@ -29,7 +29,6 @@ import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
 
-import appeng.api.storage.data.IAEFluidStack;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -40,6 +39,8 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
+import appeng.api.storage.data.IAEFluidStack;
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -317,12 +318,13 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         if (!ItemList.Tool_DataStick.isStackEqual(heldItem, false, true)) return;
 
         heldItem.setTagCompound(getCopiedData(player));
-        heldItem.setStackDisplayName(MessageFormat.format(
-            "{0} Link Data Stick ({1}, {2}, {3})",
-            getStackForm(1).getDisplayName(),
-            igte.getXCoord(),
-            igte.getYCoord(),
-            igte.getZCoord()));
+        heldItem.setStackDisplayName(
+            MessageFormat.format(
+                "{0} Link Data Stick ({1}, {2}, {3})",
+                getStackForm(1).getDisplayName(),
+                igte.getXCoord(),
+                igte.getYCoord(),
+                igte.getZCoord()));
         player.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
     }
 
@@ -396,62 +398,60 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         @Override
         protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
             GenericSyncValue<CondensateList> condensate = GenericSyncValue.builder(CondensateList.class)
-                .getter(() -> network == null
-                    ? new CondensateList()
-                    : network.getStoredCondensate(MTEBECAssembler.this))
+                .getter(
+                    () -> network == null ? new CondensateList() : network.getStoredCondensate(MTEBECAssembler.this))
                 .adapter(new CondensateListAdapter())
                 .build();
 
             syncManager.syncValue("condensate", condensate);
-            syncManager.syncValue(
-                "naniteTier",
-                new NaniteTierSyncValue(() -> currentNaniteTier, t -> currentNaniteTier = t));
+            syncManager
+                .syncValue("naniteTier", new NaniteTierSyncValue(() -> currentNaniteTier, t -> currentNaniteTier = t));
             syncManager.syncValue("naniteCount", new IntSyncValue(() -> availableNanites, i -> availableNanites = i));
 
-            TextWidget<?> naniteWidget = IKey.dynamic(() -> GRAY
-                    + "Providing Nanites:\n  "
-                    + AQUA
-                    + currentNaniteTier.describe()
-                    + GRAY
-                    + " x "
-                    + GOLD
-                    + NumberFormatUtil.formatNumber(availableNanites)
-                    + GRAY)
+            TextWidget<?> naniteWidget = IKey
+                .dynamic(
+                    () -> GRAY + "Providing Nanites:\n  "
+                        + AQUA
+                        + currentNaniteTier.describe()
+                        + GRAY
+                        + " x "
+                        + GOLD
+                        + NumberFormatUtil.formatNumber(availableNanites)
+                        + GRAY)
                 .asWidget()
                 .widthRel(1);
 
             TextWidget<?> contentsWidget = IKey.dynamic(() -> {
-                    StringBuilder ret = new StringBuilder();
+                StringBuilder ret = new StringBuilder();
 
+                ret.append(GRAY)
+                    .append("Available Condensate:\n");
+
+                if (condensate.getValue()
+                    .isEmpty()) {
                     ret.append(GRAY)
-                        .append("Available Condensate:\n");
+                        .append("None");
+                }
 
-                    if (condensate.getValue()
-                        .isEmpty()) {
-                        ret.append(GRAY)
-                            .append("None");
-                    }
+                for (var e : condensate.getValue()
+                    .object2LongEntrySet()) {
+                    ret.append("  ")
+                        .append(AQUA)
+                        .append(CondensateType.getCondensateName(e.getKey()))
+                        .append(GRAY)
+                        .append(" x ")
+                        .append(GOLD)
+                        .append(NumberFormatUtil.formatFluid(e.getLongValue()))
+                        .append(GRAY)
+                        .append('\n');
+                }
 
-                    for (var e : condensate.getValue()
-                        .object2LongEntrySet()) {
-                        ret.append("  ")
-                            .append(AQUA)
-                            .append(CondensateType.getCondensateName(e.getKey()))
-                            .append(GRAY)
-                            .append(" x ")
-                            .append(GOLD)
-                            .append(NumberFormatUtil.formatFluid(e.getLongValue()))
-                            .append(GRAY)
-                            .append('\n');
-                    }
-
-                    return ret.toString();
-                })
+                return ret.toString();
+            })
                 .asWidget()
                 .widthRel(1);
 
-            return super.createTerminalTextWidget(syncManager, parent)
-                .child(naniteWidget)
+            return super.createTerminalTextWidget(syncManager, parent).child(naniteWidget)
                 .child(contentsWidget);
         }
     }

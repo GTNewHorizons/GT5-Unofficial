@@ -9,6 +9,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.github.bsideup.jabel.Desugar;
+
 import it.unimi.dsi.fastutil.Pair;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })

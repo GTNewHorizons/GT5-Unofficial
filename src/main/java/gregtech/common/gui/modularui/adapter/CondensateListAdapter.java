@@ -8,6 +8,7 @@ import net.minecraft.network.PacketBuffer;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
+
 import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 
 public class CondensateListAdapter implements IByteBufAdapter<CondensateList> {

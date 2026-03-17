@@ -24,7 +24,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import org.jetbrains.annotations.NotNull;
 
-import appeng.api.storage.data.IAEFluidStack;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -36,6 +35,8 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
+import appeng.api.storage.data.IAEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.CondensateType;
@@ -154,7 +155,8 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                 ElectromagneticallyIsolatedCasing,
                 FineStructureConstantManipulator,
                 ElectromagneticWaveguide,
-                AdvancedFusionCoilII), null);
+                AdvancedFusionCoilII),
+            null);
 
         tt.toolTipFinisher(EnumChatFormatting.WHITE, 0, GTValues.AuthorPineapple);
 
@@ -410,33 +412,36 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
             syncManager.syncValue("contents", contents);
 
             TextWidget<?> contentsWidget = IKey.dynamic(() -> {
-                    StringBuilder ret = new StringBuilder();
+                StringBuilder ret = new StringBuilder();
 
-                    ret.append(EnumChatFormatting.GRAY).append("Stored Condensate:\n");
+                ret.append(EnumChatFormatting.GRAY)
+                    .append("Stored Condensate:\n");
 
-                    if (contents.getValue().isEmpty()) {
-                        ret.append(EnumChatFormatting.GRAY).append("None");
-                    }
+                if (contents.getValue()
+                    .isEmpty()) {
+                    ret.append(EnumChatFormatting.GRAY)
+                        .append("None");
+                }
 
-                    for (var e : contents.getValue().object2LongEntrySet()) {
-                        ret.append("  ")
-                            .append(EnumChatFormatting.AQUA)
-                            .append(CondensateType.getCondensateName(e.getKey()))
-                            .append(EnumChatFormatting.GRAY)
-                            .append(" x ")
-                            .append(EnumChatFormatting.GOLD)
-                            .append(NumberFormatUtil.formatFluid(e.getLongValue()))
-                            .append(EnumChatFormatting.GRAY)
-                            .append('\n');
-                    }
+                for (var e : contents.getValue()
+                    .object2LongEntrySet()) {
+                    ret.append("  ")
+                        .append(EnumChatFormatting.AQUA)
+                        .append(CondensateType.getCondensateName(e.getKey()))
+                        .append(EnumChatFormatting.GRAY)
+                        .append(" x ")
+                        .append(EnumChatFormatting.GOLD)
+                        .append(NumberFormatUtil.formatFluid(e.getLongValue()))
+                        .append(EnumChatFormatting.GRAY)
+                        .append('\n');
+                }
 
-                    return ret.toString();
-                })
+                return ret.toString();
+            })
                 .asWidget()
                 .widthRel(1);
 
-            return super.createTerminalTextWidget(syncManager, parent)
-                .child(contentsWidget);
+            return super.createTerminalTextWidget(syncManager, parent).child(contentsWidget);
         }
 
         @Override
@@ -453,9 +458,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                     IKey.str("Field Strength"),
                     () -> fieldStrength,
                     l -> fieldStrength = (int) l,
-                    (panel1, syncManager1, widget) -> {
-                        widget.setNumbersLong(() -> 1L, () -> Long.MAX_VALUE);
-                    })
+                    (panel1, syncManager1, widget) -> { widget.setNumbersLong(() -> 1L, () -> Long.MAX_VALUE); })
                 .addReadout(
                     IKey.str("Stored:"),
                     new DoubleSyncValue(MTEBECStorage.this::getAmountStored),
