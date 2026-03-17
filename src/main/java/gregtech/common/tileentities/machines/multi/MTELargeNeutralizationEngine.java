@@ -778,7 +778,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         }
         residueDecay = getResidueDecay();
         this.toxicResidue = Math.max(0, this.toxicResidue - residueDecay);
-        if (this.toxicResidue > getResidueCapacity()) {
+        if (this.toxicResidue > Math.max(99999, getResidueCapacity())) {// don't explode on construction lmao
             explodeMultiblock();
         }
     }

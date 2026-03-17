@@ -174,6 +174,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeBoilerTungstenSteel;
 import gregtech.common.tileentities.machines.multi.MTELargeChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeFluidExtractor;
 import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
+import gregtech.common.tileentities.machines.multi.MTELargeNeutralizationEngine;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineGas;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
