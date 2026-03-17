@@ -118,7 +118,6 @@ public class AcidRecipes {
             .fluidInputs(
                 Materials.StagnantWasteWater.getFluid(8000L),
                 MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(4000))
-            .itemOutputs(Materials.ChromiumDioxide.getDust(1))
             .fluidOutputs(Materials.ActivatedWasteWater.getFluid(12000L))
             .circuit(1)// Necessary to exceed properties.minItemInputs threshold
             .eut(1440)
