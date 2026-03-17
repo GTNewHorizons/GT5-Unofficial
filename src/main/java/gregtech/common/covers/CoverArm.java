@@ -1,7 +1,5 @@
 package gregtech.common.covers;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -94,8 +92,8 @@ public class CoverArm extends Cover {
     }
 
     private void sendMessageToPlayer(EntityPlayer aPlayer) {
-        if (export) GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.out_slot") + externalSlotId);
-        else GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.in_slot") + internalSlotId);
+        if (export) GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.out_slot.s", externalSlotId);
+        else GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.in_slot.s", internalSlotId);
     }
 
     @Override
