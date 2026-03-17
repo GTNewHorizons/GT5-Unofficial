@@ -3386,6 +3386,48 @@ public class AssemblerRecipes implements Runnable {
             GTOreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1),
             GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Steel, 1),
             ItemList.Machine_Bronze_Boiler_Solar.get(1L));
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 6),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Platinum, 2),
+                ItemList.Casing_Chemically_Inert.get(1L))
+            .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(144L))
+            .itemOutputs(ItemList.Casing_Strengthened_Inanimate.get(1L))
+            .circuit(1)
+            .eut(16)
+            .duration(50 * TICKS)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 6),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2),
+                ItemList.Casing_Chemically_Inert.get(1L))
+            .fluidInputs(Materials.Naquadah.getMolten(9L))
+            .itemOutputs(ItemList.Casing_Precise_Stationary.get(1L))
+            .circuit(1)
+            .eut(16)
+            .duration(50 * TICKS)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 6),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Netherite, 2),
+                ItemList.Casing_Chemically_Inert.get(1L))
+            .fluidInputs(Materials.Quantium.getMolten(144L))
+            .itemOutputs(ItemList.Casing_Ultimately_Static.get(1L))
+            .circuit(1)
+            .eut(16)
+            .duration(50 * TICKS)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4),
+                ItemRegistry.acidGens[2],
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4L))
+            .itemOutputs(ItemList.Machine_Multi_Large_Neutralization_Engine.get(1L))
+            .eut(TierEU.RECIPE_EV)
+            .duration(20 * SECONDS)
+            .addTo(assemblerRecipes);
     }
 
     /**
