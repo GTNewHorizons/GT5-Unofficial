@@ -1169,10 +1169,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     @Override
     public String[] getDescription() {
         if (autoPullAvailable) return GTSplit.splitLocalizedFormatted(
-            "gt.blockmachines.input_hatch_me.desc",
-            TIER_COLORS[9] + VN[9],
-            StatCollector.translateToLocal("gt.blockmachines.input_hatch_me.autopull.desc") + GTSplit.LB);
-        return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_hatch_me.desc", TIER_COLORS[8] + VN[8], "");
+            "gt.blockmachines.input_hatch_me.autopull.desc",
+            TIER_COLORS[9] + VN[9]);
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_hatch_me.desc", TIER_COLORS[8] + VN[8]);
     }
 
     protected static class Slot {

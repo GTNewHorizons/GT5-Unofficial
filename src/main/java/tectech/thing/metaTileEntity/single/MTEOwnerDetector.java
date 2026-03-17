@@ -58,8 +58,8 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        OWNER_ONLINE = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/OWNER_ONLINE"));
-        OWNER_OFFLINE = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/OWNER_OFFLINE"));
+        OWNER_ONLINE = TextureFactory.of(Textures.BlockIcons.custom("iconsets/OWNER_ONLINE"));
+        OWNER_OFFLINE = TextureFactory.of(Textures.BlockIcons.custom("iconsets/OWNER_OFFLINE"));
     }
 
     @Override

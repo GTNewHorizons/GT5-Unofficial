@@ -1105,10 +1105,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     @Override
     public String[] getDescription() {
         if (autoPullAvailable) return GTSplit.splitLocalizedFormatted(
-            "gt.blockmachines.input_bus_me.desc",
-            TIER_COLORS[6] + VN[6],
-            StatCollector.translateToLocal("gt.blockmachines.input_bus_me.autopull.desc") + GTSplit.LB);
-        return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_bus_me.desc", TIER_COLORS[4] + VN[4], "");
+            "gt.blockmachines.input_bus_me.autopull.desc",
+            TIER_COLORS[6] + VN[6]);
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_bus_me.desc", TIER_COLORS[4] + VN[4]);
     }
 
     protected static class Slot {
