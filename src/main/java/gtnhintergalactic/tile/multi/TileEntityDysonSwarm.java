@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -454,19 +455,12 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             .addCasingInfoExactly("tile.DysonSwarmControlSecondary.name", 12)
             .addCasingInfoExactly("tile.DysonSwarmControlToroid.name", 128)
             .addCasingInfoExactly("tile.DysonSwarmFloor.name", 256)
-            .addCasingInfoExactly("gt.blockcasings5.8.name", 9)
-            .addCasingInfoExactly("gt.blockcasings6.10.name", 1)
+            .addCasingInfoExactly(Casings.AwakenedDraconiumCoilBlock.getLocalizedName(), 9)
+            .addCasingInfoExactly(Casings.HermeticCasing10.getLocalizedName(), 1)
+            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Titanium), 16)
+            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.HSSS), 23)
             .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1)
-                    .getDisplayName(),
-                16)
-            .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1)
-                    .getDisplayName(),
-                23)
-            .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUHVBase, 1)
-                    .getDisplayName(),
+                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.SuperconductorUHVBase),
                 64)
             .toolTipFinisher();
         return tt;

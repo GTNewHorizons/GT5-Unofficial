@@ -365,8 +365,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addCasingInfoExactly(Casings.ExtremeDensitySpaceBendingCasing.getLocalizedName(), 3667)
             .addCasingInfoExactly(Casings.HawkingRadiationRealignmentFocus.getLocalizedName(), 64)
             .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1)
-                    .getDisplayName(),
+                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.NaquadahAlloy),
                 144)
             .addInputHatch("gt.bhc.info.i_hatch", 2)
             .addInputBus(anyCasing, 1)

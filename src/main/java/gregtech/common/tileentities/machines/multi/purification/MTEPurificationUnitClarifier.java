@@ -184,13 +184,9 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             .addController("front_center")
             .addCasingInfoRange(Casings.ReinforcedSterileWaterPlantCasing.getLocalizedName(), 123, 131, false)
             .addCasingInfoExactly(Casings.FilterMachineCasing.getLocalizedName(), 21)
+            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Iridium), 12)
             .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1)
-                    .getDisplayName(),
-                12)
-            .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.DamascusSteel, 1)
-                    .getDisplayName(),
+                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.DamascusSteel),
                 12)
             .addCasingInfoExactly(Casings.PTFEPipeCasing.getLocalizedName(), 3)
             .addInputBus("§61§7+", 1)

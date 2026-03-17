@@ -232,12 +232,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("gt.hi_engraver.tips.1", TooltipHelper.voltageText(VoltageIndex.UMV))
             .beginStructureBlock(5, 5, 5, false)
             .addController("front_center")
-            .addCasingInfoMin("gt.blockcasings10.1.name", 35, false)
-            .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1)
-                    .getDisplayName(),
-                9,
-                false)
+            .addCasingInfoMin("gt.blockcasings10.1.name", 35)
+            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.TungstenSteel), 9)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 3, true)
             .addStructurePart("gt.laserplate.name", "x1")
             .addStructurePart("GT5U.tooltip.structure.laser_source_hatch", "x1", 3)

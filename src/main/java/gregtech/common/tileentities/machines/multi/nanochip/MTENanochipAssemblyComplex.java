@@ -246,16 +246,12 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addStructurePart(
                 "GT5U.tooltip.nac.interface.nac_module",
                 "GT5U.tooltip.nac.interface.structure_outer_ring_base_casing")
-            .addCasingInfoExactly(Casings.NanochipReinforcementCasing.getLocalizedName(), 3956, false)
-            .addCasingInfoExactly(Casings.NanochipComplexGlass.getLocalizedName(), 2226, false)
-            .addCasingInfoExactly(Casings.NanochipMeshInterfaceCasing.getLocalizedName(), 1720, false)
-            .addCasingInfoExactly(Casings.NanochipComputationalMatrixCasing.getLocalizedName(), 721, false)
-            .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Naquadah, 1)
-                    .getDisplayName(),
-                53,
-                false)
-            .addCasingInfoExactly(Casings.NanochipFirewallProjectionCasing.getLocalizedName(), 32, false)
+            .addCasingInfoExactly(Casings.NanochipReinforcementCasing.getLocalizedName(), 3956)
+            .addCasingInfoExactly(Casings.NanochipComplexGlass.getLocalizedName(), 2226)
+            .addCasingInfoExactly(Casings.NanochipMeshInterfaceCasing.getLocalizedName(), 1720)
+            .addCasingInfoExactly(Casings.NanochipComputationalMatrixCasing.getLocalizedName(), 721)
+            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Naquadah), 53)
+            .addCasingInfoExactly(Casings.NanochipFirewallProjectionCasing.getLocalizedName(), 32)
             .addStructurePart(
                 ItemList.Hatch_VacuumConveyor_Input.get(1)
                     .getDisplayName(),

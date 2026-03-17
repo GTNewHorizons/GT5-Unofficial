@@ -390,10 +390,8 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                 false)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 24, true)
             .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.DamascusSteel, 1)
-                    .getDisplayName(),
-                20,
-                false)
+                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.DamascusSteel),
+                20)
             .addStructureInfo("gt.solar_factory.tier_head", "2")
             .addCasingInfoRange(
                 ItemList.Casing_RobustTungstenSteel.get(1)
@@ -402,11 +400,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                 101,
                 false)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 74, true)
-            .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tungsten, 1)
-                    .getDisplayName(),
-                75,
-                false)
+            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Tungsten), 75)
             .addCasingInfoExactly("GT5U.tooltip.structure.peuc", 20, true)
             .addStructureInfo("gt.solar_factory.tier_head", "3")
             .addCasingInfoRange(
@@ -416,17 +410,12 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                 140,
                 false)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 67, true)
-            .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tungsten, 1)
-                    .getDisplayName(),
-                24,
-                false)
+            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Tungsten), 24)
             .addCasingInfoExactly("GT5U.tooltip.structure.peuc", 26, true)
             .addCasingInfoExactly(
                 ItemList.Casing_Item_Pipe_Black_Plutonium.get(1)
                     .getDisplayName(),
-                6,
-                false)
+                6)
             .addStructureInfo("gt.solar_factory.tier_head.all")
             .addStructureInfo("")
             .addInputHatch("<casing>")

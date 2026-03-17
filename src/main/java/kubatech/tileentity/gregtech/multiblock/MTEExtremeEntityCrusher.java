@@ -127,6 +127,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -315,14 +316,10 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
             .addController("front_botton_middle")
-            .addCasingInfoMin("gt.blockcasings2.0.name", 35, false)
+            .addCasingInfoMin(Casings.SolidSteelMachineCasing.getLocalizedName(), 35)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 60, true)
-            .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1)
-                    .getDisplayName(),
-                20,
-                false)
-            .addCasingInfoExactly("tile.extrautils:spike_base_diamond.name", 9, false)
+            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Steel), 20)
+            .addCasingInfoExactly("tile.extrautils:spike_base_diamond.name", 9)
             .addOutputBus("<bottom casing>", 1)
             .addOutputHatch("<bottom casing>", 1)
             .addEnergyHatch("<bottom casing>", 1)

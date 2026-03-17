@@ -225,8 +225,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addCasingInfoExactly("GT5U.MBTT.Tiers.FluidPipe", 14, true)
             .addCasingInfoExactly("GT5U.MBTT.Tiers.Coil", 7, true)
             .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Polytetrafluoroethylene, 1)
-                    .getDisplayName(),
+                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Polytetrafluoroethylene),
                 42)
             .addInputBus(anyCasing, 1)
             .addOutputBus(anyCasing, 1)

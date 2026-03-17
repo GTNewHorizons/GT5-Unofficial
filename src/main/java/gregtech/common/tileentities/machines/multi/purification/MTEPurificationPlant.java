@@ -40,6 +40,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -177,28 +178,16 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .beginStructureBlock(7, 9, 8, false)
             .addController("front_center")
             .addCasingInfoExactly(
-                // TODO: Bring their displayed names away from the Manager
-                ItemList.BlockIndustrialStrengthConcrete.getInternalStack_unsafe()
+                ItemList.BlockIndustrialStrengthConcrete.get(1)
                     .getDisplayName(),
-                56,
-                false)
-            .addCasingInfoRange(
-                ItemList.BlockSterileWaterPlantCasing.getInternalStack_unsafe()
-                    .getDisplayName(),
-                71,
-                72,
-                false)
+                56)
+            .addCasingInfoRange(Casings.SterileWaterPlantCasing.getLocalizedName(), 71, 72, false)
             .addCasingInfoExactly(
-                ItemList.BlockIndustrialWaterPlantCasing.getInternalStack_unsafe()
+                ItemList.BlockIndustrialWaterPlantCasing.get(1)
                     .getDisplayName(),
-                77,
-                false)
-            .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tungsten, 1)
-                    .getDisplayName(),
-                30,
-                false)
-            .addCasingInfoExactly("gt.blocktintedglass.name", 6, false)
+                77)
+            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Tungsten), 30)
+            .addCasingInfoExactly("gt.blocktintedglass.name", 6)
             .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
             .addStructureInfo("gt.purification_plant.info.1")

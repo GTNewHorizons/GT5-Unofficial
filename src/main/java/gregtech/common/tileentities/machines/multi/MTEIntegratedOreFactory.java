@@ -212,16 +212,14 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInfo("gt.ore_factory.tips.3")
             .beginStructureBlock(6, 12, 11, false)
             .addController("gt.ore_factory.info.1")
-            .addCasingInfoExactly(Casings.AdvancedIridiumPlatedMachineCasing.getLocalizedName(), 128, false)
-            .addCasingInfoExactly(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 105, false)
+            .addCasingInfoExactly(Casings.AdvancedIridiumPlatedMachineCasing.getLocalizedName(), 128)
+            .addCasingInfoExactly(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 105)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 48, true)
-            .addCasingInfoExactly(Casings.TungstensteelPipeCasing.getLocalizedName(), 30, false)
+            .addCasingInfoExactly(Casings.TungstensteelPipeCasing.getLocalizedName(), 30)
             .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1)
-                    .getDisplayName(),
-                16,
-                false)
-            .addCasingInfoExactly(Casings.SteelGearBoxCasing.getLocalizedName(), 16, false)
+                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.TungstenSteel),
+                16)
+            .addCasingInfoExactly(Casings.SteelGearBoxCasing.getLocalizedName(), 16)
             .addEnergyHatch("<bottom casing>", 1)
             .addMaintenanceHatch("<bottom casing>", 1)
             .addInputBus("gt.ore_factory.info.2", 2)

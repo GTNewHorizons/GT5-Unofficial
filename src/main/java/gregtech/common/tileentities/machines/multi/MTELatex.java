@@ -266,13 +266,11 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             .addInfo("gt.latex.tips.3")
             .beginStructureBlock(5, 8, 5, false)
             .addController("front_center")
-            .addCasingInfoMin("gt.blockcasings8.0.name", 14, false)
+            .addCasingInfoMin("gt.blockcasings8.0.name", 14)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 24, true)
             .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.PolyvinylChloride, 1)
-                    .getDisplayName(),
-                16,
-                false)
+                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.PolyvinylChloride),
+                16)
             .addInputBus("<casing>", 1)
             .addOutputBus("<casing>", 1)
             .addInputHatch("<casing>", 1)

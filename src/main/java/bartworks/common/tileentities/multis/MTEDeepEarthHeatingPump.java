@@ -91,8 +91,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.1")
             .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.2")
             .addStructurePart(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, this.getFrameMaterial(), 1)
-                    .getDisplayName(),
+                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, this.getFrameMaterial()),
                 "gt.driller_shaped_mb.info.frame")
             .addEnergyHatch(GTUtility.nestParams("gt.dehp.info.energy", VN[this.getMinTier()]))
             .addMaintenanceHatch("gt.driller_shaped_mb.info.replace")
