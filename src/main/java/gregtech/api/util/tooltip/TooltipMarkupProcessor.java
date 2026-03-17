@@ -3,9 +3,7 @@ package gregtech.api.util.tooltip;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -14,6 +12,7 @@ import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.util.GTUtility;
 
 public class TooltipMarkupProcessor {
 
@@ -28,24 +27,9 @@ public class TooltipMarkupProcessor {
     public static void processTooltips(List<String> tooltips) {
         if (tooltips == null || tooltips.isEmpty()) return;
 
-        splitLinesByMark(tooltips, LINE_BREAK);
+        GTUtility.splitNewlines(tooltips);
         extractSeparatorMarks(tooltips);
         applySeparatorLines(tooltips);
-    }
-
-    public static void splitLinesByMark(List<String> list, String mark) {
-        if (list == null) return;
-
-        for (int i = 0; i < list.size();) {
-            String str = list.get(i);
-            if (str.contains(mark)) {
-                String[] parts = str.split(Pattern.quote(mark));
-                list.remove(i);
-                list.addAll(i, Arrays.asList(parts));
-            } else {
-                i++;
-            }
-        }
     }
 
     private static void extractSeparatorMarks(List<String> list) {

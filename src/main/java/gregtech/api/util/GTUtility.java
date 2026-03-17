@@ -2583,6 +2583,29 @@ public class GTUtility {
         }
     }
 
+    /**
+     * Splits all strings in the given list on the literal {@code \n}
+     * sequence in-place, expanding each matching entry into multiple
+     * consecutive entries. Uses the same splitter as
+     * {@link #translateMultiline(String, Object...)}.
+     *
+     * @param lines the list to split in-place; may be {@code null}
+     */
+    public static void splitNewlines(List<String> lines) {
+        if (lines == null) return;
+        for (int i = 0; i < lines.size();) {
+            String str = lines.get(i);
+            if (str.contains("\\n")) {
+                lines.remove(i);
+                for (String part : NEWLINE_SPLITTER.split(str)) {
+                    lines.add(i++, part);
+                }
+            } else {
+                i++;
+            }
+        }
+    }
+
     public static String tryTranslate(String key, String fallback, Object... parameters) {
         return StatCollector.canTranslate(key) ? translate(key, parameters) : fallback;
     }
