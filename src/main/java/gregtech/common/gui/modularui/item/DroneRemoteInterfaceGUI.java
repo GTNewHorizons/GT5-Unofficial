@@ -52,11 +52,11 @@ public class DroneRemoteInterfaceGUI {
 
     public ModularPanel build() {
         IPanelHandler productionPanel = pSyncManager
-            .panel("productionPanel", (k, v) -> new ProductionPanel(pSyncManager, multiblock), true);
-        IPanelHandler machineListPanel = pSyncManager.panel(
+            .syncedPanel("productionPanel", true, (k, v) -> new ProductionPanel(pSyncManager, multiblock));
+        IPanelHandler machineListPanel = pSyncManager.syncedPanel(
             "machineListPanel",
-            (k, v) -> new DroneConnectionListPanel(pSyncManager, multiblock, productionPanel),
-            true);
+            true,
+            (k, v) -> new DroneConnectionListPanel(pSyncManager, multiblock, productionPanel));
         return new ModularPanel("remoteControl").height(50)
             .width(180)
             .child(ButtonWidget.panelCloseButton())

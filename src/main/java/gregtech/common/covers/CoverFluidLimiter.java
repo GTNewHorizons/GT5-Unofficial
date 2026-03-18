@@ -71,7 +71,7 @@ public class CoverFluidLimiter extends Cover {
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (coveredTile.get() instanceof IFluidHandler) {
             adjustThreshold(!aPlayer.isSneaking());
-            GTUtility.sendChatToPlayer(aPlayer, String.format("Threshold: %f", threshold));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.fluid_limiter", threshold);
         }
     }
 

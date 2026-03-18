@@ -11,13 +11,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.fluids.Fluid;
 
+import gregtech.GTMod;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.render.items.MetaGeneratedItemRenderer;
 
 /**
  * Class containing all non-OreDict Items of GregTech.
@@ -2106,7 +2106,7 @@ public enum ItemList implements IItemContainer {
     Hatch_CraftingInput_Bus_ME_ItemOnly,
     Hatch_CraftingInput_Bus_Slave,
     Hatch_PatternProvider_Crafting,
-    AdvDebugStructureWriter,
+    DebugStructureWriter,
 
     Superconducting_Magnet_Solenoid_MV,
     Superconducting_Magnet_Solenoid_HV,
@@ -2180,6 +2180,7 @@ public enum ItemList implements IItemContainer {
     EntropicProcessor,
     DecayWarehouse,
     LATEX,
+    MagicalMaintenanceHatch,
     AcceleratorLV,
     AcceleratorMV,
     AcceleratorHV,
@@ -2721,6 +2722,25 @@ public enum ItemList implements IItemContainer {
 
     MagLevHarness,
 
+    LargeHadronCollider,
+    ColliderCasing,
+    CMSCasing,
+    ATLASCasing,
+    ALICECasing,
+    LHCbCasing,
+    AdvancedBeamlineOutputHatch,
+
+    BeamCrafter,
+    BeamMirror,
+    BeamSplitter,
+    BeamStabilizer,
+
+    StableBaryonContainmentUnit,
+    StableLeptonContainmentUnit,
+    StableMesonContainmentUnit,
+    StableBosonContainmentUnit,
+    StableEmptyContainmentUnit,
+
     ManaFly,
     DebugEnergyHatch,
 
@@ -2960,6 +2980,7 @@ public enum ItemList implements IItemContainer {
     Wrap_OpticallyCompatibleMemories,
     Wrap_LivingCrystalChips,
     Wrap_LivingBioChips,
+    ToolBox,
     MeshInterfaceNanochipCasing,
     ReinforcementNanochipCasing,
     ComputationalMatrixNanochipCasing,
@@ -3183,7 +3204,9 @@ public enum ItemList implements IItemContainer {
 
     @Override
     public IItemContainer setRender(IItemRenderer aRenderer) {
-        MetaGeneratedItemRenderer.registerSpecialRenderer(this, aRenderer);
+        if (GTMod.proxy.isClientSide()) {
+            GTMod.clientProxy().metaItemRenderer.registerSpecialRenderer(this, aRenderer);
+        }
         return this;
     }
 

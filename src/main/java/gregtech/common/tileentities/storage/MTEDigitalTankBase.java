@@ -20,6 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -29,6 +30,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -554,6 +556,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 return fluidStack != null ? fluidStack.getLocalizedName()
                     : translateToLocal("GT5U.machines.digitaltank.lockfluid.empty");
             })
+                .setSynced(false)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setTextAlignment(Alignment.CenterLeft)
                 .setMaxWidth(65)
@@ -580,7 +583,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 lockFluid(val);
                 fluidTank.setPreventDraining(mLockFluid);
 
-                Object inBrackets;
+                IChatComponent inBrackets;
                 if (mLockFluid) {
                     if (mFluid == null) {
                         setLockedFluidName(null);
@@ -589,7 +592,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                         setLockedFluidName(
                             getDrainableStack().getFluid()
                                 .getName());
-                        inBrackets = new ChatComponentTranslation(getDrainableStack().getUnlocalizedName());
+                        inBrackets = new ChatComponentFluidName(getDrainableStack());
                     }
                     if (isServer) {
                         GTUtility.sendChatTrans(
