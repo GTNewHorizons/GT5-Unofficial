@@ -217,16 +217,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
         long availableEUt = getMaxInputVoltage() * getMaxInputAmps();
-        if (availableEUt < RECIPE_EUT) {
-            return CheckRecipeResultRegistry.insufficientPower(RECIPE_EUT);
-        }
 
-        int maxParallelBeforeBatchMode = GTUtility.safeInt(availableEUt / RECIPE_EUT);
-        int maxParallel = maxParallelBeforeBatchMode;
-
-        if (isBatchModeEnabled()) {
-            maxParallel = GTUtility.safeInt((long) maxParallelBeforeBatchMode * getMaxBatchSize());
-        }
+        int maxParallel = GTUtility.safeInt(availableEUt / RECIPE_EUT);
 
         int tLube = 0;
         int tWater = 0;
@@ -261,7 +253,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
+        int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallel);
 
         long eutPerParallel = availableEUt / currentParallelBeforeBatchMode;
         int overclockedDuration = getTime(sMode);
@@ -271,22 +263,14 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             overclockedDuration = Math.max(1, overclockedDuration / 2);
         }
 
-        double batchMultiplier = 1;
-        if (isBatchModeEnabled() && currentParallel > maxParallelBeforeBatchMode
-            && overclockedDuration < getMaxBatchSize()) {
-            batchMultiplier = (double) getMaxBatchSize() / overclockedDuration;
-            batchMultiplier = Math.min(batchMultiplier, (double) currentParallel / maxParallelBeforeBatchMode);
-        }
+        lastParallel = currentParallelBeforeBatchMode;
+        setCurrentParallelism(currentParallelBeforeBatchMode);
 
-        int finalParallel = (int) (batchMultiplier * currentParallelBeforeBatchMode);
-        lastParallel = finalParallel;
-        setCurrentParallelism(finalParallel);
-
-        depleteInput(GTModHandler.getDistilledWater(finalParallel * 200L));
-        depleteInput(Materials.Lubricant.getFluid(finalParallel * 2L));
+        depleteInput(GTModHandler.getDistilledWater(currentParallelBeforeBatchMode * 200L));
+        depleteInput(Materials.Lubricant.getFluid(currentParallelBeforeBatchMode * 2L));
 
         List<ItemStack> tOres = new ArrayList<>();
-        int remainingCost = finalParallel;
+        int remainingCost = currentParallelBeforeBatchMode;
         for (int i = 0, size = tInput.size(); i < size && remainingCost > 0; i++) {
             ItemStack ore = tInput.get(i);
             int tID = GTUtility.stackToInt(ore);
@@ -352,7 +336,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         this.mEfficiencyIncrease = 10000;
         this.mOutputItems = sMidProduct;
-        this.mMaxProgresstime = (int) (overclockedDuration * batchMultiplier);
+        this.mMaxProgresstime = overclockedDuration;
         this.lEUt = -overclockedEUt * currentParallelBeforeBatchMode;
         this.updateSlots();
         return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -785,16 +769,16 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        sMode = aNBT.getInteger("ssMode");
-        sVoidStone = aNBT.getBoolean("ssStone");
+        sMode = aNBT.getInteger("mode");
+        sVoidStone = aNBT.getBoolean("doesVoidStone");
         currentParallelism = aNBT.getInteger("currentParallelism");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("ssMode", sMode);
-        aNBT.setBoolean("ssStone", sVoidStone);
+        aNBT.setInteger("mode", sMode);
+        aNBT.setBoolean("doesVoidStone", sVoidStone);
         aNBT.setInteger("currentParallelism", currentParallelism);
         super.saveNBTData(aNBT);
     }
@@ -809,9 +793,10 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 + EnumChatFormatting.BLUE
                 + tag.getInteger("currentParallelism")
                 + EnumChatFormatting.RESET);
-        currenttip.addAll(getDisplayMode(tag.getInteger("ssMode")));
-        currenttip
-            .add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", tag.getBoolean("ssStone")));
+        currenttip.addAll(getDisplayMode(tag.getInteger("mode")));
+        currenttip.add(
+            StatCollector
+                .translateToLocalFormatted("GT5U.machines.oreprocessor.void", tag.getBoolean("doesVoidStone")));
     }
 
     @Override
@@ -823,8 +808,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("ssMode", sMode);
-        tag.setBoolean("ssStone", sVoidStone);
+        tag.setInteger("mode", sMode);
+        tag.setBoolean("doesVoidStone", sVoidStone);
         tag.setInteger("currentParallelism", currentParallelism);
     }
 }
