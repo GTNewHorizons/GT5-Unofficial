@@ -366,7 +366,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
                 String modeKey = filter.getIsBlackList() ? BLACKLIST.getKey() : WHITELIST.getKey();
                 GTUtility.sendChatComp(
                     env.getLastClickedPlayer(),
-                    new ChatComponentTranslation(modeKey)
+                    new ChatComponentTranslation(modeKey).appendText(": ")
                         .appendSibling(new ChatComponentTranslation(filter.getEnableKey(), msg)));
             }
             env.dispatchMarkDirty();

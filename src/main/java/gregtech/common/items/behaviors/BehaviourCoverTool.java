@@ -168,7 +168,8 @@ public class BehaviourCoverTool extends BehaviourNone {
                     formatNumber(z),
                     dimensionId));
             chats.add(new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.side", side.name()));
-            chats.add(new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.type", stack.getDisplayName()));
+            chats.add(
+                new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.type", new ChatComponentItemName(stack)));
             return chats;
         }
     }
