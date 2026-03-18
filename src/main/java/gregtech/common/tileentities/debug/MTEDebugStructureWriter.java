@@ -241,16 +241,6 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock {
     }
 
     @Override
-    public GUITextureSet getGUITextureSet() {
-        return new GUITextureSet().setGregTechLogo(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY);
-    }
-
-    @Override
-    public boolean doesBindPlayerInventory() {
-        return true;
-    }
-
-    @Override
     protected boolean useMui2() {
         return true;
     }

@@ -95,6 +95,7 @@ public class MTEBuckConverter extends MTETieredMachineBlock {
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("eVoltage", voltage);
         aNBT.setByte("eVoltageTier", voltageTier);
+        aNBT.setBoolean("eUsingTiers", isUsingTiers);
         aNBT.setInteger("eAmperage", amperage);
     }
 
@@ -103,6 +104,7 @@ public class MTEBuckConverter extends MTETieredMachineBlock {
         // compatibility with previous version
         voltage = Math.max(aNBT.hasKey("eEUT") ? aNBT.getInteger("eEUT") : aNBT.getInteger("eVoltage"), 1);
         voltageTier = aNBT.getByte("eVoltageTier");
+        isUsingTiers = aNBT.getBoolean("eUsingTiers");
         amperage = Math.max(aNBT.hasKey("eAMP") ? aNBT.getInteger("eAMP") : aNBT.getInteger("eAmperage"), 1);
     }
 
