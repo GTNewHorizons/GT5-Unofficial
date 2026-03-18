@@ -64,6 +64,9 @@ public class GTPPMTECable extends MTECable implements IMetaTileEntityCable {
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+        if (material == null) {
+            return super.newMetaEntity(aTileEntity);
+        }
         return new GTPPMTECable(
             this.mName,
             this.mThickNess,
