@@ -304,8 +304,8 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     }
 
     @Override
-    public String getMachineModeName() {
-        return machineMode == MODE_NORMAL ? "Normal" : "Exporting";
+    public String getMachineModeKey() {
+        return machineMode == MODE_NORMAL ? "GT5U.DECAY_WAREHOUSE.mode.normal" : "GT5U.DECAY_WAREHOUSE.mode.exporting";
     }
 
     @Override

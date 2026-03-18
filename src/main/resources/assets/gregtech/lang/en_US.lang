@@ -1237,7 +1237,9 @@ GT5U.GTPP_MULTI_PACKAGER.mode.0=Packager
 GT5U.GTPP_MULTI_PACKAGER.mode.1=Unpackager
 GT5U.RESEARCH_STATION.mode.0=Research Station
 GT5U.RESEARCH_STATION.mode.1=Scanner
-# FIXME: machine name is not localized
+GT5U.DECAY_WAREHOUSE.mode.normal=Normal
+GT5U.DECAY_WAREHOUSE.mode.exporting=Exporting
+GT5U.MULTI_MACHINE_MODE.unknown=Unknown Mode
 GT5U.MULTI_MACHINE_CHANGE=Now running in %s mode
 GT5U.MULTI_MACHINE_CONFIG.SAVE=Saved Multiblock Hatch Configuration
 GT5U.MULTI_MACHINE_CONFIG.LOAD=Loaded Multiblock Hatch Configuration
