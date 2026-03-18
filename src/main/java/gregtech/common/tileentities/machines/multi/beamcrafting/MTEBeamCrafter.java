@@ -60,6 +60,9 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     private int currentRecipeMaxAmountA = 0;
     private int currentRecipeMaxAmountB = 0;
 
+    private int currentRecipeParticleIDA;
+    private int currentRecipeParticleIDB;
+
     private GTRecipe lastRecipe;
 
     private static final IStructureDefinition<MTEBeamCrafter> STRUCTURE_DEFINITION = StructureDefinition
@@ -382,6 +385,9 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         if (!isInputParticleInRecipe(inputParticle_A, inputParticle_B, metadata))
             return CheckRecipeResultRegistry.NO_RECIPE;
 
+        this.currentRecipeParticleIDA = metadata.particleID_A;
+        this.currentRecipeParticleIDB = metadata.particleID_B;
+
         this.currentRecipeMaxAmountA = metadata.amount_A;
         this.currentRecipeMaxAmountB = metadata.amount_B;
         // total time to finish recipe in ticks is the sum of the required Amounts
@@ -423,6 +429,14 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     public int getCurrentRecipeMaxAmountB() {
         return this.currentRecipeMaxAmountB;
+    }
+
+    public int getCurrentRecipeParticleIDA() {
+        return this.currentRecipeParticleIDA;
+    }
+
+    public int getCurrentRecipeParticleIDB() {
+        return this.currentRecipeParticleIDB;
     }
 
     @Override

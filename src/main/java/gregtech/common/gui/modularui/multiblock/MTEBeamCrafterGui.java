@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static gtnhlanth.common.beamline.Particle.getParticleFromId;
+
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -30,6 +32,8 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
             .syncValue("currentRecipeCurrentAmountB", new IntSyncValue(multiblock::getCurrentRecipeCurrentAmountB));
         syncManager.syncValue("currentRecipeMaxAmountA", new IntSyncValue(multiblock::getCurrentRecipeMaxAmountA));
         syncManager.syncValue("currentRecipeMaxAmountB", new IntSyncValue(multiblock::getCurrentRecipeMaxAmountB));
+        syncManager.syncValue("currentRecipeParticleIDA", new IntSyncValue(multiblock::getCurrentRecipeParticleIDA));
+        syncManager.syncValue("currentRecipeParticleIDB", new IntSyncValue(multiblock::getCurrentRecipeParticleIDB));
     }
 
     @Override
@@ -43,12 +47,16 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
             .findSyncHandler("currentRecipeMaxAmountA", IntSyncValue.class);
         IntSyncValue currentRecipeMaxAmountB = syncManager
             .findSyncHandler("currentRecipeMaxAmountB", IntSyncValue.class);
+        IntSyncValue currentRecipeParticleIDA = syncManager
+            .findSyncHandler("currentRecipeParticleIDA", IntSyncValue.class);
+        IntSyncValue currentRecipeParticleIDB = syncManager
+            .findSyncHandler("currentRecipeParticleIDB", IntSyncValue.class);
 
         IKey guiHeaderKey = IKey.dynamic(this::formatGuiHeader);
-        IKey particleAProgressKey = IKey
-            .dynamic(() -> formatParticle(1, currentRecipeCurrentAmountA, currentRecipeMaxAmountA));
-        IKey particleBProgressKey = IKey
-            .dynamic(() -> formatParticle(2, currentRecipeCurrentAmountB, currentRecipeMaxAmountB));
+        IKey particleAProgressKey = IKey.dynamic(
+            () -> formatParticle(currentRecipeParticleIDA, currentRecipeCurrentAmountA, currentRecipeMaxAmountA));
+        IKey particleBProgressKey = IKey.dynamic(
+            () -> formatParticle(currentRecipeParticleIDB, currentRecipeCurrentAmountB, currentRecipeMaxAmountB));
 
         return new ListWidget<>().widthRel(1)
             .crossAxisAlignment(Alignment.CrossAxis.START)
@@ -62,18 +70,17 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
             + StatCollector.translateToLocalFormatted("GT5U.gui.text.beamcrafter.guiheader");
     }
 
-    private String formatParticle(int particleNum, IntSyncValue currAmount, IntSyncValue maxAmount) {
-        String output;
-        if (particleNum == 1) {
-            output = EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.gui.text.beamcrafter.particleA");
-        } else {
-            output = EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.gui.text.beamcrafter.particleB");
-        }
-        output += ": " + EnumChatFormatting.GRAY
+    private String getParticleNameFromID(int particleID) {
+        return getParticleFromId(particleID).getLocalisedName();
+    }
+
+    private String formatParticle(IntSyncValue currParticleID, IntSyncValue currAmount, IntSyncValue maxAmount) {
+        return EnumChatFormatting.WHITE + getParticleNameFromID(currParticleID.getIntValue())
+            + ": "
+            + EnumChatFormatting.GRAY
             + Math.min(currAmount.getIntValue(), maxAmount.getIntValue())
             + "/"
             + maxAmount.getIntValue();
-        return output;
     }
 
 }
