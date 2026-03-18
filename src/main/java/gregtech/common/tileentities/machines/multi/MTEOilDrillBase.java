@@ -45,7 +45,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -55,11 +55,11 @@ import gregtech.api.objects.GTChunkManager;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ValidationResult;
 import gregtech.api.util.ValidationType;
-import gregtech.common.blocks.BlockFrameBox;
 
 public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetricsExporter {
 
@@ -118,32 +118,27 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     protected MultiblockTooltipBuilder createTooltip(String tierSuffix) {
         String casings = getCasingBlockItem().get(0)
             .getDisplayName();
-        String frameBoxes = ((BlockFrameBox) GregTechAPI.sBlockFrames).getLocalizedName(getFrameMaterial());
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
-        tt.addMachineType(GTUtility.translate("gt.multiblock.oil_drill.machine_type"))
+        tt.addMachineType("machtype.oil_drill")
             .addInfo(
-                GTUtility.translate(
-                    "gt.multiblock.oil_drill.desc",
-                    EnumChatFormatting.WHITE + (getRangeInChunks() + "x" + getRangeInChunks())
-                        + EnumChatFormatting.GRAY))
-            .addInfo(
-                GTUtility.translate(
-                    "gt.multiblock.min_energy_hatch_tier",
-                    GTUtility.getColoredTierNameFromTier((byte) getMinTier())))
-            .addInfo(
-                "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
-                    : formatNumber(baseCycleTime / 20.0) + " seconds"))
+                "gt.ore_drill.tips",
+                getRangeInChunks(),
+                GTUtility.getColoredTierNameFromTier((byte) getMinTier()),
+                baseCycleTime < 20 ? formatNumber(baseCycleTime) : formatNumber(baseCycleTime / 20.0),
+                baseCycleTime < 20 ? "gt.time.tick.plural" : "gt.time.second.plural")
             .beginStructureBlock(3, 7, 3, false)
-            .addController(GTUtility.translate("gt.structure.controller.front_bottom"))
-            .addStructurePart(casings, GTUtility.translate("gt.driller_shaped_mb.info.casing.1"))
-            .addStructurePart(casings, GTUtility.translate("gt.driller_shaped_mb.info.casing.2"))
-            .addStructurePart(frameBoxes, GTUtility.translate("gt.driller_shaped_mb.info.frame"))
-            .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any base casing", 1)
-            .addMaintenanceHatch(GTUtility.translate("gt.driller_shaped_mb.info.replace"), 1)
-            .addInputBus("Mining Pipes or Circuits, optional, any base casing", 1)
-            .addOutputHatch(GTUtility.translate("gt.driller_shaped_mb.info.replace"), 1)
+            .addController("front_bottom_middle")
+            .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.1")
+            .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.2")
+            .addStructurePart(
+                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, getFrameMaterial()),
+                "gt.driller_shaped_mb.info.frame")
+            .addEnergyHatch(GTUtility.nestParams("gt.ore_drill.info.e_hatch", VN[getMinTier()]), 1)
+            .addMaintenanceHatch("gt.driller_shaped_mb.info.replace", 1)
+            .addInputBus("gt.ore_drill.info.i_bus", 1)
+            .addOutputHatch("gt.driller_shaped_mb.info.replace", 1)
             .toolTipFinisher();
         return tt;
     }
