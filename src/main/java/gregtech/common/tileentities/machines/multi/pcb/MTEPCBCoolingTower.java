@@ -125,7 +125,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
             built = survivalBuildPiece(STRUCTURE_PIECE_COOLING_TOWER_T1, stackSize, 2, 9, 0, elementBudget, env, true);
         else built = survivalBuildPiece(STRUCTURE_PIECE_COOLING_TOWER_T2, stackSize, 2, 9, 0, elementBudget, env, true);
         if (built == -1) {
-            GTUtility.sendChatToPlayer(env.getActor(), EnumChatFormatting.GREEN + "Auto placing done!");
+            GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done");
             return 0;
         }
         return built;

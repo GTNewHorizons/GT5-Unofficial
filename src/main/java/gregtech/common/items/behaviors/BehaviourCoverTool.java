@@ -72,7 +72,7 @@ public class BehaviourCoverTool extends BehaviourNone {
             if (tTileEntity instanceof ICoverable coverable && targetCover != CoverRegistry.NO_COVER) {
                 if (isCopyMode) {
                     if (targetCover.allowsCopyPasteTool()) {
-                        CopyText text = new CopyText(
+                        CopyData text = new CopyData(
                             targetCover.getSide(),
                             targetCover.asItemStack(),
                             aX,
@@ -123,7 +123,7 @@ public class BehaviourCoverTool extends BehaviourNone {
     }
 
     @Desugar
-    private record CopyText(ForgeDirection side, ItemStack stack, int x, int y, int z, int dimensionId) {
+    private record CopyData(ForgeDirection side, ItemStack stack, int x, int y, int z, int dimensionId) {
 
         public void writeToNBT(NBTTagCompound aNBT) {
             aNBT.setInteger("datalines.side", side.ordinal());
@@ -134,14 +134,14 @@ public class BehaviourCoverTool extends BehaviourNone {
             aNBT.setInteger("datalines.dimensionId", dimensionId);
         }
 
-        public static @NotNull CopyText readFromNBT(NBTTagCompound aNBT) {
+        public static @NotNull BehaviourCoverTool.CopyData readFromNBT(NBTTagCompound aNBT) {
             ForgeDirection side = ForgeDirection.getOrientation(aNBT.getInteger("datalines.side"));
             ItemStack stack = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("datalines.stack"));
             int x = aNBT.getInteger("datalines.x");
             int y = aNBT.getInteger("datalines.y");
             int z = aNBT.getInteger("datalines.z");
             int dimensionId = aNBT.getInteger("datalines.dimensionId");
-            return new CopyText(side, stack, x, y, z, dimensionId);
+            return new CopyData(side, stack, x, y, z, dimensionId);
         }
 
         public @NotNull IChatComponent getCopyChat() {
@@ -183,7 +183,7 @@ public class BehaviourCoverTool extends BehaviourNone {
             final NBTTagCompound tNBT = aStack.getTagCompound();
             aList.add(
                 EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.gui.tooltip.bahaviour.cover_tool.data"));
-            List<String> chats = CopyText.readFromNBT(tNBT)
+            List<String> chats = CopyData.readFromNBT(tNBT)
                 .getCopyText();
             for (String chat : chats) {
                 aList.add(EnumChatFormatting.RESET + chat);

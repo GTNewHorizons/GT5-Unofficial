@@ -296,7 +296,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_209", " ticks");
         addStringLocalization("Interaction_DESCRIPTION_Index_209.1", " tick");
         addStringLocalization("Interaction_DESCRIPTION_Index_210", "Average: %.2f L/sec");
-        addStringLocalization("Interaction_DESCRIPTION_Index_211", "Items per side: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_216", "Deprecated Recipe");
         addStringLocalization("Interaction_DESCRIPTION_Index_219", "Extended Facing: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_221", "Item threshold");
@@ -384,8 +383,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_343.1", "Use Inverted Machine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_344", "Input Blocking");
         addStringLocalization("Interaction_DESCRIPTION_Index_344.1", "Output Blocking");
-        addStringLocalization("Interaction_DESCRIPTION_Index_502", "Mining chunk loading enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_503", "Mining chunk loading disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_505", "Enable with Signal (Safe)");
         addStringLocalization("Interaction_DESCRIPTION_Index_506", "Disable with Signal (Safe)");
         addStringLocalization("Interaction_DESCRIPTION_Index_507", "Safe Mode");
