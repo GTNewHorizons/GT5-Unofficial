@@ -1858,10 +1858,10 @@ public final class GTGuiTextures {
         GregTech.ID,
         "gui/overlay_button/machine_mode_dehp_steam");
 
-    public static final UITexture OVERLAY_BUTTON_PARTICLE_ALPHA = fullImage(GTNHLanthanides.ID, "items/particle/Alpha");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_ALPHA = fullImage(GTNHLanthanides.ID, "items/particle/alpha");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_ELECTRON = fullImage(
         GTNHLanthanides.ID,
-        "items/particle/Electron");
+        "items/particle/electron");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_ELECTRONNEUTRINO = fullImage(
         GTNHLanthanides.ID,
         "items/particle/electron_neutrino");
@@ -1880,14 +1880,14 @@ public final class GTGuiTextures {
         "items/particle/muon_neutrino");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_NEUTRON = fullImage(
         GTNHLanthanides.ID,
-        "items/particle/Neutron");
+        "items/particle/neutron");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_OMEGA = fullImage(GTNHLanthanides.ID, "items/particle/omega");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_PHOTON = fullImage(
         GTNHLanthanides.ID,
-        "items/particle/Photon");
+        "items/particle/photon");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_PROTON = fullImage(
         GTNHLanthanides.ID,
-        "items/particle/Proton");
+        "items/particle/proton");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_TAU = fullImage(GTNHLanthanides.ID, "items/particle/tau");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_TAUNEUTRINO = fullImage(
         GTNHLanthanides.ID,
