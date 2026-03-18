@@ -145,7 +145,7 @@ public class AcidRecipes {
             .fluidInputs(Materials.ToxicAir.getGas(25000L))
             .fluidOutputs(
                 Materials.CarbonMonoxide.getGas(6700L),
-                Materials.Mercury.getGas(5000L),
+                Materials.Mercury.getFluid(5000L),
                 BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(3000),
                 Materials.UltraContaminatedGas.getGas(2000L),
                 WerkstoffLoader.Krypton.getFluidOrGas(1500))
