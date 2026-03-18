@@ -43,6 +43,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.blocks.BlockCasings13;
+import gregtech.common.gui.modularui.multiblock.MTEBeamCrafterGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gtnhlanth.common.beamline.BeamInformation;
@@ -406,5 +407,26 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.beamcrafterRecipes;
+    }
+
+    public int getCurrentRecipeCurrentAmountA() {
+        return this.currentRecipeCurrentAmountA;
+    }
+
+    public int getCurrentRecipeCurrentAmountB() {
+        return this.currentRecipeCurrentAmountB;
+    }
+
+    public int getCurrentRecipeMaxAmountA() {
+        return this.currentRecipeMaxAmountA;
+    }
+
+    public int getCurrentRecipeMaxAmountB() {
+        return this.currentRecipeMaxAmountB;
+    }
+
+    @Override
+    protected @NotNull MTEBeamCrafterGui getGui() {
+        return new MTEBeamCrafterGui(this);
     }
 }
