@@ -2190,8 +2190,8 @@ GT5U.gui.text.contributors.textures=Textures
 GT5U.gui.text.contributors.rendering=Rendering
 GT5U.gui.text.contributors.structure=Structure
 GT5U.gui.text.contributors.playtesting=Playtesting
-GT5U.gui.tooltip.bahaviour.cover_tool.data=Stored Cover Data:
-GT5U.gui.tooltip.bahaviour.cover_tool.cover_copy_paste=Can copy/paste cover data.
+GT5U.gui.tooltip.behaviour.cover_tool.data=Stored Cover Data:
+GT5U.gui.tooltip.behaviour.cover_tool.cover_copy_paste=Can copy/paste cover data.
 
 GT5U.gui.chat.bindcentre=Successfully bind drone centre.
 GT5U.gui.chat.drone_level_low=Upgrade to T4 drone to active the teleport function

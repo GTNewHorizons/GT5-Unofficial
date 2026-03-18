@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
@@ -22,6 +21,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import com.github.bsideup.jabel.Desugar;
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentItemName;
 
 import gregtech.api.covers.CoverRegistry;
@@ -68,7 +68,7 @@ public class BehaviourCoverTool extends BehaviourNone {
         double useCost = isCopyMode ? 100.0D : 25.00;
         if (tNBT != null && ((aPlayer instanceof EntityPlayerMP)) && (aItem.canUse(aStack, useCost))) {
             Cover targetCover = getTargetCover(tTileEntity, side, hitX, hitY, hitZ);
-            IChatComponent chat;
+            List<IChatComponent> chats;
             if (tTileEntity instanceof ICoverable coverable && targetCover != CoverRegistry.NO_COVER) {
                 if (isCopyMode) {
                     if (targetCover.allowsCopyPasteTool()) {
@@ -79,30 +79,36 @@ public class BehaviourCoverTool extends BehaviourNone {
                             aY,
                             aZ,
                             aWorld.provider.dimensionId);
-                        chat = text.getCopyChat();
+                        chats = text.getCopyChatList();
                         text.writeToNBT(tNBT);
                         saveCoverToNBT(targetCover, tNBT);
                     } else {
-                        chat = new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.unavailable");
+                        chats = ImmutableList
+                            .of(new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.unavailable"));
                     }
                 } else {
                     int copiedCoverId = tNBT.getInteger(NBT_COVER_ID);
                     if (copiedCoverId == 0) {
-                        chat = new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.invalid_cover");
+                        chats = ImmutableList
+                            .of((new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.invalid_cover")));
                     } else if (targetCover.getCoverID() == copiedCoverId) {
                         coverable.updateAttachedCover(
                             copiedCoverId,
                             targetCover.getSide(),
                             tNBT.getCompoundTag(NBT_COVER_DATA));
-                        chat = new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.pasted");
+                        chats = ImmutableList
+                            .of((new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.pasted")));
                     } else {
-                        chat = new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.not_match");
+                        chats = ImmutableList
+                            .of((new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.not_match")));
                     }
                 }
             } else {
-                chat = new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.no_cover");
+                chats = ImmutableList.of((new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.no_cover")));
             }
-            GTUtility.sendChatComp(aPlayer, chat);
+            for (IChatComponent chat : chats) {
+                GTUtility.sendChatComp(aPlayer, chat);
+            }
             aItem.discharge(aStack, useCost, Integer.MAX_VALUE, true, false, false);
             GTUtility.doSoundAtClient(SoundResource.GTCEU_OP_PORTABLE_SCANNER, 1, 1.0F, aX, aY, aZ);
         }
@@ -136,18 +142,13 @@ public class BehaviourCoverTool extends BehaviourNone {
 
         public static @NotNull BehaviourCoverTool.CopyData readFromNBT(NBTTagCompound aNBT) {
             ForgeDirection side = ForgeDirection.getOrientation(aNBT.getInteger("datalines.side"));
-            ItemStack stack = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("datalines.stack"));
+            ItemStack stack = new ChatComponentItemName(null)
+                .decodeFromBytes(aNBT.getByteArray("datalines.stack")).stack;
             int x = aNBT.getInteger("datalines.x");
             int y = aNBT.getInteger("datalines.y");
             int z = aNBT.getInteger("datalines.z");
             int dimensionId = aNBT.getInteger("datalines.dimensionId");
             return new CopyData(side, stack, x, y, z, dimensionId);
-        }
-
-        public @NotNull IChatComponent getCopyChat() {
-            return this.getCopyChatList()
-                .stream()
-                .reduce(new ChatComponentText(""), IChatComponent::appendSibling);
         }
 
         public @NotNull List<String> getCopyText() {
@@ -181,15 +182,15 @@ public class BehaviourCoverTool extends BehaviourNone {
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         try {
             final NBTTagCompound tNBT = aStack.getTagCompound();
-            aList.add(
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.gui.tooltip.bahaviour.cover_tool.data"));
             List<String> chats = CopyData.readFromNBT(tNBT)
                 .getCopyText();
+            aList.add(
+                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.gui.tooltip.behaviour.cover_tool.data"));
             for (String chat : chats) {
                 aList.add(EnumChatFormatting.RESET + chat);
             }
         } catch (Exception e) {
-            aList.add(StatCollector.translateToLocal("GT5U.gui.tooltip.bahaviour.cover_tool.cover_copy_paste"));
+            aList.add(StatCollector.translateToLocal("GT5U.gui.tooltip.behaviour.cover_tool.cover_copy_paste"));
         }
         return aList;
     }
