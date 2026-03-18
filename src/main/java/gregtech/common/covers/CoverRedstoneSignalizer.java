@@ -23,12 +23,14 @@ public class CoverRedstoneSignalizer extends CoverLegacyData {
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         this.coverData = (this.coverData + 1) % 48;
         switch (this.coverData / 16) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("078", "Signal = ") + (this.coverData & 0xF));
+            case 0 -> GTUtility
+                .sendChatTrans(aPlayer, "GT5U.chat.cover.redstone_signalizer.signal", (this.coverData & 0xF));
             case 1 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("079", "Conditional Signal = ") + (this.coverData & 0xF));
-            case 2 -> GTUtility.sendChatToPlayer(
+                .sendChatTrans(aPlayer, "GT5U.chat.cover.redstone_signalizer.signal.cond", (this.coverData & 0xF));
+            case 2 -> GTUtility.sendChatTrans(
                 aPlayer,
-                GTUtility.trans("080", "Inverted Conditional Signal = ") + (this.coverData & 0xF));
+                "GT5U.chat.cover.redstone_signalizer.signal.cond.invert",
+                (this.coverData & 0xF));
         }
     }
 
