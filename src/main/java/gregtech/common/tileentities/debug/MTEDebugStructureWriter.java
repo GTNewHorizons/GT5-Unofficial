@@ -17,33 +17,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import com.cleanroommc.modularui.api.MCHelper;
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.MathUtils;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
-import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -52,17 +32,13 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
-import tectech.thing.gui.DebugUIHelper;
+import gregtech.common.gui.modularui.singleblock.MTEDebugStructureWriterGui;
 
-public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IAddGregtechLogo, IAddUIWidgets {
+public class MTEDebugStructureWriter extends MTETieredMachineBlock {
 
     private static final HashMap<MTEDebugStructureWriter, BoundHighlighter> bondingBoxes = new HashMap<>(1);
     private final BoundHighlighter boundingBox = new BoundHighlighter();
@@ -77,6 +53,30 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
 
     public MTEDebugStructureWriter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
+    }
+
+    public short getNumber(int index) {
+        return numbers[index];
+    }
+
+    public void setNumber(int index, short number) {
+        numbers[index] = number;
+    }
+
+    public boolean getTranspose() {
+        return transpose;
+    }
+
+    public void setTranspose(boolean transpose) {
+        this.transpose = transpose;
+    }
+
+    public boolean getShowHighlightBox() {
+        return showHighlightBox;
+    }
+
+    public void setShowHighlightBox(boolean showHighlightBox) {
+        this.showHighlightBox = showHighlightBox;
     }
 
     @Override
@@ -150,17 +150,17 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
             double[] xyz = new double[3];
             boundingBox.dim = aBaseMetaTileEntity.getWorld().provider.dimensionId;
             boundingBox.showHighlightBox = showHighlightBox;
-            abc[0] = -numbers[0] - 0.5;
-            abc[1] = -numbers[1] - 0.5;
-            abc[2] = -numbers[2] - 0.5;
+            abc[0] = numbers[0] - 0.5;
+            abc[1] = numbers[1] - 0.5;
+            abc[2] = numbers[2] - 0.5;
             writerFacing.getWorldOffset(abc, xyz);
             boundingBox.pos1 = new Vec3Impl(
                 aBaseMetaTileEntity.getXCoord() + (int) (xyz[0] + 0.5),
                 aBaseMetaTileEntity.getYCoord() + (int) (xyz[1] + 0.5),
                 aBaseMetaTileEntity.getZCoord() + (int) (xyz[2] + 0.5));
-            abc[0] = -numbers[0] + numbers[3] - 0.5;
-            abc[1] = -numbers[1] + numbers[4] - 0.5;
-            abc[2] = -numbers[2] + numbers[5] - 0.5;
+            abc[0] = numbers[0] + numbers[3] - 0.5;
+            abc[1] = numbers[1] + numbers[4] - 0.5;
+            abc[2] = numbers[2] + numbers[5] - 0.5;
             writerFacing.getWorldOffset(abc, xyz);
             boundingBox.pos2 = new Vec3Impl(
                 aBaseMetaTileEntity.getXCoord() + (int) (xyz[0] + 0.5),
@@ -241,120 +241,13 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setSize(90, 112)
-                .setPos(43, 4))
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (getBaseMetaTileEntity().isServerSide()) {
-                    printStructure(
-                        widget.getContext()
-                            .getPlayer());
-                }
-            })
-                .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_PRINT)
-                .setSize(18, 18)
-                .setPos(11, 128)
-                .addTooltip(translateToLocal("GT5U.machines.debugstructurewriter.gui.print.tooltip")))
-            .widget(
-                new CycleButtonWidget().setToggle(() -> transpose, aBoolean -> transpose = aBoolean)
-                    .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
-                    .setStaticTexture(GTUITextures.OVERLAY_BUTTON_TRANSPOSE)
-                    .setSize(18, 18)
-                    .setPos(32, 128)
-                    .addTooltip(translateToLocal("GT5U.machines.debugstructurewriter.gui.transpose.tooltip")))
-            .widget(
-                new CycleButtonWidget().setToggle(() -> showHighlightBox, aBoolean -> showHighlightBox = aBoolean)
-                    .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
-                    .setStaticTexture(GTUITextures.OVERLAY_BUTTON_BOUNDING_BOX)
-                    .setSize(18, 18)
-                    .setPos(53, 128)
-                    .addTooltip(translateToLocal("GT5U.machines.debugstructurewriter.gui.highlight.tooltip")))
-            .widget(
-                new MultiChildWidget()
-                    .addChild(
-                        new TextWidget(translateToLocal("GT5U.machines.debugstructurewriter.gui.origin"))
-                            .setDefaultColor(0xf0f0ff)
-                            .setPos(0, 0))
-                    .addChild(
-                        TextWidget.dynamicString(() -> "A: " + numbers[0])
-                            .setDefaultColor(0xf0f0ff)
-                            .setPos(0, 10))
-                    .addChild(
-                        TextWidget.dynamicString(() -> "B: " + numbers[1])
-                            .setDefaultColor(0xf0f0ff)
-                            .setPos(0, 18))
-                    .addChild(
-                        TextWidget.dynamicString(() -> "C: " + numbers[2])
-                            .setDefaultColor(0xf0f0ff)
-                            .setPos(0, 26))
-                    .addChild(
-                        new TextWidget(translateToLocal("GT5U.machines.debugstructurewriter.gui.size"))
-                            .setDefaultColor(0xf0f0ff)
-                            .setPos(0, 52))
-                    .addChild(
-                        TextWidget.dynamicString(() -> "A: " + numbers[3])
-                            .setDefaultColor(0xf0f0ff)
-                            .setPos(0, 62))
-                    .addChild(
-                        TextWidget.dynamicString(() -> "B: " + numbers[4])
-                            .setDefaultColor(0xf0f0ff)
-                            .setPos(0, 70))
-                    .addChild(
-                        TextWidget.dynamicString(() -> "C: " + numbers[5])
-                            .setDefaultColor(0xf0f0ff)
-                            .setPos(0, 78))
-                    .setPos(46, 8));
-        addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);
-        addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1, 25);
-        addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, 16, 1, 133);
-        addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, 512, 64, 151);
-    }
-
-    private void addChangeNumberButtons(ModularWindow.Builder builder, IDrawable overlay, int addNumberShift,
-        int addNumber, int xPos) {
-        int[] yPos = new int[] { 4, 22, 40, 62, 80, 98 };
-        for (int i = 0; i < yPos.length; i++) {
-            final int index = i; // needed for lambda
-            builder.widget(
-                new ButtonWidget()
-                    .setOnClick((clickData, widget) -> setNumber(clickData.shift ? addNumberShift : addNumber, index))
-                    .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
-                    .setSize(18, 18)
-                    .setPos(xPos, yPos[index]));
-        }
-    }
-
-    private void setNumber(int val, int index) {
-        int newNumber = numbers[index] + val;
-
-        // Don't let the number under/overflow
-        if (val > 0) newNumber = Math.min(newNumber, Short.MAX_VALUE);
-        else newNumber = Math.max(newNumber, Short.MIN_VALUE);
-
-        // size should be nonnegative
-        if (index >= 3) newNumber = Math.max(newNumber, 0);
-
-        numbers[index] = (short) newNumber;
-    }
-
-    @Override
     public GUITextureSet getGUITextureSet() {
         return new GUITextureSet().setGregTechLogo(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY);
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(113, 96));
-    }
-
-    @Override
     public boolean doesBindPlayerInventory() {
-        return false;
+        return true;
     }
 
     @Override
@@ -364,110 +257,7 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new GTBaseGuiBuilder(this, data, syncManager, uiSettings).doesAddGregTechLogo(false)
-            .doesAddGhostCircuitSlot(false)
-            .doesBindPlayerInventory(false)
-            .build()
-            .child(getTopSection())
-            .child(getBottomSection());
-    }
-
-    private Flow getBottomSection() {
-        return new Row().child(
-            new com.cleanroommc.modularui.widgets.ButtonWidget<>().syncHandler(
-                new InteractionSyncHandler().setOnMousePressed(
-                    mouseData -> { if (getBaseMetaTileEntity().isServerSide()) printStructure(MCHelper.getPlayer()); }))
-                .overlay(GTGuiTextures.OVERLAY_BUTTON_PRINT)
-                .tooltip(t -> t.add(IKey.lang("GT5U.machines.advdebugstructurewriter.gui.print.tooltip"))))
-            .child(
-                new ToggleButton().value(new BooleanSyncValue(() -> transpose, val -> transpose = val))
-                    .overlay(GTGuiTextures.OVERLAY_BUTTON_TRANSPOSE)
-                    .tooltip(t -> t.add(IKey.lang("GT5U.machines.advdebugstructurewriter.gui.transpose.tooltip"))))
-            .child(
-                new ToggleButton().value(new BooleanSyncValue(() -> showHighlightBox, val -> showHighlightBox = val))
-                    .overlay(GTGuiTextures.OVERLAY_BUTTON_BOUNDING_BOX)
-                    .tooltip(t -> t.add(IKey.lang("GT5U.machines.advdebugstructurewriter.gui.highlight.tooltip"))))
-            .coverChildren()
-            .align(Alignment.BottomLeft)
-            .marginBottom(15)
-            .marginLeft(15)
-            .childPadding(3);
-    }
-
-    private Flow getTopSection() {
-        return new Row().child(getButtonColumn(GTGuiTextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64))
-            .child(getButtonColumn(GTGuiTextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1))
-            .child(
-                DebugUIHelper.getScreen(0, 40, 10)
-                    .child(getTextColumn(true))
-                    .child(getTextColumn(false)))
-            .child(getButtonColumn(GTGuiTextures.OVERLAY_BUTTON_PLUS_SMALL, 16, 1))
-            .child(getButtonColumn(GTGuiTextures.OVERLAY_BUTTON_PLUS_LARGE, 512, 64))
-            .coverChildren()
-            .margin(7, 4);
-    }
-
-    private Flow getTextColumn(boolean first) {
-        String langKey = first ? "GT5U.machines.advdebugstructurewriter.gui.origin"
-            : "GT5U.machines.advdebugstructurewriter.gui.size";
-        int offset = first ? 0 : 3;
-
-        Flow flow = new Column().child(
-            IKey.lang(langKey)
-                .color(0xFFF0F0FF)
-                .asWidget()
-                .marginBottom(3));
-
-        for (int i = 0; i < 3; i++) {
-            final int index = offset + i; // needed for the lambda
-            String axis = switch (i) {
-                case (1) -> "B";
-                case (2) -> "C";
-                default -> "A";
-            };
-
-            flow.child(
-                new Row().child(
-                    IKey.str(axis + ": ")
-                        .color(0xFFF0F0FF)
-                        .asWidget())
-                    .child(
-                        new TextFieldWidget()
-                            .value(
-                                new IntSyncValue(
-                                    () -> numbers[index],
-                                    val -> numbers[index] = (short) MathUtils
-                                        .clamp(val, Short.MIN_VALUE, Short.MAX_VALUE)))
-                            .size(50, 12)
-                            .setMaxLength(6)
-                            .setFormatAsInteger(true)
-                            .setNumbers()
-                            .setTextColor(0xFFF0F0FF))
-                    .coverChildren());
-        }
-
-        return flow.coverChildren()
-            .crossAxisAlignment(Alignment.CrossAxis.START);
-    }
-
-    private Flow getButtonColumn(com.cleanroommc.modularui.api.drawable.IDrawable overlay, int addNumberShift,
-        int addNumber) {
-        Flow flow = new Column();
-
-        for (int i = 0; i < 6; i++) {
-            final int index = i;
-            com.cleanroommc.modularui.widgets.ButtonWidget<?> button = new com.cleanroommc.modularui.widgets.ButtonWidget<>()
-                .syncHandler(
-                    new InteractionSyncHandler().setOnMousePressed(
-                        mouseData -> setNumber((mouseData.shift ? addNumberShift : addNumber), index)))
-                .overlay(overlay);
-
-            if (i == 2) button.marginBottom(4);
-
-            flow.child(button);
-        }
-
-        return flow.coverChildren();
+        return new MTEDebugStructureWriterGui(this).build(data, syncManager, uiSettings);
     }
 
     public static class EventHandler {
