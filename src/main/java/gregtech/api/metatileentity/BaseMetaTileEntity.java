@@ -114,11 +114,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     private boolean mWorkUpdate = false;
     private boolean mWorks = true;
     private boolean oRedstone = false;
-    private byte mColor = 0, oldColor = 0, oldStrongRedstone = 0, oldRedstoneData = 63, oldTextureData = 0,
-        oldUpdateData = 0;
+    private byte oldTextureData = 0;
     private byte oldLightValueClient = 0, oldLightValue = -1, mLightValue = 0, mOtherUpgrades = 0;
     private ForgeDirection mFacing = ForgeDirection.DOWN, oldFacing = ForgeDirection.DOWN;
-    private int oldX = 0, oldY = 0, oldZ = 0;
     private long oldOutput = 0, mAcceptedAmperes = Long.MAX_VALUE;
     private long mLastCheckTick = 0;
     private String mOwnerName = "";
@@ -362,45 +360,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     /**
-     * Handles setting data on the first tick
-     */
-    private void handleFirstTick() {
-        oldX = xCoord;
-        oldY = yCoord;
-        oldZ = zCoord;
-        if (isServerSide()) {
-            checkDropCover();
-        } else {
-            requestCoverDataIfNeeded();
-        }
-        worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
-        mMetaTileEntity.onFirstTick(this);
-    }
-
-    /**
-     * Handles the color changing on the client side
-     */
-    private void handleColorChangeClient() {
-        if (mColor == oldColor) {
-            return;
-        }
-        oldColor = mColor;
-        mMetaTileEntity.onColorChangeClient(mColor);
-        issueTextureUpdate();
-    }
-
-    /**
-     * Handles the color changing on the server side
-     */
-    private void handleColorChangeServer() {
-        if (mColor == oldColor) {
-            return;
-        }
-        oldColor = mColor;
-        sendBlockEvent(GregTechTileClientEvents.CHANGE_COLOR, oldColor);
-    }
-
-    /**
      * Handles the light value changing on the client side
      */
     private void handleLightValueChangeClient() {
@@ -440,34 +399,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     /**
-     * Handles marking the tile entity's block for an update on the client side
-     */
-    private void handleBlockUpdateClient() {
-        if (!mNeedsUpdate) {
-            return;
-        }
-        if (GTMod.proxy.mUseBlockUpdateHandler) {
-            BlockUpdateHandler.Instance.enqueueBlockUpdate(worldObj, getLocation());
-        } else {
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        }
-        mMetaTileEntity.onTextureUpdate();
-        mNeedsUpdate = false;
-    }
-
-    /**
-     * Performs a block update on the server side
-     */
-    private void handleBlockUpdateServer() {
-        if (!mNeedsBlockUpdate) {
-            return;
-        }
-        updateNeighbours(mStrongRedstone, oldStrongRedstone);
-        oldStrongRedstone = mStrongRedstone;
-        mNeedsBlockUpdate = false;
-    }
-
-    /**
      * Updates the average EU I/O
      */
     private void updateAvgEUIO() {
@@ -490,20 +421,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         }
         oRedstone = mRedstone;
         issueBlockUpdate();
-    }
-
-    /**
-     * Handles the tile entity's position changing
-     */
-    private void handlePositionChange() {
-        if (xCoord == oldX && yCoord == oldY && zCoord == oldZ) {
-            return;
-        }
-        oldX = xCoord;
-        oldY = yCoord;
-        oldZ = zCoord;
-        issueClientUpdate();
-        clearTileEntityBuffer();
     }
 
     /**
@@ -759,28 +676,18 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         sendBlockEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, oldTextureData);
     }
 
-    /**
-     * Handles the update data changing
-     */
-    private void handleUpdateDataChange() {
-        byte updateData = mMetaTileEntity.getUpdateData();
-        if (updateData == oldUpdateData) {
+    @Override
+    protected void handleBlockUpdateClient() {
+        if (!mNeedsUpdate) {
             return;
         }
-        oldUpdateData = updateData;
-        sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, oldUpdateData);
-    }
-
-    /**
-     * Handles sided Redstone changing
-     */
-    private void handleSidedRedstoneChange() {
-        byte redstone = getSidedRedstoneMask();
-        if (redstone == oldRedstoneData) {
-            return;
+        if (GTMod.proxy.mUseBlockUpdateHandler) {
+            BlockUpdateHandler.Instance.enqueueBlockUpdate(worldObj, getLocation());
+        } else {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
-        oldRedstoneData = redstone;
-        sendBlockEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, oldRedstoneData);
+        getMetaTileEntity().onTextureUpdate();
+        mNeedsUpdate = false;
     }
 
     @Override
