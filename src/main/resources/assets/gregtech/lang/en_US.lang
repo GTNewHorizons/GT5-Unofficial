@@ -727,7 +727,7 @@ GT5U.MBTT.Dimensions=§fDimensions: §6%d§7x§6%d§7x§6%d §7(§6W§7x§6H§7x
 GT5U.MBTT.DimensionsVariable=§fDimensions: §6%d-%d§7x§6%d-%d§7x§6%d-%d §7(§6W§7x§6H§7x§6L§7) %s
 GT5U.MBTT.Hollow=§c(Hollow)
 GT5U.MBTT.Structure=§fStructure:
-GT5U.MBTT.Controller=§fController: §7%s
+GT5U.MBTT.Controller=§fController
 GT5U.MBTT.Minimum= (minimum)
 GT5U.MBTT.Tiered= (tiered)
 GT5U.MBTT.PartInfo=§f%s: §7%s
@@ -774,6 +774,14 @@ GT5U.MBTT.Parallel_Multiplicative=%s Parallels per %s Tier
 GT5U.MBTT.StructureBy=Structure by: %s
 gt.unit.liter=L
 gt.unit.liter_per_second=L/s
+gt.time.ticks=%s ticks
+gt.time.seconds=%s seconds
+
+gt.structure.controller.front_bottom=Front bottom
+gt.structure.energy_hatch.tier_base=%s+, any base casing
+gt.structure.mining_pipes_optional=Mining Pipes, optional, any base casing
+gt.structure.drilling_fluid_base=Drilling Fluid, any base casing
+gt.structure.oil_mining_pipes_optional=Mining Pipes or Circuits, optional, any base casing
 
 GT5U.MBTT.Parallel.Base=%s Parallels
 GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier
@@ -844,6 +852,16 @@ GT5U.MBTT.PCB.Tooltip.6=Can't change configuration when running!
 GT5U.MBTT.AlchemyCasingAny=Alchemically Resistant/Inert/Immune Casing
 GT5U.MBTT.AlchemicalConstructAny=Alchemical Construct
 GT5U.MBTT.SuperChest=Super/Quantum Chest
+
+gt.multiblock.min_energy_hatch_tier=Minimum energy hatch tier: %s
+gt.multiblock.base_cycle_time.ticks=Base cycle time: %s ticks
+gt.multiblock.base_cycle_time.secs=Base cycle time: %s seconds
+
+gt.multiblock.ore_drill.machine_type=Miner, MBM
+gt.multiblock.ore_drill.desc=Use a Screwdriver to configure working area\nMaximum area is %s chunks (%s blocks)\nIn chunk mode, working area center is the chunk corner nearest to the drill\nUse Soldering iron to turn off chunk mode\nUse Wire Cutter to toggle replacing mined blocks with cobblestone\nGives %s as much crushed ore vs normal processing\nFortune bonus of %s. Only works on small ores
+
+gt.multiblock.oil_drill.machine_type=Pump, FDR
+gt.multiblock.oil_drill.desc=Works on %s chunks\nUse a Screwdriver to configure range\nUse Programmed Circuits to ignore near exhausted oil field\nIf total circuit # is greater than output per operation, the machine will halt.
 
 gt.multiblock.DieselEngine.machine_type=Combustion Generator, LCE
 gt.multiblock.DieselEngine.desc1=Supply Diesel Fuels and %s of Lubricant per hour to run
