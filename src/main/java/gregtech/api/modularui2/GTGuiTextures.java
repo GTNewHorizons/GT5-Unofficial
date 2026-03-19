@@ -1319,10 +1319,6 @@ public final class GTGuiTextures {
         .fullImage(GregTech.ID, "gui/overlay_button/plus_small");
     public static final UITexture OVERLAY_BUTTON_PLUS_LARGE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/plus_large");
-    public static final UITexture OVERLAY_BUTTON_MINUS_SMALL = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/minus_small");
-    public static final UITexture OVERLAY_BUTTON_MINUS_LARGE = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/minus_large");
 
     public static final UITexture OVERLAY_BUTTON_WIRELESS_ON = fullImage(
         KekzCore.MODID,
@@ -1450,10 +1446,6 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/picture/gt_logo_gray")
         .fullImage()
         .name(GTTextureIds.PICTURE_GT_LOGO_GRAY)
-        .build();
-    public static final UITexture PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY = UITexture.builder()
-        .location(GregTech.ID, "gui/picture/gt_logo_17x17_transparent_gray")
-        .canApplyTheme()
         .build();
     private static final SteamTextureRegisterer PICTURE_GT_LOGO_STEAM = SteamTextureRegisterer.builder()
         .location("gui/picture/gt_logo_%s")
@@ -1780,12 +1772,6 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
     public static final UITexture PICTURE_PLUS_RED = UITexture.fullImage(GregTech.ID, "gui/picture/plus_red");
-    public static final UITexture PICTURE_SCREEN_BLACK = UITexture.builder()
-        .location(GregTech.ID, "gui/picture/screen_black")
-        .adaptable(2)
-        .imageSize(16, 16)
-        .canApplyTheme()
-        .build();
     // endregion picture
 
     // region machine modes
