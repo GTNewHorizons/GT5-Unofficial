@@ -4509,6 +4509,8 @@ machtype.cpi=Charcoal Pile Igniter, CPI
 machtype.ssass=Antimatter Forge, SSASS
 machtype.oil_drill=Pump, FDR
 machtype.ore_drill=Miner, MBM
+machtype.slam=Antimatter Generator, SLAM
+machtype.sc_turbine=Supercritical Steam Turbine
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -4517,6 +4519,16 @@ gt.mb.corepos.front_bottom_middle=Front bottom middle
 gt.mb.corepos.top_center=Top center
 
 # Multiblock Tooltip lines
+gt.sc_turbine.tips=Needs a Turbine, place inside controller\nUse Supercritical Steam to generate power\nOutputs 1L of SH Steam per 1L of SC Steam as well as producing power\nPower output depends on turbine and fitting\nUse screwdriver to adjust fitting of turbine
+gt.sc_turbine.maintenance=Side centered
+gt.sc_turbine.i_hatch=Supercritical Fluid, Side centered
+gt.sc_turbine.o_hatch=Superheated Steam, Side centered
+
+gt.yottank.tips=The max output speed is decided by the amount of stored liquid and the output hatch's capacity\nThe max fluid cell tier is limited by the glass tier\nHV glass for T1, EV glass for T2, IV glass for T3. . .\nThe max height of the cell blocks is 15
+gt.yottank.info.controller=Front of the second layer
+
+gt.slam.tips=Annihilating Antimatter like it's 2205!<SEPARATOR>Generates energy by reacting §bSemi-Stable Antimatter§7 with §6Matter\nAnnihilation uses an equal amount of §bAntimatter§7 and §6Matter\nConsumes §6all inputs§7 every processing cycle\n§cVoids any invalid fluid!\nA cycle lasts 5 seconds\nAn imbalance between §bAntimatter§7 and §6Matter §cdecreases efficiency!§7\nEfficiency formula: Min(§bAntimatter§7/§6Matter§7, §6Matter§7/§bAntimatter§7)\nAny excess EU generated will be §cvoided!§7\nCannot produce more than §a%s§7 EU per cycle<SEPARATOR>Energy production formula: §a§l§nA§r§7 * (§bAntimatter§7 ^ §6§l§nE§r§7) EU/Cycle\n§a§l§nA§r§antimatter energy§7 base value: §a%s§7 EU/L\n§6§l§nE§r§6nergy production boost§7:\n1. Molten Copper: §61.00\n2. Molten Superconductor Base UIV: §61.02\n3. Molten Superconductor Base UMV: §61.03<SEPARATOR>Switch the power destination to your wireless network with a screwdriver\nWireless mode requires Superconductor Base UMV to work\nWireless mode is still limited by hatch capacity
+
 gt.ssass.tips=§dDimensions not included!§7\nConverts protomatter into antimatter\nUse screwdriver to disable rendering\nPassively consumes %s + (§3Antimatter§7 * %s)^(%s - §a§l§nM§r§7) EU/t\nThe consumption decays by 0.5%% every tick when empty\nActively uses (§3Antimatter§7 * %s)^(%s - §5§l§nG§r§7) EU per cycle to produce antimatter<SEPARATOR>Cycles every second\nEvery cycle, the lowest amount of antimatter in the 16 antimatter hatches is recorded\nAll hatches with more than the lowest amount §close half the difference!§7\n§cVoids 10%% of antimatter§7 if it runs out of energy/protomatter during a cycle\nBase production per hatch is (1/16) * (§3Antimatter§7^(%s + §6§l§nC§r§7)) of antimatter each cycle\nEach hatch multiplies the base production per hatch with a random number pulled from\na normal distribution with a mean of %s + §b§l§nA§r§7 and a variance of 1\nThe total gain of antimatter can be negative!<SEPARATOR>Can be supplied with stabilization fluids to improve antimatter generation\nEach stabilization can only use one of the fluids at a time\n§a§l§nM§r§aagnetic Stabilization§7 (Consumes §3Antimatter§7^0.5 L of fluid per cycle)\n1. Molten Purified Tengam = §a0.1§7\n2. Tachyon Rich Fluid = §a0.2§7\n3. Molten MagMatter = §a0.3§7\n§5§l§nG§r§5ravity Stabilization§7 (Consumes §3Antimatter§7^0.5 L of fluid per cycle)\n1. Molten Spacetime = §50.05§7\n2. Spatially Enlarged Fluid = §50.10§7\n3. Molten Eternity = §50.15§7\n§6§l§nC§r§6ontainment Stabilization§7 (Consumes §3Antimatter§7^(2/7) L of fluid per cycle)\n1. Molten Shirabon = §60.05§7\n2. Molten MHDCSM = §60.10§7\n§b§l§nA§r§bctivation Stabilization§7 (Consumes §3Antimatter§7^(1/3) L of fluid per cycle)\n1. Depleted Naquadah Fuel Mk V = §b0.05§7\n2. Depleted Naquadah Fuel Mk VI = §b0.10§7
 
 gt.les.tips=Necessary evil\nAdvanced Essentia smelting technology\nMaximum parallel = 2^Tier * (Length - 1)\nDiffusion Cell Tiers start from 0, Length is full multi length\nEnergy Hatch tier: HV+\nYou can find more information about this machine in the Thaumonomicon
