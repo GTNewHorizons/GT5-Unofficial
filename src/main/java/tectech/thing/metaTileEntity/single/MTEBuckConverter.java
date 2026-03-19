@@ -59,8 +59,8 @@ public class MTEBuckConverter extends MTETieredMachineBlock {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        BUCK = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/BUCK"));
-        BUCK_ACTIVE = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/BUCK_ACTIVE"));
+        BUCK = TextureFactory.of(custom("iconsets/BUCK"));
+        BUCK_ACTIVE = TextureFactory.of(custom("iconsets/BUCK_ACTIVE"));
     }
 
     @Override
