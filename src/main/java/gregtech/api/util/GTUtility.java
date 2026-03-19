@@ -474,6 +474,18 @@ public class GTUtility {
         return "(" + color + GTValues.VN[tier] + EnumChatFormatting.RESET + ")";
     }
 
+    public static String getForgeDirectionNameKey(ForgeDirection side) {
+        return switch (side) {
+            case DOWN -> "GT5U.waila.facing.down";
+            case UP -> "GT5U.waila.facing.up";
+            case NORTH -> "GT5U.waila.facing.north";
+            case SOUTH -> "GT5U.waila.facing.south";
+            case WEST -> "GT5U.waila.facing.west";
+            case EAST -> "GT5U.waila.facing.east";
+            case UNKNOWN -> "GT5U.waila.facing.unknown";
+        };
+    }
+
     /**
      * @deprecated Use {@link #sendChatTrans} instead.
      */
