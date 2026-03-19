@@ -260,7 +260,6 @@ gt.blockmachines.hatch.energytunnel6.tier.13.name=UXV 262144A/t 激光靶仓
 gt.blockmachines.hatch.energytunnel7.tier.13.name=UXV 1048576A/t 激光靶仓
 gt.blockmachines.hatch.energytunnel.tier.14.name=传奇激光靶仓
 gt.blockmachines.hatch.energytunnel.desc.0=多方块机器的能量输入端
-gt.blockmachines.hatch.energytunnel.desc.1=通量
 
 gt.blockmachines.hatch.dynamomulti04.tier.05.name=4安IV动力仓
 gt.blockmachines.hatch.dynamomulti16.tier.05.name=16安IV动力仓
@@ -336,7 +335,6 @@ gt.blockmachines.hatch.dynamotunnel6.tier.13.name=UXV 262144A/t 激光源仓
 gt.blockmachines.hatch.dynamotunnel7.tier.13.name=UXV 1048576A/t 激光源仓
 gt.blockmachines.hatch.dynamotunnel.tier.14.name=传奇激光源仓
 gt.blockmachines.hatch.dynamotunnel.desc.0=多方块机器的能量输出端
-gt.blockmachines.hatch.dynamotunnel.desc.1=通量
 
 gt.blockmachines.emin.tier.08.name=UV元物质输入仓
 gt.blockmachines.emin.tier.09.name=UHV元物质输入仓
@@ -753,10 +751,6 @@ gt.blockmachines.debug.tt.genny.desc.0=凭空而生的能量
 gt.blockmachines.debug.tt.genny.desc.1=一个无限的能源生产/消耗设备
 gt.blockmachines.debug.tt.genny.desc.2=我只是想要一个...
 gt.blockmachines.debug.tt.genny.desc.3=使用螺丝刀将其切换为激光模式.
-gt.blockmachines.debug.tt.writer.name=Debug结构打印机
-gt.blockmachines.debug.tt.writer.desc.0=扫描周围的方块
-gt.blockmachines.debug.tt.writer.desc.1=打印多方块非实体的结构样式编码
-gt.blockmachines.debug.tt.writer.desc.2=ABC轴沿机器正面确定
 
 #Keywords and phrases
 #Example: ID:3

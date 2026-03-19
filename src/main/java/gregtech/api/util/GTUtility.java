@@ -130,7 +130,9 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 import com.google.auto.value.AutoValue;
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
@@ -177,7 +179,9 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
+import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.ItemIntegratedCircuit;
+import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.ores.OreManager;
 import ic2.api.recipe.ICannerBottleRecipeManager;
 import ic2.api.recipe.IRecipeInput;
@@ -213,6 +217,7 @@ public class GTUtility {
     private static int sBookCount = 0;
     public static UUID defaultUuid = null; // maybe default non-null?
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
+    private static final Splitter NEWLINE_SPLITTER = Splitter.on("\\n");
 
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
@@ -469,6 +474,18 @@ public class GTUtility {
         return "(" + color + GTValues.VN[tier] + EnumChatFormatting.RESET + ")";
     }
 
+    public static String getForgeDirectionNameKey(ForgeDirection side) {
+        return switch (side) {
+            case DOWN -> "GT5U.waila.facing.down";
+            case UP -> "GT5U.waila.facing.up";
+            case NORTH -> "GT5U.waila.facing.north";
+            case SOUTH -> "GT5U.waila.facing.south";
+            case WEST -> "GT5U.waila.facing.west";
+            case EAST -> "GT5U.waila.facing.east";
+            case UNKNOWN -> "GT5U.waila.facing.unknown";
+        };
+    }
+
     /**
      * @deprecated Use {@link #sendChatTrans} instead.
      */
@@ -485,26 +502,20 @@ public class GTUtility {
      *
      * @param player     The player who will receive the message.
      * @param messageKey The lang key of the translation. The text corresponding to the key must only contain
-     *                   placeholder '%s'; otherwise, it cannot be translated.
-     * @param args       Substitutions for `%s` in the translation. `IChatComponent` will be handled properly, others
-     *                   will be converted to String
+     *                   placeholder '%s' or positioned one '%1$s'; otherwise, it cannot be translated.
+     * @param args       Substitutions for `%s` in the translation. {@link IChatComponent} will be converted to their
+     *                   unformatted text.
      */
     public static void sendChatTrans(EntityPlayer player, @Nonnull String messageKey, Object... args) {
-        // FIXME：
-        // should have a better translation component to:
-        // 1. process format stacks;
-        // 2. accept placeholders other than '%s', at least positional ones like '%1$s'
         player.addChatComponentMessage(new ChatComponentTranslation(messageKey, args));
     }
 
     /**
-     * Send a chat component to the player.
-     * We use this method to ensure future compatibility.
-     * When we have a better translation component, we can modify the chat component sent to the player through this
-     * function.
+     * Send a chat component to the player. Sometimes we need it to send complex messages,
+     * such as multiple chat components in a single line.
      *
      * @param player    The player who will receive the message.
-     * @param component The chat component to send.
+     * @param component The chat component to be sent.
      */
     public static void sendChatComp(EntityPlayer player, @Nonnull IChatComponent component) {
         player.addChatComponentMessage(component);
@@ -617,6 +628,18 @@ public class GTUtility {
         }
 
         return out.toString();
+    }
+
+    public static String wrapStack(String message) {
+        return FORMAT_PUSH_STACK + message + FORMAT_POP_STACK;
+    }
+
+    public static final String[] COVER_DIRECTION_NAMES = new String[] { "GT5U.interface.coverTabs.down",
+        "GT5U.interface.coverTabs.up", "GT5U.interface.coverTabs.north", "GT5U.interface.coverTabs.south",
+        "GT5U.interface.coverTabs.west", "GT5U.interface.coverTabs.east" };
+
+    public static String getUnlocalizedSideName(ForgeDirection side) {
+        return GTUtility.COVER_DIRECTION_NAMES[side.ordinal()];
     }
 
     public static void checkAvailabilities() {
@@ -2198,7 +2221,13 @@ public class GTUtility {
         if (aStack == null) {
             return false;
         }
-        return isStackInList(new GTItemStack(aStack), aList);
+        if (aStack.getItem() instanceof ItemGTToolbox) {
+            return ToolboxUtil.getSelectedTool(aStack)
+                .map(selected -> isStackInList(new GTItemStack(selected), aList))
+                .orElse(false);
+        } else {
+            return isStackInList(new GTItemStack(aStack), aList);
+        }
     }
 
     public static boolean isStackInList(@Nonnull GTItemStack aStack, @Nonnull Collection<GTItemStack> aList) {
@@ -2502,9 +2531,68 @@ public class GTUtility {
         }
     }
 
+    /**
+     * Translates a localization key to a localized string.
+     *
+     * @param key the localization key to translate
+     * @return the translated string
+     */
+    public static String translate(String key) {
+        return StatCollector.translateToLocal(key);
+    }
+
+    /**
+     * Translates a localization key to a localized string.
+     * If parameters are provided, they are substituted into the translated string via
+     * {@link StatCollector#translateToLocalFormatted(String, Object...)}.
+     *
+     * @param key        the localization key to translate
+     * @param parameters optional substitution arguments for the translated string
+     * @return the translated string
+     */
     public static String translate(String key, Object... parameters) {
         return parameters.length == 0 ? StatCollector.translateToLocal(key)
             : StatCollector.translateToLocalFormatted(key, parameters);
+    }
+
+    /**
+     * Translates a localization key and splits the result into multiple lines.
+     * Lines are split on the literal {@code \n} sequence (backslash + n),
+     * as used in Minecraft lang files.
+     *
+     * @param key        the localization key to translate
+     * @param parameters optional substitution arguments for the translated string
+     * @return an array of lines from the translated string
+     * @see #translate(String, Object...)
+     */
+    public static String[] translateMultiline(String key, Object... parameters) {
+        return Iterables.toArray(NEWLINE_SPLITTER.split(translate(key, parameters)), String.class);
+    }
+
+    /**
+     * Translates a localization key, splits the result into multiple lines,
+     * and adds each line directly into the provided collection.
+     * Lines are split on the literal {@code \n} sequence (backslash + n),
+     * as used in Minecraft lang files.
+     *
+     * <p>
+     * This overload avoids allocating an intermediate array and is preferred
+     * when the caller already holds a {@link Collection}, such as the tooltip
+     * list in {@code addInformation}.
+     *
+     * <p>
+     * Note: the literal text {@code \n} cannot appear in tooltip lines,
+     * as it is used as the line separator.
+     *
+     * @param tooltip the collection to add translated lines into
+     * @param key     the localization key to translate
+     * @param args    optional substitution arguments for the translated string
+     * @see #translateMultiline(String, Object...)
+     */
+    public static void translateMultiline(Collection<String> tooltip, String key, Object... args) {
+        for (String line : NEWLINE_SPLITTER.split(translate(key, args))) {
+            tooltip.add(line);
+        }
     }
 
     /*
@@ -2698,6 +2786,16 @@ public class GTUtility {
         final byte facing = COMPASS_DIRECTIONS[MathHelper.floor_double(0.5D + 4.0F * player.rotationYaw / 360.0F)
             & 0x3];
         return ForgeDirection.getOrientation(facing);
+    }
+
+    public static void destroyCurrentItem(final EntityPlayer player) {
+        final ItemStack currentItem = player.getCurrentEquippedItem();
+        if (currentItem == null) {
+            return;
+        }
+        if (!(currentItem.getItem() instanceof ItemGTToolbox)) {
+            player.destroyCurrentEquippedItem();
+        }
     }
 
     public static class ItemNBT {
@@ -3697,9 +3795,13 @@ public class GTUtility {
     }
 
     public static String[] breakLines(String... lines) {
-        return Arrays.stream(lines)
-            .flatMap(s -> Arrays.stream(s.split("\\\\n")))
-            .toArray(String[]::new);
+        List<String> result = new ArrayList<>();
+        for (String line : lines) {
+            for (String part : NEWLINE_SPLITTER.split(line)) {
+                result.add(part);
+            }
+        }
+        return result.toArray(new String[0]);
     }
 
     @AutoValue
@@ -4101,7 +4203,7 @@ public class GTUtility {
     }
 
     /**
-     * A helper method that does rotation calculations for renderering.
+     * A helper method that does rotation calculations for rendering.
      *
      * @param extendedFacing - extendedFacing value of the MTE
      * @return AxisAngle4f that can be used directly with glRotate calls

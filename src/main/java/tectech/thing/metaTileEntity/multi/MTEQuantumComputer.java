@@ -18,7 +18,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -38,6 +37,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -47,7 +47,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -77,8 +76,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
     private final ArrayList<MTEHatchWirelessComputationOutput> eWirelessComputationOutputs = new ArrayList<>();
 
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
-    private static Textures.BlockIcons.CustomIcon ScreenON;
+    private static IIconContainer ScreenOFF;
+    private static IIconContainer ScreenON;
     // endregion
 
     // region structure
@@ -122,8 +121,6 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     // region parameters
     protected Parameters.Group.ParameterIn overclock, overvolt;
     protected Parameters.Group.ParameterOut maxCurrentTemp, availableData;
-
-    private boolean wirelessModeEnabled = false;
 
     private static final INameFunction<MTEQuantumComputer> OC_NAME = (base,
         p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.0"); // Overclock ratio
@@ -223,7 +220,6 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setDouble("computation", availableData.get());
-        aNBT.setBoolean("wirelessModeEnabled", wirelessModeEnabled);
     }
 
     @Override
@@ -233,14 +229,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             availableData.set(aNBT.getDouble("computation"));
             eAvailableData = (long) availableData.get();
         }
-        if (aNBT.hasKey("wirelessModeEnabled")) {
-            wirelessModeEnabled = aNBT.getBoolean("wirelessModeEnabled");
-            if (wirelessModeEnabled) {
-                WirelessComputationPacket.enableWirelessNetWork(getBaseMetaTileEntity());
-            }
-        } else {
-            wirelessModeEnabled = false;
-        }
+        WirelessComputationPacket.enableWirelessNetWork(getBaseMetaTileEntity());
     }
 
     @Override
@@ -404,25 +393,10 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        if (getBaseMetaTileEntity().isServerSide()) {
-            wirelessModeEnabled = !wirelessModeEnabled;
-            if (wirelessModeEnabled) {
-                GTUtility.sendChatToPlayer(aPlayer, "Wireless mode enabled");
-                WirelessComputationPacket.enableWirelessNetWork(getBaseMetaTileEntity());
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, "Wireless mode disabled");
-                WirelessComputationPacket.disableWirelessNetWork(getBaseMetaTileEntity());
-            }
-        }
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom("iconsets/EM_COMPUTER");
+        ScreenON = Textures.BlockIcons.custom("iconsets/EM_COMPUTER_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -561,17 +535,12 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     public String[] getInfoData() {
         ArrayList<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        if (wirelessModeEnabled) {
-            WirelessComputationPacket wirelessComputationPacket = WirelessComputationPacket
-                .getPacketByUserId(getBaseMetaTileEntity().getOwnerUuid());
-            data.add(StatCollector.translateToLocal("tt.infodata.qc.wireless_mode.enabled"));
-            data.add(
-                StatCollector.translateToLocalFormatted(
-                    "tt.infodata.qc.total_wireless_computation",
-                    "" + EnumChatFormatting.YELLOW + wirelessComputationPacket.getAvailableComputationStored()));
-        } else {
-            data.add(StatCollector.translateToLocal("tt.infodata.qc.wireless_mode.disabled"));
-        }
+        WirelessComputationPacket wirelessComputationPacket = WirelessComputationPacket
+            .getPacketByUserId(getBaseMetaTileEntity().getOwnerUuid());
+        data.add(
+            StatCollector.translateToLocalFormatted(
+                "tt.infodata.qc.total_wireless_computation",
+                "" + EnumChatFormatting.YELLOW + wirelessComputationPacket.getAvailableComputationStored()));
         return data.toArray(new String[] {});
     }
 

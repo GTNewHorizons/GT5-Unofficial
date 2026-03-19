@@ -16,6 +16,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.value.sync.BigIntSyncValue;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -158,12 +159,13 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
                     .tooltip(
                         new RichTooltip().add(
                             StatCollector.translateToLocal("gui.kekztech_lapotronicenergyunit.wireless_rebalance")))
-                    .onMousePressed((a) -> {
-                        multiblock.setCounter(multiblock.rebalance());
-                        canRebalance.setBoolValue(false);
-                        rebalanced.setBoolValue(true);
-                        return true;
-                    })
+                    .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
+                        if (!mouseData.isClient()) {
+                            multiblock.setCounter(multiblock.rebalance());
+                            canRebalance.setBoolValue(false);
+                            rebalanced.setBoolValue(true);
+                        }
+                    }))
                     .setEnabledIf((w) -> canRebalance.getBoolValue()));
     }
 

@@ -36,9 +36,10 @@ gt.component.platedense=Плотная пластина %s
 gt.component.platesuperdense=Сверхплотная пластина %s
 
 # Tooltip info of tile-entities
-gt.tileentity.eup_in=Входной вольтаж:
-gt.tileentity.eup_out=Выходной вольтаж:
-gt.tileentity.eup_amount=Ампераж:
+gt.tileentity.eup_in=Входной вольтаж: %s
+gt.tileentity.eup_out=Выходной вольтаж: %s
+gt.tileentity.amperage=Ампераж: %s
+gt.tileentity.throughput=Пропускная способность: %s
 gt.tileentity.has_muffler=есть улучшение глушитель
 gt.tileentity.has_steam_upgrade=есть улучшение пар
 gt.tileentity.colored=Colored (%s%s§7)
@@ -115,8 +116,6 @@ gt.item.desc.steam_eut=Энергия от оптимального потока
 gt.item.desc.steam_eut_loose=Энергия от оптимального потока пара (Форсированный): %s EU/t
 
 # GT Interaction Descriptions
-gt.interact.desc.out_slot=Выкладывается в соседний слот #
-gt.interact.desc.in_slot=Захватывает собственный слот #
 gt.interact.desc.signal_on=Включить с помощью сигнала
 gt.interact.desc.signal_inverted=Отключить с помощью сигнала
 gt.interact.desc.signal_off=Отключено
@@ -1150,15 +1149,15 @@ GT5U.machines.industrialapiary.upgradeslot.tooltip=Слот улучшения
 GT5U.machines.industrialapiary.autoqueen.tooltip=Автоматически помещать матку после размножения во входной слот
 GT5U.machines.industrialapiary.autoqueen.tooltip.1=§7Не требует улучшение "Автоматизация"
 GT5U.machines.industrialapiary.autoqueen.tooltip.2=§7§oЭта опция игнорируется, если установлено улучшение "Автоматизация"
-GT5U.machines.advdebugstructurewriter.tooltip=Сканирует блоки вокруг
-GT5U.machines.advdebugstructurewriter.tooltip.1=Печатает код не-ТЕ структуры мультиблоков
-GT5U.machines.advdebugstructurewriter.tooltip.2=ABC axes aligned to machine front
-GT5U.machines.advdebugstructurewriter.printed=Printed structure to console
-GT5U.machines.advdebugstructurewriter.gui.origin=Origin
-GT5U.machines.advdebugstructurewriter.gui.size=Размер структуры
-GT5U.machines.advdebugstructurewriter.gui.print.tooltip=Print Structure
-GT5U.machines.advdebugstructurewriter.gui.highlight.tooltip=Show Bounding Box
-GT5U.machines.advdebugstructurewriter.gui.transpose.tooltip=Transpose
+GT5U.machines.debugstructurewriter.tooltip=Сканирует блоки вокруг
+GT5U.machines.debugstructurewriter.tooltip.1=Печатает код не-ТЕ структуры мультиблоков
+GT5U.machines.debugstructurewriter.tooltip.2=ABC axes aligned to machine front
+GT5U.machines.debugstructurewriter.printed=Printed structure to console
+GT5U.machines.debugstructurewriter.gui.origin=Origin
+GT5U.machines.debugstructurewriter.gui.size=Размер структуры
+GT5U.machines.debugstructurewriter.gui.print.tooltip=Print Structure
+GT5U.machines.debugstructurewriter.gui.highlight.tooltip=Show Bounding Box
+GT5U.machines.debugstructurewriter.gui.transpose.tooltip=Transpose
 GT5U.machines.nei_transfer.steam.tooltip=%s steam recipes
 GT5U.machines.nei_transfer.voltage.tooltip=Рецепты доступные в %s
 GT5U.machines.emit_energy.tooltip=Emit energy to output side
@@ -2611,7 +2610,7 @@ GTPP.battpack.tooltip.4=Также заряжает предметы на хот
 # Tooltips for the Personal Healing Bauble
 GTPP.nanohealer.tooltip.1=Носится как ожерелье в Baubles
 GTPP.nanohealer.tooltip.2=Расходует
-GTPP.nanohealer.tooltip.3= EU за операцию
+GTPP.nanohealer.tooltip.3=EU за операцию
 GTPP.nanohealer.tooltip.4=Может восстанавливать HP, Голод и Насыщение.
 GTPP.nanohealer.tooltip.5=Не предотвращает смерть.
 GTPP.nanohealer.tooltip.6=Shift+RMB для переключения уведомлений.
@@ -2876,7 +2875,7 @@ GT5U.infodata.wormhole_generator.hatch.front=Спереди
 GT5U.infodata.purification_plant.status_button=Статус
 GT5U.infodata.purification_plant.status_title=§lPurification Unit Status
 GT5U.infodata.purification_plant.linked_units=Linked Purification Units:
-GT5U.infodata.purification_plant.linked_units.status.online=В сети
+GT5U.infodata.purification_plant.linked_units.status.active=В сети
 GT5U.infodata.purification_plant.linked_units.status.disabled=Отключён
 GT5U.infodata.purification_plant.linked_units.status.incomplete=Незавершенная структура
 

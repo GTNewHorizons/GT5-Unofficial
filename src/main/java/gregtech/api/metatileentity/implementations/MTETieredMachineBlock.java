@@ -87,6 +87,11 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
         return mDescriptionArray;
     }
 
+    // disable the entire inventory row (including corner column), for gui.
+    public boolean supportsInventoryRow() {
+        return this.doesBindPlayerInventory();
+    }
+
     /**
      * Used Client Side to get a Texture Set for this Block. Called after setting the Tier and the Description so that
      * those two are accessible.
