@@ -196,7 +196,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     protected boolean useLongPower = false;
 
     // Locale-aware formatting of numbers.
-    protected static NumberFormatMUI numberFormat;
+    public static NumberFormatMUI numberFormat;
     static {
         numberFormat = new NumberFormatMUI();
         numberFormat.setMaximumFractionDigits(8);
