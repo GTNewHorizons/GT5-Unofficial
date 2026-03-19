@@ -1,6 +1,5 @@
 package gregtech.client;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,6 +9,7 @@ import net.minecraftforge.client.event.MouseEvent;
 
 import com.gtnewhorizon.gtnhlib.event.PickBlockEvent;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
