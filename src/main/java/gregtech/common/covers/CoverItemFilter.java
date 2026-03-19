@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentItemName;
 import com.gtnewhorizon.gtnhlib.item.ItemStackPredicate;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
@@ -140,10 +141,10 @@ public class CoverItemFilter extends Cover {
         final ItemStack tStack = aPlayer.inventory.getCurrentItem();
         if (tStack != null) {
             filter.setStackInSlot(0, tStack);
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("299", "Item Filter: ") + tStack.getDisplayName());
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.item_filter", new ChatComponentItemName(tStack));
         } else {
             filter.setStackInSlot(0, null);
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("300", "Filter Cleared!"));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.item_filter.cleared");
         }
         return true;
     }
@@ -151,9 +152,9 @@ public class CoverItemFilter extends Cover {
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mWhitelist = !mWhitelist;
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             aPlayer,
-            mWhitelist ? GTUtility.trans("124.1", "Blacklist Mode") : GTUtility.trans("125.1", "Whitelist Mode"));
+            mWhitelist ? "GT5U.chat.cover.item_filter.mode.black" : "GT5U.chat.cover.item_filter.mode.white");
     }
 
     @Override

@@ -13,14 +13,24 @@ import net.minecraft.util.IIcon;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.GTHashSet;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.ItemGTToolbox;
+import gregtech.common.tools.pocket.ToolPocketBranchCutter;
+import gregtech.common.tools.pocket.ToolPocketFile;
+import gregtech.common.tools.pocket.ToolPocketKnife;
+import gregtech.common.tools.pocket.ToolPocketMultitool;
+import gregtech.common.tools.pocket.ToolPocketSaw;
+import gregtech.common.tools.pocket.ToolPocketScrewdriver;
+import gregtech.common.tools.pocket.ToolPocketWireCutter;
 
 /**
  * Defines the various slots in the toolbox. Used both to enforce inventory restrictions as well assist with drawing
@@ -62,6 +72,16 @@ public enum ToolboxSlot {
     private static final ImmutableMap<Integer, ToolboxSlot> LOOKUP = Maps
         .uniqueIndex(Arrays.asList(values()), ToolboxSlot::getSlotID);
 
+    private static final ImmutableSet<Class<? extends IToolStats>> BANNED_TOOLS = ImmutableSet.copyOf(
+        Arrays.asList(
+            ToolPocketBranchCutter.class,
+            ToolPocketFile.class,
+            ToolPocketKnife.class,
+            ToolPocketMultitool.class,
+            ToolPocketSaw.class,
+            ToolPocketScrewdriver.class,
+            ToolPocketWireCutter.class));
+
     private final Predicate<ItemStack> itemStackTest;
     private final int slot;
     private final boolean isGeneric;
@@ -71,7 +91,7 @@ public enum ToolboxSlot {
     private IIcon icon = null;
 
     ToolboxSlot(final int slot) {
-        this(slot, x -> true, true, null);
+        this(slot, ToolboxSlot::isValidForGenericSlots, true, null);
     }
 
     ToolboxSlot(final int slot, final Predicate<ItemStack> itemStackTest, final UITexture overlay) {
@@ -89,7 +109,7 @@ public enum ToolboxSlot {
     }
 
     public boolean test(final ItemStack stack) {
-        if (stack == null) {
+        if (stack == null || stack.getItem() == null) {
             return false;
         }
 
@@ -145,7 +165,10 @@ public enum ToolboxSlot {
 
     private static Predicate<ItemStack> isItemInToolSet(GTHashSet... toolSet) {
         return (ItemStack itemStack) -> {
-            if (!(itemStack.getItem() instanceof MetaGeneratedTool)) {
+            if (!(itemStack.getItem() instanceof final MetaGeneratedTool mgTool)
+                || BANNED_TOOLS.contains(mgTool.getToolStats(itemStack).getClass())
+                || GTMod.proxy.toolboxBans.contains(mgTool)
+            ) {
                 return false;
             }
 
@@ -157,5 +180,13 @@ public enum ToolboxSlot {
 
             return false;
         };
+    }
+
+    private static boolean isValidForGenericSlots(ItemStack itemStack) {
+        if (itemStack == null || itemStack.getItem() == null) {
+            return false;
+        }
+
+        return !GTMod.proxy.toolboxBans.contains(itemStack.getItem());
     }
 }

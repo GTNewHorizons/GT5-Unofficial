@@ -43,9 +43,7 @@ public abstract class CoverRedstoneWirelessBase extends Cover {
             int newFrequency = (((Integer) GTUtility.stackToInt(aPlayer.inventory.getCurrentItem())).hashCode()
                 & CHANNEL_MASK);
             processCoverData(newFrequency, this.privateChannel);
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                translateToLocalFormatted("gt.interact.desc.freq_format", frequency, privateChannel));
+            GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.freq_format", frequency, privateChannel);
             return true;
         }
         return false;
@@ -69,9 +67,7 @@ public abstract class CoverRedstoneWirelessBase extends Cover {
             int newFrequency = Math.max(0, Math.min(MAX_CHANNEL, this.frequency + adjustFrequencyValue));
             processCoverData(newFrequency, this.privateChannel);
         }
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            translateToLocalFormatted("gt.interact.desc.freq_format", frequency, privateChannel));
+        GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.freq_format", frequency, privateChannel);
     }
 
     @Override
