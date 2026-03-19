@@ -4511,6 +4511,7 @@ machtype.oil_drill=Pump, FDR
 machtype.ore_drill=Miner, MBM
 machtype.slam=Antimatter Generator, SLAM
 machtype.sc_turbine=Supercritical Steam Turbine
+machtype.lhe=Heat Exchanger, LHE
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -4519,10 +4520,17 @@ gt.mb.corepos.front_bottom_middle=Front bottom middle
 gt.mb.corepos.top_center=Top center
 
 # Multiblock Tooltip lines
+gt.lhe.tips=Inputs are §cLava§7, §cHot Coolant§7, or §cHot Solar Salt\nOutputs are §9Pahoehoe Lava§7, §9IC2 Coolant§7, or §9Cold Solar Salt\nConverts Distilled Water into §fSteam§7 or §fSH Steam§7 in the process\nOutputs §fSH Steam§7 if the input rate of hot fluid is above a certain §dthreshold<SEPARATOR>§cLava§7 : SH Threshold §d1,000 L/s§7 : Max Input §c2,000 L/s§7 : Max Output §f160,000 SH Steam/s\n§cHot Coolant§7 : SH Threshold §d800 L/s§7 : Max Input §c1,600 L/s§7 : Max Output §f320,000 SH Steam/s\n§cHot Solar Salt§7 : SH Threshold §d160 L/s§7 : Max Input §c320 L/s§7 : Max Output §f320,000 SH Steam/s<SEPARATOR>A circuit in the controller lowers the SH threshold at the cost of steam\n§d3.75%%§7 reduced SH threshold and §f1.5%%§7 reduced steam per circuit over 1
+gt.lhe.info.ti_pipe=Center 2 blocks
+gt.lhe.info.i_hatch.1=Hot Fluid, bottom center casing
+gt.lhe.info.i_hatch.2=Distilled water, any casing
+gt.lhe.info.o_hatch.1=Cold Fluid, top center casing
+gt.lhe.info.o_hatch.2=Steam/SH Steam, any casing
+
 gt.sc_turbine.tips=Needs a Turbine, place inside controller\nUse Supercritical Steam to generate power\nOutputs 1L of SH Steam per 1L of SC Steam as well as producing power\nPower output depends on turbine and fitting\nUse screwdriver to adjust fitting of turbine
-gt.sc_turbine.maintenance=Side centered
-gt.sc_turbine.i_hatch=Supercritical Fluid, Side centered
-gt.sc_turbine.o_hatch=Superheated Steam, Side centered
+gt.sc_turbine.info.maintenance=Side centered
+gt.sc_turbine.info.i_hatch=Supercritical Fluid, Side centered
+gt.sc_turbine.info.o_hatch=Superheated Steam, Side centered
 
 gt.yottank.tips=The max output speed is decided by the amount of stored liquid and the output hatch's capacity\nThe max fluid cell tier is limited by the glass tier\nHV glass for T1, EV glass for T2, IV glass for T3. . .\nThe max height of the cell blocks is 15
 gt.yottank.info.controller=Front of the second layer

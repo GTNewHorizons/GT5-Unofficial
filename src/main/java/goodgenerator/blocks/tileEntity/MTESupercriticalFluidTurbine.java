@@ -147,12 +147,11 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
             .addCasingInfoMin(
                 ItemRefer.SC_Turbine_Casing.get(1)
                     .getDisplayName(),
-                24,
-                false)
+                24)
             .addDynamoHatch("gt.mbtt.structure.back_center", 1)
-            .addMaintenanceHatch("gt.sc_turbine.maintenance", 2)
-            .addInputHatch("gt.sc_turbine.i_hatch", 2)
-            .addOutputHatch("gt.sc_turbine.o_hatch", 3)
+            .addMaintenanceHatch("gt.sc_turbine.info.maintenance", 2)
+            .addInputHatch("gt.sc_turbine.info.i_hatch", 2)
+            .addOutputHatch("gt.sc_turbine.info.o_hatch", 3)
             .toolTipFinisher();
         return tt;
     }
