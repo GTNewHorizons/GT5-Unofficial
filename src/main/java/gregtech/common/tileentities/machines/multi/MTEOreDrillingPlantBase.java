@@ -38,7 +38,6 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -58,7 +57,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.ores.OreManager;
 import gregtech.crossmod.visualprospecting.VisualProspectingDatabase;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -635,34 +633,32 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     protected MultiblockTooltipBuilder createTooltip(String tierSuffix) {
         String casings = getCasingBlockItem().get(0)
             .getDisplayName();
-        String frameBoxes = ((BlockFrameBox) GregTechAPI.sBlockFrames).getLocalizedName(getFrameMaterial());
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
         final String chunkDiameter = formatNumber(chunkRadiusConfig * 2L);
         final String blockDiameter = formatNumber(chunkRadiusConfig * 32L);
-        tt.addMachineType(GTUtility.translate("gt.multiblock.ore_drill.machine_type"))
+        tt.addMachineType("machtype.ore_drill")
             .addInfo(
-                GTUtility.translate(
-                    "gt.multiblock.ore_drill.desc",
-                    EnumChatFormatting.WHITE + (chunkDiameter + "x" + chunkDiameter) + EnumChatFormatting.GRAY,
-                    EnumChatFormatting.WHITE + (blockDiameter + "x" + blockDiameter) + EnumChatFormatting.GRAY,
-                    EnumChatFormatting.WHITE + "~3x" + EnumChatFormatting.GRAY,
-                    EnumChatFormatting.WHITE + formatNumber(mTier + 3) + EnumChatFormatting.GRAY))
-            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
-            .addInfo(
-                "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
-                    : formatNumber(baseCycleTime / 20.0) + " seconds"))
+                "gt.ore_drill.tips",
+                chunkDiameter,
+                blockDiameter,
+                formatNumber(mTier + 3),
+                GTUtility.getColoredTierNameFromTier((byte) getMinTier()),
+                baseCycleTime < 20 ? formatNumber(baseCycleTime) : formatNumber(baseCycleTime / 20.0),
+                baseCycleTime < 20 ? "gt.time.tick.plural" : "gt.time.second.plural")
             .beginStructureBlock(3, 7, 3, false)
-            .addController(GTUtility.translate("gt.structure.controller.front_bottom"))
-            .addStructurePart(casings, "form the 3x1x3 Base")
-            .addStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-            .addStructurePart(frameBoxes, GTUtility.translate("gt.driller_shaped_mb.info.frame"))
-            .addEnergyHatch("1x " + GTUtility.translate("gt.structure.energy_hatch.tier_base", VN[getMinTier()]), 1)
-            .addMaintenanceHatch(GTUtility.translate("gt.driller_shaped_mb.info.replace"), 1)
-            .addInputBus(GTUtility.translate("gt.structure.mining_pipes_optional"), 1)
-            .addInputHatch(GTUtility.translate("gt.structure.drilling_fluid_base"), 1)
-            .addOutputBus(GTUtility.translate("gt.driller_shaped_mb.info.replace"), 1)
+            .addController("front_bottom_middle")
+            .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.1")
+            .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.2")
+            .addStructurePart(
+                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, getFrameMaterial()),
+                "gt.driller_shaped_mb.info.frame")
+            .addEnergyHatch(GTUtility.nestParams("gt.ore_drill.info.e_hatch", VN[getMinTier()]), 1)
+            .addMaintenanceHatch("gt.driller_shaped_mb.info.replace", 1)
+            .addInputBus("gt.ore_drill.info.i_bus", 1)
+            .addInputHatch("gt.ore_drill.info.i_hatch", 1)
+            .addOutputBus("gt.driller_shaped_mb.info.replace", 1)
             .toolTipFinisher();
         return tt;
     }

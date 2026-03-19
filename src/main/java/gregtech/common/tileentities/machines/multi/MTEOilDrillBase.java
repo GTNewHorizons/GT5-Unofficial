@@ -123,7 +123,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
         tt.addMachineType("machtype.oil_drill")
             .addInfo(
-                "gt.ore_drill.tips",
+                "gt.oil_drill.tips",
                 getRangeInChunks(),
                 GTUtility.getColoredTierNameFromTier((byte) getMinTier()),
                 baseCycleTime < 20 ? formatNumber(baseCycleTime) : formatNumber(baseCycleTime / 20.0),
@@ -135,9 +135,9 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             .addStructurePart(
                 GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, getFrameMaterial()),
                 "gt.driller_shaped_mb.info.frame")
-            .addEnergyHatch(GTUtility.nestParams("gt.ore_drill.info.e_hatch", VN[getMinTier()]), 1)
+            .addEnergyHatch(GTUtility.nestParams("gt.oil_drill.info.e_hatch", VN[getMinTier()]), 1)
             .addMaintenanceHatch("gt.driller_shaped_mb.info.replace", 1)
-            .addInputBus("gt.ore_drill.info.i_bus", 1)
+            .addInputBus("gt.oil_drill.info.i_bus", 1)
             .addOutputHatch("gt.driller_shaped_mb.info.replace", 1)
             .toolTipFinisher();
         return tt;
