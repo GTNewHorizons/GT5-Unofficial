@@ -3253,6 +3253,16 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                ItemList.Hull_MAX.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Bedrockium, 4))
+            .itemOutputs(ItemRegistry.energyDistributor[9])
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
                 ItemList.Hull_UIV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.NetherStar, 4))
@@ -3358,8 +3368,8 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Steel, 10),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 2),
                 new ItemStack(Blocks.chest, 1),
-                new ItemStack(Items.dye, 4, Dyes.dyeRed.mIndex),
-                new ItemStack(Items.dye, 1, Dyes.dyeOrange.mIndex))
+                new OreDictItemStack("dyeRed", 4),
+                new OreDictItemStack("dyeOrange", 1))
             .fluidInputs(Materials.Polyethylene.getMolten(4 * INGOTS))
             .itemOutputs(ItemList.ToolBox.get(1L))
             .duration(30 * SECONDS)
@@ -6954,6 +6964,5 @@ public class AssemblerRecipes implements Runnable {
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(assemblerRecipes);
-
     }
 }
