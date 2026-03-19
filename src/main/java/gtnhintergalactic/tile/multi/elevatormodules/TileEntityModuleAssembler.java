@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -158,7 +159,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
     }
 
     /** Texture that will be displayed on the side of the module */
-    protected static Textures.BlockIcons.CustomIcon engraving;
+    protected static IIconContainer engraving;
 
     /**
      * Get the texture of this controller
@@ -189,7 +190,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        engraving = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_SIDE_ASSEMBLER_MODULE");
+        engraving = Textures.BlockIcons.custom("iconsets/OVERLAY_SIDE_ASSEMBLER_MODULE");
         super.registerIcons(aBlockIconRegister);
     }
 
