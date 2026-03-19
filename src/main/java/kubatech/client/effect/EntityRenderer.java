@@ -304,6 +304,13 @@ public class EntityRenderer extends EntityFX {
             case UPSIDE_DOWN -> vAxis.negate();
         }
 
+        // hAxis only rotates in 90deg increments, and so is proper
+        // but vAxis using rotateAxis can produce weird small floats.
+        // This corrects it to be a proper cardinal vector
+        vAxis.x = Math.round(vAxis.x);
+        vAxis.y = Math.round(vAxis.y);
+        vAxis.z = Math.round(vAxis.z);
+
         this.verticalAxis = vAxis;
         this.horizontalAxis = hAxis;
     }
