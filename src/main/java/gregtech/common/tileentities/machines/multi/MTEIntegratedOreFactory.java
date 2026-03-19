@@ -123,9 +123,9 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final IntOpenHashSet isThermal = new IntOpenHashSet();
     private static final IntOpenHashSet isOre = new IntOpenHashSet();
     private static boolean isInit = false;
-    private ItemStack[] sMidProduct;
-    private int sMode = 0;
-    private boolean sVoidStone = false;
+    private ItemStack[] midProduct;
+    private int mode = 0;
+    private boolean doesVoidStone = false;
     private int currentParallelism = 0;
     private final XSTR random = new XSTR();
 
@@ -211,32 +211,32 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             isInit = true;
         }
 
-        ArrayList<ItemStack> tInput = getStoredInputs();
-        ArrayList<FluidStack> tInputFluid = getStoredFluids();
-        if (tInput.isEmpty() || tInputFluid.isEmpty()) {
+        ArrayList<ItemStack> inputItem = getStoredInputs();
+        ArrayList<FluidStack> inputFluid = getStoredFluids();
+        if (inputItem.isEmpty() || inputFluid.isEmpty()) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
         long availableEUt = getMaxInputVoltage() * getMaxInputAmps();
 
         int maxParallel = GTUtility.safeInt(availableEUt / RECIPE_EUT);
 
-        int tLube = 0;
-        int tWater = 0;
-        for (FluidStack fluid : tInputFluid) {
+        int lubricantAmount = 0;
+        int waterAmount = 0;
+        for (FluidStack fluid : inputFluid) {
             if (fluid == null) continue;
-            if (fluid.equals(GTModHandler.getDistilledWater(1L))) tWater += fluid.amount;
-            else if (fluid.equals(Materials.Lubricant.getFluid(1L))) tLube += fluid.amount;
+            if (fluid.equals(GTModHandler.getDistilledWater(1L))) waterAmount += fluid.amount;
+            else if (fluid.equals(Materials.Lubricant.getFluid(1L))) lubricantAmount += fluid.amount;
         }
 
         int currentParallel = maxParallel;
-        currentParallel = (int) Math.min((long) currentParallel, tLube / 2);
-        currentParallel = (int) Math.min((long) currentParallel, tWater / 200);
+        currentParallel = (int) Math.min((long) currentParallel, lubricantAmount / 2);
+        currentParallel = (int) Math.min((long) currentParallel, waterAmount / 200);
         if (currentParallel <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         int itemParallel = 0;
-        for (ItemStack ore : tInput) {
+        for (ItemStack ore : inputItem) {
             int tID = GTUtility.stackToInt(ore);
             if (tID == 0) continue;
             if (isValidOreInput(tID)) {
@@ -256,7 +256,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallel);
 
         long eutPerParallel = availableEUt / currentParallelBeforeBatchMode;
-        int overclockedDuration = getTime(sMode);
+        int overclockedDuration = getTime(mode);
         long overclockedEUt = RECIPE_EUT;
         while (overclockedEUt * 4 <= eutPerParallel && overclockedDuration > 1) {
             overclockedEUt *= 4;
@@ -271,8 +271,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
         List<ItemStack> tOres = new ArrayList<>();
         int remainingCost = currentParallelBeforeBatchMode;
-        for (int i = 0, size = tInput.size(); i < size && remainingCost > 0; i++) {
-            ItemStack ore = tInput.get(i);
+        for (int i = 0, size = inputItem.size(); i < size && remainingCost > 0; i++) {
+            ItemStack ore = inputItem.get(i);
             int tID = GTUtility.stackToInt(ore);
             if (tID == 0 || !isValidOreInput(tID)) continue;
 
@@ -286,47 +286,47 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 remainingCost = 0;
             }
         }
-        sMidProduct = tOres.toArray(new ItemStack[0]);
+        midProduct = tOres.toArray(new ItemStack[0]);
 
-        switch (sMode) {
+        switch (mode) {
             case 0 -> {
-                doMac(isOre);
-                doWash(isCrushedOre);
-                doThermal(isCrushedPureOre, isCrushedOre);
-                doMac(isThermal, isOre, isCrushedOre, isCrushedPureOre);
+                macerate(isOre);
+                wash(isCrushedOre);
+                thermalRefine(isCrushedPureOre, isCrushedOre);
+                macerate(isThermal, isOre, isCrushedOre, isCrushedPureOre);
             }
             case 1 -> {
-                doMac(isOre);
-                doWash(isCrushedOre);
-                doMac(isOre, isCrushedOre, isCrushedPureOre);
-                doCentrifuge(isImpureDust, isPureDust);
+                macerate(isOre);
+                wash(isCrushedOre);
+                macerate(isOre, isCrushedOre, isCrushedPureOre);
+                centrifuge(isImpureDust, isPureDust);
             }
             case 2 -> {
-                doMac(isOre);
-                doMac(isThermal, isOre, isCrushedOre, isCrushedPureOre);
-                doCentrifuge(isImpureDust, isPureDust);
+                macerate(isOre);
+                macerate(isThermal, isOre, isCrushedOre, isCrushedPureOre);
+                centrifuge(isImpureDust, isPureDust);
             }
             case 3 -> {
-                doMac(isOre);
-                doWash(isCrushedOre);
-                doSift(isCrushedPureOre);
+                macerate(isOre);
+                wash(isCrushedOre);
+                sift(isCrushedPureOre);
             }
             case 4 -> {
-                doMac(isOre);
-                doChemWash(isCrushedOre, isCrushedPureOre);
-                doMac(isCrushedOre, isCrushedPureOre);
-                doCentrifuge(isImpureDust, isPureDust);
+                macerate(isOre);
+                chemicalWash(isCrushedOre, isCrushedPureOre);
+                macerate(isCrushedOre, isCrushedPureOre);
+                centrifuge(isImpureDust, isPureDust);
             }
             case 5 -> {
-                doMac(isOre);
-                doChemWash(isCrushedOre, isCrushedPureOre);
-                doThermal(isCrushedPureOre, isCrushedOre);
-                doMac(isThermal, isOre, isCrushedOre, isCrushedPureOre);
+                macerate(isOre);
+                chemicalWash(isCrushedOre, isCrushedPureOre);
+                thermalRefine(isCrushedPureOre, isCrushedOre);
+                macerate(isThermal, isOre, isCrushedOre, isCrushedPureOre);
             }
             case 6 -> {
-                doHam(isOre);
-                doHam(isThermal, isOre, isCrushedOre, isCrushedPureOre);
-                doSimWash(isImpureDust, isPureDust);
+                forgeHammer(isOre);
+                forgeHammer(isThermal, isOre, isCrushedOre, isCrushedPureOre);
+                simpleWash(isImpureDust, isPureDust);
             }
             default -> {
                 return CheckRecipeResultRegistry.NO_RECIPE;
@@ -335,7 +335,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
         this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         this.mEfficiencyIncrease = 10000;
-        this.mOutputItems = sMidProduct;
+        this.mOutputItems = midProduct;
         this.mMaxProgresstime = overclockedDuration;
         this.lEUt = -overclockedEUt * currentParallelBeforeBatchMode;
         this.updateSlots();
@@ -373,9 +373,9 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     private void processStep(RecipeLookup lookup, IntOpenHashSet... tables) {
-        if (sMidProduct == null) return;
+        if (midProduct == null) return;
         List<ItemStack> output = new ArrayList<>();
-        for (ItemStack stack : sMidProduct) {
+        for (ItemStack stack : midProduct) {
             int id = GTUtility.stackToInt(stack);
             if (checkTypes(id, tables)) {
                 GTRecipe recipe = lookup.find(stack);
@@ -391,7 +391,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         doCompress(output);
     }
 
-    private void doMac(IntOpenHashSet... tables) {
+    private void macerate(IntOpenHashSet... tables) {
         processStep(
             stack -> RecipeMaps.maceratorRecipes.findRecipeQuery()
                 .caching(false)
@@ -400,7 +400,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             tables);
     }
 
-    private void doWash(IntOpenHashSet... tables) {
+    private void wash(IntOpenHashSet... tables) {
         processStep(
             stack -> RecipeMaps.oreWasherRecipes.findRecipeQuery()
                 .caching(false)
@@ -410,7 +410,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             tables);
     }
 
-    private void doThermal(IntOpenHashSet... tables) {
+    private void thermalRefine(IntOpenHashSet... tables) {
         processStep(
             stack -> RecipeMaps.thermalCentrifugeRecipes.findRecipeQuery()
                 .caching(false)
@@ -419,7 +419,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             tables);
     }
 
-    private void doCentrifuge(IntOpenHashSet... tables) {
+    private void centrifuge(IntOpenHashSet... tables) {
         processStep(
             stack -> RecipeMaps.centrifugeRecipes.findRecipeQuery()
                 .items(stack)
@@ -427,7 +427,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             tables);
     }
 
-    private void doSift(IntOpenHashSet... tables) {
+    private void sift(IntOpenHashSet... tables) {
         processStep(
             stack -> RecipeMaps.sifterRecipes.findRecipeQuery()
                 .items(stack)
@@ -435,7 +435,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             tables);
     }
 
-    private void doHam(IntOpenHashSet... tables) {
+    private void forgeHammer(IntOpenHashSet... tables) {
         processStep(
             stack -> RecipeMaps.hammerRecipes.findRecipeQuery()
                 .caching(false)
@@ -444,7 +444,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             tables);
     }
 
-    private void doSimWash(IntOpenHashSet... tables) {
+    private void simpleWash(IntOpenHashSet... tables) {
         processStep(
             stack -> simpleWasherRecipes.findRecipeQuery()
                 .items(stack)
@@ -453,10 +453,10 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             tables);
     }
 
-    private void doChemWash(IntOpenHashSet... tables) {
-        if (sMidProduct == null) return;
+    private void chemicalWash(IntOpenHashSet... tables) {
+        if (midProduct == null) return;
         List<ItemStack> output = new ArrayList<>();
-        for (ItemStack stack : sMidProduct) {
+        for (ItemStack stack : midProduct) {
             int id = GTUtility.stackToInt(stack);
             if (!checkTypes(id, tables)) {
                 output.add(stack);
@@ -530,18 +530,18 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private void doCompress(List<ItemStack> aList) {
         HashMap<Integer, Integer> merged = new HashMap<>();
         for (ItemStack stack : aList) {
-            if (sVoidStone && GTUtility.areStacksEqual(Materials.Stone.getDust(1), stack)) continue;
+            if (doesVoidStone && GTUtility.areStacksEqual(Materials.Stone.getDust(1), stack)) continue;
             int id = GTUtility.stackToInt(stack);
             if (id != 0) {
                 merged.merge(id, stack.stackSize, Integer::sum);
             }
         }
 
-        sMidProduct = new ItemStack[merged.size()];
+        midProduct = new ItemStack[merged.size()];
         int index = 0;
         for (Map.Entry<Integer, Integer> entry : merged.entrySet()) {
             ItemStack template = GTUtility.intToStack(entry.getKey());
-            sMidProduct[index++] = GTUtility.copyAmountUnsafe(entry.getValue(), template);
+            midProduct[index++] = GTUtility.copyAmountUnsafe(entry.getValue(), template);
         }
     }
 
@@ -553,7 +553,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         return this.currentParallelism;
     }
 
-    // Not GPL
+    // Parallels are automatical
     @Override
     public boolean supportsPowerPanel() {
         return false;
@@ -690,8 +690,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 + EnumChatFormatting.BLUE
                 + getCurrentParallelism()
                 + EnumChatFormatting.RESET);
-        info.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
-        info.addAll(getDisplayMode(sMode));
+        info.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", doesVoidStone));
+        info.addAll(getDisplayMode(mode));
         return info.toArray(new String[0]);
     }
 
@@ -728,14 +728,14 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (aPlayer.isSneaking()) {
-            sVoidStone = !sVoidStone;
+            doesVoidStone = !doesVoidStone;
             GTUtility.sendChatTrans(
                 aPlayer,
-                StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
+                StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", doesVoidStone));
             return;
         }
-        sMode = (sMode + 1) % MODE_AMOUNT;
-        GTUtility.sendChatTrans(aPlayer, String.join("", getDisplayMode(sMode)));
+        mode = (mode + 1) % MODE_AMOUNT;
+        GTUtility.sendChatTrans(aPlayer, String.join("", getDisplayMode(mode)));
     }
 
     private static final UITexture[] MODE_ICONS = { GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT, // mode 0
@@ -749,17 +749,17 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public int getMachineMode() {
-        return sMode;
+        return mode;
     }
 
     @Override
     public void setMachineMode(int mode) {
-        sMode = mode % MODE_AMOUNT;
+        this.mode = mode % MODE_AMOUNT;
     }
 
     @Override
     public String getMachineModeName() {
-        return String.join("\n", getDisplayMode(sMode));
+        return String.join("\n", getDisplayMode(mode));
     }
 
     @Override
@@ -769,16 +769,16 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        sMode = aNBT.getInteger("mode");
-        sVoidStone = aNBT.getBoolean("doesVoidStone");
+        mode = aNBT.getInteger("mode");
+        doesVoidStone = aNBT.getBoolean("doesVoidStone");
         currentParallelism = aNBT.getInteger("currentParallelism");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mode", sMode);
-        aNBT.setBoolean("doesVoidStone", sVoidStone);
+        aNBT.setInteger("mode", mode);
+        aNBT.setBoolean("doesVoidStone", doesVoidStone);
         aNBT.setInteger("currentParallelism", currentParallelism);
         super.saveNBTData(aNBT);
     }
@@ -808,8 +808,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", sMode);
-        tag.setBoolean("doesVoidStone", sVoidStone);
+        tag.setInteger("mode", mode);
+        tag.setBoolean("doesVoidStone", doesVoidStone);
         tag.setInteger("currentParallelism", currentParallelism);
     }
 }
