@@ -27,6 +27,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -57,8 +58,8 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
     protected BigInteger powerTally = BigInteger.ZERO;
     protected long recipeTally = 0;
     private long currentRecipeHeat = 0;
-    private static Textures.BlockIcons.CustomIcon ScreenON;
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
+    private static IIconContainer ScreenON;
+    private static IIconContainer ScreenOFF;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int TEXTURE_INDEX = 960;
@@ -412,8 +413,8 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/GODFORGE_MODULE_ACTIVE");
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/SCREEN_OFF");
+        ScreenON = Textures.BlockIcons.custom("iconsets/GODFORGE_MODULE_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom("iconsets/SCREEN_OFF");
         super.registerIcons(aBlockIconRegister);
     }
 
