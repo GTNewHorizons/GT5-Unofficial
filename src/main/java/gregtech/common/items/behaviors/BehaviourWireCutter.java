@@ -11,6 +11,8 @@ import appeng.api.parts.IPartHost;
 import appeng.api.parts.SelectedPart;
 import appeng.core.sync.GuiBridge;
 import appeng.tile.AEBaseTile;
+import appeng.tile.storage.TileChest;
+import appeng.tile.storage.TileDrive;
 import appeng.util.Platform;
 import gregtech.api.items.MetaBaseItem;
 
@@ -22,15 +24,25 @@ public class BehaviourWireCutter extends BehaviourNone {
         if (aWorld.isRemote) return false;
 
         TileEntity tileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tileEntity == null) return false;
+
+        boolean requiresSneakForRename = tileEntity instanceof TileDrive || tileEntity instanceof TileChest;
+        if (requiresSneakForRename && !aPlayer.isSneaking()) {
+            return false;
+        }
+
+        ForgeDirection renameSide = side;
+
         if (tileEntity instanceof IPartHost partHost) {
             SelectedPart part = partHost.selectPart(Vec3.createVectorHelper(hitX, hitY, hitZ));
-            Platform.openGUI(aPlayer, tileEntity, part.side, GuiBridge.GUI_RENAMER);
-            return true;
+            if (part == null) return false;
+            renameSide = part.side;
+        } else if (!(tileEntity instanceof AEBaseTile)) {
+            return false;
         }
-        if (tileEntity instanceof AEBaseTile) {
-            Platform.openGUI(aPlayer, tileEntity, side, GuiBridge.GUI_RENAMER);
-            return true;
-        }
-        return false;
+
+        Platform.openGUI(aPlayer, tileEntity, renameSide, GuiBridge.GUI_RENAMER);
+        return true;
     }
+
 }

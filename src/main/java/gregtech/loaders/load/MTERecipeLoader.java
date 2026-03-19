@@ -2153,7 +2153,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_Bricked_BlastFurnace.get(1L),
             NOT_REMOVABLE | BUFFERED,
             new Object[] { "BFB", "FwF", "BFB", 'B', ItemList.Casing_Firebricks, 'F',
-                OreDictNames.craftingIronFurnace });
+                OreDictNames.craftingBlastFurnace });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Hull_Bronze.get(1L),
@@ -2465,12 +2465,12 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Bronze_Boiler.get(1L),
             GTModHandler.RecipeBits.BITSD,
-            new Object[] { aTextPlate, "PwP", "BFB", 'F', OreDictNames.craftingIronFurnace, 'P',
+            new Object[] { aTextPlate, "PwP", "BFB", 'F', OreDictNames.craftingBlastFurnace, 'P',
                 OrePrefixes.plate.get(Materials.Bronze), 'B', new ItemStack(Blocks.brick_block, 1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Steel_Boiler.get(1L),
             GTModHandler.RecipeBits.BITSD,
-            new Object[] { aTextPlate, "PwP", "BFB", 'F', OreDictNames.craftingIronFurnace, 'P',
+            new Object[] { aTextPlate, "PwP", "BFB", 'F', OreDictNames.craftingBlastFurnace, 'P',
                 OrePrefixes.plate.get(Materials.Steel), 'B', new ItemStack(Blocks.brick_block, 1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Steel_Boiler_Lava.get(1L),
@@ -3096,7 +3096,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_Multi_BlastFurnace.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "FFF", aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_HeatProof, 'F',
-                OreDictNames.craftingIronFurnace, 'C', OrePrefixes.circuit.get(Materials.LV), 'W',
+                OreDictNames.craftingBlastFurnace, 'C', OrePrefixes.circuit.get(Materials.LV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Multi_VacuumFreezer.get(1L),
@@ -3114,7 +3114,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_Multi_Furnace.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "FFF", aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_HeatProof, 'F',
-                OreDictNames.craftingIronFurnace, 'C', OrePrefixes.circuit.get(Materials.HV), 'W',
+                OreDictNames.craftingBlastFurnace, 'C', OrePrefixes.circuit.get(Materials.HV), 'W',
                 OrePrefixes.cableGt01.get(Materials.AnnealedCopper) });
 
         GTModHandler.addCraftingRecipe(
