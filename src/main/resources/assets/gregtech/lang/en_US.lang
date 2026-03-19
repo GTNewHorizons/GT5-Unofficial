@@ -4517,15 +4517,6 @@ gt.mb.corepos.front_bottom_middle=Front bottom middle
 gt.mb.corepos.top_center=Top center
 
 # Multiblock Tooltip lines
-gt.ore_drill.tips=Use a Screwdriver to configure working area\nMaximum area is %1$sx%1$s chunks (%2$sx%2$s blocks)\nIn chunk mode, working area center is the chunk corner nearest to the drill\nUse Soldering iron to turn off chunk mode\nUse Wire Cutter to toggle replacing mined blocks with cobblestone\nGives ~3x as much crushed ore vs normal processing\nFortune bonus of %3$s. Only works on small ores\nMinimum energy hatch tier: %4$s\nBase cycle time: %5$s %6$s
-gt.ore_drill.info.e_hatch=%s+, Any base casing
-gt.ore_drill.info.i_bus=Mining Pipes, optional, any base casing
-gt.ore_drill.info.i_hatch=Drilling Fluid, any base casing
-
-gt.oil_drill.tips=Works on %1$sx%1$s chunks\nUse a Screwdriver to configure range\nUse Programmed Circuits to ignore near exhausted oil field\nIf total circuit # is greater than output per operation, the machine will halt.\nMinimum energy hatch tier: %2$s\nBase cycle time: %3$s %4$s
-gt.oil_drill.info.e_hatch=1x %s+, Any base casing
-gt.oil_drill.info.i_bus=Mining Pipes or Circuits, optional, any base casing
-
 gt.ssass.tips=§dDimensions not included!§7\nConverts protomatter into antimatter\nUse screwdriver to disable rendering\nPassively consumes %s + (§3Antimatter§7 * %s)^(%s - §a§l§nM§r§7) EU/t\nThe consumption decays by 0.5%% every tick when empty\nActively uses (§3Antimatter§7 * %s)^(%s - §5§l§nG§r§7) EU per cycle to produce antimatter<SEPARATOR>Cycles every second\nEvery cycle, the lowest amount of antimatter in the 16 antimatter hatches is recorded\nAll hatches with more than the lowest amount §close half the difference!§7\n§cVoids 10%% of antimatter§7 if it runs out of energy/protomatter during a cycle\nBase production per hatch is (1/16) * (§3Antimatter§7^(%s + §6§l§nC§r§7)) of antimatter each cycle\nEach hatch multiplies the base production per hatch with a random number pulled from\na normal distribution with a mean of %s + §b§l§nA§r§7 and a variance of 1\nThe total gain of antimatter can be negative!<SEPARATOR>Can be supplied with stabilization fluids to improve antimatter generation\nEach stabilization can only use one of the fluids at a time\n§a§l§nM§r§aagnetic Stabilization§7 (Consumes §3Antimatter§7^0.5 L of fluid per cycle)\n1. Molten Purified Tengam = §a0.1§7\n2. Tachyon Rich Fluid = §a0.2§7\n3. Molten MagMatter = §a0.3§7\n§5§l§nG§r§5ravity Stabilization§7 (Consumes §3Antimatter§7^0.5 L of fluid per cycle)\n1. Molten Spacetime = §50.05§7\n2. Spatially Enlarged Fluid = §50.10§7\n3. Molten Eternity = §50.15§7\n§6§l§nC§r§6ontainment Stabilization§7 (Consumes §3Antimatter§7^(2/7) L of fluid per cycle)\n1. Molten Shirabon = §60.05§7\n2. Molten MHDCSM = §60.10§7\n§b§l§nA§r§bctivation Stabilization§7 (Consumes §3Antimatter§7^(1/3) L of fluid per cycle)\n1. Depleted Naquadah Fuel Mk V = §b0.05§7\n2. Depleted Naquadah Fuel Mk VI = §b0.10§7
 
 gt.les.tips=Necessary evil\nAdvanced Essentia smelting technology\nMaximum parallel = 2^Tier * (Length - 1)\nDiffusion Cell Tiers start from 0, Length is full multi length\nEnergy Hatch tier: HV+\nYou can find more information about this machine in the Thaumonomicon
@@ -4573,6 +4564,15 @@ gt.driller_shaped_mb.info.casing.1=form the 3x1x3 Base
 gt.driller_shaped_mb.info.casing.2=1x3x1 pillar above the center of the base (2 minimum total)
 gt.driller_shaped_mb.info.frame=Each pillar's side and 1x3x1 on top
 gt.driller_shaped_mb.info.replace=Any base casing
+
+gt.ore_drill.tips=Use a Screwdriver to configure working area\nMaximum area is %1$sx%1$s chunks (%2$sx%2$s blocks)\nIn chunk mode, working area center is the chunk corner nearest to the drill\nUse Soldering iron to turn off chunk mode\nUse Wire Cutter to toggle replacing mined blocks with cobblestone\nGives ~3x as much crushed ore vs normal processing\nFortune bonus of %3$s. Only works on small ores\nMinimum energy hatch tier: %4$s\nBase cycle time: %5$s %6$s
+gt.ore_drill.info.e_hatch=%s+, Any base casing
+gt.ore_drill.info.i_bus=Mining Pipes, optional, any base casing
+gt.ore_drill.info.i_hatch=Drilling Fluid, any base casing
+
+gt.oil_drill.tips=Works on %1$sx%1$s chunks\nUse a Screwdriver to configure range\nUse Programmed Circuits to ignore near exhausted oil field\nIf total circuit # is greater than output per operation, the machine will halt.\nMinimum energy hatch tier: %2$s\nBase cycle time: %3$s %4$s
+gt.oil_drill.info.e_hatch=1x %s+, Any base casing
+gt.oil_drill.info.i_bus=Mining Pipes or Circuits, optional, any base casing
 
 gt.backfiller.tips=Will fill in areas below it with light concrete. This goes through walls\nUse it to remove any spawning locations beneath your base to reduce lag\nWill pull back the pipes after it finishes that layer\nRange is %1$sx%1$s blocks horizontally\nMinimum energy hatch tier: %2$s\nBase cycle time: %3$s %4$s
 gt.backfiller.info.energy=1x %s+, Any base casing
