@@ -40,7 +40,6 @@ public class BeamCrafterFrontend extends RecipeMapFrontend {
     public void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         if (recipeInfo.calculator.getConsumption() <= 0) return;
         recipeInfo.drawText(getEUtDisplay(recipeInfo.calculator));
-        recipeInfo.drawText(getAmperageString(recipeInfo.calculator));
 
     }
 
