@@ -912,7 +912,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials UraniumInfusedAcidicSolution;
 
     // Chlorosulfonic Acid Line
-    public static Materials PhosphorusDichloride;
+    public static Materials PhosphorusChlorineMixture;
     public static Materials PhosphorusPentachloride;
     public static Materials ToxicAir;
     public static Materials ToxicSlurry;

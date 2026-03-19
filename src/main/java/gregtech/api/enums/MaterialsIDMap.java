@@ -152,7 +152,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(174, Materials.DepletedUraniumResidue);
         r(175, Materials.FranciumHydroxide);
         r(176, Materials.UraniumInfusedAcidicSolution);
-        r(177,Materials.PhosphorusDichloride);
+        r(177,Materials.PhosphorusChlorineMixture);
         r(179,Materials.PhosphorusPentachloride);
         r(180,Materials.ToxicAir);
         r(181,Materials.ToxicSlurry);

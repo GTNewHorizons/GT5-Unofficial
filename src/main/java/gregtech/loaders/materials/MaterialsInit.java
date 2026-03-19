@@ -14028,7 +14028,7 @@ public class MaterialsInit {
         Materials.DepletedUraniumResidue = loadDepletedUraniumResidue();
         Materials.FranciumHydroxide = loadFranciumHydroxide();
         Materials.UraniumInfusedAcidicSolution = loadUraniumInfusedAcidicSolution();
-        Materials.PhosphorusDichloride = loadPhosphorusDichloride();
+        Materials.PhosphorusChlorineMixture = loadPhosphorusChlorineMixture();
         Materials.PhosphorusPentachloride = loadPhosphorusPentachloride();
         Materials.ToxicAir = loadToxicAir();
         Materials.ToxicSlurry = loadToxicSlurry();
@@ -14085,16 +14085,14 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadPhosphorusDichloride() {
-        return new MaterialBuilder().setName("PhosphorusDichloride")
-            .setDefaultLocalName("Phosphorus Dichloride")
+    private static Materials loadPhosphorusChlorineMixture() {
+        return new MaterialBuilder().setName("PhosphorusChlorineMixture")
+            .setDefaultLocalName("Phosphorus-Chlorine Mixture")
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeWhite)
             .setARGB(0x00f7f3b8)
             .addCell()
             .addFluid()
-            .addMaterial(Materials.Phosphorus, 1)
-            .addMaterial(Materials.Chlorine, 2)
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }

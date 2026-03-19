@@ -101,24 +101,24 @@ public class AcidRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.PhosphorousPentoxide.getDust(7))
             .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 4000))
-            .fluidOutputs(Materials.PhosphorusDichloride.getFluid(2000L), Materials.Water.getFluid(5000L))
+            .fluidOutputs(Materials.PhosphorusChlorineMixture.getFluid(2000L), Materials.Water.getFluid(5000L))
             .duration(24 * SECONDS)
             .eut(480)
             .addTo(UniversalChemical);
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsOres.LAFOSSAITE.getCrushed(2))
-            .fluidInputs(Materials.PhosphorusDichloride.getFluid(1000L))
+            .fluidInputs(Materials.PhosphorusChlorineMixture.getFluid(1000L))
             .itemOutputs(Materials.PhosphorusTrichloride.getDust(4))
-            .fluidOutputs(Materials.StagnantWasteWater.getFluid(3000L))
+            .fluidOutputs(Materials.StagnantWasteWater.getFluid(2000L))
             .eut(5040)
             .duration(10 * SECONDS)
             .metadata(COIL_HEAT, 1800)
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                Materials.StagnantWasteWater.getFluid(8000L),
+                Materials.StagnantWasteWater.getFluid(6000L),
                 MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(4000))
-            .fluidOutputs(Materials.ActivatedWasteWater.getFluid(12000L))
+            .fluidOutputs(Materials.ActivatedWasteWater.getFluid(2000L), Materials.Chlorine.getGas(8000L))
             .circuit(1)// Necessary to exceed properties.minItemInputs threshold
             .eut(1440)
             .duration(10 * SECONDS)
