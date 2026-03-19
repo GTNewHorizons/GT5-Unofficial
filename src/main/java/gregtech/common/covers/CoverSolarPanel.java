@@ -79,7 +79,7 @@ public class CoverSolarPanel extends CoverLegacyData {
     @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.capabilities.isCreativeMode) {
-            GTUtility.sendChatToPlayer(aPlayer, "Cleaned solar panel from " + (coverData >> 2) + "% dirt");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.solar_panel.cleaned", (coverData >> 2));
             coverData = coverData & 0x3;
             return true;
         }
@@ -90,12 +90,12 @@ public class CoverSolarPanel extends CoverLegacyData {
                 .equals(new ItemStack(Items.water_bucket).getUnlocalizedName())) {
                 aPlayer.inventory.mainInventory[i] = new ItemStack(Items.bucket);
                 if (aPlayer.inventoryContainer != null) aPlayer.inventoryContainer.detectAndSendChanges();
-                GTUtility.sendChatToPlayer(aPlayer, "Cleaned solar panel from " + (coverData >> 2) + "% dirt");
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.solar_panel.cleaned", (coverData >> 2));
                 coverData = coverData & 0x3;
                 return true;
             }
         }
-        GTUtility.sendChatToPlayer(aPlayer, "You need water bucket in inventory to clean the panel.");
+        GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.solar_panel.cleaned.require");
         return false;
     }
 
