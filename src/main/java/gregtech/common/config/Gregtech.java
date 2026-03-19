@@ -102,6 +102,11 @@ public class Gregtech {
         @Config.DefaultBoolean(false)
         @Config.RequiresMcRestart
         public boolean debugChunkloaders;
+
+        @Config.Comment("Enables logging of icons registration. (May help resource-pack creators)")
+        @Config.DefaultBoolean(false)
+        @Config.RequiresMcRestart
+        public boolean logRegisterIcons;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.features")
@@ -289,11 +294,6 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean lowGravProcessing;
-
-        @Config.Comment("if true, crops need a block below to fully grow.")
-        @Config.DefaultBoolean(true)
-        @Config.RequiresMcRestart
-        public boolean cropNeedBlock;
 
         @Config.Comment("if yes, allows the automatic interactions with the maintenance hatches.")
         @Config.DefaultBoolean(true)

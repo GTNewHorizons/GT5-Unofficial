@@ -1,10 +1,6 @@
 package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.api.enums.Dyes.MACHINE_METAL;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VACUUM_HATCH;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VACUUM_HATCH_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VACUUM_PIPE_PORT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +30,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
-import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchVacuumConveyorGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryElement;
@@ -62,14 +57,6 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
 
     protected MTEHatchVacuumConveyor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
-    }
-
-    @Override
-    public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture,
-            TextureFactory
-                .of(OVERLAY_VACUUM_HATCH_ACTIVE, Dyes.getModulation(getColorization(), MACHINE_METAL.getRGBA())),
-            TextureFactory.of(OVERLAY_VACUUM_PIPE_PORT) };
     }
 
     @Override
@@ -120,13 +107,6 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
 
     public void setMainController(MTENanochipAssemblyComplex main) {
         this.mainController = main;
-    }
-
-    @Override
-    public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture,
-            TextureFactory.of(OVERLAY_VACUUM_HATCH, Dyes.getModulation(getColorization(), MACHINE_METAL.getRGBA())),
-            TextureFactory.of(OVERLAY_VACUUM_PIPE_PORT) };
     }
 
     public void unifyPacket(CircuitComponentPacket packet) {

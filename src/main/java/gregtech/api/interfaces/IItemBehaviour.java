@@ -15,6 +15,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.Nullable;
+
 import gregtech.api.enums.SubTag;
 import gregtech.api.items.MetaBaseItem;
 
@@ -30,7 +32,7 @@ public interface IItemBehaviour<E extends Item> {
 
     /**
      * Allows a GT Tool wielded in the offhand to perform an action on a placed block in the same tick.
-     * 
+     *
      * @param blockSnapshot Data about what block was placed and where
      * @param itemStack     The tool being used
      * @param player        The player initiating the action
@@ -94,4 +96,9 @@ public interface IItemBehaviour<E extends Item> {
 
     EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity,
         float aSpeed);
+
+    @Nullable
+    default String getNameOverride(String oldName, ItemStack stack) {
+        return null;
+    }
 }

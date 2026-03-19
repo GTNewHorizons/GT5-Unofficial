@@ -495,7 +495,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             aNameRegional,
             supportFluids ? 10 : 6,
             MAX_INV_COUNT,
-            new String[] { "Advanced item input for Multiblocks",
+            new String[] {
+                StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": " + EnumChatFormatting.YELLOW + "CRIB",
+                "Advanced item input for Multiblocks",
                 "Hatch Tier: " + TIER_COLORS[supportFluids ? 10 : 6] + VN[supportFluids ? 10 : 6],
                 "Processes patterns directly from ME",
                 supportFluids ? "It supports patterns including fluids"
@@ -621,6 +623,18 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
+        if (aPlayer.isSneaking()) {
+            IGregTechTileEntity te = getBaseMetaTileEntity();
+            aPlayer.openGui(
+                AppEng.instance(),
+                GuiBridge.GUI_RENAMER.ordinal() << 5 | (side.ordinal()),
+                te.getWorld(),
+                te.getXCoord(),
+                te.getYCoord(),
+                te.getZCoord());
+            return true;
+        }
+
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
         aPlayer.addChatComponentMessage(

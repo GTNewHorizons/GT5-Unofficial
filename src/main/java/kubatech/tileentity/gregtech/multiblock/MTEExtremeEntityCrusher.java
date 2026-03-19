@@ -40,6 +40,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Random;
@@ -76,8 +77,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -160,6 +163,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (getBaseMetaTileEntity().isClientSide() && entityRenderer != null) {
             entityRenderer.setDead();
         }
+    }
+
+    @Override
+    public boolean isRotationChangeAllowed() {
+        return true;
     }
 
     @Override
@@ -264,11 +272,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     public IStructureDefinition<MTEExtremeEntityCrusher> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated();
     }
 
     @Override
@@ -381,14 +384,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (entityRenderer == null) {
             ChunkCoordinates coords = this.getBaseMetaTileEntity()
                 .getCoords();
+            ExtendedFacing facing = this.getExtendedFacing();
             int[] abc = new int[] { 0, -2, 2 };
             int[] xyz = new int[] { 0, 0, 0 };
-            this.getExtendedFacing()
-                .getWorldOffset(abc, xyz);
+            facing.getWorldOffset(abc, xyz);
             xyz[0] += coords.posX;
             xyz[1] += coords.posY;
             xyz[2] += coords.posZ;
-            entityRenderer = new EntityRenderer(aBaseMetaTileEntity.getWorld(), xyz[0], xyz[1], xyz[2], time);
+            entityRenderer = new EntityRenderer(facing, aBaseMetaTileEntity.getWorld(), xyz[0], xyz[1], xyz[2], time);
         } else {
             entityRenderer.setDead();
             entityRenderer = new EntityRenderer(entityRenderer, time);
@@ -415,7 +418,12 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             MobHandlerLoader.MobEECRecipe r = MobHandlerLoader.recipeMap.get(mobType);
             if (r != null) {
                 if (entityRenderer == null) setupEntityRenderer(getBaseMetaTileEntity(), 40);
-                entityRenderer.setEntity(r.entityCopy);
+                try {
+                    entityRenderer.setEntity(r.recipe.createEntityCopy());
+                } catch (NoSuchMethodException | InvocationTargetException | InstantiationException
+                    | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
             } else entityRenderer.setEntity(null);
         } else {
             renderEntity = false;
@@ -878,6 +886,29 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 .equals(WellOfSufferingRitualName);
     }
 
+    private void rotateSpikes() {
+        ChunkCoordinates coords = this.getBaseMetaTileEntity()
+            .getCoords();
+        World world = this.getBaseMetaTileEntity()
+            .getWorld();
+        ExtendedFacing facing = this.getExtendedFacing();
+        int meta = facing.getRelativeUpInWorld()
+            .ordinal();
+        int[] abc = new int[] { 0, -1, 0 };
+        int[] xyz = new int[] { 0, 0, 0 };
+        for (int x = -1; x < 2; x++) {
+            abc[0] = x;
+            for (int z = 1; z < 4; z++) {
+                abc[2] = z;
+                facing.getWorldOffset(abc, xyz);
+                xyz[0] += coords.posX;
+                xyz[1] += coords.posY;
+                xyz[2] += coords.posZ;
+                world.setBlockMetadataWithNotify(xyz[0], xyz[1], xyz[2], meta, 3);
+            }
+        }
+    }
+
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         glassTier = -1;
@@ -887,6 +918,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (glassTier < VoltageIndex.UV)
             for (MTEHatchEnergy hatch : mEnergyHatches) if (hatch.mTier > glassTier) return false;
         checkRitualConnection();
+        this.rotateSpikes();
         return true;
     }
 

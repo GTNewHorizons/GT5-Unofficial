@@ -13,14 +13,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
+import gregtech.api.util.client.ResourceUtils;
 import gregtech.common.config.Client;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -175,8 +178,16 @@ public class BaseOreComponent extends Item {
             this.base = par1IconRegister
                 .registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME);
             if (this.componentType.hasOverlay()) {
-                this.overlay = par1IconRegister.registerIcon(
-                    GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME + "_OVERLAY");
+                final String overlayPath = GregTech.ID + ":"
+                    + "materialicons/METALLIC/"
+                    + this.componentType.COMPONENT_NAME
+                    + "_OVERLAY";
+                final ResourceLocation overlayResource = ResourceUtils
+                    .getCompleteItemTextureResourceLocation(overlayPath);
+
+                this.overlay = ResourceUtils.resourceExists(overlayResource)
+                    ? par1IconRegister.registerIcon(overlayPath)
+                    : Textures.InvisibleIcon.INVISIBLE_ICON;
             }
         }
     }
