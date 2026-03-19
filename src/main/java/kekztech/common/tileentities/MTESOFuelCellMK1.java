@@ -31,6 +31,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -107,14 +108,14 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
             .addInfo("gt.so_fuel_cell.tips.2", EU_PER_TICK, STEAM_PER_SEC, "fluid.steam", OXYGEN_PER_SEC)
             .beginStructureBlock(3, 3, 5, false)
             .addController("front_center")
-            .addCasingInfoMin("gt.blockcasings4.1.name", 12, false)
-            .addStructurePart("tile.kekztech_yszceramicelectrolyteunit_block.name", "gt.so_fuel_cell.info.1")
-            .addStructurePart("Material.reinforcedglass", "gt.so_fuel_cell.info.2")
-            .addDynamoHatch("gt.so_fuel_cell.info.3", 2)
+            .addCasingInfoMin(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 12)
+            .addStructurePart("tile.kekztech_yszceramicelectrolyteunit_block.name", "gt.so_fuel_cell.info.ysz")
+            .addStructurePart("Material.reinforcedglass", "gt.so_fuel_cell.info.glass")
+            .addDynamoHatch("gt.mbtt.structure.back_center", 2)
             .addMaintenanceHatch("<casing>", 1)
-            .addInputHatch("gt.so_fuel_cell.info.4", 1)
-            .addInputHatch("gt.so_fuel_cell.info.5", 1)
-            .addOutputHatch("gt.so_fuel_cell_i.info.1", 1)
+            .addInputHatch("gt.so_fuel_cell.info.i_hatch.1", 1)
+            .addInputHatch("gt.so_fuel_cell.info.i_hatch.2", 1)
+            .addOutputHatch("gt.so_fuel_cell_i.info.o_hatch", 1)
             .toolTipFinisher();
         return tt;
     }

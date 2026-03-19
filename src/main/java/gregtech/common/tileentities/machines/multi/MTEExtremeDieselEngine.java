@@ -16,6 +16,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -41,20 +42,20 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.ece")
-            .addInfo("gt.ece.tips.1")
+            .addInfo("gt.ece.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 4, false)
             .addController("front_center")
-            .addCasingInfoRange("gt.blockcasings4.0.name", 16, 22, false)
-            .addStructurePart("gt.blockcasings2.4.name", "gt.ece.info.1")
-            .addStructurePart("gt.blockcasings8.4.name", "gt.ece.info.2")
-            .addStructureInfo("gt.ece.info.3")
-            .addDynamoHatch("gt.ece.info.4", 2)
-            .addMaintenanceHatch("gt.ece.info.5", 1)
-            .addMufflerHatch("gt.ece.info.6", 1)
-            .addInputHatch("gt.ece.info.7", 1)
-            .addInputHatch("gt.ece.info.8", 1)
-            .addInputHatch("gt.ece.info.9", 1)
+            .addCasingInfoRange(Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), 16, 22, false)
+            .addStructurePart(Casings.TitaniumGearBoxCasing.getLocalizedName(), "gt.ece.info.ti_gearbox")
+            .addStructurePart(Casings.ExtremeEngineIntakeCasing.getLocalizedName(), "gt.ece.info.intake")
+            .addStructureInfo("gt.ece.info.intake_caution")
+            .addDynamoHatch("gt.mbtt.structure.back_center", 2)
+            .addMaintenanceHatch("gt.ece.info.maintenance", 1)
+            .addMufflerHatch("gt.ece.info.muffler", 1)
+            .addInputHatch("gt.ece.info.i_hatch.1", 1)
+            .addInputHatch("gt.ece.info.i_hatch.2", 1)
+            .addInputHatch("gt.ece.info.i_hatch.3", 1)
             .toolTipFinisher();
         return tt;
     }
