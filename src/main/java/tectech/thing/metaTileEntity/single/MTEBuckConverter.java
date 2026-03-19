@@ -1,6 +1,7 @@
 package tectech.thing.metaTileEntity.single;
 
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.Textures.BlockIcons.custom;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
