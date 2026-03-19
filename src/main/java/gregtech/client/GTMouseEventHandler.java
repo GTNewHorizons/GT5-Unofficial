@@ -1,5 +1,6 @@
 package gregtech.client;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
@@ -53,7 +54,7 @@ public final class GTMouseEventHandler {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public void onPickBlockEvent(PickBlockEvent event) {
         final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
