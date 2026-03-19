@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -449,9 +448,8 @@ public class Cover implements IGuiHolder<CoverGuiData> {
     public void onCoverJackhammer(EntityPlayer aPlayer) {
         adjustTickRateMultiplier(aPlayer.isSneaking());
 
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocalFormatted("gt.cover.info.chat.tick_rate", getCurrentTickRateFormatted()));
+        GTUtility
+            .sendChatTrans(aPlayer, "gt.cover.info.chat.tick_rate", getCurrentTickRateFormatted().toChatComponent());
     }
 
     /**
