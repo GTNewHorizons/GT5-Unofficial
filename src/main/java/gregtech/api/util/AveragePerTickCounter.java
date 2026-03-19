@@ -1,7 +1,6 @@
 package gregtech.api.util;
 
 import java.security.InvalidParameterException;
-import java.util.Arrays;
 
 import net.minecraft.server.MinecraftServer;
 
@@ -50,10 +49,10 @@ public class AveragePerTickCounter {
 
     public long getLast() {
         final int targetTick = getWorldTimeInTicks() - 1;
-        if(timestamps[currIndex] == targetTick) return values[currIndex];
+        if (timestamps[currIndex] == targetTick) return values[currIndex];
 
         int prevIndex = (currIndex - 1 + values.length) % values.length;
-        if(timestamps[prevIndex] == targetTick) return values[prevIndex];
+        if (timestamps[prevIndex] == targetTick) return values[prevIndex];
 
         return 0;
     }
@@ -63,8 +62,7 @@ public class AveragePerTickCounter {
         int currTick = getWorldTimeInTicks();
         int minTick = currTick - period;
         for (int i = 0; i < values.length; i++) {
-            if (timestamps[i] >= minTick && timestamps[i] < currTick)
-                sum += values[i];
+            if (timestamps[i] >= minTick && timestamps[i] < currTick) sum += values[i];
         }
         cachedAverage = sum / (double) period;
         lastCacheTick = currTick;
