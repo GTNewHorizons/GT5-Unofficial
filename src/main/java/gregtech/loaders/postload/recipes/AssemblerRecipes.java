@@ -6964,6 +6964,5 @@ public class AssemblerRecipes implements Runnable {
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(assemblerRecipes);
-
     }
 }
