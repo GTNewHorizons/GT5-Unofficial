@@ -14024,10 +14024,10 @@ public class MaterialsInit {
     }
 
     private static void loadAcidRecipes() {
-        Materials.CrudeFrancium = loadCrudeFrancium();
-        Materials.DepletedUraniumResidue = loadDepletedUraniumResidue();
+        Materials.ImpureFranciumSolution = loadImpureFranciumSolution();
         Materials.FranciumHydroxide = loadFranciumHydroxide();
-        Materials.UraniumInfusedAcidicSolution = loadUraniumInfusedAcidicSolution();
+        Materials.FranciumSlurry = loadFranciumSlurry();
+        Materials.ThoriumElutionAdsorbent = loadThoriumElutionAdsorbent();
         Materials.PhosphorusChlorineMixture = loadPhosphorusChlorineMixture();
         Materials.PhosphorusPentachloride = loadPhosphorusPentachloride();
         Materials.ToxicAir = loadToxicAir();
@@ -14040,23 +14040,23 @@ public class MaterialsInit {
         Materials.ChlorosulfonicAcid = loadChlorosulfonicAcid();
     }
 
-    private static Materials loadCrudeFrancium() {
-        return new MaterialBuilder().setName("CrudeFrancium")
-            .setDefaultLocalName("Crude Francium")
-            .setIconSet(TextureSet.SET_DULL)
+    private static Materials loadImpureFranciumSolution() {
+        return new MaterialBuilder().setName("ImpureFranciumSolution")
+            .setDefaultLocalName("Impure Francium Solution")
+            .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeRed)
             .setARGB(0x004a180a)
-            .addDustItems()
+            .addFluid()
             .constructMaterial();
     }
 
-    private static Materials loadDepletedUraniumResidue() {
-        return new MaterialBuilder().setName("DepletedUraniumResidue")
-            .setDefaultLocalName("Depleted Uranium Residue")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeGreen)
-            .setARGB(0x001d4733)
-            .addDustItems()
+    private static Materials loadFranciumSlurry() {
+        return new MaterialBuilder().setName("FranciumSlurry")
+            .setDefaultLocalName("Francium Slurry")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeRed)
+            .setARGB(0x00b02000)
+            .addFluid()
             .constructMaterial();
     }
 
@@ -14073,12 +14073,12 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadUraniumInfusedAcidicSolution() {
-        return new MaterialBuilder().setName("UraniumInfusedAcidicSolution")
-            .setDefaultLocalName("Uranium Infused Acidic Solution")
+    private static Materials loadThoriumElutionAdsorbent() {
+        return new MaterialBuilder().setName("ThoriumElutionAdsorbent")
+            .setDefaultLocalName("Thorium Elution Adsorbent")
             .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeLime)
-            .setARGB(0x0014f78a)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0x0007835a)
             .addCell()
             .addFluid()
             .addSubTag(SubTag.TRANSPARENT)

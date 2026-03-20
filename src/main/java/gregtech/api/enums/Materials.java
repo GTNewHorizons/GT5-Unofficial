@@ -906,10 +906,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials PrismaticNaquadahCompositeSlurry;
 
     // Francium Line
-    public static Materials CrudeFrancium;
-    public static Materials DepletedUraniumResidue;
+    public static Materials ImpureFranciumSolution;
     public static Materials FranciumHydroxide;
-    public static Materials UraniumInfusedAcidicSolution;
+    public static Materials FranciumSlurry;
+    public static Materials ThoriumElutionAdsorbent;
 
     // Chlorosulfonic Acid Line
     public static Materials PhosphorusChlorineMixture;

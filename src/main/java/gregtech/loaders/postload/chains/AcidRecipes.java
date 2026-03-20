@@ -1,8 +1,8 @@
 package gregtech.loaders.postload.chains;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
@@ -10,22 +10,19 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
-import static gregtech.api.util.GTRecipeConstants.DISSOLUTION_TANK_RATIO;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.electrolyzerNonCellRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.mixerNonCellRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.digesterRecipes;
-import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionTankRecipes;
 
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
-import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -39,54 +36,34 @@ public class AcidRecipes {
     public static void run() {
         // Francium Line
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Uranium.getDust(16))
-            .fluidInputs(Materials.NitricAcid.getFluid(10000L), Materials.TerephthalicAcid.getFluid(400L))
-            .itemOutputs(Materials.DepletedUraniumResidue.getDust(8))
-            .fluidOutputs(Materials.UraniumInfusedAcidicSolution.getFluid(15000L))
-            .duration(240 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .metadata(DISSOLUTION_TANK_RATIO, 25)
-            .addTo(dissolutionTankRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Uranium235.getDust(8))
-            .fluidInputs(Materials.NitricAcid.getFluid(10000L), Materials.TerephthalicAcid.getFluid(400L))
-            .itemOutputs(Materials.DepletedUraniumResidue.getDust(8))
-            .fluidOutputs(Materials.UraniumInfusedAcidicSolution.getFluid(30000L))
-            .duration(160 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .metadata(DISSOLUTION_TANK_RATIO, 25)
-            .addTo(dissolutionTankRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsElements.getInstance().URANIUM233.getDust(4))
-            .fluidInputs(Materials.NitricAcid.getFluid(10000L), Materials.TerephthalicAcid.getFluid(400L))
-            .itemOutputs(Materials.DepletedUraniumResidue.getDust(8))
-            .fluidOutputs(Materials.UraniumInfusedAcidicSolution.getFluid(60000L))
-            .duration(80 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .metadata(DISSOLUTION_TANK_RATIO, 25)
-            .addTo(dissolutionTankRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.DepletedUraniumResidue.getDust(5))
-            .itemOutputs(Materials.Lead.getDust(3), Materials.Bismuth.getDust(2))
-            .duration(10 * SECONDS)
-            .eut(200)
-            .addTo(centrifugeRecipes);
-        GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.UraniumInfusedAcidicSolution.getFluid(6000L))
-            .itemOutputs(Materials.Thorium.getDust(1), Materials.Lead.getDust(2), Materials.CrudeFrancium.getDust(1))
-            .fluidOutputs(Materials.NitrogenDioxide.getGas(1000L))
-            .outputChances(9000, 8000, 6000)
+            .itemInputs(Materials.Thorium.getDust(4), Materials.ChromiumTrioxide.getDust(2))
+            .fluidInputs(WerkstoffLoader.AmmoniumChloride.getFluidOrGas(2000))
+            .fluidOutputs(Materials.ThoriumElutionAdsorbent.getFluid(2000L))
+            .eut(TierEU.RECIPE_HV)
             .duration(15 * SECONDS)
-            .eut(1200)
-            .addTo(sifterRecipes);
+            .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.CrudeFrancium.getDust(10), GGMaterial.vanadiumPentoxide.get(OrePrefixes.dust, 1))
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(4000L))
-            .itemOutputs(Materials.Francium.getDust(3))
-            .fluidOutputs(Materials.HypochlorousAcid.getFluid(4000L))
+            .fluidInputs(Materials.ThoriumElutionAdsorbent.getFluid(8000L))
+            .itemOutputs(Materials.Chrome.getDust(4))
+            .outputChances(5500)
+            .fluidOutputs(Materials.ImpureFranciumSolution.getFluid(4500L), Materials.Ammonia.getGas(3500L))
+            .eut(TierEU.RECIPE_LuV)
+            .duration(30 * SECONDS)
+            .addTo(electrolyzerNonCellRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.SiliconDioxide.getDust(4), Materials.Barite.getDust(1))
+            .fluidInputs(Materials.ImpureFranciumSolution.getFluid(5000L))
+            .fluidOutputs(Materials.FranciumSlurry.getFluid(4000L))
+            .eut(600)
+            .duration(15 * SECONDS)
+            .addTo(mixerRecipes);
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.FranciumSlurry.getFluid(4000L))
+            .itemOutputs(Materials.Francium.getDust(1), Materials.Francium.getDust(1), Materials.Lead.getDust(1))
+            .outputChances(9000, 8000, 6500)
+            .eut(TierEU.RECIPE_HV)
             .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(UniversalChemical);
+            .addTo(sifterRecipes);
         // Fr + H2O = FrOH + H
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Francium.getDust(1))
