@@ -928,7 +928,7 @@ public class CentrifugeRecipes implements Runnable {
 
         // From ProcessingSand
         GTValues.RA.stdBuilder()
-            .itemInputs(new OreDictItemStack("sandOil", 2), ItemList.Cell_Empty.get(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ore, Materials.Oilsands, 2), ItemList.Cell_Empty.get(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 1L), new ItemStack(Blocks.sand, 1, 0))
             .duration(50 * SECONDS)
             .eut(5)
