@@ -187,7 +187,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     @Override
     protected void setElectricityStats() {
         // for a 6.4 second beautiful batch
-        batchMultiplier = batchMode ? 128 : 1;
+        batchMultiplier = (batchMode && reachingVoidOrBedrock()) ? 128 : 1;
         this.mEfficiency = getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         int tier = Math.max(0, GTUtility.getTier(getMaxInputVoltage()));
