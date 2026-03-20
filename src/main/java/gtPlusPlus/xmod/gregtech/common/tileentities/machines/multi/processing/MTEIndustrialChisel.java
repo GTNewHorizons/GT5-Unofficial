@@ -282,8 +282,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
         } else if (aTarget != null && !canBeMadeFrom(aInput, aTarget)) {
             tOutput = null;
         } else {
-            int nextDamage = getItemsForChiseling(aInput).size() == aInput.getItemDamage() + 1 ? 0
-                : aInput.getItemDamage() + 1;
+            int nextDamage = (aInput.getItemDamage() + 1) % getItemsForChiseling(aInput).size();
             tOutput = getItemsForChiseling(aInput).get(nextDamage);
         }
         return tOutput;
