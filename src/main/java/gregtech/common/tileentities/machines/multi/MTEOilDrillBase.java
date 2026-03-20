@@ -329,13 +329,12 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         }
 
         FluidStack pumpedOil = pumpOil(speed, false);
-        mOilFlow = pumpedOil.amount * batchMultiplier;
-        // Multiblock base already includes 1 parallel
-        recipesDone += batchMultiplier - 1;
+        mOilFlow = pumpedOil.amount;
+        recipesDone = batchMultiplier;
         return ValidationResult.of(ValidationType.VALID, pumpedOil.amount == 0 ? null : pumpedOil);
     }
 
-    /**
+    /**Pump the oil. Takes batch mode into account.
      * @param speed    Speed to pump oil
      * @param simulate If true, it actually does not consume vein
      * @return Fluid pumped
@@ -347,7 +346,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
         FluidStack returnOil = new FluidStack(mOil, 0);
         World world = getBaseMetaTileEntity().getWorld();
-        float coefficient = simulate ? -speed : speed;
+        float coefficient = simulate ? -speed * batchMultiplier : speed * batchMultiplier;
 
         for (Iterator<ChunkCoordIntPair> iterator = mOilFieldChunks.iterator(); iterator.hasNext();) {
             ChunkCoordIntPair tChunk = iterator.next();
