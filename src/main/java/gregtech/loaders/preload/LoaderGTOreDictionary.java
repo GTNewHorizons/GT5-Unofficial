@@ -2,6 +2,7 @@ package gregtech.loaders.preload;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Botania;
+import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -226,7 +227,9 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator
             .registerOre(OreDictNames.craftingRecycler, new ItemStack(GregTechAPI.sBlockMachines, 1, 53));
 
-        GTOreDictUnificator.registerOre(OreDictNames.craftingIronFurnace, GTModHandler.getIC2Item("ironFurnace", 1L));
+        GTOreDictUnificator.registerOre(
+            OreDictNames.craftingBlastFurnace,
+            GTModHandler.getModItem(EtFuturumRequiem.ID, "blast_furnace", 1));
 
         GTOreDictUnificator
             .registerOre(OreDictNames.craftingCentrifuge, new ItemStack(GregTechAPI.sBlockMachines, 1, 62));
