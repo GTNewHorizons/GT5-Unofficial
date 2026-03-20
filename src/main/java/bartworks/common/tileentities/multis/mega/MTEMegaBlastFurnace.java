@@ -228,13 +228,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
                 this.inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
             return true;
         }
-        this.batchMode = !this.batchMode;
-        if (this.batchMode) {
-            GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-        } else {
-            GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-        }
-        return true;
+        return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
