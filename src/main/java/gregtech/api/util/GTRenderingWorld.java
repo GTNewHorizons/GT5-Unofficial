@@ -33,6 +33,27 @@ public class GTRenderingWorld implements IBlockAccess {
     private static final Map<ChunkCoordIntPair, Set<ChunkPosition>> index = new ConcurrentHashMap<>();
     private IBlockAccess mWorld = Minecraft.getMinecraft().theWorld;
 
+    /**
+     * Per-face meta override used by CTM textures during rendering to ensure each facade side
+     * reports its own meta to the CTM icon lookup, regardless of what is stored in {@link #infos}.
+     * Only valid on the render thread; set/cleared around each icon query.
+     */
+    private static int metaOverrideX = Integer.MIN_VALUE;
+    private static int metaOverrideY = Integer.MIN_VALUE;
+    private static int metaOverrideZ = Integer.MIN_VALUE;
+    private static int metaOverrideValue;
+
+    public static void setMetaOverride(int x, int y, int z, int meta) {
+        metaOverrideX = x;
+        metaOverrideY = y;
+        metaOverrideZ = z;
+        metaOverrideValue = meta;
+    }
+
+    public static void clearMetaOverride() {
+        metaOverrideX = Integer.MIN_VALUE;
+    }
+
     static {
         new ForgeEventHandler();
     }
@@ -79,6 +100,9 @@ public class GTRenderingWorld implements IBlockAccess {
 
     @Override
     public int getBlockMetadata(int p_72805_1_, int p_72805_2_, int p_72805_3_) {
+        if (p_72805_1_ == metaOverrideX && p_72805_2_ == metaOverrideY && p_72805_3_ == metaOverrideZ) {
+            return metaOverrideValue;
+        }
         BlockInfo blockInfo = infos.get(new ChunkPosition(p_72805_1_, p_72805_2_, p_72805_3_));
         return blockInfo != null ? blockInfo.meta : mWorld.getBlockMetadata(p_72805_1_, p_72805_2_, p_72805_3_);
     }
