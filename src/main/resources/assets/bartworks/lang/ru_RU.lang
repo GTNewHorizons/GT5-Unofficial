@@ -259,9 +259,6 @@ BW.NEI.display.radhatch.0=Зиверт: %s Sv
 BW.NEI.display.radhatch.1=Масса: %s кг
 BW.NEI.display.radhatch.2=Время: %s сек
 
-misc.BatchModeTextOn=Включён пакетный режим
-misc.BatchModeTextOff=Отключён пакетный режим
-
 tooltip.cal.imprintedWith=Imprinted with: %s
 chat.cal.mode.0=Режим: Сборочная линия электросхем
 chat.cal.mode.1=Режим: Сборщик электросхем

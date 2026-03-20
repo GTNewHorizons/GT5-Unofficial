@@ -22,10 +22,6 @@ death.attack.plasmabolt=%s died by burning hot plasma.
 death.attack.plasmabolt.player=%1$s was killed by %2$s using plasma.
 death.attack.gtpp.grinder=%s was ground into nothingness by an IsaMill.
 
-# Batch mode chat message
-misc.BatchModeTextOn=Включён пакетный режим (рекомендуется использовать МЭ выходной люк, излишки на выходе будут уничтожены!)
-misc.BatchModeTextOff=Отключён пакетный режим
-
 # Alternative Materials
 item.itemPlateBatteryAlloy.name=Пластина из аккумуляторного сплава
 item.itemIngotBatteryAlloy.name=Слиток из аккумуляторного сплава

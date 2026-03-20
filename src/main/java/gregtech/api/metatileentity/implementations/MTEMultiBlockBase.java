@@ -3018,9 +3018,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             if (aPlayer.isSneaking()) {
                 batchMode = !batchMode;
                 if (batchMode) {
-                    GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
+                    GTUtility.sendChatTrans(aPlayer, "GT5U.chat.machine.batch_mode.enable");
                 } else {
-                    GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
+                    GTUtility.sendChatTrans(aPlayer, "GT5U.chat.machine.batch_mode.disable");
                 }
                 return true;
             }
