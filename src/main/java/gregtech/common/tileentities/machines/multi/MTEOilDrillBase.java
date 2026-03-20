@@ -191,7 +191,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         this.mEfficiencyIncrease = 10000;
         int tier = Math.max(0, GTUtility.getTier(getMaxInputVoltage()));
         this.mEUt = -7 << (tier << 1); // (1/4) A of current tier when at bottom (7/8) A of current tier while mining
-        this.mMaxProgresstime = calculateMaxProgressTime(tier) * batchMultiplier;
+        this.mMaxProgresstime = calculateMaxProgressTime(tier);
     }
 
     @Override
@@ -200,7 +200,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             1,
             (workState == STATE_AT_BOTTOM || simulateWorking
                 ? (64 * (chunkRangeConfig * chunkRangeConfig)) >> (getMinTier() - 1)
-                : 120) / GTUtility.powInt(2, tier));
+                : 120) / GTUtility.powInt(2, tier)) * batchMultiplier;
     }
 
     protected float computeSpeed() {
