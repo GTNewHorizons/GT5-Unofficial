@@ -1,7 +1,6 @@
 package gregtech.api.util;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayDeque;
 
 import net.minecraft.server.MinecraftServer;
 
@@ -18,100 +17,56 @@ public class AveragePerTickCounter {
         if (period <= 0) throw new InvalidParameterException("period should be a positive non-zero number");
 
         this.period = period;
-        values = new ArrayDeque<>(period);
+        int size = period + 1;
+        this.values = new long[size];
+        this.timestamps = new int[size];
     }
 
     public void addValue(long value) {
-
         if (value == 0) return;
 
         final int currTick = getWorldTimeInTicks();
 
-        if (values.isEmpty()) {
-            values.addLast(new Measurement(currTick, value));
-            isCachedAverageValid = false;
-            return;
-        }
-
-        Measurement lastMeasurement = values.peekLast();
-        final int lastMeasurementTick = lastMeasurement.TimestampInWorldTicks;
-
         /// sums up values added in the same tick
         /// for example a cable had an amp running through it multiple times in the same tick
-        if (currTick == lastMeasurementTick) {
-            lastMeasurement.Value = lastMeasurement.Value + value;
-            isCachedAverageValid = false;
-            return;
-        }
-
-        if (currTick > lastMeasurementTick) {
-            trimIrrelevantData(currTick);
-
-            values.addLast(new Measurement(currTick, value));
-            isCachedAverageValid = false;
+        if (currTick == timestamps[currIndex]) {
+            values[currIndex] += value;
+        } else if (currTick > timestamps[currIndex]) {
+            currIndex = (currIndex + 1) % values.length;
+            values[currIndex] = value;
+            timestamps[currIndex] = currTick;
         }
     }
 
     public double getAverage() {
-
-        if (values.isEmpty()) return 0;
-
         final int currTick = getWorldTimeInTicks();
+        if (lastCacheTick == currTick) return cachedAverage;
 
-        Measurement lastMeasurement = values.peekLast();
-        final int lastMeasurementTick = lastMeasurement.TimestampInWorldTicks;
-
-        if (currTick < lastMeasurementTick) return 0;
-
-        if (currTick > lastMeasurementTick) {
-            trimIrrelevantData(currTick);
-        }
-
-        if (isCachedAverageValid) return cachedAverage;
+        if (currTick < timestamps[currIndex]) return 0;
 
         return calculateAverage();
     }
 
     public long getLast() {
+        final int targetTick = getWorldTimeInTicks() - 1;
+        if (timestamps[currIndex] == targetTick) return values[currIndex];
 
-        if (values.isEmpty()) return 0;
-
-        final int currTick = getWorldTimeInTicks();
-
-        Measurement lastMeasurement = values.peekLast();
-        final int lastMeasurementTick = lastMeasurement.TimestampInWorldTicks;
-
-        if (currTick == lastMeasurementTick) return values.getLast().Value;
+        int prevIndex = (currIndex - 1 + values.length) % values.length;
+        if (timestamps[prevIndex] == targetTick) return values[prevIndex];
 
         return 0;
     }
 
     private double calculateAverage() {
-
-        isCachedAverageValid = true;
         long sum = 0;
-
-        for (Measurement measurement : values) {
-            sum += measurement.Value;
+        int currTick = getWorldTimeInTicks();
+        int minTick = currTick - period;
+        for (int i = 0; i < values.length; i++) {
+            if (timestamps[i] >= minTick && timestamps[i] < currTick) sum += values[i];
         }
-
-        return sum / (double) period;
-    }
-
-    private void trimIrrelevantData(int currWorldTimeInTicks) {
-
-        if (values.isEmpty()) return;
-
-        int firstMeasurementTick = values.peekFirst().TimestampInWorldTicks;
-
-        while (currWorldTimeInTicks - firstMeasurementTick >= period) {
-            values.removeFirst();
-            isCachedAverageValid = false;
-
-            if (values.isEmpty()) return;
-
-            firstMeasurementTick = values.peekFirst().TimestampInWorldTicks;
-        }
+        cachedAverage = sum / (double) period;
+        lastCacheTick = currTick;
+        return cachedAverage;
     }
 
     private int getWorldTimeInTicks() {
@@ -119,20 +74,11 @@ public class AveragePerTickCounter {
             .getTickCounter();
     }
 
-    private final ArrayDeque<Measurement> values;
+    private final long[] values;
+    private final int[] timestamps;
+    private int currIndex = 0;
     private final int period;
 
-    private final double cachedAverage = 0;
-    private boolean isCachedAverageValid = true;
-
-    private static class Measurement {
-
-        public int TimestampInWorldTicks;
-        public long Value;
-
-        public Measurement(int timestampInWorldTicks, long value) {
-            this.TimestampInWorldTicks = timestampInWorldTicks;
-            this.Value = value;
-        }
-    }
+    private double cachedAverage = 0;
+    private int lastCacheTick = 0;
 }
