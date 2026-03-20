@@ -116,7 +116,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         if (aNBT.hasKey("chunkRangeConfig")) chunkRangeConfig = aNBT.getInteger("chunkRangeConfig");
     }
 
-    protected MultiblockTooltipBuilder createTooltip(String tierSuffix) {
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
         String casings = getCasingBlockItem().get(0)
             .getDisplayName();
 

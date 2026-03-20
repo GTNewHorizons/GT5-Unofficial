@@ -19,11 +19,6 @@ public class MTEOilDrill2 extends MTEOilDrillBase {
     }
 
     @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        return createTooltip("II");
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEOilDrill2(mName);
     }
