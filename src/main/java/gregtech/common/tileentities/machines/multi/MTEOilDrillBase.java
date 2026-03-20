@@ -68,6 +68,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     private int chunkRangeConfig = getRangeInChunks();
 
+    protected int batchMultiplier = 1;
+
     public MTEOilDrillBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -180,8 +182,6 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     protected List<IHatchElement<? super MTEDrillerBase>> getAllowedHatches() {
         return ImmutableList.of(InputBus, OutputHatch, Maintenance, Energy);
     }
-
-    int batchMultiplier = 1;
 
     @Override
     protected void setElectricityStats() {
