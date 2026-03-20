@@ -80,9 +80,13 @@ public class GTPacketClearPowerfail extends GTPacket {
 
     @SideOnly(Side.CLIENT)
     private void clearClient() {
-        long coord = CoordinatePacker.pack(x, y, z);
-        GTMod.clientProxy().powerfailRenderer.powerfails.remove(coord);
-        if (Mods.Navigator.isModLoaded()) PowerfailLayerManager.INSTANCE.removePowerfail(coord);
+        var powerfails = GTMod.clientProxy().powerfailRenderer.powerfails.get(dim);
+
+        if (powerfails != null) {
+            long coord = CoordinatePacker.pack(x, y, z);
+            powerfails.remove(coord);
+            if (Mods.Navigator.isModLoaded()) PowerfailLayerManager.INSTANCE.removePowerfail(coord);
+        }
     }
 
     private void clearServer() {

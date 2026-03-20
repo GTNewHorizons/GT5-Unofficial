@@ -44,6 +44,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.blocks.BlockCasings13;
+import gregtech.common.gui.modularui.multiblock.MTEBeamCrafterGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gtnhlanth.common.beamline.BeamInformation;
@@ -59,6 +60,9 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     private int currentRecipeCurrentAmountB = 0;
     private int currentRecipeMaxAmountA = 0;
     private int currentRecipeMaxAmountB = 0;
+
+    private int currentRecipeParticleIDA;
+    private int currentRecipeParticleIDB;
 
     private GTRecipe lastRecipe;
 
@@ -382,6 +386,9 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         if (!isInputParticleInRecipe(inputParticle_A, inputParticle_B, metadata))
             return CheckRecipeResultRegistry.NO_RECIPE;
 
+        this.currentRecipeParticleIDA = metadata.particleID_A;
+        this.currentRecipeParticleIDB = metadata.particleID_B;
+
         this.currentRecipeMaxAmountA = metadata.amount_A;
         this.currentRecipeMaxAmountB = metadata.amount_B;
         // total time to finish recipe in ticks is the sum of the required Amounts
@@ -407,5 +414,34 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.beamcrafterRecipes;
+    }
+
+    public int getCurrentRecipeCurrentAmountA() {
+        return this.currentRecipeCurrentAmountA;
+    }
+
+    public int getCurrentRecipeCurrentAmountB() {
+        return this.currentRecipeCurrentAmountB;
+    }
+
+    public int getCurrentRecipeMaxAmountA() {
+        return this.currentRecipeMaxAmountA;
+    }
+
+    public int getCurrentRecipeMaxAmountB() {
+        return this.currentRecipeMaxAmountB;
+    }
+
+    public int getCurrentRecipeParticleIDA() {
+        return this.currentRecipeParticleIDA;
+    }
+
+    public int getCurrentRecipeParticleIDB() {
+        return this.currentRecipeParticleIDB;
+    }
+
+    @Override
+    protected @NotNull MTEBeamCrafterGui getGui() {
+        return new MTEBeamCrafterGui(this);
     }
 }

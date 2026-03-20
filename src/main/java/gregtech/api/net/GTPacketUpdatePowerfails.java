@@ -11,10 +11,10 @@ import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Mods;
+import gregtech.client.GTPowerfailRenderer;
 import gregtech.common.data.GTPowerfailTracker.Powerfail;
 import gregtech.crossmod.navigator.PowerfailLayerManager;
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
 public class GTPacketUpdatePowerfails extends GTPacket {
 
@@ -79,11 +79,12 @@ public class GTPacketUpdatePowerfails extends GTPacket {
         if (!(blockAccess instanceof World world)) return;
         if (this.worldId != world.provider.dimensionId) return;
 
-        Long2ObjectOpenHashMap<Powerfail> powerfails = GTMod.clientProxy().powerfailRenderer.powerfails;
-        powerfails.clear();
+        GTPowerfailRenderer renderer = GTMod.clientProxy().powerfailRenderer;
+
+        renderer.powerfails.clear();
 
         for (Powerfail p : this.powerfails) {
-            powerfails.put(p.getCoord(), p);
+            renderer.addPowerfail(p);
         }
 
         if (Mods.Navigator.isModLoaded()) {
