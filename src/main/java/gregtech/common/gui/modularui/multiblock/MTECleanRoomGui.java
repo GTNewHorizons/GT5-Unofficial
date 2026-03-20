@@ -26,10 +26,8 @@ public class MTECleanRoomGui extends MTEMultiBlockBaseGui<MTECleanroom> {
         IntSyncValue efficency = syncManager.findSyncHandler("efficiency", IntSyncValue.class);
         return super.createTerminalTextWidget(syncManager, parent).child(
             IKey.dynamic(
-                () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                    + ": "
-                    + formatNumber(efficency.getValue() / 100D)
-                    + "%"
+                () -> EnumChatFormatting.WHITE + StatCollector
+                    .translateToLocalFormatted("GT5U.multiblock.efficiency", formatNumber(efficency.getValue() / 100D))
             // enabled if active
             )
                 .asWidget()
