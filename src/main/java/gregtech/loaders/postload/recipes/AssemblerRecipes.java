@@ -3421,11 +3421,23 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4),
+                ItemList.FluidRegulator_EV.get(2L),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 2),
                 ItemRegistry.acidGens[2],
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4L))
             .itemOutputs(ItemList.Machine_Multi_Large_Neutralization_Engine.get(1L))
             .eut(TierEU.RECIPE_EV)
+            .duration(20 * SECONDS)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4L),
+                ItemList.Casing_IV.get(1L),
+                ItemList.Sensor_EV.get(2L),
+                ItemList.Casing_Strengthened_Inanimate.get(1L))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(8 * INGOTS))
+            .itemOutputs(ItemList.Hatch_ToxicResidueSensor.get(1L))
+            .eut(1920)
             .duration(20 * SECONDS)
             .addTo(assemblerRecipes);
     }

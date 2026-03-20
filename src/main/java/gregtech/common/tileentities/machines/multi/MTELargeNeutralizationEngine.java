@@ -702,11 +702,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         long aTotal = 0;
         for (MTEHatchDynamo aDynamo : validMTEList(mDynamoHatches)) {
             long aVoltage = aDynamo.maxEUOutput();
-            aTotal = aDynamo.maxAmperesOut() * aVoltage;
+            aTotal += aDynamo.maxAmperesOut() * aVoltage;
         }
         for (MTEHatch aDynamo : validMTEList(mExoticDynamoHatches)) {
             long aVoltage = aDynamo.maxEUOutput();
-            aTotal = aDynamo.maxAmperesOut() * aVoltage;
+            aTotal += aDynamo.maxAmperesOut() * aVoltage;
         }
         return aTotal;
     }

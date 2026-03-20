@@ -3553,8 +3553,9 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Multi_Large_Neutralization_Engine.get(1L),
             GTModHandler.RecipeBits.BITS,
-            new Object[] { "PCP", "CAC", "PCP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'C',
-                OrePrefixes.circuit.get(Materials.IV), 'A', ItemRegistry.acidGens[2] });
+            new Object[] { "PCP", "FAF", "PCP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'C',
+                OrePrefixes.circuit.get(Materials.IV), 'F', ItemList.FluidRegulator_EV.get(1L), 'A',
+                ItemRegistry.acidGens[2] });
     }
 
     private static void registerShapelessCraftingRecipes() {
