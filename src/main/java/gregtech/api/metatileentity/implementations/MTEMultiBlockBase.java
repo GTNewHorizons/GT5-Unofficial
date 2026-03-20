@@ -2339,7 +2339,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
         if (hatchCount > 0) {
             info.add(
-                GTUtility.translate("GT5U.multiblock.scanner.energy", formatNumber(storedEnergy), formatNumber(maxEnergy)));
+                GTUtility
+                    .translate("GT5U.multiblock.scanner.energy", formatNumber(storedEnergy), formatNumber(maxEnergy)));
 
             info.add(
                 GTUtility.translate(
@@ -2352,14 +2353,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             info.add(GTUtility.translate("GT5U.multiblock.scanner.usage", formatNumber(getActualEnergyUsage())));
         }
 
-        info.add(GTUtility.translate("GT5U.multiblock.scanner.problems", formatNumber(getIdealStatus() - getRepairStatus())));
+        info.add(
+            GTUtility
+                .translate("GT5U.multiblock.scanner.problems", formatNumber(getIdealStatus() - getRepairStatus())));
 
         if (mEfficiency > 0) {
             info.add(GTUtility.translate("GT5U.multiblock.scanner.efficiency", formatNumber(mEfficiency / 100.0F)));
         }
 
         if (getPollutionPerSecond(getStackForm(1)) > 0) {
-            info.add(GTUtility.translate("GT5U.multiblock.scanner.pollution", formatNumber(getAveragePollutionPercentage())));
+            info.add(
+                GTUtility
+                    .translate("GT5U.multiblock.scanner.pollution", formatNumber(getAveragePollutionPercentage())));
         }
 
         if (recipesDone > 0) {
