@@ -132,7 +132,7 @@ public class CraftingRecipes implements Runnable {
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "IPI", "PMP", "ISI", 'I', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
                 'P', GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Wood, 1L), 'M',
-                new ItemStack(ItemRegistry.PUMPPARTS, 1, 1), 'S', "craftingIronFurnace" });
+                new ItemStack(ItemRegistry.PUMPPARTS, 1, 1), 'S', "craftingBlastFurnace" });
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.WINDMETER),
