@@ -367,7 +367,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.GRAY
                     + "*"
                     + EnumChatFormatting.YELLOW
-                    + "Fuel Consumption(L/s)"
+                    + "Fuel Consumption(L/t)"
                     + EnumChatFormatting.GRAY
                     + "*rand("
                     + EnumChatFormatting.WHITE
