@@ -201,7 +201,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             1,
             (workState == STATE_AT_BOTTOM || simulateWorking
                 ? (64 * (chunkRangeConfig * chunkRangeConfig)) >> (getMinTier() - 1)
-                : 120) / GTUtility.powInt(2, tier)) * batchMultiplier;
+                : 120) / GTUtility.powInt(2, tier))
+            * batchMultiplier;
     }
 
     protected float computeSpeed() {
@@ -335,7 +336,9 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         return ValidationResult.of(ValidationType.VALID, pumpedOil.amount == 0 ? null : pumpedOil);
     }
 
-    /**Pump the oil. Takes batch mode into account.
+    /**
+     * Pump the oil. Takes batch mode into account.
+     * 
      * @param speed    Speed to pump oil
      * @param simulate If true, it actually does not consume vein
      * @return Fluid pumped
