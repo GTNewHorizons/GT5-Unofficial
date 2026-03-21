@@ -372,7 +372,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                 // This only works because for now we enable batch mode solely on the infinity pump which does not
                 // deplete the field, otherwise we'll need to find out how to keep precision while applying the batch
                 // multiplier to the coefficient variable
-                returnOil.amount += pumped.amount*batchMultiplier;
+                returnOil.amount += pumped.amount * batchMultiplier;
             }
         }
         return returnOil;
