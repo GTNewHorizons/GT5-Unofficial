@@ -8,7 +8,6 @@ import static gregtech.api.util.tooltip.TooltipMarkupProcessor.FINISHER_MARK;
 import static gregtech.api.util.tooltip.TooltipMarkupProcessor.INDENT_MARK;
 import static gregtech.api.util.tooltip.TooltipMarkupProcessor.SEPARATOR_MARK;
 import static gregtech.api.util.tooltip.TooltipMarkupProcessor.STRUCTURE_SEPARATOR_MARK;
-import static net.minecraft.util.StatCollector.canTranslate;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static org.apache.commons.lang3.StringUtils.removeEnd;
 
@@ -431,9 +430,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addController(String info) {
-        addStructurePart(
-            "GT5U.MBTT.Controller",
-            canTranslate("gt.mb.corepos." + info) ? "gt.mb.corepos." + info : info);
+        addStructurePart("GT5U.MBTT.Controller", tryTranslate("gt.mbtt.structure." + info, info));
         return this;
     }
 
@@ -1047,7 +1044,7 @@ public class MultiblockTooltipBuilder {
         addInfo("GT5U.MBTT.HoldDisplay");
 
         if (!this.authors.isEmpty()) {
-            if (this.authors.size() == 1 && canTranslate(this.authors.get(0))) {
+            if (this.authors.size() == 1 && StatCollector.canTranslate(this.authors.get(0))) {
                 addInfo(this.authors.get(0));
             } else {
                 addInfo(
