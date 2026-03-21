@@ -123,54 +123,44 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
 
-        tt.addMachineType("Boiler");
+        tt.addMachineType("gt.recipe.largeboilerfakefuels");
         // Tooltip differs between the boilers that output Superheated Steam (Titanium and Tungstensteel) and the ones
         // that do not (Bronze and Steel)
         if (isSuperheated()) {
             tt.addInfo(
-                "Produces " + formatNumber((getEUt() * 40) * ((runtimeBoost(20) / (20f)) / superToNormalSteam))
-                    + "L of Superheated Steam with 1 Coal at "
-                    + formatNumber((getEUt() * 40L) / superToNormalSteam)
-                    + "L/s") // ?
-                .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
-                .addInfo("Only some solid fuels are allowed (check the NEI Large Boiler tab for details)")
-                .addInfo("If there are any disallowed fuels in the input bus, the boiler won't run!");
+                "gt.mb_boiler.tips.1a",
+                formatNumber((getEUt() * 40) * ((runtimeBoost(20) / 20f) / superToNormalSteam)),
+                formatNumber((getEUt() * 40L) / superToNormalSteam)); // ?
         } else {
             tt.addInfo(
-                "Produces " + formatNumber((getEUt() * 40) * (runtimeBoost(20) / 20f))
-                    + "L of Steam with 1 Coal at "
-                    + formatNumber(getEUt() * 40L)
-                    + "L/s") // ?
-                .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
-                .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
+                "gt.mb_boiler.tips.1b",
+                formatNumber((getEUt() * 40) * (runtimeBoost(20) / 20f)),
+                formatNumber(getEUt() * 40L)); // ?
         }
-        tt.addInfo(
-            String.format(
-                "Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up",
-                formatNumber(500.0 / getEfficiencyIncrease()))) // ? check semifluid again
+        tt.addInfo("gt.mb_boiler.tips.2", formatNumber(500.0 / getEfficiencyIncrease())) // ? check semifluid again
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, false)
-            .addController("Front bottom")
-            .addCasingInfoRange(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24, 31, false) // ?
-            .addOtherStructurePart(getCasingMaterial() + " Fire Boxes", "Bottom layer, 3 minimum")
-            .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Blocks", "Inner 3 blocks")
-            .addMaintenanceHatch("Any firebox", 1)
-            .addMufflerHatch("Any firebox", 1)
-            .addInputBus("Solid fuel, Any firebox", 1)
-            .addInputHatch("Liquid fuel, Any firebox", 1)
-            .addStructureInfo("You can use either, or both")
-            .addInputHatch("Water, Any firebox", 1)
-            .addOutputHatch("Steam, any casing", 2)
+            .addController("front_bottom_middle")
+            .addCasingInfoRange(new ItemStack(getCasingBlock(), 1, getCasingMeta()).getDisplayName(), 24, 31, false)
+            .addStructurePart(
+                new ItemStack(getFireboxBlock(), 1, getFireboxMeta()).getDisplayName(),
+                "gt.mb_boiler.info.firebox")
+            .addStructurePart(
+                new ItemStack(getPipeBlock(), 1, getPipeMeta()).getDisplayName(),
+                "gt.mb_boiler.info.pipe")
+            .addMaintenanceHatch("gt.mb_boiler.info.maintenance", 1)
+            .addMufflerHatch("gt.mb_boiler.info.maintenance", 1)
+            .addInputBus("gt.mb_boiler.info.i_bus", 1)
+            .addInputHatch("gt.mb_boiler.info.i_hatch.1", 1)
+            .addStructureInfo("gt.mb_boiler.info.i_hatch.1.tip")
+            .addInputHatch("gt.mb_boiler.info.i_hatch.2", 1)
+            .addOutputHatch("gt.mb_boiler.info.o_hatch", 2)
             .toolTipFinisher();
 
         return tt;
     }
 
-    public abstract String getCasingMaterial();
-
     public abstract Block getCasingBlock();
-
-    public abstract String getCasingBlockType();
 
     public abstract byte getCasingMeta();
 

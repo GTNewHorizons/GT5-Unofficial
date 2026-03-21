@@ -29,6 +29,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -146,23 +147,28 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(Casings.ElectrolyzerCasing.getLocalizedName());
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Electrolyzer")
+        tt.addMachineType("gt.recipe.electrolyzer")
             .addBulkMachineInfo(PARALLEL_PER_TIER, SPEED, EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, false)
-            .addController("Front Center")
-            .addCasingInfoMin("Electrolyzer Casings", 6, false)
-            .addCasingInfoExactly("Potin Frame Box", 12, false)
-            .addCasingInfoExactly("Tin Item Pipe Casing", 4, false)
-            .addCasingInfoExactly("Brass Item Pipe Casing", 4, false)
-            .addInputBus("Any Electrolyzer Casing", 1)
-            .addOutputBus("Any Electrolyzer Casing", 1)
-            .addInputHatch("Any Electrolyzer Casing", 1)
-            .addOutputHatch("Any Electrolyzer Casing", 1)
-            .addEnergyHatch("Any Electrolyzer Casing", 1)
-            .addMaintenanceHatch("Any Electrolyzer Casing", 1)
-            .addMufflerHatch("Any Electrolyzer Casing", 1)
+            .addController("front_center")
+            .addCasingInfoMin(Casings.ElectrolyzerCasing.getLocalizedName(), 6, false)
+            .addCasingInfoExactly(
+                MaterialsAlloy.POTIN.getFrameBox(1)
+                    .getDisplayName(),
+                12,
+                false)
+            .addCasingInfoExactly(Casings.TinItemPipeCasing.getLocalizedName(), 4, false)
+            .addCasingInfoExactly(Casings.BrassItemPipeCasing.getLocalizedName(), 4, false)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputHatch(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
+            .addMufflerHatch(anyCasing, 1)
             .addStructureAuthors("Vortex")
             .toolTipFinisher();
         return tt;

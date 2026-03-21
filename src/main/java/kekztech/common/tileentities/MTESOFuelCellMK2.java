@@ -32,6 +32,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -103,25 +104,26 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Gas Turbine")
-            .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
+        tt.addMachineType("machtype.gas_turbine")
+            .addInfo("gt.so_fuel_cell.tips.1", formatNumber(EU_PER_TICK * 20))
+            .addInfo("gt.so_fuel_cell_ii.tips")
             .addInfo(
-                "Consumes up to " + formatNumber(EU_PER_TICK * 20)
-                    + "EU worth of fuel with up to 100% efficiency each second")
-            .addInfo("Nitrobenzene and other gas fuels above 1M EU/bucket are more efficient")
-            .addInfo("Steam production requires the SOFC to heat up completely first")
-            .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Superheated Steam")
-            .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
+                "gt.so_fuel_cell.tips.2",
+                EU_PER_TICK,
+                STEAM_PER_SEC,
+                FluidRegistry.getFluidStack("ic2superheatedsteam", 1)
+                    .getLocalizedName(),
+                OXYGEN_PER_SEC)
             .beginStructureBlock(3, 3, 5, false)
-            .addController("Front center")
-            .addCasingInfoMin("Robust Tungstensteel Machine Casing", 12, false)
-            .addOtherStructurePart("GDC Ceramic Electrolyte Unit", "3x, Center 1x1x3")
-            .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
-            .addDynamoHatch("Back center", 2)
-            .addMaintenanceHatch("Any casing", 1)
-            .addInputHatch("Fuel, any casing", 1)
-            .addInputHatch("Oxygen, any casing", 1)
-            .addOutputHatch("Superheated Steam, any casing", 1)
+            .addController("front_center")
+            .addCasingInfoMin(Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), 12)
+            .addStructurePart("tile.kekztech_gdcceramicelectrolyteunit_block.name", "gt.so_fuel_cell.info.ysz")
+            .addStructurePart("Material.reinforcedglass", "gt.so_fuel_cell.info.glass")
+            .addDynamoHatch("gt.mbtt.structure.back_center", 2)
+            .addMaintenanceHatch("<casing>", 1)
+            .addInputHatch("gt.so_fuel_cell.info.i_hatch.1", 1)
+            .addInputHatch("gt.so_fuel_cell.info.i_hatch.2", 1)
+            .addOutputHatch("gt.so_fuel_cell_ii.info.o_hatch", 1)
             .toolTipFinisher();
         return tt;
     }

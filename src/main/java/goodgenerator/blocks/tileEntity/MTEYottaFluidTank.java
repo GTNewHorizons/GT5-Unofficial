@@ -48,6 +48,7 @@ import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -58,6 +59,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -445,19 +447,16 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Tank")
-            .addInfo("The max output speed is decided by the amount of stored liquid and the output hatch's capacity")
-            .addInfo("The max fluid cell tier is limited by the glass tier")
-            .addInfo("HV glass for T1, EV glass for T2, IV glass for T3. . .")
-            .addInfo("The max height of the cell blocks is 15")
+        tt.addMachineType("machtype.fluid_tank")
+            .addInfo("gt.yottank.tips")
             .beginVariableStructureBlock(5, 5, 1, 15, 5, 5, false)
-            .addController("Front of the second layer")
-            .addCasingInfoExactly("Steel Frame Box", 16, false)
-            .addCasingInfoRange("Any Tiered Glass", 16, 240, true)
-            .addCasingInfoRange("Fluid Cell Block", 9, 135, true)
-            .addCasingInfoRange("YOTTank Casing", 25, 43, false)
-            .addInputHatch("Hint Block Number 1")
-            .addOutputHatch("Hint Block Number 3")
+            .addController("gt.yottank.info.controller")
+            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Steel), 16, false)
+            .addCasingInfoRange("GT5U.MBTT.AnyGlass", 16, 240, true)
+            .addCasingInfoRange("yottaFluidTankCell.name", 9, 135, true)
+            .addCasingInfoRange("yottaFluidTankCasing.name", 25, 43, false)
+            .addInputHatch("<hint>", 1)
+            .addOutputHatch("<hint>", 3)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

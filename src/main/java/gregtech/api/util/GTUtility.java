@@ -134,6 +134,10 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
@@ -2300,11 +2304,7 @@ public class GTUtility {
 
         String key = "gtnop.world." + name;
 
-        if (StatCollector.canTranslate(key)) {
-            return StatCollector.translateToLocal(key);
-        } else {
-            return name;
-        }
+        return tryTranslate(key, name);
     }
 
     public static boolean moveEntityToDimensionAtCoords(Entity entity, int aDimension, double aX, double aY,
@@ -2593,6 +2593,33 @@ public class GTUtility {
         for (String line : NEWLINE_SPLITTER.split(translate(key, args))) {
             tooltip.add(line);
         }
+    }
+
+    /**
+     * Splits all strings in the given list on the literal {@code \n}
+     * sequence in-place, expanding each matching entry into multiple
+     * consecutive entries. Uses the same splitter as
+     * {@link #translateMultiline(String, Object...)}.
+     *
+     * @param lines the list to split in-place; may be {@code null}
+     */
+    public static void splitNewlines(List<String> lines) {
+        if (lines == null) return;
+        for (int i = 0; i < lines.size();) {
+            String str = lines.get(i);
+            if (str.contains("\\n")) {
+                lines.remove(i);
+                for (String part : NEWLINE_SPLITTER.split(str)) {
+                    lines.add(i++, part);
+                }
+            } else {
+                i++;
+            }
+        }
+    }
+
+    public static String tryTranslate(String key, String fallback, Object... parameters) {
+        return StatCollector.canTranslate(key) ? translate(key, parameters) : fallback;
     }
 
     /*
@@ -4200,6 +4227,34 @@ public class GTUtility {
         return entity instanceof EntityPlayer p && !p.getClass()
             .getName()
             .contains("Fake");
+    }
+
+    /**
+     * ONLY used in GT MTE tooltips<br>
+     *
+     * Different from translateToLocalFormatted, it's to make sure<br>
+     * nothing gets hardcoded on startup<br>
+     * for a seamless translation experience
+     */
+    public static String nestParams(String locKey, Object... params) {
+        if (params == null || params.length == 0) {
+            return locKey;
+        }
+
+        JsonObject json = new JsonObject();
+        json.addProperty("k", locKey);
+
+        JsonArray paramsArray = new JsonArray();
+        for (Object param : params) {
+            if (param == null) {
+                paramsArray.add(JsonNull.INSTANCE);
+            } else {
+                paramsArray.add(new JsonPrimitive(param.toString()));
+            }
+        }
+        json.add("p", paramsArray);
+
+        return json.toString();
     }
 
     /**

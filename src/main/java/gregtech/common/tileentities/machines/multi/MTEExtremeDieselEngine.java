@@ -16,6 +16,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -40,25 +41,21 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Combustion Generator, ECE")
-            .addInfo("Supply high rating fuel and 8000L of Lubricant per hour to run")
-            .addInfo("Supply 40L/s of Liquid Oxygen to boost output (optional)")
-            .addInfo("Default: Produces 10900EU/t at 100% fuel efficiency")
-            .addInfo("Boosted: Produces 32700EU/t at 150% fuel efficiency")
-            .addInfo("You need to wait for it to reach 300% to output full power")
+        tt.addMachineType("machtype.ece")
+            .addInfo("gt.ece.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 4, false)
-            .addController("Front center")
-            .addCasingInfoRange("Robust Tungstensteel Machine Casing", 16, 22, false)
-            .addOtherStructurePart("Titanium Gear Box Machine Casing", "Inner 2 blocks")
-            .addOtherStructurePart("Extreme Engine Intake Machine Casing", "8x, ring around controller")
-            .addStructureInfo("Extreme Engine Intake Casings must not be obstructed in front (only air blocks)")
-            .addDynamoHatch("Back center", 2)
-            .addMaintenanceHatch("One of the casings next to a Gear Box", 1)
-            .addMufflerHatch("Top middle back, above the rear Gear Box", 1)
-            .addInputHatch("HOG, next to a Gear Box", 1)
-            .addInputHatch("Lubricant, next to a Gear Box", 1)
-            .addInputHatch("Liquid Oxygen, optional, next to a Gear Box", 1)
+            .addController("front_center")
+            .addCasingInfoRange(Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), 16, 22, false)
+            .addStructurePart(Casings.TitaniumGearBoxCasing.getLocalizedName(), "gt.ece.info.ti_gearbox")
+            .addStructurePart(Casings.ExtremeEngineIntakeCasing.getLocalizedName(), "gt.ece.info.intake")
+            .addStructureInfo("gt.ece.info.intake_caution")
+            .addDynamoHatch("gt.mbtt.structure.back_center", 2)
+            .addMaintenanceHatch("gt.ece.info.maintenance", 1)
+            .addMufflerHatch("gt.ece.info.muffler", 1)
+            .addInputHatch("gt.ece.info.i_hatch.1", 1)
+            .addInputHatch("gt.ece.info.i_hatch.2", 1)
+            .addInputHatch("gt.ece.info.i_hatch.3", 1)
             .toolTipFinisher();
         return tt;
     }
