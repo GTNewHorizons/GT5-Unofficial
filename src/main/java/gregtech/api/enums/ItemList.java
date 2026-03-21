@@ -3034,14 +3034,12 @@ public enum ItemList implements IItemContainer {
         sToluene, sNitrationMixture, sRocketFuel, sHydricSulfur, sIndiumConcentrate, sLeadZincSolution,
         sHydrochloricAcid;
 
-    public static final ItemList[] FORESTRY_DECORATIVE_PLANKS = new ItemList[]{ ItemList.Plank_Larch, ItemList.Plank_Teak,
-        ItemList.Plank_Acacia_Green, ItemList.Plank_Lime, ItemList.Plank_Chestnut,
-        ItemList.Plank_Wenge, ItemList.Plank_Baobab, ItemList.Plank_Sequoia,
-        ItemList.Plank_Kapok, ItemList.Plank_Ebony, ItemList.Plank_Mahagony,
-        ItemList.Plank_Balsa, ItemList.Plank_Willow, ItemList.Plank_Walnut,
-        ItemList.Plank_Greenheart, ItemList.Plank_Cherry, ItemList.Plank_Mahoe,
-        ItemList.Plank_Poplar, ItemList.Plank_Palm, ItemList.Plank_Papaya,
-        ItemList.Plank_Pine, ItemList.Plank_Plum, ItemList.Plank_Maple,
+    public static final ItemList[] FORESTRY_DECORATIVE_PLANKS = new ItemList[] { ItemList.Plank_Larch,
+        ItemList.Plank_Teak, ItemList.Plank_Acacia_Green, ItemList.Plank_Lime, ItemList.Plank_Chestnut,
+        ItemList.Plank_Wenge, ItemList.Plank_Baobab, ItemList.Plank_Sequoia, ItemList.Plank_Kapok, ItemList.Plank_Ebony,
+        ItemList.Plank_Mahagony, ItemList.Plank_Balsa, ItemList.Plank_Willow, ItemList.Plank_Walnut,
+        ItemList.Plank_Greenheart, ItemList.Plank_Cherry, ItemList.Plank_Mahoe, ItemList.Plank_Poplar,
+        ItemList.Plank_Palm, ItemList.Plank_Papaya, ItemList.Plank_Pine, ItemList.Plank_Plum, ItemList.Plank_Maple,
         ItemList.Plank_Citrus };
     private ItemStack mStack;
     private boolean mHasNotBeenSet;

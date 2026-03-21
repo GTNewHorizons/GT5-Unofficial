@@ -10,7 +10,6 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import gregtech.api.util.GTRecipeConstants;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -24,6 +23,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipeConstants;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class CuttingRecipes implements Runnable {
@@ -395,8 +395,7 @@ public class CuttingRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(new OreDictItemStack("stoneRedrock", 1))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Redrock, 1L))
-                .fluidInputs(
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(1))
+                .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
                 .duration(4 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(cutterRecipes);
@@ -598,7 +597,6 @@ public class CuttingRecipes implements Runnable {
             .eut(eut)
             .metadata(GTRecipeConstants.CLEANROOM, cleanroomRequired)
             .addTo(cutterRecipes);
-
 
     }
 }

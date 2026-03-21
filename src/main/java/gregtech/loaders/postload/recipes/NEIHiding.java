@@ -3,8 +3,6 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NotEnoughItems;
 
-import net.minecraft.item.ItemStack;
-
 import codechicken.nei.api.API;
 import gregtech.api.enums.ItemList;
 
