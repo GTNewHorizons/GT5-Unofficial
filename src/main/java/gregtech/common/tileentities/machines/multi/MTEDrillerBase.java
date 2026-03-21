@@ -128,14 +128,8 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         }
     };
 
-    private Block casingBlock;
-    private int casingMeta;
-    private int frameMeta;
     protected int casingTextureIndex;
     protected boolean isPickingPipes;
-
-    private ForgeDirection back;
-
     private int xDrill, yDrill, zDrill, xPipe, zPipe, yHead;
 
     protected int getXDrill() {
@@ -193,18 +187,9 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     }
 
     private void initFields() {
-        casingBlock = getCasingBlockItem().getBlock();
-        casingMeta = getCasingBlockItem().get(0)
-            .getItemDamage();
-        int frameId = 4096 + getFrameMaterial().mMetaItemSubID;
-        frameMeta = GregTechAPI.METATILEENTITIES[frameId] != null
-            ? GregTechAPI.METATILEENTITIES[frameId].getTileEntityBaseType()
-            : WILDCARD;
         casingTextureIndex = getCasingTextureIndex();
         workState = STATE_DOWNWARD;
-
         addOperatingMessages();
-
     }
 
     @Override
@@ -633,7 +618,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         xDrill = getBaseMetaTileEntity().getXCoord();
         yDrill = getBaseMetaTileEntity().getYCoord();
         zDrill = getBaseMetaTileEntity().getZCoord();
-        back = getBaseMetaTileEntity().getBackFacing();
+        ForgeDirection back = getBaseMetaTileEntity().getBackFacing();
         xPipe = xDrill + back.offsetX;
         zPipe = zDrill + back.offsetZ;
     }
