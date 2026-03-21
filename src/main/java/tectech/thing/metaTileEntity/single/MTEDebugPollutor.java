@@ -2,47 +2,39 @@ package tectech.thing.metaTileEntity.single;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.util.function.Consumer;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.pollution.Pollution;
 import tectech.TecTech;
+import tectech.thing.gui.MTEDebugPollutorGui;
 import tectech.util.CommonValues;
 
 /**
  * Created by Tec on 23.03.2017.
  */
-public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWidgets, IAddGregtechLogo {
+public class MTEDebugPollutor extends MTETieredMachineBlock {
 
     private static ITexture POLLUTOR;
-    public int pollution = 0;
-    private static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+    private int pollution = 0;
+    private boolean isPolluting = true;
 
     public MTEDebugPollutor(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -76,7 +68,9 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-            (side == facing) ? POLLUTOR : Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1] };
+            (side == facing) ? POLLUTOR
+                : isPolluting ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1]
+                    : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_LASER[mTier + 1] };
     }
 
     @Override
@@ -99,24 +93,33 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("ePollution", pollution);
+        aNBT.setBoolean("eConsuming", isPolluting);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         pollution = aNBT.getInteger("ePollution");
+        isPolluting = aNBT.getBoolean("eConsuming");
     }
+
+    private int particleCooldown = 10;
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if (pollution > 0) {
-                Pollution.addPollution(aBaseMetaTileEntity, pollution);
-            }
-        } else if (aBaseMetaTileEntity.isClientSide() && aBaseMetaTileEntity.isActive()) {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                if (side != aBaseMetaTileEntity.getFrontFacing()) {
-                    TecTech.proxy.em_particle(aBaseMetaTileEntity, side);
-                    TecTech.proxy.pollutor_particle(aBaseMetaTileEntity, side);
+        getBaseMetaTileEntity().setActive(pollution > 0);
+        if (aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.isActive()) {
+            if (aBaseMetaTileEntity.isServerSide())
+                Pollution.addPollution(aBaseMetaTileEntity, isPolluting ? pollution : -pollution);
+            else {
+                if (particleCooldown-- < 0) {
+                    particleCooldown = 10; // the effects are overwhelming without a cooldown
+                    for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                        if (side != aBaseMetaTileEntity.getFrontFacing()) {
+                            TecTech.proxy.em_particle(aBaseMetaTileEntity, side);
+                            TecTech.proxy.pollutor_particle(aBaseMetaTileEntity, side); // cleaning particles could be
+                                                                                        // added?
+                        }
+                    }
                 }
             }
         }
@@ -138,70 +141,30 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
         return false;
     }
 
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
-                .setSize(17, 17)
-                .setPos(113, 56));
+    public int getPollution() {
+        return pollution;
+    }
+
+    public void setPollution(int pollution) {
+        this.pollution = pollution;
+    }
+
+    public boolean isPolluting() {
+        return isPolluting;
+    }
+
+    public void setPolluting(boolean polluting) {
+        isPolluting = polluting;
+        getBaseMetaTileEntity().issueTextureUpdate();
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setSize(90, 72)
-                .setPos(43, 4))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("tt.gui.text.debug_pollutor.pollution") + ": "
-                            + numberFormat.format(pollution))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 8));
-
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> pollution -= val, 512, 64, 7, 4);
-        addChangeNumberButton(
-            builder,
-            GTUITextures.OVERLAY_BUTTON_MINUS_LARGE,
-            val -> pollution /= val,
-            512,
-            64,
-            7,
-            22);
-
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> pollution -= val, 16, 1, 25, 4);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> pollution /= val, 16, 2, 25, 22);
-
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> pollution += val, 16, 1, 133, 4);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> pollution *= val, 16, 2, 133, 22);
-
-        addChangeNumberButton(
-            builder,
-            GTUITextures.OVERLAY_BUTTON_PLUS_LARGE,
-            val -> pollution += val,
-            512,
-            64,
-            151,
-            4);
-        addChangeNumberButton(
-            builder,
-            GTUITextures.OVERLAY_BUTTON_PLUS_LARGE,
-            val -> pollution *= val,
-            512,
-            64,
-            151,
-            22);
-
+    protected boolean useMui2() {
+        return true;
     }
 
-    private void addChangeNumberButton(ModularWindow.Builder builder, IDrawable overlay, Consumer<Integer> setter,
-        int changeNumberShift, int changeNumber, int xPos, int yPos) {
-        builder.widget(
-            new ButtonWidget()
-                .setOnClick((clickData, widget) -> setter.accept(clickData.shift ? changeNumberShift : changeNumber))
-                .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
-                .setSize(18, 18)
-                .setPos(xPos, yPos));
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEDebugPollutorGui(this).build(data, syncManager, uiSettings);
     }
 }
