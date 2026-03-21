@@ -234,10 +234,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == WorkState.UPWARD))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getYHead, newInt -> clientYHead = newInt))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> workState.ordinal(),
-                    newInt -> workState = WorkState.fromOrdinal(newInt)));
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> workState.ordinal(), this::setWorkState));
     }
 
     @Override

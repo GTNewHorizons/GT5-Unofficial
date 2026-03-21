@@ -176,6 +176,10 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         return yHead;
     }
 
+    protected final void setWorkState(int ordinal) {
+        this.workState = WorkState.fromOrdinal(ordinal);
+    }
+
     protected void addOperatingMessages() {
         // Inheritors can overwrite these to add custom operating messages.
         addResultMessage(WorkState.DOWNWARD, true, "deploying_pipe");
@@ -229,7 +233,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        workState = WorkState.fromOrdinal(aNBT.getInteger("workState"));
+        this.setWorkState(aNBT.getInteger("workState"));
         if (aNBT.hasKey("isPickingPipes"))
             workState = aNBT.getBoolean("isPickingPipes") ? WorkState.UPWARD : WorkState.DOWNWARD;
         if (aNBT.hasKey("chunkLoadingEnabled")) mChunkLoadingEnabled = aNBT.getBoolean("chunkLoadingEnabled");
@@ -811,9 +815,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                             GTUITextures.OVERLAY_BUTTON_RETRACT_PIPE };
                     })
                     .attachSyncer(
-                        new FakeSyncWidget.IntegerSyncer(
-                            () -> workState.ordinal(),
-                            (newInt) -> workState = WorkState.fromOrdinal(newInt)),
+                        new FakeSyncWidget.IntegerSyncer(() -> workState.ordinal(), this::setWorkState),
                         builder,
                         (widget, integer) -> widget.notifyTooltipChange())
                     .dynamicTooltip(
@@ -901,7 +903,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
      * @param resultKey     An I18N key for the message.
      */
     protected void addResultMessage(final WorkState state, final boolean wasSuccessful,
-                                    @NotNull final String resultKey) {
+        @NotNull final String resultKey) {
         addResultMessage(
             state,
             wasSuccessful ? SimpleCheckRecipeResult.ofSuccess(resultKey)

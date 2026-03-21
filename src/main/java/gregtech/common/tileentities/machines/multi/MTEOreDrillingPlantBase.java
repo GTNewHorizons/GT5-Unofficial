@@ -724,10 +724,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             .widget(new FakeSyncWidget.IntegerSyncer(oreBlockPositions::size, (newInt) -> clientOreListSize = newInt))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getTotalChunkCount, (newInt) -> clientTotalChunks = newInt))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getChunkNumber, (newInt) -> clientCurrentChunk = newInt))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> workState.ordinal(),
-                    (newInt) -> workState = WorkState.fromOrdinal(newInt)))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> workState.ordinal(), this::setWorkState))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getYHead, (newInt) -> clientYHead = newInt))
             .widget(new FakeSyncWidget.StringSyncer(() -> veinName, (newString) -> veinName = newString));
     }
