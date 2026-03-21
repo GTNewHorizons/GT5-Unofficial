@@ -207,14 +207,14 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     @Override
     protected void addOperatingMessages() {
         // Inheritors can overwrite these to add custom operating messages.
-        addResultMessage(STATE_DOWNWARD, true, "deploying_pipe");
-        addResultMessage(STATE_DOWNWARD, false, "extracting_pipe");
-        addResultMessage(STATE_AT_BOTTOM, true, "circulating_fluid");
-        addResultMessage(STATE_AT_BOTTOM, false, "no_mining_pipe");
-        addResultMessage(STATE_UPWARD, true, "retracting_pipe");
-        addResultMessage(STATE_UPWARD, false, "drill_generic_finished");
-        addResultMessage(STATE_ABORT, true, "retracting_pipe");
-        addResultMessage(STATE_ABORT, false, "drill_retract_pipes_finished");
+        addResultMessage(WorkStates.STATE_DOWNWARD, true, "deploying_pipe");
+        addResultMessage(WorkStates.STATE_DOWNWARD, false, "extracting_pipe");
+        addResultMessage(WorkStates.STATE_AT_BOTTOM, true, "circulating_fluid");
+        addResultMessage(WorkStates.STATE_AT_BOTTOM, false, "no_mining_pipe");
+        addResultMessage(WorkStates.STATE_UPWARD, true, "retracting_pipe");
+        addResultMessage(WorkStates.STATE_UPWARD, false, "drill_generic_finished");
+        addResultMessage(WorkStates.STATE_ABORT, true, "retracting_pipe");
+        addResultMessage(WorkStates.STATE_ABORT, false, "drill_retract_pipes_finished");
     }
 
     @Override
@@ -228,7 +228,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
         if (tryLowerPipeState(true) == 0) {
-            workState = STATE_DOWNWARD;
+            workState = WorkStates.STATE_DOWNWARD;
             return true;
         }
         if (this.machineMode == 0) {

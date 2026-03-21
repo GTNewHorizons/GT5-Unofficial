@@ -209,11 +209,11 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                     return false;
                 }
                 case 3 -> {
-                    workState = STATE_UPWARD;
+                    workState = WorkStates.STATE_UPWARD;
                     return true;
                 }
                 case 1 -> {
-                    workState = STATE_AT_BOTTOM;
+                    workState = WorkStates.STATE_AT_BOTTOM;
                     return true;
                 }
             }
@@ -325,7 +325,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             if (oreBlockPositions.isEmpty()) {
                 GTChunkManager.releaseChunk((TileEntity) getBaseMetaTileEntity(), mCurrentChunk);
                 if (!moveToNextChunk(xDrill >> 4, zDrill >> 4)) {
-                    workState = STATE_UPWARD;
+                    workState = WorkStates.STATE_UPWARD;
                     updateVeinNameFromVP();
                 }
                 return true;
@@ -390,9 +390,9 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         final ChunkCoordIntPair topLeft = getTopLeftChunkCoords();
         final ChunkCoordIntPair drillPos = getDrillCoords();
 
-        if (workState == STATE_DOWNWARD) {
+        if (workState == WorkStates.STATE_DOWNWARD) {
             return 1;
-        } else if (workState == STATE_UPWARD) {
+        } else if (workState == WorkStates.STATE_UPWARD) {
             // Technically, the miner isn't mining anything now; it's retracting the pipes in preparation to end
             // operation.
             return 0;
@@ -513,7 +513,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
         return (int) Math.max(
             1,
-            ((workState == STATE_DOWNWARD || workState == STATE_AT_BOTTOM || simulateWorking) ? getBaseProgressTime()
+            ((workState == WorkStates.STATE_DOWNWARD || workState == WorkStates.STATE_AT_BOTTOM || simulateWorking)
+                ? getBaseProgressTime()
                 : 80) / GTUtility.powInt(2, tier));
     }
 
@@ -688,7 +689,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(
                         widget -> getBaseMetaTileEntity().isActive() && clientOreListSize > 0
-                            && workState == STATE_AT_BOTTOM))
+                            && workState == WorkStates.STATE_AT_BOTTOM))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
@@ -698,7 +699,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                             numberFormat.format(clientOreListSize)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(
-                        widget -> getBaseMetaTileEntity().isActive() && clientYHead > 0 && workState == STATE_DOWNWARD))
+                        widget -> getBaseMetaTileEntity().isActive() && clientYHead > 0
+                            && workState == WorkStates.STATE_DOWNWARD))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
@@ -709,7 +711,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(
                         widget -> getBaseMetaTileEntity().isActive() && clientCurrentChunk > 0
-                            && workState == STATE_AT_BOTTOM))
+                            && workState == WorkStates.STATE_AT_BOTTOM))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
@@ -717,11 +719,15 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                             + StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_current_vein", veinName))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(
-                        widget -> veinName != null && (workState == STATE_AT_BOTTOM || workState == STATE_DOWNWARD)))
+                        widget -> veinName != null
+                            && (workState == WorkStates.STATE_AT_BOTTOM || workState == WorkStates.STATE_DOWNWARD)))
             .widget(new FakeSyncWidget.IntegerSyncer(oreBlockPositions::size, (newInt) -> clientOreListSize = newInt))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getTotalChunkCount, (newInt) -> clientTotalChunks = newInt))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getChunkNumber, (newInt) -> clientCurrentChunk = newInt))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> workState, (newInt) -> workState = newInt))
+            .widget(
+                new FakeSyncWidget.IntegerSyncer(
+                    () -> workState.ordinal(),
+                    (newInt) -> workState = WorkStates.fromOrdinal(newInt)))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getYHead, (newInt) -> clientYHead = newInt))
             .widget(new FakeSyncWidget.StringSyncer(() -> veinName, (newString) -> veinName = newString));
     }
