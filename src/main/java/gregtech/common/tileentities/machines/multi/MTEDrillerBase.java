@@ -85,10 +85,10 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrillerBase>
     implements IChunkLoader, ISurvivalConstructable {
 
-    private static final ItemStack miningPipe = GTModHandler.getIC2Item("miningPipe", 0);
-    private static final ItemStack miningPipeTip = GTModHandler.getIC2Item("miningPipeTip", 0);
-    private static final Block miningPipeBlock = GTUtility.getBlockFromStack(miningPipe);
-    private static final Block miningPipeTipBlock = GTUtility.getBlockFromStack(miningPipeTip);
+    private static final ItemStack MINING_PIPE = GTModHandler.getIC2Item("miningPipe", 0);
+    private static final ItemStack MINING_PIPE_TIP = GTModHandler.getIC2Item("miningPipeTip", 0);
+    private static final Block MINING_PIPE_BLOCK = GTUtility.getBlockFromStack(MINING_PIPE);
+    private static final Block MINING_PIPE_TIP_BLOCK = GTUtility.getBlockFromStack(MINING_PIPE_TIP);
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final ClassValue<IStructureDefinition<MTEDrillerBase>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
@@ -279,9 +279,9 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     protected boolean tryPickPipe() {
         if (yHead == yDrill) return isPickingPipes = false;
         if (tryOutputPipe()) {
-            if (checkBlockAndMeta(xPipe, yHead + 1, zPipe, miningPipeBlock, WILDCARD))
+            if (checkBlockAndMeta(xPipe, yHead + 1, zPipe, MINING_PIPE_BLOCK, WILDCARD))
                 getBaseMetaTileEntity().getWorld()
-                    .setBlock(xPipe, yHead + 1, zPipe, miningPipeTipBlock);
+                    .setBlock(xPipe, yHead + 1, zPipe, MINING_PIPE_TIP_BLOCK);
             getBaseMetaTileEntity().getWorld()
                 .setBlockToAir(xPipe, yHead, zPipe);
             return isPickingPipes = true;
@@ -314,12 +314,12 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         }
 
         Block b = getBaseMetaTileEntity().getBlock(xPipe, yHead - 1, zPipe);
-        if (b != miningPipeTipBlock && !GTUtility.setBlockByFakePlayer(
+        if (b != MINING_PIPE_TIP_BLOCK && !GTUtility.setBlockByFakePlayer(
             getFakePlayer(getBaseMetaTileEntity()),
             xPipe,
             yHead - 1,
             zPipe,
-            miningPipeTipBlock,
+            MINING_PIPE_TIP_BLOCK,
             0,
             isSimulating)) {
             return PipeActionResult.CANCELED;
@@ -327,9 +327,9 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         if (!isSimulating) {
             if (yHead != yDrill) {
                 getBaseMetaTileEntity().getWorld()
-                    .setBlock(xPipe, yHead, zPipe, miningPipeBlock);
+                    .setBlock(xPipe, yHead, zPipe, MINING_PIPE_BLOCK);
             }
-            if (b != miningPipeBlock && b != miningPipeTipBlock) {
+            if (b != MINING_PIPE_BLOCK && b != MINING_PIPE_TIP_BLOCK) {
                 getBaseMetaTileEntity().decrStackSize(1, 1);
             }
         }
@@ -348,16 +348,16 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     }
 
     private void putMiningPipesFromInputsInController() {
-        int maxPipes = miningPipe.getMaxStackSize();
+        int maxPipes = MINING_PIPE.getMaxStackSize();
         if (hasMiningPipes(maxPipes)) return;
 
         ItemStack pipes = getStackInSlot(1);
-        if (pipes != null && !pipes.isItemEqual(miningPipe)) return;
+        if (pipes != null && !pipes.isItemEqual(MINING_PIPE)) return;
         for (ItemStack storedItem : getStoredInputs()) {
-            if (!storedItem.isItemEqual(miningPipe)) continue;
+            if (!storedItem.isItemEqual(MINING_PIPE)) continue;
 
             if (pipes == null) {
-                setInventorySlotContents(1, GTUtility.copyOrNull(miningPipe));
+                setInventorySlotContents(1, GTUtility.copyOrNull(MINING_PIPE));
                 pipes = getStackInSlot(1);
             }
 
@@ -373,8 +373,8 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     }
 
     private boolean tryOutputPipe() {
-        if (!getBaseMetaTileEntity().addStackToSlot(1, GTUtility.copyAmount(1, miningPipe)))
-            mOutputItems = new ItemStack[] { GTUtility.copyAmount(1, miningPipe) };
+        if (!getBaseMetaTileEntity().addStackToSlot(1, GTUtility.copyAmount(1, MINING_PIPE)))
+            mOutputItems = new ItemStack[] { GTUtility.copyAmount(1, MINING_PIPE) };
         return true;
     }
 
@@ -388,7 +388,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     private boolean hasMiningPipes(int minCount) {
         ItemStack stack = getStackInSlot(1);
-        return stack != null && stack.stackSize > minCount - 1 && stack.isItemEqual(miningPipe);
+        return stack != null && stack.stackSize > minCount - 1 && stack.isItemEqual(MINING_PIPE);
     }
 
     private boolean isEnergyEnough() {
@@ -633,12 +633,12 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     private boolean checkPipesAndSetYHead() {
         yHead = yDrill - 1;
-        while (checkBlockAndMeta(xPipe, yHead, zPipe, miningPipeBlock, WILDCARD)) yHead--; // skip pipes
+        while (checkBlockAndMeta(xPipe, yHead, zPipe, MINING_PIPE_BLOCK, WILDCARD)) yHead--; // skip pipes
         // is pipe tip OR is controller layer
-        if (checkBlockAndMeta(xPipe, yHead, zPipe, miningPipeTipBlock, WILDCARD) || ++yHead == yDrill) return true;
+        if (checkBlockAndMeta(xPipe, yHead, zPipe, MINING_PIPE_TIP_BLOCK, WILDCARD) || ++yHead == yDrill) return true;
         // pipe column is broken - try fix
         getBaseMetaTileEntity().getWorld()
-            .setBlock(xPipe, yHead, zPipe, miningPipeTipBlock);
+            .setBlock(xPipe, yHead, zPipe, MINING_PIPE_TIP_BLOCK);
         return true;
     }
 
