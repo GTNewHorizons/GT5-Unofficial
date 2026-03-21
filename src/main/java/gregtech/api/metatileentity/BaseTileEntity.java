@@ -936,11 +936,11 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         return defaultColor;
     }
 
-    protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x404040);
-    protected Supplier<Integer> COLOR_TITLE_WHITE = () -> getTextColorOrDefault("title_white", 0xfafaff);
-    protected Supplier<Integer> COLOR_TEXT_WHITE = () -> getTextColorOrDefault("text_white", 0xfafaff);
-    protected Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x404040);
-    protected Supplier<Integer> COLOR_TEXT_RED = () -> getTextColorOrDefault("text_red", 0xff0000);
+    protected final Supplier<Integer> COLOR_TITLE = () -> DynamicColors.get("title", 0x404040);
+    protected final Supplier<Integer> COLOR_TITLE_WHITE = () -> DynamicColors.get("title_white", 0xfafaff);
+    protected final Supplier<Integer> COLOR_TEXT_WHITE = () -> DynamicColors.get("text_white", 0xfafaff);
+    protected final Supplier<Integer> COLOR_TEXT_GRAY = () -> DynamicColors.get("text_gray", 0x404040);
+    protected final Supplier<Integer> COLOR_TEXT_RED = () -> DynamicColors.get("text_red", 0xff0000);
 
     public int getGUIColorization() {
         return Dyes.dyeWhite.toInt();
