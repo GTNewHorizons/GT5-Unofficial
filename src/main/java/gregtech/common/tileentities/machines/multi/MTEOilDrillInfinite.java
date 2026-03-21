@@ -1,8 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ItemList;
@@ -19,16 +16,6 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
 
     public MTEOilDrillInfinite(String aName) {
         super(aName);
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        this.batchMode = !this.batchMode;
-        GTUtility.sendChatTrans(
-            aPlayer,
-            this.batchMode ? "GT5U.chat.machine.batch_mode.enable" : "GT5U.chat.machine.batch_mode.disable");
-        return true;
     }
 
     @Override

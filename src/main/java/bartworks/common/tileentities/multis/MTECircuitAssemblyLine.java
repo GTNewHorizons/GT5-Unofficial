@@ -646,15 +646,10 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             GTUtility.sendChatTrans(
                 aPlayer,
                 inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
+            return true;
         } else {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
+            return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
         }
-        return true;
     }
 
     @Override
