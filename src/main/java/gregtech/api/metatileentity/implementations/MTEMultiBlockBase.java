@@ -2299,10 +2299,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 : seconds > 0 ? String.valueOf(seconds)
                 : String.valueOf(this.mTotalRunTime);
         String timeKey =
-            hours > 0 ? "GT5U.multiblock.totalRunHours"
-                : minutes > 0 ? "GT5U.multiblock.totalRunMinutes"
-                : seconds > 0 ? "GT5U.multiblock.totalRunSeconds"
-                : "GT5U.multiblock.totalRunTicks";
+            hours > 0 ? "GT5U.multiblock.scanner.totalRunHours"
+                : minutes > 0 ? "GT5U.multiblock.scanner.totalRunMinutes"
+                : seconds > 0 ? "GT5U.multiblock.scanner.totalRunSeconds"
+                : "GT5U.multiblock.scanner.totalRunTicks";
 
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             final IGregTechTileEntity te = tHatch.getBaseMetaTileEntity();
@@ -2316,14 +2316,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (getBaseMetaTileEntity() != null) {
             IGregTechTileEntity te = getBaseMetaTileEntity();
 
-            info.add(GTUtility.translate("GT5U.multiblock.owned_by", te.getOwnerName()));
+            info.add(GTUtility.translate("GT5U.multiblock.scanner.owned_by", te.getOwnerName()));
 
             if (te.getMetaTileEntity() != null) {
-                info.add(GTUtility.translate("GT5U.multiblock.meta_tile_entity", te.getMetaTileID())
+                info.add(GTUtility.translate("GT5U.multiblock.scanner.meta_tile_entity", te.getMetaTileID())
                     + " "
-                    + GTUtility.translate(te.canAccessData() ? "GT5U.multiblock.valid" : "GT5U.multiblock.invalid"));
+                    + GTUtility.translate(te.canAccessData() ? "GT5U.multiblock.scanner.valid" : "GT5U.multiblock.scanner.invalid"));
             } else {
-                info.add(GTUtility.translate("GT5U.multiblock.is_meta_tile_entity"));
+                info.add(GTUtility.translate("GT5U.multiblock.scanner.is_meta_tile_entity"));
             }
         }
 
@@ -2332,38 +2332,43 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (mProgresstime > 0) {
             info.add(
                 GTUtility.translate(
-                    "GT5U.multiblock.Progress",
+                    "GT5U.multiblock.scanner.Progress",
                     formatNumber(mProgresstime / 20),
                     formatNumber(mMaxProgresstime / 20)));
         }
 
         if (hatchCount > 0) {
             info.add(
-                GTUtility.translate("GT5U.multiblock.energy", formatNumber(storedEnergy), formatNumber(maxEnergy)));
+                GTUtility
+                    .translate("GT5U.multiblock.scanner.energy", formatNumber(storedEnergy), formatNumber(maxEnergy)));
 
             info.add(
                 GTUtility.translate(
-                    "GT5U.multiblock.mei",
+                    "GT5U.multiblock.scanner.mei",
                     formatNumber(getMaxInputVoltage()),
                     VN[GTUtility.getTier(getMaxInputVoltage())]));
         }
 
         if (getActualEnergyUsage() > 0) {
-            info.add(GTUtility.translate("GT5U.multiblock.usage", formatNumber(getActualEnergyUsage())));
+            info.add(GTUtility.translate("GT5U.multiblock.scanner.usage", formatNumber(getActualEnergyUsage())));
         }
 
-        info.add(GTUtility.translate("GT5U.multiblock.problems", formatNumber(getIdealStatus() - getRepairStatus())));
+        info.add(
+            GTUtility
+                .translate("GT5U.multiblock.scanner.problems", formatNumber(getIdealStatus() - getRepairStatus())));
 
         if (mEfficiency > 0) {
-            info.add(GTUtility.translate("GT5U.multiblock.efficiency", formatNumber(mEfficiency / 100.0F)));
+            info.add(GTUtility.translate("GT5U.multiblock.scanner.efficiency", formatNumber(mEfficiency / 100.0F)));
         }
 
         if (getPollutionPerSecond(getStackForm(1)) > 0) {
-            info.add(GTUtility.translate("GT5U.multiblock.pollution", formatNumber(getAveragePollutionPercentage())));
+            info.add(
+                GTUtility
+                    .translate("GT5U.multiblock.scanner.pollution", formatNumber(getAveragePollutionPercentage())));
         }
 
         if (recipesDone > 0) {
-            info.add(GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)));
+            info.add(GTUtility.translate("GT5U.multiblock.scanner.recipesDone", formatNumber(recipesDone)));
         }
 
         info.add(GTUtility.translate(timeKey, timeValue));
@@ -3009,6 +3014,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     @Override
     public Pos2d getMachineModeSwitchButtonPos() {
         return new Pos2d(80, 91);
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (this.supportsBatchMode()) {
+            if (aPlayer.isSneaking()) {
+                batchMode = !batchMode;
+                if (batchMode) {
+                    GTUtility.sendChatTrans(aPlayer, "GT5U.chat.machine.batch_mode.enable");
+                } else {
+                    GTUtility.sendChatTrans(aPlayer, "GT5U.chat.machine.batch_mode.disable");
+                }
+                return true;
+            }
+        }
+        return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override

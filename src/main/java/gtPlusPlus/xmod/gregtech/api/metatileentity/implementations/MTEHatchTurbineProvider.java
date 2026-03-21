@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.GTMod;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -23,7 +24,6 @@ import gregtech.common.gui.modularui.hatch.base.MTETurbineHousingGui;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
 
 public class MTEHatchTurbineProvider extends MTEHatchInputBus {
 
@@ -166,12 +166,12 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (aPlayer != null) {
-            if (KeyboardUtils.isCtrlKeyDown()) {
+            if (GTMod.proxy.CTRL_KEYBIND.isKeyDown(aPlayer)) {
                 mDescending = !mDescending;
                 GTUtility.sendChatToPlayer(aPlayer, "Direction: " + (mDescending ? "DOWN" : "UP"));
             } else {
                 int aAmount = 0;
-                if (KeyboardUtils.isShiftKeyDown()) {
+                if (aPlayer.isSneaking()) {
                     aAmount = 10;
                 } else {
                     aAmount = 100;
