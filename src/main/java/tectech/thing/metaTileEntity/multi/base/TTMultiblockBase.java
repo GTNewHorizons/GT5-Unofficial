@@ -90,7 +90,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
-import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
@@ -367,12 +366,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             list.add(StatCollector.translateToLocal("tt.gui.tooltip.full_led_desc.unused"));
         }
         return list;
-    }
-
-    @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addInfo("MISSING TOOLTIP")
-            .toolTipFinisher();
     }
 
     /**
