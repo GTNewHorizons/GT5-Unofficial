@@ -331,7 +331,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
         FluidStack pumpedOil = pumpOil(speed, false);
         mOilFlow = pumpedOil.amount;
-        recipesDone = batchMultiplier;
+        recipesDone += batchMultiplier;
         return ValidationResult.of(ValidationType.VALID, pumpedOil.amount == 0 ? null : pumpedOil);
     }
 
