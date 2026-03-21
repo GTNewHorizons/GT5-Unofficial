@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_STABILIZER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_STABILIZER_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -18,9 +17,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -28,7 +26,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTEBeamStabilizerGui;
 import gregtech.common.misc.GTStructureChannels;
@@ -78,9 +75,9 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
             new String[][]{{
                 "       ",
                 "       ",
-                "  BBB  ",
-                "  BCB  ",
-                "  B~B  ",
+                "  EEE  ",
+                "  ECE  ",
+                "  E~E  ",
                 "       ",
                 "       "
             },{
@@ -158,16 +155,14 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
             },{
                 "       ",
                 "       ",
-                "  BBB  ",
-                "  BDB  ",
-                "  BBB  ",
+                "  EEE  ",
+                "  EDE  ",
+                "  EEE  ",
                 "       ",
                 "       "
             }})
         //spotless:on
-        .addElement(
-            'B', // collider casing
-            ofBlock(GregTechAPI.sBlockCasings13, 10))
+        .addElement('B', Casings.ShieldedAcceleratorCasing.asElement())
         .addElement('A', chainAllGlasses())
         .addElement(
             'C',
@@ -183,6 +178,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
                 .hint(3)
                 .adder(MTEBeamStabilizer::addBeamLineOutputHatch)
                 .build()) // beamline output hatch
+        .addElement('E', Casings.GrateMachineCasing.asElement())
         .build();
 
     public MTEBeamStabilizer(final int aID, final String aName, final String aNameRegional) {
@@ -209,25 +205,20 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BEAM_STABILIZER_ACTIVE)
                         .extFacing()
                         .build() };
             } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BEAM_STABILIZER)
                         .extFacing()
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)) };
+            rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture() };
         }
         return rTexture;
     }
