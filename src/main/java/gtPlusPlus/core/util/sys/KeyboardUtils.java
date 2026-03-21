@@ -23,15 +23,4 @@ public class KeyboardUtils {
             return false;
         }
     }
-
-    public static boolean isShiftKeyDown() {
-        try {
-            if (!Keyboard.isCreated()) {
-                return false;
-            }
-            return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-        } catch (Exception t) {
-            return false;
-        }
-    }
 }

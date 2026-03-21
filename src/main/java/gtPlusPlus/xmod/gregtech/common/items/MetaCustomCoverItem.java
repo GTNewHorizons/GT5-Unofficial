@@ -23,7 +23,6 @@ import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverToggleVisual;
 
 public class MetaCustomCoverItem extends Item {
@@ -162,7 +161,7 @@ public class MetaCustomCoverItem extends Item {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (KeyboardUtils.isShiftKeyDown()) {
+        if (!world.isRemote && player.isSneaking()) {
             boolean con = getCoverConnections(stack);
             setCoverConnections(stack, !con);
         }
