@@ -16,7 +16,6 @@ import static java.lang.Math.max;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import gregtech.api.casing.Casings;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -34,7 +33,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -50,7 +49,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
-import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.gui.modularui.multiblock.MTELargeHadronColliderGui;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
@@ -264,9 +262,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         ITexture[] rTexture;
         if (side == aFacing) {
             if ((aActive) && (this.machineMode == MACHINEMODE_ACCELERATOR)) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(ColliderCasingTextureID),
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(ColliderCasingTextureID),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_LHC_ACCELERATOR)
                         .extFacing()
@@ -277,9 +273,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                         .glow()
                         .build() };
             } else if ((aActive) && (this.machineMode == MACHINEMODE_COLLIDER)) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(ColliderCasingTextureID),
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(ColliderCasingTextureID),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_LHC_COLLIDER)
                         .extFacing()
@@ -290,17 +284,14 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(ColliderCasingTextureID),
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(ColliderCasingTextureID),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_LHC)
                         .extFacing()
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(ColliderCasingTextureID) };
+            rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(ColliderCasingTextureID) };
         }
         return rTexture;
     }

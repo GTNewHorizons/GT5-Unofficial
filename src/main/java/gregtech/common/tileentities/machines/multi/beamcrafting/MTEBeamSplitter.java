@@ -36,7 +36,8 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId(); // Shielded Acc.
+    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId(); // Shielded
+                                                                                                            // Acc.
 
     private static final IStructureDefinition<MTEBeamSplitter> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEBeamSplitter>builder()

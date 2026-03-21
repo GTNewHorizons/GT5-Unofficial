@@ -38,7 +38,8 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId(); // Shielded Acc.
+    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId(); // Shielded
+                                                                                                            // Acc.
 
     public int playerTargetBeamRate = 100;
     private int storedParticleID = 0;
