@@ -856,12 +856,7 @@ gt.multiblock.ore_drill.machine_type=Miner, MBM
 gt.multiblock.ore_drill.desc=Use a Screwdriver to configure working area\nMaximum area is %s chunks (%s blocks)\nIn chunk mode, working area center is the chunk corner nearest to the drill\nUse Soldering iron to turn off chunk mode\nUse Wire Cutter to toggle replacing mined blocks with cobblestone\nGives %s as much crushed ore vs normal processing\nFortune bonus of %s. Only works on small ores
 
 gt.multiblock.DieselEngine.machine_type=Combustion Generator, LCE
-gt.multiblock.DieselEngine.desc1=Supply Diesel Fuels and %s of Lubricant per hour to run
-gt.multiblock.DieselEngine.desc2=Supply %s of Oxygen to boost output (optional)
-gt.multiblock.DieselEngine.default_output=Default: Produces %s at %s fuel efficiency
-gt.multiblock.DieselEngine.boosted_output=Boosted: Produces %s at %s fuel efficiency
-gt.multiblock.DieselEngine.wait_power=You need to wait for it to reach %s to output full power
-gt.multiblock.DieselEngine.intake_warning=Engine Intake Casings must not be obstructed in front (only air blocks)
+gt.multiblock.DieselEngine.desc=Supply Diesel Fuels and %s of Lubricant per hour to run\nSupply %s of Oxygen to boost output (optional)\nDefault: Produces %s at %s fuel efficiency\nBoosted: Produces %s at %s fuel efficiency\nYou need to wait for it to reach %s to output full power\nEngine Intake Casings must not be obstructed in front (only air blocks)
 gt.multiblock.DieselEngine.gear_box_inner=Inner 2 blocks
 gt.multiblock.DieselEngine.engine_intake_ring=8x, ring around controller
 gt.multiblock.DieselEngine.maintenance_hatch=One of the casings next to a Gear Box

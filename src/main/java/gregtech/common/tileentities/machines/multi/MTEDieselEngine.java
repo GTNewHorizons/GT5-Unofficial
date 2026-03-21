@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -106,29 +107,32 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
         String boostedEfficiency = TooltipHelper.effText(1.5f);
         String waitPower = TooltipHelper.effText(3.0f);
 
-        tt.addMachineType(GTUtility.translate("gt.multiblock.DieselEngine.machine_type"))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc1", lubricantRate))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc2", oxygenRate))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.default_output", defaultOutput, defaultEfficiency))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.boosted_output", boostedOutput, boostedEfficiency))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.wait_power", waitPower))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.intake_warning"))
+        tt.addMachineType("gt.multiblock.DieselEngine.machine_type")
+            .addInfo(
+                "gt.multiblock.DieselEngine.desc",
+                lubricantRate,
+                oxygenRate,
+                defaultOutput,
+                defaultEfficiency,
+                boostedOutput,
+                boostedEfficiency,
+                waitPower)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 4, false)
-            .addController(GTUtility.translate("gt.mbtt.structure.front_center"))
-            .addCasingInfoRange(GTUtility.translate("gt.blockcasings4.Casing_StableTitanium"), 16, 22, false)
-            .addOtherStructurePart(
-                GTUtility.translate("gt.blockcasings2.Casing_Gearbox_Titanium"),
-                GTUtility.translate("gt.multiblock.DieselEngine.gear_box_inner"))
-            .addOtherStructurePart(
-                GTUtility.translate("gt.blockcasings4.Casing_EngineIntake"),
-                GTUtility.translate("gt.multiblock.DieselEngine.engine_intake_ring"))
-            .addDynamoHatch(GTUtility.translate("gt.mbtt.structure.back_center"), 2)
-            .addMaintenanceHatch(GTUtility.translate("gt.multiblock.DieselEngine.maintenance_hatch"), 1)
-            .addMufflerHatch(GTUtility.translate("gt.multiblock.DieselEngine.muffler_hatch"), 1)
-            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.diesel_fuel"), 1)
-            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.lubricant"), 1)
-            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.oxygen_optional"), 1)
+            .addController("front_center")
+            .addCasingInfoRange(Casings.StableTitaniumMachineCasing.getLocalizedName(), 16, 22, false)
+            .addStructurePart(
+                Casings.TitaniumGearBoxCasing.getLocalizedName(),
+                "gt.multiblock.DieselEngine.gear_box_inner")
+            .addStructurePart(
+                Casings.EngineIntakeCasing.getLocalizedName(),
+                "gt.multiblock.DieselEngine.engine_intake_ring")
+            .addDynamoHatch("gt.mbtt.structure.back_center", 2)
+            .addMaintenanceHatch("gt.multiblock.DieselEngine.maintenance_hatch", 1)
+            .addMufflerHatch("gt.multiblock.DieselEngine.muffler_hatch", 1)
+            .addInputHatch("gt.multiblock.DieselEngine.diesel_fuel", 1)
+            .addInputHatch("gt.multiblock.DieselEngine.lubricant", 1)
+            .addInputHatch("gt.multiblock.DieselEngine.oxygen_optional", 1)
             .toolTipFinisher();
         return tt;
     }
