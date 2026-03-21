@@ -284,6 +284,7 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
         structureBuild_EM(STRUCTURE_PIECE_MAIN, 3, 3, 0, stackSize, hintsOnly);
     }
 
+    @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(1000, elementBudget * 5);
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, realBudget, env, false, true);

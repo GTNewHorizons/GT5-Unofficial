@@ -129,6 +129,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         sActiveSiphon = aSiphon;
     }
 
+    @Override
     public void onConfigLoad() {
         sharedConfigLoad();
         mMaxVisPerDrain = (int) Math.round(Math.sqrt((double) (V[mTier] * 10000) / (sEnergyFromVis * getEfficiency())));

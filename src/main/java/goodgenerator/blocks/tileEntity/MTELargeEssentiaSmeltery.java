@@ -310,6 +310,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         super.runMachine(aBaseMetaTileEntity, aTick);
     }
 
+    @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
 

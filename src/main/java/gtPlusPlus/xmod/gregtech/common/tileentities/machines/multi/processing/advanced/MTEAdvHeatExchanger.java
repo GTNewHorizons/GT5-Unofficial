@@ -548,6 +548,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEAdvHeatExchanger> adder() {
             return adder;
         }

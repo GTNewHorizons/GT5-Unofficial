@@ -536,6 +536,7 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         return this.priority;
     }
 
+    @Override
     public boolean getSticky() {
         return this.isSticky;
     }

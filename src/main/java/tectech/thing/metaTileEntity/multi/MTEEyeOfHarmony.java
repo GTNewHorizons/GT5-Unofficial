@@ -1479,6 +1479,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
     }
 
+    @Override
     public void outputAfterRecipe_EM() {
         recipeRunning = false;
         eRequiredData = 0L;

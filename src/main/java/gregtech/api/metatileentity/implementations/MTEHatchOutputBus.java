@@ -390,6 +390,7 @@ public class MTEHatchOutputBus extends MTEHatch
      * @param slot  The slot, or -1 for a general 'lowest slot' query.
      * @param stack The stack, or null for a general 'any standard stack' query (getMaxStackSize() == 64).
      */
+    @Override
     public int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
         return Math.min(getInventoryStackLimit(), stack == null ? 64 : stack.getMaxStackSize());
     }

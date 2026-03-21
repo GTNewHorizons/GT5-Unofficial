@@ -99,10 +99,12 @@ public class MTEVoidMiners {
             return tt;
         }
 
+        @Override
         public void construct(ItemStack stackSize, boolean hintsOnly) {
             buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 7, 1);
         }
 
+        @Override
         public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
             if (mMachine) return -1;
             return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 7, 1, elementBudget, env, false, true);
@@ -209,10 +211,12 @@ public class MTEVoidMiners {
             return tt;
         }
 
+        @Override
         public void construct(ItemStack stackSize, boolean hintsOnly) {
             buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 4, 10, 1);
         }
 
+        @Override
         public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
             if (mMachine) return -1;
             return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 10, 1, elementBudget, env, false, true);
@@ -312,10 +316,12 @@ public class MTEVoidMiners {
             return tt;
         }
 
+        @Override
         public void construct(ItemStack stackSize, boolean hintsOnly) {
             buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 4, 13, 2);
         }
 
+        @Override
         public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
             if (mMachine) return -1;
             return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 13, 2, elementBudget, env, false, true);

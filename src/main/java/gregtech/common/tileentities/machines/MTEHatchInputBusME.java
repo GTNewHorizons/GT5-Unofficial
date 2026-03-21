@@ -334,6 +334,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         }
     }
 
+    @Override
     public boolean doFastRecipeCheck() {
         return expediteRecipeCheck;
     }

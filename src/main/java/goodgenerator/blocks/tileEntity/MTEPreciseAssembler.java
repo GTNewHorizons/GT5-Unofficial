@@ -495,6 +495,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         return true;
     }
 
+    @Override
     public boolean supportsMachineModeSwitch() {
         return true;
     }

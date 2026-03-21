@@ -445,6 +445,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEExtremeHeatExchanger> adder() {
             return adder;
         }

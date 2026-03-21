@@ -576,6 +576,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         return false;
     }
 
+    @Override
     public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;

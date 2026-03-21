@@ -177,6 +177,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTENanochipAssemblyModuleBase<?>> adder() {
             return adder;
         }

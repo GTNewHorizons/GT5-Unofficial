@@ -544,10 +544,12 @@ public class MTEHatchOutputME extends MTEHatchOutput
         return getProxy().getNode();
     }
 
+    @Override
     public void dispatchMarkDirty() {
         this.markDirty();
     }
 
+    @Override
     public MTEHatchOutputMEBase<IAEFluidStack, MEFilterFluid, FluidStack> getProvider() {
         return provider;
     }

@@ -2051,6 +2051,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             return GTUtility.translate(name);
         }
 
+        @Override
         public IGTHatchAdder<? super TTMultiblockBase> adder() {
             return adder;
         }

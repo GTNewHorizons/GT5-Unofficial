@@ -562,6 +562,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
     }
 
+    @Override
     public boolean doFastRecipeCheck() {
         return expediteRecipeCheck;
     }

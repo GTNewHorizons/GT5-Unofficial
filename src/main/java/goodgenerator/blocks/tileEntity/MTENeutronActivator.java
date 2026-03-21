@@ -183,6 +183,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
         return GoodGeneratorRecipeMaps.neutronActivatorRecipes;
     }
 
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Neutron Activator, NA")
@@ -530,6 +531,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTENeutronActivator> adder() {
             return adder;
         }

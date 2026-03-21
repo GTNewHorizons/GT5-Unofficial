@@ -19,6 +19,7 @@ public abstract class MTETooltipMultiBlockBaseEM extends TTMultiblockBase implem
         super(aName);
     }
 
+    @Override
     protected MultiblockTooltipBuilder getTooltip() {
         int tId = getBaseMetaTileEntity().getMetaTileID();
         MultiblockTooltipBuilder tooltip = tooltips.get(tId);
@@ -29,6 +30,7 @@ public abstract class MTETooltipMultiBlockBaseEM extends TTMultiblockBase implem
         return tooltip;
     }
 
+    @Override
     protected abstract MultiblockTooltipBuilder createTooltip();
 
     @Override
@@ -36,10 +38,12 @@ public abstract class MTETooltipMultiBlockBaseEM extends TTMultiblockBase implem
         return getCurrentDescription();
     }
 
+    @Override
     public String[] getPrimaryDescription() {
         return getTooltip().getInformation();
     }
 
+    @Override
     public String[] getSecondaryDescription() {
         return getTooltip().getStructureInformation();
     }

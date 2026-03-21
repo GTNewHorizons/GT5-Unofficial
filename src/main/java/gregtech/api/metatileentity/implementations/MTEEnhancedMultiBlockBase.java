@@ -144,6 +144,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     @Override
     public abstract IStructureDefinition<T> getStructureDefinition();
 
+    @Override
     protected abstract MultiblockTooltipBuilder createTooltip();
 
     @Override

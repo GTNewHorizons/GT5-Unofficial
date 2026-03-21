@@ -734,6 +734,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            @Override
             @Nonnull
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 if (map == null) {

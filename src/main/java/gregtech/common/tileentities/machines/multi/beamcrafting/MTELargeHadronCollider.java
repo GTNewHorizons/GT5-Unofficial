@@ -684,6 +684,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         return new MTELargeHadronColliderGui(this);
     }
 
+    @Override
     protected SoundResource getProcessStartSound() {
         return SoundResource.GT_MACHINES_LHC_SPIN_UP;
     }

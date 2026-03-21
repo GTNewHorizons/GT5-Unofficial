@@ -110,6 +110,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final ItemStack STELLAR_FUEL = Avaritia.isModLoaded() ? getModItem(Avaritia.ID, "Resource", 1, 8)
         : GTOreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 1);
 
+    @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         // 1000 blocks max per placement.
         int realBudget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
@@ -560,6 +561,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEForgeOfGods> adder() {
             return adder;
         }
