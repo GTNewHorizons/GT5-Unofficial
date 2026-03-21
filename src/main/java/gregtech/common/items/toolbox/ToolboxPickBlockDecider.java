@@ -30,6 +30,7 @@ import gregtech.common.items.toolbox.pickblock.CoverableAction;
 import gregtech.common.items.toolbox.pickblock.EnderIOAction;
 import gregtech.common.items.toolbox.pickblock.ForceDeselectAction;
 import gregtech.common.items.toolbox.pickblock.IDeciderAction;
+import gregtech.common.items.toolbox.pickblock.MaintenanceHatchAction;
 import gregtech.common.items.toolbox.pickblock.PickResults;
 import gregtech.common.items.toolbox.pickblock.ProjectRedAction;
 import gregtech.common.items.toolbox.pickblock.RailcraftAction;
@@ -89,7 +90,7 @@ public class ToolboxPickBlockDecider {
         new RailcraftAction());
 
     private static final Map<Class<?>, ForceDeselectAction<?>> FORCE_DESELECT = ImmutableMap
-        .of(MTEHatchMaintenance.class, new ForceDeselectAction<>(MTEHatchMaintenance.class, hatch -> !hatch.mAuto));
+        .of(MTEHatchMaintenance.class, new MaintenanceHatchAction());
 
     private ToolboxPickBlockDecider() {}
 
@@ -124,10 +125,11 @@ public class ToolboxPickBlockDecider {
 
                     if (baseTE != null) {
                         final Object chosen = Objects.firstNonNull(GTUtility.getMetaTileEntity(baseTE), baseTE);
+                        final ForgeDirection side = ForgeDirection.getOrientation(position.sideHit);
 
                         if (chosen != null && FORCE_DESELECT.containsKey(chosen.getClass())
                             && FORCE_DESELECT.get(chosen.getClass())
-                                .test(chosen)) {
+                                .test(chosen, side)) {
                             return new PickResults(true);
                         }
 
@@ -137,7 +139,7 @@ public class ToolboxPickBlockDecider {
                                     action.apply(
                                         chosen,
                                         GTUtility.determineWrenchingSide(
-                                            ForgeDirection.getOrientation(position.sideHit),
+                                            side,
                                             (float) position.hitVec.xCoord,
                                             (float) position.hitVec.yCoord,
                                             (float) position.hitVec.zCoord)));

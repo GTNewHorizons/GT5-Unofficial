@@ -1,6 +1,8 @@
 package gregtech.common.items.toolbox.pickblock;
 
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
+
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Allows the {@link gregtech.common.items.toolbox.ToolboxPickBlockDecider} to define blocks that will suggest
@@ -9,16 +11,16 @@ import java.util.function.Predicate;
 public class ForceDeselectAction<V> {
 
     private final Class<V> targetClass;
-    private final Predicate<V> predicate;
+    private final BiPredicate<V, ForgeDirection> predicate;
 
-    public ForceDeselectAction(final Class<V> targetClass, final Predicate<V> predicate) {
+    public ForceDeselectAction(final Class<V> targetClass, final BiPredicate<V, ForgeDirection> predicate) {
         this.targetClass = targetClass;
         this.predicate = predicate;
     }
 
-    public boolean test(Object mte) {
+    public boolean test(Object mte, ForgeDirection side) {
         if (targetClass.isInstance(mte)) {
-            return predicate.test(targetClass.cast(mte));
+            return predicate.test(targetClass.cast(mte), side);
         }
 
         return false;
