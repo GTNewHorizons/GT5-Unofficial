@@ -14,7 +14,6 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -247,9 +246,6 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     @Override
     @SideOnly(Side.CLIENT)
     public final void registerBlockIcons(final IIconRegister aRegisterer) {}
-
-    @Override
-    public abstract TileEntity createNewTileEntity(final World world, final int p_149915_2_);
 
     /**
      * Called when {@link #breakBlock}() is called, but before {@link InventoryUtils#dropInventoryItems} and the super

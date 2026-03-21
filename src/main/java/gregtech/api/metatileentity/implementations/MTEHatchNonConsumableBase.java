@@ -83,9 +83,6 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     }
 
     @Override
-    public abstract int getItemCapacity();
-
-    @Override
     public abstract boolean isValidItem(ItemStack item);
 
     @Override

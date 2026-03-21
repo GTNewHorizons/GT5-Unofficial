@@ -1,6 +1,5 @@
 package gtPlusPlus.api.interfaces;
 
-import net.minecraft.block.Block;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
@@ -11,6 +10,4 @@ public interface ITexturedBlock extends ITexturedTileEntity {
     @Override
     ITexture[] getTexture(ForgeDirection side);
 
-    @Override
-    ITexture[] getTexture(Block block, ForgeDirection side);
 }
