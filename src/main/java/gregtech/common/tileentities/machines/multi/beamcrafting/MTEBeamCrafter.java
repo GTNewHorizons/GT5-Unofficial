@@ -27,10 +27,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -40,10 +39,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.extensions.ArrayExt;
-import gregtech.common.blocks.BlockCasings13;
+import gregtech.common.gui.modularui.multiblock.MTEBeamCrafterGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gtnhlanth.common.beamline.BeamInformation;
@@ -60,6 +58,9 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     private int currentRecipeMaxAmountA = 0;
     private int currentRecipeMaxAmountB = 0;
 
+    private int currentRecipeParticleIDA;
+    private int currentRecipeParticleIDB;
+
     private GTRecipe lastRecipe;
 
     private static final IStructureDefinition<MTEBeamCrafter> STRUCTURE_DEFINITION = StructureDefinition
@@ -69,9 +70,9 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             // spotless:off
             new String[][]{{
                 "                 ",
-                " BBB         BBB ",
-                " BCB         BCB ",
-                " BBB         BBB ",
+                " DDD         DDD ",
+                " DCD         DCD ",
+                " DDD         DDD ",
                 "                 "
             },{
                 " BBB         BBB ",
@@ -136,12 +137,12 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             }})
         //spotless:on
         .addElement(
-            'B', // collider casing
+            'B',
             buildHatchAdder(MTEBeamCrafter.class)
                 .atLeast(Energy, ExoticEnergy, Maintenance, InputBus, InputHatch, OutputBus, OutputHatch)
-                .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
+                .casingIndex(CASING_INDEX_CENTRE)
                 .hint(1)
-                .buildAndChain(GregTechAPI.sBlockCasings13, 10))
+                .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
         .addElement('A', chainAllGlasses())
         .addElement(
             'C',
@@ -150,6 +151,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 .hint(2)
                 .adder(MTEBeamCrafter::addBeamLineInputHatch)
                 .build()) // beamline input hatch
+        .addElement('D', Casings.GrateMachineCasing.asElement())
         .build();
 
     public MTEBeamCrafter(final int aID, final String aName, final String aNameRegional) {
@@ -176,9 +178,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BEAMCRAFTER)
                         .extFacing()
@@ -189,17 +189,14 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BEAMCRAFTER)
                         .extFacing()
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)) };
+            rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture() };
         }
         return rTexture;
     }
@@ -382,6 +379,9 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         if (!isInputParticleInRecipe(inputParticle_A, inputParticle_B, metadata))
             return CheckRecipeResultRegistry.NO_RECIPE;
 
+        this.currentRecipeParticleIDA = metadata.particleID_A;
+        this.currentRecipeParticleIDB = metadata.particleID_B;
+
         this.currentRecipeMaxAmountA = metadata.amount_A;
         this.currentRecipeMaxAmountB = metadata.amount_B;
         // total time to finish recipe in ticks is the sum of the required Amounts
@@ -407,5 +407,34 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.beamcrafterRecipes;
+    }
+
+    public int getCurrentRecipeCurrentAmountA() {
+        return this.currentRecipeCurrentAmountA;
+    }
+
+    public int getCurrentRecipeCurrentAmountB() {
+        return this.currentRecipeCurrentAmountB;
+    }
+
+    public int getCurrentRecipeMaxAmountA() {
+        return this.currentRecipeMaxAmountA;
+    }
+
+    public int getCurrentRecipeMaxAmountB() {
+        return this.currentRecipeMaxAmountB;
+    }
+
+    public int getCurrentRecipeParticleIDA() {
+        return this.currentRecipeParticleIDA;
+    }
+
+    public int getCurrentRecipeParticleIDB() {
+        return this.currentRecipeParticleIDB;
+    }
+
+    @Override
+    protected @NotNull MTEBeamCrafterGui getGui() {
+        return new MTEBeamCrafterGui(this);
     }
 }
