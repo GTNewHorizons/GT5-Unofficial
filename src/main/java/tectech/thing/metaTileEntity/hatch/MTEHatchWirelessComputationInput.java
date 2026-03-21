@@ -94,11 +94,6 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
     }
 
     @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-    }
-
-    @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
             new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO)

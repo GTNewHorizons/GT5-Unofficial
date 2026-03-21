@@ -342,11 +342,6 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
-    @Override
-    public @NotNull CheckRecipeResult checkProcessing() {
-        return super.checkProcessing();
-    }
-
     public void fillTank() {
         ArrayList<FluidStack> inputFluid = getStoredFluids();
         for (FluidStack fluid : inputFluid) {

@@ -67,11 +67,6 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus implements IConfigur
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        super.onPostTick(aBaseMetaTileEntity, aTimer);
-    }
-
-    @Override
     public String[] getDescription() {
         return new String[] { EnumChatFormatting.GRAY + "Stocks Items internally",
             EnumChatFormatting.GRAY + "Configure Items in the UI",
