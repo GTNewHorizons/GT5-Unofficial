@@ -1849,6 +1849,15 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Barium.getDust(1))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1000L))
+            .itemOutputs(Materials.Barite.getDust(6))
+            .fluidOutputs(Materials.Hydrogen.getGas(2000L))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
+        GTValues.RA.stdBuilder()
             .itemInputs(Materials.SodiumHydroxide.getDust(3), Materials.AllylChloride.getCells(1))
             .itemOutputs(Materials.SaltWater.getCells(1))
             .fluidInputs(Materials.HypochlorousAcid.getFluid(1_000))

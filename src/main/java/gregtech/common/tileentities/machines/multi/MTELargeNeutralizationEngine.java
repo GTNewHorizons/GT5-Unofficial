@@ -95,6 +95,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private float robotArmDecayBoost;
     private int robotArmTier;
     private int robotArmAmount;
+    public int residueCapacity;
 
     // random number generation
     private int randomFactor;
@@ -127,8 +128,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return m - 4;
     }
 
-    public int getResidueCapacity() {
-        return switch (structureTier) {
+    public void updateResidueCapacity() {
+        this.residueCapacity = switch (structureTier) {
             case 1 -> 375000;
             case 2 -> 1000000;
             case 3 -> 2500000;
@@ -137,7 +138,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     public float getResidueUsedPercentage() {
-        return Math.round(10 * (float) toxicResidue / getResidueCapacity() * 100F) / 10F;
+        return Math.round(10 * (float) toxicResidue / residueCapacity * 100F) / 10F;
     }
 
     private int getBaseResidueDecay() {
@@ -331,7 +332,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addInfo(getAlkaliTextFormatted("Sodium Hydroxide", 150, 60))
             .addInfo(getAlkaliTextFormatted("Potassium Hydroxide", 190, 24))
             .addInfo(getAlkaliTextFormatted("Caesium Hydroxide", 250, 6))
-            .addInfo(getAlkaliTextFormatted("Francium Hydroxide", 500, 2))
+            .addInfo(getAlkaliTextFormatted("Francium Hydroxide", 500, 5))
             .addSeparator()
             .addInfo(
                 "Produces " + EnumChatFormatting.RED
@@ -541,6 +542,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         if (getBaseMetaTileEntity() == null) return false;
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         updateHatchTexture();
+        updateResidueCapacity();
         return true;
     }
 
@@ -626,7 +628,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private void useBooster() {
         if (depleteInput(Materials.FranciumHydroxide.getDust(1))) {
             this.boosterEUBoost = 5F;
-            this.boosterBoostTicks = 600;
+            this.boosterBoostTicks = 240;
         } else if (depleteInput(Materials.CaesiumHydroxide.getDust(1))) {
             this.boosterEUBoost = 2.5F;
             this.boosterBoostTicks = 200;
@@ -659,6 +661,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         aNBT.setBoolean("isApproachingFromHigher", isApproachingFromHigher);
         aNBT.setInteger("robotArmTier", robotArmTier);
         aNBT.setInteger("robotArmAmount", robotArmAmount);
+        aNBT.setInteger("residueCapacity", residueCapacity);
     }
 
     @Override
@@ -681,6 +684,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         isApproachingFromHigher = aNBT.getBoolean("isApproachingFromHigher");
         robotArmTier = aNBT.getInteger("robotArmTier");
         robotArmAmount = aNBT.getInteger("robotArmAmount");
+        residueCapacity = aNBT.getInteger("residueCapacity");
     }
 
     @Override
@@ -761,7 +765,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         super.onPostTick(aBaseMetaTileEntity, aTick);
         for (MTEToxicResidueSensor toxicResidueSensorHatch : sensorHatches) { // done in onPostTick so it can update
                                                                               // even when multi is off
-            toxicResidueSensorHatch.updateRedstoneOutput(toxicResidue, getResidueCapacity());
+            toxicResidueSensorHatch.updateRedstoneOutput(toxicResidue, residueCapacity);
         }
         robotArmTier = getRobotArmTier();
         if (robotArmTier != -1) {
@@ -778,7 +782,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         }
         residueDecay = getResidueDecay();
         this.toxicResidue = Math.max(0, this.toxicResidue - residueDecay);
-        if (this.toxicResidue > Math.max(99999, getResidueCapacity())) {// don't explode on construction lmao
+        if (this.toxicResidue > Math.max(99999, this.residueCapacity)) {// don't explode on construction lmao
             explodeMultiblock();
         }
     }

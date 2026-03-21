@@ -40,7 +40,7 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
         if (!checkMachineSyncer.getBoolValue()) return terminalText;
 
         IntSyncValue toxicResidueSyncer = new IntSyncValue(() -> multiblock.toxicResidue);
-        IntSyncValue residueCapacitySyncer = new IntSyncValue(multiblock::getResidueCapacity);
+        IntSyncValue residueCapacitySyncer = new IntSyncValue(() -> multiblock.residueCapacity);
         FloatSyncValue residuePercentageSyncer = new FloatSyncValue(multiblock::getResidueUsedPercentage);
         syncManager.syncValue("toxicResidue", toxicResidueSyncer);
         syncManager.syncValue("residueCapacitySyncer", residueCapacitySyncer);
