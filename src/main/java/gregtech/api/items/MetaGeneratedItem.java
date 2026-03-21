@@ -84,6 +84,8 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final ConcurrentHashMap<Short, Long[]> mElectricStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Long[]> mFluidContainerStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Short> mBurnValues = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, String> mNameLocalizationKeys = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, String> mTooltipLocalizationKeys = new ConcurrentHashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -192,6 +194,39 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     }
 
     /**
+     * Adds a Custom Item, storing the provided localization keys for deferred translation.
+     * Unlike {@link #addItem}, which resolves names and tooltips eagerly at registration time,
+     * this method stores {@code aNameKey} and {@code aToolTipKey} so they are translated at
+     * render time — allowing the displayed text to reflect the player's current language.
+     *
+     * <p>
+     * Use this method when the item name and tooltip are static localization keys.
+     * For dynamic content assembled at runtime (e.g. formatted strings with per-item data),
+     * use {@link #addItem} directly and build the string manually.
+     *
+     * @param aID         The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
+     * @param aNameKey    The localization key for the item's display name
+     * @param aToolTipKey The localization key for the item's tooltip, or null for no tooltip.
+     *                    The translated value may contain {@code \n} to separate tooltip lines.
+     * @param aRandomData The OreDict Names you want to give the Item. Also used for TC Aspects and some other things.
+     * @return An ItemStack containing the newly created Item.
+     */
+    public final ItemStack addItemWithLocalizationKeys(int aID, String aNameKey, String aToolTipKey,
+        Object... aRandomData) {
+        ItemStack rStack = addItem(aID, aNameKey, aToolTipKey, aRandomData);
+        if (rStack != null) {
+            short meta = (short) (mOffset + aID);
+            if (GTUtility.isStringValid(aNameKey)) {
+                mNameLocalizationKeys.put(meta, aNameKey);
+            }
+            if (GTUtility.isStringValid(aToolTipKey)) {
+                mTooltipLocalizationKeys.put(meta, aToolTipKey);
+            }
+        }
+        return rStack;
+    }
+
+    /**
      * Sets a Food Behavior for the Item.
      *
      * @param aMetaValue    the Meta Value of the Item you want to set it to. [0 - 32765]
@@ -262,6 +297,24 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         if (aCapacity < 0) mElectricStats.remove((short) aMetaValue);
         else mFluidContainerStats.put((short) aMetaValue, new Long[] { aCapacity, Math.max(1, aStacksize) });
         return this;
+    }
+
+    @Override
+    protected String getToolTipLocalizationKey(ItemStack aStack) {
+        return mTooltipLocalizationKeys.get((short) getDamage(aStack));
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack aStack) {
+        String tName = super.getItemStackDisplayName(aStack);
+        String tNameKey = mNameLocalizationKeys.get((short) getDamage(aStack));
+        if (GTUtility.isStringValid(tNameKey)) {
+            return GTUtility.translate(tNameKey);
+        }
+        if (net.minecraft.util.StatCollector.canTranslate(tName)) {
+            return GTUtility.translate(tName);
+        }
+        return tName;
     }
 
     /**

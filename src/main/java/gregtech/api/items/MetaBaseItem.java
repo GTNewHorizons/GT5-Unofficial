@@ -35,7 +35,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -57,7 +56,7 @@ public abstract class MetaBaseItem extends GTGenericItem
      * @param aUnlocalized The Unlocalized Name of this Item.
      */
     public MetaBaseItem(String aUnlocalized) {
-        super(aUnlocalized, "Generated Item", null);
+        super(aUnlocalized, null, null);
         setHasSubtypes(true);
         setMaxDamage(0);
     }
@@ -82,6 +81,10 @@ public abstract class MetaBaseItem extends GTGenericItem
     public abstract Long[] getElectricStats(ItemStack aStack);
 
     public abstract Long[] getFluidContainerStats(ItemStack aStack);
+
+    protected String getToolTipLocalizationKey(ItemStack aStack) {
+        return null;
+    }
 
     @Override
     public boolean hasProjectile(SubTag aProjectileType, ItemStack aStack) {
@@ -246,12 +249,9 @@ public abstract class MetaBaseItem extends GTGenericItem
     @Override
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         if (aStack.getItemDamage() < 0 || aStack.getItemDamage() >= 32000) {
-            String tKey = getUnlocalizedName(aStack) + ".tooltip";
-            String[] tStrings = GTLanguageManager.getTranslation(tKey)
-                .split("/n ");
-            for (String tString : tStrings) if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) {
-                aList.add(tString);
-            }
+            String tooltipKey = getToolTipLocalizationKey(aStack);
+            String tKey = tooltipKey != null ? tooltipKey : getUnlocalizedName(aStack) + ".tooltip";
+            GTUtility.translateMultiline(aList, tKey);
         } else {
             Materials material = getMaterial(aStack.getItemDamage());
             if (material != null) {
