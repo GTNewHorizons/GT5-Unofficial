@@ -9,6 +9,7 @@ import net.minecraftforge.client.event.MouseEvent;
 
 import com.gtnewhorizon.gtnhlib.event.PickBlockEvent;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -53,7 +54,7 @@ public final class GTMouseEventHandler {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public void onPickBlockEvent(PickBlockEvent event) {
         final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
