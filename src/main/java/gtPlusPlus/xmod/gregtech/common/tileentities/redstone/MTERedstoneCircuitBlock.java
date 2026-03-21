@@ -308,6 +308,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
      * : 59; if (side == ForgeDirection.UP) return aRedstone ? 58 : 57; return aRedstone ? 62 : 61; }
      */
 
+    @Override
     public byte getOutputRedstone(ForgeDirection side) {
         return getBaseMetaTileEntity().getOutputRedstoneSignal(side);
     }

@@ -49,6 +49,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         this.tooltip = aTooltip;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> itemList) {
         ItemStack itemStack = new ItemStack(this, 1);

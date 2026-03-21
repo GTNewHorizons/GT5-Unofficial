@@ -280,6 +280,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
         return 2;
     }
 
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingCount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z)) return false;
