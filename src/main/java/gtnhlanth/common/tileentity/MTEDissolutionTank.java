@@ -35,7 +35,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.GregTechAPI;
-import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -53,7 +52,7 @@ import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.util.DescTextLocalization;
 
 public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolutionTank>
-    implements ISurvivalConstructable, ISecondaryDescribable {
+    implements ISurvivalConstructable {
 
     private final IStructureDefinition<MTEDissolutionTank> multiDefinition = StructureDefinition
         .<MTEDissolutionTank>builder()
