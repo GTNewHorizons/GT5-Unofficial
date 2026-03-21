@@ -58,6 +58,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
+import biomesoplenty.api.content.BOPCBlocks;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -65,6 +66,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
@@ -1303,6 +1305,15 @@ public class RecipesGregTech {
             .fluidOutputs(MaterialMisc.ACETIC_ANHYDRIDE.getFluidStack(1_000))
             .eut(TierEU.RECIPE_HV)
             .duration(30 * SECONDS)
+            .addTo(chemicalDehydratorRecipes);
+
+        // Dead wood
+        ItemStack deadWood = new ItemStack(BOPCBlocks.logs3, 1, 2);
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("logWood", 1))
+            .itemOutputs(deadWood)
+            .duration(10 * TICKS)
+            .eut(TierEU.RECIPE_LV)
             .addTo(chemicalDehydratorRecipes);
     }
 
