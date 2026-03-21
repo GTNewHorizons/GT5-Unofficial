@@ -242,24 +242,24 @@ public class CuttingRecipes implements Runnable {
         }
 
         if (Forestry.isModLoaded()) {
-            for (int i = 0; i < ItemList.FORESTRY_DECORATIVE_PLANKS.length; i++) {
+            for (int i = 0; i < ItemList.FORESTRY_DECORATIVE_PLANKS.size(); i++) {
                 ItemStack slabWood = getModItem(Forestry.ID, "slabs", 1, i);
                 ItemStack slabWoodFireproof = getModItem(Forestry.ID, "slabsFireproof", 1, i);
+                final ItemList plank = ItemList.FORESTRY_DECORATIVE_PLANKS.get(i);
 
                 recipeWithClassicFluids(
                     new ItemStack[] { slabWood },
-                    new ItemStack[] { ItemList.FORESTRY_DECORATIVE_PLANKS[i].get(2) },
+                    new ItemStack[] { plank.get(2) },
                     2 * SECONDS,
                     8,
                     false);
 
                 recipeWithClassicFluids(
                     new ItemStack[] { slabWoodFireproof },
-                    new ItemStack[] { ItemList.FORESTRY_DECORATIVE_PLANKS[i].get(2) },
+                    new ItemStack[] { plank.get(2) },
                     2 * SECONDS,
                     8,
                     false);
-
             }
         }
 

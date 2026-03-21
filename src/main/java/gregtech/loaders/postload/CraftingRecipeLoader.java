@@ -1941,17 +1941,18 @@ public class CraftingRecipeLoader implements Runnable {
 
         if (Forestry.isModLoaded()) {
 
-            for (int i = 0; i < ItemList.FORESTRY_DECORATIVE_PLANKS.length; i++) {
+            for (int i = 0; i < ItemList.FORESTRY_DECORATIVE_PLANKS.size(); i++) {
                 ItemStack slabWood = getModItem(Forestry.ID, "slabs", 1, i);
                 ItemStack slabWoodFireproof = getModItem(Forestry.ID, "slabsFireproof", 1, i);
+                final ItemList plank = ItemList.FORESTRY_DECORATIVE_PLANKS.get(i);
 
                 GTModHandler.addCraftingRecipe(
-                    ItemList.FORESTRY_DECORATIVE_PLANKS[i].get(2),
+                    plank.get(2),
                     GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
                     new Object[] { "s ", " P", 'P', slabWood });
 
                 GTModHandler.addCraftingRecipe(
-                    ItemList.FORESTRY_DECORATIVE_PLANKS[i].get(2),
+                    plank.get(2),
                     GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
                     new Object[] { "s ", " P", 'P', slabWoodFireproof });
             }

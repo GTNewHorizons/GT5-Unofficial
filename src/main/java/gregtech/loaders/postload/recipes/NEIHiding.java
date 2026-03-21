@@ -14,9 +14,8 @@ public class NEIHiding implements Runnable {
             return;
         }
 
-        for (ItemList cover : ItemList.FORESTRY_DECORATIVE_PLANKS) {
-            API.hideItem(cover.get(1));
+        for (ItemList plank : ItemList.FORESTRY_DECORATIVE_PLANKS) {
+            API.hideItem(plank.get(1));
         }
-
     }
 }
