@@ -203,16 +203,16 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             }
 
             switch (tryLowerPipeState()) {
-                case 2 -> {
+                case NO_PIPE -> {
                     mMaxProgresstime = 0;
                     setRuntimeFailureReason(CheckRecipeResultRegistry.MISSING_MINING_PIPE);
                     return false;
                 }
-                case 3 -> {
+                case CANCELED -> {
                     workState = WorkState.UPWARD;
                     return true;
                 }
-                case 1 -> {
+                case INVALID_BLOCK -> {
                     workState = WorkState.AT_BOTTOM;
                     return true;
                 }

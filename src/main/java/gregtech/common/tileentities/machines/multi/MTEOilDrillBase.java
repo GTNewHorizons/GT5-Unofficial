@@ -213,12 +213,12 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
         switch (tryLowerPipeState(true)) {
-            case 0 -> {
+            case SUCCESS -> {
                 workState = WorkState.DOWNWARD;
                 setElectricityStats();
                 return true;
             }
-            case 3 -> {
+            case CANCELED -> {
                 workState = WorkState.UPWARD;
                 return true;
             }

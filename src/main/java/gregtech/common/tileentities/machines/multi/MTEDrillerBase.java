@@ -289,24 +289,27 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         return isPickingPipes = false;
     }
 
-    /**
-     * @return 0 for succeeded, 1 for invalid block, 2 for not having mining pipes, 3 for event canceled.
-     */
-    protected int tryLowerPipeState() {
+    protected enum PipeActionResult {
+        SUCCESS,
+        INVALID_BLOCK,
+        NO_PIPE,
+        CANCELED
+    }
+
+    protected PipeActionResult tryLowerPipeState() {
         return tryLowerPipeState(false);
     }
 
-    /**
-     * @return 0 for succeeded, 1 for invalid block, 2 for not having mining pipes, 3 for event canceled.
-     */
-    protected int tryLowerPipeState(boolean isSimulating) {
-        if (!isHasMiningPipes()) return 2;
+    protected PipeActionResult tryLowerPipeState(boolean isSimulating) {
+        if (!hasMiningPipes()) {
+            return PipeActionResult.NO_PIPE;
+        }
         switch (canLowerPipe()) {
             case 1 -> {
-                return 1;
+                return PipeActionResult.INVALID_BLOCK;
             }
             case 2 -> {
-                return 3;
+                return PipeActionResult.CANCELED;
             }
         }
 
@@ -318,19 +321,35 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
             zPipe,
             miningPipeTipBlock,
             0,
-            isSimulating)) return 3;
-        if (!isSimulating) {
-            if (yHead != yDrill) getBaseMetaTileEntity().getWorld()
-                .setBlock(xPipe, yHead, zPipe, miningPipeBlock);
-            if (b != miningPipeBlock && b != miningPipeTipBlock) getBaseMetaTileEntity().decrStackSize(1, 1);
+            isSimulating)) {
+            return PipeActionResult.CANCELED;
         }
+        if (!isSimulating) {
+            if (yHead != yDrill) {
+                getBaseMetaTileEntity().getWorld()
+                    .setBlock(xPipe, yHead, zPipe, miningPipeBlock);
+            }
+            if (b != miningPipeBlock && b != miningPipeTipBlock) {
+                getBaseMetaTileEntity().decrStackSize(1, 1);
+            }
+        }
+        return PipeActionResult.SUCCESS;
+    }
 
-        return 0;
+    /**
+     * @return 0 for available, 1 for invalid block, 2 for event canceled.
+     */
+    private int canLowerPipe() {
+        IGregTechTileEntity aBaseTile = getBaseMetaTileEntity();
+        if (yHead > 0 && GTUtility.getBlockHardnessAt(aBaseTile.getWorld(), xPipe, yHead - 1, zPipe) >= 0) {
+            return GTUtility.eraseBlockByFakePlayer(getFakePlayer(aBaseTile), xPipe, yHead - 1, zPipe, true) ? 0 : 2;
+        }
+        return 1;
     }
 
     private void putMiningPipesFromInputsInController() {
         int maxPipes = miningPipe.getMaxStackSize();
-        if (isHasMiningPipes(maxPipes)) return;
+        if (hasMiningPipes(maxPipes)) return;
 
         ItemStack pipes = getStackInSlot(1);
         if (pipes != null && !pipes.isItemEqual(miningPipe)) return;
@@ -359,28 +378,17 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         return true;
     }
 
-    /**
-     * @return 0 for available, 1 for invalid block, 2 for event canceled.
-     */
-    protected int canLowerPipe() {
-        IGregTechTileEntity aBaseTile = getBaseMetaTileEntity();
-        if (yHead > 0 && GTUtility.getBlockHardnessAt(aBaseTile.getWorld(), xPipe, yHead - 1, zPipe) >= 0) {
-            return GTUtility.eraseBlockByFakePlayer(getFakePlayer(aBaseTile), xPipe, yHead - 1, zPipe, true) ? 0 : 2;
-        }
-        return 1;
-    }
-
     protected boolean reachingVoidOrBedrock() {
         return yHead <= 0 || checkBlockAndMeta(xPipe, yHead - 1, zPipe, Blocks.bedrock, WILDCARD);
     }
 
-    private boolean isHasMiningPipes() {
-        return isHasMiningPipes(1);
+    private boolean hasMiningPipes() {
+        return hasMiningPipes(1);
     }
 
-    private boolean isHasMiningPipes(int minCount) {
-        ItemStack pipe = getStackInSlot(1);
-        return pipe != null && pipe.stackSize > minCount - 1 && pipe.isItemEqual(miningPipe);
+    private boolean hasMiningPipes(int minCount) {
+        ItemStack stack = getStackInSlot(1);
+        return stack != null && stack.stackSize > minCount - 1 && stack.isItemEqual(miningPipe);
     }
 
     private boolean isEnergyEnough() {
@@ -395,16 +403,16 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
         switch (tryLowerPipeState()) {
-            case 2 -> {
+            case NO_PIPE -> {
                 mMaxProgresstime = 0;
                 setRuntimeFailureReason(CheckRecipeResultRegistry.MISSING_MINING_PIPE);
                 return false;
             }
-            case 3 -> {
+            case CANCELED -> {
                 workState = WorkState.UPWARD;
                 return true;
             }
-            case 1 -> {
+            case INVALID_BLOCK -> {
                 workState = WorkState.AT_BOTTOM;
                 return true;
             }
@@ -416,7 +424,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
-        if (tryLowerPipeState(true) == 0) {
+        if (tryLowerPipeState(true) == PipeActionResult.SUCCESS) {
             workState = WorkState.DOWNWARD;
             return true;
         }

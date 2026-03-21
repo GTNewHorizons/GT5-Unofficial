@@ -227,7 +227,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     @Override
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
-        if (tryLowerPipeState(true) == 0) {
+        if (tryLowerPipeState(true) == PipeActionResult.SUCCESS) {
             workState = WorkState.DOWNWARD;
             return true;
         }
