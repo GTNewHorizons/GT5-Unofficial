@@ -14,7 +14,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import baubles.api.BaubleType;
-import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -30,7 +29,7 @@ import ic2.api.item.IElectricItemManager;
 @Optional.InterfaceList(
     value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.ModIDs.BAUBLES),
         @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.ModIDs.BAUBLES) })
-public abstract class ElectricBaseBauble extends BaseBauble implements IElectricItem, IElectricItemManager, IBauble {
+public abstract class ElectricBaseBauble extends BaseBauble implements IElectricItem, IElectricItemManager {
 
     public final int mTier;
     private final double maxValueEU;

@@ -32,7 +32,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
-import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -51,8 +50,7 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.multiblock.MTECleanRoomGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
-public class MTECleanroom extends MTETooltipMultiBlockBase
-    implements IConstructable, ISecondaryDescribable, ICleanroom {
+public class MTECleanroom extends MTETooltipMultiBlockBase implements IConstructable, ICleanroom {
 
     /**
      * Maximum width (horizontal size) of the cleanroom. Includes walls.

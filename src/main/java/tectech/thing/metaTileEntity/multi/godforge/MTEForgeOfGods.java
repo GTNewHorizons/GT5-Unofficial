@@ -48,7 +48,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -87,7 +86,7 @@ import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsRingsStr
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsStructureString;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
-public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
+public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstructable {
 
     private static IIconContainer ScreenON;
 

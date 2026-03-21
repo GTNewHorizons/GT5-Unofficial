@@ -23,7 +23,6 @@ import appeng.api.networking.events.MENetworkChannelsChanged;
 import appeng.api.networking.events.MENetworkEventSubscribe;
 import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.security.BaseActionSource;
-import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.ICellContainer;
 import appeng.api.storage.IMEInventory;
@@ -49,8 +48,8 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 
-public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHost, ICellContainer,
-    IMEInventory<IAEFluidStack>, IMEInventoryHandler<IAEFluidStack>, IPowerChannelState {
+public class MTEYOTTAHatch extends MTEHatch
+    implements IGridProxyable, ICellContainer, IMEInventoryHandler<IAEFluidStack>, IPowerChannelState {
 
     private static final IIconContainer textureFont = Textures.BlockIcons.custom("icons/YOTTAHatch");
     private static final BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);

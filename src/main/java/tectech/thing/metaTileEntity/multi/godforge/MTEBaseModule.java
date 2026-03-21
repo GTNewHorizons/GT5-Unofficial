@@ -16,7 +16,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -37,7 +36,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public abstract class MTEBaseModule extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
+public abstract class MTEBaseModule extends TTMultiblockBase implements ISurvivalConstructable {
 
     protected final int tier = getTier();
     protected boolean isConnected = false;

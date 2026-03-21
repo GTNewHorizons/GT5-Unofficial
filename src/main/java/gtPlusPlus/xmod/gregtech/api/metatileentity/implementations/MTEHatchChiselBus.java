@@ -8,13 +8,12 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.common.gui.modularui.hatch.MTEHatchChiselBusGui;
 
-public class MTEHatchChiselBus extends MTEHatchInputBus implements IAddUIWidgets {
+public class MTEHatchChiselBus extends MTEHatchInputBus {
 
     public MTEHatchChiselBus(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier);

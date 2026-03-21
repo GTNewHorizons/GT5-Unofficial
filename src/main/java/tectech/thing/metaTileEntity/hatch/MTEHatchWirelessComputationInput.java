@@ -28,7 +28,6 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.WirelessComputationPacket;
@@ -37,8 +36,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.thing.gui.TecTechUITextures;
 
-public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
-    implements IAddGregtechLogo, IAddUIWidgets, IDataCopyable {
+public class MTEHatchWirelessComputationInput extends MTEHatchDataInput implements IAddGregtechLogo, IDataCopyable {
 
     public long requiredComputation = 10000;
     public static final String COPIED_DATA_IDENTIFIER = "cloudComputationInput";
