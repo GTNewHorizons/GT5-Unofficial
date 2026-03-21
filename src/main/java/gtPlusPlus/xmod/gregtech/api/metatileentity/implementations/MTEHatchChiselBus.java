@@ -25,11 +25,6 @@ public class MTEHatchChiselBus extends MTEHatchInputBus implements IAddUIWidgets
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchChiselBusGui(this).build(data, syncManager, uiSettings);
     }

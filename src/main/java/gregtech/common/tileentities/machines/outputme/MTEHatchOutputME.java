@@ -463,11 +463,6 @@ public class MTEHatchOutputME extends MTEHatchOutput
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public String[] getInfoData() {
         List<String> ss = new ArrayList<>();
         ss.add(

@@ -282,17 +282,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     }
 
     @Override
-    public boolean supportsBatchMode() {
-        return false;
-    }
-
-    @Override
     protected boolean supportsCraftingMEBuffer() {
-        return false;
-    }
-
-    @Override
-    public boolean supportsInputSeparation() {
         return false;
     }
 

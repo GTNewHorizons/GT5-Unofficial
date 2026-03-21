@@ -934,11 +934,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchCraftingInputMEGui(this).build(data, syncManager, uiSettings);
     }

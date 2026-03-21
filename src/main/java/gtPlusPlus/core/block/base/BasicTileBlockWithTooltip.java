@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -290,11 +289,6 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     @Override
     public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
         return aWorld.getBlockMetadata(aX, aY, aZ);
-    }
-
-    @Override
-    public Item getItemDropped(int meta, Random rand, int p_149650_3_) {
-        return Item.getItemFromBlock(this);
     }
 
     @Override

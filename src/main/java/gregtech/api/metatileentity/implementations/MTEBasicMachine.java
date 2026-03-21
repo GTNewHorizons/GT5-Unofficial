@@ -1305,11 +1305,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTETieredMachineBlockBaseGui(this).build(data, syncManager, uiSettings);
     }
