@@ -274,7 +274,7 @@ public class CellLoader implements IWerkstoffRunnable {
             boolean ElementSet = false;
             for (Element e : Element.values()) {
                 if (e.toString()
-                    .equals(werkstoff.getToolTip())) {
+                    .equals(werkstoff.getFormulaTooltip())) {
                     werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial()
                         : new MaterialBuilder().setName(werkstoff.getDefaultName())
                             .setDefaultLocalName(werkstoff.getDefaultName())
@@ -294,7 +294,7 @@ public class CellLoader implements IWerkstoffRunnable {
 
             ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
             BehaviourDataOrb.setDataTitle(scannerOutput, "Elemental-Scan");
-            BehaviourDataOrb.setDataName(scannerOutput, werkstoff.getToolTip());
+            BehaviourDataOrb.setDataName(scannerOutput, werkstoff.getFormulaTooltip());
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(cell))
                 .itemOutputs(scannerOutput)

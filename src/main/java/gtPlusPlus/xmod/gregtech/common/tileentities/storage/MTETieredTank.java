@@ -82,9 +82,9 @@ public class MTETieredTank extends MTEBasicTank {
                 .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
                 tooltip.add(
-                    GTUtility.translate("gtpp.tiered_tank.tooltip.contains") + EnumChatFormatting.YELLOW
-                        + tContents.getLocalizedName()
-                        + EnumChatFormatting.GRAY);
+                    GTUtility.translate(
+                        "gtpp.tiered_tank.tooltip.contains",
+                        EnumChatFormatting.YELLOW + tContents.getLocalizedName() + EnumChatFormatting.GRAY));
 
                 tooltip.add(
                     GTUtility.translate(
