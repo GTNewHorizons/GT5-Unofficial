@@ -395,7 +395,7 @@ public class CuttingRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(new OreDictItemStack("stoneRedrock", 1))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Redrock, 1L))
-                .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, 200 * 30 / 1280))))
+                .fluidInputs(Materials.Lubricant.getFluid(4))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(cutterRecipes);
@@ -430,7 +430,7 @@ public class CuttingRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneMarble", 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Marble, 1L))
-            .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, 200 * 30 / 1280))))
+            .fluidInputs(Materials.Lubricant.getFluid(4))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -466,7 +466,7 @@ public class CuttingRecipes implements Runnable {
             .itemInputs(new OreDictItemStack("stoneBasalt", 1))
             .circuit(3)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Basalt, 1L))
-            .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, 200 * 30 / 1280))))
+            .fluidInputs(Materials.Lubricant.getFluid(4))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -500,7 +500,7 @@ public class CuttingRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneGraniteBlack", 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.GraniteBlack, 1L))
-            .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, 200 * 30 / 1280))))
+            .fluidInputs(Materials.Lubricant.getFluid(4))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -533,7 +533,7 @@ public class CuttingRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneGraniteRed", 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.GraniteRed, 1L))
-            .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, 200 * 30 / 1280))))
+            .fluidInputs(Materials.Lubricant.getFluid(4))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
