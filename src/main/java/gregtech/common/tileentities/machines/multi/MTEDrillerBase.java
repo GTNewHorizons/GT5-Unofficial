@@ -812,9 +812,9 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                     (widget, val) -> widget.notifyTooltipChange())
                 .dynamicTooltip(
                     () -> ImmutableList.of(
-                        StatCollector.translateToLocal(
-                            mChunkLoadingEnabled ? "GT5U.gui.button.chunk_loading_on"
-                                : "GT5U.gui.button.chunk_loading_off")))
+                        GTUtility.translate(
+                            mChunkLoadingEnabled ? "gt.gui.button.chunk_loading_on"
+                                : "gt.gui.button.chunk_loading_off")))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(new Pos2d(80, BUTTON_Y_LEVEL))
                 .setSize(16, 16))
@@ -836,8 +836,8 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                     .dynamicTooltip(
                         () -> ImmutableList.of(
                             StatCollector.translateToLocalFormatted(
-                                workState == STATE_ABORT ? "GT5U.gui.button.drill_retract_pipes_active"
-                                    : "GT5U.gui.button.drill_retract_pipes")))
+                                workState == STATE_ABORT ? "gt.gui.button.drill_retract_pipes_active"
+                                    : "gt.gui.button.drill_retract_pipes")))
                     .setTooltipShowUpDelay(TOOLTIP_DELAY)
                     .setPos(new Pos2d(174, 112))
                     .setSize(16, 16));
