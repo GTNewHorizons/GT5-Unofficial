@@ -128,16 +128,6 @@ public class BlockSuperLight extends BlockContainer {
             } catch (Exception ignored) {}
         }
 
-        @Override
-        public void markDirty() {
-            super.markDirty();
-        }
-
-        @Override
-        public boolean canUpdate() {
-            return super.canUpdate();
-        }
-
         public void updateLighting(boolean enable) {
 
             mLastUpdateTick = System.currentTimeMillis();
