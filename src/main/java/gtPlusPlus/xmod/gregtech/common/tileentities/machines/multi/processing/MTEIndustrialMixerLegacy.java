@@ -38,20 +38,21 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEIndustrialMixer extends GTPPMultiBlockBase<MTEIndustrialMixer> implements ISurvivalConstructable {
+public class MTEIndustrialMixerLegacy extends GTPPMultiBlockBase<MTEIndustrialMixerLegacy>
+    implements ISurvivalConstructable {
 
     public static int CASING_TEXTURE_ID;
     public static String mCasingName = "Multi-Use Casing";
     public static String mCasingName2 = "Titanium Turbine Casing";
     private int mCasing;
-    private static IStructureDefinition<MTEIndustrialMixer> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialMixerLegacy> STRUCTURE_DEFINITION = null;
 
-    public MTEIndustrialMixer(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialMixerLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
         CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 2);
     }
 
-    public MTEIndustrialMixer(final String aName) {
+    public MTEIndustrialMixerLegacy(final String aName) {
         super(aName);
         CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 2);
     }
@@ -72,7 +73,7 @@ public class MTEIndustrialMixer extends GTPPMultiBlockBase<MTEIndustrialMixer> i
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialMixer(this.mName);
+        return new MTEIndustrialMixerLegacy(this.mName);
     }
 
     @Override
@@ -102,9 +103,9 @@ public class MTEIndustrialMixer extends GTPPMultiBlockBase<MTEIndustrialMixer> i
     }
 
     @Override
-    public IStructureDefinition<MTEIndustrialMixer> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialMixerLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialMixer>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialMixerLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
@@ -112,7 +113,7 @@ public class MTEIndustrialMixer extends GTPPMultiBlockBase<MTEIndustrialMixer> i
                             { "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
-                    buildHatchAdder(MTEIndustrialMixer.class)
+                    buildHatchAdder(MTEIndustrialMixerLegacy.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
                         .casingIndex(CASING_TEXTURE_ID)
                         .hint(1)

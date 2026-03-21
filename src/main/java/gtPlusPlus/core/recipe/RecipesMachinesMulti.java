@@ -66,7 +66,7 @@ public class RecipesMachinesMulti {
         multiExtruder();
         multiImplo();
         multiPackager();
-        multiMixer();
+        multiUseCasing();
         multiAssembler();
     }
 
@@ -815,13 +815,7 @@ public class RecipesMachinesMulti {
 
     }
 
-    private static void multiMixer() {
-        // Industrial Mixing Machine
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_Mixer.get(1),
-            new Object[] { "PCP", "ZMZ", "PCP", 'P', MaterialsAlloy.STABALLOY.getPlate(1), 'C', "circuitElite", 'Z',
-                MaterialsAlloy.ZIRCONIUM_CARBIDE.getPlate(1), 'M', ItemList.Machine_IV_Mixer });
-
+    private static void multiUseCasing() {
         // Multi-Use Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Multi_Use.get(1),
