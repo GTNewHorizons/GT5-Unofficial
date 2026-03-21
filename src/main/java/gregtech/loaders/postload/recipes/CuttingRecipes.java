@@ -352,7 +352,7 @@ public class CuttingRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneConcrete", 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Concrete, 1L))
-            .fluidInputs(GTModHandler.getDistilledWater(Math.max(3, Math.min(750, 200 * 30 / 426))))
+            .fluidInputs(GTModHandler.getDistilledWater(14))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
