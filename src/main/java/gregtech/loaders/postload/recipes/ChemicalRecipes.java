@@ -1848,6 +1848,7 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
+        // Ba + H2SO4 = BaSO4 + H2
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Barium.getDust(1))
             .fluidInputs(Materials.SulfuricAcid.getFluid(1000L))
