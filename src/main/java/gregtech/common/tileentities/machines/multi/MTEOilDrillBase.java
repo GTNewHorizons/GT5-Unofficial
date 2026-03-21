@@ -351,7 +351,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
         FluidStack returnOil = new FluidStack(mOil, 0);
         World world = getBaseMetaTileEntity().getWorld();
-        float coefficient = simulate ? -speed : speed;
+        final float coefficient = (simulate ? -speed : speed) * batchMultiplier;
 
         for (Iterator<ChunkCoordIntPair> iterator = mOilFieldChunks.iterator(); iterator.hasNext();) {
             ChunkCoordIntPair tChunk = iterator.next();
@@ -369,10 +369,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                 continue;
             }
             if (returnOil.isFluidEqual(pumped)) {
-                // This only works because for now we enable batch mode solely on the infinity pump which does not
-                // deplete the field, otherwise we'll need to find out how to keep precision while applying the batch
-                // multiplier to the coefficient variable
-                returnOil.amount += pumped.amount * batchMultiplier;
+                returnOil.amount += pumped.amount;
             }
         }
         return returnOil;
