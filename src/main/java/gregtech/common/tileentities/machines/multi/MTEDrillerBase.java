@@ -304,16 +304,20 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         if (!hasMiningPipes()) {
             return PipeActionResult.NO_PIPE;
         }
-        switch (canLowerPipe()) {
-            case 1 -> {
-                return PipeActionResult.INVALID_BLOCK;
-            }
-            case 2 -> {
+        boolean canEraseBlock = false;
+        final IGregTechTileEntity aBaseTile = getBaseMetaTileEntity();
+        if (yHead > 0 && GTUtility.getBlockHardnessAt(aBaseTile.getWorld(), xPipe, yHead - 1, zPipe) >= 0) {
+            if (GTUtility.eraseBlockByFakePlayer(getFakePlayer(aBaseTile), xPipe, yHead - 1, zPipe, true)) {
+                canEraseBlock = true;
+            } else {
                 return PipeActionResult.CANCELED;
             }
         }
+        if (!canEraseBlock) {
+            return PipeActionResult.INVALID_BLOCK;
+        }
 
-        Block b = getBaseMetaTileEntity().getBlock(xPipe, yHead - 1, zPipe);
+        final Block b = getBaseMetaTileEntity().getBlock(xPipe, yHead - 1, zPipe);
         if (b != MINING_PIPE_TIP_BLOCK && !GTUtility.setBlockByFakePlayer(
             getFakePlayer(getBaseMetaTileEntity()),
             xPipe,
@@ -334,17 +338,6 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
             }
         }
         return PipeActionResult.SUCCESS;
-    }
-
-    /**
-     * @return 0 for available, 1 for invalid block, 2 for event canceled.
-     */
-    private int canLowerPipe() {
-        IGregTechTileEntity aBaseTile = getBaseMetaTileEntity();
-        if (yHead > 0 && GTUtility.getBlockHardnessAt(aBaseTile.getWorld(), xPipe, yHead - 1, zPipe) >= 0) {
-            return GTUtility.eraseBlockByFakePlayer(getFakePlayer(aBaseTile), xPipe, yHead - 1, zPipe, true) ? 0 : 2;
-        }
-        return 1;
     }
 
     private void putMiningPipesFromInputsInController() {
