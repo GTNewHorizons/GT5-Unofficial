@@ -1,8 +1,5 @@
 package gregtech.common.blocks;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
@@ -57,8 +54,4 @@ public class BlockCasings11 extends BlockCasingsAbstract {
         };
     }
 
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
-        super.addInformation(stack, player, tooltip, advancedTooltips);
-    }
 }

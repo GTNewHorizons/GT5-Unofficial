@@ -58,11 +58,6 @@ public class MTEHatchVoid extends MTEHatchOutput {
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-    }
-
-    @Override
     public boolean doesFillContainers() {
         return false;
     }
@@ -97,12 +92,6 @@ public class MTEHatchVoid extends MTEHatchOutput {
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {}
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-    }
 
     @Override
     public boolean outputsItems() {

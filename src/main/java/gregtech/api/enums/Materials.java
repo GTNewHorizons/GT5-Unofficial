@@ -50,7 +50,7 @@ import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import gregtech.loaders.materials.MaterialsInit;
 
 @SuppressWarnings("unused") // API Legitimately has unused Members and Methods
-public class Materials implements IColorModulationContainer, ISubTagContainer, IOreMaterial {
+public class Materials implements IColorModulationContainer, IOreMaterial {
 
     // Elements
     public static Materials Aluminium;

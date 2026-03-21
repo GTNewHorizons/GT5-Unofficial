@@ -68,7 +68,7 @@ import it.unimi.dsi.fastutil.shorts.Short2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import thaumcraft.api.aspects.Aspect;
 
-public class Werkstoff implements IColorModulationContainer, ISubTagContainer, IOreMaterial {
+public class Werkstoff implements IColorModulationContainer, IOreMaterial {
 
     public static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
     public static final Short2ObjectMap<Werkstoff> werkstoffHashMap = new Short2ObjectLinkedOpenHashMap<>();

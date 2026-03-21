@@ -251,11 +251,6 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public void explodeMultiblock() {
-        super.explodeMultiblock();
-    }
-
-    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece("main", stackSize, hintsOnly, 5, 16, 0);
     }

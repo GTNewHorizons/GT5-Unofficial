@@ -238,11 +238,6 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     }
 
     @Override
-    public int fill(FluidStack resource, boolean doFill) {
-        return super.fill(resource, doFill);
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return BartWorksRecipeMaps.bacterialVatRecipes;
     }

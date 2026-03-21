@@ -596,10 +596,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         return STRUCTURE_DEFINITION;
     }
 
-    public boolean addInputHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        return super.addInputHatchToMachineList(aTileEntity, aBaseCasingIndex);
-    }
-
     @Override
     public boolean supportsPowerPanel() {
         return false;
