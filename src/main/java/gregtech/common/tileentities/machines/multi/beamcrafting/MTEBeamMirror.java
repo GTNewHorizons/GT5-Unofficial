@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.beamcrafting;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_MIRROR;
+import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
@@ -32,6 +33,7 @@ import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
+import gtnhlanth.common.register.LanthItemList;
 
 public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements ISurvivalConstructable {
 
@@ -48,8 +50,8 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
                 "   ",
                 "   ",
                 "   ",
-                "BCB",
-                "B~B"
+                "ECE",
+                "E~E"
             },{
                 "   ",
                 "   ",
@@ -63,22 +65,20 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
                 "BAB",
                 "BBB"
             },{
-                "BDB",
+                "EDE",
                 "BAB",
                 "BAB",
                 "BAB",
                 "BBB"
             },{
-                "BBB",
+                "EEE",
                 "BBB",
                 "BBB",
                 "BBB",
                 "BBB"
             }})
         //spotless:on
-        .addElement(
-            'B', // collider casing
-            ofBlock(GregTechAPI.sBlockCasings13, 10))
+        .addElement('B', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
         .addElement('A', chainAllGlasses())
         .addElement(
             'C',
@@ -94,6 +94,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
                 .hint(2)
                 .adder(MTEBeamMirror::addBeamLineOutputHatch)
                 .build()) // beamline output hatch
+        .addElement('E', ofBlock(GregTechAPI.sBlockCasings3, 10)) // Grate casing
         .build();
 
     public MTEBeamMirror(final int aID, final String aName, final String aNameRegional) {
@@ -141,15 +142,13 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
         ITexture[] rTexture;
         if (side == aFacing) {
             rTexture = new ITexture[] {
-                Textures.BlockIcons
-                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                casingTexturePages[12][126],
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_BEAM_MIRROR)
                     .extFacing()
                     .build() };
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)) };
+            rTexture = new ITexture[] { casingTexturePages[12][126] };
         }
         return rTexture;
     }

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -9,6 +10,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.recipe.RecipeMaps.BEAMCRAFTER_METADATA;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -42,12 +44,12 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.extensions.ArrayExt;
-import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.gui.modularui.multiblock.MTEBeamCrafterGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
+import gtnhlanth.common.register.LanthItemList;
 
 public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements ISurvivalConstructable {
 
@@ -72,9 +74,9 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             // spotless:off
             new String[][]{{
                 "                 ",
-                " BBB         BBB ",
-                " BCB         BCB ",
-                " BBB         BBB ",
+                " DDD         DDD ",
+                " DCD         DCD ",
+                " DDD         DDD ",
                 "                 "
             },{
                 " BBB         BBB ",
@@ -139,12 +141,12 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             }})
         //spotless:on
         .addElement(
-            'B', // collider casing
+            'B',
             buildHatchAdder(MTEBeamCrafter.class)
                 .atLeast(Energy, ExoticEnergy, Maintenance, InputBus, InputHatch, OutputBus, OutputHatch)
-                .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
+                .casingIndex(CASING_INDEX_CENTRE)
                 .hint(1)
-                .buildAndChain(GregTechAPI.sBlockCasings13, 10))
+                .buildAndChain(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
         .addElement('A', chainAllGlasses())
         .addElement(
             'C',
@@ -153,6 +155,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 .hint(2)
                 .adder(MTEBeamCrafter::addBeamLineInputHatch)
                 .build()) // beamline input hatch
+        .addElement('D', ofBlock(GregTechAPI.sBlockCasings3, 10)) // Grate casing
         .build();
 
     public MTEBeamCrafter(final int aID, final String aName, final String aNameRegional) {
@@ -179,9 +182,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                rTexture = new ITexture[] {casingTexturePages[12][126],
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BEAMCRAFTER)
                         .extFacing()
@@ -192,17 +193,14 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                rTexture = new ITexture[] {casingTexturePages[12][126],
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BEAMCRAFTER)
                         .extFacing()
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)) };
+            rTexture = new ITexture[] { casingTexturePages[12][126] };
         }
         return rTexture;
     }
