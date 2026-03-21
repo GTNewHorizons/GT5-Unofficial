@@ -489,7 +489,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.WHITE
                     + "90 "
                     + EnumChatFormatting.GRAY
-                    + "chance for used robot arms to "
+                    + "chance for "
+                    + EnumChatFormatting.WHITE
+                    + "all "
+                    + EnumChatFormatting.GRAY
+                    + "used robot arms to "
                     + EnumChatFormatting.RED
                     + "void")
             .addSeparator()
