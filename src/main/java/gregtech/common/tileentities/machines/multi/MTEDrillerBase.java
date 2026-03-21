@@ -23,10 +23,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import net.minecraft.block.Block;
@@ -81,6 +78,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrillerBase>
     implements IChunkLoader, ISurvivalConstructable {
@@ -136,7 +134,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     protected boolean mWorkChunkNeedsReload = true;
 
     /** Stores default result messages for success/failures of each work state. */
-    private final Map<ResultRegistryKey, CheckRecipeResult> resultRegistry = new HashMap<>();
+    private final Int2ObjectOpenHashMap<CheckRecipeResult> resultRegistry = new Int2ObjectOpenHashMap<>();
 
     /** Allows inheritors to supply custom runtime failure messages. */
     private CheckRecipeResult runtimeFailure = null;
@@ -541,9 +539,8 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                 lastRuntimeFailure = null;
             }
 
-            return resultRegistry.getOrDefault(
-                new ResultRegistryKey(workState, wasSuccessful),
-                SimpleCheckRecipeResult.ofFailure("no_mining_pipe"));
+            return resultRegistry
+                .getOrDefault(pack(workState, wasSuccessful), SimpleCheckRecipeResult.ofFailure("no_mining_pipe"));
         } else {
             final CheckRecipeResult result;
             result = lastRuntimeFailure = runtimeFailure;
@@ -893,7 +890,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
      * @param result A previously registered recipe result.
      */
     protected void addResultMessage(final WorkState state, @NotNull final CheckRecipeResult result) {
-        resultRegistry.put(new ResultRegistryKey(state, result.wasSuccessful()), result);
+        resultRegistry.put(pack(state, result.wasSuccessful()), result);
     }
 
     /**
@@ -911,32 +908,9 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                 : SimpleCheckRecipeResult.ofFailure(resultKey));
     }
 
-    @SuppressWarnings("ClassCanBeRecord")
-    private final static class ResultRegistryKey {
-
-        private final int state;
-        private final boolean successful;
-
-        public ResultRegistryKey(final WorkState state, final boolean successful) {
-            this.state = state.ordinal();
-            this.successful = successful;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (!(obj instanceof ResultRegistryKey other)) {
-                return false;
-            }
-
-            return (state == other.state && successful == other.successful);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(state, successful);
-        }
+    private static int pack(WorkState state, boolean successful) {
+        final int stateBits = state.ordinal();
+        final int successBit = successful ? 0b1 : 0b0;
+        return (stateBits << 1) | successBit;
     }
 }
