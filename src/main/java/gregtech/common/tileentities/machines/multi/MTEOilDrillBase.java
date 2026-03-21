@@ -68,6 +68,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     private int chunkRangeConfig = getRangeInChunks();
 
+    protected int batchMultiplier = 1;
+
     public MTEOilDrillBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -114,7 +116,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         if (aNBT.hasKey("chunkRangeConfig")) chunkRangeConfig = aNBT.getInteger("chunkRangeConfig");
     }
 
-    protected MultiblockTooltipBuilder createTooltip(String tierSuffix) {
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
         String casings = getCasingBlockItem().get(0)
             .getDisplayName();
 
@@ -181,17 +184,15 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         return ImmutableList.of(InputBus, OutputHatch, Maintenance, Energy);
     }
 
-    int batchMultiplier = 1;
-
     @Override
     protected void setElectricityStats() {
         // for a 6.4 second beautiful batch
-        batchMultiplier = batchMode ? 128 : 1;
+        batchMultiplier = (batchMode && reachingVoidOrBedrock()) ? 128 : 1;
         this.mEfficiency = getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         int tier = Math.max(0, GTUtility.getTier(getMaxInputVoltage()));
         this.mEUt = -7 << (tier << 1); // (1/4) A of current tier when at bottom (7/8) A of current tier while mining
-        this.mMaxProgresstime = calculateMaxProgressTime(tier) * batchMultiplier;
+        this.mMaxProgresstime = calculateMaxProgressTime(tier);
     }
 
     @Override
@@ -200,7 +201,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             1,
             (workState == STATE_AT_BOTTOM || simulateWorking
                 ? (64 * (chunkRangeConfig * chunkRangeConfig)) >> (getMinTier() - 1)
-                : 120) / GTUtility.powInt(2, tier));
+                : 120) / GTUtility.powInt(2, tier))
+            * batchMultiplier;
     }
 
     protected float computeSpeed() {
@@ -329,13 +331,15 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         }
 
         FluidStack pumpedOil = pumpOil(speed, false);
-        mOilFlow = pumpedOil.amount * batchMultiplier;
+        mOilFlow = pumpedOil.amount;
         // Multiblock base already includes 1 parallel
         recipesDone += batchMultiplier - 1;
         return ValidationResult.of(ValidationType.VALID, pumpedOil.amount == 0 ? null : pumpedOil);
     }
 
     /**
+     * Pump the oil. Takes batch mode into account.
+     *
      * @param speed    Speed to pump oil
      * @param simulate If true, it actually does not consume vein
      * @return Fluid pumped
@@ -347,7 +351,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
         FluidStack returnOil = new FluidStack(mOil, 0);
         World world = getBaseMetaTileEntity().getWorld();
-        float coefficient = simulate ? -speed : speed;
+        final float coefficient = (simulate ? -speed : speed) * batchMultiplier;
 
         for (Iterator<ChunkCoordIntPair> iterator = mOilFieldChunks.iterator(); iterator.hasNext();) {
             ChunkCoordIntPair tChunk = iterator.next();
