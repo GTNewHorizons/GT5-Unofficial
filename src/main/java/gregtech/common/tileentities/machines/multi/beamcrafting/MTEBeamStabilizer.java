@@ -21,7 +21,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -29,7 +28,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTEBeamStabilizerGui;
 import gregtech.common.misc.GTStructureChannels;
@@ -210,19 +208,15 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] {
-                    casingTexturePages[12][126],
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_BEAM_STABILIZER_ACTIVE)
-                        .extFacing()
-                        .build() };
+                rTexture = new ITexture[] { casingTexturePages[12][126], TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_BEAM_STABILIZER_ACTIVE)
+                    .extFacing()
+                    .build() };
             } else {
-                rTexture = new ITexture[] {
-                    casingTexturePages[12][126],
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_BEAM_STABILIZER)
-                        .extFacing()
-                        .build() };
+                rTexture = new ITexture[] { casingTexturePages[12][126], TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_BEAM_STABILIZER)
+                    .extFacing()
+                    .build() };
             }
         } else {
             rTexture = new ITexture[] { casingTexturePages[12][126] };

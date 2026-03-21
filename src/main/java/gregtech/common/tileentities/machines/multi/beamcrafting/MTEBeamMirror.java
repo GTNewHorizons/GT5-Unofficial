@@ -19,14 +19,12 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
@@ -141,12 +139,10 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
-            rTexture = new ITexture[] {
-                casingTexturePages[12][126],
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_BEAM_MIRROR)
-                    .extFacing()
-                    .build() };
+            rTexture = new ITexture[] { casingTexturePages[12][126], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_BEAM_MIRROR)
+                .extFacing()
+                .build() };
         } else {
             rTexture = new ITexture[] { casingTexturePages[12][126] };
         }
