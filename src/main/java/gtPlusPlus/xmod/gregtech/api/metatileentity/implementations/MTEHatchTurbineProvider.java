@@ -24,8 +24,6 @@ import gregtech.common.gui.modularui.hatch.base.MTETurbineHousingGui;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
-import gtPlusPlus.core.lib.GTPPCore;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchTurbineProvider extends MTEHatchInputBus {
