@@ -17,7 +17,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -34,7 +33,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
+public class MTECoolantTower extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<MTECoolantTower> multiDefinition = null;
     private static final int CASING_INDEX = 1539;

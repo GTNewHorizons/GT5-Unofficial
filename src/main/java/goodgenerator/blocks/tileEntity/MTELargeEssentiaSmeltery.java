@@ -45,7 +45,6 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.GTMod;
@@ -73,8 +72,7 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
-public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
-    implements IConstructable, ISurvivalConstructable {
+public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
     private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_On");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
