@@ -1761,6 +1761,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     public boolean depleteInput(ItemStack aStack) {
+        return depleteInput(aStack, false);
+    }
+
+    public boolean depleteInput(ItemStack aStack, boolean simulate) {
         if (GTUtility.isStackInvalid(aStack)) return false;
         FluidStack aLiquid = GTUtility.getFluidForFilledItem(aStack, true);
         if (aLiquid != null) return depleteInput(aLiquid);
@@ -1782,6 +1786,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 ItemStack stackInSlot = baseMetaTileEntity.getStackInSlot(i);
                 if (GTUtility.areStacksEqual(aStack, stackInSlot)) {
                     if (stackInSlot.stackSize >= aStack.stackSize) {
+                        if (simulate) return true;
                         baseMetaTileEntity.decrStackSize(i, aStack.stackSize);
                         return true;
                     }
