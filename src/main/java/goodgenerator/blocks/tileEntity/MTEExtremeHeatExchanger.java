@@ -31,7 +31,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.api.recipe.ExtremeHeatExchangerRecipe;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
-import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
@@ -52,9 +51,9 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
-    implements IConstructable, ISurvivalConstructable {
+public class MTEExtremeHeatExchanger extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<MTEExtremeHeatExchanger> multiDefinition = null;
 

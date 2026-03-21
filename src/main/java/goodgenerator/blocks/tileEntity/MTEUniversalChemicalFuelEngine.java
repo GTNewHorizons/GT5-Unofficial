@@ -27,7 +27,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
@@ -51,9 +50,9 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
-    implements IConstructable, ISurvivalConstructable {
+public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
     protected final double DIESEL_EFFICIENCY_COEFFICIENT = 0.04D;
     protected final double GAS_EFFICIENCY_COEFFICIENT = 0.04D;
