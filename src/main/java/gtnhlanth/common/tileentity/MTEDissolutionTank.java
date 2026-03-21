@@ -138,40 +138,32 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
     }
 
     private boolean checkRatio(GTRecipe tRecipe, List<FluidStack> tFluidInputs) {
+        /*
+         * System.out.println("Called checkRatio with:");
+         * for (FluidStack f : tFluidInputs) {
+         * System.out.println(f.getUnlocalizedName() + " " + f.amount);
+         * }
+         */
         FluidStack majorGenericFluid = tRecipe.mFluidInputs[0];
         FluidStack minorGenericFluid = tRecipe.mFluidInputs[1];
 
-        int majorAmount;
-        int minorAmount;
+        int majorAmount = 0;
+        int minorAmount = 0;
 
-        FluidStack fluidInputOne = tFluidInputs.get(0);
-        FluidStack fluidInputTwo = tFluidInputs.get(1);
-
-        if (fluidInputOne.getUnlocalizedName()
-            .equals(majorGenericFluid.getUnlocalizedName())) {
-            if (fluidInputTwo.getUnlocalizedName()
+        for (int i = 0; i < tFluidInputs.size(); i++) {
+            FluidStack f = tFluidInputs.get(i);
+            if (f.getUnlocalizedName()
+                .equals(majorGenericFluid.getUnlocalizedName())) {
+                majorAmount += f.amount;
+            } else if (f.getUnlocalizedName()
                 .equals(minorGenericFluid.getUnlocalizedName())) {
-                // majorInput = fluidInputOne;
-                majorAmount = fluidInputOne.amount;
-                // minorInput = fluidInputTwo;
-                minorAmount = fluidInputTwo.amount;
-                // GTLog.out.print("in first IF");
-            } else return false; // No valid other input
+                    minorAmount += f.amount;
+                }
+        }
 
-        } else if (fluidInputTwo.getUnlocalizedName()
-            .equals(majorGenericFluid.getUnlocalizedName())) {
-                if (fluidInputOne.getUnlocalizedName()
-                    .equals(minorGenericFluid.getUnlocalizedName())) {
-                    // majorInput = fluidInputTwo;
-                    majorAmount = fluidInputTwo.amount;
-                    // minorInput = fluidInputOne;
-                    minorAmount = fluidInputOne.amount;
-                    // GTLog.out.print("in second if");
-                } else return false;
+        // System.out.println("Major: " + majorAmount + ", minor: " + minorAmount);
 
-            } else return false;
-
-        return majorAmount / tRecipe.mSpecialValue == minorAmount;
+        return majorAmount == minorAmount * tRecipe.mSpecialValue;
     }
 
     @Override
