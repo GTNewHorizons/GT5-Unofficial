@@ -10,6 +10,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.util.GTRecipeConstants;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -569,76 +570,44 @@ public class CuttingRecipes implements Runnable {
 
     public void recipeWithClassicFluids(ItemStack[] inputs, ItemStack[] outputs, int duration, long eut,
         boolean cleanroomRequired) {
-        if (cleanroomRequired) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(inputs)
-                .itemOutputs(outputs)
-                .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * eut / 320))))
-                .duration(2 * duration)
-                .eut(eut)
-                .requiresCleanRoom()
-                .addTo(cutterRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(inputs)
-                .itemOutputs(outputs)
-                .fluidInputs(GTModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426))))
-                .duration(2 * duration)
-                .eut(eut)
-                .requiresCleanRoom()
-                .addTo(cutterRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(inputs)
+            .itemOutputs(outputs)
+            .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * eut / 320))))
+            .duration(2 * duration)
+            .eut(eut)
+            .metadata(GTRecipeConstants.CLEANROOM, cleanroomRequired)
+            .addTo(cutterRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(inputs)
-                .itemOutputs(outputs)
-                .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * eut / 1280))))
-                .duration(duration)
-                .eut(eut)
-                .requiresCleanRoom()
-                .addTo(cutterRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(inputs)
+            .itemOutputs(outputs)
+            .fluidInputs(GTModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426))))
+            .duration(2 * duration)
+            .eut(eut)
+            .metadata(GTRecipeConstants.CLEANROOM, cleanroomRequired)
+            .addTo(cutterRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(inputs)
-                .itemOutputs(outputs)
-                .fluidInputs(
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(10, duration * eut / 4000))))
-                .duration((int) (duration / 2.5))
-                .eut(eut)
-                .requiresCleanRoom()
-                .addTo(cutterRecipes);
-        } else {
-            GTValues.RA.stdBuilder()
-                .itemInputs(inputs)
-                .itemOutputs(outputs)
-                .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * eut / 320))))
-                .duration(2 * duration)
-                .eut(eut)
-                .addTo(cutterRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(inputs)
+            .itemOutputs(outputs)
+            .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * eut / 1280))))
+            .duration(duration)
+            .eut(eut)
+            .metadata(GTRecipeConstants.CLEANROOM, cleanroomRequired)
+            .addTo(cutterRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(inputs)
-                .itemOutputs(outputs)
-                .fluidInputs(GTModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426))))
-                .duration(2 * duration)
-                .eut(eut)
-                .addTo(cutterRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(inputs)
+            .itemOutputs(outputs)
+            .fluidInputs(
+                Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(10, duration * eut / 4000))))
+            .duration((int) (duration / 2.5))
+            .eut(eut)
+            .metadata(GTRecipeConstants.CLEANROOM, cleanroomRequired)
+            .addTo(cutterRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(inputs)
-                .itemOutputs(outputs)
-                .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * eut / 1280))))
-                .duration(duration)
-                .eut(eut)
-                .addTo(cutterRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(inputs)
-                .itemOutputs(outputs)
-                .fluidInputs(
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(10, duration * eut / 4000))))
-                .duration((int) (duration / 2.5))
-                .eut(eut)
-                .addTo(cutterRecipes);
-        }
     }
 }
