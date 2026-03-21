@@ -52,6 +52,11 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     private static final double FLUSH_MAX = 0.999D;
 
     /**
+     * Per-layer outward offset (in blocks) to prevent z-fighting between coplanar texture layers.
+     */
+    private static final double LAYER_OFFSET = 0.001D;
+
+    /**
      * Mixed Brightness cache
      * <p>
      * Entries store the result of {@link Block#getMixedBrightnessForBlock(IBlockAccess, int, int, int)}<br>
@@ -202,54 +207,132 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     public void renderNegativeYFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(blockAccess, x, y - 1, z, 0)) return;
+            && !block.shouldSideBeRendered(
+                blockAccess,
+                x + ForgeDirection.DOWN.offsetX,
+                y + ForgeDirection.DOWN.offsetY,
+                z + ForgeDirection.DOWN.offsetZ,
+                ForgeDirection.DOWN.ordinal()))
+            return;
         setupLightingYNeg();
-        super.renderNegativeYFacing(tex);
+        final double origMinY = renderBlocks.renderMinY;
+        for (int i = 0; i < tex.length; i++) {
+            ITexture layer = tex[i];
+            if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMinY = origMinY - i * LAYER_OFFSET;
+            layer.renderYNeg(this);
+        }
+        renderBlocks.renderMinY = origMinY;
     }
 
     @Override
     public void renderPositiveYFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(blockAccess, x, y + 1, z, 1)) return;
+            && !block.shouldSideBeRendered(
+                blockAccess,
+                x + ForgeDirection.UP.offsetX,
+                y + ForgeDirection.UP.offsetY,
+                z + ForgeDirection.UP.offsetZ,
+                ForgeDirection.UP.ordinal()))
+            return;
         setupLightingYPos();
-        super.renderPositiveYFacing(tex);
+        final double origMaxY = renderBlocks.renderMaxY;
+        for (int i = 0; i < tex.length; i++) {
+            ITexture layer = tex[i];
+            if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMaxY = origMaxY + i * LAYER_OFFSET;
+            layer.renderYPos(this);
+        }
+        renderBlocks.renderMaxY = origMaxY;
     }
 
     @Override
     public void renderNegativeZFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(blockAccess, x, y, z - 1, 2)) return;
+            && !block.shouldSideBeRendered(
+                blockAccess,
+                x + ForgeDirection.NORTH.offsetX,
+                y + ForgeDirection.NORTH.offsetY,
+                z + ForgeDirection.NORTH.offsetZ,
+                ForgeDirection.NORTH.ordinal()))
+            return;
         setupLightingZNeg();
-        super.renderNegativeZFacing(tex);
+        final double origMinZ = renderBlocks.renderMinZ;
+        for (int i = 0; i < tex.length; i++) {
+            ITexture layer = tex[i];
+            if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMinZ = origMinZ - i * LAYER_OFFSET;
+            layer.renderZNeg(this);
+        }
+        renderBlocks.renderMinZ = origMinZ;
     }
 
     @Override
     public void renderPositiveZFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(blockAccess, x, y, z + 1, 3)) return;
+            && !block.shouldSideBeRendered(
+                blockAccess,
+                x + ForgeDirection.SOUTH.offsetX,
+                y + ForgeDirection.SOUTH.offsetY,
+                z + ForgeDirection.SOUTH.offsetZ,
+                ForgeDirection.SOUTH.ordinal()))
+            return;
         setupLightingZPos();
-        super.renderPositiveZFacing(tex);
+        final double origMaxZ = renderBlocks.renderMaxZ;
+        for (int i = 0; i < tex.length; i++) {
+            ITexture layer = tex[i];
+            if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMaxZ = origMaxZ + i * LAYER_OFFSET;
+            layer.renderZPos(this);
+        }
+        renderBlocks.renderMaxZ = origMaxZ;
     }
 
     @Override
     public void renderNegativeXFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(blockAccess, x - 1, y, z, 4)) return;
+            && !block.shouldSideBeRendered(
+                blockAccess,
+                x + ForgeDirection.WEST.offsetX,
+                y + ForgeDirection.WEST.offsetY,
+                z + ForgeDirection.WEST.offsetZ,
+                ForgeDirection.WEST.ordinal()))
+            return;
         setupLightingXNeg();
-        super.renderNegativeXFacing(tex);
+        final double origMinX = renderBlocks.renderMinX;
+        for (int i = 0; i < tex.length; i++) {
+            ITexture layer = tex[i];
+            if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMinX = origMinX - i * LAYER_OFFSET;
+            layer.renderXNeg(this);
+        }
+        renderBlocks.renderMinX = origMinX;
     }
 
     @Override
     public void renderPositiveXFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(blockAccess, x + 1, y, z, 5)) return;
+            && !block.shouldSideBeRendered(
+                blockAccess,
+                x + ForgeDirection.EAST.offsetX,
+                y + ForgeDirection.EAST.offsetY,
+                z + ForgeDirection.EAST.offsetZ,
+                ForgeDirection.EAST.ordinal()))
+            return;
         setupLightingXPos();
-        super.renderPositiveXFacing(tex);
+        final double origMaxX = renderBlocks.renderMaxX;
+        for (int i = 0; i < tex.length; i++) {
+            ITexture layer = tex[i];
+            if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMaxX = origMaxX + i * LAYER_OFFSET;
+            layer.renderXPos(this);
+        }
+        renderBlocks.renderMaxX = origMaxX;
     }
 
     /**
