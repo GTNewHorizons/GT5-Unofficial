@@ -218,7 +218,7 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
             }
 
             for (TElement e : discovered) {
-                if (e.getNetwork() == null) {
+                if (e.getNetwork() != biggestNetwork) {
                     e.setNetwork(biggestNetwork);
                     biggestNetwork.addElement(e);
                 }

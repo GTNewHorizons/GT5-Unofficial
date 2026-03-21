@@ -1,6 +1,7 @@
 package gregtech.api.recipe;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.IntFunction;
@@ -54,7 +55,7 @@ public final class BasicUIPropertiesBuilder {
 
     private boolean useSpecialSlot;
 
-    private final ImmutableList.Builder<Rectangle> neiTransferRect = ImmutableList.builder();
+    private final List<Rectangle> neiTransferRect = new ArrayList<>();
     @Nullable
     private String neiTransferRectId;
 
@@ -88,7 +89,7 @@ public final class BasicUIPropertiesBuilder {
         if (maxItemInputs == 0 && maxItemOutputs == 0 && maxFluidInputs == 0 && maxFluidOutputs == 0) {
             throw new IllegalArgumentException("Set either of max I/O count");
         }
-        List<Rectangle> builtNEITransferRect = neiTransferRect.build();
+        List<Rectangle> builtNEITransferRect = ImmutableList.copyOf(neiTransferRect);
         if (builtNEITransferRect.isEmpty()) {
             builtNEITransferRect = Collections.singletonList(
                 new Rectangle(
@@ -195,6 +196,11 @@ public final class BasicUIPropertiesBuilder {
 
     public BasicUIPropertiesBuilder useSpecialSlot(boolean useSpecialSlot) {
         this.useSpecialSlot = useSpecialSlot;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder clearNEITransferRects() {
+        this.neiTransferRect.clear();
         return this;
     }
 
