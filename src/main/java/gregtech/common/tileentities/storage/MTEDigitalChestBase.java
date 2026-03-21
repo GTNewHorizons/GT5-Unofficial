@@ -230,22 +230,20 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         mVoidOverflow = !mVoidOverflow;
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             aPlayer,
-            StatCollector.translateToLocal(
-                mVoidOverflow ? "GT5U.machines.digitalchest.voidoverflow.enabled"
-                    : "GT5U.machines.digitalchest.voidoverflow.disabled"));
+            mVoidOverflow ? "GT5U.machines.digitalchest.voidoverflow.enabled"
+                : "GT5U.machines.digitalchest.voidoverflow.disabled");
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         mDisableFilter = !mDisableFilter;
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             aPlayer,
-            StatCollector.translateToLocal(
-                mDisableFilter ? "GT5U.machines.digitalchest.inputfilter.disabled"
-                    : "GT5U.machines.digitalchest.inputfilter.enabled"));
+            mDisableFilter ? "GT5U.machines.digitalchest.inputfilter.disabled"
+                : "GT5U.machines.digitalchest.inputfilter.enabled");
         return true;
     }
 

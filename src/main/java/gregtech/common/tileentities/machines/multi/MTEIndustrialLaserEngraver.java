@@ -190,9 +190,9 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         ItemStack aTool) {
         stopAllRendering = !stopAllRendering;
         if (stopAllRendering) {
-            GTUtility.sendChatToPlayer(aPlayer, "Rendering off");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.rendering.off");
             if (renderer != null) renderer.setShouldRender(false);
-        } else GTUtility.sendChatToPlayer(aPlayer, "Rendering on");
+        } else GTUtility.sendChatTrans(aPlayer, "GT5U.chat.rendering.on");
     }
 
     @Override
@@ -209,7 +209,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         } else {
             if (renderer != null) {
                 renderer.toggleRealism();
-                GTUtility.sendChatToPlayer(aPlayer, "Toggling realism!");
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.laser.engraver.toggling_realism");
                 return true;
             }
         }
