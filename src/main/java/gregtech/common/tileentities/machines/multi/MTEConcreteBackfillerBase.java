@@ -75,7 +75,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
     }
 
     private void initRecipeResults() {
-        addResultMessage(WorkStates.STATE_UPWARD, true, "backfiller_working");
+        addResultMessage(WorkState.UPWARD, true, "backfiller_working");
     }
 
     @Override
@@ -144,7 +144,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
     @Override
     public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
         return (int) Math
-            .max(1, (workState == WorkStates.STATE_UPWARD || simulateWorking ? 240 : 80) / GTUtility.powInt(2, tier));
+            .max(1, (workState == WorkState.UPWARD || simulateWorking ? 240 : 80) / GTUtility.powInt(2, tier));
     }
 
     @Override
@@ -173,7 +173,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
             mLastZOff = 0;
             return true;
         } else {
-            workState = WorkStates.STATE_DOWNWARD;
+            workState = WorkState.DOWNWARD;
             stopMachine(ShutDownReasonRegistry.NONE);
             setShutdownReason(StatCollector.translateToLocal("GT5U.gui.text.backfiller_finished"));
             return false;
@@ -232,12 +232,12 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
                             numberFormat.format(clientYHead)))
                     .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == WorkStates.STATE_UPWARD))
+                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == WorkState.UPWARD))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getYHead, newInt -> clientYHead = newInt))
             .widget(
                 new FakeSyncWidget.IntegerSyncer(
                     () -> workState.ordinal(),
-                    newInt -> workState = WorkStates.fromOrdinal(newInt)));
+                    newInt -> workState = WorkState.fromOrdinal(newInt)));
     }
 
     @Override

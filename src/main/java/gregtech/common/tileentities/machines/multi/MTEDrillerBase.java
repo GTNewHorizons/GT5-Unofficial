@@ -130,7 +130,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     protected int casingTextureIndex;
     protected boolean isPickingPipes;
     private int xDrill, yDrill, zDrill, xPipe, zPipe, yHead;
-    protected WorkStates workState = WorkStates.STATE_DOWNWARD;
+    protected WorkState workState = WorkState.DOWNWARD;
     protected boolean mChunkLoadingEnabled = true;
     protected ChunkCoordIntPair mCurrentChunk = null;
     protected boolean mWorkChunkNeedsReload = true;
@@ -160,7 +160,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     private void initFields() {
         casingTextureIndex = getCasingTextureIndex();
-        workState = WorkStates.STATE_DOWNWARD;
+        workState = WorkState.DOWNWARD;
         addOperatingMessages();
     }
 
@@ -178,14 +178,14 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     protected void addOperatingMessages() {
         // Inheritors can overwrite these to add custom operating messages.
-        addResultMessage(WorkStates.STATE_DOWNWARD, true, "deploying_pipe");
-        addResultMessage(WorkStates.STATE_DOWNWARD, false, "extracting_pipe");
-        addResultMessage(WorkStates.STATE_AT_BOTTOM, true, "drilling");
-        addResultMessage(WorkStates.STATE_AT_BOTTOM, false, "no_mining_pipe");
-        addResultMessage(WorkStates.STATE_UPWARD, true, "retracting_pipe");
-        addResultMessage(WorkStates.STATE_UPWARD, false, "drill_generic_finished");
-        addResultMessage(WorkStates.STATE_ABORT, true, "retracting_pipe");
-        addResultMessage(WorkStates.STATE_ABORT, false, "drill_retract_pipes_finished");
+        addResultMessage(WorkState.DOWNWARD, true, "deploying_pipe");
+        addResultMessage(WorkState.DOWNWARD, false, "extracting_pipe");
+        addResultMessage(WorkState.AT_BOTTOM, true, "drilling");
+        addResultMessage(WorkState.AT_BOTTOM, false, "no_mining_pipe");
+        addResultMessage(WorkState.UPWARD, true, "retracting_pipe");
+        addResultMessage(WorkState.UPWARD, false, "drill_generic_finished");
+        addResultMessage(WorkState.ABORT, true, "retracting_pipe");
+        addResultMessage(WorkState.ABORT, false, "drill_retract_pipes_finished");
     }
 
     @Override
@@ -229,9 +229,9 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        workState = WorkStates.fromOrdinal(aNBT.getInteger("workState"));
+        workState = WorkState.fromOrdinal(aNBT.getInteger("workState"));
         if (aNBT.hasKey("isPickingPipes"))
-            workState = aNBT.getBoolean("isPickingPipes") ? WorkStates.STATE_UPWARD : WorkStates.STATE_DOWNWARD;
+            workState = aNBT.getBoolean("isPickingPipes") ? WorkState.UPWARD : WorkState.DOWNWARD;
         if (aNBT.hasKey("chunkLoadingEnabled")) mChunkLoadingEnabled = aNBT.getBoolean("chunkLoadingEnabled");
         if (aNBT.getBoolean("isChunkloading")) {
             mCurrentChunk = new ChunkCoordIntPair(
@@ -397,11 +397,11 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                 return false;
             }
             case 3 -> {
-                workState = WorkStates.STATE_UPWARD;
+                workState = WorkState.UPWARD;
                 return true;
             }
             case 1 -> {
-                workState = WorkStates.STATE_AT_BOTTOM;
+                workState = WorkState.AT_BOTTOM;
                 return true;
             }
             default -> {
@@ -413,10 +413,10 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
         if (tryLowerPipeState(true) == 0) {
-            workState = WorkStates.STATE_DOWNWARD;
+            workState = WorkState.DOWNWARD;
             return true;
         }
-        workState = WorkStates.STATE_UPWARD;
+        workState = WorkState.UPWARD;
         return true;
     }
 
@@ -425,7 +425,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         if (tryPickPipe()) {
             return true;
         } else {
-            workState = WorkStates.STATE_DOWNWARD;
+            workState = WorkState.DOWNWARD;
             stopMachine(ShutDownReasonRegistry.NONE);
             return false;
         }
@@ -435,8 +435,8 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     protected void onAbort() {}
 
     protected void abortDrilling() {
-        if (workState != WorkStates.STATE_ABORT) {
-            workState = WorkStates.STATE_ABORT;
+        if (workState != WorkState.ABORT) {
+            workState = WorkState.ABORT;
             onAbort();
             setShutdownReason("");
 
@@ -453,7 +453,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         if (tryPickPipe()) {
             return true;
         } else {
-            workState = WorkStates.STATE_DOWNWARD;
+            workState = WorkState.DOWNWARD;
             stopMachine(ShutDownReasonRegistry.NONE);
             return false;
         }
@@ -492,7 +492,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
         final boolean wasSuccessful;
         switch (workState) {
-            case STATE_DOWNWARD -> wasSuccessful = workingDownward(
+            case DOWNWARD -> wasSuccessful = workingDownward(
                 controllerStack,
                 xDrill,
                 yDrill,
@@ -501,7 +501,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                 zPipe,
                 yHead,
                 oldYHead);
-            case STATE_AT_BOTTOM -> wasSuccessful = workingAtBottom(
+            case AT_BOTTOM -> wasSuccessful = workingAtBottom(
                 controllerStack,
                 xDrill,
                 yDrill,
@@ -510,7 +510,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                 zPipe,
                 yHead,
                 oldYHead);
-            case STATE_UPWARD -> wasSuccessful = workingUpward(
+            case UPWARD -> wasSuccessful = workingUpward(
                 controllerStack,
                 xDrill,
                 yDrill,
@@ -519,7 +519,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                 zPipe,
                 yHead,
                 oldYHead);
-            case STATE_ABORT -> wasSuccessful = workingToAbortOperation(
+            case ABORT -> wasSuccessful = workingToAbortOperation(
                 controllerStack,
                 xDrill,
                 yDrill,
@@ -803,7 +803,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                 new ButtonWidget().setOnClick((clickData, widget) -> abortDrilling())
                     .setPlayClickSound(true)
                     .setBackground(() -> {
-                        if (workState == WorkStates.STATE_ABORT) {
+                        if (workState == WorkState.ABORT) {
                             return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
                                 GTUITextures.OVERLAY_BUTTON_RETRACT_PIPE, GTUITextures.OVERLAY_BUTTON_LOCKED };
                         }
@@ -813,13 +813,13 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                     .attachSyncer(
                         new FakeSyncWidget.IntegerSyncer(
                             () -> workState.ordinal(),
-                            (newInt) -> workState = WorkStates.fromOrdinal(newInt)),
+                            (newInt) -> workState = WorkState.fromOrdinal(newInt)),
                         builder,
                         (widget, integer) -> widget.notifyTooltipChange())
                     .dynamicTooltip(
                         () -> ImmutableList.of(
                             StatCollector.translateToLocalFormatted(
-                                workState == WorkStates.STATE_ABORT ? "GT5U.gui.button.drill_retract_pipes_active"
+                                workState == WorkState.ABORT ? "GT5U.gui.button.drill_retract_pipes_active"
                                     : "GT5U.gui.button.drill_retract_pipes")))
                     .setTooltipShowUpDelay(TOOLTIP_DELAY)
                     .setPos(new Pos2d(174, 112))
@@ -866,20 +866,20 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         }
     }
 
-    protected enum WorkStates {
+    protected enum WorkState {
 
-        STATE_DOWNWARD,
-        STATE_AT_BOTTOM,
-        STATE_UPWARD,
-        STATE_ABORT;
+        DOWNWARD,
+        AT_BOTTOM,
+        UPWARD,
+        ABORT;
 
-        private static final WorkStates[] VALUES = values();
+        private static final WorkState[] VALUES = values();
 
-        public static WorkStates fromOrdinal(int ordinal) {
+        public static WorkState fromOrdinal(int ordinal) {
             if (0 <= ordinal && ordinal < VALUES.length) {
                 return VALUES[ordinal];
             }
-            return STATE_DOWNWARD;
+            return DOWNWARD;
         }
     }
 
@@ -889,7 +889,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
      * @param state  A work state.
      * @param result A previously registered recipe result.
      */
-    protected void addResultMessage(final WorkStates state, @NotNull final CheckRecipeResult result) {
+    protected void addResultMessage(final WorkState state, @NotNull final CheckRecipeResult result) {
         resultRegistry.put(new ResultRegistryKey(state, result.wasSuccessful()), result);
     }
 
@@ -900,8 +900,8 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
      * @param wasSuccessful Whether the operation was successful.
      * @param resultKey     An I18N key for the message.
      */
-    protected void addResultMessage(final WorkStates state, final boolean wasSuccessful,
-        @NotNull final String resultKey) {
+    protected void addResultMessage(final WorkState state, final boolean wasSuccessful,
+                                    @NotNull final String resultKey) {
         addResultMessage(
             state,
             wasSuccessful ? SimpleCheckRecipeResult.ofSuccess(resultKey)
@@ -914,7 +914,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         private final int state;
         private final boolean successful;
 
-        public ResultRegistryKey(final WorkStates state, final boolean successful) {
+        public ResultRegistryKey(final WorkState state, final boolean successful) {
             this.state = state.ordinal();
             this.successful = successful;
         }
