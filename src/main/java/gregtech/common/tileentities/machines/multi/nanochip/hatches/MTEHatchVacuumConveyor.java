@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -24,7 +23,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -133,20 +131,16 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setByte("color", (byte) (getColorization() + (byte) 1));
-
+        tag.setByte("color", (byte) (getColorization() + 1));
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
-        byte color = (byte) (accessor.getNBTData()
+        final byte color = (byte) (accessor.getNBTData()
             .getByte("color") - 1);
-        if (color >= 0 && color < 16) currenttip.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.waila.hatch.color_channel",
-                Dyes.VALUES[color].formatting + Dyes.VALUES[color].getLocalizedDyeName() + EnumChatFormatting.GRAY));
+        MTEHatch.addColorChannelInfo(currenttip, color);
     }
 
     @Override
