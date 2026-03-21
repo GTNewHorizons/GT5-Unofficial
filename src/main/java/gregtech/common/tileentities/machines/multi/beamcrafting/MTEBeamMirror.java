@@ -34,7 +34,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
+    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
 
     private static final IStructureDefinition<MTEBeamMirror> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEBeamMirror>builder()
@@ -78,14 +78,14 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
         .addElement(
             'C',
             buildHatchAdder(MTEBeamMirror.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(CASING_INDEX_CENTRE)
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(1)
                 .adder(MTEBeamMirror::addBeamLineInputHatch)
                 .build()) // beamline input hatch
         .addElement(
             'D',
             buildHatchAdder(MTEBeamMirror.class).hatchClass(MTEHatchOutputBeamline.class)
-                .casingIndex(CASING_INDEX_CENTRE)
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(2)
                 .adder(MTEBeamMirror::addBeamLineOutputHatch)
                 .build()) // beamline output hatch
