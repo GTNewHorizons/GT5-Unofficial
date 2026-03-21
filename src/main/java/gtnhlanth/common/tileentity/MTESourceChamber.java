@@ -19,6 +19,7 @@ import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
 
+import gregtech.api.casing.Casings;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -63,7 +64,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
     private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
-    private static final int CASING_INDEX = 1662;
+    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
 
     private float outputEnergy;
     private int outputRate;
@@ -78,34 +79,34 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                     { "ckkkc", "keeek", "ke-ek", "keeek", "ccocc" }, { "ckkkc", "k---k", "k---k", "k---k", "ccccc" },
                     { "ckkkc", "k---k", "k---k", "k---k", "ccccc" }, { "ckkkc", "keeek", "ke-ek", "keeek", "ccccc" },
                     { "ccccc", "ckkkc", "ckbkc", "ckkkc", "ccccc" } })
-            .addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+            .addElement('c', Casings.ShieldedAcceleratorCasing.asElement())
             .addElement('k', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
             .addElement('e', ofBlock(LanthItemList.ELECTRODE_CASING, 0))
             .addElement(
                 'b',
                 buildHatchAdder(MTESourceChamber.class).hatchClass(MTEHatchOutputBeamline.class)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(ShieldedAccCasingTextureID)
                     .hint(4)
                     .adder(MTESourceChamber::addBeamLineOutputHatch)
                     .build())
             .addElement(
                 'i',
                 buildHatchAdder(MTESourceChamber.class).atLeast(InputBus, InputHatch)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(ShieldedAccCasingTextureID)
                     .hint(1)
                     .build())
             .addElement(
                 'o',
                 buildHatchAdder(MTESourceChamber.class).atLeast(OutputBus)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(ShieldedAccCasingTextureID)
                     .hint(2)
                     .build())
             .addElement(
                 'd',
                 buildHatchAdder(MTESourceChamber.class).atLeast(Maintenance, Energy)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(ShieldedAccCasingTextureID)
                     .hint(3)
-                    .buildAndChain(ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0)))
+                    .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
 
             .build();
     }
@@ -165,7 +166,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addInfo("Any one recipe can only provide up to its own " + EnumChatFormatting.YELLOW + "Maximum Beam Energy")
             .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom")
-            .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 56, false)
+            .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 56, false)
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 52, false)
             .addCasingInfoExactly(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 16, false)
             .addOtherStructurePart("Beamline Output Hatch", addHintNumber(4))
@@ -401,7 +402,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
         // Placeholder
         if (side == facing) {
-            if (active) return new ITexture[] { casingTexturePages[12][126], TextureFactory.builder()
+            if (active) return new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
                 .extFacing()
                 .build(),
@@ -410,7 +411,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[12][126], TextureFactory.builder()
+            return new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER)
                 .extFacing()
                 .build(),
@@ -420,7 +421,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[12][126] };
+        return new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture() };
     }
 
     private String particleText(String text) {

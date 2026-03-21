@@ -1017,7 +1017,8 @@ public enum Casings implements ICasing {
     // ------------------ Lanthanides -----------------
 
     ShieldedAcceleratorCasing
-        (() -> LanthItemList.SHIELDED_ACCELERATOR_CASING, 0,1662),
+        (() -> LanthItemList.SHIELDED_ACCELERATOR_CASING, 0,gt(12,126)),
+    // other lanth casings need to be registered manually
 
 
     // ------------------ Miscellaneous Elements -----------------

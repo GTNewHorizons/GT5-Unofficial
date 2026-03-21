@@ -21,6 +21,7 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.casing.Casings;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -75,7 +76,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
     private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
-    private static final int CASING_INDEX = 1662;
+    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
 
     private int glassTier = -1;
     private int machineTemp = 0;
@@ -118,39 +119,39 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                     { "ccccccc", "cvvvvvc", "kvvvvvk", "kvv-vvk", "kvvvvvk", "cvvvvvc", "ccccccc" },
                     { "ccccccc", "ccccccc", "ccccccc", "ccc-ccc", "ccccccc", "ccccccc", "ccccccc" },
                     { "ccccccc", "cbbbbbc", "cbbbbbc", "cbbobbc", "cbbbbbc", "cbbbbbc", "ccccccc" } })
-            .addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-            .addElement('g', ofBlock(GregTechAPI.sBlockCasings3, 10)) // Grate Machine Casing
+            .addElement('c', Casings.ShieldedAcceleratorCasing.asElement())
+            .addElement('g', Casings.GrateMachineCasing.asElement())
             .addElement('b', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
             .addElement(
                 'i',
                 buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchInputBeamline.class)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(ShieldedAccCasingTextureID)
                     .hint(3)
                     .adder(MTELINAC::addBeamLineInputHatch)
                     .build())
             .addElement(
                 'o',
                 buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchOutputBeamline.class)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(ShieldedAccCasingTextureID)
                     .hint(4)
                     .adder(MTELINAC::addBeamLineOutputHatch)
                     .build())
             .addElement('v', ofBlock(LanthItemList.ELECTRODE_CASING, 0))
             .addElement('k', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
             .addElement('d', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
-            .addElement('y', ofBlock(GregTechAPI.sBlockCasings1, 15)) // Superconducting coil
+            .addElement('y', Casings.SuperconductingCoilBlock.asElement())
             .addElement(
                 'h',
                 buildHatchAdder(MTELINAC.class).atLeast(InputHatch, OutputHatch)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(ShieldedAccCasingTextureID)
                     .hint(2)
                     .build())
             .addElement(
                 'j',
                 buildHatchAdder(MTELINAC.class).atLeast(Maintenance, Energy)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(ShieldedAccCasingTextureID)
                     .hint(1)
-                    .buildAndChain(ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0)))
+                    .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
             .build();
     }
 
@@ -197,12 +198,12 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addInfo("If " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " <= " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ", " + createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " * " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + "/100")
             .beginVariableStructureBlock(7, 7, 7, 7, 19, 83, false)
             .addController("Front bottom")
-            .addCasingInfoRange(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 325, 1285, false)
+            .addCasingInfoRange(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 325, 1285, false)
             .addCasingInfoRange(LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), 148, 852, false)
             .addCasingInfoRange(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 127, 703, false)
-            .addCasingInfoRange("Superconducting Coil Block", 56, 312, false)
+            .addCasingInfoRange(Casings.SuperconductingCoilBlock.getLocalizedName(), 56, 312, false)
             .addCasingInfoRange(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 156, 732, false)
-            .addCasingInfoExactly("Grate Machine Casing", 47, false)
+            .addCasingInfoExactly(Casings.GrateMachineCasing.getLocalizedName(), 47, false)
             .addCasingInfoExactly("Any Tiered Glass (LuV+)", 48, false)
             .addEnergyHatch(addHintNumber(1))
             .addMaintenanceHatch(addHintNumber(1))
@@ -437,7 +438,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         // Placeholder
         if (side == facing) {
-            if (active) return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
+            if (active) return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
                 .extFacing()
                 .build(),
@@ -446,7 +447,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
+            return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER)
                 .extFacing()
                 .build(),
@@ -456,7 +457,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[0][47] };
+        return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture() };
     }
 
     @Override
