@@ -130,38 +130,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     protected int casingTextureIndex;
     protected boolean isPickingPipes;
     private int xDrill, yDrill, zDrill, xPipe, zPipe, yHead;
-
-    protected int getXDrill() {
-        return xDrill;
-    }
-
-    protected int getZDrill() {
-        return zDrill;
-    }
-
-    protected int getYHead() {
-        return yHead;
-    }
-
     protected WorkStates workState = WorkStates.STATE_DOWNWARD;
-
-    protected enum WorkStates {
-
-        STATE_DOWNWARD,
-        STATE_AT_BOTTOM,
-        STATE_UPWARD,
-        STATE_ABORT;
-
-        private static final WorkStates[] VALUES = values();
-
-        public static WorkStates fromOrdinal(int ordinal) {
-            if (0 <= ordinal && ordinal < VALUES.length) {
-                return VALUES[ordinal];
-            }
-            return STATE_DOWNWARD;
-        }
-    }
-
     protected boolean mChunkLoadingEnabled = true;
     protected ChunkCoordIntPair mCurrentChunk = null;
     protected boolean mWorkChunkNeedsReload = true;
@@ -189,6 +158,24 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         initFields();
     }
 
+    private void initFields() {
+        casingTextureIndex = getCasingTextureIndex();
+        workState = WorkStates.STATE_DOWNWARD;
+        addOperatingMessages();
+    }
+
+    protected int getXDrill() {
+        return xDrill;
+    }
+
+    protected int getZDrill() {
+        return zDrill;
+    }
+
+    protected int getYHead() {
+        return yHead;
+    }
+
     protected void addOperatingMessages() {
         // Inheritors can overwrite these to add custom operating messages.
         addResultMessage(WorkStates.STATE_DOWNWARD, true, "deploying_pipe");
@@ -199,12 +186,6 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         addResultMessage(WorkStates.STATE_UPWARD, false, "drill_generic_finished");
         addResultMessage(WorkStates.STATE_ABORT, true, "retracting_pipe");
         addResultMessage(WorkStates.STATE_ABORT, false, "drill_retract_pipes_finished");
-    }
-
-    private void initFields() {
-        casingTextureIndex = getCasingTextureIndex();
-        workState = WorkStates.STATE_DOWNWARD;
-        addOperatingMessages();
     }
 
     @Override
@@ -882,6 +863,23 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         @Override
         public long count(MTEDrillerBase t) {
             return t.mDataAccessHatches.size();
+        }
+    }
+
+    protected enum WorkStates {
+
+        STATE_DOWNWARD,
+        STATE_AT_BOTTOM,
+        STATE_UPWARD,
+        STATE_ABORT;
+
+        private static final WorkStates[] VALUES = values();
+
+        public static WorkStates fromOrdinal(int ordinal) {
+            if (0 <= ordinal && ordinal < VALUES.length) {
+                return VALUES[ordinal];
+            }
+            return STATE_DOWNWARD;
         }
     }
 
