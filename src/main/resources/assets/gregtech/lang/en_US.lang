@@ -4770,14 +4770,13 @@ gt.latex.tips.3=§3Make sure to cover up!
 
 gt.hi_engraver.tips.1=Laser source hatch determines maximum recipe tier and parallels\nRecipe tier and overclocks limited to laser source tier + 1\nWhen using a UEV+ laser source, one multi-amp energy hatch is allowed instead of regular energy hatches\nParallels equal to the cube root of laser source amperage input\nGlass tier determines maximum laser source tier\n%s glass accepts all laser source hatches\nUse screwdriver to disable laser rendering\nUse wire cutter to toggle realism mode if you hate angled lasers
 
-gt.ore_factory.tips.1=Does all ore processing in one step
-gt.ore_factory.tips.2=Every ore costs 30EU/t, 2L lubricant, 200L distilled water\nRecipes that need extra input require their extra inputs on top of the normal costs\nProcessing time is dependent on mode\nUse a screwdriver to switch mode\nSneak click with screwdriver to void the stone dust
-gt.ore_factory.tips.3=§aOP stands for Ore Processor ;)
-gt.ore_factory.info.1=The third layer
-gt.ore_factory.info.2=Input ore/crushed ore
-gt.ore_factory.info.3=Input lubricant/distilled water/washing chemicals
-gt.ore_factory.info.4=Output Pollution
-gt.ore_factory.info.5=Output products
+gt.ore_factory.tips.1=Does all ore processing in one step\nParallel count scales with total input power: EU/t / 30\nEvery ore costs 30EU/t, 2L lubricant, 200L distilled water\nRecipes that need extra input require their extra inputs on top of the normal costs\nProcessing time is dependent on mode\nUse a screwdriver to switch mode\nSneak click with screwdriver to void the stone dust
+gt.ore_factory.tips.2=§aOP stands for Ore Processor ;)
+gt.ore_factory.info.controller=The third layer
+gt.ore_factory.info.i_bus=Input ore/crushed ore
+gt.ore_factory.info.i_hatch=Input lubricant/distilled water/washing chemicals
+gt.ore_factory.info.muffler=Output Pollution
+gt.ore_factory.info.o_bus=Output products
 
 gt.advdistill.tips.1=Stats dictated by tower mode\nRight click the controller with screwdriver to change mode
 gt.advdistill.tips.2=Distillery Mode (requires full height tower)\n§68 * Voltage Tier§7 Parallels

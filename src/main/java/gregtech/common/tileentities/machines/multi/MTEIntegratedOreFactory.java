@@ -46,6 +46,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -58,6 +59,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -583,36 +585,32 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Ore Processor, IOF")
-            .addInfo("Does all ore processing in one step")
-            .addInfo("Parallel count scales with total input power: EU/t / 30")
-            .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water")
-            .addInfo("Recipes that need extra input require their extra inputs on top of the normal costs")
-            .addInfo("Processing time is dependent on mode")
-            .addInfo("Use a screwdriver to switch mode")
-            .addInfo("Sneak click with screwdriver to void the stone dust")
+        tt.addMachineType("machtype.ore_factory")
+            .addInfo("gt.ore_factory.tips.1")
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
-            .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
+            .addInfo("gt.ore_factory.tips.2")
             .beginStructureBlock(15, 9, 13, false)
-            .addController("The third layer")
-            .addCasingInfoExactly("Awakened Draconium Coil Block", 7, false)
-            .addCasingInfoExactly("Centrifuge Casing", 7, false)
-            .addCasingInfoExactly("Grate Machine Casing", 7, false)
-            .addCasingInfoExactly("Large Sieve Grate", 7, false)
-            .addCasingInfoExactly("Titanium Gear Box Casing", 7, false)
-            .addCasingInfoExactly("Any Tiered Glass", 90, false)
-            .addCasingInfoExactly("Stainless Steel Frame Box", 23, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 169, false)
-            .addCasingInfoExactly("Iridium Sheetmetal", 96, false)
-            .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 462, false)
-            .addEnergyHatch("Any bottom Casing", 1)
-            .addMaintenanceHatch("Any bottom Casing", 1)
-            .addInputBus("Input ore/crushed ore", 2)
-            .addInputHatch("Input lubricant/distilled water/washing chemicals", 3)
-            .addMufflerHatch("Output Pollution", 3)
-            .addOutputBus("Output products", 4)
+            .addController("gt.ore_factory.info.controller")
+            .addCasingInfoExactly(Casings.AwakenedDraconiumCoilBlock.getLocalizedName(), 7)
+            .addCasingInfoExactly(Casings.CentrifugeCasing.getLocalizedName(), 7)
+            .addCasingInfoExactly(Casings.GrateMachineCasing.getLocalizedName(), 7)
+            .addCasingInfoExactly(Casings.LargeSieveGrate.getLocalizedName(), 7)
+            .addCasingInfoExactly(Casings.TitaniumGearBoxCasing.getLocalizedName(), 7)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 90, true)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.StainlessSteel),
+                23)
+            .addCasingInfoExactly(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 169)
+            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.sheetmetal, Materials.Iridium), 96)
+            .addCasingInfoExactly(Casings.AdvancedIridiumPlatedMachineCasing.getLocalizedName(), 462)
+            .addEnergyHatch("<bottom casing>", 1)
+            .addMaintenanceHatch("<bottom casing>", 1)
+            .addInputBus("gt.ore_factory.info.i_bus", 2)
+            .addInputHatch("gt.ore_factory.info.i_hatch", 3)
+            .addMufflerHatch("gt.ore_factory.info.muffler", 3)
+            .addOutputBus("gt.ore_factory.info.o_bus", 4)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Bavib")
             .toolTipFinisher();
         return tt;
