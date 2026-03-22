@@ -8,6 +8,7 @@ import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -352,10 +353,10 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public void getExtraInfoData(List<String> info) {
-        info.add(MessageFormat.format("Min hatch tier: {0}", calculateHatchTier()));
-        info.add(MessageFormat.format("Last 5 seconds: {0} EU/t", transferredLast5Secs));
-        info.add(MessageFormat.format("Last 30 seconds: {0} EU/t", transferredLast30Secs));
-        info.add(MessageFormat.format("Last minute: {0} EU/t", transferredLast1Min));
+        info.add(translateToLocalFormatted("tt.infodata.multi.min_hatch_tier", calculateHatchTier()));
+        info.add(translateToLocalFormatted("tt.infodata.multi.last_seconds.0", formatUIEUt(transferredLast5Secs)));
+        info.add(translateToLocalFormatted("tt.infodata.multi.last_seconds.1", formatUIEUt(transferredLast30Secs)));
+        info.add(translateToLocalFormatted("tt.infodata.multi.last_seconds.2", formatUIEUt(transferredLast1Min)));
     }
 
     @Override
