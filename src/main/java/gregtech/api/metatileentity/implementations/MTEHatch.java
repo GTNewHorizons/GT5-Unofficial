@@ -2,12 +2,15 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import appeng.api.crafting.ICraftingIconProvider;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -18,7 +21,7 @@ import gregtech.api.util.tooltip.TooltipHelper;
 /**
  * Handles texture changes internally. No special calls are necessary other than updateTexture in add***ToMachineList.
  */
-public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProvider {
+public abstract class MTEHatch extends MTEBasicTank {
 
     public enum ConnectionType {
         CABLE,
@@ -234,5 +237,14 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
             desc[lines.length + 3] = author;
         }
         return desc;
+    }
+
+    public static void addColorChannelInfo(List<String> tooltip, byte color) {
+        if (color >= 0 && color < 16) {
+            tooltip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.hatch.color_channel",
+                    Dyes.VALUES[color].formatting + Dyes.VALUES[color].getLocalizedDyeName()));
+        }
     }
 }

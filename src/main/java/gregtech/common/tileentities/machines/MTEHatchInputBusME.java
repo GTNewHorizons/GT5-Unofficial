@@ -76,12 +76,10 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -97,8 +95,7 @@ import gregtech.common.gui.modularui.widget.AESlotWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchInputBusME extends MTEHatchInputBus
-    implements IConfigurationCircuitSupport, IRecipeProcessingAwareHatch, IAddGregtechLogo, IAddUIWidgets,
+public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProcessingAwareHatch, IAddGregtechLogo,
     IPowerChannelState, ISmartInputHatch, IDataCopyable, IMEConnectable {
 
     protected static final int SLOT_COUNT = 16;
@@ -352,6 +349,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         }
     }
 
+    @Override
     public boolean doFastRecipeCheck() {
         return expediteRecipeCheck;
     }

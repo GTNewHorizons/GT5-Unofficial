@@ -313,10 +313,12 @@ public class MTEHatchCokeOven extends MTEHatch {
         };
     }
 
+    @Override
     public ITexture[] getTexturesActive(ITexture baseTexture) {
         return null;
     }
 
+    @Override
     public ITexture[] getTexturesInactive(ITexture baseTexture) {
         return null;
     }

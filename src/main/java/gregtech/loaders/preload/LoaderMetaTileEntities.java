@@ -168,6 +168,7 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialPackager;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialWireMill;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
+import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactoryLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerBronze;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteel;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerTitanium;
@@ -450,7 +451,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "multimachine.distillationtower",
                 "Distillation Tower").getStackForm(1L));
         ItemList.Ore_Processor.set(
-            new MTEIntegratedOreFactory(
+            new MTEIntegratedOreFactoryLegacy(
                 INTEGRATED_ORE_FACTORY_CONTROLLER.ID,
                 "multimachine.oreprocessor",
                 "Integrated Ore Factory").getStackForm(1L));
@@ -829,6 +830,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MegaChemicalReactor.ID,
                 "multimachine.mega-chemical-reactor",
                 "Mega Chemical Reactor").getStackForm(1));
+
+        ItemList.IntegratedOreFactory.set(
+            new MTEIntegratedOreFactory(IntegratedOreFactory.ID, "multimachine.oreprocessor", "Integrated Ore Factory")
+                .getStackForm(1L));
     }
 
     private static void registerSteamMachines() {

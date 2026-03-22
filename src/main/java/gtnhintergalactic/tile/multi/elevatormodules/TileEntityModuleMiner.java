@@ -1246,6 +1246,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
          *
          * @return Number of possible parallels
          */
+        @Override
         protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
         }
@@ -1345,6 +1346,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
          *
          * @return Number of possible parallels
          */
+        @Override
         protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
         }
@@ -1444,6 +1446,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
          *
          * @return Number of possible parallels
          */
+        @Override
         protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
         }

@@ -547,6 +547,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         return false;
     }
 
+    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         this.buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, 0, 0, 0);
         int tLength = Math.min(stackSize.stackSize + 1, 7);
@@ -646,15 +647,10 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             GTUtility.sendChatTrans(
                 aPlayer,
                 inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
+            return true;
         } else {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
+            return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
         }
-        return true;
     }
 
     @Override

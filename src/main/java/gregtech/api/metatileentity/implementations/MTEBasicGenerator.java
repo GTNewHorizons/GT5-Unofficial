@@ -259,9 +259,6 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
 
     public abstract int getPollution();
 
-    @Override
-    public abstract RecipeMap<?> getRecipeMap();
-
     public abstract int getEfficiency();
 
     public int consumedFluidPerOperation(FluidStack aLiquid) {
