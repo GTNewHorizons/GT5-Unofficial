@@ -221,6 +221,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase {
         return new MTECharcoalPit(mName);
     }
 
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Charcoal Pile Igniter, CPI")

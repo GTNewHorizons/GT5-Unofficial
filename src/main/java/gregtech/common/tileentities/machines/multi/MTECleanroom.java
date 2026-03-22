@@ -793,11 +793,6 @@ public class MTECleanroom extends MTETooltipMultiBlockBase implements IConstruct
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTECleanRoomGui(this);
     }

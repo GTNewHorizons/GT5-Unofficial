@@ -21,7 +21,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -52,7 +51,7 @@ import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
+public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements ISurvivalConstructable {
 
     protected final double DIESEL_EFFICIENCY_COEFFICIENT = 0.04D;
     protected final double GAS_EFFICIENCY_COEFFICIENT = 0.04D;

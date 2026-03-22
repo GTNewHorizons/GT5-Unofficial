@@ -34,7 +34,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -72,7 +71,7 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
-public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
+public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvivalConstructable {
 
     private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_On");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
@@ -308,6 +307,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements IConst
         super.runMachine(aBaseMetaTileEntity, aTick);
     }
 
+    @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
 

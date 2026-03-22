@@ -683,6 +683,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEQuantumForceTransformer> adder() {
             return adder;
         }

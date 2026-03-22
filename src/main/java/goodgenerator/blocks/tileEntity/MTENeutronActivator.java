@@ -21,7 +21,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -64,7 +63,7 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTENeutronActivator extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
+public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalConstructable {
 
     public Parameters.Group.ParameterIn batchSetting;
 
@@ -183,6 +182,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements IConstructa
         return GoodGeneratorRecipeMaps.neutronActivatorRecipes;
     }
 
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Neutron Activator, NA")
@@ -530,6 +530,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements IConstructa
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTENeutronActivator> adder() {
             return adder;
         }

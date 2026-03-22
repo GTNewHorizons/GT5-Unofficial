@@ -17,7 +17,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -41,7 +40,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTEFuelRefineFactory extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
+public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalConstructable {
 
     private IStructureDefinition<MTEFuelRefineFactory> multiDefinition = null;
     private int tier = -1;

@@ -768,6 +768,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTENanochipAssemblyComplex> adder() {
             return adder;
         }

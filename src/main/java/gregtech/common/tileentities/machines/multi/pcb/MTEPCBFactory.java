@@ -1069,6 +1069,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEPCBFactory> adder() {
             return adder;
         }

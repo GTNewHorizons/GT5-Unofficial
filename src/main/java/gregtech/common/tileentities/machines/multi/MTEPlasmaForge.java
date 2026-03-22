@@ -734,6 +734,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            @Override
             @Nonnull
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 if (map == null) {
@@ -1118,11 +1119,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     }
 
     private static final int CATALYST_WINDOW_ID = 10;
-
-    @Override
-    protected boolean useMui2() {
-        return true;
-    }
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {

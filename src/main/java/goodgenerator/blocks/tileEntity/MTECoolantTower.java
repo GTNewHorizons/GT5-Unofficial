@@ -11,7 +11,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -33,7 +32,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTECoolantTower extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
+public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstructable {
 
     protected IStructureDefinition<MTECoolantTower> multiDefinition = null;
     private static final int CASING_INDEX = 1539;

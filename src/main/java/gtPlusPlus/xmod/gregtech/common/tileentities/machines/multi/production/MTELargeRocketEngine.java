@@ -446,6 +446,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         return injected > 0;
     }
 
+    @Override
     protected boolean requiresMuffler() {
         return true;
     }

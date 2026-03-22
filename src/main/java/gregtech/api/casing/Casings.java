@@ -492,6 +492,16 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings13, 8, gt(16, 6, 8)),
     NaniteReplicationFramework
         (() -> GregTechAPI.sBlockCasings13, 9, gt(16, 6, 9)),
+    ColliderCasing
+        (() -> GregTechAPI.sBlockCasings13,10,gt(16,6,10)),
+    CMSCasing
+        (() -> GregTechAPI.sBlockCasings13,11,gt(16,6,11)),
+    ATLASCasing
+        (() -> GregTechAPI.sBlockCasings13,12,gt(16,6,12)),
+    ALICECasing
+        (() -> GregTechAPI.sBlockCasings13,13,gt(16,6,13)),
+    LHCbCasing
+        (() -> GregTechAPI.sBlockCasings13,14,gt(16,6,14)),
 
     // Block Casings Foundry
     PrimaryExoFoundryCasing
@@ -1007,7 +1017,8 @@ public enum Casings implements ICasing {
     // ------------------ Lanthanides -----------------
 
     ShieldedAcceleratorCasing
-        (() -> LanthItemList.SHIELDED_ACCELERATOR_CASING, 0,1662),
+        (() -> LanthItemList.SHIELDED_ACCELERATOR_CASING, 0,gt(12,126)),
+    // other lanth casings need to be registered manually
 
 
     // ------------------ Miscellaneous Elements -----------------

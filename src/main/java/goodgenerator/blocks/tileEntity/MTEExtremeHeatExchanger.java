@@ -23,7 +23,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -53,7 +52,7 @@ import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTEExtremeHeatExchanger extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
+public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurvivalConstructable {
 
     protected IStructureDefinition<MTEExtremeHeatExchanger> multiDefinition = null;
 
@@ -444,6 +443,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements IConstr
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEExtremeHeatExchanger> adder() {
             return adder;
         }
