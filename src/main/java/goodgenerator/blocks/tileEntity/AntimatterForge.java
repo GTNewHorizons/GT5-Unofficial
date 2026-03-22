@@ -709,65 +709,31 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     @Override
-    public String[] getInfoData() {
-        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+    public void getExtraInfoData(List<String> info) {
+        info.add(StatCollector.translateToLocal("gui.AntimatterForge.0") + ": "
+            + EnumChatFormatting.BLUE
+            + formatNumber(getAntimatterAmount())
+            + EnumChatFormatting.RESET
+            + " L");
 
-        long storedEnergy = 0;
-        long maxEnergy = 0;
+        info.add(StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
+            + EnumChatFormatting.RED
+            + formatNumber(getPassiveConsumption())
+            + EnumChatFormatting.RESET
+            + " EU/t");
 
-        for (MTEHatch tHatch : mExoticEnergyHatches) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
+        info.add(StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
+            + EnumChatFormatting.LIGHT_PURPLE
+            + formatNumber(getActiveConsumption())
+            + EnumChatFormatting.RESET
+            + " EU/t");
 
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.antimatter_forge")
-                + " "
-                + EnumChatFormatting.GRAY,
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime)
-                + EnumChatFormatting.RESET
-                + "t / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime)
-                + EnumChatFormatting.RESET
-                + "t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("gui.AntimatterForge.0") + ": "
-                + EnumChatFormatting.BLUE
-                + formatNumber(getAntimatterAmount())
-                + EnumChatFormatting.RESET
-                + " L",
-            StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(getPassiveConsumption())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
-                + EnumChatFormatting.LIGHT_PURPLE
-                + formatNumber(getActiveConsumption())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
-                + EnumChatFormatting.AQUA
-                + formatNumber(getAntimatterChange())
-                + EnumChatFormatting.RESET
-                + " L",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+        info.add(StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
+            + EnumChatFormatting.AQUA
+            + formatNumber(getAntimatterChange())
+            + EnumChatFormatting.RESET
+            + " L");
+
     }
 
     public long getAntimatterAmount() {
