@@ -710,30 +710,13 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     @Override
     public void getExtraInfoData(List<String> info) {
-        info.add(StatCollector.translateToLocal("gui.AntimatterForge.0") + ": "
-            + EnumChatFormatting.BLUE
-            + formatNumber(getAntimatterAmount())
-            + EnumChatFormatting.RESET
-            + " L");
+        info.add(StatCollector.translateToLocalFormatted("gui.AntimatterForge.0", formatNumber(getAntimatterAmount())));
 
-        info.add(StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
-            + EnumChatFormatting.RED
-            + formatNumber(getPassiveConsumption())
-            + EnumChatFormatting.RESET
-            + " EU/t");
+        info.add(StatCollector.translateToLocalFormatted("gui.AntimatterForge.1", formatNumber(getPassiveConsumption())));
 
-        info.add(StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
-            + EnumChatFormatting.LIGHT_PURPLE
-            + formatNumber(getActiveConsumption())
-            + EnumChatFormatting.RESET
-            + " EU/t");
+        info.add(StatCollector.translateToLocalFormatted("gui.AntimatterForge.2", formatNumber(getActiveConsumption())));
 
-        info.add(StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
-            + EnumChatFormatting.AQUA
-            + formatNumber(getAntimatterChange())
-            + EnumChatFormatting.RESET
-            + " L");
-
+        info.add(StatCollector.translateToLocalFormatted("gui.AntimatterForge.3", formatNumber(getAntimatterChange())));
     }
 
     public long getAntimatterAmount() {

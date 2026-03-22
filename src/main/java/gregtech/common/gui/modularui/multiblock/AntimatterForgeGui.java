@@ -19,6 +19,8 @@ import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import goodgenerator.blocks.tileEntity.AntimatterForge;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
@@ -53,39 +55,19 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterForge.0")
-                            + ": "
-                            + EnumChatFormatting.BLUE
-                            + numberFormat.format(containedSync.getLongValue())
-                            + EnumChatFormatting.WHITE
-                            + " L")))
+                        () -> StatCollector.translateToLocalFormatted("gui.AntimatterForge.0", numberFormat.format(containedSync.getLongValue())))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterForge.1")
-                            + ": "
-                            + EnumChatFormatting.RED
-                            + standardFormat.format(passiveConsSync.getLongValue())
-                            + EnumChatFormatting.WHITE
-                            + " EU/t")))
+                        () -> StatCollector.translateToLocalFormatted("gui.AntimatterForge.1", standardFormat.format(passiveConsSync.getLongValue())))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterForge.2")
-                            + ": "
-                            + EnumChatFormatting.LIGHT_PURPLE
-                            + standardFormat.format(activeConsSync.getLongValue())
-                            + EnumChatFormatting.WHITE
-                            + " EU/t")))
+                        () -> StatCollector.translateToLocalFormatted("gui.AntimatterForge.2", standardFormat.format(activeConsSync.getLongValue())))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterForge.3")
-                            + ": "
-                            + EnumChatFormatting.AQUA
-                            + numberFormat.format(amChangeSync.getLongValue())
-                            + EnumChatFormatting.WHITE
-                            + " L")));
+                        () -> StatCollector.translateToLocalFormatted("gui.AntimatterForge.3", numberFormat.format(amChangeSync.getLongValue())))));
 
     }
 }
