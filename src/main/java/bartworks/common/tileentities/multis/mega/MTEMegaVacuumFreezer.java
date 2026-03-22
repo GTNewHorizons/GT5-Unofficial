@@ -30,7 +30,6 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -61,7 +60,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -315,26 +313,6 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
         if (!aNBT.hasKey(BATCH_MODE_NBT_KEY)) {
             this.batchMode = aNBT.getBoolean("mUseMultiparallelMode");
         }
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            this.batchMode = !this.batchMode;
-            if (this.batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     public SubspaceCoolingFluid findSubspaceCoolingFluid() {

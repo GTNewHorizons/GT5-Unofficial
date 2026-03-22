@@ -25,7 +25,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -56,8 +55,7 @@ import gregtech.common.gui.modularui.multiblock.AntimatterGeneratorGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
-    implements IConstructable, ISurvivalConstructable {
+public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implements ISurvivalConstructable {
 
     public static final String MAIN_NAME = "antimatterGenerator";
     protected IStructureDefinition<AntimatterGenerator> multiDefinition = null;

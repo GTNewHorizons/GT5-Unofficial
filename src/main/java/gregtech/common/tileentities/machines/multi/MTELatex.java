@@ -149,9 +149,11 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
     private static final FluidStack[] valid_rubbers = { Materials.Rubber.getMolten(1L),
         Materials.RubberSilicone.getMolten(1L), Materials.StyreneButadieneRubber.getMolten(1L) };
 
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            @Override
             protected @NotNull ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
                 return super.createParallelHelper(Objects.requireNonNull(recipeAfterAdjustments(recipe)));
             }

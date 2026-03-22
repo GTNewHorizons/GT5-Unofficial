@@ -3,11 +3,10 @@ package goodgenerator.blocks.tileEntity.base;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public abstract class MTETooltipMultiBlockBaseEM extends TTMultiblockBase implements ISecondaryDescribable {
+public abstract class MTETooltipMultiBlockBaseEM extends TTMultiblockBase {
 
     private static final Map<Integer, MultiblockTooltipBuilder> tooltips = new ConcurrentHashMap<>();
 
@@ -19,6 +18,7 @@ public abstract class MTETooltipMultiBlockBaseEM extends TTMultiblockBase implem
         super(aName);
     }
 
+    @Override
     protected MultiblockTooltipBuilder getTooltip() {
         int tId = getBaseMetaTileEntity().getMetaTileID();
         MultiblockTooltipBuilder tooltip = tooltips.get(tId);
@@ -29,6 +29,7 @@ public abstract class MTETooltipMultiBlockBaseEM extends TTMultiblockBase implem
         return tooltip;
     }
 
+    @Override
     protected abstract MultiblockTooltipBuilder createTooltip();
 
     @Override
@@ -36,10 +37,12 @@ public abstract class MTETooltipMultiBlockBaseEM extends TTMultiblockBase implem
         return getCurrentDescription();
     }
 
+    @Override
     public String[] getPrimaryDescription() {
         return getTooltip().getInformation();
     }
 
+    @Override
     public String[] getSecondaryDescription() {
         return getTooltip().getStructureInformation();
     }

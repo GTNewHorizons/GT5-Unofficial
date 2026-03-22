@@ -35,7 +35,6 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IFluidLockable;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -43,7 +42,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
 
-public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLockable, IAddUIWidgets {
+public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLockable {
 
     protected String lockedFluidName = null;
     private WeakReference<EntityPlayer> playerThatLockedfluid = null;

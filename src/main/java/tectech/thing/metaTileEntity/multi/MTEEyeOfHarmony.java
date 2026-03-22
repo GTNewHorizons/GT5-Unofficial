@@ -50,7 +50,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -95,7 +94,7 @@ import tectech.util.FluidStackLong;
 import tectech.util.ItemStackLong;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
+public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstructable {
 
     public static final boolean EOH_DEBUG_MODE = false;
     private static final long MOLTEN_SPACETIME_PER_FAILURE_TIER = 14_400L;
@@ -1364,6 +1363,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
     }
 
+    @Override
     public void outputAfterRecipe_EM() {
         recipeRunning = false;
         eRequiredData = 0L;

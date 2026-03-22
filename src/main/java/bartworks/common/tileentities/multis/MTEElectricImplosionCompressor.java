@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
@@ -463,21 +462,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     public boolean supportsBatchMode() {
         return true;
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
     }
 
     @Override

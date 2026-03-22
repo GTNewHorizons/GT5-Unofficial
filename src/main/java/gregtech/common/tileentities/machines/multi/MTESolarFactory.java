@@ -26,7 +26,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -61,8 +60,7 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.SolarFactoryRecipeData;
 import gregtech.common.misc.GTStructureChannels;
 
-public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
-    implements IConstructable, ISurvivalConstructable {
+public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory> implements ISurvivalConstructable {
 
     private static final int CASING_T1_INDEX = 49;
     private static final int CASING_T2_INDEX = 48;

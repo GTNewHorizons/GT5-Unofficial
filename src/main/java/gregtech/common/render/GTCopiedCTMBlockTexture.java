@@ -6,11 +6,10 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.IBlockContainer;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.ISBRContext;
 import gregtech.api.util.GTRenderingWorld;
 
-class GTCopiedCTMBlockTexture extends GTTextureBase implements ITexture, IBlockContainer {
+class GTCopiedCTMBlockTexture extends GTTextureBase implements IBlockContainer {
 
     private final Block mBlock;
     private final byte mSide;

@@ -190,6 +190,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         return outputFluids;
     }
 
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 

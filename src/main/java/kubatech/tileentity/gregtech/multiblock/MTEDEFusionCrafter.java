@@ -124,6 +124,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         return STRUCTURE_DEFINITION;
     }
 
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         mTierCasing = -1;
@@ -156,6 +157,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         return tt;
     }
 
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {

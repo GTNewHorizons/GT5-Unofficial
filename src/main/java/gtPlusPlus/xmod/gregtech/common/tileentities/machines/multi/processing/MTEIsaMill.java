@@ -21,7 +21,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -367,16 +366,6 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 1;
     }
@@ -457,6 +446,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
             ItemStack millingBall;
 
+            @Override
             public CheckRecipeResult process() {
                 if (getAvailableMillingBalls().length == 0) return SimpleCheckRecipeResult.ofFailure("no_milling_ball");
                 return super.process();

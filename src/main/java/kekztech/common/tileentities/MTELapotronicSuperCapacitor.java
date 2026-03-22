@@ -1061,11 +1061,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     public boolean hasRunningText() {
         return false;
     }

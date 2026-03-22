@@ -223,6 +223,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEBlackHoleCompressor> adder() {
             return adder;
         }

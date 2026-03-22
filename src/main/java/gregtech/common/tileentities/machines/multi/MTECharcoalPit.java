@@ -25,7 +25,6 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
-import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -37,7 +36,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.pollution.Pollution;
 
-public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISecondaryDescribable {
+public class MTECharcoalPit extends MTETooltipMultiBlockBase {
 
     private boolean running = false;
 
@@ -222,6 +221,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
         return new MTECharcoalPit(mName);
     }
 
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.cpi")

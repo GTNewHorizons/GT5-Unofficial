@@ -21,7 +21,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -64,7 +63,7 @@ import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 
-public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
+public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements ISurvivalConstructable {
 
     public Parameters.Group.ParameterIn batchSetting;
 
@@ -152,10 +151,10 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
         float aX, float aY, float aZ, ItemStack aTool) {
         if (getMaxBatchSize() == 1) {
             parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 128);
-            GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.machine.batch_mode.enable");
         } else {
             parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 1);
-            GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.machine.batch_mode.disable");
         }
         return true;
     }
@@ -183,6 +182,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
         return GoodGeneratorRecipeMaps.neutronActivatorRecipes;
     }
 
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Neutron Activator, NA")
@@ -530,6 +530,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTENeutronActivator> adder() {
             return adder;
         }

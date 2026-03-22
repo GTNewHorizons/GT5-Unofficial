@@ -21,7 +21,6 @@ import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -47,7 +46,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
@@ -334,20 +332,5 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     @Override
     public boolean supportsBatchMode() {
         return true;
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
     }
 }

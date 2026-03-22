@@ -252,6 +252,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
             true);
     }
 
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tierGearBoxCasing = -1;
         tierPipeCasing = -1;

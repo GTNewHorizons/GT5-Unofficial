@@ -251,11 +251,6 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public void explodeMultiblock() {
-        super.explodeMultiblock();
-    }
-
-    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece("main", stackSize, hintsOnly, 5, 16, 0);
     }
@@ -431,21 +426,6 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                 aPlayer,
                 inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
         }
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
     }
 
     @Override

@@ -13,7 +13,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -66,16 +65,6 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new MTECyclotron(this.mName);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
     }
 
     @Override

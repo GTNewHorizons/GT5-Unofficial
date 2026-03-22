@@ -266,6 +266,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX) };
     }
 
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
         return super.checkMachine(aBaseMetaTileEntity, aStack);

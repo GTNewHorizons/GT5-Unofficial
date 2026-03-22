@@ -465,16 +465,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        this.batchMode = !this.batchMode;
-        GTUtility.sendChatTrans(
-            aPlayer,
-            this.batchMode ? "GT5U.chat.machine.batch_mode.enable" : "GT5U.chat.machine.batch_mode.disable");
-        return true;
-    }
-
     // We place the event handler in an inner
     // class to prevent high costs of registering
     // the event because forge event bus reflects

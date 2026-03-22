@@ -667,6 +667,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEQuantumForceTransformer> adder() {
             return adder;
         }
@@ -816,21 +817,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_QUANTUM_FORCE_TRANSFORMER_LOOP;
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
     }
 
     private String catalystText(String text) {
