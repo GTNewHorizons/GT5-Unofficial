@@ -6,26 +6,20 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
-import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
@@ -36,23 +30,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import appeng.api.config.Actionable;
 import appeng.api.implementations.IPowerChannelState;
@@ -65,7 +46,6 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
-import appeng.core.localization.WailaText;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
@@ -74,7 +54,6 @@ import appeng.util.item.AEItemStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
@@ -92,7 +71,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.gui.modularui.widget.AESlotWidget;
+import gregtech.common.gui.modularui.hatch.MTEHatchInputBusMEGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -100,13 +79,13 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     implements IConfigurationCircuitSupport, IRecipeProcessingAwareHatch, IAddGregtechLogo, IAddUIWidgets,
     IPowerChannelState, ISmartInputHatch, IDataCopyable, IMEConnectable {
 
-    protected static final int SLOT_COUNT = 16;
+    public static final int SLOT_COUNT = 16;
     public static final String COPIED_DATA_IDENTIFIER = "stockingBus";
     protected BaseActionSource requestSource = null;
     protected @Nullable AENetworkProxy gridProxy = null;
     protected final Slot[] slots = new Slot[SLOT_COUNT];
     protected boolean processingRecipe = false;
-    protected final boolean autoPullAvailable;
+    public final boolean autoPullAvailable;
     protected boolean autoPullItemList = false;
     protected int minAutoPullStackSize = 1;
     protected int autoPullRefreshTime = 100;
@@ -160,7 +139,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         super.onPostTick(aBaseMetaTileEntity, aTimer);
     }
 
-    protected boolean isAllowedToWork() {
+    public boolean isAllowedToWork() {
         if (processingRecipe) return cachedActivity;
 
         IGregTechTileEntity igte = getBaseMetaTileEntity();
@@ -316,12 +295,33 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         }
     }
 
-    protected void setAutoPullItemList(boolean pullItemList) {
+    public int getMinAutoPullStackSize() {
+        return minAutoPullStackSize;
+    }
+
+    public void setMinAutoPullStackSize(int minAutoPullStackSize) {
+        this.minAutoPullStackSize = minAutoPullStackSize;
+    }
+
+    public int getAutoPullRefreshTime() {
+        return autoPullRefreshTime;
+    }
+
+    public void setAutoPullRefreshTime(int autoPullRefreshTime) {
+        this.autoPullRefreshTime = autoPullRefreshTime;
+    }
+
+    public boolean isAutoPullItemList() {
+        return autoPullItemList;
+    }
+
+    public void setAutoPullItemList(boolean pullItemList) {
         if (!autoPullAvailable) {
             return;
         }
 
-        if (autoPullItemList != pullItemList) {
+        // check isServerSide to avoid refreshing twice
+        if (autoPullItemList != pullItemList && getBaseMetaTileEntity().isServerSide()) {
             autoPullItemList = pullItemList;
 
             clearSlotConfigs();
@@ -332,10 +332,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
             updateAllInformationSlots();
         }
-    }
-
-    public boolean doFastRecipeCheck() {
-        return expediteRecipeCheck;
     }
 
     @Override
@@ -551,7 +547,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         return tag;
     }
 
-    protected int getManualSlot() {
+    public int getManualSlot() {
         return 1;
     }
 
@@ -588,6 +584,11 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         return false;
     }
 
+    @Override
+    public boolean doFastRecipeCheck() {
+        return expediteRecipeCheck;
+    }
+
     public void setRecipeCheck(boolean value) {
         expediteRecipeCheck = value;
 
@@ -600,8 +601,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchInputBusMEGui(this, slots).build(data, syncManager, uiSettings);
     }
 
     @Override
@@ -849,224 +850,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     @Override
-    public int getGUIHeight() {
-        return 179;
-    }
-
-    private boolean containsSuchStack(ItemStack tStack) {
-        return Stream.of(slots)
-            .filter(Objects::nonNull)
-            .anyMatch(slot -> GTUtility.areStacksEqual(slot.config, tStack));
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (autoPullAvailable) {
-            buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
-        }
-
-        SlotItemHandler configItemHandler = new SlotItemHandler();
-
-        builder.widget(new SlotSyncWidget());
-
-        builder.widget(
-            SlotGroup.ofItemHandler(configItemHandler, 4)
-                .startFromSlot(0)
-                .endAtSlot(15)
-                .phantom(true)
-                .slotCreator(index -> new BaseSlot(configItemHandler, index, true) {
-
-                    @Override
-                    public boolean isEnabled() {
-                        return !autoPullItemList && super.isEnabled();
-                    }
-                })
-                .widgetCreator(slot -> (SlotWidget) new SlotWidget(slot) {
-
-                    @Override
-                    protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-                        if (clickData.mouseButton != 0 || !getMcSlot().isEnabled()) return;
-
-                        if (cursorStack != null && containsSuchStack(cursorStack)) return;
-
-                        setSlotConfig(slot.getSlotIndex(), GTUtility.copyAmount(1, cursorStack));
-
-                        if (getBaseMetaTileEntity().isServerSide()) {
-                            try {
-                                updateInformationSlot(slot.getSlotIndex());
-                            } catch (GridAccessException e) {
-                                // :P
-                            }
-                        }
-                    }
-
-                    @Override
-                    public IDrawable[] getBackground() {
-                        IDrawable slot;
-                        if (autoPullItemList) {
-                            slot = GTUITextures.SLOT_DARK_GRAY;
-                        } else {
-                            slot = ModularUITextures.ITEM_SLOT;
-                        }
-                        return new IDrawable[] { slot, GTUITextures.OVERLAY_SLOT_ARROW_ME };
-                    }
-
-                    @Override
-                    public List<String> getExtraTooltip() {
-                        if (autoPullItemList) {
-                            return Collections.singletonList(
-                                StatCollector.translateToLocal("GT5U.machines.stocking_bus.cannot_set_slot"));
-                        } else {
-                            return Collections
-                                .singletonList(StatCollector.translateToLocal("modularui.phantom.single.clear"));
-                        }
-                    }
-                }.dynamicTooltip(() -> {
-                    if (autoPullItemList) {
-                        return Collections.singletonList(
-                            StatCollector.translateToLocal("GT5U.machines.stocking_bus.cannot_set_slot"));
-                    } else {
-                        return Collections.emptyList();
-                    }
-                })
-                    .setUpdateTooltipEveryTick(true))
-                .build()
-                .setPos(12, 9))
-            .widget(
-                SlotGroup.ofItemHandler(configItemHandler, 4)
-                    .startFromSlot(16)
-                    .endAtSlot(31)
-                    .phantom(true)
-                    .background(GTUITextures.SLOT_DARK_GRAY)
-                    .widgetCreator(slot -> new AESlotWidget(slot).disableInteraction())
-                    .build()
-                    .setPos(102, 9))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_DOUBLE)
-                    .setPos(87, 30)
-                    .setSize(12, 12));
-
-        if (autoPullAvailable) {
-            builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (clickData.mouseButton == 0) {
-                    setAutoPullItemList(!autoPullItemList);
-                } else if (clickData.mouseButton == 1 && !widget.isClient()) {
-                    widget.getContext()
-                        .openSyncedWindow(CONFIG_WINDOW_ID);
-                }
-            })
-                .setBackground(() -> {
-                    if (autoPullItemList) {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                            GTUITextures.OVERLAY_BUTTON_AUTOPULL_ME };
-                    } else {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
-                            GTUITextures.OVERLAY_BUTTON_AUTOPULL_ME_DISABLED };
-                    }
-                })
-                .addTooltips(
-                    Arrays.asList(
-                        StatCollector.translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip.1"),
-                        StatCollector.translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip.2")))
-                .setSize(16, 16)
-                .setPos(85, 10))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList));
-        }
-
-        builder.widget(TextWidget.dynamicString(() -> {
-            boolean isActive = isActive();
-            boolean isPowered = isPowered();
-            boolean isBooting = isBooting();
-
-            String state = WailaText.getPowerState(isActive, isPowered, isBooting);
-
-            if (isActive && isPowered) {
-                return MessageFormat.format(
-                    "{0}{1}§f ({2})",
-                    EnumChatFormatting.GREEN,
-                    state,
-                    StatCollector
-                        .translateToLocal(isAllowedToWork() ? "GT5U.gui.text.enabled" : "GT5U.gui.text.disabled"));
-            } else {
-                return EnumChatFormatting.DARK_RED + state;
-            }
-        })
-            .setTextAlignment(Alignment.Center)
-            .setSize(130, 9)
-            .setPos(28, 84))
-            .widget(
-                new SlotWidget(inventoryHandler, getManualSlot())
-                    // ghost slots are prioritized over manual slot
-                    .setShiftClickPriority(11)
-                    .setPos(84, 45));
-    }
-
-    protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
-        final int WIDTH = 78;
-        final int HEIGHT = 115;
-        final int PARENT_WIDTH = getGUIWidth();
-        final int PARENT_HEIGHT = getGUIHeight();
-        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        builder.setDraggable(true);
-        builder.setPos(
-            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
-                .add(
-                    Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                        .add(WIDTH - 3, 0)));
-        builder.widget(
-            TextWidget.localised("GT5U.machines.stocking_bus.min_stack_size")
-                .setPos(3, 2)
-                .setSize(74, 14))
-            .widget(
-                new NumericWidget().setSetter(val -> minAutoPullStackSize = (int) val)
-                    .setGetter(() -> minAutoPullStackSize)
-                    .setBounds(1, Integer.MAX_VALUE)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(70, 18)
-                    .setPos(3, 18)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
-        builder.widget(
-            TextWidget.localised("GT5U.machines.stocking_bus.refresh_time")
-                .setPos(3, 42)
-                .setSize(74, 14))
-            .widget(
-                new NumericWidget().setSetter(val -> autoPullRefreshTime = (int) val)
-                    .setGetter(() -> autoPullRefreshTime)
-                    .setBounds(1, Integer.MAX_VALUE)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(70, 18)
-                    .setPos(3, 58)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
-        builder.widget(
-            TextWidget.localised("GT5U.machines.stocking_bus.force_check")
-                .setPos(3, 88)
-                .setSize(50, 14))
-            .widget(
-                new CycleButtonWidget().setToggle(() -> expediteRecipeCheck, val -> setRecipeCheck(val))
-                    .setTextureGetter(
-                        state -> expediteRecipeCheck ? GTUITextures.OVERLAY_BUTTON_CHECKMARK
-                            : GTUITextures.OVERLAY_BUTTON_CROSS)
-                    .setBackground(GTUITextures.BUTTON_STANDARD)
-                    .setPos(53, 87)
-                    .setSize(16, 16));
-        return builder.build();
-    }
-
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(80, 63));
-    }
-
-    @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         if (!autoPullAvailable) {
@@ -1127,7 +910,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         return strings.toArray(new String[0]);
     }
 
-    protected static class Slot {
+    public static class Slot {
 
         /** The item to pull into this slot. */
         public final ItemStack config;
@@ -1198,107 +981,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             }
 
             return slot;
-        }
-    }
-
-    private class SlotItemHandler implements IItemHandlerModifiable {
-
-        @Override
-        public int getSlots() {
-            return SLOT_COUNT * 2;
-        }
-
-        @Override
-        public ItemStack getStackInSlot(int slotIndex) {
-            boolean forConfig = slotIndex < SLOT_COUNT;
-            slotIndex %= SLOT_COUNT;
-
-            Slot slot = GTDataUtils.getIndexSafe(slots, slotIndex);
-
-            if (slot == null) return null;
-
-            return forConfig ? slot.config : GTUtility.copyAmountUnsafe(slot.extractedAmount, slot.extracted);
-        }
-
-        @Override
-        public @org.jetbrains.annotations.Nullable ItemStack insertItem(int slot, @Nullable ItemStack stack,
-            boolean simulate) {
-            return stack;
-        }
-
-        @Override
-        public @org.jetbrains.annotations.Nullable ItemStack extractItem(int slot, int amount, boolean simulate) {
-            return null;
-        }
-
-        @Override
-        public int getSlotLimit(int slot) {
-            return Integer.MAX_VALUE;
-        }
-
-        @Override
-        public void setStackInSlot(int slotIndex, ItemStack stack) {
-            // do nothing
-        }
-    }
-
-    private class SlotSyncWidget extends FakeSyncWidget.ListSyncer<Slot> {
-
-        public SlotSyncWidget() {
-            super(
-                () -> GTDataUtils.mapToList(slots, slot -> slot == null ? null : slot.copy()),
-                slots2 -> System.arraycopy(slots2.toArray(new Slot[0]), 0, slots, 0, SLOT_COUNT),
-                SlotSyncWidget::writeSlot,
-                SlotSyncWidget::readSlot);
-        }
-
-        private static int counter = 0;
-        private static final int NOT_NULL = 0b1 << counter++;
-        private static final int EXTRACTED_SET = 0b1 << counter++;
-
-        private static void writeSlot(PacketBuffer buffer, Slot slot) {
-            int flags = 0;
-
-            if (slot != null) {
-                flags |= NOT_NULL;
-                if (slot.extracted != null) {
-                    flags |= EXTRACTED_SET;
-                }
-            }
-
-            buffer.writeByte(flags);
-
-            try {
-                if (slot != null) {
-                    buffer.writeItemStackToBuffer(slot.config);
-
-                    if (slot.extracted != null) {
-                        buffer.writeItemStackToBuffer(slot.extracted);
-                        buffer.writeInt(slot.extractedAmount);
-                    }
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        private static Slot readSlot(PacketBuffer buffer) {
-            int flags = buffer.readByte();
-
-            if ((flags & NOT_NULL) == 0) return null;
-
-            try {
-                Slot slot = new Slot(buffer.readItemStackFromBuffer());
-
-                if ((flags & EXTRACTED_SET) != 0) {
-                    slot.extracted = buffer.readItemStackFromBuffer();
-                    slot.extractedAmount = buffer.readInt();
-                }
-
-                return slot;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 
