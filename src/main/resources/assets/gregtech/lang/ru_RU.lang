@@ -801,7 +801,7 @@ GT5U.ECCF.temperature.threshold=Порог температуры
 GT5U.ECCF.pressure.required=Требуемое давление
 GT5U.ECCF.temperature.required=Требуемая температура
 
-GT5U.EBF.heat=Температура в печи
+GT5U.EBF.heat=Температура в печи: §a%s §rK
 GT5U.coil.None=Нет
 GT5U.coil.ULV=Нет
 GT5U.coil.LV=Мельхиор
@@ -1525,7 +1525,7 @@ GT5U.hatch.item.filter.disable=Item output filtering disabled
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
 
-GT5U.multiblock.pollution=Загрязнение снижено до
+GT5U.multiblock.pollution=Загрязнение снижено до: §a%s §r%%
 GT5U.multiblock.energy=Энергии накоплено
 GT5U.multiblock.Progress=Прогресс
 GT5U.multiblock.efficiency=Эффективность
