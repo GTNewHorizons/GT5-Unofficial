@@ -550,7 +550,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
 
                 for (ToolboxSlot suggested : pickResults.suggestedTools()) {
                     if (handler.getStackInSlot(suggested.getSlotID()) != null) {
-                        sendChangeToolPacket(suggested.getSlotID(), inventorySlot);
+                        sendChangeToolPacket(inventorySlot, suggested.getSlotID());
                         return true;
                     }
                 }
