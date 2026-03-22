@@ -91,7 +91,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
 
     @Override
     public String getMachineType() {
-        return "Boiler";
+        return "machtype.thermal_boiler";
     }
 
     @Override

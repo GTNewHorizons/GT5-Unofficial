@@ -30,7 +30,9 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
+import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -155,42 +157,23 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Engine, UCFE")
-            .addInfo("BURNING BURNING BURNING")
-            .addInfo("Use combustible liquid to generate power")
-            .addInfo("You need to supply Combustion Promoter to keep it running")
-            .addInfo("It will consume all the fuel and combustion promoter in the hatch every second")
-            .addInfo("Energy output to the dynamo will be distributed over the next second")
-            .addInfo("If the Dynamo Hatch's buffer fills up, the machine will stop")
-            .addInfo(
-                "If the amount of energy to be produced is higher "
-                    + "than the dynamo hatch can handle then all produced energy will void")
-            .addInfo("When turned on, there is a 10-second period where the machine will not stop")
-            .addInfo("Even if it doesn't stop, all the fuel in the hatch will be consumed")
-            .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel")
-            .addInfo(
-                "The higher the amount of promoter, the higher the efficiency"
-                    + "It follows an exponential curve exp(-C/(p/x))*1.5 ")
-            .addInfo("Where x is the amount of fuel in liters, p is the amount of promoter in liters")
-            .addInfo("and C depends on the fuel type. Diesel: C=0.04; Gas: C=0.04; Rocket fuel: C=0.005")
-            .addInfo("It creates sqrt(Current Output Power) pollution every second")
-            .addInfo(
-                "If you forget to supply Combustion Promoter, this engine will swallow all the fuel "
-                    + EnumChatFormatting.YELLOW
-                    + "without outputting energy")
-            .addInfo("The efficiency is up to 150%")
+        tt.addMachineType("machtype.ucfe")
+            .addInfo("gt.ucfe.tips")
             .addTecTechHatchInfo()
             .beginStructureBlock(5, 4, 9, false)
-            .addController("Mid of the second layer")
-            .addCasingInfoExactly("Stable Titanium Machine Casing", 93, false)
-            .addCasingInfoExactly("Titanium Gear Box Casing", 14, false)
-            .addCasingInfoExactly("Engine Intake Casing", 14, false)
-            .addCasingInfoExactly("Titanium Plated Cylinder", 14, false)
-            .addCasingInfoExactly("Titanium Pipe Casing", 14, false)
-            .addMaintenanceHatch("Hint Block Number 1")
-            .addMufflerHatch("Hint Block Number 2 (fill all slots with mufflers)")
-            .addInputHatch("Hint Block Number 3 (fill all slots with input hatches)")
-            .addDynamoHatch("Hint Block Number 4")
+            .addController("gt.ucfe.info.controller")
+            .addCasingInfoExactly(Casings.StableTitaniumMachineCasing.getLocalizedName(), 93)
+            .addCasingInfoExactly(Casings.TitaniumGearBoxCasing.getLocalizedName(), 14)
+            .addCasingInfoExactly(Casings.EngineIntakeCasing.getLocalizedName(), 14)
+            .addCasingInfoExactly(
+                ItemRefer.Titanium_Plated_Cylinder.get(1)
+                    .getDisplayName(),
+                14)
+            .addCasingInfoExactly(Casings.TinItemPipeCasing.getLocalizedName(), 14)
+            .addMaintenanceHatch("<hint>", 1)
+            .addMufflerHatch("gt.ucfe.info.muffler")
+            .addInputHatch("gt.ucfe.info.i_hatch")
+            .addDynamoHatch("<hint>", 4)
             .toolTipFinisher();
         return tt;
     }
