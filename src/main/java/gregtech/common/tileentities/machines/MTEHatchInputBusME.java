@@ -54,7 +54,6 @@ import appeng.util.item.AEItemStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
-import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
@@ -333,6 +332,22 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     }
 
     @Override
+    public boolean doFastRecipeCheck() {
+        return expediteRecipeCheck;
+    }
+
+    public void setRecipeCheck(boolean value) {
+        expediteRecipeCheck = value;
+
+        IGregTechTileEntity igte = getBaseMetaTileEntity();
+
+        // Changing this field requires a structure check/update, so let's do that automatically
+        if (igte.isServerSide()) {
+            GregTechAPI.causeMachineUpdate(igte.getWorld(), igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
+        }
+    }
+
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
 
@@ -580,22 +595,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
             return ret;
         }
         return false;
-    }
-
-    @Override
-    public boolean doFastRecipeCheck() {
-        return expediteRecipeCheck;
-    }
-
-    public void setRecipeCheck(boolean value) {
-        expediteRecipeCheck = value;
-
-        IGregTechTileEntity igte = getBaseMetaTileEntity();
-
-        // Changing this field requires a structure check/update, so let's do that automatically
-        if (igte.isServerSide()) {
-            GregTechAPI.causeMachineUpdate(igte.getWorld(), igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
-        }
     }
 
     @Override
