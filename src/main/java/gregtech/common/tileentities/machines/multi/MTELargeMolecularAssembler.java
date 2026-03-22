@@ -738,6 +738,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         return inventoryProxy;
     }
 
+    @Override
     public String getName() {
         final var crafterIcon = getCrafterIcon();
         if (crafterIcon != null) {

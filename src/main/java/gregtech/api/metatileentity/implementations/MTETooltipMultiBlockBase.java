@@ -46,10 +46,12 @@ public abstract class MTETooltipMultiBlockBase extends MTEMultiBlockBase impleme
         return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
     }
 
+    @Override
     public String[] getPrimaryDescription() {
         return getTooltip().getInformation();
     }
 
+    @Override
     public String[] getSecondaryDescription() {
         return getTooltip().getStructureInformation();
     }

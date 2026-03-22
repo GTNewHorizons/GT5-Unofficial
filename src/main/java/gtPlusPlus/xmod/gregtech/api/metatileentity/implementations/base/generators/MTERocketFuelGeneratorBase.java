@@ -17,7 +17,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
-import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
@@ -242,9 +241,6 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
     public int getPollution() {
         return MathUtils.randInt(pollMin, pollMax);
     }
-
-    @Override
-    public abstract RecipeMap<?> getRecipeMap();
 
     public abstract int getEfficiency();
 

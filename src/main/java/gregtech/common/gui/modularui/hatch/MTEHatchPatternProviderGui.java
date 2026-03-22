@@ -20,11 +20,6 @@ public class MTEHatchPatternProviderGui extends MTEHatchBaseGui<MTEHatchPatternP
     }
 
     @Override
-    protected boolean supportsLeftCornerFlow() {
-        return false;
-    }
-
-    @Override
     protected boolean supportsRightCornerFlow() {
         return false;
     }
