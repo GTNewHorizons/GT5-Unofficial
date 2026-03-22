@@ -116,8 +116,6 @@ gt.item.desc.steam_eut=Энергия от оптимального потока
 gt.item.desc.steam_eut_loose=Энергия от оптимального потока пара (Форсированный): %s EU/t
 
 # GT Interaction Descriptions
-gt.interact.desc.out_slot=Выкладывается в соседний слот #
-gt.interact.desc.in_slot=Захватывает собственный слот #
 gt.interact.desc.signal_on=Включить с помощью сигнала
 gt.interact.desc.signal_inverted=Отключить с помощью сигнала
 gt.interact.desc.signal_off=Отключено
@@ -2612,7 +2610,7 @@ GTPP.battpack.tooltip.4=Также заряжает предметы на хот
 # Tooltips for the Personal Healing Bauble
 GTPP.nanohealer.tooltip.1=Носится как ожерелье в Baubles
 GTPP.nanohealer.tooltip.2=Расходует
-GTPP.nanohealer.tooltip.3= EU за операцию
+GTPP.nanohealer.tooltip.3=EU за операцию
 GTPP.nanohealer.tooltip.4=Может восстанавливать HP, Голод и Насыщение.
 GTPP.nanohealer.tooltip.5=Не предотвращает смерть.
 GTPP.nanohealer.tooltip.6=Shift+RMB для переключения уведомлений.
