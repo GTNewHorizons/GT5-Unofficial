@@ -4,6 +4,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
@@ -103,7 +104,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         .addElement(
             'D',
             buildHatchAdder(MTEIntegratedOreFactory.class)
-                .atLeast(Energy, ExoticEnergy, InputBus, InputHatch, Muffler, OutputBus, OutputHatch)
+                .atLeast(Energy, ExoticEnergy, InputBus, InputHatch, Muffler, OutputBus, OutputHatch, Maintenance)
                 .casingIndex(Casings.CleanStainlessSteelMachineCasing.textureId)
                 .hint(1)
                 .buildAndChain(Casings.CleanStainlessSteelMachineCasing.asElement()))
