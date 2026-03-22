@@ -207,28 +207,6 @@ public class GTLanguageManager {
     }
 
     public static void writePlaceholderStrings() {
-        addStringLocalization("Interaction_DESCRIPTION_Index_047", "Filter Fluid: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_048", "Pump speed: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_049", "L/tick ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_050", "L/sec");
-        addStringLocalization("Interaction_DESCRIPTION_Index_053", "Slot: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_068.1", "Emit if any Player is close");
-        addStringLocalization("Interaction_DESCRIPTION_Index_069.1", "Emit if other Player is close");
-        addStringLocalization("Interaction_DESCRIPTION_Index_070", "Emit if you are close");
-        addStringLocalization("Interaction_DESCRIPTION_Index_071", "Conducts strongest Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_072", "Conducts from bottom Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_073", "Conducts from top Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_074", "Conducts from north Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_075", "Conducts from south Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_076", "Conducts from west Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_077", "Conducts from east Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_078", "Signal = ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_079", "Conditional Signal = ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_080", "Inverted Conditional Signal = ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_082", "Open if work enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_083", "Open if work disabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_084", "Only Output allowed");
-        addStringLocalization("Interaction_DESCRIPTION_Index_085", "Only Input allowed");
         addStringLocalization("Interaction_DESCRIPTION_Index_100", "This is ");
         addStringLocalization("Interaction_DESCRIPTION_Index_101", " Ore.");
         addStringLocalization("Interaction_DESCRIPTION_Index_102", "There is Lava behind this Rock.");
@@ -246,19 +224,13 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_122", "Emit Redstone if slots contain something");
         addStringLocalization("Interaction_DESCRIPTION_Index_123", "Don't emit Redstone");
         // 124 moved to lang files
-        addStringLocalization("Interaction_DESCRIPTION_Index_124.1", "Blacklist Mode");
         // 125 obsolete
-        addStringLocalization("Interaction_DESCRIPTION_Index_125.1", "Whitelist Mode");
         // 126 moved to lang files
         // 127 obsolete
         addStringLocalization("Interaction_DESCRIPTION_Index_128", "Redstone");
-        addStringLocalization("Interaction_DESCRIPTION_Index_128.1", "Redstone ");
         addStringLocalization("Interaction_DESCRIPTION_Index_129", "Energy");
-        addStringLocalization("Interaction_DESCRIPTION_Index_129.1", "Energy ");
         addStringLocalization("Interaction_DESCRIPTION_Index_130", "Fluids");
-        addStringLocalization("Interaction_DESCRIPTION_Index_130.1", "Fluids ");
         addStringLocalization("Interaction_DESCRIPTION_Index_131", "Items");
-        addStringLocalization("Interaction_DESCRIPTION_Index_131.1", "Items ");
         addStringLocalization("Interaction_DESCRIPTION_Index_132", "Pipe is loose. (Wrench)");
         addStringLocalization("Interaction_DESCRIPTION_Index_133", "Screws are loose. (Screwdriver)");
         addStringLocalization("Interaction_DESCRIPTION_Index_134", "Something is stuck. (Soft Mallet)");
@@ -328,9 +300,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_203", " gibbl");
         addStringLocalization("Interaction_DESCRIPTION_Index_204", "No Pollution in Chunk! HAYO!");
         addStringLocalization("Interaction_DESCRIPTION_Index_206", "Scan for Assembly Line");
-        addStringLocalization(
-            "Interaction_DESCRIPTION_Index_207",
-            "Pump speed: %dL every %d ticks, %.2f L/sec on average");
         addStringLocalization("Interaction_DESCRIPTION_Index_208", " L");
         addStringLocalization("Interaction_DESCRIPTION_Index_209", " ticks");
         addStringLocalization("Interaction_DESCRIPTION_Index_209.1", " tick");
@@ -390,8 +359,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_273", "Original Recipe by: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_274", "Modified by: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_275", "Original voltage: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_299", "Item Filter: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_300", "Filter Cleared!");
         addStringLocalization("Interaction_DESCRIPTION_Index_300.1", "Fluid Lock Cleared.");
         addStringLocalization("Interaction_DESCRIPTION_Index_301", "Universal");
         addStringLocalization("Interaction_DESCRIPTION_Index_302", "Int. EU");
@@ -404,7 +371,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_313", "Block Input");
         addStringLocalization("Interaction_DESCRIPTION_Index_314", "Allow Input");
         addStringLocalization("Interaction_DESCRIPTION_Index_315", "Filter Empty");
-        addStringLocalization("Interaction_DESCRIPTION_Index_316", "Pump speed limit reached!");
         addStringLocalization("Interaction_DESCRIPTION_Index_317", "Filter: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_318", "Check Mode");
         addStringLocalization("Interaction_DESCRIPTION_Index_319", "Any player");
@@ -436,9 +402,7 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_510", "Multi Tier required: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_602", "Use Private Frequency");
         addStringLocalization("Interaction_DESCRIPTION_Index_756", "Connectable: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_ALL", "All");
         addStringLocalization("Interaction_DESCRIPTION_Index_ANY", "Any");
-        addStringLocalization("Interaction_DESCRIPTION_Index_SIDE", "Side: ");
 
         addStringLocalization(FACE_ANY, "Any Side");
         addStringLocalization(FACE_BOTTOM, "Bottom");

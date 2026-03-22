@@ -18,6 +18,7 @@ import tectech.thing.item.ItemTeslaCoilCover;
 
 public class CoverLoader implements Runnable {
 
+    @Override
     public void run() {
         final IIconContainer TESLA_OVERLAY = Textures.BlockIcons.custom("iconsets/TESLA_OVERLAY");
         final IIconContainer TESLA_OVERLAY_ULTIMATE = Textures.BlockIcons.custom("iconsets/TESLA_OVERLAY_ULTIMATE");

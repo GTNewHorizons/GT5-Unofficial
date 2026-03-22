@@ -10,7 +10,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import appeng.api.crafting.ICraftingIconProvider;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
@@ -22,7 +21,7 @@ import gregtech.api.util.tooltip.TooltipHelper;
 /**
  * Handles texture changes internally. No special calls are necessary other than updateTexture in add***ToMachineList.
  */
-public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProvider {
+public abstract class MTEHatch extends MTEBasicTank {
 
     public enum ConnectionType {
         CABLE,

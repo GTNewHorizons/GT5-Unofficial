@@ -73,11 +73,13 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
     @Override
     public abstract MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity);
 
+    @Override
     public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
         final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
+    @Override
     public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
         final ForgeDirection side, final ItemStack aStack) {
         return false;

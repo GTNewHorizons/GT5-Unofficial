@@ -119,8 +119,8 @@ gt.item.desc.steam_eut=Energy from Optimal Steam Flow: %s EU/t
 gt.item.desc.steam_eut_loose=Energy from Optimal Steam Flow (Loose): %s EU/t
 
 # GT Interaction Descriptions
-gt.interact.desc.out_slot=Puts out into adjacent Slot #
-gt.interact.desc.in_slot=Grabs in for own Slot #
+gt.interact.desc.out_slot.s=Puts out into adjacent Slot #%s
+gt.interact.desc.in_slot.s=Grabs in for own Slot #%s
 gt.interact.desc.signal_on=Enable with Signal
 gt.interact.desc.signal_inverted=Disable with Signal
 gt.interact.desc.signal_off=Disabled
@@ -2100,6 +2100,9 @@ GT5U.gui.text.LHC.collidermode=Colliding beam...
 GT5U.gui.text.LHC.completedcycles=Completed Cycles
 GT5U.gui.text.LHC.targetbeamenergyeV=Target Beam Energy (eV):
 GT5U.gui.text.LHC.maxaccelerationcycles=Max Acceleration Cycles:
+GT5U.gui.text.beamcrafter.guiheader=Current Recipe Progress
+GT5U.gui.text.beamcrafter.particleA=Particle 1
+GT5U.gui.text.beamcrafter.particleB=Particle 2
 
 gt.blockmachines.multimachine.beamcrafting.beamcrafter.machinetype=Beam Crafter, Beam Assembler
 gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip1=Collides two beams of particles into target materials to modify
@@ -2281,6 +2284,43 @@ GT5U.item.toolbox.byline.crowbar=You thought I was going to put a Half-Life\n §
 GT5U.item.toolbox.byline.soldering_iron=Put some fine soldering alloy wire\n §oin the generic slots!
 GT5U.item.toolbox.byline.format=§o"%s"§r -§cQuerns§r
 
+GT5U.chat.cover.decorative.redstone=Redstone
+GT5U.chat.cover.decorative.energy=Energy
+GT5U.chat.cover.decorative.fluids=Fluids
+GT5U.chat.cover.decorative.items=Items
+GT5U.chat.cover.fluid_filter=Filter Fluid: %s
+GT5U.chat.cover.fluid_limiter=Threshold: %s
+GT5U.chat.cover.fluid_regulator.max=Pump speed limit reached!
+GT5U.chat.cover.fluid_regulator.rate_1=Pump speed: %sL/tick %sL/sec
+GT5U.chat.cover.fluid_regulator.speed=Pump speed: %sL every %s ticks, %s L/sec on average
+GT5U.chat.cover.fluid_storage_monitor.side=Side: %s
+GT5U.chat.cover.slot=Slot: %s
+GT5U.chat.cover.slot.all=Slot: All
+GT5U.chat.cover.item_filter=Item Filter: %s
+GT5U.chat.cover.item_filter.cleared=Filter Cleared!
+GT5U.chat.cover.item_filter.mode.black=Blacklist Mode
+GT5U.chat.cover.item_filter.mode.white=Whitelist Mode
+GT5U.chat.cover.player_detector.any=Emit if any Player is close
+GT5U.chat.cover.player_detector.other=Emit if other Player is close
+GT5U.chat.cover.player_detector.you=Emit if you are close
+GT5U.chat.cover.redstone_conductor.input.strongest=Conducts strongest Input
+GT5U.chat.cover.redstone_conductor.input.bottom=Conducts from bottom Input
+GT5U.chat.cover.redstone_conductor.input.top=Conducts from top Input
+GT5U.chat.cover.redstone_conductor.input.north=Conducts from north Input
+GT5U.chat.cover.redstone_conductor.input.south=Conducts from south Input
+GT5U.chat.cover.redstone_conductor.input.west=Conducts from west Input
+GT5U.chat.cover.redstone_conductor.input.east=Conducts from east Input
+GT5U.chat.cover.redstone_signalizer.signal=Signal = %s
+GT5U.chat.cover.redstone_signalizer.signal.cond=Conditional Signal = %s
+GT5U.chat.cover.redstone_signalizer.signal.cond.invert=Inverted Conditional Signal = %s
+GT5U.chat.cover.shutter.open.if.enabled=Open if work enabled
+GT5U.chat.cover.shutter.open.if.disabled=Open if work disabled
+GT5U.chat.cover.shutter.output.allowed=Only Output allowed
+GT5U.chat.cover.shutter.input.allowed=Only Input allowed
+GT5U.chat.cover.solar_panel.cleaned=Cleaned solar panel from %s%% dirt
+GT5U.chat.cover.solar_panel.cleaned.require=You need water bucket in inventory to clean the panel.
+GT5U.chat.cover.wireless_controller.shutdown_at=%s at (%s, %s, %s) shut down.
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3
@@ -2366,14 +2406,14 @@ GT5U.hatch.outputme.cache_capacity_label=Current cache capacity: §e%s§r
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
 
-GT5U.multiblock.pollution=Pollution reduced to: §a%s§r%%
-GT5U.multiblock.energy=Stored Energy: §a%s §rEU / §e%s §rEU
-GT5U.multiblock.Progress=Progress: §a%s §rs / §e%s §rs
-GT5U.multiblock.efficiency=Efficiency: §e%s§r%%
-GT5U.multiblock.problems=Problems: §c%s
-GT5U.multiblock.mei=Max Energy Input: §e%s §rEU/t (*2A) Tier: §e%s
+GT5U.multiblock.pollution=Pollution reduced to
+GT5U.multiblock.energy=Stored Energy
+GT5U.multiblock.Progress=Progress
+GT5U.multiblock.efficiency=Efficiency
+GT5U.multiblock.problems=Problems
+GT5U.multiblock.mei=Max Energy Income
 GT5U.multiblock.maxtier=Max Tier
-GT5U.multiblock.usage=Currently uses: §c%s §rEU/t
+GT5U.multiblock.usage=Currently uses
 GT5U.multiblock.parallelism=Max Parallel
 GT5U.multiblock.curparallelism=Current Parallel
 GT5U.multiblock.euModifier=EU Modifier
@@ -2384,16 +2424,26 @@ GT5U.multiblock.coilLevel=Heating Coil Level
 GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
 GT5U.multiblock.runningMode=§eRunning Mode:
 GT5U.multiblock.startup=Starting up...
-GT5U.multiblock.recipesDone=Recipes Finished: §a%s
-GT5U.multiblock.totalRunHours=Total runtime: §6%s§r hours
-GT5U.multiblock.totalRunMinutes=Total runtime: §6%s§r minutes
-GT5U.multiblock.totalRunSeconds=Total runtime: §6%s§r seconds
-GT5U.multiblock.totalRunTicks=Total runtime: §6%s§r ticks
-GT5U.multiblock.owned_by=Owned by: §6%s
-GT5U.multiblock.meta_tile_entity=Meta-ID: §6%s
-GT5U.multiblock.valid=§avalid
-GT5U.multiblock.invalid=§cinvalid
-GT5U.multiblock.is_meta_tile_entity=§cMetaTileEntity == null!
+GT5U.multiblock.recipesDone=Recipes Finished
+
+
+GT5U.multiblock.scanner.pollution=Pollution reduced to: §a%s§r%%
+GT5U.multiblock.scanner.energy=Stored Energy: §a%s §rEU / §e%s §rEU
+GT5U.multiblock.scanner.Progress=Progress: §a%s §rs / §e%s §rs
+GT5U.multiblock.scanner.efficiency=Efficiency: §e%s§r%%
+GT5U.multiblock.scanner.problems=Problems: §c%s
+GT5U.multiblock.scanner.mei=Max Energy Input: §e%s §rEU/t (*2A) Tier: §e%s
+GT5U.multiblock.scanner.usage=Currently uses: §c%s §rEU/t
+GT5U.multiblock.scanner.recipesDone=Recipes Finished: §a%s
+GT5U.multiblock.scanner.totalRunHours=Total runtime: §6%s§r hours
+GT5U.multiblock.scanner.totalRunMinutes=Total runtime: §6%s§r minutes
+GT5U.multiblock.scanner.totalRunSeconds=Total runtime: §6%s§r seconds
+GT5U.multiblock.scanner.totalRunTicks=Total runtime: §6%s§r ticks
+GT5U.multiblock.scanner.owned_by=Owned by: §6%s
+GT5U.multiblock.scanner.meta_tile_entity=Meta-ID: §6%s
+GT5U.multiblock.scanner.valid=§avalid
+GT5U.multiblock.scanner.invalid=§cinvalid
+GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 
 
 # NEI recipe handlers
@@ -3787,6 +3837,13 @@ GTPP.EBF.heat=Heat capacity
 GTPP.machines.tier=Tier
 GTPP.machines.input=Input
 GTPP.machines.output=Output
+
+GTPP.multiblock.pollution=Pollution
+GTPP.multiblock.energy=Stored Energy
+GTPP.multiblock.efficiency=Efficiency
+GTPP.multiblock.mei=Max Energy Income
+GTPP.multiblock.usage=Currently uses
+GTPP.multiblock.generation=Currently generates
 
 GTPP.multiblock.specialvalue=Special Value
 GTPP.multiblock.duration=Duration

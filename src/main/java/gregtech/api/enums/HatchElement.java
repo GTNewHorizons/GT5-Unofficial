@@ -144,6 +144,7 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
         return GTUtility.translate(name);
     }
 
+    @Override
     public IGTHatchAdder<? super MTEMultiBlockBase> adder() {
         return adder;
     }
