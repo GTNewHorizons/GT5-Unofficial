@@ -2,6 +2,8 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
