@@ -25,7 +25,9 @@ public abstract class MTETooltipMultiBlockBase extends MTEMultiBlockBase impleme
         super(aName);
     }
 
-    protected MultiblockTooltipBuilder getTooltip() {
+    protected abstract MultiblockTooltipBuilder createTooltip();
+
+    protected final MultiblockTooltipBuilder getTooltip() {
         if (GTValues.debugTooltips) {
             return createTooltip();
         }
@@ -38,25 +40,23 @@ public abstract class MTETooltipMultiBlockBase extends MTEMultiBlockBase impleme
         return tooltip;
     }
 
-    protected abstract MultiblockTooltipBuilder createTooltip();
-
     @Override
-    public String[] getDescription() {
+    public final String[] getDescription() {
         return getCurrentDescription();
     }
 
     @Override
-    public boolean isDisplaySecondaryDescription() {
-        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-    }
-
-    @Override
-    public String[] getPrimaryDescription() {
+    public final String[] getPrimaryDescription() {
         return getTooltip().getInformation();
     }
 
     @Override
-    public String[] getSecondaryDescription() {
+    public final String[] getSecondaryDescription() {
         return getTooltip().getStructureInformation();
+    }
+
+    @Override
+    public final boolean isDisplaySecondaryDescription() {
+        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
     }
 }

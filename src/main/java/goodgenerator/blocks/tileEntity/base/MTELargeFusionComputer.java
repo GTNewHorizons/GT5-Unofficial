@@ -73,8 +73,9 @@ import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
+public abstract class MTELargeFusionComputer extends TTMultiblockBase
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
     public Parameters.Group.ParameterIn batchSetting;
