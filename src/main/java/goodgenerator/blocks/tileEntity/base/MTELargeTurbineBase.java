@@ -17,7 +17,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -206,16 +205,6 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
             || addInputToMachineList(tTileEntity, getCasingTextureIndex())
             || addOutputToMachineList(tTileEntity, getCasingTextureIndex())
             || addMufflerToMachineList(tTileEntity, getCasingTextureIndex());
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
     }
 
     @Override
