@@ -118,6 +118,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     /** Cached fluid stack using for displaying the pumped fluid */
     private FluidStack fluid = new FluidStack(FluidRegistry.WATER, 0) {
 
+        @Override
         public String getLocalizedName() {
             return "None";
         }

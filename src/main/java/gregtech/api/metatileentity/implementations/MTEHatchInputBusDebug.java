@@ -12,7 +12,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -22,7 +21,7 @@ import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputBusDebugGui;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchInputBusDebug extends MTEHatchInputBus implements IConfigurationCircuitSupport {
+public class MTEHatchInputBusDebug extends MTEHatchInputBus {
 
     private static final int SLOT_COUNT = 16;
     public final ItemStackHandler phantomHolder = new LimitingItemStackHandler(SLOT_COUNT, 1);
@@ -64,11 +63,6 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus implements IConfigur
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchInputBusDebug(mName, mTier, new String[0], mTextures);
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        super.onPostTick(aBaseMetaTileEntity, aTimer);
     }
 
     @Override

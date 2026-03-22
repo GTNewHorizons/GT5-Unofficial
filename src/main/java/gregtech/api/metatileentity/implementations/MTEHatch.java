@@ -24,7 +24,7 @@ import gregtech.api.util.tooltip.TooltipHelper;
 /**
  * Handles texture changes internally. No special calls are necessary other than updateTexture in add***ToMachineList.
  */
-public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProvider {
+public abstract class MTEHatch extends MTEBasicTank {
 
     public enum ConnectionType {
         CABLE,

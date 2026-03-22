@@ -3689,11 +3689,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         return super.getContainerItem(aStack);
     }
 
-    @Override
-    public boolean doesMaterialAllowGeneration(OrePrefixes aPrefix, Materials aMaterial) {
-        return (super.doesMaterialAllowGeneration(aPrefix, aMaterial));
-    }
-
     private void setBurnValues() {
         setBurnValue(17000 + Materials.Wood.mMetaItemSubID, 1600);
     }

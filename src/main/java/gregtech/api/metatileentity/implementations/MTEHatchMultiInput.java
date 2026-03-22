@@ -23,7 +23,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchMultiInput extends MTEHatchInput implements IAddUIWidgets {
+public class MTEHatchMultiInput extends MTEHatchInput {
 
     private final FluidStack[] mStoredFluid;
     private final FluidStackTank[] fluidTanks;

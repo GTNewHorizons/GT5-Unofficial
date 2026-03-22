@@ -40,6 +40,7 @@ public class MTEBusInputFocusGui extends MTEHatchNbtConsumableGui {
         return false;
     }
 
+    @Override
     protected Flow createOutputColumn(int amountPerSlotGroup) {
         Flow outputColumn = Flow.column()
             .coverChildren();

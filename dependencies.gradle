@@ -141,7 +141,7 @@ dependencies {
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Electro-Magic-Tools:1.7.17:dev") { transitive = false }
 
     // For testing ctm
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.0.0-alpha17:dev') { transitive = false }
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.1.4:dev') { transitive = false }
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("com.github.GTNewHorizons:CoreTweaks:0.3.4.0-GTNH"))

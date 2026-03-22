@@ -26,7 +26,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -76,7 +75,7 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 
 public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
-    implements IConstructable, ISurvivalConstructable, IOverclockDescriptionProvider {
+    implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
     public Parameters.Group.ParameterIn batchSetting;
 
@@ -236,10 +235,10 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
         float aX, float aY, float aZ, ItemStack aTool) {
         if (getMaxBatchSize() == 1) {
             parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 128);
-            GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.machine.batch_mode.enable");
         } else {
             parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 1);
-            GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.machine.batch_mode.disable");
         }
         return true;
     }

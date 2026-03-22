@@ -46,7 +46,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLockable, IAddUIWidgets {
+public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLockable {
 
     protected String lockedFluidName = null;
     private WeakReference<EntityPlayer> playerThatLockedfluid = null;

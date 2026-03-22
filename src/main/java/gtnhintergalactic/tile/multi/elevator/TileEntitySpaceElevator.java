@@ -309,6 +309,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super TileEntitySpaceElevator> adder() {
             return adder;
         }

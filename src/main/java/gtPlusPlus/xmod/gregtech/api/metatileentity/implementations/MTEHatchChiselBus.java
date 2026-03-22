@@ -16,7 +16,7 @@ import gregtech.common.gui.modularui.hatch.MTEHatchChiselBusGui;
 import gtPlusPlus.core.util.Utils;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchChiselBus extends MTEHatchInputBus implements IAddUIWidgets {
+public class MTEHatchChiselBus extends MTEHatchInputBus {
 
     public MTEHatchChiselBus(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier);
@@ -24,11 +24,6 @@ public class MTEHatchChiselBus extends MTEHatchInputBus implements IAddUIWidgets
 
     public MTEHatchChiselBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, getSlots(aTier), aDescription, aTextures);
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 
     @Override

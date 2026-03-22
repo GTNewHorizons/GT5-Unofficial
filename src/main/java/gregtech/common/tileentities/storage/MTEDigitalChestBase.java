@@ -153,12 +153,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
-    public abstract ItemStack getItemStack();
-
-    @Override
-    public abstract void setItemStack(ItemStack s);
-
-    @Override
     public IItemList<IAEItemStack> getAvailableItems(final IItemList<IAEItemStack> out, int iteration) {
         return meInventoryHandler.getAvailableItems(out, iteration);
     }
@@ -167,12 +161,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public IItemList<IAEItemStack> getStorageList() {
         return meInventoryHandler.getStorageList();
     }
-
-    @Override
-    public abstract int getItemCount();
-
-    @Override
-    public abstract void setItemCount(int aCount);
 
     @Override
     public int getMaxItemCount() {

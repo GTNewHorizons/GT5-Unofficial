@@ -35,7 +35,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -45,8 +44,7 @@ import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchOutputBus extends MTEHatch
-    implements IAddUIWidgets, IItemLockable, IDataCopyable, IAddGregtechLogo, IOutputBus {
+public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataCopyable, IAddGregtechLogo, IOutputBus {
 
     private static final String DATA_STICK_DATA_TYPE = "outputBusFilter";
     private static final String LOCKED_ITEM_NBT_KEY = "lockedItem";
@@ -382,6 +380,7 @@ public class MTEHatchOutputBus extends MTEHatch
      * @param slot  The slot, or -1 for a general 'lowest slot' query.
      * @param stack The stack, or null for a general 'any standard stack' query (getMaxStackSize() == 64).
      */
+    @Override
     public int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
         return Math.min(getInventoryStackLimit(), stack == null ? 64 : stack.getMaxStackSize());
     }

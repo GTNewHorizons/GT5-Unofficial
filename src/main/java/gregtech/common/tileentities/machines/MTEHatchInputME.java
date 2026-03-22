@@ -84,7 +84,6 @@ import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -102,7 +101,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets,
+public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState, IAddGregtechLogo,
     IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable, IMEConnectable {
 
     private static final int SLOT_COUNT = 16;
@@ -564,6 +563,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
     }
 
+    @Override
     public boolean doFastRecipeCheck() {
         return expediteRecipeCheck;
     }

@@ -506,6 +506,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEHIPCompressor> adder() {
             return adder;
         }

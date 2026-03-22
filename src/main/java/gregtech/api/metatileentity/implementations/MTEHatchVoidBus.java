@@ -125,11 +125,6 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         NBTTagList lockedItemList = new NBTTagList();

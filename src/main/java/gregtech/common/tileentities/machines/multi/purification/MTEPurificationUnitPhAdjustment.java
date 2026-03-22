@@ -550,6 +550,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
         return TierEU.RECIPE_ZPM;
     }
 
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
         // Do not form without positioned hatches
@@ -614,6 +615,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEPurificationUnitPhAdjustment> adder() {
             return adder;
         }

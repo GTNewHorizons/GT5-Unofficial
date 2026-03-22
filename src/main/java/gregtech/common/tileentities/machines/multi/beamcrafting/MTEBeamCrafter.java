@@ -51,7 +51,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
+    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
 
     private int currentRecipeCurrentAmountA = 0;
     private int currentRecipeCurrentAmountB = 0;
@@ -140,14 +140,14 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             'B',
             buildHatchAdder(MTEBeamCrafter.class)
                 .atLeast(Energy, ExoticEnergy, Maintenance, InputBus, InputHatch, OutputBus, OutputHatch)
-                .casingIndex(CASING_INDEX_CENTRE)
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(1)
                 .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
         .addElement('A', chainAllGlasses())
         .addElement(
             'C',
             buildHatchAdder(MTEBeamCrafter.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(CASING_INDEX_CENTRE)
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(2)
                 .adder(MTEBeamCrafter::addBeamLineInputHatch)
                 .build()) // beamline input hatch

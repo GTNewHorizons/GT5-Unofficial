@@ -36,7 +36,8 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
+    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId(); // Shielded
+                                                                                                            // Acc.
 
     private static final IStructureDefinition<MTEBeamSplitter> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEBeamSplitter>builder()
@@ -86,14 +87,14 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
         .addElement(
             'C',
             buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(CASING_INDEX_CENTRE)
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(2)
                 .adder(MTEBeamSplitter::addBeamLineInputHatch)
                 .build()) // beamline input hatch
         .addElement(
             'D',
             buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(CASING_INDEX_CENTRE)
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(3)
                 .adder(
                     (splitter, te, casingIndex) -> splitter
