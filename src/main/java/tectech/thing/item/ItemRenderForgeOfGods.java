@@ -7,7 +7,7 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import gregtech.common.GTClient;
+import gregtech.GTMod;
 
 public class ItemRenderForgeOfGods implements IItemRenderer {
 
@@ -28,7 +28,11 @@ public class ItemRenderForgeOfGods implements IItemRenderer {
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 
         enableOpaqueColorInversion();
-        renderGORGEStar(type, GTClient.getAnimationRenderTicks(), 0.82);
+        renderGORGEStar(
+            type,
+            GTMod.clientProxy()
+                .getAnimationRenderTicks(),
+            0.82);
         disableOpaqueColorInversion();
 
         enablePseudoTransparentColorInversion();

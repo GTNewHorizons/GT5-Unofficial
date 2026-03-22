@@ -29,7 +29,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
+import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -97,74 +97,81 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             aOutputSlots,
             TextureFactory.of(
                 TextureFactory.of(
-                    new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE")),
+                    Textures.BlockIcons.customOptional(
+                        "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
-                        (new CustomIcon(
+                        (Textures.BlockIcons.customOptional(
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE_GLOW")))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory
-                    .of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE")),
                 TextureFactory.builder()
                     .addIcon(
-                        (new CustomIcon(
+                        (Textures.BlockIcons.customOptional(
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_GLOW")))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory.of(
-                    new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE")),
+                    Textures.BlockIcons.customOptional(
+                        "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
-                        (new CustomIcon(
+                        (Textures.BlockIcons.customOptional(
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE_GLOW")))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory
-                    .of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT")),
                 TextureFactory.builder()
                     .addIcon(
-                        (new CustomIcon(
+                        (Textures.BlockIcons.customOptional(
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_GLOW")))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory.of(
-                    new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE")),
+                    Textures.BlockIcons.customOptional(
+                        "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
-                        (new CustomIcon(
+                        (Textures.BlockIcons.customOptional(
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE_GLOW")))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory
-                    .of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP")),
                 TextureFactory.builder()
                     .addIcon(
-                        (new CustomIcon(
+                        (Textures.BlockIcons.customOptional(
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_GLOW")))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory.of(
-                    new CustomIcon(
+                    Textures.BlockIcons.customOptional(
                         "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
-                        (new CustomIcon(
+                        (Textures.BlockIcons.customOptional(
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_ACTIVE_GLOW")))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory
-                    .of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM")),
                 TextureFactory.builder()
                     .addIcon(
-                        (new CustomIcon(
+                        (Textures.BlockIcons.customOptional(
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_GLOW")))
                     .glow()
                     .build()));

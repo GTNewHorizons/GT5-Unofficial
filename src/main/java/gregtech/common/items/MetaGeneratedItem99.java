@@ -24,6 +24,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.config.Client;
 
 public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
@@ -126,17 +127,6 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     }
 
     /** Returns null for item damage out of bounds. */
-    private Materials getMaterial(int damage) {
-        if (damage < 0) {
-            return null;
-        }
-        if (damage >= 32000) {
-            return null;
-        }
-        return GregTechAPI.sGeneratedMaterials[damage % 1_000];
-    }
-
-    /** Returns null for item damage out of bounds. */
     private OrePrefixes getOrePrefix(int damage) {
         if (damage < 0) {
             return null;
@@ -221,12 +211,14 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        if (aStack.getItemDamage() < 0 || aStack.getItemDamage() >= 32000) return;
-        Materials material = getMaterial(aStack.getItemDamage());
-        if (material == null) return;
-        String flavorText = material.getFlavorText();
-        if (flavorText != null && !flavorText.isEmpty()) {
-            aList.add("§8§o" + flavorText);
+        if (Client.tooltip.showFlavorText) {
+            if (aStack.getItemDamage() < 0 || aStack.getItemDamage() >= 32000) return;
+            Materials material = getMaterial(aStack.getItemDamage());
+            if (material == null) return;
+            String flavorText = material.getFlavorText();
+            if (flavorText != null && !flavorText.isEmpty()) {
+                aList.add("§8§o" + flavorText);
+            }
         }
     }
 }

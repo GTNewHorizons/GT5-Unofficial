@@ -56,7 +56,6 @@ import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
@@ -66,7 +65,7 @@ import gregtech.common.config.MachineStats;
 import ic2.core.block.EntityItnt;
 import ic2.core.block.EntityNuke;
 
-public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAddUIWidgets {
+public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
     private static int sPassiveEnergyDrain = 2048;

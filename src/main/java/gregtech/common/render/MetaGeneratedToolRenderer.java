@@ -1,5 +1,7 @@
 package gregtech.common.render;
 
+import static gregtech.api.enums.Textures.InvisibleIcon.INVISIBLE_ICON;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -92,7 +94,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 ItemRenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
             }
-            if (overlay != null) {
+            if (overlay != null && overlay != INVISIBLE_ICON) {
                 Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 ItemRenderUtil.renderItemIcon(overlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
@@ -113,7 +115,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
                 ItemRenderUtil.renderItem(type, icon);
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
             }
-            if (overlay != null) {
+            if (overlay != null && overlay != INVISIBLE_ICON) {
                 Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 ItemRenderUtil.renderItem(type, overlay);

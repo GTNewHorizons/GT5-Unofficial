@@ -90,6 +90,7 @@ public final class GTTextureIds {
     public static final String PROGRESSBAR_FUEL_BRONZE = "gregtech:progressbar_fuel_bronze";
     public static final String PROGRESSBAR_FUEL_STEEL = "gregtech:progressbar_fuel_steel";
     public static final String PROGRESSBAR_SIEVERT = "gregtech:progressbar_sievert";
+    public static final String PROGRESSBAR_WATER_PURIFICATION = "gregtech:water_purification";
     public static final String PROGRESSBAR_METER_MINT = "gregtech:progressbar_meter_mint";
     public static final String PROGRESSBAR_METER_ORANGE = "gregtech:progressbar_meter_orange";
     public static final String PROGRESSBAR_METER_ROSE = "gregtech:progressbar_meter_rose";
@@ -156,4 +157,7 @@ public final class GTTextureIds {
     public static final String PICTURE_EXOFOUNDRY_PAIR_UC_HC_ACTIVE = "gregtech:picture_exofoundry_pair_uc_hc_active";
     public static final String PICTURE_EXOFOUNDRY_PAIR_HR_SELF = "gregtech:picture_exofoundry_pair_hr_self";
     public static final String PICTURE_EXOFOUNDRY_PAIR_HR_SELF_ACTIVE = "gregtech:picture_exofoundry_pair_hr_self_active";
+    public static final String PICTURE_WATER_PURIFICATION_ONLINE = "gregtech:picture_water_purification_online";
+    public static final String PICTURE_WATER_PURIFICATION_IDLE = "gregtech:picture_water_purification_idle";
+    public static final String PICTURE_WATER_PURIFICATION_OFFLINE = "gregtech:picture_water_purification_offline";
 }

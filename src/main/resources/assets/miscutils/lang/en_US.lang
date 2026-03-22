@@ -22,10 +22,6 @@ death.attack.plasmabolt=%s died by burning hot plasma.
 death.attack.plasmabolt.player=%1$s was killed by %2$s using plasma.
 death.attack.gtpp.grinder=%s was ground into nothingness by an IsaMill.
 
-# Batch mode chat message
-misc.BatchModeTextOn=Batch recipes (ME output bus recommended, will void excess outputs!)
-misc.BatchModeTextOff=Don't batch recipes
-
 # Alternative Materials
 item.itemPlateBatteryAlloy.name=Plate of Battery Alloy
 item.itemIngotBatteryAlloy.name=Ingot of Battery Alloy
@@ -4017,9 +4013,9 @@ gtpp.tooltip.tool.mining_speed=Mining Speed:
 
 gtpp.tooltip.wireless_charger.0=Can be locked to the owner by sneaking with a screwdriver.
 gtpp.tooltip.wireless_charger.1=Use screwdriver to change mode.
-gtpp.tooltip.wireless_charger.2=§aLong-Range Mode§7: Can supply 1A of power to each player up to %,dm away.
-gtpp.tooltip.wireless_charger.3=§aLocal Mode§7: Can supply 2A to each player within %,dm.
-gtpp.tooltip.wireless_charger.4=§aMixed Mode§7: Can supply 1A up to %,dm away and more 1A within %,dm.
+gtpp.tooltip.wireless_charger.2=§aLong-Range Mode§7: Can supply 1A of power to each player up to %s m away.
+gtpp.tooltip.wireless_charger.3=§aLocal Mode§7: Can supply 2A to each player within %s m.
+gtpp.tooltip.wireless_charger.4=§aMixed Mode§7: Can supply 1A up to %s m away and more 1A within %s m.
 
 #gtpp info data
 gtpp.infodata.tesseract_generator.name=Tesseract Generator
@@ -4052,6 +4048,16 @@ gtpp.infodata.energy_buffer.eu_stored=%s EU stored
 gtpp.infodata.energy_buffer.eu_capacity=%s EU capacity
 gtpp.infodata.tiered_chest.name=Super Storage Chest
 gtpp.infodata.tiered_tank.name=%s Fluid Tank
+gtpp.tiered_tank.desc.capacity=Stores %s of fluid
+gtpp.tiered_tank.desc.portable=A portable tank.
+gtpp.tiered_tank.desc.fluid=Fluid: %s %s L
+gtpp.tiered_tank.tooltip.contains=Contains Fluid: 
+gtpp.tiered_tank.tooltip.amount=Fluid Amount: %s L
+gtpp.infodata.tiered_tank.name=%s Tank
+gtpp.tiered_tank.infodata.amount=%s L
+gtpp.tiered_tank.infodata.capacity=%s L
+GT5U.infodata.digital_tank.stored_fluid=Stored Fluid
+GT5U.infodata.digital_tank.stored_fluid.empty=Empty
 
 # GUI
 gtpp.gui.text.time_since_built=Total Time Since Built
@@ -4091,5 +4097,5 @@ gtpp.chat.wireless_charger.mode.mixed=Mixed
 gtpp.chat.wireless_charger.range=Range
 gtpp.chat.wireless_charger.lock=Locked to owner
 gtpp.chat.wireless_charger.unlock=Unlocked
-gtpp.chat.wireless_charger.enter=You have entered charging range. [%,dm - %s]
-gtpp.chat.wireless_charger.leave=You have left charging range. [%,dm - %s]
+gtpp.chat.wireless_charger.enter=You have entered charging range. [%s m - %s]
+gtpp.chat.wireless_charger.leave=You have left charging range. [%s m - %s]

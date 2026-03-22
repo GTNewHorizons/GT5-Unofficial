@@ -16,6 +16,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class FormingPressRecipes implements Runnable {
@@ -207,6 +208,28 @@ public class FormingPressRecipes implements Runnable {
             .itemOutputs(ItemList.NaniteFramework.get(1))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
+            .addTo(formingPressRecipes);
+
+        // From ProcessingFood - foodDough forming press
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("foodDough", 1), ItemList.Shape_Mold_Bun.get(0L))
+            .itemOutputs(ItemList.Food_Raw_Bun.get(1L))
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(4)
+            .addTo(formingPressRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("foodDough", 2), ItemList.Shape_Mold_Bread.get(0L))
+            .itemOutputs(ItemList.Food_Raw_Bread.get(1L))
+            .duration(12 * SECONDS + 16 * TICKS)
+            .eut(4)
+            .addTo(formingPressRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("foodDough", 3), ItemList.Shape_Mold_Baguette.get(0L))
+            .itemOutputs(ItemList.Food_Raw_Baguette.get(1L))
+            .duration(19 * SECONDS + 4 * TICKS)
+            .eut(4)
             .addTo(formingPressRecipes);
     }
 }

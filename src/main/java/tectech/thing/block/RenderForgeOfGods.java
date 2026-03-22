@@ -25,7 +25,7 @@ import org.lwjgl.opengl.GL20;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 
-import gregtech.common.GTClient;
+import gregtech.GTMod;
 import tectech.Reference;
 import tectech.rendering.EOH.EOHRenderingUtils;
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsRingsStructureString;
@@ -458,7 +458,8 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             this.cachedRingCount = forgeTile.getRingCount();
         }
 
-        float timer = GTClient.getAnimationRenderTicks();
+        float timer = GTMod.clientProxy()
+            .getAnimationRenderTicks();
 
         // Correct order for transparency/depth:
         // 1) Opaque star writes depth

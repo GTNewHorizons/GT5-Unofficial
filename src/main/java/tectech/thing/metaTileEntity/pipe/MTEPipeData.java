@@ -17,6 +17,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -34,8 +35,8 @@ import tectech.util.CommonValues;
  */
 public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, IActivePipe {
 
-    private static Textures.BlockIcons.CustomIcon EMpipe;
-    private static Textures.BlockIcons.CustomIcon EMbar, EMbarActive;
+    private static IIconContainer EMpipe;
+    private static IIconContainer EMbar, EMbarActive;
     public byte connectionCount = 0;
 
     private boolean active;
@@ -56,9 +57,9 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_DATA");
-        EMbar = new Textures.BlockIcons.CustomIcon("iconsets/EM_BAR");
-        EMbarActive = new Textures.BlockIcons.CustomIcon("iconsets/EM_BAR_ACTIVE");
+        EMpipe = Textures.BlockIcons.custom("iconsets/EM_DATA");
+        EMbar = Textures.BlockIcons.custom("iconsets/EM_BAR");
+        EMbarActive = Textures.BlockIcons.custom("iconsets/EM_BAR_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 

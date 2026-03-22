@@ -111,7 +111,7 @@ public class BehaviourSprayColor extends BehaviourNone {
         int initialBlockMeta = aWorld.getBlockMetadata(aX, aY, aZ);
         TileEntity initialTE = aWorld.getTileEntity(aX, aY, aZ);
         while ((GTUtility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, aX, aY, aZ, side, aPlayer))) {
-            GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SPRAY_CAN, 1.0F, 1.0F, hitX, hitY, hitZ);
+            GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SPRAY_CAN, 1.0F, 1.0F, aX, aY, aZ);
             if (!aPlayer.capabilities.isCreativeMode) {
                 tUses -= 1L;
             }

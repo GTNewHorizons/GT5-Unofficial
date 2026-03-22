@@ -59,14 +59,17 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     protected static final int ASSEMBLY_OFFSET_Y = 4;
     protected static final int ASSEMBLY_OFFSET_Z = 0;
 
+    @Override
     public int structureOffsetX() {
         return ASSEMBLY_OFFSET_X;
     }
 
+    @Override
     public int structureOffsetY() {
         return ASSEMBLY_OFFSET_Y;
     }
 
+    @Override
     public int structureOffsetZ() {
         return ASSEMBLY_OFFSET_Z;
     }
@@ -272,8 +275,9 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         String[] origin = super.getInfoData();
         String[] ret = new String[origin.length + 1];
         System.arraycopy(origin, 0, ret, 0, origin.length);
-        ret[origin.length] = translateToLocal("scanner.info.CASS.tier")
-            + (machineTier >= 0 ? GTValues.VN[machineTier] : translateToLocal("scanner.info.CASS.tier.none"));
+        ret[origin.length] = translateToLocalFormatted(
+            "scanner.info.CASS.tier",
+            (machineTier >= 0 ? GTValues.VN[machineTier] : translateToLocal("scanner.info.CASS.tier.none")));
         return ret;
     }
 

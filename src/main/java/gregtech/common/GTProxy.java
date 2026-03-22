@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -51,6 +52,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
@@ -85,6 +87,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import org.lwjgl.input.Keyboard;
 
+import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -160,6 +163,7 @@ import gregtech.common.config.OPStuff;
 import gregtech.common.data.GTPowerfailTracker;
 import gregtech.common.data.maglev.TetherManager;
 import gregtech.common.handlers.OffhandToolFunctionalityHandler;
+import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
@@ -690,6 +694,8 @@ public class GTProxy implements IFuelHandler {
     /** Second color of the waila progress bar's border (bottom and right). */
     public int wailaProgressBorderColor2 = 0xFF505050;
 
+    public Set<Item> toolboxBans = ImmutableSet.of();
+
     public static final int GUI_ID_COVER_SIDE_BASE = 10; // Takes GUI ID 10 - 15
 
     private static final Map<String, Integer> oreDictBurnTimes = new Object2IntOpenHashMap<>();
@@ -708,6 +714,7 @@ public class GTProxy implements IFuelHandler {
     public TetherManager tetherManager;
 
     public SyncedKeybind TOOL_MODE_SWITCH_KEYBIND;
+    public SyncedKeybind CTRL_KEYBIND;
 
     static {
         oreDictBurnTimes.put("dustTinyWood", 11);
@@ -1053,7 +1060,9 @@ public class GTProxy implements IFuelHandler {
         MinecraftForge.EVENT_BUS.register(new OffhandToolFunctionalityHandler());
         TOOL_MODE_SWITCH_KEYBIND = SyncedKeybind
             .createConfigurable("key.gt.tool_mode_switch", "Gregtech", Keyboard.KEY_PERIOD)
-            .registerGlobalListener(MetaGeneratedTool::switchToolMode);
+            .registerGlobalListener(MetaGeneratedTool::switchCurrentToolMode)
+            .registerGlobalListener(ItemGTToolbox::switchToolMode);
+        CTRL_KEYBIND = SyncedKeybind.create(Keyboard.KEY_LCONTROL);
 
         GregTechAPI.sLoadStarted = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
@@ -1458,6 +1467,9 @@ public class GTProxy implements IFuelHandler {
                 aEvent.fortuneLevel,
                 aEvent.isSilkTouching,
                 aEvent);
+        }
+        if (aStack.getItem() instanceof final ItemGTToolbox toolbox) {
+            toolbox.onBlockHarvestingEvent(aEvent);
         }
         if (EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, aStack) > 2) {
             try {

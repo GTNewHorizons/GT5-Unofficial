@@ -153,7 +153,7 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
                 }
             }
         }
-        return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+        return Textures.GlobalIcons.RENDERING_ERROR.getIcon();
     }
 
     @Override
