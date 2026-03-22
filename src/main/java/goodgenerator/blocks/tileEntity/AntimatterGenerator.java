@@ -391,24 +391,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
 
     @Override
     public void getExtraInfoData(List<String> info) {
-        info.add(StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
-            + EnumChatFormatting.GREEN
-            + formatNumber(this.euLastCycle)
-            + EnumChatFormatting.RESET
-            + " EU");
+        info.add(StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.0", formatNumber(this.euLastCycle)));
 
-        info.add(StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": "
-            + EnumChatFormatting.AQUA
-            + formatNumber(Math.ceil(this.annihilationEfficiency * 100))
-            + EnumChatFormatting.RESET
-            + " %");
+        info.add(StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.1", formatNumber(Math.ceil(this.annihilationEfficiency * 100))));
 
-        info.add(StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
-            + EnumChatFormatting.AQUA
-            + formatNumber(Math.ceil(this.avgEffCache * 100))
-            + EnumChatFormatting.RESET
-            + " % ⟩₁₀");
-
+        info.add(StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.2", formatNumber(Math.ceil(this.avgEffCache * 100))));
 
     }
 
@@ -455,24 +442,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
-        currentTip.add(
-            StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
-                + EnumChatFormatting.BLUE
-                + GTUtility.scientificFormat(energyProducedCache)
-                + EnumChatFormatting.WHITE
-                + " EU");
-        currentTip.add(
-            StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(Math.ceil(efficiencyCache * 100))
-                + EnumChatFormatting.WHITE
-                + " %");
-        currentTip.add(
-            StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
-                + EnumChatFormatting.RED
-                + formatNumber(Math.ceil(avgEffCache * 100))
-                + EnumChatFormatting.WHITE
-                + " % ⟩₁₀");
+        currentTip.add(StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.0", formatNumber(this.energyProducedCache)));
+        currentTip.add(StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.1", formatNumber(Math.ceil(this.efficiencyCache * 100))));
+        currentTip.add(StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.2", formatNumber(Math.ceil(this.avgEffCache * 100))));
     }
 
     @Override

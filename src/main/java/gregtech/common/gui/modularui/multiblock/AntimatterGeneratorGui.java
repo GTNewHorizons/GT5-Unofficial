@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.text.DecimalFormat;
@@ -62,30 +63,15 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui<AntimatterGener
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterGenerator.0")
-                            + ": "
-                            + EnumChatFormatting.BLUE
-                            + standardFormat.format(energyProducedSync.getLongValue())
-                            + EnumChatFormatting.WHITE
-                            + " EU")))
+                        () -> StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.0", standardFormat.format(energyProducedSync.getLongValue())))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterGenerator.1")
-                            + ": "
-                            + EnumChatFormatting.RED
-                            + numberFormat.format(Math.ceil(curEfficiencySync.getDoubleValue() * 100))
-                            + EnumChatFormatting.WHITE
-                            + " %")))
+                        () -> StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.1", numberFormat.format(Math.ceil(curEfficiencySync.getDoubleValue() * 100))))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterGenerator.1")
-                            + ": ⟨ "
-                            + EnumChatFormatting.RED
-                            + numberFormat.format(Math.ceil(avgEfficiencySync.getDoubleValue() * 100))
-                            + EnumChatFormatting.WHITE
-                            + " % ⟩₁₀")));
+                        () -> StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.2", numberFormat.format(Math.ceil(avgEfficiencySync.getDoubleValue() * 100))))));
     }
 
     @Override
