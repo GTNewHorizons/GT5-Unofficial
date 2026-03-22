@@ -24,6 +24,7 @@ import gregtech.common.inventory.IAEInventory;
  */
 public interface IAEItemHandlerModifiable extends IItemHandlerModifiable, IAEInventory {
 
+    @Override
     IAEItemStack getAEStackInSlot(int slot);
 
     @Override
@@ -33,6 +34,7 @@ public interface IAEItemHandlerModifiable extends IItemHandlerModifiable, IAEInv
         return stack == null ? null : stack.getItemStack();
     }
 
+    @Override
     @Nullable
     IAEItemStack insertAEItem(int slot, @NotNull IAEItemStack stack, boolean simulate, boolean forced);
 
@@ -55,6 +57,7 @@ public interface IAEItemHandlerModifiable extends IItemHandlerModifiable, IAEInv
         return insertion.isEmpty() ? null : insertion.toStack();
     }
 
+    @Override
     @Nullable
     IAEItemStack extractAEItem(int slot, long amount, boolean simulate, boolean forced);
 
@@ -74,6 +77,7 @@ public interface IAEItemHandlerModifiable extends IItemHandlerModifiable, IAEInv
         return getAESlotLimit(slot, getAEStackInSlot(slot));
     }
 
+    @Override
     long getAESlotLimit(int slot, IAEItemStack stack);
 
     @Override
@@ -94,6 +98,7 @@ public interface IAEItemHandlerModifiable extends IItemHandlerModifiable, IAEInv
         return ret;
     }
 
+    @Override
     void setStackInSlot(int slot, IAEItemStack stack);
 
     @Override

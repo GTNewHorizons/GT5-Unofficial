@@ -333,11 +333,6 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         for (MTEHatchSteamBusInput tHatch : validMTEList(mSteamInputs)) tHatch.updateSlots();
     }
 
-    @Override
-    public boolean supportsBatchMode() {
-        return true;
-    }
-
     /*
      * With batch mode enabled (True by default from config), HP steam multi processing times get rounded and look weird
      * Setting them to false here will make it look normal again. (Steam multi's can't process every tick anyway)
