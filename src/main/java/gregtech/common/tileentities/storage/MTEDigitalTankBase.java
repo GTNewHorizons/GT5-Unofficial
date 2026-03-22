@@ -46,8 +46,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.SpecialChars;
 
-public abstract class MTEDigitalTankBase extends MTEBasicTank
-    implements IFluidLockableMui2, IAddUIWidgets, IAddGregtechLogo {
+public abstract class MTEDigitalTankBase extends MTEBasicTank implements IFluidLockableMui2, IAddGregtechLogo {
 
     public boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
     protected Fluid lockedFluid = null;
