@@ -12,14 +12,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
-import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -133,22 +130,16 @@ public class MTEHatchInput extends MTEHatch {
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setByte("color", getBaseMetaTileEntity().getColorization());
+        tag.setByte("color", (byte) (getBaseMetaTileEntity().getColorization() + 1));
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
-        byte color = accessor.getNBTData()
-            .getByte("color");
-        if (color >= 0 && color < 16) {
-            currenttip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.waila.hatch.color_channel",
-                    Dyes.VALUES[color].formatting + Dyes.VALUES[color].getLocalizedDyeName()
-                        + EnumChatFormatting.GRAY));
-        }
+        final byte color = (byte) (accessor.getNBTData()
+            .getByte("color") - 1);
+        MTEHatch.addColorChannelInfo(currenttip, color);
     }
 
     @Override

@@ -16,8 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -31,7 +29,6 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 
 import gregtech.GTMod;
-import gregtech.api.enums.Dyes;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
@@ -128,19 +125,15 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setByte("color", (byte) (getBaseMetaTileEntity().getColorization() + 1));
-
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
-        byte color = (byte) (accessor.getNBTData()
+        final byte color = (byte) (accessor.getNBTData()
             .getByte("color") - 1);
-        if (color >= 0 && color < 16) currenttip.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.waila.hatch.color_channel",
-                Dyes.VALUES[color].formatting + Dyes.VALUES[color].getLocalizedDyeName() + EnumChatFormatting.GRAY));
+        MTEHatch.addColorChannelInfo(currenttip, color);
     }
 
     @Override

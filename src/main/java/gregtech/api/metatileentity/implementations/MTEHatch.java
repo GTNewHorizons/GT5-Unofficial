@@ -2,15 +2,15 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
@@ -252,5 +252,14 @@ public abstract class MTEHatch extends MTEBasicTank {
             return GTSplit.splitLocalizedWithSuffix(key, suffixs);
         }
         return GTSplit.splitLocalizedFormattedWithSuffix(key, suffixs, formatted);
+    }
+
+    public static void addColorChannelInfo(List<String> tooltip, byte color) {
+        if (color >= 0 && color < 16) {
+            tooltip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.hatch.color_channel",
+                    Dyes.VALUES[color].formatting + Dyes.VALUES[color].getLocalizedDyeName()));
+        }
     }
 }
