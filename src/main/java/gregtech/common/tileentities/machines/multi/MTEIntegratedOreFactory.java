@@ -217,74 +217,72 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
         long availableEUt = getMaxInputVoltage() * getMaxInputAmps();
-
-        int maxParallel = GTUtility.safeInt(availableEUt / RECIPE_EUT);
+        int maxParallelFromPower = GTUtility.safeInt(availableEUt / RECIPE_EUT);
 
         int lubricantAmount = 0;
         int waterAmount = 0;
+        final double BATCH_MULTIPLIER = 6.4;
+        final int TICKS_NORMAL = 20;
+        final int TICKS_BATCH = 128;
+
         for (FluidStack fluid : inputFluid) {
             if (fluid == null) continue;
             if (fluid.equals(GTModHandler.getDistilledWater(1L))) waterAmount += fluid.amount;
             else if (fluid.equals(Materials.Lubricant.getFluid(1L))) lubricantAmount += fluid.amount;
         }
 
-        int currentParallel = maxParallel;
-        currentParallel = (int) Math.min((long) currentParallel, lubricantAmount / 2);
-        currentParallel = (int) Math.min((long) currentParallel, waterAmount / 200);
-        if (currentParallel <= 0) {
+        int parallelFromFluids = Math.min(lubricantAmount / 2, waterAmount / 200);
+        if (this.batchMode) {
+            parallelFromFluids = (int) (parallelFromFluids / BATCH_MULTIPLIER);
+        }
+
+        if (parallelFromFluids <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        int itemParallel = 0;
+        int parallelFromItems = 0;
         for (ItemStack ore : inputItem) {
             int tID = GTUtility.stackToInt(ore);
-            if (tID == 0) continue;
-            if (isValidOreInput(tID)) {
-                if (itemParallel + ore.stackSize <= currentParallel) {
-                    itemParallel += ore.stackSize;
-                } else {
-                    itemParallel = currentParallel;
-                    break;
-                }
-            }
+            if (tID == 0 || !isValidOreInput(tID)) continue;
+            parallelFromItems += ore.stackSize;
         }
-        currentParallel = itemParallel;
-        if (currentParallel <= 0) {
+
+        int baseParallel = Math.min(Math.min(maxParallelFromPower, parallelFromFluids), parallelFromItems);
+        if (baseParallel <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallel);
+        boolean isBatch = this.batchMode;
 
-        long eutPerParallel = availableEUt / currentParallelBeforeBatchMode;
-        int overclockedDuration = getTime(mode);
-        long overclockedEUt = RECIPE_EUT;
-        while (overclockedEUt * 4 <= eutPerParallel && overclockedDuration > 1) {
-            overclockedEUt *= 4;
-            overclockedDuration = Math.max(1, overclockedDuration / 2);
+        long effectiveParallelLong = isBatch ? Math.round(baseParallel * BATCH_MULTIPLIER) : baseParallel;
+
+        int effectiveParallel = GTUtility.safeInt(effectiveParallelLong);
+        if (effectiveParallel <= 0) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        lastParallel = currentParallelBeforeBatchMode;
-        setCurrentParallelism(currentParallelBeforeBatchMode);
+        depleteInput(GTModHandler.getDistilledWater(effectiveParallel * 200L));
+        depleteInput(Materials.Lubricant.getFluid(effectiveParallel * 2L));
 
-        depleteInput(GTModHandler.getDistilledWater(currentParallelBeforeBatchMode * 200L));
-        depleteInput(Materials.Lubricant.getFluid(currentParallelBeforeBatchMode * 2L));
+        long fixedEUt = -RECIPE_EUT * baseParallel;
 
         List<ItemStack> tOres = new ArrayList<>();
-        int remainingCost = currentParallelBeforeBatchMode;
-        for (int i = 0, size = inputItem.size(); i < size && remainingCost > 0; i++) {
+        int remaining = effectiveParallel;
+
+        for (int i = 0; i < inputItem.size() && remaining > 0; i++) {
             ItemStack ore = inputItem.get(i);
             int tID = GTUtility.stackToInt(ore);
             if (tID == 0 || !isValidOreInput(tID)) continue;
 
-            if (remainingCost >= ore.stackSize) {
-                tOres.add(GTUtility.copy(ore));
-                remainingCost -= ore.stackSize;
-                ore.stackSize = 0;
-            } else {
-                tOres.add(GTUtility.copyAmountUnsafe(remainingCost, ore));
-                ore.stackSize -= remainingCost;
-                remainingCost = 0;
-            }
+            int take = Math.min(remaining, ore.stackSize);
+
+            tOres.add(GTUtility.copyAmountUnsafe(take, ore));
+            ore.stackSize -= take;
+            remaining -= take;
+        }
+
+        if (tOres.isEmpty()) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
         midProduct = tOres.toArray(new ItemStack[0]);
 
@@ -336,8 +334,12 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         this.mEfficiencyIncrease = 10000;
         this.mOutputItems = midProduct;
-        this.mMaxProgresstime = overclockedDuration;
-        this.lEUt = -overclockedEUt * currentParallelBeforeBatchMode;
+        this.mMaxProgresstime = isBatch ? TICKS_BATCH : TICKS_NORMAL;
+        this.lEUt = fixedEUt;
+
+        lastParallel = effectiveParallel;
+        setCurrentParallelism(effectiveParallel);
+
         this.updateSlots();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
@@ -352,8 +354,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
-            .setUnlimitedTierSkips();
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
