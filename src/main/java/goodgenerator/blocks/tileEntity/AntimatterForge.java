@@ -712,9 +712,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     public void getExtraInfoData(List<String> info) {
         info.add(StatCollector.translateToLocalFormatted("gui.AntimatterForge.0", formatNumber(getAntimatterAmount())));
 
-        info.add(StatCollector.translateToLocalFormatted("gui.AntimatterForge.1", formatNumber(getPassiveConsumption())));
+        info.add(
+            StatCollector.translateToLocalFormatted("gui.AntimatterForge.1", formatNumber(getPassiveConsumption())));
 
-        info.add(StatCollector.translateToLocalFormatted("gui.AntimatterForge.2", formatNumber(getActiveConsumption())));
+        info.add(
+            StatCollector.translateToLocalFormatted("gui.AntimatterForge.2", formatNumber(getActiveConsumption())));
 
         info.add(StatCollector.translateToLocalFormatted("gui.AntimatterForge.3", formatNumber(getAntimatterChange())));
     }

@@ -8,7 +8,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -393,9 +392,15 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
     public void getExtraInfoData(List<String> info) {
         info.add(StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.0", formatNumber(this.euLastCycle)));
 
-        info.add(StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.1", formatNumber(Math.ceil(this.annihilationEfficiency * 100))));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "gui.AntimatterGenerator.1",
+                formatNumber(Math.ceil(this.annihilationEfficiency * 100))));
 
-        info.add(StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.2", formatNumber(Math.ceil(this.avgEffCache * 100))));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "gui.AntimatterGenerator.2",
+                formatNumber(Math.ceil(this.avgEffCache * 100))));
 
     }
 
@@ -442,9 +447,17 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
-        currentTip.add(StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.0", formatNumber(this.energyProducedCache)));
-        currentTip.add(StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.1", formatNumber(Math.ceil(this.efficiencyCache * 100))));
-        currentTip.add(StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.2", formatNumber(Math.ceil(this.avgEffCache * 100))));
+        currentTip.add(
+            StatCollector
+                .translateToLocalFormatted("gui.AntimatterGenerator.0", formatNumber(this.energyProducedCache)));
+        currentTip.add(
+            StatCollector.translateToLocalFormatted(
+                "gui.AntimatterGenerator.1",
+                formatNumber(Math.ceil(this.efficiencyCache * 100))));
+        currentTip.add(
+            StatCollector.translateToLocalFormatted(
+                "gui.AntimatterGenerator.2",
+                formatNumber(Math.ceil(this.avgEffCache * 100))));
     }
 
     @Override

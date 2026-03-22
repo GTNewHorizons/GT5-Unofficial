@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.AuthorColen;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -19,7 +18,6 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +59,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -914,26 +911,28 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     public void getExtraInfoData(List<String> info) {
         info.add(StatCollector.translateToLocalFormatted("GT5U.EBF.heat", formatNumber(this.mHeatingCapacity)));
 
-        info.add(StatCollector.translateToLocalFormatted(
-            "GT5U.infodata.plasma_forge.ticks_run_fuel_discount",
-            EnumChatFormatting.GREEN + formatNumber(running_time) + EnumChatFormatting.RESET,
-            EnumChatFormatting.RED + formatNumber(100 * (1 - discount)) + EnumChatFormatting.RESET + "%",
-            extraCatalystNeeded));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.plasma_forge.ticks_run_fuel_discount",
+                EnumChatFormatting.GREEN + formatNumber(running_time) + EnumChatFormatting.RESET,
+                EnumChatFormatting.RED + formatNumber(100 * (1 - discount)) + EnumChatFormatting.RESET + "%",
+                extraCatalystNeeded));
 
-        info.add(StatCollector.translateToLocalFormatted(
-            "GT5U.infodata.plasma_forge.convergence",
-            (convergence
-                ? EnumChatFormatting.GREEN
-                + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.active")
-                + EnumChatFormatting.RESET
-                + (discount == maximum_discount
-                ? StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.achieved")
-                : StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.plasma_forge.convergence.progress",
-                formatNumber((max_efficiency_time_in_ticks - running_time) / (20 * 60))))
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.plasma_forge.convergence",
+                (convergence
+                    ? EnumChatFormatting.GREEN
+                        + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.active")
+                        + EnumChatFormatting.RESET
+                        + (discount == maximum_discount
+                            ? StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.achieved")
+                            : StatCollector.translateToLocalFormatted(
+                                "GT5U.infodata.plasma_forge.convergence.progress",
+                                formatNumber((max_efficiency_time_in_ticks - running_time) / (20 * 60))))
 
-                : EnumChatFormatting.RED
-                + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.inactive"))));
+                    : EnumChatFormatting.RED
+                        + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.inactive"))));
     }
 
     private void recalculateDiscount() {

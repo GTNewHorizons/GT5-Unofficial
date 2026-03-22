@@ -759,12 +759,18 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
 
     @Override
     public void getExtraInfoData(List<String> info) {
-        info.add(StatCollector.translateToLocalFormatted("BW.infoData.BioVat.expectedProduction", (this.mMachine
-            ? (this.mMaxProgresstime <= 0 ? this.getExpectedMultiplier(null, false) : this.mExpectedMultiplier)
-            * 100
-            : -1)));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.BioVat.expectedProduction",
+                (this.mMachine
+                    ? (this.mMaxProgresstime <= 0 ? this.getExpectedMultiplier(null, false) : this.mExpectedMultiplier)
+                        * 100
+                    : -1)));
 
-        info.add(StatCollector.translateToLocalFormatted("BW.infoData.BioVat.production", (this.mMaxProgresstime <= 0 ? 0 : this.mTimes) * 100));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.BioVat.production",
+                (this.mMaxProgresstime <= 0 ? 0 : this.mTimes) * 100));
     }
 
     @Override

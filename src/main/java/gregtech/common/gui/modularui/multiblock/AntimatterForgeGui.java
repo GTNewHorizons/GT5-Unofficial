@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -18,8 +17,6 @@ import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import goodgenerator.blocks.tileEntity.AntimatterForge;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
 
@@ -55,19 +52,27 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> StatCollector.translateToLocalFormatted("gui.AntimatterForge.0", numberFormat.format(containedSync.getLongValue())))))
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gui.AntimatterForge.0",
+                            numberFormat.format(containedSync.getLongValue())))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> StatCollector.translateToLocalFormatted("gui.AntimatterForge.1", standardFormat.format(passiveConsSync.getLongValue())))))
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gui.AntimatterForge.1",
+                            standardFormat.format(passiveConsSync.getLongValue())))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> StatCollector.translateToLocalFormatted("gui.AntimatterForge.2", standardFormat.format(activeConsSync.getLongValue())))))
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gui.AntimatterForge.2",
+                            standardFormat.format(activeConsSync.getLongValue())))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> StatCollector.translateToLocalFormatted("gui.AntimatterForge.3", numberFormat.format(amChangeSync.getLongValue())))));
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gui.AntimatterForge.3",
+                            numberFormat.format(amChangeSync.getLongValue())))));
 
     }
 }
