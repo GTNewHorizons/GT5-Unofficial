@@ -40,6 +40,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
 
     protected NBTTagCompound pendingDescriptionPacket;
 
+    protected int oldX = 0, oldY = 0, oldZ = 0;
+    protected byte mColor = 0, oldColor = 0, oldStrongRedstone = 0, oldRedstoneData = 63, oldUpdateData = 0;
+
     // Profiling
     private final int[] mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
     private boolean hasTimeStatisticsStarted;
@@ -64,8 +67,6 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
         }
         return false;
     }
-
-    protected abstract void updateEntityProfiled();
 
     @Override
     public final void updateEntity() {
@@ -121,6 +122,109 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
                     getMetaTileEntity().getClass());
         }
 
+    }
+
+    protected abstract void updateEntityProfiled();
+
+    /**
+     * Handles setting data on the first tick
+     */
+    protected void handleFirstTick() {
+        oldX = xCoord;
+        oldY = yCoord;
+        oldZ = zCoord;
+        if (isServerSide()) {
+            checkDropCover();
+        } else {
+            requestCoverDataIfNeeded();
+        }
+        worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+        getMetaTileEntity().onFirstTick(this);
+    }
+
+    /**
+     * Handles the color changing on the client side
+     */
+    protected void handleColorChangeClient() {
+        if (mColor == oldColor) {
+            return;
+        }
+        oldColor = mColor;
+        getMetaTileEntity().onColorChangeClient(mColor);
+        issueTextureUpdate();
+    }
+
+    /**
+     * Handles marking the tile entity's block for an update on the client side
+     */
+    protected void handleBlockUpdateClient() {
+        if (!mNeedsUpdate) {
+            return;
+        }
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        getMetaTileEntity().onTextureUpdate();
+        mNeedsUpdate = false;
+    }
+
+    /**
+     * Handles the tile entity's position changing
+     */
+    protected void handlePositionChange() {
+        if (xCoord == oldX && yCoord == oldY && zCoord == oldZ) {
+            return;
+        }
+        oldX = xCoord;
+        oldY = yCoord;
+        oldZ = zCoord;
+        issueClientUpdate();
+        clearTileEntityBuffer();
+    }
+
+    /**
+     * Handles the update data changing
+     */
+    protected void handleUpdateDataChange() {
+        byte updateData = getMetaTileEntity().getUpdateData();
+        if (updateData == oldUpdateData) {
+            return;
+        }
+        oldUpdateData = updateData;
+        sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, oldUpdateData);
+    }
+
+    /**
+     * Handles the color changing on the server side
+     */
+    protected void handleColorChangeServer() {
+        if (mColor == oldColor) {
+            return;
+        }
+        oldColor = mColor;
+        sendBlockEvent(GregTechTileClientEvents.CHANGE_COLOR, oldColor);
+    }
+
+    /**
+     * Handles sided Redstone changing
+     */
+    protected void handleSidedRedstoneChange() {
+        byte redstone = getSidedRedstoneMask();
+        if (redstone == oldRedstoneData) {
+            return;
+        }
+        oldRedstoneData = redstone;
+        sendBlockEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, oldRedstoneData);
+    }
+
+    /**
+     * Performs a block update on the server side
+     */
+    protected void handleBlockUpdateServer() {
+        if (!mNeedsBlockUpdate) {
+            return;
+        }
+        updateNeighbours(mStrongRedstone, oldStrongRedstone);
+        oldStrongRedstone = mStrongRedstone;
+        mNeedsBlockUpdate = false;
     }
 
     protected abstract void onTickFail();
