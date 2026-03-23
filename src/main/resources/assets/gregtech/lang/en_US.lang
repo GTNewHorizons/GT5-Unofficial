@@ -3976,6 +3976,8 @@ GT5U.tooltip.structure.eoh_scfg=Spacetime Compression Field Generator
 GT5U.tooltip.structure.kaboom_containment=Containment Block
 GT5U.tooltip.structure.tiered_fusion_casing=Tiered Fusion Casing
 GT5U.tooltip.structure.peuc=Precise Electronic Unit Casing
+GT5U.tooltip.structure.neutron_accelerator=Neutron Accelerator
+GT5U.tooltip.structure.neutron_sensor=Neutron Sensor
 
 GT5U.tooltip.fluid.registry=Registry: %s
 GT5U.tooltip.fluid.amount=Amount: %s
@@ -4530,8 +4532,11 @@ machtype.slam=Antimatter Generator, SLAM
 machtype.sc_turbine=Supercritical Steam Turbine
 machtype.lhe=Heat Exchanger, LHE
 machtype.ucfe=Chemical Engine, UCFE
+machtype.neutron_activator=Neutron Activator, NA
 
 # Multiblock Tooltip lines
+gt.neutron_activator.tips=Superluminal-velocity Motion.\nThe minimum height of the Speeding Pipe Casing is 4\nPer extra Speeding Pipe Casing will give time discount\nBut it will reduce the Neutron Accelerator efficiency\nYou need to input energy to the Neutron Accelerator to get it running\nIt will output correct products with Specific Neutron Kinetic Energy\nOtherwise it will output trash\nThe Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running\nIt will explode when the Neutron Kinetic Energy is over §c1200MeV§7.\nInputting Graphite/Beryllium dust can reduce 10MeV per dust immediately.
+
 gt.ucfe.tips=BURNING BURNING BURNING\nUse combustible liquid to generate power\nYou need to supply Combustion Promoter to keep it running\nIt will consume all the fuel and combustion promoter in the hatch every second\nEnergy output to the dynamo will be distributed over the next second\nIf the Dynamo Hatch's buffer fills up, the machine will stop\nIf the amount of energy to be produced is higher than the dynamo hatch can handle then all produced energy will void\nWhen turned on, there is a 10-second period where the machine will not stop\nEven if it doesn't stop, all the fuel in the hatch will be consumed\nThe efficiency is determined by the proportion of Combustion Promoter to fuel\nThe higher the amount of promoter, the higher the efficiency. It follows an exponential curve exp(-C/(p/x))*1.5\nWhere x is the amount of fuel in liters, p is the amount of promoter in liters\nand C depends on the fuel type. Diesel: C=0.04; Gas: C=0.04; Rocket fuel: C=0.005\nIt creates sqrt(Current Output Power) pollution every second\nIf you forget to supply Combustion Promoter, this engine will swallow all the fuel §ewithout outputting energy\nThe efficiency is up to 150%
 gt.ucfe.info.controller=Mid of the second layer
 gt.ucfe.info.muffler=Hint Block Number 2 (fill all slots with mufflers)
