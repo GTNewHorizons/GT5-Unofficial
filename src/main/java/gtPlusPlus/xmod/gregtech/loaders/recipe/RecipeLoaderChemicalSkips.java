@@ -308,7 +308,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Oxygen.getGas(2_000),
                 Materials.Nitrogen.getGas(24_000))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 16))
-            .fluidOutputs(Materials.PrismaticAcid.getFluid(32_000))
+            .fluidOutputs(Materials.PrismaticAcid.getFluid(32_000), Materials.Strontium.getMolten(144L * 16))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .metadata(QFT_CATALYST, GregtechItemList.CrystalColorizationCatalyst.get(0))
