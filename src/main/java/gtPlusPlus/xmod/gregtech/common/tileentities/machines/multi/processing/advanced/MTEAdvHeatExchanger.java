@@ -429,11 +429,6 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return super.isGivingInformation();
-    }
-
-    @Override
     public String[] getExtraInfoData() {
         return new String[] {
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
@@ -553,6 +548,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEAdvHeatExchanger> adder() {
             return adder;
         }

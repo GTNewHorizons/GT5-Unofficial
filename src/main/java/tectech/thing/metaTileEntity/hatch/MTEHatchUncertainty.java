@@ -37,7 +37,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
@@ -49,7 +48,7 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 15.12.2016.
  */
-public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, IAddUIWidgets {
+public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo {
 
     private static IIconContainer ScreenON;
     private static IIconContainer ScreenOFF;

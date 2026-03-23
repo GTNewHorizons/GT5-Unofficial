@@ -340,11 +340,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         return StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.mode.Scanner");
     }
 
-    @Override
-    public int getMachineMode() {
-        return super.getMachineMode();
-    }
-
     // endregion machine mode
 
     // region holder utils

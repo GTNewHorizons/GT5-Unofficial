@@ -463,11 +463,6 @@ public class MTEHatchOutputME extends MTEHatchOutput
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public String[] getInfoData() {
         List<String> ss = new ArrayList<>();
         ss.add(
@@ -549,10 +544,12 @@ public class MTEHatchOutputME extends MTEHatchOutput
         return getProxy().getNode();
     }
 
+    @Override
     public void dispatchMarkDirty() {
         this.markDirty();
     }
 
+    @Override
     public MTEHatchOutputMEBase<IAEFluidStack, MEFilterFluid, FluidStack> getProvider() {
         return provider;
     }
