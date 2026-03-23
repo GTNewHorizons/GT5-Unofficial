@@ -338,19 +338,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
                 this.mHadNoWater = true;
             } else {
                 if (this.mHadNoWater) {
-                    GTLog.writeExplosionLog(
-                        this.getBaseMetaTileEntity()
-                            .getWorld().provider.getDimensionName(),
-                        this.getBaseMetaTileEntity()
-                            .getXCoord(),
-                        this.getBaseMetaTileEntity()
-                            .getYCoord(),
-                        this.getBaseMetaTileEntity()
-                            .getZCoord(),
-                        this.getLocalName(),
-                        this.getBaseMetaTileEntity()
-                            .getOwnerName(),
-                        "Boiler had no water");
+                    GTLog.writeExplosionLog(this, "Boiler had no water");
                     onDangerousWaterLack(aBaseMetaTileEntity, aTick);
                     return true;
                 }

@@ -364,19 +364,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                     if (dryHeatCounter < dryHeatMaximum) {
                         dryHeatCounter += 1;
                     } else {
-                        GTLog.writeExplosionLog(
-                            this.getBaseMetaTileEntity()
-                                .getWorld().provider.getDimensionName(),
-                            this.getBaseMetaTileEntity()
-                                .getXCoord(),
-                            this.getBaseMetaTileEntity()
-                                .getYCoord(),
-                            this.getBaseMetaTileEntity()
-                                .getZCoord(),
-                            this.getLocalName(),
-                            this.getBaseMetaTileEntity()
-                                .getOwnerName(),
-                            "was too hot and had no more Distilled Water!");
+                        GTLog.writeExplosionLog(this, "was too hot and had no more Distilled Water!");
                         explodeMultiblock(); // Generate crater
                     }
                 }

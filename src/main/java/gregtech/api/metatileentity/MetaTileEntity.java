@@ -247,19 +247,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public void onExplosion() {
-        GTLog.writeExplosionLog(
-            this.getBaseMetaTileEntity()
-                .getWorld().provider.getDimensionName(),
-            this.getBaseMetaTileEntity()
-                .getXCoord(),
-            this.getBaseMetaTileEntity()
-                .getYCoord(),
-            this.getBaseMetaTileEntity()
-                .getZCoord(),
-            this.getLocalName(),
-            this.getBaseMetaTileEntity()
-                .getOwnerName(),
-            "Machine exploded");
+        GTLog.writeExplosionLog(this, "Machine exploded");
     }
 
     /**

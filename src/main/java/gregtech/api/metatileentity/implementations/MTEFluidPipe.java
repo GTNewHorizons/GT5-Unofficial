@@ -335,14 +335,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
             if (tTemperature > mHeatResistance) {
                 if (aBaseMetaTileEntity.getRandomNumber(100) == 0) {
                     // Poof
-                    GTLog.writeExplosionLog(
-                        aBaseMetaTileEntity.getWorld().provider.getDimensionName(),
-                        aBaseMetaTileEntity.getXCoord(),
-                        aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getZCoord(),
-                        mName,
-                        aBaseMetaTileEntity.getOwnerName(),
-                        "set to fire due to low heat resistance");
+                    GTLog.writeExplosionLog(aBaseMetaTileEntity, mName, "set to fire due to low heat resistance");
                     aBaseMetaTileEntity.setToFire();
                     return true;
                 }
@@ -350,12 +343,8 @@ public class MTEFluidPipe extends MetaPipeEntity {
                 aBaseMetaTileEntity.setOnFire();
 
                 GTLog.writeExplosionLog(
-                    aBaseMetaTileEntity.getWorld().provider.getDimensionName(),
-                    aBaseMetaTileEntity.getXCoord(),
-                    aBaseMetaTileEntity.getYCoord(),
-                    aBaseMetaTileEntity.getZCoord(),
+                    aBaseMetaTileEntity,
                     mName,
-                    aBaseMetaTileEntity.getOwnerName(),
                     "set blocks around to fire due to low heat resistance");
             }
             if (!mGasProof && tFluid.getFluid()

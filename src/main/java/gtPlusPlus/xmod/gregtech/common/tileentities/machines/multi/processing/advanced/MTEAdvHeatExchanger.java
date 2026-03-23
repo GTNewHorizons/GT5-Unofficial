@@ -371,14 +371,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                         addOutput(Materials.Steam.getGas(tGeneratedEU)); // Generate regular steam
                     }
                 } else {
-                    GTLog.writeExplosionLog(
-                        "unknown dimension",
-                        0,
-                        0,
-                        0,
-                        this.getLocalName(),
-                        "unknown owner",
-                        "had no more Distilled water!");
+                    GTLog.writeExplosionLog(this, "had no more Distilled water!");
                     explodeMultiblock(); // Generate crater
                 }
                 endRecipeProcessing();

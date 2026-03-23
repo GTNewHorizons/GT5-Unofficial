@@ -435,23 +435,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                                         .getPlayerEntityByName(mOwnerName),
                                                     "badweather");
                                             } catch (Exception ignored) {}
-                                            GTLog.writeExplosionLog(
-                                                this.getWorldObj().provider.getDimensionName(),
-                                                this.getXCoord(),
-                                                this.getYCoord(),
-                                                this.getZCoord(),
-                                                this.getLocalName(),
-                                                this.getOwnerName(),
-                                                "explosion due to rain!");
+                                            GTLog
+                                                .writeExplosionLog(this, this.getLocalName(), "explosion due to rain!");
                                             doEnergyExplosion();
                                         } else {
                                             GTLog.writeExplosionLog(
-                                                this.getWorldObj().provider.getDimensionName(),
-                                                this.getXCoord(),
-                                                this.getYCoord(),
-                                                this.getZCoord(),
+                                                this,
                                                 this.getLocalName(),
-                                                this.getOwnerName(),
                                                 "set to fire due to rain!");
                                             setOnFire();
                                         }
@@ -470,12 +460,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                                 "badweather");
                                         } catch (Exception ignored) {}
                                         GTLog.writeExplosionLog(
-                                            this.getWorldObj().provider.getDimensionName(),
-                                            this.getXCoord(),
-                                            this.getYCoord(),
-                                            this.getZCoord(),
+                                            this,
                                             this.getLocalName(),
-                                            this.getOwnerName(),
                                             "explosion due to thunderstorm!");
                                         doEnergyExplosion();
                                     }
@@ -1286,14 +1272,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 + "EU >= "
                 + getUniversalEnergyCapacity() / 5D
                 + "Capacity of the Machine!";
-            GTLog.writeExplosionLog(
-                this.getWorldObj().provider.getDimensionName(),
-                this.getXCoord(),
-                this.getYCoord(),
-                this.getZCoord(),
-                this.getLocalName(),
-                this.getOwnerName(),
-                reason);
+            GTLog.writeExplosionLog(this, this.getLocalName(), reason);
 
             doExplosion(
                 oldOutput * (getUniversalEnergyStored() >= getUniversalEnergyCapacity() ? 4
@@ -1806,12 +1785,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             || mMetaTileEntity.maxAmperesIn() <= mAcceptedAmperes) return 0;
         if (aVoltage > getInputVoltage()) {
             GTLog.writeExplosionLog(
-                this.getWorldObj().provider.getDimensionName(),
-                this.getXCoord(),
-                this.getYCoord(),
-                this.getZCoord(),
-                this.getLocalName(),
-                this.getOwnerName(),
+                this.mMetaTileEntity,
                 "Energy Explosion, injected " + aVoltage + "EU/t in a " + getInputVoltage() + "EU/t Machine!");
             doExplosion(aVoltage);
             return 0;

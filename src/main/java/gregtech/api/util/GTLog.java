@@ -8,6 +8,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
  * <p/>
@@ -58,4 +61,28 @@ public class GTLog {
             ownerName,
             details);
     }
+
+    public static void writeExplosionLog(IMetaTileEntity tileEntity, String details) {
+        IGregTechTileEntity baseTileEntity = tileEntity.getBaseMetaTileEntity();
+        writeExplosionLog(
+            baseTileEntity.getWorld().provider.getDimensionName(),
+            baseTileEntity.getXCoord(),
+            baseTileEntity.getYCoord(),
+            baseTileEntity.getZCoord(),
+            tileEntity.getLocalName(),
+            baseTileEntity.getOwnerName(),
+            details);
+    }
+
+    public static void writeExplosionLog(IGregTechTileEntity baseTileEntity, String name, String details) {
+        writeExplosionLog(
+            baseTileEntity.getWorld().provider.getDimensionName(),
+            baseTileEntity.getXCoord(),
+            baseTileEntity.getYCoord(),
+            baseTileEntity.getZCoord(),
+            name,
+            baseTileEntity.getOwnerName(),
+            details);
+    }
+
 }
