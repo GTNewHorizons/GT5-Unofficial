@@ -35,7 +35,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -52,7 +51,7 @@ import tectech.util.TTUtility;
 /**
  * Created by Tec on 03.04.2017.
  */
-public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWidgets {
+public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo {
 
     private static IIconContainer EM_R;
     private static IIconContainer EM_R_ACTIVE;

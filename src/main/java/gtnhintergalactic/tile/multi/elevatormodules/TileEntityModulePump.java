@@ -374,6 +374,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          *
          * @return Number of possible parallels
          */
+        @Override
         protected int getParallels() {
             return MAX_PARALLELS;
         }
@@ -383,6 +384,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          *
          * @return Number of possible parallel recipes
          */
+        @Override
         protected int getParallelRecipes() {
             return MAX_PARALLEL_RECIPES;
         }
@@ -463,6 +465,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          *
          * @return Number of possible parallels
          */
+        @Override
         protected int getParallels() {
             return MAX_PARALLELS;
         }
@@ -472,6 +475,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          *
          * @return Number of possible parallel recipes
          */
+        @Override
         protected int getParallelRecipes() {
             return MAX_PARALLEL_RECIPES;
         }
@@ -553,6 +557,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          *
          * @return Number of possible parallels
          */
+        @Override
         protected int getParallels() {
             return MAX_PARALLELS;
         }
@@ -562,6 +567,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          *
          * @return Number of possible parallel recipes
          */
+        @Override
         protected int getParallelRecipes() {
             return MAX_PARALLEL_RECIPES;
         }

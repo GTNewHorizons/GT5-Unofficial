@@ -742,11 +742,6 @@ public class MTETeslaTower extends TTMultiblockBase
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
     public void saveParameters(NBTTagCompound nbt) {
         nbt.setLong("eEnergyCapacity", energyCapacity);
         nbt.setDouble(

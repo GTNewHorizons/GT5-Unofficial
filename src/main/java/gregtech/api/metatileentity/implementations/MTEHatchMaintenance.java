@@ -49,7 +49,6 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -64,7 +63,7 @@ import ic2.core.IHasGui;
 import ic2.core.item.ItemToolbox;
 import thaumic.tinkerer.common.block.tile.tablet.TabletFakePlayer;
 
-public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAlignment {
+public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
 
     private Rotation rotation = Rotation.NORMAL;
 

@@ -35,6 +35,7 @@ public class SimpleAction<V> implements IDeciderAction {
         this(targetClass, (x, y) -> ImmutableList.copyOf(slots));
     }
 
+    @Override
     public List<ToolboxSlot> apply(Object obj, ForgeDirection wrenchedSide) {
         return cast(obj).map(casted -> testFunction.apply(casted, wrenchedSide))
             .orElse(ImmutableList.of());

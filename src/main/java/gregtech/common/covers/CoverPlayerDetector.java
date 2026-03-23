@@ -28,6 +28,7 @@ public class CoverPlayerDetector extends CoverLegacyData {
         super(context, coverTexture);
     }
 
+    @Override
     public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }
