@@ -499,6 +499,7 @@ public class GTUtility {
 
     /**
      * Send a translated chat message to the player.
+     * Example usage: {@code GTUtility.sendChatTrans(player, "gregtech.chat.example", arg1, arg2);}
      *
      * @param player     The player who will receive the message.
      * @param messageKey The lang key of the translation. The text corresponding to the key must only contain

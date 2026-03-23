@@ -726,12 +726,12 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         if (aPlayer.isSneaking()) {
             doesVoidStone = !doesVoidStone;
             GTUtility.sendChatTrans(
-                aPlayer,
-                StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", doesVoidStone));
+                aPlayer,"GT5U.machines.oreprocessor.void", doesVoidStone);
             return;
         }
         mode = mode.next();
-        GTUtility.sendChatTrans(aPlayer, String.join("", getDisplayMode(mode)));
+        // FIXME: localize the display mode.
+        GTUtility.sendChatToPlayer(aPlayer, String.join("", getDisplayMode(mode)));
     }
 
     @Override
