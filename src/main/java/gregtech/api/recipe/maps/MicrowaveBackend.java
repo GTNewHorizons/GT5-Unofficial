@@ -4,9 +4,6 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static gregtech.api.util.GTRecipeConstants.EXPLODE;
 import static gregtech.api.util.GTRecipeConstants.ON_FIRE;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -74,11 +71,8 @@ public class MicrowaveBackend extends NonGTBackend {
                 || GTUtility.areStacksEqual(item, new ItemStack(Items.firework_charge, 1, WILDCARD), true)
                 || GTUtility.areStacksEqual(item, new ItemStack(Items.fireworks, 1, WILDCARD), true)
                 || GTUtility.areStacksEqual(item, new ItemStack(Items.fire_charge, 1, WILDCARD), true)) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                LocalDateTime currentTime = LocalDateTime.now();
-                GTLog.exp.printf(
-                    "[%s]: Microwave Explosion due to TNT || EGG || FIREWORKCHARGE || FIREWORK || FIRE CHARGE%n",
-                    currentTime.format(formatter));
+                GTLog.writeExplosionLog(
+                    "Microwave Explosion due to TNT || EGG || FIREWORKCHARGE || FIREWORK || FIRE CHARGE");
                 return GTRecipeBuilder.empty()
                     .metadata(EXPLODE, true)
                     .build()
@@ -90,21 +84,14 @@ public class MicrowaveBackend extends NonGTBackend {
                 if (itemData.mMaterial != null && itemData.mMaterial.mMaterial != null) {
                     if (itemData.mMaterial.mMaterial.contains(SubTag.METAL)
                         || itemData.mMaterial.mMaterial.contains(SubTag.EXPLOSIVE)) {
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                        LocalDateTime currentTime = LocalDateTime.now();
-                        GTLog.exp
-                            .printf("[%s]: Microwave Explosion due to METAL insertion", currentTime.format(formatter));
+                        GTLog.writeExplosionLog("Microwave Explosion due to METAL insertion");
                         return GTRecipeBuilder.empty()
                             .metadata(EXPLODE, true)
                             .build()
                             .orElse(null);
                     }
                     if (itemData.mMaterial.mMaterial.contains(SubTag.FLAMMABLE)) {
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                        LocalDateTime currentTime = LocalDateTime.now();
-                        GTLog.exp.printf(
-                            "[%s]: Microwave INFLAMMATION due to FLAMMABLE insertion",
-                            currentTime.format(formatter));
+                        GTLog.writeExplosionLog("Microwave INFLAMMATION due to FLAMMABLE insertion");
                         return GTRecipeBuilder.empty()
                             .metadata(ON_FIRE, true)
                             .build()
@@ -115,21 +102,14 @@ public class MicrowaveBackend extends NonGTBackend {
                     if (materialStack == null) continue;
                     if (materialStack.mMaterial.contains(SubTag.METAL)
                         || materialStack.mMaterial.contains(SubTag.EXPLOSIVE)) {
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                        LocalDateTime currentTime = LocalDateTime.now();
-                        GTLog.exp
-                            .printf("[%s]: Microwave Explosion due to METAL insertion", currentTime.format(formatter));
+                        GTLog.writeExplosionLog("Microwave Explosion due to METAL insertion");
                         return GTRecipeBuilder.empty()
                             .metadata(EXPLODE, true)
                             .build()
                             .orElse(null);
                     }
                     if (materialStack.mMaterial.contains(SubTag.FLAMMABLE)) {
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                        LocalDateTime currentTime = LocalDateTime.now();
-                        GTLog.exp.printf(
-                            "[%s]: Microwave INFLAMMATION due to FLAMMABLE insertion",
-                            currentTime.format(formatter));
+                        GTLog.writeExplosionLog("Microwave INFLAMMATION due to FLAMMABLE insertion");
                         return GTRecipeBuilder.empty()
                             .metadata(ON_FIRE, true)
                             .build()
@@ -138,10 +118,7 @@ public class MicrowaveBackend extends NonGTBackend {
                 }
             }
             if (TileEntityFurnace.getItemBurnTime(item) > 0) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                LocalDateTime currentTime = LocalDateTime.now();
-                GTLog.exp
-                    .printf("[%s]: Microwave INFLAMMATION due to BURNABLE insertion", currentTime.format(formatter));
+                GTLog.writeExplosionLog("Microwave INFLAMMATION due to BURNABLE insertion");
                 return GTRecipeBuilder.empty()
                     .metadata(ON_FIRE, true)
                     .build()

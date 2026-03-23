@@ -46,6 +46,12 @@ public class GTLog {
         }
     }
 
+    public static void writeExplosionLog(String message) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime currentTime = LocalDateTime.now();
+        GTLog.exp.printf("[%s]: %s%n", currentTime.format(formatter), message);
+    }
+
     public static void writeExplosionLog(String dimension, int x, int y, int z, String blockName, String ownerName,
         String details) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -78,7 +84,7 @@ public class GTLog {
                 baseTileEntity.getOwnerName(),
                 details);
         } else {
-            exp.println("error: baseTileEntity is null, unable to log explosion");
+            exp.println(details);
         }
     }
 
