@@ -7,6 +7,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.tooltip.TooltipHelper.voltageTierText;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -79,7 +80,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
@@ -288,47 +288,28 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Precise Assembler, Assembler, PrAss")
-            .addInfo("No more than 7nm of error")
-            .addInfo("Has Two Modes: Precise and Normal")
-            .addInfo("Use a Screwdriver to change modes")
-            .addSeparator()
-            .addInfo("Precise Mode unlocks the ability to assemble precise components")
-            .addInfo("Casing Tier determines Maximum Recipe Tier")
-            .addSeparator()
-            .addInfo("Normal Mode allows standard assembler recipes")
+        tt.addMachineType("gt.recipe.assembler", "machtype.prass")
             .addInfo(
-                EnumChatFormatting.WHITE + "Precise Casing"
-                    + EnumChatFormatting.GRAY
-                    + " Tier determines "
-                    + TooltipHelper.parallelText("Parallels"))
-            .addInfo(
-                tieredTextLine("Imprecise", "Mk-I", "MK-II", "MK-III", "MK-IV") + "->"
-                    + tieredTextLine("16", "32", "64", "128", "256")
-                    + " Parallels")
+                "gt.prass.tips.1",
+                tieredTextLine(GTUtility.translate("gt.prass.text.imprecise"), "Mk-I", "MK-II", "MK-III", "MK-IV"),
+                tieredTextLine("16", "32", "64", "128", "256"))
             .addStaticSpeedInfo(2f)
-            .addSeparator()
-            .addInfo(
-                "Machine Casing limits the voltage tier the machine can work on, "
-                    + GTValues.TIER_COLORS[VoltageIndex.UHV]
-                    + "UHV"
-                    + EnumChatFormatting.GRAY
-                    + "-tier Machine Casing unlocks all.")
+            .addInfo("gt.prass.tips.2", voltageTierText(9))
             .addTecTechHatchInfo()
             .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 5, 5, true)
-            .addController("Front bottom")
-            .addCasingInfoExactly("Machine Casing", 21, true)
-            .addCasingInfoExactly("Any Tiered Glass (EV+)", 42, false)
-            .addCasingInfoRange("Precise Electronic Unit Casing", 42, 86, true)
-            .addInputHatch("Any Casing")
-            .addInputBus("Any Casing")
-            .addOutputHatch("Any Casing")
-            .addOutputBus("Any Casing")
-            .addEnergyHatch("Any Casing")
-            .addMufflerHatch("Any Casing")
-            .addMaintenanceHatch("Any Casing")
+            .addController("front_bottom_middle")
+            .addCasingInfoExactly("gt.blockcasings.name", 21, true)
+            .addCasingInfoExactly(GTUtility.nestParams("GT5U.MBTT.AnyGlass_Tier", voltageTierText(4, false)), 42, true)
+            .addCasingInfoRange("preciseUnitCasing.name", 42, 86, true)
+            .addInputHatch("<casing>")
+            .addInputBus("<casing>")
+            .addOutputHatch("<casing>")
+            .addOutputBus("<casing>")
+            .addEnergyHatch("<casing>")
+            .addMufflerHatch("<casing>")
+            .addMaintenanceHatch("<casing>")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
             .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)

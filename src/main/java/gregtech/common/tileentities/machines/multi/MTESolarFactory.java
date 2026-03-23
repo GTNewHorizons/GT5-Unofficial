@@ -399,7 +399,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                 false)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 74, true)
             .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Tungsten), 75)
-            .addCasingInfoExactly("GT5U.tooltip.structure.peuc", 20, true)
+            .addCasingInfoExactly("preciseUnitCasing.name", 20, true)
             .addStructureInfo("gt.solar_factory.tier_head", "3")
             .addCasingInfoRange(
                 ItemList.Casing_Advanced_Iridium.get(1)
@@ -409,7 +409,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                 false)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 67, true)
             .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Tungsten), 24)
-            .addCasingInfoExactly("GT5U.tooltip.structure.peuc", 26, true)
+            .addCasingInfoExactly("preciseUnitCasing.name", 26, true)
             .addCasingInfoExactly(
                 ItemList.Casing_Item_Pipe_Black_Plutonium.get(1)
                     .getDisplayName(),

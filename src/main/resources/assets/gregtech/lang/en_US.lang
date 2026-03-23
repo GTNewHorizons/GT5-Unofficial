@@ -3975,7 +3975,6 @@ GT5U.tooltip.structure.eoh_sfg=Stabilisation Field Generator
 GT5U.tooltip.structure.eoh_scfg=Spacetime Compression Field Generator
 GT5U.tooltip.structure.kaboom_containment=Containment Block
 GT5U.tooltip.structure.tiered_fusion_casing=Tiered Fusion Casing
-GT5U.tooltip.structure.peuc=Precise Electronic Unit Casing
 GT5U.tooltip.structure.neutron_accelerator=Neutron Accelerator
 GT5U.tooltip.structure.neutron_sensor=Neutron Sensor
 
@@ -4534,8 +4533,13 @@ machtype.lhe=Heat Exchanger, LHE
 machtype.ucfe=Chemical Engine, UCFE
 machtype.neutron_activator=Neutron Activator, NA
 machtype.multi_nq_gen=Naquadah Reactor, LNR
+machtype.prass=Precise Assembler, PrAss
 
 # Multiblock Tooltip lines
+gt.prass.tips.1=No more than 7nm of error\nHas Two Modes: Precise and Normal\nUse a Screwdriver to change modes<SEPARATOR>Precise Mode unlocks the ability to assemble precise components\nCasing Tier determines Maximum Recipe Tier<SEPARATOR>\nNormal Mode allows standard assembler recipes\n§fPrecise Casing§7 Tier determines §6Parallels\n%s->%s Parallels
+gt.prass.tips.2=<SEPARATOR>Machine Casing limits the voltage tier the machine can work on, %s-tier Machine Casing unlocks all.
+gt.prass.text.imprecise=Imprecise
+
 gt.multi_nq_gen.tips.1=Environmentally Friendly!\nGenerate power from high-energy liquids\nConsumes §b%d L/s Liquid Air§ to keep running, otherwise §eit will void your fuel§7.\nThe reactor will explode when there is more than §cONE§7 type of fuel in hatches!\nInput liquid nuclear fuel or liquid naquadah fuel<SEPARATOR>Can increase §defficiency§7 by §fconsuming §9coolants:
 gt.multi_nq_gen.tips.2=<SEPARATOR>Can increase §doutput power and fuel usage§7 by §fconsuming §cexcited liquid:
 gt.multi_nq_gen.info.dynamo=Any bottom layer casing, only accept ONE!
