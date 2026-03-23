@@ -52,11 +52,6 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     private static final double FLUSH_MAX = 0.999D;
 
     /**
-     * Per-layer outward offset (in blocks) to prevent z-fighting between coplanar texture layers.
-     */
-    private static final double LAYER_OFFSET = 0.001D;
-
-    /**
      * Mixed Brightness cache
      * <p>
      * Entries store the result of {@link Block#getMixedBrightnessForBlock(IBlockAccess, int, int, int)}<br>
@@ -210,10 +205,9 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
             && !block.shouldSideBeRendered(blockAccess, x, y - 1, z, ForgeDirection.DOWN.ordinal())) return;
         setupLightingYNeg();
         final double origMinY = renderBlocks.renderMinY;
-        for (int i = 0; i < tex.length; i++) {
-            ITexture layer = tex[i];
+        for (ITexture layer : tex) {
             if (layer == null || !layer.isValidTexture()) continue;
-            renderBlocks.renderMinY = origMinY - i * LAYER_OFFSET;
+            renderBlocks.renderMinY = Math.nextDown(renderBlocks.renderMinY);
             layer.renderYNeg(this);
         }
         renderBlocks.renderMinY = origMinY;
@@ -226,10 +220,9 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
             && !block.shouldSideBeRendered(blockAccess, x, y + 1, z, ForgeDirection.UP.ordinal())) return;
         setupLightingYPos();
         final double origMaxY = renderBlocks.renderMaxY;
-        for (int i = 0; i < tex.length; i++) {
-            ITexture layer = tex[i];
+        for (ITexture layer : tex) {
             if (layer == null || !layer.isValidTexture()) continue;
-            renderBlocks.renderMaxY = origMaxY + i * LAYER_OFFSET;
+            renderBlocks.renderMaxY = Math.nextUp(renderBlocks.renderMaxY);
             layer.renderYPos(this);
         }
         renderBlocks.renderMaxY = origMaxY;
@@ -242,10 +235,9 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
             && !block.shouldSideBeRendered(blockAccess, x, y, z - 1, ForgeDirection.NORTH.ordinal())) return;
         setupLightingZNeg();
         final double origMinZ = renderBlocks.renderMinZ;
-        for (int i = 0; i < tex.length; i++) {
-            ITexture layer = tex[i];
+        for (ITexture layer : tex) {
             if (layer == null || !layer.isValidTexture()) continue;
-            renderBlocks.renderMinZ = origMinZ - i * LAYER_OFFSET;
+            renderBlocks.renderMinZ = Math.nextDown(renderBlocks.renderMinZ);
             layer.renderZNeg(this);
         }
         renderBlocks.renderMinZ = origMinZ;
@@ -258,10 +250,9 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
             && !block.shouldSideBeRendered(blockAccess, x, y, z + 1, ForgeDirection.SOUTH.ordinal())) return;
         setupLightingZPos();
         final double origMaxZ = renderBlocks.renderMaxZ;
-        for (int i = 0; i < tex.length; i++) {
-            ITexture layer = tex[i];
+        for (ITexture layer : tex) {
             if (layer == null || !layer.isValidTexture()) continue;
-            renderBlocks.renderMaxZ = origMaxZ + i * LAYER_OFFSET;
+            renderBlocks.renderMaxZ = Math.nextUp(renderBlocks.renderMaxZ);
             layer.renderZPos(this);
         }
         renderBlocks.renderMaxZ = origMaxZ;
@@ -274,10 +265,9 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
             && !block.shouldSideBeRendered(blockAccess, x - 1, y, z, ForgeDirection.WEST.ordinal())) return;
         setupLightingXNeg();
         final double origMinX = renderBlocks.renderMinX;
-        for (int i = 0; i < tex.length; i++) {
-            ITexture layer = tex[i];
+        for (ITexture layer : tex) {
             if (layer == null || !layer.isValidTexture()) continue;
-            renderBlocks.renderMinX = origMinX - i * LAYER_OFFSET;
+            renderBlocks.renderMinX = Math.nextDown(renderBlocks.renderMinX);
             layer.renderXNeg(this);
         }
         renderBlocks.renderMinX = origMinX;
@@ -290,10 +280,9 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
             && !block.shouldSideBeRendered(blockAccess, x + 1, y, z, ForgeDirection.EAST.ordinal())) return;
         setupLightingXPos();
         final double origMaxX = renderBlocks.renderMaxX;
-        for (int i = 0; i < tex.length; i++) {
-            ITexture layer = tex[i];
+        for (ITexture layer : tex) {
             if (layer == null || !layer.isValidTexture()) continue;
-            renderBlocks.renderMaxX = origMaxX + i * LAYER_OFFSET;
+            renderBlocks.renderMaxX = Math.nextUp(renderBlocks.renderMaxX);
             layer.renderXPos(this);
         }
         renderBlocks.renderMaxX = origMaxX;
@@ -379,7 +368,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
 
     /**
      * Performs an optional instanceof check
-     * 
+     *
      * @param blockAccess the world access interface to check
      * @return {@code true} if {@code blockAccess instanceof blockrenderer6343.client.world.DummyWorld}
      */
