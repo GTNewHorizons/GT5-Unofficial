@@ -227,8 +227,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         if (inputItem.isEmpty() || inputFluid.isEmpty()) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        final long availableEUt = getMaxInputVoltage() * getMaxInputAmps();
-        final int maxParallelFromPower = GTUtility.safeInt(availableEUt / RECIPE_EUT);
+        final int maxParallelFromPower = GTUtility.safeInt(getMaxInputEu() / RECIPE_EUT);
 
         int lubricantAmount = 0;
         int waterAmount = 0;
