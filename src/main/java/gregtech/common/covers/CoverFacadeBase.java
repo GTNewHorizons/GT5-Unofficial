@@ -43,11 +43,7 @@ public abstract class CoverFacadeBase extends Cover {
     private static final int ITEM_PASS_FLAG = 0x8;
 
     public static CoverPlacementPredicate isCoverPlaceable(Function<ItemStack, Block> getTargetBlock) {
-        return (ForgeDirection side, ItemStack coverItem, ICoverable coverable) -> {
-            final Block targetBlock = getTargetBlock.apply(coverItem);
-            if (targetBlock == null) return false;
-            return true;
-        };
+        return (side, coverItem, coverable) -> getTargetBlock.apply(coverItem) != null;
     }
 
     ItemStack mStack;

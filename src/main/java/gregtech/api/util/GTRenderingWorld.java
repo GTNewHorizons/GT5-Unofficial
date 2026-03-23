@@ -36,22 +36,22 @@ public class GTRenderingWorld implements IBlockAccess {
     /**
      * Per-face meta override used by CTM textures during rendering to ensure each facade side
      * reports its own meta to the CTM icon lookup, regardless of what is stored in {@link #infos}.
-     * Only valid on the render thread; set/cleared around each icon query.
+     * ThreadLocal to support Angelica's multi-threaded rendering. Set/cleared around each icon query.
+     * Layout: [x, y, z, meta]; x == Integer.MIN_VALUE means no override is active.
      */
-    private static int metaOverrideX = Integer.MIN_VALUE;
-    private static int metaOverrideY = Integer.MIN_VALUE;
-    private static int metaOverrideZ = Integer.MIN_VALUE;
-    private static int metaOverrideValue;
+    private static final ThreadLocal<int[]> META_OVERRIDE = ThreadLocal
+        .withInitial(() -> new int[] { Integer.MIN_VALUE, 0, 0, 0 });
 
     public static void setMetaOverride(int x, int y, int z, int meta) {
-        metaOverrideX = x;
-        metaOverrideY = y;
-        metaOverrideZ = z;
-        metaOverrideValue = meta;
+        int[] o = META_OVERRIDE.get();
+        o[0] = x;
+        o[1] = y;
+        o[2] = z;
+        o[3] = meta;
     }
 
     public static void clearMetaOverride() {
-        metaOverrideX = Integer.MIN_VALUE;
+        META_OVERRIDE.get()[0] = Integer.MIN_VALUE;
     }
 
     static {
@@ -100,8 +100,9 @@ public class GTRenderingWorld implements IBlockAccess {
 
     @Override
     public int getBlockMetadata(int p_72805_1_, int p_72805_2_, int p_72805_3_) {
-        if (p_72805_1_ == metaOverrideX && p_72805_2_ == metaOverrideY && p_72805_3_ == metaOverrideZ) {
-            return metaOverrideValue;
+        final int[] o = META_OVERRIDE.get();
+        if (p_72805_1_ == o[0] && p_72805_2_ == o[1] && p_72805_3_ == o[2]) {
+            return o[3];
         }
         BlockInfo blockInfo = infos.get(new ChunkPosition(p_72805_1_, p_72805_2_, p_72805_3_));
         return blockInfo != null ? blockInfo.meta : mWorld.getBlockMetadata(p_72805_1_, p_72805_2_, p_72805_3_);

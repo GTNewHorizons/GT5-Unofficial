@@ -733,14 +733,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 final Cover cover = tile.getCoverAtSide(dir);
                 final Block facadeBlock = cover.getFacadeBlock();
                 if (facadeBlock != null) return cover.getFacadeMeta();
-            } else {
-                for (final ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
-                    final Cover cover = tile.getCoverAtSide(d);
-                    final Block facadeBlock = cover.getFacadeBlock();
-                    if (facadeBlock != null) {
-                        return cover.getFacadeMeta();
-                    }
-                }
             }
         }
         return 0;
