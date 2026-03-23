@@ -104,14 +104,17 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
         return STRUCTURE_DEFINITION;
     }
 
+    @Override
     public int structureOffsetX() {
         return ENCASEMENT_WRAPPER_OFFSET_X;
     }
 
+    @Override
     public int structureOffsetY() {
         return ENCASEMENT_WRAPPER_OFFSET_Y;
     }
 
+    @Override
     public int structureOffsetZ() {
         return ENCASEMENT_WRAPPER_OFFSET_Z;
     }

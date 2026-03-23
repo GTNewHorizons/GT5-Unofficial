@@ -32,7 +32,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -48,7 +48,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
-import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.gui.modularui.multiblock.MTELargeHadronColliderGui;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
@@ -71,7 +70,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public static final double keV_EU_RATIO = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
     public static final float RATE_SCALE_FACTOR = 1.1F;
 
-    private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
+    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
+    private static final int ColliderCasingTextureID = Casings.ColliderCasing.getTextureId();
 
     private float outputEnergy;
     private int outputRate;
@@ -174,9 +174,9 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         .addElement(
             'C', // collider casing
             buildHatchAdder(MTELargeHadronCollider.class).atLeast(Energy, ExoticEnergy)
-                .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
+                .casingIndex(Casings.ColliderCasing.getTextureId())
                 .hint(1)
-                .buildAndChain(GregTechAPI.sBlockCasings13, 10))
+                .buildAndChain(Casings.ColliderCasing.asElement()))
         .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
         .addElement('D', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
         .addElement('E', lazy(t -> { // any neonite variant
@@ -190,14 +190,14 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         .addElement(
             'F',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(CASING_INDEX_CENTRE)
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(2)
                 .adder(MTELargeHadronCollider::addBeamLineInputHatch)
                 .build()) // beamline input hatch
         .addElement(
             '1',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(CASING_INDEX_CENTRE)
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(3)
                 .adder(
                     (collider, te, casingIndex) -> collider
@@ -206,7 +206,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         .addElement(
             '2',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(CASING_INDEX_CENTRE)
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(4)
                 .adder(
                     (collider, te, casingIndex) -> collider
@@ -215,7 +215,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         .addElement(
             '3',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(CASING_INDEX_CENTRE)
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(5)
                 .adder(
                     (collider, te, casingIndex) -> collider
@@ -224,17 +224,17 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         .addElement(
             '4',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(CASING_INDEX_CENTRE)
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(6)
                 .adder(
                     (collider, te, casingIndex) -> collider
                         .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Gravity))
                 .build()) // Grav beam output hatch
 
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings13, 11)) // CMS Casing (EM)
-        .addElement('K', ofBlock(GregTechAPI.sBlockCasings13, 12)) // ATLAS Casing (Weak)
-        .addElement('I', ofBlock(GregTechAPI.sBlockCasings13, 13)) // ALICE Casing (Strong)
-        .addElement('O', ofBlock(GregTechAPI.sBlockCasings13, 14)) // LHCB Casing (Grav)
+        .addElement('B', Casings.CMSCasing.asElement())
+        .addElement('K', Casings.ATLASCasing.asElement())
+        .addElement('I', Casings.ALICECasing.asElement())
+        .addElement('O', Casings.LHCbCasing.asElement())
         .build();
 
     public MTELargeHadronCollider(final int aID, final String aName, final String aNameRegional) {
@@ -261,9 +261,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         ITexture[] rTexture;
         if (side == aFacing) {
             if ((aActive) && (this.machineMode == MACHINEMODE_ACCELERATOR)) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(ColliderCasingTextureID),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_LHC_ACCELERATOR)
                         .extFacing()
@@ -274,9 +272,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                         .glow()
                         .build() };
             } else if ((aActive) && (this.machineMode == MACHINEMODE_COLLIDER)) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(ColliderCasingTextureID),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_LHC_COLLIDER)
                         .extFacing()
@@ -287,17 +283,14 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(ColliderCasingTextureID),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_LHC)
                         .extFacing()
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)) };
+            rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(ColliderCasingTextureID) };
         }
         return rTexture;
     }
@@ -683,6 +676,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         return new MTELargeHadronColliderGui(this);
     }
 
+    @Override
     protected SoundResource getProcessStartSound() {
         return SoundResource.GT_MACHINES_LHC_SPIN_UP;
     }

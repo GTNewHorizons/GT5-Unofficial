@@ -1,8 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -17,14 +16,14 @@ import static gregtech.api.enums.TickTime.SECOND;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -40,18 +39,21 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -60,7 +62,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -68,59 +70,61 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEIntegratedOreFactory>
     implements ISurvivalConstructable {
 
-    private static final int CASING_INDEX1 = 183;
-    private static final int CASING_INDEX2 = 49;
-    private static final int MAX_PARA = 1024;
     private static final long RECIPE_EUT = 30;
     private static final String STRUCTURE_PIECE_MAIN = "main";
+
+    private static final int OFFSET_X = 7;
+    private static final int OFFSET_Y = 6;
+    private static final int OFFSET_Z = 1;
+
+    private static final UITexture[] MODE_ICONS = { GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_MACERATOR, // mac wash
+                                                                                                            // thermal
+                                                                                                            // mac
+        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_WASHER, // mac wash mac centri
+        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_CENTRIFUGE, // mac mac centri
+        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_SIFTER, // mac wash sift
+        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_BATH, // mac chem mac centri
+        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_THERMAL, // mac chem thermal mac
+        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_FORGE, // forge forge simplewash
+    };
+
     private static final IStructureDefinition<MTEIntegratedOreFactory> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEIntegratedOreFactory>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] {
-                    { "           ", "           ", "       WWW ", "       WWW ", "           ", "           " },
-                    { "           ", "       sss ", "      sppps", "      sppps", "       sss ", "           " },
-                    { "           ", "       sss ", "      s   s", "      s   s", "       sss ", "           " },
-                    { "           ", "       sss ", "      sppps", "      sppps", "       sss ", "           " },
-                    { "           ", "       sss ", "      s   s", "      s   s", "       sss ", "           " },
-                    { "           ", "       sss ", "      sppps", "      sppps", "       sss ", "           " },
-                    { "iiiiii     ", "iIIIIiisssi", "iIIIIis   s", "iIIIIis   s", "iIIIIiisssi", "iiiiii     " },
-                    { "iggggi     ", "gt  t isssi", "g xx  sppps", "g xx  sppps", "gt  t isssi", "iggggi     " },
-                    { "iggggi     ", "gt  t isssi", "g xx  s   s", "g xx  s   s", "gt  t isssi", "iggggi     " },
-                    { "iggggi     ", "gt  t is~si", "g xx  spppO", "g xx  spppO", "gt  t isssi", "iggggi     " },
-                    { "iggggi     ", "gt  t isssi", "g xx  s   O", "g xx  s   O", "gt  t isssi", "iggggi     " },
-                    { "EEEEEE     ", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEE     " } }))
-        .addElement('i', ofBlock(GregTechAPI.sBlockCasings8, 7))
-        .addElement('s', ofBlock(GregTechAPI.sBlockCasings4, 1))
-        .addElement('g', chainAllGlasses())
-        .addElement('x', ofBlock(GregTechAPI.sBlockCasings2, 3))
-        .addElement('p', ofBlock(GregTechAPI.sBlockCasings2, 15))
-        .addElement('t', ofFrame(Materials.TungstenSteel))
+            // spotless:off
+            new String[][] {
+                { "               ", "               ", "               ", "               ", "     DDDDD     ", "    GG   GG    ", "    G     G    ", "  J G     G J  ", " JJJG     GJJJ " },
+                { " FFF       FFF ", " FAF       FAF ", " FAFF     FFAF ", " FAFFFF FFFFAF ", " FAFFDDDDDFFAF ", " FAFFDDDDDFFAF ", " FFFFDD~DDFFFF ", " FFFFDDDDDFFFF ", "JFFFJDDDDDJFFFJ" },
+                { " FFF       FFF ", " AEF       FBA ", " AEFJ     JFBA ", " AEFFJJGJJFFBA ", " AEFFDDDDDFFBA ", " AEF       FBA ", " FEF       FBF ", "JFEF      JFBFJ", "JFFFJDDDDDJFFFJ" },
+                { " FFF       FFF ", " FAF       FAF ", " FAFF     FFAF ", " FAFFFF FFFFAF ", " FAFFDDDDDFFAF ", " FAFF     FFAF ", " FFFF     FFFF ", " FFFF     FFFF ", "JFFFJDDDDDJFFFJ" },
+                { "               ", "               ", "               ", "               ", "    DDDDDDD    ", "    D     D    ", "    D     D    ", "  J D     D J  ", " JJJDDDDDDDJJJ " },
+                { " FFF       FFF ", " FAF       FAF ", " FAFF     FFAF ", " FAFFFF FFFFAF ", " FAFFDDDDDFFAF ", " FAFF     FFAF ", " FFFF     FFFF ", " FFFF     FFFF ", "JFFFJDDDDDJFFFJ" },
+                { " FFF       FFF ", " A F       FCA ", " A FJ     JFCA ", " A FFJJGJJFFCA ", " A FFDDDDDFFCA ", " A F       FCA ", " F F       FCF ", "JF FJ     JFCFJ", "JFFFJDDDDDJFFFJ" },
+                { " FFF       FFF ", " FAF       FAF ", " FAFF     FFAF ", " FAFFFF FFFFAF ", " FAFFDDDDDFFAF ", " FAFF     FFAF ", " FFFF     FFFF ", " FFFF     FFFF ", "JFFFJDDDDDJFFFJ" },
+                { "               ", "               ", "               ", "               ", "    DDDDDDD    ", "    D     D    ", "    D     D    ", "  J D     D J  ", " JJJDDDDDDDJJJ " },
+                { " FFF       FFF ", " FAF       FAF ", " FAFF     FFAF ", " FAFFFF FFFFAF ", " FAFFDDDDDFFAF ", " FAFF     FFAF ", " FFFF     FFFF ", " FFFF     FFFF ", "JFFFJDDDDDJFFFJ" },
+                { " FFF       FFF ", " AHF       FIA ", " AHFJ     JFIA ", " AHFFJJGJJFFIA ", " AHFFDDDDDFFIA ", " AHF       FIA ", " FHF       FIF ", "JFHF      JFIFJ", "JFFFJDDDDDJFFFJ" },
+                { " FFF       FFF ", " FAF       FAF ", " FAFF     FFAF ", " FAFFFF FFFFAF ", " FAFFDDDDDFFAF ", " FAFFDDDDDFFAF ", " FFFFDDDDDFFFF ", " FFFFDDDDDFFFF ", "JFFFJDDDDDJFFFJ" },
+                { "               ", "               ", "               ", "               ", "     DDDDD     ", "    GG   GG    ", "    G     G    ", "  J G     G J  ", " JJJG     GJJJ " } })
+            //spotless:on
+        .addElement('A', chainAllGlasses())
+        .addElement('B', Casings.TitaniumGearBoxCasing.asElement())
+        .addElement('C', Casings.GrateMachineCasing.asElement())
         .addElement(
-            'E',
-            buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(Energy, Maintenance)
-                .casingIndex(CASING_INDEX1)
+            'D',
+            buildHatchAdder(MTEIntegratedOreFactory.class)
+                .atLeast(Energy, ExoticEnergy, InputBus, InputHatch, Muffler, OutputBus, OutputHatch, Maintenance)
+                .casingIndex(Casings.CleanStainlessSteelMachineCasing.textureId)
                 .hint(1)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 7))
-        .addElement(
-            'I',
-            buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(InputBus)
-                .casingIndex(CASING_INDEX1)
-                .hint(2)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 7))
-        .addElement(
-            'W',
-            buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(InputHatch, Muffler)
-                .casingIndex(CASING_INDEX2)
-                .hint(3)
-                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
-        .addElement(
-            'O',
-            buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(OutputBus, OutputHatch)
-                .casingIndex(CASING_INDEX2)
-                .hint(4)
-                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
+                .buildAndChain(Casings.CleanStainlessSteelMachineCasing.asElement()))
+        .addElement('E', Casings.ElectrumFluxCoilBlock.asElement()) // the latest available at uhv
+        .addElement('F', Casings.AdvancedIridiumPlatedMachineCasing.asElement())
+
+        .addElement('G', ofFrame(Materials.StainlessSteel))
+        .addElement('J', ofSheetMetal(Materials.Iridium))
+        .addElement('I', Casings.CentrifugeCasing.asElement())
+        .addElement('H', Casings.LargeSieveGrate.asElement())
         .build();
 
     private static final IntOpenHashSet isCrushedOre = new IntOpenHashSet();
@@ -130,59 +134,12 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final IntOpenHashSet isThermal = new IntOpenHashSet();
     private static final IntOpenHashSet isOre = new IntOpenHashSet();
     private static boolean isInit = false;
-    private ItemStack[] sMidProduct;
-    private int sMode = 0;
-    private boolean sVoidStone = false;
+
+    private ItemStack[] midProduct;
+    private ProcessingMode mode = ProcessingMode.MAC_WASH_THERMAL_MAC;
+    private boolean doesVoidStone = false;
     private int currentParallelism = 0;
-
-    @SuppressWarnings("ForLoopReplaceableByForEach")
-    private static void initHash() {
-        for (String name : OreDictionary.getOreNames()) {
-            if (name == null || name.isEmpty()) continue;
-            if (name.startsWith("crushedPurified")) {
-                ArrayList<ItemStack> ores = OreDictionary.getOres(name);
-                for (int i = 0, size = ores.size(); i < size; i++) {
-                    isCrushedPureOre.add(GTUtility.stackToInt(ores.get(i)));
-                }
-            } else if (name.startsWith("crushedCentrifuged")) {
-                ArrayList<ItemStack> ores = OreDictionary.getOres(name);
-                for (int i = 0, size = ores.size(); i < size; i++) {
-                    isThermal.add(GTUtility.stackToInt(ores.get(i)));
-                }
-            } else if (name.startsWith("crushed")) {
-                ArrayList<ItemStack> ores = OreDictionary.getOres(name);
-                for (int i = 0, size = ores.size(); i < size; i++) {
-                    isCrushedOre.add(GTUtility.stackToInt(ores.get(i)));
-                }
-            } else if (name.startsWith("dustImpure")) {
-                ArrayList<ItemStack> ores = OreDictionary.getOres(name);
-                for (int i = 0, size = ores.size(); i < size; i++) {
-                    isImpureDust.add(GTUtility.stackToInt(ores.get(i)));
-                }
-            } else if (name.startsWith("dustPure")) {
-                ArrayList<ItemStack> ores = OreDictionary.getOres(name);
-                for (int i = 0, size = ores.size(); i < size; i++) {
-                    isPureDust.add(GTUtility.stackToInt(ores.get(i)));
-                }
-            } else if (name.startsWith("ore")) {
-                ArrayList<ItemStack> ores = OreDictionary.getOres(name);
-                for (int i = 0, size = ores.size(); i < size; i++) {
-                    isOre.add(GTUtility.stackToInt(ores.get(i)));
-                }
-            } else if (name.startsWith("rawOre")) {
-                ArrayList<ItemStack> ores = OreDictionary.getOres(name);
-                for (int i = 0, size = ores.size(); i < size; i++) {
-                    isOre.add(GTUtility.stackToInt(ores.get(i)));
-                }
-            }
-        }
-    }
-
-    // Not GPL
-    @Override
-    public boolean supportsPowerPanel() {
-        return false;
-    }
+    private final XSTR random = new XSTR();
 
     public MTEIntegratedOreFactory(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -192,229 +149,182 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         super(aName);
     }
 
+    private static void registerOrePrefix(String prefix, IntOpenHashSet target) {
+        for (ItemStack stack : OreDictionary.getOres(prefix)) {
+            target.add(GTUtility.stackToInt(stack));
+        }
+    }
+
+    private static void initHash() {
+        for (String name : OreDictionary.getOreNames()) {
+            if (name == null || name.isEmpty()) continue;
+
+            if (name.startsWith("crushedPurified")) registerOrePrefix(name, isCrushedPureOre);
+            else if (name.startsWith("crushedCentrifuged")) registerOrePrefix(name, isThermal);
+            else if (name.startsWith("crushed")) registerOrePrefix(name, isCrushedOre);
+            else if (name.startsWith("dustImpure")) registerOrePrefix(name, isImpureDust);
+            else if (name.startsWith("dustPure")) registerOrePrefix(name, isPureDust);
+            else if (name.startsWith("ore") || name.startsWith("rawOre")) registerOrePrefix(name, isOre);
+        }
+    }
+
     @Override
     public IStructureDefinition<MTEIntegratedOreFactory> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
     @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Ore Processor, IOF")
-            .addInfo("Does all ore processing in one step")
-            .addStaticParallelInfo(1024)
-            .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water")
-            .addInfo("Recipes that need extra input require their extra inputs on top of the normal costs")
-            .addInfo("Processing time is dependent on mode")
-            .addInfo("Use a screwdriver to switch mode")
-            .addInfo("Sneak click with screwdriver to void the stone dust")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
-            .beginStructureBlock(6, 12, 11, false)
-            .addController("The third layer")
-            .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 128, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 105, false)
-            .addCasingInfoExactly("Any Tiered Glass", 48, false)
-            .addCasingInfoExactly("Tungstensteel Pipe Casing", 30, false)
-            .addCasingInfoExactly("Tungstensteel Frame Box", 16, false)
-            .addCasingInfoExactly("Steel Gear Box Casing", 16, false)
-            .addEnergyHatch("Any bottom Casing", 1)
-            .addMaintenanceHatch("Any bottom Casing", 1)
-            .addInputBus("Input ore/crushed ore", 2)
-            .addInputHatch("Input lubricant/distilled water/washing chemicals", 3)
-            .addMufflerHatch("Output Pollution", 3)
-            .addOutputBus("Output products", 4)
-            .toolTipFinisher();
-        return tt;
-    }
-
-    @Override
     public void construct(ItemStack itemStack, boolean b) {
-        buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 8, 9, 1);
+        buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, OFFSET_X, OFFSET_Y, OFFSET_Z);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 8, 9, 1, elementBudget, env, false, true);
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            OFFSET_X,
+            OFFSET_Y,
+            OFFSET_Z,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
-    private static int getTime(int mode) {
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        // other order makes nei preview go crazy
+        boolean piece = checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z);
+        if (mExoticEnergyHatches.size() > 1) return false;
+        if (mMufflerHatches.isEmpty()) return false;
+        return piece;
+    }
+
+    private static int getRecipeTickTime(ProcessingMode mode) {
         return switch (mode) {
-            case 0 -> 30 * SECOND;
-            case 1 -> 15 * SECOND;
-            case 2 -> 10 * SECOND;
-            case 3 -> 20 * SECOND;
-            case 4 -> 17 * SECOND;
-            case 5 -> 32 * SECOND;
-            case 6 -> 1 * SECOND;
-            default ->
-                // go to hell
-                1000000000;
+            case MAC_WASH_THERMAL_MAC -> 30 * SECOND;
+            case MAC_WASH_MAC_CENTRI -> 15 * SECOND;
+            case MAC_MAC_CENTRI -> 10 * SECOND;
+            case MAC_WASH_SIFT -> 20 * SECOND;
+            case MAC_CHEM_MAC_CENTRI -> 17 * SECOND;
+            case MAC_CHEM_THERMAL_MAC -> 32 * SECOND;
+            case FORGE_FORGE_SIMPLEWASH -> 1 * SECOND;
         };
     }
 
     @Override
     @NotNull
-    @SuppressWarnings("ForLoopReplaceableByForEach")
     public CheckRecipeResult checkProcessing() {
         if (!isInit) {
             initHash();
             isInit = true;
         }
 
-        ArrayList<ItemStack> tInput = getStoredInputs();
-        ArrayList<FluidStack> tInputFluid = getStoredFluids();
-        if (tInput.isEmpty() || tInputFluid.isEmpty()) {
+        ArrayList<ItemStack> inputItem = getStoredInputs();
+        ArrayList<FluidStack> inputFluid = getStoredFluids();
+        if (inputItem.isEmpty() || inputFluid.isEmpty()) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        long availableEUt = GTUtility.roundUpVoltage(getMaxInputVoltage());
-        if (availableEUt < RECIPE_EUT) {
-            return CheckRecipeResultRegistry.insufficientPower(RECIPE_EUT);
+        final long availableEUt = getMaxInputVoltage() * getMaxInputAmps();
+        final int maxParallelFromPower = GTUtility.safeInt(availableEUt / RECIPE_EUT);
+
+        int lubricantAmount = 0;
+        int waterAmount = 0;
+
+        for (FluidStack fluid : inputFluid) {
+            if (fluid == null) continue;
+            if (fluid.equals(GTModHandler.getDistilledWater(1L))) waterAmount += fluid.amount;
+            else if (fluid.equals(Materials.Lubricant.getFluid(1L))) lubricantAmount += fluid.amount;
         }
 
-        int maxParallel = MAX_PARA;
-        int originalMaxParallel = maxParallel;
-
-        OverclockCalculator calculator = new OverclockCalculator().setEUt(availableEUt)
-            .setRecipeEUt(RECIPE_EUT)
-            .setDuration(getTime(sMode))
-            .setParallel(originalMaxParallel);
-
-        maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
-
-        int maxParallelBeforeBatchMode = maxParallel;
-        if (isBatchModeEnabled()) {
-            maxParallel = GTUtility.safeInt((long) maxParallel * getMaxBatchSize(), 0);
-        }
-
-        int currentParallel = (int) Math.min(maxParallel, availableEUt / RECIPE_EUT);
-        // Calculate parallel by fluids
-        int tLube = 0;
-        int tWater = 0;
-        for (int i = 0, size = tInputFluid.size(); i < size; i++) {
-            FluidStack fluid = tInputFluid.get(i);
-            if (fluid != null && fluid.equals(GTModHandler.getDistilledWater(1L))) {
-                tWater += fluid.amount;
-            } else if (fluid != null && fluid.equals(Materials.Lubricant.getFluid(1L))) {
-                tLube += fluid.amount;
-            }
-        }
-        currentParallel = Math.min(currentParallel, tLube / 2);
-        currentParallel = Math.min(currentParallel, tWater / 200);
-        if (currentParallel <= 0) {
+        final int parallelFromFluids = Math.min(lubricantAmount / 2, waterAmount / 200);
+        if (parallelFromFluids <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        // Calculate parallel by items
-        int itemParallel = 0;
-        for (int i = 0, size = tInput.size(); i < size; i++) {
-            ItemStack ore = tInput.get(i);
+        int parallelFromItems = 0;
+        for (ItemStack ore : inputItem) {
             int tID = GTUtility.stackToInt(ore);
-            if (tID == 0) continue;
-            if (isPureDust.contains(tID) || isImpureDust.contains(tID)
-                || isCrushedPureOre.contains(tID)
-                || isThermal.contains(tID)
-                || isCrushedOre.contains(tID)
-                || isOre.contains(tID)) {
-                if (itemParallel + ore.stackSize <= currentParallel) {
-                    itemParallel += ore.stackSize;
-                } else {
-                    itemParallel = currentParallel;
-                    break;
-                }
-            }
+            if (tID == 0 || !isValidOreInput(tID)) continue;
+            parallelFromItems += ore.stackSize;
         }
-        currentParallel = itemParallel;
-        if (currentParallel <= 0) {
+
+        final int baseParallel = Math.min(Math.min(maxParallelFromPower, parallelFromFluids), parallelFromItems);
+        if (baseParallel <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
 
-        calculator.setCurrentParallel(currentParallelBeforeBatchMode)
-            .calculate();
-
-        double batchMultiplierMax = 1;
-        // In case batch mode enabled
-        if (currentParallel > maxParallelBeforeBatchMode && calculator.getDuration() < getMaxBatchSize()) {
-            batchMultiplierMax = (double) getMaxBatchSize() / calculator.getDuration();
-            batchMultiplierMax = Math.min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
+        final int effectiveParallel = GTUtility.safeInt(baseParallel);
+        if (effectiveParallel <= 0) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
-        lastParallel = finalParallel;
+        depleteInput(GTModHandler.getDistilledWater(effectiveParallel * 200L));
+        depleteInput(Materials.Lubricant.getFluid(effectiveParallel * 2L));
 
-        // for scanner
-        setCurrentParallelism(finalParallel);
+        final long fixedEUt = -RECIPE_EUT * baseParallel;
 
-        // Consume fluids
-        depleteInput(GTModHandler.getDistilledWater(finalParallel * 200L));
-        depleteInput(Materials.Lubricant.getFluid(finalParallel * 2L));
-
-        // Consume items and generate outputs
         List<ItemStack> tOres = new ArrayList<>();
-        int remainingCost = finalParallel;
-        for (int i = 0, size = tInput.size(); i < size; i++) {
-            ItemStack ore = tInput.get(i);
+        int remaining = effectiveParallel;
+
+        for (int i = 0; i < inputItem.size() && remaining > 0; i++) {
+            ItemStack ore = inputItem.get(i);
             int tID = GTUtility.stackToInt(ore);
-            if (tID == 0) continue;
-            if (isPureDust.contains(tID) || isImpureDust.contains(tID)
-                || isCrushedPureOre.contains(tID)
-                || isThermal.contains(tID)
-                || isCrushedOre.contains(tID)
-                || isOre.contains(tID)) {
-                if (remainingCost >= ore.stackSize) {
-                    tOres.add(GTUtility.copy(ore));
-                    remainingCost -= ore.stackSize;
-                    ore.stackSize = 0;
-                } else {
-                    tOres.add(GTUtility.copyAmountUnsafe(remainingCost, ore));
-                    ore.stackSize -= remainingCost;
-                    break;
-                }
-            }
+            if (tID == 0 || !isValidOreInput(tID)) continue;
+
+            int take = Math.min(remaining, ore.stackSize);
+
+            tOres.add(GTUtility.copyAmountUnsafe(take, ore));
+            ore.stackSize -= take;
+            remaining -= take;
         }
-        sMidProduct = tOres.toArray(new ItemStack[0]);
-        switch (sMode) {
-            case 0 -> {
-                doMac(isOre);
-                doWash(isCrushedOre);
-                doThermal(isCrushedPureOre, isCrushedOre);
-                doMac(isThermal, isOre, isCrushedOre, isCrushedPureOre);
+
+        if (tOres.isEmpty()) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+        midProduct = tOres.toArray(new ItemStack[0]);
+
+        switch (mode) {
+            case MAC_WASH_THERMAL_MAC -> {
+                macerate(isOre);
+                wash(isCrushedOre);
+                thermalRefine(isCrushedPureOre, isCrushedOre);
+                macerate(isThermal, isOre, isCrushedOre, isCrushedPureOre);
             }
-            case 1 -> {
-                doMac(isOre);
-                doWash(isCrushedOre);
-                doMac(isOre, isCrushedOre, isCrushedPureOre);
-                doCentrifuge(isImpureDust, isPureDust);
+            case MAC_WASH_MAC_CENTRI -> {
+                macerate(isOre);
+                wash(isCrushedOre);
+                macerate(isOre, isCrushedOre, isCrushedPureOre);
+                centrifuge(isImpureDust, isPureDust);
             }
-            case 2 -> {
-                doMac(isOre);
-                doMac(isThermal, isOre, isCrushedOre, isCrushedPureOre);
-                doCentrifuge(isImpureDust, isPureDust);
+            case MAC_MAC_CENTRI -> {
+                macerate(isOre);
+                macerate(isThermal, isOre, isCrushedOre, isCrushedPureOre);
+                centrifuge(isImpureDust, isPureDust);
             }
-            case 3 -> {
-                doMac(isOre);
-                doWash(isCrushedOre);
-                doSift(isCrushedPureOre);
+            case MAC_WASH_SIFT -> {
+                macerate(isOre);
+                wash(isCrushedOre);
+                sift(isCrushedPureOre);
             }
-            case 4 -> {
-                doMac(isOre);
-                doChemWash(isCrushedOre, isCrushedPureOre);
-                doMac(isCrushedOre, isCrushedPureOre);
-                doCentrifuge(isImpureDust, isPureDust);
+            case MAC_CHEM_MAC_CENTRI -> {
+                macerate(isOre);
+                chemicalWash(isCrushedOre, isCrushedPureOre);
+                macerate(isCrushedOre, isCrushedPureOre);
+                centrifuge(isImpureDust, isPureDust);
             }
-            case 5 -> {
-                doMac(isOre);
-                doChemWash(isCrushedOre, isCrushedPureOre);
-                doThermal(isCrushedPureOre, isCrushedOre);
-                doMac(isThermal, isOre, isCrushedOre, isCrushedPureOre);
+            case MAC_CHEM_THERMAL_MAC -> {
+                macerate(isOre);
+                chemicalWash(isCrushedOre, isCrushedPureOre);
+                thermalRefine(isCrushedPureOre, isCrushedOre);
+                macerate(isThermal, isOre, isCrushedOre, isCrushedPureOre);
             }
-            case 6 -> {
-                doHam(isOre);
-                doHam(isThermal, isOre, isCrushedOre, isCrushedPureOre);
-                doSimWash(isImpureDust, isPureDust);
+            case FORGE_FORGE_SIMPLEWASH -> {
+                forgeHammer(isOre);
+                forgeHammer(isThermal, isOre, isCrushedOre, isCrushedPureOre);
+                simpleWash(isImpureDust, isPureDust);
             }
             default -> {
                 return CheckRecipeResultRegistry.NO_RECIPE;
@@ -423,318 +333,236 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
         this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         this.mEfficiencyIncrease = 10000;
-        this.mOutputItems = sMidProduct;
-        this.mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax);
-        this.lEUt = calculator.getConsumption();
-        if (this.lEUt > 0) {
-            this.lEUt = -this.lEUt;
-        }
+        this.mOutputItems = midProduct;
+        this.mMaxProgresstime = getRecipeTickTime(this.mode);
+        this.lEUt = fixedEUt;
+
+        lastParallel = effectiveParallel;
+        setCurrentParallelism(effectiveParallel);
+
         this.updateSlots();
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    private static boolean isValidOreInput(int id) {
+        return isPureDust.contains(id) || isImpureDust.contains(id)
+            || isCrushedPureOre.contains(id)
+            || isThermal.contains(id)
+            || isCrushedOre.contains(id)
+            || isOre.contains(id);
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (mProgresstime >= mMaxProgresstime - 1 && mMaxProgresstime > 0) {
-            // Multiblock base already includes 1 parallel
+            // MTEExtendedPowerMultiBlockBase already counts 1 parallel; add the rest.
             this.recipesDone += lastParallel - 1;
         }
         super.runMachine(aBaseMetaTileEntity, aTick);
     }
 
+    @FunctionalInterface
+    private interface RecipeLookup {
+
+        /** Returns the recipe for {@code stack}, or {@code null} if none found. */
+        GTRecipe find(ItemStack stack);
+    }
+
+    private void processStep(RecipeLookup lookup, IntOpenHashSet... tables) {
+        if (midProduct == null) return;
+        List<ItemStack> output = new ArrayList<>();
+        for (ItemStack stack : midProduct) {
+            int id = GTUtility.stackToInt(stack);
+            if (checkTypes(id, tables)) {
+                GTRecipe recipe = lookup.find(stack);
+                if (recipe != null) {
+                    output.addAll(getOutputStack(recipe, stack.stackSize));
+                } else {
+                    output.add(stack);
+                }
+            } else {
+                output.add(stack);
+            }
+        }
+        doCompress(output);
+    }
+
+    private void macerate(IntOpenHashSet... tables) {
+        processStep(
+            stack -> RecipeMaps.maceratorRecipes.findRecipeQuery()
+                .caching(false)
+                .items(stack)
+                .find(),
+            tables);
+    }
+
+    private void wash(IntOpenHashSet... tables) {
+        processStep(
+            stack -> RecipeMaps.oreWasherRecipes.findRecipeQuery()
+                .caching(false)
+                .items(stack)
+                .fluids(GTModHandler.getDistilledWater(Integer.MAX_VALUE))
+                .find(),
+            tables);
+    }
+
+    private void thermalRefine(IntOpenHashSet... tables) {
+        processStep(
+            stack -> RecipeMaps.thermalCentrifugeRecipes.findRecipeQuery()
+                .caching(false)
+                .items(stack)
+                .find(),
+            tables);
+    }
+
+    private void centrifuge(IntOpenHashSet... tables) {
+        processStep(
+            stack -> RecipeMaps.centrifugeRecipes.findRecipeQuery()
+                .items(stack)
+                .find(),
+            tables);
+    }
+
+    private void sift(IntOpenHashSet... tables) {
+        processStep(
+            stack -> RecipeMaps.sifterRecipes.findRecipeQuery()
+                .items(stack)
+                .find(),
+            tables);
+    }
+
+    private void forgeHammer(IntOpenHashSet... tables) {
+        processStep(
+            stack -> RecipeMaps.hammerRecipes.findRecipeQuery()
+                .caching(false)
+                .items(stack)
+                .find(),
+            tables);
+    }
+
+    private void simpleWash(IntOpenHashSet... tables) {
+        processStep(
+            stack -> simpleWasherRecipes.findRecipeQuery()
+                .items(stack)
+                .fluids(Materials.Water.getFluid(100))
+                .find(),
+            tables);
+    }
+
+    private void chemicalWash(IntOpenHashSet... tables) {
+        if (midProduct == null) return;
+        List<ItemStack> output = new ArrayList<>();
+        for (ItemStack stack : midProduct) {
+            int id = GTUtility.stackToInt(stack);
+            if (!checkTypes(id, tables)) {
+                output.add(stack);
+                continue;
+            }
+            GTRecipe recipe = RecipeMaps.chemicalBathRecipes.findRecipeQuery()
+                .items(stack)
+                .fluids(getStoredFluids().toArray(new FluidStack[0]))
+                .find();
+
+            if (recipe != null && recipe.getRepresentativeFluidInput(0) != null) {
+                FluidStack requiredFluid = recipe.getRepresentativeFluidInput(0)
+                    .copy();
+                int available = getFluidAmount(requiredFluid);
+                int canProcess = Math.min(available / requiredFluid.amount, stack.stackSize);
+
+                depleteInput(new FluidStack(requiredFluid.getFluid(), canProcess * requiredFluid.amount));
+                output.addAll(getOutputStack(recipe, canProcess));
+
+                if (canProcess < stack.stackSize) {
+                    output.add(GTUtility.copyAmountUnsafe(stack.stackSize - canProcess, stack));
+                }
+            } else {
+                output.add(stack);
+            }
+        }
+        doCompress(output);
+    }
+
     private boolean checkTypes(int aID, IntOpenHashSet... aTables) {
         for (IntOpenHashSet set : aTables) {
-            if (set.contains(aID)) {
-                return true;
-            }
+            if (set.contains(aID)) return true;
         }
         return false;
     }
 
-    @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            sVoidStone = !sVoidStone;
-            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.oreprocessor.void", sVoidStone);
-            return;
-        }
-        sMode = (sMode + 1) % 7;
-        List<String> des = getDisplayMode(sMode);
-        GTUtility.sendChatToPlayer(aPlayer, String.join("", des));
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        sMode = aNBT.getInteger("ssMode");
-        sVoidStone = aNBT.getBoolean("ssStone");
-        currentParallelism = aNBT.getInteger("currentParallelism");
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("ssMode", sMode);
-        aNBT.setBoolean("ssStone", sVoidStone);
-        aNBT.setInteger("currentParallelism", currentParallelism);
-        super.saveNBTData(aNBT);
-    }
-
-    private void doMac(IntOpenHashSet... aTables) {
-        List<ItemStack> tProduct = new ArrayList<>();
-        if (sMidProduct != null) {
-            for (ItemStack aStack : sMidProduct) {
-                int tID = GTUtility.stackToInt(aStack);
-                if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
-                        .caching(false)
-                        .items(aStack)
-                        .find();
-                    if (tRecipe != null) {
-                        tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
-                    } else {
-                        tProduct.add(aStack);
-                    }
-                } else {
-                    tProduct.add(aStack);
-                }
-            }
-        }
-        doCompress(tProduct);
-    }
-
-    private void doWash(IntOpenHashSet... aTables) {
-        List<ItemStack> tProduct = new ArrayList<>();
-        if (sMidProduct != null) {
-            for (ItemStack aStack : sMidProduct) {
-                int tID = GTUtility.stackToInt(aStack);
-                if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.oreWasherRecipes.findRecipeQuery()
-                        .caching(false)
-                        .items(aStack)
-                        .fluids(GTModHandler.getDistilledWater(Integer.MAX_VALUE))
-                        .find();
-                    if (tRecipe != null) {
-                        tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
-                    } else {
-                        tProduct.add(aStack);
-                    }
-                } else {
-                    tProduct.add(aStack);
-                }
-            }
-        }
-        doCompress(tProduct);
-    }
-
-    private void doThermal(IntOpenHashSet... aTables) {
-        List<ItemStack> tProduct = new ArrayList<>();
-        if (sMidProduct != null) {
-            for (ItemStack aStack : sMidProduct) {
-                int tID = GTUtility.stackToInt(aStack);
-                if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.thermalCentrifugeRecipes.findRecipeQuery()
-                        .caching(false)
-                        .items(aStack)
-                        .find();
-                    if (tRecipe != null) {
-                        tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
-                    } else {
-                        tProduct.add(aStack);
-                    }
-                } else {
-                    tProduct.add(aStack);
-                }
-            }
-        }
-        doCompress(tProduct);
-    }
-
-    private void doCentrifuge(IntOpenHashSet... aTables) {
-        List<ItemStack> tProduct = new ArrayList<>();
-        if (sMidProduct != null) {
-            for (ItemStack aStack : sMidProduct) {
-                int tID = GTUtility.stackToInt(aStack);
-                if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.centrifugeRecipes.findRecipeQuery()
-                        .items(aStack)
-                        .find();
-                    if (tRecipe != null) {
-                        tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
-                    } else {
-                        tProduct.add(aStack);
-                    }
-                } else {
-                    tProduct.add(aStack);
-                }
-            }
-        }
-        doCompress(tProduct);
-    }
-
-    private void doSift(IntOpenHashSet... aTables) {
-        List<ItemStack> tProduct = new ArrayList<>();
-        if (sMidProduct != null) {
-            for (ItemStack aStack : sMidProduct) {
-                int tID = GTUtility.stackToInt(aStack);
-                if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.sifterRecipes.findRecipeQuery()
-                        .items(aStack)
-                        .find();
-                    if (tRecipe != null) {
-                        tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
-                    } else {
-                        tProduct.add(aStack);
-                    }
-                } else {
-                    tProduct.add(aStack);
-                }
-            }
-        }
-        doCompress(tProduct);
-    }
-
-    private void doChemWash(IntOpenHashSet... aTables) {
-        List<ItemStack> tProduct = new ArrayList<>();
-        if (sMidProduct != null) {
-            for (ItemStack aStack : sMidProduct) {
-                int tID = GTUtility.stackToInt(aStack);
-                if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.chemicalBathRecipes.findRecipeQuery()
-                        .items(aStack)
-                        .fluids(getStoredFluids().toArray(new FluidStack[0]))
-                        .find();
-                    if (tRecipe != null && tRecipe.getRepresentativeFluidInput(0) != null) {
-                        FluidStack tInputFluid = tRecipe.getRepresentativeFluidInput(0)
-                            .copy();
-                        int tStored = getFluidAmount(tInputFluid);
-                        int tWashed = Math.min(tStored / tInputFluid.amount, aStack.stackSize);
-                        depleteInput(new FluidStack(tInputFluid.getFluid(), tWashed * tInputFluid.amount));
-                        tProduct.addAll(getOutputStack(tRecipe, tWashed));
-                        if (tWashed < aStack.stackSize) {
-                            tProduct.add(GTUtility.copyAmountUnsafe(aStack.stackSize - tWashed, aStack));
-                        }
-                    } else {
-                        tProduct.add(aStack);
-                    }
-                } else {
-                    tProduct.add(aStack);
-                }
-            }
-        }
-        doCompress(tProduct);
-    }
-
-    private void doHam(IntOpenHashSet... aTables) {
-        List<ItemStack> tProduct = new ArrayList<>();
-        if (sMidProduct != null) {
-            for (ItemStack aStack : sMidProduct) {
-                int tID = GTUtility.stackToInt(aStack);
-                if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery()
-                        .caching(false)
-                        .items(aStack)
-                        .find();
-                    if (tRecipe != null) {
-                        tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
-                    } else {
-                        tProduct.add(aStack);
-                    }
-                } else {
-                    tProduct.add(aStack);
-                }
-            }
-        }
-        doCompress(tProduct);
-    }
-
-    private void doSimWash(IntOpenHashSet... aTables) {
-        List<ItemStack> tProduct = new ArrayList<>();
-        if (sMidProduct != null) {
-            for (ItemStack aStack : sMidProduct) {
-                int tID = GTUtility.stackToInt(aStack);
-                if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = simpleWasherRecipes.findRecipeQuery()
-                        .items(aStack)
-                        .fluids(Materials.Water.getFluid(100))
-                        .find();
-                    if (tRecipe != null) {
-                        tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
-                    } else {
-                        tProduct.add(aStack);
-                    }
-                } else {
-                    tProduct.add(aStack);
-                }
-            }
-        }
-        doCompress(tProduct);
-    }
-
     private int getFluidAmount(FluidStack aFluid) {
-        int tAmt = 0;
         if (aFluid == null) return 0;
+        int total = 0;
         for (FluidStack fluid : getStoredFluids()) {
-            if (aFluid.isFluidEqual(fluid)) {
-                tAmt += fluid.amount;
-            }
+            if (aFluid.isFluidEqual(fluid)) total += fluid.amount;
         }
-        return tAmt;
+        return total;
     }
 
     private List<ItemStack> getOutputStack(GTRecipe aRecipe, int aTime) {
-        List<ItemStack> tOutput = new ArrayList<>();
+        List<ItemStack> outputs = new ArrayList<>();
         for (int i = 0; i < aRecipe.mOutputs.length; i++) {
-            if (aRecipe.getOutput(i) == null) {
-                continue;
-            }
-            int tChance = aRecipe.getOutputChance(i);
-            if (tChance == 10000) {
-                tOutput.add(GTUtility.copyAmountUnsafe(aTime * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
+            ItemStack template = aRecipe.getOutput(i);
+            if (template == null) continue;
+
+            int chance = aRecipe.getOutputChance(i);
+            int quantity;
+            if (chance == 10000) {
+                quantity = aTime * template.stackSize;
             } else {
-                // Use Normal Distribution
-                double u = aTime * (tChance / 10000D);
-                double e = aTime * (tChance / 10000D) * (1 - (tChance / 10000D));
-                Random random = new Random();
-                int tAmount = (int) Math.ceil(Math.sqrt(e) * random.nextGaussian() + u);
-                tOutput.add(GTUtility.copyAmountUnsafe(tAmount * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
+                // Normal-distribution approximation for probabilistic drops
+                double p = chance / 10000.0;
+                double mean = aTime * p;
+                double std = Math.sqrt(aTime * p * (1 - p));
+                quantity = (int) Math.ceil(std * random.nextGaussian() + mean);
+                quantity *= template.stackSize;
+            }
+            if (quantity > 0) {
+                outputs.add(GTUtility.copyAmountUnsafe(quantity, template));
             }
         }
-        return tOutput.stream()
-            .filter(i -> (i != null && i.stackSize > 0))
-            .collect(Collectors.toList());
+        return outputs;
     }
 
     private void doCompress(List<ItemStack> aList) {
-        HashMap<Integer, Integer> rProduct = new HashMap<>();
+        HashMap<Integer, Integer> merged = new HashMap<>();
         for (ItemStack stack : aList) {
-            int tID = GTUtility.stackToInt(stack);
-            if (sVoidStone) {
-                if (GTUtility.areStacksEqual(Materials.Stone.getDust(1), stack)) {
-                    continue;
-                }
-            }
-            if (tID != 0) {
-                if (rProduct.containsKey(tID)) {
-                    rProduct.put(tID, rProduct.get(tID) + stack.stackSize);
-                } else {
-                    rProduct.put(tID, stack.stackSize);
-                }
+            if (doesVoidStone && GTUtility.areStacksEqual(Materials.Stone.getDust(1), stack)) continue;
+            int id = GTUtility.stackToInt(stack);
+            if (id != 0) {
+                merged.merge(id, stack.stackSize, Integer::sum);
             }
         }
-        sMidProduct = new ItemStack[rProduct.size()];
-        int cnt = 0;
-        for (Integer id : rProduct.keySet()) {
-            ItemStack stack = GTUtility.intToStack(id);
-            sMidProduct[cnt] = GTUtility.copyAmountUnsafe(rProduct.get(id), stack);
-            cnt++;
+
+        midProduct = new ItemStack[merged.size()];
+        int index = 0;
+        for (Map.Entry<Integer, Integer> entry : merged.entrySet()) {
+            ItemStack template = GTUtility.intToStack(entry.getKey());
+            midProduct[index++] = GTUtility.copyAmountUnsafe(entry.getValue(), template);
         }
     }
 
+    private void setCurrentParallelism(int parallelism) {
+        this.currentParallelism = parallelism;
+    }
+
+    private int getCurrentParallelism() {
+        return this.currentParallelism;
+    }
+
+    // Parallels are automatical
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, 8, 9, 1) && mMaintenanceHatches.size() <= 1
-            && !mMufflerHatches.isEmpty();
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 
     @Override
@@ -747,56 +575,47 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         return new MTEIntegratedOreFactory(mName);
     }
 
-    private void setCurrentParallelism(int parallelism) {
-        this.currentParallelism = parallelism;
-    }
-
-    private int getCurrentParallelism() {
-        return this.currentParallelism;
-    }
-
     @Override
-    public String[] getInfoData() {
-        List<String> informationData = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        String parallelism = StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-            + EnumChatFormatting.BLUE
-            + getCurrentParallelism()
-            + EnumChatFormatting.RESET;
-        informationData.add(parallelism);
-        informationData.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
-        informationData.addAll(getDisplayMode(sMode));
-        return informationData.toArray(new String[0]);
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addMachineType("Ore Processor, IOF")
+            .addInfo("Does all ore processing in one step")
+            .addInfo("Parallel count scales with total input power: EU/t / 30")
+            .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water")
+            .addInfo("Recipes that need extra input require their extra inputs on top of the normal costs")
+            .addInfo("Processing time is dependent on mode")
+            .addInfo("Use a screwdriver to switch mode")
+            .addInfo("Sneak click with screwdriver to void the stone dust")
+            .addTecTechHatchInfo()
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
+            .beginStructureBlock(15, 9, 13, false)
+            .addController("The third layer")
+            .addCasingInfoExactly("Awakened Draconium Coil Block", 7, false)
+            .addCasingInfoExactly("Centrifuge Casing", 7, false)
+            .addCasingInfoExactly("Grate Machine Casing", 7, false)
+            .addCasingInfoExactly("Large Sieve Grate", 7, false)
+            .addCasingInfoExactly("Titanium Gear Box Casing", 7, false)
+            .addCasingInfoExactly("Any Tiered Glass", 90, false)
+            .addCasingInfoExactly("Stainless Steel Frame Box", 23, false)
+            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 169, false)
+            .addCasingInfoExactly("Iridium Sheetmetal", 96, false)
+            .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 462, false)
+            .addEnergyHatch("Any bottom Casing", 1)
+            .addMaintenanceHatch("Any bottom Casing", 1)
+            .addInputBus("Input ore/crushed ore", 2)
+            .addInputHatch("Input lubricant/distilled water/washing chemicals", 3)
+            .addMufflerHatch("Output Pollution", 3)
+            .addOutputBus("Output products", 4)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "Bavib")
+            .toolTipFinisher();
+        return tt;
     }
 
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ORE_FACTORY_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ORE_FACTORY_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ORE_FACTORY)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ORE_FACTORY_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2) };
-    }
-
-    private static List<String> getDisplayMode(int mode) {
+    private static List<String> getDisplayMode(ProcessingMode mode) {
         final EnumChatFormatting AQUA = EnumChatFormatting.AQUA;
+        final String ARROW = " " + AQUA + "-> ";
         final String CRUSH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Macerate");
         final String WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Ore_Washer")
             .replace(" ", " " + AQUA);
@@ -808,58 +627,147 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .replace(" ", " " + AQUA);
         final String HAMMER = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Forge_Hammer");
         final String SIM_WASHER = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Simple_Washer");
-        final String ARROW = " " + AQUA + "-> ";
 
-        List<String> des = new ArrayList<>();
-        des.add(StatCollector.translateToLocalFormatted("GT5U.multiblock.runningMode") + " ");
+        List<String> lines = new ArrayList<>();
+        lines.add(StatCollector.translateToLocalFormatted("GT5U.multiblock.runningMode") + " ");
 
         switch (mode) {
-            case 0 -> {
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + WASH + ARROW);
-                des.add(AQUA + THERMAL + ARROW);
-                des.add(AQUA + CRUSH + ' ');
+            case MAC_WASH_THERMAL_MAC -> {
+                lines.add(AQUA + CRUSH + ARROW);
+                lines.add(AQUA + WASH + ARROW);
+                lines.add(AQUA + THERMAL + ARROW);
+                lines.add(AQUA + CRUSH + ' ');
             }
-            case 1 -> {
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + WASH + ARROW);
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + CENTRIFUGE + ' ');
+            case MAC_WASH_MAC_CENTRI -> {
+                lines.add(AQUA + CRUSH + ARROW);
+                lines.add(AQUA + WASH + ARROW);
+                lines.add(AQUA + CRUSH + ARROW);
+                lines.add(AQUA + CENTRIFUGE + ' ');
             }
-            case 2 -> {
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + CENTRIFUGE + ' ');
+            case MAC_MAC_CENTRI -> {
+                lines.add(AQUA + CRUSH + ARROW);
+                lines.add(AQUA + CRUSH + ARROW);
+                lines.add(AQUA + CENTRIFUGE + ' ');
             }
-            case 3 -> {
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + WASH + ARROW);
-                des.add(AQUA + SIFTER + ' ');
+            case MAC_WASH_SIFT -> {
+                lines.add(AQUA + CRUSH + ARROW);
+                lines.add(AQUA + WASH + ARROW);
+                lines.add(AQUA + SIFTER + ' ');
             }
-            case 4 -> {
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + CHEM_WASH + ARROW);
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + CENTRIFUGE + ' ');
+            case MAC_CHEM_MAC_CENTRI -> {
+                lines.add(AQUA + CRUSH + ARROW);
+                lines.add(AQUA + CHEM_WASH + ARROW);
+                lines.add(AQUA + CRUSH + ARROW);
+                lines.add(AQUA + CENTRIFUGE + ' ');
             }
-            case 5 -> {
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + CHEM_WASH + ARROW);
-                des.add(AQUA + THERMAL + ARROW);
-                des.add(AQUA + CRUSH + ' ');
+            case MAC_CHEM_THERMAL_MAC -> {
+                lines.add(AQUA + CRUSH + ARROW);
+                lines.add(AQUA + CHEM_WASH + ARROW);
+                lines.add(AQUA + THERMAL + ARROW);
+                lines.add(AQUA + CRUSH + ' ');
             }
-            case 6 -> {
-                des.add(AQUA + HAMMER + ARROW);
-                des.add(AQUA + HAMMER + ARROW);
-                des.add(AQUA + SIM_WASHER + ' ');
+            case FORGE_FORGE_SIMPLEWASH -> {
+                lines.add(AQUA + HAMMER + ARROW);
+                lines.add(AQUA + HAMMER + ARROW);
+                lines.add(AQUA + SIM_WASHER + ' ');
             }
-            default -> des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.WRONG_MODE"));
+            default -> lines.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.WRONG_MODE"));
         }
 
-        des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor2", getTime(mode) / 20));
+        lines.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor2", getRecipeTickTime(mode) / 20));
+        return lines;
+    }
 
-        return des;
+    @Override
+    public String[] getInfoData() {
+        List<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        info.add(
+            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.BLUE
+                + getCurrentParallelism()
+                + EnumChatFormatting.RESET);
+        info.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", doesVoidStone));
+        info.addAll(getDisplayMode(mode));
+        return info.toArray(new String[0]);
+    }
 
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        if (side != aFacing) {
+            return new ITexture[] { Casings.CleanStainlessSteelMachineCasing.getCasingTexture() };
+        }
+        if (aActive) {
+            return new ITexture[] { Casings.CleanStainlessSteelMachineCasing.getCasingTexture(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ORE_FACTORY_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ORE_FACTORY_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+        }
+        return new ITexture[] { Casings.CleanStainlessSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
+            .addIcon(OVERLAY_FRONT_ORE_FACTORY)
+            .extFacing()
+            .build(),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_ORE_FACTORY_GLOW)
+                .extFacing()
+                .glow()
+                .build() };
+    }
+
+    @Override
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        if (aPlayer.isSneaking()) {
+            doesVoidStone = !doesVoidStone;
+            GTUtility.sendChatTrans(
+                aPlayer,
+                StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", doesVoidStone));
+            return;
+        }
+        mode = mode.next();
+        GTUtility.sendChatTrans(aPlayer, String.join("", getDisplayMode(mode)));
+    }
+
+    @Override
+    public int getMachineMode() {
+        return mode.ordinal();
+    }
+
+    @Override
+    public void setMachineMode(int idx) {
+        mode = ProcessingMode.fromOrdinal(idx);
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return String.join("\n", getDisplayMode(mode));
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return super.getGui().withMachineModeIcons(MODE_ICONS);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        mode = ProcessingMode.fromOrdinal(aNBT.getInteger("mode"));
+        doesVoidStone = aNBT.getBoolean("doesVoidStone");
+        currentParallelism = aNBT.getInteger("currentParallelism");
+        super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setInteger("mode", mode.ordinal());
+        aNBT.setBoolean("doesVoidStone", doesVoidStone);
+        aNBT.setInteger("currentParallelism", currentParallelism);
+        super.saveNBTData(aNBT);
     }
 
     @Override
@@ -867,29 +775,52 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
-
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
                 + EnumChatFormatting.BLUE
                 + tag.getInteger("currentParallelism")
                 + EnumChatFormatting.RESET);
-        currenttip.addAll(getDisplayMode(tag.getInteger("ssMode")));
-        currenttip
-            .add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", tag.getBoolean("ssStone")));
+        currenttip.addAll(getDisplayMode(ProcessingMode.fromOrdinal(tag.getInteger("mode"))));
+        currenttip.add(
+            StatCollector
+                .translateToLocalFormatted("GT5U.machines.oreprocessor.void", tag.getBoolean("doesVoidStone")));
+    }
 
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("ssMode", sMode);
-        tag.setBoolean("ssStone", sVoidStone);
+        tag.setInteger("mode", mode.ordinal());
+        tag.setBoolean("doesVoidStone", doesVoidStone);
         tag.setInteger("currentParallelism", currentParallelism);
     }
 
-    @Override
-    public boolean supportsBatchMode() {
-        return true;
+    private enum ProcessingMode {
+
+        MAC_WASH_THERMAL_MAC,
+        MAC_WASH_MAC_CENTRI,
+        MAC_MAC_CENTRI,
+        MAC_WASH_SIFT,
+        MAC_CHEM_MAC_CENTRI,
+        MAC_CHEM_THERMAL_MAC,
+        FORGE_FORGE_SIMPLEWASH;
+
+        private static final ProcessingMode[] VALUES = values();
+
+        public static ProcessingMode fromOrdinal(int ordinal) {
+            if (0 <= ordinal && ordinal < VALUES.length) {
+                return VALUES[ordinal];
+            }
+            return ProcessingMode.MAC_WASH_THERMAL_MAC;
+        }
+
+        public ProcessingMode next() {
+            return fromOrdinal(this.ordinal() + 1);
+        }
     }
 }

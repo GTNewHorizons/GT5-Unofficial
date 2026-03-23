@@ -2,7 +2,6 @@ package gregtech.common.gui.modularui.hatch;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -68,11 +67,6 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
                         .alignment(Alignment.CENTER)
                         .asWidget()
                         .paddingTop(3)));
-    }
-
-    @Override
-    protected IDrawable.DrawableWidget createLogo() {
-        return super.createLogo();
     }
 
     @Override
