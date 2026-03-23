@@ -69,7 +69,15 @@ public class GTLog {
     }
 
     public static void writeExplosionLog(IMetaTileEntity tileEntity, String details) {
+        if (tileEntity == null) {
+            writeExplosionLog(details);
+            return;
+        }
         IGregTechTileEntity baseTileEntity = tileEntity.getBaseMetaTileEntity();
+        if (baseTileEntity == null) {
+            writeExplosionLog(details);
+            return;
+        }
         writeExplosionLog(baseTileEntity, tileEntity.getLocalName(), details);
     }
 
@@ -84,7 +92,7 @@ public class GTLog {
                 baseTileEntity.getOwnerName(),
                 details);
         } else {
-            exp.println(details);
+            writeExplosionLog(details);
         }
     }
 
