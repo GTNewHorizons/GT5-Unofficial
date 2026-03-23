@@ -2,7 +2,6 @@ package gregtech.common.items.behaviors;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -130,20 +129,21 @@ public class BehaviourCoverTool extends BehaviourNone {
 
     @Desugar
     private record CopyData(ForgeDirection side, ItemStack stack, int x, int y, int z, int dimensionId) {
-
         public void writeToNBT(NBTTagCompound aNBT) {
             aNBT.setInteger("datalines.side", side.ordinal());
-            aNBT.setByteArray("datalines.stack", new ChatComponentItemName(stack).encodeToBytes());
+            aNBT.setTag("datalines.stack", stack.writeToNBT(new NBTTagCompound()));
             aNBT.setInteger("datalines.x", x);
             aNBT.setInteger("datalines.y", y);
             aNBT.setInteger("datalines.z", z);
             aNBT.setInteger("datalines.dimensionId", dimensionId);
         }
 
-        public static @NotNull BehaviourCoverTool.CopyData readFromNBT(NBTTagCompound aNBT) {
+        public static BehaviourCoverTool.CopyData readFromNBT(NBTTagCompound aNBT) {
+            if (!aNBT.hasKey("datalines.side")) {
+                return null;
+            }
             ForgeDirection side = ForgeDirection.getOrientation(aNBT.getInteger("datalines.side"));
-            ItemStack stack = new ChatComponentItemName(null)
-                .decodeFromBytes(aNBT.getByteArray("datalines.stack")).stack;
+            ItemStack stack = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("datalines.stack"));
             int x = aNBT.getInteger("datalines.x");
             int y = aNBT.getInteger("datalines.y");
             int z = aNBT.getInteger("datalines.z");
@@ -159,18 +159,15 @@ public class BehaviourCoverTool extends BehaviourNone {
         }
 
         public @NotNull List<IChatComponent> getCopyChatList() {
-            List<IChatComponent> chats = new ArrayList<>();
-            chats.add(
+            return ImmutableList.of(
                 new ChatComponentTranslation(
                     "GT5U.chat.behaviour.cover_tool.position",
                     formatNumber(x),
                     formatNumber(y),
                     formatNumber(z),
-                    dimensionId));
-            chats.add(new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.side", side.name()));
-            chats.add(
+                    dimensionId),
+                new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.side", side.name()),
                 new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.type", new ChatComponentItemName(stack)));
-            return chats;
         }
     }
 
@@ -181,18 +178,17 @@ public class BehaviourCoverTool extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        try {
+        if (aStack.hasTagCompound()) {
             final NBTTagCompound tNBT = aStack.getTagCompound();
-            List<String> chats = CopyData.readFromNBT(tNBT)
-                .getCopyText();
-            aList.add(
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.gui.tooltip.behaviour.cover_tool.data"));
-            for (String chat : chats) {
-                aList.add(EnumChatFormatting.RESET + chat);
+            final CopyData data = CopyData.readFromNBT(tNBT);
+            if (data != null) {
+                aList.add(
+                    EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.gui.tooltip.behaviour.cover_tool.data"));
+                aList.addAll(data.getCopyText());
+                return aList;
             }
-        } catch (Exception e) {
-            aList.add(StatCollector.translateToLocal("GT5U.gui.tooltip.behaviour.cover_tool.cover_copy_paste"));
         }
+        aList.add(StatCollector.translateToLocal("GT5U.gui.tooltip.behaviour.cover_tool.cover_copy_paste"));
         return aList;
     }
 }
