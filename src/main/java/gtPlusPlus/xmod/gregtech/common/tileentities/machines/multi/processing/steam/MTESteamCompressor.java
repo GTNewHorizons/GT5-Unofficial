@@ -34,7 +34,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -50,13 +49,11 @@ import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings1;
-import gregtech.common.blocks.BlockCasings2;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> implements ISurvivalConstructable {
+public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompressor> implements ISurvivalConstructable {
 
     public MTESteamCompressor(String aName) {
         super(aName);
@@ -117,9 +114,8 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     }
 
     @Override
-    protected int getCasingTextureId() {
-        if (tierMachineCasing == 2) return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
-        return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
+    protected boolean isHighPressure() {
+        return tierMachineCasing == 2;
     }
 
     @Override

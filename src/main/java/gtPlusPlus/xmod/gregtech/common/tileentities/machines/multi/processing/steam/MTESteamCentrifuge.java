@@ -32,7 +32,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -40,7 +39,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -48,13 +46,11 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings1;
-import gregtech.common.blocks.BlockCasings2;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> implements ISurvivalConstructable {
+public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifuge> implements ISurvivalConstructable {
 
     public MTESteamCentrifuge(String aName) {
         super(aName);
@@ -99,6 +95,11 @@ public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> im
 
     private int tierMachine = 1;
 
+    @Override
+    protected boolean isHighPressure() {
+        return tierGearBoxCasing == 2 && tierPipeCasing == 2 && tierFireBoxCasing == 2 && tierMachineCasing == 2;
+    }
+
     public Integer getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             tCountCasing++;
@@ -130,20 +131,6 @@ public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> im
         if (block == sBlockCasings2 && 12 == meta) return 1;
         if (block == sBlockCasings2 && 13 == meta) return 2;
         return null;
-    }
-
-    protected void updateHatchTexture() {
-        for (MTEHatch h : mSteamInputs) h.updateTexture(getCasingTextureId());
-        for (MTEHatch h : mSteamOutputs) h.updateTexture(getCasingTextureId());
-        for (MTEHatch h : mSteamInputFluids) h.updateTexture(getCasingTextureId());
-        for (MTEHatch h : mOutputHatches) h.updateTexture(getCasingTextureId());
-    }
-
-    @Override
-    protected int getCasingTextureId() {
-        if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierFireBoxCasing == 2 || tierMachineCasing == 2)
-            return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
-        return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
     }
 
     @Override
@@ -253,8 +240,8 @@ public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> im
             && tierMachineCasing == 1
             && tCountCasing >= 60
             && checkHatches()) {
-            updateHatchTexture();
             tierMachine = 1;
+            updateHatchTexture();
             return true;
         }
         if (tierGearBoxCasing == 2 && tierPipeCasing == 2
@@ -262,8 +249,8 @@ public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> im
             && tierMachineCasing == 2
             && tCountCasing >= 60
             && checkHatches()) {
-            updateHatchTexture();
             tierMachine = 2;
+            updateHatchTexture();
             return true;
         }
         return false;

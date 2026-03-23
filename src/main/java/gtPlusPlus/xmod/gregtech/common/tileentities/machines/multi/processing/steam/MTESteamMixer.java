@@ -56,14 +56,12 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings1;
-import gregtech.common.blocks.BlockCasings2;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements ISurvivalConstructable {
+public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> implements ISurvivalConstructable {
 
     public MTESteamMixer(String aName) {
         super(aName);
@@ -168,10 +166,8 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
     }
 
     @Override
-    protected int getCasingTextureId() {
-        if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierFrame == 2 || tierMachineCasing == 2)
-            return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
-        return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
+    protected boolean isHighPressure() {
+        return tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierFrame == 2 || tierMachineCasing == 2;
     }
 
     @Override
