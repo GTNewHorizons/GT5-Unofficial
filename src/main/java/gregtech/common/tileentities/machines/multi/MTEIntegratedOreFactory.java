@@ -192,7 +192,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         return piece;
     }
 
-    private static int getTime(int mode) {
+    private static int getRecipeTickTime(int mode) {
         return switch (mode) {
             case 0 -> 30 * SECOND;
             case 1 -> 15 * SECOND;
@@ -218,14 +218,11 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         if (inputItem.isEmpty() || inputFluid.isEmpty()) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        long availableEUt = getMaxInputVoltage() * getMaxInputAmps();
-        int maxParallelFromPower = GTUtility.safeInt(availableEUt / RECIPE_EUT);
+        final long availableEUt = getMaxInputVoltage() * getMaxInputAmps();
+        final int maxParallelFromPower = GTUtility.safeInt(availableEUt / RECIPE_EUT);
 
         int lubricantAmount = 0;
         int waterAmount = 0;
-        final double BATCH_MULTIPLIER = 6.4;
-        final int TICKS_NORMAL = 20;
-        final int TICKS_BATCH = 128;
 
         for (FluidStack fluid : inputFluid) {
             if (fluid == null) continue;
@@ -233,11 +230,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             else if (fluid.equals(Materials.Lubricant.getFluid(1L))) lubricantAmount += fluid.amount;
         }
 
-        int parallelFromFluids = Math.min(lubricantAmount / 2, waterAmount / 200);
-        if (this.batchMode) {
-            parallelFromFluids = (int) (parallelFromFluids / BATCH_MULTIPLIER);
-        }
-
+        final int parallelFromFluids = Math.min(lubricantAmount / 2, waterAmount / 200);
         if (parallelFromFluids <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
@@ -249,16 +242,12 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             parallelFromItems += ore.stackSize;
         }
 
-        int baseParallel = Math.min(Math.min(maxParallelFromPower, parallelFromFluids), parallelFromItems);
+        final int baseParallel = Math.min(Math.min(maxParallelFromPower, parallelFromFluids), parallelFromItems);
         if (baseParallel <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        boolean isBatch = this.batchMode;
-
-        long effectiveParallelLong = isBatch ? Math.round(baseParallel * BATCH_MULTIPLIER) : baseParallel;
-
-        int effectiveParallel = GTUtility.safeInt(effectiveParallelLong);
+        final int effectiveParallel = GTUtility.safeInt(baseParallel);
         if (effectiveParallel <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
@@ -266,7 +255,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         depleteInput(GTModHandler.getDistilledWater(effectiveParallel * 200L));
         depleteInput(Materials.Lubricant.getFluid(effectiveParallel * 2L));
 
-        long fixedEUt = -RECIPE_EUT * baseParallel;
+        final long fixedEUt = -RECIPE_EUT * baseParallel;
 
         List<ItemStack> tOres = new ArrayList<>();
         int remaining = effectiveParallel;
@@ -336,7 +325,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         this.mEfficiencyIncrease = 10000;
         this.mOutputItems = midProduct;
-        this.mMaxProgresstime = isBatch ? TICKS_BATCH : TICKS_NORMAL;
+        this.mMaxProgresstime = getRecipeTickTime(this.mode);
         this.lEUt = fixedEUt;
 
         lastParallel = effectiveParallel;
@@ -563,11 +552,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
-    public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
     public boolean supportsVoidProtection() {
         return true;
     }
@@ -677,7 +661,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             default -> lines.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.WRONG_MODE"));
         }
 
-        lines.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor2", getTime(mode) / 20));
+        lines.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor2", getRecipeTickTime(mode) / 20));
         return lines;
     }
 
