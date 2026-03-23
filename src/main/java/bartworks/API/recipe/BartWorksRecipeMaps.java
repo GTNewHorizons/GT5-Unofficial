@@ -40,9 +40,6 @@ public class BartWorksRecipeMaps {
             return null;
         })
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
-        .logo(BWUITextures.PICTURE_BW_LOGO_47X21)
-        .logoSize(47, 21)
-        .logoPos(125, 3)
         .disableRegisterNEI()
         .build();
     public static final RecipeMap<RecipeMapBackend> bacterialVatRecipes = RecipeMapBuilder.of("bw.recipe.BacteriaVat")
