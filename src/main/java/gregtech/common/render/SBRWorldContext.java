@@ -207,13 +207,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     public void renderNegativeYFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(
-                blockAccess,
-                x + ForgeDirection.DOWN.offsetX,
-                y + ForgeDirection.DOWN.offsetY,
-                z + ForgeDirection.DOWN.offsetZ,
-                ForgeDirection.DOWN.ordinal()))
-            return;
+            && !block.shouldSideBeRendered(blockAccess, x, y - 1, z, ForgeDirection.DOWN.ordinal())) return;
         setupLightingYNeg();
         final double origMinY = renderBlocks.renderMinY;
         for (int i = 0; i < tex.length; i++) {
@@ -229,13 +223,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     public void renderPositiveYFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(
-                blockAccess,
-                x + ForgeDirection.UP.offsetX,
-                y + ForgeDirection.UP.offsetY,
-                z + ForgeDirection.UP.offsetZ,
-                ForgeDirection.UP.ordinal()))
-            return;
+            && !block.shouldSideBeRendered(blockAccess, x, y + 1, z, ForgeDirection.UP.ordinal())) return;
         setupLightingYPos();
         final double origMaxY = renderBlocks.renderMaxY;
         for (int i = 0; i < tex.length; i++) {
@@ -251,13 +239,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     public void renderNegativeZFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(
-                blockAccess,
-                x + ForgeDirection.NORTH.offsetX,
-                y + ForgeDirection.NORTH.offsetY,
-                z + ForgeDirection.NORTH.offsetZ,
-                ForgeDirection.NORTH.ordinal()))
-            return;
+            && !block.shouldSideBeRendered(blockAccess, x, y, z - 1, ForgeDirection.NORTH.ordinal())) return;
         setupLightingZNeg();
         final double origMinZ = renderBlocks.renderMinZ;
         for (int i = 0; i < tex.length; i++) {
@@ -273,13 +255,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     public void renderPositiveZFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(
-                blockAccess,
-                x + ForgeDirection.SOUTH.offsetX,
-                y + ForgeDirection.SOUTH.offsetY,
-                z + ForgeDirection.SOUTH.offsetZ,
-                ForgeDirection.SOUTH.ordinal()))
-            return;
+            && !block.shouldSideBeRendered(blockAccess, x, y, z + 1, ForgeDirection.SOUTH.ordinal())) return;
         setupLightingZPos();
         final double origMaxZ = renderBlocks.renderMaxZ;
         for (int i = 0; i < tex.length; i++) {
@@ -295,13 +271,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     public void renderNegativeXFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(
-                blockAccess,
-                x + ForgeDirection.WEST.offsetX,
-                y + ForgeDirection.WEST.offsetY,
-                z + ForgeDirection.WEST.offsetZ,
-                ForgeDirection.WEST.ordinal()))
-            return;
+            && !block.shouldSideBeRendered(blockAccess, x - 1, y, z, ForgeDirection.WEST.ordinal())) return;
         setupLightingXNeg();
         final double origMinX = renderBlocks.renderMinX;
         for (int i = 0; i < tex.length; i++) {
@@ -317,13 +287,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     public void renderPositiveXFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(
-                blockAccess,
-                x + ForgeDirection.EAST.offsetX,
-                y + ForgeDirection.EAST.offsetY,
-                z + ForgeDirection.EAST.offsetZ,
-                ForgeDirection.EAST.ordinal()))
-            return;
+            && !block.shouldSideBeRendered(blockAccess, x + 1, y, z, ForgeDirection.EAST.ordinal())) return;
         setupLightingXPos();
         final double origMaxX = renderBlocks.renderMaxX;
         for (int i = 0; i < tex.length; i++) {
