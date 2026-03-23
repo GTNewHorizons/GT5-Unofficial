@@ -442,12 +442,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     public void onBlockExploded(World aWorld, int aX, int aY, int aZ, Explosion aExplosion) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof BaseMetaTileEntity baseTE) {
-            GTLog.exp.printf(
-                "Explosion at : %d | %d | %d DIMID: %s due to near explosion!%n",
-                aX,
-                aY,
-                aZ,
-                aWorld.provider.dimensionId);
+            GTLog.writeExplosionLog(baseTE, this.getUnlocalizedName(), "exploded due to near explosion");
             baseTE.doEnergyExplosion();
         }
         super.onBlockExploded(aWorld, aX, aY, aZ, aExplosion);
@@ -568,12 +563,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
             final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if (tTileEntity != null && (chance < 1.0F)) {
                 if (tTileEntity instanceof BaseMetaTileEntity bmte && (GregTechAPI.sMachineNonWrenchExplosions)) {
-                    GTLog.exp.printf(
-                        "Explosion at : %d | %d | %d DIMID: %s NonWrench picking/Rain!%n",
-                        aX,
-                        aY,
-                        aZ,
-                        aWorld.provider.dimensionId);
+                    GTLog.writeExplosionLog(bmte, this.getUnlocalizedName(), "exploded due to NonWrench picking/Rain!");
                     bmte.doEnergyExplosion();
                 }
             } else {
