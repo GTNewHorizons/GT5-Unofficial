@@ -712,8 +712,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                     .getFacadeBlock();
                 if (facadeBlock != null) return facadeBlock;
             } else {
-                // we do not allow more than one type of facade per block, so no need to check every side
-                // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
                 for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
                     final Block facadeBlock = tile.getCoverAtSide(tSide)
                         .getFacadeBlock();
@@ -735,16 +733,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 final Cover cover = tile.getCoverAtSide(dir);
                 final Block facadeBlock = cover.getFacadeBlock();
                 if (facadeBlock != null) return cover.getFacadeMeta();
-            } else {
-                // we do not allow more than one type of facade per block, so no need to check every side
-                // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
-                for (final ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
-                    final Cover cover = tile.getCoverAtSide(d);
-                    final Block facadeBlock = cover.getFacadeBlock();
-                    if (facadeBlock != null) {
-                        return cover.getFacadeMeta();
-                    }
-                }
             }
         }
         return 0;
