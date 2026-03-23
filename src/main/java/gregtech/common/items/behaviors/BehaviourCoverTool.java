@@ -90,7 +90,7 @@ public class BehaviourCoverTool extends BehaviourNone {
                     int copiedCoverId = tNBT.getInteger(NBT_COVER_ID);
                     if (copiedCoverId == 0) {
                         chats = ImmutableList
-                            .of((new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.invalid_cover")));
+                            .of(new ChatComponentTranslation("GT5U.chat.behaviour.cover_tool.invalid_cover"));
                     } else if (targetCover.getCoverID() == copiedCoverId) {
                         coverable.updateAttachedCover(
                             copiedCoverId,
