@@ -17,13 +17,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
-import static gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory.modesEnum.FORGE_FORGE_SIMPLEWASH;
-import static gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory.modesEnum.MAC_CHEM_MAC_CENTRI;
-import static gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory.modesEnum.MAC_CHEM_THERMAL_MAC;
-import static gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory.modesEnum.MAC_MAC_CENTRI;
-import static gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory.modesEnum.MAC_WASH_MAC_CENTRI;
-import static gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory.modesEnum.MAC_WASH_SIFT;
-import static gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory.modesEnum.MAC_WASH_THERMAL_MAC;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 
 import java.util.ArrayList;
@@ -78,28 +71,22 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     implements ISurvivalConstructable {
 
     private static final long RECIPE_EUT = 30;
-    private static final int MODE_AMOUNT = 7;
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private static final int OFFSET_X = 7;
     private static final int OFFSET_Y = 6;
     private static final int OFFSET_Z = 1;
 
-    public enum modesEnum {
-        MAC_WASH_THERMAL_MAC,
-        MAC_WASH_MAC_CENTRI,
-        MAC_MAC_CENTRI,
-        MAC_WASH_SIFT,
-        MAC_CHEM_MAC_CENTRI,
-        MAC_CHEM_THERMAL_MAC,
-        FORGE_FORGE_SIMPLEWASH
-    }
-
-    private static modesEnum modeFromOrdinal(int ordinal) {
-        modesEnum[] values = modesEnum.values();
-        if (ordinal >= 0 && ordinal < values.length) return values[ordinal];
-        return modesEnum.MAC_WASH_THERMAL_MAC;
-    }
+    private static final UITexture[] MODE_ICONS = { GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_MACERATOR, // mac wash
+                                                                                                            // thermal
+                                                                                                            // mac
+        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_WASHER, // mac wash mac centri
+        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_CENTRIFUGE, // mac mac centri
+        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_SIFTER, // mac wash sift
+        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_BATH, // mac chem mac centri
+        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_THERMAL, // mac chem thermal mac
+        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_FORGE, // forge forge simplewash
+    };
 
     private static final IStructureDefinition<MTEIntegratedOreFactory> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEIntegratedOreFactory>builder()
@@ -147,11 +134,20 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final IntOpenHashSet isThermal = new IntOpenHashSet();
     private static final IntOpenHashSet isOre = new IntOpenHashSet();
     private static boolean isInit = false;
+
     private ItemStack[] midProduct;
-    private modesEnum mode = modesEnum.MAC_WASH_THERMAL_MAC;
+    private ProcessingMode mode = ProcessingMode.MAC_WASH_THERMAL_MAC;
     private boolean doesVoidStone = false;
     private int currentParallelism = 0;
     private final XSTR random = new XSTR();
+
+    public MTEIntegratedOreFactory(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    public MTEIntegratedOreFactory(String aName) {
+        super(aName);
+    }
 
     private static void registerOrePrefix(String prefix, IntOpenHashSet target) {
         for (ItemStack stack : OreDictionary.getOres(prefix)) {
@@ -170,14 +166,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             else if (name.startsWith("dustPure")) registerOrePrefix(name, isPureDust);
             else if (name.startsWith("ore") || name.startsWith("rawOre")) registerOrePrefix(name, isOre);
         }
-    }
-
-    public MTEIntegratedOreFactory(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
-    }
-
-    public MTEIntegratedOreFactory(String aName) {
-        super(aName);
     }
 
     @Override
@@ -214,7 +202,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         return piece;
     }
 
-    private static int getRecipeTickTime(modesEnum mode) {
+    private static int getRecipeTickTime(ProcessingMode mode) {
         return switch (mode) {
             case MAC_WASH_THERMAL_MAC -> 30 * SECOND;
             case MAC_WASH_MAC_CENTRI -> 15 * SECOND;
@@ -625,7 +613,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         return tt;
     }
 
-    private static List<String> getDisplayMode(modesEnum mode) {
+    private static List<String> getDisplayMode(ProcessingMode mode) {
         final EnumChatFormatting AQUA = EnumChatFormatting.AQUA;
         final String ARROW = " " + AQUA + "-> ";
         final String CRUSH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Macerate");
@@ -742,20 +730,9 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", doesVoidStone));
             return;
         }
-        mode = modeFromOrdinal(mode.ordinal() + 1);
+        mode = mode.next();
         GTUtility.sendChatTrans(aPlayer, String.join("", getDisplayMode(mode)));
     }
-
-    private static final UITexture[] MODE_ICONS = { GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_MACERATOR, // mac wash
-                                                                                                            // thermal
-                                                                                                            // mac
-        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_WASHER, // mac wash mac centri
-        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_CENTRIFUGE, // mac mac centri
-        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_SIFTER, // mac wash sift
-        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_BATH, // mac chem mac centri
-        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_THERMAL, // mac chem thermal mac
-        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_FORGE, // forge forge simplewash
-    };
 
     @Override
     public int getMachineMode() {
@@ -764,7 +741,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public void setMachineMode(int idx) {
-        mode = modeFromOrdinal(idx);
+        mode = ProcessingMode.fromOrdinal(idx);
     }
 
     @Override
@@ -779,7 +756,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mode = modeFromOrdinal(aNBT.getInteger("mode"));
+        mode = ProcessingMode.fromOrdinal(aNBT.getInteger("mode"));
         doesVoidStone = aNBT.getBoolean("doesVoidStone");
         currentParallelism = aNBT.getInteger("currentParallelism");
         super.loadNBTData(aNBT);
@@ -803,7 +780,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 + EnumChatFormatting.BLUE
                 + tag.getInteger("currentParallelism")
                 + EnumChatFormatting.RESET);
-        currenttip.addAll(getDisplayMode(modeFromOrdinal(tag.getInteger("mode"))));
+        currenttip.addAll(getDisplayMode(ProcessingMode.fromOrdinal(tag.getInteger("mode"))));
         currenttip.add(
             StatCollector
                 .translateToLocalFormatted("GT5U.machines.oreprocessor.void", tag.getBoolean("doesVoidStone")));
@@ -821,5 +798,29 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         tag.setInteger("mode", mode.ordinal());
         tag.setBoolean("doesVoidStone", doesVoidStone);
         tag.setInteger("currentParallelism", currentParallelism);
+    }
+
+    private enum ProcessingMode {
+
+        MAC_WASH_THERMAL_MAC,
+        MAC_WASH_MAC_CENTRI,
+        MAC_MAC_CENTRI,
+        MAC_WASH_SIFT,
+        MAC_CHEM_MAC_CENTRI,
+        MAC_CHEM_THERMAL_MAC,
+        FORGE_FORGE_SIMPLEWASH;
+
+        private static final ProcessingMode[] VALUES = values();
+
+        public static ProcessingMode fromOrdinal(int ordinal) {
+            if (0 <= ordinal && ordinal < VALUES.length) {
+                return VALUES[ordinal];
+            }
+            return ProcessingMode.MAC_WASH_THERMAL_MAC;
+        }
+
+        public ProcessingMode next() {
+            return fromOrdinal(this.ordinal() + 1);
+        }
     }
 }
