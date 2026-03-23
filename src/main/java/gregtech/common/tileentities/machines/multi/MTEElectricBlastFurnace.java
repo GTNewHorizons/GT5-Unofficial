@@ -234,8 +234,6 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     @Override
     public void getExtraInfoData(List<String> info) {
         info.add(StatCollector.translateToLocalFormatted("GT5U.EBF.heat", formatNumber(mHeatingCapacity)));
-
-        info.add(StatCollector.translateToLocalFormatted("GT5U.multiblock.pollution", getAveragePollutionPercentage()));
     }
 
     @Override
