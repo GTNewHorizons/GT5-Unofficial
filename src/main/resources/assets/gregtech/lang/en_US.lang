@@ -4533,8 +4533,15 @@ machtype.sc_turbine=Supercritical Steam Turbine
 machtype.lhe=Heat Exchanger, LHE
 machtype.ucfe=Chemical Engine, UCFE
 machtype.neutron_activator=Neutron Activator, NA
+machtype.multi_nq_gen=Naquadah Reactor, LNR
 
 # Multiblock Tooltip lines
+gt.multi_nq_gen.tips.1=Environmentally Friendly!\nGenerate power from high-energy liquids\nConsumes §b%d L/s Liquid Air§ to keep running, otherwise §eit will void your fuel§7.\nThe reactor will explode when there is more than §cONE§7 type of fuel in hatches!\nInput liquid nuclear fuel or liquid naquadah fuel<SEPARATOR>Can increase §defficiency§7 by §fconsuming §9coolants:
+gt.multi_nq_gen.tips.2=<SEPARATOR>Can increase §doutput power and fuel usage§7 by §fconsuming §cexcited liquid:
+gt.multi_nq_gen.info.dynamo=Any bottom layer casing, only accept ONE!
+gt.multi_nq_gen.coolanttext=§f%s L/s§7 : §d%d%%§7 : §9%s
+gt.multi_nq_gen.excitedtext=§f%s L/s§7 : §d%dx power§7 : §c%s
+
 gt.neutron_activator.tips=Superluminal-velocity Motion.\nThe minimum height of the Speeding Pipe Casing is 4\nPer extra Speeding Pipe Casing will give time discount\nBut it will reduce the Neutron Accelerator efficiency\nYou need to input energy to the Neutron Accelerator to get it running\nIt will output correct products with Specific Neutron Kinetic Energy\nOtherwise it will output trash\nThe Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running\nIt will explode when the Neutron Kinetic Energy is over §c1200MeV§7.\nInputting Graphite/Beryllium dust can reduce 10MeV per dust immediately.
 
 gt.ucfe.tips=BURNING BURNING BURNING\nUse combustible liquid to generate power\nYou need to supply Combustion Promoter to keep it running\nIt will consume all the fuel and combustion promoter in the hatch every second\nEnergy output to the dynamo will be distributed over the next second\nIf the Dynamo Hatch's buffer fills up, the machine will stop\nIf the amount of energy to be produced is higher than the dynamo hatch can handle then all produced energy will void\nWhen turned on, there is a 10-second period where the machine will not stop\nEven if it doesn't stop, all the fuel in the hatch will be consumed\nThe efficiency is determined by the proportion of Combustion Promoter to fuel\nThe higher the amount of promoter, the higher the efficiency. It follows an exponential curve exp(-C/(p/x))*1.5\nWhere x is the amount of fuel in liters, p is the amount of promoter in liters\nand C depends on the fuel type. Diesel: C=0.04; Gas: C=0.04; Rocket fuel: C=0.005\nIt creates sqrt(Current Output Power) pollution every second\nIf you forget to supply Combustion Promoter, this engine will swallow all the fuel §ewithout outputting energy\nThe efficiency is up to 150%
@@ -4872,7 +4879,6 @@ gt.adv_assline.info.o_bus=Replaces Input Bus or Solid Steel Machine casing on la
 gt.adv_assline.info.dataaccess=Any Grate Machine Casing NOT on the first slice
 
 gt.ebf.tips=You can use some fluids to reduce recipe time. Place the circuit in the Input Bus\nIncreases Heat by §c100K §7for every §fVoltage §7tier past §bMV\nReduces §bEU Usage §7by §f5% §7every §c900K §7above the recipe requirement\nEvery §c1800K §7over the recipe requirement grants 1 §dPerfect Overclock\nThat means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)
-gt.ebf.info.hatches=Any bottom layer casing
 gt.ebf.info.muffler=Top middle
 
 gt.mfe.tips.1=Use screwdriver to switch mode\nInsert an electromagnet into the electromagnet housing to use\nBetter electromagnets give further bonuses\nWith Tengam electromagnet, multi-amp (NOT laser) hatches are allowed

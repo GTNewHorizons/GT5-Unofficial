@@ -30,7 +30,9 @@ import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.DescTextLocalization;
+import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -348,64 +350,35 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Naquadah Reactor, LNR")
-            .addInfo("Environmentally Friendly!")
-            .addInfo("Generate power from high-energy liquids")
-            .addInfo(
-                String.format(
-                    "Consumes %s%d L/s Liquid Air%s to keep running, otherwise" + EnumChatFormatting.YELLOW
-                        + " it will void your fuel"
-                        + EnumChatFormatting.GRAY
-                        + ".",
-                    EnumChatFormatting.AQUA,
-                    LiquidAirConsumptionPerSecond,
-                    EnumChatFormatting.GRAY))
-            .addInfo(
-                "The reactor will explode when there is more than" + EnumChatFormatting.RED
-                    + " ONE"
-                    + EnumChatFormatting.GRAY
-                    + " type of fuel in hatches!")
-            .addInfo("Input liquid nuclear fuel or liquid naquadah fuel")
-            .addSeparator()
-            .addInfo(
-                "Can increase " + EnumChatFormatting.LIGHT_PURPLE
-                    + "efficiency "
-                    + EnumChatFormatting.GRAY
-                    + "by "
-                    + EnumChatFormatting.WHITE
-                    + "consuming "
-                    + EnumChatFormatting.BLUE
-                    + "coolants:")
-            .addInfo(getCoolantTextFormatted("IC2 Coolant", "1000", CoolantEfficiency[3]))
-            .addInfo(getCoolantTextFormatted("Super Coolant", "1000", CoolantEfficiency[2]))
-            .addInfo(getCoolantTextFormatted("Cryotheum", "1000", CoolantEfficiency[1]))
-            .addInfo(getCoolantTextFormatted("Tachyon Rich Temporal Fluid", "20", CoolantEfficiency[0]))
-            .addSeparator()
-            .addInfo(
-                "Can increase " + EnumChatFormatting.LIGHT_PURPLE
-                    + "output power and fuel usage "
-                    + EnumChatFormatting.GRAY
-                    + "by "
-                    + EnumChatFormatting.WHITE
-                    + "consuming "
-                    + EnumChatFormatting.RED
-                    + "excited liquid:")
-            .addInfo(getExcitedTextFormatted("Molten Caesium", "180", ExcitedLiquidCoe[4]))
-            .addInfo(getExcitedTextFormatted("Molten Uranium-235", "180", ExcitedLiquidCoe[3]))
-            .addInfo(getExcitedTextFormatted("Molten Naquadah", "20", ExcitedLiquidCoe[2]))
-            .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))
-            .addInfo(getExcitedTextFormatted("Spatially Enlarged Fluid", "20", ExcitedLiquidCoe[0]))
+        tt.addMachineType("machtype.multi_nq_gen")
+            .addInfo("gt.multi_nq_gen.tips.1", LiquidAirConsumptionPerSecond)
+            .addInfo(getCoolantTextFormatted("fluidCoolant", "1000", CoolantEfficiency[3]))
+            .addInfo(getCoolantTextFormatted("fluid.supercoolant", "1000", CoolantEfficiency[2]))
+            .addInfo(getCoolantTextFormatted("fluid.cryotheum", "1000", CoolantEfficiency[1]))
+            .addInfo(getCoolantTextFormatted("fluid.temporalfluid", "20", CoolantEfficiency[0]))
+            .addInfo("gt.multi_nq_gen.tips.2")
+            .addInfo(getExcitedTextFormatted("fluid.molten.caesium", "180", ExcitedLiquidCoe[4]))
+            .addInfo(getExcitedTextFormatted("fluid.molten.uranium235", "180", ExcitedLiquidCoe[3]))
+            .addInfo(getExcitedTextFormatted("fluid.molten.naquadah", "20", ExcitedLiquidCoe[2]))
+            .addInfo(getExcitedTextFormatted("fluid.molten.atomic separation catalyst", "20", ExcitedLiquidCoe[1]))
+            .addInfo(getExcitedTextFormatted("fluid.spatialfluid", "20", ExcitedLiquidCoe[0]))
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 8, 7, true)
-            .addController("Front bottom")
-            .addCasingInfoExactly("Field Restriction Casing", 48, false)
-            .addCasingInfoExactly("Radiation Proof Steel Frame Box", 36, false)
-            .addCasingInfoExactly("Tungstensteel Pipe Casing", 6, false)
-            .addCasingInfoExactly("Radiation Proof Machine Casing", 121, false)
-            .addDynamoHatch("Any bottom layer casing, only accept ONE!")
-            .addInputHatch("Any bottom layer casing")
-            .addOutputHatch("Any bottom layer casing")
-            .addMaintenanceHatch("Any bottom layer casing")
+            .addController("front_bottom_middle")
+            .addCasingInfoExactly(
+                ItemRefer.Field_Restriction_Casing.get(1)
+                    .getDisplayName(),
+                48)
+            .addCasingInfoExactly(
+                ItemRefer.Radiation_Proof_Steel_Frame_Box.get(1)
+                    .getDisplayName(),
+                36)
+            .addCasingInfoExactly(Casings.TungstensteelPipeCasing.getLocalizedName(), 6)
+            .addCasingInfoExactly(Casings.RadiationProofMachineCasing.getLocalizedName(), 121)
+            .addDynamoHatch("gt.multi_nq_gen.info.dynamo")
+            .addInputHatch("<bottom casing>")
+            .addOutputHatch("<bottom casing>")
+            .addMaintenanceHatch("<bottom casing>")
             .toolTipFinisher();
         return tt;
     }
@@ -443,30 +416,13 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
     }
 
     public String getCoolantTextFormatted(String fluidType, String litersConsumed, int effBoost) {
-        return String.format(
-            "%s%s L/s%s : %s%d%% %s: %s%s",
-            EnumChatFormatting.WHITE,
-            litersConsumed,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.LIGHT_PURPLE,
-            effBoost,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.BLUE,
-            fluidType);
+        return GTUtility
+            .translate("gt.multi_nq_gen.coolanttext", litersConsumed, effBoost, GTUtility.translate(fluidType));
     }
 
     public String getExcitedTextFormatted(String fluidType, String litersConsumed, int multiplier) {
-        return String.format(
-            "%s%s L/s %s: %s%dx power %s: %s%s",
-            EnumChatFormatting.WHITE,
-            litersConsumed,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.LIGHT_PURPLE,
-            multiplier,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.RED,
-            fluidType);
-
+        return GTUtility
+            .translate("gt.multi_nq_gen.excitedtext", litersConsumed, multiplier, GTUtility.translate(fluidType));
     }
 
 }
