@@ -251,7 +251,14 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
             if (dryHeatCounter < dryHeatMaximum) {
                 ++dryHeatCounter;
             } else {
-                GTLog.exp.println(this.mName + " was too hot and had no more Water!");
+                GTLog.writeExplosionLog(
+                    "unknown dimension",
+                    0,
+                    0,
+                    0,
+                    this.getLocalName(),
+                    "unkown owner",
+                    "was too hot and had no more Water!");
                 explodeMultiblock(); // Generate crater
             }
             return false;

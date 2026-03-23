@@ -400,7 +400,19 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                         addOutput(
                             FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU / superToNormalSteam));
                     } else {
-                        GTLog.exp.println("Boiler " + this.mName + " had no Water!");
+                        GTLog.writeExplosionLog(
+                            this.getBaseMetaTileEntity()
+                                .getWorld().provider.getDimensionName(),
+                            this.getBaseMetaTileEntity()
+                                .getXCoord(),
+                            this.getBaseMetaTileEntity()
+                                .getYCoord(),
+                            this.getBaseMetaTileEntity()
+                                .getZCoord(),
+                            this.getLocalName(),
+                            this.getBaseMetaTileEntity()
+                                .getOwnerName(),
+                            "Boiler had no water");
                         explodeMultiblock();
                     }
                 } else {
@@ -408,7 +420,19 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                         || depleteInput(GTModHandler.getDistilledWater(amount))) {
                         addOutput(Materials.Steam.getGas(tGeneratedEU));
                     } else {
-                        GTLog.exp.println("Boiler " + this.mName + " had no Water!");
+                        GTLog.writeExplosionLog(
+                            this.getBaseMetaTileEntity()
+                                .getWorld().provider.getDimensionName(),
+                            this.getBaseMetaTileEntity()
+                                .getXCoord(),
+                            this.getBaseMetaTileEntity()
+                                .getYCoord(),
+                            this.getBaseMetaTileEntity()
+                                .getZCoord(),
+                            this.getLocalName(),
+                            this.getBaseMetaTileEntity()
+                                .getOwnerName(),
+                            "Boiler had no water");
                         explodeMultiblock();
                     }
                 }

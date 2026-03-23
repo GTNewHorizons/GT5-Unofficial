@@ -3,6 +3,8 @@ package gregtech.api.util;
 import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,5 +41,21 @@ public class GTLog {
         public void println(String aString) {
             mBufferedOreDictLog.add(aString);
         }
+    }
+
+    public static void writeExplosionLog(String dimension, int x, int y, int z, String blockName, String ownerName,
+        String details) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime currentTime = LocalDateTime.now();
+        exp.printf(
+            "[%s] DIM %s (%d,%d,%d): %s (built by %s) %s%n",
+            currentTime.format(formatter),
+            dimension,
+            x,
+            y,
+            z,
+            blockName,
+            ownerName,
+            details);
     }
 }
