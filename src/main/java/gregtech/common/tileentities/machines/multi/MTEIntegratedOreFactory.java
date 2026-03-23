@@ -725,8 +725,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             doesVoidStone = !doesVoidStone;
-            GTUtility.sendChatTrans(
-                aPlayer,"GT5U.machines.oreprocessor.void", doesVoidStone);
+            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.oreprocessor.void", doesVoidStone);
             return;
         }
         mode = mode.next();

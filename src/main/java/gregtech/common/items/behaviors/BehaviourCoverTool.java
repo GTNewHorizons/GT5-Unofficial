@@ -129,6 +129,7 @@ public class BehaviourCoverTool extends BehaviourNone {
 
     @Desugar
     private record CopyData(ForgeDirection side, ItemStack stack, int x, int y, int z, int dimensionId) {
+
         public void writeToNBT(NBTTagCompound aNBT) {
             aNBT.setInteger("datalines.side", side.ordinal());
             aNBT.setTag("datalines.stack", stack.writeToNBT(new NBTTagCompound()));
@@ -183,7 +184,8 @@ public class BehaviourCoverTool extends BehaviourNone {
             final CopyData data = CopyData.readFromNBT(tNBT);
             if (data != null) {
                 aList.add(
-                    EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.gui.tooltip.behaviour.cover_tool.data"));
+                    EnumChatFormatting.BLUE
+                        + StatCollector.translateToLocal("GT5U.gui.tooltip.behaviour.cover_tool.data"));
                 aList.addAll(data.getCopyText());
                 return aList;
             }
