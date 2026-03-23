@@ -7,12 +7,11 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.util.GTUtility;
+import gregtech.api.objects.OreDictItemStack;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
@@ -79,14 +78,12 @@ public class CokeOvenRecipes implements Runnable {
             .eut(0)
             .addTo(cokeOvenRecipes);
 
-        for (ItemStack log : OreDictionary.getOres("logWood")) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, log))
-                .itemOutputs(Materials.Charcoal.getGems(1))
-                .fluidOutputs(Materials.Creosote.getFluid(250))
-                .duration(1 * MINUTES + 30 * SECONDS)
-                .eut(0)
-                .addTo(cokeOvenRecipes);
-        }
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("logWood", 1))
+            .itemOutputs(Materials.Charcoal.getGems(1))
+            .fluidOutputs(Materials.Creosote.getFluid(250))
+            .duration(1 * MINUTES + 30 * SECONDS)
+            .eut(0)
+            .addTo(cokeOvenRecipes);
     }
 }

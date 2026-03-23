@@ -11,8 +11,8 @@ public class MaterialsFluorides {
 
     public static final Material FLUORITE = new Material(
         "Fluorite (F)", // Material Name
-        MaterialState.ORE, // State
-        null, // Material Colour
+        MaterialState.SOLID, // State
+        new short[] { 0x30, 0x7d, 0x5d, 0x00 }, // Material Colour
         Materials.Fluorine.mMeltingPoint, // Melting Point in C
         Materials.Fluorine.mBlastFurnaceTemp, // Boiling Point in C
         -1, // Protons

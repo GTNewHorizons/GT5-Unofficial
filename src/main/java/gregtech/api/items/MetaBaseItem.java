@@ -31,6 +31,8 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import com.gtnewhorizons.modularui.api.KeyboardUtil;
 
 import gregtech.GTMod;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.util.GTLanguageManager;
@@ -149,11 +151,11 @@ public abstract class MetaBaseItem extends GTGenericItem
         try {
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
                 if (tBehavior.onLeftClickEntity(this, aStack, aPlayer, aEntity)) {
-                    if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+                    if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
                     return true;
                 }
             if (aStack.stackSize <= 0) {
-                aPlayer.destroyCurrentEquippedItem();
+                GTUtility.destroyCurrentItem(aPlayer);
                 return false;
             }
         } catch (Exception e) {
@@ -171,11 +173,11 @@ public abstract class MetaBaseItem extends GTGenericItem
         try {
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
                 if (tBehavior.onItemUse(this, aStack, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ)) {
-                    if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+                    if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
                     return true;
                 }
             if (aStack.stackSize <= 0) {
-                aPlayer.destroyCurrentEquippedItem();
+                GTUtility.destroyCurrentItem(aPlayer);
                 return false;
             }
         } catch (Exception e) {
@@ -203,11 +205,11 @@ public abstract class MetaBaseItem extends GTGenericItem
                 hitX,
                 hitY,
                 hitZ)) {
-                    if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+                    if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
                     return true;
                 }
             if (aStack.stackSize <= 0) {
-                aPlayer.destroyCurrentEquippedItem();
+                GTUtility.destroyCurrentItem(aPlayer);
                 return false;
             }
         } catch (Exception e) {
@@ -230,14 +232,44 @@ public abstract class MetaBaseItem extends GTGenericItem
         return aStack;
     }
 
+    /** Returns null for item damage out of bounds. */
+    public Materials getMaterial(int damage) {
+        if (damage < 0) {
+            return null;
+        }
+        if (damage >= 32000) {
+            return null;
+        }
+        return GregTechAPI.sGeneratedMaterials[damage % 1_000];
+    }
+
     @Override
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        if (Client.tooltip.showFormula) {
+        if (aStack.getItemDamage() < 0 || aStack.getItemDamage() >= 32000) {
             String tKey = getUnlocalizedName(aStack) + ".tooltip";
             String[] tStrings = GTLanguageManager.getTranslation(tKey)
                 .split("/n ");
-            for (String tString : tStrings)
-                if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) aList.add(tString);
+            for (String tString : tStrings) if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) {
+                aList.add(tString);
+            }
+        } else {
+            Materials material = getMaterial(aStack.getItemDamage());
+            if (material != null) {
+                String flavorText = material.getFlavorText();
+                String formula = material.getChemicalTooltip();
+
+                if (Client.tooltip.showFormula) {
+                    if (formula != null && !formula.isEmpty()) {
+                        aList.add(formula);
+                    }
+                }
+
+                if (Client.tooltip.showFlavorText) {
+                    if (flavorText != null && !flavorText.isEmpty()) {
+                        aList.add("§8§o" + flavorText);
+                    }
+                }
+            }
         }
 
         Long[] tStats = getElectricStats(aStack);
@@ -669,4 +701,26 @@ public abstract class MetaBaseItem extends GTGenericItem
         return false;
     }
 
+    @Override
+    public String getItemStackDisplayName(final ItemStack itemStack) {
+        final String base = super.getItemStackDisplayName(itemStack);
+
+        ArrayList<IItemBehaviour<MetaBaseItem>> behaviorList = mItemBehaviors.get((short) getDamage(itemStack));
+        if (behaviorList == null) {
+            return base;
+        }
+
+        try {
+            for (IItemBehaviour<MetaBaseItem> behavior : behaviorList) {
+                final String newName = behavior.getNameOverride(base, itemStack);
+                if (newName != null) {
+                    return newName;
+                }
+            }
+        } catch (Exception e) {
+            if (D1) e.printStackTrace(GTLog.err);
+        }
+
+        return base;
+    }
 }

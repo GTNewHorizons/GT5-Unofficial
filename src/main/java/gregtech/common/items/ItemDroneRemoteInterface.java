@@ -17,12 +17,17 @@ import com.cleanroommc.modularui.factory.GuiManager;
 import com.cleanroommc.modularui.factory.ItemStackGuiData;
 import com.cleanroommc.modularui.factory.ItemStackGuiFactory;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.modularui2.GTModularScreen;
 import gregtech.common.gui.modularui.item.DroneRemoteInterfaceGUI;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 
@@ -112,5 +117,11 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
             }
         }
         return new DroneRemoteInterfaceGUI(guiSyncManager, centre).build();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public ModularScreen createScreen(ItemStackGuiData data, ModularPanel mainPanel) {
+        return new GTModularScreen(mainPanel, GTGuiThemes.STANDARD);
     }
 }

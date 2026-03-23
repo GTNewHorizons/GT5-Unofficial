@@ -16,10 +16,9 @@ import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HarvestTool;
-import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
@@ -28,9 +27,9 @@ import tectech.mechanics.pipe.PipeActivity;
 
 public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActivePipe {
 
-    public static final IIconContainer EM_PIPE = new CustomIcon("iconsets/EM_DATA");
-    public static final IIconContainer EM_BAR = new CustomIcon("iconsets/EM_BAR");
-    public static final IIconContainer EM_BAR_ACTIVE = new CustomIcon("iconsets/EM_BAR_ACTIVE");
+    public static final IIconContainer EM_PIPE = Textures.BlockIcons.custom("iconsets/EM_DATA");
+    public static final IIconContainer EM_BAR = Textures.BlockIcons.custom("iconsets/EM_BAR");
+    public static final IIconContainer EM_BAR_ACTIVE = Textures.BlockIcons.custom("iconsets/EM_BAR_ACTIVE");
 
     protected boolean mIsActive;
 
@@ -44,9 +43,6 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
         super(prototype.mName, 0);
         mThickness = prototype.mThickness;
     }
-
-    @Override
-    public abstract IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity base, ForgeDirection side, int aConnections, int colorIndex,

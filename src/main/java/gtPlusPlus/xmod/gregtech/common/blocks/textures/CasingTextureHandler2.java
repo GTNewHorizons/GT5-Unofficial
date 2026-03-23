@@ -56,7 +56,7 @@ public class CasingTextureHandler2 {
                     }
                 }
                 case 14 -> {
-                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+                    return Textures.GlobalIcons.RENDERING_ERROR.getIcon();
                 }
                 case 15 -> {
                     return TexturesGtBlock.Sterile_Casing.getIcon();

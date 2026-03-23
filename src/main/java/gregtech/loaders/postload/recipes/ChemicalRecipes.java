@@ -18,6 +18,8 @@ import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.core.material.MaterialMisc.SODIUM_NITRATE;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import java.util.Locale;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -27,11 +29,13 @@ import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -50,6 +54,21 @@ public class ChemicalRecipes implements Runnable {
         registerBoth();
 
         polymerizationRecipes();
+
+        // From ProcessingDye - chemical dye
+        for (Dyes dye : Dyes.VALUES) {
+            String fluidName = "dye.chemical." + dye.name()
+                .toLowerCase(Locale.ENGLISH);
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    new OreDictItemStack(dye.name(), 1),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 2))
+                .fluidInputs(Materials.SulfuricAcid.getFluid(432))
+                .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 288))
+                .duration(30 * SECONDS)
+                .eut(48)
+                .addTo(UniversalChemical);
+        }
     }
 
     public void registerBoth() {

@@ -17,7 +17,6 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
-import gregtech.GTMod;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -176,7 +175,8 @@ public class CommonWidgets {
                 }
             });
             selectedSyncHandler.setChangeListener(() -> {
-                if (GTMod.proxy.isClientSide()) return;
+                if (selectedSyncHandler.getSyncManager()
+                    .isClient()) return;
                 baseMachine.getBaseMetaTileEntity()
                     .markInventoryBeenModified();
             });

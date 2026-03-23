@@ -32,9 +32,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -51,10 +51,10 @@ import tectech.util.TTUtility;
 /**
  * Created by Tec on 03.04.2017.
  */
-public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWidgets {
+public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo {
 
-    private static Textures.BlockIcons.CustomIcon EM_R;
-    private static Textures.BlockIcons.CustomIcon EM_R_ACTIVE;
+    private static IIconContainer EM_R;
+    private static IIconContainer EM_R_ACTIVE;
     public int heat = 0;
     private float overClock = 1, overVolt = 1;
     private static final Map<String, RackComponent> componentBinds = new HashMap<>();
@@ -96,8 +96,8 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_R_ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/EM_RACK_ACTIVE");
-        EM_R = new Textures.BlockIcons.CustomIcon("iconsets/EM_RACK");
+        EM_R_ACTIVE = Textures.BlockIcons.custom("iconsets/EM_RACK_ACTIVE");
+        EM_R = Textures.BlockIcons.custom("iconsets/EM_RACK");
     }
 
     @Override

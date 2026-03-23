@@ -106,7 +106,7 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
             case 12 -> TexturesGtBlock.Casing_Redox_5.getIcon();
             case 13 -> TexturesGtBlock.TEXTURE_MAGIC_PANEL_B.getIcon();
             case 15 -> TexturesGtBlock.Turbine_SC_Material_Casing.getIcon();
-            default -> Textures.BlockIcons.RENDERING_ERROR.getIcon();
+            default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
         };
     }
 }

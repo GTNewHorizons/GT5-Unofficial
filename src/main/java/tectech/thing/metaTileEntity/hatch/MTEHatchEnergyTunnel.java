@@ -1,13 +1,11 @@
 package tectech.thing.metaTileEntity.hatch;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -19,6 +17,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.common.gui.modularui.hatch.MTEHatchEnergyTunnelGui;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.util.CommonValues;
@@ -35,14 +34,12 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
             aNameRegional,
             aTier,
             0,
-            new String[] { CommonValues.TEC_MARK_GENERAL,
+            MTEHatch.formatEnergyInfoDesc(
+                false,
+                aTier,
+                aAmp,
                 translateToLocal("gt.blockmachines.hatch.energytunnel.desc.0"),
-                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
-                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                    + EnumChatFormatting.YELLOW
-                    + formatNumber(aAmp * V[aTier])
-                    + EnumChatFormatting.RESET
-                    + " EU/t", },
+                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip")),
             aAmp); // Energy injecting terminal for Multiblocks
     }
 

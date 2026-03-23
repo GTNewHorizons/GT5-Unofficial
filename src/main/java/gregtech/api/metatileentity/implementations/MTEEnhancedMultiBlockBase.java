@@ -35,7 +35,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.client.volumetric.ISoundPosition;
@@ -143,8 +142,6 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
      */
     @Override
     public abstract IStructureDefinition<T> getStructureDefinition();
-
-    protected abstract MultiblockTooltipBuilder createTooltip();
 
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {

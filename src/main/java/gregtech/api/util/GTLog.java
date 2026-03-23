@@ -22,13 +22,15 @@ public class GTLog {
     public static PrintStream err = System.err;
     public static PrintStream ore = new LogBuffer();
     public static PrintStream exp = new LogBuffer();
+    public static PrintStream ico = new LogBuffer();
     public static File mLogFile;
     public static File mOreDictLogFile;
     public static File mExplosionLog;
+    public static File mRegisterIconsLog;
 
     public static class LogBuffer extends PrintStream {
 
-        public final List<String> mBufferedOreDictLog = new ArrayList<>();
+        public final List<String> lineBuffer = new ArrayList<>();
 
         public LogBuffer() {
             super(new OutputStream() {
@@ -42,7 +44,7 @@ public class GTLog {
 
         @Override
         public void println(String aString) {
-            mBufferedOreDictLog.add(aString);
+            lineBuffer.add(aString);
         }
     }
 

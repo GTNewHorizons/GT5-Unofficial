@@ -2757,7 +2757,7 @@ public class OrePrefixes {
                 if (name.startsWith("nugget")) return materialPrefix + "%material" + " Chip";
                 if (name.startsWith("plate")) return materialPrefix + "%material" + " Plank";
             }
-            case "Plastic", "Rubber", "Polyethylene", "Epoxid", "EpoxidFiberReinforced", "Polydimethylsiloxane", "Silicone", "Polysiloxane", "Polycaprolactam", "Polytetrafluoroethylene", "PolyvinylChloride", "Polystyrene", "StyreneButadieneRubber" -> {
+            case "Plastic", "Rubber", "Polyethylene", "Epoxid", "EpoxidFiberReinforced", "Polydimethylsiloxane", "Silicone", "Polysiloxane", "Polycaprolactam", "Polytetrafluoroethylene", "PolyvinylChloride", "Polystyrene", "StyreneButadieneRubber", "Polybenzimidazole", "RadoxPoly", "PolyphenyleneSulfide" -> {
                 if (name.startsWith("dust")) return materialPrefix + "%material" + " Pulp";
                 if (name.startsWith("plate")) return materialPrefix + "%material" + " Sheet";
                 if (name.startsWith("ingot")) return materialPrefix + "%material" + " Bar";

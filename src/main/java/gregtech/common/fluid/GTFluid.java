@@ -93,6 +93,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
 
     // ----- IGTFluid interface implementations -----
 
+    @Override
     public IGTRegisteredFluid addFluid() {
         if (FluidRegistry.registerFluid(GTFluid.this)) {
             // Registered as a new Fluid

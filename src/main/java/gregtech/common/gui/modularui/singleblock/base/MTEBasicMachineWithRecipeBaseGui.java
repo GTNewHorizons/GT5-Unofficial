@@ -23,7 +23,6 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
-import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
@@ -32,7 +31,7 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 
-public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTEBasicMachineWithRecipe> {
+public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseGui<MTEBasicMachineWithRecipe> {
 
     BasicUIProperties properties;
     BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlayFunction;
@@ -219,13 +218,13 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     protected FluidSlot createFluidInputSlot() {
         return new FluidSlot().overlay(slotOverlayFunction.apply(0, true, false, false))
-            .tooltipShowUpTimer(TOOLTIP_DELAY)
             .syncHandler(new FluidSlotSyncHandler(machine.getFluidTank()) {
 
                 @Override
                 protected void onValueChanged() {
                     super.onValueChanged();
-                    if (GTMod.proxy.isClientSide()) return;
+                    if (this.getSyncManager()
+                        .isClient()) return;
                     machine.getBaseMetaTileEntity()
                         .markInventoryBeenModified();
                 }
@@ -258,13 +257,13 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     protected FluidSlot createFluidOutputSlot() {
         return new FluidSlot().overlay(slotOverlayFunction.apply(0, true, true, false))
-            .tooltipShowUpTimer(TOOLTIP_DELAY)
             .syncHandler(new FluidSlotSyncHandler(machine.getFluidOutputTank()) {
 
                 @Override
                 protected void onValueChanged() {
                     super.onValueChanged();
-                    if (GTMod.proxy.isClientSide()) return;
+                    if (this.getSyncManager()
+                        .isClient()) return;
                     machine.getBaseMetaTileEntity()
                         .markInventoryBeenModified();
                 }
