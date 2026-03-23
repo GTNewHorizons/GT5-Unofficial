@@ -41,7 +41,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -174,12 +173,6 @@ public class MTESteamAlloySmelter extends MTESteamMultiBlockBase<MTESteamAlloySm
             return 2;
         }
         return null;
-    }
-
-    protected void updateHatchTexture() {
-        for (MTEHatch h : mSteamInputs) h.updateTexture(bronzeCasing.textureId);
-        for (MTEHatch h : mSteamOutputs) h.updateTexture(bronzeCasing.textureId);
-        for (MTEHatch h : mSteamInputFluids) h.updateTexture(bronzeCasing.textureId);
     }
 
     @Override
