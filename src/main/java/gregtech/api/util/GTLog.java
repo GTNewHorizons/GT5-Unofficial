@@ -64,25 +64,22 @@ public class GTLog {
 
     public static void writeExplosionLog(IMetaTileEntity tileEntity, String details) {
         IGregTechTileEntity baseTileEntity = tileEntity.getBaseMetaTileEntity();
-        writeExplosionLog(
-            baseTileEntity.getWorld().provider.getDimensionName(),
-            baseTileEntity.getXCoord(),
-            baseTileEntity.getYCoord(),
-            baseTileEntity.getZCoord(),
-            tileEntity.getLocalName(),
-            baseTileEntity.getOwnerName(),
-            details);
+        writeExplosionLog(baseTileEntity, tileEntity.getLocalName(), details);
     }
 
     public static void writeExplosionLog(IGregTechTileEntity baseTileEntity, String name, String details) {
-        writeExplosionLog(
-            baseTileEntity.getWorld().provider.getDimensionName(),
-            baseTileEntity.getXCoord(),
-            baseTileEntity.getYCoord(),
-            baseTileEntity.getZCoord(),
-            name,
-            baseTileEntity.getOwnerName(),
-            details);
+        if (baseTileEntity != null) {
+            writeExplosionLog(
+                baseTileEntity.getWorld().provider.getDimensionName(),
+                baseTileEntity.getXCoord(),
+                baseTileEntity.getYCoord(),
+                baseTileEntity.getZCoord(),
+                name,
+                baseTileEntity.getOwnerName(),
+                details);
+        } else {
+            exp.println("error: baseTileEntity is null, unable to log explosion");
+        }
     }
 
 }
