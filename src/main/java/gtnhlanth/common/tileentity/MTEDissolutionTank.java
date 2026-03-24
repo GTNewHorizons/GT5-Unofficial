@@ -139,12 +139,6 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
     }
 
     private boolean checkRatio(GTRecipe tRecipe, List<FluidStack> tFluidInputs) {
-        /*
-         * System.out.println("Called checkRatio with:");
-         * for (FluidStack f : tFluidInputs) {
-         * System.out.println(f.getUnlocalizedName() + " " + f.amount);
-         * }
-         */
         FluidStack majorGenericFluid = tRecipe.mFluidInputs[0];
         FluidStack minorGenericFluid = tRecipe.mFluidInputs[1];
 
@@ -161,8 +155,6 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
                     minorAmount += f.amount;
                 }
         }
-
-        // System.out.println("Major: " + majorAmount + ", minor: " + minorAmount);
 
         return majorAmount == minorAmount * tRecipe.mSpecialValue;
     }
