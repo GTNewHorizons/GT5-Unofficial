@@ -4613,6 +4613,10 @@ gt.les.tips=Necessary evil\nAdvanced Essentia smelting technology\nMaximum paral
 gt.mass_solidifier.tips.1=Speeds up to a maximum of %s\nDecays at double the rate that it speeds up at
 gt.mass_solidifier.tips.2=Can use §eSolidifier Hatches§7 to hold fluids and molds in the same hatch\n§9Pretty Ⱄⱁⰾⰻⰴ, isn't it
 
+gt.fluid_shaper.tips.1=Can use §eSolidifier Hatches§7 to hold different molds
+gt.fluid_shaper.tips.2=Gains %s Parallels per §fVoltage§7 Tier per width expansion\nSpeeds up to a maximum of %s\nDecays at double the rate that it speeds up at
+gt.fluid_shaper.flavor=§9Pretty Ⱄⱁⰾⰻⰴ, isn't it
+
 gt.i_chisel.tips=Factory Grade Auto Chisel\nTarget block goes in Controller slot for common Input Buses\nYou can also set a target block in each Chisel Input Bus and use them as an Input Bus\nIf no target is provided for common buses, the result of the first chisel is used
 
 gt.nac.tips.1=Uses Circuit Components (%1$s) to create circuits at unimaginable speeds\nClick the Logo Icon in the GUI for more information<SEPARATOR>%1$s can only exist in the perfect environment present in %2$s\nConvert items to %1$s in the control room by placing them in a %3$s input bus\nEvery §45§7 seconds, all items in %3$s input buses are placed\nin Vacuum Conveyor Outputs (%4$s) of the same %5$s\nFinished circuit %1$s are converted back into circuits by routing them to a %6$s in the control room\n%1$s in a %3$s %6$s are placed in an output bus of the same %5$s<SEPARATOR>%1$s must be processed into a refined version by §f§nmodules§r§7 before they\ncan be assembled into a circuit in the §aNanochip Assembly Matrix\nAll power from the energy hatch is distributed to the modules as they need it

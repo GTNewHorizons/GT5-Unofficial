@@ -34,6 +34,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.ParticleFX;
@@ -82,18 +83,11 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
             .addInfo("gt.mb_coke_oven.tips")
             .beginStructureBlock(3, 3, 3, true)
             .addController("front_center")
-            .addCasingInfoRange(
-                ItemList.CokeOvenCasing.get(1)
-                    .getDisplayName(),
-                0,
-                26,
-                false)
+            .addCasingInfoRange(Casings.CokeOvenBricks.getLocalizedName(), 0, 26, false)
             .addStructurePart(
                 ItemList.CokeOvenHatch.get(1)
                     .getDisplayName(),
-                TooltipHelper.anyCasingText(
-                    ItemList.CokeOvenCasing.get(1)
-                        .getDisplayName()))
+                TooltipHelper.anyCasingText(Casings.CokeOvenBricks.getLocalizedName()))
             .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
             .toolTipFinisher(AuthorJulia);
     }
