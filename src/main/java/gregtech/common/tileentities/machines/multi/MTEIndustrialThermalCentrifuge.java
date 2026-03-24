@@ -279,4 +279,12 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
 
         return (float) (BASE_EU_MULTIPLIER * heatingBonus);
     }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mCasing = 0;
+        coilLevel = null;
+        solenoidLevel = null;
+    }
 }
