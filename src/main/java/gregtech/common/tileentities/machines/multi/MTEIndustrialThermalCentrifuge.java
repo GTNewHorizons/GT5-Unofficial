@@ -219,7 +219,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
     }
 
     public boolean checkHatch() {
-        return mMaintenanceHatches.size() == 1 && mMufflerHatches.size() == 1 && mEnergyHatches.size() >= 1;
+        return mMufflerHatches.size() == 1 && mEnergyHatches.size() >= 1;
     }
 
     @Override
