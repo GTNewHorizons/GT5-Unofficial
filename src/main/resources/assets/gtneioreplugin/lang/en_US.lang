@@ -6,7 +6,7 @@ gtnop.gui.undergroundFluid.name=Underground Fluid Stats
 gtnop.gui.ieVeinStat.name=IE Vein Stats
 gtnop.gui.bedrockOreStat.name=Bedrock Ore Stats
 
-gtnop.gui.nei.veinName=Vein name
+gtnop.gui.nei.veinName=%s
 gtnop.gui.nei.primaryOre=Primary
 gtnop.gui.nei.secondaryOre=Secondary
 gtnop.gui.nei.betweenOre=Between
@@ -34,7 +34,6 @@ gtnop.gui.nei.chanceDrops=Drops
 gtnop.gui.nei.ieVeinComponent=Vein components
 gtnop.gui.nei.fromMod=From mod
 
-gtnop.gui.nei.seeAll=See All
 gtnop.gui.nei.vein=Vein
 gtnop.gui.nei.oreOthers=Other ore
 gtnop.nei.genPosition=Position

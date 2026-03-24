@@ -6,7 +6,7 @@ gtnop.gui.undergroundFluid.name=地下流体信息
 gtnop.gui.ieVeinStat.name=IE虚拟矿脉信息
 gtnop.gui.bedrockOreStat.name=基岩矿脉信息
 
-gtnop.gui.nei.veinName=矿脉名称
+gtnop.gui.nei.veinName=%s
 gtnop.gui.nei.primaryOre=上层矿石
 gtnop.gui.nei.secondaryOre=下层矿石
 gtnop.gui.nei.betweenOre=中层矿石
@@ -34,7 +34,6 @@ gtnop.gui.nei.chanceDrops=几率掉落
 gtnop.gui.nei.ieVeinComponent=矿脉构成
 gtnop.gui.nei.fromMod=来自模组
 
-gtnop.gui.nei.seeAll=查看全部
 gtnop.gui.nei.vein=矿脉
 gtnop.gui.nei.oreOthers=伴随生成
 gtnop.nei.genPosition=生成位置

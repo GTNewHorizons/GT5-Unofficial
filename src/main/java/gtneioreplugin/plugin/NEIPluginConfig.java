@@ -85,6 +85,8 @@ public class NEIPluginConfig implements IConfigureNEI {
                     "gtneioreplugin.plugin.gregtech5." + handler.getKey(),
                     GTNEIOrePlugin.NAME,
                     GTNEIOrePlugin.MODID).setHeight(160)
+                        .setShowFavoritesButton(false)
+                        .setShowOverlayButton(false)
                         .setMaxRecipesPerPage(2)
                         .setDisplayStack(handler.getValue())
                         .build());
