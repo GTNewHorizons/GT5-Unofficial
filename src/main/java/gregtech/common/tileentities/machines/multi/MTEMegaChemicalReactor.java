@@ -19,7 +19,6 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -42,7 +41,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMegaChemicalReactor>
@@ -98,10 +96,8 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Reactor, MCR")
-            .addInfo(
-                TooltipHelper
-                    .coloredText(TooltipHelper.italicText("Infinite Potential!"), EnumChatFormatting.DARK_GRAY))
+        tt.addMachineType("machtype.mcr")
+            .addInfo("gt.mcr.flavor")
             .addStaticParallelInfo(PARALLELS)
             .addPerfectOCInfo()
             .addSeparator()
@@ -110,17 +106,17 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(5, 5, 9, false)
-            .addController("Front center")
-            .addCasingInfoMin("Chemically Inert Machine Casing", 46, false)
-            .addCasingInfoExactly("Fusion Coil Block", 7, false)
-            .addCasingInfoExactly("PTFE Pipe Casing", 28, false)
-            .addCasingInfoExactly("Any Tiered Glass", 64, true)
-            .addEnergyHatch("Hint block ", 1)
-            .addMaintenanceHatch("Hint block ", 1)
-            .addInputHatch("Hint block ", 1)
-            .addInputBus("Hint block ", 1)
-            .addOutputBus("Hint block ", 1)
-            .addOutputHatch("Hint block ", 1)
+            .addController("front_center")
+            .addCasingInfoMin(Casings.ChemicallyInertMachineCasing.getLocalizedName(), 46)
+            .addCasingInfoExactly(Casings.FusionCoilBlock.getLocalizedName(), 7)
+            .addCasingInfoExactly(Casings.PTFEPipeCasing.getLocalizedName(), 28)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 64, true)
+            .addEnergyHatch("<hint>", 1)
+            .addMaintenanceHatch("<hint>", 1)
+            .addInputHatch("<hint>", 1)
+            .addInputBus("<hint>", 1)
+            .addOutputBus("<hint>", 1)
+            .addOutputHatch("<hint>", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

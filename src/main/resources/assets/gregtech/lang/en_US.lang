@@ -4521,8 +4521,11 @@ machtype.multi_nq_gen=Naquadah Reactor, LNR
 machtype.prass=Precise Assembler, PrAss
 machtype.bbb=Brewery, BBB
 machtype.lst=Steam Turbine, LST
+machtype.mcr=Chemical Reactor, MCR
 
 # Multiblock Tooltip lines
+gt.mcr.flavor=§8§oInfinite Potential!
+
 gt.lst.tips=Needs a Turbine, place inside controller\nOutputs Distilled Water as well as producing power\nPower output depends on turbine and fitting\nUse screwdriver to adjust fitting of turbine
 gt.lst.info.maintenance=Side centered
 gt.lst.info.i_hatch=Steam, Side centered
