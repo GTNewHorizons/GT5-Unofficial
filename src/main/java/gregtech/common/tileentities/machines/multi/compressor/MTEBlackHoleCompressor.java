@@ -245,12 +245,12 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         ItemStack aTool) {
         shouldRender = !shouldRender;
         if (!shouldRender) {
-            GTUtility.sendChatToPlayer(aPlayer, "Rendering off");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.rendering.off");
             rendererTileEntity = null;
             destroyRenderBlock();
         } else {
             if (blackHoleStatus != 1) createRenderBlock();
-            GTUtility.sendChatToPlayer(aPlayer, "Rendering on");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.rendering.on");
         }
 
     }
