@@ -95,18 +95,18 @@ public class MTEImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEIm
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Implosion Compressor")
-            .addInfo("Explosions are fun")
+        tt.addMachineType("gt.recipe.implosioncompressor")
+            .addInfo("gt.implosion_compressor.flavor")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
-            .addCasingInfoRange("Solid Steel Machine Casing", 16, 24, false)
-            .addStructureInfo("Casings can be replaced with Explosion Hazard Signs")
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addMufflerHatch("Any casing", 1)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
+            .addController("front_center")
+            .addCasingInfoRange(Casings.SolidSteelMachineCasing.getLocalizedName(), 16, 24, false)
+            .addStructureInfo("gt.implosion_compressor.info")
+            .addEnergyHatch("<casing>", 1)
+            .addMaintenanceHatch("<casing>", 1)
+            .addMufflerHatch("<casing>", 1)
+            .addInputBus("<casing>", 1)
+            .addOutputBus("<casing>", 1)
             .toolTipFinisher();
         return tt;
     }

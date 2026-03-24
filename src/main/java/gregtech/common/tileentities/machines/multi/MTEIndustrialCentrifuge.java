@@ -147,22 +147,25 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Centrifuge")
+        tt.addMachineType("gt.recipe.centrifuge")
             .addBulkMachineInfo(PARALLEL_PER_TIER, SPEED, EU_EFFICIENCY)
-            .addInfo("Disable animations with a screwdriver")
+            .addInfo("gt.multi_centrifuge.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Centrifuge Casings", 6, false)
-            .addCasingInfoExactly("Large Sieve Grate", 18, false)
-            .addCasingInfoExactly("Eglin Steel Frame Box", 24, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .addController("front_center")
+            .addCasingInfoMin(Casings.CentrifugeCasing.getLocalizedName(), 6)
+            .addCasingInfoExactly(Casings.LargeSieveGrate.getLocalizedName(), 18)
+            .addCasingInfoExactly(
+                MaterialsAlloy.EGLIN_STEEL.getFrameBox(1)
+                    .getDisplayName(),
+                24)
+            .addInputBus("<casing>", 1)
+            .addOutputBus("<casing>", 1)
+            .addInputHatch("<casing>", 1)
+            .addOutputHatch("<casing>", 1)
+            .addEnergyHatch("<casing>", 1)
+            .addMaintenanceHatch("<casing>", 1)
+            .addMufflerHatch("<casing>", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Ducked")
             .toolTipFinisher();
         return tt;

@@ -4519,8 +4519,14 @@ machtype.ucfe=Chemical Engine, UCFE
 machtype.neutron_activator=Neutron Activator, NA
 machtype.multi_nq_gen=Naquadah Reactor, LNR
 machtype.prass=Precise Assembler, PrAss
+machtype.bbb=Brewery, BBB
 
 # Multiblock Tooltip lines
+gt.multi_centrifuge.tips=Disable animations with a screwdriver
+
+gt.implosion_compressor.flavor=Explosions are fun
+gt.implosion_compressor.info=Casings can be replaced with Explosion Hazard Signs
+
 gt.prass.tips.1=No more than 7nm of error\nHas Two Modes: Precise and Normal\nUse a Screwdriver to change modes<SEPARATOR>Precise Mode unlocks the ability to assemble precise components\nCasing Tier determines Maximum Recipe Tier<SEPARATOR>\nNormal Mode allows standard assembler recipes\n§fPrecise Casing§7 Tier determines §6Parallels\n%s->%s Parallels
 gt.prass.tips.2=<SEPARATOR>Machine Casing limits the voltage tier the machine can work on, %s-tier Machine Casing unlocks all.
 gt.prass.text.imprecise=Imprecise
