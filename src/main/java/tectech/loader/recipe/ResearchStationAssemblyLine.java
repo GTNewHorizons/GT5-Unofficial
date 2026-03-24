@@ -2995,8 +2995,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 8),
                     MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFrameBox(8),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Creon, 6),
-                    ItemList.StableBosonContainmentUnit.get(1),
-                    ItemList.Field_Generator_UEV.get(2),
+                    ItemList.StableBosonContainmentUnit.get(1), ItemList.Field_Generator_UEV.get(2),
                     // Artificial Gravity Generator
                     getModItem(GalacticraftAmunRa.ID, "tile.machines3", 4L, 1) },
                 new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(16 * INGOTS),
