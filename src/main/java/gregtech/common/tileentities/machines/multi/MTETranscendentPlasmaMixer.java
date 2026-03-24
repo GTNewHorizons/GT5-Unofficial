@@ -106,7 +106,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String anyCasing = TooltipHelper.anyCasingText(Casings.DimensionalInjectionCasing.getLocalizedName());
+        String anyCasing = TooltipHelper.anyCasingText(Casings.DimensionalInjectionCasing);
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.tpm")
             .addInfo("gt.tpm.tips")

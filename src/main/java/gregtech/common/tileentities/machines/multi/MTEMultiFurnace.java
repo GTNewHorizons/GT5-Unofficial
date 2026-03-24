@@ -114,7 +114,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             .addCasingInfoRange(Casings.HeatProofMachineCasing.getLocalizedName(), 8, 14, false)
             .addStructurePart("GT5U.tooltip.structure.heating_coil", "gt.multi_furnace.info.coil")
             .addEnergyHatch("<bottom casing>", 1)
-            .addMaintenanceHatch(TooltipHelper.anyCasingText(Casings.HeatProofMachineCasing.getLocalizedName()), 1)
+            .addMaintenanceHatch(TooltipHelper.anyCasingText(Casings.HeatProofMachineCasing), 1)
             .addMufflerHatch("gt.multi_furnace.info.muffler", 2)
             .addInputBus("<bottom casing>", 1)
             .addOutputBus("<bottom casing>", 1)

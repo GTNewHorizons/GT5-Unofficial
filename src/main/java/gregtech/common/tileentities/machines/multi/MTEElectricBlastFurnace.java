@@ -121,7 +121,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addInputBus("<bottom casing>", 1)
             .addInputHatch("<bottom casing>", 1)
             .addOutputBus("<bottom casing>", 1)
-            .addOutputHatch(TooltipHelper.anyCasingText(Casings.HeatProofMachineCasing.getLocalizedName()), 3)
+            .addOutputHatch(TooltipHelper.anyCasingText(Casings.HeatProofMachineCasing), 3)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;

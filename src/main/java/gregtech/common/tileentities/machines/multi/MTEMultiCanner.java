@@ -114,7 +114,7 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String anyCasing = TooltipHelper.anyCasingText(Casings.SolidSteelMachineCasing.getLocalizedName());
+        String anyCasing = TooltipHelper.anyCasingText(Casings.SolidSteelMachineCasing);
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.canner")
             .addBulkMachineInfo(8, 2f, 1)

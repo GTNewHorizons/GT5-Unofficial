@@ -353,7 +353,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String anyCasing = TooltipHelper.anyCasingText(Casings.BackgroundRadiationAbsorbentCasing.getLocalizedName());
+        String anyCasing = TooltipHelper.anyCasingText(Casings.BackgroundRadiationAbsorbentCasing);
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.compressor", "machtype.adv_nt_compressor", "BHC")
             .addInfo("gt.bhc.tips.1")

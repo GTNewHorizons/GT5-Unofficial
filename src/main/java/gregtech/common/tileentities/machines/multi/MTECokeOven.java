@@ -87,7 +87,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
             .addStructurePart(
                 ItemList.CokeOvenHatch.get(1)
                     .getDisplayName(),
-                TooltipHelper.anyCasingText(Casings.CokeOvenBricks.getLocalizedName()))
+                TooltipHelper.anyCasingText(Casings.CokeOvenBricks))
             .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
             .toolTipFinisher(AuthorJulia);
     }

@@ -73,7 +73,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String anyCasing = TooltipHelper.anyCasingText(Casings.ThermalProcessingCasing.getLocalizedName());
+        String anyCasing = TooltipHelper.anyCasingText(Casings.ThermalProcessingCasing);
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addBulkMachineInfo(8, 3f, 0.75f)

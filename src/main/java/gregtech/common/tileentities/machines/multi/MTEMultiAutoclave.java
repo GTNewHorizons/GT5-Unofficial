@@ -207,7 +207,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String anyCasing = TooltipHelper.anyCasingText(Casings.PressureContainmentCasing.getLocalizedName());
+        String anyCasing = TooltipHelper.anyCasingText(Casings.PressureContainmentCasing);
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.autoclave")
             .addDynamicParallelInfo(12, TooltipTier.ITEM_PIPE_CASING)

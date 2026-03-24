@@ -119,7 +119,7 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String anyCasing = TooltipHelper.anyCasingText(Casings.InconelReinforcedCasing.getLocalizedName());
+        String anyCasing = TooltipHelper.anyCasingText(Casings.InconelReinforcedCasing);
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("gt.zyngen.tips.1")

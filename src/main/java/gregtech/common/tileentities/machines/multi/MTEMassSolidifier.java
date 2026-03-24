@@ -168,7 +168,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String anyCasing = TooltipHelper.anyCasingText(Casings.SolidifierCasing.getLocalizedName());
+        String anyCasing = TooltipHelper.anyCasingText(Casings.SolidifierCasing);
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.fluidsolidifier")
             .addVoltageParallelInfo(10)

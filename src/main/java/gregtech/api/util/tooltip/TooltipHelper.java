@@ -8,6 +8,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.util.GTUtility;
@@ -213,7 +214,7 @@ public class TooltipHelper {
      *         <br>
      *         used as a more specific `Any Casing`
      */
-    public static String anyCasingText(String casingName) {
-        return GTUtility.nestParams("GT5U.MBTT.HatchInfo", casingName);
+    public static String anyCasingText(Casings casing) {
+        return GTUtility.nestParams("GT5U.MBTT.HatchInfo", casing.getLocalizedName());
     }
 }

@@ -380,7 +380,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String anyCasing = TooltipHelper.anyCasingText(Casings.VibrationSafeCasing.getLocalizedName());
+        String anyCasing = TooltipHelper.anyCasingText(Casings.VibrationSafeCasing);
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.centrifuge")
             .addInfo("gt.spinmatron.tips.1")
