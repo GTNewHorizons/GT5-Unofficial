@@ -402,26 +402,6 @@ public class RecipeLoaderChemicalSkips {
             .metadata(QFT_CATALYST, GregtechItemList.BiologicalIntelligenceCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 4)
             .addTo(quantumForceTransformerRecipes);
-        // Rare Particles
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.Laser_Lens_Special.get(1))
-            .itemOutputs(
-                Particle.getBaseParticle(Particle.Z_BOSON),
-                Particle.getBaseParticle(Particle.W_BOSON),
-                Particle.getBaseParticle(Particle.LAMBDA),
-                Particle.getBaseParticle(Particle.OMEGA),
-                Particle.getBaseParticle(Particle.HIGGS_BOSON),
-                Particle.getBaseParticle(Particle.ETA_MESON))
-            .fluidInputs(
-                Materials.Hydrogen.getPlasma(30_000),
-                Materials.Helium.getPlasma(30_000),
-                Materials.Americium.getPlasma(30_000),
-                new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 30_000))
-            .duration(3 * MINUTES + 20 * SECONDS)
-            .eut(TierEU.RECIPE_UIV)
-            .metadata(QFT_CATALYST, GregtechItemList.SynchrotronCapableCatalyst.get(0))
-            .metadata(QFT_FOCUS_TIER, 4)
-            .addTo(quantumForceTransformerRecipes);
 
         if (GalaxySpace.isModLoaded()) {
             // Seaweed
@@ -658,19 +638,6 @@ public class RecipeLoaderChemicalSkips {
                 Materials.TranscendentMetal.getNanite(1))
             .circuit(10)
             .itemOutputs(GregtechItemList.BiologicalIntelligenceCatalyst.get(1))
-            .fluidInputs(GGMaterial.shirabon.getMolten(10 * STACKS))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_UMV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.EmptyCatalystCarrier.get(1),
-                Particle.getBaseParticle(Particle.HIGGS_BOSON),
-                Particle.getIon("Helium", 0),
-                Particle.getIon("Hydrogen", 0),
-                Materials.Eternity.getNanite(16))
-            .circuit(10)
-            .itemOutputs(GregtechItemList.SynchrotronCapableCatalyst.get(1))
             .fluidInputs(GGMaterial.shirabon.getMolten(10 * STACKS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
