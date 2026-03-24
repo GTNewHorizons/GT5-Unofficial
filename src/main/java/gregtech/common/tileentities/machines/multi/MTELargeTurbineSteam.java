@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -58,18 +59,15 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Steam Turbine, LST")
-            .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Outputs Distilled Water as well as producing power")
-            .addInfo("Power output depends on turbine and fitting")
-            .addInfo("Use screwdriver to adjust fitting of turbine")
+        tt.addMachineType("machtype.lst")
+            .addInfo("gt.lst.tips")
             .beginStructureBlock(3, 3, 4, true)
-            .addController("Front center")
-            .addCasingInfoRange("Turbine Casing", 8, 31, false)
-            .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Side centered", 2)
-            .addInputHatch("Steam, Side centered", 2)
-            .addOutputHatch("Distilled Water, Side centered", 2)
+            .addController("front_center")
+            .addCasingInfoRange(Casings.TurbineCasing.getLocalizedName(), 8, 31, false)
+            .addDynamoHatch("gt.mbtt.structure.back_center", 1)
+            .addMaintenanceHatch("gt.lst.info.maintenance", 2)
+            .addInputHatch("gt.lst.info.i_hatch", 2)
+            .addOutputHatch("gt.lst.info.o_hatch", 2)
             .toolTipFinisher();
         return tt;
     }

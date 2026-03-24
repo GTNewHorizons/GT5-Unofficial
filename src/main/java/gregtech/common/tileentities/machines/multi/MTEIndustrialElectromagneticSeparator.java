@@ -211,7 +211,7 @@ public class MTEIndustrialElectromagneticSeparator
         tt.addMachineType("gt.recipe.polarizer", "gt.recipe.electromagneticseparator")
             .addInfo("gt.mfe.tips.1")
             .beginStructureBlock(7, 6, 7, false)
-            .addController("front_bottom_center")
+            .addController("front_bottom_middle")
             .addCasingInfoMin("gt.blockcasings10.0.name", MIN_CASING)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 12, true)
             .addCasingInfoExactly(

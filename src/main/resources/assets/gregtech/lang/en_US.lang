@@ -4520,8 +4520,14 @@ machtype.neutron_activator=Neutron Activator, NA
 machtype.multi_nq_gen=Naquadah Reactor, LNR
 machtype.prass=Precise Assembler, PrAss
 machtype.bbb=Brewery, BBB
+machtype.lst=Steam Turbine, LST
 
 # Multiblock Tooltip lines
+gt.lst.tips=Needs a Turbine, place inside controller\nOutputs Distilled Water as well as producing power\nPower output depends on turbine and fitting\nUse screwdriver to adjust fitting of turbine
+gt.lst.info.maintenance=Side centered
+gt.lst.info.i_hatch=Steam, Side centered
+gt.lst.info.o_hatch=Distilled Water, Side centered
+
 gt.multi_centrifuge.tips=Disable animations with a screwdriver
 
 gt.implosion_compressor.flavor=Explosions are fun
