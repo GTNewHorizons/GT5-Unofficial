@@ -138,8 +138,10 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
             .matrix(matrix)
             .key(
                 's',
-                index -> new StockingSlot(isAutoPullSyncer)
-                    .slot(new ModularSlot(configItemHandler, index).filter(this::doesNotContainsSuchStack)))
+                index -> new StockingSlot(isAutoPullSyncer).slot(
+                    new ModularSlot(configItemHandler, index)
+                        .filter(is -> doesNotContainsSuchStack(is) && !isAutoPullSyncer.getBoolValue())
+                        .slotGroup(FILTER_INV_NAME)))
             .build()
             .coverChildren();
     }
