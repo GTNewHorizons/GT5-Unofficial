@@ -229,8 +229,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic()
-            .setSpeedBonus(1.0f / getSpeedBonus())
+        return new ProcessingLogic().setSpeedBonus(1.0f / getSpeedBonus())
             .setEuModifier(getEUMultiplier())
             .setMaxParallelSupplier(this::getTrueParallel);
     }
