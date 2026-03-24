@@ -155,14 +155,13 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, false)
             .addController("front_center")
-            .addCasingInfoMin(Casings.ElectrolyzerCasing.getLocalizedName(), 6, false)
+            .addCasingInfoMin(Casings.ElectrolyzerCasing.getLocalizedName(), 6)
             .addCasingInfoExactly(
                 MaterialsAlloy.POTIN.getFrameBox(1)
                     .getDisplayName(),
-                12,
-                false)
-            .addCasingInfoExactly(Casings.TinItemPipeCasing.getLocalizedName(), 4, false)
-            .addCasingInfoExactly(Casings.BrassItemPipeCasing.getLocalizedName(), 4, false)
+                12)
+            .addCasingInfoExactly(Casings.TinItemPipeCasing.getLocalizedName(), 4)
+            .addCasingInfoExactly(Casings.BrassItemPipeCasing.getLocalizedName(), 4)
             .addInputBus(anyCasing, 1)
             .addOutputBus(anyCasing, 1)
             .addInputHatch(anyCasing, 1)

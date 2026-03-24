@@ -216,8 +216,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 12, true)
             .addCasingInfoExactly(
                 GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.NeodymiumMagnetic),
-                37,
-                false)
+                37)
             .addStructurePart("gt.blockmachines.hatch.mag_hatch.name", "gt.mfe.info.1", 2)
             .addInputBus("<casing>", 1)
             .addOutputBus("<casing>", 1)
