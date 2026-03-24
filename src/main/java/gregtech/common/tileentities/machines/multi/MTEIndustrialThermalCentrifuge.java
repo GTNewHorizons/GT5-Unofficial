@@ -65,6 +65,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
 
     private static final double BASE_SPEED_BONUS = 2.5;
     private static final double BASE_EU_MULTIPLIER = 0.8;
+    private static final int BASE_PARALLELS = 8;
     private static IStructureDefinition<MTEIndustrialThermalCentrifuge> STRUCTURE_DEFINITION = null;
 
     public MTEIndustrialThermalCentrifuge(final int aID, final String aName, final String aNameRegional) {
@@ -84,7 +85,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Industrial Thermal Centrifuge, LTR")
-            .addBulkMachineInfo(8, (float) BASE_SPEED_BONUS, (float) BASE_EU_MULTIPLIER)
+            .addBulkMachineInfo(BASE_PARALLELS, (float) BASE_SPEED_BONUS, (float) BASE_EU_MULTIPLIER)
             .addDynamicParallelInfo(PARALLELS_PER_SOLENOID, TooltipTier.SOLENOID)
             .addInfo(
                 String.format(
@@ -236,7 +237,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
 
     @Override
     public int getMaxParallelRecipes() {
-        return (8 * GTUtility.getTier(this.getMaxInputVoltage()))
+        return (BASE_PARALLELS * GTUtility.getTier(this.getMaxInputVoltage()))
             + (solenoidLevel == null ? 0 : (PARALLELS_PER_SOLENOID * solenoidLevel));
     }
 
