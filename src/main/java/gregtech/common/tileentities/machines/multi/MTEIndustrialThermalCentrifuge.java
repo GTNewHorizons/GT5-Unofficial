@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -44,7 +43,6 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEIndustrialThermalCentrifuge>
@@ -102,7 +100,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 8, 5, false)
             .addController("Front Center")
-            .addCasingInfoMin("Thermal Processing Casings/Noise Hazard Sign Blocks", 92, false)
+            .addCasingInfoMin("Thermal Processing Casings", 92, false)
             .addCasingInfoMin("Heat Proof Machine Casings", 4, false)
             .addCasingInfoMin("Red Steel Frame Box", 16, false)
             .addCasingInfoMin("Solenoid Superconducting Coil", 6, true)
@@ -116,6 +114,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.SOLENOID)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "oasis_cactus")
             .toolTipFinisher();
         return tt;
     }
@@ -140,7 +139,6 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
                             .casingIndex(Casings.ThermalProcessingCasing.textureId)
                             .hint(1)
                             .build(),
-                        onElementPass(x -> ++x.casingAmount, ofBlock(ModBlocks.blockCasings2Misc, 0)),
                         onElementPass(x -> ++x.casingAmount, Casings.ThermalProcessingCasing.asElement())))
                 .addElement('A', chainAllGlasses())
                 .addElement('B', Casings.HeatProofMachineCasing.asElement())
