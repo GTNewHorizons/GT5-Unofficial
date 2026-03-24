@@ -84,7 +84,6 @@ import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -100,7 +99,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets,
+public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState, IAddGregtechLogo,
     IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable, IMEConnectable {
 
     private static final int SLOT_COUNT = 16;
@@ -562,6 +561,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
     }
 
+    @Override
     public boolean doFastRecipeCheck() {
         return expediteRecipeCheck;
     }
@@ -1166,10 +1166,14 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     private static String[] getDescriptionArray(boolean autoPullAvailable) {
-        List<String> strings = new ArrayList<>(autoPullAvailable ? 12 : 6);
+        List<String> strings = new ArrayList<>(autoPullAvailable ? 13 : 7);
         if (autoPullAvailable) {
+            strings.add(
+                StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": " + EnumChatFormatting.YELLOW + "ASIH");
             strings.add("Advanced fluid input for Multiblocks");
         } else {
+            strings.add(
+                StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": " + EnumChatFormatting.YELLOW + "SIH");
             strings.add("Next-gen fluid input for Multiblocks");
         }
         strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 9 : 8] + VN[autoPullAvailable ? 9 : 8]);

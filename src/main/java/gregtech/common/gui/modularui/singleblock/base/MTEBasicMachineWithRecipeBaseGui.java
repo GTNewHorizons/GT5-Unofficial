@@ -218,7 +218,6 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
 
     protected FluidSlot createFluidInputSlot() {
         return new FluidSlot().overlay(slotOverlayFunction.apply(0, true, false, false))
-            .tooltipShowUpTimer(TOOLTIP_DELAY)
             .syncHandler(new FluidSlotSyncHandler(machine.getFluidTank()) {
 
                 @Override
@@ -258,7 +257,6 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
 
     protected FluidSlot createFluidOutputSlot() {
         return new FluidSlot().overlay(slotOverlayFunction.apply(0, true, true, false))
-            .tooltipShowUpTimer(TOOLTIP_DELAY)
             .syncHandler(new FluidSlotSyncHandler(machine.getFluidOutputTank()) {
 
                 @Override

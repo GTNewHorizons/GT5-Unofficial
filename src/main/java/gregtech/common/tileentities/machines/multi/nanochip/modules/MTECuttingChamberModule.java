@@ -110,14 +110,17 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
         return STRUCTURE_DEFINITION;
     }
 
+    @Override
     public int structureOffsetX() {
         return CUTTING_OFFSET_X;
     }
 
+    @Override
     public int structureOffsetY() {
         return CUTTING_OFFSET_Y;
     }
 
+    @Override
     public int structureOffsetZ() {
         return CUTTING_OFFSET_Z;
     }

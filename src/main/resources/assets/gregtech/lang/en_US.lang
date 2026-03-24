@@ -119,8 +119,8 @@ gt.item.desc.steam_eut=Energy from Optimal Steam Flow: %s EU/t
 gt.item.desc.steam_eut_loose=Energy from Optimal Steam Flow (Loose): %s EU/t
 
 # GT Interaction Descriptions
-gt.interact.desc.out_slot=Puts out into adjacent Slot #
-gt.interact.desc.in_slot=Grabs in for own Slot #
+gt.interact.desc.out_slot.s=Puts out into adjacent Slot #%s
+gt.interact.desc.in_slot.s=Grabs in for own Slot #%s
 gt.interact.desc.signal_on=Enable with Signal
 gt.interact.desc.signal_inverted=Disable with Signal
 gt.interact.desc.signal_off=Disabled
@@ -1074,6 +1074,7 @@ gt.recipe.purificationplantdegasifier=Degassing
 gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
 gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
+gt.recipe.beamcrafter=Beam Crafter
 gt.recipe.foundry_modules=Foundry Module Components
 
 # Recipe categories
@@ -1097,7 +1098,9 @@ GT5U.recipes.chance.output=Output Chance: %s
 
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
-GT5U.machines.workareaset=Work Area set to
+GT5U.machines.workareaset.s=Work Area set to %sx%s
+GT5U.machines.workareaset.chunks=Work Area set to %sx%s Chunks
+GT5U.machines.workareaset.blocks=Work Area set to %sx%s Chunks (%sx%s Blocks)
 GT5U.machines.workarea_fail=Can't adjust work area while running
 GT5U.machines.autoretract.enabled=Auto retract enabled
 GT5U.machines.autoretract.disabled=Auto retract disabled
@@ -1218,6 +1221,8 @@ GT5U.GTPP_MULTI_STEAM_FURNACE.mode.1=Blasting
 GT5U.GTPP_MULTI_STEAM_FURNACE.mode.2=Smoking
 GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode.0=Separator
 GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode.1=Polarizer
+GT5U.MULTI_LHC.mode.0=Accelerator
+GT5U.MULTI_LHC.mode.1=Collider
 GT5U.BLACKHOLE.mode.0=Compressor
 GT5U.BLACKHOLE.mode.1=Singularity Compressor
 GT5U.GTPP_MULTI_INDUSTRIAL_DEHYDRATOR.mode.0=Vacuum Furnace
@@ -1232,6 +1237,9 @@ GT5U.GTPP_MULTI_PACKAGER.mode.0=Packager
 GT5U.GTPP_MULTI_PACKAGER.mode.1=Unpackager
 GT5U.RESEARCH_STATION.mode.0=Research Station
 GT5U.RESEARCH_STATION.mode.1=Scanner
+GT5U.DECAY_WAREHOUSE.mode.normal=Normal
+GT5U.DECAY_WAREHOUSE.mode.exporting=Exporting
+GT5U.MULTI_MACHINE_MODE.unknown=Unknown Mode
 GT5U.MULTI_MACHINE_CHANGE=Now running in %s mode
 GT5U.MULTI_MACHINE_CONFIG.SAVE=Saved Multiblock Hatch Configuration
 GT5U.MULTI_MACHINE_CONFIG.LOAD=Loaded Multiblock Hatch Configuration
@@ -1879,7 +1887,7 @@ gt.circuitcomponent.processed.frame.celestialtungsten=Spliced Celestial Tungsten
 gt.circuitcomponent.processed.frame.hypogen=Spliced Hypogen Framebox
 
 gt.circuitcomponent.sheet.processed.siliconerubber=Silicone Rubber Wrapper Spool
-gt.circuitcomponent.sheet.processed.polybenzimidazole=Polybenzimidazone Wrapper Spool
+gt.circuitcomponent.sheet.processed.polybenzimidazole=Polybenzimidazole Wrapper Spool
 gt.circuitcomponent.sheet.processed.radoxpolymer=Radox Polymer Wrapper Spool
 gt.circuitcomponent.sheet.processed.shirabon=Shirabon Wrapper Spool
 gt.circuitcomponent.sheet.processed.styrenerubber=Styrene-Butadiene Rubber Wrapper Spool
@@ -2082,6 +2090,101 @@ GT5U.gui.chat.powerfail.list.truncated=%s additional powerfails truncated
 GT5U.gui.chat.powerfail.shown=Enabled powerfail overlay rendering.
 GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
 
+GT5U.gui.text.BeamlineHatch.blacklist=Blacklist Selection
+GT5U.gui.text.BeamlineHatch.emptylist=No list to choose from
+
+# LHC and beamcrafting
+
+GT5U.gui.text.LHC.beamenergykeV=Current Beam Energy %seV
+GT5U.gui.text.LHC.beamrate=Current Beam Rate
+GT5U.gui.text.LHC.powercost=Current Power Draw: %s EU/t
+GT5U.gui.text.LHC.status=Status: %s
+GT5U.gui.text.LHC.off=Off
+GT5U.gui.text.LHC.acceleratormode=Accelerating beam...
+GT5U.gui.text.LHC.collidermode=Colliding beam...
+GT5U.gui.text.LHC.completedcycles=Completed Cycles
+GT5U.gui.text.LHC.targetbeamenergyeV=Target Beam Energy (eV):
+GT5U.gui.text.LHC.maxaccelerationcycles=Max Acceleration Cycles:
+GT5U.gui.text.beamcrafter.guiheader=Current Recipe Progress
+GT5U.gui.text.beamcrafter.particleA=Particle 1
+GT5U.gui.text.beamcrafter.particleB=Particle 2
+
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.machinetype=Beam Crafter, Beam Assembler
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip1=Collides two beams of particles into target materials to modify
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip2=their subatomic structure
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip3=The Input Beams can be supplied to either Beamline Input Hatch
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip4=Recipes will not start unless both beams have sufficiently high
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5=§eBeam Energies§7
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6=Processing speed is determined purely by the Input §cBeam Rates§7
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7=Each particle §cAmount§7 provided corresponds to one tick of progress
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8=Once the required §cAmount§7 of a specific §bPart§6icle§7 have been input,
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip9=excess particles of that type are voided
+
+gt.blockmachines.multimachine.beamcrafting.beammirror.machinetype=Beam Mirror
+gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip1=Takes in particle beams and sends them back out
+gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip2=§6That's literally it.
+
+gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetype=Beam Splitter
+gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetypefake=Beam Splitter, Bean Splitter
+gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip1=Select which particles to blacklist in the output hatches
+gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip2=Input particles will be split evenly among all valid output hatches
+
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.machinetype=Beam Stabilizer
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip1=Accepts and stores up to 100000 §aParticles§7 from
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip2=potentially intermittent high §cRate§7 particle beam packets
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip3=and re-releases those particles as a stable beam at a
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip4=§cRate§7 of your choosing
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip5=If a particle beam with a different §aParticle§7, §6Energy§7 or
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip6=§bFocus§7 is sent to the machine during operation, it is
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip7=ignored UNLESS there are no currently stored §aParticles
+
+gt.blockmachines.multimachine.beamcrafting.LHC.machinetype=Particle Accelerator, Particle Collider, LHC
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip1=Accelerates particles to high energies and then collides them to generate new particles
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip2=Electrically neutral particles are unaffected
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip3=Set the §etarget beam energy§7 (up to 2TeV) and the §9maximum number of cycles§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip4=Cycles every second
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip5=§f§nAccelerator mode§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6=Accelerates the beam in the smaller LHC ring
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Accelerator mode increases the §6Beam Energy§7 by §bEnergy Hatch Voltage§7 * §f10eV§7, until the
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8=§eTarget Beam Energy§7 is reached, or the §9maximum number of cycles§7 is reached
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §eTarget Beam Energy§7 is reached, multiply the current §cBeam Rate§7 by §f1.1§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=§aPower§7 cost starts at §f1A§7 of §fUV§7 per §cBeam Rate§7 and increases quadratically
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11=with the §dnumber of completed cycles§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=§aP§7 = §f(1A UV)§7 * §cR§7 * §dN§7^2
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13=Automatically switches to Collider mode when the §9maximum number of cycles§7 is reached
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip14=§f§nCollider mode§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip15=Splits the beam into §ftwo§7 beams that go in opposite directions in the larger LHC ring, which
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip16=then collide to generate new particles
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip17=The §3Collision Energy§7 is two times the §6Beam Energy§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip18=If the §3Collision Energy§7 exceeds the rest mass of a particle, that particle will start
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip19=appearing in the outputs
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip20=A particle output can only appear in the modules that correspond to the forces that
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip21=interact with that particle
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip22=For example, Neutrinos cannot appear in the Strong force module, §fALICE§7, since they do
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip23=not interact via the strong force
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip24=§fFiltered Beamline Output Hatches§7 will allow you to see the list of possible outputs, and
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip25=filter them
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip26=There are four LHC modules, marked by the letter on top of the module:
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip27=§bE - Electromagnetism§7 - Charged Matter Sensor (§bCMS§7)
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip28=§2W - Weak Interaction§7 - Advanced Total Lepton Assimilation Snare (§2ATLAS§7)
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29=§fS - Strong Force§7 - Absolute Lattice Integrated Chromodynamic Encapsulator (§fALICE§7)
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip30=§5G - Gravity§7 - Localized Horizon Curvature Binder (§5LHCb§7)
+
+gt.blockmachines.multimachine.beamcrafting.ttcontroller=Front Center
+gt.blockmachines.multimachine.beamcrafting.ttehatch=Energy Hatch
+gt.blockmachines.multimachine.beamcrafting.ttcasing=Collider Casing
+gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing=Shielded Accelerator Casing
+gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass=Shielded Accelerator Glass
+gt.blockmachines.multimachine.beamcrafting.ttanyglass=Any Tiered Glass
+gt.blockmachines.multimachine.beamcrafting.ttanycasing=Any Collider Casing
+gt.blockmachines.multimachine.beamcrafting.ttanyneonite=Neonite (Any, optional)
+gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch=Beamline Input Hatch
+gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch=Beamline Output Hatch
+gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered=Filtered Beamline Output Hatch
+gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description1=Allows blacklisting of specific particle types in the Large Hadron Collider
+gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description2=Right click to open the GUI and change selections
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.gui.targetbeamrate=Target Beam Rate:
+
 GT5U.gui.text.contributors.panel.open=Open Contributor List
 GT5U.gui.text.contributors.header=Contributors
 GT5U.gui.text.contributors.projectlead=Project Lead
@@ -2090,6 +2193,8 @@ GT5U.gui.text.contributors.textures=Textures
 GT5U.gui.text.contributors.rendering=Rendering
 GT5U.gui.text.contributors.structure=Structure
 GT5U.gui.text.contributors.playtesting=Playtesting
+GT5U.gui.tooltip.behaviour.cover_tool.data=Stored Cover Data:
+GT5U.gui.tooltip.behaviour.cover_tool.cover_copy_paste=Can copy/paste cover data.
 
 GT5U.gui.chat.bindcentre=Successfully bind drone centre.
 GT5U.gui.chat.drone_level_low=Upgrade to T4 drone to active the teleport function
@@ -2186,6 +2291,72 @@ GT5U.item.toolbox.byline.crowbar=You thought I was going to put a Half-Life\n §
 GT5U.item.toolbox.byline.soldering_iron=Put some fine soldering alloy wire\n §oin the generic slots!
 GT5U.item.toolbox.byline.format=§o"%s"§r -§cQuerns§r
 
+GT5U.chat.rendering.off=Rendering off
+GT5U.chat.rendering.on=Rendering on
+GT5U.chat.auto_place.done=§aAuto placing done!
+GT5U.chat.auto_place.done.water=§aAuto placing done! Now go place the water yourself!
+
+GT5U.chat.cover.decorative.redstone=Redstone
+GT5U.chat.cover.decorative.energy=Energy
+GT5U.chat.cover.decorative.fluids=Fluids
+GT5U.chat.cover.decorative.items=Items
+GT5U.chat.cover.fluid_filter=Filter Fluid: %s
+GT5U.chat.cover.fluid_limiter=Threshold: %s
+GT5U.chat.cover.fluid_regulator.max=Pump speed limit reached!
+GT5U.chat.cover.fluid_regulator.rate_1=Pump speed: %sL/tick %sL/sec
+GT5U.chat.cover.fluid_regulator.speed=Pump speed: %sL every %s ticks, %s L/sec on average
+GT5U.chat.cover.fluid_storage_monitor.side=Side: %s
+GT5U.chat.cover.slot=Slot: %s
+GT5U.chat.cover.slot.all=Slot: All
+GT5U.chat.cover.item_filter=Item Filter: %s
+GT5U.chat.cover.item_filter.cleared=Filter Cleared!
+GT5U.chat.cover.item_filter.mode.black=Blacklist Mode
+GT5U.chat.cover.item_filter.mode.white=Whitelist Mode
+GT5U.chat.cover.player_detector.any=Emit if any Player is close
+GT5U.chat.cover.player_detector.other=Emit if other Player is close
+GT5U.chat.cover.player_detector.you=Emit if you are close
+GT5U.chat.cover.redstone_conductor.input.strongest=Conducts strongest Input
+GT5U.chat.cover.redstone_conductor.input.bottom=Conducts from bottom Input
+GT5U.chat.cover.redstone_conductor.input.top=Conducts from top Input
+GT5U.chat.cover.redstone_conductor.input.north=Conducts from north Input
+GT5U.chat.cover.redstone_conductor.input.south=Conducts from south Input
+GT5U.chat.cover.redstone_conductor.input.west=Conducts from west Input
+GT5U.chat.cover.redstone_conductor.input.east=Conducts from east Input
+GT5U.chat.cover.redstone_signalizer.signal=Signal = %s
+GT5U.chat.cover.redstone_signalizer.signal.cond=Conditional Signal = %s
+GT5U.chat.cover.redstone_signalizer.signal.cond.invert=Inverted Conditional Signal = %s
+GT5U.chat.cover.shutter.open.if.enabled=Open if work enabled
+GT5U.chat.cover.shutter.open.if.disabled=Open if work disabled
+GT5U.chat.cover.shutter.output.allowed=Only Output allowed
+GT5U.chat.cover.shutter.input.allowed=Only Input allowed
+GT5U.chat.cover.solar_panel.cleaned=Cleaned solar panel from %s%% dirt
+GT5U.chat.cover.solar_panel.cleaned.require=You need water bucket in inventory to clean the panel.
+GT5U.chat.cover.wireless_controller.shutdown_at=%s at (%s, %s, %s) shut down.
+GT5U.chat.behaviour.cover_tool.position=§m-----§r X: §b%s§r Y: §b%s§r Z: §b%s§r D: §b%s§r §m-----
+GT5U.chat.behaviour.cover_tool.side=Block Side: §b%s§r
+GT5U.chat.behaviour.cover_tool.type=Cover Type: §a%s§r
+GT5U.chat.behaviour.cover_tool.unavailable=Copy unavailable for this cover type
+GT5U.chat.behaviour.cover_tool.invalid_cover=Please Copy a Valid Cover First.
+GT5U.chat.behaviour.cover_tool.pasted=Cover Data Pasted.
+GT5U.chat.behaviour.cover_tool.not_match=Not Matched Cover.
+GT5U.chat.behaviour.cover_tool.no_cover=No Cover Found.
+GT5U.chat.behaviour.prospecting.ore=This is %s Ore.
+GT5U.chat.behaviour.prospecting.lava=There is Lava behind this Rock.
+GT5U.chat.behaviour.prospecting.liquid=There is a Liquid behind this Rock.
+GT5U.chat.behaviour.prospecting.air=There is an Air Pocket behind this Rock.
+GT5U.chat.behaviour.prospecting.changing=Material is changing behind this Rock.
+GT5U.chat.behaviour.prospecting.traces_of=Found traces of %s Ore.
+GT5U.chat.behaviour.prospecting.no_ores=No Ores found.
+
+GT5U.chat.distributor.items_per_side=Items per side: %s
+GT5U.chat.driller_base.chunk_loading.enable=Mining chunk loading enabled
+GT5U.chat.driller_base.chunk_loading.disabled=Mining chunk loading disabled
+GT5U.chat.laser.engraver.toggling_realism=Toggling realism!
+GT5U.chat.ore_drilling_plant_base.replace_with_cobblestone=Replace with cobblestone %s
+GT5U.chat.spinmatron.texture.static=Using Static Turbine Texture.
+GT5U.chat.spinmatron.texture.animated=Using Animated Turbine Texture.
+
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3
@@ -2271,14 +2442,14 @@ GT5U.hatch.outputme.cache_capacity_label=Current cache capacity: §e%s§r
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
 
-GT5U.multiblock.pollution=Pollution reduced to: §a%s§r%%
-GT5U.multiblock.energy=Stored Energy: §a%s §rEU / §e%s §rEU
-GT5U.multiblock.Progress=Progress: §a%s §rs / §e%s §rs
-GT5U.multiblock.efficiency=Efficiency: §e%s§r%%
-GT5U.multiblock.problems=Problems: §c%s
-GT5U.multiblock.mei=Max Energy Input: §e%s §rEU/t (*2A) Tier: §e%s
+GT5U.multiblock.pollution=Pollution reduced to
+GT5U.multiblock.energy=Stored Energy
+GT5U.multiblock.Progress=Progress
+GT5U.multiblock.efficiency=Efficiency
+GT5U.multiblock.problems=Problems
+GT5U.multiblock.mei=Max Energy Income
 GT5U.multiblock.maxtier=Max Tier
-GT5U.multiblock.usage=Currently uses: §c%s §rEU/t
+GT5U.multiblock.usage=Currently uses
 GT5U.multiblock.parallelism=Max Parallel
 GT5U.multiblock.curparallelism=Current Parallel
 GT5U.multiblock.euModifier=EU Modifier
@@ -2289,16 +2460,26 @@ GT5U.multiblock.coilLevel=Heating Coil Level
 GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
 GT5U.multiblock.runningMode=§eRunning Mode:
 GT5U.multiblock.startup=Starting up...
-GT5U.multiblock.recipesDone=Recipes Finished: §a%s
-GT5U.multiblock.totalRunHours=Total runtime: §6%s§r hours
-GT5U.multiblock.totalRunMinutes=Total runtime: §6%s§r minutes
-GT5U.multiblock.totalRunSeconds=Total runtime: §6%s§r seconds
-GT5U.multiblock.totalRunTicks=Total runtime: §6%s§r ticks
-GT5U.multiblock.owned_by=Owned by: §6%s
-GT5U.multiblock.meta_tile_entity=Meta-ID: §6%s
-GT5U.multiblock.valid=§avalid
-GT5U.multiblock.invalid=§cinvalid
-GT5U.multiblock.is_meta_tile_entity=§cMetaTileEntity == null!
+GT5U.multiblock.recipesDone=Recipes Finished
+
+
+GT5U.multiblock.scanner.pollution=Pollution reduced to: §a%s§r%%
+GT5U.multiblock.scanner.energy=Stored Energy: §a%s §rEU / §e%s §rEU
+GT5U.multiblock.scanner.Progress=Progress: §a%s §rs / §e%s §rs
+GT5U.multiblock.scanner.efficiency=Efficiency: §e%s§r%%
+GT5U.multiblock.scanner.problems=Problems: §c%s
+GT5U.multiblock.scanner.mei=Max Energy Input: §e%s §rEU/t (*2A) Tier: §e%s
+GT5U.multiblock.scanner.usage=Currently uses: §c%s §rEU/t
+GT5U.multiblock.scanner.recipesDone=Recipes Finished: §a%s
+GT5U.multiblock.scanner.totalRunHours=Total runtime: §6%s§r hours
+GT5U.multiblock.scanner.totalRunMinutes=Total runtime: §6%s§r minutes
+GT5U.multiblock.scanner.totalRunSeconds=Total runtime: §6%s§r seconds
+GT5U.multiblock.scanner.totalRunTicks=Total runtime: §6%s§r ticks
+GT5U.multiblock.scanner.owned_by=Owned by: §6%s
+GT5U.multiblock.scanner.meta_tile_entity=Meta-ID: §6%s
+GT5U.multiblock.scanner.valid=§avalid
+GT5U.multiblock.scanner.invalid=§cinvalid
+GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 
 
 # NEI recipe handlers
@@ -3693,6 +3874,13 @@ GTPP.machines.tier=Tier
 GTPP.machines.input=Input
 GTPP.machines.output=Output
 
+GTPP.multiblock.pollution=Pollution
+GTPP.multiblock.energy=Stored Energy
+GTPP.multiblock.efficiency=Efficiency
+GTPP.multiblock.mei=Max Energy Income
+GTPP.multiblock.usage=Currently uses
+GTPP.multiblock.generation=Currently generates
+
 GTPP.multiblock.specialvalue=Special Value
 GTPP.multiblock.duration=Duration
 GTPP.multiblock.multimachine.metal=Metal Mode. Does compressor (circuit 20), lathe (circuit 21) and electromagnetic polarizer (circuit 22).
@@ -4822,6 +5010,11 @@ gt.blockcasings13.6.name=Magnetic Anchor Casing
 gt.blockcasings13.7.name=Field Energy Absorber Casing
 gt.blockcasings13.8.name=Loadbearing Distribution Casing
 gt.blockcasings13.9.name=Nanite Replication Framework
+gt.blockcasings13.10.name=Collider Casing
+gt.blockcasings13.11.name=Charged Matter Sensor Casing
+gt.blockcasings13.12.name=Advanced Total Lepton Assimilation Snare Casing
+gt.blockcasings13.13.name=Absolute Lattice Integrated Chromodynamic Encapsulator Casing
+gt.blockcasings13.14.name=Localized Horizon Curvature Binder Casing
 gt.blockcasingsNH.0.name=Air Filter Turbine Casing
 gt.blockcasingsNH.1.name=Air Filter Vent Casing
 gt.blockcasingsNH.2.name=Pyrolyse Oven Casing

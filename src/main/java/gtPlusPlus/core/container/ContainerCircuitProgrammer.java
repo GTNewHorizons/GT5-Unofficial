@@ -109,17 +109,6 @@ public class ContainerCircuitProgrammer extends Container {
     }
 
     @Override
-    public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold,
-        final EntityPlayer aPlayer) {
-        return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
-    }
-
-    @Override
-    public void onContainerClosed(final EntityPlayer par1EntityPlayer) {
-        super.onContainerClosed(par1EntityPlayer);
-    }
-
-    @Override
     public boolean canInteractWith(final EntityPlayer par1EntityPlayer) {
         if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockCircuitProgrammer) {
             return false;
