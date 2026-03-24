@@ -136,7 +136,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
         tt.addMachineType("machtype.distillation_tower")
             .addInfo("gt.distillation_tower.tips.1")
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addStructurePart("gt.blockcasings4.1.name", "gt.distillation_tower.info.1")
             .addEnergyHatch("gt.distillation_tower.info.2", 1, 2)
             .addMaintenanceHatch("<casing>", 1, 2, 3)

@@ -88,7 +88,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         tt.addMachineType("machtype.dehp")
             .addInfo("gt.dehp.tips", (long) (25600 * 20), (long) (192 * 20), TierEU.RECIPE_HV)
             .beginStructureBlock(3, 7, 3, false)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.1")
             .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.2")
             .addStructurePart(

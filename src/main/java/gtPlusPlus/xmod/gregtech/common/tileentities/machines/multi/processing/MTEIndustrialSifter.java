@@ -69,7 +69,7 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
             .addBulkMachineInfo(4, 5f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 3, 5, false)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoMin("gtplusplus.blockcasings.2.6.name", 18)
             .addCasingInfoMin("gtplusplus.blockcasings.2.5.name", 35)
             .addInputBus("<casing>", 1)

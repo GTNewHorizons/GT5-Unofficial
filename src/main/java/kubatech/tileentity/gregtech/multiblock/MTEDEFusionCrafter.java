@@ -141,7 +141,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         tt.addMachineType("machtype.defc")
             .addInfo("gt.defc.tips")
             .beginStructureBlock(5, 10, 5, false)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoMin("defc.casing.7.name", 19)
             .addStructurePart("gt.blockcasings4.7.name", "gt.defc.info.coil")
             .addStructurePart("gt.blockcasings4.6.name", "gt.defc.info.casing")

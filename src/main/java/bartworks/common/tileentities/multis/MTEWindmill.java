@@ -239,7 +239,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         tt.addMachineType("machtype.windmill")
             .addInfo("gt.windmill.tips.1")
             .beginStructureBlock(7, 12, 7, false)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoMin("tile.clayHardened.name", 40)
             .addStructurePart("tile.dispenser.name", "gt.windmill.info.1")
             .addStructurePart("tile.doorWood.name", "gt.windmill.info.2")

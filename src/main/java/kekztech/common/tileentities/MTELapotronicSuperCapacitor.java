@@ -406,7 +406,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 formatNumber(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap))
             .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
             .addStructureInfo("gt.lapo_super_capacitor.info.height")
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addStructurePart("tile.kekztech_lapotronicenergyunit_block.0.name", "gt.lapo_super_capacitor.info.casing")
             .addStructurePart(
                 GTUtility.nestParams(

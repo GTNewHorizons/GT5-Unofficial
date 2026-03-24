@@ -299,7 +299,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 5, 5, true)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoExactly("gt.blockcasings.name", 21, true)
             .addCasingInfoExactly(GTUtility.nestParams("GT5U.MBTT.AnyGlass_Tier", voltageTierText(4, false)), 42, true)
             .addCasingInfoRange("preciseUnitCasing.name", 42, 86, true)

@@ -132,7 +132,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                 baseCycleTime < 20 ? formatNumber(baseCycleTime) : formatNumber(baseCycleTime / 20.0),
                 baseCycleTime < 20 ? "gt.time.tick.plural" : "gt.time.second.plural")
             .beginStructureBlock(3, 7, 3, false)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.1")
             .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.2")
             .addStructurePart(

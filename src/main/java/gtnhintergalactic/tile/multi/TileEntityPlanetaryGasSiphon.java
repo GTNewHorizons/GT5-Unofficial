@@ -168,7 +168,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
         if (TooltipUtil.siphonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.siphonLoreText);
         tt.addInfo("gt.blockmachines.multimachine.ig.siphon.desc1")
             .beginStructureBlock(3, 7, 3, false)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addStructurePart("ig.siphon.structure.SiphonCasing", "ig.siphon.structure.Base")
             .addStructurePart("ig.siphon.structure.ReboltedRhodiumPalladiumCasing", "ig.siphon.structure.PillarMiddle")
             .addStructurePart("ig.siphon.structure.FrameTungstensteel", "ig.siphon.structure.Sides")

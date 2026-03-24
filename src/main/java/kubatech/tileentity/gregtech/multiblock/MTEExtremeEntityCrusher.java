@@ -311,7 +311,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addInfo("gt.eec.tips", MAX_LOOTING_LEVEL)
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoMin(Casings.SolidSteelMachineCasing.getLocalizedName(), 35)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 60, true)
             .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Steel), 20)

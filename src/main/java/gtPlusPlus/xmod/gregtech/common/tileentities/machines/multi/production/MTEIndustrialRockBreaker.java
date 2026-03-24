@@ -80,7 +80,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
             .addInfo("gt.boldarnator.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoMin(Casings.ThermalProcessingCasing.getLocalizedName(), 9, false)
             .addCasingInfoExactly(Casings.ThermalContainmentCasing.getLocalizedName(), 16, false)
             .addInputBus(anyCasing, 1)

@@ -60,7 +60,7 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
             .addInfo("gt.rfpp.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 9, 3, false)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoMin(
                 GregtechItemList.Casing_Refinery_Structural.get(1)
                     .getDisplayName(),

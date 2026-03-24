@@ -368,7 +368,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addInfo("gt.ei_greenhouse.tips.2");
         EIGModes.addTooltipInfo(tt);
         tt.beginStructureBlock(7, 7, 9, false)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoMin(
                 GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.get(1)
                     .getDisplayName(),

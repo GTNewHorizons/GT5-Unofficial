@@ -117,7 +117,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
         tt.addMachineType("machtype.lhe")
             .addInfo("gt.lhe.tips")
             .beginStructureBlock(3, 4, 3, false)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoRange(Casings.StableTitaniumMachineCasing.getLocalizedName(), 20, 28, false)
             .addStructurePart(Casings.TitaniumPipeCasing.getLocalizedName(), "gt.lhe.info.ti_pipe")
             .addMaintenanceHatch("<casing>", 1)

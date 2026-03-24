@@ -110,7 +110,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             .addDynamicMultiplicativeParallelInfo(2, TooltipTier.COIL)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoRange(Casings.HeatProofMachineCasing.getLocalizedName(), 8, 14, false)
             .addStructurePart("GT5U.tooltip.structure.heating_coil", "gt.multi_furnace.info.coil")
             .addEnergyHatch("<bottom casing>", 1)

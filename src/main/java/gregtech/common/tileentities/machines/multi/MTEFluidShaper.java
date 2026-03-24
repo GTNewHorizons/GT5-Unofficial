@@ -193,7 +193,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addInfo("gt.fluid_shaper.flavor")
             .beginVariableStructureBlock(9, 33, 5, 5, 5, 5, true)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoRange(Casings.SolidifierCasing.getLocalizedName(), 91, 211, false)
             .addCasingInfoRange(Casings.SolidifierRadiator.getLocalizedName(), 13, 73, false)
             .addCasingInfoRange(Casings.HeatProofMachineCasing.getLocalizedName(), 4, 16, false)

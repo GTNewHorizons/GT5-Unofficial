@@ -194,7 +194,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoMin("gt.blockcasings4.1.name", 7, false)
             .addInputBus("<bottom casing>", 1)
             .addOutputBus("<bottom casing>", 1)

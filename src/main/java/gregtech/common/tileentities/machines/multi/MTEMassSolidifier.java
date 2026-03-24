@@ -177,7 +177,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
             .addGlassEnergyLimitInfo(VoltageIndex.UEV)
             .addInfo("gt.mass_solidifier.tips.2")
             .beginStructureBlock(5, 6, 9, false)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addCasingInfoMin(Casings.SolidifierCasing.getLocalizedName(), MIN_CASINGS)
             .addCasingInfoExactly(Casings.SolidifierRadiator.getLocalizedName(), 34)

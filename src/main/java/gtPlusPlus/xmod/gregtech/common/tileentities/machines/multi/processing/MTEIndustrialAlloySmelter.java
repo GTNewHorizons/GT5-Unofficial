@@ -127,7 +127,7 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             .addInfo("gt.zyngen.tips.2")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoMin(Casings.InconelReinforcedCasing.getLocalizedName(), 8, false)
             .addStructurePart(Casings.IntegralEncasementEV.getLocalizedName(), "gt.zyngen.info.1")
             .addStructurePart("GT5U.tooltip.structure.heating_coil", "gt.zyngen.info.2")

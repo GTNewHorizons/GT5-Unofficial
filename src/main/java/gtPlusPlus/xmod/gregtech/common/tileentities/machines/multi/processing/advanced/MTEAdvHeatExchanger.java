@@ -128,7 +128,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         tt.addMachineType(getMachineType())
             .addInfo("gt.wwxl.tips")
             .beginStructureBlock(5, 9, 5, false)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoMin(
                 GregtechItemList.Casing_XL_HeatExchanger.get(1)
                     .getDisplayName(),

@@ -140,7 +140,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         tt.addInfo("gt.mb_boiler.tips.2", formatNumber(500.0 / getEfficiencyIncrease())) // ? check semifluid again
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, false)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoRange(new ItemStack(getCasingBlock(), 1, getCasingMeta()).getDisplayName(), 24, 31, false)
             .addStructurePart(
                 new ItemStack(getFireboxBlock(), 1, getFireboxMeta()).getDisplayName(),

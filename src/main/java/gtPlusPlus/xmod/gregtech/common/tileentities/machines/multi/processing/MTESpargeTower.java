@@ -128,7 +128,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         tt.addMachineType("machtype.sparge")
             .addInfo("gt.sparge_tower.tips")
             .beginStructureBlock(3, 8, 3, true)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoMin(
                 GregtechItemList.Casing_Sparge_Tower_Exterior.get(1)
                     .getDisplayName(),

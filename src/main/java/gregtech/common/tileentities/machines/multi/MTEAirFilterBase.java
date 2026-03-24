@@ -197,7 +197,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                 getBonusByTier(),
                 getEUt())
             .beginStructureBlock(3, 4, 3, true)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addStructurePart(getCasingString(), "gt.mb_air_filter.info.casing")
             .addStructurePart(getPipeString(), "gt.mb_air_filter.info.pipe")
             .addMufflerHatch("gt.mb_air_filter.info.muffler")

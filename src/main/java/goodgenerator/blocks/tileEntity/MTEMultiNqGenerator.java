@@ -364,7 +364,7 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
             .addInfo(getExcitedTextFormatted("fluid.spatialfluid", "20", ExcitedLiquidCoe[0]))
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 8, 7, true)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoExactly(
                 ItemRefer.Field_Restriction_Casing.get(1)
                     .getDisplayName(),

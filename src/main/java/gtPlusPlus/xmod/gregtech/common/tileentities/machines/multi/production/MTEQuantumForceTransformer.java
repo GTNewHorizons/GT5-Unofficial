@@ -193,7 +193,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 21, 15, true)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoMin("gtplusplus.blockcasings.2.12.name", 80)
             .addCasingInfoMin("gtplusplus.blockcasings.4.4.name", 177)
             .addCasingInfoMin("gtplusplus.blockcasings.5.15.name", 224)

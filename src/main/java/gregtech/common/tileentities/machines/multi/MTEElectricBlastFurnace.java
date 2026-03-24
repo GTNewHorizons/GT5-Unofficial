@@ -112,7 +112,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addInfo("gt.ebf.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoRange("gt.blockcasings.11.name", 0, 15, false)
             .addCasingInfoExactly("GT5U.tooltip.structure.heating_coil", 16, true)
             .addEnergyHatch("<bottom casing>", 1)

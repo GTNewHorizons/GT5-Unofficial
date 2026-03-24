@@ -190,7 +190,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.neutron_activator")
             .addInfo("gt.neutron_activator.tips")
-            .addController("front_bottom_middle")
+            .addController("front_bottom_center")
             .addCasingInfoRange(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 7, 31, false)
             .addCasingInfoExactly(Casings.ProcessorMachineCasing.getLocalizedName(), 18)
             .addCasingInfoMin(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Steel), 16)
