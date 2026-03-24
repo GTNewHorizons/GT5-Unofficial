@@ -114,7 +114,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.SOLENOID)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "oasis_cactus")
+            .addStructureAuthors(EnumChatFormatting.GOLD + "Oasis_Cactus")
             .toolTipFinisher();
         return tt;
     }
