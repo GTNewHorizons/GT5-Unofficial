@@ -2772,7 +2772,6 @@ public enum ItemList implements IItemContainer {
     CompressedInputBusUXV,
     // new controllers
     IndustrialWireFactory,
-    IndustrialThermalCentrifuge,
     IndustrialPackager,
     IndustrialCentrifuge,
     IndustrialElectrolyzer,

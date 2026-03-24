@@ -807,9 +807,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "industrialwiremill.controller.tier.single",
                 "Industrial Wire Factory").getStackForm(1));
 
-        ItemList.IndustrialThermalCentrifuge.set(
+        ItemList.LargeThermalRefinery.set(
             new MTEIndustrialThermalCentrifuge(
-                IndustrialThermalCentrifuge.ID,
+                LargeThermalRefinery.ID,
                 "industrialthermalcentrifuge.controller.tier.single",
                 "Industrial Thermal Centrifuge").getStackForm(1));
 

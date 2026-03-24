@@ -1647,7 +1647,7 @@ public class MTERecipeLoader implements Runnable {
 
         // Industrial Thermal Centrifuge Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IndustrialThermalCentrifuge.get(1),
+            ItemList.LargeThermalRefinery.get(1),
             new Object[] { GregtechItemList.Industrial_ThermalCentrifuge });
 
         // Amazon Packager Conversion Recipe

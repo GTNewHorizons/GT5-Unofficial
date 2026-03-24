@@ -236,6 +236,11 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
         return PollutionConfig.pollutionPerSecondMultiIndustrialThermalCentrifuge;
     }
 
+    @Override
+    protected int getCasingTextureId() {
+        return getCasingTextureIndex();
+    }
+
     public byte getCasingTextureIndex() {
         return (byte) TAE.GTPP_INDEX(16);
     }

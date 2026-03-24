@@ -169,6 +169,11 @@ public class MTEIndustrialThermalCentrifugeLegacy extends GTPPMultiBlockBase<MTE
         return 0;
     }
 
+    @Override
+    protected int getCasingTextureId() {
+        return getCasingTextureIndex();
+    }
+
     public byte getCasingTextureIndex() {
         return (byte) TAE.GTPP_INDEX(16);
     }
