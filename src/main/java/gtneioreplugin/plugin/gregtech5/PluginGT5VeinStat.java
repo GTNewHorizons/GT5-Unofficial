@@ -1,16 +1,23 @@
 package gtneioreplugin.plugin.gregtech5;
 
+import java.awt.Point;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 import com.google.common.collect.ImmutableList;
 
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.GuiRecipe;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.OrePrefixes.ParsedOreDictName;
 import gregtech.api.interfaces.IOreMaterial;
@@ -22,6 +29,25 @@ import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
 import gtneioreplugin.util.OreVeinLayer;
 
 public class PluginGT5VeinStat extends PluginGT5Base {
+
+    private static Field guiLeftField;
+    private static Field guiTopField;
+
+    private static final int LAYER_ICON_X = 4;
+    private static final int LAYER_TEXT_X = 24;
+    private static final int LAYER_TEXT_MAX_WIDTH = 138;
+    private static final int VEIN_NAME_Y = 4;
+    private static final int LAYER_ROW_START_Y = VEIN_NAME_Y + 8 + 3; // font height + 3px gap
+    private static final int LAYER_ROW_STEP = 18; // 16px icon + 2px gap
+    private static final int LAYER_TEXT_CENTER_OFFSET_Y = 4;
+    private static final int VEIN_INFO_X = 6;
+    private static final int VEIN_INFO_ROW_Y = LAYER_ROW_START_Y + LAYER_ROW_STEP * 3
+        + LAYER_TEXT_CENTER_OFFSET_Y
+        + 8
+        + 6; // last layer text + font height + 6px gap
+    private static final int VEIN_INFO_SECOND_ROW_Y = VEIN_INFO_ROW_Y + 12;
+    private static final int DIM_NAMES_ROW_Y = VEIN_INFO_SECOND_ROW_Y + 12;
+    private static final int DIM_ITEMS_START_Y = DIM_NAMES_ROW_Y + 10;
 
     // spotless:off
     public static final List<OrePrefixes> PREFIX_WHITELIST = ImmutableList.of(
@@ -139,8 +165,34 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         drawVeinInfo(oreLayer);
 
         drawDimNames();
+    }
 
-        drawSeeAllRecipesLabel();
+    @Override
+    public List<String> handleTooltip(GuiRecipe<?> gui, List<String> currentTip, int recipe) {
+        OreLayerWrapper oreLayer = getOreLayer(recipe);
+        Point recipePos = gui.getRecipePosition(recipe);
+        Point mousePosAbs = GuiDraw.getMousePosition();
+        Point mousePos = new Point(
+            mousePosAbs.x - getGuiLeft(gui) - recipePos.x,
+            mousePosAbs.y - getGuiTop(gui) - recipePos.y);
+        int fontHeight = GuiDraw.fontRenderer.FONT_HEIGHT;
+
+        int[] layers = { OreVeinLayer.VEIN_PRIMARY, OreVeinLayer.VEIN_SECONDARY, OreVeinLayer.VEIN_BETWEEN,
+            OreVeinLayer.VEIN_SPORADIC };
+        for (int i = 0; i < layers.length; i++) {
+            String fullText = getVeinLayerFullText(oreLayer, layers[i]);
+            if (!isLineTruncated(fullText, LAYER_TEXT_MAX_WIDTH)) continue;
+
+            int y = LAYER_ROW_START_Y + LAYER_ROW_STEP * i + LAYER_TEXT_CENTER_OFFSET_Y;
+            if (mousePos.x >= LAYER_TEXT_X && mousePos.x <= LAYER_TEXT_X + LAYER_TEXT_MAX_WIDTH
+                && mousePos.y >= y
+                && mousePos.y <= y + fontHeight) {
+                currentTip.add(fullText);
+                break;
+            }
+        }
+
+        return currentTip;
     }
 
     private OreLayerWrapper getOreLayer(int recipe) {
@@ -153,27 +205,99 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     }
 
     private void drawVeinNameLine(String veinName) {
-        drawLine("gtnop.gui.nei.veinName", veinName + I18n.format("gtnop.gui" + ".nei.vein"), 2, 20);
+        String veinText = I18n.format("gtnop.gui.nei.veinName", veinName + I18n.format("gtnop.gui.nei.vein"));
+        veinText = EnumChatFormatting.BOLD + veinText + EnumChatFormatting.RESET;
+        GuiDraw.drawStringC(veinText, getGuiWidth() / 2, VEIN_NAME_Y, 0x404040, false);
     }
 
     private void drawVeinLayerNames(OreLayerWrapper oreLayer) {
-        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_PRIMARY, 50);
-        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_SECONDARY, 60);
-        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_BETWEEN, 70);
-        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_SPORADIC, 80);
+        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_PRIMARY, LAYER_ROW_START_Y + LAYER_TEXT_CENTER_OFFSET_Y);
+        drawVeinLayerNameLine(
+            oreLayer,
+            OreVeinLayer.VEIN_SECONDARY,
+            LAYER_ROW_START_Y + LAYER_ROW_STEP + LAYER_TEXT_CENTER_OFFSET_Y);
+        drawVeinLayerNameLine(
+            oreLayer,
+            OreVeinLayer.VEIN_BETWEEN,
+            LAYER_ROW_START_Y + LAYER_ROW_STEP * 2 + LAYER_TEXT_CENTER_OFFSET_Y);
+        drawVeinLayerNameLine(
+            oreLayer,
+            OreVeinLayer.VEIN_SPORADIC,
+            LAYER_ROW_START_Y + LAYER_ROW_STEP * 3 + LAYER_TEXT_CENTER_OFFSET_Y);
     }
 
     private void drawVeinLayerNameLine(OreLayerWrapper oreLayer, int veinLayer, int height) {
         drawLine(
             OreVeinLayer.getOreVeinLayerName(veinLayer),
             getGTOreLocalizedName(oreLayer.ores[veinLayer], false),
-            2,
-            height);
+            LAYER_TEXT_X,
+            height,
+            LAYER_TEXT_MAX_WIDTH);
+    }
+
+    private String getVeinLayerFullText(OreLayerWrapper oreLayer, int veinLayer) {
+        return I18n.format(OreVeinLayer.getOreVeinLayerName(veinLayer)) + ": "
+            + getGTOreLocalizedName(oreLayer.ores[veinLayer], false);
+    }
+
+    private boolean isLineTruncated(String text, int maxWidth) {
+        return GuiDraw.fontRenderer.getStringWidth(text) > maxWidth;
+    }
+
+    private int getGuiLeft(GuiRecipe<?> gui) {
+        Field field = getGuiLeftField();
+        if (field == null) return 0;
+        try {
+            return field.getInt(gui);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Unable to read guiLeft", e);
+        }
+    }
+
+    private int getGuiTop(GuiRecipe<?> gui) {
+        Field field = getGuiTopField();
+        if (field == null) return 0;
+        try {
+            return field.getInt(gui);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Unable to read guiTop", e);
+        }
+    }
+
+    private static Field getGuiLeftField() {
+        if (guiLeftField == null) {
+            try {
+                guiLeftField = ReflectionHelper.findField(GuiContainer.class, "guiLeft", "field_147003_i");
+            } catch (Throwable ignored) {
+                return null;
+            }
+        }
+        return guiLeftField;
+    }
+
+    private static Field getGuiTopField() {
+        if (guiTopField == null) {
+            try {
+                guiTopField = ReflectionHelper.findField(GuiContainer.class, "guiTop", "field_147009_r");
+            } catch (Throwable ignored) {
+                return null;
+            }
+        }
+        return guiTopField;
     }
 
     private void drawVeinInfo(OreLayerWrapper oreLayer) {
-        drawLine("gtnop.gui.nei.genHeight", oreLayer.worldGenHeightRange, 2, 90);
-        drawLine("gtnop.gui.nei.weightedChance", Integer.toString(oreLayer.randomWeight), 100, 90);
+        drawLine("gtnop.gui.nei.genHeight", oreLayer.worldGenHeightRange, VEIN_INFO_X, VEIN_INFO_ROW_Y);
+        drawLine(
+            "gtnop.gui.nei.weightedChance",
+            Integer.toString(oreLayer.randomWeight),
+            VEIN_INFO_X,
+            VEIN_INFO_SECOND_ROW_Y);
+    }
+
+    @Override
+    protected void drawDimNames() {
+        drawLine("gtnop.gui.nei.worldNames", "", 6, DIM_NAMES_ROW_Y);
     }
 
     @Override
@@ -210,16 +334,25 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         public CachedVeinStatRecipe(String veinName, List<ItemStack> stackListPrimary,
             List<ItemStack> stackListSecondary, List<ItemStack> stackListBetween, List<ItemStack> stackListSporadic) {
             this.veinName = veinName;
-            positionedStackPrimary = new PositionedStack(stackListPrimary, 2, 0);
-            positionedStackSecondary = new PositionedStack(stackListSecondary, 22, 0);
-            positionedStackBetween = new PositionedStack(stackListBetween, 42, 0);
-            positionedStackSporadic = new PositionedStack(stackListSporadic, 62, 0);
+            positionedStackPrimary = new PositionedStack(stackListPrimary, LAYER_ICON_X, LAYER_ROW_START_Y);
+            positionedStackSecondary = new PositionedStack(
+                stackListSecondary,
+                LAYER_ICON_X,
+                LAYER_ROW_START_Y + LAYER_ROW_STEP);
+            positionedStackBetween = new PositionedStack(
+                stackListBetween,
+                LAYER_ICON_X,
+                LAYER_ROW_START_Y + LAYER_ROW_STEP * 2);
+            positionedStackSporadic = new PositionedStack(
+                stackListSporadic,
+                LAYER_ICON_X,
+                LAYER_ROW_START_Y + LAYER_ROW_STEP * 3);
             setDimensionDisplayItems();
         }
 
         private void setDimensionDisplayItems() {
-            int x = 2;
-            int y = 110;
+            int x = 4;
+            int y = DIM_ITEMS_START_Y;
             int count = 0;
             int itemsPerLine = 9;
             int itemSize = 18;

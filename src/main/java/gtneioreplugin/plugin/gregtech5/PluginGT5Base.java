@@ -24,14 +24,29 @@ public abstract class PluginGT5Base extends PluginBase {
 
     protected void drawLine(String lineKey, String value, int x, int y) {
         String text = I18n.format(lineKey) + ": " + value;
+        drawLineWithWidth(text, x, y, getGuiWidth() - 10);
+    }
 
-        String text2 = text;
+    protected void drawLine(String lineKey, String value, int x, int y, int maxWidth) {
+        String text = I18n.format(lineKey) + ": " + value;
+        drawLineWithWidth(text, x, y, maxWidth);
+    }
 
-        if (GuiDraw.fontRenderer.getStringWidth(text) > getGuiWidth()) {
-            text2 = GuiDraw.fontRenderer.trimStringToWidth(text, getGuiWidth() - 10);
+    private void drawLineWithWidth(String text, int x, int y, int maxWidth) {
+        String textToDraw = text;
+        int clampedMaxWidth = Math.max(0, maxWidth);
+        int ellipsisWidth = GuiDraw.fontRenderer.getStringWidth("...");
+
+        if (GuiDraw.fontRenderer.getStringWidth(text) > clampedMaxWidth) {
+            if (clampedMaxWidth > ellipsisWidth) {
+                String trimmed = GuiDraw.fontRenderer.trimStringToWidth(text, clampedMaxWidth - ellipsisWidth);
+                textToDraw = trimmed + "...";
+            } else {
+                textToDraw = GuiDraw.fontRenderer.trimStringToWidth(text, clampedMaxWidth);
+            }
         }
 
-        GuiDraw.drawString(text2 + (text2.length() < text.length() ? "..." : ""), x, y, 0x404040, false);
+        GuiDraw.drawString(textToDraw, x, y, 0x404040, false);
     }
 
     /**
