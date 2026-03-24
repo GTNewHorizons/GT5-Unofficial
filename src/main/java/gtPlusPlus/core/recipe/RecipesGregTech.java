@@ -1844,6 +1844,7 @@ public class RecipesGregTech {
         }
     }
 
+    //TODO: remove cyclotron recipes for 2.10
     private static void cyclotronRecipes() {
         // Polonium
         GTValues.RA.stdBuilder()
