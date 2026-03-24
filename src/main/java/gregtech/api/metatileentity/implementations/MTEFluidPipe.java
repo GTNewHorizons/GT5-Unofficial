@@ -343,27 +343,17 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
             if (tTemperature > mHeatResistance) {
                 if (aBaseMetaTileEntity.getRandomNumber(100) == 0) {
                     // Poof
-                    GTLog.exp.println(
-                        "Set Pipe to Fire due to to low heat resistance at " + aBaseMetaTileEntity.getXCoord()
-                            + " | "
-                            + aBaseMetaTileEntity.getYCoord()
-                            + " | "
-                            + aBaseMetaTileEntity.getZCoord()
-                            + " DIMID: "
-                            + aBaseMetaTileEntity.getWorld().provider.dimensionId);
+                    GTLog.writeExplosionLog(aBaseMetaTileEntity, mName, "set to fire due to low heat resistance");
                     aBaseMetaTileEntity.setToFire();
                     return true;
                 }
                 // Mmhmm, Fire
                 aBaseMetaTileEntity.setOnFire();
-                GTLog.exp.println(
-                    "Set Blocks around Pipe to Fire due to to low heat resistance at " + aBaseMetaTileEntity.getXCoord()
-                        + " | "
-                        + aBaseMetaTileEntity.getYCoord()
-                        + " | "
-                        + aBaseMetaTileEntity.getZCoord()
-                        + " DIMID: "
-                        + aBaseMetaTileEntity.getWorld().provider.dimensionId);
+
+                GTLog.writeExplosionLog(
+                    aBaseMetaTileEntity,
+                    mName,
+                    "set blocks around to fire due to low heat resistance");
             }
             if (!mGasProof && tFluid.getFluid()
                 .isGaseous(tFluid)) {

@@ -36,6 +36,7 @@ public class BehaviourScanner extends BehaviourNone {
                 tNBT.setInteger("dataLinesCount", tList_sS);
                 for (int i = 0; i < tList_sS; i++) {
                     tNBT.setString("dataLines" + i, list.get(i));
+                    // FIXME: localize scanner data
                     GTUtility.sendChatToPlayer(aPlayer, list.get(i));
                 }
             }
