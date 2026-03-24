@@ -17,6 +17,7 @@ import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -29,13 +30,14 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.TAE;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -43,10 +45,9 @@ import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndustrialThermalCentrifuge>
+public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEIndustrialThermalCentrifuge>
     implements ISurvivalConstructable {
 
     private int mCasing;
@@ -80,14 +81,9 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
     }
 
     @Override
-    public String getMachineType() {
-        return "Industrial Thermal Centrifuge, LTR";
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
+        tt.addMachineType("Industrial Thermal Centrifuge, LTR")
             .addBulkMachineInfo(8, (float) BASE_SPEED_BONUS, (float) BASE_EU_MULTIPLIER)
             .addDynamicParallelInfo(PARALLELS_PER_SOLENOID, TooltipTier.SOLENOID)
             .addInfo(
@@ -140,7 +136,7 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
                     ofChain(
                         buildHatchAdder(MTEIndustrialThermalCentrifuge.class)
                             .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                            .casingIndex(getCasingTextureIndex())
+                            .casingIndex(Casings.ThermalProcessingCasing.textureId)
                             .hint(1)
                             .build(),
                         onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 0)),
@@ -167,6 +163,33 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
     }
 
     @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        if (side == aFacing) {
+            if (aActive) return new ITexture[] { Casings.ThermalProcessingCasing.getCasingTexture(),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.oMCDIndustrialThermalCentrifugeActive)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.oMCDIndustrialThermalCentrifugeActiveGlow)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { Casings.ThermalProcessingCasing.getCasingTexture(), TextureFactory.builder()
+                .addIcon(TexturesGtBlock.oMCDIndustrialThermalCentrifuge)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.oMCDIndustrialThermalCentrifugeGlow)
+                    .extFacing()
+                    .glow()
+                    .build() };
+        }
+        return new ITexture[] { Casings.ThermalProcessingCasing.getCasingTexture() };
+    }
+
+    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
     }
@@ -189,27 +212,11 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && mCasing >= 8 && checkHatch();
+        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && mCasing >= 85 && checkHatch();
     }
 
-    @Override
-    protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.oMCDIndustrialThermalCentrifugeActive;
-    }
-
-    @Override
-    protected IIconContainer getActiveGlowOverlay() {
-        return TexturesGtBlock.oMCDIndustrialThermalCentrifugeActiveGlow;
-    }
-
-    @Override
-    protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.oMCDIndustrialThermalCentrifuge;
-    }
-
-    @Override
-    protected IIconContainer getInactiveGlowOverlay() {
-        return TexturesGtBlock.oMCDIndustrialThermalCentrifugeGlow;
+    public boolean checkHatch() {
+        return mMaintenanceHatches.size() == 1 && mMufflerHatches.size() == 1 && mEnergyHatches.size() >= 1;
     }
 
     @Override
@@ -234,15 +241,6 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialThermalCentrifuge;
-    }
-
-    @Override
-    protected int getCasingTextureId() {
-        return getCasingTextureIndex();
-    }
-
-    public byte getCasingTextureIndex() {
-        return (byte) TAE.GTPP_INDEX(16);
     }
 
     @SideOnly(Side.CLIENT)
