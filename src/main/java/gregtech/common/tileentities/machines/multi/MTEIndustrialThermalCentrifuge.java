@@ -212,6 +212,8 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
+        coilLevel = null;
+        solenoidLevel = null;
         return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && mCasing >= 85 && checkHatch();
     }
 
@@ -278,14 +280,6 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
             : GTUtility.powInt(HEATING_COIL_EU_MULTIPLIER, coilLevel.getTier()));
 
         return (float) (BASE_EU_MULTIPLIER * heatingBonus);
-    }
-
-    @Override
-    public void clearHatches() {
-        super.clearHatches();
-        mCasing = 0;
-        coilLevel = null;
-        solenoidLevel = null;
     }
 
     @Override
