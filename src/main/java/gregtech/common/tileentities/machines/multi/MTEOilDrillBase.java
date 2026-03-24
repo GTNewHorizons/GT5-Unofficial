@@ -165,13 +165,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             if (chunkRangeConfig > getRangeInChunks()) chunkRangeConfig = 1;
         }
         if (oldChunkRange != chunkRangeConfig) mOilFieldChunks.clear();
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            GTUtility.translate("GT5U.machines.workareaset") + " "
-                + chunkRangeConfig
-                + "x"
-                + chunkRangeConfig
-                + GTUtility.translate("GT5U.machines.chunks")); // TODO Add translation support
+        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.workareaset.chunks", chunkRangeConfig, chunkRangeConfig);
     }
 
     @Override

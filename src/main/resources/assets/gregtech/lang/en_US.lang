@@ -1121,7 +1121,9 @@ GT5U.recipes.chance.output=Output Chance: %s
 
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
-GT5U.machines.workareaset=Work Area set to
+GT5U.machines.workareaset.s=Work Area set to %sx%s
+GT5U.machines.workareaset.chunks=Work Area set to %sx%s Chunks
+GT5U.machines.workareaset.blocks=Work Area set to %sx%s Chunks (%sx%s Blocks)
 GT5U.machines.workarea_fail=Can't adjust work area while running
 GT5U.machines.autoretract.enabled=Auto retract enabled
 GT5U.machines.autoretract.disabled=Auto retract disabled
@@ -1258,6 +1260,9 @@ GT5U.GTPP_MULTI_PACKAGER.mode.0=Packager
 GT5U.GTPP_MULTI_PACKAGER.mode.1=Unpackager
 GT5U.RESEARCH_STATION.mode.0=Research Station
 GT5U.RESEARCH_STATION.mode.1=Scanner
+GT5U.DECAY_WAREHOUSE.mode.normal=Normal
+GT5U.DECAY_WAREHOUSE.mode.exporting=Exporting
+GT5U.MULTI_MACHINE_MODE.unknown=Unknown Mode
 GT5U.MULTI_MACHINE_CHANGE=Now running in %s mode
 GT5U.MULTI_MACHINE_CONFIG.SAVE=Saved Multiblock Hatch Configuration
 GT5U.MULTI_MACHINE_CONFIG.LOAD=Loaded Multiblock Hatch Configuration
@@ -2197,6 +2202,8 @@ GT5U.gui.text.contributors.textures=Textures
 GT5U.gui.text.contributors.rendering=Rendering
 GT5U.gui.text.contributors.structure=Structure
 GT5U.gui.text.contributors.playtesting=Playtesting
+GT5U.gui.tooltip.behaviour.cover_tool.data=Stored Cover Data:
+GT5U.gui.tooltip.behaviour.cover_tool.cover_copy_paste=Can copy/paste cover data.
 
 GT5U.gui.chat.bindcentre=Successfully bind drone centre.
 GT5U.gui.chat.drone_level_low=Upgrade to T4 drone to active the teleport function
@@ -2293,6 +2300,11 @@ GT5U.item.toolbox.byline.crowbar=You thought I was going to put a Half-Life\n §
 GT5U.item.toolbox.byline.soldering_iron=Put some fine soldering alloy wire\n §oin the generic slots!
 GT5U.item.toolbox.byline.format=§o"%s"§r -§cQuerns§r
 
+GT5U.chat.rendering.off=Rendering off
+GT5U.chat.rendering.on=Rendering on
+GT5U.chat.auto_place.done=§aAuto placing done!
+GT5U.chat.auto_place.done.water=§aAuto placing done! Now go place the water yourself!
+
 GT5U.chat.cover.decorative.redstone=Redstone
 GT5U.chat.cover.decorative.energy=Energy
 GT5U.chat.cover.decorative.fluids=Fluids
@@ -2329,6 +2341,30 @@ GT5U.chat.cover.shutter.input.allowed=Only Input allowed
 GT5U.chat.cover.solar_panel.cleaned=Cleaned solar panel from %s%% dirt
 GT5U.chat.cover.solar_panel.cleaned.require=You need water bucket in inventory to clean the panel.
 GT5U.chat.cover.wireless_controller.shutdown_at=%s at (%s, %s, %s) shut down.
+GT5U.chat.behaviour.cover_tool.position=§m-----§r X: §b%s§r Y: §b%s§r Z: §b%s§r D: §b%s§r §m-----
+GT5U.chat.behaviour.cover_tool.side=Block Side: §b%s§r
+GT5U.chat.behaviour.cover_tool.type=Cover Type: §a%s§r
+GT5U.chat.behaviour.cover_tool.unavailable=Copy unavailable for this cover type
+GT5U.chat.behaviour.cover_tool.invalid_cover=Please Copy a Valid Cover First.
+GT5U.chat.behaviour.cover_tool.pasted=Cover Data Pasted.
+GT5U.chat.behaviour.cover_tool.not_match=Not Matched Cover.
+GT5U.chat.behaviour.cover_tool.no_cover=No Cover Found.
+GT5U.chat.behaviour.prospecting.ore=This is %s Ore.
+GT5U.chat.behaviour.prospecting.lava=There is Lava behind this Rock.
+GT5U.chat.behaviour.prospecting.liquid=There is a Liquid behind this Rock.
+GT5U.chat.behaviour.prospecting.air=There is an Air Pocket behind this Rock.
+GT5U.chat.behaviour.prospecting.changing=Material is changing behind this Rock.
+GT5U.chat.behaviour.prospecting.traces_of=Found traces of %s Ore.
+GT5U.chat.behaviour.prospecting.no_ores=No Ores found.
+
+GT5U.chat.distributor.items_per_side=Items per side: %s
+GT5U.chat.driller_base.chunk_loading.enable=Mining chunk loading enabled
+GT5U.chat.driller_base.chunk_loading.disabled=Mining chunk loading disabled
+GT5U.chat.laser.engraver.toggling_realism=Toggling realism!
+GT5U.chat.ore_drilling_plant_base.replace_with_cobblestone=Replace with cobblestone %s
+GT5U.chat.spinmatron.texture.static=Using Static Turbine Texture.
+GT5U.chat.spinmatron.texture.animated=Using Animated Turbine Texture.
+
 
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them

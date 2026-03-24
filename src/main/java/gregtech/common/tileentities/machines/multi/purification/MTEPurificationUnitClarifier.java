@@ -221,9 +221,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             env,
             true);
         if (built == -1) {
-            GTUtility.sendChatToPlayer(
-                env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
+            GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done.water");
             return 0;
         }
         return built;

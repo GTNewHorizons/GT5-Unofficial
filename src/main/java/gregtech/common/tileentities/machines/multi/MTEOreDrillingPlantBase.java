@@ -159,19 +159,11 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             final String blockDiameter = formatNumber(chunkRadiusConfig * 32L);
             GTUtility.sendChatTrans(
                 aPlayer,
-                GTUtility.translate("GT5U.machines.workareaset") + " "
-                    + chunkDiameter
-                    + "x"
-                    + chunkDiameter
-                    + " "
-                    + GTUtility.translate("GT5U.machines.chunks")
-                    + " ("
-                    + blockDiameter
-                    + "x"
-                    + blockDiameter
-                    + " "
-                    + GTUtility.translate("GT5U.machines.blocks")
-                    + ")");
+                "GT5U.machines.workareaset.blocks",
+                chunkDiameter,
+                chunkDiameter,
+                blockDiameter,
+                blockDiameter);
         }
     }
 
@@ -179,7 +171,10 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         replaceWithCobblestone = !replaceWithCobblestone;
-        GTUtility.sendChatTrans(aPlayer, "Replace with cobblestone " + replaceWithCobblestone);
+        GTUtility.sendChatTrans(
+            aPlayer,
+            "GT5U.chat.ore_drilling_plant_base.replace_with_cobblestone",
+            replaceWithCobblestone);
         return true;
     }
 
