@@ -50,7 +50,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEIndustrialThermalCentrifuge>
     implements ISurvivalConstructable {
 
-    private int mCasing;
+    private int casingAmount;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 2;
     private static final int OFFSET_Y = 7;
@@ -140,8 +140,8 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
                             .casingIndex(Casings.ThermalProcessingCasing.textureId)
                             .hint(1)
                             .build(),
-                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 0)),
-                        onElementPass(x -> ++x.mCasing, Casings.ThermalProcessingCasing.asElement())))
+                        onElementPass(x -> ++x.casingAmount, ofBlock(ModBlocks.blockCasings2Misc, 0)),
+                        onElementPass(x -> ++x.casingAmount, Casings.ThermalProcessingCasing.asElement())))
                 .addElement('A', chainAllGlasses())
                 .addElement('B', Casings.HeatProofMachineCasing.asElement())
                 .addElement(
@@ -212,10 +212,10 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCasing = 0;
+        casingAmount = 0;
         coilLevel = null;
         solenoidLevel = null;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && mCasing >= 85 && checkHatch();
+        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 85 && checkHatch();
     }
 
     public boolean checkHatch() {
@@ -229,7 +229,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().noRecipeCaching()
+        return new ProcessingLogic()
             .setSpeedBonus(1.0f / getSpeedBonus())
             .setEuModifier(getEUMultiplier())
             .setMaxParallelSupplier(this::getTrueParallel);
