@@ -231,9 +231,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String anyCasing = TooltipHelper.anyCasingText(
-            ItemList.Casing_FrostProof.get(1)
-                .getDisplayName());
+        String anyCasing = TooltipHelper.anyCasingText(Casings.FrostProofMachineCasing);
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.mvf")
             .addInfo("gt.mvf.tips.1")
