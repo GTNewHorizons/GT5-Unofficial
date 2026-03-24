@@ -338,34 +338,6 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * Add multiple info lines separated by separators.
-     * Only support simple info lines (no params included)
-     *
-     * @param lineColor Color of the separator line
-     * @param infos     All info's localization keys
-     *
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addManyInfo(EnumChatFormatting lineColor, String... infos) {
-        if (infos.length == 1) {
-            return addInfo(infos[0]);
-        } else {
-            for (int i = 0; i < infos.length; i++) {
-                if (i > 0) {
-                    addSeparator(lineColor);
-                }
-                addInfo(infos[i]);
-            }
-        }
-        return this;
-    }
-
-    public MultiblockTooltipBuilder addManyInfo(String... infos) {
-        addManyInfo(EnumChatFormatting.GRAY, infos);
-        return this;
-    }
-
-    /**
      * Add a line telling how much this machine pollutes.
      *
      * @param pollution Amount of pollution per second when active

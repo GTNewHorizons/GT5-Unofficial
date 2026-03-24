@@ -308,11 +308,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.eec")
-            .addInfo("gt.eec.tips.1")
-            .addSeparator()
-            .addInfo("gt.eec.tips.2", MAX_LOOTING_LEVEL)
-            .addSeparator()
-            .addManyInfo("gt.eec.tips.3", "gt.eec.tips.4", "gt.eec.tips.5")
+            .addInfo("gt.eec.tips", MAX_LOOTING_LEVEL)
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
             .addController("front_bottom_middle")
