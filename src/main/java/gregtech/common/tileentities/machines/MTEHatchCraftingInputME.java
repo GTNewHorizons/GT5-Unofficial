@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
 
@@ -1222,6 +1223,14 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     @Override
     public Iterator<PatternSlot<MTEHatchCraftingInputME>> inventories() {
         return Arrays.stream(internalInventory)
+            .filter(Objects::nonNull)
+            .iterator();
+    }
+
+    public Iterator<PatternSlot<MTEHatchCraftingInputME>> inventoriesReversed() {
+        return IntStream.range(0, internalInventory.length)
+            .map(i -> internalInventory.length - 1 - i)
+            .mapToObj(i -> internalInventory[i])
             .filter(Objects::nonNull)
             .iterator();
     }
