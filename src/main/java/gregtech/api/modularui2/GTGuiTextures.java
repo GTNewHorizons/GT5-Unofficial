@@ -704,12 +704,6 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/overlay_slot/implosion")
         .build();
 
-    public static final UITexture OVERLAY_SLOT_IN = UITexture.builder()
-        .canApplyTheme()
-        .fullImage()
-        .location(GregTech.ID, "gui/overlay_slot/in")
-        .build();
-
     public static final UITexture OVERLAY_SLOT_LENS = UITexture.builder()
         .canApplyTheme()
         .fullImage()
@@ -1772,6 +1766,17 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
     public static final UITexture PICTURE_PLUS_RED = UITexture.fullImage(GregTech.ID, "gui/picture/plus_red");
+    public static final UITexture PICTURE_SCREEN_BLACK = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/screen_black")
+        .imageSize(16, 16)
+        .canApplyTheme()
+        .adaptable(2)
+        .build();
+    public static final UITexture PICTURE_GAUGE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/gauge")
+        .fullImage()
+        .canApplyTheme()
+        .build();
     // endregion picture
 
     // region machine modes

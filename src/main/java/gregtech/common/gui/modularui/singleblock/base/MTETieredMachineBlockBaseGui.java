@@ -136,7 +136,8 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
             .align(Alignment.BottomRight)
             .paddingRight(4);
 
-        cornerFlow.childIf(this.doesAddCircuitSlot(), () -> this.createCircuitSlot(syncManager));
+        cornerFlow.childIf(this.doesAddGregTechLogo(), this::createLogo)
+            .childIf(this.doesAddCircuitSlot(), () -> this.createCircuitSlot(syncManager));
 
         return cornerFlow;
     }

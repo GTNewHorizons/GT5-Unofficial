@@ -366,4 +366,8 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
 
     }
 
+    @Override
+    protected boolean doesAddGregTechLogo() {
+        return false;
+    }
 }
