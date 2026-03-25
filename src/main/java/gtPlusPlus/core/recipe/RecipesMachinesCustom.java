@@ -614,20 +614,6 @@ public class RecipesMachinesCustom {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
-        // COMET - Compact Cyclotron
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Hull_IV.get(1),
-                GregtechItemList.Casing_Cyclotron_Coil.get(2),
-                MaterialsAlloy.INCOLOY_020.getPlate(8),
-                MaterialsAlloy.TANTALLOY_61.getGear(2),
-                MaterialsAlloy.INCOLOY_MA956.getScrew(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 16))
-            .itemOutputs(GregtechItemList.COMET_Cyclotron.get(1))
-            .fluidInputs(MaterialsAlloy.INCOLOY_020.getFluidStack(9 * INGOTS))
-            .duration(5 * MINUTES)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
     }
 
     private static void powerSubstation() {
