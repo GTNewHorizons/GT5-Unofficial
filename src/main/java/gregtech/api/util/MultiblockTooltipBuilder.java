@@ -587,6 +587,7 @@ public class MultiblockTooltipBuilder {
             String resolvedInfo = switch (info.toLowerCase()) {
                 case "<casing>", "any casing" -> "GT5U.MBTT.AnyCasing";
                 case "<bottom casing>", "bottom casing" -> "GT5U.MBTT.AnyBottomCasing";
+                case "<top casing>", "top casing" -> "GT5U.MBTT.AnyTopCasing";
                 default -> info;
             };
             if (addHintInfo) {

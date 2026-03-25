@@ -48,7 +48,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
@@ -234,19 +233,17 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
         String anyCasing = TooltipHelper.anyCasingText(Casings.FrostProofMachineCasing);
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.mvf")
-            .addInfo("gt.mvf.tips.1")
+            .addInfo("gt.mvf.flavor")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addSeparator()
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
-            .addSeparator()
             .addInfo(
-                "gt.mvf.tips.2",
+                "gt.mvf.tips",
                 Materials.SpaceTime.getLocalizedName(),
-                FluidRegistry.getFluidStack("spatialfluid", 1)
+                FluidRegistry.getFluid("spatialfluid")
                     .getLocalizedName(),
                 Materials.Eternity.getLocalizedName())
-            .addInfo("gt.mvf.tips.3")
             .beginStructureBlock(15, 15, 15, true)
             .addController("front_center")
             .addEnergyHatch(anyCasing, 1)

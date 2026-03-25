@@ -736,7 +736,8 @@ GT5U.MBTT.PartHintDesc=Hint block with dot %s
 GT5U.MBTT.AnyGlass=Any Glass
 GT5U.MBTT.AnyGlass_Tier=Any Glass (%s+)
 GT5U.MBTT.AnyCasing=Any Casing
-GT5U.MBTT.AnyBottomCasing=Any Bottom Casing
+GT5U.MBTT.AnyBottomCasing=Any Bottom Layer Casing
+GT5U.MBTT.AnyTopCasing=Any Top Layer Casing
 GT5U.MBTT.MaintenanceHatch=Maintenance Hatch
 GT5U.MBTT.MufflerHatch=Muffler Hatch
 GT5U.MBTT.EnergyHatch=Energy Hatch
@@ -4522,8 +4523,21 @@ machtype.prass=Precise Assembler, PrAss
 machtype.bbb=Brewery, BBB
 machtype.lst=Steam Turbine, LST
 machtype.mcr=Chemical Reactor, MCR
+machtype.bacvat=Bacterial Vat, Bac Vat
+machtype.manual_trafo=Transformer
 
 # Multiblock Tooltip lines
+gt.manual_trafo.tips=Operates in 4 diffrent modes:\nMode 1: Circuit 0 in controller: Direct-Upstep\nMode 2: Circuit 1 in controller: Direct-Downstep\nMode 3: Circuit 2 in controller: Tapped-Upstep (currently disabled)\nMode 4: Circuit 2 in controller: Tapped-Downstep (currently disabled)
+gt.manual_trafo.info=\n\nTapped Mode :
+gt.manual_trafo.info.winding=1 Layer for each tier transformed
+gt.manual_trafo.info.nzf_block=Middle of Transformer-Winding Blocks
+gt.manual_trafo.info.e_hatches=Touching Transformer-Winding Blocks
+gt.manual_trafo.info.e_hatches_req=Hatches touching Transformer-Winding Blocks must be tiered from bottom to top
+
+gt.bacvat.tips=§bAdvanced Bio Processing<SEPARATOR>Some recipes require §aR§2A§aD§2I§aA§2T§aI§2O§aN§7 supplied with a §l§aRadio Hatch\nRadiation can be either a minimum requirement or an exact value§Efficiency depends on Output Hatch fluid level§Efficiency peaks at §d50%
+gt.bacvat.info.glass=Hollow two middle layers
+gt.bacvat.info.glass_req=Some Recipes need more advanced Glass Types
+
 gt.mcr.flavor=§8§oInfinite Potential!
 
 gt.lst.tips=Needs a Turbine, place inside controller\nOutputs Distilled Water as well as producing power\nPower output depends on turbine and fitting\nUse screwdriver to adjust fitting of turbine
@@ -4800,9 +4814,8 @@ gt.advdistill.tips.3=Distillation Tower Mode
 gt.advdistill.info.1=One per layer except bottom
 gt.advdistill.info.2=Top Casing
 
-gt.mvf.tips.1=§8§o"Handles all things cooling!"
-gt.mvf.tips.2=Upgrade to Tier 2 to unlock §3Subspace Cooling\nWill gain §6perfect overclocks§7 by §aconsuming §dcoolants:\n§a75 L/s§7 : §61§7 : §d%s\n§a50 L/s§7 : §62§7 : §d%s\n§a25 L/s§7 : §63§7 : §d%s
-gt.mvf.tips.3=<SEPARATOR>§3Reinforcing the structure allows the injection of exotic coolants,\n§3enabling the capture of heat energy from miniature tears in spacetime,\n§3massively increasing the efficiency of the cooling process.
+gt.mvf.flavor=§8§o"Handles all things cooling!"
+gt.mvf.tips=<SEPARATOR>Upgrade to Tier 2 to unlock §3Subspace Cooling\nWill gain §6perfect overclocks§7 by §aconsuming §dcoolants:\n§a75 L/s§7 : §61§7 : §d%s\n§a50 L/s§7 : §62§7 : §d%s\n§a25 L/s§7 : §63§7 : §d%s<SEPARATOR>§3Reinforcing the structure allows the injection of exotic coolants,\n§3enabling the capture of heat energy from miniature tears in spacetime,\n§3massively increasing the efficiency of the cooling process.
 gt.mvf.info.t1_multi=§9Base Multi (Tier §51§9):
 gt.mvf.info.t2_multi=§9Tier §52§9 (Upgrades from Tier §51§9):
 
