@@ -90,8 +90,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
 
     protected Flow createContentHolderRow(ModularPanel panel, PanelSyncManager syncManager) {
         Flow contentFlow = Flow.row()
-            .size(getContentRowWidth(), getContentRowHeight())
-            .paddingBottom(4);
+            .size(getContentRowWidth(), getContentRowHeight());
         contentFlow.child(createContentSection(panel, syncManager));
         return contentFlow;
     }
@@ -134,6 +133,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
             .reverseLayout(true)
             .coverChildren()
             .align(Alignment.BottomRight)
+            .paddingBottom(2)
             .paddingRight(4);
 
         cornerFlow.childIf(this.doesAddGregTechLogo(), this::createLogo)
