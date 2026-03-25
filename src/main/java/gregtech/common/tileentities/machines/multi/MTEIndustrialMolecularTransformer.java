@@ -11,6 +11,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -75,7 +76,7 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
             .addEnergyHatch("Any Radiant Naquadah Alloy Casing", 1)
             .addMaintenanceHatch("Any Radiant Naquadah Alloy Casing", 1)
             .addMufflerHatch("Any Radiant Naquadah Alloy Casing", 1)
-            .addStructureAuthors("XX")
+            .addStructureAuthors(EnumChatFormatting.GOLD + "Fox")
             .toolTipFinisher();
         return tt;
     }
