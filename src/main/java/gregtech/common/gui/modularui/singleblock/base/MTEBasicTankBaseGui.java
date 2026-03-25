@@ -86,11 +86,13 @@ public class MTEBasicTankBaseGui extends MTETieredMachineBlockBaseGui<MTEBasicTa
         // input slot
         ioColumn.child(
             new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.getInputSlot()).slotGroup("item_inv"))
-                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_IN_STANDARD));
+                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_IN_STANDARD)
+                .marginBottom(supportsGauge() ? 0 : 8));
 
         // gauge icon
-        ioColumn.child(
-            GTGuiTextures.PICTURE_GAUGE.asWidget()
+        ioColumn.childIf(
+            supportsGauge(),
+            () -> GTGuiTextures.PICTURE_GAUGE.asWidget()
                 .size(18));
 
         // output slot
@@ -99,6 +101,10 @@ public class MTEBasicTankBaseGui extends MTETieredMachineBlockBaseGui<MTEBasicTa
                 .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD));
 
         return ioColumn;
+    }
+
+    protected boolean supportsGauge() {
+        return true;
     }
 
     @Override
