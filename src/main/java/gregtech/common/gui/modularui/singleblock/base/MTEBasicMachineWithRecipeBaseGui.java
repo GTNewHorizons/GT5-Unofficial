@@ -109,8 +109,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
 
     @Override
     protected Flow createRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createRightCornerFlow(panel, syncManager)
-            .paddingBottom(0)
+        return super.createRightCornerFlow(panel, syncManager).paddingBottom(0)
             .childIf(this.doesAddSpecialSlot(), this::createSpecialSlot)
             .childIf(properties.maxFluidOutputs > 0, this::createFluidOutputSlot);
         // the fluid output slot is positioned under the first item output slot, which is 1.5 slots over in the gui.
