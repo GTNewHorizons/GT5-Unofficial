@@ -28,7 +28,7 @@ public abstract class PluginBase extends TemplateRecipeHandler {
     public void drawBackground(int recipe) {
         GL11.glColor4f(1, 1, 1, 1);
         GuiDraw.changeTexture(getGuiTexture());
-        GuiDraw.drawTexturedModalRect(0, 0, 5, 11, getGuiWidth(), getGuiHeight());
+        GuiDraw.drawTexturedModalRect(-2, -2, 5, 11, getGuiWidth(), getGuiHeight());
     }
 
     @Override
@@ -41,7 +41,7 @@ public abstract class PluginBase extends TemplateRecipeHandler {
     public abstract String getOutputId();
 
     public int getGuiWidth() {
-        return 166;
+        return 170;
     }
 
     public int getGuiHeight() {
