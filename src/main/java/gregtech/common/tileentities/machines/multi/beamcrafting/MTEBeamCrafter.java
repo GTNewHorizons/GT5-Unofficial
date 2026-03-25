@@ -320,16 +320,32 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         BeamInformation inputParticle_B = this.getNthInputParticle(1);
 
         if (inputParticle_A != null && inputParticle_B != null) {
-            int particleRateA = inputParticle_A.getRate();
-            int particleRateB = inputParticle_B.getRate();
+            int inputParticleRateA = inputParticle_A.getRate();
+            int inputParticleRateB = inputParticle_B.getRate();
+            int inputParticleIDA = inputParticle_A.getParticleId();
+            int inputParticleIDB = inputParticle_B.getParticleId();
 
-            this.currentRecipeCurrentAmountA += particleRateA;
-            if (this.currentRecipeCurrentAmountA <= currentRecipeMaxAmountA) {
-                mProgresstime += particleRateA;
+            // beamline input hatch array matches order of particles from recipe
+            if (inputParticleIDA == this.currentRecipeParticleIDA){
+                this.currentRecipeCurrentAmountA += inputParticleRateA;
+                if (this.currentRecipeCurrentAmountA <= currentRecipeMaxAmountA) {
+                    mProgresstime += inputParticleRateA;
+                }
+                this.currentRecipeCurrentAmountB += inputParticleRateB;
+                if (this.currentRecipeCurrentAmountB <= currentRecipeMaxAmountB) {
+                    mProgresstime += inputParticleRateB;
+                }
             }
-            this.currentRecipeCurrentAmountB += particleRateB;
-            if (this.currentRecipeCurrentAmountB <= currentRecipeMaxAmountB) {
-                mProgresstime += particleRateB;
+            // beamline input hatch array does NOT match order of particles from recipe
+            else {
+                this.currentRecipeCurrentAmountA += inputParticleRateB;
+                if (this.currentRecipeCurrentAmountA <= currentRecipeMaxAmountA) {
+                    mProgresstime += inputParticleRateB;
+                }
+                this.currentRecipeCurrentAmountB += inputParticleRateA;
+                if (this.currentRecipeCurrentAmountB <= currentRecipeMaxAmountB) {
+                    mProgresstime += inputParticleRateA;
+                }
             }
         }
     }
