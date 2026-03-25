@@ -54,7 +54,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFrothFlotationCell>
     implements ISurvivalConstructable {
 
-    private int mCasing;
+    private int casingAmount;
     private static final int OFFSET_X = 5;
     private static final int OFFSET_Y = 3;
     private static final int OFFSET_Z = 0;
@@ -130,7 +130,8 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                         .atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy)
                         .casingIndex(Casings.InconelReinforcedCasing.textureId)
                         .hint(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, Casings.InconelReinforcedCasing.asElement())))
+                        .buildAndChain(
+                            onElementPass(x -> ++x.casingAmount, Casings.InconelReinforcedCasing.asElement())))
                 .addElement('D', Casings.FlotationCellCasings.asElement())
                 .addElement('E', Casings.InconelReinforcedCasing.asElement())
                 .addElement('A', ofFrame(MaterialsAlloy.INCONEL_690))
@@ -180,8 +181,8 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCasing = 0;
-        return checkPiece(mName, OFFSET_X, OFFSET_Y, OFFSET_Z) && mCasing >= 110 && checkHatch();
+        casingAmount = 0;
+        return checkPiece(mName, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 90 && checkHatch();
     }
 
     public boolean checkHatch() {
