@@ -834,10 +834,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Industrial Electrolyzer").getStackForm(1L));
 
         ItemList.FlotationCell.set(
-            new MTEFrothFlotationCell(
-                FlotationCell.ID,
-                "gtpp.multimachine.flotationcell.controller.tier.single",
-                "Flotation Cell Regulator").getStackForm(1L));
+            new MTEFrothFlotationCell(FlotationCell.ID, "gtpp.multimachine.flotationcell", "Flotation Cell Regulator")
+                .getStackForm(1L));
 
         ItemList.MegaChemicalReactor.set(
             new MTEMegaChemicalReactor(
