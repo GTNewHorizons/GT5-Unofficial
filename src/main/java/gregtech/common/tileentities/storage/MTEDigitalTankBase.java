@@ -667,4 +667,9 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank implements IFluidL
                 .setPos(116, 63)
                 .setSize(18, 18));
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

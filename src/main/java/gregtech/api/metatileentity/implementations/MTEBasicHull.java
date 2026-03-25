@@ -130,4 +130,9 @@ public class MTEBasicHull extends MTEBasicTank {
     public int getCapacity() {
         return (mTier + 1) * 1000;
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
