@@ -140,7 +140,7 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 40 && checkHatch();
+        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 95 && checkHatch();
     }
 
     public boolean checkHatch() {
