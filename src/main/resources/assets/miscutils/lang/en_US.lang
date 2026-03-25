@@ -4039,7 +4039,6 @@ gtpp.infodata.solar_heater.testificate=Testificate
 gtpp.infodata.energy_buffer.eu_stored=%s EU stored
 gtpp.infodata.energy_buffer.eu_capacity=%s EU capacity
 gtpp.infodata.tiered_chest.name=Super Storage Chest
-gtpp.infodata.tiered_tank.name=%s Fluid Tank
 gtpp.tiered_tank.desc.capacity=Stores %s of fluid
 gtpp.tiered_tank.desc.portable=A portable tank.
 gtpp.tiered_tank.desc.fluid=Fluid: %s %s L
