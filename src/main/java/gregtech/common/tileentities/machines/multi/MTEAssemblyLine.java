@@ -133,17 +133,17 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.assline")
-            .addInfo("gt.assline.tips.1")
+            .addInfo("gt.assline.tips")
             .addMaxTierSkips(1)
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
-            .addStructureInfo("gt.assline.info.1")
-            .addController("gt.assline.info.2")
-            .addEnergyHatch("gt.assline.info.3", 1)
-            .addMaintenanceHatch("gt.assline.info.4", 3)
-            .addInputBus("gt.assline.info.5", 4)
-            .addInputHatch("gt.assline.info.4", 3)
-            .addOutputBus("gt.assline.info.6", 3)
-            .addStructurePart("gt.blockmachines.hatch.dataaccess.name", "gt.assline.info.7", 2)
+            .addStructureInfo("gt.asslike.info")
+            .addController("gt.assline.info.controller")
+            .addEnergyHatch("gt.asslike.info.energy", 1)
+            .addMaintenanceHatch("gt.asslike.info.i_hatch", 3)
+            .addInputBus("gt.asslike.info.i_bus", 4)
+            .addInputHatch("gt.asslike.info.i_hatch", 3)
+            .addOutputBus("gt.asslike.info.o_bus", 3)
+            .addStructurePart("gt.blockmachines.hatch.dataaccess.name", "gt.asslike.info.dataaccess", 2)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

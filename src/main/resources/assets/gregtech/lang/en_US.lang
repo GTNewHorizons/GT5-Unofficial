@@ -4528,6 +4528,8 @@ machtype.manual_trafo=Transformer
 machtype.thtr=High Temperature Reactor, THTR
 
 # Multiblock Tooltip lines
+gt.cal.mode_format=<SEPARATOR>§6%s:\nImprint this machine with a Circuit Imprint,\nby putting the imprint in the controller\nEvery Circuit Assembly Line can only be imprinted ONCE<SEPARATOR>§6%s:\nDoes Circuit Assembler recipes, Minimum Length: §c%s\nRecipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1\nThis mode supports Crafting Input Buffer/Bus and allows bus separation
+
 gt.thtr.tips=Needs to be primed with %s of helium\nNeeds a constant supply of §bcoolant§7 while running\nNeeds at least §6100K§7 Fuel pebbles to start operation (can hold up to 675k pebbles)\nConsumes up to §60.5%%§7 of total Fuel Pellets per Operation depending on efficiency\nEfficiency decreases exponentially if the internal buffer is not completely filled\nReactor will take §b4800L/t§7 of coolant multiplied by efficiency\nUses %s EU/t\nOne Operation takes 9 hours
 gt.thtr.info=Corners and the 2 touching blocks are air (cylindric)
 
@@ -4683,14 +4685,23 @@ gt.spinmatron.tips.4=Requires Recipe Tier * §910L/s§7 of §5Kerosene§7 to ope
 gt.spinmatron.info.frame=Central Frame Blocks
 gt.spinmatron.info.rotor=Central Rotor Blocks
 
-gt.assline.tips.1=Used to craft complex machine parts (LuV+)\nItems & Fluids are inserted in NEI order, one per slice\nDoes not run Assembler recipes
-gt.assline.info.1=From Bottom to Top, Left to Right\nLayer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing\nLayer 2 - Glass, Assembly Line Casing, Glass\nLayer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing\nLayer 4 - Empty, Solid Steel Machine Casing, Empty\nUp to 16 repeating slices, each one allows for 1 more item in recipes
-gt.assline.info.2=Either Grate Machine Casing on the first slice
-gt.assline.info.3=Any layer 4 casing
-gt.assline.info.4=Any layer 1 casing
-gt.assline.info.5=As specified on layer 1
-gt.assline.info.6=Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice
-gt.assline.info.7=Any Grate Machine Casing NOT on the first slice
+gt.assline.tips=Used to craft complex machine parts (LuV+)\nItems & Fluids are inserted in NEI order, one per slice\nDoes not run Assembler recipes
+gt.assline.info.controller=Either Grate Machine Casing on the first slice
+
+gt.adv_assline.tips=Assembly Line with item pipelining\nAll fluids are consumed at the start of the recipe\nRecipe tier is limited by the lowest Energy Hatch tier\n§6<SEPARATOR>\nRuns imperfect overclocks until Energy Hatch tier\nAdditional overclocks are increasingly more expensive\n§bMultiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)\n§bPower usage = Multiplier × (Active Slices) × (Recipe EU/t)\nOverclocking assumes all recipe slices are active\n§lDoes not overclock beyond 1 tick\nConstructed identically to the Assembly Line
+gt.adv_assline.info.controller=Either Grate on layer 3 of the first slice
+
+gt.cal.info=From Bottom to Top, Left to Right\nLayer 1 - Solid Steel Machine Casing, Input bus (Last Output bus), Solid Steel Machine Casing\nLayer 2 - %1$s+ Tier Glass, Assembly Line Casing, %1$s+ Tier Glass\nLayer 3 - Grate Machine Casing\nUp to 7 repeating slices, last is Output Bus
+gt.cal.controller=Layer 3 first slice front
+gt.cal.info.e_hatch=1x, Any layer 3 casing
+gt.cal.info.o_bus=As specified in final slice on layer 1
+
+gt.asslike.info=From Bottom to Top, Left to Right\nLayer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing\nLayer 2 - Glass, Assembly Line Casing, Glass\nLayer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing\nLayer 4 - Empty, Solid Steel Machine Casing, Empty\nUp to 16 repeating slices, each one allows for 1 more item in recipes
+gt.asslike.info.energy=Any layer 4 casing
+gt.asslike.info.i_hatch=Any layer 1 casing
+gt.asslike.info.i_bus=As specified on layer 1
+gt.asslike.info.o_bus=Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice
+gt.asslike.info.dataaccess=Any Grate Machine Casing NOT on the first slice
 
 gt.distillation_tower.tips.1=Fluids are only put out at the correct height\nThe correct height equals the slot number in the NEI recipe
 gt.distillation_tower.info.1=7 x h - 5 (minimum)
@@ -4887,15 +4898,6 @@ gt.lcr.tips.1=Accepts fluids instead of fluid cells
 gt.lcr.info.1=Center
 gt.lcr.info.2=Adjacent to the PTFE Pipe Machine Casing
 gt.lcr.info.3=You can have multiple hatches/buses
-
-gt.adv_assline.tips=Assembly Line with item pipelining\nAll fluids are consumed at the start of the recipe\nRecipe tier is limited by the lowest Energy Hatch tier\n§6<SEPARATOR>\nRuns imperfect overclocks until Energy Hatch tier\nAdditional overclocks are increasingly more expensive\n§bMultiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)\n§bPower usage = Multiplier × (Active Slices) × (Recipe EU/t)\nOverclocking assumes all recipe slices are active\n§lDoes not overclock beyond 1 tick\nConstructed identically to the Assembly Line
-gt.adv_assline.info=From Bottom to Top, Left to Right\nLayer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing\nLayer 2 - Glass, Assembly Line Casing, Glass\nLayer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing\nLayer 4 - Empty, Solid Steel Machine Casing, Empty\nUp to 16 repeating slices, each one allows for 1 more item in recipes
-gt.adv_assline.info.controller=Either Grate on layer 3 of the first slice
-gt.adv_assline.info.energy=Any layer 4 casing
-gt.adv_assline.info.i_hatch=Any layer 1 casing
-gt.adv_assline.info.i_bus=As specified on layer 1
-gt.adv_assline.info.o_bus=Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice
-gt.adv_assline.info.dataaccess=Any Grate Machine Casing NOT on the first slice
 
 gt.ebf.tips=You can use some fluids to reduce recipe time. Place the circuit in the Input Bus\nIncreases Heat by §c100K §7for every §fVoltage §7tier past §bMV\nReduces §bEU Usage §7by §f5% §7every §c900K §7above the recipe requirement\nEvery §c1800K §7over the recipe requirement grants 1 §dPerfect Overclock\nThat means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)
 gt.ebf.info.muffler=Top middle
