@@ -93,7 +93,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
             .addOutputHatch("Bottom Casing", 1)
             .addEnergyHatch("Bottom Casing", 1)
             .addMaintenanceHatch("Bottom Casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "XX")
+            .addStructureAuthors(EnumChatFormatting.GOLD + "nockyx")
             .toolTipFinisher();
         return tt;
     }
@@ -187,11 +187,6 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
 
     public boolean checkHatch() {
         return mEnergyHatches.size() >= 1;
-    }
-
-    @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d == ForgeDirection.SOUTH;
     }
 
     @Override
