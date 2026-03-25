@@ -1665,6 +1665,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialElectrolyzer.get(1),
             new Object[] { GregtechItemList.Industrial_Electrolyzer });
 
+        // Flotation Cell Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.FlotationCell.get(1),
+            new Object[] { GregtechItemList.Controller_Flotation_Cell });
+
         // Mega Chemical Reactor Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.MegaChemicalReactor.get(1),
