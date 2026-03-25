@@ -432,7 +432,7 @@ public class RecipesMachinesCustom {
             2048,
             (int) TierEU.RECIPE_UIV,
             16,
-            new Object[] { GregtechItemList.Controller_MolecularTransformer.get(1),
+            new Object[] { ItemList.MolecularTransformer.get(1),
                 GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 8 }, ItemList.Electric_Pump_UEV.get(4),
                 ItemList.Field_Generator_UEV.get(4), GregtechItemList.Laser_Lens_Special.get(1) },
@@ -954,7 +954,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.NITINOL_60.getFluidStack(18 * INGOTS),
                 MaterialsAlloy.INCOLOY_MA956.getFluidStack(72 * INGOTS),
                 MaterialsAlloy.KANTHAL.getFluidStack(4 * INGOTS))
-            .itemOutputs(GregtechItemList.Controller_MolecularTransformer.get(1))
+            .itemOutputs(ItemList.MolecularTransformer.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * MINUTES)
             .addTo(AssemblyLine);

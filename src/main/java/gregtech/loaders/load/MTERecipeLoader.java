@@ -1655,6 +1655,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialPackager.get(1),
             new Object[] { GregtechItemList.Amazon_Warehouse_Controller });
 
+        // Molecular Transformer Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.MolecularTransformer.get(1),
+            new Object[] { GregtechItemList.Controller_MolecularTransformer });
+
         // Industrial Centrifuge Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialCentrifuge.get(1),
