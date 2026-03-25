@@ -18,11 +18,11 @@ import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.modularui2.GTGuiTextures;
 
-public class MTEBasicTankBaseGui extends MTETieredMachineBlockBaseGui<MTEBasicTank> {
+public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachineBlockBaseGui<T> {
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
-    public MTEBasicTankBaseGui(MTEBasicTank machine) {
+    public MTEBasicTankBaseGui(T machine) {
         super(machine);
     }
 

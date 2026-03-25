@@ -45,7 +45,7 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
     public FluidStack mFluid;
     // Due to class initializing order, getCapacity might not work properly at this time.
     // So we pass supplier instead of current value here.
-    protected final FluidStackTank fluidTank = new FluidStackTank(
+    public final FluidStackTank fluidTank = new FluidStackTank(
         () -> mFluid,
         fluidStack -> mFluid = fluidStack,
         this::getRealCapacity);
@@ -351,6 +351,6 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
 
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEBasicTankBaseGui(this).build(guiData, syncManager, uiSettings);
+        return new MTEBasicTankBaseGui<>(this).build(guiData, syncManager, uiSettings);
     }
 }
