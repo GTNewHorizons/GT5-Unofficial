@@ -328,20 +328,6 @@ public class RecipeLoaderChemicalSkips {
             .metadata(QFT_CATALYST, GregtechItemList.RawIntelligenceCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 3)
             .addTo(quantumForceTransformerRecipes);
-        // Unknown Particles
-        GTValues.RA.stdBuilder()
-            .itemOutputs(
-                Particle.getBaseParticle(Particle.UNKNOWN),
-                Particle.getBaseParticle(Particle.GRAVITON),
-                Particle.getBaseParticle(Particle.PROTON),
-                Particle.getBaseParticle(Particle.ELECTRON))
-            .fluidInputs(Materials.Hydrogen.getGas(10_000), Materials.Deuterium.getGas(1_000))
-            .fluidOutputs(Materials.Hydrogen.getPlasma(1_000))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_UEV)
-            .metadata(QFT_CATALYST, GregtechItemList.ParticleAccelerationCatalyst.get(0))
-            .metadata(QFT_FOCUS_TIER, 3)
-            .addTo(quantumForceTransformerRecipes);
         // Lategame Plastics (Missing Radox Polymer and Heavy Radox)
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Carbon.getDust(64), Materials.Osmium.getDust(24))
@@ -604,17 +590,6 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Gold.getNanite(1))
             .circuit(10)
             .itemOutputs(GregtechItemList.RawIntelligenceCatalyst.get(1))
-            .fluidInputs(Materials.SpaceTime.getMolten(1 * STACKS))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_UIV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.EmptyCatalystCarrier.get(1),
-                GregtechItemList.Laser_Lens_Special.get(64),
-                GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 10))
-            .circuit(10)
-            .itemOutputs(GregtechItemList.ParticleAccelerationCatalyst.get(1))
             .fluidInputs(Materials.SpaceTime.getMolten(1 * STACKS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
