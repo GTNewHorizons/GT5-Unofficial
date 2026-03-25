@@ -427,6 +427,26 @@ public class SpaceMiningRecipes {
             ItemMiningDrones.DroneTiers.UIV.ordinal(),
             150);
 
+        // Apatite Asteroid
+        addRecipesToDrones(
+            "apatiteAsteroid",
+            null,
+            null,
+            new int[] { 4500, 2500, 3000 },
+            new Materials[] { Materials.Apatite, Materials.TricalciumPhosphate, Materials.Pyrochlore },
+            OrePrefixes.oreEndstone,
+            20,
+            150,
+            60,
+            250,
+            60,
+            1,
+            25 * SECONDS,
+            (int) TierEU.RECIPE_LuV,
+            ItemMiningDrones.DroneTiers.HV.ordinal(),
+            ItemMiningDrones.DroneTiers.UHV.ordinal(),
+            150);
+
         // Lead Asteroid
         addRecipesToDrones(
             "leadAsteroid",
