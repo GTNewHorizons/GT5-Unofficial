@@ -326,7 +326,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             int inputParticleIDB = inputParticle_B.getParticleId();
 
             // beamline input hatch array matches order of particles from recipe
-            if (inputParticleIDA == this.currentRecipeParticleIDA){
+            if (inputParticleIDA == this.currentRecipeParticleIDA) {
                 this.currentRecipeCurrentAmountA += inputParticleRateA;
                 if (this.currentRecipeCurrentAmountA <= currentRecipeMaxAmountA) {
                     mProgresstime += inputParticleRateA;
@@ -410,7 +410,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
         tRecipe.consumeInput(1, inputFluids, inputItems);
 
-        if (tRecipe.mOutputChances == null || XSTR_INSTANCE.nextInt(10000) < tRecipe.mOutputChances[0]){
+        if (tRecipe.mOutputChances == null || XSTR_INSTANCE.nextInt(10000) < tRecipe.mOutputChances[0]) {
             this.mOutputItems = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
         }
 
