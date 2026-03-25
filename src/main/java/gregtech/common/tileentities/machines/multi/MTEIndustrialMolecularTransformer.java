@@ -38,7 +38,6 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
 
     private static IStructureDefinition<MTEIndustrialMolecularTransformer> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final int CASING_TEXTURE_ID = 48;
     private int casingAmount;
 
     private static final int OFFSET_X = 3;
