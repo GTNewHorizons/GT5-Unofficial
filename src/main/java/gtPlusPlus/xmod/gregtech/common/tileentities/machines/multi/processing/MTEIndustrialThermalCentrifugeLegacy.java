@@ -13,7 +13,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
