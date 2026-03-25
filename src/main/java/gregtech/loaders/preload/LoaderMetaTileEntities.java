@@ -165,6 +165,7 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticS
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialPackager;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialThermalCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialWireMill;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactoryLegacy;
@@ -805,6 +806,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 IndustrialWireMill.ID,
                 "industrialwiremill.controller.tier.single",
                 "Industrial Wire Factory").getStackForm(1));
+
+        ItemList.LargeThermalRefinery.set(
+            new MTEIndustrialThermalCentrifuge(
+                LargeThermalRefinery.ID,
+                "industrialthermalcentrifuge.controller.tier.single",
+                "Industrial Thermal Centrifuge").getStackForm(1));
 
         ItemList.IndustrialPackager.set(
             new MTEIndustrialPackager(
