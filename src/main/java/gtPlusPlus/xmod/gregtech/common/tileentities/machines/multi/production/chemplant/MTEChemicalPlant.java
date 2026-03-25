@@ -144,6 +144,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addInfo("gt.exxonmobil.tips.2", TooltipHelper.tierText(TooltipTier.PIPE_CASING))
             .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
             .addInfo("gt.exxonmobil.tips.3")
+            .beginStructureBlock(7, 7, 7, false)
             .addController("front_bottom_center")
             .addStructurePart("gt.blockmachines.hatch.catalysts.name", "<casing>")
             .addStructureHint("item.GTPP.catalyst_housing.name", 1)

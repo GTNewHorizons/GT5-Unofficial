@@ -220,6 +220,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
             .addInfo("gt.les.tips")
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
+            .beginVariableStructureBlock(5, 5, 5, 5, 5, 8, true)
             .addController("front_center")
             .addCasingInfoMin(Casings.MagicCasing.getLocalizedName(), 24)
             .addMaintenanceHatch("<hint>", 1)
