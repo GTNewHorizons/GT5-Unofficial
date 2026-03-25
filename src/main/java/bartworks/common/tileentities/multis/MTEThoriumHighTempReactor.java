@@ -30,7 +30,6 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -48,6 +47,7 @@ import bartworks.common.items.SimpleSubItemClass;
 import bartworks.util.MathUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -144,41 +144,18 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("High Temperature Reactor, THTR")
-            .addInfo("Needs to be primed with " + formatNumber(HELIUM_NEEDED) + " of helium")
-            .addInfo(
-                "Needs a constant supply of " + EnumChatFormatting.AQUA
-                    + "coolant"
-                    + EnumChatFormatting.GRAY
-                    + " while running")
-            .addInfo(
-                "Needs at least " + EnumChatFormatting.GOLD
-                    + "100K"
-                    + EnumChatFormatting.GRAY
-                    + " Fuel pebbles to start operation (can hold up to 675k pebbles)")
-            .addInfo(
-                "Consumes up to " + EnumChatFormatting.GOLD
-                    + "0.5%"
-                    + EnumChatFormatting.GRAY
-                    + " of total Fuel Pellets per Operation depending on efficiency")
-            .addInfo("Efficiency decreases exponentially if the internal buffer is not completely filled")
-            .addInfo(
-                "Reactor will take " + EnumChatFormatting.AQUA
-                    + "4800L/t"
-                    + EnumChatFormatting.GRAY
-                    + " of coolant multiplied by efficiency")
-            .addInfo("Uses " + formatNumber(powerUsage) + " EU/t")
-            .addInfo("One Operation takes 9 hours")
+        tt.addMachineType("machtype.thtr")
+            .addInfo("gt.thtr.tips", formatNumber(HELIUM_NEEDED), formatNumber(powerUsage))
             .beginStructureBlock(11, 12, 11, true)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Radiation Proof Casings", 500, false)
-            .addStructureInfo("Corners and the 2 touching blocks are air (cylindric)")
-            .addInputBus("Any top layer casing", 2)
-            .addInputHatch("Any top layer casing", 2)
-            .addOutputBus("Any bottom layer casing", 1)
-            .addOutputHatch("Any bottom layer casing", 1)
-            .addEnergyHatch("Any bottom layer casing", 1)
-            .addMaintenanceHatch("Any bottom layer casing", 1)
+            .addController("front_bottom_center")
+            .addCasingInfoMin(Casings.RadiationProofMachineCasing.getLocalizedName(), 500)
+            .addStructureInfo("gt.thtr.info")
+            .addInputBus("<top casing>", 2)
+            .addInputHatch("<top casing>", 2)
+            .addOutputBus("<bottom casing>", 1)
+            .addOutputHatch("<bottom casing>", 1)
+            .addEnergyHatch("<bottom casing>", 1)
+            .addMaintenanceHatch("<bottom casing>", 1)
             .toolTipFinisher();
         return tt;
     }

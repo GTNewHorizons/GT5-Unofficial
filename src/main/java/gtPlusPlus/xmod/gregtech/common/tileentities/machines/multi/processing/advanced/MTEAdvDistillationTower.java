@@ -48,6 +48,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
@@ -183,26 +184,23 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.distillery", "gt.recipe.distillationtower")
             .addInfo("gt.advdistill.tips.1")
-            .addSeparator()
-            .addInfo("gt.advdistill.tips.2")
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(0.15f)
-            .addSeparator()
-            .addInfo("gt.advdistill.tips.3")
+            .addInfo("gt.advdistill.tips.2")
             .addStaticParallelInfo(DT_MODE_MAX_PARALLELS)
             .addStaticSpeedInfo(3.5f)
             .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
             .addController("front_bottom_center")
-            .addCasingInfoMin("gt.blockcasings4.1.name", 7, false)
+            .addCasingInfoMin(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 7)
             .addInputBus("<bottom casing>", 1)
             .addOutputBus("<bottom casing>", 1)
             .addInputHatch("<bottom casing>", 1)
             .addMaintenanceHatch("<casing>", 1)
             .addEnergyHatch("<casing>", 1)
-            .addOutputHatch("gt.advdistill.info.1", 2)
-            .addMufflerHatch("gt.advdistill.info.2", 3)
+            .addOutputHatch("gt.advdistill.info.o_hatch", 2)
+            .addMufflerHatch("<top casing>", 3)
             .toolTipFinisher();
         return tt;
     }
