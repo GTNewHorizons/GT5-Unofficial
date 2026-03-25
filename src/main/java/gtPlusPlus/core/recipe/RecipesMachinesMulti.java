@@ -60,6 +60,7 @@ public class RecipesMachinesMulti {
         multiMacerator();
         multiWiremill();
         multiSifter();
+        multiThermalCentrifuge();
         multiWasher();
         multiCutter();
         multiExtruder();
