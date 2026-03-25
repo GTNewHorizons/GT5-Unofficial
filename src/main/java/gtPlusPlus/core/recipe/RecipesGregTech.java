@@ -606,7 +606,7 @@ public class RecipesGregTech {
             .metadata(SCANNING, new Scanning(60 * SECONDS, TierEU.RECIPE_UEV))
             .itemInputs(
                 GregtechItemList.Battery_Casing_Gem_4.get(1),
-                ItemList.StableBosonContainmentUnit.get(16),
+                ItemList.StableBosonContainmentUnit.get(2),
                 MaterialsAlloy.ABYSSAL.getPlate(16),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 32),
