@@ -8,6 +8,7 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.List;
@@ -113,15 +114,15 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                 .addShape(
                     mName,
                     new String[][] { { "           ", "           ", "           ", "    D~D    ", "   CCCCC   " },
-                        { "           ", "           ", "           ", "  DD   DD  ", "  CCCCCCC  " },
-                        { "           ", "       BB  ", "           ", " D       D ", " CCCCCCCCC " },
-                        { "           ", "      BBB  ", "       B   ", " D       D ", "CCCCCCCCCCC" },
-                        { "   EEEEE   ", " AE  BBBEA ", "A         A", "D    D    D", "CCCCCCCCCCC" },
-                        { " EEEEEEEEE ", " E  BEB  E ", "     E     ", "D   DED   D", "CCCCCCCCCCC" },
-                        { "   EEEEE   ", " AEBBB  EA ", "A         A", "D    D    D", "CCCCCCCCCCC" },
-                        { "           ", "  BBB      ", "   B       ", " D       D ", "CCCCCCCCCCC" },
-                        { "           ", "  BB       ", "           ", " D       D ", " CCCCCCCCC " },
-                        { "           ", "           ", "           ", "  DD   DD  ", "  CCCCCCC  " },
+                        { "           ", "           ", "           ", "  DDWWWDD  ", "  CCCCCCC  " },
+                        { "           ", "       BB  ", "           ", " DWWWWWWWD ", " CCCCCCCCC " },
+                        { "           ", "      BBB  ", "       B   ", " DWWWWWWWD ", "CCCCCCCCCCC" },
+                        { "   EEEEE   ", " AE  BBBEA ", "A         A", "DWWWWDWWWWD", "CCCCCCCCCCC" },
+                        { " EEEEEEEEE ", " E  BEB  E ", "     E     ", "DWWWDEDWWWD", "CCCCCCCCCCC" },
+                        { "   EEEEE   ", " AEBBB  EA ", "A         A", "DWWWWDWWWWD", "CCCCCCCCCCC" },
+                        { "           ", "  BBB      ", "   B       ", " DWWWWWWWD ", "CCCCCCCCCCC" },
+                        { "           ", "  BB       ", "           ", " DWWWWWWWD ", " CCCCCCCCC " },
+                        { "           ", "           ", "           ", "  DDWWWDD  ", "  CCCCCCC  " },
                         { "           ", "           ", "           ", "    DDD    ", "   CCCCC   " } })
                 .addElement(
                     'C',
@@ -135,6 +136,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                 .addElement('E', Casings.InconelReinforcedCasing.asElement())
                 .addElement('A', ofFrame(MaterialsAlloy.INCONEL_690))
                 .addElement('B', ofFrame(MaterialsAlloy.STABALLOY))
+                .addElement('W', ofAnyWater(false))
                 .build();
         }
         return STRUCTURE_DEFINITION;
