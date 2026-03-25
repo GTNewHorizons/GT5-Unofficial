@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER_ACTIVE;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.recipe.RecipeMaps.BEAMCRAFTER_METADATA;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -392,7 +393,10 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 
         tRecipe.consumeInput(1, inputFluids, inputItems);
-        this.mOutputItems = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
+
+        if (tRecipe.mOutputChances == null || XSTR_INSTANCE.nextInt(10000) < tRecipe.mOutputChances[0]){
+            this.mOutputItems = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
+        }
 
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
