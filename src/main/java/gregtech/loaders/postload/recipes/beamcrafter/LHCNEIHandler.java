@@ -16,7 +16,8 @@ import gregtech.nei.GTNEIDefaultHandler;
 
 public class LHCNEIHandler extends GTNEIDefaultHandler {
 
-    // Note: this was written almost from scratch so it might be different to standard implementations (if there are any)
+    // Note: this was written almost from scratch so it might be different to standard implementations (if there are
+    // any)
 
     public LHCNEIHandler(RecipeCategory recipeCategory) {
         super(recipeCategory);
