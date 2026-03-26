@@ -217,7 +217,8 @@ public class GTUtility {
     private static int sBookCount = 0;
     public static UUID defaultUuid = null; // maybe default non-null?
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
-    private static final Splitter NEWLINE_SPLITTER = Splitter.on("\\n");
+    private static final Splitter NEWLINE_SPLITTER = Splitter.on("\\n")
+        .omitEmptyStrings();
 
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
