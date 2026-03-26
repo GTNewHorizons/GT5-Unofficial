@@ -14,6 +14,8 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static java.lang.Math.max;
 
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -519,6 +521,11 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     @Override
     public byte getUpdateData() {
         return (byte) ((machineMode == MACHINEMODE_COLLIDER) ? MACHINEMODE_COLLIDER : MACHINEMODE_ACCELERATOR);
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.largeHadronColliderRecipes;
     }
 
     @NotNull

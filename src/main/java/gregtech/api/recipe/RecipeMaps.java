@@ -33,6 +33,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderFrontend;
+import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderMetadata;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -1642,6 +1644,28 @@ public final class RecipeMaps {
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STANDARD)
+        .build();
+
+    public static final RecipeMetadataKey<LargeHadronColliderMetadata> LARGE_HADRON_COLLIDER_METADATA = SimpleRecipeMetadataKey
+        .create(LargeHadronColliderMetadata.class, "large_hadron_collider_metadata");
+
+    public static final RecipeMap<RecipeMapBackend> largeHadronColliderRecipes = RecipeMapBuilder
+        .of("gt.recipe.large_hadron_collider")
+        .maxIO(1, 8, 0, 0)
+        .minInputs(1, 0)
+        .neiItemOutputsGetter(recipe -> {
+            LargeHadronColliderMetadata metadata = recipe.getMetadata(LARGE_HADRON_COLLIDER_METADATA);
+            if (metadata == null) return GTValues.emptyItemStackArray;
+
+            List<ItemStack> ret = new ArrayList<>();
+            ret.addAll(Arrays.asList(recipe.mOutputs));
+            for (Particle p : metadata.particleList) {
+                ret.add(new ItemStack(LanthItemList.PARTICLE_ITEM, 1, p.getId()));
+            }
+
+            return ret.toArray(new ItemStack[0]);
+        }).progressBar(GTUITextures.PROGRESSBAR_LHC_EM)
+        .frontend(LargeHadronColliderFrontend::new)
         .build();
 
     public static final RecipeMetadataKey<BeamCrafterMetadata> BEAMCRAFTER_METADATA = SimpleRecipeMetadataKey
