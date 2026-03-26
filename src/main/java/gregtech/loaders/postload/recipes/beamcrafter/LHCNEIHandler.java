@@ -16,6 +16,8 @@ import gregtech.nei.GTNEIDefaultHandler;
 
 public class LHCNEIHandler extends GTNEIDefaultHandler {
 
+    // Note: this was written almost from scratch so it might be different to standard implementations (if there are any)
+
     public LHCNEIHandler(RecipeCategory recipeCategory) {
         super(recipeCategory);
     }
@@ -41,6 +43,7 @@ public class LHCNEIHandler extends GTNEIDefaultHandler {
         int textureIndex = metadata.progressBarTextureIndex;
         UITexture dynamicProgressBar = PROGRESSBAR_LHC_EM;
 
+        // hardcoded indices because there shouldn't ever be more LHC modules
         if (textureIndex == 1) {
             dynamicProgressBar = PROGRESSBAR_LHC_W;
         }
@@ -52,16 +55,20 @@ public class LHCNEIHandler extends GTNEIDefaultHandler {
         }
 
         Pos2d progressPos = new Pos2d(-2, 0);
+        // fixed dimensions because there shouldn't ever be more LHC modules
         int progressWidth = 170;
         int progressHeight = 82;
 
         float progress = (float) (getDrawTicks() % 100) / 100f;
+        // minFraction and arrowWidth exist so that there isn't 3 seconds of dead time when the progress bar resets
         float minFraction = 64 / 170f;
         float arrowWidth = (progressWidth * (minFraction + (1f - minFraction) * progress));
 
+        // draw the background (upper half of texture file)
         dynamicProgressBar
             .drawSubArea(progressPos.getX(), progressPos.getY(), progressWidth, progressHeight, 0f, 0f, 1f, 0.5f);
 
+        // draw the progress arrow (bottom half of texture file)
         dynamicProgressBar.drawSubArea(
             progressPos.getX(),
             progressPos.getY(),
