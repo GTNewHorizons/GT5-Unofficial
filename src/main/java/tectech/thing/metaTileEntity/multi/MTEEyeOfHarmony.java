@@ -78,7 +78,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;
@@ -1549,12 +1548,12 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         while (amount >= Integer.MAX_VALUE) {
             FluidStack tmpFluid = fluid.copy();
             tmpFluid.amount = Integer.MAX_VALUE;
-            ((MTEHatchOutputME) mOutputHatches.get(0)).tryFillAE(tmpFluid);
+            dumpFluid(mOutputHatches, tmpFluid, false);
             amount -= Integer.MAX_VALUE;
         }
         FluidStack tmpFluid = fluid.copy();
         tmpFluid.amount = (int) amount;
-        ((MTEHatchOutputME) mOutputHatches.get(0)).tryFillAE(tmpFluid);
+        dumpFluid(mOutputHatches, tmpFluid, false);
     }
 
     @Override

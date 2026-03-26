@@ -131,15 +131,6 @@ public class MTEHatchOutputME extends MTEHatchOutput
         return ok ? aFluid.amount : 0;
     }
 
-    public int tryFillAE(final FluidStack aFluid) {
-        if (aFluid == null) return 0;
-        if (canAcceptFluid() || (provider.getTickCounter() == provider.getLastInputTick())) {
-            provider.addToCache(aFluid);
-            return aFluid.amount;
-        }
-        return 0;
-    }
-
     @Override
     public boolean canStoreFluid(@NotNull FluidStack fluidStack) {
         return provider.canStore(fluidStack);
