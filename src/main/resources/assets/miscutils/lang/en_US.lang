@@ -3940,14 +3940,6 @@ item.itemSimpleFiremaker.message.1=You somehow managed to set yourself on fire..
 item.itemSimpleFiremaker.message.2=You created a fire!
 item.itemSimpleFiremaker.message.3=Your attempt does nothing.
 
-# Added 17/07/23
-item.BasicGenericChemItem.29.name=Limpid Water Catalyst
-item.BasicGenericChemItem.30.name=Flawless Water Catalyst
-
-# Added 18/07/23
-item.BasicGenericChemItem.31.name=Particle Acceleration Catalyst
-item.BasicGenericChemItem.32.name=Synchrotron-Capable Catalyst
-
 # Added 19/09/23
 item.BasicGenericChemItem.33.name=Algagenic Growth Promoter Catalyst
 
@@ -4047,11 +4039,10 @@ gtpp.infodata.solar_heater.testificate=Testificate
 gtpp.infodata.energy_buffer.eu_stored=%s EU stored
 gtpp.infodata.energy_buffer.eu_capacity=%s EU capacity
 gtpp.infodata.tiered_chest.name=Super Storage Chest
-gtpp.infodata.tiered_tank.name=%s Fluid Tank
 gtpp.tiered_tank.desc.capacity=Stores %s of fluid
 gtpp.tiered_tank.desc.portable=A portable tank.
 gtpp.tiered_tank.desc.fluid=Fluid: %s %s L
-gtpp.tiered_tank.tooltip.contains=Contains Fluid: 
+gtpp.tiered_tank.tooltip.contains=Contains Fluid:
 gtpp.tiered_tank.tooltip.amount=Fluid Amount: %s L
 gtpp.infodata.tiered_tank.name=%s Tank
 gtpp.tiered_tank.infodata.amount=%s L
