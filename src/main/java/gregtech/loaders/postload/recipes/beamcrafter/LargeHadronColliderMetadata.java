@@ -26,8 +26,8 @@ public class LargeHadronColliderMetadata {
 
         private ImmutableList<Particle> particleList;
 
-        public Builder particleList(List<Particle> particleList) {
-            this.particleList = LHCModule.EM.acceptedParticles;
+        public Builder particleList(ImmutableList<Particle> particleList) {
+            this.particleList = particleList;
             return this;
         }
 
