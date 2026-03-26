@@ -416,17 +416,14 @@ public class GTRecipeConstants {
                 // deal with circuits
                 return GTUtility.concat(
                     builder.copy()
-                        .itemInputs(itemInputs)
                         .fluidInputs(ArrayUtils.addAll(builder.fluidInputs, GTModHandler.getDistilledWater(100L)))
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .itemInputs(itemInputs)
                         .fluidInputs(
                             ArrayUtils.addAll(builder.fluidInputs, Materials.Grade1PurifiedWater.getFluid(100L)))
                         .duration(halfBoostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .itemInputs(itemInputs)
                         .fluidInputs(
                             ArrayUtils.addAll(builder.fluidInputs, Materials.Grade2PurifiedWater.getFluid(100L)))
                         .duration(boostedRecipeTime)
