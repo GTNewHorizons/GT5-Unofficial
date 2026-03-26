@@ -4137,17 +4137,11 @@ public class GTUtility {
         };
 
         if (isFormatShortened) {
-            ret.append(" (");
-            ret.append(EnumChatFormatting.GRAY);
-            if (perSecond <= 1) {
-                ret.append(df.format(progressTime / amount));
-                ret.append("s/each");
-            } else {
-                ret.append(formatShortenedLong((long) perSecond));
-                ret.append("/s");
-            }
-            ret.append(EnumChatFormatting.WHITE);
-            ret.append(")");
+            ret.append(
+                String.format(
+                    " (§7%s§f)",
+                    perSecond <= 1 ? translate("GT5U.gui.text.second_each", df.format(progressTime / amount))
+                        : translate("GT5U.gui.text.each_per_second", formatShortenedLong((long) perSecond))));
         } else {
             ret.append(EnumChatFormatting.RESET);
             ret.append(
