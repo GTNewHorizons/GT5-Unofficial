@@ -722,8 +722,6 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         registerChemplantCatalyst(GregtechItemList.UltimatePlasticCatalyst.get(1));
         registerChemplantCatalyst(GregtechItemList.BiologicalIntelligenceCatalyst.get(1));
         registerChemplantCatalyst(GregtechItemList.TemporalHarmonyCatalyst.get(1));
-        registerChemplantCatalyst(GregtechItemList.ParticleAccelerationCatalyst.get(1));
-        registerChemplantCatalyst(GregtechItemList.SynchrotronCapableCatalyst.get(1));
         registerChemplantCatalyst(GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1));
     }
 }
