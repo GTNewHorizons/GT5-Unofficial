@@ -1403,7 +1403,8 @@ public class GTUtility {
         sBookCount++;
         rStack = new ItemStack(Items.written_book, 1);
         NBTTagCompound tNBT = new NBTTagCompound();
-        tNBT.setString("title", GTUtility.translate("gt.Book." + aTitle + ".Name", aTitle));
+        String key = "gt.Book." + aTitle + ".Name";
+        tNBT.setString("title", StatCollector.canTranslate(key) ? GTUtility.translate(key) : aTitle);
         tNBT.setString("author", aAuthor);
         NBTTagList tNBTList = new NBTTagList();
         for (byte i = 0; i < aPages.length; i++) {
