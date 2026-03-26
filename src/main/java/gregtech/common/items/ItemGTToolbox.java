@@ -269,6 +269,9 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     @Override
     public void addInformation(final ItemStack toolbox, final EntityPlayer player, final List<String> tooltipList,
         final boolean f3mode) {
+
+        super.addInformation(toolbox, player, tooltipList, f3mode);
+
         final Optional<ToolboxSlot> selectedToolType = ToolboxUtil.getSelectedToolType(toolbox);
 
         final GameSettings settings = Minecraft.getMinecraft().gameSettings;
