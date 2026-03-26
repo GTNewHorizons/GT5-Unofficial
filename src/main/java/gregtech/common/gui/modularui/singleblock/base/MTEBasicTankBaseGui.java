@@ -13,7 +13,6 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
 
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -43,11 +42,6 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
     }
 
     protected Flow createScreen(ModularPanel panel, PanelSyncManager syncManager) {
-        FluidStackTank fluidStackTank = new FluidStackTank(
-            machine::getDrainableStack,
-            machine::setDrainableStack,
-            machine::getCapacity);
-
         Flow screen = Flow.col()
             .size(71, 45)
             .padding(3, 2, 3, 2)
@@ -63,13 +57,13 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
 
         // liquid amount
         screen.child(
-            IKey.dynamic(() -> numberFormat.format(fluidStackTank.getFluidAmount()))
+            IKey.dynamic(() -> numberFormat.format(machine.fluidTank.getFluidAmount()))
                 .asWidget()
                 .color(Color.WHITE.main));
 
         // fluid slot
         screen.child(
-            new FluidSlot().syncHandler(new FluidSlotSyncHandler(fluidStackTank))
+            new FluidSlot().syncHandler(new FluidSlotSyncHandler(machine.fluidTank))
                 .align(Alignment.BottomRight)
                 .background(IDrawable.EMPTY));
 
