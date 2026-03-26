@@ -17,7 +17,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.fluid.IGTFluid;
 import gregtech.api.interfaces.fluid.IGTRegisteredFluid;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
 public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runnable {
@@ -93,12 +92,11 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
 
     // ----- IGTFluid interface implementations -----
 
+    @Override
     public IGTRegisteredFluid addFluid() {
         if (FluidRegistry.registerFluid(GTFluid.this)) {
             // Registered as a new Fluid
             registeredFluid = this;
-            // Adds a server-side localized-name
-            GTLanguageManager.addStringLocalization(getUnlocalizedName(), localizedName);
         } else {
             // Fluid already registered, get it from the registry
             registeredFluid = FluidRegistry.getFluid(GTFluid.this.fluidName);

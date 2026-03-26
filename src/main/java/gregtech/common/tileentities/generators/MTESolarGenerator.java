@@ -283,4 +283,9 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
         ItemStack aStack) {
         return false;
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

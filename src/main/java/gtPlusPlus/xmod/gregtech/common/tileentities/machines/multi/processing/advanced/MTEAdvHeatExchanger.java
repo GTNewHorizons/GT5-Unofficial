@@ -371,7 +371,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                         addOutput(Materials.Steam.getGas(tGeneratedEU)); // Generate regular steam
                     }
                 } else {
-                    GTLog.exp.println(this.mName + " had no more Distilled water!");
+                    GTLog.writeExplosionLog(this, "had no more Distilled water!");
                     explodeMultiblock(); // Generate crater
                 }
                 endRecipeProcessing();
@@ -426,11 +426,6 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEAdvHeatExchanger(this.mName);
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return super.isGivingInformation();
     }
 
     @Override
@@ -553,6 +548,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEAdvHeatExchanger> adder() {
             return adder;
         }

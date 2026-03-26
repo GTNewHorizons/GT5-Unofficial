@@ -67,6 +67,7 @@ import gregtech.common.items.toolbox.ToolboxElectricManager;
 import gregtech.common.items.toolbox.ToolboxItemStackHandler;
 import gregtech.common.items.toolbox.ToolboxPickBlockDecider;
 import gregtech.common.items.toolbox.ToolboxUtil;
+import gregtech.common.items.toolbox.pickblock.PickResults;
 import gregtech.crossmod.backhand.Backhand;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -438,6 +439,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         }
 
         return !ToolboxPickBlockDecider.getSuggestedTool(event)
+            .suggestedTools()
             .isEmpty();
     }
 
@@ -515,6 +517,9 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
             if (handler.getStackInSlot(slot.getSlotID()) != null) {
                 toolCount++;
                 lastSlot = slot.getSlotID();
+                if (toolCount > 1) {
+                    break;
+                }
             }
         }
 
@@ -532,7 +537,18 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                 sendChangeToolPacket(inventorySlot, selectedToolType.isPresent() ? NO_TOOL_SELECTED : lastSlot);
                 return true;
             } else {
-                for (ToolboxSlot suggested : ToolboxPickBlockDecider.getSuggestedTool(player)) {
+                final PickResults pickResults = ToolboxPickBlockDecider.getSuggestedTool(player);
+
+                if (pickResults.forceDeselect()) {
+                    // If the toolbox already has no selected tool, do nothing, but interrupt the event anyway.
+                    if (selectedToolType.isPresent()) {
+                        sendChangeToolPacket(inventorySlot, NO_TOOL_SELECTED);
+                    }
+
+                    return true;
+                }
+
+                for (ToolboxSlot suggested : pickResults.suggestedTools()) {
                     if (handler.getStackInSlot(suggested.getSlotID()) != null) {
                         sendChangeToolPacket(inventorySlot, suggested.getSlotID());
                         return true;

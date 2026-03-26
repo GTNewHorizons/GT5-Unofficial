@@ -1098,7 +1098,9 @@ GT5U.recipes.chance.output=Output Chance: %s
 
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
-GT5U.machines.workareaset=Work Area set to
+GT5U.machines.workareaset.s=Work Area set to %sx%s
+GT5U.machines.workareaset.chunks=Work Area set to %sx%s Chunks
+GT5U.machines.workareaset.blocks=Work Area set to %sx%s Chunks (%sx%s Blocks)
 GT5U.machines.workarea_fail=Can't adjust work area while running
 GT5U.machines.autoretract.enabled=Auto retract enabled
 GT5U.machines.autoretract.disabled=Auto retract disabled
@@ -1235,6 +1237,9 @@ GT5U.GTPP_MULTI_PACKAGER.mode.0=Packager
 GT5U.GTPP_MULTI_PACKAGER.mode.1=Unpackager
 GT5U.RESEARCH_STATION.mode.0=Research Station
 GT5U.RESEARCH_STATION.mode.1=Scanner
+GT5U.DECAY_WAREHOUSE.mode.normal=Normal
+GT5U.DECAY_WAREHOUSE.mode.exporting=Exporting
+GT5U.MULTI_MACHINE_MODE.unknown=Unknown Mode
 GT5U.MULTI_MACHINE_CHANGE=Now running in %s mode
 GT5U.MULTI_MACHINE_CONFIG.SAVE=Saved Multiblock Hatch Configuration
 GT5U.MULTI_MACHINE_CONFIG.LOAD=Loaded Multiblock Hatch Configuration
@@ -2188,6 +2193,8 @@ GT5U.gui.text.contributors.textures=Textures
 GT5U.gui.text.contributors.rendering=Rendering
 GT5U.gui.text.contributors.structure=Structure
 GT5U.gui.text.contributors.playtesting=Playtesting
+GT5U.gui.tooltip.behaviour.cover_tool.data=Stored Cover Data:
+GT5U.gui.tooltip.behaviour.cover_tool.cover_copy_paste=Can copy/paste cover data.
 
 GT5U.gui.chat.bindcentre=Successfully bind drone centre.
 GT5U.gui.chat.drone_level_low=Upgrade to T4 drone to active the teleport function
@@ -2272,17 +2279,22 @@ GT5U.item.toolbox.tooltip.open_toolbox=%s: Open toolbox
 # This inserts gt.item.desc.durability into the %s
 GT5U.item.toolbox.tooltip.tool_durability=Tool %s
 
-GT5U.item.toolbox.byline.closed=Your stalwart ally for an epic\n §oengineering journey.
+GT5U.item.toolbox.byline.closed=Your stalwart ally for an epic\n§oengineering journey.
 # The tool-specific bylines are pretty much all jokes. Accuracy in translation isn't important.
-GT5U.item.toolbox.byline.wrench=The solution? Use a machine. And if\n §othat don't work? Use more machine.
+GT5U.item.toolbox.byline.wrench=The solution? Use a machine. And if\n§othat don't work? Use more machine.
 # Translator note: A horrible English pun. "Wire" -> "Why are". Don't feel obligated to preserve it ;)
-GT5U.item.toolbox.byline.wire_cutter=WIRE you reading this? Cut it out.\n §oThere's work to do!
+GT5U.item.toolbox.byline.wire_cutter=WIRE you reading this? Cut it out.\n§oThere's work to do!
 GT5U.item.toolbox.byline.screwdriver=Contains 0% vodka and 0% orange juice.
 GT5U.item.toolbox.byline.soft_mallet=Wait, isn't this just a clown hammer?
-GT5U.item.toolbox.byline.hard_hammer=This performs the Forge Hammer recipe\n §oon anything you mine with it!
-GT5U.item.toolbox.byline.crowbar=You thought I was going to put a Half-Life\n §oreference here, didn't you?
-GT5U.item.toolbox.byline.soldering_iron=Put some fine soldering alloy wire\n §oin the generic slots!
+GT5U.item.toolbox.byline.hard_hammer=This performs the Forge Hammer recipe\n§oon anything you mine with it!
+GT5U.item.toolbox.byline.crowbar=You thought I was going to put a Half-Life\n§oreference here, didn't you?
+GT5U.item.toolbox.byline.soldering_iron=Put some fine soldering alloy wire\n§oin the generic slots!
 GT5U.item.toolbox.byline.format=§o"%s"§r -§cQuerns§r
+
+GT5U.chat.rendering.off=Rendering off
+GT5U.chat.rendering.on=Rendering on
+GT5U.chat.auto_place.done=§aAuto placing done!
+GT5U.chat.auto_place.done.water=§aAuto placing done! Now go place the water yourself!
 
 GT5U.chat.cover.decorative.redstone=Redstone
 GT5U.chat.cover.decorative.energy=Energy
@@ -2320,6 +2332,30 @@ GT5U.chat.cover.shutter.input.allowed=Only Input allowed
 GT5U.chat.cover.solar_panel.cleaned=Cleaned solar panel from %s%% dirt
 GT5U.chat.cover.solar_panel.cleaned.require=You need water bucket in inventory to clean the panel.
 GT5U.chat.cover.wireless_controller.shutdown_at=%s at (%s, %s, %s) shut down.
+GT5U.chat.behaviour.cover_tool.position=§m-----§r X: §b%s§r Y: §b%s§r Z: §b%s§r D: §b%s§r §m-----
+GT5U.chat.behaviour.cover_tool.side=Block Side: §b%s§r
+GT5U.chat.behaviour.cover_tool.type=Cover Type: §a%s§r
+GT5U.chat.behaviour.cover_tool.unavailable=Copy unavailable for this cover type
+GT5U.chat.behaviour.cover_tool.invalid_cover=Please Copy a Valid Cover First.
+GT5U.chat.behaviour.cover_tool.pasted=Cover Data Pasted.
+GT5U.chat.behaviour.cover_tool.not_match=Not Matched Cover.
+GT5U.chat.behaviour.cover_tool.no_cover=No Cover Found.
+GT5U.chat.behaviour.prospecting.ore=This is %s Ore.
+GT5U.chat.behaviour.prospecting.lava=There is Lava behind this Rock.
+GT5U.chat.behaviour.prospecting.liquid=There is a Liquid behind this Rock.
+GT5U.chat.behaviour.prospecting.air=There is an Air Pocket behind this Rock.
+GT5U.chat.behaviour.prospecting.changing=Material is changing behind this Rock.
+GT5U.chat.behaviour.prospecting.traces_of=Found traces of %s Ore.
+GT5U.chat.behaviour.prospecting.no_ores=No Ores found.
+
+GT5U.chat.distributor.items_per_side=Items per side: %s
+GT5U.chat.driller_base.chunk_loading.enable=Mining chunk loading enabled
+GT5U.chat.driller_base.chunk_loading.disabled=Mining chunk loading disabled
+GT5U.chat.laser.engraver.toggling_realism=Toggling realism!
+GT5U.chat.ore_drilling_plant_base.replace_with_cobblestone=Replace with cobblestone %s
+GT5U.chat.spinmatron.texture.static=Using Static Turbine Texture.
+GT5U.chat.spinmatron.texture.animated=Using Animated Turbine Texture.
+
 
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
@@ -2699,6 +2735,1575 @@ gt.interact.desc.Energy_Detector.average_out=§8Avg. Output
 gt.interact.desc.Energy_Detector.average_out.tooltip=§fAverage Electric Output
 gt.interact.desc.Energy_Detector.eu_stored=§8EU stored
 gt.interact.desc.Energy_Detector.eu_stored.tooltip=§fElectricity Storage(Including Batteries)
+
+# MetaItem01
+## GT Credit
+gt.item.credit.copper.name=Copper GT Credit
+gt.item.credit.copper.tooltip=0.125 Credits
+gt.item.credit.cupronickel.name=Cupronickel GT Credit
+gt.item.credit.cupronickel.tooltip=1 Credit
+gt.item.credit.silver.name=Silver GT Credit
+gt.item.credit.silver.tooltip=8 Credits
+gt.item.credit.gold.name=Gold GT Credit
+gt.item.credit.gold.tooltip=64 Credits
+gt.item.credit.platinum.name=Platinum GT Credit
+gt.item.credit.platinum.tooltip=512 Credits
+gt.item.credit.osmium.name=Osmium GT Credit
+gt.item.credit.osmium.tooltip=4,096 Credits
+gt.item.credit.naquadah.name=Naquadah GT Credit
+gt.item.credit.naquadah.tooltip=32,768 Credits
+gt.item.credit.neutronium.name=Neutronium GT Credit
+gt.item.credit.neutronium.tooltip=262,144 Credits
+
+## Coin
+gt.item.coin.gold_ancient.name=Ancient Gold Coin
+gt.item.coin.gold_ancient.tooltip=Found in ancient Ruins
+gt.item.coin.doge.name=Doge Coin
+gt.item.coin.doge.tooltip=wow much coin how money so crypto plz mine v rich very currency wow
+gt.item.coin.chocolate.name=Chocolate Coin
+gt.item.coin.chocolate.tooltip=Wrapped in Gold
+
+## Industrial Credit
+gt.item.credit.industrial.copper.name=Industrial Copper Credit
+gt.item.credit.industrial.copper.tooltip=0.125 Credits
+gt.item.credit.industrial.silver.name=Industrial Silver Credit
+gt.item.credit.industrial.silver.tooltip=8 Credits
+gt.item.credit.industrial.gold.name=Industrial Gold Credit
+gt.item.credit.industrial.gold.tooltip=64 Credits
+gt.item.credit.industrial.platinum.name=Industrial Platinum Credit
+gt.item.credit.industrial.platinum.tooltip=512 Credits
+gt.item.credit.industrial.osmium.name=Industrial Osmium Credit
+gt.item.credit.industrial.osmium.tooltip=4096 Credits
+
+## NAND Chip Array
+gt.item.nand_chip_array.name=NAND Chip Array
+gt.item.nand_chip_array.tooltip=Chips on Board
+
+## Minecart Wheels
+gt.item.minecart_wheels.iron.name=Iron Minecart Wheels
+gt.item.minecart_wheels.steel.name=Steel Minecart Wheels
+gt.item.minecart_wheels.tooltip=To get things rolling
+
+## Firebrick
+gt.item.compressed_fireclay.name=Compressed Fireclay
+gt.item.compressed_fireclay.tooltip=Brick-shaped
+gt.item.firebrick.name=Firebrick
+gt.item.firebrick.tooltip=Heat resistant
+
+## Shape
+gt.item.shape_empty.name=Empty Shape Plate
+gt.item.shape_empty.tooltip=Raw Plate to make Molds and Extruder Shapes
+
+### Shape Mold
+gt.item.shape_mold.plate.name=Mold (Plate)
+gt.item.shape_mold.plate.tooltip=Mold for making Plates
+gt.item.shape_mold.casing.name=Mold (Casing)
+gt.item.shape_mold.casing.tooltip=Mold for making Item Casings
+gt.item.shape_mold.gear.name=Mold (Gear)
+gt.item.shape_mold.gear.tooltip=Mold for making Gears
+gt.item.shape_mold.credit.name=Mold (Coinage)
+gt.item.shape_mold.credit.tooltip=Secure Mold for making Coins (Don't lose it!)
+gt.item.shape_mold.bottle.name=Mold (Bottle)
+gt.item.shape_mold.bottle.tooltip=Mold for making Bottles
+gt.item.shape_mold.ingot.name=Mold (Ingot)
+gt.item.shape_mold.ingot.tooltip=Mold for making Ingots
+gt.item.shape_mold.ball.name=Mold (Ball)
+gt.item.shape_mold.ball.tooltip=Mold for making Balls
+gt.item.shape_mold.block.name=Mold (Block)
+gt.item.shape_mold.block.tooltip=Mold for making Blocks
+gt.item.shape_mold.nugget.name=Mold (Nuggets)
+gt.item.shape_mold.nugget.tooltip=Mold for making Nuggets
+gt.item.shape_mold.bun.name=Mold (Buns)
+gt.item.shape_mold.bun.tooltip=Mold for shaping Buns
+gt.item.shape_mold.bread.name=Mold (Bread)
+gt.item.shape_mold.bread.tooltip=Mold for shaping Breads
+gt.item.shape_mold.baguette.name=Mold (Baguette)
+gt.item.shape_mold.baguette.tooltip=Mold for shaping Baguettes
+gt.item.shape_mold.cylinder.name=Mold (Cylinder)
+gt.item.shape_mold.cylinder.tooltip=Mold for shaping Cylinders
+gt.item.shape_mold.anvil.name=Mold (Anvil)
+gt.item.shape_mold.anvil.tooltip=Mold for shaping Anvils
+gt.item.shape_mold.name.name=Mold (Name)
+gt.item.shape_mold.name.tooltip=Mold for naming Items (rename Mold with Anvil)
+gt.item.shape_mold.arrow.name=Mold (Arrow Head)
+gt.item.shape_mold.arrow.tooltip=Mold for making Arrow Heads
+gt.item.shape_mold.gear_small.name=Mold (Small Gear)
+gt.item.shape_mold.gear_small.tooltip=Mold for making small Gears
+gt.item.shape_mold.rod.name=Mold (Rod)
+gt.item.shape_mold.rod.tooltip=Mold for making Rods
+gt.item.shape_mold.bolt.name=Mold (Bolt)
+gt.item.shape_mold.bolt.tooltip=Mold for making Bolts
+gt.item.shape_mold.round.name=Mold (Round)
+gt.item.shape_mold.round.tooltip=Mold for making Rounds
+gt.item.shape_mold.screw.name=Mold (Screw)
+gt.item.shape_mold.screw.tooltip=Mold for making Screws
+gt.item.shape_mold.ring.name=Mold (Ring)
+gt.item.shape_mold.ring.tooltip=Mold for making Rings
+gt.item.shape_mold.rod_long.name=Mold (Long Rod)
+gt.item.shape_mold.rod_long.tooltip=Mold for making Long Rods
+gt.item.shape_mold.rotor.name=Mold (Rotor)
+gt.item.shape_mold.rotor.tooltip=Mold for making a Rotor
+gt.item.shape_mold.turbine_blade.name=Mold (Turbine Blade)
+gt.item.shape_mold.turbine_blade.tooltip=Mold for making a Turbine Blade
+gt.item.shape_mold.pipe_tiny.name=Mold (Tiny Pipe)
+gt.item.shape_mold.pipe_tiny.tooltip=Mold for making tiny Pipes
+gt.item.shape_mold.pipe_small.name=Mold (Small Pipe)
+gt.item.shape_mold.pipe_small.tooltip=Mold for making small Pipes
+gt.item.shape_mold.pipe_medium.name=Mold (Normal Pipe)
+gt.item.shape_mold.pipe_medium.tooltip=Mold for making Pipes
+gt.item.shape_mold.pipe_large.name=Mold (Large Pipe)
+gt.item.shape_mold.pipe_large.tooltip=Mold for making large Pipes
+gt.item.shape_mold.pipe_huge.name=Mold (Huge Pipe)
+gt.item.shape_mold.pipe_huge.tooltip=Mold for making full Block Pipes
+gt.item.shape_mold.tool_head_drill.name=Mold (Drill Head)
+gt.item.shape_mold.tool_head_drill.tooltip=Mold for making Drill Heads
+
+### Shape Extruder
+gt.item.shape_extruder.plate.name=Extruder Shape (Plate)
+gt.item.shape_extruder.plate.tooltip=Extruder Shape for making Plates
+gt.item.shape_extruder.rod.name=Extruder Shape (Rod)
+gt.item.shape_extruder.rod.tooltip=Extruder Shape for making Rods
+gt.item.shape_extruder.bolt.name=Extruder Shape (Bolt)
+gt.item.shape_extruder.bolt.tooltip=Extruder Shape for making Bolts
+gt.item.shape_extruder.ring.name=Extruder Shape (Ring)
+gt.item.shape_extruder.ring.tooltip=Extruder Shape for making Rings
+gt.item.shape_extruder.cell.name=Extruder Shape (Cell)
+gt.item.shape_extruder.cell.tooltip=Extruder Shape for making Cells
+gt.item.shape_extruder.ingot.name=Extruder Shape (Ingot)
+gt.item.shape_extruder.ingot.tooltip=Extruder Shape for, wait, can't we just use a Furnace?
+gt.item.shape_extruder.wire.name=Extruder Shape (Wire)
+gt.item.shape_extruder.wire.tooltip=DEPRECATED! Will be removed in next major update.
+gt.item.shape_extruder.casing.name=Extruder Shape (Casing)
+gt.item.shape_extruder.casing.tooltip=Extruder Shape for making Item Casings
+gt.item.shape_extruder.pipe_tiny.name=Extruder Shape (Tiny Pipe)
+gt.item.shape_extruder.pipe_tiny.tooltip=Extruder Shape for making tiny Pipes
+gt.item.shape_extruder.pipe_small.name=Extruder Shape (Small Pipe)
+gt.item.shape_extruder.pipe_small.tooltip=Extruder Shape for making small Pipes
+gt.item.shape_extruder.pipe_medium.name=Extruder Shape (Normal Pipe)
+gt.item.shape_extruder.pipe_medium.tooltip=Extruder Shape for making Pipes
+gt.item.shape_extruder.pipe_large.name=Extruder Shape (Large Pipe)
+gt.item.shape_extruder.pipe_large.tooltip=Extruder Shape for making large Pipes
+gt.item.shape_extruder.pipe_huge.name=Extruder Shape (Huge Pipe)
+gt.item.shape_extruder.pipe_huge.tooltip=Extruder Shape for making full Block Pipes
+gt.item.shape_extruder.block.name=Extruder Shape (Block)
+gt.item.shape_extruder.block.tooltip=Extruder Shape for making Blocks
+gt.item.shape_extruder.sword.name=Extruder Shape (Sword Blade)
+gt.item.shape_extruder.sword.tooltip=Extruder Shape for making Swords
+gt.item.shape_extruder.pickaxe.name=Extruder Shape (Pickaxe Head)
+gt.item.shape_extruder.pickaxe.tooltip=Extruder Shape for making Pickaxes
+gt.item.shape_extruder.shovel.name=Extruder Shape (Shovel Head)
+gt.item.shape_extruder.shovel.tooltip=Extruder Shape for making Shovels
+gt.item.shape_extruder.axe.name=Extruder Shape (Axe Head)
+gt.item.shape_extruder.axe.tooltip=Extruder Shape for making Axes
+gt.item.shape_extruder.hoe.name=Extruder Shape (Hoe Head)
+gt.item.shape_extruder.hoe.tooltip=Extruder Shape for making Hoes
+gt.item.shape_extruder.hammer.name=Extruder Shape (Hammer Head)
+gt.item.shape_extruder.hammer.tooltip=Extruder Shape for making Hammers
+gt.item.shape_extruder.file.name=Extruder Shape (File Head)
+gt.item.shape_extruder.file.tooltip=Extruder Shape for making Files
+gt.item.shape_extruder.saw.name=Extruder Shape (Saw Blade)
+gt.item.shape_extruder.saw.tooltip=Extruder Shape for making Saws
+gt.item.shape_extruder.gear.name=Extruder Shape (Gear)
+gt.item.shape_extruder.gear.tooltip=Extruder Shape for making Gears
+gt.item.shape_extruder.bottle.name=Extruder Shape (Bottle)
+gt.item.shape_extruder.bottle.tooltip=Extruder Shape for making Bottles
+gt.item.shape_extruder.rotor.name=Extruder Shape (Rotor)
+gt.item.shape_extruder.rotor.tooltip=Extruder Shape for a Rotor
+gt.item.shape_extruder.small_gear.name=Extruder Shape (Small Gear)
+gt.item.shape_extruder.small_gear.tooltip=Extruder Shape for a Small Gear
+gt.item.shape_extruder.turbine_blade.name=Extruder Shape (Turbine Blade)
+gt.item.shape_extruder.turbine_blade.tooltip=Extruder Shape for a Turbine Blade
+gt.item.shape_extruder.tool_head_drill.name=Extruder Shape (Drill Head)
+gt.item.shape_extruder.tool_head_drill.tooltip=Extruder Shape for a Drill Head
+
+### Shape Slicer
+gt.item.shape_slicer.flat.name=Slicer Blade (Flat)
+gt.item.shape_slicer.flat.tooltip=Slicer Blade (Flat)
+gt.item.shape_slicer.stripes.name=Slicer Blade (Stripes)
+gt.item.shape_slicer.stripes.tooltip=Slicer Blade for cutting Stripes
+
+## Fuel Can
+gt.item.fuel_can.plastic.empty.name=Empty Plastic Fuel Can
+gt.item.fuel_can.plastic.empty.tooltip=Used to store Fuels
+gt.item.fuel_can.plastic.filled.name=Plastic Fuel Can
+gt.item.fuel_can.plastic.filled.tooltip=Burns well in Diesel Generators
+
+## Thermos
+gt.item.thermos_can.empty.name=Empty Thermos Can
+gt.item.thermos_can.empty.tooltip=Keeping hot things hot and cold things cold
+
+## Large Fluid Cell
+gt.item.large_fluid_cell.steel.name=Large Steel Fluid Cell
+gt.item.large_fluid_cell.steel.tooltip=
+gt.item.large_fluid_cell.tungstensteel.name=Large Tungstensteel Fluid Cell
+gt.item.large_fluid_cell.tungstensteel.tooltip=
+gt.item.large_fluid_cell.aluminium.name=Large Aluminium Fluid Cell
+gt.item.large_fluid_cell.aluminium.tooltip=
+gt.item.large_fluid_cell.stainless_steel.name=Large Stainless Steel Fluid Cell
+gt.item.large_fluid_cell.stainless_steel.tooltip=
+gt.item.large_fluid_cell.titanium.name=Large Titanium Fluid Cell
+gt.item.large_fluid_cell.titanium.tooltip=
+gt.item.large_fluid_cell.chrome.name=Large Chrome Fluid Cell
+gt.item.large_fluid_cell.chrome.tooltip=
+gt.item.large_fluid_cell.iridium.name=Large Iridium Fluid Cell
+gt.item.large_fluid_cell.iridium.tooltip=
+gt.item.large_fluid_cell.osmium.name=Large Osmium Fluid Cell
+gt.item.large_fluid_cell.osmium.tooltip=
+gt.item.large_fluid_cell.neutronium.name=Large Neutronium Fluid Cell
+gt.item.large_fluid_cell.neutronium.tooltip=
+
+## Spray
+gt.item.spray.empty.name=Empty Spray Can
+gt.item.spray.empty.tooltip=Used for making Sprays
+
+gt.item.spray_can.dye.name=Spray Can (%s)
+gt.item.spray_can.dye.tooltip.full=Full
+gt.item.spray_can.dye.tooltip.used=Used
+
+gt.item.spray_can.solvent.name=Spray Can Solvent
+gt.item.spray_can.solvent.tooltip.full=Full
+gt.item.spray_can.solvent.tooltip.used=Used
+gt.item.spray_can.solvent.empty.name=Empty Spray Can Solvent Canister
+gt.item.spray_can.solvent.empty.tooltip=Used for making Spray Can Solvent
+
+gt.item.spray_can.infinite.name=Infinite Spray Can
+gt.item.spray_can.infinite.tooltip=Contains all sixteen colors, as well as solvent!
+
+## Match
+gt.item.matches.name=Match
+gt.item.matches.tooltip=
+gt.item.matchbox.used.name=Match Box
+gt.item.matchbox.used.tooltip=This is not a Car
+gt.item.matchbox.full.name=Match Box (Full)
+gt.item.matchbox.full.tooltip=This is not a Car
+
+## Lighter
+gt.item.lighter.invar.empty.name=Lighter (Empty)
+gt.item.lighter.invar.empty.tooltip=
+gt.item.lighter.invar.used.name=Lighter
+gt.item.lighter.invar.used.tooltip=
+gt.item.lighter.invar.full.name=Lighter (Full)
+gt.item.lighter.invar.full.tooltip=
+gt.item.lighter.platinum.empty.name=Platinum Lighter (Empty)
+gt.item.lighter.platinum.empty.tooltip=A known Prank Master is engraved on it
+gt.item.lighter.platinum.used.name=Platinum Lighter
+gt.item.lighter.platinum.used.tooltip=A known Prank Master is engraved on it
+gt.item.lighter.platinum.full.name=Platinum Lighter (Full)
+gt.item.lighter.platinum.full.tooltip=A known Prank Master is engraved on it
+
+## Ingot Alloy
+gt.item.ingot.heavy_duty.t1.name=Heavy Duty Alloy Ingot T1
+gt.item.ingot.heavy_duty.t1.tooltip=Used to make Heavy Duty Plates T1
+gt.item.ingot.heavy_duty.t2.name=Heavy Duty Alloy Ingot T2
+gt.item.ingot.heavy_duty.t2.tooltip=Used to make Heavy Duty Plates T2
+gt.item.ingot.heavy_duty.t3.name=Heavy Duty Alloy Ingot T3
+gt.item.ingot.heavy_duty.t3.tooltip=Used to make Heavy Duty Plates T3
+gt.item.ingot.iridium_alloy.name=Iridium Alloy Ingot
+gt.item.ingot.iridium_alloy.tooltip=Used to make Iridium Plates
+
+## Paper
+gt.item.paper.printed_pages.name=Printed Pages
+gt.item.paper.printed_pages.tooltip=Used to make written Books
+gt.item.paper.magic.empty.name=Magic Paper
+gt.item.paper.magic.page.name=Enchanted Page
+gt.item.paper.magic.pages.name=Enchanted Pages
+gt.item.paper.punch_card.empty.name=Punch Card
+gt.item.paper.punch_card.encoded.name=Punched Card
+
+## Book
+gt.item.book.written.01.name=Book
+gt.item.book.written.02.name=Book
+gt.item.book.written.03.name=Book
+
+## Schematic
+gt.item.schematic.empty.name=Schematic
+gt.item.schematic.empty.tooltip=EMPTY
+gt.item.schematic.crafting.name=Schematic (Crafting)
+gt.item.schematic.crafting.tooltip=Crafts the Programmed Recipe
+gt.item.schematic.1x1.name=Schematic (1x1)
+gt.item.schematic.1x1.tooltip=Crafts 1 Items as 1x1 (use in Packager)
+gt.item.schematic.2x2.name=Schematic (2x2)
+gt.item.schematic.2x2.tooltip=Crafts 4 Items as 2x2 (use in Packager)
+gt.item.schematic.3x3.name=Schematic (3x3)
+gt.item.schematic.3x3.tooltip=Crafts 9 Items as 3x3 (use in Packager)
+gt.item.schematic.dust.name=Schematic (Dusts)
+gt.item.schematic.dust.tooltip=Combines Dusts (use in Packager)
+gt.item.schematic.dust_small.name=Schematic (Small Dusts)
+gt.item.schematic.dust_small.tooltip=Splits Dusts into 4 (use in Packager)
+
+## Battery
+### Battery Tooltip
+gt.item.battery.su.tooltip=Single use battery
+gt.item.battery.re.tooltip=Reusable battery
+
+### Battery Hull
+gt.item.battery_hull.lv.name=Small Battery Hull
+gt.item.battery_hull.lv.tooltip=An empty LV Battery Hull
+gt.item.battery_hull.mv.name=Medium Battery Hull
+gt.item.battery_hull.mv.tooltip=An empty MV Battery Hull
+gt.item.battery_hull.hv.name=Large Battery Hull
+gt.item.battery_hull.hv.tooltip=An empty HV Battery Hull
+gt.item.battery_hull.ev.name=Small Sunnarium Battery (Empty)
+gt.item.battery_hull.ev.tooltip=An empty EV Battery Container
+gt.item.battery_hull.iv.name=Medium Sunnarium Battery (Empty)
+gt.item.battery_hull.iv.tooltip=An empty IV Battery Container
+gt.item.battery_hull.luv.name=Large Sunnarium Battery (Empty)
+gt.item.battery_hull.luv.tooltip=An empty LuV Battery Container
+gt.item.battery_hull.zpm.name=Medium Naquadria Battery (Empty)
+gt.item.battery_hull.zpm.tooltip=An empty ZPM Energy Storage
+gt.item.battery_hull.uv.name=Large Naquadria Battery (Empty)
+gt.item.battery_hull.uv.tooltip=An empty UV Energy Storage
+gt.item.battery_hull.uhv.name=Small Neutronium Battery (Empty)
+gt.item.battery_hull.uhv.tooltip=An empty UHV Energy Storage
+gt.item.battery_hull.uev.name=Medium Neutronium Battery (Empty)
+gt.item.battery_hull.uev.tooltip=An empty UEV Energy Storage
+gt.item.battery_hull.uiv.name=Large Neutronium Battery (Empty)
+gt.item.battery_hull.uiv.tooltip=An empty UIV Energy Storage
+gt.item.battery_hull.umv.name=Medium Plasma Battery (Empty)
+gt.item.battery_hull.umv.tooltip=An empty UMV Energy Storage
+gt.item.battery_hull.uxv.name=Large Plasma Battery (Empty)
+gt.item.battery_hull.uxv.tooltip=An empty UXV Energy Storage
+
+### Small Battery
+gt.item.battery.re.ulv.tantalum.name=Tantalum Capacitor
+gt.item.battery.su.lv.sulfuric_acid.name=Small Acid Battery
+gt.item.battery.su.lv.mercury.name=Small Mercury Battery
+gt.item.battery.re.lv.cadmium.name=Small Cadmium Battery
+gt.item.battery.re.lv.lithium.name=Small Lithium Battery
+gt.item.battery.re.lv.sodium.name=Small Sodium Battery
+
+### Medium Battery
+gt.item.battery.su.mv.sulfuric_acid.name=Medium Acid Battery
+gt.item.battery.su.mv.mercury.name=Medium Mercury Battery
+gt.item.battery.re.mv.cadmium.name=Medium Cadmium Battery
+gt.item.battery.re.mv.lithium.name=Medium Lithium Battery
+gt.item.battery.re.mv.sodium.name=Medium Sodium Battery
+
+### Large Battery
+gt.item.battery.su.hv.sulfuric_acid.name=Large Acid Battery
+gt.item.battery.su.hv.mercury.name=Large Mercury Battery
+gt.item.battery.re.hv.cadmium.name=Large Cadmium Battery
+gt.item.battery.re.hv.lithium.name=Large Lithium Battery
+gt.item.battery.re.hv.sodium.name=Large Sodium Battery
+
+### High Tier Battery
+gt.item.battery.lapotronic_orb.name=Lapotronic Energy Orb
+gt.item.battery.zpm_module.name=Zero Point Module
+gt.item.battery.lapotronic_orb_cluster.name=Lapotronic Energy Orb Cluster
+gt.item.battery.ultimate.name=Ultimate Battery
+gt.item.battery.ultimate.tooltip=Fill this to win minecraft
+gt.item.battery.really_ultimate.name=Really Ultimate Battery
+gt.item.battery.really_ultimate.tooltip=Fill this to be way older
+gt.item.battery.extremely_ultimate.name=Extremely Ultimate Battery
+gt.item.battery.extremely_ultimate.tooltip=Fill this to be older
+gt.item.battery.insanely_ultimate.name=Insanely Ultimate Battery
+gt.item.battery.insanely_ultimate.tooltip=Fill this for fun
+gt.item.battery.mega_ultimate.name=Mega Ultimate Battery
+gt.item.battery.mega_ultimate.tooltip=Fill the capacitor to reach enlightenment
+gt.item.battery.energy_module.name=Energy Module
+gt.item.battery.energy_cluster.name=Energy Cluster
+gt.item.battery.ev.name=Small Sunnarium Battery
+gt.item.battery.iv.name=Medium Sunnarium Battery
+gt.item.battery.luv.name=Large Sunnarium Battery
+gt.item.battery.zpm.name=Medium Naquadria Battery
+gt.item.battery.uv.name=Large Naquadria Battery
+gt.item.battery.uhv.name=Small Neutronium Battery
+gt.item.battery.uev.name=Medium Neutronium Battery
+gt.item.battery.uiv.name=Large Neutronium Battery
+gt.item.battery.umv.name=Medium Infinity Battery
+gt.item.battery.uxv.name=Large Infinity Battery
+
+## Electric Motors
+gt.item.electric_motor.lv.name=Electric Motor (LV)
+gt.item.electric_motor.mv.name=Electric Motor (MV)
+gt.item.electric_motor.hv.name=Electric Motor (HV)
+gt.item.electric_motor.ev.name=Electric Motor (EV)
+gt.item.electric_motor.iv.name=Electric Motor (IV)
+gt.item.electric_motor.luv.name=Electric Motor (LuV)
+gt.item.electric_motor.zpm.name=Electric Motor (ZPM)
+gt.item.electric_motor.uv.name=Electric Motor (UV)
+gt.item.electric_motor.uhv.name=Electric Motor (UHV)
+gt.item.electric_motor.uev.name=Electric Motor (UEV)
+gt.item.electric_motor.uiv.name=Electric Motor (UIV)
+gt.item.electric_motor.umv.name=Electric Motor (UMV)
+gt.item.electric_motor.uxv.name=Electric Motor (UXV)
+gt.item.electric_motor.max.name=Electric Motor (MAX)
+
+## Electric Pistons
+gt.item.electric_piston.lv.name=Electric Piston (LV)
+gt.item.electric_piston.mv.name=Electric Piston (MV)
+gt.item.electric_piston.hv.name=Electric Piston (HV)
+gt.item.electric_piston.ev.name=Electric Piston (EV)
+gt.item.electric_piston.iv.name=Electric Piston (IV)
+gt.item.electric_piston.luv.name=Electric Piston (LuV)
+gt.item.electric_piston.zpm.name=Electric Piston (ZPM)
+gt.item.electric_piston.uv.name=Electric Piston (UV)
+gt.item.electric_piston.uhv.name=Electric Piston (UHV)
+gt.item.electric_piston.uev.name=Electric Piston (UEV)
+gt.item.electric_piston.uiv.name=Electric Piston (UIV)
+gt.item.electric_piston.umv.name=Electric Piston (UMV)
+gt.item.electric_piston.uxv.name=Electric Piston (UXV)
+gt.item.electric_piston.max.name=Electric Piston (MAX)
+
+## Electric Pumps
+gt.item.electric_pump.lv.name=Electric Pump (LV)
+gt.item.electric_pump.mv.name=Electric Pump (MV)
+gt.item.electric_pump.hv.name=Electric Pump (HV)
+gt.item.electric_pump.ev.name=Electric Pump (EV)
+gt.item.electric_pump.iv.name=Electric Pump (IV)
+gt.item.electric_pump.luv.name=Electric Pump (LuV)
+gt.item.electric_pump.zpm.name=Electric Pump (ZPM)
+gt.item.electric_pump.uv.name=Electric Pump (UV)
+gt.item.electric_pump.uhv.name=Electric Pump (UHV)
+gt.item.electric_pump.uev.name=Electric Pump (UEV)
+gt.item.electric_pump.uiv.name=Electric Pump (UIV)
+gt.item.electric_pump.umv.name=Electric Pump (UMV)
+gt.item.electric_pump.uxv.name=Electric Pump (UXV)
+gt.item.electric_pump.max.name=Electric Pump (MAX)
+gt.item.electric_pump.tooltip=%s L/t %s L
+
+## Other items
+gt.item.electronics_lump.name=Lump of Electronics
+gt.item.electronics_lump.tooltip=How did they even produce this?
+gt.item.tesseract.raw.name=Raw Tesseract
+gt.item.giga_chad_token.name=Giga Chad Token
+gt.item.giga_chad_token.tooltip=You are worthy
+gt.item.tesseract.energised.name=Energised Tesseract
+gt.item.tesseract.energised.tooltip=Higher dimensional engineering
+gt.item.component.sawblade.diamond.name=Diamond Sawblade
+gt.item.component.grinder.diamond.name=Diamond Grinding Head
+gt.item.component.grinder.tungsten.name=Tungsten Grinding Head
+gt.item.upgrade.lock.name=Lock Upgrade
+gt.item.upgrade.lock.tooltip=Protects your Machines
+gt.item.component.filter.name=Item Filter
+gt.item.mcguffium_239.name=Mc Guffium 239
+gt.item.mcguffium_239.tooltip=42% better than Phlebotnium
+gt.item.sengir_planks.name=The holy Planks of Sengir
+
+## Steam Valves
+gt.item.steam_valve.lv.name=Steam Valve (LV)
+gt.item.steam_valve.mv.name=Steam Valve (MV)
+gt.item.steam_valve.hv.name=Steam Valve (HV)
+gt.item.steam_valve.ev.name=Steam Valve (EV)
+gt.item.steam_valve.iv.name=Steam Valve (IV)
+gt.item.steam_valve.tooltip=%s L/t (%s L/s) as Cover
+
+## Fluid Regulators
+gt.item.fluid_regulator.lv.name=Fluid Regulator (LV)
+gt.item.fluid_regulator.mv.name=Fluid Regulator (MV)
+gt.item.fluid_regulator.hv.name=Fluid Regulator (HV)
+gt.item.fluid_regulator.ev.name=Fluid Regulator (EV)
+gt.item.fluid_regulator.iv.name=Fluid Regulator (IV)
+gt.item.fluid_regulator.luv.name=Fluid Regulator (LuV)
+gt.item.fluid_regulator.zpm.name=Fluid Regulator (ZPM)
+gt.item.fluid_regulator.uv.name=Fluid Regulator (UV)
+gt.item.fluid_regulator.uhv.name=Fluid Regulator (UHV)
+gt.item.fluid_regulator.uev.name=Fluid Regulator (UEV)
+gt.item.fluid_regulator.uiv.name=Fluid Regulator (UIV)
+gt.item.fluid_regulator.umv.name=Fluid Regulator (UMV)
+gt.item.fluid_regulator.uxv.name=Fluid Regulator (UXV)
+gt.item.fluid_regulator.max.name=Fluid Regulator (MAX)
+gt.item.fluid_regulator.tooltip=Configurable up to %s L/sec (as Cover)\nRightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick\nto adjust the pump speed by 1/16/256 L/sec per click\nCan not transfer more than 2.1B L per Operation
+
+## Fluid Filter
+gt.item.fluid_filter.name=Fluid Filter Cover
+gt.item.fluid_filter.tooltip=Set with Fluid Container to only accept one Fluid Type
+
+## Item Filters
+gt.item.item_filter.export.name=Filtered Conveyor Cover (Export)
+gt.item.item_filter.export.tooltip=Right click with an item to set filter (Only supports Export Mode)
+gt.item.item_filter.import.name=Filtered Conveyor Cover (Import)
+gt.item.item_filter.import.tooltip=Right click with an item to set filter (Only supports Import Mode)
+
+## Fluid Limiter Cover
+gt.item.cover.fluid_limiter.name=Fluid Limiter Cover
+gt.item.cover.fluid_limiter.tooltip=Limits fluid input depending on fill level
+
+## Conveyor Modules
+gt.item.conveyor_module.lv.name=Conveyor Module (LV)
+gt.item.conveyor_module.lv.tooltip=1 stack of 16 items every 5 secs (as Cover)
+gt.item.conveyor_module.mv.name=Conveyor Module (MV)
+gt.item.conveyor_module.mv.tooltip=1 stack of 64 items every 5 secs (as Cover)
+gt.item.conveyor_module.hv.name=Conveyor Module (HV)
+gt.item.conveyor_module.hv.tooltip=1 stack of 64 items every 1 sec (as Cover)
+gt.item.conveyor_module.ev.name=Conveyor Module (EV)
+gt.item.conveyor_module.ev.tooltip=1 stack of 64 items every 1/5 sec (as Cover)
+gt.item.conveyor_module.iv.name=Conveyor Module (IV)
+gt.item.conveyor_module.iv.tooltip=1 stack of 64 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.luv.name=Conveyor Module (LuV)
+gt.item.conveyor_module.luv.tooltip=4 stacks of 64 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.zpm.name=Conveyor Module (ZPM)
+gt.item.conveyor_module.zpm.tooltip=16 stacks of 64 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.uv.name=Conveyor Module (UV)
+gt.item.conveyor_module.uv.tooltip=16 stacks of 256 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.uhv.name=Conveyor Module (UHV)
+gt.item.conveyor_module.uhv.tooltip=16 stacks of 1,024 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.uev.name=Conveyor Module (UEV)
+gt.item.conveyor_module.uev.tooltip=16 stacks of 4,096 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.uiv.name=Conveyor Module (UIV)
+gt.item.conveyor_module.uiv.tooltip=16 stacks of 16,384 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.umv.name=Conveyor Module (UMV)
+gt.item.conveyor_module.umv.tooltip=16 stacks of 65,536 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.uxv.name=Conveyor Module (UXV)
+gt.item.conveyor_module.uxv.tooltip=16 stacks of 262,144 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.max.name=Conveyor Module (MAX)
+gt.item.conveyor_module.max.tooltip=16 stacks of 2.1B items every 1/20 sec (as Cover)
+
+## Robot Arms
+gt.item.robot_arm.lv.name=Robot Arm (LV)
+gt.item.robot_arm.lv.tooltip=1 stack every 20 secs (as Cover)\nGrabs from and inserts into specific slots
+gt.item.robot_arm.mv.name=Robot Arm (MV)
+gt.item.robot_arm.mv.tooltip=1 stack every 5 secs (as Cover)\nGrabs from and inserts into specific slots
+gt.item.robot_arm.hv.name=Robot Arm (HV)
+gt.item.robot_arm.hv.tooltip=1 stack every 1 sec (as Cover)\nGrabs from and inserts into specific slots
+gt.item.robot_arm.ev.name=Robot Arm (EV)
+gt.item.robot_arm.ev.tooltip=1 stack every 1/5 sec (as Cover)\nGrabs from and inserts into specific slots
+gt.item.robot_arm.iv.name=Robot Arm (IV)
+gt.item.robot_arm.iv.tooltip=1 stack every 1/20 sec (as Cover)\nGrabs from and inserts into specific slots
+gt.item.robot_arm.luv.name=Robot Arm (LuV)
+gt.item.robot_arm.zpm.name=Robot Arm (ZPM)
+gt.item.robot_arm.uv.name=Robot Arm (UV)
+gt.item.robot_arm.uhv.name=Robot Arm (UHV)
+gt.item.robot_arm.uev.name=Robot Arm (UEV)
+gt.item.robot_arm.uiv.name=Robot Arm (UIV)
+gt.item.robot_arm.umv.name=Robot Arm (UMV)
+gt.item.robot_arm.uxv.name=Robot Arm (UXV)
+gt.item.robot_arm.max.name=Robot Arm (MAX)
+gt.item.part_not_cover.tooltip=Cannot be used as a Cover
+
+## Quantum items
+gt.item.quantum_eye.name=Quantum Eye
+gt.item.quantum_eye.tooltip=Improved Ender Eye
+gt.item.quantum_star.name=Quantum Star
+gt.item.quantum_star.tooltip=Improved Nether Star
+gt.item.gravistar.name=Gravi Star
+gt.item.gravistar.tooltip=Ultimate Nether Star
+
+## Emitters
+gt.item.emitter.lv.name=Emitter (LV)
+gt.item.emitter.mv.name=Emitter (MV)
+gt.item.emitter.hv.name=Emitter (HV)
+gt.item.emitter.ev.name=Emitter (EV)
+gt.item.emitter.iv.name=Emitter (IV)
+gt.item.emitter.luv.name=Emitter (LuV)
+gt.item.emitter.zpm.name=Emitter (ZPM)
+gt.item.emitter.uv.name=Emitter (UV)
+gt.item.emitter.uhv.name=Emitter (UHV)
+gt.item.emitter.uev.name=Emitter (UEV)
+gt.item.emitter.uiv.name=Emitter (UIV)
+gt.item.emitter.umv.name=Emitter (UMV)
+gt.item.emitter.uxv.name=Emitter (UXV)
+gt.item.emitter.max.name=Emitter (MAX)
+
+## Sensors
+gt.item.sensor.lv.name=Sensor (LV)
+gt.item.sensor.mv.name=Sensor (MV)
+gt.item.sensor.hv.name=Sensor (HV)
+gt.item.sensor.ev.name=Sensor (EV)
+gt.item.sensor.iv.name=Sensor (IV)
+gt.item.sensor.luv.name=Sensor (LuV)
+gt.item.sensor.zpm.name=Sensor (ZPM)
+gt.item.sensor.uv.name=Sensor (UV)
+gt.item.sensor.uhv.name=Sensor (UHV)
+gt.item.sensor.uev.name=Sensor (UEV)
+gt.item.sensor.uiv.name=Sensor (UIV)
+gt.item.sensor.umv.name=Sensor (UMV)
+gt.item.sensor.uxv.name=Sensor (UXV)
+gt.item.sensor.max.name=Sensor (MAX)
+
+## Field Generators
+gt.item.field_generator.lv.name=Field Generator (LV)
+gt.item.field_generator.mv.name=Field Generator (MV)
+gt.item.field_generator.hv.name=Field Generator (HV)
+gt.item.field_generator.ev.name=Field Generator (EV)
+gt.item.field_generator.iv.name=Field Generator (IV)
+gt.item.field_generator.luv.name=Field Generator (LuV)
+gt.item.field_generator.zpm.name=Field Generator (ZPM)
+gt.item.field_generator.uv.name=Field Generator (UV)
+gt.item.field_generator.uhv.name=Field Generator (UHV)
+gt.item.field_generator.uev.name=Field Generator (UEV)
+gt.item.field_generator.uiv.name=Field Generator (UIV)
+gt.item.field_generator.umv.name=Field Generator (UMV)
+gt.item.field_generator.uxv.name=Field Generator (UXV)
+gt.item.field_generator.max.name=Field Generator (MAX)
+
+## Advanced materials
+gt.item.material.stable_adhesive.name=Hyper-Stable Self-Healing Adhesive
+gt.item.material.stable_adhesive.tooltip=Complete and selective adhesion, even when torn or damaged
+gt.item.material.superconductor_composite.name=Superconductor Rare-Earth Composite
+gt.item.material.superconductor_composite.tooltip=Zero resistance to electrical and quantum flow, regardless of temperature
+gt.item.material.naquadria_supersolid.name=Black Body Naquadria Supersolid
+gt.item.material.naquadria_supersolid.tooltip=Flows like a fluid and reflects nothing, perfect absorption and transfer
+
+## Circuits
+gt.item.circuit.primitive.name=Vacuum Tube
+gt.item.circuit.primitive.tooltip=A very simple Circuit
+gt.item.circuit.basic.name=Integrated Logic Circuit
+gt.item.circuit.basic.tooltip=A Basic Circuit
+gt.item.circuit.good.name=Good Electronic Circuit
+gt.item.circuit.good.tooltip=A Good Circuit
+gt.item.circuit.advanced.name=Processor Assembly
+gt.item.circuit.advanced.tooltip=An Advanced Circuit
+gt.item.circuit.data.name=Workstation
+gt.item.circuit.data.tooltip=An Extreme Circuit
+gt.item.circuit.elite.name=Mainframe
+gt.item.circuit.elite.tooltip=An Elite Circuit
+gt.item.circuit.master.name=Nano Mainframe
+gt.item.circuit.master.tooltip=A Master Circuit
+
+## Circuit boards
+gt.item.circuit_board.basic.name=Coated Circuit Board
+gt.item.circuit_board.basic.tooltip=A Basic Board
+gt.item.circuit_board.advanced.name=Epoxy Circuit Board
+gt.item.circuit_board.advanced.tooltip=An Advanced Board
+gt.item.circuit_board.elite.name=Multilayer Fiber-Reinforced Circuit Board
+gt.item.circuit_board.elite.tooltip=An Elite Board
+gt.item.circuit_board.phenolic.name=Phenolic Circuit Board
+gt.item.circuit_board.phenolic.tooltip=A Good Board
+gt.item.circuit_board.fiberglass.name=Fiber-Reinforced Circuit Board
+gt.item.circuit_board.fiberglass.tooltip=An Extreme Board
+
+## Circuit parts
+gt.item.circuit_part.crystal_chip_elite.name=Engraved Crystal Chip
+gt.item.circuit_part.crystal_chip_elite.tooltip=Needed for Circuits
+gt.item.circuit_part.crystal_chip_master.name=Engraved Lapotron Chip
+gt.item.circuit_part.crystal_chip_master.tooltip=Needed for Circuits
+gt.item.circuit_part.crystal_chip_wetware.name=Living Crystal Chip
+gt.item.circuit_part.crystal_chip_wetware.tooltip=Needed for Circuits
+gt.item.circuit_part.diode.name=Diode
+gt.item.circuit_part.diode.tooltip=Basic Electronic Component
+gt.item.circuit_part.resistor.name=Resistor
+gt.item.circuit_part.resistor.tooltip=Basic Electronic Component
+gt.item.circuit_part.transistor.name=Transistor
+gt.item.circuit_part.transistor.tooltip=Basic Electronic Component
+gt.item.circuit_part.capacitor.name=Capacitor
+gt.item.circuit_part.capacitor.tooltip=Electronic Component
+
+## Tools
+gt.item.tool.data_orb.name=Data Orb
+gt.item.tool.data_orb.tooltip=A High Capacity Data Storage
+gt.item.tool.data_stick.name=Data Stick
+gt.item.tool.data_stick.tooltip=A Low Capacity Data Storage
+gt.item.tool.cover_copy_paste.name=Cover Copy/Paste tool
+gt.item.tool.cover_copy_paste.tooltip=Set Cover Massively.
+gt.item.tool.debug_scanner.name=Debug Scanner
+gt.item.tool.debug_scanner.tooltip=Also an Infinite Energy Source
+gt.item.tool.portable_scanner.name=Portable Scanner
+gt.item.tool.portable_scanner.tooltip=Tricorder
+gt.item.tool.sensor_kit.name=GregTech Sensor Kit
+gt.item.tool.duct_tape.name=BrainTech Aerospace Advanced Reinforced Duct Tape FAL-84
+gt.item.tool.duct_tape.tooltip=If you can't fix it with this, use more of it!
+
+## Cover
+gt.item.cover.controller.name=Machine Controller Cover
+gt.item.cover.controller.tooltip=Turns Machines ON/OFF
+gt.item.cover.activity_detector.name=Activity Detector Cover
+gt.item.cover.activity_detector.tooltip=Gives out Activity as Redstone
+gt.item.cover.fluid_detector.name=Fluid Detector Cover
+gt.item.cover.fluid_detector.tooltip=Gives out Fluid Amount as Redstone
+gt.item.cover.item_detector.name=Item Detector Cover
+gt.item.cover.item_detector.tooltip=Gives out Item Amount as Redstone
+gt.item.cover.energy_detector.name=Energy Detector Cover
+gt.item.cover.energy_detector.tooltip=Gives out Energy Amount as Redstone
+gt.item.cover.player_detector.name=Player Detector Cover
+gt.item.cover.player_detector.tooltip=Gives out close Players as Redstone
+gt.item.cover.fluid_storage_monitor.name=Fluid Storage Monitor Cover
+gt.item.cover.fluid_storage_monitor.tooltip=Displays the fluid stored in the Tank
+gt.item.cover.chest.basic.name=Basic Item Holder
+gt.item.cover.chest.basic.tooltip=Holds 9 item for use within machine GUI (as Cover)
+gt.item.cover.chest.good.name=Good Item Holder
+gt.item.cover.chest.good.tooltip=Holds 12 item for use within machine GUI (as Cover)
+gt.item.cover.chest.advanced.name=Advanced Item Holder
+gt.item.cover.chest.advanced.tooltip=Holds 15 item for use within machine GUI (as Cover)
+gt.item.cover.screen.name=Computer Monitor Cover
+gt.item.cover.screen.tooltip=Displays Data and GUI
+gt.item.cover.crafting.name=Crafting Table Cover
+gt.item.cover.crafting.tooltip=Better than a wooden Workbench
+gt.item.cover.drain.name=Drain Module Cover
+gt.item.cover.drain.tooltip=Absorbs Fluids and collects Rain
+gt.item.cover.shutter.name=Shutter Module Cover
+gt.item.cover.shutter.tooltip=Blocks Inventory/Tank Side. Use together with Machine Controller.
+
+### Solar Panels
+gt.item.cover.solar_panel.basic.name=Solar Panel
+gt.item.cover.solar_panel.basic.tooltip=May the Sun be with you (Needs cleaning with right click)
+gt.item.cover.solar_panel.8v.name=Solar Panel (8V)
+gt.item.cover.solar_panel.8v.tooltip=8 Volt Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.lv.name=Solar Panel (LV)
+gt.item.cover.solar_panel.lv.tooltip=Low Voltage Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.mv.name=Solar Panel (MV)
+gt.item.cover.solar_panel.mv.tooltip=Medium Voltage Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.hv.name=Solar Panel (HV)
+gt.item.cover.solar_panel.hv.tooltip=High Voltage Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.ev.name=Solar Panel (EV)
+gt.item.cover.solar_panel.ev.tooltip=Extreme Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.iv.name=Solar Panel (IV)
+gt.item.cover.solar_panel.iv.tooltip=Insane Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.luv.name=Solar Panel (LuV)
+gt.item.cover.solar_panel.luv.tooltip=Ludicrous Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.zpm.name=Solar Panel (ZPM)
+gt.item.cover.solar_panel.zpm.tooltip=ZPM Voltage Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.uv.name=Solar Panel (UV)
+gt.item.cover.solar_panel.uv.tooltip=Ultimate Solar Panel (Needs cleaning with right click)
+
+### Redstone Covers
+gt.item.cover.redstone_transmitter.name=Redstone Transmitter
+gt.item.cover.redstone_transmitter.tooltip=Transfers Redstone signals wireless
+gt.item.cover.redstone_transmitter_internal.name=Redstone Transmitter (Internal)
+gt.item.cover.redstone_transmitter_internal.tooltip=Transfers Redstone signals wireless\n§cDEPRECATED! This will be removed in the next major update.
+gt.item.cover.redstone_receiver.name=Redstone Receiver
+gt.item.cover.redstone_receiver.tooltip=Transfers Redstone signals wireless
+gt.item.cover.wireless_controller.name=Wireless Machine Controller Cover
+gt.item.cover.wireless_controller.tooltip=Turns Machines ON/OFF wirelessly\nCan only connect with advanced wireless covers
+
+### Maintenance Cover
+gt.item.cover.needs_maintenance.name=Needs Maintenance Cover
+gt.item.cover.needs_maintenance.tooltip=Attach to Multiblock Controller. Emits Redstone Signal if needs Maintenance
+
+## Wireless Energy Cover
+gt.item.wireless_energy_cover.name=%s Wireless Energy Cover
+gt.item.wireless_energy_cover.tooltip=Stores energy globally in a network, up to 2^(2^31) EU.\nDoes not connect to wires. This cover withdraws EU from the network.\nIgnores voltage limitations (no explosions).
+gt.item.wireless_energy_cover_debug.name=Debug Wireless Energy Cover
+gt.item.wireless_energy_cover_debug.tooltip=Infinite Power. Ignores Voltage Limitations.
+
+## Steam Regulators (use same tooltip as steam valves)
+gt.item.steam_regulator.lv.name=Steam Regulator (LV)
+gt.item.steam_regulator.mv.name=Steam Regulator (MV)
+gt.item.steam_regulator.hv.name=Steam Regulator (HV)
+gt.item.steam_regulator.ev.name=Steam Regulator (EV)
+gt.item.steam_regulator.iv.name=Steam Regulator (IV)
+
+## Electromagnets
+gt.item.electromagnet.iron.name=Iron Electromagnet
+gt.item.electromagnet.steel.name=Steel Electromagnet
+gt.item.electromagnet.neodymium.name=Neodymium Electromagnet
+gt.item.electromagnet.samarium.name=§eSamarium Electromagnet
+gt.item.electromagnet.tengam.name=§aTengam Electromagnet
+
+## Black Hole items
+gt.item.black_hole.seed.name=Black Hole Seed
+gt.item.black_hole.seed.tooltip=Opens a pseudostable black hole
+gt.item.black_hole.collapser.name=Black Hole Collapser
+gt.item.black_hole.collapser.tooltip=Safely closes a pseudostable black hole
+gt.item.black_hole.stabilizer.name=Superstable Black Hole Seed
+gt.item.black_hole.stabilizer.tooltip=Opens a superstable black hole\nBlack hole will never destabilize and will operate at maximum efficiency
+
+# MetaItem02
+## Thermos Can drinks
+gt.item.thermos_can.coffee.name=Coffee
+gt.item.thermos_can.coffee.tooltip=Coffee, dark, without anything else
+gt.item.thermos_can.sweet_coffee.name=Sweet coffee
+gt.item.thermos_can.sweet_coffee.tooltip=Keeping you awake the whole night
+gt.item.thermos_can.latte.name=Latte
+gt.item.thermos_can.latte.tooltip=Just the regular morning Coffee, with milk
+gt.item.thermos_can.sweet_latte.name=Sweet Latte
+gt.item.thermos_can.sweet_latte.tooltip=A little bit of sugar goes a long way
+gt.item.thermos_can.sweet_jesus_latte.name=Sweet Jesus Latte
+gt.item.thermos_can.sweet_jesus_latte.tooltip=You want some Coffee to your Sugar?
+gt.item.thermos_can.dark_chocolate_milk.name=Dark Chocolate Milk
+gt.item.thermos_can.dark_chocolate_milk.tooltip=A bit bitter, better add a bit Sugar
+gt.item.thermos_can.chocolate_milk.name=Chocolate Milk
+gt.item.thermos_can.chocolate_milk.tooltip=Sweet Goodness
+gt.item.thermos_can.tea.name=Tea
+gt.item.thermos_can.tea.tooltip=Keep calm and carry on
+gt.item.thermos_can.sweet_tea.name=Sweet Tea
+gt.item.thermos_can.sweet_tea.tooltip=How about a Tea Party? In Boston?
+gt.item.thermos_can.ice_tea.name=Ice Tea
+gt.item.thermos_can.ice_tea.tooltip=Better than this purple Junk Drink from failed Potions
+
+## Gelled Toluene
+gt.item.gelled_toluene.name=Gelled Toluene
+gt.item.gelled_toluene.tooltip=Raw Explosive
+
+## Bottle drinks
+gt.item.bottle.purple_drink.name=Purple Drink
+gt.item.bottle.purple_drink.tooltip=How about Lemonade. Or some Ice Tea? I got Purple Drink!
+gt.item.bottle.grape_juice.name=Grape Juice
+gt.item.bottle.grape_juice.tooltip=This has a cleaning effect on your internals.
+gt.item.bottle.wine.name=Wine
+gt.item.bottle.wine.tooltip=Ordinary
+gt.item.bottle.vinegar.name=Vinegar
+gt.item.bottle.vinegar.tooltip=Exquisite
+gt.item.bottle.potato_juice.name=Potato Juice
+gt.item.bottle.potato_juice.tooltip=Ever seen Potato Juice in stores? No? That has a reason.
+gt.item.bottle.vodka.name=Vodka
+gt.item.bottle.vodka.tooltip=Not to confuse with Water
+gt.item.bottle.leninade.name=Leninade
+gt.item.bottle.leninade.tooltip=Let the Communism flow through you!
+gt.item.bottle.mineral_water.name=Mineral Water
+gt.item.bottle.mineral_water.tooltip=The best Stuff you can drink to stay healthy
+gt.item.bottle.salty_water.name=Salty Water
+gt.item.bottle.salty_water.tooltip=Like Sea Water but less dirty
+gt.item.bottle.reed_water.name=Reed Water
+gt.item.bottle.reed_water.tooltip=I guess this tastes better when fermented
+gt.item.bottle.rum.name=Rum
+gt.item.bottle.rum.tooltip=A buddle o' rum
+gt.item.bottle.pirate_brew.name=Pirate Brew
+gt.item.bottle.pirate_brew.tooltip=Set the Sails, we are going to Torrentuga!
+gt.item.bottle.hops_juice.name=Hops Juice
+gt.item.bottle.hops_juice.tooltip=Every Beer has a start
+gt.item.bottle.dark_beer.name=Dark Beer
+gt.item.bottle.dark_beer.tooltip=Dark Beer, for the real Men
+gt.item.bottle.dragon_blood.name=Dragon Blood
+gt.item.bottle.dragon_blood.tooltip=FUS RO DAH!
+gt.item.bottle.wheaty_juice.name=Wheaty Juice
+gt.item.bottle.wheaty_juice.tooltip=Is this liquefied Bread or what?
+gt.item.bottle.scotch.name=Scotch
+gt.item.bottle.scotch.tooltip=Technically this is just a Whisky
+gt.item.bottle.glen_mckenner.name=Glen McKenner
+gt.item.bottle.glen_mckenner.tooltip=Don't hand to easily surprised people, they will shatter it.
+gt.item.bottle.wheaty_hops_juice.name=Wheaty Hops Juice
+gt.item.bottle.wheaty_hops_juice.tooltip=Also known as 'Duff-Lite'
+gt.item.bottle.beer.name=Beer
+gt.item.bottle.beer.tooltip=Good old Beer
+gt.item.bottle.chilly_sauce.name=Chilly Sauce
+gt.item.bottle.chilly_sauce.tooltip=Spicy
+gt.item.bottle.hot_sauce.name=Hot Sauce
+gt.item.bottle.hot_sauce.tooltip=Very Spicy, I guess?
+gt.item.bottle.diabolo_sauce.name=Diabolo Sauce
+gt.item.bottle.diabolo_sauce.tooltip=As if the Devil made this Sauce
+gt.item.bottle.diablo_sauce.name=Diablo Sauce
+gt.item.bottle.diablo_sauce.tooltip=Diablo always comes back!
+gt.item.bottle.snitches_glitch_sauce.name=Old Man Snitches glitched Diablo Sauce
+gt.item.bottle.snitches_glitch_sauce.tooltip=[Missing No]
+gt.item.bottle.apple_juice.name=Apple Juice
+gt.item.bottle.apple_juice.tooltip=Made of the Apples from our best Oak Farms
+gt.item.bottle.cider.name=Cider
+gt.item.bottle.cider.tooltip=If you have nothing better to do with your Apples
+gt.item.bottle.golden_apple_juice.name=Golden Apple Juice
+gt.item.bottle.golden_apple_juice.tooltip=A golden Apple in liquid form
+gt.item.bottle.golden_cider.name=Golden Cider
+gt.item.bottle.golden_cider.tooltip=More Resistance, less Regeneration
+gt.item.bottle.iduns_apple_juice.name=Idun's Apple Juice
+gt.item.bottle.iduns_apple_juice.tooltip=So you got the Idea of using Notch Apples for a drink?
+gt.item.bottle.notches_brew.name=Notches Brew
+gt.item.bottle.notches_brew.tooltip=This is just overpowered
+gt.item.bottle.lemon_juice.name=Lemon Juice
+gt.item.bottle.lemon_juice.tooltip=Maybe adding Sugar will make it less sour
+gt.item.bottle.limoncello.name=Limoncello
+gt.item.bottle.limoncello.tooltip=An alcoholic Drink which tastes like Lemons
+gt.item.bottle.lemonade.name=Lemonade
+gt.item.bottle.lemonade.tooltip=Cold and refreshing Lemonade
+gt.item.bottle.alcopops.name=Alcopops
+gt.item.bottle.alcopops.tooltip=Don't let your Children drink this junk!
+gt.item.bottle.cave_johnsons_grenade_juice.name=Cave Johnson's Grenade Juice
+gt.item.bottle.cave_johnsons_grenade_juice.tooltip=When life gives you Lemons, make Life take them Lemons back!
+gt.item.bottle.milk.name=Milk
+gt.item.bottle.milk.tooltip=Got Milk?
+gt.item.bottle.holy_water.name=Holy Water
+gt.item.bottle.holy_water.tooltip=May the holy Planks be with you
+
+## Potato on a Stick
+gt.item.food.potato_on_stick.name=Potato on a Stick
+gt.item.food.potato_on_stick.tooltip=Totally looks like a Crab Claw
+gt.item.food.potato_on_stick_roasted.name=Roasted Potato on a Stick
+gt.item.food.potato_on_stick_roasted.tooltip=Still looks like a Crab Claw
+
+## Fries
+gt.item.food.raw_fries.name=Potato Strips
+gt.item.food.raw_fries.tooltip=It's Potato in Stripe Form
+gt.item.food.fries.name=Fries
+gt.item.food.fries.tooltip=Not to confuse with Fry the Delivery Boy
+gt.item.food.packaged_fries.name=Fries
+gt.item.food.packaged_fries.tooltip=Ketchup not included
+
+## Chips
+gt.item.food.raw_potato_chips.name=Potato Chips (Raw)
+gt.item.food.raw_potato_chips.tooltip=Just like a Potato
+gt.item.food.potato_chips.name=Potato Chips
+gt.item.food.potato_chips.tooltip=Crunchy
+gt.item.food.chili_chips.name=Chili Chips
+gt.item.food.chili_chips.tooltip=Spicy
+gt.item.food.packaged_potato_chips.name=Bag of Potato Chips
+gt.item.food.packaged_potato_chips.tooltip=Full of delicious Air
+gt.item.food.packaged_chili_chips.name=Bag of Chili Chips
+gt.item.food.packaged_chili_chips.tooltip=Stop making noises Baj!
+
+## Chum
+gt.item.food.chum.name=Chum
+gt.item.food.chum.tooltip=Chum is Fum!
+gt.item.food.chum_on_stick.name=Chum on a Stick
+gt.item.food.chum_on_stick.tooltip=Don't forget to try our Chum-balaya
+
+## Dough and Cookies
+gt.item.food.dough_sugar.name=Sugary Dough
+gt.item.food.dough_sugar.tooltip=Don't eat the Dough before it is baken
+gt.item.food.dough_chocolate.name=Chocolate Dough
+gt.item.food.dough_chocolate.tooltip=I said don't eat the Dough!
+gt.item.food.raw_cookie.name=Cookie shaped Dough
+gt.item.food.raw_cookie.tooltip=For baking Cookies
+
+## Buns and Burgers
+gt.item.food.sliced_buns.name=Buns
+gt.item.food.sliced_buns.tooltip=Pre Sliced
+gt.item.food.burger_veggie.name=Veggieburger
+gt.item.food.burger_veggie.tooltip=No matter how you call this, this is NOT a Burger!
+gt.item.food.burger_cheese.name=Cheeseburger
+gt.item.food.burger_cheese.tooltip=Cheesy!
+gt.item.food.burger_meat.name=Hamburger
+gt.item.food.burger_meat.tooltip=The Mc Burger Queen Burger
+gt.item.food.burger_chum.name=Chumburger
+gt.item.food.burger_chum.tooltip=Fum is Chum!
+
+## Breads and Sandwiches
+gt.item.food.sliced_breads.name=Breads
+gt.item.food.sliced_breads.tooltip=Pre Sliced
+gt.item.food.sandwich_veggie.name=Veggie Sandwich
+gt.item.food.sandwich_veggie.tooltip=Meatless
+gt.item.food.sandwich_cheese.name=Cheese Sandwich
+gt.item.food.sandwich_cheese.tooltip=Say Cheese!
+gt.item.food.sandwich_bacon.name=Bacon Sandwich
+gt.item.food.sandwich_bacon.tooltip=The best Sandwich ever!
+gt.item.food.sandwich_steak.name=Steak Sandwich
+gt.item.food.sandwich_steak.tooltip=Not a 'Steam Sandwich'
+
+## Baguettes and Large Sandwiches
+gt.item.food.sliced_baguettes.name=Baguettes
+gt.item.food.sliced_baguettes.tooltip=Pre Sliced
+gt.item.food.large_sandwich_veggie.name=Large Veggie Sandwich
+gt.item.food.large_sandwich_veggie.tooltip=Just not worth it
+gt.item.food.large_sandwich_cheese.name=Large Cheese Sandwich
+gt.item.food.large_sandwich_cheese.tooltip=I need another cheesy tooltip for this
+gt.item.food.large_sandwich_bacon.name=Large Bacon Sandwich
+gt.item.food.large_sandwich_bacon.tooltip=For Men! (and manly Women)
+gt.item.food.large_sandwich_steak.name=Large Steak Sandwich
+gt.item.food.large_sandwich_steak.tooltip=Yes, I once accidentally called it 'Steam Sandwich'
+
+## Pizzas
+gt.item.food.raw_pizza_veggie.name=Raw Veggie Pizza
+gt.item.food.raw_pizza_veggie.tooltip=Into the Oven with it!
+gt.item.food.raw_pizza_cheese.name=Raw Cheese Pizza
+gt.item.food.raw_pizza_cheese.tooltip=Into the Oven with it!
+gt.item.food.raw_pizza_meat.name=Raw Mince Meat Pizza
+gt.item.food.raw_pizza_meat.tooltip=Into the Oven with it!
+gt.item.food.baked_pizza_veggie.name=Veggie Pizza
+gt.item.food.baked_pizza_veggie.tooltip=The next they want is Gluten Free Pizzas...
+gt.item.food.baked_pizza_cheese.name=Cheese Pizza
+gt.item.food.baked_pizza_cheese.tooltip=Pizza Magarita
+gt.item.food.baked_pizza_meat.name=Mince Meat Pizza
+gt.item.food.baked_pizza_meat.tooltip=Emo Pizza, it cuts itself!
+
+## Indigo Dye
+gt.item.dye.indigo.name=Indigo Dye
+gt.item.dye.indigo.tooltip=Blue Dye
+
+## 16 Standard Dyes
+gt.item.dye.black.name=Black Dye
+gt.item.dye.red.name=Red Dye
+gt.item.dye.green.name=Green Dye
+gt.item.dye.brown.name=Brown Dye
+gt.item.dye.blue.name=Blue Dye
+gt.item.dye.purple.name=Purple Dye
+gt.item.dye.cyan.name=Cyan Dye
+gt.item.dye.light_gray.name=Light Gray Dye
+gt.item.dye.gray.name=Gray Dye
+gt.item.dye.pink.name=Pink Dye
+gt.item.dye.lime.name=Lime Dye
+gt.item.dye.yellow.name=Yellow Dye
+gt.item.dye.light_blue.name=Light Blue Dye
+gt.item.dye.magenta.name=Magenta Dye
+gt.item.dye.orange.name=Orange Dye
+gt.item.dye.white.name=White Dye
+
+## Plank Covers (common tooltip)
+gt.item.plank_cover.tooltip=Can be used as Cover
+
+## Plank Cover names
+gt.item.plank_cover.oak.name=Oak Plank Cover
+gt.item.plank_cover.spruce.name=Spruce Plank Cover
+gt.item.plank_cover.birch.name=Birch Plank Cover
+gt.item.plank_cover.jungle.name=Jungle Plank Cover
+gt.item.plank_cover.acacia.name=Acacia Plank Cover
+gt.item.plank_cover.dark_oak.name=Dark Oak Plank Cover
+gt.item.plank_cover.larch.name=Larch Plank Cover
+gt.item.plank_cover.teak.name=Teak Plank Cover
+gt.item.plank_cover.green_acacia.name=Green Acacia Plank Cover
+gt.item.plank_cover.lime.name=Lime Plank Cover
+gt.item.plank_cover.chestnut.name=Chestnut Plank Cover
+gt.item.plank_cover.wenge.name=Wenge Plank Cover
+gt.item.plank_cover.baobab.name=Baobab Plank Cover
+gt.item.plank_cover.sequoia.name=Sequoia Plank Cover
+gt.item.plank_cover.kapok.name=Kapok Plank Cover
+gt.item.plank_cover.ebony.name=Ebony Plank Cover
+gt.item.plank_cover.mahagony.name=Mahagony Plank Cover
+gt.item.plank_cover.balsa.name=Balsa Plank Cover
+gt.item.plank_cover.willow.name=Willow Plank Cover
+gt.item.plank_cover.walnut.name=Walnut Plank Cover
+gt.item.plank_cover.greenheart.name=Greenheart Plank Cover
+gt.item.plank_cover.cherry.name=Cherry Plank Cover
+gt.item.plank_cover.mahoe.name=Mahoe Plank Cover
+gt.item.plank_cover.poplar.name=Poplar Plank Cover
+gt.item.plank_cover.palm.name=Palm Plank Cover
+gt.item.plank_cover.papaya.name=Papaya Plank Cover
+gt.item.plank_cover.pine.name=Pine Plank Cover
+gt.item.plank_cover.plum.name=Plum Plank Cover
+gt.item.plank_cover.maple.name=Maple Plank Cover
+gt.item.plank_cover.citrus.name=Citrus Plank Cover
+gt.item.plank_cover.cherry_efr.name=Cherry Plank Cover
+
+## Super Fuel Binder
+gt.item.sf_mixture.name=Super Fuel Binder
+gt.item.sf_mixture.tooltip=Raw Material
+gt.item.msf_mixture.name=Magic Super Fuel Binder
+gt.item.msf_mixture.tooltip=Raw Material
+
+## Food items
+gt.item.food.cheese.name=Cheese
+gt.item.food.cheese.tooltip=Click the Cheese
+gt.item.food.dough.name=Dough
+gt.item.food.dough.tooltip=For making Breads
+gt.item.food.flat_dough.name=Flattened Dough
+gt.item.food.flat_dough.tooltip=For making Pizza
+gt.item.food.raw_bread.name=Dough
+gt.item.food.raw_bread.tooltip=In Bread Shape
+gt.item.food.raw_bun.name=Dough
+gt.item.food.raw_bun.tooltip=In Bun Shape
+gt.item.food.raw_baguette.name=Dough
+gt.item.food.raw_baguette.tooltip=In Baguette Shape
+gt.item.food.baked_bun.name=Bun
+gt.item.food.baked_bun.tooltip=Do not teleport Bread!
+gt.item.food.baked_baguette.name=Baguette
+gt.item.food.baked_baguette.tooltip=I teleported nothing BUT Bread!!!
+gt.item.food.sliced_bread.name=Sliced Bread
+gt.item.food.sliced_bread.tooltip=Just half a Bread
+gt.item.food.sliced_bun.name=Sliced Bun
+gt.item.food.sliced_bun.tooltip=Just half a Bun
+gt.item.food.sliced_baguette.name=Sliced Baguette
+gt.item.food.sliced_baguette.tooltip=Just half a Baguette
+gt.item.food.raw_cake.name=Cake Bottom
+gt.item.food.raw_cake.tooltip=For making Cake
+gt.item.food.baked_cake.name=Baked Cake Bottom
+gt.item.food.baked_cake.tooltip=I know I promised you an actual Cake, but well...
+gt.item.food.sliced_lemon.name=Lemon Slice
+gt.item.food.sliced_lemon.tooltip=Ideal to put on your Drink
+gt.item.food.sliced_tomato.name=Tomato Slice
+gt.item.food.sliced_tomato.tooltip=Solid Ketchup
+gt.item.food.sliced_onion.name=Onion Slice
+gt.item.food.sliced_onion.tooltip=ONIONS, UNITE!
+gt.item.food.sliced_cucumber.name=Cucumber Slice
+gt.item.food.sliced_cucumber.tooltip=QUEWWW-CUMMM-BERRR!!!
+gt.item.food.sliced_cheese.name=Cheese Slice
+gt.item.food.sliced_cheese.tooltip=ALIEN ATTACK!!!, throw the CHEEEEESE!!!
+
+## Advanced wireless covers
+gt.item.cover.advanced_redstone_transmitter.name=Advanced Redstone Transmitter
+gt.item.cover.advanced_redstone_transmitter.tooltip=Transfers Redstone signals wirelessly\nCan only connect with advanced wireless covers
+gt.item.cover.advanced_redstone_transmitter_internal.name=Advanced Redstone Transmitter (Internal)
+gt.item.cover.advanced_redstone_transmitter_internal.tooltip=Transfers Redstone signals wirelessly\nCan only connect with advanced wireless covers\n§cDEPRECATED! This will be removed in the next major update.
+gt.item.cover.advanced_redstone_receiver.name=Advanced Redstone Receiver
+gt.item.cover.advanced_redstone_receiver.tooltip=Transfers Redstone signals wirelessly\nCan only connect with advanced wireless covers
+gt.item.cover.advanced_redstone_receiver_internal.name=Advanced Redstone Receiver (Internal)
+gt.item.cover.advanced_redstone_receiver_internal.tooltip=Transfers Redstone signals wirelessly\nCan only connect with advanced wireless covers\n§cDEPRECATED! This will be removed in the next major update.
+
+## Wireless detector covers
+gt.item.cover.wireless_fluid_detector.name=Wireless Fluid Detector Cover
+gt.item.cover.wireless_fluid_detector.tooltip=Transfers Fluid Amount as Redstone wirelessly\nCan only connect with advanced wireless covers
+gt.item.cover.wireless_item_detector.name=Wireless Item Detector Cover
+gt.item.cover.wireless_item_detector.tooltip=Transfers Item Amount as Redstone wirelessly\nCan only connect with advanced wireless covers
+gt.item.cover.wireless_needs_maintenance.name=Wireless Needs Maintenance Cover
+gt.item.cover.wireless_needs_maintenance.tooltip=Transfers Maintenance Issues as Redstone wirelessly\nCan only connect with advanced wireless covers
+gt.item.cover.wireless_activity_detector.name=Wireless Activity Detector Cover
+gt.item.cover.wireless_activity_detector.tooltip=Transfers Activity as Redstone wirelessly\nCan only connect with advanced wireless covers
+
+## Special items
+gt.item.display.its_free.name=ITS FREE
+gt.item.display.its_free.tooltip=(or at least almost free)
+gt.magnet.tooltip.base=Used in Magnetic Flux Exhibitor\n %sSpeed: +%d%%\n %sEU Usage: %d%%\n %sParallel: %d
+gt.magnet.tooltip.exotic=%s%sCan Use Multi-Amp Hatches\n %sLimit to one energy hatch if using Multi-Amp
+gt.Item_Redstone_Sniffer.name=Redstone Sniffer
+gt.Item_Redstone_Sniffer.tooltip=What are these frequencies?!
+gt.Item_Drone_Remote_Interface.name=Drone Remote Interface
+gt.Item_Drone_Remote_Interface.tooltip=Built-in super powerful navigation beacon!!
+gt.item.vajra_core.name=Vajra Core
+gt.item.magnetron.name=Magnetron
+gt.Item_Chaos_Locator.name=Chaos Locator
+gt.Item_Chaos_Locator.tooltip=Warps to areas with extreme entropy
+gt.Item_Toolbox.name=Field Engineer's Toolbox
+gt.Item_Toolbox.tooltip=A container to hold your tools!
+
+# MetaItem02
+## Power Goggles
+gt.Power_Goggles.name=Power Goggles
+gt.Power_Goggles.tooltip=For when you need to look at power storage 24/7
+
+## Circuit Boards
+gt.item.circuit_board.wetware.name=Wetware Lifesupport Circuit Board
+gt.item.circuit_board.wetware.tooltip=The Board that keeps life
+gt.item.circuit_board.plastic.name=Plastic Circuit Board
+gt.item.circuit_board.plastic.tooltip=A Good Board
+gt.item.circuit_board.bio.name=Bio Circuit Board
+gt.item.circuit_board.bio.tooltip=Bio genetic mutated Board
+
+## Electronic Components (SMD and basic)
+gt.item.circuit_part.resistor_smd.name=SMD Resistor
+gt.item.circuit_part.resistor_smd.tooltip=Electronic Component
+gt.item.circuit_part.glass_tube.name=Glass Tube
+gt.item.circuit_part.glass_tube.tooltip=
+gt.item.circuit_part.coil.name=Small Coil
+gt.item.circuit_part.coil.tooltip=Basic Electronic Component
+gt.item.circuit_part.diode_smd.name=SMD Diode
+gt.item.circuit_part.diode_smd.tooltip=Electronic Component
+gt.item.circuit_part.transistor_smd.name=SMD Transistor
+gt.item.circuit_part.transistor_smd.tooltip=Electronic Component
+gt.item.circuit_part.capacitor_smd.name=SMD Capacitor
+gt.item.circuit_part.capacitor_smd.tooltip=Electronic Component
+gt.item.circuit_part.glass_fiber.name=Glass Fiber
+gt.item.circuit_part.glass_fiber.tooltip=SiO2·B2O3·Na2O  # пример, может отличаться, но оставим как в коде
+gt.item.circuit_part.petri_dish.name=Petri Dish
+gt.item.circuit_part.petri_dish.tooltip=For cultivating cells
+gt.item.circuit_part.reinforced_glass_tube.name=Reinforced Glass Tube
+gt.item.circuit_part.reinforced_glass_tube.tooltip=
+
+## Advanced SMD Components
+gt.item.circuit_part.resistor_asmd.name=Advanced SMD Resistor
+gt.item.circuit_part.resistor_asmd.tooltip=Advanced Electronic Component
+gt.item.circuit_part.diode_asmd.name=Advanced SMD Diode
+gt.item.circuit_part.diode_asmd.tooltip=Advanced Electronic Component
+gt.item.circuit_part.transistor_asmd.name=Advanced SMD Transistor
+gt.item.circuit_part.transistor_asmd.tooltip=Advanced Electronic Component
+gt.item.circuit_part.capacitor_asmd.name=Advanced SMD Capacitor
+gt.item.circuit_part.capacitor_asmd.tooltip=Advanced Electronic Component
+gt.item.circuit_part.inductor_smd.name=SMD Inductor
+gt.item.circuit_part.inductor_smd.tooltip=Electronic Component
+gt.item.circuit_part.inductor_asmd.name=Advanced SMD Inductor
+gt.item.circuit_part.inductor_asmd.tooltip=Advanced Electronic Component
+
+## Optical (XSMD) Components
+gt.item.circuit_part.resistor_xsmd.name=Optical SMD Resistor
+gt.item.circuit_part.resistor_xsmd.tooltip=Highly Advanced Electronic Component
+gt.item.circuit_part.diode_xsmd.name=Optical SMD Diode
+gt.item.circuit_part.diode_xsmd.tooltip=Highly Advanced Electronic Component
+gt.item.circuit_part.transistor_xsmd.name=Optical SMD Transistor
+gt.item.circuit_part.transistor_xsmd.tooltip=Highly Advanced Electronic Component
+gt.item.circuit_part.capacitor_xsmd.name=Optical SMD Capacitor
+gt.item.circuit_part.capacitor_xsmd.tooltip=Highly Advanced Electronic Component
+gt.item.circuit_part.inductor_xsmd.name=Optical SMD Inductor
+gt.item.circuit_part.inductor_xsmd.tooltip=Highly Advanced Electronic Component
+
+## Silicon Boules
+gt.item.circuit.silicon_ingot.plain.name=Monocrystalline Silicon Boule
+gt.item.circuit.silicon_ingot.phosphorus.name=Phosphorus doped Monocrystalline Silicon Boule
+gt.item.circuit.silicon_ingot.naquadah.name=Naquadah doped Monocrystalline Silicon Boule
+gt.item.circuit.silicon_ingot.europium.name=Europium doped Monocrystalline Silicon Boule
+gt.item.circuit.silicon_ingot.americium.name=Americium doped Monocrystalline Silicon Boule
+gt.item.circuit.silicon_ingot.optical.name=Optically Enriched Crystalline Boule
+gt.item.circuit.raw_circuit.tooltip=Raw Circuit
+
+## Wafers
+gt.item.circuit.wafer.plain.name=Wafer
+gt.item.circuit.wafer.phosphorus.name=Phosphorus doped Wafer
+gt.item.circuit.wafer.naquadah.name=Naquadah doped Wafer
+gt.item.circuit.wafer.europium.name=Europium doped Wafer
+gt.item.circuit.wafer.americium.name=Americium doped Wafer
+gt.item.circuit.wafer.optical_prepared.name=Photonically Prepared Wafer
+gt.item.circuit.wafer.optical_enhanced.name=Photonically Enhanced Wafer
+
+## Wafer variants (for circuits)
+gt.item.circuit.wafer.ilc.name=Integrated Logic Circuit (Wafer)
+gt.item.circuit.wafer.ram.name=Random Access Memory Chip (Wafer)
+gt.item.circuit.wafer.nand.name=NAND Memory Chip (Wafer)
+gt.item.circuit.wafer.nor.name=NOR Memory Chip (Wafer)
+gt.item.circuit.wafer.cpu.name=Central Processing Unit (Wafer)
+gt.item.circuit.wafer.soc.name=SoC Wafer
+gt.item.circuit.wafer.asoc.name=ASoC Wafer
+gt.item.circuit.wafer.pic.name=PIC Wafer
+gt.item.circuit.wafer.hpic.name=HPIC Wafer
+gt.item.circuit.wafer.nanocpu.name=NanoCPU Wafer
+gt.item.circuit.wafer.quantumcpu.name=QBit Wafer
+gt.item.circuit.wafer.uhpic.name=UHPIC Wafer
+gt.item.circuit.wafer.simple_soc.name=Simple SoC Wafer
+gt.item.circuit.wafer.ulpic.name=ULPIC Wafer
+gt.item.circuit.wafer.lpic.name=LPIC Wafer
+gt.item.circuit.wafer.npic.name=NPIC Wafer
+gt.item.circuit.wafer.ppic.name=PPIC Wafer
+gt.item.circuit.wafer.qpic.name=QPIC Wafer
+gt.item.circuit.wafer.bioware.name=Living Bio Wafer
+
+## Chips
+gt.item.circuit.chip.ilc.name=Integrated Logic Circuit
+gt.item.circuit.chip.ilc.tooltip=Integrated Circuit
+gt.item.circuit.chip.ram.name=Random Access Memory Chip
+gt.item.circuit.chip.ram.tooltip=Integrated Circuit
+gt.item.circuit.chip.nand.name=NAND Memory Chip
+gt.item.circuit.chip.nand.tooltip=Integrated Circuit
+gt.item.circuit.chip.nor.name=NOR Memory Chip
+gt.item.circuit.chip.nor.tooltip=Integrated Circuit
+gt.item.circuit.chip.cpu.name=Central Processing Unit
+gt.item.circuit.chip.cpu.tooltip=Integrated Circuit
+gt.item.circuit.chip.soc.name=SoC
+gt.item.circuit.chip.soc.tooltip=System on a Chip
+gt.item.circuit.chip.asoc.name=ASoC
+gt.item.circuit.chip.asoc.tooltip=Advanced System on a Chip
+gt.item.circuit.chip.pic.name=Power IC
+gt.item.circuit.chip.pic.tooltip=Power Circuit
+gt.item.circuit.chip.hpic.name=High Power IC
+gt.item.circuit.chip.hpic.tooltip=High Power Circuit
+gt.item.circuit.chip.nanocpu.name=Nanocomponent Central Processing Unit
+gt.item.circuit.chip.nanocpu.tooltip=Power Circuit
+gt.item.circuit.chip.quantumcpu.name=QBit Processing Unit
+gt.item.circuit.chip.quantumcpu.tooltip=Quantum CPU
+gt.item.circuit.chip.uhpic.name=Ultra High Power IC
+gt.item.circuit.chip.uhpic.tooltip=Ultra High Power Circuit
+gt.item.circuit.chip.simple_soc.name=Simple SoC
+gt.item.circuit.chip.simple_soc.tooltip=Simple System on a Chip
+gt.item.circuit.chip.ulpic.name=Ultra Low Power IC
+gt.item.circuit.chip.ulpic.tooltip=Ultra Low Power Circuit
+gt.item.circuit.chip.lpic.name=Low Power IC
+gt.item.circuit.chip.lpic.tooltip=Low Power Circuit
+gt.item.circuit.chip.npic.name=Nano Power IC
+gt.item.circuit.chip.npic.tooltip=Nano Power Circuit
+gt.item.circuit.chip.ppic.name=Piko Power IC
+gt.item.circuit.chip.ppic.tooltip=Piko Power Circuit
+gt.item.circuit.chip.qpic.name=Quantum Power IC
+gt.item.circuit.chip.qpic.tooltip=Quantum Power Circuit
+gt.item.circuit.chip.bioware.name=Living Bio Chip
+gt.item.circuit.chip.bioware.tooltip=Needed for Circuits
+
+## Crystal and Bio chips
+gt.item.circuit.chip.crystal_soc2.name=Raw Advanced Crystal Chip
+gt.item.circuit.chip.crystal_soc2.tooltip=Raw Advanced Crystal Processor
+gt.item.circuit_part.raw_crystal_chip.name=Raw Crystal Chip
+gt.item.circuit_part.raw_crystal_chip.tooltip=Raw Crystal Processor
+gt.item.circuit.chip.crystal_cpu.name=Crystal Processing Unit
+gt.item.circuit.chip.crystal_cpu.tooltip=Crystal CPU
+gt.item.circuit.chip.crystal_soc.name=Crystal SoC
+gt.item.circuit.chip.crystal_soc.tooltip=Crystal System on a Chip
+gt.item.circuit.chip.neuro_cpu.name=Neuro Processing Unit
+gt.item.circuit.chip.neuro_cpu.tooltip=Neuro CPU
+gt.item.circuit.chip.stemcell.name=Stemcells
+gt.item.circuit.chip.stemcell.tooltip=Raw inteligence
+gt.item.circuit_part.raw_crystal_parts.name=Raw Crystal Chip Parts
+gt.item.circuit_part.raw_crystal_parts.tooltip=Raw Crystal Processor Parts
+gt.item.circuit.chip.biocell.name=Biocells
+gt.item.circuit.chip.biocell.tooltip=Mutated Raw inteligence
+gt.item.circuit.chip.bio_cpu.name=Bio Processing Unit
+gt.item.circuit.chip.bio_cpu.tooltip=Bio CPU
+gt.item.circuit.chip.optical.name=Raw Exposed Optical Chip
+gt.item.circuit.chip.optical.tooltip=Raw Optical Chip
+
+## NAND Chip
+gt.item.nand_chip.name=NAND Chip
+gt.item.nand_chip.tooltip=A very simple Circuit
+
+## Microprocessor
+gt.item.circuit.microprocessor.name=Microprocessor
+gt.item.circuit.microprocessor.tooltip=A Basic Circuit
+
+## Integrated Processor
+gt.item.circuit.integrated_processor.name=Integrated Processor
+gt.item.circuit.integrated_processor.tooltip=A Good Circuit
+
+## Good Integrated Circuit
+gt.item.circuit.good_integrated.name=Good Integrated Circuit
+gt.item.circuit.good_integrated.tooltip=Good Circuit
+
+## Nano Circuits
+gt.item.circuit.nano_processor.name=Nano Processor
+gt.item.circuit.nano_processor.tooltip=An Advanced Circuit
+gt.item.circuit.nano_assembly.name=Nano Assembly
+gt.item.circuit.nano_assembly.tooltip=An Extreme Circuit
+gt.item.circuit.nano_supercomputer.name=Nano Supercomputer
+gt.item.circuit.nano_supercomputer.tooltip=An Elite Circuit
+
+## Quantum Circuits
+gt.item.circuit.quantum_processor.name=Quantum Processor
+gt.item.circuit.quantum_processor.tooltip=An Extreme Circuit
+gt.item.circuit.quantum_assembly.name=Quantum Assembly
+gt.item.circuit.quantum_assembly.tooltip=An Elite Circuit
+gt.item.circuit.quantum_supercomputer.name=Quantum Supercomputer
+gt.item.circuit.quantum_supercomputer.tooltip=A Master Circuit
+gt.item.circuit.quantum_mainframe.name=Quantum Mainframe
+gt.item.circuit.quantum_mainframe.tooltip=An Ultimate Circuit
+
+## Crystal Circuits
+gt.item.circuit.crystal_processor.name=Crystal Processor
+gt.item.circuit.crystal_processor.tooltip=An Elite Circuit
+gt.item.circuit.crystal_assembly.name=Crystal Assembly
+gt.item.circuit.crystal_assembly.tooltip=A Master Circuit
+gt.item.circuit.crystal_supercomputer.name=Crystal Supercomputer
+gt.item.circuit.crystal_supercomputer.tooltip=An Ultimate Circuit
+gt.item.circuit.crystal_mainframe.name=Crystal Mainframe
+gt.item.circuit.crystal_mainframe.tooltip=A Super Circuit
+
+## Wetware Circuits
+gt.item.circuit.wetware_processor.name=Wetware Processor
+gt.item.circuit.wetware_processor.tooltip=A Master Circuit
+gt.item.circuit.wetware_assembly.name=Wetware Assembly
+gt.item.circuit.wetware_assembly.tooltip=An Ultimate Circuit
+gt.item.circuit.wetware_supercomputer.name=Wetware Supercomputer
+gt.item.circuit.wetware_supercomputer.tooltip=A Super Circuit
+gt.item.circuit.wetware_mainframe.name=Wetware Mainframe
+gt.item.circuit.wetware_mainframe.tooltip=An Infinite Circuit
+
+## Bioware Circuits
+gt.item.circuit.bioware_processor.name=Bioware Processor
+gt.item.circuit.bioware_processor.tooltip=An Ultimate Circuit
+gt.item.circuit.bioware_assembly.name=Bioware Assembly
+gt.item.circuit.bioware_assembly.tooltip=A Super Circuit
+gt.item.circuit.bioware_supercomputer.name=Bioware Supercomputer
+gt.item.circuit.bioware_supercomputer.tooltip=An Infinite Circuit
+gt.item.circuit.bioware_mainframe.name=Bioware Mainframe
+gt.item.circuit.bioware_mainframe.tooltip=A Bio Circuit
+
+## Circuit Boards (new)
+gt.item.circuit_board.coated_basic.name=Circuit Board
+gt.item.circuit_board.coated_basic.tooltip=A basic Circuit Board
+gt.item.circuit_board.phenolic_good.name=Good Circuit Board
+gt.item.circuit_board.phenolic_good.tooltip=A good Circuit Board
+gt.item.circuit_board.epoxy_advanced.name=Advanced Circuit Board
+gt.item.circuit_board.epoxy_advanced.tooltip=An advanced Circuit Board
+gt.item.circuit_board.fiberglass_advanced.name=More Advanced Circuit Board
+gt.item.circuit_board.fiberglass_advanced.tooltip=A more advanced Circuit Board
+gt.item.circuit_board.multifiberglass_elite.name=Elite Circuit Board
+gt.item.circuit_board.multifiberglass_elite.tooltip=An elite Circuit Board
+gt.item.circuit_board.wetware_extreme.name=Extreme Wetware Lifesupport Circuit Board
+gt.item.circuit_board.wetware_extreme.tooltip=The Board that keeps life
+gt.item.circuit_board.plastic_advanced.name=Plastic Circuit Board
+gt.item.circuit_board.plastic_advanced.tooltip=A good Board
+gt.item.circuit_board.bio_ultra.name=Ultra Bio Mutated Circuit Board
+gt.item.circuit_board.bio_ultra.tooltip=Bio genetic mutated Board
+gt.item.circuit_board.optical.name=Optical Circuit Board
+gt.item.circuit_board.optical.tooltip=Optically Infused Board
+
+## Optical Circuits
+gt.item.circuit.optical_processor.name=Optical Processor
+gt.item.circuit.optical_processor.tooltip=An Optical Circuit
+gt.item.circuit.optical_assembly.name=Optical Assembly
+gt.item.circuit.optical_assembly.tooltip=An Optical Circuit
+gt.item.circuit.optical_computer.name=Optical Supercomputer
+gt.item.circuit.optical_computer.tooltip=An Optical Circuit
+gt.item.circuit.optical_mainframe.name=Optical Mainframe
+gt.item.circuit.optical_mainframe.tooltip=An Optical Circuit
+
+## Exotic Circuits
+gt.item.circuit.exotic_processor.name=Exotic Processor
+gt.item.circuit.exotic_processor.tooltip=An Exotic Circuit
+gt.item.circuit.exotic_assembly.name=Exotic Assembly
+gt.item.circuit.exotic_assembly.tooltip=An Exotic Circuit
+gt.item.circuit.exotic_computer.name=Exotic Supercomputer
+gt.item.circuit.exotic_computer.tooltip=An Exotic Circuit
+gt.item.circuit.exotic_mainframe.name=Exotic Mainframe
+gt.item.circuit.exotic_mainframe.tooltip=An Exotic Circuit
+
+## Cosmic Circuits
+gt.item.circuit.cosmic_processor.name=Cosmic Processor
+gt.item.circuit.cosmic_processor.tooltip=A Cosmic Circuit
+gt.item.circuit.cosmic_assembly.name=Cosmic Assembly
+gt.item.circuit.cosmic_assembly.tooltip=A Cosmic Circuit
+gt.item.circuit.cosmic_computer.name=Cosmic Supercomputer
+gt.item.circuit.cosmic_computer.tooltip=A Cosmic Circuit
+gt.item.circuit.cosmic_mainframe.name=Cosmic Mainframe
+gt.item.circuit.cosmic_mainframe.tooltip=A Cosmic Circuit
+
+## Transcendent Circuits
+gt.item.circuit.transcendent_processor.name=Temporally Transcendent Processor
+gt.item.circuit.transcendent_processor.tooltip=A circuit operating outside of known spacetime
+gt.item.circuit.transcendent_assembly.name=Temporally Transcendent Assembly
+gt.item.circuit.transcendent_assembly.tooltip=A circuit operating outside of known spacetime
+gt.item.circuit.transcendent_computer.name=Temporally Transcendent Supercomputer
+gt.item.circuit.transcendent_computer.tooltip=A circuit operating outside of known spacetime
+gt.item.circuit.transcendent_mainframe.name=Temporally Transcendent Mainframe
+gt.item.circuit.transcendent_mainframe.tooltip=A circuit operating outside of known spacetime
+
+## Tube Wires
+gt.item.tube_wires.name=Tube Wires
+gt.item.tube_wires.tooltip=For the Vacuum Tubes
+
+## Solar Panels (high tiers)
+gt.item.cover.solar_panel.uhv.name=Solar Panel (UHV)
+gt.item.cover.solar_panel.uhv.tooltip=Ultimate High Voltage Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.uev.name=Solar Panel (UEV)
+gt.item.cover.solar_panel.uev.tooltip=Ultimate Extreme Voltage Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.uiv.name=Solar Panel (UIV)
+gt.item.cover.solar_panel.uiv.tooltip=Ultimate Insane Voltage Solar Panel (Needs cleaning with right click)
+
+## Coils
+gt.item.coil.ulv.name=Ultra Low Voltage Coil
+gt.item.coil.ulv.tooltip=Primitive Coil
+gt.item.coil.lv.name=Low Voltage Coil
+gt.item.coil.lv.tooltip=Basic Coil
+gt.item.coil.mv.name=Medium Voltage Coil
+gt.item.coil.mv.tooltip=Good Coil
+gt.item.coil.hv.name=High Voltage Coil
+gt.item.coil.hv.tooltip=Advanced Coil
+gt.item.coil.ev.name=Extreme Voltage Coil
+gt.item.coil.ev.tooltip=Extreme Coil
+gt.item.coil.iv.name=Insane Voltage Coil
+gt.item.coil.iv.tooltip=Elite Coil
+gt.item.coil.luv.name=Ludicrous Voltage Coil
+gt.item.coil.luv.tooltip=Master Coil
+gt.item.coil.zpm.name=ZPM Voltage Coil
+gt.item.coil.zpm.tooltip=Ultimate Coil
+gt.item.coil.uv.name=Ultimate Voltage Coil
+gt.item.coil.uv.tooltip=Super Coil
+gt.item.coil.uhv.name=Highly Ultimate Voltage Coil
+gt.item.coil.uhv.tooltip=Infinite Coil
+
+## Materials
+gt.item.gallium_arsenide_crystal.name=Gallium Arsenide Crystal
+gt.item.gallium_arsenide_crystal.tooltip=For making boules
+gt.item.small_gallium_arsenide_crystal.name=Small Gallium Arsenide Crystal
+gt.item.small_gallium_arsenide_crystal.tooltip=For making boules
+gt.item.kevlar_fiber.name=Kevlar Fiber
+gt.item.kevlar_fiber.tooltip=For making Kevlar Plates
+gt.item.woven_kevlar.name=Woven Kevlar
+gt.item.woven_kevlar.tooltip=For making Kevlar Plates
+gt.item.spinneret.name=Spinneret
+gt.item.spinneret.tooltip=For making Kevlar Fiber
+
+## Apiary upgrades
+gt.item.apiary_upgrade.frame.name=Upgrade Frame
+gt.item.apiary_upgrade.frame.tooltip=Crafting component
+
+gt.item.apiary_upgrade.acceleration_1.name=Acceleration Upgrade x2
+gt.item.apiary_upgrade.acceleration_1.tooltip=Acceleration upgrade for Industrial Apiary\nMaximum Installed: 1\n* Unlocks 2x acceleration level\n* Energy Consumption +1 AMP LV
+gt.item.apiary_upgrade.acceleration_2.name=Acceleration Upgrade x4
+gt.item.apiary_upgrade.acceleration_2.tooltip=Acceleration upgrade for Industrial Apiary\nMaximum Installed: 1\n* Unlocks 4x acceleration level\n* Energy Consumption +1 AMP MV
+gt.item.apiary_upgrade.acceleration_3.name=Acceleration Upgrade x8
+gt.item.apiary_upgrade.acceleration_3.tooltip=Acceleration upgrade for Industrial Apiary\nMaximum Installed: 1\n* Unlocks 8x acceleration level\n* Energy Consumption +1 AMP HV
+gt.item.apiary_upgrade.acceleration_4.name=Acceleration Upgrade x16
+gt.item.apiary_upgrade.acceleration_4.tooltip=Acceleration upgrade for Industrial Apiary\nMaximum Installed: 1\n* Unlocks 16x acceleration level\n* Energy Consumption +1 AMP EV
+gt.item.apiary_upgrade.acceleration_5.name=Acceleration Upgrade x32
+gt.item.apiary_upgrade.acceleration_5.tooltip=Acceleration upgrade for Industrial Apiary\nMaximum Installed: 1\n* Unlocks 32x acceleration level\n* Energy Consumption +1 AMP IV
+gt.item.apiary_upgrade.acceleration_6.name=Acceleration Upgrade x64
+gt.item.apiary_upgrade.acceleration_6.tooltip=Acceleration upgrade for Industrial Apiary\nMaximum Installed: 1\n* Unlocks 64x acceleration level\n* Energy Consumption +1 AMP LuV
+gt.item.apiary_upgrade.acceleration_7.name=Acceleration Upgrade x128
+gt.item.apiary_upgrade.acceleration_7.tooltip=Acceleration upgrade for Industrial Apiary\nMaximum Installed: 1\n* Unlocks 128x acceleration level\n* Energy Consumption +1 AMP ZPM
+gt.item.apiary_upgrade.acceleration_8.name=Acceleration Upgrade x256
+gt.item.apiary_upgrade.acceleration_8.tooltip=Acceleration upgrade for Industrial Apiary\nMaximum Installed: 1\n* Unlocks 256x acceleration level\n* Energy Consumption +1 AMP UV
+gt.item.apiary_upgrade.acceleration_8_upgraded.name=Upgraded Acceleration Upgrade x256
+gt.item.apiary_upgrade.acceleration_8_upgraded.tooltip=Acceleration upgrade for Industrial Apiary\nMaximum Installed: 1\n* Unlocks 256x acceleration level\n* Will also grant 8x production upgrade\n* Energy Consumption +1 AMP UV
+gt.item.apiary_upgrade.production.name=Production Upgrade
+gt.item.apiary_upgrade.production.tooltip=Production upgrade for Industrial Apiary\nMaximum Installed: 8\nIncreases production modifier by 0.25\nEnergy Consumption +40%
+gt.item.apiary_upgrade.plains.name=Plains Emulation Upgrade
+gt.item.apiary_upgrade.plains.tooltip=Plains emulation upgrade for Industrial Apiary\nMaximum Installed: 1\n* Biome Override: Plains\n* Energy Consumption +40%
+gt.item.apiary_upgrade.light.name=Light Upgrade
+gt.item.apiary_upgrade.light.tooltip=Light upgrade for Industrial Apiary\nMaximum Installed: 1\n* Internal Lighting\n* Energy Consumption +5%
+gt.item.apiary_upgrade.flowering.name=Flowering Upgrade
+gt.item.apiary_upgrade.flowering.tooltip=Flowering upgrade for Industrial Apiary\nMaximum Installed: 8\n* Flowering and Pollination +20%\n* Energy Consumption +10%
+gt.item.apiary_upgrade.winter.name=Winter Emulation Upgrade
+gt.item.apiary_upgrade.winter.tooltip=Winter emulation upgrade for Industrial Apiary\nMaximum Installed: 1\n* Biome Override: Taiga\n* Energy Consumption +50%
+gt.item.apiary_upgrade.dryer.name=Dryer Upgrade
+gt.item.apiary_upgrade.dryer.tooltip=Dryer upgrade for Industrial Apiary\nMaximum Installed: 16\n* Humidity -12.5%\n* Energy Consumption +2.5%
+gt.item.apiary_upgrade.automation.name=Automation Upgrade
+gt.item.apiary_upgrade.automation.tooltip=Automation upgrade for Industrial Apiary\nMaximum Installed: 1\n* Automation\n* Energy Consumption +10%
+gt.item.apiary_upgrade.humidifier.name=Humidifier Upgrade
+gt.item.apiary_upgrade.humidifier.tooltip=Humidifier upgrade for Industrial Apiary\nMaximum Installed: 16\n* Humidity +12.5%\n* Energy Consumption +2.5%
+gt.item.apiary_upgrade.hell.name=HELL Emulation Upgrade
+gt.item.apiary_upgrade.hell.tooltip=HELL emulation upgrade for Industrial Apiary\nMaximum Installed: 1\n* Biome Override: HELL\n* Energy Consumption +50%
+gt.item.apiary_upgrade.pollen.name=Pollen Scrubber Upgrade
+gt.item.apiary_upgrade.pollen.tooltip=Pollen scrubber upgrade for Industrial Apiary\nMaximum Installed: 1\n* Flowering and Pollination -100%\n* Energy Consumption +30%
+gt.item.apiary_upgrade.desert.name=Desert Emulation Upgrade
+gt.item.apiary_upgrade.desert.tooltip=Desert emulation upgrade for Industrial Apiary\nMaximum Installed: 1\n* Biome Override: Desert\n* Energy Consumption +20%
+gt.item.apiary_upgrade.cooler.name=Cooler Upgrade
+gt.item.apiary_upgrade.cooler.tooltip=Cooler upgrade for Industrial Apiary\nMaximum Installed: 16\n* Temperature -12.5%\n* Energy Consumption +2.5%
+gt.item.apiary_upgrade.lifespan.name=Lifespan Upgrade
+gt.item.apiary_upgrade.lifespan.tooltip=Lifespan upgrade for Industrial Apiary\nMaximum Installed: 4\n* Lifespan -33%\n* Energy Consumption +5%
+gt.item.apiary_upgrade.seal.name=Seal Upgrade
+gt.item.apiary_upgrade.seal.tooltip=Seal upgrade for Industrial Apiary\nMaximum Installed: 1\n* Rain Protection\n* Energy Consumption +5%
+gt.item.apiary_upgrade.stabilizer.name=Genetic Stabilizer Upgrade
+gt.item.apiary_upgrade.stabilizer.tooltip=Genetic stabilizer upgrade for Industrial Apiary\nMaximum Installed: 1\n* Genetic Decay -100%\n* Energy Consumption +150%
+gt.item.apiary_upgrade.jungle.name=Jungle Emulation Upgrade
+gt.item.apiary_upgrade.jungle.tooltip=Jungle emulation upgrade for Industrial Apiary\nMaximum Installed: 1\n* Biome Override: Jungle\n* Energy Consumption +20%
+gt.item.apiary_upgrade.territory.name=Territory Upgrade
+gt.item.apiary_upgrade.territory.tooltip=Territory upgrade for Industrial Apiary\nMaximum Installed: 4\n* Territory +50%\n* Energy Consumption +5%
+gt.item.apiary_upgrade.ocean.name=Ocean Emulation Upgrade
+gt.item.apiary_upgrade.ocean.tooltip=Ocean emulation upgrade for Industrial Apiary\nMaximum Installed: 1\n* Biome Override: Ocean\n* Energy Consumption +20%
+gt.item.apiary_upgrade.sky.name=Open Sky Upgrade
+gt.item.apiary_upgrade.sky.tooltip=Open sky upgrade for Industrial Apiary\nMaximum Installed: 1\n* Open Sky Simulation\n* Energy Consumption +5%
+gt.item.apiary_upgrade.heater.name=Heater Upgrade
+gt.item.apiary_upgrade.heater.tooltip=Heater upgrade for Industrial Apiary\nMaximum Installed: 16\n* Temperature +12.5%\n* Energy Consumption +2.5%
+gt.item.apiary_upgrade.sieve.name=Sieve Upgrade
+gt.item.apiary_upgrade.sieve.tooltip=Sieve upgrade for Industrial Apiary\nMaximum Installed: 1\n* Pollen Collection\n* Energy Consumption +25%
+gt.item.apiary_upgrade.unlight.name=Night Upgrade
+gt.item.apiary_upgrade.unlight.tooltip=Night upgrade for Industrial Apiary\nMaximum Installed: 1\n* Internal Darkness\n* Energy Consumption +5%
+
+## Special items
+gt.item.nuclear_star.name=Nuclear Star
+gt.item.nuclear_star.tooltip=By the powers of Greg, I command this star to be really hot.
+gt.item.cover.metrics_transmitter.name=Metrics Transmitter Cover
+gt.item.cover.metrics_transmitter.tooltip=Taking Information Panels to the next level!\nCreates a GregTech Advanced Sensor Card when attached\nWorks across dimensions or if machine is dismantled\nRemoving this cover will destroy the linked card\n- Querns
+
+gt.item.activated_carbon_filter_mesh.name=Activated Carbon Filter Mesh
+gt.item.activated_carbon_filter_mesh.tooltip=The most granular filter you could possibly make.
+
+## Quark catalysts
+gt.item.quark_catalyst_housing.empty.name=Empty Quark Release Catalyst Housing
+gt.item.quark_catalyst_housing.empty.tooltip=Capable of holding Quark Release Catalysts
+gt.item.quark_catalyst.up.name=Up-Quark Releasing Catalyst
+gt.item.quark_catalyst.up.tooltip=Can release up-quarks into environment to reshape matter
+gt.item.quark_catalyst.down.name=Down-Quark Releasing Catalyst
+gt.item.quark_catalyst.down.tooltip=Can release down-quarks into environment to reshape matter
+gt.item.quark_catalyst.strange.name=Strange-Quark Releasing Catalyst
+gt.item.quark_catalyst.strange.tooltip=Can release strange-quarks into environment to reshape matter
+gt.item.quark_catalyst.charm.name=Charm-Quark Releasing Catalyst
+gt.item.quark_catalyst.charm.tooltip=Can release charm-quarks into environment to reshape matter
+gt.item.quark_catalyst.bottom.name=Bottom-Quark Releasing Catalyst
+gt.item.quark_catalyst.bottom.tooltip=Can release bottom-quarks into environment to reshape matter
+gt.item.quark_catalyst.top.name=Top-Quark Releasing Catalyst
+gt.item.quark_catalyst.top.tooltip=Can release top-quarks into environment to reshape matter
+gt.item.quark_catalyst.unaligned.name=Unaligned Quark Releasing Catalyst
+gt.item.quark_catalyst.unaligned.tooltip=Needs to be realigned before use
+
+## Optical CPU
+gt.item.optical_cpu_containment_housing.name=Optical CPU Containment Housing
+gt.item.optical_cpu_containment_housing.tooltip=CPU Housing
+gt.item.optically_perfected_cpu.name=Optically Perfected CPU
+gt.item.optically_perfected_cpu.tooltip=Perfected CPU!
+gt.item.optically_compatible_memory.name=Optically Compatible Memory
+gt.item.optically_compatible_memory.tooltip=Its in the name!
+
+## Timepiece
+gt.item.timepiece.name=Timepiece
+gt.item.timepiece.tooltip=Beware of the kid with the hat
+
+## Transdimensional Alignment Matrix
+gt.item.transdimensional_alignment_matrix.name=Transdimensional Alignment Matrix
+gt.item.transdimensional_alignment_matrix.tooltip=Device supporting the alignment of transdimensional spaces.\nEnables Dimensional Convergence on the DTPF.
+
+## Thermal items
+gt.item.thermal_superconductor.name=Thermal Superconductor
+gt.item.thermal_superconductor.tooltip=With the power of second sound!
+gt.item.relativistic_heat_capacitor.name=Relativistic Heat Capacitor
+gt.item.relativistic_heat_capacitor.tooltip=Thermal Resonance?
+gt.item.phononic_seed_crystal.name=Phononic Seed Crystal
+gt.item.phononic_seed_crystal.tooltip=Perfect Thermal Conductance
+gt.item.harmonic_compound.name=Harmonic Compound
+gt.item.harmonic_compound.tooltip=Toxic violet with a red haze
+
+## Netherite stuff
+gt.item.heavy_hellish_mud.name=Heavy Hellish Mud
+gt.item.heavy_hellish_mud.tooltip=God wouldn't touch this
+gt.item.netherite_scrap_seed.name=Netherite Scrap Seed
+gt.item.netherite_scrap_seed.tooltip=
+gt.item.brittle_netherite_scrap.name=Brittle Netherite Scrap
+gt.item.brittle_netherite_scrap.tooltip=
+gt.item.netherite_nanoparticles.name=Netherite Nanoparticles
+gt.item.netherite_nanoparticles.tooltip=
+gt.item.intensely_bonded_netherite_nanoparticles.name=Intensely Bonded Netherite Nanoparticles
+gt.item.intensely_bonded_netherite_nanoparticles.tooltip=
+gt.item.hot_netherite_scrap.name=Hot Netherite Scrap
+gt.item.hot_netherite_scrap.tooltip=Activated?
+
+## Other materials
+gt.item.beryllium_shielding_plate.name=Beryllium Shielding Plate
+gt.item.beryllium_shielding_plate.tooltip=A plate made of Beryllium, used for reactor shielding
+gt.item.alumina_support_ring.name=Alumina Support Ring
+gt.item.alumina_support_ring.tooltip=A support ring used for insulated fluid pipes
+gt.item.alumina_support_ring_raw.name=Raw Alumina Support Ring
+gt.item.alumina_support_ring_raw.tooltip=An unfired support ring used for insulated fluid pipes
+gt.item.prismarine_precipitate.name=Prismarine Precipitate
+gt.item.prismarine_precipitate.tooltip=
+gt.item.prismatic_crystal.name=Prismatic Crystal
+gt.item.prismatic_crystal.tooltip=
+gt.item.radiation_proof_composite_sheet.name=Radiation-Proof Prismatic Naquadah Composite Sheet
+gt.item.radiation_proof_composite_sheet.tooltip=Attenuates all forms of radiation almost perfectly
+gt.item.naquarite_universal_insulator_foil.name=Naquarite Universal Insulator Foil
+gt.item.naquarite_universal_insulator_foil.tooltip=The Perfect Insulator!\nAbsorbs all heat, radiation and electricity.
+
+## Manafly
+gt.item.manafly.name=Manafly
+gt.item.manafly.tooltip=If you sift this, you're a monster
 
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
@@ -5029,3 +6634,452 @@ gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
 gt.blocktintedglass.3.name=Tinted Industrial Glass (Black)
+
+# Items — LoaderGTBlockFluid
+# Sensor Cards
+gt.sensorcard.name=GregTech Sensor Card
+gt.sensorcard.tooltip=Insert into Display Panel
+
+# Sensor Cards
+gt.advancedsensorcard.name=GregTech Advanced Sensor Card
+gt.advancedsensorcard.tooltip=Nuclear Control not installed
+
+# Advanced Sensor Card
+gt.item.adv_sensor_card.error.deconstructed.1=Host machine has been deconstructed.
+gt.item.adv_sensor_card.error.deconstructed.2=Please re-insert the card to rebind.
+gt.item.adv_sensor_card.error.no_data=No data found.
+gt.item.adv_sensor_card.tooltip.fried.1=Card has been fried.
+gt.item.adv_sensor_card.tooltip.fried.2=Data is unrecoverable.
+gt.item.adv_sensor_card.tooltip.fried.3=Please replace the card.
+gt.item.adv_sensor_card.tooltip.machine=Machine: %s
+gt.item.adv_sensor_card.tooltip.frequency=Frequency: %s
+gt.item.adv_sensor_card.tooltip.recipe_hint=Insert into a Cover Metrics Transmitter to bind.
+gt.item.adv_sensor_card.dimension=Dimension: %s
+gt.item.adv_sensor_card.coords=Coordinates: %s
+
+# Neutron Reflector
+gt.neutronreflector.name=Iridium Neutron Reflector
+gt.neutronreflector.tooltip_main=Undestructable
+
+# Coolant Cells
+gt.60k_Helium_Coolantcell.name=60k He Coolant Cell
+gt.180k_Helium_Coolantcell.name=180k He Coolant Cell
+gt.360k_Helium_Coolantcell.name=360k He Coolant Cell
+gt.60k_NaK_Coolantcell.name=60k NaK Coolant Cell
+gt.180k_NaK_Coolantcell.name=180k NaK Coolant Cell
+gt.360k_NaK_Coolantcell.name=360k NaK Coolant Cell
+gt.180k_Space_Coolantcell.name=180k Sp Coolant Cell
+gt.360k_Space_Coolantcell.name=360k Sp Coolant Cell
+gt.540k_Space_Coolantcell.name=540k Sp Coolant Cell
+gt.1080k_Space_Coolantcell.name=1080k Sp Coolant Cell
+gt.neutroniumHeatCapacitor.name=1G Neutronium Heat Capacitor
+
+# Coolant Cell shared tooltip key
+gt.item.desc.stored_heat=Stored Heat: %s
+
+# Breeder Cells
+gt.rodLithium.name=Fuel Rod (Lithium)
+gt.rodLithium.tooltip_main=Source of tritium
+gt.rodGlowstone.name=Fuel Rod (Glowstone)
+gt.rodGlowstone.tooltip_main=Source of sunnarium
+
+# Depleted Cells
+gt.depletedRodLithium.name=Fuel Rod (Tritium)
+gt.depletedRodGlowstone.name=Fuel Rod (Sunnarium)
+gt.depletedRodThorium.name=Fuel Rod (Depleted Thorium)
+gt.depletedRodThorium2.name=Dual Fuel Rod (Depleted Thorium)
+gt.depletedRodThorium4.name=Quad Fuel Rod (Depleted Thorium)
+gt.depletedRodUranium.name=Fuel Rod (Depleted Uranium)
+gt.depletedRodUranium2.name=Dual Fuel Rod (Depleted Uranium)
+gt.depletedRodUranium4.name=Quad Fuel Rod (Depleted Uranium)
+gt.depletedRodMOX.name=Fuel Rod (Depleted MOX)
+gt.depletedRodMOX2.name=Dual Fuel Rod (Depleted MOX)
+gt.depletedRodMOX4.name=Quad Fuel Rod (Depleted MOX)
+gt.depletedRodHighDensityUranium.name=Fuel Rod (Depleted High Density Uranium)
+gt.depletedRodHighDensityUranium2.name=Dual Fuel Rod (Depleted High Density Uranium)
+gt.depletedRodHighDensityUranium4.name=Quad Fuel Rod (Depleted High Density Uranium)
+gt.depletedRodHighDensityPlutonium.name=Fuel Rod (Depleted High Density Plutonium)
+gt.depletedRodHighDensityPlutonium2.name=Dual Fuel Rod (Depleted High Density Plutonium)
+gt.depletedRodHighDensityPlutonium4.name=Quad Fuel Rod (Depleted High Density Plutonium)
+gt.depletedRodExcitedUranium.name=Fuel Rod (Depleted Excited Uranium)
+gt.depletedRodExcitedUranium2.name=Dual Fuel Rod (Depleted Excited Uranium)
+gt.depletedRodExcitedUranium4.name=Quad Fuel Rod (Depleted Excited Uranium)
+gt.depletedRodExcitedPlutonium.name=Fuel Rod (Depleted Excited Plutonium)
+gt.depletedRodExcitedPlutonium2.name=Dual Fuel Rod (Depleted Excited Plutonium)
+gt.depletedRodExcitedPlutonium4.name=Quad Fuel Rod (Depleted Excited Plutonium)
+gt.depletedRodNaquadah.name=Fuel Rod (Depleted Naquadah)
+gt.depletedRodNaquadah2.name=Dual Fuel Rod (Depleted Naquadah)
+gt.depletedRodNaquadah4.name=Quad Fuel Rod (Depleted Naquadah)
+gt.depletedRodNaquadah32.name=The Core (Depleted)
+gt.depletedRodNaquadria.name=Fuel Rod (Depleted Naquadria)
+gt.depletedRodNaquadria2.name=Dual Fuel Rod (Depleted Naquadria)
+gt.depletedRodNaquadria4.name=Quad Fuel Rod (Depleted Naquadria)
+gt.depletedRodTiberium.name=Fuel Rod (Depleted Tiberium)
+gt.depletedRodTiberium2.name=Dual Fuel Rod (Depleted Tiberium)
+gt.depletedRodTiberium4.name=Quad Fuel Rod (Depleted Tiberium)
+
+# Radioactive Cells
+gt.rodThorium.name=Fuel Rod (Thorium)
+gt.rodThorium2.name=Dual Fuel Rod (Thorium)
+gt.rodThorium4.name=Quad Fuel Rod (Thorium)
+gt.rodUranium.name=Fuel Rod (Uranium)
+gt.rodUranium2.name=Dual Fuel Rod (Uranium)
+gt.rodUranium4.name=Quad Fuel Rod (Uranium)
+gt.rodMOX.name=Fuel Rod (Mox)
+gt.rodMOX2.name=Dual Fuel Rod (Mox)
+gt.rodMOX4.name=Quad Fuel Rod (Mox)
+gt.rodHighDensityUranium.name=Fuel Rod (High Density Uranium)
+gt.rodHighDensityUranium2.name=Dual Fuel Rod (High Density Uranium)
+gt.rodHighDensityUranium4.name=Quad Fuel Rod (High Density Uranium)
+gt.rodHighDensityPlutonium.name=Fuel Rod (High Density Plutonium)
+gt.rodHighDensityPlutonium2.name=Dual Fuel Rod (High Density Plutonium)
+gt.rodHighDensityPlutonium4.name=Quad Fuel Rod (High Density Plutonium)
+gt.rodExcitedUranium.name=Fuel Rod (Excited Uranium)
+gt.rodExcitedUranium2.name=Dual Fuel Rod (Excited Uranium)
+gt.rodExcitedUranium4.name=Quad Fuel Rod (Excited Uranium)
+gt.rodExcitedPlutonium.name=Fuel Rod (Excited Plutonium)
+gt.rodExcitedPlutonium2.name=Dual Fuel Rod (Excited Plutonium)
+gt.rodExcitedPlutonium4.name=Quad Fuel Rod (Excited Plutonium)
+gt.rodNaquadah.name=Fuel Rod (Naquadah)
+gt.rodNaquadah2.name=Dual Fuel Rod (Naquadah)
+gt.rodNaquadah4.name=Quad Fuel Rod (Naquadah)
+gt.rodNaquadah32.name=The Core
+gt.rodNaquadria.name=Fuel Rod (Naquadria)
+gt.rodNaquadria2.name=Dual Fuel Rod (Naquadria)
+gt.rodNaquadria4.name=Quad Fuel Rod (Naquadria)
+gt.rodTiberium.name=Fuel Rod (Tiberium)
+gt.rodTiberium2.name=Dual Fuel Rod (Tiberium)
+gt.rodTiberium4.name=Quad Fuel Rod (Tiberium)
+
+# Drones
+gt.tierdDrone0.name=Drone (Level 1)
+gt.tierdDrone0.tooltip_main=Quadcopter Stable Small Aircraft
+gt.tierdDrone1.name=Drone (Level 2)
+gt.tierdDrone1.tooltip_main=Dual Turbo High-Ejection Medium Aircraft
+gt.tierdDrone2.name=Drone (Level 3)
+gt.tierdDrone2.tooltip_main=Single Engine Anti-Gravity Large Aircraft
+gt.tierdDrone3.name=Drone (Level 4)
+gt.tierdDrone3.tooltip_main=Warp engine FTL Shuttle
+
+# Volumetric Flask
+gt.Volumetric_Flask.name=Volumetric flask
+
+# CircuitComponentFakeItem
+gt.fakecircuitcomponent.name=Fake Circuit Component Item
+
+# ItemIntegratedCircuit
+gt.integrated_circuit.name=Programmed Circuit
+
+# ItemWirelessHeadphones
+gt.WirelessHeadphones.name=Wireless Headphones
+
+# ItemMagLevHarness
+gt.MaglevHarness.name=MagLev Harness
+
+# Items — BartWorks
+gt.BWCircuitProgrammer.name=Circuit Programmer
+gt.BWCircuitProgrammer.tooltip=Programs Integrated Circuits
+
+# Printer Manual
+gt.Book.Printer Manual V2.0.Name=Printer Manual V2.0
+gt.Book.Printer Manual V2.0.Page00=This Manual explains the different Functionalities the GregTech Printing Factory has built in, which are not in NEI. Most got NEI Support now, but there is still some left without it.
+gt.Book.Printer Manual V2.0.Page01=1. Coloring Items and Blocks: You know those Crafting Recipes, which have a dye surrounded by 8 Item to dye them? Or the ones which have just one Item and one Dye in the Grid? Those two Recipe Types can be cheaply automated using the Printer.
+gt.Book.Printer Manual V2.0.Page02=The Colorization Functionality even optimizes the Recipes, which normally require 8 Items + 1 Dye to 1 Item and an 8th of the normally used Dye in Fluid Form, isn't that awesome?
+gt.Book.Printer Manual V2.0.Page03=2. Copying Books: This Task got slightly harder. The first Step is putting the written and signed Book inside the Scanner with a Data Stick ready to receive the Data.
+gt.Book.Printer Manual V2.0.Page04=Now insert the Stick into the Data Slot of the Printer and add 3 pieces of Paper together with 144 Liters of actual Ink Fluid. Water mixed and chemical Dyes won't work on Paper without messing things up!
+gt.Book.Printer Manual V2.0.Page05=You got a stack of Pages for your new Book, just put them into the Assembler with some Glue and a piece of Leather for the Binding, and you receive an identical copy of the Book, which would stack together with the original.
+gt.Book.Printer Manual V2.0.Page06=3. Renaming Items: This Functionality is no longer Part of the Printer. There is now a Name Mold for the Forming Press to imprint a Name into an Item, just rename the Mold in an Anvil and use it in the Forming Press on any Item.
+gt.Book.Printer Manual V2.0.Page07=4. Crafting of Books, Maps, Nametags etc etc etc: Those Recipes moved to other Machines, just look them up in NEI.
+
+# Punch Card Manual
+gt.Book.Punch Card Manual V0.0.Name=Punch Card Manual V0.0
+gt.Book.Punch Card Manual V0.0.Page00=This Manual will explain the Functionality of the Punch Cards, once they are fully implemented. And no, they won't be like the IRL Punch Cards. This is just a current Idea Collection.
+gt.Book.Punch Card Manual V0.0.Page01=(i1&&i2)?o1=15:o1=0;=10
+gt.Book.Punch Card Manual V0.0.Page02=ignore all Whitespace Characters, use Long for saving the Numbers
+gt.Book.Punch Card Manual V0.0.Page03=&& || ^^ & | ^ ! ++ -- + - % / // * ** << >> >>> < > <= >= == !=  ~ ( ) ?: , ; ;= ;=X; = i0 i1 i2 i3 i4 i5 o0 o1 o2 o3 o4 o5 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 A B C D E F
+gt.Book.Punch Card Manual V0.0.Page04='0' = false, 'everything but 0' = true, '!' turns '0' into '1' and everything else into '0'
+gt.Book.Punch Card Manual V0.0.Page05=',' is just a separator for multiple executed Codes in a row.
+gt.Book.Punch Card Manual V0.0.Page06=';' means that the Program waits until the next tick before continuing. ';=10' and ';=10;' both mean that it will wait 10 Ticks instead of 1. And ';=0' or anything < 0 will default to 0.
+gt.Book.Punch Card Manual V0.0.Page07=If the '=' Operator is used within Brackets, it returns the value the variable has been set to.
+gt.Book.Punch Card Manual V0.0.Page08=The Program saves the Char Index of the current Task, the 10 Variables (which reset to 0 as soon as the Program Loop stops), the 10 Member Variables and the remaining waiting Time in its NBT.
+gt.Book.Punch Card Manual V0.0.Page09=A = 10, B = 11, C = 12, D = 13, E = 14, F = 15, just for Hexadecimal Space saving, since Redstone has only 4 Bits.
+gt.Book.Punch Card Manual V0.0.Page10=For implementing Loops you just need 1 Punch Card per Loop, these Cards can restart once they are finished, depending on how many other Cards there are in the Program Loop you inserted your Card into, since it will process them procedurally.
+gt.Book.Punch Card Manual V0.0.Page11=A Punch Card Processor can run up to four Loops, each with the length of seven Punch Cards, parallel.
+gt.Book.Punch Card Manual V0.0.Page12=Why does the Punch Card need Ink to be made, you ask? Because the empty one needs to have some lines on, and the for the punched one it prints the Code to execute in a human readable format on the Card.
+
+# Microwave Oven Manual
+gt.Book.Microwave Oven Manual.Name=Microwave Oven Manual
+gt.Book.Microwave Oven Manual.Page00=Congratulations, you inserted a random seemingly empty Book into the Microwave and these Letters appeared out of nowhere.
+gt.Book.Microwave Oven Manual.Page01=You just got a Microwave Oven and asked yourself 'why do I even need it?'. It's simple, the Microwave can cook for just 128 EU and at an insane speed. Not even a normal E-furnace can do it that fast and cheap!
+gt.Book.Microwave Oven Manual.Page02=This is the cheapest and fastest way to cook for you. That is why the Microwave Oven can be found in almost every Kitchen (see www.youwannabuyakitchen.ly).
+gt.Book.Microwave Oven Manual.Page03=Long time exposure to Microwaves can cause Cancer, but we doubt Steve lives long enough to die because of that.
+gt.Book.Microwave Oven Manual.Page04=Do not insert any Metals. It might result in an Explosion.
+gt.Book.Microwave Oven Manual.Page05=Do not dry Animals with it. It will result in a Hot Dog, no matter which Animal you put into it.
+gt.Book.Microwave Oven Manual.Page06=Do not insert inflammable Objects. The Oven will catch on Fire.
+gt.Book.Microwave Oven Manual.Page07=Do not insert Explosives such as Eggs. Just don't.
+
+# Fluids
+# Gases
+fluid.Air=Air
+fluid.LiquidOxygen=Liquid Oxygen
+fluid.LiquidNitrogen=Liquid Nitrogen
+fluid.LiquidAir=Liquid Air
+fluid.Oxygen=Oxygen
+fluid.Hydrogen=Hydrogen
+fluid.Deuterium=Deuterium
+fluid.Tritium=Tritium
+fluid.Helium=Helium
+fluid.Helium-3=Helium-3
+fluid.Argon=Argon
+fluid.Radon=Radon
+fluid.Fluorine=Fluorine
+fluid.Methane=Methane
+fluid.Nitrogen=Nitrogen
+fluid.NitrogenDioxide=Nitrogen Dioxide
+fluid.Steam=Steam
+fluid.gas_natural_gas=Natural Gas
+fluid.gas_sulfuricgas=Sulfuric Gas
+fluid.gas_gas=Refinery Gas
+fluid.liquid_hydricsulfur=Hydrogen Sulfide
+
+# Liquids — Petroleum & Fuels
+fluid.liquid_extra_heavy_oil=Very Heavy Oil
+fluid.liquid_heavy_oil=Heavy Oil
+fluid.liquid_medium_oil=Raw Oil
+fluid.liquid_light_oil=Light Oil
+fluid.liquid_naphtha=Naphtha
+fluid.liquid_sulfuricnaphtha=Sulfuric Naphtha
+fluid.liquid_sufluriclight_fuel=Sulfuric Light Fuel
+fluid.liquid_sulfuricheavy_fuel=Sulfuric Heavy Fuel
+fluid.liquid_light_fuel=Light Fuel
+fluid.liquid_heavy_fuel=Heavy Fuel
+fluid.liquid_lpg=LPG
+fluid.fuel=Diesel
+fluid.NitroFuel=Cetane-Boosted Diesel
+fluid.oil=Oil
+fluid.liquid_toluene=Toluene
+fluid.liquid_epichlorhydrin=Epichlorohydrin
+fluid.liquid_nitrationmixture=Nitration Mixture
+fluid.liquid_drillingfluid=Drilling Fluid
+
+# Liquids — Industrial / Chemical
+fluid.Titaniumtetrachloride=Titaniumtetrachloride
+fluid.Chlorine=Chlorine
+fluid.Mercury=Mercury
+fluid.SodiumPersulfate=Sodium Persulfate
+fluid.Glyceryl=Glyceryl Trinitrate
+fluid.sulfuricacid=Sulfuric Acid
+fluid.lubricant=Lubricant
+fluid.creosote=Creosote Oil
+fluid.UUAmplifier=UU Amplifier
+fluid.mcguffium=Mc Guffium 239
+fluid.refinedGlue=Refined Glue
+fluid.charcoal_byproducts=Charcoal Byproducts
+fluid.molten.bisphenol_a=Molten Bisphenol A
+fluid.liquid_sodium=Liquid Sodium
+
+# Liquids — Biological / Food
+fluid.seedoil=Seed Oil
+fluid.fishoil=Fish Oil
+fluid.for.honey=Honey
+fluid.biomass=Biomass
+fluid.bioethanol=Bio Ethanol
+fluid.milk=Milk
+fluid.hotfryingoil=Hot Frying Oil
+
+# Liquids — Special / Endgame
+fluid.fieryblood=Fiery Blood
+fluid.holywater=Holy Water
+fluid.DimensionallyTranscendentResidue=Dimensionally Transcendent Residue
+fluid.ExcitedDTCC=Excited Dimensionally Transcendent Crude Catalyst
+fluid.ExcitedDTPC=Excited Dimensionally Transcendent Prosaic Catalyst
+fluid.ExcitedDTRC=Excited Dimensionally Transcendent Resplendent Catalyst
+fluid.ExcitedDTEC=Excited Dimensionally Transcendent Exotic Catalyst
+fluid.ExcitedDTSC=Excited Dimensionally Transcendent Stellar Catalyst
+fluid.antimatter=Antimatter
+fluid.protomatter=Protomatter
+fluid.PrimordialMatter=Primordial Matter
+fluid.QuarkGluonPlasma=Quark-Gluon Plasma
+fluid.PhononMedium=Phonon Medium
+fluid.PhononCrystalSolution=Phonon Crystal Solution
+fluid.RawStarMatter=Raw Star Matter
+fluid.Space=Space
+fluid.Time=Time
+
+# Slurry
+fluid.ice=Crushed Ice
+
+# Molten
+fluid.molten.glass=Molten Glass
+fluid.molten.redstone=Molten Redstone
+fluid.molten.blaze=Molten Blaze
+fluid.wet.concrete=Wet Concrete
+fluid.molten.granitered=Molten Red Granite
+fluid.molten.graniteblack=Molten Black Granite
+fluid.molten.cosmicneutronium=Molten Cosmic Neutronium
+fluid.molten.ichorium=Molten Ichorium
+
+# Plasma
+fluid.plasma.infinity=Infinity Plasma
+fluid.plasma.bedrockium=Bedrockium Plasma
+fluid.plasma.cosmicneutronium=Cosmic Neutronium Plasma
+fluid.plasma.ichorium=Ichorium Plasma
+
+# Dyes
+fluid.dye.chemical.dyeblack=Chemical Black Dye
+fluid.dye.chemical.dyeblue=Chemical Blue Dye
+fluid.dye.chemical.dyebrown=Chemical Brown Dye
+fluid.dye.chemical.dyecyan=Chemical Cyan Dye
+fluid.dye.chemical.dyegray=Chemical Gray Dye
+fluid.dye.chemical.dyegreen=Chemical Green Dye
+fluid.dye.chemical.dyelightblue=Chemical Light Blue Dye
+fluid.dye.chemical.dyelightgray=Chemical Light Gray Dye
+fluid.dye.chemical.dyelime=Chemical Lime Dye
+fluid.dye.chemical.dyemagenta=Chemical Magenta Dye
+fluid.dye.chemical.dyeorange=Chemical Orange Dye
+fluid.dye.chemical.dyepink=Chemical Pink Dye
+fluid.dye.chemical.dyepurple=Chemical Purple Dye
+fluid.dye.chemical.dyered=Chemical Red Dye
+fluid.dye.chemical.dyewhite=Chemical White Dye
+fluid.dye.chemical.dyeyellow=Chemical Yellow Dye
+fluid.dye.watermixed.dyeblack=Water Mixed Black Dye
+fluid.dye.watermixed.dyeblue=Water Mixed Blue Dye
+fluid.dye.watermixed.dyebrown=Water Mixed Brown Dye
+fluid.dye.watermixed.dyecyan=Water Mixed Cyan Dye
+fluid.dye.watermixed.dyegray=Water Mixed Gray Dye
+fluid.dye.watermixed.dyegreen=Water Mixed Green Dye
+fluid.dye.watermixed.dyelightblue=Water Mixed Light Blue Dye
+fluid.dye.watermixed.dyelightgray=Water Mixed Light Gray Dye
+fluid.dye.watermixed.dyelime=Water Mixed Lime Dye
+fluid.dye.watermixed.dyemagenta=Water Mixed Magenta Dye
+fluid.dye.watermixed.dyeorange=Water Mixed Orange Dye
+fluid.dye.watermixed.dyepink=Water Mixed Pink Dye
+fluid.dye.watermixed.dyepurple=Water Mixed Purple Dye
+fluid.dye.watermixed.dyered=Water Mixed Red Dye
+fluid.dye.watermixed.dyewhite=Water Mixed White Dye
+fluid.dye.watermixed.dyeyellow=Water Mixed Yellow Dye
+fluid.squidink=Squid Ink
+fluid.indigo=Indigo Dye
+
+# Potions
+fluid.potion.awkward=Awkward Brew
+fluid.potion.thick=Thick Brew
+fluid.potion.mundane=Mundane Brew
+
+fluid.potion.damage=Harming Brew
+fluid.potion.damage.strong=Strong Harming Brew
+fluid.potion.damage.splash=Splash Harming Brew
+fluid.potion.damage.strong.splash=Strong Splash Harming Brew
+
+fluid.potion.health=Healing Brew
+fluid.potion.health.strong=Strong Healing Brew
+fluid.potion.health.splash=Splash Healing Brew
+fluid.potion.health.strong.splash=Strong Splash Healing Brew
+
+fluid.potion.speed=Swiftness Brew
+fluid.potion.speed.strong=Strong Swiftness Brew
+fluid.potion.speed.long=Stretched Swiftness Brew
+fluid.potion.speed.splash=Splash Swiftness Brew
+fluid.potion.speed.strong.splash=Strong Splash Swiftness Brew
+fluid.potion.speed.long.splash=Stretched Splash Swiftness Brew
+
+fluid.potion.strength=Strength Brew
+fluid.potion.strength.strong=Strong Strength Brew
+fluid.potion.strength.long=Stretched Strength Brew
+fluid.potion.strength.splash=Splash Strength Brew
+fluid.potion.strength.strong.splash=Strong Splash Strength Brew
+fluid.potion.strength.long.splash=Stretched Splash Strength Brew
+
+fluid.potion.regen=Regenerating Brew
+fluid.potion.regen.strong=Strong Regenerating Brew
+fluid.potion.regen.long=Stretched Regenerating Brew
+fluid.potion.regen.splash=Splash Regenerating Brew
+fluid.potion.regen.strong.splash=Strong Splash Regenerating Brew
+fluid.potion.regen.long.splash=Stretched Splash Regenerating Brew
+
+fluid.potion.poison=Poisonous Brew
+fluid.potion.poison.strong=Strong Poisonous Brew
+fluid.potion.poison.long=Stretched Poisonous Brew
+fluid.potion.poison.splash=Splash Poisonous Brew
+fluid.potion.poison.strong.splash=Strong Splash Poisonous Brew
+fluid.potion.poison.long.splash=Stretched Splash Poisonous Brew
+
+fluid.potion.fireresistance=Fire Resistant Brew
+fluid.potion.fireresistance.long=Stretched Fire Resistant Brew
+fluid.potion.fireresistance.splash=Splash Fire Resistant Brew
+fluid.potion.fireresistance.long.splash=Stretched Splash Fire Resistant Brew
+
+fluid.potion.nightvision=Night Vision Brew
+fluid.potion.nightvision.long=Stretched Night Vision Brew
+fluid.potion.nightvision.splash=Splash Night Vision Brew
+fluid.potion.nightvision.long.splash=Stretched Splash Night Vision Brew
+
+fluid.potion.weakness=Weakening Brew
+fluid.potion.weakness.long=Stretched Weakening Brew
+fluid.potion.weakness.splash=Splash Weakening Brew
+fluid.potion.weakness.long.splash=Stretched Splash Weakening Brew
+
+fluid.potion.slowness=Lame Brew
+fluid.potion.slowness.long=Stretched Lame Brew
+fluid.potion.slowness.splash=Splash Lame Brew
+fluid.potion.slowness.long.splash=Stretched Splash Lame Brew
+
+fluid.potion.waterbreathing=Fishy Brew
+fluid.potion.waterbreathing.long=Stretched Fishy Brew
+fluid.potion.waterbreathing.splash=Splash Fishy Brew
+fluid.potion.waterbreathing.long.splash=Stretched Splash Fishy Brew
+
+fluid.potion.invisibility=Invisible Brew
+fluid.potion.invisibility.long=Stretched Invisible Brew
+fluid.potion.invisibility.splash=Splash Invisible Brew
+fluid.potion.invisibility.long.splash=Stretched Splash Invisible Brew
+
+# Beverages (bottles)
+fluid.potion.purpledrink=Purple Drink
+fluid.potion.grapejuice=Grape Juice
+fluid.potion.wine=Wine
+fluid.potion.vinegar=Vinegar
+fluid.potion.potatojuice=Potato Juice
+fluid.potion.vodka=Vodka
+fluid.potion.leninade=Leninade
+fluid.potion.mineralwater=Mineral Water
+fluid.potion.saltywater=Salty Water
+fluid.potion.reedwater=Reed Water
+fluid.potion.rum=Rum
+fluid.potion.piratebrew=Pirate Brew
+fluid.potion.hopsjuice=Hops Juice
+fluid.potion.darkbeer=Dark Beer
+fluid.potion.dragonblood=Dragon Blood
+fluid.potion.wheatyjuice=Wheaty Juice
+fluid.potion.scotch=Scotch
+fluid.potion.glenmckenner=Glen McKenner
+fluid.potion.wheatyhopsjuice=Wheaty Hops Juice
+fluid.potion.beer=Beer
+fluid.potion.chillysauce=Chilly Sauce
+fluid.potion.hotsauce=Hot Sauce
+fluid.potion.diabolosauce=Diabolo Sauce
+fluid.potion.diablosauce=Diablo Sauce
+fluid.potion.diablosauce.strong=Old Man Snitches glitched Diablo Sauce
+fluid.potion.applejuice=Apple Juice
+fluid.potion.cider=Cider
+fluid.potion.goldenapplejuice=Golden Apple Juice
+fluid.potion.goldencider=Golden Cider
+fluid.potion.idunsapplejuice=Idun's Apple Juice
+fluid.potion.notchesbrew=Notches Brew
+fluid.potion.lemonjuice=Lemon Juice
+fluid.potion.limoncello=Limoncello
+fluid.potion.lemonade=Lemonade
+fluid.potion.alcopops=Alcopops
+fluid.potion.cavejohnsonsgrenadejuice=Cave Johnsons Grenade Juice
+
+# Beverages (thermos cans)
+fluid.potion.coffee=Coffee
+fluid.potion.sweetcoffee=Sweet Coffee
+fluid.potion.Latte=Latte
+fluid.potion.sweetlatte=Sweet Latte
+fluid.potion.sweetjesuslatte=Sweet Jesus Latte
+fluid.potion.darkchocolatemilk=Dark Chocolate Milk
+fluid.potion.chocolatemilk=Chocolate Milk
+fluid.potion.tea=Tea
+fluid.potion.sweettea=Sweet Tea
+fluid.potion.icetea=Ice Tea
