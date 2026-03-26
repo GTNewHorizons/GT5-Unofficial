@@ -629,4 +629,9 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             }
         }
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
