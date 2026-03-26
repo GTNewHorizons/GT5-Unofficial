@@ -1309,7 +1309,7 @@ public class RecipesGregTech {
             .addTo(chemicalDehydratorRecipes);
 
         // Dead wood
-        if (BiomesOPlenty.isModLoaded()){
+        if (BiomesOPlenty.isModLoaded()) {
             ItemStack deadWood = new ItemStack(BOPCBlocks.logs3, 1, 2);
             GTValues.RA.stdBuilder()
                 .itemInputs(new OreDictItemStack("logWood", 1))
