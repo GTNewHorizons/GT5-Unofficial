@@ -4529,10 +4529,9 @@ machtype.mcr=Chemical Reactor, MCR
 machtype.bacvat=Bacterial Vat, Bac Vat
 machtype.manual_trafo=Transformer
 machtype.thtr=High Temperature Reactor, THTR
+machtype.cal=Circuit Assembler, CAL
 
 # Multiblock Tooltip lines
-gt.cal.mode_format=<SEPARATOR>§6%s:\nImprint this machine with a Circuit Imprint,\nby putting the imprint in the controller\nEvery Circuit Assembly Line can only be imprinted ONCE<SEPARATOR>§6%s:\nDoes Circuit Assembler recipes, Minimum Length: §c%s\nRecipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1\nThis mode supports Crafting Input Buffer/Bus and allows bus separation
-
 gt.thtr.tips=Needs to be primed with %s of helium\nNeeds a constant supply of §bcoolant§7 while running\nNeeds at least §6100K§7 Fuel pebbles to start operation (can hold up to 675k pebbles)\nConsumes up to §60.5%%§7 of total Fuel Pellets per Operation depending on efficiency\nEfficiency decreases exponentially if the internal buffer is not completely filled\nReactor will take §b4800L/t§7 of coolant multiplied by efficiency\nUses %s EU/t\nOne Operation takes 9 hours
 gt.thtr.info=Corners and the 2 touching blocks are air (cylindric)
 
@@ -4694,10 +4693,13 @@ gt.assline.info.controller=Either Grate Machine Casing on the first slice
 gt.adv_assline.tips=Assembly Line with item pipelining\nAll fluids are consumed at the start of the recipe\nRecipe tier is limited by the lowest Energy Hatch tier\n§6<SEPARATOR>\nRuns imperfect overclocks until Energy Hatch tier\nAdditional overclocks are increasingly more expensive\n§bMultiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)\n§bPower usage = Multiplier × (Active Slices) × (Recipe EU/t)\nOverclocking assumes all recipe slices are active\n§lDoes not overclock beyond 1 tick\nConstructed identically to the Assembly Line
 gt.adv_assline.info.controller=Either Grate on layer 3 of the first slice
 
+gt.cal.tips.1=Change Mode with Screwdriver
+gt.cal.tips.2=<SEPARATOR>§6%s:\nImprint this machine with a Circuit Imprint,\nby putting the imprint in the controller\nEvery Circuit Assembly Line can only be imprinted ONCE<SEPARATOR>§6%s:\nDoes Circuit Assembler recipes, Minimum Length: §c%s\nRecipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1\nThis mode supports Crafting Input Buffer/Bus and allows bus separation
 gt.cal.info=From Bottom to Top, Left to Right\nLayer 1 - Solid Steel Machine Casing, Input bus (Last Output bus), Solid Steel Machine Casing\nLayer 2 - %1$s+ Tier Glass, Assembly Line Casing, %1$s+ Tier Glass\nLayer 3 - Grate Machine Casing\nUp to 7 repeating slices, last is Output Bus
 gt.cal.controller=Layer 3 first slice front
 gt.cal.info.e_hatch=1x, Any layer 3 casing
 gt.cal.info.o_bus=As specified in final slice on layer 1
+gt.cal.info.glass=As specified on layer 2
 
 gt.asslike.info=From Bottom to Top, Left to Right\nLayer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing\nLayer 2 - Glass, Assembly Line Casing, Glass\nLayer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing\nLayer 4 - Empty, Solid Steel Machine Casing, Empty\nUp to 16 repeating slices, each one allows for 1 more item in recipes
 gt.asslike.info.energy=Any layer 4 casing

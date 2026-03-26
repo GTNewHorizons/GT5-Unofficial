@@ -28,8 +28,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.api.util.GTUtility.getColoredTierNameFromTier;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.tooltip.TooltipHelper.voltageTierText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -189,21 +189,20 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Circuit Assembler, CAL")
-            .addInfo("Change Mode with Screwdriver")
+        tt.addMachineType("machtype.cal")
+            .addInfo("gt.cal.tips.1")
             .addPerfectOCInfo()
-            .addInfo("gt.cal.tips", "chat.cal.mode.0", "chat.cal.mode.1", MINIMUM_CIRCUIT_ASSEMBLER_LENGTH)
+            .addInfo("gt.cal.tips.2", "chat.cal.mode.0", "chat.cal.mode.1", MINIMUM_CIRCUIT_ASSEMBLER_LENGTH)
             .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
-            .addStructureInfo("gt.cal.info", getColoredTierNameFromTier((byte) 4))
+            .addStructureInfo("gt.cal.info", voltageTierText(4, false))
             .addController("gt.cal.controller")
             .addEnergyHatch("gt.cal.info.e_hatch", 1)
             .addInputHatch("gt.asslike.info.i_hatch", 2)
             .addInputBus("gt.asslike.info.i_bus", 3, 4)
             .addOutputBus("gt.cal.info.o_bus", 4)
             .addStructurePart(
-                StatCollector
-                    .translateToLocalFormatted("tooltip.bw.structure.tier_glass", getColoredTierNameFromTier((byte) 4)),
-                "As specified on layer 2",
+                GTUtility.nestParams("GT5U.MBTT.AnyGlass_Tier", voltageTierText(4, false)),
+                "gt.cal.info.glass",
                 5)
             .addMaintenanceHatch("gt.asslike.info.i_hatch", 2)
 
