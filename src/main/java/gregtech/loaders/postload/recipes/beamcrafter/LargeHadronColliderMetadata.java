@@ -1,13 +1,10 @@
 package gregtech.loaders.postload.recipes.beamcrafter;
 
-import com.google.common.collect.ImmutableList;
-import gregtech.common.tileentities.machines.multi.beamcrafting.LHCModule;
-import gtnhlanth.common.beamline.Particle;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import com.google.common.collect.ImmutableList;
+
+import gtnhlanth.common.beamline.Particle;
 
 public class LargeHadronColliderMetadata {
 
@@ -16,7 +13,6 @@ public class LargeHadronColliderMetadata {
     private LargeHadronColliderMetadata(List<Particle> particleList) {
         this.particleList = particleList;
     }
-
 
     public static Builder builder() {
         return new Builder();

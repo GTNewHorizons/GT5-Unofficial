@@ -33,8 +33,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderFrontend;
-import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderMetadata;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -103,6 +101,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterFrontend;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
+import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderFrontend;
+import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderMetadata;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
@@ -1664,7 +1664,7 @@ public final class RecipeMaps {
             }
 
             return ret.toArray(new ItemStack[0]);
-        }).progressBar(GTUITextures.PROGRESSBAR_LHC_EM)
+        })
         .frontend(LargeHadronColliderFrontend::new)
         .build();
 
