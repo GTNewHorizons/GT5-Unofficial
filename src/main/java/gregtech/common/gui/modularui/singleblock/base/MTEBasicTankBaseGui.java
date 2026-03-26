@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.singleblock.base;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -12,14 +14,11 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.modularui2.GTGuiTextures;
 
 public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachineBlockBaseGui<T> {
-
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     public MTEBasicTankBaseGui(T machine) {
         super(machine);
@@ -57,13 +56,16 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
 
         // liquid amount
         screen.child(
-            IKey.dynamic(() -> numberFormat.format(machine.fluidTank.getFluidAmount()))
+            IKey.dynamic(
+                () -> formatNumber(
+                    machine.getFluidTank()
+                        .getFluidAmount()))
                 .asWidget()
                 .color(Color.WHITE.main));
 
         // fluid slot
         screen.child(
-            new FluidSlot().syncHandler(new FluidSlotSyncHandler(machine.fluidTank))
+            new FluidSlot().syncHandler(new FluidSlotSyncHandler(machine.getFluidTank()))
                 .align(Alignment.BottomRight)
                 .background(IDrawable.EMPTY));
 
@@ -71,15 +73,13 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
     }
 
     protected Flow createIO(ModularPanel panel, PanelSyncManager syncManager) {
-        syncManager.registerSlotGroup("item_inv", 1);
-
         Flow ioColumn = Flow.col()
             .coverChildren()
             .childPadding(1);
 
         // input slot
         ioColumn.child(
-            new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.getInputSlot()).slotGroup("item_inv"))
+            new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.getInputSlot()).singletonSlotGroup())
                 .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_IN_STANDARD)
                 .marginBottom(supportsGauge() ? 0 : 8));
 
@@ -99,15 +99,5 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
 
     protected boolean supportsGauge() {
         return true;
-    }
-
-    @Override
-    protected boolean supportsMuffler() {
-        return false;
-    }
-
-    @Override
-    protected boolean supportsPowerSwitch() {
-        return false;
     }
 }
