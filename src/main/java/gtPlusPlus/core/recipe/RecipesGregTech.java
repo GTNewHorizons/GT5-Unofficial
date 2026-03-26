@@ -2,6 +2,7 @@ package gtPlusPlus.core.recipe;
 
 import static gregtech.api.enums.Mods.Backpack;
 import static gregtech.api.enums.Mods.Baubles;
+import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -1308,13 +1309,15 @@ public class RecipesGregTech {
             .addTo(chemicalDehydratorRecipes);
 
         // Dead wood
-        ItemStack deadWood = new ItemStack(BOPCBlocks.logs3, 1, 2);
-        GTValues.RA.stdBuilder()
-            .itemInputs(new OreDictItemStack("logWood", 1))
-            .itemOutputs(deadWood)
-            .duration(10 * TICKS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(chemicalDehydratorRecipes);
+        if (BiomesOPlenty.isModLoaded()){
+            ItemStack deadWood = new ItemStack(BOPCBlocks.logs3, 1, 2);
+            GTValues.RA.stdBuilder()
+                .itemInputs(new OreDictItemStack("logWood", 1))
+                .itemOutputs(deadWood)
+                .duration(10 * TICKS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(chemicalDehydratorRecipes);
+        }
     }
 
     private static void largeChemReactorRecipes() {
