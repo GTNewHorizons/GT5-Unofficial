@@ -73,12 +73,6 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        return super.getTexture(aBaseMetaTileEntity, side, facing, colorIndex, aActive, aRedstone);
-    }
-
-    @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_IN),
             TextureFactory.builder()

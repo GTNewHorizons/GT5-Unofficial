@@ -419,4 +419,9 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
             tess.draw();
         }
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

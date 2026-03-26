@@ -16,12 +16,11 @@ import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 
-public class MTEHatchMultiInput extends MTEHatchInput implements IAddUIWidgets {
+public class MTEHatchMultiInput extends MTEHatchInput {
 
     private final FluidStack[] mStoredFluid;
     private final FluidStackTank[] fluidTanks;

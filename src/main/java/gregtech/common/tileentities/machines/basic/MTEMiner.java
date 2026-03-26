@@ -24,7 +24,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.recipe.BasicUIProperties;
@@ -34,7 +33,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.misc.DrillingLogicDelegate;
 import gregtech.common.misc.IDrillingLogicDelegateOwner;
 
-public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateOwner, IAddUIWidgets {
+public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateOwner {
 
     static final int[] RADIUS = { 8, 8, 16, 24, 32 }; // Miner radius per tier
     static final int[] SPEED = { 160, 160, 80, 40, 20 }; // Miner cycle time per tier
@@ -177,13 +176,8 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
                 }
             }
 
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                String.format(
-                    "%s %dx%d",
-                    StatCollector.translateToLocal("GT5U.machines.workareaset"),
-                    (radiusConfig * 2 + 1),
-                    (radiusConfig * 2 + 1)));
+            GTUtility
+                .sendChatTrans(aPlayer, "GT5U.machines.workareaset.s", (radiusConfig * 2 + 1), (radiusConfig * 2 + 1));
 
             // Rebuild ore cache after change config
             fillOreList(getBaseMetaTileEntity());

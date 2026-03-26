@@ -558,6 +558,7 @@ public class MTEPurificationUnitBaryonicPerfection
         return EnumChatFormatting.GRAY;
     }
 
+    @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add(StatCollector.translateToLocal("GT5U.infodata.pubp.catalyst_history"));
