@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
@@ -64,12 +65,15 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
                 .color(Color.WHITE.main));
 
         // fluid slot
-        screen.child(
-            new FluidSlot().syncHandler(new FluidSlotSyncHandler(machine.getFluidTank()))
-                .align(Alignment.BottomRight)
-                .background(IDrawable.EMPTY));
+        screen.child(createFluidSlot(panel, syncManager));
 
         return screen;
+    }
+
+    protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager) {
+        return new FluidSlot().syncHandler(new FluidSlotSyncHandler(machine.getFluidTank()))
+            .align(Alignment.BottomRight)
+            .background(IDrawable.EMPTY);
     }
 
     protected Flow createIO(ModularPanel panel, PanelSyncManager syncManager) {
@@ -77,24 +81,28 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
             .coverChildren()
             .childPadding(1);
 
-        // input slot
-        ioColumn.child(
-            new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.getInputSlot()).singletonSlotGroup())
-                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_IN_STANDARD)
-                .marginBottom(supportsGauge() ? 0 : 8));
-
-        // gauge icon
-        ioColumn.childIf(
-            supportsGauge(),
-            () -> GTGuiTextures.PICTURE_GAUGE.asWidget()
-                .size(18));
-
-        // output slot
-        ioColumn.child(
-            new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.getOutputSlot()).canPut(false))
-                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD));
+        ioColumn.child(createInputSlot(panel, syncManager));
+        ioColumn.childIf(supportsGauge(), this::getGaugeIcon);
+        ioColumn.child(createOutputSlot(panel, syncManager));
 
         return ioColumn;
+    }
+
+    protected ItemSlot createInputSlot(ModularPanel panel, PanelSyncManager syncManager) {
+        return new ItemSlot()
+            .slot(new ModularSlot(machine.inventoryHandler, machine.getInputSlot()).singletonSlotGroup())
+            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_IN_STANDARD)
+            .marginBottom(supportsGauge() ? 0 : 8);
+    }
+
+    protected Widget<?> getGaugeIcon() {
+        return GTGuiTextures.PICTURE_GAUGE.asWidget()
+            .size(18);
+    }
+
+    protected ItemSlot createOutputSlot(ModularPanel panel, PanelSyncManager syncManager) {
+        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.getOutputSlot()).canPut(false))
+            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD);
     }
 
     protected boolean supportsGauge() {
