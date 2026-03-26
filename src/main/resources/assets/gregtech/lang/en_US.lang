@@ -119,8 +119,8 @@ gt.item.desc.steam_eut=Energy from Optimal Steam Flow: %s EU/t
 gt.item.desc.steam_eut_loose=Energy from Optimal Steam Flow (Loose): %s EU/t
 
 # GT Interaction Descriptions
-gt.interact.desc.out_slot=Puts out into adjacent Slot #
-gt.interact.desc.in_slot=Grabs in for own Slot #
+gt.interact.desc.out_slot.s=Puts out into adjacent Slot #%s
+gt.interact.desc.in_slot.s=Grabs in for own Slot #%s
 gt.interact.desc.signal_on=Enable with Signal
 gt.interact.desc.signal_inverted=Disable with Signal
 gt.interact.desc.signal_off=Disabled
@@ -1074,6 +1074,7 @@ gt.recipe.purificationplantdegasifier=Degassing
 gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
 gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
+gt.recipe.beamcrafter=Beam Crafter
 gt.recipe.foundry_modules=Foundry Module Components
 
 # Recipe categories
@@ -1097,7 +1098,9 @@ GT5U.recipes.chance.output=Output Chance: %s
 
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
-GT5U.machines.workareaset=Work Area set to
+GT5U.machines.workareaset.s=Work Area set to %sx%s
+GT5U.machines.workareaset.chunks=Work Area set to %sx%s Chunks
+GT5U.machines.workareaset.blocks=Work Area set to %sx%s Chunks (%sx%s Blocks)
 GT5U.machines.workarea_fail=Can't adjust work area while running
 GT5U.machines.autoretract.enabled=Auto retract enabled
 GT5U.machines.autoretract.disabled=Auto retract disabled
@@ -1218,6 +1221,8 @@ GT5U.GTPP_MULTI_STEAM_FURNACE.mode.1=Blasting
 GT5U.GTPP_MULTI_STEAM_FURNACE.mode.2=Smoking
 GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode.0=Separator
 GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode.1=Polarizer
+GT5U.MULTI_LHC.mode.0=Accelerator
+GT5U.MULTI_LHC.mode.1=Collider
 GT5U.BLACKHOLE.mode.0=Compressor
 GT5U.BLACKHOLE.mode.1=Singularity Compressor
 GT5U.GTPP_MULTI_INDUSTRIAL_DEHYDRATOR.mode.0=Vacuum Furnace
@@ -1232,6 +1237,9 @@ GT5U.GTPP_MULTI_PACKAGER.mode.0=Packager
 GT5U.GTPP_MULTI_PACKAGER.mode.1=Unpackager
 GT5U.RESEARCH_STATION.mode.0=Research Station
 GT5U.RESEARCH_STATION.mode.1=Scanner
+GT5U.DECAY_WAREHOUSE.mode.normal=Normal
+GT5U.DECAY_WAREHOUSE.mode.exporting=Exporting
+GT5U.MULTI_MACHINE_MODE.unknown=Unknown Mode
 GT5U.MULTI_MACHINE_CHANGE=Now running in %s mode
 GT5U.MULTI_MACHINE_CONFIG.SAVE=Saved Multiblock Hatch Configuration
 GT5U.MULTI_MACHINE_CONFIG.LOAD=Loaded Multiblock Hatch Configuration
@@ -1552,7 +1560,7 @@ GT5U.gui.text.pollution_fail=§4Failed to output the pollution.
 GT5U.gui.text.structure_incomplete=§4Shut down due to incomplete structure.
 GT5U.gui.text.no_repair=§4Shut down due to machine damage.
 GT5U.gui.text.no_machine_part=No correct machine part in controller slot.
-GT5U.gui.text.insufficient=§4Shut down due to insufficient dynamo size
+GT5U.gui.text.insufficient_dynamo=§4Shut down due to insufficient dynamo size
 GT5U.gui.text.computation_loss=§4Shut down due to computation loss.
 GT5U.gui.text.missing_item=§7Missing required item: §b%s§f
 GT5U.gui.text.ph_sensor=pH threshold
@@ -1879,7 +1887,7 @@ gt.circuitcomponent.processed.frame.celestialtungsten=Spliced Celestial Tungsten
 gt.circuitcomponent.processed.frame.hypogen=Spliced Hypogen Framebox
 
 gt.circuitcomponent.sheet.processed.siliconerubber=Silicone Rubber Wrapper Spool
-gt.circuitcomponent.sheet.processed.polybenzimidazole=Polybenzimidazone Wrapper Spool
+gt.circuitcomponent.sheet.processed.polybenzimidazole=Polybenzimidazole Wrapper Spool
 gt.circuitcomponent.sheet.processed.radoxpolymer=Radox Polymer Wrapper Spool
 gt.circuitcomponent.sheet.processed.shirabon=Shirabon Wrapper Spool
 gt.circuitcomponent.sheet.processed.styrenerubber=Styrene-Butadiene Rubber Wrapper Spool
@@ -2082,6 +2090,101 @@ GT5U.gui.chat.powerfail.list.truncated=%s additional powerfails truncated
 GT5U.gui.chat.powerfail.shown=Enabled powerfail overlay rendering.
 GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
 
+GT5U.gui.text.BeamlineHatch.blacklist=Blacklist Selection
+GT5U.gui.text.BeamlineHatch.emptylist=No list to choose from
+
+# LHC and beamcrafting
+
+GT5U.gui.text.LHC.beamenergykeV=Current Beam Energy %seV
+GT5U.gui.text.LHC.beamrate=Current Beam Rate
+GT5U.gui.text.LHC.powercost=Current Power Draw: %s EU/t
+GT5U.gui.text.LHC.status=Status: %s
+GT5U.gui.text.LHC.off=Off
+GT5U.gui.text.LHC.acceleratormode=Accelerating beam...
+GT5U.gui.text.LHC.collidermode=Colliding beam...
+GT5U.gui.text.LHC.completedcycles=Completed Cycles
+GT5U.gui.text.LHC.targetbeamenergyeV=Target Beam Energy (eV):
+GT5U.gui.text.LHC.maxaccelerationcycles=Max Acceleration Cycles:
+GT5U.gui.text.beamcrafter.guiheader=Current Recipe Progress
+GT5U.gui.text.beamcrafter.particleA=Particle 1
+GT5U.gui.text.beamcrafter.particleB=Particle 2
+
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.machinetype=Beam Crafter, Beam Assembler
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip1=Collides two beams of particles into target materials to modify
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip2=their subatomic structure
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip3=The Input Beams can be supplied to either Beamline Input Hatch
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip4=Recipes will not start unless both beams have sufficiently high
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5=§eBeam Energies§7
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6=Processing speed is determined purely by the Input §cBeam Rates§7
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7=Each particle §cAmount§7 provided corresponds to one tick of progress
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8=Once the required §cAmount§7 of a specific §bPart§6icle§7 have been input,
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip9=excess particles of that type are voided
+
+gt.blockmachines.multimachine.beamcrafting.beammirror.machinetype=Beam Mirror
+gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip1=Takes in particle beams and sends them back out
+gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip2=§6That's literally it.
+
+gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetype=Beam Splitter
+gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetypefake=Beam Splitter, Bean Splitter
+gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip1=Select which particles to blacklist in the output hatches
+gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip2=Input particles will be split evenly among all valid output hatches
+
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.machinetype=Beam Stabilizer
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip1=Accepts and stores up to 100000 §aParticles§7 from
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip2=potentially intermittent high §cRate§7 particle beam packets
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip3=and re-releases those particles as a stable beam at a
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip4=§cRate§7 of your choosing
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip5=If a particle beam with a different §aParticle§7, §6Energy§7 or
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip6=§bFocus§7 is sent to the machine during operation, it is
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip7=ignored UNLESS there are no currently stored §aParticles
+
+gt.blockmachines.multimachine.beamcrafting.LHC.machinetype=Particle Accelerator, Particle Collider, LHC
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip1=Accelerates particles to high energies and then collides them to generate new particles
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip2=Electrically neutral particles are unaffected
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip3=Set the §etarget beam energy§7 (up to 2TeV) and the §9maximum number of cycles§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip4=Cycles every second
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip5=§f§nAccelerator mode§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6=Accelerates the beam in the smaller LHC ring
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Accelerator mode increases the §6Beam Energy§7 by §bEnergy Hatch Voltage§7 * §f10eV§7, until the
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8=§eTarget Beam Energy§7 is reached, or the §9maximum number of cycles§7 is reached
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §eTarget Beam Energy§7 is reached, multiply the current §cBeam Rate§7 by §f1.1§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=§aPower§7 cost starts at §f1A§7 of §fUV§7 per §cBeam Rate§7 and increases quadratically
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11=with the §dnumber of completed cycles§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=§aP§7 = §f(1A UV)§7 * §cR§7 * §dN§7^2
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13=Automatically switches to Collider mode when the §9maximum number of cycles§7 is reached
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip14=§f§nCollider mode§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip15=Splits the beam into §ftwo§7 beams that go in opposite directions in the larger LHC ring, which
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip16=then collide to generate new particles
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip17=The §3Collision Energy§7 is two times the §6Beam Energy§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip18=If the §3Collision Energy§7 exceeds the rest mass of a particle, that particle will start
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip19=appearing in the outputs
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip20=A particle output can only appear in the modules that correspond to the forces that
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip21=interact with that particle
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip22=For example, Neutrinos cannot appear in the Strong force module, §fALICE§7, since they do
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip23=not interact via the strong force
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip24=§fFiltered Beamline Output Hatches§7 will allow you to see the list of possible outputs, and
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip25=filter them
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip26=There are four LHC modules, marked by the letter on top of the module:
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip27=§bE - Electromagnetism§7 - Charged Matter Sensor (§bCMS§7)
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip28=§2W - Weak Interaction§7 - Advanced Total Lepton Assimilation Snare (§2ATLAS§7)
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29=§fS - Strong Force§7 - Absolute Lattice Integrated Chromodynamic Encapsulator (§fALICE§7)
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip30=§5G - Gravity§7 - Localized Horizon Curvature Binder (§5LHCb§7)
+
+gt.blockmachines.multimachine.beamcrafting.ttcontroller=Front Center
+gt.blockmachines.multimachine.beamcrafting.ttehatch=Energy Hatch
+gt.blockmachines.multimachine.beamcrafting.ttcasing=Collider Casing
+gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing=Shielded Accelerator Casing
+gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass=Shielded Accelerator Glass
+gt.blockmachines.multimachine.beamcrafting.ttanyglass=Any Tiered Glass
+gt.blockmachines.multimachine.beamcrafting.ttanycasing=Any Collider Casing
+gt.blockmachines.multimachine.beamcrafting.ttanyneonite=Neonite (Any, optional)
+gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch=Beamline Input Hatch
+gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch=Beamline Output Hatch
+gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered=Filtered Beamline Output Hatch
+gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description1=Allows blacklisting of specific particle types in the Large Hadron Collider
+gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description2=Right click to open the GUI and change selections
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.gui.targetbeamrate=Target Beam Rate:
+
 GT5U.gui.text.contributors.panel.open=Open Contributor List
 GT5U.gui.text.contributors.header=Contributors
 GT5U.gui.text.contributors.projectlead=Project Lead
@@ -2090,6 +2193,8 @@ GT5U.gui.text.contributors.textures=Textures
 GT5U.gui.text.contributors.rendering=Rendering
 GT5U.gui.text.contributors.structure=Structure
 GT5U.gui.text.contributors.playtesting=Playtesting
+GT5U.gui.tooltip.behaviour.cover_tool.data=Stored Cover Data:
+GT5U.gui.tooltip.behaviour.cover_tool.cover_copy_paste=Can copy/paste cover data.
 
 GT5U.gui.chat.bindcentre=Successfully bind drone centre.
 GT5U.gui.chat.drone_level_low=Upgrade to T4 drone to active the teleport function
@@ -2186,6 +2291,72 @@ GT5U.item.toolbox.byline.crowbar=You thought I was going to put a Half-Life\n§o
 GT5U.item.toolbox.byline.soldering_iron=Put some fine soldering alloy wire\n§oin the generic slots!
 GT5U.item.toolbox.byline.format=§o"%s"§r -§cQuerns§r
 
+GT5U.chat.rendering.off=Rendering off
+GT5U.chat.rendering.on=Rendering on
+GT5U.chat.auto_place.done=§aAuto placing done!
+GT5U.chat.auto_place.done.water=§aAuto placing done! Now go place the water yourself!
+
+GT5U.chat.cover.decorative.redstone=Redstone
+GT5U.chat.cover.decorative.energy=Energy
+GT5U.chat.cover.decorative.fluids=Fluids
+GT5U.chat.cover.decorative.items=Items
+GT5U.chat.cover.fluid_filter=Filter Fluid: %s
+GT5U.chat.cover.fluid_limiter=Threshold: %s
+GT5U.chat.cover.fluid_regulator.max=Pump speed limit reached!
+GT5U.chat.cover.fluid_regulator.rate_1=Pump speed: %sL/tick %sL/sec
+GT5U.chat.cover.fluid_regulator.speed=Pump speed: %sL every %s ticks, %s L/sec on average
+GT5U.chat.cover.fluid_storage_monitor.side=Side: %s
+GT5U.chat.cover.slot=Slot: %s
+GT5U.chat.cover.slot.all=Slot: All
+GT5U.chat.cover.item_filter=Item Filter: %s
+GT5U.chat.cover.item_filter.cleared=Filter Cleared!
+GT5U.chat.cover.item_filter.mode.black=Blacklist Mode
+GT5U.chat.cover.item_filter.mode.white=Whitelist Mode
+GT5U.chat.cover.player_detector.any=Emit if any Player is close
+GT5U.chat.cover.player_detector.other=Emit if other Player is close
+GT5U.chat.cover.player_detector.you=Emit if you are close
+GT5U.chat.cover.redstone_conductor.input.strongest=Conducts strongest Input
+GT5U.chat.cover.redstone_conductor.input.bottom=Conducts from bottom Input
+GT5U.chat.cover.redstone_conductor.input.top=Conducts from top Input
+GT5U.chat.cover.redstone_conductor.input.north=Conducts from north Input
+GT5U.chat.cover.redstone_conductor.input.south=Conducts from south Input
+GT5U.chat.cover.redstone_conductor.input.west=Conducts from west Input
+GT5U.chat.cover.redstone_conductor.input.east=Conducts from east Input
+GT5U.chat.cover.redstone_signalizer.signal=Signal = %s
+GT5U.chat.cover.redstone_signalizer.signal.cond=Conditional Signal = %s
+GT5U.chat.cover.redstone_signalizer.signal.cond.invert=Inverted Conditional Signal = %s
+GT5U.chat.cover.shutter.open.if.enabled=Open if work enabled
+GT5U.chat.cover.shutter.open.if.disabled=Open if work disabled
+GT5U.chat.cover.shutter.output.allowed=Only Output allowed
+GT5U.chat.cover.shutter.input.allowed=Only Input allowed
+GT5U.chat.cover.solar_panel.cleaned=Cleaned solar panel from %s%% dirt
+GT5U.chat.cover.solar_panel.cleaned.require=You need water bucket in inventory to clean the panel.
+GT5U.chat.cover.wireless_controller.shutdown_at=%s at (%s, %s, %s) shut down.
+GT5U.chat.behaviour.cover_tool.position=§m-----§r X: §b%s§r Y: §b%s§r Z: §b%s§r D: §b%s§r §m-----
+GT5U.chat.behaviour.cover_tool.side=Block Side: §b%s§r
+GT5U.chat.behaviour.cover_tool.type=Cover Type: §a%s§r
+GT5U.chat.behaviour.cover_tool.unavailable=Copy unavailable for this cover type
+GT5U.chat.behaviour.cover_tool.invalid_cover=Please Copy a Valid Cover First.
+GT5U.chat.behaviour.cover_tool.pasted=Cover Data Pasted.
+GT5U.chat.behaviour.cover_tool.not_match=Not Matched Cover.
+GT5U.chat.behaviour.cover_tool.no_cover=No Cover Found.
+GT5U.chat.behaviour.prospecting.ore=This is %s Ore.
+GT5U.chat.behaviour.prospecting.lava=There is Lava behind this Rock.
+GT5U.chat.behaviour.prospecting.liquid=There is a Liquid behind this Rock.
+GT5U.chat.behaviour.prospecting.air=There is an Air Pocket behind this Rock.
+GT5U.chat.behaviour.prospecting.changing=Material is changing behind this Rock.
+GT5U.chat.behaviour.prospecting.traces_of=Found traces of %s Ore.
+GT5U.chat.behaviour.prospecting.no_ores=No Ores found.
+
+GT5U.chat.distributor.items_per_side=Items per side: %s
+GT5U.chat.driller_base.chunk_loading.enable=Mining chunk loading enabled
+GT5U.chat.driller_base.chunk_loading.disabled=Mining chunk loading disabled
+GT5U.chat.laser.engraver.toggling_realism=Toggling realism!
+GT5U.chat.ore_drilling_plant_base.replace_with_cobblestone=Replace with cobblestone %s
+GT5U.chat.spinmatron.texture.static=Using Static Turbine Texture.
+GT5U.chat.spinmatron.texture.animated=Using Animated Turbine Texture.
+
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3
@@ -2271,14 +2442,14 @@ GT5U.hatch.outputme.cache_capacity_label=Current cache capacity: §e%s§r
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
 
-GT5U.multiblock.pollution=Pollution reduced to: §a%s§r%%
-GT5U.multiblock.energy=Stored Energy: §a%s §rEU / §e%s §rEU
-GT5U.multiblock.Progress=Progress: §a%s §rs / §e%s §rs
-GT5U.multiblock.efficiency=Efficiency: §e%s§r%%
-GT5U.multiblock.problems=Problems: §c%s
-GT5U.multiblock.mei=Max Energy Input: §e%s §rEU/t (*2A) Tier: §e%s
+GT5U.multiblock.pollution=Pollution reduced to
+GT5U.multiblock.energy=Stored Energy
+GT5U.multiblock.Progress=Progress
+GT5U.multiblock.efficiency=Efficiency
+GT5U.multiblock.problems=Problems
+GT5U.multiblock.mei=Max Energy Income
 GT5U.multiblock.maxtier=Max Tier
-GT5U.multiblock.usage=Currently uses: §c%s §rEU/t
+GT5U.multiblock.usage=Currently uses
 GT5U.multiblock.parallelism=Max Parallel
 GT5U.multiblock.curparallelism=Current Parallel
 GT5U.multiblock.euModifier=EU Modifier
@@ -2289,16 +2460,26 @@ GT5U.multiblock.coilLevel=Heating Coil Level
 GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
 GT5U.multiblock.runningMode=§eRunning Mode:
 GT5U.multiblock.startup=Starting up...
-GT5U.multiblock.recipesDone=Recipes Finished: §a%s
-GT5U.multiblock.totalRunHours=Total runtime: §6%s§r hours
-GT5U.multiblock.totalRunMinutes=Total runtime: §6%s§r minutes
-GT5U.multiblock.totalRunSeconds=Total runtime: §6%s§r seconds
-GT5U.multiblock.totalRunTicks=Total runtime: §6%s§r ticks
-GT5U.multiblock.owned_by=Owned by: §6%s
-GT5U.multiblock.meta_tile_entity=Meta-ID: §6%s
-GT5U.multiblock.valid=§avalid
-GT5U.multiblock.invalid=§cinvalid
-GT5U.multiblock.is_meta_tile_entity=§cMetaTileEntity == null!
+GT5U.multiblock.recipesDone=Recipes Finished
+
+
+GT5U.multiblock.scanner.pollution=Pollution reduced to: §a%s§r%%
+GT5U.multiblock.scanner.energy=Stored Energy: §a%s §rEU / §e%s §rEU
+GT5U.multiblock.scanner.Progress=Progress: §a%s §rs / §e%s §rs
+GT5U.multiblock.scanner.efficiency=Efficiency: §e%s§r%%
+GT5U.multiblock.scanner.problems=Problems: §c%s
+GT5U.multiblock.scanner.mei=Max Energy Input: §e%s §rEU/t (*2A) Tier: §e%s
+GT5U.multiblock.scanner.usage=Currently uses: §c%s §rEU/t
+GT5U.multiblock.scanner.recipesDone=Recipes Finished: §a%s
+GT5U.multiblock.scanner.totalRunHours=Total runtime: §6%s§r hours
+GT5U.multiblock.scanner.totalRunMinutes=Total runtime: §6%s§r minutes
+GT5U.multiblock.scanner.totalRunSeconds=Total runtime: §6%s§r seconds
+GT5U.multiblock.scanner.totalRunTicks=Total runtime: §6%s§r ticks
+GT5U.multiblock.scanner.owned_by=Owned by: §6%s
+GT5U.multiblock.scanner.meta_tile_entity=Meta-ID: §6%s
+GT5U.multiblock.scanner.valid=§avalid
+GT5U.multiblock.scanner.invalid=§cinvalid
+GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 
 
 # NEI recipe handlers
@@ -5258,6 +5439,13 @@ GTPP.machines.tier=Tier
 GTPP.machines.input=Input
 GTPP.machines.output=Output
 
+GTPP.multiblock.pollution=Pollution
+GTPP.multiblock.energy=Stored Energy
+GTPP.multiblock.efficiency=Efficiency
+GTPP.multiblock.mei=Max Energy Income
+GTPP.multiblock.usage=Currently uses
+GTPP.multiblock.generation=Currently generates
+
 GTPP.multiblock.specialvalue=Special Value
 GTPP.multiblock.duration=Duration
 GTPP.multiblock.multimachine.metal=Metal Mode. Does compressor (circuit 20), lathe (circuit 21) and electromagnetic polarizer (circuit 22).
@@ -5280,7 +5468,7 @@ GTPP.battpack.tooltip.4=Also charges items on the hotbar
 # Tooltips for the Personal Healing Bauble
 GTPP.nanohealer.tooltip.1=Worn as a Necklace within Baubles
 GTPP.nanohealer.tooltip.2=Drains
-GTPP.nanohealer.tooltip.3= EU per operation.
+GTPP.nanohealer.tooltip.3=EU per operation.
 GTPP.nanohealer.tooltip.4=Can restore HP, Hunger and Saturation.
 GTPP.nanohealer.tooltip.5=Will not prevent death.
 GTPP.nanohealer.tooltip.6=Shift+RMB to toggle notifications.
@@ -6387,6 +6575,11 @@ gt.blockcasings13.6.name=Magnetic Anchor Casing
 gt.blockcasings13.7.name=Field Energy Absorber Casing
 gt.blockcasings13.8.name=Loadbearing Distribution Casing
 gt.blockcasings13.9.name=Nanite Replication Framework
+gt.blockcasings13.10.name=Collider Casing
+gt.blockcasings13.11.name=Charged Matter Sensor Casing
+gt.blockcasings13.12.name=Advanced Total Lepton Assimilation Snare Casing
+gt.blockcasings13.13.name=Absolute Lattice Integrated Chromodynamic Encapsulator Casing
+gt.blockcasings13.14.name=Localized Horizon Curvature Binder Casing
 gt.blockcasingsNH.0.name=Air Filter Turbine Casing
 gt.blockcasingsNH.1.name=Air Filter Vent Casing
 gt.blockcasingsNH.2.name=Pyrolyse Oven Casing
@@ -6437,3 +6630,452 @@ gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
 gt.blocktintedglass.3.name=Tinted Industrial Glass (Black)
+
+# Items — LoaderGTBlockFluid
+# Sensor Cards
+gt.sensorcard.name=GregTech Sensor Card
+gt.sensorcard.tooltip_main=Insert into Display Panel
+
+# Sensor Cards
+gt.advancedsensorcard.name=GregTech Advanced Sensor Card
+gt.advancedsensorcard.tooltip_main=Nuclear Control not installed
+
+# Advanced Sensor Card
+gt.item.adv_sensor_card.error.deconstructed.1=Host machine has been deconstructed.
+gt.item.adv_sensor_card.error.deconstructed.2=Please re-insert the card to rebind.
+gt.item.adv_sensor_card.error.no_data=No data found.
+gt.item.adv_sensor_card.tooltip.fried.1=Card has been fried.
+gt.item.adv_sensor_card.tooltip.fried.2=Data is unrecoverable.
+gt.item.adv_sensor_card.tooltip.fried.3=Please replace the card.
+gt.item.adv_sensor_card.tooltip.machine=Machine: %s
+gt.item.adv_sensor_card.tooltip.frequency=Frequency: %s
+gt.item.adv_sensor_card.tooltip.recipe_hint=Insert into a Cover Metrics Transmitter to bind.
+gt.item.adv_sensor_card.dimension=Dimension: %s
+gt.item.adv_sensor_card.coords=Coordinates: %s
+
+# Neutron Reflector
+gt.neutronreflector.name=Iridium Neutron Reflector
+gt.neutronreflector.tooltip_main=Undestructable
+
+# Coolant Cells
+gt.60k_Helium_Coolantcell.name=60k He Coolant Cell
+gt.180k_Helium_Coolantcell.name=180k He Coolant Cell
+gt.360k_Helium_Coolantcell.name=360k He Coolant Cell
+gt.60k_NaK_Coolantcell.name=60k NaK Coolant Cell
+gt.180k_NaK_Coolantcell.name=180k NaK Coolant Cell
+gt.360k_NaK_Coolantcell.name=360k NaK Coolant Cell
+gt.180k_Space_Coolantcell.name=180k Sp Coolant Cell
+gt.360k_Space_Coolantcell.name=360k Sp Coolant Cell
+gt.540k_Space_Coolantcell.name=540k Sp Coolant Cell
+gt.1080k_Space_Coolantcell.name=1080k Sp Coolant Cell
+gt.neutroniumHeatCapacitor.name=1G Neutronium Heat Capacitor
+
+# Coolant Cell shared tooltip key
+gt.item.desc.stored_heat=Stored Heat: %s
+
+# Breeder Cells
+gt.rodLithium.name=Fuel Rod (Lithium)
+gt.rodLithium.tooltip_main=Source of tritium
+gt.rodGlowstone.name=Fuel Rod (Glowstone)
+gt.rodGlowstone.tooltip_main=Source of sunnarium
+
+# Depleted Cells
+gt.depletedRodLithium.name=Fuel Rod (Tritium)
+gt.depletedRodGlowstone.name=Fuel Rod (Sunnarium)
+gt.depletedRodThorium.name=Fuel Rod (Depleted Thorium)
+gt.depletedRodThorium2.name=Dual Fuel Rod (Depleted Thorium)
+gt.depletedRodThorium4.name=Quad Fuel Rod (Depleted Thorium)
+gt.depletedRodUranium.name=Fuel Rod (Depleted Uranium)
+gt.depletedRodUranium2.name=Dual Fuel Rod (Depleted Uranium)
+gt.depletedRodUranium4.name=Quad Fuel Rod (Depleted Uranium)
+gt.depletedRodMOX.name=Fuel Rod (Depleted MOX)
+gt.depletedRodMOX2.name=Dual Fuel Rod (Depleted MOX)
+gt.depletedRodMOX4.name=Quad Fuel Rod (Depleted MOX)
+gt.depletedRodHighDensityUranium.name=Fuel Rod (Depleted High Density Uranium)
+gt.depletedRodHighDensityUranium2.name=Dual Fuel Rod (Depleted High Density Uranium)
+gt.depletedRodHighDensityUranium4.name=Quad Fuel Rod (Depleted High Density Uranium)
+gt.depletedRodHighDensityPlutonium.name=Fuel Rod (Depleted High Density Plutonium)
+gt.depletedRodHighDensityPlutonium2.name=Dual Fuel Rod (Depleted High Density Plutonium)
+gt.depletedRodHighDensityPlutonium4.name=Quad Fuel Rod (Depleted High Density Plutonium)
+gt.depletedRodExcitedUranium.name=Fuel Rod (Depleted Excited Uranium)
+gt.depletedRodExcitedUranium2.name=Dual Fuel Rod (Depleted Excited Uranium)
+gt.depletedRodExcitedUranium4.name=Quad Fuel Rod (Depleted Excited Uranium)
+gt.depletedRodExcitedPlutonium.name=Fuel Rod (Depleted Excited Plutonium)
+gt.depletedRodExcitedPlutonium2.name=Dual Fuel Rod (Depleted Excited Plutonium)
+gt.depletedRodExcitedPlutonium4.name=Quad Fuel Rod (Depleted Excited Plutonium)
+gt.depletedRodNaquadah.name=Fuel Rod (Depleted Naquadah)
+gt.depletedRodNaquadah2.name=Dual Fuel Rod (Depleted Naquadah)
+gt.depletedRodNaquadah4.name=Quad Fuel Rod (Depleted Naquadah)
+gt.depletedRodNaquadah32.name=The Core (Depleted)
+gt.depletedRodNaquadria.name=Fuel Rod (Depleted Naquadria)
+gt.depletedRodNaquadria2.name=Dual Fuel Rod (Depleted Naquadria)
+gt.depletedRodNaquadria4.name=Quad Fuel Rod (Depleted Naquadria)
+gt.depletedRodTiberium.name=Fuel Rod (Depleted Tiberium)
+gt.depletedRodTiberium2.name=Dual Fuel Rod (Depleted Tiberium)
+gt.depletedRodTiberium4.name=Quad Fuel Rod (Depleted Tiberium)
+
+# Radioactive Cells
+gt.rodThorium.name=Fuel Rod (Thorium)
+gt.rodThorium2.name=Dual Fuel Rod (Thorium)
+gt.rodThorium4.name=Quad Fuel Rod (Thorium)
+gt.rodUranium.name=Fuel Rod (Uranium)
+gt.rodUranium2.name=Dual Fuel Rod (Uranium)
+gt.rodUranium4.name=Quad Fuel Rod (Uranium)
+gt.rodMOX.name=Fuel Rod (Mox)
+gt.rodMOX2.name=Dual Fuel Rod (Mox)
+gt.rodMOX4.name=Quad Fuel Rod (Mox)
+gt.rodHighDensityUranium.name=Fuel Rod (High Density Uranium)
+gt.rodHighDensityUranium2.name=Dual Fuel Rod (High Density Uranium)
+gt.rodHighDensityUranium4.name=Quad Fuel Rod (High Density Uranium)
+gt.rodHighDensityPlutonium.name=Fuel Rod (High Density Plutonium)
+gt.rodHighDensityPlutonium2.name=Dual Fuel Rod (High Density Plutonium)
+gt.rodHighDensityPlutonium4.name=Quad Fuel Rod (High Density Plutonium)
+gt.rodExcitedUranium.name=Fuel Rod (Excited Uranium)
+gt.rodExcitedUranium2.name=Dual Fuel Rod (Excited Uranium)
+gt.rodExcitedUranium4.name=Quad Fuel Rod (Excited Uranium)
+gt.rodExcitedPlutonium.name=Fuel Rod (Excited Plutonium)
+gt.rodExcitedPlutonium2.name=Dual Fuel Rod (Excited Plutonium)
+gt.rodExcitedPlutonium4.name=Quad Fuel Rod (Excited Plutonium)
+gt.rodNaquadah.name=Fuel Rod (Naquadah)
+gt.rodNaquadah2.name=Dual Fuel Rod (Naquadah)
+gt.rodNaquadah4.name=Quad Fuel Rod (Naquadah)
+gt.rodNaquadah32.name=The Core
+gt.rodNaquadria.name=Fuel Rod (Naquadria)
+gt.rodNaquadria2.name=Dual Fuel Rod (Naquadria)
+gt.rodNaquadria4.name=Quad Fuel Rod (Naquadria)
+gt.rodTiberium.name=Fuel Rod (Tiberium)
+gt.rodTiberium2.name=Dual Fuel Rod (Tiberium)
+gt.rodTiberium4.name=Quad Fuel Rod (Tiberium)
+
+# Drones
+gt.tierdDrone0.name=Drone (Level 1)
+gt.tierdDrone0.tooltip_main=Quadcopter Stable Small Aircraft
+gt.tierdDrone1.name=Drone (Level 2)
+gt.tierdDrone1.tooltip_main=Dual Turbo High-Ejection Medium Aircraft
+gt.tierdDrone2.name=Drone (Level 3)
+gt.tierdDrone2.tooltip_main=Single Engine Anti-Gravity Large Aircraft
+gt.tierdDrone3.name=Drone (Level 4)
+gt.tierdDrone3.tooltip_main=Warp engine FTL Shuttle
+
+# Volumetric Flask
+gt.Volumetric_Flask.name=Volumetric flask
+
+# CircuitComponentFakeItem
+gt.fakecircuitcomponent.name=Fake Circuit Component Item
+
+# ItemIntegratedCircuit
+gt.integrated_circuit.name=Programmed Circuit
+
+# ItemWirelessHeadphones
+gt.WirelessHeadphones.name=Wireless Headphones
+
+# ItemMagLevHarness
+gt.MaglevHarness.name=MagLev Harness
+
+# Items — BartWorks
+gt.BWCircuitProgrammer.name=Circuit Programmer
+gt.BWCircuitProgrammer.tooltip_main=Programs Integrated Circuits
+
+# Printer Manual
+gt.Book.Printer Manual V2.0.Name=Printer Manual V2.0
+gt.Book.Printer Manual V2.0.Page00=This Manual explains the different Functionalities the GregTech Printing Factory has built in, which are not in NEI. Most got NEI Support now, but there is still some left without it.
+gt.Book.Printer Manual V2.0.Page01=1. Coloring Items and Blocks: You know those Crafting Recipes, which have a dye surrounded by 8 Item to dye them? Or the ones which have just one Item and one Dye in the Grid? Those two Recipe Types can be cheaply automated using the Printer.
+gt.Book.Printer Manual V2.0.Page02=The Colorization Functionality even optimizes the Recipes, which normally require 8 Items + 1 Dye to 1 Item and an 8th of the normally used Dye in Fluid Form, isn't that awesome?
+gt.Book.Printer Manual V2.0.Page03=2. Copying Books: This Task got slightly harder. The first Step is putting the written and signed Book inside the Scanner with a Data Stick ready to receive the Data.
+gt.Book.Printer Manual V2.0.Page04=Now insert the Stick into the Data Slot of the Printer and add 3 pieces of Paper together with 144 Liters of actual Ink Fluid. Water mixed and chemical Dyes won't work on Paper without messing things up!
+gt.Book.Printer Manual V2.0.Page05=You got a stack of Pages for your new Book, just put them into the Assembler with some Glue and a piece of Leather for the Binding, and you receive an identical copy of the Book, which would stack together with the original.
+gt.Book.Printer Manual V2.0.Page06=3. Renaming Items: This Functionality is no longer Part of the Printer. There is now a Name Mold for the Forming Press to imprint a Name into an Item, just rename the Mold in an Anvil and use it in the Forming Press on any Item.
+gt.Book.Printer Manual V2.0.Page07=4. Crafting of Books, Maps, Nametags etc etc etc: Those Recipes moved to other Machines, just look them up in NEI.
+
+# Punch Card Manual
+gt.Book.Punch Card Manual V0.0.Name=Punch Card Manual V0.0
+gt.Book.Punch Card Manual V0.0.Page00=This Manual will explain the Functionality of the Punch Cards, once they are fully implemented. And no, they won't be like the IRL Punch Cards. This is just a current Idea Collection.
+gt.Book.Punch Card Manual V0.0.Page01=(i1&&i2)?o1=15:o1=0;=10
+gt.Book.Punch Card Manual V0.0.Page02=ignore all Whitespace Characters, use Long for saving the Numbers
+gt.Book.Punch Card Manual V0.0.Page03=&& || ^^ & | ^ ! ++ -- + - % / // * ** << >> >>> < > <= >= == !=  ~ ( ) ?: , ; ;= ;=X; = i0 i1 i2 i3 i4 i5 o0 o1 o2 o3 o4 o5 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 A B C D E F
+gt.Book.Punch Card Manual V0.0.Page04='0' = false, 'everything but 0' = true, '!' turns '0' into '1' and everything else into '0'
+gt.Book.Punch Card Manual V0.0.Page05=',' is just a separator for multiple executed Codes in a row.
+gt.Book.Punch Card Manual V0.0.Page06=';' means that the Program waits until the next tick before continuing. ';=10' and ';=10;' both mean that it will wait 10 Ticks instead of 1. And ';=0' or anything < 0 will default to 0.
+gt.Book.Punch Card Manual V0.0.Page07=If the '=' Operator is used within Brackets, it returns the value the variable has been set to.
+gt.Book.Punch Card Manual V0.0.Page08=The Program saves the Char Index of the current Task, the 10 Variables (which reset to 0 as soon as the Program Loop stops), the 10 Member Variables and the remaining waiting Time in its NBT.
+gt.Book.Punch Card Manual V0.0.Page09=A = 10, B = 11, C = 12, D = 13, E = 14, F = 15, just for Hexadecimal Space saving, since Redstone has only 4 Bits.
+gt.Book.Punch Card Manual V0.0.Page10=For implementing Loops you just need 1 Punch Card per Loop, these Cards can restart once they are finished, depending on how many other Cards there are in the Program Loop you inserted your Card into, since it will process them procedurally.
+gt.Book.Punch Card Manual V0.0.Page11=A Punch Card Processor can run up to four Loops, each with the length of seven Punch Cards, parallel.
+gt.Book.Punch Card Manual V0.0.Page12=Why does the Punch Card need Ink to be made, you ask? Because the empty one needs to have some lines on, and the for the punched one it prints the Code to execute in a human readable format on the Card.
+
+# Microwave Oven Manual
+gt.Book.Microwave Oven Manual.Name=Microwave Oven Manual
+gt.Book.Microwave Oven Manual.Page00=Congratulations, you inserted a random seemingly empty Book into the Microwave and these Letters appeared out of nowhere.
+gt.Book.Microwave Oven Manual.Page01=You just got a Microwave Oven and asked yourself 'why do I even need it?'. It's simple, the Microwave can cook for just 128 EU and at an insane speed. Not even a normal E-furnace can do it that fast and cheap!
+gt.Book.Microwave Oven Manual.Page02=This is the cheapest and fastest way to cook for you. That is why the Microwave Oven can be found in almost every Kitchen (see www.youwannabuyakitchen.ly).
+gt.Book.Microwave Oven Manual.Page03=Long time exposure to Microwaves can cause Cancer, but we doubt Steve lives long enough to die because of that.
+gt.Book.Microwave Oven Manual.Page04=Do not insert any Metals. It might result in an Explosion.
+gt.Book.Microwave Oven Manual.Page05=Do not dry Animals with it. It will result in a Hot Dog, no matter which Animal you put into it.
+gt.Book.Microwave Oven Manual.Page06=Do not insert inflammable Objects. The Oven will catch on Fire.
+gt.Book.Microwave Oven Manual.Page07=Do not insert Explosives such as Eggs. Just don't.
+
+# Fluids
+# Gases
+fluid.Air=Air
+fluid.LiquidOxygen=Liquid Oxygen
+fluid.LiquidNitrogen=Liquid Nitrogen
+fluid.LiquidAir=Liquid Air
+fluid.Oxygen=Oxygen
+fluid.Hydrogen=Hydrogen
+fluid.Deuterium=Deuterium
+fluid.Tritium=Tritium
+fluid.Helium=Helium
+fluid.Helium-3=Helium-3
+fluid.Argon=Argon
+fluid.Radon=Radon
+fluid.Fluorine=Fluorine
+fluid.Methane=Methane
+fluid.Nitrogen=Nitrogen
+fluid.NitrogenDioxide=Nitrogen Dioxide
+fluid.Steam=Steam
+fluid.gas_natural_gas=Natural Gas
+fluid.gas_sulfuricgas=Sulfuric Gas
+fluid.gas_gas=Refinery Gas
+fluid.liquid_hydricsulfur=Hydrogen Sulfide
+
+# Liquids — Petroleum & Fuels
+fluid.liquid_extra_heavy_oil=Very Heavy Oil
+fluid.liquid_heavy_oil=Heavy Oil
+fluid.liquid_medium_oil=Raw Oil
+fluid.liquid_light_oil=Light Oil
+fluid.liquid_naphtha=Naphtha
+fluid.liquid_sulfuricnaphtha=Sulfuric Naphtha
+fluid.liquid_sufluriclight_fuel=Sulfuric Light Fuel
+fluid.liquid_sulfuricheavy_fuel=Sulfuric Heavy Fuel
+fluid.liquid_light_fuel=Light Fuel
+fluid.liquid_heavy_fuel=Heavy Fuel
+fluid.liquid_lpg=LPG
+fluid.fuel=Diesel
+fluid.NitroFuel=Cetane-Boosted Diesel
+fluid.oil=Oil
+fluid.liquid_toluene=Toluene
+fluid.liquid_epichlorhydrin=Epichlorohydrin
+fluid.liquid_nitrationmixture=Nitration Mixture
+fluid.liquid_drillingfluid=Drilling Fluid
+
+# Liquids — Industrial / Chemical
+fluid.Titaniumtetrachloride=Titaniumtetrachloride
+fluid.Chlorine=Chlorine
+fluid.Mercury=Mercury
+fluid.SodiumPersulfate=Sodium Persulfate
+fluid.Glyceryl=Glyceryl Trinitrate
+fluid.sulfuricacid=Sulfuric Acid
+fluid.lubricant=Lubricant
+fluid.creosote=Creosote Oil
+fluid.UUAmplifier=UU Amplifier
+fluid.mcguffium=Mc Guffium 239
+fluid.refinedGlue=Refined Glue
+fluid.charcoal_byproducts=Charcoal Byproducts
+fluid.molten.bisphenol_a=Molten Bisphenol A
+fluid.liquid_sodium=Liquid Sodium
+
+# Liquids — Biological / Food
+fluid.seedoil=Seed Oil
+fluid.fishoil=Fish Oil
+fluid.for.honey=Honey
+fluid.biomass=Biomass
+fluid.bioethanol=Bio Ethanol
+fluid.milk=Milk
+fluid.hotfryingoil=Hot Frying Oil
+
+# Liquids — Special / Endgame
+fluid.fieryblood=Fiery Blood
+fluid.holywater=Holy Water
+fluid.DimensionallyTranscendentResidue=Dimensionally Transcendent Residue
+fluid.ExcitedDTCC=Excited Dimensionally Transcendent Crude Catalyst
+fluid.ExcitedDTPC=Excited Dimensionally Transcendent Prosaic Catalyst
+fluid.ExcitedDTRC=Excited Dimensionally Transcendent Resplendent Catalyst
+fluid.ExcitedDTEC=Excited Dimensionally Transcendent Exotic Catalyst
+fluid.ExcitedDTSC=Excited Dimensionally Transcendent Stellar Catalyst
+fluid.antimatter=Antimatter
+fluid.protomatter=Protomatter
+fluid.PrimordialMatter=Primordial Matter
+fluid.QuarkGluonPlasma=Quark-Gluon Plasma
+fluid.PhononMedium=Phonon Medium
+fluid.PhononCrystalSolution=Phonon Crystal Solution
+fluid.RawStarMatter=Raw Star Matter
+fluid.Space=Space
+fluid.Time=Time
+
+# Slurry
+fluid.ice=Crushed Ice
+
+# Molten
+fluid.molten.glass=Molten Glass
+fluid.molten.redstone=Molten Redstone
+fluid.molten.blaze=Molten Blaze
+fluid.wet.concrete=Wet Concrete
+fluid.molten.granitered=Molten Red Granite
+fluid.molten.graniteblack=Molten Black Granite
+fluid.molten.cosmicneutronium=Molten Cosmic Neutronium
+fluid.molten.ichorium=Molten Ichorium
+
+# Plasma
+fluid.plasma.infinity=Infinity Plasma
+fluid.plasma.bedrockium=Bedrockium Plasma
+fluid.plasma.cosmicneutronium=Cosmic Neutronium Plasma
+fluid.plasma.ichorium=Ichorium Plasma
+
+# Dyes
+fluid.dye.chemical.dyeblack=Chemical Black Dye
+fluid.dye.chemical.dyeblue=Chemical Blue Dye
+fluid.dye.chemical.dyebrown=Chemical Brown Dye
+fluid.dye.chemical.dyecyan=Chemical Cyan Dye
+fluid.dye.chemical.dyegray=Chemical Gray Dye
+fluid.dye.chemical.dyegreen=Chemical Green Dye
+fluid.dye.chemical.dyelightblue=Chemical Light Blue Dye
+fluid.dye.chemical.dyelightgray=Chemical Light Gray Dye
+fluid.dye.chemical.dyelime=Chemical Lime Dye
+fluid.dye.chemical.dyemagenta=Chemical Magenta Dye
+fluid.dye.chemical.dyeorange=Chemical Orange Dye
+fluid.dye.chemical.dyepink=Chemical Pink Dye
+fluid.dye.chemical.dyepurple=Chemical Purple Dye
+fluid.dye.chemical.dyered=Chemical Red Dye
+fluid.dye.chemical.dyewhite=Chemical White Dye
+fluid.dye.chemical.dyeyellow=Chemical Yellow Dye
+fluid.dye.watermixed.dyeblack=Water Mixed Black Dye
+fluid.dye.watermixed.dyeblue=Water Mixed Blue Dye
+fluid.dye.watermixed.dyebrown=Water Mixed Brown Dye
+fluid.dye.watermixed.dyecyan=Water Mixed Cyan Dye
+fluid.dye.watermixed.dyegray=Water Mixed Gray Dye
+fluid.dye.watermixed.dyegreen=Water Mixed Green Dye
+fluid.dye.watermixed.dyelightblue=Water Mixed Light Blue Dye
+fluid.dye.watermixed.dyelightgray=Water Mixed Light Gray Dye
+fluid.dye.watermixed.dyelime=Water Mixed Lime Dye
+fluid.dye.watermixed.dyemagenta=Water Mixed Magenta Dye
+fluid.dye.watermixed.dyeorange=Water Mixed Orange Dye
+fluid.dye.watermixed.dyepink=Water Mixed Pink Dye
+fluid.dye.watermixed.dyepurple=Water Mixed Purple Dye
+fluid.dye.watermixed.dyered=Water Mixed Red Dye
+fluid.dye.watermixed.dyewhite=Water Mixed White Dye
+fluid.dye.watermixed.dyeyellow=Water Mixed Yellow Dye
+fluid.squidink=Squid Ink
+fluid.indigo=Indigo Dye
+
+# Potions
+fluid.potion.awkward=Awkward Brew
+fluid.potion.thick=Thick Brew
+fluid.potion.mundane=Mundane Brew
+
+fluid.potion.damage=Harming Brew
+fluid.potion.damage.strong=Strong Harming Brew
+fluid.potion.damage.splash=Splash Harming Brew
+fluid.potion.damage.strong.splash=Strong Splash Harming Brew
+
+fluid.potion.health=Healing Brew
+fluid.potion.health.strong=Strong Healing Brew
+fluid.potion.health.splash=Splash Healing Brew
+fluid.potion.health.strong.splash=Strong Splash Healing Brew
+
+fluid.potion.speed=Swiftness Brew
+fluid.potion.speed.strong=Strong Swiftness Brew
+fluid.potion.speed.long=Stretched Swiftness Brew
+fluid.potion.speed.splash=Splash Swiftness Brew
+fluid.potion.speed.strong.splash=Strong Splash Swiftness Brew
+fluid.potion.speed.long.splash=Stretched Splash Swiftness Brew
+
+fluid.potion.strength=Strength Brew
+fluid.potion.strength.strong=Strong Strength Brew
+fluid.potion.strength.long=Stretched Strength Brew
+fluid.potion.strength.splash=Splash Strength Brew
+fluid.potion.strength.strong.splash=Strong Splash Strength Brew
+fluid.potion.strength.long.splash=Stretched Splash Strength Brew
+
+fluid.potion.regen=Regenerating Brew
+fluid.potion.regen.strong=Strong Regenerating Brew
+fluid.potion.regen.long=Stretched Regenerating Brew
+fluid.potion.regen.splash=Splash Regenerating Brew
+fluid.potion.regen.strong.splash=Strong Splash Regenerating Brew
+fluid.potion.regen.long.splash=Stretched Splash Regenerating Brew
+
+fluid.potion.poison=Poisonous Brew
+fluid.potion.poison.strong=Strong Poisonous Brew
+fluid.potion.poison.long=Stretched Poisonous Brew
+fluid.potion.poison.splash=Splash Poisonous Brew
+fluid.potion.poison.strong.splash=Strong Splash Poisonous Brew
+fluid.potion.poison.long.splash=Stretched Splash Poisonous Brew
+
+fluid.potion.fireresistance=Fire Resistant Brew
+fluid.potion.fireresistance.long=Stretched Fire Resistant Brew
+fluid.potion.fireresistance.splash=Splash Fire Resistant Brew
+fluid.potion.fireresistance.long.splash=Stretched Splash Fire Resistant Brew
+
+fluid.potion.nightvision=Night Vision Brew
+fluid.potion.nightvision.long=Stretched Night Vision Brew
+fluid.potion.nightvision.splash=Splash Night Vision Brew
+fluid.potion.nightvision.long.splash=Stretched Splash Night Vision Brew
+
+fluid.potion.weakness=Weakening Brew
+fluid.potion.weakness.long=Stretched Weakening Brew
+fluid.potion.weakness.splash=Splash Weakening Brew
+fluid.potion.weakness.long.splash=Stretched Splash Weakening Brew
+
+fluid.potion.slowness=Lame Brew
+fluid.potion.slowness.long=Stretched Lame Brew
+fluid.potion.slowness.splash=Splash Lame Brew
+fluid.potion.slowness.long.splash=Stretched Splash Lame Brew
+
+fluid.potion.waterbreathing=Fishy Brew
+fluid.potion.waterbreathing.long=Stretched Fishy Brew
+fluid.potion.waterbreathing.splash=Splash Fishy Brew
+fluid.potion.waterbreathing.long.splash=Stretched Splash Fishy Brew
+
+fluid.potion.invisibility=Invisible Brew
+fluid.potion.invisibility.long=Stretched Invisible Brew
+fluid.potion.invisibility.splash=Splash Invisible Brew
+fluid.potion.invisibility.long.splash=Stretched Splash Invisible Brew
+
+# Beverages (bottles)
+fluid.potion.purpledrink=Purple Drink
+fluid.potion.grapejuice=Grape Juice
+fluid.potion.wine=Wine
+fluid.potion.vinegar=Vinegar
+fluid.potion.potatojuice=Potato Juice
+fluid.potion.vodka=Vodka
+fluid.potion.leninade=Leninade
+fluid.potion.mineralwater=Mineral Water
+fluid.potion.saltywater=Salty Water
+fluid.potion.reedwater=Reed Water
+fluid.potion.rum=Rum
+fluid.potion.piratebrew=Pirate Brew
+fluid.potion.hopsjuice=Hops Juice
+fluid.potion.darkbeer=Dark Beer
+fluid.potion.dragonblood=Dragon Blood
+fluid.potion.wheatyjuice=Wheaty Juice
+fluid.potion.scotch=Scotch
+fluid.potion.glenmckenner=Glen McKenner
+fluid.potion.wheatyhopsjuice=Wheaty Hops Juice
+fluid.potion.beer=Beer
+fluid.potion.chillysauce=Chilly Sauce
+fluid.potion.hotsauce=Hot Sauce
+fluid.potion.diabolosauce=Diabolo Sauce
+fluid.potion.diablosauce=Diablo Sauce
+fluid.potion.diablosauce.strong=Old Man Snitches glitched Diablo Sauce
+fluid.potion.applejuice=Apple Juice
+fluid.potion.cider=Cider
+fluid.potion.goldenapplejuice=Golden Apple Juice
+fluid.potion.goldencider=Golden Cider
+fluid.potion.idunsapplejuice=Idun's Apple Juice
+fluid.potion.notchesbrew=Notches Brew
+fluid.potion.lemonjuice=Lemon Juice
+fluid.potion.limoncello=Limoncello
+fluid.potion.lemonade=Lemonade
+fluid.potion.alcopops=Alcopops
+fluid.potion.cavejohnsonsgrenadejuice=Cave Johnsons Grenade Juice
+
+# Beverages (thermos cans)
+fluid.potion.coffee=Coffee
+fluid.potion.sweetcoffee=Sweet Coffee
+fluid.potion.Latte=Latte
+fluid.potion.sweetlatte=Sweet Latte
+fluid.potion.sweetjesuslatte=Sweet Jesus Latte
+fluid.potion.darkchocolatemilk=Dark Chocolate Milk
+fluid.potion.chocolatemilk=Chocolate Milk
+fluid.potion.tea=Tea
+fluid.potion.sweettea=Sweet Tea
+fluid.potion.icetea=Ice Tea

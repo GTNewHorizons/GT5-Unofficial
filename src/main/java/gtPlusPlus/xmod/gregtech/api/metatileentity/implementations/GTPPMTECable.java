@@ -8,12 +8,11 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.render.TextureFactory;
 
-public class GTPPMTECable extends MTECable implements IMetaTileEntityCable {
+public class GTPPMTECable extends MTECable {
 
     private final short[] vRGB;
 

@@ -402,4 +402,9 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
                     .setPos(79, 34));
         }
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

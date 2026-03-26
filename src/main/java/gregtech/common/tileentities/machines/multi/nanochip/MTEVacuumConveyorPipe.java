@@ -51,6 +51,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
         return GTMod.proxy.gt6Pipe;
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new MTEVacuumConveyorPipe(this);
     }

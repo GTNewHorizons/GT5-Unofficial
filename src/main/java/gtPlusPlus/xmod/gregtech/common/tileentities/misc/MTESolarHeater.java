@@ -272,16 +272,6 @@ public class MTESolarHeater extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-    }
-
-    @Override
-    public void onRemoval() {
-        super.onRemoval();
-    }
-
-    @Override
     public boolean isOutputFacing(ForgeDirection side) {
         return side.offsetY == 0;
     }
@@ -289,11 +279,6 @@ public class MTESolarHeater extends MTETieredMachineBlock {
     @Override
     public long getMinimumStoredEU() {
         return 0;
-    }
-
-    @Override
-    public void onFacingChange() {
-        super.onFacingChange();
     }
 
     @Override

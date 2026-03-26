@@ -474,6 +474,18 @@ public class GTUtility {
         return "(" + color + GTValues.VN[tier] + EnumChatFormatting.RESET + ")";
     }
 
+    public static String getForgeDirectionNameKey(ForgeDirection side) {
+        return switch (side) {
+            case DOWN -> "GT5U.waila.facing.down";
+            case UP -> "GT5U.waila.facing.up";
+            case NORTH -> "GT5U.waila.facing.north";
+            case SOUTH -> "GT5U.waila.facing.south";
+            case WEST -> "GT5U.waila.facing.west";
+            case EAST -> "GT5U.waila.facing.east";
+            case UNKNOWN -> "GT5U.waila.facing.unknown";
+        };
+    }
+
     /**
      * @deprecated Use {@link #sendChatTrans} instead.
      */
@@ -487,6 +499,7 @@ public class GTUtility {
 
     /**
      * Send a translated chat message to the player.
+     * Example usage: {@code GTUtility.sendChatTrans(player, "gregtech.chat.example", arg1, arg2);}
      *
      * @param player     The player who will receive the message.
      * @param messageKey The lang key of the translation. The text corresponding to the key must only contain
@@ -1390,12 +1403,12 @@ public class GTUtility {
         sBookCount++;
         rStack = new ItemStack(Items.written_book, 1);
         NBTTagCompound tNBT = new NBTTagCompound();
-        tNBT.setString("title", GTLanguageManager.addStringLocalization("Book." + aTitle + ".Name", aTitle));
+        String key = "gt.Book." + aTitle + ".Name";
+        tNBT.setString("title", StatCollector.canTranslate(key) ? GTUtility.translate(key) : aTitle);
         tNBT.setString("author", aAuthor);
         NBTTagList tNBTList = new NBTTagList();
         for (byte i = 0; i < aPages.length; i++) {
-            aPages[i] = GTLanguageManager
-                .addStringLocalization("Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : i), aPages[i]);
+            aPages[i] = GTUtility.translate("gt.Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : i), aPages[i]);
             if (i < 48) {
                 if (aPages[i].length() < 256) tNBTList.appendTag(new NBTTagString(aPages[i]));
                 else GTLog.err.println("WARNING: String for written Book too long! -> " + aPages[i]);

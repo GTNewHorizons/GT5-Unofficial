@@ -550,4 +550,9 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
                 .build()
                 .setPos(7, 4));
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

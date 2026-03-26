@@ -76,7 +76,7 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = survivalBuildPiece(STRUCTURE_PIECE_BIO_CHAMBER, stackSize, 2, 6, 0, elementBudget, env, true);
         if (built == -1) {
-            GTUtility.sendChatToPlayer(env.getActor(), EnumChatFormatting.GREEN + "Auto placing done!");
+            GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done");
             return 0;
         }
         return built;
@@ -102,6 +102,7 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
             .addInfo(EnumChatFormatting.GRAY + "Left click the PCB Factory controller with a data stick,")
             .addInfo(EnumChatFormatting.GRAY + "then right click this controller to link.")
             .addInfo(EnumChatFormatting.GRAY + "Can connect to many PCB Factories!")
+            .beginStructureBlock(5, 7, 12, false)
             .addController("Front Center")
             .addCasingInfoExactlyColored(
                 "Clean Stainless Steel Machine Casing",
