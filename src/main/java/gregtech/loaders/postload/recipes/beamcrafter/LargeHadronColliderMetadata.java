@@ -9,9 +9,11 @@ import gtnhlanth.common.beamline.Particle;
 public class LargeHadronColliderMetadata {
 
     public final List<Particle> particleList;
+    public final int progressBarTextureIndex;
 
-    private LargeHadronColliderMetadata(List<Particle> particleList) {
+    private LargeHadronColliderMetadata(List<Particle> particleList, int progressBarTextureIndex) {
         this.particleList = particleList;
+        this.progressBarTextureIndex = progressBarTextureIndex;
     }
 
     public static Builder builder() {
@@ -21,14 +23,20 @@ public class LargeHadronColliderMetadata {
     public static class Builder {
 
         private ImmutableList<Particle> particleList;
+        private int progressBarTextureIndex;
 
         public Builder particleList(ImmutableList<Particle> particleList) {
             this.particleList = particleList;
             return this;
         }
 
+        public Builder progressBarTextureIndex(int progressBarTextureIndex) {
+            this.progressBarTextureIndex = progressBarTextureIndex;
+            return this;
+        }
+
         public LargeHadronColliderMetadata build() {
-            return new LargeHadronColliderMetadata(particleList);
+            return new LargeHadronColliderMetadata(particleList, progressBarTextureIndex);
         }
     }
 }

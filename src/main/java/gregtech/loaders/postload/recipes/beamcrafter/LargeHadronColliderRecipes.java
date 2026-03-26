@@ -19,6 +19,7 @@ public class LargeHadronColliderRecipes implements Runnable {
                 LARGE_HADRON_COLLIDER_METADATA,
                 LargeHadronColliderMetadata.builder()
                     .particleList(LHCModule.EM.acceptedParticles)
+                    .progressBarTextureIndex(0)
                     .build())
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UV)
@@ -30,6 +31,7 @@ public class LargeHadronColliderRecipes implements Runnable {
                 LARGE_HADRON_COLLIDER_METADATA,
                 LargeHadronColliderMetadata.builder()
                     .particleList(LHCModule.Weak.acceptedParticles.subList(0, 8))
+                    .progressBarTextureIndex(1)
                     .build())
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UV)
@@ -41,6 +43,7 @@ public class LargeHadronColliderRecipes implements Runnable {
                 LARGE_HADRON_COLLIDER_METADATA,
                 LargeHadronColliderMetadata.builder()
                     .particleList(LHCModule.Weak.acceptedParticles.subList(8, 16))
+                    .progressBarTextureIndex(1)
                     .build())
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UV)
@@ -52,6 +55,7 @@ public class LargeHadronColliderRecipes implements Runnable {
                 LARGE_HADRON_COLLIDER_METADATA,
                 LargeHadronColliderMetadata.builder()
                     .particleList(LHCModule.Strong.acceptedParticles)
+                    .progressBarTextureIndex(2)
                     .build())
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UV)
@@ -63,6 +67,7 @@ public class LargeHadronColliderRecipes implements Runnable {
                 LARGE_HADRON_COLLIDER_METADATA,
                 LargeHadronColliderMetadata.builder()
                     .particleList(LHCModule.Grav.acceptedParticles)
+                    .progressBarTextureIndex(3)
                     .build())
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UV)
