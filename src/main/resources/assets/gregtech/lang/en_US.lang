@@ -3088,7 +3088,7 @@ gt.item.battery.re.hv.sodium.name=Large Sodium Battery
 
 ### High Tier Battery
 gt.item.battery.lapotronic_orb.name=Lapotronic Energy Orb
-gt.item.battery.zpm.name=Zero Point Module
+gt.item.battery.zpm_module.name=Zero Point Module
 gt.item.battery.lapotronic_orb_cluster.name=Lapotronic Energy Orb Cluster
 gt.item.battery.ultimate.name=Ultimate Battery
 gt.item.battery.ultimate.tooltip=Fill this to win minecraft
@@ -3808,19 +3808,23 @@ gt.item.cover.wireless_activity_detector.tooltip=Transfers Activity as Redstone 
 ## Special items
 gt.item.display.its_free.name=ITS FREE
 gt.item.display.its_free.tooltip=(or at least almost free)
-gt.item.redstone_sniffer.name=Redstone Sniffer
-gt.item.redstone_sniffer.tooltip=What are these frequencies?!
-gt.item.drone_remote_interface.name=Drone Remote Interface
-gt.item.drone_remote_interface.tooltip=Built-in super powerful navigation beacon!!
+gt.magnet.tooltip.base=Used in Magnetic Flux Exhibitor\n %sSpeed: +%d%%\n %sEU Usage: %d%%\n %sParallel: %d
+gt.magnet.tooltip.exotic=%s%sCan Use Multi-Amp Hatches\n %sLimit to one energy hatch if using Multi-Amp
+gt.Item_Redstone_Sniffer.name=Redstone Sniffer
+gt.Item_Redstone_Sniffer.tooltip=What are these frequencies?!
+gt.Item_Drone_Remote_Interface.name=Drone Remote Interface
+gt.Item_Drone_Remote_Interface.tooltip=Built-in super powerful navigation beacon!!
 gt.item.vajra_core.name=Vajra Core
 gt.item.magnetron.name=Magnetron
-gt.item.chaos_locator.name=Chaos Locator
-gt.item.chaos_locator.tooltip=Warps to areas with extreme entropy
+gt.Item_Chaos_Locator.name=Chaos Locator
+gt.Item_Chaos_Locator.tooltip=Warps to areas with extreme entropy
+gt.Item_Toolbox.name=Field Engineer's Toolbox
+gt.Item_Toolbox.tooltip=A container to hold your tools!
 
 # MetaItem02
 ## Power Goggles
-gt.item.power_goggles.name=Power Goggles
-gt.item.power_goggles.tooltip=For when you need to look at power storage 24/7
+gt.Power_Goggles.name=Power Goggles
+gt.Power_Goggles.tooltip=For when you need to look at power storage 24/7
 
 ## Circuit Boards
 gt.item.circuit_board.wetware.name=Wetware Lifesupport Circuit Board
@@ -6634,11 +6638,11 @@ gt.blocktintedglass.3.name=Tinted Industrial Glass (Black)
 # Items — LoaderGTBlockFluid
 # Sensor Cards
 gt.sensorcard.name=GregTech Sensor Card
-gt.sensorcard.tooltip_main=Insert into Display Panel
+gt.sensorcard.tooltip=Insert into Display Panel
 
 # Sensor Cards
 gt.advancedsensorcard.name=GregTech Advanced Sensor Card
-gt.advancedsensorcard.tooltip_main=Nuclear Control not installed
+gt.advancedsensorcard.tooltip=Nuclear Control not installed
 
 # Advanced Sensor Card
 gt.item.adv_sensor_card.error.deconstructed.1=Host machine has been deconstructed.
@@ -6774,7 +6778,7 @@ gt.MaglevHarness.name=MagLev Harness
 
 # Items — BartWorks
 gt.BWCircuitProgrammer.name=Circuit Programmer
-gt.BWCircuitProgrammer.tooltip_main=Programs Integrated Circuits
+gt.BWCircuitProgrammer.tooltip=Programs Integrated Circuits
 
 # Printer Manual
 gt.Book.Printer Manual V2.0.Name=Printer Manual V2.0

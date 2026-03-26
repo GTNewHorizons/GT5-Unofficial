@@ -1224,16 +1224,20 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
             ItemList.SPRAY_CAN_DYES[i].set(
-                addItemWithLocalizationKeys(
+                addItemWithLocalizationKeysAndArgs(
                     Spray_Colors[i],
-                    GTUtility.translate("gt.item.spray_can.dye.name", Dyes.get(i).mName),
-                    GTUtility.translate("gt.item.spray_can.dye.tooltip.full"),
+                    "gt.item.spray_can.dye.name",
+                    new Object[] { Dyes.get(i).mName },
+                    "gt.item.spray_can.dye.tooltip.full",
+                    null,
                     new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4L)));
             ItemList.SPRAY_CAN_DYES_USED[i].set(
-                addItemWithLocalizationKeys(
+                addItemWithLocalizationKeysAndArgs(
                     Spray_Colors_Used[i],
-                    GTUtility.translate("gt.item.spray_can.dye.name", Dyes.get(i).mName),
-                    GTUtility.translate("gt.item.spray_can.dye.tooltip.used"),
+                    "gt.item.spray_can.dye.name",
+                    new Object[] { Dyes.get(i).mName },
+                    "gt.item.spray_can.dye.tooltip.used",
+                    null,
                     new TCAspects.TC_AspectStack(TCAspects.SENSUS, 3L),
                     SubTag.INVISIBLE));
         }
@@ -1241,15 +1245,15 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Spray_Color_Remover.set(
             addItemWithLocalizationKeys(
                 Spray_Color_Remover.ID,
-                GTUtility.translate("gt.item.spray_can.solvent.name"),
-                GTUtility.translate("gt.item.spray_can.solvent.tooltip.full"),
+                "gt.item.spray_can.solvent.name",
+                "gt.item.spray_can.solvent.tooltip.full",
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 8L)));
         ItemList.Spray_Color_Used_Remover.set(
             addItemWithLocalizationKeys(
                 Spray_Color_Used_Remover.ID,
-                GTUtility.translate("gt.item.spray_can.solvent.name"),
-                GTUtility.translate("gt.item.spray_can.solvent.tooltip.used"),
+                "gt.item.spray_can.solvent.name",
+                "gt.item.spray_can.solvent.tooltip.used",
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 3L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 6L),
                 SubTag.INVISIBLE));
@@ -1392,7 +1396,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Paper_Magic_Empty.set(
             addItemWithLocalizationKeys(
                 Paper_Magic_Empty.ID,
-                GTUtility.translate("gt.item.paper.magic.empty.name"),
+                "gt.item.paper.magic.empty.name",
                 "",
                 SubTag.INVISIBLE,
                 new ItemData(Materials.Paper, 3628800L),
@@ -1401,7 +1405,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Paper_Magic_Page.set(
             addItemWithLocalizationKeys(
                 Paper_Magic_Page.ID,
-                GTUtility.translate("gt.item.paper.magic.page.name"),
+                "gt.item.paper.magic.page.name",
                 "",
                 SubTag.INVISIBLE,
                 new ItemData(Materials.Paper, 3628800L),
@@ -1410,7 +1414,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Paper_Magic_Pages.set(
             addItemWithLocalizationKeys(
                 Paper_Magic_Pages.ID,
-                GTUtility.translate("gt.item.paper.magic.pages.name"),
+                "gt.item.paper.magic.pages.name",
                 "",
                 SubTag.INVISIBLE,
                 new ItemData(Materials.Paper, 10886400L),
@@ -1419,7 +1423,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Paper_Punch_Card_Empty.set(
             addItemWithLocalizationKeys(
                 Paper_Punch_Card_Empty.ID,
-                GTUtility.translate("gt.item.paper.punch_card.empty.name"),
+                "gt.item.paper.punch_card.empty.name",
                 "",
                 SubTag.INVISIBLE,
                 new ItemData(Materials.Paper, 7257600L),
@@ -1427,7 +1431,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Paper_Punch_Card_Encoded.set(
             addItemWithLocalizationKeys(
                 Paper_Punch_Card_Encoded.ID,
-                GTUtility.translate("gt.item.paper.punch_card.encoded.name"),
+                "gt.item.paper.punch_card.encoded.name",
                 "",
                 SubTag.INVISIBLE,
                 new ItemData(Materials.Paper, 7257600L),
@@ -1435,7 +1439,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Book_Written_01.set(
             addItemWithLocalizationKeys(
                 Book_Written_01.ID,
-                GTUtility.translate("gt.item.book.written.01.name"),
+                "gt.item.book.written.01.name",
                 "",
                 new ItemData(Materials.Paper, 10886400L),
                 "bookWritten",
@@ -1445,7 +1449,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Book_Written_02.set(
             addItemWithLocalizationKeys(
                 Book_Written_02.ID,
-                GTUtility.translate("gt.item.book.written.02.name"),
+                "gt.item.book.written.02.name",
                 "",
                 new ItemData(Materials.Paper, 10886400L),
                 "bookWritten",
@@ -1455,7 +1459,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Book_Written_03.set(
             addItemWithLocalizationKeys(
                 Book_Written_03.ID,
-                GTUtility.translate("gt.item.book.written.03.name"),
+                "gt.item.book.written.03.name",
                 "",
                 new ItemData(Materials.Paper, 10886400L),
                 "bookWritten",
@@ -1725,7 +1729,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.ZPM.set(
             addItemWithLocalizationKeys(
                 IDMetaItem01.ZPM.ID,
-                "gt.item.battery.zpm.name",
+                "gt.item.battery.zpm_module.name",
                 "gt.item.battery.su.tooltip",
                 "batteryZPM",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
@@ -1824,7 +1828,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Motor_LV.set(
             addItemWithLocalizationKeys(
                 Electric_Motor_LV.ID,
-                GTUtility.translate("gt.item.electric_motor.lv.name"),
+                "gt.item.electric_motor.lv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
@@ -1832,7 +1836,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Motor_MV.set(
             addItemWithLocalizationKeys(
                 Electric_Motor_MV.ID,
-                GTUtility.translate("gt.item.electric_motor.mv.name"),
+                "gt.item.electric_motor.mv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -1840,7 +1844,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Motor_HV.set(
             addItemWithLocalizationKeys(
                 Electric_Motor_HV.ID,
-                GTUtility.translate("gt.item.electric_motor.hv.name"),
+                "gt.item.electric_motor.hv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
@@ -1848,7 +1852,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Motor_EV.set(
             addItemWithLocalizationKeys(
                 Electric_Motor_EV.ID,
-                GTUtility.translate("gt.item.electric_motor.ev.name"),
+                "gt.item.electric_motor.ev.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
@@ -1856,7 +1860,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Motor_IV.set(
             addItemWithLocalizationKeys(
                 Electric_Motor_IV.ID,
-                GTUtility.translate("gt.item.electric_motor.iv.name"),
+                "gt.item.electric_motor.iv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
@@ -1864,7 +1868,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Motor_LuV.set(
             addItemWithLocalizationKeys(
                 Electric_Motor_LuV.ID,
-                GTUtility.translate("gt.item.electric_motor.luv.name"),
+                "gt.item.electric_motor.luv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L),
@@ -1872,7 +1876,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Motor_ZPM.set(
             addItemWithLocalizationKeys(
                 Electric_Motor_ZPM.ID,
-                GTUtility.translate("gt.item.electric_motor.zpm.name"),
+                "gt.item.electric_motor.zpm.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L),
@@ -1880,7 +1884,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Motor_UV.set(
             addItemWithLocalizationKeys(
                 Electric_Motor_UV.ID,
-                GTUtility.translate("gt.item.electric_motor.uv.name"),
+                "gt.item.electric_motor.uv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
@@ -1889,7 +1893,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItemWithLocalizationKeys(
                     Electric_Motor_UHV.ID,
-                    GTUtility.translate("gt.item.electric_motor.uhv.name"),
+                    "gt.item.electric_motor.uhv.name",
                     "",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
@@ -1899,7 +1903,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItemWithLocalizationKeys(
                     Electric_Motor_UEV.ID,
-                    GTUtility.translate("gt.item.electric_motor.uev.name"),
+                    "gt.item.electric_motor.uev.name",
                     "",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -1909,7 +1913,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItemWithLocalizationKeys(
                     Electric_Motor_UIV.ID,
-                    GTUtility.translate("gt.item.electric_motor.uiv.name"),
+                    "gt.item.electric_motor.uiv.name",
                     "",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -1918,7 +1922,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Motor_UMV.set(
             addItemWithLocalizationKeys(
                 Electric_Motor_UMV.ID,
-                GTUtility.translate("gt.item.electric_motor.umv.name"),
+                "gt.item.electric_motor.umv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -1926,7 +1930,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Motor_UXV.set(
             addItemWithLocalizationKeys(
                 Electric_Motor_UXV.ID,
-                GTUtility.translate("gt.item.electric_motor.uxv.name"),
+                "gt.item.electric_motor.uxv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -1934,7 +1938,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Motor_MAX.set(
             addItemWithLocalizationKeys(
                 Electric_Motor_MAX.ID,
-                GTUtility.translate("gt.item.electric_motor.max.name"),
+                "gt.item.electric_motor.max.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -1953,7 +1957,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItemWithLocalizationKeys(
                     Tesseract.ID,
-                    GTUtility.translate("gt.item.tesseract.raw.name"),
+                    "gt.item.tesseract.raw.name",
                     "",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -1979,7 +1983,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Piston_LV.set(
             addItemWithLocalizationKeys(
                 Electric_Piston_LV.ID,
-                GTUtility.translate("gt.item.electric_piston.lv.name"),
+                "gt.item.electric_piston.lv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -1987,7 +1991,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Piston_MV.set(
             addItemWithLocalizationKeys(
                 Electric_Piston_MV.ID,
-                GTUtility.translate("gt.item.electric_piston.mv.name"),
+                "gt.item.electric_piston.mv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
@@ -1995,7 +1999,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Piston_HV.set(
             addItemWithLocalizationKeys(
                 Electric_Piston_HV.ID,
-                GTUtility.translate("gt.item.electric_piston.hv.name"),
+                "gt.item.electric_piston.hv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
@@ -2003,7 +2007,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Piston_EV.set(
             addItemWithLocalizationKeys(
                 Electric_Piston_EV.ID,
-                GTUtility.translate("gt.item.electric_piston.ev.name"),
+                "gt.item.electric_piston.ev.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
@@ -2011,7 +2015,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Piston_IV.set(
             addItemWithLocalizationKeys(
                 Electric_Piston_IV.ID,
-                GTUtility.translate("gt.item.electric_piston.iv.name"),
+                "gt.item.electric_piston.iv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L),
@@ -2019,7 +2023,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Piston_LuV.set(
             addItemWithLocalizationKeys(
                 Electric_Piston_LuV.ID,
-                GTUtility.translate("gt.item.electric_piston.luv.name"),
+                "gt.item.electric_piston.luv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L),
@@ -2027,7 +2031,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Piston_ZPM.set(
             addItemWithLocalizationKeys(
                 Electric_Piston_ZPM.ID,
-                GTUtility.translate("gt.item.electric_piston.zpm.name"),
+                "gt.item.electric_piston.zpm.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L),
@@ -2035,7 +2039,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Piston_UV.set(
             addItemWithLocalizationKeys(
                 Electric_Piston_UV.ID,
-                GTUtility.translate("gt.item.electric_piston.uv.name"),
+                "gt.item.electric_piston.uv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
@@ -2044,7 +2048,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItemWithLocalizationKeys(
                     Electric_Piston_UHV.ID,
-                    GTUtility.translate("gt.item.electric_piston.uhv.name"),
+                    "gt.item.electric_piston.uhv.name",
                     "",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
@@ -2054,7 +2058,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItemWithLocalizationKeys(
                     Electric_Piston_UEV.ID,
-                    GTUtility.translate("gt.item.electric_piston.uev.name"),
+                    "gt.item.electric_piston.uev.name",
                     "",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2064,7 +2068,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItemWithLocalizationKeys(
                     Electric_Piston_UIV.ID,
-                    GTUtility.translate("gt.item.electric_piston.uiv.name"),
+                    "gt.item.electric_piston.uiv.name",
                     "",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2073,7 +2077,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Piston_UMV.set(
             addItemWithLocalizationKeys(
                 Electric_Piston_UMV.ID,
-                GTUtility.translate("gt.item.electric_piston.umv.name"),
+                "gt.item.electric_piston.umv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2081,7 +2085,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Piston_UXV.set(
             addItemWithLocalizationKeys(
                 Electric_Piston_UXV.ID,
-                GTUtility.translate("gt.item.electric_piston.uxv.name"),
+                "gt.item.electric_piston.uxv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2089,271 +2093,333 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electric_Piston_MAX.set(
             addItemWithLocalizationKeys(
                 Electric_Piston_MAX.ID,
-                GTUtility.translate("gt.item.electric_piston.max.name"),
+                "gt.item.electric_piston.max.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)));
 
         ItemList.Electric_Pump_LV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Electric_Pump_LV.ID,
-                GTUtility.translate("gt.item.electric_pump.lv.name"),
-                GTUtility.translate("gt.item.electric_pump.tooltip", formatNumber(32), formatNumber(32 * 20)),
+                "gt.item.electric_pump.lv.name",
+                null,
+                "gt.item.electric_pump.tooltip",
+                new Object[] { formatNumber(32), formatNumber(32 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L)));
         ItemList.Electric_Pump_MV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Electric_Pump_MV.ID,
-                GTUtility.translate("gt.item.electric_pump.mv.name"),
-                GTUtility.translate("gt.item.electric_pump.tooltip", formatNumber(128), formatNumber(128 * 20)),
+                "gt.item.electric_pump.mv.name",
+                null,
+                "gt.item.electric_pump.tooltip",
+                new Object[] { formatNumber(128), formatNumber(128 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
         ItemList.Electric_Pump_HV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Electric_Pump_HV.ID,
-                GTUtility.translate("gt.item.electric_pump.hv.name"),
-                GTUtility.translate("gt.item.electric_pump.tooltip", formatNumber(512), formatNumber(512 * 20)),
+                "gt.item.electric_pump.hv.name",
+                null,
+                "gt.item.electric_pump.tooltip",
+                new Object[] { formatNumber(512), formatNumber(512 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L)));
         ItemList.Electric_Pump_EV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Electric_Pump_EV.ID,
-                GTUtility.translate("gt.item.electric_pump.ev.name"),
-                GTUtility.translate("gt.item.electric_pump.tooltip", formatNumber(2048), formatNumber(2048 * 20)),
+                "gt.item.electric_pump.ev.name",
+                null,
+                "gt.item.electric_pump.tooltip",
+                new Object[] { formatNumber(2048), formatNumber(2048 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 8L)));
         ItemList.Electric_Pump_IV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Electric_Pump_IV.ID,
-                GTUtility.translate("gt.item.electric_pump.iv.name"),
-                GTUtility.translate("gt.item.electric_pump.tooltip", formatNumber(8192), formatNumber(8192 * 20)),
+                "gt.item.electric_pump.iv.name",
+                null,
+                "gt.item.electric_pump.tooltip",
+                new Object[] { formatNumber(8192), formatNumber(8192 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 16L)));
         ItemList.Electric_Pump_LuV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Electric_Pump_LuV.ID,
-                GTUtility.translate("gt.item.electric_pump.luv.name"),
-                GTUtility.translate("gt.item.electric_pump.tooltip", formatNumber(32768), formatNumber(32768 * 20)),
+                "gt.item.electric_pump.luv.name",
+                null,
+                "gt.item.electric_pump.tooltip",
+                new Object[] { formatNumber(32768), formatNumber(32768 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 32L)));
         ItemList.Electric_Pump_ZPM.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Electric_Pump_ZPM.ID,
-                GTUtility.translate("gt.item.electric_pump.zpm.name"),
-                GTUtility.translate("gt.item.electric_pump.tooltip", formatNumber(131072), formatNumber(131072 * 20)),
+                "gt.item.electric_pump.zpm.name",
+                null,
+                "gt.item.electric_pump.tooltip",
+                new Object[] { formatNumber(131072), formatNumber(131072 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 64L)));
         ItemList.Electric_Pump_UV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Electric_Pump_UV.ID,
-                GTUtility.translate("gt.item.electric_pump.uv.name"),
-                GTUtility.translate("gt.item.electric_pump.tooltip", formatNumber(524288), formatNumber(524288 * 20)),
+                "gt.item.electric_pump.uv.name",
+                null,
+                "gt.item.electric_pump.tooltip",
+                new Object[] { formatNumber(524288), formatNumber(524288 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 128L)));
         ItemList.Electric_Pump_UHV
             .set(
-                addItemWithLocalizationKeys(
+                addItemWithLocalizationKeysAndArgs(
                     Electric_Pump_UHV.ID,
-                    GTUtility.translate("gt.item.electric_pump.uhv.name"),
-                    GTUtility
-                        .translate("gt.item.electric_pump.tooltip", formatNumber(8388608), formatNumber(8388608 * 20)),
+                    "gt.item.electric_pump.uhv.name",
+                    null,
+                    "gt.item.electric_pump.tooltip",
+                    new Object[] { formatNumber(8388608), formatNumber(8388608 * 20) },
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 256L)))
             .setRender(new CosmicNeutroniumMetaItemRenderer());
-        ItemList.Electric_Pump_UEV.set(
-            addItemWithLocalizationKeys(
-                Electric_Pump_UEV.ID,
-                GTUtility.translate("gt.item.electric_pump.uev.name"),
-                GTUtility
-                    .translate("gt.item.electric_pump.tooltip", formatNumber(16777216), formatNumber(16777216 * 20)),
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)))
+        ItemList.Electric_Pump_UEV
+            .set(
+                addItemWithLocalizationKeysAndArgs(
+                    Electric_Pump_UEV.ID,
+                    "gt.item.electric_pump.uev.name",
+                    null,
+                    "gt.item.electric_pump.tooltip",
+                    new Object[] { formatNumber(16777216), formatNumber(16777216 * 20) },
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)))
             .setRender(new InfinityMetaItemRenderer());
-        ItemList.Electric_Pump_UIV.set(
-            addItemWithLocalizationKeys(
-                Electric_Pump_UIV.ID,
-                GTUtility.translate("gt.item.electric_pump.uiv.name"),
-                GTUtility
-                    .translate("gt.item.electric_pump.tooltip", formatNumber(33554432), formatNumber(33554432 * 20)),
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)))
+        ItemList.Electric_Pump_UIV
+            .set(
+                addItemWithLocalizationKeysAndArgs(
+                    Electric_Pump_UIV.ID,
+                    "gt.item.electric_pump.uiv.name",
+                    null,
+                    "gt.item.electric_pump.tooltip",
+                    new Object[] { formatNumber(33554432), formatNumber(33554432 * 20) },
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)))
             .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Electric_Pump_UMV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Electric_Pump_UMV.ID,
-                GTUtility.translate("gt.item.electric_pump.umv.name"),
-                GTUtility
-                    .translate("gt.item.electric_pump.tooltip", formatNumber(67108864), formatNumber(67108864 * 20)),
+                "gt.item.electric_pump.umv.name",
+                null,
+                "gt.item.electric_pump.tooltip",
+                new Object[] { formatNumber(67108864), formatNumber(67108864 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)));
         ItemList.Electric_Pump_UXV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Electric_Pump_UXV.ID,
-                GTUtility.translate("gt.item.electric_pump.uxv.name"),
-                GTUtility
-                    .translate("gt.item.electric_pump.tooltip", formatNumber(134217728), formatNumber(134217728 * 20L)),
+                "gt.item.electric_pump.uxv.name",
+                null,
+                "gt.item.electric_pump.tooltip",
+                new Object[] { formatNumber(134217728), formatNumber(134217728 * 20L) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)));
         ItemList.Electric_Pump_MAX.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Electric_Pump_MAX.ID,
-                GTUtility.translate("gt.item.electric_pump.max.name"),
-                GTUtility
-                    .translate("gt.item.electric_pump.tooltip", formatNumber(268435456), formatNumber(268435456 * 20L)),
+                "gt.item.electric_pump.max.name",
+                null,
+                "gt.item.electric_pump.tooltip",
+                new Object[] { formatNumber(268435456), formatNumber(268435456 * 20L) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)));
 
         ItemList.Steam_Valve_LV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Steam_Valve_LV.ID,
-                GTUtility.translate("gt.item.steam_valve.lv.name"),
-                GTUtility.translate("gt.item.steam_valve.tooltip", formatNumber(1024), formatNumber(1024 * 20)),
+                "gt.item.steam_valve.lv.name",
+                null,
+                "gt.item.steam_valve.tooltip",
+                new Object[] { formatNumber(1024), formatNumber(1024 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L)));
         ItemList.Steam_Valve_MV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Steam_Valve_MV.ID,
-                GTUtility.translate("gt.item.steam_valve.mv.name"),
-                GTUtility.translate("gt.item.steam_valve.tooltip", formatNumber(2048), formatNumber(2048 * 20)),
+                "gt.item.steam_valve.mv.name",
+                null,
+                "gt.item.steam_valve.tooltip",
+                new Object[] { formatNumber(2048), formatNumber(2048 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
         ItemList.Steam_Valve_HV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Steam_Valve_HV.ID,
-                GTUtility.translate("gt.item.steam_valve.hv.name"),
-                GTUtility.translate("gt.item.steam_valve.tooltip", formatNumber(4096), formatNumber(4096 * 20)),
+                "gt.item.steam_valve.hv.name",
+                null,
+                "gt.item.steam_valve.tooltip",
+                new Object[] { formatNumber(4096), formatNumber(4096 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L)));
         ItemList.Steam_Valve_EV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Steam_Valve_EV.ID,
-                GTUtility.translate("gt.item.steam_valve.ev.name"),
-                GTUtility.translate("gt.item.steam_valve.tooltip", formatNumber(8192), formatNumber(8192 * 20)),
+                "gt.item.steam_valve.ev.name",
+                null,
+                "gt.item.steam_valve.tooltip",
+                new Object[] { formatNumber(8192), formatNumber(8192 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 8L)));
         ItemList.Steam_Valve_IV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Steam_Valve_IV.ID,
-                GTUtility.translate("gt.item.steam_valve.iv.name"),
-                GTUtility.translate("gt.item.steam_valve.tooltip", formatNumber(16384), formatNumber(16384 * 20)),
+                "gt.item.steam_valve.iv.name",
+                null,
+                "gt.item.steam_valve.tooltip",
+                new Object[] { formatNumber(16384), formatNumber(16384 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 16L)));
 
         ItemList.FluidRegulator_LV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_LV.ID,
-                GTUtility.translate("gt.item.fluid_regulator.lv.name"),
-                GTUtility.translate("gt.item.fluid_regulator.tooltip", formatNumber(32 * 20))));
+                "gt.item.fluid_regulator.lv.name",
+                null,
+                "gt.item.fluid_regulator.tooltip",
+                new Object[] { formatNumber(32 * 20) }));
         ItemList.FluidRegulator_MV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_MV.ID,
-                GTUtility.translate("gt.item.fluid_regulator.mv.name"),
-                GTUtility.translate("gt.item.fluid_regulator.tooltip", formatNumber(128 * 20))));
+                "gt.item.fluid_regulator.mv.name",
+                null,
+                "gt.item.fluid_regulator.tooltip",
+                new Object[] { formatNumber(128 * 20) }));
         ItemList.FluidRegulator_HV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_HV.ID,
-                GTUtility.translate("gt.item.fluid_regulator.hv.name"),
-                GTUtility.translate("gt.item.fluid_regulator.tooltip", formatNumber(512 * 20))));
+                "gt.item.fluid_regulator.hv.name",
+                null,
+                "gt.item.fluid_regulator.tooltip",
+                new Object[] { formatNumber(512 * 20) }));
         ItemList.FluidRegulator_EV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_EV.ID,
-                GTUtility.translate("gt.item.fluid_regulator.ev.name"),
-                GTUtility.translate("gt.item.fluid_regulator.tooltip", formatNumber(2048 * 20))));
+                "gt.item.fluid_regulator.ev.name",
+                null,
+                "gt.item.fluid_regulator.tooltip",
+                new Object[] { formatNumber(2048 * 20) }));
         ItemList.FluidRegulator_IV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_IV.ID,
-                GTUtility.translate("gt.item.fluid_regulator.iv.name"),
-                GTUtility.translate("gt.item.fluid_regulator.tooltip", formatNumber(8192 * 20))));
+                "gt.item.fluid_regulator.iv.name",
+                null,
+                "gt.item.fluid_regulator.tooltip",
+                new Object[] { formatNumber(8192 * 20) }));
         ItemList.FluidRegulator_LuV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_LuV.ID,
-                GTUtility.translate("gt.item.fluid_regulator.luv.name"),
-                GTUtility.translate("gt.item.fluid_regulator.tooltip", formatNumber(32768 * 20))));
+                "gt.item.fluid_regulator.luv.name",
+                null,
+                "gt.item.fluid_regulator.tooltip",
+                new Object[] { formatNumber(32768 * 20) }));
         ItemList.FluidRegulator_ZPM.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_ZPM.ID,
-                GTUtility.translate("gt.item.fluid_regulator.zpm.name"),
-                GTUtility.translate("gt.item.fluid_regulator.tooltip", formatNumber(131072 * 20))));
+                "gt.item.fluid_regulator.zpm.name",
+                null,
+                "gt.item.fluid_regulator.tooltip",
+                new Object[] { formatNumber(131072 * 20) }));
         ItemList.FluidRegulator_UV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_UV.ID,
-                GTUtility.translate("gt.item.fluid_regulator.uv.name"),
-                GTUtility.translate("gt.item.fluid_regulator.tooltip", formatNumber(524288 * 20))));
+                "gt.item.fluid_regulator.uv.name",
+                null,
+                "gt.item.fluid_regulator.tooltip",
+                new Object[] { formatNumber(524288 * 20) }));
         ItemList.FluidRegulator_UHV
             .set(
-                addItemWithLocalizationKeys(
+                addItemWithLocalizationKeysAndArgs(
                     FluidRegulator_UHV.ID,
-                    GTUtility.translate("gt.item.fluid_regulator.uhv.name"),
-                    GTUtility.translate("gt.item.fluid_regulator.tooltip", formatNumber(8388608 * 20))))
+                    "gt.item.fluid_regulator.uhv.name",
+                    null,
+                    "gt.item.fluid_regulator.tooltip",
+                    new Object[] { formatNumber(8388608 * 20) }))
             .setRender(new CosmicNeutroniumMetaItemRenderer());
         ItemList.FluidRegulator_UEV
             .set(
-                addItemWithLocalizationKeys(
+                addItemWithLocalizationKeysAndArgs(
                     FluidRegulator_UEV.ID,
-                    GTUtility.translate("gt.item.fluid_regulator.uev.name"),
-                    GTUtility.translate("gt.item.fluid_regulator.tooltip", formatNumber(16777216 * 20))))
+                    "gt.item.fluid_regulator.uev.name",
+                    null,
+                    "gt.item.fluid_regulator.tooltip",
+                    new Object[] { formatNumber(16777216 * 20) }))
             .setRender(new InfinityMetaItemRenderer());
         ItemList.FluidRegulator_UIV
             .set(
-                addItemWithLocalizationKeys(
+                addItemWithLocalizationKeysAndArgs(
                     FluidRegulator_UIV.ID,
-                    GTUtility.translate("gt.item.fluid_regulator.uiv.name"),
-                    GTUtility.translate("gt.item.fluid_regulator.tooltip", formatNumber(33554432 * 20))))
+                    "gt.item.fluid_regulator.uiv.name",
+                    null,
+                    "gt.item.fluid_regulator.tooltip",
+                    new Object[] { formatNumber(33554432 * 20) }))
             .setRender(new TranscendentalMetaItemRenderer());
         ItemList.FluidRegulator_UMV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_UMV.ID,
-                GTUtility.translate("gt.item.fluid_regulator.umv.name"),
-                GTUtility.translate("gt.item.fluid_regulator.tooltip", formatNumber(67108864 * 20))));
+                "gt.item.fluid_regulator.umv.name",
+                null,
+                "gt.item.fluid_regulator.tooltip",
+                new Object[] { formatNumber(67108864 * 20) }));
         ItemList.FluidRegulator_UXV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_UXV.ID,
-                GTUtility.translate("gt.item.fluid_regulator.uxv.name"),
-                GTUtility.translate("gt.item.fluid_regulator.tooltip", formatNumber(134217728 * 20L))));
+                "gt.item.fluid_regulator.uxv.name",
+                null,
+                "gt.item.fluid_regulator.tooltip",
+                new Object[] { formatNumber(134217728 * 20L) }));
         ItemList.FluidRegulator_MAX.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_MAX.ID,
-                GTUtility.translate("gt.item.fluid_regulator.max.name"),
-                GTUtility.translate("gt.item.fluid_regulator.tooltip", formatNumber(268435456 * 20L))));
+                "gt.item.fluid_regulator.max.name",
+                null,
+                "gt.item.fluid_regulator.tooltip",
+                new Object[] { formatNumber(268435456 * 20L) }));
 
         ItemList.FluidFilter.set(
             addItemWithLocalizationKeys(FluidFilter.ID, "gt.item.fluid_filter.name", "gt.item.fluid_filter.tooltip"));
@@ -2638,7 +2704,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Emitter_LV.set(
             addItemWithLocalizationKeys(
                 Emitter_LV.ID,
-                GTUtility.translate("gt.item.emitter.lv.name"),
+                "gt.item.emitter.lv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
@@ -2646,7 +2712,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Emitter_MV.set(
             addItemWithLocalizationKeys(
                 Emitter_MV.ID,
-                GTUtility.translate("gt.item.emitter.mv.name"),
+                "gt.item.emitter.mv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -2654,7 +2720,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Emitter_HV.set(
             addItemWithLocalizationKeys(
                 Emitter_HV.ID,
-                GTUtility.translate("gt.item.emitter.hv.name"),
+                "gt.item.emitter.hv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
@@ -2662,7 +2728,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Emitter_EV.set(
             addItemWithLocalizationKeys(
                 Emitter_EV.ID,
-                GTUtility.translate("gt.item.emitter.ev.name"),
+                "gt.item.emitter.ev.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
@@ -2670,7 +2736,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Emitter_IV.set(
             addItemWithLocalizationKeys(
                 Emitter_IV.ID,
-                GTUtility.translate("gt.item.emitter.iv.name"),
+                "gt.item.emitter.iv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
@@ -2678,7 +2744,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Emitter_LuV.set(
             addItemWithLocalizationKeys(
                 Emitter_LuV.ID,
-                GTUtility.translate("gt.item.emitter.luv.name"),
+                "gt.item.emitter.luv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L),
@@ -2686,7 +2752,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Emitter_ZPM.set(
             addItemWithLocalizationKeys(
                 Emitter_ZPM.ID,
-                GTUtility.translate("gt.item.emitter.zpm.name"),
+                "gt.item.emitter.zpm.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L),
@@ -2694,7 +2760,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Emitter_UV.set(
             addItemWithLocalizationKeys(
                 Emitter_UV.ID,
-                GTUtility.translate("gt.item.emitter.uv.name"),
+                "gt.item.emitter.uv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
@@ -2703,7 +2769,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItemWithLocalizationKeys(
                     Emitter_UHV.ID,
-                    GTUtility.translate("gt.item.emitter.uhv.name"),
+                    "gt.item.emitter.uhv.name",
                     "",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
@@ -2713,7 +2779,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItemWithLocalizationKeys(
                     Emitter_UEV.ID,
-                    GTUtility.translate("gt.item.emitter.uev.name"),
+                    "gt.item.emitter.uev.name",
                     "",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2723,7 +2789,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItemWithLocalizationKeys(
                     Emitter_UIV.ID,
-                    GTUtility.translate("gt.item.emitter.uiv.name"),
+                    "gt.item.emitter.uiv.name",
                     "",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2732,7 +2798,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Emitter_UMV.set(
             addItemWithLocalizationKeys(
                 Emitter_UMV.ID,
-                GTUtility.translate("gt.item.emitter.umv.name"),
+                "gt.item.emitter.umv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2740,7 +2806,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Emitter_UXV.set(
             addItemWithLocalizationKeys(
                 Emitter_UXV.ID,
-                GTUtility.translate("gt.item.emitter.uxv.name"),
+                "gt.item.emitter.uxv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2748,7 +2814,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Emitter_MAX.set(
             addItemWithLocalizationKeys(
                 Emitter_MAX.ID,
-                GTUtility.translate("gt.item.emitter.max.name"),
+                "gt.item.emitter.max.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2757,7 +2823,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Sensor_LV.set(
             addItemWithLocalizationKeys(
                 Sensor_LV.ID,
-                GTUtility.translate("gt.item.sensor.lv.name"),
+                "gt.item.sensor.lv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
@@ -2766,7 +2832,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Sensor_MV.set(
             addItemWithLocalizationKeys(
                 Sensor_MV.ID,
-                GTUtility.translate("gt.item.sensor.mv.name"),
+                "gt.item.sensor.mv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -2774,7 +2840,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Sensor_HV.set(
             addItemWithLocalizationKeys(
                 Sensor_HV.ID,
-                GTUtility.translate("gt.item.sensor.hv.name"),
+                "gt.item.sensor.hv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
@@ -2782,7 +2848,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Sensor_EV.set(
             addItemWithLocalizationKeys(
                 Sensor_EV.ID,
-                GTUtility.translate("gt.item.sensor.ev.name"),
+                "gt.item.sensor.ev.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
@@ -2790,7 +2856,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Sensor_IV.set(
             addItemWithLocalizationKeys(
                 Sensor_IV.ID,
-                GTUtility.translate("gt.item.sensor.iv.name"),
+                "gt.item.sensor.iv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
@@ -2798,7 +2864,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Sensor_LuV.set(
             addItemWithLocalizationKeys(
                 Sensor_LuV.ID,
-                GTUtility.translate("gt.item.sensor.luv.name"),
+                "gt.item.sensor.luv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L),
@@ -2806,7 +2872,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Sensor_ZPM.set(
             addItemWithLocalizationKeys(
                 Sensor_ZPM.ID,
-                GTUtility.translate("gt.item.sensor.zpm.name"),
+                "gt.item.sensor.zpm.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L),
@@ -2814,7 +2880,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Sensor_UV.set(
             addItemWithLocalizationKeys(
                 Sensor_UV.ID,
-                GTUtility.translate("gt.item.sensor.uv.name"),
+                "gt.item.sensor.uv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
@@ -2823,7 +2889,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItemWithLocalizationKeys(
                     Sensor_UHV.ID,
-                    GTUtility.translate("gt.item.sensor.uhv.name"),
+                    "gt.item.sensor.uhv.name",
                     "",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
@@ -2833,7 +2899,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItemWithLocalizationKeys(
                     Sensor_UEV.ID,
-                    GTUtility.translate("gt.item.sensor.uev.name"),
+                    "gt.item.sensor.uev.name",
                     "",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2843,7 +2909,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItemWithLocalizationKeys(
                     Sensor_UIV.ID,
-                    GTUtility.translate("gt.item.sensor.uiv.name"),
+                    "gt.item.sensor.uiv.name",
                     "",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2852,7 +2918,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Sensor_UMV.set(
             addItemWithLocalizationKeys(
                 Sensor_UMV.ID,
-                GTUtility.translate("gt.item.sensor.umv.name"),
+                "gt.item.sensor.umv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2860,7 +2926,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Sensor_UXV.set(
             addItemWithLocalizationKeys(
                 Sensor_UXV.ID,
-                GTUtility.translate("gt.item.sensor.uxv.name"),
+                "gt.item.sensor.uxv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2868,7 +2934,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Sensor_MAX.set(
             addItemWithLocalizationKeys(
                 Sensor_MAX.ID,
-                GTUtility.translate("gt.item.sensor.max.name"),
+                "gt.item.sensor.max.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2877,7 +2943,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Field_Generator_LV.set(
             addItemWithLocalizationKeys(
                 Field_Generator_LV.ID,
-                GTUtility.translate("gt.item.field_generator.lv.name"),
+                "gt.item.field_generator.lv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
@@ -2885,7 +2951,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Field_Generator_MV.set(
             addItemWithLocalizationKeys(
                 Field_Generator_MV.ID,
-                GTUtility.translate("gt.item.field_generator.mv.name"),
+                "gt.item.field_generator.mv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -2893,7 +2959,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Field_Generator_HV.set(
             addItemWithLocalizationKeys(
                 Field_Generator_HV.ID,
-                GTUtility.translate("gt.item.field_generator.hv.name"),
+                "gt.item.field_generator.hv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
@@ -2901,7 +2967,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Field_Generator_EV.set(
             addItemWithLocalizationKeys(
                 Field_Generator_EV.ID,
-                GTUtility.translate("gt.item.field_generator.ev.name"),
+                "gt.item.field_generator.ev.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
@@ -2909,7 +2975,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Field_Generator_IV.set(
             addItemWithLocalizationKeys(
                 Field_Generator_IV.ID,
-                GTUtility.translate("gt.item.field_generator.iv.name"),
+                "gt.item.field_generator.iv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
@@ -2917,7 +2983,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Field_Generator_LuV.set(
             addItemWithLocalizationKeys(
                 Field_Generator_LuV.ID,
-                GTUtility.translate("gt.item.field_generator.luv.name"),
+                "gt.item.field_generator.luv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L),
@@ -2925,7 +2991,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Field_Generator_ZPM.set(
             addItemWithLocalizationKeys(
                 Field_Generator_ZPM.ID,
-                GTUtility.translate("gt.item.field_generator.zpm.name"),
+                "gt.item.field_generator.zpm.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L),
@@ -2933,7 +2999,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Field_Generator_UV.set(
             addItemWithLocalizationKeys(
                 Field_Generator_UV.ID,
-                GTUtility.translate("gt.item.field_generator.uv.name"),
+                "gt.item.field_generator.uv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
@@ -2942,7 +3008,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItemWithLocalizationKeys(
                     Field_Generator_UHV.ID,
-                    GTUtility.translate("gt.item.field_generator.uhv.name"),
+                    "gt.item.field_generator.uhv.name",
                     "",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
@@ -2952,7 +3018,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItemWithLocalizationKeys(
                     Field_Generator_UEV.ID,
-                    GTUtility.translate("gt.item.field_generator.uev.name"),
+                    "gt.item.field_generator.uev.name",
                     "",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1024L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2962,7 +3028,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItemWithLocalizationKeys(
                     Field_Generator_UIV.ID,
-                    GTUtility.translate("gt.item.field_generator.uiv.name"),
+                    "gt.item.field_generator.uiv.name",
                     "",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1024L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2971,7 +3037,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Field_Generator_UMV.set(
             addItemWithLocalizationKeys(
                 Field_Generator_UMV.ID,
-                GTUtility.translate("gt.item.field_generator.umv.name"),
+                "gt.item.field_generator.umv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1024L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2979,7 +3045,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Field_Generator_UXV.set(
             addItemWithLocalizationKeys(
                 Field_Generator_UXV.ID,
-                GTUtility.translate("gt.item.field_generator.uxv.name"),
+                "gt.item.field_generator.uxv.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1024L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2987,7 +3053,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Field_Generator_MAX.set(
             addItemWithLocalizationKeys(
                 Field_Generator_MAX.ID,
-                GTUtility.translate("gt.item.field_generator.max.name"),
+                "gt.item.field_generator.max.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1024L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -3176,7 +3242,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Component_Sawblade_Diamond.set(
             addItemWithLocalizationKeys(
                 Component_Sawblade_Diamond.ID,
-                GTUtility.translate("gt.item.component.sawblade.diamond.name"),
+                "gt.item.component.sawblade.diamond.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L),
@@ -3185,7 +3251,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Component_Grinder_Diamond.set(
             addItemWithLocalizationKeys(
                 Component_Grinder_Diamond.ID,
-                GTUtility.translate("gt.item.component.grinder.diamond.name"),
+                "gt.item.component.grinder.diamond.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L),
@@ -3194,7 +3260,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Component_Grinder_Tungsten.set(
             addItemWithLocalizationKeys(
                 Component_Grinder_Tungsten.ID,
-                GTUtility.translate("gt.item.component.grinder.tungsten.name"),
+                "gt.item.component.grinder.tungsten.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L),
@@ -3211,7 +3277,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Component_Filter.set(
             addItemWithLocalizationKeys(
                 Component_Filter.ID,
-                GTUtility.translate("gt.item.component.filter.name"),
+                "gt.item.component.filter.name",
                 "",
                 new ItemData(Materials.Zinc, OrePrefixes.foil.getMaterialAmount() * 16L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
@@ -3308,8 +3374,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Cover_Wireless_Energy_Debug.set(
             addItemWithLocalizationKeys(
                 Cover_Wireless_Energy_Debug.ID,
-                GTUtility.translate("gt.item.wireless_energy_cover_debug.name"),
-                GTUtility.translate("gt.item.wireless_energy_cover_debug.tooltip"),
+                "gt.item.wireless_energy_cover_debug.name",
+                "gt.item.wireless_energy_cover_debug.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 9999L)));
 
         ItemList.Cover_Screen.set(
@@ -3440,11 +3506,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 6L)));
 
         ItemList.NC_SensorKit.set(
-            addItemWithLocalizationKeys(
-                NC_SensorKit.ID,
-                GTUtility.translate("gt.item.tool.sensor_kit.name"),
-                "",
-                new BehaviourSensorKit()));
+            addItemWithLocalizationKeys(NC_SensorKit.ID, "gt.item.tool.sensor_kit.name", "", new BehaviourSensorKit()));
         ItemList.Duct_Tape.set(
             addItemWithLocalizationKeys(
                 Duct_Tape.ID,
@@ -3507,78 +3569,88 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
 
         ItemList.Steam_Regulator_LV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Steam_Regulator_LV.ID,
-                GTUtility.translate("gt.item.steam_regulator.lv.name"),
-                GTUtility.translate("gt.item.steam_valve.tooltip", formatNumber(1024), formatNumber(1024 * 20)),
+                "gt.item.steam_regulator.lv.name",
+                null,
+                "gt.item.steam_valve.tooltip",
+                new Object[] { formatNumber(1024), formatNumber(1024 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L)));
         ItemList.Steam_Regulator_MV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Steam_Regulator_MV.ID,
-                GTUtility.translate("gt.item.steam_regulator.mv.name"),
-                GTUtility.translate("gt.item.steam_valve.tooltip", formatNumber(2048), formatNumber(2048 * 20)),
+                "gt.item.steam_regulator.mv.name",
+                null,
+                "gt.item.steam_valve.tooltip",
+                new Object[] { formatNumber(2048), formatNumber(2048 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
         ItemList.Steam_Regulator_HV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Steam_Regulator_HV.ID,
-                GTUtility.translate("gt.item.steam_regulator.hv.name"),
-                GTUtility.translate("gt.item.steam_valve.tooltip", formatNumber(4096), formatNumber(4096 * 20)),
+                "gt.item.steam_regulator.hv.name",
+                null,
+                "gt.item.steam_valve.tooltip",
+                new Object[] { formatNumber(4096), formatNumber(4096 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L)));
         ItemList.Steam_Regulator_EV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Steam_Regulator_EV.ID,
-                GTUtility.translate("gt.item.steam_regulator.ev.name"),
-                GTUtility.translate("gt.item.steam_valve.tooltip", formatNumber(8192), formatNumber(8192 * 20)),
+                "gt.item.steam_regulator.ev.name",
+                null,
+                "gt.item.steam_valve.tooltip",
+                new Object[] { formatNumber(8192), formatNumber(8192 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 8L)));
         ItemList.Steam_Regulator_IV.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Steam_Regulator_IV.ID,
-                GTUtility.translate("gt.item.steam_regulator.iv.name"),
-                GTUtility.translate("gt.item.steam_valve.tooltip", formatNumber(16384), formatNumber(16384 * 20)),
+                "gt.item.steam_regulator.iv.name",
+                null,
+                "gt.item.steam_valve.tooltip",
+                new Object[] { formatNumber(16384), formatNumber(16384 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 16L)));
         ItemList.Electromagnet_Iron.set(
-            addItemWithLocalizationKeys(
+            addItem(
                 Electromagnet_Iron.ID,
                 GTUtility.translate("gt.item.electromagnet.iron.name"),
                 MagnetTiers.buildMagnetTooltip(MagnetTiers.Iron),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 8)));
         ItemList.Electromagnet_Steel.set(
-            addItemWithLocalizationKeys(
+            addItem(
                 Electromagnet_Steel.ID,
                 GTUtility.translate("gt.item.electromagnet.steel.name"),
                 MagnetTiers.buildMagnetTooltip(MagnetTiers.Steel),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 16)));
         ItemList.Electromagnet_Neodymium.set(
-            addItemWithLocalizationKeys(
+            addItem(
                 Electromagnet_Neodymium.ID,
                 GTUtility.translate("gt.item.electromagnet.neodymium.name"),
                 MagnetTiers.buildMagnetTooltip(MagnetTiers.Neodymium),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 24)));
         ItemList.Electromagnet_Samarium.set(
-            addItemWithLocalizationKeys(
+            addItem(
                 Electromagnet_Samarium.ID,
-                EnumChatFormatting.YELLOW + GTUtility.translate("gt.item.electromagnet.samarium.name"),
+                GTUtility.translate("gt.item.electromagnet.samarium.name"),
                 MagnetTiers.buildMagnetTooltip(MagnetTiers.Samarium),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 32)));
         ItemList.Electromagnet_Tengam.set(
-            addItemWithLocalizationKeys(
+            addItem(
                 Electromagnet_Tengam.ID,
-                EnumChatFormatting.GREEN + GTUtility.translate("gt.item.electromagnet.tengam.name"),
+                GTUtility.translate("gt.item.electromagnet.tengam.name"),
                 MagnetTiers.buildMagnetTooltip(MagnetTiers.Tengam),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 40)));
 

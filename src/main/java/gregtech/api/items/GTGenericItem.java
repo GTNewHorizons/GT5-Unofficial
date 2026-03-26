@@ -66,7 +66,10 @@ public class GTGenericItem extends Item implements IProjectileItem {
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        if (mEnglish != null) return GTUtility.translate(mEnglish);
+        if (mEnglish != null) {
+            String key = mName + ".name";
+            return StatCollector.canTranslate(key) ? GTUtility.translate(key) : mEnglish;
+        }
         return super.getItemStackDisplayName(aStack);
     }
 
@@ -95,7 +98,12 @@ public class GTGenericItem extends Item implements IProjectileItem {
         if (getMaxDamage() > 0 && !getHasSubtypes())
             aList.add((aStack.getMaxDamage() - getDamage(aStack)) + " / " + aStack.getMaxDamage());
         if (mTooltip != null) {
-            GTUtility.translateMultiline(aList, mTooltip);
+            String key = mName + ".tooltip";
+            if (StatCollector.canTranslate(key)) {
+                GTUtility.translateMultiline(aList, key);
+            } else {
+                GTUtility.translateMultiline(aList, mTooltip);
+            }
         }
         if (GTModHandler.isElectricItem(aStack))
             aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier", getTier(aStack)));

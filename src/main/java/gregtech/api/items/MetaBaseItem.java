@@ -86,6 +86,10 @@ public abstract class MetaBaseItem extends GTGenericItem
         return null;
     }
 
+    protected Object[] getToolTipLocalizationArgs(ItemStack aStack) {
+        return null;
+    }
+
     @Override
     public boolean hasProjectile(SubTag aProjectileType, ItemStack aStack) {
         ArrayList<IItemBehaviour<MetaBaseItem>> tList = mItemBehaviors.get((short) getDamage(aStack));
@@ -251,7 +255,12 @@ public abstract class MetaBaseItem extends GTGenericItem
         if (aStack.getItemDamage() < 0 || aStack.getItemDamage() >= 32000) {
             String tooltipKey = getToolTipLocalizationKey(aStack);
             String tKey = tooltipKey != null ? tooltipKey : getUnlocalizedName(aStack) + ".tooltip";
-            GTUtility.translateMultiline(aList, tKey);
+            Object[] tArgs = getToolTipLocalizationArgs(aStack);
+            if (tArgs == null) {
+                GTUtility.translateMultiline(aList, tKey);
+            } else {
+                GTUtility.translateMultiline(aList, tKey, tArgs);
+            }
         } else {
             Materials material = getMaterial(aStack.getItemDamage());
             if (material != null) {

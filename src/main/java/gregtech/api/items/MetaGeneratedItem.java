@@ -86,6 +86,8 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final ConcurrentHashMap<Short, Short> mBurnValues = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, String> mNameLocalizationKeys = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, String> mTooltipLocalizationKeys = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, Object[]> mNameLocalizationArgs = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, Object[]> mTooltipLocalizationArgs = new ConcurrentHashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -226,6 +228,21 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         return rStack;
     }
 
+    public final ItemStack addItemWithLocalizationKeysAndArgs(int aID, String aNameKey, Object[] aNameArgs,
+        String aToolTipKey, Object[] aToolTipArgs, Object... aRandomData) {
+        ItemStack rStack = addItemWithLocalizationKeys(aID, aNameKey, aToolTipKey, aRandomData);
+        if (rStack != null) {
+            short meta = (short) (mOffset + aID);
+            if (aNameArgs != null) {
+                mNameLocalizationArgs.put(meta, aNameArgs);
+            }
+            if (aToolTipArgs != null) {
+                mTooltipLocalizationArgs.put(meta, aToolTipArgs);
+            }
+        }
+        return rStack;
+    }
+
     /**
      * Sets a Food Behavior for the Item.
      *
@@ -305,16 +322,18 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     }
 
     @Override
+    protected Object[] getToolTipLocalizationArgs(ItemStack aStack) {
+        return mTooltipLocalizationArgs.get((short) getDamage(aStack));
+    }
+
+    @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        String tName = super.getItemStackDisplayName(aStack);
         String tNameKey = mNameLocalizationKeys.get((short) getDamage(aStack));
         if (GTUtility.isStringValid(tNameKey)) {
-            return GTUtility.translate(tNameKey);
+            Object[] tNameArgs = mNameLocalizationArgs.get((short) getDamage(aStack));
+            return tNameArgs == null ? GTUtility.translate(tNameKey) : GTUtility.translate(tNameKey, tNameArgs);
         }
-        if (net.minecraft.util.StatCollector.canTranslate(tName)) {
-            return GTUtility.translate(tName);
-        }
-        return tName;
+        return super.getItemStackDisplayName(aStack);
     }
 
     /**
