@@ -433,7 +433,8 @@ public class SpaceMiningRecipes {
             null,
             null,
             new int[] { 4500, 2500, 3000, 2000 },
-            new Materials[] { Materials.Apatite, Materials.TricalciumPhosphate, Materials.Phosphate, Materials.Niobium },
+            new Materials[] { Materials.Apatite, Materials.TricalciumPhosphate, Materials.Phosphate,
+                Materials.Niobium },
             OrePrefixes.oreEndstone,
             20,
             150,
@@ -446,19 +447,16 @@ public class SpaceMiningRecipes {
             ItemMiningDrones.DroneTiers.HV.ordinal(),
             ItemMiningDrones.DroneTiers.UHV.ordinal(),
             150);
-			
+
         // Space Ore Asteroid
         addRecipesToDrones(
             "spaceOreAsteroid",
             null,
             null,
             new int[] { 2000, 2000, 2000, 1000, 2000, 2000, 3000, 3000, 3000, 3000, 3000, 3000 },
-            new Materials[] { Materials.MeteoricIron, Materials.DeepIron,
-                Materials.Mytryl, Materials.BlackPlutonium, 
-                Materials.CallistoIce, Materials.Ledox, 
-                Materials.Alduorite, Materials.Rubracium, 
-                Materials.Vulcanite, Materials.Vyroxeres, 
-                Materials.Ceruclase, Materials.Orichalcum }
+            new Materials[] { Materials.MeteoricIron, Materials.DeepIron, Materials.Mytryl, Materials.BlackPlutonium,
+                Materials.CallistoIce, Materials.Ledox, Materials.Alduorite, Materials.Rubracium, Materials.Vulcanite,
+                Materials.Vyroxeres, Materials.Ceruclase, Materials.Orichalcum },
             OrePrefixes.oreEndstone,
             20,
             50,
