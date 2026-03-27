@@ -25,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -246,21 +245,20 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         return ToolboxUtil.getSelectedToolType(toolbox)
             .map(slot -> {
                 final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
-                final String toolName = StatCollector.translateToLocal("GT5U.gui.text.toolbox.slot_title." + slot.name().toLowerCase());
+                final String toolName = GTUtility.translate("GT5U.gui.text.toolbox.slot_title." + slot.name().toLowerCase());
                 final Optional<ItemStack> potentialTool = handler.getCurrentTool();
                 final byte toolMode = potentialTool.map(MetaGeneratedTool::getToolMode).orElse((byte) 0);
 
                 //noinspection SimplifyOptionalCallChains
                 return toolMode > 0
-                    ? StatCollector.translateToLocalFormatted(
+                    ? GTUtility.translate(
                     "GT5U.item.toolbox.name_template.mode",
                     base,
                     toolName,
                     potentialTool.map(currentTool -> currentTool.getItem() instanceof final MetaGeneratedTool mgToolItem
                         ? mgToolItem.getToolModeName(currentTool)
                         : "").orElse(""))
-                    : StatCollector
-                    .translateToLocalFormatted("GT5U.item.toolbox.name_template", base, toolName);
+                    : GTUtility.translate("GT5U.item.toolbox.name_template", base, toolName);
             })
             .orElse(base);
 
@@ -269,6 +267,9 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     @Override
     public void addInformation(final ItemStack toolbox, final EntityPlayer player, final List<String> tooltipList,
         final boolean f3mode) {
+
+        super.addInformation(toolbox, player, tooltipList, f3mode);
+
         final Optional<ToolboxSlot> selectedToolType = ToolboxUtil.getSelectedToolType(toolbox);
 
         final GameSettings settings = Minecraft.getMinecraft().gameSettings;
@@ -276,13 +277,13 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         // noinspection SimplifyOptionalCallChains
         if (!selectedToolType.isPresent()) {
             tooltipList.add(
-                StatCollector.translateToLocalFormatted(
+                GTUtility.translate(
                     "GT5U.item.toolbox.tooltip.open_toolbox",
                     I18n.format(settings.keyBindUseItem.getKeyDescription())));
         }
 
         tooltipList.add(
-            StatCollector.translateToLocalFormatted(
+            GTUtility.translate(
                 "GT5U.item.toolbox.tooltip.select_tool",
                 I18n.format(settings.keyBindPickBlock.getKeyDescription())));
 
@@ -306,18 +307,18 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
             }
 
             tooltipList.add(
-                StatCollector.translateToLocalFormatted(
+                GTUtility.translate(
                     "GT5U.item.toolbox.tooltip.deselect_tool",
                     I18n.format(settings.keyBindPickBlock.getKeyDescription())));
             tooltipList.add(
-                StatCollector.translateToLocalFormatted(
+                GTUtility.translate(
                     "gt.behaviour.switch_mode.tooltip",
                     GameSettings.getKeyDisplayString(GTMod.proxy.TOOL_MODE_SWITCH_KEYBIND.getKeyCode())));
             tooltipList.add(
                 EnumChatFormatting.WHITE +
-                    StatCollector.translateToLocalFormatted(
+                    GTUtility.translate(
                         "GT5U.item.toolbox.tooltip.tool_durability",
-                        StatCollector.translateToLocalFormatted(
+                        GTUtility.translate(
                             "gt.item.desc.durability",
                             EnumChatFormatting.GREEN + formatNumber(
                                 maxDamage - MetaGeneratedTool.getToolDamage(tool)
@@ -338,7 +339,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
 
         if (voltageTier > -1) {
             tooltipList.add(
-                EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                EnumChatFormatting.AQUA + GTUtility.translate(
                     "gt.item.desc.eu_info",
                     formatNumber(charge),
                     formatNumber(maxCharge),
@@ -348,9 +349,9 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
 
         tooltipList.addAll(
             Arrays.asList(
-                StatCollector.translateToLocalFormatted(
+                GTUtility.translate(
                     "GT5U.item.toolbox.byline.format",
-                    StatCollector.translateToLocal(
+                    GTUtility.translate(
                         "GT5U.item.toolbox.byline." + selectedToolType.map(
                             slot -> slot.name()
                                 .toLowerCase())
@@ -550,11 +551,8 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         }
 
         if (toolCount == 0) {
-            GTNHLib.proxy.printMessageAboveHotbar(
-                StatCollector.translateToLocal("GT5U.gui.text.toolbox.error.no_tools"),
-                120,
-                true,
-                true);
+            GTNHLib.proxy
+                .printMessageAboveHotbar(GTUtility.translate("GT5U.gui.text.toolbox.error.no_tools"), 120, true, true);
             return false;
         }
 
