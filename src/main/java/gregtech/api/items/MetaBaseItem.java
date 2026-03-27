@@ -59,7 +59,7 @@ public abstract class MetaBaseItem extends GTGenericItem
      * @param aUnlocalized The Unlocalized Name of this Item.
      */
     public MetaBaseItem(String aUnlocalized) {
-        super(aUnlocalized, "Generated Item", null);
+        super(aUnlocalized, null, null);
         setHasSubtypes(true);
         setMaxDamage(0);
     }
@@ -84,6 +84,14 @@ public abstract class MetaBaseItem extends GTGenericItem
     public abstract Long[] getElectricStats(ItemStack aStack);
 
     public abstract Long[] getFluidContainerStats(ItemStack aStack);
+
+    protected String getToolTipLocalizationKey(ItemStack aStack) {
+        return null;
+    }
+
+    protected Object[] getToolTipLocalizationArgs(ItemStack aStack) {
+        return null;
+    }
 
     @Override
     public boolean hasProjectile(SubTag aProjectileType, ItemStack aStack) {

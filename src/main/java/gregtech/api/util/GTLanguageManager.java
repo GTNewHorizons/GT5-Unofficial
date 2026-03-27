@@ -98,6 +98,7 @@ public class GTLanguageManager {
     public static synchronized void addStringLocalization(String aKey, String aEnglish) {
         String trimmedKey = aKey != null ? aKey.trim() : "";
         if (trimmedKey.isEmpty()) return; // RIP cascading class loading, don't use GT_Utility here
+        if (aEnglish == null) aEnglish = "";
         if (sEnglishFile == null) {
             // Lang file is not set up yet
             BUFFERMAP.put(trimmedKey, aEnglish);

@@ -9,7 +9,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -83,28 +82,23 @@ public class MTEIndustrialElectromagneticSeparator
         }
 
         public static String buildMagnetTooltip(MagnetTiers m) {
-            String tooltip = "Used in Magnetic Flux Exhibitor" + GTSplit.LB
-                + EnumChatFormatting.LIGHT_PURPLE
-                + "Speed: +"
-                + Math.round((1F / m.speedBoost * 100) - 100)
-                + "%"
-                + GTSplit.LB
-                + EnumChatFormatting.DARK_PURPLE
-                + "EU Usage: "
-                + Math.round(m.euModifier * 100)
-                + "%"
-                + GTSplit.LB
-                + EnumChatFormatting.AQUA
-                + "Parallel: "
-                + m.maxParallel;
+            String tooltip = GTUtility.translate(
+                "gt.magnet.tooltip.base",
+                EnumChatFormatting.LIGHT_PURPLE,
+                Math.round((1F / m.speedBoost * 100) - 100),
+                EnumChatFormatting.DARK_PURPLE,
+                Math.round(m.euModifier * 100),
+                EnumChatFormatting.AQUA,
+                m.maxParallel);
 
-            if (m.supportsExotic) tooltip = tooltip + GTSplit.LB
-                + EnumChatFormatting.BOLD
-                + EnumChatFormatting.GREEN
-                + "Can Use Multi-Amp Hatches"
-                + GTSplit.LB
-                + EnumChatFormatting.RED
-                + "Limit to one energy hatch if using Multi-Amp";
+            if (m.supportsExotic) {
+                tooltip = tooltip + "\\n"
+                    + GTUtility.translate(
+                        "gt.magnet.tooltip.exotic",
+                        EnumChatFormatting.BOLD,
+                        EnumChatFormatting.GREEN,
+                        EnumChatFormatting.RED);
+            }
 
             return tooltip;
         }
@@ -223,7 +217,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addCasingInfoExactly("Any Tiered Glass", 12, false)
             .addOtherStructurePart("Magnetic Neodymium Frame Box", "x37")
             .addOtherStructurePart(
-                translateToLocal("GT5U.tooltip.structure.electromagnet_housing"),
+                GTUtility.translate("GT5U.tooltip.structure.electromagnet_housing"),
                 "1 Block Above/Behind Controller",
                 2)
             .addInputBus("Any Casing", 1)
