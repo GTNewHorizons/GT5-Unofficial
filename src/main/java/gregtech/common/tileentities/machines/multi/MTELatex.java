@@ -265,7 +265,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cable Coater, LATEX")
             .addInfo(
-                DARK_GRAY + "" + EnumChatFormatting.ITALIC + "AKA Laminate Application and Thermal Enclosure matriX")
+                DARK_GRAY + "" + EnumChatFormatting.ITALIC + "AKA Laminate Application and Thermal Enclosure eXpert")
             .addBulkMachineInfo(8, 2F, 0.85F)
             .addInfo(
                 "Recipes have an additive " + TooltipHelper.coloredText("6.25%", DARK_GREEN)
