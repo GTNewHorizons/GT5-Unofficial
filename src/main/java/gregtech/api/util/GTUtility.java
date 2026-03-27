@@ -217,7 +217,8 @@ public class GTUtility {
     private static int sBookCount = 0;
     public static UUID defaultUuid = null; // maybe default non-null?
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
-    private static final Splitter NEWLINE_SPLITTER = Splitter.on("\\n");
+    private static final Splitter NEWLINE_SPLITTER = Splitter.on("\\n")
+        .omitEmptyStrings();
 
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
@@ -1403,12 +1404,12 @@ public class GTUtility {
         sBookCount++;
         rStack = new ItemStack(Items.written_book, 1);
         NBTTagCompound tNBT = new NBTTagCompound();
-        tNBT.setString("title", GTLanguageManager.addStringLocalization("Book." + aTitle + ".Name", aTitle));
+        String key = "gt.Book." + aTitle + ".Name";
+        tNBT.setString("title", StatCollector.canTranslate(key) ? GTUtility.translate(key) : aTitle);
         tNBT.setString("author", aAuthor);
         NBTTagList tNBTList = new NBTTagList();
         for (byte i = 0; i < aPages.length; i++) {
-            aPages[i] = GTLanguageManager
-                .addStringLocalization("Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : i), aPages[i]);
+            aPages[i] = GTUtility.translate("gt.Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : i), aPages[i]);
             if (i < 48) {
                 if (aPages[i].length() < 256) tNBTList.appendTag(new NBTTagString(aPages[i]));
                 else GTLog.err.println("WARNING: String for written Book too long! -> " + aPages[i]);
