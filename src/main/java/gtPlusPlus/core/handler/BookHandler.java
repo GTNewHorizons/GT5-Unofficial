@@ -34,12 +34,10 @@ public class BookHandler {
             "gtpp.book.thermal_boiler.name",
             "GregoriusT",
             new String[] { "gtpp.book.thermal_boiler.page00", "gtpp.book.thermal_boiler.page01",
-                "gtpp.book.thermal_boiler.page02", "gtpp.book.thermal_boiler.page03",
-                "gtpp.book.thermal_boiler.page04", "gtpp.book.thermal_boiler.page05",
-                "gtpp.book.thermal_boiler.page06", "gtpp.book.thermal_boiler.page07",
-                "gtpp.book.thermal_boiler.page08", "gtpp.book.thermal_boiler.page09",
-                "gtpp.book.thermal_boiler.page10", "gtpp.book.thermal_boiler.page11",
-                "gtpp.book.thermal_boiler.page12", "gtpp.book.thermal_boiler.page13",
+                "gtpp.book.thermal_boiler.page02", "gtpp.book.thermal_boiler.page03", "gtpp.book.thermal_boiler.page04",
+                "gtpp.book.thermal_boiler.page05", "gtpp.book.thermal_boiler.page06", "gtpp.book.thermal_boiler.page07",
+                "gtpp.book.thermal_boiler.page08", "gtpp.book.thermal_boiler.page09", "gtpp.book.thermal_boiler.page10",
+                "gtpp.book.thermal_boiler.page11", "gtpp.book.thermal_boiler.page12", "gtpp.book.thermal_boiler.page13",
                 "gtpp.book.thermal_boiler.page14", "gtpp.book.thermal_boiler.page15" });
 
         // Test Novel
