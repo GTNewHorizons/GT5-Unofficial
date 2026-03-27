@@ -164,8 +164,8 @@ public class MTERTGenerator extends MTEBasicGenerator {
             this.mDescriptionArray,
             "Fuel is measured in minecraft days (Check with Scanner)",
             "RTG changes output voltage depending on fuel",
-            "Generates power at " + formatNumber(this.getEfficiency()) + "% Efficiency per tick",
-            "Output Voltage: " + formatNumber(this.getOutputTier()) + " EU/t",
+            "Generates power at " + addFormattedString(formatNumber(this.getEfficiency())) + "%% Efficiency per tick",
+            "Output Voltage: " + addFormattedString(formatNumber(this.getOutputTier())) + " EU/t",
             GTPPCore.GT_Tooltip.get());
     }
 

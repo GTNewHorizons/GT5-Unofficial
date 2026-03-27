@@ -129,7 +129,9 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
             mEnabledItems.set(aID);
             mVisibleItems.set(aID);
             GTLanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".name", aEnglish);
-            GTLanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".tooltip", aToolTip);
+            if (!aToolTip.equals("")) {
+                GTLanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".tooltip", aToolTip);
+            }
             List<TC_AspectStack> tAspects = new ArrayList<>();
             // Important Stuff to do first
             for (Object tRandomData : aRandomData) if (tRandomData instanceof SubTag) {
@@ -475,5 +477,4 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final Long[] getFluidContainerStats(ItemStack aStack) {
         return mFluidContainerStats.get((short) aStack.getItemDamage());
     }
-
 }
