@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -17,7 +18,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.fluid.IGTFluid;
 import gregtech.api.interfaces.fluid.IGTRegisteredFluid;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
 public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runnable {
@@ -91,6 +91,15 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
             | Math.max(0, Math.min(255, colorRGBA[2]));
     }
 
+    @Override
+    public String getLocalizedName(FluidStack stack) {
+        String key = getUnlocalizedName();
+        if (StatCollector.canTranslate(key)) {
+            return StatCollector.translateToLocal(key);
+        }
+        return localizedName != null && !localizedName.isEmpty() ? localizedName : super.getLocalizedName(stack);
+    }
+
     // ----- IGTFluid interface implementations -----
 
     @Override
@@ -98,8 +107,6 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
         if (FluidRegistry.registerFluid(GTFluid.this)) {
             // Registered as a new Fluid
             registeredFluid = this;
-            // Adds a server-side localized-name
-            GTLanguageManager.addStringLocalization(getUnlocalizedName(), localizedName);
         } else {
             // Fluid already registered, get it from the registry
             registeredFluid = FluidRegistry.getFluid(GTFluid.this.fluidName);
