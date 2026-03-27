@@ -262,7 +262,6 @@ import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTSplit;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverSolarPanel;
 import gregtech.common.powergoggles.ItemPowerGoggles;
@@ -362,7 +361,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             addItemWithLocalizationKeys(
                 Circuit_Parts_GlassFiber.ID,
                 "gt.item.circuit_part.glass_fiber.name",
-                Materials.BorosilicateGlass.mChemicalFormula,
+                Materials.BorosilicateGlass.getChemicalFormula(),
                 o));
         ItemList.Circuit_Parts_PetriDish.set(
             addItemWithLocalizationKeys(

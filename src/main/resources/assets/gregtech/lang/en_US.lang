@@ -4075,8 +4075,8 @@ gt.item.cover.wireless_activity_detector.tooltip=Transfers Activity as Redstone 
 ## Special items
 gt.item.display.its_free.name=ITS FREE
 gt.item.display.its_free.tooltip=(or at least almost free)
-gt.magnet.tooltip.base=Used in Magnetic Flux Exhibitor\n %sSpeed: +%d%%\n %sEU Usage: %d%%\n %sParallel: %d
-gt.magnet.tooltip.exotic=%s%sCan Use Multi-Amp Hatches\n %sLimit to one energy hatch if using Multi-Amp
+gt.magnet.tooltip.base=Used in Magnetic Flux Exhibitor\n%sSpeed: +%d%%\n%sEU Usage: %d%%\n%sParallel: %d
+gt.magnet.tooltip.exotic=%s%sCan Use Multi-Amp Hatches\n%sLimit to one energy hatch if using Multi-Amp
 gt.Item_Redstone_Sniffer.name=Redstone Sniffer
 gt.Item_Redstone_Sniffer.tooltip=What are these frequencies?!
 gt.Item_Drone_Remote_Interface.name=Drone Remote Interface

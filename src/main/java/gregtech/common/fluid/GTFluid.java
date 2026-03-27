@@ -23,6 +23,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.fluid.IGTFluid;
 import gregtech.api.interfaces.fluid.IGTRegisteredFluid;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
 public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runnable {

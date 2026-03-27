@@ -211,7 +211,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTFoodStat;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverExternal;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverInternal;
