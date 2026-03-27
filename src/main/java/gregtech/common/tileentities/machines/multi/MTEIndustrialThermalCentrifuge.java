@@ -76,7 +76,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialThermalCentrifuge(STRUCTURE_PIECE_MAIN);
+        return new MTEIndustrialThermalCentrifuge(this.mName);
     }
 
     @Override
