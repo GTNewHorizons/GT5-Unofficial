@@ -10329,6 +10329,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.MAGNETO, 1)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MORTAR_GRINDABLE)
+            .removeOrePrefix(OrePrefixes.cellMolten)
             .constructMaterial();
     }
 
@@ -10669,6 +10670,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 1)
             .addAspect(TCAspects.MAGNETO, 3)
             .addSubTag(SubTag.METAL)
+            .removeOrePrefix(OrePrefixes.cellMolten)
             .constructMaterial();
     }
 
@@ -11009,6 +11011,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.RADIO, 1)
             .addAspect(TCAspects.MAGNETO, 10)
             .addSubTag(SubTag.METAL)
+            .removeOrePrefix(OrePrefixes.cellMolten)
             .constructMaterial();
     }
 
@@ -11107,6 +11110,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.MAGNETO, 1)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MORTAR_GRINDABLE)
+            .removeOrePrefix(OrePrefixes.cellMolten)
             .constructMaterial();
     }
 
