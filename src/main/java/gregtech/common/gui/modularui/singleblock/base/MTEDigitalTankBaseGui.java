@@ -1,240 +1,184 @@
 package gregtech.common.gui.modularui.singleblock.base;
 
-import net.minecraft.util.StatCollector;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.drawable.Rectangle;
-import com.cleanroommc.modularui.drawable.text.DynamicKey;
-import com.cleanroommc.modularui.drawable.text.StringKey;
-import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTGuis;
-import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.widget.FluidLockSlot;
+import gregtech.common.modularui2.widget.FluidLockSlotWidget;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 
-public class MTEDigitalTankBaseGui {
+public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasicTankBaseGui<T> {
 
-    protected final MTEDigitalTankBase machine;
-
-    public MTEDigitalTankBaseGui(MTEDigitalTankBase machine) {
-        this.machine = machine;
+    public MTEDigitalTankBaseGui(T machine) {
+        super(machine);
     }
 
-    public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(machine, guiData, syncManager, uiSettings)
-            .build();
+    @Override
+    protected boolean supportsGauge() {
+        return false;
+    }
 
-        machine.fluidTank.setAllowOverflow(machine.allowOverflow());
-        machine.fluidTank.setPreventDraining(machine.mLockFluid);
+    @Override
+    protected boolean supportsMuffler() {
+        return false;
+    }
 
-        FluidSlotSyncHandler fluidTankSyncHandler = new FluidSlotSyncHandler(machine.fluidTank);
-        FluidSlot fluidSlotWidget = new FluidSlot().syncHandler(fluidTankSyncHandler)
-            .pos(58, 41)
-            .background(GTGuiTextures.TRANSPARENT);
+    @Override
+    protected boolean supportsPowerSwitch() {
+        return false;
+    }
 
-        FluidLockSlot fluidLockSlot = new FluidLockSlot(machine);
-        FluidSlotSyncHandler lockSlotSyncHandler = new FluidSlotSyncHandler(fluidLockSlot).phantom(true);
-        fluidLockSlot.syncHandler(lockSlotSyncHandler)
-            .background(GTGuiTextures.TRANSPARENT)
-            .pos(149, 41);
+    @Override
+    protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
 
-        final boolean isServer = GTUtility.isServer();
+        Flow mainRow = Flow.row()
+            .coverChildren()
+            .childPadding(1)
+            .paddingLeft(4)
+            .paddingTop(10)
+            .crossAxisAlignment(Alignment.CrossAxis.START);
 
-        // Left black panel
-        panel.child(
-            new Rectangle().setColor(0)
+        mainRow.child(createLeftSide(panel, syncManager));
+        mainRow.child(createIO(panel, syncManager));
+        mainRow.child(createRightSide(panel, syncManager));
+
+        return super.createContentSection(panel, syncManager).child(mainRow);
+    }
+
+    protected Flow createLeftSide(ModularPanel panel, PanelSyncManager syncManager) {
+        Flow leftSide = Flow.col()
+            .childPadding(2)
+            .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START);
+
+        Flow buttonRow = Flow.row()
+            .coverChildren();
+
+        // auto output
+        buttonRow.child(
+            new ToggleButton().size(18)
+                .value(new BooleanSyncValue(machine::isOutputFluid, machine::setOutputFluid))
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
+                .tooltip(t -> t.addLine(translateToLocal("GT5U.machines.digitaltank.autooutput.tooltip"))));
+
+        // lock
+        buttonRow.child(
+            new ToggleButton().size(18)
+                .value(new BooleanSyncValue(machine::isFluidLocked, machine::lockFluid))
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_LOCK)
+                .tooltip(t -> {
+                    t.addLine(translateToLocal("GT5U.machines.digitaltank.lockfluid.tooltip"));
+                    t.addLine(translateToLocal("GT5U.machines.digitaltank.lockfluid.tooltip.1"));
+                    t.addLine(translateToLocal("GT5U.machines.digitaltank.lockfluid.tooltip.2"));
+                }));
+
+        // allow input
+        buttonRow.child(
+            new ToggleButton().size(18)
+                .value(new BooleanSyncValue(machine::isAllowInputFromOutputSide, machine::setAllowInputFromOutputSide))
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE)
+                .tooltip(t -> t.addLine(translateToLocal("GT5U.machines.digitaltank.inputfromoutput.tooltip"))));
+
+        leftSide.child(createScreen(panel, syncManager));
+        leftSide.child(buttonRow);
+
+        return leftSide;
+    }
+
+    protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager) {
+        return new FluidSlot().syncHandler(new FluidSlotSyncHandler(machine.getFluidTank()).canDisplayEmptyFluid(true))
+            .align(Alignment.BottomRight)
+            .background(IDrawable.EMPTY);
+    }
+
+    protected Flow createRightSide(ModularPanel panel, PanelSyncManager syncManager) {
+        Flow rightSide = Flow.col()
+            .childPadding(2)
+            .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START);
+
+        Flow buttonRow = Flow.row()
+            .coverChildren();
+
+        // overflow
+        buttonRow.child(
+            new ToggleButton().size(18)
+                .value(new BooleanSyncValue(machine::isVoidFluidPart, machine::setVoidFluidPart))
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
+                .tooltip(t -> {
+                    t.addLine(translateToLocal("GT5U.machines.digitaltank.voidoverflow.tooltip"));
+                    t.addLine(translateToLocal("GT5U.machines.digitaltank.voidoverflow.tooltip.1"));
+                }));
+
+        // void
+        buttonRow.child(
+            new ToggleButton().size(18)
+                .value(new BooleanSyncValue(machine::isVoidFluidFull, machine::setVoidFluidFull))
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_ALL)
+                .tooltip(t -> {
+                    t.addLine(translateToLocal("GT5U.machines.digitaltank.voidfull.tooltip"));
+                    t.addLine(translateToLocal("GT5U.machines.digitaltank.voidfull.tooltip.1"));
+                }));
+
+        rightSide.child(createFilterScreen(panel, syncManager));
+        rightSide.child(buttonRow);
+
+        return rightSide;
+    }
+
+    protected Flow createFilterScreen(ModularPanel panel, PanelSyncManager syncManager) {
+        Flow screen = Flow.col()
+            .size(71, 45)
+            .padding(3, 2, 3, 2)
+            .childPadding(1)
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .background(GTGuiTextures.PICTURE_SCREEN_BLACK);
+
+        FluidLockSlotWidget fluidLockSlotWidget = new FluidLockSlotWidget(machine);
+
+        // fluid amount label
+        screen.child(
+            IKey.lang("GT5U.machines.digitaltank.lockfluid.label")
                 .asWidget()
-                .background(GTGuiTextures.BACKGROUND_SCREEN_BLACK)
-                .pos(7, 16)
-                .size(71, 45))
-            .child(fluidSlotWidget)
-            .child(
-                new TextWidget<>(StatCollector.translateToLocal("GT5U.machines.digitaltank.fluid.amount"))
-                    .color(machine.getColorTextWhite())
-                    .pos(10, 20))
-            .child(new TextWidget<>(new DynamicKey(() -> {
-                if (fluidTankSyncHandler.getValue() != null && fluidTankSyncHandler.getValue()
-                    .getFluid() != null) {
-                    return IKey.str(NumberFormatUtil.formatNumber(fluidTankSyncHandler.getValue().amount));
-                }
-                return IKey.str("0");
-            })).color(machine.getColorTextWhite())
-                .pos(10, 30))
+                .color(Color.WHITE.main));
 
-            // Item slots
-            .child(
-                new ItemSlot().background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_IN_STANDARD)
-                    .slot(new ModularSlot(machine.inventoryHandler, machine.getInputSlot()))
-                    .pos(79, 16))
-            .child(
-                new ItemSlot().background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD)
-                    .slot(new ModularSlot(machine.inventoryHandler, machine.getOutputSlot()).accessibility(false, true))
-                    .pos(79, 43))
+        // fluid name
+        screen.child(IKey.dynamic(() -> {
+            if (fluidLockSlotWidget.getFluid() != null) {
+                return fluidLockSlotWidget.getFluid()
+                    .getLocalizedName();
+            }
+            return translateToLocal("GT5U.machines.digitaltank.lockfluid.empty");
+        })
+            .asWidget()
+            .color(Color.WHITE.main));
 
-            // Right black panel
-            .child(
-                new Rectangle().setColor(0)
-                    .asWidget()
-                    .background(GTGuiTextures.BACKGROUND_SCREEN_BLACK)
-                    .pos(98, 16)
-                    .size(71, 45))
-            .child(
-                new TextWidget<>(StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.label"))
-                    .color(machine.getColorTextWhite())
-                    .pos(101, 20))
-            .child(fluidLockSlot)
-            .child(new TextWidget<>(new DynamicKey(() -> {
-                if (fluidLockSlot.getFluid() != null) {
-                    return new StringKey(
-                        fluidLockSlot.getFluid()
-                            .getLocalizedName());
-                }
-                return IKey.str(StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.empty"));
-            })).maxWidth(65)
-                .color(machine.getColorTextWhite())
-                .pos(101, 30))
+        // fluid lock slot
+        screen.child(
+            fluidLockSlotWidget.syncHandler(new FluidSlotSyncHandler(fluidLockSlotWidget).phantom(true))
+                .align(Alignment.BottomRight)
+                .background(IDrawable.EMPTY));
 
-            // Bottom buttons
-            .child(
-                new ToggleButton()
-                    .background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
-                    .selectedBackground(
-                        GTGuiTextures.BUTTON_STANDARD_PRESSED,
-                        GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
-                    .value(new BooleanSyncValue(() -> machine.mOutputFluid, val -> {
-                        machine.mOutputFluid = val;
-                        if (isServer) {
-                            if (!machine.mOutputFluid) {
-                                GTUtility.sendChatToPlayer(
-                                    guiData.getPlayer(),
-                                    GTUtility.trans("262", "Fluid Auto Output Disabled"));
-                            } else {
-                                GTUtility.sendChatToPlayer(
-                                    guiData.getPlayer(),
-                                    GTUtility.trans("263", "Fluid Auto Output Enabled"));
-                            }
-                        }
-                    }))
-                    .pos(7, 63)
-                    .size(18))
-            .child(
-                new ToggleButton().background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_LOCK)
-                    .selectedBackground(GTGuiTextures.BUTTON_STANDARD_PRESSED, GTGuiTextures.OVERLAY_BUTTON_LOCK)
-                    .value(new BooleanSyncValue(() -> machine.mLockFluid, val -> {
-                        machine.lockFluid(val);
-                        machine.fluidTank.setPreventDraining(machine.mLockFluid);
+        return screen;
+    }
 
-                        String inBrackets;
-                        if (machine.mLockFluid) {
-                            if (machine.mFluid == null) {
-                                machine.setLockedFluid(null);
-                                inBrackets = GTUtility
-                                    .trans("264", "currently none, will be locked to the next that is put in");
-                            } else {
-                                machine.setLockedFluid(
-                                    machine.getDrainableStack()
-                                        .getFluid());
-                                inBrackets = machine.getDrainableStack()
-                                    .getLocalizedName();
-                            }
-                            if (isServer) {
-                                GTUtility.sendChatToPlayer(
-                                    guiData.getPlayer(),
-                                    String.format("%s (%s)", GTUtility.trans("265", "1 specific Fluid"), inBrackets));
-                            }
-                        } else {
-                            machine.fluidTank.drain(0, true);
-                            if (isServer) {
-                                GTUtility.sendChatToPlayer(
-                                    guiData.getPlayer(),
-                                    GTUtility.trans("266", "Lock Fluid Mode Disabled"));
-                            }
-                        }
-                    }))
-                    .pos(25, 63)
-                    .size(18))
-            .child(
-                new ToggleButton()
-                    .background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE)
-                    .selectedBackground(
-                        GTGuiTextures.BUTTON_STANDARD_PRESSED,
-                        GTGuiTextures.OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE)
-                    .value(new BooleanSyncValue(() -> machine.mAllowInputFromOutputSide, val -> {
-                        machine.mAllowInputFromOutputSide = val;
-                        if (isServer) {
-                            if (!machine.mAllowInputFromOutputSide) {
-                                GTUtility.sendChatToPlayer(
-                                    guiData.getPlayer(),
-                                    StatCollector.translateToLocal("gt.interact.desc.input_from_output_off"));
-                            } else {
-                                GTUtility.sendChatToPlayer(
-                                    guiData.getPlayer(),
-                                    StatCollector.translateToLocal("gt.interact.desc.input_from_output_on"));
-                            }
-                        }
-                    }))
-                    .pos(43, 63)
-                    .size(18))
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
 
-            .child(
-                new ToggleButton()
-                    .background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
-                    .selectedBackground(
-                        GTGuiTextures.BUTTON_STANDARD_PRESSED,
-                        GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
-                    .value(new BooleanSyncValue(() -> machine.mVoidFluidPart, val -> {
-                        machine.mVoidFluidPart = val;
-                        machine.fluidTank.setAllowOverflow(machine.allowOverflow());
-                        if (isServer) {
-                            if (!machine.mVoidFluidPart) {
-                                GTUtility.sendChatToPlayer(
-                                    guiData.getPlayer(),
-                                    GTUtility.trans("267", "Overflow Voiding Mode Disabled"));
-                            } else {
-                                GTUtility.sendChatToPlayer(
-                                    guiData.getPlayer(),
-                                    GTUtility.trans("268", "Overflow Voiding Mode Enabled"));
-                            }
-                        }
-                    }))
-                    .pos(98, 63)
-                    .size(18))
-            .child(
-                new ToggleButton().background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_ALL)
-                    .selectedBackground(
-                        GTGuiTextures.BUTTON_STANDARD_PRESSED,
-                        GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_ALL)
-                    .value(new BooleanSyncValue(() -> machine.mVoidFluidFull, val -> {
-                        machine.mVoidFluidFull = val;
-                        machine.fluidTank.setAllowOverflow(machine.allowOverflow());
-                        if (isServer) {
-                            if (!machine.mVoidFluidFull) {
-                                GTUtility.sendChatToPlayer(
-                                    guiData.getPlayer(),
-                                    GTUtility.trans("269", "Void Full Mode Disabled"));
-                            } else {
-                                GTUtility.sendChatToPlayer(
-                                    guiData.getPlayer(),
-                                    GTUtility.trans("270", "Void Full Mode Enabled"));
-                            }
-                        }
-                    }))
-                    .pos(116, 63)
-                    .size(18));
-
-        return panel;
+        machine.getFluidTank()
+            .setPreventDraining(true);
     }
 }

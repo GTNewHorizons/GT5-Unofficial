@@ -1,13 +1,12 @@
-package gregtech.common.gui.modularui.widget;
+package gregtech.common.modularui2.widget;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
-import org.jetbrains.annotations.NotNull;
-
+import com.cleanroommc.modularui.api.value.ISyncOrValue;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
@@ -18,11 +17,11 @@ import gregtech.api.interfaces.metatileentity.IFluidLockableMui2;
  * Represents both the {@link FluidSlot} itself and the {@link IFluidTank} that {@link FluidSlotSyncHandler} handles.
  * Create a new instance of this, then pass it to its own {@link FluidSlotSyncHandler}.
  */
-public class FluidLockSlot extends FluidSlot implements IFluidTank {
+public class FluidLockSlotWidget extends FluidSlot implements IFluidTank {
 
     private final IFluidLockableMui2 machine;
 
-    public FluidLockSlot(IFluidLockableMui2 machine) {
+    public FluidLockSlotWidget(IFluidLockableMui2 machine) {
         this.machine = machine;
     }
 
@@ -33,13 +32,8 @@ public class FluidLockSlot extends FluidSlot implements IFluidTank {
 
     @Override
     public FluidSlot syncHandler(FluidSlotSyncHandler syncHandler) {
-        setSyncHandler(syncHandler.controlsAmount(false));
+        setSyncOrValue(ISyncOrValue.orEmpty(syncHandler.controlsAmount(false)));
         return this;
-    }
-
-    @Override
-    public boolean handleDragAndDrop(@NotNull ItemStack draggedStack, int button) {
-        return super.handleDragAndDrop(draggedStack, button);
     }
 
     protected void addToolTip(RichTooltip tooltip) {
@@ -67,7 +61,8 @@ public class FluidLockSlot extends FluidSlot implements IFluidTank {
 
     @Override
     public int getCapacity() {
-        return 1000;
+        // always show as full
+        return 0;
     }
 
     @Override
@@ -78,9 +73,9 @@ public class FluidLockSlot extends FluidSlot implements IFluidTank {
 
     @Override
     public int fill(FluidStack fluidStack, boolean doFill) {
-        if (doFill) {
-            machine.setLockedFluid(fluidStack.getFluid());
-        }
+        // null check for fluidStack?
+        Fluid fluid = fluidStack.getFluid();
+        if (doFill && machine.acceptsFluidLock(fluid)) machine.setLockedFluid(fluid);
         return 1;
     }
 

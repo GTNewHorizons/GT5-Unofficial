@@ -31,12 +31,9 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IFluidLockableMui2;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
@@ -47,12 +44,11 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.SpecialChars;
 
-public abstract class MTEDigitalTankBase extends MTEBasicTank
-    implements IFluidLockableMui2, IAddUIWidgets, IAddGregtechLogo {
+public abstract class MTEDigitalTankBase extends MTEBasicTank implements IFluidLockableMui2 {
 
-    public boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
+    protected boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
     protected Fluid lockedFluid = null;
-    public boolean mAllowInputFromOutputSide = false;
+    protected boolean mAllowInputFromOutputSide = false;
 
     public MTEDigitalTankBase(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -218,8 +214,10 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
 
     @Override
     public void setLockedFluid(Fluid fluid) {
-        this.lockedFluid = fluid;
+        if (mVoidFluidFull) return;
 
+        Fluid temp = lockedFluid;
+        this.lockedFluid = fluid;
         if (fluid != null) {
             if (getFluidAmount() == 0) {
                 // create new FluidStack, otherwise existing 0-amount FluidStack will
@@ -228,8 +226,9 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             }
             mLockFluid = true;
         }
-        // Don't unlock if lockedFluidName == null,
-        // as player might explicitly enable fluid locking with no fluid contained
+
+        // disable lock if the lock slot was cleared
+        if (temp != null && fluid == null) mLockFluid = false;
     }
 
     @Override
@@ -239,9 +238,20 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
 
     @Override
     public void lockFluid(boolean lock) {
+        if (mVoidFluidFull) return;
+
         this.mLockFluid = lock;
-        if (!lock) {
+        fluidTank.setPreventDraining(lock);
+
+        if (lock) {
+            if (mFluid == null) {
+                setLockedFluid(null);
+            } else {
+                setLockedFluid(getDrainableStack().getFluid());
+            }
+        } else {
             setLockedFluid(null);
+            fluidTank.drain(0, true);
         }
     }
 
@@ -256,6 +266,46 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
 
         return mFluid != null && mFluid.getFluid()
             .equals(fluid);
+    }
+
+    public boolean isOutputFluid() {
+        return mOutputFluid;
+    }
+
+    public void setOutputFluid(boolean mOutputFluid) {
+        this.mOutputFluid = mOutputFluid;
+    }
+
+    public boolean isVoidFluidPart() {
+        return mVoidFluidPart;
+    }
+
+    public void setVoidFluidPart(boolean mVoidFluidPart) {
+        this.mVoidFluidPart = mVoidFluidPart;
+        fluidTank.setAllowOverflow(allowOverflow());
+    }
+
+    public boolean isVoidFluidFull() {
+        return mVoidFluidFull;
+    }
+
+    public void setVoidFluidFull(boolean mVoidFluidFull) {
+        this.mVoidFluidFull = mVoidFluidFull;
+        fluidTank.setAllowOverflow(allowOverflow());
+
+        // clear locked fluid and disable locking
+        if (mVoidFluidFull) {
+            lockedFluid = null;
+            mLockFluid = false;
+        }
+    }
+
+    public boolean isAllowInputFromOutputSide() {
+        return mAllowInputFromOutputSide;
+    }
+
+    public void setAllowInputFromOutputSide(boolean mAllowInputFromOutputSide) {
+        this.mAllowInputFromOutputSide = mAllowInputFromOutputSide;
     }
 
     @Override
@@ -495,14 +545,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
         else if (tag.hasKey("mFluid")) tag.removeTag("mFluid");
     }
 
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
-
-    protected boolean useMui2() {
-        return true;
-    }
-
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEDigitalTankBaseGui(this).build(data, syncManager, uiSettings);
-
+        return new MTEDigitalTankBaseGui<>(this).build(data, syncManager, uiSettings);
     }
 }
