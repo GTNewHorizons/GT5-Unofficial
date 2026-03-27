@@ -58,10 +58,12 @@ public class CoverShutter extends CoverLegacyData {
         }
     }
 
+    @Override
     public boolean letsRedstoneGoIn() {
         return shouldAllow(3);
     }
 
+    @Override
     public boolean letsRedstoneGoOut() {
         return shouldAllow(2);
     }
@@ -81,14 +83,17 @@ public class CoverShutter extends CoverLegacyData {
         return shouldAllow(3);
     }
 
+    @Override
     public boolean letsFluidOut(Fluid fluid) {
         return shouldAllow(2);
     }
 
+    @Override
     public boolean letsItemsIn(int slot) {
         return shouldAllow(3);
     }
 
+    @Override
     public boolean letsItemsOut(int slot) {
         return shouldAllow(2);
     }

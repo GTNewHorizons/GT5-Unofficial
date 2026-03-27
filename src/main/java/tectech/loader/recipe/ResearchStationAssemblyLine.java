@@ -2921,6 +2921,30 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.SixPhasedCopper, 16),
                     GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Creon, 16),
                     GGMaterial.metastableOganesson.get(OrePrefixes.plateDense, 16),
+                    ItemList.StableBosonContainmentUnit.get(8),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 16),
+                    ItemList.Sensor_UIV.get(32), new Object[] { OrePrefixes.circuit.get(Materials.UIV), 64L },
+                    CustomItemList.eM_energyTunnel7_UIV.get(1), ItemRegistry.energyDistributor[11] },
+                new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(32 * STACKS),
+                    Materials.ExcitedDTEC.getFluid(8_192_000), Materials.Thorium.getPlasma(4 * STACKS),
+                    Materials.TranscendentMetal.getMolten(32 * STACKS) },
+                CustomItemList.Machine_Multi_ForgeOfGods.get(1),
+                300 * SECONDS,
+                (int) TierEU.RECIPE_UMV);
+
+            // TODO: remove recipe for 2.10
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
+                CustomItemList.Godforge_StellarEnergySiphonCasing.get(1),
+                48_000_000,
+                8_192,
+                (int) TierEU.RECIPE_UMV,
+                64,
+                new Object[] { CustomItemList.Godforge_StellarEnergySiphonCasing.get(4), ItemList.ZPM4.get(2),
+                    ItemList.Casing_Dim_Bridge.get(64), getModItem(EternalSingularity.ID, "eternal_singularity", 32L),
+                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Mellion, 16),
+                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.SixPhasedCopper, 16),
+                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Creon, 16),
+                    GGMaterial.metastableOganesson.get(OrePrefixes.plateDense, 16),
                     new ItemStack(
                         Particle.getBaseParticle(Particle.GRAVITON)
                             .getItem(),
@@ -2960,6 +2984,26 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         if (GalacticraftAmunRa.isModLoaded()) {
             // Structure Casing
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
+                CustomItemList.Godforge_MagneticConfinementCasing.get(1),
+                48_000_000,
+                8_192,
+                (int) TierEU.RECIPE_UMV,
+                64,
+                new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Mellion, 16),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SixPhasedCopper, 16),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 8),
+                    MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFrameBox(8),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Creon, 6),
+                    ItemList.StableBosonContainmentUnit.get(1), ItemList.Field_Generator_UEV.get(2),
+                    // Artificial Gravity Generator
+                    getModItem(GalacticraftAmunRa.ID, "tile.machines3", 4L, 1) },
+                new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(16 * INGOTS),
+                    Materials.Lead.getPlasma(2 * INGOTS) },
+                CustomItemList.Godforge_BoundlessStructureCasing.get(1),
+                10 * SECONDS,
+                (int) TierEU.RECIPE_UIV);
+            // TODO: Remove for 2.10
             TTRecipeAdder.addResearchableAssemblylineRecipe(
                 CustomItemList.Godforge_MagneticConfinementCasing.get(1),
                 48_000_000,
@@ -3047,7 +3091,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             10 * SECONDS,
             (int) TierEU.RECIPE_UIV);
 
-        // TODO: (deprecated, remove after 2.9) Gravitational Lens
+        // TODO: remove for 2.10
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             new ItemStack(BlockQuantumGlass.INSTANCE, 1),
             48_000_000,

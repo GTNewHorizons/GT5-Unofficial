@@ -59,14 +59,17 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     protected static final int ASSEMBLY_OFFSET_Y = 4;
     protected static final int ASSEMBLY_OFFSET_Z = 0;
 
+    @Override
     public int structureOffsetX() {
         return ASSEMBLY_OFFSET_X;
     }
 
+    @Override
     public int structureOffsetY() {
         return ASSEMBLY_OFFSET_Y;
     }
 
+    @Override
     public int structureOffsetZ() {
         return ASSEMBLY_OFFSET_Z;
     }

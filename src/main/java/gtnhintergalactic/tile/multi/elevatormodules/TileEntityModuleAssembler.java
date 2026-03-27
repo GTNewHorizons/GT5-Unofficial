@@ -254,6 +254,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
         /**
          * @return Maximum parallels that this module allows
          */
+        @Override
         protected int getMaxParallels() {
             return MAX_PARALLELS;
         }
@@ -331,6 +332,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
         /**
          * @return Maximum parallels that this module allows
          */
+        @Override
         protected int getMaxParallels() {
             return MAX_PARALLELS;
         }
@@ -408,6 +410,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
         /**
          * @return Maximum parallels that this module allows
          */
+        @Override
         protected int getMaxParallels() {
             return MAX_PARALLELS;
         }

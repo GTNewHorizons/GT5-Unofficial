@@ -97,7 +97,8 @@ public class GTLanguageManager {
      */
     public static synchronized String addStringLocalization(String aKey, String aEnglish) {
         String trimmedKey = aKey != null ? aKey.trim() : "";
-        if (trimmedKey.isEmpty()) return E; // RIP cascading class loading, don't use GT_Utility here
+        if (trimmedKey.isEmpty()) return E;// RIP cascading class loading, don't use GT_Utility here
+        if (aEnglish == null) aEnglish = "";
         if (sEnglishFile == null) {
             // Lang file is not set up yet
             BUFFERMAP.put(trimmedKey, aEnglish);
@@ -207,14 +208,6 @@ public class GTLanguageManager {
     }
 
     public static void writePlaceholderStrings() {
-        addStringLocalization("Interaction_DESCRIPTION_Index_100", "This is ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_101", " Ore.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_102", "There is Lava behind this Rock.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_103", "There is a Liquid behind this Rock.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_104", "There is an Air Pocket behind this Rock.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_105", "Material is changing behind this Rock.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_106", "Found traces of ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_107", "No Ores found.");
         // 116 moved to lang files
         // 117 obsolete
         // 118 moved to lang files
@@ -304,7 +297,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_209", " ticks");
         addStringLocalization("Interaction_DESCRIPTION_Index_209.1", " tick");
         addStringLocalization("Interaction_DESCRIPTION_Index_210", "Average: %.2f L/sec");
-        addStringLocalization("Interaction_DESCRIPTION_Index_211", "Items per side: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_216", "Deprecated Recipe");
         addStringLocalization("Interaction_DESCRIPTION_Index_219", "Extended Facing: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_221", "Item threshold");
@@ -392,8 +384,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_343.1", "Use Inverted Machine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_344", "Input Blocking");
         addStringLocalization("Interaction_DESCRIPTION_Index_344.1", "Output Blocking");
-        addStringLocalization("Interaction_DESCRIPTION_Index_502", "Mining chunk loading enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_503", "Mining chunk loading disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_505", "Enable with Signal (Safe)");
         addStringLocalization("Interaction_DESCRIPTION_Index_506", "Disable with Signal (Safe)");
         addStringLocalization("Interaction_DESCRIPTION_Index_507", "Safe Mode");
