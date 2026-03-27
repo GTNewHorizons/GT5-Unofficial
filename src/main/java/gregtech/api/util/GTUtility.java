@@ -525,7 +525,10 @@ public class GTUtility {
 
     /**
      * Send a message to all players on the server
+     * 
+     * @deprecated Use {@link #sendServerMessage(IChatComponent)} instead
      */
+    @Deprecated
     public static void sendServerMessage(String message) {
         sendServerMessage(new ChatComponentText(message));
     }
@@ -537,6 +540,16 @@ public class GTUtility {
         MinecraftServer.getServer()
             .getConfigurationManager()
             .sendChatMsg(chatComponent);
+    }
+
+    public static void sendMessageInRadius(World world, double x, double y, double z, double range,
+        IChatComponent component) {
+        double distSq = range * range;
+        for (var player : world.playerEntities) {
+            if (player.getDistanceSq(x, y, z) <= distSq) {
+                player.addChatMessage(component);
+            }
+        }
     }
 
     /** Uses thread analysis, works on dedicated servers. */
