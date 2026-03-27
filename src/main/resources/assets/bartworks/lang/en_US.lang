@@ -285,3 +285,6 @@ BW.chat.thtr.cannot_change_mode=THTR mode cannot be changed while the machine is
 BW.chat.thtr.running_in.emptying=THTR is now running in emptying mode.
 BW.chat.thtr.running_in.normal=THTR is now running in normal Operation.
 BW.chat.diode.max_amps=Max Amps: %s
+
+gt.BWCircuitProgrammer.name=Circuit Programmer
+gt.BWCircuitProgrammer.tooltip=Programs Integrated Circuits
