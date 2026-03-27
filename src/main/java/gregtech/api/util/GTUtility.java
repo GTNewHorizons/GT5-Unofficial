@@ -1404,12 +1404,14 @@ public class GTUtility {
         sBookCount++;
         rStack = new ItemStack(Items.written_book, 1);
         NBTTagCompound tNBT = new NBTTagCompound();
-        String key = "gt.Book." + aTitle + ".Name";
-        tNBT.setString("title", StatCollector.canTranslate(key) ? GTUtility.translate(key) : aTitle);
+        tNBT.setString("title", StatCollector.canTranslate(aTitle) ? GTUtility.translate(aTitle) : aTitle);
         tNBT.setString("author", aAuthor);
         NBTTagList tNBTList = new NBTTagList();
         for (byte i = 0; i < aPages.length; i++) {
-            aPages[i] = GTUtility.translate("gt.Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : i), aPages[i]);
+            String pageKeyOrText = aPages[i] == null ? "" : aPages[i];
+            String pageText = StatCollector.canTranslate(pageKeyOrText) ? GTUtility.translate(pageKeyOrText)
+                : pageKeyOrText;
+            aPages[i] = pageText.replace("\\n", "\n");
             if (i < 48) {
                 if (aPages[i].length() < 256) tNBTList.appendTag(new NBTTagString(aPages[i]));
                 else GTLog.err.println("WARNING: String for written Book too long! -> " + aPages[i]);

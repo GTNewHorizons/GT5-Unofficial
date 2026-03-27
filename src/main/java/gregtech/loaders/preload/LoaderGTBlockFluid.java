@@ -116,50 +116,50 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GTUtility.getWrittenBook(
             "Manual_Printer",
-            "Printer Manual V2.0",
+            "gt.book.printer_manual.name",
             "Gregorius Techneticies",
-            // Pages are defined in assets/gregtech/lang/en_US.lang (gt.Book.Printer Manual V2.0.PageXX).
-            "gt.Book.Printer Manual V2.0.Page00",
-            "gt.Book.Printer Manual V2.0.Page01",
-            "gt.Book.Printer Manual V2.0.Page02",
-            "gt.Book.Printer Manual V2.0.Page03",
-            "gt.Book.Printer Manual V2.0.Page04",
-            "gt.Book.Printer Manual V2.0.Page05",
-            "gt.Book.Printer Manual V2.0.Page06",
-            "gt.Book.Printer Manual V2.0.Page07");
+            // Pages are defined in assets/gregtech/lang/en_US.lang (gt.book.printer_manual.pageXX).
+            "gt.book.printer_manual.page00",
+            "gt.book.printer_manual.page01",
+            "gt.book.printer_manual.page02",
+            "gt.book.printer_manual.page03",
+            "gt.book.printer_manual.page04",
+            "gt.book.printer_manual.page05",
+            "gt.book.printer_manual.page06",
+            "gt.book.printer_manual.page07");
 
         GTUtility.getWrittenBook(
             "Manual_Punch_Cards",
-            "Punch Card Manual V0.0",
+            "gt.book.punch_card_manual_v0.name",
             "Gregorius Techneticies",
-            // Pages are defined in assets/gregtech/lang/en_US.lang (gt.Book.Punch Card Manual V0.0.PageXX).
-            "gt.Book.Punch Card Manual V0.0.Page00",
-            "gt.Book.Punch Card Manual V0.0.Page01",
-            "gt.Book.Punch Card Manual V0.0.Page02",
-            "gt.Book.Punch Card Manual V0.0.Page03",
-            "gt.Book.Punch Card Manual V0.0.Page04",
-            "gt.Book.Punch Card Manual V0.0.Page05",
-            "gt.Book.Punch Card Manual V0.0.Page06",
-            "gt.Book.Punch Card Manual V0.0.Page07",
-            "gt.Book.Punch Card Manual V0.0.Page08",
-            "gt.Book.Punch Card Manual V0.0.Page09",
-            "gt.Book.Punch Card Manual V0.0.Page10",
-            "gt.Book.Punch Card Manual V0.0.Page11",
-            "gt.Book.Punch Card Manual V0.0.Page12");
+            // Pages are defined in assets/gregtech/lang/en_US.lang (gt.book.punch_card_manual_v0.pageXX).
+            "gt.book.punch_card_manual_v0.page00",
+            "gt.book.punch_card_manual_v0.page01",
+            "gt.book.punch_card_manual_v0.page02",
+            "gt.book.punch_card_manual_v0.page03",
+            "gt.book.punch_card_manual_v0.page04",
+            "gt.book.punch_card_manual_v0.page05",
+            "gt.book.punch_card_manual_v0.page06",
+            "gt.book.punch_card_manual_v0.page07",
+            "gt.book.punch_card_manual_v0.page08",
+            "gt.book.punch_card_manual_v0.page09",
+            "gt.book.punch_card_manual_v0.page10",
+            "gt.book.punch_card_manual_v0.page11",
+            "gt.book.punch_card_manual_v0.page12");
 
         GTUtility.getWrittenBook(
             "Manual_Microwave",
-            "Microwave Oven Manual",
+            "gt.book.microwave_oven_manual.name",
             "Kitchen Industries",
-            // Pages are defined in assets/gregtech/lang/en_US.lang (gt.Book.Microwave Oven Manual.PageXX).
-            "gt.Book.Microwave Oven Manual.Page00",
-            "gt.Book.Microwave Oven Manual.Page01",
-            "gt.Book.Microwave Oven Manual.Page02",
-            "gt.Book.Microwave Oven Manual.Page03",
-            "gt.Book.Microwave Oven Manual.Page04",
-            "gt.Book.Microwave Oven Manual.Page05",
-            "gt.Book.Microwave Oven Manual.Page06",
-            "gt.Book.Microwave Oven Manual.Page07");
+            // Pages are defined in assets/gregtech/lang/en_US.lang (gt.book.microwave_oven_manual.pageXX).
+            "gt.book.microwave_oven_manual.page00",
+            "gt.book.microwave_oven_manual.page01",
+            "gt.book.microwave_oven_manual.page02",
+            "gt.book.microwave_oven_manual.page03",
+            "gt.book.microwave_oven_manual.page04",
+            "gt.book.microwave_oven_manual.page05",
+            "gt.book.microwave_oven_manual.page06",
+            "gt.book.microwave_oven_manual.page07");
 
         GTLog.out.println("GTMod: Register Items.");
 

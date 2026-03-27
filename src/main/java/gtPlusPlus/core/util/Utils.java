@@ -85,23 +85,16 @@ public class Utils {
         stack = (book == null) ? new ItemStack(ModItems.itemCustomBook, 1, ID) : book;
 
         NBTTagCompound NBT = new NBTTagCompound();
-        String titleKey = "Book." + title + ".Name";
-        String localizationTitle = StatCollector.canTranslate(titleKey) ? GTUtility.translate(titleKey) : title;
+        String localizationTitle = StatCollector.canTranslate(title) ? GTUtility.translate(title) : title;
         NBT.setString("title", localizationTitle);
         NBT.setString("author", author);
 
         NBTTagList NBTList = new NBTTagList();
         for (byte i = 0; i < pages.length; i++) {
-            String pageKey = "Book." + title + ".Page" + ((i < 10) ? "0" + i : i);
-            String pageText;
-            if (StatCollector.canTranslate(pageKey)) {
-                pageText = GTUtility.translate(pageKey);
-            } else if (pages[i] != null && StatCollector.canTranslate(pages[i])) {
-                pageText = GTUtility.translate(pages[i]);
-            } else {
-                pageText = pages[i] == null ? "" : pages[i];
-            }
-            pages[i] = pageText.replaceAll("<BR>", "\n");
+            String pageKeyOrText = pages[i] == null ? "" : pages[i];
+            String pageText = StatCollector.canTranslate(pageKeyOrText) ? GTUtility.translate(pageKeyOrText)
+                : pageKeyOrText;
+            pages[i] = pageText.replace("\\n", "\n");
             if (i < 48) {
                 if (pages[i].length() < 256) {
                     NBTList.appendTag(new NBTTagString(pages[i]));

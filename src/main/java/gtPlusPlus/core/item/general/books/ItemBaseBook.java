@@ -55,8 +55,8 @@ public class ItemBaseBook extends ItemWritableBook {
         }
         BookHandler.BookTemplate book = BookHandler.mBookMap.get(tItem.getItemDamage());
         if (book != null) {
-            String titleKey = "Book." + book.mTitle() + ".Name";
-            String title = StatCollector.canTranslate(titleKey) ? GTUtility.translate(titleKey) : book.mTitle();
+            String titleKey = book.mTitle();
+            String title = StatCollector.canTranslate(titleKey) ? GTUtility.translate(titleKey) : titleKey;
             return EnumChatFormatting.ITALIC + title;
         }
         return "GT++ Storybook";
