@@ -152,6 +152,8 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
             .addInfo("Similar structure to the Fusion Reactor")
             .addInfo("Any external casing can be a hatch/bus, unlike Fusion")
             .addInfo("Cyclotron Machine Casings around Cyclotron Coil Blocks")
+            .addSeparator()
+            .addInfo("§4DEPRECATED")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addCasingInfoMin("Cyclotron Machine Casings", 40, false)
             .addCasingInfoMin("Cyclotron Coil", 32, false)

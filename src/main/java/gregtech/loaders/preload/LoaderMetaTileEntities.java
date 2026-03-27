@@ -164,7 +164,9 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialElectrolyzer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialMolecularTransformer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialPackager;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialThermalCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialWireMill;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactoryLegacy;
@@ -806,6 +808,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "industrialwiremill.controller.tier.single",
                 "Industrial Wire Factory").getStackForm(1));
 
+        ItemList.LargeThermalRefinery.set(
+            new MTEIndustrialThermalCentrifuge(
+                LargeThermalRefinery.ID,
+                "industrialthermalcentrifuge.controller.tier.single",
+                "Industrial Thermal Centrifuge").getStackForm(1));
+
         ItemList.IndustrialPackager.set(
             new MTEIndustrialPackager(
                 IndustrialPackager.ID,
@@ -829,6 +837,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MegaChemicalReactor.ID,
                 "multimachine.mega-chemical-reactor",
                 "Mega Chemical Reactor").getStackForm(1));
+
+        ItemList.MolecularTransformer.set(
+            new MTEIndustrialMolecularTransformer(
+                MolecularTransformer.ID,
+                "moleculartransformer.controller.tier.single",
+                "Molecular Transformer").getStackForm(1L));
 
         ItemList.IntegratedOreFactory.set(
             new MTEIntegratedOreFactory(IntegratedOreFactory.ID, "multimachine.oreprocessor", "Integrated Ore Factory")
