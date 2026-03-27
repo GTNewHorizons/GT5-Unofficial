@@ -350,10 +350,10 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public void getExtraInfoData(List<String> info) {
-        info.add(translateToLocalFormatted("tt.infodata.multi.min_hatch_tier", calculateHatchTier()));
-        info.add(translateToLocalFormatted("tt.infodata.multi.last_seconds.0", formatUIEUt(transferredLast5Secs)));
-        info.add(translateToLocalFormatted("tt.infodata.multi.last_seconds.1", formatUIEUt(transferredLast30Secs)));
-        info.add(translateToLocalFormatted("tt.infodata.multi.last_seconds.2", formatUIEUt(transferredLast1Min)));
+        info.add(translateToLocalFormatted("tt.infodata.multi.min_hatch_tier.s", calculateHatchTier()));
+        info.add(translateToLocalFormatted("tt.infodata.multi.last_seconds.0.s", formatUIEUt(transferredLast5Secs)));
+        info.add(translateToLocalFormatted("tt.infodata.multi.last_seconds.1.s", formatUIEUt(transferredLast30Secs)));
+        info.add(translateToLocalFormatted("tt.infodata.multi.last_seconds.2.s", formatUIEUt(transferredLast1Min)));
     }
 
     @Override

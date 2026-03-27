@@ -883,7 +883,7 @@ GT5U.fusion.plasma=Plasma Output
 
 GT5U.tpm.parallelwindow=Open Parallel Configuration Window
 
-GT5U.EBF.heat=Heat capacity: §a%s §rK
+GT5U.EBF.heat.s=Heat capacity: §a%s §rK
 GT5U.coil.None=None
 GT5U.coil.ULV=None
 GT5U.coil.LV=Cupronickel
@@ -2406,7 +2406,7 @@ GT5U.hatch.outputme.cache_capacity_label=Current cache capacity: §e%s§r
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
 
-GT5U.multiblock.pollution=Pollution reduced to: §a%s §r%%
+GT5U.multiblock.pollution=Pollution reduced to
 GT5U.multiblock.energy=Stored Energy
 GT5U.multiblock.Progress=Progress
 GT5U.multiblock.efficiency=Efficiency

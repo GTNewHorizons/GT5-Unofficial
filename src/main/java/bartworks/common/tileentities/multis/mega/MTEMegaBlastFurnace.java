@@ -271,7 +271,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
 
     @Override
     public void getExtraInfoData(List<String> info) {
-        info.add(StatCollector.translateToLocalFormatted("GT5U.EBF.heat", formatNumber(this.mHeatingCapacity)));
+        info.add(StatCollector.translateToLocalFormatted("GT5U.EBF.heat.s", formatNumber(this.mHeatingCapacity)));
     }
 
     @Override

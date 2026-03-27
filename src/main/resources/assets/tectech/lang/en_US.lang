@@ -1967,10 +1967,10 @@ tt.infodata.multi.divisor.recipe_time.non_perfect_oc=Recipe time divisor per non
 tt.infodata.multi.currently_using=Currently using: %s EU/t
 tt.infodata.multi.capacity.heat=Heat Capacity: %s
 tt.infodata.multi.capacity.heat.effective=Effective Heat Capacity: %s
-tt.infodata.multi.min_hatch_tier=Min hatch tier: %s
-tt.infodata.multi.last_seconds.0=Last 5 seconds: %s EU/t
-tt.infodata.multi.last_seconds.1=Last 30 seconds: %s EU/t
-tt.infodata.multi.last_seconds.2=Last minute: %s EU/t
+tt.infodata.multi.min_hatch_tier.s=Min hatch tier: %s
+tt.infodata.multi.last_seconds.0.s=Last 5 seconds: %s EU/t
+tt.infodata.multi.last_seconds.1.s=Last 30 seconds: %s EU/t
+tt.infodata.multi.last_seconds.2.s=Last minute: %s EU/t
 
 ## Eye of Harmony
 tt.infodata.eoh.control_block_statistics=Control Block Statistics

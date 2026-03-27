@@ -53,25 +53,25 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
                 new TextWidget<>(
                     IKey.dynamic(
                         () -> StatCollector.translateToLocalFormatted(
-                            "gui.AntimatterForge.0",
+                            "gui.AntimatterForge.0.s",
                             numberFormat.format(containedSync.getLongValue())))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
                         () -> StatCollector.translateToLocalFormatted(
-                            "gui.AntimatterForge.1",
+                            "gui.AntimatterForge.1.s",
                             standardFormat.format(passiveConsSync.getLongValue())))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
                         () -> StatCollector.translateToLocalFormatted(
-                            "gui.AntimatterForge.2",
+                            "gui.AntimatterForge.2.s",
                             standardFormat.format(activeConsSync.getLongValue())))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
                         () -> StatCollector.translateToLocalFormatted(
-                            "gui.AntimatterForge.3",
+                            "gui.AntimatterForge.3.s",
                             numberFormat.format(amChangeSync.getLongValue())))));
 
     }

@@ -238,8 +238,8 @@ solarsystem.Ross128System=Система Ross128
 itemGroup.bw.MetaItems.0=BartWorks Circuit Overhaul предметы
 
 # info data
-BW.infoData.BioVat.expectedProduction=Ожидаемое производство: §a %s §r%%
-BW.infoData.BioVat.production=Производство
+BW.infoData.BioVat.expectedProduction.s=Ожидаемое производство: §a %s §r%%
+BW.infoData.BioVat.production.s=Производство: §a%s §§r%%
 
 BW.infoData.htr.helium_level=Уровень гелия: %sЛ / %sЛ
 BW.infoData.htr.problems=Проблемы: %s
