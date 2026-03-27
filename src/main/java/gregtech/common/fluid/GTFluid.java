@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -88,6 +89,15 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     public int getColor() {
         return (Math.max(0, Math.min(255, colorRGBA[0])) << 16) | (Math.max(0, Math.min(255, colorRGBA[1])) << 8)
             | Math.max(0, Math.min(255, colorRGBA[2]));
+    }
+
+    @Override
+    public String getLocalizedName(FluidStack stack) {
+        String key = getUnlocalizedName();
+        if (StatCollector.canTranslate(key)) {
+            return StatCollector.translateToLocal(key);
+        }
+        return localizedName != null && !localizedName.isEmpty() ? localizedName : super.getLocalizedName(stack);
     }
 
     // ----- IGTFluid interface implementations -----
