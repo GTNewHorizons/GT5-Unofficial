@@ -29,7 +29,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.ISBRWorldContext;
-import gregtech.api.render.SBRContextHolder;
 
 /**
  * Represents the rendering context for a single block during a render pass.
@@ -85,12 +84,14 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      */
     private float aoTopLeft, aoBottomLeft, aoBottomRight, aoTopRight;
 
+    private SBRWorldContext() {}
+
     /**
-     * Package-private constructor.
-     * <p>
-     * Instances should be obtained via {@link SBRContextHolder#getSBRWorldContext}.
+     * @return a new {@link ISBRWorldContext} instance
      */
-    public SBRWorldContext() {}
+    public static ISBRWorldContext create() {
+        return new SBRWorldContext();
+    }
 
     /**
      * Gets mixed ambient occlusion value from two inputs, with a ratio applied to the final result.
@@ -118,10 +119,11 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      * @param renderBlocks the {@link RenderBlocks} renderer to use
      * @return this context instance, configured with the given parameters
      */
+    @Override
     @SuppressWarnings("MethodWithTooManyParameters")
     public
     // Blame ISimpleBlockRenderingHandler.renderWorldBlock
-    SBRWorldContext setup(int x, int y, int z, Block block, int modelId, RenderBlocks renderBlocks) {
+    ISBRWorldContext setup(int x, int y, int z, Block block, int modelId, RenderBlocks renderBlocks) {
         super.setup(block, modelId, renderBlocks);
         this.blockAccess = renderBlocks.blockAccess;
         this.worldRenderPass = ForgeHooksClient.getWorldRenderPass();
@@ -187,7 +189,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      * This ensures deterministic rendering by clearing any leftover state
      * from previous use of this context instance.
      *
-     * @return this {@link SBRContextBase} instance for chaining
+     * @return this context instance for chaining
      */
     @Override
     public ISBRWorldContext reset() {
