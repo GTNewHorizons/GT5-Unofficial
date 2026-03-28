@@ -1345,6 +1345,7 @@ gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
 gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
 gt.recipe.beamcrafter=Beam Crafter
+gt.recipe.large_hadron_collider=Large Hadron Collider
 gt.recipe.foundry_modules=Foundry Module Components
 
 # Recipe categories
@@ -5485,100 +5486,6 @@ gregtech.effectMachineBoost=Machine Booster
 entity.gregtech.GT_Entity_Arrow.name= a GregTech arrow
 
 # Fluids
-# Gases
-fluid.LiquidOxygen=Liquid Oxygen
-fluid.LiquidNitrogen=Liquid Nitrogen
-fluid.Oxygen=Oxygen
-fluid.Hydrogen=Hydrogen
-fluid.Helium=Helium
-fluid.Argon=Argon
-fluid.Methane=Methane
-fluid.Nitrogen=Nitrogen
-fluid.Steam=Steam
-fluid.air=Air
-fluid.xenon=Xenon
-
-# Liquids — Petroleum & Fuels
-fluid.fuel=Diesel
-fluid.oil=Oil
-
-# Liquids — Industrial / Chemical
-fluid.creosote=Creosote Oil
-
-# Liquids — Biological / Food
-fluid.seedoil=Seed Oil
-fluid.for.honey=Honey
-fluid.biomass=Biomass
-fluid.bioethanol=Bio Ethanol
-fluid.milk=Milk
-
-# Liquids — Special / Endgame
-fluid.antimatter=Antimatter
-fluid.PrimordialMatter=Primordial Matter
-fluid.QuarkGluonPlasma=Quark-Gluon Plasma
-fluid.PhononMedium=Phonon Medium
-fluid.PhononCrystalSolution=Phonon Crystal Solution
-fluid.RawStarMatter=Raw Star Matter
-fluid.Space=Space
-fluid.Time=Time
-
-# Slurry
-fluid.ice=Crushed Ice
-
-fluid.FermentedBacterialSludge=Fermented Bacterial Sludge
-fluid.NitricAcid=Nitric Acid
-fluid.EnrichedBacterialSludge=Enriched Bacterial Sludge
-fluid.Ammonia=Ammonia
-fluid.Pollution=Pollution
-fluid.SodiumPotassium=Sodium Potassium
-fluid.Concrete=Concrete
-fluid.mushroomStew=Mushroom Stew
-fluid.Ethyl Chloroformate=Ethyl Chloroformate
-fluid.Ethyl Carbamate=Ethyl Carbamate
-fluid.Ethyl N-nitrocarbamate=Ethyl N-nitrocarbamate
-fluid.Ammonium N-nitrourethane=Ammonium N-nitrourethane
-fluid.Trinitramid=Trinitramid
-fluid.Ammonia Boronfluoride Solution=Ammonia Boronfluoride Solution
-fluid.Sodium Tetrafluoroborate=Sodium Tetrafluoroborate
-fluid.Tetrafluoroborate=Tetrafluoroborate
-fluid.Ethyl Acetate=Ethyl Acetate
-fluid.Acetylhydrazine=Acetylhydrazine
-fluid.Unsymmetrical Dimethylhydrazine=Unsymmetrical Dimethylhydrazine
-fluid.Monomethylhydrazine Fuel Mix=Monomethylhydrazine Fuel Mix
-fluid.Unsymmetrical Dimethylhydrazine Fuel Mix=Unsymmetrical Dimethylhydrazine Fuel Mix
-fluid.Boron Trifluoride=Boron Trifluoride
-fluid.Tert-Butylbenzene=Tert-Butylbenzene
-fluid.2-tert-butyl-anthraquinone=2-tert-butyl-anthraquinone
-fluid.2-tert-butyl-anthrahydroquinone=2-tert-butyl-anthrahydroquinone
-fluid.Hydrogen Peroxide=Hydrogen Peroxide
-fluid.hydrazine=Hydrazine
-fluid.Dimethyl Sulfate=Dimethyl Sulfate
-fluid.Ethyl Dinitrocarbamate=Ethyl Dinitrocarbamate
-fluid.Ammonium Dinitramide=Ammonium Dinitramide
-fluid.LMP-103S=LMP-103S
-fluid.O-Xylene=O-Xylene
-# GT_MetaGenerated_Item_98 cells
-fluid.EnzymesSollution=Enzyme Solution
-fluid.FluorecentdDNA=Fluorescent DNA
-# No cell, most from bart bio
-fluid.Monomethylhydrazine=Monomethylhydrazine
-fluid.GelatinMixture=GelatinMixture
-fluid.sludge=sludge
-fluid.Formaldehyde=Formaldehyde
-fluid.MeatExtract=MeatExtract
-# No recipe
-fluid.CompressedOxygen=CompressedOxygen
-fluid.CompressedNitrogen=CompressedNitrogen
-fluid.redplasma=redplasma
-fluid.tile.fluidBlockSludge=fluidBlockSludge
-# No Texture
-fluid.guano=guano
-fluid.poo=poo
-fluid.sewerage=sewerage
-fluid.fuelgc=fuelgc
-fluid.dirtywater=dirtywater
-fluid.oilgc=oilgc
-
 fluid.aniline=Aniline
 fluid.bioethanol=Bio Ethanol
 fluid.biomass=Biomass
@@ -7400,31 +7307,31 @@ gt.BWCircuitProgrammer.name=Circuit Programmer
 gt.BWCircuitProgrammer.tooltip=Programs Integrated Circuits
 
 # Printer Manual
-gt.Book.Printer Manual V2.0.Name=Printer Manual V2.0
-gt.Book.Printer Manual V2.0.Page00=This Manual explains the different Functionalities the GregTech Printing Factory has built in, which are not in NEI. Most got NEI Support now, but there is still some left without it.
-gt.Book.Printer Manual V2.0.Page01=1. Coloring Items and Blocks: You know those Crafting Recipes, which have a dye surrounded by 8 Item to dye them? Or the ones which have just one Item and one Dye in the Grid? Those two Recipe Types can be cheaply automated using the Printer.
-gt.Book.Printer Manual V2.0.Page02=The Colorization Functionality even optimizes the Recipes, which normally require 8 Items + 1 Dye to 1 Item and an 8th of the normally used Dye in Fluid Form, isn't that awesome?
-gt.Book.Printer Manual V2.0.Page03=2. Copying Books: This Task got slightly harder. The first Step is putting the written and signed Book inside the Scanner with a Data Stick ready to receive the Data.
-gt.Book.Printer Manual V2.0.Page04=Now insert the Stick into the Data Slot of the Printer and add 3 pieces of Paper together with 144 Liters of actual Ink Fluid. Water mixed and chemical Dyes won't work on Paper without messing things up!
-gt.Book.Printer Manual V2.0.Page05=You got a stack of Pages for your new Book, just put them into the Assembler with some Glue and a piece of Leather for the Binding, and you receive an identical copy of the Book, which would stack together with the original.
-gt.Book.Printer Manual V2.0.Page06=3. Renaming Items: This Functionality is no longer Part of the Printer. There is now a Name Mold for the Forming Press to imprint a Name into an Item, just rename the Mold in an Anvil and use it in the Forming Press on any Item.
-gt.Book.Printer Manual V2.0.Page07=4. Crafting of Books, Maps, Nametags etc etc etc: Those Recipes moved to other Machines, just look them up in NEI.
+gt.book.printer_manual.name=Printer Manual V2.0
+gt.book.printer_manual.page00=This Manual explains the different Functionalities the GregTech Printing Factory has built in, which are not in NEI. Most got NEI Support now, but there is still some left without it.
+gt.book.printer_manual.page01=1. Coloring Items and Blocks: You know those Crafting Recipes, which have a dye surrounded by 8 Item to dye them? Or the ones which have just one Item and one Dye in the Grid? Those two Recipe Types can be cheaply automated using the Printer.
+gt.book.printer_manual.page02=The Colorization Functionality even optimizes the Recipes, which normally require 8 Items + 1 Dye to 1 Item and an 8th of the normally used Dye in Fluid Form, isn't that awesome?
+gt.book.printer_manual.page03=2. Copying Books: This Task got slightly harder. The first Step is putting the written and signed Book inside the Scanner with a Data Stick ready to receive the Data.
+gt.book.printer_manual.page04=Now insert the Stick into the Data Slot of the Printer and add 3 pieces of Paper together with 144 Liters of actual Ink Fluid. Water mixed and chemical Dyes won't work on Paper without messing things up!
+gt.book.printer_manual.page05=You got a stack of Pages for your new Book, just put them into the Assembler with some Glue and a piece of Leather for the Binding, and you receive an identical copy of the Book, which would stack together with the original.
+gt.book.printer_manual.page06=3. Renaming Items: This Functionality is no longer Part of the Printer. There is now a Name Mold for the Forming Press to imprint a Name into an Item, just rename the Mold in an Anvil and use it in the Forming Press on any Item.
+gt.book.printer_manual.page07=4. Crafting of Books, Maps, Nametags etc etc etc: Those Recipes moved to other Machines, just look them up in NEI.
 
 # Punch Card Manual
-gt.Book.Punch Card Manual V0.0.Name=Punch Card Manual V0.0
-gt.Book.Punch Card Manual V0.0.Page00=This Manual will explain the Functionality of the Punch Cards, once they are fully implemented. And no, they won't be like the IRL Punch Cards. This is just a current Idea Collection.
-gt.Book.Punch Card Manual V0.0.Page01=(i1&&i2)?o1=15:o1=0;=10
-gt.Book.Punch Card Manual V0.0.Page02=ignore all Whitespace Characters, use Long for saving the Numbers
-gt.Book.Punch Card Manual V0.0.Page03=&& || ^^ & | ^ ! ++ -- + - % / // * ** << >> >>> < > <= >= == !=  ~ ( ) ?: , ; ;= ;=X; = i0 i1 i2 i3 i4 i5 o0 o1 o2 o3 o4 o5 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 A B C D E F
-gt.Book.Punch Card Manual V0.0.Page04='0' = false, 'everything but 0' = true, '!' turns '0' into '1' and everything else into '0'
-gt.Book.Punch Card Manual V0.0.Page05=',' is just a separator for multiple executed Codes in a row.
-gt.Book.Punch Card Manual V0.0.Page06=';' means that the Program waits until the next tick before continuing. ';=10' and ';=10;' both mean that it will wait 10 Ticks instead of 1. And ';=0' or anything < 0 will default to 0.
-gt.Book.Punch Card Manual V0.0.Page07=If the '=' Operator is used within Brackets, it returns the value the variable has been set to.
-gt.Book.Punch Card Manual V0.0.Page08=The Program saves the Char Index of the current Task, the 10 Variables (which reset to 0 as soon as the Program Loop stops), the 10 Member Variables and the remaining waiting Time in its NBT.
-gt.Book.Punch Card Manual V0.0.Page09=A = 10, B = 11, C = 12, D = 13, E = 14, F = 15, just for Hexadecimal Space saving, since Redstone has only 4 Bits.
-gt.Book.Punch Card Manual V0.0.Page10=For implementing Loops you just need 1 Punch Card per Loop, these Cards can restart once they are finished, depending on how many other Cards there are in the Program Loop you inserted your Card into, since it will process them procedurally.
-gt.Book.Punch Card Manual V0.0.Page11=A Punch Card Processor can run up to four Loops, each with the length of seven Punch Cards, parallel.
-gt.Book.Punch Card Manual V0.0.Page12=Why does the Punch Card need Ink to be made, you ask? Because the empty one needs to have some lines on, and the for the punched one it prints the Code to execute in a human readable format on the Card.
+gt.book.punch_card_manual_v0.name=Punch Card Manual V0.0
+gt.book.punch_card_manual_v0.page00=This Manual will explain the Functionality of the Punch Cards, once they are fully implemented. And no, they won't be like the IRL Punch Cards. This is just a current Idea Collection.
+gt.book.punch_card_manual_v0.page01=(i1&&i2)?o1=15:o1=0;=10
+gt.book.punch_card_manual_v0.page02=ignore all Whitespace Characters, use Long for saving the Numbers
+gt.book.punch_card_manual_v0.page03=&& || ^^ & | ^ ! ++ -- + - % / // * ** << >> >>> < > <= >= == !=  ~ ( ) ?: , ; ;= ;=X; = i0 i1 i2 i3 i4 i5 o0 o1 o2 o3 o4 o5 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 A B C D E F
+gt.book.punch_card_manual_v0.page04='0' = false, 'everything but 0' = true, '!' turns '0' into '1' and everything else into '0'
+gt.book.punch_card_manual_v0.page05=',' is just a separator for multiple executed Codes in a row.
+gt.book.punch_card_manual_v0.page06=';' means that the Program waits until the next tick before continuing. ';=10' and ';=10;' both mean that it will wait 10 Ticks instead of 1. And ';=0' or anything < 0 will default to 0.
+gt.book.punch_card_manual_v0.page07=If the '=' Operator is used within Brackets, it returns the value the variable has been set to.
+gt.book.punch_card_manual_v0.page08=The Program saves the Char Index of the current Task, the 10 Variables (which reset to 0 as soon as the Program Loop stops), the 10 Member Variables and the remaining waiting Time in its NBT.
+gt.book.punch_card_manual_v0.page09=A = 10, B = 11, C = 12, D = 13, E = 14, F = 15, just for Hexadecimal Space saving, since Redstone has only 4 Bits.
+gt.book.punch_card_manual_v0.page10=For implementing Loops you just need 1 Punch Card per Loop, these Cards can restart once they are finished, depending on how many other Cards there are in the Program Loop you inserted your Card into, since it will process them procedurally.
+gt.book.punch_card_manual_v0.page11=A Punch Card Processor can run up to four Loops, each with the length of seven Punch Cards, parallel.
+gt.book.punch_card_manual_v0.page12=Why does the Punch Card need Ink to be made, you ask? Because the empty one needs to have some lines on, and the for the punched one it prints the Code to execute in a human readable format on the Card.
 
 # Microwave Oven Manual
 gt.Book.Microwave Oven Manual.Name=Microwave Oven Manual
