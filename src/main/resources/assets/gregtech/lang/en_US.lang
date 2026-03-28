@@ -5476,37 +5476,55 @@ gregtech.effectMachineBoost=Machine Booster
 
 entity.gregtech.GT_Entity_Arrow.name= a GregTech arrow
 
-fluid.Xenon=Xenon
+# Fluids
+# Gases
+fluid.LiquidOxygen=Liquid Oxygen
+fluid.LiquidNitrogen=Liquid Nitrogen
+fluid.Oxygen=Oxygen
+fluid.Hydrogen=Hydrogen
+fluid.Helium=Helium
+fluid.Argon=Argon
+fluid.Methane=Methane
+fluid.Nitrogen=Nitrogen
+fluid.Steam=Steam
+fluid.air=Air
+fluid.xenon=Xenon
+
+# Liquids — Petroleum & Fuels
+fluid.fuel=Diesel
+fluid.oil=Oil
+
+# Liquids — Industrial / Chemical
+fluid.creosote=Creosote Oil
+
+# Liquids — Biological / Food
+fluid.seedoil=Seed Oil
+fluid.for.honey=Honey
+fluid.biomass=Biomass
+fluid.bioethanol=Bio Ethanol
+fluid.milk=Milk
+
+# Liquids — Special / Endgame
+fluid.antimatter=Antimatter
+fluid.PrimordialMatter=Primordial Matter
+fluid.QuarkGluonPlasma=Quark-Gluon Plasma
+fluid.PhononMedium=Phonon Medium
+fluid.PhononCrystalSolution=Phonon Crystal Solution
+fluid.RawStarMatter=Raw Star Matter
+fluid.Space=Space
+fluid.Time=Time
+
+# Slurry
+fluid.ice=Crushed Ice
+
 fluid.FermentedBacterialSludge=Fermented Bacterial Sludge
 fluid.NitricAcid=Nitric Acid
 fluid.EnrichedBacterialSludge=Enriched Bacterial Sludge
 fluid.Ammonia=Ammonia
-fluid.Neon=Neon
-fluid.Oganesson=Oganesson
-fluid.Aqua Regia=Aqua Regia
-fluid.Ammonium Chloride=Ammonium Chloride
-fluid.Platinum Concentrate=Platinum Concentrate
-fluid.Sodium Formate=Sodium Formate
-fluid.Formic Acid=Formic Acid
-fluid.Palladium Enriched Ammonia=Palladium Enriched Ammonia
-fluid.Ruthenium Tetroxide=Ruthenium Tetroxide
-fluid.Hot Ruthenium Tetroxide Solution=Hot Ruthenium Tetroxide Solution
-fluid.Ruthenium Tetroxide Solution=Ruthenium Tetroxide Solution
-fluid.Rhodium Sulfate=Rhodium Sulfate
-fluid.Rhodium Sulfate Solution=Rhodium Sulfate Solution
-fluid.Calcium Chloride=Calcium Chloride
-fluid.Acidic Osmium Solution=Acidic Osmium Solution
-fluid.Osmium Solution=Osmium Solution
-fluid.Acidic Iridium Solution=Acidic Iridium Solution
-fluid.Rhodium Salt Solution=Rhodium Salt Solution
-fluid.Rhodium Filter Cake Solution=Rhodium Filter Cake Solution
 fluid.Pollution=Pollution
 fluid.SodiumPotassium=Sodium Potassium
 fluid.Concrete=Concrete
 fluid.mushroomStew=Mushroom Stew
-
-fluid.Sodium Tungstate=Sodium Tungstate
-fluid.Phosgene=Phosgene
 fluid.Ethyl Chloroformate=Ethyl Chloroformate
 fluid.Ethyl Carbamate=Ethyl Carbamate
 fluid.Ethyl N-nitrocarbamate=Ethyl N-nitrocarbamate
@@ -5530,24 +5548,15 @@ fluid.Dimethyl Sulfate=Dimethyl Sulfate
 fluid.Ethyl Dinitrocarbamate=Ethyl Dinitrocarbamate
 fluid.Ammonium Dinitramide=Ammonium Dinitramide
 fluid.LMP-103S=LMP-103S
-fluid.Nitromethane=Nitromethane
 fluid.O-Xylene=O-Xylene
 # GT_MetaGenerated_Item_98 cells
-fluid.UnknownNutrientAgar=Unknown Nutrient Agar
-fluid.SeaweedBroth=Seaweed Broth
 fluid.EnzymesSollution=Enzyme Solution
-fluid.escherichiakolifluid=eColi Bacteria Fluid
-fluid.Penicillin=Penicillin
 fluid.FluorecentdDNA=Fluorescent DNA
-fluid.Polymerase=Polymerase
 # No cell, most from bart bio
 fluid.Monomethylhydrazine=Monomethylhydrazine
-fluid.binnibacteriafluid=binnibacteriafluid
-fluid.barnadafisarboriatorisfluid=barnadafisarboriatorisfluid
 fluid.GelatinMixture=GelatinMixture
 fluid.sludge=sludge
 fluid.Formaldehyde=Formaldehyde
-fluid.tcetieisfucusserratusfluid=tcetieisfucusserratusfluid
 fluid.MeatExtract=MeatExtract
 # No recipe
 fluid.CompressedOxygen=CompressedOxygen
@@ -5581,7 +5590,6 @@ fluid.acidic osmium solution=Acidic Osmium Solution
 fluid.acidicised 1,4-butanediol=Acidicised 1,4-Butanediol
 fluid.activatednetherite=Activated Netherite
 fluid.advancedglue=Advanced Glue
-fluid.air=Air
 fluid.allylchloride=Allyl Chloride
 fluid.ammonium chloride=Ammonium Chloride
 fluid.ammonium nitrate solution=Ammonium Nitrate Solution
@@ -5667,6 +5675,8 @@ fluid.dinitrogentetroxide=Dinitrogen Tetroxide
 fluid.dinitrotoluene=Dinitrotoluene
 fluid.diphenylisophtalate=Diphenyl Isophthalate
 fluid.diphenylmethanediisocyanatemixture=Diphenylmethane Diisocyanate Mixture
+
+# Dyes
 fluid.dye.chemical.dyeblack=Chemical Black Dye
 fluid.dye.chemical.dyeblue=Chemical Blue Dye
 fluid.dye.chemical.dyebrown=Chemical Brown Dye
@@ -5699,6 +5709,7 @@ fluid.dye.watermixed.dyepurple=Water Mixed Purple Dye
 fluid.dye.watermixed.dyered=Water Mixed Red Dye
 fluid.dye.watermixed.dyewhite=Water Mixed White Dye
 fluid.dye.watermixed.dyeyellow=Water Mixed Yellow Dye
+
 fluid.dysprosium chloride concentrate=Dysprosium Chloride Concentrate
 fluid.dysprosium extracting nano resin=Dysprosium Extracting Nano Resin
 fluid.enriched naquadah goo=Enriched Naquadah Goo
@@ -5933,6 +5944,8 @@ fluid.moderatelysteamcracked.lightfuel=Moderately Steam-Cracked Light Fuel
 fluid.moderatelysteamcracked.naphtha=Moderately Steam-Cracked Naphtha
 fluid.moderatelysteamcracked.propane=Moderately Steam-Cracked Propane
 fluid.moderatelysteamcracked.propene=Moderately Steam-Cracked Propene
+
+# Molten
 fluid.molten.abyssalalloy=Molten Abyssal Alloy
 fluid.molten.aceticanhydride=Acetic Anhydride
 fluid.molten.adamantium=Molten Adamantium
@@ -6384,6 +6397,7 @@ fluid.molten.zircaloy-4=Molten Zircaloy-4
 fluid.molten.zirconium=Molten Zirconium
 fluid.molten.zirconiumcarbide=Molten Zirconium Carbide
 fluid.molten.zn-th alloy=Molten Zn-Th Alloy
+
 fluid.moltenexohalkonitebase=Molten Exo-Halkonite Steel Preparation Base
 fluid.mtbereactionmixture(butane)=MTBE Reaction Mixture (Butane)
 fluid.mtbereactionmixture(butene)=MTBE Reaction Mixture (Butene)
@@ -6451,6 +6465,8 @@ fluid.phosphoricacid_gt5u=Phosphoric Acid
 fluid.phosphorustrichloride=Phosphorus Trichloride
 fluid.phtalicacid=Phthalic Acid
 fluid.pineoil=Pine Oil
+
+# Plasma
 fluid.plasma.advancednitinol=Advanced Nitinol Plasma
 fluid.plasma.aluminium=Aluminium Plasma
 fluid.plasma.americium=Americium Plasma
@@ -6584,6 +6600,7 @@ fluid.plasma.ytterbium=Ytterbium Plasma
 fluid.plasma.yttrium=Yttrium Plasma
 fluid.plasma.zinc=Zinc Plasma
 fluid.plasma.zirconium=Zirconium Plasma
+
 fluid.platinum concentrate=Platinum Concentrate
 fluid.plutonium based liquid fuel=Plutonium Based Liquid Fuel
 fluid.plutonium based liquid fuel (depleted)=Plutonium Based Liquid Fuel (Depleted)
@@ -6596,6 +6613,8 @@ fluid.polyurethaneresin=Polyurethane Resin
 fluid.polyvinylacetate=Polyvinyl Acetate
 fluid.poornetherwaste=Poor Nether Waste
 fluid.potassium permanganate solution=Potassium Permanganate Solution
+
+# Potions
 fluid.potion.alcopops=Alcopops
 fluid.potion.applejuice=Apple Juice
 fluid.potion.awkward=Awkward Brew
@@ -6846,7 +6865,6 @@ fluid.whitedwarfmatter=White Dwarf Matter
 fluid.woodgas=Wood Gas
 fluid.woodtar=Wood Tar
 fluid.woodvinegar=Wood Vinegar
-fluid.xenon=Xenon
 fluid.xenoxene=Xenoxene
 fluid.ytterbium chloride concentrate=Ytterbium Chloride Concentrate
 fluid.ytterbium extracting nano resin=Ytterbium Extracting Nano Resin
@@ -8467,269 +8485,3 @@ gt.Book.Microwave Oven Manual.Page04=Do not insert any Metals. It might result i
 gt.Book.Microwave Oven Manual.Page05=Do not dry Animals with it. It will result in a Hot Dog, no matter which Animal you put into it.
 gt.Book.Microwave Oven Manual.Page06=Do not insert inflammable Objects. The Oven will catch on Fire.
 gt.Book.Microwave Oven Manual.Page07=Do not insert Explosives such as Eggs. Just don't.
-
-# Fluids
-# Gases
-fluid.Air=Air
-fluid.LiquidOxygen=Liquid Oxygen
-fluid.LiquidNitrogen=Liquid Nitrogen
-fluid.LiquidAir=Liquid Air
-fluid.Oxygen=Oxygen
-fluid.Hydrogen=Hydrogen
-fluid.Deuterium=Deuterium
-fluid.Tritium=Tritium
-fluid.Helium=Helium
-fluid.Helium-3=Helium-3
-fluid.Argon=Argon
-fluid.Radon=Radon
-fluid.Fluorine=Fluorine
-fluid.Methane=Methane
-fluid.Nitrogen=Nitrogen
-fluid.NitrogenDioxide=Nitrogen Dioxide
-fluid.Steam=Steam
-fluid.gas_natural_gas=Natural Gas
-fluid.gas_sulfuricgas=Sulfuric Gas
-fluid.gas_gas=Refinery Gas
-fluid.liquid_hydricsulfur=Hydrogen Sulfide
-
-# Liquids — Petroleum & Fuels
-fluid.liquid_extra_heavy_oil=Very Heavy Oil
-fluid.liquid_heavy_oil=Heavy Oil
-fluid.liquid_medium_oil=Raw Oil
-fluid.liquid_light_oil=Light Oil
-fluid.liquid_naphtha=Naphtha
-fluid.liquid_sulfuricnaphtha=Sulfuric Naphtha
-fluid.liquid_sufluriclight_fuel=Sulfuric Light Fuel
-fluid.liquid_sulfuricheavy_fuel=Sulfuric Heavy Fuel
-fluid.liquid_light_fuel=Light Fuel
-fluid.liquid_heavy_fuel=Heavy Fuel
-fluid.liquid_lpg=LPG
-fluid.fuel=Diesel
-fluid.NitroFuel=Cetane-Boosted Diesel
-fluid.oil=Oil
-fluid.liquid_toluene=Toluene
-fluid.liquid_epichlorhydrin=Epichlorohydrin
-fluid.liquid_nitrationmixture=Nitration Mixture
-fluid.liquid_drillingfluid=Drilling Fluid
-
-# Liquids — Industrial / Chemical
-fluid.Titaniumtetrachloride=Titaniumtetrachloride
-fluid.Chlorine=Chlorine
-fluid.Mercury=Mercury
-fluid.SodiumPersulfate=Sodium Persulfate
-fluid.Glyceryl=Glyceryl Trinitrate
-fluid.sulfuricacid=Sulfuric Acid
-fluid.lubricant=Lubricant
-fluid.creosote=Creosote Oil
-fluid.UUAmplifier=UU Amplifier
-fluid.mcguffium=Mc Guffium 239
-fluid.refinedGlue=Refined Glue
-fluid.charcoal_byproducts=Charcoal Byproducts
-fluid.molten.bisphenol_a=Molten Bisphenol A
-fluid.liquid_sodium=Liquid Sodium
-
-# Liquids — Biological / Food
-fluid.seedoil=Seed Oil
-fluid.fishoil=Fish Oil
-fluid.for.honey=Honey
-fluid.biomass=Biomass
-fluid.bioethanol=Bio Ethanol
-fluid.milk=Milk
-fluid.hotfryingoil=Hot Frying Oil
-
-# Liquids — Special / Endgame
-fluid.fieryblood=Fiery Blood
-fluid.holywater=Holy Water
-fluid.DimensionallyTranscendentResidue=Dimensionally Transcendent Residue
-fluid.ExcitedDTCC=Excited Dimensionally Transcendent Crude Catalyst
-fluid.ExcitedDTPC=Excited Dimensionally Transcendent Prosaic Catalyst
-fluid.ExcitedDTRC=Excited Dimensionally Transcendent Resplendent Catalyst
-fluid.ExcitedDTEC=Excited Dimensionally Transcendent Exotic Catalyst
-fluid.ExcitedDTSC=Excited Dimensionally Transcendent Stellar Catalyst
-fluid.antimatter=Antimatter
-fluid.protomatter=Protomatter
-fluid.PrimordialMatter=Primordial Matter
-fluid.QuarkGluonPlasma=Quark-Gluon Plasma
-fluid.PhononMedium=Phonon Medium
-fluid.PhononCrystalSolution=Phonon Crystal Solution
-fluid.RawStarMatter=Raw Star Matter
-fluid.Space=Space
-fluid.Time=Time
-
-# Slurry
-fluid.ice=Crushed Ice
-
-# Molten
-fluid.molten.glass=Molten Glass
-fluid.molten.redstone=Molten Redstone
-fluid.molten.blaze=Molten Blaze
-fluid.wet.concrete=Wet Concrete
-fluid.molten.granitered=Molten Red Granite
-fluid.molten.graniteblack=Molten Black Granite
-fluid.molten.cosmicneutronium=Molten Cosmic Neutronium
-fluid.molten.ichorium=Molten Ichorium
-
-# Plasma
-fluid.plasma.infinity=Infinity Plasma
-fluid.plasma.bedrockium=Bedrockium Plasma
-fluid.plasma.cosmicneutronium=Cosmic Neutronium Plasma
-fluid.plasma.ichorium=Ichorium Plasma
-
-# Dyes
-fluid.dye.chemical.dyeblack=Chemical Black Dye
-fluid.dye.chemical.dyeblue=Chemical Blue Dye
-fluid.dye.chemical.dyebrown=Chemical Brown Dye
-fluid.dye.chemical.dyecyan=Chemical Cyan Dye
-fluid.dye.chemical.dyegray=Chemical Gray Dye
-fluid.dye.chemical.dyegreen=Chemical Green Dye
-fluid.dye.chemical.dyelightblue=Chemical Light Blue Dye
-fluid.dye.chemical.dyelightgray=Chemical Light Gray Dye
-fluid.dye.chemical.dyelime=Chemical Lime Dye
-fluid.dye.chemical.dyemagenta=Chemical Magenta Dye
-fluid.dye.chemical.dyeorange=Chemical Orange Dye
-fluid.dye.chemical.dyepink=Chemical Pink Dye
-fluid.dye.chemical.dyepurple=Chemical Purple Dye
-fluid.dye.chemical.dyered=Chemical Red Dye
-fluid.dye.chemical.dyewhite=Chemical White Dye
-fluid.dye.chemical.dyeyellow=Chemical Yellow Dye
-fluid.dye.watermixed.dyeblack=Water Mixed Black Dye
-fluid.dye.watermixed.dyeblue=Water Mixed Blue Dye
-fluid.dye.watermixed.dyebrown=Water Mixed Brown Dye
-fluid.dye.watermixed.dyecyan=Water Mixed Cyan Dye
-fluid.dye.watermixed.dyegray=Water Mixed Gray Dye
-fluid.dye.watermixed.dyegreen=Water Mixed Green Dye
-fluid.dye.watermixed.dyelightblue=Water Mixed Light Blue Dye
-fluid.dye.watermixed.dyelightgray=Water Mixed Light Gray Dye
-fluid.dye.watermixed.dyelime=Water Mixed Lime Dye
-fluid.dye.watermixed.dyemagenta=Water Mixed Magenta Dye
-fluid.dye.watermixed.dyeorange=Water Mixed Orange Dye
-fluid.dye.watermixed.dyepink=Water Mixed Pink Dye
-fluid.dye.watermixed.dyepurple=Water Mixed Purple Dye
-fluid.dye.watermixed.dyered=Water Mixed Red Dye
-fluid.dye.watermixed.dyewhite=Water Mixed White Dye
-fluid.dye.watermixed.dyeyellow=Water Mixed Yellow Dye
-fluid.squidink=Squid Ink
-fluid.indigo=Indigo Dye
-
-# Potions
-fluid.potion.awkward=Awkward Brew
-fluid.potion.thick=Thick Brew
-fluid.potion.mundane=Mundane Brew
-
-fluid.potion.damage=Harming Brew
-fluid.potion.damage.strong=Strong Harming Brew
-fluid.potion.damage.splash=Splash Harming Brew
-fluid.potion.damage.strong.splash=Strong Splash Harming Brew
-
-fluid.potion.health=Healing Brew
-fluid.potion.health.strong=Strong Healing Brew
-fluid.potion.health.splash=Splash Healing Brew
-fluid.potion.health.strong.splash=Strong Splash Healing Brew
-
-fluid.potion.speed=Swiftness Brew
-fluid.potion.speed.strong=Strong Swiftness Brew
-fluid.potion.speed.long=Stretched Swiftness Brew
-fluid.potion.speed.splash=Splash Swiftness Brew
-fluid.potion.speed.strong.splash=Strong Splash Swiftness Brew
-fluid.potion.speed.long.splash=Stretched Splash Swiftness Brew
-
-fluid.potion.strength=Strength Brew
-fluid.potion.strength.strong=Strong Strength Brew
-fluid.potion.strength.long=Stretched Strength Brew
-fluid.potion.strength.splash=Splash Strength Brew
-fluid.potion.strength.strong.splash=Strong Splash Strength Brew
-fluid.potion.strength.long.splash=Stretched Splash Strength Brew
-
-fluid.potion.regen=Regenerating Brew
-fluid.potion.regen.strong=Strong Regenerating Brew
-fluid.potion.regen.long=Stretched Regenerating Brew
-fluid.potion.regen.splash=Splash Regenerating Brew
-fluid.potion.regen.strong.splash=Strong Splash Regenerating Brew
-fluid.potion.regen.long.splash=Stretched Splash Regenerating Brew
-
-fluid.potion.poison=Poisonous Brew
-fluid.potion.poison.strong=Strong Poisonous Brew
-fluid.potion.poison.long=Stretched Poisonous Brew
-fluid.potion.poison.splash=Splash Poisonous Brew
-fluid.potion.poison.strong.splash=Strong Splash Poisonous Brew
-fluid.potion.poison.long.splash=Stretched Splash Poisonous Brew
-
-fluid.potion.fireresistance=Fire Resistant Brew
-fluid.potion.fireresistance.long=Stretched Fire Resistant Brew
-fluid.potion.fireresistance.splash=Splash Fire Resistant Brew
-fluid.potion.fireresistance.long.splash=Stretched Splash Fire Resistant Brew
-
-fluid.potion.nightvision=Night Vision Brew
-fluid.potion.nightvision.long=Stretched Night Vision Brew
-fluid.potion.nightvision.splash=Splash Night Vision Brew
-fluid.potion.nightvision.long.splash=Stretched Splash Night Vision Brew
-
-fluid.potion.weakness=Weakening Brew
-fluid.potion.weakness.long=Stretched Weakening Brew
-fluid.potion.weakness.splash=Splash Weakening Brew
-fluid.potion.weakness.long.splash=Stretched Splash Weakening Brew
-
-fluid.potion.slowness=Lame Brew
-fluid.potion.slowness.long=Stretched Lame Brew
-fluid.potion.slowness.splash=Splash Lame Brew
-fluid.potion.slowness.long.splash=Stretched Splash Lame Brew
-
-fluid.potion.waterbreathing=Fishy Brew
-fluid.potion.waterbreathing.long=Stretched Fishy Brew
-fluid.potion.waterbreathing.splash=Splash Fishy Brew
-fluid.potion.waterbreathing.long.splash=Stretched Splash Fishy Brew
-
-fluid.potion.invisibility=Invisible Brew
-fluid.potion.invisibility.long=Stretched Invisible Brew
-fluid.potion.invisibility.splash=Splash Invisible Brew
-fluid.potion.invisibility.long.splash=Stretched Splash Invisible Brew
-
-# Beverages (bottles)
-fluid.potion.purpledrink=Purple Drink
-fluid.potion.grapejuice=Grape Juice
-fluid.potion.wine=Wine
-fluid.potion.vinegar=Vinegar
-fluid.potion.potatojuice=Potato Juice
-fluid.potion.vodka=Vodka
-fluid.potion.leninade=Leninade
-fluid.potion.mineralwater=Mineral Water
-fluid.potion.saltywater=Salty Water
-fluid.potion.reedwater=Reed Water
-fluid.potion.rum=Rum
-fluid.potion.piratebrew=Pirate Brew
-fluid.potion.hopsjuice=Hops Juice
-fluid.potion.darkbeer=Dark Beer
-fluid.potion.dragonblood=Dragon Blood
-fluid.potion.wheatyjuice=Wheaty Juice
-fluid.potion.scotch=Scotch
-fluid.potion.glenmckenner=Glen McKenner
-fluid.potion.wheatyhopsjuice=Wheaty Hops Juice
-fluid.potion.beer=Beer
-fluid.potion.chillysauce=Chilly Sauce
-fluid.potion.hotsauce=Hot Sauce
-fluid.potion.diabolosauce=Diabolo Sauce
-fluid.potion.diablosauce=Diablo Sauce
-fluid.potion.diablosauce.strong=Old Man Snitches glitched Diablo Sauce
-fluid.potion.applejuice=Apple Juice
-fluid.potion.cider=Cider
-fluid.potion.goldenapplejuice=Golden Apple Juice
-fluid.potion.goldencider=Golden Cider
-fluid.potion.idunsapplejuice=Idun's Apple Juice
-fluid.potion.notchesbrew=Notches Brew
-fluid.potion.lemonjuice=Lemon Juice
-fluid.potion.limoncello=Limoncello
-fluid.potion.lemonade=Lemonade
-fluid.potion.alcopops=Alcopops
-fluid.potion.cavejohnsonsgrenadejuice=Cave Johnsons Grenade Juice
-
-# Beverages (thermos cans)
-fluid.potion.coffee=Coffee
-fluid.potion.sweetcoffee=Sweet Coffee
-fluid.potion.Latte=Latte
-fluid.potion.sweetlatte=Sweet Latte
-fluid.potion.sweetjesuslatte=Sweet Jesus Latte
-fluid.potion.darkchocolatemilk=Dark Chocolate Milk
-fluid.potion.chocolatemilk=Chocolate Milk
-fluid.potion.tea=Tea
-fluid.potion.sweettea=Sweet Tea
-fluid.potion.icetea=Ice Tea
