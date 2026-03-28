@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
@@ -23,6 +24,7 @@ import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
+import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTChunkAssociatedData;
 
 /**
@@ -599,7 +601,7 @@ public class GTValues {
 
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
 
-    public static final String AuthorLeon = "Author: " + EnumChatFormatting.AQUA
+    public static final String AuthorLeon = "" + EnumChatFormatting.AQUA
         + EnumChatFormatting.BOLD
         + "l"
         + EnumChatFormatting.DARK_AQUA
