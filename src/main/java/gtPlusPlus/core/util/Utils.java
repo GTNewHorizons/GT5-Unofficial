@@ -10,8 +10,6 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import gregtech.api.GregTechAPI;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
@@ -50,7 +48,7 @@ public class Utils {
         return new File(".");
     }
 
-    public static ItemStack getWrittenBook(ItemStack book, int ID, String mapping, String title, String author,
+    public static ItemStack getWrittenBook(ItemStack book, int ID, String mapping, String titleKey, String author,
         String[] pages) {
 
         if (GTUtility.isStringInvalid(mapping)) {
@@ -62,14 +60,14 @@ public class Utils {
             return GTUtility.copyAmount(1L, stack);
         }
 
-        if (GTUtility.isStringInvalid(title) || GTUtility.isStringInvalid(author) || pages.length == 0) {
+        if (GTUtility.isStringInvalid(titleKey) || GTUtility.isStringInvalid(author) || pages.length == 0) {
             return null;
         }
 
         stack = (book == null) ? new ItemStack(ModItems.itemCustomBook, 1, ID) : book;
 
         NBTTagCompound NBT = new NBTTagCompound();
-        String localizationTitle = StatCollector.canTranslate(title) ? GTUtility.translate(title) : title;
+        String localizationTitle = GTUtility.translate(titleKey);
         NBT.setString("title", localizationTitle);
         NBT.setString("author", author);
 
@@ -87,8 +85,8 @@ public class Utils {
                     GTLog.err.println("WARNING: String for written Book too long! -> " + pages[i]);
                 }
             } else {
-                Logger.INFO("WARNING: Too much Pages for written Book! -> " + title);
-                GTLog.err.println("WARNING: Too much Pages for written Book! -> " + title);
+                Logger.INFO("WARNING: Too much Pages for written Book! -> " + titleKey);
+                GTLog.err.println("WARNING: Too much Pages for written Book! -> " + titleKey);
                 break;
             }
         }
@@ -105,14 +103,14 @@ public class Utils {
         String logMessage = String.format(
             "GT++_Mod: Added Book to Book++ List  -  Mapping: '%s'  -  Name: '%s'  -  Author: '%s'",
             mapping,
-            title,
+            titleKey,
             author);
         GTLog.out.println(logMessage);
 
         NBTUtils.createIntegerTagCompound(stack, "stats", "mMeta", ID);
         GTPPCore.sBookList.put(mapping, stack);
 
-        Logger.INFO(String.format("Creating book: %s by %s. Using Meta %d.", title, author, ID));
+        Logger.INFO(String.format("Creating book: %s by %s. Using Meta %d.", titleKey, author, ID));
 
         return GTUtility.copy(stack);
     }
