@@ -2093,7 +2093,7 @@ public class WerkstoffLoader {
         Werkstoff.Stats stat = werkstoff.getStats();
         int bp = stat.getBoilingPoint();
         int mp = stat.getMeltingPoint();
-        int rt = 300;
+        int rt = 300; // room temperature
         if (stat.isGas()) {
             return Math.max(bp, rt);
         } else {
