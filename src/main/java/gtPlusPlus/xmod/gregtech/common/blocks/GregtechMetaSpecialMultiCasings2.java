@@ -14,7 +14,6 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -49,15 +48,6 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
 
     public GregtechMetaSpecialMultiCasings2() {
         super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.3", MaterialCasings.INSTANCE);
-
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Resonance Chamber I");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Resonance Chamber II");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Resonance Chamber III");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Resonance Chamber IV");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Modulator I");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Modulator II");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Modulator III");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Modulator IV");
 
         GregtechItemList.ResonanceChamber_I.set(new ItemStack(this, 1, 0));
         GregtechItemList.ResonanceChamber_II.set(new ItemStack(this, 1, 1));
