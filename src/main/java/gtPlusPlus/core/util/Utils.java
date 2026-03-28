@@ -49,20 +49,6 @@ public class Utils {
         return new File(".");
     }
 
-    public static String getBookTitleLocalization(final String aTitle) {
-        return StatCollector.translateToLocal("Book." + aTitle + ".Name");
-    }
-
-    public static String[] getBookPagesLocalization(final String aTitle, final String[] aPages) {
-        String[] aLocalizationPages = new String[aPages.length];
-        for (byte i = 0; i < aPages.length; i = (byte) (i + 1)) {
-            aLocalizationPages[i] = StatCollector
-                .translateToLocal("Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : Byte.valueOf(i)))
-                .replace(GTSplit.LB, "\n");
-        }
-        return aLocalizationPages;
-    }
-
     public static ItemStack getWrittenBook(ItemStack book, int ID, String mapping, String titleKey, String author,
         String[] pages) {
 

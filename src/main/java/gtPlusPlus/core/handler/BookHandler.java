@@ -7,10 +7,8 @@ import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTSplit;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -108,15 +106,4 @@ public class BookHandler {
     @Desugar
     public record BookTemplate(int mMeta, String mMapping, String mTitle, String mAuthor, String[] mPages) {}
 
-    public static void addBookTitleLocalization(final String aTitle) {
-        GTLanguageManager.addStringLocalization("Book." + aTitle + ".Name", aTitle);
-    }
-
-    public static void addBookPagesLocalization(final String aTitle, final String[] aPages) {
-        for (byte i = 0; i < aPages.length; i = (byte) (i + 1)) {
-            GTLanguageManager.addStringLocalization(
-                "Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : Byte.valueOf(i)),
-                aPages[i].replace("\n", GTSplit.LB));
-        }
-    }
 }
