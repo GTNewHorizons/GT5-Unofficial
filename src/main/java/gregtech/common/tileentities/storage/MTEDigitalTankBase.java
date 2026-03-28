@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
@@ -30,7 +31,6 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IFluidLockableMui2;
@@ -57,9 +57,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank implements IFluidL
             aTier,
             3,
             new String[] {
-                translateToLocalFormatted(
-                    "GT5U.machines.digitaltank.tooltip",
-                    NumberFormatUtil.formatNumber(commonSizeCompute(aTier))),
+                translateToLocalFormatted("GT5U.machines.digitaltank.tooltip", formatNumber(commonSizeCompute(aTier))),
                 translateToLocal("GT5U.machines.digitaltank.tooltip1"), });
     }
 
