@@ -10,7 +10,6 @@ import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
@@ -79,10 +78,9 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
     protected Flow createIO(ModularPanel panel, PanelSyncManager syncManager) {
         Flow ioColumn = Flow.col()
             .coverChildren()
-            .childPadding(1);
+            .childPadding(9);
 
         ioColumn.child(createInputSlot(panel, syncManager));
-        ioColumn.childIf(supportsGauge(), this::getGaugeIcon);
         ioColumn.child(createOutputSlot(panel, syncManager));
 
         return ioColumn;
@@ -91,21 +89,11 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
     protected ItemSlot createInputSlot(ModularPanel panel, PanelSyncManager syncManager) {
         return new ItemSlot()
             .slot(new ModularSlot(machine.inventoryHandler, machine.getInputSlot()).singletonSlotGroup())
-            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_IN_STANDARD)
-            .marginBottom(supportsGauge() ? 0 : 8);
-    }
-
-    protected Widget<?> getGaugeIcon() {
-        return GTGuiTextures.PICTURE_GAUGE.asWidget()
-            .size(18);
+            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_IN_STANDARD);
     }
 
     protected ItemSlot createOutputSlot(ModularPanel panel, PanelSyncManager syncManager) {
         return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.getOutputSlot()).canPut(false))
             .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD);
-    }
-
-    protected boolean supportsGauge() {
-        return true;
     }
 }
