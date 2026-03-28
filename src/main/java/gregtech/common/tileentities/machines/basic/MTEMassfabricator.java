@@ -53,7 +53,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
 
     public static int sUUAperUUM = 1;
     public static int sUUASpeedBonus = 4;
-    public static int sDurationMultiplier = 3215;
+    public static int sDurationMultiplier = 3200;
     public static boolean sRequiresUUA = false;
     public static int BASE_EUT = 256;
     public static GTRecipe nonUUARecipe;
