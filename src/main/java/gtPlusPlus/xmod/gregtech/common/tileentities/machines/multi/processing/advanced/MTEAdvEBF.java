@@ -122,6 +122,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "Perfect Overclock")
             .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(3, 4, 3, true)
             .addController("Bottom center")
             .addCasingInfoMin(mCasingName, 6, false)
             .addInputHatch("Any Casing", 1)

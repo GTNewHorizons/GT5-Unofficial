@@ -3,6 +3,8 @@ package gregtech.loaders.postload.recipes.beamcrafter;
 import static gregtech.api.recipe.RecipeMaps.BEAMCRAFTER_METADATA;
 import static gregtech.api.recipe.RecipeMaps.beamcrafterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gtPlusPlus.core.material.MaterialsAlloy.ABYSSAL;
+import static gtPlusPlus.core.material.MaterialsAlloy.QUANTUM;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.ADVANCED_NITINOL;
 import static gtnhlanth.common.beamline.Particle.ELECTRON;
 import static gtnhlanth.common.beamline.Particle.ETA;
@@ -110,7 +112,7 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.MoltenProtoHalkoniteBase.getFluid(9216))
+            .fluidInputs(ABYSSAL.getFluidStack(9216))
             .itemInputs(ItemList.Superconducting_Magnet_Solenoid_UEV.get(4), ItemList.Field_Generator_UHV.get(4))
             .itemOutputs(ItemList.ALICECasing.get(4))
             .metadata(
@@ -128,7 +130,7 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.SpaceTime.getMolten(9216L))
+            .fluidInputs(QUANTUM.getFluidStack(9216))
             .itemInputs(ItemList.Superconducting_Magnet_Solenoid_UIV.get(4), ItemList.Field_Generator_UEV.get(4))
             .itemOutputs(ItemList.LHCbCasing.get(4))
             .metadata(

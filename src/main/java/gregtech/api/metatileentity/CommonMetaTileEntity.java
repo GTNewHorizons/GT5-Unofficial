@@ -50,7 +50,6 @@ import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 
@@ -82,7 +81,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      */
     public long mSoundRequests = 0;
 
-    protected CommonMetaTileEntity(int id, String basicName, String regionalName, int invSlotCount) {
+    protected CommonMetaTileEntity(int id, String basicName, int invSlotCount) {
         if (GregTechAPI.sPostloadStarted || !GregTechAPI.sPreloadStarted)
             throw new IllegalAccessError("This Constructor has to be called in the load Phase");
         if (GregTechAPI.METATILEENTITIES[id] == null) {
@@ -101,7 +100,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         mInventory = new ItemStack[invSlotCount];
         mName = basicName.replace(" ", "_")
             .toLowerCase(Locale.ENGLISH);
-        GTLanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", regionalName);
     }
 
     protected CommonMetaTileEntity(String name, int invSlotCount) {

@@ -3,7 +3,7 @@ package gregtech.common.tileentities.machines.multi.compressor;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.Ollie;
+import static gregtech.api.enums.GTAuthors.Ollie;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -245,12 +245,12 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         ItemStack aTool) {
         shouldRender = !shouldRender;
         if (!shouldRender) {
-            GTUtility.sendChatToPlayer(aPlayer, "Rendering off");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.rendering.off");
             rendererTileEntity = null;
             destroyRenderBlock();
         } else {
             if (blackHoleStatus != 1) createRenderBlock();
-            GTUtility.sendChatToPlayer(aPlayer, "Rendering on");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.rendering.on");
         }
 
     }

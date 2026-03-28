@@ -1,8 +1,8 @@
 package gregtech.common.tileentities.machines.multi.pcb;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GTValues.AuthorBlueWeabo;
-import static gregtech.api.enums.GTValues.Authorguid118;
+import static gregtech.api.enums.GTAuthors.AuthorBlueWeabo;
+import static gregtech.api.enums.GTAuthors.Authorguid118;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW;
@@ -125,7 +125,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
             built = survivalBuildPiece(STRUCTURE_PIECE_COOLING_TOWER_T1, stackSize, 2, 9, 0, elementBudget, env, true);
         else built = survivalBuildPiece(STRUCTURE_PIECE_COOLING_TOWER_T2, stackSize, 2, 9, 0, elementBudget, env, true);
         if (built == -1) {
-            GTUtility.sendChatToPlayer(env.getActor(), EnumChatFormatting.GREEN + "Auto placing done!");
+            GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done");
             return 0;
         }
         return built;
@@ -157,6 +157,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
             .addInfo(EnumChatFormatting.GRAY + "Left click the PCB Factory controller with a data stick,")
             .addInfo(EnumChatFormatting.GRAY + "then right click this controller to link.")
             .addInfo(EnumChatFormatting.GRAY + "Can connect to many PCB Factories!")
+            .beginStructureBlock(5, 10, 5, false)
             .addStructureInfo("Tier 1")
             .addController("Front Center")
             .addCasingInfoExactlyColored(
