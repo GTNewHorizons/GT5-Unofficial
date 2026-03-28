@@ -411,7 +411,13 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
         tRecipe.consumeInput(1, inputFluids, inputItems);
 
-        if (tRecipe.mOutputChances == null || XSTR_INSTANCE.nextInt(10000) < tRecipe.mOutputChances[0]) {
+        if (tRecipe.mOutputChances != null && tRecipe.mOutputs != null) {
+            for (int i = 0; i < tRecipe.mOutputChances.length; i++) {
+                if (XSTR_INSTANCE.nextInt(10000) < tRecipe.mOutputChances[i]) {
+                    this.mOutputItems[i] = tRecipe.mOutputs[i].copy();
+                }
+            }
+        } else {
             this.mOutputItems = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
         }
 
