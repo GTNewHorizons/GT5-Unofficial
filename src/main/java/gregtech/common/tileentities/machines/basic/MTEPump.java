@@ -292,12 +292,7 @@ public class MTEPump extends MTEBasicMachine {
             }
             if (radiusConfig > max) radiusConfig = 0;
         }
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
-                + (radiusConfig * 2 + 1)
-                + "x"
-                + (radiusConfig * 2 + 1)); // TODO Add translation support
+        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.workareaset.s", (radiusConfig * 2 + 1), (radiusConfig * 2 + 1));
 
         clearQueue(false);
     }

@@ -303,10 +303,6 @@ public final class ModItems {
             .registerOre("catalystBiologicalIntelligence");
         GregtechItemList.TemporalHarmonyCatalyst.set(new ItemStack(genericChemItem, 1, 28))
             .registerOre("catalystTemporalHarmony");
-        GregtechItemList.ParticleAccelerationCatalyst.set(new ItemStack(genericChemItem, 1, 31))
-            .registerOre("catalystParticleAcceleration");
-        GregtechItemList.SynchrotronCapableCatalyst.set(new ItemStack(genericChemItem, 1, 32))
-            .registerOre("catalystSynchrotronCapable");
         GregtechItemList.AlgagenicGrowthPromoterCatalyst.set(new ItemStack(genericChemItem, 1, 33))
             .registerOre("catalystAlgagenicGrowthPromoter");
         GregtechItemList.HellishForceCatalyst.set(new ItemStack(genericChemItem, 1, 34))

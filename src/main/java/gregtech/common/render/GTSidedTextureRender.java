@@ -6,7 +6,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.ISBRContext;
 import gregtech.api.render.TextureFactory;
 
-public class GTSidedTextureRender extends GTTextureBase implements ITexture, IColorModulationContainer {
+public class GTSidedTextureRender extends GTTextureBase implements IColorModulationContainer {
 
     protected final ITexture[] mTextures;
     /**

@@ -2,7 +2,6 @@ package tectech.thing.metaTileEntity.hatch;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
 
@@ -17,6 +16,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -27,23 +27,14 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /**
  * Created by danie_000 on 16.12.2016.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchDynamoMulti extends MTEHatch implements IHideTooltipEnergyInfo {
 
     public final int maxAmperes;
     public int Amperes;
 
     public MTEHatchDynamoMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            MTEHatch.formatEnergyInfoDesc(
-                true,
-                aTier,
-                aAmp,
-                translateToLocal("gt.blockmachines.hatch.dynamomulti.desc.0")));
+        super(aID, aName, aNameRegional, aTier, 0, (String) null);
         Amperes = maxAmperes = aAmp;
     }
 
@@ -191,5 +182,10 @@ public class MTEHatchDynamoMulti extends MTEHatch implements IHideTooltipEnergyI
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return MTEHatch.formatEnergyInfoDesc(true, mTier, maxAmperes, "gt.blockmachines.hatch.dynamomulti.desc");
     }
 }

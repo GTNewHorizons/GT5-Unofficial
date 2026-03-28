@@ -317,11 +317,6 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
         this.mRedstoneLevel = aNBT.getLong("mRedstoneLevel");
     }
 
-    @Override
-    public void onFirstTick(final IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-    }
-
     public boolean allowCoverOnSide(final ForgeDirection side, final int aCoverID) {
         return side != this.getBaseMetaTileEntity()
             .getFrontFacing();
@@ -397,14 +392,4 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
         return false;
     }
 
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-    }
-
-    @Override
-    public void onMachineBlockUpdate() {
-        super.onMachineBlockUpdate();
-    }
 }

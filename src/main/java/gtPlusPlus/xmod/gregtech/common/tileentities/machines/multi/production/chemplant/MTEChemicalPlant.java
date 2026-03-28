@@ -148,6 +148,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
             .addInfo("Any catalyst must be placed in the catalyst housing")
             .addInfo("Awakened Draconium coils combined with Tungstensteel pipe casing makes catalyst unbreakable")
+            .beginStructureBlock(7, 7, 7, false)
             .addController("Bottom Center")
             .addOtherStructurePart("Catalyst Housing", "Any Casing")
             .addStructureHint("item.GTPP.catalyst_housing.name", 1)
@@ -721,8 +722,6 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         registerChemplantCatalyst(GregtechItemList.UltimatePlasticCatalyst.get(1));
         registerChemplantCatalyst(GregtechItemList.BiologicalIntelligenceCatalyst.get(1));
         registerChemplantCatalyst(GregtechItemList.TemporalHarmonyCatalyst.get(1));
-        registerChemplantCatalyst(GregtechItemList.ParticleAccelerationCatalyst.get(1));
-        registerChemplantCatalyst(GregtechItemList.SynchrotronCapableCatalyst.get(1));
         registerChemplantCatalyst(GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1));
         registerChemplantCatalyst(GregtechItemList.ChlorinationCatalyst.get(1));
     }
