@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
@@ -24,7 +23,6 @@ import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
-import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTChunkAssociatedData;
 
 /**
@@ -221,11 +219,11 @@ public class GTValues {
      * Sides
      */
     public static final byte SIDE_BOTTOM = 0, SIDE_DOWN = 0, SIDE_TOP = 1, SIDE_UP = 1, SIDE_NORTH = 2, // Also a Side
-                                                                                                        // with a
-                                                                                                        // stupidly
-                                                                                                        // mirrored
-                                                                                                        // Texture
-        SIDE_SOUTH = 3, SIDE_WEST = 4, SIDE_EAST = 5, // Also a Side with a stupidly mirrored Texture
+    // with a
+    // stupidly
+    // mirrored
+    // Texture
+    SIDE_SOUTH = 3, SIDE_WEST = 4, SIDE_EAST = 5, // Also a Side with a stupidly mirrored Texture
         SIDE_ANY = 6, SIDE_UNKNOWN = 6, SIDE_INVALID = 6, SIDE_INSIDE = 6, SIDE_UNDEFINED = 6;
 
     /** Compass alike Array for the proper ordering of North, East, South and West. */
@@ -456,186 +454,6 @@ public class GTValues {
      */
     public static boolean DEVENV = Launch.blackboard == null ? true
         : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
-
-    /**
-     * Pretty formatting for author names.
-     */
-    public static final String Colen = "" + EnumChatFormatting.DARK_RED
-        + EnumChatFormatting.BOLD
-        + EnumChatFormatting.ITALIC
-        + EnumChatFormatting.UNDERLINE
-        + "C"
-        + EnumChatFormatting.GOLD
-        + EnumChatFormatting.BOLD
-        + EnumChatFormatting.ITALIC
-        + EnumChatFormatting.UNDERLINE
-        + "o"
-        + EnumChatFormatting.GREEN
-        + EnumChatFormatting.BOLD
-        + EnumChatFormatting.ITALIC
-        + EnumChatFormatting.UNDERLINE
-        + "l"
-        + EnumChatFormatting.DARK_AQUA
-        + EnumChatFormatting.BOLD
-        + EnumChatFormatting.ITALIC
-        + EnumChatFormatting.UNDERLINE
-        + "e"
-        + EnumChatFormatting.DARK_PURPLE
-        + EnumChatFormatting.BOLD
-        + EnumChatFormatting.ITALIC
-        + EnumChatFormatting.UNDERLINE
-        + "n";
-
-    public static final String AuthorColen = "Author: " + Colen;
-    public static final String AuthorKuba = "Author: " + EnumChatFormatting.DARK_RED
-        + EnumChatFormatting.BOLD
-        + "k"
-        + EnumChatFormatting.RED
-        + EnumChatFormatting.BOLD
-        + "u"
-        + EnumChatFormatting.GOLD
-        + EnumChatFormatting.BOLD
-        + "b"
-        + EnumChatFormatting.YELLOW
-        + EnumChatFormatting.BOLD
-        + "a"
-        + EnumChatFormatting.DARK_GREEN
-        + EnumChatFormatting.BOLD
-        + "6"
-        + EnumChatFormatting.GREEN
-        + EnumChatFormatting.BOLD
-        + "0"
-        + EnumChatFormatting.AQUA
-        + EnumChatFormatting.BOLD
-        + "0"
-        + EnumChatFormatting.DARK_AQUA
-        + EnumChatFormatting.BOLD
-        + "0";
-
-    public static final String AuthorPxx500 = "Author: " + EnumChatFormatting.DARK_BLUE
-        + EnumChatFormatting.BOLD
-        + "Pxx500";
-
-    public static final String AuthorBlueWeabo = "Author: " + EnumChatFormatting.BLUE
-        + EnumChatFormatting.BOLD
-        + "Blue"
-        + EnumChatFormatting.AQUA
-        + EnumChatFormatting.BOLD
-        + "Weabo";
-
-    public static final String Authorguid118 = "Author: " + EnumChatFormatting.WHITE
-        + EnumChatFormatting.BOLD
-        + "gu"
-        + EnumChatFormatting.AQUA
-        + EnumChatFormatting.BOLD
-        + "id"
-        + EnumChatFormatting.DARK_AQUA
-        + EnumChatFormatting.BOLD
-        + "118";
-
-    public static final String Authorminecraft7771 = "Author: " + EnumChatFormatting.BLUE
-        + EnumChatFormatting.LIGHT_PURPLE
-        + "minecraft7771";
-
-    public static final String AuthorHamCorp = "Author: " + EnumChatFormatting.GOLD
-        + "Ham"
-        + EnumChatFormatting.WHITE
-        + "Corp";
-
-    public static final String Authorzub = "Author: " + EnumChatFormatting.DARK_PURPLE
-        + EnumChatFormatting.ITALIC
-        + "zub";
-
-    public static final Supplier<String> AuthorCloud = chain(
-        text("Author: " + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD),
-        animatedText(
-            "C",
-            1,
-            500,
-            DARK_AQUA + OBFUSCATED + BOLD + "X" + RESET + AQUA + BOLD,
-            DARK_AQUA + "\u238B" + RESET + AQUA + BOLD,
-            DARK_AQUA + OBFUSCATED + BOLD + "X" + RESET + AQUA + BOLD,
-            DARK_AQUA + "\u0B83" + RESET + AQUA + BOLD,
-            DARK_AQUA + OBFUSCATED + BOLD + "X" + RESET + AQUA + BOLD,
-            DARK_AQUA + BOLD + "\u29BC" + RESET + AQUA + BOLD),
-        text(EnumChatFormatting.AQUA + EnumChatFormatting.BOLD.toString() + "loud" + EnumChatFormatting.RESET),
-        animatedText(
-            " ",
-            1,
-            500,
-            DARK_AQUA + OBFUSCATED + BOLD + "X",
-            DARK_AQUA + "\u238B",
-            DARK_AQUA + OBFUSCATED + BOLD + "X",
-            DARK_AQUA + "\u0B83",
-            DARK_AQUA + OBFUSCATED + BOLD + "X",
-            DARK_AQUA + BOLD + "\u29BC"));
-
-    public static final String AuthorQuerns = "Author: " + EnumChatFormatting.RED + "Querns";
-    public static final String AuthorSilverMoon = "Author: " + EnumChatFormatting.AQUA + "SilverMoon";
-    public static final String AuthorTheEpicGamer274 = "Author: " + EnumChatFormatting.DARK_AQUA + "TheEpicGamer274";
-    public static final String Ollie = EnumChatFormatting.GREEN.toString() + EnumChatFormatting.BOLD + "Ollie";
-    public static final String authorBaps = "Author: " + EnumChatFormatting.GOLD
-        + "Ba"
-        + EnumChatFormatting.LIGHT_PURPLE
-        + "ps";
-    public static final String AuthorOmdaCZ = "Author: " + EnumChatFormatting.BLUE
-        + "Omda"
-        + EnumChatFormatting.RED
-        + "CZ";
-
-    public static final String AuthorEvgenWarGold = "" + EnumChatFormatting.RED
-        + EnumChatFormatting.BOLD
-        + "Evgen"
-        + EnumChatFormatting.BLUE
-        + EnumChatFormatting.BOLD
-        + "War"
-        + EnumChatFormatting.GOLD
-        + EnumChatFormatting.BOLD
-        + "Gold";
-    public static final String AuthorVolence = "Author: " + EnumChatFormatting.AQUA + "Volence";
-
-    public static final String AuthorEigenRaven = "Author: " + EnumChatFormatting.DARK_PURPLE
-        + "Eigen"
-        + EnumChatFormatting.BOLD
-        + "Raven";
-
-    public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
-
-    public static final String AuthorLeon = "" + EnumChatFormatting.AQUA
-        + EnumChatFormatting.BOLD
-        + "l"
-        + EnumChatFormatting.DARK_AQUA
-        + EnumChatFormatting.BOLD
-        + "e"
-        + EnumChatFormatting.BLUE
-        + EnumChatFormatting.BOLD
-        + "o"
-        + EnumChatFormatting.DARK_BLUE
-        + EnumChatFormatting.BOLD
-        + "n";
-
-    public static final Supplier<String> AuthorNoc = chain(
-        animatedText(
-            "Noc",
-            0,
-            500,
-            EnumChatFormatting.GOLD + BOLD,
-            EnumChatFormatting.DARK_GREEN + BOLD,
-            EnumChatFormatting.GOLD + BOLD,
-            EnumChatFormatting.DARK_GREEN + BOLD,
-            EnumChatFormatting.DARK_GREEN + OBFUSCATED + BOLD));
-
-    public static final String AuthorJulia =
-        // spotless:off
-        EnumChatFormatting.BOLD.toString() +
-        EnumChatFormatting.GOLD            + CustomGlyphs.SPARKLES +
-        EnumChatFormatting.AQUA            + "J"                   +
-        EnumChatFormatting.LIGHT_PURPLE    + "u"                   +
-        EnumChatFormatting.WHITE           + "l"                   +
-        EnumChatFormatting.LIGHT_PURPLE    + "i"                   +
-        EnumChatFormatting.AQUA            + "a"                   +
-        EnumChatFormatting.GOLD            + CustomGlyphs.SPARKLES ;
-        // spotless:on
 
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
