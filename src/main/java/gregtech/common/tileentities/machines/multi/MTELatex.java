@@ -152,9 +152,11 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
     private static final FluidStack[] valid_rubbers = { Materials.Rubber.getMolten(1L),
         Materials.RubberSilicone.getMolten(1L), Materials.StyreneButadieneRubber.getMolten(1L) };
 
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            @Override
             protected @NotNull ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
                 return super.createParallelHelper(Objects.requireNonNull(recipeAfterAdjustments(recipe)));
             }
@@ -263,7 +265,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cable Coater, LATEX")
             .addInfo(
-                DARK_GRAY + "" + EnumChatFormatting.ITALIC + "AKA Laminated Application and Thermal Enclosure eXpert")
+                DARK_GRAY + "" + EnumChatFormatting.ITALIC + "AKA Laminate Application and Thermal Enclosure eXocoater")
             .addBulkMachineInfo(8, 2F, 0.85F)
             .addInfo(
                 "Recipes have an additive " + TooltipHelper.coloredText("6.25%", DARK_GREEN)

@@ -10,7 +10,6 @@ import net.minecraft.util.IIcon;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -25,11 +24,6 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
             }
             TAE.registerTexture(3, i, TextureFactory.of(this, i));
         }
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Tempered Arc Furnace Casing");
-        GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + ".4.name", "Quantum Force Transformer Coil Casings");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Vacuum Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Turbodyne Casing");
 
         GregtechItemList.Casing_Industrial_Arc_Furnace.set(new ItemStack(this, 1, 3));
         GregtechItemList.Casing_Coil_QuantumForceTransformer.set(new ItemStack(this, 1, 4));
@@ -62,7 +56,7 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
                     return TexturesGtBlock.Casing_Coil_QFT.getIcon();
                 }
                 case 5, 6, 7, 8, 12, 13, 14, 15 -> {
-                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+                    return Textures.GlobalIcons.RENDERING_ERROR.getIcon();
                 }
                 case 10 -> {
                     if (aSide < 2) {

@@ -65,7 +65,7 @@ public class RecipeGenRecycling implements Runnable {
             return;
         }
 
-        Logger.WARNING("Generating Recycling recipes for " + material.getLocalizedName());
+        Logger.WARNING("Generating Recycling recipes for " + material.getDefaultLocalName());
 
         final OrePrefixes[] mValidPrefixesAsString = { OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.nugget,
             OrePrefixes.plate, OrePrefixes.plateDense, OrePrefixes.plateDouble, OrePrefixes.plateTriple,
@@ -83,7 +83,7 @@ public class RecipeGenRecycling implements Runnable {
 
         for (int r = 0; r < mValidPairs.length; r++) {
             ItemStack temp = getItemStackOfAmountFromOreDictNoBroken(
-                mValidPrefixesAsString[r].getName() + StringUtils.sanitizeString(material.getLocalizedName()),
+                mValidPrefixesAsString[r].getName() + StringUtils.sanitizeString(material.getDefaultLocalName()),
                 1);
             if (temp != null) {
                 mValidPairs[mSlotIndex++] = Pair.of(mValidPrefixesAsString[r], temp.copy());
@@ -140,7 +140,7 @@ public class RecipeGenRecycling implements Runnable {
                     .addTo(maceratorRecipes);
 
                 Logger.WARNING(
-                    "Recycle Recipe: " + material.getLocalizedName()
+                    "Recycle Recipe: " + material.getDefaultLocalName()
                         + " - Success - Recycle "
                         + tempStack.getDisplayName()
                         + " and obtain "
@@ -183,7 +183,10 @@ public class RecipeGenRecycling implements Runnable {
             final int aFluidAmount = (int) ((materialAmount * INGOTS) / (M * tempStack.stackSize));
             final int aDuration = (int) Math.max(1, (24 * materialAmount) / M);
             final FluidStack fluidOutput = material.getFluidStack(aFluidAmount);
-            long powerUsage = Math.max(8L, (long) Math.sqrt(2L * Math.max(1, material.getMeltingPointK())));
+            // Temporary: align fluid extraction recycling EU/t with GT++ fluid recipe tiering
+            // to avoid mid-tier uptiers (e.g., Tumbaga/Potin). This uses the same tier->voltage
+            // mapping as RecipeGenFluids via material.vVoltageMultiplier.
+            long powerUsage = Math.max(8L, material.vVoltageMultiplier);
             final int powerTier = GTUtility.getTier(powerUsage);
             if (powerTier > 0 && powerTier < VP.length && powerUsage > VP[powerTier]) {
                 powerUsage = VP[powerTier];
@@ -200,7 +203,7 @@ public class RecipeGenRecycling implements Runnable {
                 .addTo(fluidExtractionRecipes);
 
             Logger.WARNING(
-                "Fluid Recycle Recipe: " + material.getLocalizedName()
+                "Fluid Recycle Recipe: " + material.getDefaultLocalName()
                     + " - Success - Recycle "
                     + tempStack.getDisplayName()
                     + " and obtain "
@@ -290,7 +293,7 @@ public class RecipeGenRecycling implements Runnable {
     public static ItemStack get(final OrePrefixes aPrefix, final Material aMaterial, final ItemStack aReplacement,
         final long aAmount) {
         return get(
-            aPrefix.getName() + StringUtils.sanitizeString(aMaterial.getLocalizedName()),
+            aPrefix.getName() + StringUtils.sanitizeString(aMaterial.getDefaultLocalName()),
             aReplacement,
             aAmount,
             false,

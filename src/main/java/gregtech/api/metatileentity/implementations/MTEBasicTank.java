@@ -343,4 +343,9 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
     protected FluidSlotWidget createFluidSlot() {
         return new FluidSlotWidget(fluidTank);
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

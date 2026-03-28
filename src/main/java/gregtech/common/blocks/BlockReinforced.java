@@ -38,7 +38,6 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.entity.EntityPowderBarrelPrimed;
@@ -52,19 +51,6 @@ public class BlockReinforced extends GTGenericBlock {
         }
         setStepSound(soundTypeStone);
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Bronzeplate Reinforced Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Iridium Reinforced Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Plascrete Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Tungstensteel Reinforced Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Brittle Charcoal");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Powder Barrel");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Solid Super Fuel");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Magic Solid Super Fuel");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Steel Reinforced Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Titanium Reinforced Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Naquadah Reinforced Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Neutronium Reinforced Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Raw Deep Dark Portal Block");
         ItemList.Block_BronzePlate.set(
             new ItemStack(
                 this.setHardness(60.0f)

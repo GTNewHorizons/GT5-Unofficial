@@ -29,6 +29,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
         OrePrefixes.toolHeadDrill.add(this);
     }
 
+    @Override
     public void registerOre(OrePrefixes aPrefix, Materials material, String aOreDictName, String aModName,
         ItemStack aStack) {
         if (!aPrefix.doGenerateItem(material)) return;

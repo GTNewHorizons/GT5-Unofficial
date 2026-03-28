@@ -72,7 +72,8 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
     public String[] getDescription() {
         String[] desc = new String[mDescriptionArray.length + 1];
         System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-        desc[mDescriptionArray.length] = "Fuel Efficiency: " + getEfficiency() + "%";
+        desc[mDescriptionArray.length] = "Fuel Efficiency: " + addFormattedString(String.valueOf(getEfficiency()))
+            + "%%";
         return desc;
     }
 
@@ -258,9 +259,6 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
     }
 
     public abstract int getPollution();
-
-    @Override
-    public abstract RecipeMap<?> getRecipeMap();
 
     public abstract int getEfficiency();
 

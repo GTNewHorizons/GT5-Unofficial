@@ -84,6 +84,10 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final ConcurrentHashMap<Short, Long[]> mElectricStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Long[]> mFluidContainerStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Short> mBurnValues = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, String> mNameLocalizationKeys = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, String> mTooltipLocalizationKeys = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, Object[]> mNameLocalizationArgs = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, Object[]> mTooltipLocalizationArgs = new ConcurrentHashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -125,7 +129,9 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
             mEnabledItems.set(aID);
             mVisibleItems.set(aID);
             GTLanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".name", aEnglish);
-            GTLanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".tooltip", aToolTip);
+            if (!aToolTip.equals("")) {
+                GTLanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".tooltip", aToolTip);
+            }
             List<TC_AspectStack> tAspects = new ArrayList<>();
             // Important Stuff to do first
             for (Object tRandomData : aRandomData) if (tRandomData instanceof SubTag) {
@@ -189,6 +195,54 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
             return rStack;
         }
         return null;
+    }
+
+    /**
+     * Adds a Custom Item, storing the provided localization keys for deferred translation.
+     * Unlike {@link #addItem}, which resolves names and tooltips eagerly at registration time,
+     * this method stores {@code aNameKey} and {@code aToolTipKey} so they are translated at
+     * render time — allowing the displayed text to reflect the player's current language.
+     *
+     * <p>
+     * Use this method when the item name and tooltip are static localization keys.
+     * For dynamic content assembled at runtime (e.g. formatted strings with per-item data),
+     * use {@link #addItem} directly and build the string manually.
+     *
+     * @param aID         The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
+     * @param aNameKey    The localization key for the item's display name
+     * @param aToolTipKey The localization key for the item's tooltip, or null for no tooltip.
+     *                    The translated value may contain {@code \n} to separate tooltip lines.
+     * @param aRandomData The OreDict Names you want to give the Item. Also used for TC Aspects and some other things.
+     * @return An ItemStack containing the newly created Item.
+     */
+    public final ItemStack addItemWithLocalizationKeys(int aID, String aNameKey, String aToolTipKey,
+        Object... aRandomData) {
+        ItemStack rStack = addItem(aID, aNameKey, aToolTipKey, aRandomData);
+        if (rStack != null) {
+            short meta = (short) (mOffset + aID);
+            if (GTUtility.isStringValid(aNameKey)) {
+                mNameLocalizationKeys.put(meta, aNameKey);
+            }
+            if (GTUtility.isStringValid(aToolTipKey)) {
+                mTooltipLocalizationKeys.put(meta, aToolTipKey);
+            }
+        }
+        return rStack;
+    }
+
+    public final ItemStack addItemWithLocalizationKeysAndArgs(int aID, String aNameKey, Object[] aNameArgs,
+        String aToolTipKey, Object[] aToolTipArgs, Object... aRandomData) {
+        ItemStack rStack = addItemWithLocalizationKeys(aID, aNameKey, aToolTipKey, aRandomData);
+        if (rStack != null) {
+            short meta = (short) (mOffset + aID);
+            if (aNameArgs != null) {
+                mNameLocalizationArgs.put(meta, aNameArgs);
+            }
+            if (aToolTipArgs != null) {
+                mTooltipLocalizationArgs.put(meta, aToolTipArgs);
+            }
+        }
+        return rStack;
     }
 
     /**
@@ -262,6 +316,26 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         if (aCapacity < 0) mElectricStats.remove((short) aMetaValue);
         else mFluidContainerStats.put((short) aMetaValue, new Long[] { aCapacity, Math.max(1, aStacksize) });
         return this;
+    }
+
+    @Override
+    protected String getToolTipLocalizationKey(ItemStack aStack) {
+        return mTooltipLocalizationKeys.get((short) getDamage(aStack));
+    }
+
+    @Override
+    protected Object[] getToolTipLocalizationArgs(ItemStack aStack) {
+        return mTooltipLocalizationArgs.get((short) getDamage(aStack));
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack aStack) {
+        String tNameKey = mNameLocalizationKeys.get((short) getDamage(aStack));
+        if (GTUtility.isStringValid(tNameKey)) {
+            Object[] tNameArgs = mNameLocalizationArgs.get((short) getDamage(aStack));
+            return tNameArgs == null ? GTUtility.translate(tNameKey) : GTUtility.translate(tNameKey, tNameArgs);
+        }
+        return super.getItemStackDisplayName(aStack);
     }
 
     /**
@@ -403,5 +477,4 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final Long[] getFluidContainerStats(ItemStack aStack) {
         return mFluidContainerStats.get((short) aStack.getItemDamage());
     }
-
 }
