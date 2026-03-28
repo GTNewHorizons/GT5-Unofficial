@@ -3,11 +3,13 @@ package gregtech.api.util;
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -51,6 +53,7 @@ public class GTLanguageManager {
     /**
      * If placeholder like %material should be used for writing lang entries to file.
      */
+    @Deprecated
     public static boolean i18nPlaceholder = true;
     /**
      * If there's any lang entry that is not found on lang file and waiting to be written.
@@ -68,6 +71,8 @@ public class GTLanguageManager {
      * Map referencing private field of StringTranslate, used by StatCollector. Used to inject lang entries there.
      */
     private static final Map<String, String> stringTranslateLanguageList;
+    private static final Map<String, String> stringTranslateLanguageListFallBack;
+    public static String LanguageCode = "en_US";
 
     static {
         try {
@@ -75,33 +80,29 @@ public class GTLanguageManager {
                 .findField(net.minecraft.util.StringTranslate.class, "languageList", "field_74816_c");
             Field fieldStringTranslateInstance = ReflectionHelper
                 .findField(net.minecraft.util.StringTranslate.class, "instance", "field_74817_a");
+            Field fieldStatCollectorFallbackTranslator = ReflectionHelper
+                .findField(net.minecraft.util.StatCollector.class, "fallbackTranslator", "field_150828_b");
             // noinspection unchecked
             stringTranslateLanguageList = (Map<String, String>) fieldStringTranslateLanguageList
                 .get(fieldStringTranslateInstance.get(null));
+            stringTranslateLanguageListFallBack = (Map<String, String>) fieldStringTranslateLanguageList
+                .get(fieldStatCollectorFallbackTranslator.get(null));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * @deprecated Parameter aWriteIntoLangFile is no longer used, use {@link #addStringLocalization(String, String)} or
-     *             consider migrating to MC lang system instead.
-     */
-    @Deprecated
-    public static synchronized String addStringLocalization(String aKey, String aEnglish, boolean aWriteIntoLangFile) {
-        return addStringLocalization(aKey, aEnglish);
-    }
-
-    /**
      * If you newly use this method, please consider using MC lang system instead.
      */
-    public static synchronized String addStringLocalization(String aKey, String aEnglish) {
+    public static synchronized void addStringLocalization(String aKey, String aEnglish) {
         String trimmedKey = aKey != null ? aKey.trim() : "";
-        if (trimmedKey.isEmpty()) return E; // RIP cascading class loading, don't use GT_Utility here
+        if (trimmedKey.isEmpty()) return; // RIP cascading class loading, don't use GT_Utility here
+        if (aEnglish == null) aEnglish = "";
         if (sEnglishFile == null) {
             // Lang file is not set up yet
             BUFFERMAP.put(trimmedKey, aEnglish);
-            return aEnglish;
+            return;
         }
         if (!BUFFERMAP.isEmpty()) {
             // Lang file is now set up, resolve all the buffers
@@ -111,35 +112,33 @@ public class GTLanguageManager {
             }
             BUFFERMAP.clear();
         }
-
         if (!LANGMAP.containsKey(trimmedKey)) {
-            return storeTranslation(trimmedKey, aEnglish);
+            storeTranslation(trimmedKey, aEnglish);
         }
-        return LANGMAP.get(trimmedKey);
     }
 
-    public static synchronized String addAnySubBlockLocalization(String unlocalizedName) {
-        return addStringLocalization(unlocalizedName + "." + WILDCARD + ".name", ANY_SUB_BLOCK);
+    public static synchronized void addAnySubBlockLocalization(String unlocalizedName) {
+        addStringLocalization(unlocalizedName + "." + WILDCARD + ".name", ANY_SUB_BLOCK);
     }
 
-    private static synchronized String storeTranslation(String trimmedKey, String english) {
+    private static synchronized void storeTranslation(String trimmedKey, String english) {
         String translation = writeToLangFile(trimmedKey, english);
         LANGMAP.put(trimmedKey, translation);
-        addToMCLangList(trimmedKey, translation);
         TEMPMAP.put(trimmedKey, translation);
         LanguageRegistry.instance()
-            // If we use the actual user configured locale here, switching lang to others while running game
-            // turns everything into unlocalized string. So we make it "default" and call it a day.
-            .injectLanguage("en_US", TEMPMAP);
+            .injectLanguage(LanguageCode, TEMPMAP);
         TEMPMAP.clear();
-        return translation;
     }
 
     private static synchronized String writeToLangFile(String trimmedKey, String aEnglish) {
+        addToMCLangListFallBack(trimmedKey, aEnglish);
         Property tProperty = sEnglishFile.get("LanguageFile", trimmedKey, aEnglish);
         if (hasUnsavedEntry && GregTechAPI.sPostloadFinished) {
             sEnglishFile.save();
             hasUnsavedEntry = false;
+        }
+        if (StatCollector.canTranslate(trimmedKey)) {
+            return StatCollector.translateToLocal(trimmedKey);
         }
         String translation = tProperty.getString();
         if (tProperty.wasRead()) {
@@ -151,6 +150,7 @@ public class GTLanguageManager {
         } else {
             markFileDirty();
         }
+        addToMCLangList(trimmedKey, translation);
         return translation;
     }
 
@@ -207,47 +207,6 @@ public class GTLanguageManager {
     }
 
     public static void writePlaceholderStrings() {
-        addStringLocalization("Interaction_DESCRIPTION_Index_047", "Filter Fluid: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_048", "Pump speed: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_049", "L/tick ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_050", "L/sec");
-        addStringLocalization("Interaction_DESCRIPTION_Index_053", "Slot: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_068.1", "Emit if any Player is close");
-        addStringLocalization("Interaction_DESCRIPTION_Index_069.1", "Emit if other Player is close");
-        addStringLocalization("Interaction_DESCRIPTION_Index_070", "Emit if you are close");
-        addStringLocalization("Interaction_DESCRIPTION_Index_071", "Conducts strongest Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_072", "Conducts from bottom Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_073", "Conducts from top Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_074", "Conducts from north Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_075", "Conducts from south Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_076", "Conducts from west Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_077", "Conducts from east Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_078", "Signal = ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_079", "Conditional Signal = ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_080", "Inverted Conditional Signal = ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_082", "Open if work enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_083", "Open if work disabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_084", "Only Output allowed");
-        addStringLocalization("Interaction_DESCRIPTION_Index_085", "Only Input allowed");
-        addStringLocalization("Interaction_DESCRIPTION_Index_094.1", "Not enough soldering material!");
-        addStringLocalization("Interaction_DESCRIPTION_Index_098", "Do not regulate Item Stack Size");
-        addStringLocalization("Interaction_DESCRIPTION_Index_099", "Regulate Item Stack Size to: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_100", "This is ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_101", " Ore.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_102", "There is Lava behind this Rock.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_103", "There is a Liquid behind this Rock.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_104", "There is an Air Pocket behind this Rock.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_105", "Material is changing behind this Rock.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_106", "Found traces of ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_107", "No Ores found.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_108", "Outputs misc. Fluids, Steam and Items");
-        addStringLocalization("Interaction_DESCRIPTION_Index_109", "Outputs Steam and Items");
-        addStringLocalization("Interaction_DESCRIPTION_Index_110", "Outputs Steam and misc. Fluids");
-        addStringLocalization("Interaction_DESCRIPTION_Index_111", "Outputs Steam");
-        addStringLocalization("Interaction_DESCRIPTION_Index_112", "Outputs misc. Fluids and Items");
-        addStringLocalization("Interaction_DESCRIPTION_Index_113", "Outputs only Items");
-        addStringLocalization("Interaction_DESCRIPTION_Index_114", "Outputs only misc. Fluids");
-        addStringLocalization("Interaction_DESCRIPTION_Index_115", "Outputs nothing");
         // 116 moved to lang files
         // 117 obsolete
         // 118 moved to lang files
@@ -257,19 +216,13 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_122", "Emit Redstone if slots contain something");
         addStringLocalization("Interaction_DESCRIPTION_Index_123", "Don't emit Redstone");
         // 124 moved to lang files
-        addStringLocalization("Interaction_DESCRIPTION_Index_124.1", "Blacklist Mode");
         // 125 obsolete
-        addStringLocalization("Interaction_DESCRIPTION_Index_125.1", "Whitelist Mode");
         // 126 moved to lang files
         // 127 obsolete
         addStringLocalization("Interaction_DESCRIPTION_Index_128", "Redstone");
-        addStringLocalization("Interaction_DESCRIPTION_Index_128.1", "Redstone ");
         addStringLocalization("Interaction_DESCRIPTION_Index_129", "Energy");
-        addStringLocalization("Interaction_DESCRIPTION_Index_129.1", "Energy ");
         addStringLocalization("Interaction_DESCRIPTION_Index_130", "Fluids");
-        addStringLocalization("Interaction_DESCRIPTION_Index_130.1", "Fluids ");
         addStringLocalization("Interaction_DESCRIPTION_Index_131", "Items");
-        addStringLocalization("Interaction_DESCRIPTION_Index_131.1", "Items ");
         addStringLocalization("Interaction_DESCRIPTION_Index_132", "Pipe is loose. (Wrench)");
         addStringLocalization("Interaction_DESCRIPTION_Index_133", "Screws are loose. (Screwdriver)");
         addStringLocalization("Interaction_DESCRIPTION_Index_134", "Something is stuck. (Soft Mallet)");
@@ -286,9 +239,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_148", "V ");
         addStringLocalization("Interaction_DESCRIPTION_Index_149", "A");
         addStringLocalization("Interaction_DESCRIPTION_Index_151", "Does not get consumed in the process");
-        addStringLocalization("Interaction_DESCRIPTION_Index_151.1", "Outputs items and 1 specific Fluid");
-        addStringLocalization("Interaction_DESCRIPTION_Index_151.2", "Outputs 1 specific Fluid");
-        addStringLocalization("Interaction_DESCRIPTION_Index_151.4", "Successfully locked Fluid to %s");
         addStringLocalization("Interaction_DESCRIPTION_Index_152", "Total: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_153", "Usage: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_154", "Voltage: ");
@@ -342,18 +292,10 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_203", " gibbl");
         addStringLocalization("Interaction_DESCRIPTION_Index_204", "No Pollution in Chunk! HAYO!");
         addStringLocalization("Interaction_DESCRIPTION_Index_206", "Scan for Assembly Line");
-        addStringLocalization(
-            "Interaction_DESCRIPTION_Index_207",
-            "Pump speed: %dL every %d ticks, %.2f L/sec on average");
         addStringLocalization("Interaction_DESCRIPTION_Index_208", " L");
         addStringLocalization("Interaction_DESCRIPTION_Index_209", " ticks");
         addStringLocalization("Interaction_DESCRIPTION_Index_209.1", " tick");
         addStringLocalization("Interaction_DESCRIPTION_Index_210", "Average: %.2f L/sec");
-        addStringLocalization("Interaction_DESCRIPTION_Index_211", "Items per side: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_212", "Input enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_213", "Input disabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_214", "Connected");
-        addStringLocalization("Interaction_DESCRIPTION_Index_215", "Disconnected");
         addStringLocalization("Interaction_DESCRIPTION_Index_216", "Deprecated Recipe");
         addStringLocalization("Interaction_DESCRIPTION_Index_219", "Extended Facing: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_221", "Item threshold");
@@ -408,8 +350,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_273", "Original Recipe by: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_274", "Modified by: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_275", "Original voltage: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_299", "Item Filter: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_300", "Filter Cleared!");
         addStringLocalization("Interaction_DESCRIPTION_Index_300.1", "Fluid Lock Cleared.");
         addStringLocalization("Interaction_DESCRIPTION_Index_301", "Universal");
         addStringLocalization("Interaction_DESCRIPTION_Index_302", "Int. EU");
@@ -422,7 +362,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_313", "Block Input");
         addStringLocalization("Interaction_DESCRIPTION_Index_314", "Allow Input");
         addStringLocalization("Interaction_DESCRIPTION_Index_315", "Filter Empty");
-        addStringLocalization("Interaction_DESCRIPTION_Index_316", "Pump speed limit reached!");
         addStringLocalization("Interaction_DESCRIPTION_Index_317", "Filter: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_318", "Check Mode");
         addStringLocalization("Interaction_DESCRIPTION_Index_319", "Any player");
@@ -444,8 +383,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_343.1", "Use Inverted Machine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_344", "Input Blocking");
         addStringLocalization("Interaction_DESCRIPTION_Index_344.1", "Output Blocking");
-        addStringLocalization("Interaction_DESCRIPTION_Index_502", "Mining chunk loading enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_503", "Mining chunk loading disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_505", "Enable with Signal (Safe)");
         addStringLocalization("Interaction_DESCRIPTION_Index_506", "Disable with Signal (Safe)");
         addStringLocalization("Interaction_DESCRIPTION_Index_507", "Safe Mode");
@@ -454,9 +391,7 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_510", "Multi Tier required: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_602", "Use Private Frequency");
         addStringLocalization("Interaction_DESCRIPTION_Index_756", "Connectable: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_ALL", "All");
         addStringLocalization("Interaction_DESCRIPTION_Index_ANY", "Any");
-        addStringLocalization("Interaction_DESCRIPTION_Index_SIDE", "Side: ");
 
         addStringLocalization(FACE_ANY, "Any Side");
         addStringLocalization(FACE_BOTTOM, "Bottom");
@@ -471,6 +406,60 @@ public class GTLanguageManager {
     private static void addToMCLangList(String aKey, String translation) {
         if (stringTranslateLanguageList != null) {
             stringTranslateLanguageList.put(aKey, translation);
+        }
+    }
+
+    private static void addToMCLangListFallBack(String aKey, String english) {
+        if (stringTranslateLanguageListFallBack != null) {
+            stringTranslateLanguageListFallBack.put(aKey, english);
+        }
+    }
+
+    public static synchronized void reloadLanguage(Map<String, String> languageMap) {
+        if (!GregTechAPI.sFullLoadFinished) return;
+        File languageDir = sEnglishFile.getConfigFile()
+            .getParentFile();
+        String userLang = Minecraft.getMinecraft()
+            .getLanguageManager()
+            .getCurrentLanguage()
+            .getLanguageCode();
+        LanguageCode = userLang;
+        if (userLang.equals("en_US")) {
+            reloadLanguageWithEnglish(languageDir, languageMap);
+            return;
+        }
+        String l10nFileName = "GregTech_" + userLang + ".lang";
+        File l10nFile = new File(languageDir, l10nFileName);
+        if (!l10nFile.isFile()) {
+            reloadLanguageWithEnglish(languageDir, languageMap);
+            return;
+        }
+        sEnglishFile = new Configuration(l10nFile);
+        isEN_US = false;
+        sEnglishFile.load();
+        for (String key : LANGMAP.keySet()) {
+            if (languageMap.containsKey(key)) {
+                LANGMAP.put(key, languageMap.get(key));
+                continue;
+            }
+            Property tProperty = sEnglishFile.get("LanguageFile", key, stringTranslateLanguageListFallBack.get(key));
+            String translation = tProperty.getString();
+            languageMap.put(key, translation);
+            LANGMAP.put(key, translation);
+        }
+    }
+
+    public static synchronized void reloadLanguageWithEnglish(File languageDir, Map<String, String> languageMap) {
+        isEN_US = true;
+        sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
+        for (String key : LANGMAP.keySet()) {
+            if (languageMap.containsKey(key)) {
+                LANGMAP.put(key, languageMap.get(key));
+                continue;
+            }
+            String english = stringTranslateLanguageListFallBack.get(key);
+            languageMap.put(key, english);
+            LANGMAP.put(key, english);
         }
     }
 }

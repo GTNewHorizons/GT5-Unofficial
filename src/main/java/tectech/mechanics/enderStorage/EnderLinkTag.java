@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.gtnewhorizon.gtnhlib.hash.Fnv1a32;
+
 public class EnderLinkTag implements Serializable {
 
     private static final long serialVersionUID = 6884008436570077863L;
@@ -35,8 +37,10 @@ public class EnderLinkTag implements Serializable {
 
     @Override
     public int hashCode() {
-        final int hash = 31 + (frequency == null ? 0 : frequency.hashCode());
-        return hash * 31 + (player == null ? 0 : player.hashCode());
+        int hash = Fnv1a32.initialState();
+        hash = Fnv1a32.hashStep(hash, Objects.hashCode(frequency));
+        hash = Fnv1a32.hashStep(hash, Objects.hashCode(player));
+        return hash;
     }
 
     public NBTTagCompound save() {

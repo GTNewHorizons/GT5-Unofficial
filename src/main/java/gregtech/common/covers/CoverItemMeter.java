@@ -154,9 +154,8 @@ public class CoverItemMeter extends Cover {
             slot++;
             if (slot > coverable.getSizeInventory()) slot = -1;
 
-            if (slot == -1)
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("053", "Slot: ") + GTUtility.trans("ALL", "All"));
-            else GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("053", "Slot: ") + slot);
+            if (slot == -1) GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.slot.all");
+            else GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.slot", slot);
         }
     }
 

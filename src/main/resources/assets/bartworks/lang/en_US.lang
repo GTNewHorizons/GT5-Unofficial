@@ -1,3 +1,7 @@
+# Components
+gt.oreprefix.bolted_material_casing=Bolted %s Casing
+gt.oreprefix.rebolted_material_casing=Rebolted %s Casing
+
 itemGroup.GT2C=Gregtech 2 Compat
 item.GT_Rockcutter_Item_LV.name=Rockcutter LV
 item.GT_Rockcutter_Item_MV.name=Rockcutter MV
@@ -264,9 +268,6 @@ BW.infoData.mega_vacuum_freezer.subspace_cooling.inactive=Subspace cooling: §cI
 BW.NEI.display.radhatch.0=Sievert: %s Sv
 BW.NEI.display.radhatch.1=Mass: %s kg
 BW.NEI.display.radhatch.2=Time: %s s
-
-misc.BatchModeTextOn=Batch recipes
-misc.BatchModeTextOff=Don't batch recipes
 
 tooltip.cal.imprintedWith=Imprinted with: %s
 chat.cal.mode.0=Circuit Assembly Line Mode

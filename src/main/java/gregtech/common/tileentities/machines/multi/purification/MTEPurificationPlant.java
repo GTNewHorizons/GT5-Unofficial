@@ -142,9 +142,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = survivalBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 3, 6, 0, elementBudget, env, true);
         if (built == -1) {
-            GTUtility.sendChatToPlayer(
-                env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
+            GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done.water");
             return 0;
         }
         return built;
@@ -417,7 +415,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             MTEPurificationUnitBase<?> metaTileEntity = unit.metaTileEntity();
             PurificationUnitStatus status = metaTileEntity.status();
             // Unit needs to be idle at first before active if it is active it will only check if running recipes.
-            if (status == PurificationUnitStatus.IDLE) {
+            if (status == PurificationUnitStatus.IDLE || status == PurificationUnitStatus.ACTIVE) {
                 // Perform recipe check for unit and start it if successful
                 if (metaTileEntity.doPurificationRecipeCheck()) {
                     unit.setActive(true);

@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -427,6 +428,54 @@ public class GTRecipe implements Comparable<GTRecipe> {
     public static boolean GTppRecipeHelper;
 
     /**
+     * Builds the merged-input cache array. Override in subclasses to support alternative input representations (e.g.
+     * oredict slots). Called once per recipe, result is cached by {@link #getCachedCombinedItemInputs()}.
+     */
+    protected @NotNull RecipeItemInput @NotNull [] buildItemInputCache() {
+        final ItemStack[] inputs = mInputs;
+        if (inputs == null || inputs.length == 0) return EMPTY_INPUT_CACHE;
+
+        final int[] chances = mInputChances;
+        final ObjectArrayList<@NotNull RecipeItemInput> newCache = ObjectArrayList
+            .wrap(new RecipeItemInput[inputs.length], 0);
+
+        for (int i = 0; i < inputs.length; i++) {
+            final ItemStack itemStack = inputs[i];
+            if (itemStack == null) continue;
+
+            // Get the consumption chance for this specific input slot (default 100%)
+            int chance = (chances != null && i < chances.length) ? chances[i] : 10000;
+
+            final RecipeItemInput existingInput = newCache.stream()
+                .filter(existing -> existing.matchesType(itemStack))
+                .findAny()
+                .orElse(null);
+
+            if (existingInput == null) {
+                RecipeItemInput newInput = new RecipeItemInput(itemStack, isNBTSensitive);
+                // Initialize weighted amount: (actual stack size * chance percentage)
+                newInput.chanceWeightedAmount = (itemStack.stackSize * (double) chance) / 10000.0;
+                newCache.add(newInput);
+            } else {
+                existingInput.inputAmount = Math.addExact(existingInput.inputAmount, itemStack.stackSize);
+                // Accumulate weighted amount: sum of (slot_size * slot_chance)
+                existingInput.chanceWeightedAmount += (itemStack.stackSize * (double) chance) / 10000.0;
+            }
+        }
+
+        return newCache.toArray(new RecipeItemInput[0]);
+    }
+
+    /**
+     * Returns true to skip the early-exit check that requires at least as many provided item types as recipe input
+     * slots. Must be overridden when a recipe type can satisfy multiple distinct slots with the same item type (e.g.
+     * oredict recipes where multiple slots may resolve to the same item).
+     */
+    protected boolean skipItemInputCountCheck() {
+        return false;
+    }
+
+    /**
      * @return Computes a (cached) array of all input items, combined by type into stacks. Do not mutate.
      */
     private @NotNull RecipeItemInput @NotNull [] getCachedCombinedItemInputs() {
@@ -448,43 +497,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 return mergedInputCache;
             }
 
-            final ItemStack[] inputs = mInputs;
-            final int[] chances = mInputChances;
-            inputsAtCacheTime = inputs;
-            if (inputs == null || inputs.length == 0) {
-                mergedInputCache = EMPTY_INPUT_CACHE;
-                return mergedInputCache;
-            }
-
-            final ObjectArrayList<@NotNull RecipeItemInput> newCache = ObjectArrayList
-                .wrap(new RecipeItemInput[inputs.length], 0);
-
-            for (int i = 0; i < inputs.length; i++) {
-                final ItemStack itemStack = inputs[i];
-                if (itemStack == null) continue;
-
-                // Get the consumption chance for this specific input slot (default 100%)
-                int chance = (chances != null && i < chances.length) ? chances[i] : 10000;
-
-                final RecipeItemInput existingInput = newCache.stream()
-                    .filter(existing -> existing.matchesType(itemStack))
-                    .findAny()
-                    .orElse(null);
-
-                if (existingInput == null) {
-                    RecipeItemInput newInput = new RecipeItemInput(itemStack, isNBTSensitive);
-                    // Initialize weighted amount: (actual stack size * chance percentage)
-                    newInput.chanceWeightedAmount = (itemStack.stackSize * (double) chance) / 10000.0;
-                    newCache.add(newInput);
-                } else {
-                    existingInput.inputAmount = Math.addExact(existingInput.inputAmount, itemStack.stackSize);
-                    // Accumulate weighted amount: sum of (slot_size * slot_chance)
-                    existingInput.chanceWeightedAmount += (itemStack.stackSize * (double) chance) / 10000.0;
-                }
-            }
-
-            final RecipeItemInput[] frozenCache = newCache.toArray(new RecipeItemInput[0]);
-            if (GregTechAPI.sFullLoadFinished) {
+            inputsAtCacheTime = mInputs;
+            final RecipeItemInput[] frozenCache = buildItemInputCache();
+            // Cache empty results always; non-empty results only after full load to avoid stale caches during
+            // recipe registration.
+            if (frozenCache == EMPTY_INPUT_CACHE || GregTechAPI.sFullLoadFinished) {
                 mergedInputCache = frozenCache;
             }
             return frozenCache;
@@ -585,8 +602,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     continue;
                 }
 
-                final ItemData providedUnifiedItem = unifiedProvidedInputs[iProvided];
-                if (!recipeItemCost.matchesRecipe(providedUnifiedItem, providedItem)) {
+                if (!recipeItemCost.matchesRecipe(unifiedProvidedInputs[iProvided], providedItem)) {
                     continue;
                 }
 
@@ -642,10 +658,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
         if (mInputs.length > 0) {
             final @NotNull RecipeItemInput @NotNull [] combinedInputs = getCachedCombinedItemInputs();
 
-            if (aInputs.length < combinedInputs.length) {
+            if (!skipItemInputCountCheck() && aInputs.length < combinedInputs.length) {
                 // Fewer item types provided than required by the recipe, making it impossible to satisfy.
                 return 0;
             }
+
             final ItemData[] unifiedProvidedInputs = new ItemData[aInputs.length];
             for (int i = 0; i < aInputs.length; i++) {
                 unifiedProvidedInputs[i] = GTOreDictUnificator.getAssociation(aInputs[i]);
@@ -655,10 +672,9 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 double remainingCost = combinedInput.inputAmount * currentParallel;
                 long providedAmount = 0;
 
-                for (int i = 0; i < unifiedProvidedInputs.length; i++) {
-                    final ItemData providedUnifiedItem = unifiedProvidedInputs[i];
+                for (int i = 0; i < aInputs.length; i++) {
                     final ItemStack providedItem = aInputs[i];
-                    if (!combinedInput.matchesRecipe(providedUnifiedItem, providedItem)) {
+                    if (!combinedInput.matchesRecipe(unifiedProvidedInputs[i], providedItem)) {
                         continue;
                     }
 
@@ -899,12 +915,19 @@ public class GTRecipe implements Comparable<GTRecipe> {
          */
         public double chanceWeightedAmount;
 
+        /**
+         * OreDict ID for this slot, or -1 if not an oredict slot. When >= 0, matching checks
+         * {@link OreDictionary#getOreIDs(ItemStack)} dynamically rather than the static alternatives array.
+         */
+        public final int oreDictId;
+
         public RecipeItemInput(ItemStack stack, boolean recipeIsNBTSensitive) {
             Objects.requireNonNull(stack);
             this.inputAmount = stack.stackSize;
             // Initialize weighted amount with 100% chance by default.
             // This will be overwritten or accumulated in getCachedCombinedItemInputs.
             this.chanceWeightedAmount = stack.stackSize;
+            this.oreDictId = -1;
 
             final boolean stackNeedsNBT = GTRecipe.shouldCheckNBT(stack);
             this.usesNbtMatching = recipeIsNBTSensitive | stackNeedsNBT;
@@ -919,17 +942,38 @@ public class GTRecipe implements Comparable<GTRecipe> {
         }
 
         /**
+         * Constructor for oredict slots that match by OreDict ID at runtime. This is the preferred constructor for
+         * oredict inputs as it dynamically matches items registered after recipe creation.
+         */
+        public RecipeItemInput(int oreDictId, ItemStack representative, long amount, boolean nbtSensitive) {
+            this.oreDictId = oreDictId;
+            this.unifiedStack = representative != null ? GTOreDictUnificator.get_nocopy(true, representative) : null;
+            this.inputAmount = amount;
+            this.chanceWeightedAmount = amount;
+            this.usesNbtMatching = nbtSensitive;
+        }
+
+        /**
          * @return True if the passed in stack is of the same item type as this input (respecting
          *         {@link RecipeItemInput#usesNbtMatching}).
          */
         public boolean matchesType(final ItemStack other) {
+            if (oreDictId >= 0) {
+                for (int id : OreDictionary.getOreIDs(other)) if (id == oreDictId) return true;
+                return false;
+            }
             return GTUtility.areStacksEqual(this.unifiedStack, other, !usesNbtMatching);
         }
 
         /**
-         * @return True if the given input+oredict data for that input can be used as a valid recipe ingredient.
+         * @return True if the given item can be used as a valid recipe ingredient for this input slot. For oredict
+         *         slots, checks the OreDict ID dynamically. For regular slots, uses GT unification matching.
          */
         public boolean matchesRecipe(final ItemData oredictOther, final ItemStack other) {
+            if (oreDictId >= 0) {
+                for (int id : OreDictionary.getOreIDs(other)) if (id == oreDictId) return true;
+                return false;
+            }
             if (usesNbtMatching) {
                 return GTUtility.areStacksEqual(this.unifiedStack, other, false);
             } else {
@@ -1284,6 +1328,10 @@ public class GTRecipe implements Comparable<GTRecipe> {
     public static class GTRecipe_WithAlt extends GTRecipe {
 
         public ItemStack[][] mOreDictAlt;
+        /**
+         * OreDict IDs parallel to mOreDictAlt/mInputs; -1 means not an oredict slot. May be null for legacy recipes.
+         */
+        public int[] mOreDictIds;
 
         /**
          * Only for {@link GTRecipeBuilder}.
@@ -1293,7 +1341,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
             int[] mFluidOutputChances, Object mSpecialItems, int mDuration, int mEUt, int mSpecialValue,
             boolean mEnabled, boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered, boolean mNeedsEmptyOutput,
             boolean nbtSensitive, String[] neiDesc, @Nullable IRecipeMetadataStorage metadataStorage,
-            RecipeCategory recipeCategory, ItemStack[][] mOreDictAlt) {
+            RecipeCategory recipeCategory, ItemStack[][] mOreDictAlt, int[] mOreDictIds) {
             super(
                 mInputs,
                 mOutputs,
@@ -1317,6 +1365,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 mSpecialItems,
                 mDuration);
             this.mOreDictAlt = mOreDictAlt;
+            this.mOreDictIds = mOreDictIds;
         }
 
         public GTRecipe_WithAlt(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
@@ -1352,6 +1401,51 @@ public class GTRecipe implements Comparable<GTRecipe> {
             }
             if (aIndex >= mInputs.length) return null;
             return GTUtility.copyOrNull(mInputs[aIndex]);
+        }
+
+        @Override
+        protected RecipeItemInput[] buildItemInputCache() {
+            if (mInputs == null || mInputs.length == 0) return EMPTY_INPUT_CACHE;
+
+            final ObjectArrayList<RecipeItemInput> newCache = new ObjectArrayList<>(mInputs.length);
+
+            for (int i = 0; i < mInputs.length; i++) {
+                if (mInputs[i] == null) continue;
+
+                final long amount = mInputs[i].stackSize;
+                final int chance = (mInputChances != null && i < mInputChances.length) ? mInputChances[i] : 10000;
+                final double weighted = (amount * (double) chance) / 10000.0;
+
+                final int slotOreDictId = (mOreDictIds != null && i < mOreDictIds.length) ? mOreDictIds[i] : -1;
+                final ItemStack representative = mInputs[i];
+
+                RecipeItemInput existing = null;
+                for (int j = 0; j < newCache.size(); j++) {
+                    if (newCache.get(j)
+                        .matchesType(representative)) {
+                        existing = newCache.get(j);
+                        break;
+                    }
+                }
+
+                if (existing != null) {
+                    existing.inputAmount += amount;
+                    existing.chanceWeightedAmount += weighted;
+                } else {
+                    RecipeItemInput ri = (slotOreDictId >= 0)
+                        ? new RecipeItemInput(slotOreDictId, mInputs[i], amount, isNBTSensitive)
+                        : new RecipeItemInput(mInputs[i], isNBTSensitive);
+                    ri.chanceWeightedAmount = weighted;
+                    newCache.add(ri);
+                }
+            }
+
+            return newCache.toArray(new RecipeItemInput[0]);
+        }
+
+        @Override
+        protected boolean skipItemInputCountCheck() {
+            return true;
         }
     }
 }

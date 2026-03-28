@@ -232,6 +232,12 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/background/steam_dial_steel");
     public static final UITexture PROGRESSBAR_NAME_REMOVER = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/name_remover");
+    public static final UITexture PROGRESSBAR_BEAMCRAFTER = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/beamcrafter");
+    public static final UITexture PROGRESSBAR_LHC_EM = UITexture.fullImage(GregTech.ID, "gui/progressbar/lhc_em");
+    public static final UITexture PROGRESSBAR_LHC_W = UITexture.fullImage(GregTech.ID, "gui/progressbar/lhc_weak");
+    public static final UITexture PROGRESSBAR_LHC_S = UITexture.fullImage(GregTech.ID, "gui/progressbar/lhc_strong");
+    public static final UITexture PROGRESSBAR_LHC_G = UITexture.fullImage(GregTech.ID, "gui/progressbar/lhc_gravity");
 
     public static FallbackableUITexture fallbackableProgressbar(String name, UITexture fallback) {
         return new FallbackableUITexture(UITexture.fullImage(GregTech.ID, "gui/progressbar/" + name), fallback);

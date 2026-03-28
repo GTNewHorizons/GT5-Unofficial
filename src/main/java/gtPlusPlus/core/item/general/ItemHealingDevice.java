@@ -26,7 +26,6 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -136,7 +135,12 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
         list.add(EnumChatFormatting.GREEN + aString1 + EnumChatFormatting.GRAY);
         list.add(
-            EnumChatFormatting.GREEN + aString2 + formatNumber(EUPerOperation) + aString3 + EnumChatFormatting.GRAY);
+            EnumChatFormatting.GREEN + aString2
+                + " "
+                + formatNumber(EUPerOperation)
+                + " "
+                + aString3
+                + EnumChatFormatting.GRAY);
         list.add(EnumChatFormatting.GREEN + aString4 + EnumChatFormatting.GRAY);
         list.add(EnumChatFormatting.RED + aString5 + EnumChatFormatting.GRAY);
 
@@ -379,8 +383,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
     @Override
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         ItemStack superStack = super.onItemRightClick(aStack, aWorld, aPlayer);
-        boolean isShiftHeld = KeyboardUtils.isShiftKeyDown();
-        if (isShiftHeld) {
+        if (!aWorld.isRemote && aPlayer.isSneaking()) {
             boolean oldState = getShowMessages(superStack);
             boolean newState = !oldState;
             ItemHealingDevice.setShowMessages(superStack, newState);

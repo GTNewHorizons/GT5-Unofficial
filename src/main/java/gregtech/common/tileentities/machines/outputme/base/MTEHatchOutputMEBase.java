@@ -20,7 +20,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -61,6 +60,7 @@ import appeng.me.helpers.IGridProxyable;
 import appeng.me.storage.CellInventory;
 import appeng.me.storage.CellInventoryHandler;
 import appeng.me.storage.MEInventoryHandler;
+import appeng.util.IterationCounter;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import gregtech.api.enums.Dyes;
@@ -142,13 +142,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         final boolean currentActive = getProxy().isActive();
         if (this.wasActive != currentActive) {
             this.wasActive = currentActive;
-            try {
-                this.getProxy()
-                    .getGrid()
-                    .postEvent(new MENetworkCellArrayUpdate());
-            } catch (final GridAccessException e) {
-                // :P
-            }
+            this.updateCellArray();
         }
     }
 
@@ -197,6 +191,8 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
                 GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.outputme.cacheMode.desc");
             }
             updateState();
+            cellToCacheTransfer();
+            this.updateCellArray();
         }
         env.dispatchMarkDirty();
     }
@@ -316,9 +312,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         @Override
         public void onListUpdate() {
             try {
-                MTEHatchOutputMEBase.this.getProxy()
-                    .getGrid()
-                    .postEvent(new MENetworkCellArrayUpdate());
+                MTEHatchOutputMEBase.this.updateCellArray();
                 final IStorageGrid gs = MTEHatchOutputMEBase.this.getProxy()
                     .getStorage();
                 Platform.postChanges(gs, null, env.getCellStack(), env.getActionSource());
@@ -351,10 +345,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
 
         if (cacheMode) {
             try {
-                this.getProxy()
-                    .getGrid()
-                    .postEvent(new MENetworkCellArrayUpdate());
-
+                this.updateCellArray();
                 final IStorageGrid gs = this.getProxy()
                     .getStorage();
                 Platform.postChanges(gs, oldCellStack, upgradeItemStack, env.getActionSource());
@@ -369,21 +360,20 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         ItemStack upgradeItemStack = env.getCellStack();
 
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ICellWorkbenchItem cellWorkbenchItem) {
+            // FIXME: localize this msg
             String msg = filter.updateFilterFromCell(cellWorkbenchItem, upgradeItemStack);
             if (!msg.isEmpty() && env.getLastClickedPlayer() != null) {
                 String modeKey = filter.getIsBlackList() ? BLACKLIST.getKey() : WHITELIST.getKey();
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatComp(
                     env.getLastClickedPlayer(),
-                    StatCollector.translateToLocal(modeKey)
-                        + StatCollector.translateToLocalFormatted(filter.getEnableKey(), msg));
+                    new ChatComponentTranslation(modeKey).appendText(": ")
+                        .appendSibling(new ChatComponentTranslation(filter.getEnableKey(), msg)));
             }
             env.dispatchMarkDirty();
         } else {
             filter.clear();
             if (env.getLastClickedPlayer() != null) {
-                GTUtility.sendChatToPlayer(
-                    env.getLastClickedPlayer(),
-                    StatCollector.translateToLocal(filter.getDisableKey()));
+                GTUtility.sendChatTrans(env.getLastClickedPlayer(), filter.getDisableKey());
             }
             env.dispatchMarkDirty();
         }
@@ -485,6 +475,16 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         lastOutputTick = tickCounter;
     }
 
+    public void cellToCacheTransfer() {
+        if (!cacheMode && cell != null) {
+            final Iterable<T> iter = cell.getAvailableItems(
+                cell.getStackType()
+                    .createPrimitiveList(),
+                IterationCounter.fetchNewId());
+            iter.forEach(stack -> addToCache(cell.extractItems(stack, Actionable.MODULATE, env.getActionSource())));
+        }
+    }
+
     public boolean shouldCheck() {
         return checkMode && cacheMode && cell != null;
     }
@@ -522,8 +522,10 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     }
 
     public void addToCache(T stack) {
-        if (!isVoidCell) cache.insert(stack, stack.getStackSize());
-        lastInputTick = tickCounter;
+        if (!isVoidCell) {
+            cache.insert(stack, stack.getStackSize());
+            env.dispatchMarkDirty();
+        }
     }
 
     public boolean storePartial(I stack, boolean simulate) {
@@ -531,8 +533,8 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             return false;
         }
         if (!simulate) {
-            env.dispatchMarkDirty();
             addToCache(stack);
+            lastInputTick = tickCounter;
         }
         return true;
     }
@@ -611,6 +613,14 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         }
     }
 
+    public void updateCellArray() {
+        try {
+            this.getProxy()
+                .getGrid()
+                .postEvent(new MENetworkCellArrayUpdate());
+        } catch (Exception ignored) {}
+    }
+
     public NBTTagCompound getCopiedData(EntityPlayer player) {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("type", env.getCopiedDataIdentifier(player));
@@ -645,7 +655,17 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
 
     public List<T> getCacheList() {
         List<T> stackList = new ArrayList<>();
-        cache.iterateAll((stack, amount) -> stackList.add(stack.setStackSize(amount)));
+
+        if (cacheMode && cell != null) {
+            final Iterable<T> iter = cell.getAvailableItems(
+                cell.getStackType()
+                    .createPrimitiveList(),
+                IterationCounter.fetchNewId());
+            iter.forEach(stackList::add);
+        } else {
+            cache.iterateAll((stack, amount) -> stackList.add(stack.setStackSize(amount)));
+        }
+
         return stackList;
     }
 

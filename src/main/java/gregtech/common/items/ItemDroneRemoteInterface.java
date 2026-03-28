@@ -9,7 +9,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
@@ -17,12 +16,18 @@ import com.cleanroommc.modularui.factory.GuiManager;
 import com.cleanroommc.modularui.factory.ItemStackGuiData;
 import com.cleanroommc.modularui.factory.ItemStackGuiFactory;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.modularui2.GTModularScreen;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.item.DroneRemoteInterfaceGUI;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 
@@ -56,8 +61,8 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
             int y = centreNbt.getInteger("y");
             int z = centreNbt.getInteger("z");
             int dim = centreNbt.getInteger("dim");
-            aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.drone_remote_connected", x, y, z, dim));
-        } else aList.add(StatCollector.translateToLocal("GT5U.tooltip.drone_remote_disconnected"));
+            aList.add(GTUtility.translate("GT5U.tooltip.drone_remote_connected", x, y, z, dim));
+        } else aList.add(GTUtility.translate("GT5U.tooltip.drone_remote_disconnected"));
     }
 
     @Override
@@ -112,5 +117,11 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
             }
         }
         return new DroneRemoteInterfaceGUI(guiSyncManager, centre).build();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public ModularScreen createScreen(ItemStackGuiData data, ModularPanel mainPanel) {
+        return new GTModularScreen(mainPanel, GTGuiThemes.STANDARD);
     }
 }

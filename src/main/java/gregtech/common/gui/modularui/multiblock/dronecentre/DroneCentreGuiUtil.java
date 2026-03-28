@@ -61,7 +61,8 @@ public class DroneCentreGuiUtil {
                 InteractionSyncHandler.class,
                 () -> new InteractionSyncHandler().setOnMousePressed(var -> {
                     EntityPlayer player = dynamicSyncManager.getPlayer();
-                    if (!NetworkUtils.isClient() && var.shift && conn.getLinkedCentre() instanceof MTEDroneCentre dc) {
+                    if (!NetworkUtils.isClient() && var.mouseButton == 1
+                        && conn.getLinkedCentre() instanceof MTEDroneCentre dc) {
                         int level = dc.getDroneLevel();
                         if (level < 4) {
                             player.addChatMessage(new ChatComponentTranslation("GT5U.gui.chat.drone_level_low"));
@@ -70,7 +71,7 @@ public class DroneCentreGuiUtil {
                         }
                         DroneCentreGuiUtil.teleportPlayerToMachine(conn, player);
                         player.closeScreen();
-                    } else if (NetworkUtils.isClient() && !var.shift) {
+                    } else if (NetworkUtils.isClient() && var.mouseButton == 0) {
                         ChunkCoordinates machineCoord = conn.getMachineCoord();
                         DimensionalCoord blockPos = new DimensionalCoord(
                             machineCoord.posX,
@@ -78,18 +79,17 @@ public class DroneCentreGuiUtil {
                             machineCoord.posZ,
                             player.dimension);
                         BlockPosHighlighter.highlightBlocks(player, Collections.singletonList(blockPos), null, null);
-                        player.closeScreen();
                     }
                 })))
             .size(16)
             .background(GTGuiTextures.BUTTON_STANDARD)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
             .tooltipBuilder(
-                t -> t.addLine(IKey.lang("GT5U.gui.button.drone_highlight"))
-                    .addLine("x:" + conn.getMachineCoord().posX)
+                t -> t.addLine("x:" + conn.getMachineCoord().posX)
                     .addLine("y:" + conn.getMachineCoord().posY)
                     .addLine("z:" + conn.getMachineCoord().posZ)
                     .addLine(IKey.lang("GT5U.infodata.dimension", conn.getMachineWorld()))
+                    .addLine(IKey.lang("GT5U.gui.button.drone_highlight"))
                     .addLine(IKey.lang("GT5U.gui.button.drone_teleport")));
     }
 
@@ -106,7 +106,7 @@ public class DroneCentreGuiUtil {
                     .child(
                         IKey.lang("GT5U.gui.text.drone_key")
                             .asWidget()
-                            .alignment(Alignment.CENTER))
+                            .textAlign(Alignment.CENTER))
                     .child(
                         new TextFieldWidget().height(16)
                             .widthRel(0.8f)

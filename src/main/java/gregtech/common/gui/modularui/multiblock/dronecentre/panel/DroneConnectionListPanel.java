@@ -71,7 +71,8 @@ public class DroneConnectionListPanel extends ModularPanel {
                 if (dynamicWidget.hasChildren()) {
                     IWidget child = dynamicWidget.getChildren()
                         .get(0);
-                    if (child instanceof DroneListWidget<?, ?>list) {
+                    if (child instanceof DroneListWidget<?, ?>list && list.getScrollData()
+                        .getScrollSize() != 0) {
                         lastScroll = list.getScrollY();
                     }
                 }
@@ -252,7 +253,7 @@ public class DroneConnectionListPanel extends ModularPanel {
         if (clientConnections.isEmpty()) {
             return IKey.lang("GT5U.gui.text.drone_no_connection")
                 .asWidget()
-                .alignment(Alignment.CENTER)
+                .textAlign(Alignment.CENTER)
                 .align(Alignment.CENTER)
                 .widthRel(0.95f)
                 .scale(2);

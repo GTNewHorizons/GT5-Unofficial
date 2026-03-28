@@ -1,5 +1,7 @@
 package gregtech.common.text;
 
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 
 public final class ClientTickRateFormatter {
@@ -33,5 +35,12 @@ public final class ClientTickRateFormatter {
             "gt.cover.info.format.tick_rate",
             tickRate,
             StatCollector.translateToLocal(unitI18NKey));
+    }
+
+    public IChatComponent toChatComponent() {
+        return new ChatComponentTranslation(
+            "gt.cover.info.format.tick_rate",
+            tickRate,
+            new ChatComponentTranslation(unitI18NKey));
     }
 }

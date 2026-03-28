@@ -30,6 +30,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -268,7 +269,9 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             // Energy Hatch: Any Computer Casing on the backside of the main body
             .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1)
             // Maintenance Hatch: Any Computer Casing on the backside of the main body
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1)
+            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingsHint1or3"), 1, 3)
+            .addOutputBus(translateToLocal("tt.keyword.Structure.AnyComputerCasingsHint1or3"), 1, 3)
+            .addInputHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingsHint1or3"), 1, 3)
             .toolTipFinisher();
         return tt;
     }
@@ -328,19 +331,13 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public String getMachineModeName() {
-        return getMachineModeName(this.machineMode);
+    public String getMachineModeKey() {
+        return getMachineModeKey(this.machineMode);
     }
 
-    private static String getMachineModeName(int mode) {
-        if (mode == MODE_RESEARCH_STATION)
-            return StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.mode.Assembly_line");
-        return StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.mode.Scanner");
-    }
-
-    @Override
-    public int getMachineMode() {
-        return super.getMachineMode();
+    private static String getMachineModeKey(int mode) {
+        if (mode == MODE_RESEARCH_STATION) return "gt.blockmachines.multimachine.em.research.mode.Assembly_line";
+        return "gt.blockmachines.multimachine.em.research.mode.Scanner";
     }
 
     // endregion machine mode
@@ -466,7 +463,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
         GTUtility
-            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+            .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
     }
     // endregion event handlers
 
@@ -863,7 +860,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(getMachineModeName(tag.getInteger("machineMode")));
+        currentTip.add(StatCollector.translateToLocal(getMachineModeKey(tag.getInteger("machineMode"))));
         currentTip.add(
             StatCollector.translateToLocalFormatted(
                 "gt.blockmachines.multimachine.em.research.computation",

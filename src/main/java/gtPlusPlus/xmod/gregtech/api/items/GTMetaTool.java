@@ -24,18 +24,15 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
-import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import mods.railcraft.api.core.items.IToolCrowbar;
 
 /**
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:
@@ -47,7 +44,7 @@ import mods.railcraft.api.core.items.IToolCrowbar;
     @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.ModIDs.RAILCRAFT),
     @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = Mods.ModIDs.BUILD_CRAFT_CORE),
     @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O) })
-public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagableItem, IToolCrowbar, IToolWrench {
+public abstract class GTMetaTool extends MetaGeneratedTool {
 
     /**
      * All instances of this Item Class are listed here. This gets used to register the Renderer to all Items of this
@@ -176,7 +173,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
             }
         }
         if (aStack.stackSize <= 0) {
-            aPlayer.destroyCurrentEquippedItem();
+            GTUtility.destroyCurrentItem(aPlayer);
         }
         return true;
     }

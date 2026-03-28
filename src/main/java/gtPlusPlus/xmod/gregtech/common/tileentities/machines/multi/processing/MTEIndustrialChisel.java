@@ -8,16 +8,21 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.Mods.ArchitectureCraft;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -25,7 +30,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.enums.GTValues;
+import cpw.mods.fml.common.registry.GameRegistry;
+import gcewing.architecture.common.item.ArchitectureItemBlock;
+import gcewing.architecture.common.shape.Shape;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -34,6 +41,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -79,7 +87,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
             .addBulkMachineInfo(16, 3f, 0.75f)
             .addInfo("Factory Grade Auto Chisel")
             .addInfo("Target block goes in Controller slot for common Input Buses")
-            .addInfo("You can also set a target block in each Chisel Bus and use them as an Input Bus")
+            .addInfo("You can also set a target block in each Chisel Input Bus and use them as an Input Bus")
             .addInfo("If no target is provided for common buses, the result of the first chisel is used")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
@@ -102,12 +110,12 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                     mName,
                     transpose(
                         // spotless:off
-                                    new String[][] {
-                                            { "CCC", "CCC", "CCC" },
-                                            { "C~C", "C-C", "CCC" },
-                                            { "CCC", "CCC", "CCC" },
-                                    }))
-                                    // spotless:on
+                        new String[][] {
+                            { "CCC", "CCC", "CCC" },
+                            { "C~C", "C-C", "CCC" },
+                            { "CCC", "CCC", "CCC" },
+                        }))
+                // spotless:on
                 .addElement(
                     'C',
                     buildHatchAdder(MTEIndustrialChisel.class)
@@ -204,8 +212,71 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
         return Carving.chisel.getItemsForChiseling(aStack);
     }
 
+    private GTRecipe generateChiselRecipe(ItemStack aInput) {
+        boolean tIsCached = hasValidCache(aInput, this.target, true);
+        if (tIsCached
+            || aInput != null && (hasChiselResults(aInput) || this.target.getItem() instanceof ArchitectureItemBlock)) {
+            ItemStack tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, this.target);
+            if (tOutput != null) {
+                if (mCachedRecipe != null && GTUtility.areStacksEqual(aInput, mInputCache)
+                    && GTUtility.areStacksEqual(tOutput, mOutputCache)) {
+                    return mCachedRecipe;
+                }
+                int outputAmount = 1;
+                int inputAmount = 1;
+                if (ArchitectureCraft.isModLoaded() && tOutput.getItem() instanceof ArchitectureItemBlock) {
+                    NBTTagCompound tag = tOutput.getTagCompound();
+                    inputAmount = Shape.forId(tag.getInteger("Shape")).materialUsed;
+                    outputAmount = Shape.forId(tag.getInteger("Shape")).itemsProduced;
+                }
+                // We can chisel this
+                Optional<GTRecipe> aRecipe = GTRecipeBuilder.builder()
+                    .itemInputs(GTUtility.copyAmount(inputAmount, aInput))
+                    .itemOutputs(GTUtility.copyAmount(outputAmount, tOutput))
+                    .outputChances(10000)
+                    .duration(20)
+                    .eut(16)
+                    .specialValue(0)
+                    .build();
+
+                // Cache it
+                if (aRecipe.isPresent()) {
+                    cacheItem(aInput, tOutput, aRecipe.get());
+                }
+                return aRecipe.orElse(null);
+            }
+        }
+        return null;
+    }
+
     private static ItemStack getChiselOutput(ItemStack aInput, ItemStack aTarget) {
         ItemStack tOutput;
+
+        if (ArchitectureCraft.isModLoaded()) {
+            if (!(aInput.getItem() instanceof ItemBlock) || aInput.getItem() instanceof ArchitectureItemBlock) {
+                return null;
+            }
+            Block block = Block.getBlockFromItem(aInput.getItem());
+            if (aTarget.getItem() instanceof ArchitectureItemBlock
+                && ((block == Blocks.glass || block == Blocks.stained_glass)
+                    || (block.renderAsNormalBlock() && !block.hasTileEntity()))) {
+                tOutput = aTarget.copy();
+                NBTTagCompound tag = aTarget.getTagCompound();
+                NBTTagCompound tagOutput = (NBTTagCompound) tag.copy();
+                int aInputDmg = aInput.getItemDamage();
+                GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(block);
+                if (id == null) return null;
+                String baseName = id.toString();
+                int shapeId = tag.getInteger("Shape");
+                if (aInputDmg <= 15 && aInputDmg >= 0) {
+                    tagOutput.setInteger("BaseData", aInputDmg);
+                    tagOutput.setInteger("Shape", shapeId);
+                    tagOutput.setString("BaseName", baseName);
+                    tOutput.setTagCompound(tagOutput);
+                    return tOutput;
+                }
+            }
+        }
         if (aTarget != null && canBeMadeFrom(aInput, aTarget)) {
             tOutput = aTarget;
         } else if (aTarget != null && !canBeMadeFrom(aInput, aTarget)) {
@@ -214,38 +285,6 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
             tOutput = getItemsForChiseling(aInput).get(0);
         }
         return tOutput;
-    }
-
-    private GTRecipe generateChiselRecipe(ItemStack aInput) {
-        boolean tIsCached = hasValidCache(aInput, this.target, true);
-        if (tIsCached || aInput != null && hasChiselResults(aInput)) {
-            ItemStack tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, this.target);
-            if (tOutput != null) {
-                if (mCachedRecipe != null && GTUtility.areStacksEqual(aInput, mInputCache)
-                    && GTUtility.areStacksEqual(tOutput, mOutputCache)) {
-                    return mCachedRecipe;
-                }
-                // We can chisel this
-                GTRecipe aRecipe = new GTRecipe(
-                    new ItemStack[] { GTUtility.copyAmount(1, aInput) },
-                    new ItemStack[] { GTUtility.copyAmount(1, tOutput) },
-                    null,
-                    null,
-                    new int[] { 10000 },
-                    null,
-                    null,
-                    GTValues.emptyFluidStackArray,
-                    GTValues.emptyFluidStackArray,
-                    20,
-                    16,
-                    0);
-
-                // Cache it
-                cacheItem(aInput, tOutput, aRecipe);
-                return aRecipe;
-            }
-        }
-        return null;
     }
 
     private GTRecipe getRecipe() {

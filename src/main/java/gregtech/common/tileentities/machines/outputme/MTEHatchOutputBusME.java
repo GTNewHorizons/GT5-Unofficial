@@ -116,6 +116,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         provider.updateState();
     }
 
+    @Override
     public ItemStack getVisual() {
         return ItemList.Hatch_Output_Bus_ME.get(1);
     }
@@ -350,6 +351,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         provider.setItemNBT(aNBT);
     }
 
+    @Override
     public NBTTagCompound saveStackToNBT(IAEItemStack s) {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setTag("itemStack", GTUtility.saveItem(s.getItemStack()));
@@ -357,8 +359,12 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         return tag;
     }
 
+    @Override
     public IAEItemStack loadStackFromNBT(NBTTagCompound t) {
-        return AEItemStack.create(GTUtility.loadItem(t));
+        final ItemStack is = GTUtility.loadItem(t.getCompoundTag("itemStack"));
+        if (is == null) return null;
+        return AEItemStack.create(is)
+            .setStackSize(t.getLong("size"));
     }
 
     @Override
@@ -607,10 +613,12 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         return getProxy().getNode();
     }
 
+    @Override
     public void dispatchMarkDirty() {
         this.markDirty();
     }
 
+    @Override
     public MTEHatchOutputMEBase<IAEItemStack, MEFilterItem, ItemStack> getProvider() {
         return provider;
     }
