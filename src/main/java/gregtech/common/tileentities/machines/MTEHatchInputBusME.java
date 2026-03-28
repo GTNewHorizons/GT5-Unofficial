@@ -6,9 +6,6 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
-import java.util.ArrayList;
-import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -24,7 +21,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -60,7 +56,6 @@ import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -78,8 +73,8 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProcessingAwareHatch, IAddGregtechLogo,
-    IPowerChannelState, ISmartInputHatch, IDataCopyable, IMEConnectable {
+public class MTEHatchInputBusME extends MTEHatchInputBus
+    implements IRecipeProcessingAwareHatch, IPowerChannelState, ISmartInputHatch, IDataCopyable, IMEConnectable {
 
     public static final int SLOT_COUNT = 16;
     public static final String COPIED_DATA_IDENTIFIER = "stockingBus";
@@ -91,7 +86,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     protected boolean autoPullItemList = false;
     protected int minAutoPullStackSize = 1;
     protected int autoPullRefreshTime = 100;
-    protected static final int CONFIG_WINDOW_ID = 10;
     protected boolean additionalConnection = false;
     protected boolean justHadNewItems = false;
     protected boolean expediteRecipeCheck = false;
