@@ -62,6 +62,7 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
             .addInfo("Performs 4/4 overclock")
             .addInfo(createParallelText())
             .addTecTechHatchInfo()
+            .beginStructureBlock(47, 7, 47, false)
             .addCasingInfoMin("Fusion Machine Casing MK IV", 1664, false)
             .addCasingInfoMin("Compact Fusion Coil MK-II Finaltype", 560, false)
             .addCasingInfoMin("Infinity Frame Box", 128, false)

@@ -1,3 +1,7 @@
+# Components
+gt.oreprefix.bolted_material_casing=Bolted %s Casing
+gt.oreprefix.rebolted_material_casing=Rebolted %s Casing
+
 itemGroup.GT2C=Gregtech 2 Compat
 item.GT_Rockcutter_Item_LV.name=Rockcutter LV
 item.GT_Rockcutter_Item_MV.name=Rockcutter MV

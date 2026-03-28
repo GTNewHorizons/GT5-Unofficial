@@ -627,7 +627,7 @@ public class RecipesMachinesMulti {
 
         // Large Thermal Refinery
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_ThermalCentrifuge.get(1),
+            ItemList.LargeThermalRefinery.get(1),
             new Object[] { "PCP", "RMR", "PGP", 'P', OrePrefixes.plate.get(Materials.RedSteel), 'C', "circuitData", 'R',
                 MaterialsAlloy.TALONITE.getRod(1), 'M', ItemList.Machine_EV_ThermalCentrifuge, 'G',
                 MaterialsAlloy.TALONITE.getGear(1) });
