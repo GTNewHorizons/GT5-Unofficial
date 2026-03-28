@@ -125,12 +125,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInputBus("Mining Pipes, optional, any base casing")
             .addInputHatch("Any base casing")
             .addOutputHatch("Any base casing")
-            .toolTipFinisher(
-                EnumChatFormatting.GREEN + "bartimaeusnek"
-                    + EnumChatFormatting.GRAY
-                    + " via "
-                    + EnumChatFormatting.DARK_GREEN
-                    + "BartWorks");
+            .toolTipFinisher();
         return tt;
     }
 

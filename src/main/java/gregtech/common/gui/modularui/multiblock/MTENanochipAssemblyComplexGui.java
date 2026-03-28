@@ -46,7 +46,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
@@ -375,14 +374,14 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.contributors.projectlead",
-                createContributorEntry(GTAuthors.AuthorNotAPenguin, -1)));
+                createContributorEntry("NotAPenguin", 0xFF55FFFF)));
 
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.contributors.programming",
                 createContributorEntry("JurreJelle", Color.INDIGO.brighterSafe(2)),
                 createContributorEntry("FourIsTheNumber", Color.PURPLE.brighterSafe(1)),
-                createContributorEntry(GTAuthors.AuthorNotAPenguin, -1),
+                createContributorEntry("NotAPenguin", 0xFF55FFFF),
                 createContributorEntry("TheEpicGamer274", 0xFF2BCAD9),
                 createContributorEntry("Nockyx", Color.YELLOW.brighterSafe(1)),
                 createContributorEntry("Serenibyss", 0xFFFFA3FB),

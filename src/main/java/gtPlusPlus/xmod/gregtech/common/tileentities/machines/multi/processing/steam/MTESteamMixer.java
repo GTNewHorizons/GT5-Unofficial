@@ -41,7 +41,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -407,8 +406,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
             .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "1x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Steel Frame Box")
-            .addStructureAuthors(GTAuthors.AuthorJL2210)
-            .toolTipFinisher(GTAuthors.AuthorEvgenWarGold);
+            .toolTipFinisher();
         return tt;
     }
 

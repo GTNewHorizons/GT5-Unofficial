@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.MetaTileEntityIDs.ChiselBus_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.ChiselBus_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.ChiselBus_MV;
@@ -52,7 +51,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_ZPM;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GTMod;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gtPlusPlus.api.objects.Logger;
@@ -131,10 +129,6 @@ public class GregtechCustomHatches {
                 "hatch.air.intake.tier.02",
                 "Atmospheric Intake Hatch",
                 9).getStackForm(1L));
-        addItemTooltip(
-            GregtechItemList.Hatch_Air_Intake_Atmospheric.get(1),
-            () -> "Author: " + GTAuthors.AuthorNoc.get());
-
         // Multiblock Reservoir Hatch
         GregtechItemList.Hatch_Reservoir.set(
             new MTEHatchReservoir(Hatch_Reservoir.ID, "hatch.water.intake.tier.00", "Reservoir Hatch", 4)

@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi.drone;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorSilverMoon;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -188,7 +187,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addCasingInfoExactly("Any tiered glass", 6, false)
             .addInputBus("Any Titanium Casing", 1)
             .addStructureInfo("No maintenance hatch needed")
-            .toolTipFinisher(AuthorSilverMoon);
+            .toolTipFinisher();
         return tt;
     }
 

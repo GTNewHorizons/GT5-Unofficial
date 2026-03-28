@@ -52,7 +52,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import appeng.api.AEApi;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
@@ -989,7 +988,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addDynamoHatch("§60§r - §64§r (Laser Only, Hint Block Number 2)")
             .addEnergyHatch("§60§r - §64§r (Laser Only, Hint Block Number 2)")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTAuthors.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
+            .toolTipFinisher();
         // spotless:on
 
         return tt;

@@ -9,7 +9,6 @@ import static java.lang.Long.min;
 import java.math.BigInteger;
 import java.util.UUID;
 
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -37,9 +36,7 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalizedWithSuffix(
-            "gt.blockmachines.energy_hatch_wireless.desc",
-            GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorColen));
+        return GTSplit.splitLocalized("gt.blockmachines.energy_hatch_wireless.desc");
     }
 
     @Override

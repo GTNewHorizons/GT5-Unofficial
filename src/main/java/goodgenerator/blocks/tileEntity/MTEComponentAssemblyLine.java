@@ -241,7 +241,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addInputHatch("Bottom left and right corners", 5)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING)
-            .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
+            .toolTipFinisher();
         return tt;
     }
 

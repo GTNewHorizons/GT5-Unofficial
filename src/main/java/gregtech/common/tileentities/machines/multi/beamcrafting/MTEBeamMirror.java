@@ -16,7 +16,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -178,7 +177,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
                 1,
                 false)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTAuthors.AuthorHamCorp);
+            .toolTipFinisher();
         return tt;
     }
 

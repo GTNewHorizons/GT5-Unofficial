@@ -28,7 +28,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -269,7 +268,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addTecTechHatchInfo()
-            .toolTipFinisher(GTAuthors.AuthorHamCorp);
+            .toolTipFinisher();
         return tt;
     }
 

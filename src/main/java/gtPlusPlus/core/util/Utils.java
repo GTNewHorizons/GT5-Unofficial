@@ -122,13 +122,6 @@ public class Utils {
         return GTSplit.splitLocalizedWithSuffix(key, GTPPCore.GT_Tooltip.get());
     }
 
-    public static String[] splitLocalizedFormattedWithAuthor(String key, String authorName, Object... objects) {
-        return GTSplit.splitLocalizedFormattedWithSuffix(
-            key,
-            StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip", authorName),
-            objects);
-    }
-
     public static String[] splitLocalizedFormattedWithAlkalus(String key, Object... objects) {
         return GTSplit.splitLocalizedFormattedWithSuffix(key, GTPPCore.GT_Tooltip.get(), objects);
     }

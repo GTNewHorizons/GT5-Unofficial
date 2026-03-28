@@ -607,7 +607,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInputHatch("Input lubricant/distilled water/washing chemicals", 3)
             .addMufflerHatch("Output Pollution", 3)
             .addOutputBus("Output products", 4)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Bavib")
             .toolTipFinisher();
         return tt;
     }

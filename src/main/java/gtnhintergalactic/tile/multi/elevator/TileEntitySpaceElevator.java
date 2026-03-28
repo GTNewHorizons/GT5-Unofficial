@@ -49,7 +49,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -748,7 +747,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.FrameNeutronium"), 56, false)
             .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.Motor"), 88, true)
             .addEnergyHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-            .toolTipFinisher(GTAuthors.Authorminecraft7771);
+            .toolTipFinisher();
         return tt;
     }
 

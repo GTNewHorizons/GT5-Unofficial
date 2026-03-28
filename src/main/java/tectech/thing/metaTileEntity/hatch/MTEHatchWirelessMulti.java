@@ -24,7 +24,6 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -226,7 +225,6 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
     @Override
     public String[] getDescription() {
         return MTEHatch.formatEnergyInfoDesc(
-            new String[] { GTAuthors.AuthorColen, GTAuthors.AuthorCloud.get() },
             translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
             false,
             mTier,

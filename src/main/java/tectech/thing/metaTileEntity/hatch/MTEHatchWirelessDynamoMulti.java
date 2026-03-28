@@ -10,7 +10,6 @@ import java.util.UUID;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -118,12 +117,6 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
 
     @Override
     public String[] getDescription() {
-        return MTEHatch.formatEnergyInfoDesc(
-            new String[] { GTAuthors.AuthorColen, GTAuthors.AuthorChrom },
-            null,
-            true,
-            mTier,
-            maxAmperes,
-            "gt.blockmachines.dynamo_hatch.wireless");
+        return MTEHatch.formatEnergyInfoDesc(true, mTier, maxAmperes, "gt.blockmachines.dynamo_hatch.wireless");
     }
 }
