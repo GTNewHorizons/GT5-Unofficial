@@ -82,19 +82,17 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
     public ItemStack onItemRightClick(final ItemStack itemStack, final World world, final EntityPlayer par3Entity) {
         // Let the player know what blueprint is held
         if (itemStack.hasTagCompound()) {
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 par3Entity,
-                "This Blueprint holds NBT data. " + "|"
-                    + this.getNBT(itemStack, "mID")
-                    + "|"
-                    + this.getNBT(itemStack, "mBlueprint")
-                    + "|"
-                    + this.getNBT(itemStack, "mName")
-                    + "|"
-                    + ItemUtils.getArrayStackNames(this.readItemsFromNBT(itemStack)));
+                "gtpp.chat.blue_print.holding",
+                this.getNBT(itemStack, "mID"),
+                this.getNBT(itemStack, "mBlueprint"),
+                this.getNBT(itemStack, "mName"),
+                ItemUtils.getArrayStackNameComps(this.readItemsFromNBT(itemStack)));
         } else {
             this.createNBT(itemStack);
-            GTUtility.sendChatToPlayer(par3Entity, "This is a placeholder. " + this.getNBT(itemStack, "mID"));
+            GTUtility
+                .sendChatTrans(par3Entity, "gtpp.chat.blue_print.holding.placeholder" + this.getNBT(itemStack, "mID"));
         }
 
         return super.onItemRightClick(itemStack, world, par3Entity);

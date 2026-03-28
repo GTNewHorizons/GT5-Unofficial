@@ -2504,8 +2504,7 @@ GT5U.chat.hatch.output.specific_fluid=Outputs 1 specific Fluid (%s)
 GT5U.chat.hatch.output.fluid.already_locked=Hatch is locked to a different fluid. To change the locking, empty it and made it locked to the next fluid with a screwdriver. Currently locked to %s
 GT5U.chat.hatch.output.fluid.locked_to=Successfully locked Fluid to %s
 
-GT5U.chat.wet_transformer.half_mode.enable=Transformer is now running at 8A:32A in/out ratio.
-GT5U.chat.wet_transformer.half_mode.disable=Transformer is now running at 16A:64A in/out ratio.
+GT5U.chat.transformer.ratio=Transformer is now running at %s in/out ratio.
 
 GT5U.chat.soldering_iron.not_enough=Not enough soldering material!
 GT5U.chat.ore.set_ore_natural_flag=Set ore natural flag to %s
@@ -5846,7 +5845,7 @@ GT5U.gui.text.no_output_for_sapling=§7This sapling yields no outputs
 GT5U.gui.text.no_tools=§7Missing applicable tools
 
 # Cover Overflow Valve
-GTPP.chat.text.cover_overflow_valve_overflow_point=Overflow Point: %d L
+GTPP.chat.text.cover_overflow_valve_overflow_point.s=Overflow Point: %s L
 GTPP.gui.text.cover_overflow_valve_overflow_point=§8Overflow Point
 GTPP.gui.text.cover_overflow_valve_voiding_rate=§8Voiding Rate
 GTPP.gui.text.cover_overflow_valve_allow_fluid_input=§8Allow Fluid Input

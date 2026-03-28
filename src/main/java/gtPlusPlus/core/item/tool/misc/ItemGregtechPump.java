@@ -29,6 +29,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -863,7 +866,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                     removal = 8 * (int) GTUtility.powInt(4, aTier);
                 }
                 if (!canUse(aStack, removal) && aTier > 0 && aTier < 4) {
-                    GTUtility.sendChatToPlayer(aPlayer, "Not enough power.");
+                    GTUtility.sendChatTrans(aPlayer, "gtpp.chat.pump.no_power");
                     Logger.INFO("No Power");
                     return false;
                 }
@@ -933,9 +936,11 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                             Logger.INFO("Cleared Tank? " + b + " | mAmountInserted: " + mAmountInserted);
                             Logger.INFO("Returning " + b + " - drainTankGT.");
                             if (b) {
-                                GTUtility.sendChatToPlayer(
+                                GTUtility.sendChatTrans(
                                     aPlayer,
-                                    "Drained " + mAmountInserted + "L of " + aStored.getLocalizedName() + ".");
+                                    "gtpp.chat.pump.drained",
+                                    new ChatComponentNumber(mAmountInserted),
+                                    new ChatComponentFluidName(aStored));
                             } else {
                                 drain(aStack, mAmountInserted);
                             }

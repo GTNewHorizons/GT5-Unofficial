@@ -110,10 +110,6 @@ public class MTETransformerHiAmp extends MTETransformer {
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         this.mHalfMode = !mHalfMode;
-        if (this.mHalfMode) {
-            GTUtility.sendChatToPlayer(aPlayer, "Transformer is now running at 2A:8A in/out Ratio.");
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, "Transformer is now running at 4A:16A in/out Ratio.");
-        }
+        GTUtility.sendChatTrans(aPlayer, "GT5U.chat.transformer.ratio", this.mHalfMode ? "2A:8A" : "4A:16A");
     }
 }

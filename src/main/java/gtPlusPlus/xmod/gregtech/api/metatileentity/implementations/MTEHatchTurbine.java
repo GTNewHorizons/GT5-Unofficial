@@ -8,6 +8,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -350,29 +351,41 @@ public class MTEHatchTurbine extends MTEHatch {
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
-            GTUtility.sendChatToPlayer(aPlayer, "Using Animations? " + usingAnimations());
-            GTUtility.sendChatToPlayer(aPlayer, "Has Controller? " + this.mHasController);
+            GTUtility.sendChatTrans(aPlayer, "gtpp.chat.hatch_turbine.using_animation", usingAnimations());
+            GTUtility.sendChatTrans(aPlayer, "gtpp.chat.hatch_turbine.has_controller", this.mHasController);
             if (mHasController) {
-                GTUtility.sendChatToPlayer(aPlayer, "Controller Location: " + mControllerLocation.getLocationString());
-                GTUtility.sendChatToPlayer(aPlayer, "Controller Active? " + this.isControllerActive());
+                GTUtility.sendChatTrans(
+                    aPlayer,
+                    "gtpp.chat.hatch_turbine.controller.location",
+                    mControllerLocation.xPos,
+                    mControllerLocation.yPos,
+                    mControllerLocation.zPos,
+                    mControllerLocation.dim);
+                GTUtility
+                    .sendChatTrans(aPlayer, "gtpp.chat.hatch_turbine.controller.active", this.isControllerActive());
             }
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 aPlayer,
-                "Active? " + this.getBaseMetaTileEntity()
+                "gtpp.chat.hatch_turbine.active",
+                this.getBaseMetaTileEntity()
                     .isActive());
-            GTUtility.sendChatToPlayer(aPlayer, "Has Turbine inserted? " + this.hasTurbine());
+            GTUtility.sendChatTrans(aPlayer, "gtpp.chat.hatch_turbine.turbine_inserted", this.hasTurbine());
             if (this.hasTurbine()) {
                 Materials aMat = MetaGeneratedTool.getPrimaryMaterial(getTurbine());
                 String aSize = MTELargerTurbineBase
                     .getTurbineSizeString(MTELargerTurbineBase.getTurbineSize(getTurbine()));
-                GTUtility.sendChatToPlayer(aPlayer, "Using: " + aMat.getLocalizedName() + " " + aSize);
+                GTUtility.sendChatTrans(
+                    aPlayer,
+                    "gtpp.chat.hatch_turbine.using",
+                    new ChatComponentTranslation(aMat.getLocalizedNameKey()),
+                    aSize);
             }
         } else {
             this.mUsingAnimation = !mUsingAnimation;
             if (this.mUsingAnimation) {
-                GTUtility.sendChatToPlayer(aPlayer, "Using Animated Turbine Texture.");
+                GTUtility.sendChatTrans(aPlayer, "gtpp.chat.hatch_turbine.turbine.animated");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, "Using Static Turbine Texture.");
+                GTUtility.sendChatTrans(aPlayer, "gtpp.chat.hatch_turbine.turbine.static");
             }
         }
     }
@@ -413,23 +426,23 @@ public class MTEHatchTurbine extends MTEHatch {
                     || GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                     aPlayer.inventory.addItemStackToInventory((this.getTurbine()));
                     this.mInventory[0] = null;
-                    GTUtility.sendChatToPlayer(aPlayer, "Removed turbine with wrench.");
+                    GTUtility.sendChatTrans(aPlayer, "gtpp.chat.hatch_turbine.remove_with_wrench");
                     sendUpdate();
                     return true;
                 }
             } else {
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    aHasTurbine ? "Cannot remove turbine, no free inventory space." : "No turbine to remove.");
+                    aHasTurbine ? "gtpp.chat.hatch_turbine.cannot_remove_turbine"
+                        : "gtpp.chat.hatch_turbine.no_turbine_to_remove");
             }
         } else if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)) {
             if (mControllerLocation != null) {
                 if (setController(mControllerLocation)) {
                     if (aPlayer.capabilities.isCreativeMode
                         || GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                        String tChat = "Trying to Reset linked Controller";
                         IGregTechTileEntity g = this.getBaseMetaTileEntity();
-                        GTUtility.sendChatToPlayer(aPlayer, tChat);
+                        GTUtility.sendChatTrans(aPlayer, "gtpp.chat.hatch_turbine.reset_linked_controller");
                         GTUtility.sendSoundToPlayers(
                             g.getWorld(),
                             SoundResource.IC2_TOOLS_BATTERY_USE,

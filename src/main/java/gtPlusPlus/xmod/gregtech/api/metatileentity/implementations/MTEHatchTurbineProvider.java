@@ -160,7 +160,9 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
         if (aPlayer != null) {
             if (GTMod.proxy.CTRL_KEYBIND.isKeyDown(aPlayer)) {
                 mDescending = !mDescending;
-                GTUtility.sendChatToPlayer(aPlayer, "Direction: " + (mDescending ? "DOWN" : "UP"));
+                GTUtility.sendChatTrans(
+                    aPlayer,
+                    mDescending ? "gtpp.chat.hatch_turbine_provider.down" : "gtpp.chat.hatch_turbine_provider.up");
             } else {
                 int aAmount = 0;
                 if (aPlayer.isSneaking()) {
@@ -192,7 +194,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
                 if (isItemStackScrewdriver(aPlayer.getHeldItem())) {
                     aDidScrewdriver = true;
                     mRefreshTime = 1200;
-                    GTUtility.sendChatToPlayer(aPlayer, "Reset check time to " + mRefreshTime + " ticks.");
+                    GTUtility.sendChatTrans(aPlayer, "gtpp.chat.hatch_turbine_provider.reset_time", mRefreshTime);
                 }
             }
         }

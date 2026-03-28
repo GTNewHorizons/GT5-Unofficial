@@ -12,6 +12,8 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
+
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.container.ContainerVolumetricFlaskSetter;
@@ -399,7 +401,10 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
     public boolean onScrewdriverRightClick(byte side, EntityPlayer player, int x, int y, int z) {
 
         if (player.isSneaking()) {
-            GTUtility.sendChatToPlayer(player, "Value: " + this.getCustomValue());
+            GTUtility.sendChatTrans(
+                player,
+                "gtpp.chat.volumetric_flask_setter.value",
+                new ChatComponentNumber(this.getCustomValue()));
         }
 
         try {
@@ -408,7 +413,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
             } else {
                 aCurrentMode++;
             }
-            GTUtility.sendChatToPlayer(player, "Slot " + aCurrentMode + " is now default.");
+            GTUtility.sendChatTrans(player, "gtpp.chat.volumetric_flask_setter.set_mode", aCurrentMode);
             return true;
         } catch (Exception t) {
             return false;

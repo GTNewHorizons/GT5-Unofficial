@@ -457,9 +457,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
         ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             sVoidStone = !sVoidStone;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.oreprocessor.void", sVoidStone);
             return;
         }
         sMode = (sMode + 1) % 7;

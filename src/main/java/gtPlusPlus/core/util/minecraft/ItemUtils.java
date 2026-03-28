@@ -16,9 +16,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentItemName;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
@@ -234,6 +238,24 @@ public class ItemUtils {
             }
         }
         return itemNames;
+    }
+
+    public static IChatComponent getArrayStackNameComps(final ItemStack[] stacks) {
+        IChatComponent names = new ChatComponentText("");
+        int aPos = 0;
+        for (final ItemStack stack : stacks) {
+            if (stack == null) {
+                continue;
+            }
+            IChatComponent name = new ChatComponentItemName(stack).appendText(" x")
+                .appendText(String.valueOf(stack.stackSize));
+            if (aPos != 0) {
+                names.appendText(", ");
+            }
+            names.appendSibling(name);
+            aPos++;
+        }
+        return names;
     }
 
     public static String getArrayStackNames(final ItemStack[] aStack) {
