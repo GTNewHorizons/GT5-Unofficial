@@ -2,6 +2,8 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -11,10 +13,12 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
 
@@ -218,25 +222,38 @@ public abstract class MTEHatch extends MTEBasicTank {
         return -1;
     }
 
-    public static String[] formatEnergyInfoDesc(boolean isDynamo, int tier, int amp, String... lines) {
-        return MTEHatch.formatEnergyInfoDesc(null, isDynamo, tier, amp, lines);
+    public static String[] formatEnergyInfoDesc(boolean isDynamo, int tier, int amp, String key, Object... formatted) {
+        return MTEHatch.formatEnergyInfoDesc(null, null, isDynamo, tier, amp, key, formatted);
     }
 
-    public static String[] formatEnergyInfoDesc(String author, boolean isDynamo, int tier, int amp, String... lines) {
-        final boolean hasAuthor = author != null;
-        final String[] desc = new String[lines.length + 3 + (hasAuthor ? 1 : 0)];
-        System.arraycopy(lines, 0, desc, 0, lines.length);
-        desc[lines.length] = GTUtility.translate(
-            "gt.tileentity.throughput",
-            EnumChatFormatting.YELLOW + formatNumber(amp * GTValues.V[tier]) + EnumChatFormatting.RESET + " EU/t");
-        desc[lines.length + 1] = GTUtility.translate(
-            isDynamo ? "gt.tileentity.eup_out" : "gt.tileentity.eup_in",
-            TooltipHelper.voltageText(GTValues.V[tier]));
-        desc[lines.length + 2] = GTUtility.translate("gt.tileentity.amperage", TooltipHelper.ampText(amp));
-        if (hasAuthor) {
-            desc[lines.length + 3] = author;
+    public static String[] formatEnergyInfoDesc(String suffixTooltip, boolean isDynamo, int tier, int amp, String key,
+        Object... formatted) {
+        return MTEHatch.formatEnergyInfoDesc(null, suffixTooltip, isDynamo, tier, amp, key, formatted);
+    }
+
+    public static String[] formatEnergyInfoDesc(String[] author, String suffixTooltip, boolean isDynamo, int tier,
+        int amp, String key, Object... formatted) {
+        final List<String> additionalTooltips = new LinkedList<>();
+        if (suffixTooltip != null) {
+            Collections.addAll(additionalTooltips, suffixTooltip);
         }
-        return desc;
+        additionalTooltips.add(
+            GTUtility.translate(
+                "gt.tileentity.throughput",
+                EnumChatFormatting.YELLOW + formatNumber(amp * GTValues.V[tier]) + EnumChatFormatting.RESET + " EU/t"));
+        additionalTooltips.add(
+            GTUtility.translate(
+                isDynamo ? "gt.tileentity.eup_out" : "gt.tileentity.eup_in",
+                TooltipHelper.voltageText(GTValues.V[tier])));
+        additionalTooltips.add(GTUtility.translate("gt.tileentity.amperage", TooltipHelper.ampText(amp)));
+        if (author != null) {
+            additionalTooltips.add(GTAuthors.buildAuthorsWithFormat(author));
+        }
+        final String[] suffixs = additionalTooltips.toArray(new String[0]);
+        if (formatted.length == 0) {
+            return GTSplit.splitLocalizedWithSuffix(key, suffixs);
+        }
+        return GTSplit.splitLocalizedFormattedWithSuffix(key, suffixs, formatted);
     }
 
     public static void addColorChannelInfo(List<String> tooltip, byte color) {
