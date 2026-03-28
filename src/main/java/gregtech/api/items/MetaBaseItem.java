@@ -7,6 +7,8 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,6 +24,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -37,8 +40,8 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.Client;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -241,10 +244,7 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     /** Returns null for item damage out of bounds. */
     public Materials getMaterial(int damage) {
-        if (damage < 0) {
-            return null;
-        }
-        if (damage >= 32000) {
+        if (!Materials.isMaterialItem(damage)) {
             return null;
         }
         return GregTechAPI.sGeneratedMaterials[damage % 1_000];
@@ -252,35 +252,12 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     @Override
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        if (aStack.getItemDamage() < 0 || aStack.getItemDamage() >= 32000) {
-            String tooltipKey = getToolTipLocalizationKey(aStack);
-            String tKey = tooltipKey != null ? tooltipKey : getUnlocalizedName(aStack) + ".tooltip";
-            Object[] tArgs = getToolTipLocalizationArgs(aStack);
-            if (tArgs == null) {
-                GTUtility.translateMultiline(aList, tKey);
-            } else {
-                GTUtility.translateMultiline(aList, tKey, tArgs);
-            }
-        } else {
-            Materials material = getMaterial(aStack.getItemDamage());
-            if (material != null) {
-                String flavorText = material.getFlavorText();
-                String formula = material.getChemicalTooltip();
-
-                if (Client.tooltip.showFormula) {
-                    if (formula != null && !formula.isEmpty()) {
-                        aList.add(formula);
-                    }
-                }
-
-                if (Client.tooltip.showFlavorText) {
-                    if (flavorText != null && !flavorText.isEmpty()) {
-                        aList.add("§8§o" + flavorText);
-                    }
-                }
-            }
-        }
-
+        final String key = getUnlocalizedName() + "." + aStack.getItemDamage() + ".tooltip";
+        if (StatCollector.canTranslate(key)) Collections.addAll(
+            aList,
+            Arrays.stream(GTSplit.splitLocalized(key))
+                .filter(GTUtility::isStringValid)
+                .toArray(String[]::new));
         Long[] tStats = getElectricStats(aStack);
         if (tStats != null) {
             if (tStats[3] > 0) {

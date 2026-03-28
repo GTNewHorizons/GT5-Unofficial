@@ -2,6 +2,9 @@ package gregtech.common.fluid;
 
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 
+import java.util.Arrays;
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
@@ -12,23 +15,27 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.system.material.Werkstoff;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.fluid.IGTFluid;
 import gregtech.api.interfaces.fluid.IGTRegisteredFluid;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
 public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runnable {
 
-    private final String localizedName;
+    private final String defaultLocalName;
     private final ResourceLocation stillIconResourceLocation;
     private final ResourceLocation flowingIconResourceLocation;
     private final short[] colorRGBA;
     private final FluidState fluidState;
     private final Fluid iconsFrom;
     private Fluid registeredFluid;
+    private Supplier<String> localizedName;
 
     /**
      * Constructs this {@link IGTFluid} implementation from an {@link GTFluidBuilder} instance
@@ -37,7 +44,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
      */
     protected GTFluid(@Nonnull final GTFluidBuilder builder) {
         super(builder.fluidName);
-        this.localizedName = builder.localizedName;
+        this.defaultLocalName = builder.defaultLocalName;
         this.stillIconResourceLocation = builder.stillIconResourceLocation;
         this.flowingIconResourceLocation = builder.flowingIconResourceLocation;
         this.iconsFrom = builder.iconsFrom;
@@ -89,15 +96,6 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     public int getColor() {
         return (Math.max(0, Math.min(255, colorRGBA[0])) << 16) | (Math.max(0, Math.min(255, colorRGBA[1])) << 8)
             | Math.max(0, Math.min(255, colorRGBA[2]));
-    }
-
-    @Override
-    public String getLocalizedName(FluidStack stack) {
-        String key = getUnlocalizedName();
-        if (StatCollector.canTranslate(key)) {
-            return StatCollector.translateToLocal(key);
-        }
-        return localizedName != null && !localizedName.isEmpty() ? localizedName : super.getLocalizedName(stack);
     }
 
     // ----- IGTFluid interface implementations -----
@@ -178,6 +176,80 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     }
 
     /**
+     * Adds a server-side localized-name
+     */
+    @Override
+    public IGTRegisteredFluid addLocalizedName() {
+        GTLanguageManager.addStringLocalization(getUnlocalizedName(), defaultLocalName);
+        return this;
+    }
+
+    /**
+     * Check if the localized name matches the material name, or if it matches any of the oreprefix formatted material
+     * names. If neither matches, add a key for localized.
+     *
+     * @param key          the localization key for this fluid
+     * @param materialName the material name
+     *
+     * @implNote The method checks for the following oreprefix patterns:
+     *           <ul>
+     *           <li>Molten %s</li>
+     *           <li>%s Plasma</li>
+     *           <li>Lightly Hydro-Cracked %s</li>
+     *           <li>Lightly Steam-Cracked %s</li>
+     *           <li>Moderately Hydro-Cracked %s</li>
+     *           <li>Moderately Steam-Cracked %s</li>
+     *           <li>Severely Hydro-Cracked %s</li>
+     *           <li>Severely Steam-Cracked %s</li>
+     *           </ul>
+     *           If a pattern matches, it uses formatted localization with the appropriate oreprefix key.
+     */
+    public IGTRegisteredFluid addLocalizedName(String key, String materialName) {
+        if (!materialName.equals(defaultLocalName)) {
+            if (addLocalizedNameHasOreprefix(
+                key,
+                materialName,
+                new String[] { "Molten %s", "%s Plasma", "Lightly Hydro-Cracked %s", "Lightly Steam-Cracked %s",
+                    "Moderately Hydro-Cracked %s", "Moderately Steam-Cracked %s", "Severely Hydro-Cracked %s",
+                    "Severely Steam-Cracked %s" })) {
+                return this;
+            }
+            return addLocalizedName();
+        }
+        localizedName = () -> StatCollector.translateToLocal(key);
+        return this;
+    }
+
+    private boolean addLocalizedNameHasOreprefix(String key, String materialName, String[] oreprefixNames) {
+        return Arrays.stream(oreprefixNames)
+            .anyMatch(oreprefixName -> addLocalizedNameHasOreprefix(key, materialName, oreprefixName));
+    }
+
+    private boolean addLocalizedNameHasOreprefix(String key, String materialName, String oreprefixName) {
+        final String oreprefixNameRemovedFormat = oreprefixName.replace("%s", "");
+        if (defaultLocalName.contains(oreprefixNameRemovedFormat)) {
+            if (String.format(oreprefixName, materialName)
+                .equals(defaultLocalName)) {
+                localizedName = () -> OrePrefixes
+                    .getLocalizedNameForItem(oreprefixName, "%s", StatCollector.translateToLocal(key));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public IGTRegisteredFluid addLocalizedName(Materials materials) {
+        if (materials == null) return addLocalizedName();
+        return addLocalizedName(materials.getLocalizedNameKey(), materials.mDefaultLocalName);
+    }
+
+    @Override
+    public IGTRegisteredFluid addLocalizedName(Werkstoff werkstoff) {
+        return addLocalizedName(werkstoff.getLocalizedNameKey(), werkstoff.getDefaultName());
+    }
+
+    /**
      * @inheritDoc
      */
     @Override
@@ -213,5 +285,11 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     @Override
     public String toString() {
         return "GTFluid{" + "fluidName='" + fluidName + '\'' + '}';
+    }
+
+    @Override
+    public String getLocalizedName() {
+        if (localizedName == null) return super.getLocalizedName();
+        return localizedName.get();
     }
 }
