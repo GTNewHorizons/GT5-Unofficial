@@ -118,7 +118,6 @@ public class LoaderGTBlockFluid implements Runnable {
             "Manual_Printer",
             "gt.book.printer_manual.name",
             "Gregorius Techneticies",
-            // Pages are defined in assets/gregtech/lang/en_US.lang (gt.book.printer_manual.pageXX).
             "gt.book.printer_manual.page00",
             "gt.book.printer_manual.page01",
             "gt.book.printer_manual.page02",
@@ -132,7 +131,6 @@ public class LoaderGTBlockFluid implements Runnable {
             "Manual_Punch_Cards",
             "gt.book.punch_card_manual_v0.name",
             "Gregorius Techneticies",
-            // Pages are defined in assets/gregtech/lang/en_US.lang (gt.book.punch_card_manual_v0.pageXX).
             "gt.book.punch_card_manual_v0.page00",
             "gt.book.punch_card_manual_v0.page01",
             "gt.book.punch_card_manual_v0.page02",
@@ -151,7 +149,6 @@ public class LoaderGTBlockFluid implements Runnable {
             "Manual_Microwave",
             "gt.book.microwave_oven_manual.name",
             "Kitchen Industries",
-            // Pages are defined in assets/gregtech/lang/en_US.lang (gt.book.microwave_oven_manual.pageXX).
             "gt.book.microwave_oven_manual.page00",
             "gt.book.microwave_oven_manual.page01",
             "gt.book.microwave_oven_manual.page02",

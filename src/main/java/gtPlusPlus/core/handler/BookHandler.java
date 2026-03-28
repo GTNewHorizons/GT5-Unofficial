@@ -57,9 +57,7 @@ public class BookHandler {
             "Manual_Modular_Bauble",
             "gtpp.book.modular_baubles.name",
             "Alkalus",
-            new String[] { "gtpp.book.modular_baubles.page00", "gtpp.book.modular_baubles.page01",
-                "gtpp.book.modular_baubles.page02", "gtpp.book.modular_baubles.page03",
-                "gtpp.book.modular_baubles.page04" });
+            new String[] { "gtpp.book.modular_baubles.page00", "gtpp.book.modular_baubles.page01" });
 
         book_NuclearManual = writeBookTemplate(
             4,

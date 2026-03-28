@@ -50,22 +50,6 @@ public class Utils {
         return new File(".");
     }
 
-    public static String addBookTitleLocalization(final String aTitle) {
-        return GTLanguageManager
-            .addStringLocalization("Book." + aTitle + ".Name", aTitle, !GregTechAPI.sPostloadFinished);
-    }
-
-    public static String[] addBookPagesLocalization(final String aTitle, final String[] aPages) {
-        String[] aLocalizationPages = new String[aPages.length];
-        for (byte i = 0; i < aPages.length; i = (byte) (i + 1)) {
-            aLocalizationPages[i] = GTLanguageManager.addStringLocalization(
-                "Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : Byte.valueOf(i)),
-                aPages[i],
-                !GregTechAPI.sPostloadFinished);
-        }
-        return aLocalizationPages;
-    }
-
     public static ItemStack getWrittenBook(ItemStack book, int ID, String mapping, String title, String author,
         String[] pages) {
 
