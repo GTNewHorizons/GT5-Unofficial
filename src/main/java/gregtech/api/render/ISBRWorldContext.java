@@ -1,5 +1,7 @@
 package gregtech.api.render;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -14,6 +16,9 @@ public interface ISBRWorldContext extends ISBRContext {
 
     @Nullable
     TileEntity getTileEntity();
+
+    @SuppressWarnings("MethodWithTooManyParameters")
+    ISBRWorldContext setup(int x, int y, int z, @NotNull Block block, int modelId, @NotNull RenderBlocks renderBlocks);
 
     @Override
     ISBRWorldContext reset();
