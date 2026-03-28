@@ -238,4 +238,9 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 30));
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

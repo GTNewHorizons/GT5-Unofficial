@@ -13,14 +13,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_COLLIDER_
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static java.lang.Math.max;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -34,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -141,15 +141,15 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
         GTUtility
-            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+            .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
     }
 
     @Override
-    public String getMachineModeName() {
+    public String getMachineModeKey() {
         if (machineMode == MACHINEMODE_ACCELERATOR) {
-            return translateToLocal("GT5U.MULTI_LHC.mode.0");
+            return "GT5U.MULTI_LHC.mode.0";
         }
-        return translateToLocal("GT5U.MULTI_LHC.mode.1");
+        return "GT5U.MULTI_LHC.mode.1";
     }
 
     @Override
@@ -384,7 +384,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 73,
                 false)
             .addTecTechHatchInfo()
-            .toolTipFinisher(GTValues.AuthorHamCorp);
+            .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;
     }
 

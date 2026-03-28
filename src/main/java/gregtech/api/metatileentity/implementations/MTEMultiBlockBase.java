@@ -1452,19 +1452,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public void explodeMultiblock() {
 
-        GTLog.exp.println(
-            "MultiBlockExplosion at: " + this.getBaseMetaTileEntity()
-                .getXCoord()
-                + " | "
-                + this.getBaseMetaTileEntity()
-                    .getYCoord()
-                + " | "
-                + this.getBaseMetaTileEntity()
-                    .getZCoord()
-                + " DIMID: "
-                + this.getBaseMetaTileEntity()
-                    .getWorld().provider.dimensionId
-                + ".");
+        GTLog.writeExplosionLog(this, "MultiBlockExplosion");
 
         Pollution.addPollution(getBaseMetaTileEntity(), GTMod.proxy.mPollutionOnExplosion);
         mInventory[1] = null;
@@ -1657,7 +1645,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (!tHatch.canStoreFluid(copiedFluidStack)) continue;
 
             if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                if (!tMEHatch.canAcceptFluid()) continue;
+                if (!tMEHatch.canFillFluid()) continue;
             }
 
             int tAmount = tHatch.fill(copiedFluidStack, false);
@@ -2914,7 +2902,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     return false;
                 }
 
-                if (((MTEHatchOutputME) tHatch).canFillFluid()) {
+                if (((MTEHatchOutputME) tHatch).canAcceptFluid()) {
                     return true;
                 }
             }

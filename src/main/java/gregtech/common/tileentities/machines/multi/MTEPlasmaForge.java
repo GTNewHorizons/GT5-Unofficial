@@ -3,6 +3,8 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.AuthorColen;
+import static gregtech.api.enums.GTAuthors.AuthorColen;
+import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -672,6 +674,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + " output buses")
             .addStructureInfo("")
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addTecTechHatchInfo()
             .toolTipFinisher(AuthorColen);
         return tt;
     }
