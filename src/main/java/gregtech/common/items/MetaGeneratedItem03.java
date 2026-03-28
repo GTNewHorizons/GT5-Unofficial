@@ -250,6 +250,7 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -360,7 +361,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             addItemWithLocalizationKeys(
                 Circuit_Parts_GlassFiber.ID,
                 "gt.item.circuit_part.glass_fiber.name",
-                Materials.BorosilicateGlass.mChemicalFormula,
+                Materials.BorosilicateGlass.getChemicalFormula(),
                 o));
         ItemList.Circuit_Parts_PetriDish.set(
             addItemWithLocalizationKeys(
@@ -1804,7 +1805,9 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     private void registerAllAnimatedTooltips() {
-        addItemTooltip(ItemList.Transdimensional_Alignment_Matrix.get(1), GTValues.AuthorCloud);
+        addItemTooltip(
+            ItemList.Transdimensional_Alignment_Matrix.get(1),
+            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
     }
 
     private void initOreDictUnificatorEntries() {
