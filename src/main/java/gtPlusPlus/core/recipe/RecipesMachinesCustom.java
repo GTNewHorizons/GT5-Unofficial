@@ -816,7 +816,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.INCONEL_625.getFluidStack(16 * INGOTS),
                 MaterialsAlloy.INCONEL_792.getFluidStack(32 * INGOTS),
                 MaterialsAlloy.HASTELLOY_N.getFluidStack(32 * INGOTS))
-            .itemOutputs(GregtechItemList.Controller_Flotation_Cell.get(1))
+            .itemOutputs(ItemList.FlotationCell.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(60 * SECONDS)
             .addTo(AssemblyLine);

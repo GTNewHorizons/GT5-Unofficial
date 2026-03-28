@@ -1645,7 +1645,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (!tHatch.canStoreFluid(copiedFluidStack)) continue;
 
             if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                if (!tMEHatch.canAcceptFluid()) continue;
+                if (!tMEHatch.canFillFluid()) continue;
             }
 
             int tAmount = tHatch.fill(copiedFluidStack, false);
@@ -2902,7 +2902,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     return false;
                 }
 
-                if (((MTEHatchOutputME) tHatch).canFillFluid()) {
+                if (((MTEHatchOutputME) tHatch).canAcceptFluid()) {
                     return true;
                 }
             }
