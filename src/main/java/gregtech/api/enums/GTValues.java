@@ -219,11 +219,11 @@ public class GTValues {
      * Sides
      */
     public static final byte SIDE_BOTTOM = 0, SIDE_DOWN = 0, SIDE_TOP = 1, SIDE_UP = 1, SIDE_NORTH = 2, // Also a Side
-    // with a
-    // stupidly
-    // mirrored
-    // Texture
-    SIDE_SOUTH = 3, SIDE_WEST = 4, SIDE_EAST = 5, // Also a Side with a stupidly mirrored Texture
+        // with a
+        // stupidly
+        // mirrored
+        // Texture
+        SIDE_SOUTH = 3, SIDE_WEST = 4, SIDE_EAST = 5, // Also a Side with a stupidly mirrored Texture
         SIDE_ANY = 6, SIDE_UNKNOWN = 6, SIDE_INVALID = 6, SIDE_INSIDE = 6, SIDE_UNDEFINED = 6;
 
     /** Compass alike Array for the proper ordering of North, East, South and West. */
