@@ -189,9 +189,6 @@ gt.oreprefix.huge_restrictive_material_item_pipe=Huge Restrictive %s Item Pipe
 
 gt.oreprefix.material_frame_box_tileentity=%s (TileEntity)
 
-# Tooltip for Material
-gt.metaitem.01.8150.tooltip=§b§lCrystallized shards stabilized by a maximized Godforge
-
 gt.block.any_sub_block=Any Sub Block of this one
 
 gt.author=Author: %s
@@ -1342,6 +1339,7 @@ gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
 gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
 gt.recipe.beamcrafter=Beam Crafter
+gt.recipe.large_hadron_collider=Large Hadron Collider
 gt.recipe.foundry_modules=Foundry Module Components
 
 # Recipe categories
@@ -4107,7 +4105,7 @@ gt.item.circuit_part.transistor_smd.tooltip=Electronic Component
 gt.item.circuit_part.capacitor_smd.name=SMD Capacitor
 gt.item.circuit_part.capacitor_smd.tooltip=Electronic Component
 gt.item.circuit_part.glass_fiber.name=Glass Fiber
-gt.item.circuit_part.glass_fiber.tooltip=SiO2·B2O3·Na2O  # пример, может отличаться, но оставим как в коде
+gt.item.circuit_part.glass_fiber.tooltip=SiO2·B2O3·Na2O
 gt.item.circuit_part.petri_dish.name=Petri Dish
 gt.item.circuit_part.petri_dish.tooltip=For cultivating cells
 gt.item.circuit_part.reinforced_glass_tube.name=Reinforced Glass Tube
@@ -5468,91 +5466,245 @@ gregtech.effectMachineBoost=Machine Booster
 
 entity.gregtech.GT_Entity_Arrow.name= a GregTech arrow
 
-fluid.Xenon=Xenon
-fluid.FermentedBacterialSludge=Fermented Bacterial Sludge
-fluid.NitricAcid=Nitric Acid
-fluid.EnrichedBacterialSludge=Enriched Bacterial Sludge
-fluid.Ammonia=Ammonia
-fluid.Neon=Neon
-fluid.Oganesson=Oganesson
-fluid.Aqua Regia=Aqua Regia
-fluid.Ammonium Chloride=Ammonium Chloride
-fluid.Platinum Concentrate=Platinum Concentrate
-fluid.Sodium Formate=Sodium Formate
-fluid.Formic Acid=Formic Acid
-fluid.Palladium Enriched Ammonia=Palladium Enriched Ammonia
-fluid.Ruthenium Tetroxide=Ruthenium Tetroxide
-fluid.Hot Ruthenium Tetroxide Solution=Hot Ruthenium Tetroxide Solution
-fluid.Ruthenium Tetroxide Solution=Ruthenium Tetroxide Solution
-fluid.Rhodium Sulfate=Rhodium Sulfate
-fluid.Rhodium Sulfate Solution=Rhodium Sulfate Solution
-fluid.Calcium Chloride=Calcium Chloride
-fluid.Acidic Osmium Solution=Acidic Osmium Solution
-fluid.Osmium Solution=Osmium Solution
-fluid.Acidic Iridium Solution=Acidic Iridium Solution
-fluid.Rhodium Salt Solution=Rhodium Salt Solution
-fluid.Rhodium Filter Cake Solution=Rhodium Filter Cake Solution
-fluid.Pollution=Pollution
-fluid.SodiumPotassium=Sodium Potassium
-fluid.Concrete=Concrete
-fluid.mushroomStew=Mushroom Stew
+# Fluids
+fluid.aniline=Aniline
+fluid.bioethanol=Bio Ethanol
+fluid.biomass=Biomass
+fluid.boricacid=Boric Acid
+fluid.butanol=Butanol
+fluid.cadaverine=Cadaverine
+fluid.carbondisulfide=Carbon Disulfide
+fluid.creosote=Creosote Oil
+fluid.cryotheum=Gelid Cryotheum
+fluid.cyclohexane=Cyclohexane
+fluid.cyclohexanone=Cyclohexanone
 
-fluid.Sodium Tungstate=Sodium Tungstate
-fluid.Phosgene=Phosgene
-fluid.Ethyl Chloroformate=Ethyl Chloroformate
-fluid.Ethyl Carbamate=Ethyl Carbamate
-fluid.Ethyl N-nitrocarbamate=Ethyl N-nitrocarbamate
-fluid.Ammonium N-nitrourethane=Ammonium N-nitrourethane
-fluid.Trinitramid=Trinitramid
-fluid.Ammonia Boronfluoride Solution=Ammonia Boronfluoride Solution
-fluid.Sodium Tetrafluoroborate=Sodium Tetrafluoroborate
-fluid.Tetrafluoroborate=Tetrafluoroborate
-fluid.Ethyl Acetate=Ethyl Acetate
-fluid.Acetylhydrazine=Acetylhydrazine
-fluid.Unsymmetrical Dimethylhydrazine=Unsymmetrical Dimethylhydrazine
-fluid.Monomethylhydrazine Fuel Mix=Monomethylhydrazine Fuel Mix
-fluid.Unsymmetrical Dimethylhydrazine Fuel Mix=Unsymmetrical Dimethylhydrazine Fuel Mix
-fluid.Boron Trifluoride=Boron Trifluoride
-fluid.Tert-Butylbenzene=Tert-Butylbenzene
-fluid.2-tert-butyl-anthraquinone=2-tert-butyl-anthraquinone
-fluid.2-tert-butyl-anthrahydroquinone=2-tert-butyl-anthrahydroquinone
-fluid.Hydrogen Peroxide=Hydrogen Peroxide
-fluid.hydrazine=Hydrazine
-fluid.Dimethyl Sulfate=Dimethyl Sulfate
-fluid.Ethyl Dinitrocarbamate=Ethyl Dinitrocarbamate
-fluid.Ammonium Dinitramide=Ammonium Dinitramide
-fluid.LMP-103S=LMP-103S
-fluid.Nitromethane=Nitromethane
-fluid.O-Xylene=O-Xylene
-# GT_MetaGenerated_Item_98 cells
-fluid.UnknownNutrientAgar=Unknown Nutrient Agar
-fluid.SeaweedBroth=Seaweed Broth
-fluid.EnzymesSollution=Enzyme Solution
+# Dyes
+fluid.dye.chemical.dyeblack=Chemical Black Dye
+fluid.dye.chemical.dyeblue=Chemical Blue Dye
+fluid.dye.chemical.dyebrown=Chemical Brown Dye
+fluid.dye.chemical.dyecyan=Chemical Cyan Dye
+fluid.dye.chemical.dyegray=Chemical Gray Dye
+fluid.dye.chemical.dyegreen=Chemical Green Dye
+fluid.dye.chemical.dyelightblue=Chemical Light Blue Dye
+fluid.dye.chemical.dyelightgray=Chemical Light Gray Dye
+fluid.dye.chemical.dyelime=Chemical Lime Dye
+fluid.dye.chemical.dyemagenta=Chemical Magenta Dye
+fluid.dye.chemical.dyeorange=Chemical Orange Dye
+fluid.dye.chemical.dyepink=Chemical Pink Dye
+fluid.dye.chemical.dyepurple=Chemical Purple Dye
+fluid.dye.chemical.dyered=Chemical Red Dye
+fluid.dye.chemical.dyewhite=Chemical White Dye
+fluid.dye.chemical.dyeyellow=Chemical Yellow Dye
+fluid.dye.watermixed.dyeblack=Water Mixed Black Dye
+fluid.dye.watermixed.dyeblue=Water Mixed Blue Dye
+fluid.dye.watermixed.dyebrown=Water Mixed Brown Dye
+fluid.dye.watermixed.dyecyan=Water Mixed Cyan Dye
+fluid.dye.watermixed.dyegray=Water Mixed Gray Dye
+fluid.dye.watermixed.dyegreen=Water Mixed Green Dye
+fluid.dye.watermixed.dyelightblue=Water Mixed Light Blue Dye
+fluid.dye.watermixed.dyelightgray=Water Mixed Light Gray Dye
+fluid.dye.watermixed.dyelime=Water Mixed Lime Dye
+fluid.dye.watermixed.dyemagenta=Water Mixed Magenta Dye
+fluid.dye.watermixed.dyeorange=Water Mixed Orange Dye
+fluid.dye.watermixed.dyepink=Water Mixed Pink Dye
+fluid.dye.watermixed.dyepurple=Water Mixed Purple Dye
+fluid.dye.watermixed.dyered=Water Mixed Red Dye
+fluid.dye.watermixed.dyewhite=Water Mixed White Dye
+fluid.dye.watermixed.dyeyellow=Water Mixed Yellow Dye
+
+fluid.enzymessollution=EnzymesSollution
 fluid.escherichiakolifluid=eColi Bacteria Fluid
-fluid.Penicillin=Penicillin
-fluid.FluorecentdDNA=Fluorescent DNA
-fluid.Polymerase=Polymerase
-# No cell, most from bart bio
-fluid.Monomethylhydrazine=Monomethylhydrazine
-fluid.binnibacteriafluid=binnibacteriafluid
-fluid.barnadafisarboriatorisfluid=barnadafisarboriatorisfluid
-fluid.GelatinMixture=GelatinMixture
-fluid.sludge=sludge
-fluid.Formaldehyde=Formaldehyde
-fluid.tcetieisfucusserratusfluid=tcetieisfucusserratusfluid
-fluid.MeatExtract=MeatExtract
-# No recipe
-fluid.CompressedOxygen=CompressedOxygen
-fluid.CompressedNitrogen=CompressedNitrogen
-fluid.redplasma=redplasma
-fluid.tile.fluidBlockSludge=fluidBlockSludge
-# No Texture
-fluid.guano=guano
-fluid.poo=poo
-fluid.sewerage=sewerage
-fluid.fuelgc=fuelgc
-fluid.dirtywater=dirtywater
-fluid.oilgc=oilgc
+fluid.fermentation.base=Fermentation Base
+fluid.fieryblood=Fiery Blood
+fluid.fluid.2ethylanthrahydroquinone=2-Ethylanthrahydroquinone
+fluid.fluid.2ethylanthraquinone=2-Ethylanthraquinone
+fluid.fluid.ammoniumnitrateslurry=Hydrated Ammonium Nitrate Slurry
+fluid.fluid.anthracene=Anthracene
+fluid.fluid.burntlifbef2thf4uf4=Burnt LiFBeF2ThF4UF4 Salt
+fluid.fluid.burntlifbef2zrf4u235=Burnt LiFBeF2ZrF4U235 Salt
+fluid.fluid.burntlifbef2zrf4uf4=Burnt LiFBeF2ZrF4UF4 Salt
+fluid.fluid.coalgas=Coal Gas
+fluid.fluid.coaltaroil=Coal Tar Oil
+fluid.fluid.ethylbenzene=Ethylbenzene
+fluid.fluid.formaldehyde=Formaldehyde
+fluid.fluid.geneticmutagen=Genetic Mutagen
+fluid.fluid.hydrazine=Hydrazine
+fluid.fluid.hydrogenperoxide=Hydrogen Peroxide
+fluid.fluid.impurelifbef2=Impure Molten Salt Base
+fluid.fluid.kerosene=Kerosene
+fluid.fluid.liquidhydrogen=Liquid Hydrogen
+fluid.fluid.monomethylhydrazine=Monomethylhydrazine
+fluid.fluid.naphthalene=Naphthalene
+fluid.fluid.nitrogentetroxide=Nitrogen Tetroxide
+fluid.fluid.raisinjuice=Raisin Juice
+fluid.fluid.rocketfuelmixa=H8N4C2O4 Rocket Fuel
+fluid.fluid.rocketfuelmixb=Rp-1 Rocket Fuel
+fluid.fluid.rocketfuelmixc=CN3H7O3 Rocket Fuel
+fluid.fluid.rocketfuelmixd=Dense Hydrazine Fuel Mixture
+fluid.fluid.rp1fuel=RP-1
+fluid.fluid.sulfuriccoaltaroil=Sulfuric Coal Tar Oil
+fluid.fluorecentddna=FluorecentdDNA
+fluid.froth.almandineflotation=Almandine Froth
+fluid.froth.copperflotation=Chalcopyrite Froth
+fluid.froth.grossularflotation=Grossular Froth
+fluid.froth.monaziteflotation=Monazite Froth
+fluid.froth.netherrackflotation=Netherrack Froth
+fluid.froth.nickelflotation=Nickel Froth
+fluid.froth.pentlanditeflotation=Pentlandite Froth
+fluid.froth.platinumflotation=Platinum Froth
+fluid.froth.pyropeflotation=Pyrope Froth
+fluid.froth.redstoneflotation=Redstone Froth
+fluid.froth.spessartineflotation=Spessartine Froth
+fluid.froth.zincflotation=Sphalerite Froth
+fluid.fulvic acid=Fulvic Acid
+fluid.heated fulvic acid=Heated Fulvic Acid
+fluid.hydrofluoricacid=Industrial Strength Hydrofluoric Acid
+fluid.hydrogenchloride=Industrial Strength Hydrogen Chloride
+fluid.ice=Crushed Ice
+fluid.indigo=Indigo Dye
+fluid.indiumconcentrate=Indium Concentrate
+fluid.kerogen=Kerogen
+fluid.leadzincsolution=Lead-Zinc Solution
+fluid.liquid_drillingfluid=Drilling Fluid
+fluid.liquid_sodium=Liquid Sodium
+fluid.liquidresin=Liquid Resin
+fluid.mobessence=Mob Essence
+fluid.mud.red.slurry=Red Mud Slurry
+fluid.nitrobenzene=Nitrobenzene
+fluid.nuclear.waste=Nuclear Waste
+fluid.penicillin=Penicillin
+fluid.pineoil=Pine Oil
+fluid.polymerase=Polymerase
+fluid.polyurethane=Polyurethane
+
+# Potions
+fluid.potion.alcopops=Alcopops
+fluid.potion.applejuice=Apple Juice
+fluid.potion.awkward=Awkward Brew
+fluid.potion.beer=Beer
+fluid.potion.cavejohnsonsgrenadejuice=Cave Johnsons Grenade Juice
+fluid.potion.chillysauce=Chilly Sauce
+fluid.potion.chocolatemilk=Chocolate Milk
+fluid.potion.cider=Cider
+fluid.potion.coffee=Coffee
+fluid.potion.damage=Harming Brew
+fluid.potion.damage.splash=Splash Harming Brew
+fluid.potion.damage.strong=Strong Harming Brew
+fluid.potion.damage.strong.splash=Strong Splash Harming Brew
+fluid.potion.darkbeer=Dark Beer
+fluid.potion.darkchocolatemilk=Dark Chocolate Milk
+fluid.potion.diablosauce=Diablo Sauce
+fluid.potion.diablosauce.strong=Old Man Snitches glitched Diablo Sauce
+fluid.potion.diabolosauce=Diabolo Sauce
+fluid.potion.dragonblood=Dragon Blood
+fluid.potion.fireresistance=Fire Resistant Brew
+fluid.potion.fireresistance.long=Stretched Fire Resistant Brew
+fluid.potion.fireresistance.long.splash=Stretched Splash Fire Resistant Brew
+fluid.potion.fireresistance.splash=Splash Fire Resistant Brew
+fluid.potion.glenmckenner=Glen McKenner
+fluid.potion.goldenapplejuice=Golden Apple Juice
+fluid.potion.goldencider=Golden Cider
+fluid.potion.grapejuice=Grape Juice
+fluid.potion.health=Healing Brew
+fluid.potion.health.splash=Splash Healing Brew
+fluid.potion.health.strong=Strong Healing Brew
+fluid.potion.health.strong.splash=Strong Splash Healing Brew
+fluid.potion.hopsjuice=Hops Juice
+fluid.potion.hotsauce=Hot Sauce
+fluid.potion.icetea=Ice Tea
+fluid.potion.idunsapplejuice=Idun's Apple Juice
+fluid.potion.invisibility=Invisible Brew
+fluid.potion.invisibility.long=Stretched Invisible Brew
+fluid.potion.invisibility.long.splash=Stretched Splash Invisible Brew
+fluid.potion.invisibility.splash=Splash Invisible Brew
+fluid.potion.latte=Latte
+fluid.potion.lemonade=Lemonade
+fluid.potion.lemonjuice=Lemon Juice
+fluid.potion.leninade=Leninade
+fluid.potion.limoncello=Limoncello
+fluid.potion.mineralwater=Mineral Water
+fluid.potion.mundane=Mundane Brew
+fluid.potion.nightvision=Night Vision Brew
+fluid.potion.nightvision.long=Stretched Night Vision Brew
+fluid.potion.nightvision.long.splash=Stretched Splash Night Vision Brew
+fluid.potion.nightvision.splash=Splash Night Vision Brew
+fluid.potion.notchesbrew=Notches Brew
+fluid.potion.piratebrew=Pirate Brew
+fluid.potion.poison=Poisonous Brew
+fluid.potion.poison.long=Stretched Poisonous Brew
+fluid.potion.poison.long.splash=Stretched Splash Poisonous Brew
+fluid.potion.poison.splash=Splash Poisonous Brew
+fluid.potion.poison.strong=Strong Poisonous Brew
+fluid.potion.poison.strong.splash=Strong Splash Poisonous Brew
+fluid.potion.potatojuice=Potato Juice
+fluid.potion.purpledrink=Purple Drink
+fluid.potion.reedwater=Reed Water
+fluid.potion.regen=Regenerating Brew
+fluid.potion.regen.long=Stretched Regenerating Brew
+fluid.potion.regen.long.splash=Stretched Splash Regenerating Brew
+fluid.potion.regen.splash=Splash Regenerating Brew
+fluid.potion.regen.strong=Strong Regenerating Brew
+fluid.potion.regen.strong.splash=Strong Splash Regenerating Brew
+fluid.potion.rum=Rum
+fluid.potion.saltywater=Salty Water
+fluid.potion.scotch=Scotch
+fluid.potion.slowness=Lame Brew
+fluid.potion.slowness.long=Stretched Lame Brew
+fluid.potion.slowness.long.splash=Stretched Splash Lame Brew
+fluid.potion.slowness.splash=Splash Lame Brew
+fluid.potion.speed=Swiftness Brew
+fluid.potion.speed.long=Stretched Swiftness Brew
+fluid.potion.speed.long.splash=Stretched Splash Swiftness Brew
+fluid.potion.speed.splash=Splash Swiftness Brew
+fluid.potion.speed.strong=Strong Swiftness Brew
+fluid.potion.speed.strong.splash=Strong Splash Swiftness Brew
+fluid.potion.strength=Strength Brew
+fluid.potion.strength.long=Stretched Strength Brew
+fluid.potion.strength.long.splash=Stretched Splash Strength Brew
+fluid.potion.strength.splash=Splash Strength Brew
+fluid.potion.strength.strong=Strong Strength Brew
+fluid.potion.strength.strong.splash=Strong Splash Strength Brew
+fluid.potion.sweetcoffee=Sweet Coffee
+fluid.potion.sweetjesuslatte=Sweet Jesus Latte
+fluid.potion.sweetlatte=Sweet Latte
+fluid.potion.sweettea=Sweet Tea
+fluid.potion.tea=Tea
+fluid.potion.thick=Thick Brew
+fluid.potion.vodka=Vodka
+fluid.potion.waterbreathing=Fishy Brew
+fluid.potion.waterbreathing.long=Stretched Fishy Brew
+fluid.potion.waterbreathing.long.splash=Stretched Splash Fishy Brew
+fluid.potion.waterbreathing.splash=Splash Fishy Brew
+fluid.potion.weakness=Weakening Brew
+fluid.potion.weakness.long=Stretched Weakening Brew
+fluid.potion.weakness.long.splash=Stretched Splash Weakening Brew
+fluid.potion.weakness.splash=Splash Weakening Brew
+fluid.potion.wheatyhopsjuice=Wheaty Hops Juice
+fluid.potion.wheatyjuice=Wheaty Juice
+fluid.potion.wine=Wine
+
+fluid.propionicacid=Propionic Acid
+fluid.pseudomonasveroniifluid=Anaerobic Oil Bacteria Fluid
+fluid.putrescine=Putrescine
+fluid.pyrotheum=Blazing Pyrotheum
+fluid.rocket_fuel=Rocket Fuel
+fluid.saccharomycescerevisiaefluid=Common Yeast Fluid
+fluid.saccharomycescerevisiaevarbayanusfluid=Whine Yeast Fluid
+fluid.saccharomycescerevisiaevarcerevisiaefluid=Beer Yeast Fluid
+fluid.saccharomycesescherichiafluid=General Purpose Fermenting Bacteria Fluid
+fluid.solution.bluevitriol=Blue Vitriol Water Solution
+fluid.solution.greenvitriol=Green Vitriol Water Solution
+fluid.solution.nickelsulfate=Nickel Sulfate Water Solution
+fluid.squidink=Squid Ink
+fluid.steam=Steam
+fluid.sulfuricapatite=Sulfuric Apatite Mix
+fluid.sulfuriclithium=Sulfuric Lithium Mix
+fluid.sulfurousacid=Sulfurous Acid
+fluid.ureamix=Urea Mix
+fluid.uuamplifier=UU Amplifier
+fluid.wet.concrete=Wet Concrete
+fluidHotWater=Heated Water
 
 # Space projects
 gt.solar.system.overworld=Overworld
@@ -7131,31 +7283,31 @@ gt.BWCircuitProgrammer.name=Circuit Programmer
 gt.BWCircuitProgrammer.tooltip=Programs Integrated Circuits
 
 # Printer Manual
-gt.Book.Printer Manual V2.0.Name=Printer Manual V2.0
-gt.Book.Printer Manual V2.0.Page00=This Manual explains the different Functionalities the GregTech Printing Factory has built in, which are not in NEI. Most got NEI Support now, but there is still some left without it.
-gt.Book.Printer Manual V2.0.Page01=1. Coloring Items and Blocks: You know those Crafting Recipes, which have a dye surrounded by 8 Item to dye them? Or the ones which have just one Item and one Dye in the Grid? Those two Recipe Types can be cheaply automated using the Printer.
-gt.Book.Printer Manual V2.0.Page02=The Colorization Functionality even optimizes the Recipes, which normally require 8 Items + 1 Dye to 1 Item and an 8th of the normally used Dye in Fluid Form, isn't that awesome?
-gt.Book.Printer Manual V2.0.Page03=2. Copying Books: This Task got slightly harder. The first Step is putting the written and signed Book inside the Scanner with a Data Stick ready to receive the Data.
-gt.Book.Printer Manual V2.0.Page04=Now insert the Stick into the Data Slot of the Printer and add 3 pieces of Paper together with 144 Liters of actual Ink Fluid. Water mixed and chemical Dyes won't work on Paper without messing things up!
-gt.Book.Printer Manual V2.0.Page05=You got a stack of Pages for your new Book, just put them into the Assembler with some Glue and a piece of Leather for the Binding, and you receive an identical copy of the Book, which would stack together with the original.
-gt.Book.Printer Manual V2.0.Page06=3. Renaming Items: This Functionality is no longer Part of the Printer. There is now a Name Mold for the Forming Press to imprint a Name into an Item, just rename the Mold in an Anvil and use it in the Forming Press on any Item.
-gt.Book.Printer Manual V2.0.Page07=4. Crafting of Books, Maps, Nametags etc etc etc: Those Recipes moved to other Machines, just look them up in NEI.
+gt.book.printer_manual.name=Printer Manual V2.0
+gt.book.printer_manual.page00=This Manual explains the different Functionalities the GregTech Printing Factory has built in, which are not in NEI. Most got NEI Support now, but there is still some left without it.
+gt.book.printer_manual.page01=1. Coloring Items and Blocks: You know those Crafting Recipes, which have a dye surrounded by 8 Item to dye them? Or the ones which have just one Item and one Dye in the Grid? Those two Recipe Types can be cheaply automated using the Printer.
+gt.book.printer_manual.page02=The Colorization Functionality even optimizes the Recipes, which normally require 8 Items + 1 Dye to 1 Item and an 8th of the normally used Dye in Fluid Form, isn't that awesome?
+gt.book.printer_manual.page03=2. Copying Books: This Task got slightly harder. The first Step is putting the written and signed Book inside the Scanner with a Data Stick ready to receive the Data.
+gt.book.printer_manual.page04=Now insert the Stick into the Data Slot of the Printer and add 3 pieces of Paper together with 144 Liters of actual Ink Fluid. Water mixed and chemical Dyes won't work on Paper without messing things up!
+gt.book.printer_manual.page05=You got a stack of Pages for your new Book, just put them into the Assembler with some Glue and a piece of Leather for the Binding, and you receive an identical copy of the Book, which would stack together with the original.
+gt.book.printer_manual.page06=3. Renaming Items: This Functionality is no longer Part of the Printer. There is now a Name Mold for the Forming Press to imprint a Name into an Item, just rename the Mold in an Anvil and use it in the Forming Press on any Item.
+gt.book.printer_manual.page07=4. Crafting of Books, Maps, Nametags etc etc etc: Those Recipes moved to other Machines, just look them up in NEI.
 
 # Punch Card Manual
-gt.Book.Punch Card Manual V0.0.Name=Punch Card Manual V0.0
-gt.Book.Punch Card Manual V0.0.Page00=This Manual will explain the Functionality of the Punch Cards, once they are fully implemented. And no, they won't be like the IRL Punch Cards. This is just a current Idea Collection.
-gt.Book.Punch Card Manual V0.0.Page01=(i1&&i2)?o1=15:o1=0;=10
-gt.Book.Punch Card Manual V0.0.Page02=ignore all Whitespace Characters, use Long for saving the Numbers
-gt.Book.Punch Card Manual V0.0.Page03=&& || ^^ & | ^ ! ++ -- + - % / // * ** << >> >>> < > <= >= == !=  ~ ( ) ?: , ; ;= ;=X; = i0 i1 i2 i3 i4 i5 o0 o1 o2 o3 o4 o5 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 A B C D E F
-gt.Book.Punch Card Manual V0.0.Page04='0' = false, 'everything but 0' = true, '!' turns '0' into '1' and everything else into '0'
-gt.Book.Punch Card Manual V0.0.Page05=',' is just a separator for multiple executed Codes in a row.
-gt.Book.Punch Card Manual V0.0.Page06=';' means that the Program waits until the next tick before continuing. ';=10' and ';=10;' both mean that it will wait 10 Ticks instead of 1. And ';=0' or anything < 0 will default to 0.
-gt.Book.Punch Card Manual V0.0.Page07=If the '=' Operator is used within Brackets, it returns the value the variable has been set to.
-gt.Book.Punch Card Manual V0.0.Page08=The Program saves the Char Index of the current Task, the 10 Variables (which reset to 0 as soon as the Program Loop stops), the 10 Member Variables and the remaining waiting Time in its NBT.
-gt.Book.Punch Card Manual V0.0.Page09=A = 10, B = 11, C = 12, D = 13, E = 14, F = 15, just for Hexadecimal Space saving, since Redstone has only 4 Bits.
-gt.Book.Punch Card Manual V0.0.Page10=For implementing Loops you just need 1 Punch Card per Loop, these Cards can restart once they are finished, depending on how many other Cards there are in the Program Loop you inserted your Card into, since it will process them procedurally.
-gt.Book.Punch Card Manual V0.0.Page11=A Punch Card Processor can run up to four Loops, each with the length of seven Punch Cards, parallel.
-gt.Book.Punch Card Manual V0.0.Page12=Why does the Punch Card need Ink to be made, you ask? Because the empty one needs to have some lines on, and the for the punched one it prints the Code to execute in a human readable format on the Card.
+gt.book.punch_card_manual_v0.name=Punch Card Manual V0.0
+gt.book.punch_card_manual_v0.page00=This Manual will explain the Functionality of the Punch Cards, once they are fully implemented. And no, they won't be like the IRL Punch Cards. This is just a current Idea Collection.
+gt.book.punch_card_manual_v0.page01=(i1&&i2)?o1=15:o1=0;=10
+gt.book.punch_card_manual_v0.page02=ignore all Whitespace Characters, use Long for saving the Numbers
+gt.book.punch_card_manual_v0.page03=&& || ^^ & | ^ ! ++ -- + - % / // * ** << >> >>> < > <= >= == !=  ~ ( ) ?: , ; ;= ;=X; = i0 i1 i2 i3 i4 i5 o0 o1 o2 o3 o4 o5 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 A B C D E F
+gt.book.punch_card_manual_v0.page04='0' = false, 'everything but 0' = true, '!' turns '0' into '1' and everything else into '0'
+gt.book.punch_card_manual_v0.page05=',' is just a separator for multiple executed Codes in a row.
+gt.book.punch_card_manual_v0.page06=';' means that the Program waits until the next tick before continuing. ';=10' and ';=10;' both mean that it will wait 10 Ticks instead of 1. And ';=0' or anything < 0 will default to 0.
+gt.book.punch_card_manual_v0.page07=If the '=' Operator is used within Brackets, it returns the value the variable has been set to.
+gt.book.punch_card_manual_v0.page08=The Program saves the Char Index of the current Task, the 10 Variables (which reset to 0 as soon as the Program Loop stops), the 10 Member Variables and the remaining waiting Time in its NBT.
+gt.book.punch_card_manual_v0.page09=A = 10, B = 11, C = 12, D = 13, E = 14, F = 15, just for Hexadecimal Space saving, since Redstone has only 4 Bits.
+gt.book.punch_card_manual_v0.page10=For implementing Loops you just need 1 Punch Card per Loop, these Cards can restart once they are finished, depending on how many other Cards there are in the Program Loop you inserted your Card into, since it will process them procedurally.
+gt.book.punch_card_manual_v0.page11=A Punch Card Processor can run up to four Loops, each with the length of seven Punch Cards, parallel.
+gt.book.punch_card_manual_v0.page12=Why does the Punch Card need Ink to be made, you ask? Because the empty one needs to have some lines on, and the for the punched one it prints the Code to execute in a human readable format on the Card.
 
 # Microwave Oven Manual
 gt.Book.Microwave Oven Manual.Name=Microwave Oven Manual
@@ -7167,269 +7319,3 @@ gt.Book.Microwave Oven Manual.Page04=Do not insert any Metals. It might result i
 gt.Book.Microwave Oven Manual.Page05=Do not dry Animals with it. It will result in a Hot Dog, no matter which Animal you put into it.
 gt.Book.Microwave Oven Manual.Page06=Do not insert inflammable Objects. The Oven will catch on Fire.
 gt.Book.Microwave Oven Manual.Page07=Do not insert Explosives such as Eggs. Just don't.
-
-# Fluids
-# Gases
-fluid.Air=Air
-fluid.LiquidOxygen=Liquid Oxygen
-fluid.LiquidNitrogen=Liquid Nitrogen
-fluid.LiquidAir=Liquid Air
-fluid.Oxygen=Oxygen
-fluid.Hydrogen=Hydrogen
-fluid.Deuterium=Deuterium
-fluid.Tritium=Tritium
-fluid.Helium=Helium
-fluid.Helium-3=Helium-3
-fluid.Argon=Argon
-fluid.Radon=Radon
-fluid.Fluorine=Fluorine
-fluid.Methane=Methane
-fluid.Nitrogen=Nitrogen
-fluid.NitrogenDioxide=Nitrogen Dioxide
-fluid.Steam=Steam
-fluid.gas_natural_gas=Natural Gas
-fluid.gas_sulfuricgas=Sulfuric Gas
-fluid.gas_gas=Refinery Gas
-fluid.liquid_hydricsulfur=Hydrogen Sulfide
-
-# Liquids — Petroleum & Fuels
-fluid.liquid_extra_heavy_oil=Very Heavy Oil
-fluid.liquid_heavy_oil=Heavy Oil
-fluid.liquid_medium_oil=Raw Oil
-fluid.liquid_light_oil=Light Oil
-fluid.liquid_naphtha=Naphtha
-fluid.liquid_sulfuricnaphtha=Sulfuric Naphtha
-fluid.liquid_sufluriclight_fuel=Sulfuric Light Fuel
-fluid.liquid_sulfuricheavy_fuel=Sulfuric Heavy Fuel
-fluid.liquid_light_fuel=Light Fuel
-fluid.liquid_heavy_fuel=Heavy Fuel
-fluid.liquid_lpg=LPG
-fluid.fuel=Diesel
-fluid.NitroFuel=Cetane-Boosted Diesel
-fluid.oil=Oil
-fluid.liquid_toluene=Toluene
-fluid.liquid_epichlorhydrin=Epichlorohydrin
-fluid.liquid_nitrationmixture=Nitration Mixture
-fluid.liquid_drillingfluid=Drilling Fluid
-
-# Liquids — Industrial / Chemical
-fluid.Titaniumtetrachloride=Titaniumtetrachloride
-fluid.Chlorine=Chlorine
-fluid.Mercury=Mercury
-fluid.SodiumPersulfate=Sodium Persulfate
-fluid.Glyceryl=Glyceryl Trinitrate
-fluid.sulfuricacid=Sulfuric Acid
-fluid.lubricant=Lubricant
-fluid.creosote=Creosote Oil
-fluid.UUAmplifier=UU Amplifier
-fluid.mcguffium=Mc Guffium 239
-fluid.refinedGlue=Refined Glue
-fluid.charcoal_byproducts=Charcoal Byproducts
-fluid.molten.bisphenol_a=Molten Bisphenol A
-fluid.liquid_sodium=Liquid Sodium
-
-# Liquids — Biological / Food
-fluid.seedoil=Seed Oil
-fluid.fishoil=Fish Oil
-fluid.for.honey=Honey
-fluid.biomass=Biomass
-fluid.bioethanol=Bio Ethanol
-fluid.milk=Milk
-fluid.hotfryingoil=Hot Frying Oil
-
-# Liquids — Special / Endgame
-fluid.fieryblood=Fiery Blood
-fluid.holywater=Holy Water
-fluid.DimensionallyTranscendentResidue=Dimensionally Transcendent Residue
-fluid.ExcitedDTCC=Excited Dimensionally Transcendent Crude Catalyst
-fluid.ExcitedDTPC=Excited Dimensionally Transcendent Prosaic Catalyst
-fluid.ExcitedDTRC=Excited Dimensionally Transcendent Resplendent Catalyst
-fluid.ExcitedDTEC=Excited Dimensionally Transcendent Exotic Catalyst
-fluid.ExcitedDTSC=Excited Dimensionally Transcendent Stellar Catalyst
-fluid.antimatter=Antimatter
-fluid.protomatter=Protomatter
-fluid.PrimordialMatter=Primordial Matter
-fluid.QuarkGluonPlasma=Quark-Gluon Plasma
-fluid.PhononMedium=Phonon Medium
-fluid.PhononCrystalSolution=Phonon Crystal Solution
-fluid.RawStarMatter=Raw Star Matter
-fluid.Space=Space
-fluid.Time=Time
-
-# Slurry
-fluid.ice=Crushed Ice
-
-# Molten
-fluid.molten.glass=Molten Glass
-fluid.molten.redstone=Molten Redstone
-fluid.molten.blaze=Molten Blaze
-fluid.wet.concrete=Wet Concrete
-fluid.molten.granitered=Molten Red Granite
-fluid.molten.graniteblack=Molten Black Granite
-fluid.molten.cosmicneutronium=Molten Cosmic Neutronium
-fluid.molten.ichorium=Molten Ichorium
-
-# Plasma
-fluid.plasma.infinity=Infinity Plasma
-fluid.plasma.bedrockium=Bedrockium Plasma
-fluid.plasma.cosmicneutronium=Cosmic Neutronium Plasma
-fluid.plasma.ichorium=Ichorium Plasma
-
-# Dyes
-fluid.dye.chemical.dyeblack=Chemical Black Dye
-fluid.dye.chemical.dyeblue=Chemical Blue Dye
-fluid.dye.chemical.dyebrown=Chemical Brown Dye
-fluid.dye.chemical.dyecyan=Chemical Cyan Dye
-fluid.dye.chemical.dyegray=Chemical Gray Dye
-fluid.dye.chemical.dyegreen=Chemical Green Dye
-fluid.dye.chemical.dyelightblue=Chemical Light Blue Dye
-fluid.dye.chemical.dyelightgray=Chemical Light Gray Dye
-fluid.dye.chemical.dyelime=Chemical Lime Dye
-fluid.dye.chemical.dyemagenta=Chemical Magenta Dye
-fluid.dye.chemical.dyeorange=Chemical Orange Dye
-fluid.dye.chemical.dyepink=Chemical Pink Dye
-fluid.dye.chemical.dyepurple=Chemical Purple Dye
-fluid.dye.chemical.dyered=Chemical Red Dye
-fluid.dye.chemical.dyewhite=Chemical White Dye
-fluid.dye.chemical.dyeyellow=Chemical Yellow Dye
-fluid.dye.watermixed.dyeblack=Water Mixed Black Dye
-fluid.dye.watermixed.dyeblue=Water Mixed Blue Dye
-fluid.dye.watermixed.dyebrown=Water Mixed Brown Dye
-fluid.dye.watermixed.dyecyan=Water Mixed Cyan Dye
-fluid.dye.watermixed.dyegray=Water Mixed Gray Dye
-fluid.dye.watermixed.dyegreen=Water Mixed Green Dye
-fluid.dye.watermixed.dyelightblue=Water Mixed Light Blue Dye
-fluid.dye.watermixed.dyelightgray=Water Mixed Light Gray Dye
-fluid.dye.watermixed.dyelime=Water Mixed Lime Dye
-fluid.dye.watermixed.dyemagenta=Water Mixed Magenta Dye
-fluid.dye.watermixed.dyeorange=Water Mixed Orange Dye
-fluid.dye.watermixed.dyepink=Water Mixed Pink Dye
-fluid.dye.watermixed.dyepurple=Water Mixed Purple Dye
-fluid.dye.watermixed.dyered=Water Mixed Red Dye
-fluid.dye.watermixed.dyewhite=Water Mixed White Dye
-fluid.dye.watermixed.dyeyellow=Water Mixed Yellow Dye
-fluid.squidink=Squid Ink
-fluid.indigo=Indigo Dye
-
-# Potions
-fluid.potion.awkward=Awkward Brew
-fluid.potion.thick=Thick Brew
-fluid.potion.mundane=Mundane Brew
-
-fluid.potion.damage=Harming Brew
-fluid.potion.damage.strong=Strong Harming Brew
-fluid.potion.damage.splash=Splash Harming Brew
-fluid.potion.damage.strong.splash=Strong Splash Harming Brew
-
-fluid.potion.health=Healing Brew
-fluid.potion.health.strong=Strong Healing Brew
-fluid.potion.health.splash=Splash Healing Brew
-fluid.potion.health.strong.splash=Strong Splash Healing Brew
-
-fluid.potion.speed=Swiftness Brew
-fluid.potion.speed.strong=Strong Swiftness Brew
-fluid.potion.speed.long=Stretched Swiftness Brew
-fluid.potion.speed.splash=Splash Swiftness Brew
-fluid.potion.speed.strong.splash=Strong Splash Swiftness Brew
-fluid.potion.speed.long.splash=Stretched Splash Swiftness Brew
-
-fluid.potion.strength=Strength Brew
-fluid.potion.strength.strong=Strong Strength Brew
-fluid.potion.strength.long=Stretched Strength Brew
-fluid.potion.strength.splash=Splash Strength Brew
-fluid.potion.strength.strong.splash=Strong Splash Strength Brew
-fluid.potion.strength.long.splash=Stretched Splash Strength Brew
-
-fluid.potion.regen=Regenerating Brew
-fluid.potion.regen.strong=Strong Regenerating Brew
-fluid.potion.regen.long=Stretched Regenerating Brew
-fluid.potion.regen.splash=Splash Regenerating Brew
-fluid.potion.regen.strong.splash=Strong Splash Regenerating Brew
-fluid.potion.regen.long.splash=Stretched Splash Regenerating Brew
-
-fluid.potion.poison=Poisonous Brew
-fluid.potion.poison.strong=Strong Poisonous Brew
-fluid.potion.poison.long=Stretched Poisonous Brew
-fluid.potion.poison.splash=Splash Poisonous Brew
-fluid.potion.poison.strong.splash=Strong Splash Poisonous Brew
-fluid.potion.poison.long.splash=Stretched Splash Poisonous Brew
-
-fluid.potion.fireresistance=Fire Resistant Brew
-fluid.potion.fireresistance.long=Stretched Fire Resistant Brew
-fluid.potion.fireresistance.splash=Splash Fire Resistant Brew
-fluid.potion.fireresistance.long.splash=Stretched Splash Fire Resistant Brew
-
-fluid.potion.nightvision=Night Vision Brew
-fluid.potion.nightvision.long=Stretched Night Vision Brew
-fluid.potion.nightvision.splash=Splash Night Vision Brew
-fluid.potion.nightvision.long.splash=Stretched Splash Night Vision Brew
-
-fluid.potion.weakness=Weakening Brew
-fluid.potion.weakness.long=Stretched Weakening Brew
-fluid.potion.weakness.splash=Splash Weakening Brew
-fluid.potion.weakness.long.splash=Stretched Splash Weakening Brew
-
-fluid.potion.slowness=Lame Brew
-fluid.potion.slowness.long=Stretched Lame Brew
-fluid.potion.slowness.splash=Splash Lame Brew
-fluid.potion.slowness.long.splash=Stretched Splash Lame Brew
-
-fluid.potion.waterbreathing=Fishy Brew
-fluid.potion.waterbreathing.long=Stretched Fishy Brew
-fluid.potion.waterbreathing.splash=Splash Fishy Brew
-fluid.potion.waterbreathing.long.splash=Stretched Splash Fishy Brew
-
-fluid.potion.invisibility=Invisible Brew
-fluid.potion.invisibility.long=Stretched Invisible Brew
-fluid.potion.invisibility.splash=Splash Invisible Brew
-fluid.potion.invisibility.long.splash=Stretched Splash Invisible Brew
-
-# Beverages (bottles)
-fluid.potion.purpledrink=Purple Drink
-fluid.potion.grapejuice=Grape Juice
-fluid.potion.wine=Wine
-fluid.potion.vinegar=Vinegar
-fluid.potion.potatojuice=Potato Juice
-fluid.potion.vodka=Vodka
-fluid.potion.leninade=Leninade
-fluid.potion.mineralwater=Mineral Water
-fluid.potion.saltywater=Salty Water
-fluid.potion.reedwater=Reed Water
-fluid.potion.rum=Rum
-fluid.potion.piratebrew=Pirate Brew
-fluid.potion.hopsjuice=Hops Juice
-fluid.potion.darkbeer=Dark Beer
-fluid.potion.dragonblood=Dragon Blood
-fluid.potion.wheatyjuice=Wheaty Juice
-fluid.potion.scotch=Scotch
-fluid.potion.glenmckenner=Glen McKenner
-fluid.potion.wheatyhopsjuice=Wheaty Hops Juice
-fluid.potion.beer=Beer
-fluid.potion.chillysauce=Chilly Sauce
-fluid.potion.hotsauce=Hot Sauce
-fluid.potion.diabolosauce=Diabolo Sauce
-fluid.potion.diablosauce=Diablo Sauce
-fluid.potion.diablosauce.strong=Old Man Snitches glitched Diablo Sauce
-fluid.potion.applejuice=Apple Juice
-fluid.potion.cider=Cider
-fluid.potion.goldenapplejuice=Golden Apple Juice
-fluid.potion.goldencider=Golden Cider
-fluid.potion.idunsapplejuice=Idun's Apple Juice
-fluid.potion.notchesbrew=Notches Brew
-fluid.potion.lemonjuice=Lemon Juice
-fluid.potion.limoncello=Limoncello
-fluid.potion.lemonade=Lemonade
-fluid.potion.alcopops=Alcopops
-fluid.potion.cavejohnsonsgrenadejuice=Cave Johnsons Grenade Juice
-
-# Beverages (thermos cans)
-fluid.potion.coffee=Coffee
-fluid.potion.sweetcoffee=Sweet Coffee
-fluid.potion.Latte=Latte
-fluid.potion.sweetlatte=Sweet Latte
-fluid.potion.sweetjesuslatte=Sweet Jesus Latte
-fluid.potion.darkchocolatemilk=Dark Chocolate Milk
-fluid.potion.chocolatemilk=Chocolate Milk
-fluid.potion.tea=Tea
-fluid.potion.sweettea=Sweet Tea
-fluid.potion.icetea=Ice Tea
