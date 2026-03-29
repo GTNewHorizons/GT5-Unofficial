@@ -8,7 +8,6 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -31,7 +30,6 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gregtech.api.util.client.ResourceUtils;
 import gregtech.common.config.Client;
@@ -48,7 +46,7 @@ public class BaseItemComponent extends Item {
     public final Material componentMaterial;
     public final String materialName;
     public final String unlocalName;
-    public final Supplier<String> translatedMaterialName;
+    public final String materialKey;
     public final ComponentTypes componentType;
     public final int componentColour;
     public short[] extraData;
@@ -60,7 +58,7 @@ public class BaseItemComponent extends Item {
         this.componentMaterial = material;
         this.unlocalName = "item" + componentType.COMPONENT_NAME + material.getUnlocalizedName();
         this.materialName = material.getDefaultLocalName();
-        this.translatedMaterialName = material::getLocalizedName;
+        this.materialKey = material.getLocalizedNameKey();
         this.componentType = componentType;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(this.unlocalName);
@@ -91,7 +89,7 @@ public class BaseItemComponent extends Item {
         this.componentMaterial = aTempMaterial;
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
-        this.translatedMaterialName = () -> GTUtility.getFluidName(fluid, true);
+        this.materialKey = fluid.getUnlocalizedName();
         this.componentType = ComponentTypes.CELL;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(aFormattedNameForFluids);
@@ -166,7 +164,7 @@ public class BaseItemComponent extends Item {
             return componentType.getGtOrePrefix()
                 .getLocalizedNameForItem(componentMaterial);
         }
-        return OrePrefixes.getLocalizedNameForItem(componentType.getName(), "@", translatedMaterialName.get());
+        return OrePrefixes.getLocalizedNameForItem(componentType.getName(), "@", materialKey);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

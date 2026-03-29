@@ -30,6 +30,7 @@ import gregtech.api.objects.GTArrayList;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.GTInflectionManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
@@ -2879,14 +2880,36 @@ public class OrePrefixes {
     }
 
     public String getLocalizedNameForItem(IOreMaterial materials) {
-        return StatCollector.translateToLocalFormatted(getOreprefixKey(materials), materials.getLocalizedName());
+        return getLocalizedNameForItemWithInflection(getOreprefixKey(materials), materials);
     }
 
-    public static String getLocalizedNameForItem(String prefix, String materialName) {
-        return StatCollector.translateToLocalFormatted(getOreprefixKey(prefix), materialName);
+    public static String getLocalizedNameForItem(String prefix, IOreMaterial material) {
+        return getLocalizedNameForItemWithInflection(getOreprefixKey(prefix), material);
+    }
+
+    public static String getLocalizedNameForItem(String prefix, String formatString, IOreMaterial material) {
+        return getLocalizedNameForItemWithInflection(getOreprefixKey(prefix, formatString), material);
     }
 
     public static String getLocalizedNameForItem(String prefix, String formatString, String materialName) {
-        return StatCollector.translateToLocalFormatted(getOreprefixKey(prefix, formatString), materialName);
+        return getLocalizedNameForItemWithInflection(getOreprefixKey(prefix, formatString), materialName);
+    }
+
+    private static String getLocalizedNameForItemWithInflection(String prefixKey, IOreMaterial material) {
+        final String key = prefixKey + "."
+            + material.getInternalName()
+                .toLowerCase();
+        if (StatCollector.canTranslate(key)) {
+            return StatCollector.translateToLocal(key);
+        }
+        return GTInflectionManager.formatInflection(prefixKey, material.getLocalizedNameKey());
+    }
+
+    private static String getLocalizedNameForItemWithInflection(String prefixKey, String materialKey) {
+        final String key = prefixKey + "." + materialKey.toLowerCase();
+        if (StatCollector.canTranslate(key)) {
+            return StatCollector.translateToLocal(key);
+        }
+        return GTInflectionManager.formatInflection(prefixKey, materialKey);
     }
 }

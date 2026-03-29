@@ -522,6 +522,11 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         return this.defaultName;
     }
 
+    @Override
+    public String getDefaultLocalName() {
+        return getDefaultName();
+    }
+
     public String getVarName() {
         return this.defaultName.replace(" ", "");
     }

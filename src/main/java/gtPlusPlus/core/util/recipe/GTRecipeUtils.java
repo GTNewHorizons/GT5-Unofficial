@@ -59,7 +59,8 @@ public class GTRecipeUtils {
             if (savedCircuit != null) {
                 // if the current recipe has a circuit and the recipe (without circuits) is already in the
                 // circuit map then check make sure the circuit map saves the recipe with the smallest circuit
-                // damage value. This is to prevent a case where recipe load order would affect which duplicate
+                // damage value. This is to prevent a case where recipe load order would affect which
+                // duplicate
                 // recipes with multiple circuit values gets removed.
                 if (circuitMap.containsKey(newRecipe)) {
                     if (circuitMap.get(newRecipe)
