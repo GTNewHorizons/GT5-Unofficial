@@ -306,4 +306,8 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
         return 32000;
     }
 
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
