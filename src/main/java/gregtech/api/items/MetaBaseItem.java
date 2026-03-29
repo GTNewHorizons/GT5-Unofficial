@@ -7,6 +7,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,6 +39,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -252,9 +254,11 @@ public abstract class MetaBaseItem extends GTGenericItem
         final String key = getToolTipLocalizationKey(aStack);
         final Object[] formatters = getToolTipLocalizationArgs(aStack);
         if (GTUtility.isStringValid(key)) {
-            aList.add(
-                formatters == null ? StatCollector.translateToLocal(key)
-                    : StatCollector.translateToLocalFormatted(key, formatters));
+            Collections.addAll(
+                aList,
+                GTSplit.split(
+                    formatters == null ? StatCollector.translateToLocal(key)
+                        : StatCollector.translateToLocalFormatted(key, formatters)));
         }
         Long[] tStats = getElectricStats(aStack);
         if (tStats != null) {
