@@ -289,11 +289,6 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
     public void setInventorySlotContents(final int p_70299_1_, final ItemStack p_70299_2_) {}
 
     @Override
-    public String getInventoryName() {
-        return null;
-    }
-
-    @Override
     public int getInventoryStackLimit() {
         return 0;
     }

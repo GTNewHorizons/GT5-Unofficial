@@ -7327,3 +7327,5 @@ gt.Book.Microwave Oven Manual.Page04=Do not insert any Metals. It might result i
 gt.Book.Microwave Oven Manual.Page05=Do not dry Animals with it. It will result in a Hot Dog, no matter which Animal you put into it.
 gt.Book.Microwave Oven Manual.Page06=Do not insert inflammable Objects. The Oven will catch on Fire.
 gt.Book.Microwave Oven Manual.Page07=Do not insert Explosives such as Eggs. Just don't.
+
+gt.tile.data_server.name=GT-Data Server

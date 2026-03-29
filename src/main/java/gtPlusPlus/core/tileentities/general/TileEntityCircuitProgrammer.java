@@ -254,7 +254,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
 
     @Override
     public String getInventoryName() {
-        return this.hasCustomInventoryName() ? this.customName : "container.circuitprogrammer";
+        return this.hasCustomInventoryName() ? this.customName : "tile.blockCircuitProgrammer.name";
     }
 
     @Override
