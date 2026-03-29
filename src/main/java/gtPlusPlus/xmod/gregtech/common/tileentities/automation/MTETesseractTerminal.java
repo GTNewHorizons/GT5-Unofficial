@@ -597,4 +597,9 @@ public class MTETesseractTerminal extends MTEBasicTank {
         } catch (Exception t) {}
         super.onRemoval();
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
