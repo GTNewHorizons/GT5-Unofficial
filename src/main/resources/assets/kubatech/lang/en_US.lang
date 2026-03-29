@@ -96,6 +96,8 @@ kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_capacity=Remaining see
 
 #Chat Messages
 kubatech.chat.forbidden_while_running=Cannot change mode while running!
+kubatech.chat.cannot_insert=§cCan't insert while running!
+
 
 kubatech.chat.eec.ritual_mode_enabled=Ritual mode enabled
 kubatech.chat.eec.ritual_mode_disabled=Ritual mode disabled
@@ -103,6 +105,32 @@ kubatech.chat.eec.ritual_mode_connected=Successfully connected to ritual
 kubatech.chat.eec.ritual_mode_error=Can't connect to ritual!
 kubatech.chat.eec.infernal_drops_enabled=Mobs can spawn infernal
 kubatech.chat.eec.infernal_drops_disabled=Mobs will be prevented from spawning infernal
+kubatech.chat.eec.animation.enabled=Animations are enabled
+kubatech.chat.eec.animation.disabled=Animations are disabled
+
+kubatech.chat.eig.cannot_setup_when_working=You can't enable/disable setup if the machine is working!
+kubatech.chat.eig.run_mode.operational=EIG is now running in operational mode.
+kubatech.chat.eig.run_mode.input=EIG is now running in seed input mode.
+kubatech.chat.eig.run_mode.output=EIG is now running in seed output mode.
+kubatech.chat.eig.run_mode.invalid=EIG is now running in an invalid mode please send us a ticket!
+kubatech.chat.eig.cannot_change_mode.working=You can't change mode if the machine is working!
+kubatech.chat.eig.cannot_change_mode.seed_inside=You can't change mode if there are seeds inside!
+kubatech.chat.eig.change_mode=Changed mode to: %s
+kubatech.chat.eig.mode.ic2=IC2
+kubatech.chat.eig.mode.normal=Normal
+kubatech.chat.eig.no_humidity_mode.enabled=No Humidity mode enabled.
+kubatech.chat.eig.no_humidity_mode.disabled=No Humidity mode disabled.
+
+kubatech.chat.htgr.mode.emptying=HTGR is now running in emptying mode.
+kubatech.chat.htgr.mode.normal=HTGR is now running in normal Operation.
+
+kubatech.chat.mia.auto_place.water_flower=§aAuto placing done! Now go place the water and flowers yourself!
+kubatech.chat.mia.mode_change.input=Changed primary mode to: Input mode
+kubatech.chat.mia.mode_change.output=Changed primary mode to: Output mode
+kubatech.chat.mia.mode_change.operating=Changed primary mode to: Operating mode
+kubatech.chat.mia.mode_change.not_empty=Can't change operating mode when the multi is not empty!
+kubatech.chat.mia.secondary_mode.normal=Changed secondary mode to: Normal mode
+kubatech.chat.mia.secondary_mode.swarmer=Changed secondary mode to: Swarmer mode
 
 # info data
 ## general
