@@ -40,6 +40,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.metatileentity.IConnectable;
+import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
@@ -49,7 +50,6 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
 
@@ -305,12 +305,27 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         }
     }
 
+    @Nullable
+    private static IFluidContainerItemMetaTile getFluidContainerItemMeta(@Nonnull ItemStack container) {
+        final int tDamage = container.getItemDamage();
+        if (tDamage < 0 || tDamage >= GregTechAPI.METATILEENTITIES.length) {
+            return null;
+        }
+        final IMetaTileEntity tMetaTile = GregTechAPI.METATILEENTITIES[tDamage];
+        return tMetaTile instanceof IFluidContainerItemMetaTile fluidMeta ? fluidMeta : null;
+    }
+
     @Override
     public FluidStack getFluid(ItemStack container) {
         if (container != null) {
+            final IFluidContainerItemMetaTile fluidMeta = getFluidContainerItemMeta(container);
+            if (fluidMeta == null) {
+                return null;
+            }
+            final String fluidKey = fluidMeta.getFluidNbtKey();
             final NBTTagCompound tNBT = container.stackTagCompound;
-            if (tNBT != null && tNBT.hasKey("mFluid", 10)) {
-                return FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("mFluid"));
+            if (tNBT != null && tNBT.hasKey(fluidKey, 10)) {
+                return FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag(fluidKey));
             }
         }
         return null;
@@ -338,11 +353,11 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     @Override
     public int fill(ItemStack container, FluidStack resource, boolean doFill) {
         if (container != null && resource != null) {
-            final int tDamage = container.getItemDamage();
-            final IMetaTileEntity tMetaTile = GregTechAPI.METATILEENTITIES[tDamage];
-            if (!(tMetaTile instanceof MTEDigitalTankBase)) {
+            final IFluidContainerItemMetaTile fluidMeta = getFluidContainerItemMeta(container);
+            if (fluidMeta == null) {
                 return 0;
             }
+            final String fluidKey = fluidMeta.getFluidNbtKey();
             if (container.stackSize > 1) {
                 return 0;
             }
@@ -358,7 +373,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 final int tAmount = Math.min(tCapacity - tStoredFluid.amount, resource.amount);
                 if (doFill) {
                     final FluidStack tNewFluid = new FluidStack(tStoredFluid, tAmount + tStoredFluid.amount);
-                    container.stackTagCompound.setTag("mFluid", tNewFluid.writeToNBT(new NBTTagCompound()));
+                    container.stackTagCompound.setTag(fluidKey, tNewFluid.writeToNBT(new NBTTagCompound()));
                 }
                 return tAmount;
             }
@@ -366,7 +381,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 final int tAmount = Math.min(tCapacity, resource.amount);
                 if (doFill) {
                     final FluidStack tNewFluid = new FluidStack(resource, tAmount);
-                    container.stackTagCompound.setTag("mFluid", tNewFluid.writeToNBT(new NBTTagCompound()));
+                    container.stackTagCompound.setTag(fluidKey, tNewFluid.writeToNBT(new NBTTagCompound()));
                 }
                 return tAmount;
             }
@@ -377,11 +392,11 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     @Override
     public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
         if (container != null && container.hasTagCompound()) {
-            final int tDamage = container.getItemDamage();
-            final IMetaTileEntity tMetaTile = GregTechAPI.METATILEENTITIES[tDamage];
-            if (!(tMetaTile instanceof MTEDigitalTankBase)) {
+            final IFluidContainerItemMetaTile fluidMeta = getFluidContainerItemMeta(container);
+            if (fluidMeta == null) {
                 return null;
             }
+            final String fluidKey = fluidMeta.getFluidNbtKey();
             final FluidStack tStoredFluid = getFluid(container);
             if (tStoredFluid != null) {
                 final int tAmount = Math.min(maxDrain, tStoredFluid.amount);
@@ -389,10 +404,10 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 final FluidStack tOutputFluid = new FluidStack(tStoredFluid, tAmount);
                 if (doDrain) {
                     if (tNewFluid.amount <= 0) {
-                        container.stackTagCompound.removeTag("mFluid");
+                        container.stackTagCompound.removeTag(fluidKey);
                         if (container.stackTagCompound.hasNoTags()) container.setTagCompound(null);
                     } else {
-                        container.stackTagCompound.setTag("mFluid", tNewFluid.writeToNBT(new NBTTagCompound()));
+                        container.stackTagCompound.setTag(fluidKey, tNewFluid.writeToNBT(new NBTTagCompound()));
                     }
                 }
                 return tOutputFluid;

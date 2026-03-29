@@ -317,4 +317,8 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
         return 16000;
     }
 
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
