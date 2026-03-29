@@ -539,4 +539,9 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank implements IFluidL
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEDigitalTankBaseGui<>(this).build(data, syncManager, uiSettings);
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
