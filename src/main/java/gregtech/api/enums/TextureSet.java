@@ -50,7 +50,7 @@ public class TextureSet {
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/toolHeadScrewdriver", "/toolHeadBuzzSaw",
         "/toolHeadSoldering", "/nanites", "/wireFine", "/gearGtSmall", "/rotor", "/stickLong", "/springSmall",
         "/spring", "/arrowGtWood", "/arrowGtPlastic", "/gemChipped", "/gemFlawed", "/gemFlawless", "/gemExquisite",
-        "/gearGt", "/oreRaw", aTextVoidDir, aTextVoidDir, "/oreSmall", "/ore", "/wire", "/foil", "/block1", "/block2",
+        "/gearGt", "/oreRaw", "/gemPerfect", aTextVoidDir, "/oreSmall", "/ore", "/wire", "/foil", "/block1", "/block2",
         "/block3", "/block4", "/block5", "/block6", "/pipeSide", "/pipeTiny", "/pipeSmall", "/pipeMedium", "/pipeLarge",
         "/pipeHuge", "/frameGt", "/pipeQuadruple", "/pipeNonuple", "/sheetmetal", aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,

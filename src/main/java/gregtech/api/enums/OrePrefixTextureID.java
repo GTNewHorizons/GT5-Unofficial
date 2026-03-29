@@ -51,6 +51,7 @@ public class OrePrefixTextureID {
     public static final int GEM_EXQUISITE = 62;
     public static final int GEAR = 63;
     public static final int ORE_RAW = 64;
+    public static final int GEM_PERFECT = 65;
     public static final int ORE_SMALL = 67;
     public static final int ORE = 68;
     public static final int BLOCK = 71;

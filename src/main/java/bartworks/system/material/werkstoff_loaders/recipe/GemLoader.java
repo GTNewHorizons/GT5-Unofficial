@@ -23,6 +23,7 @@ import static gregtech.api.enums.OrePrefixes.gemChipped;
 import static gregtech.api.enums.OrePrefixes.gemExquisite;
 import static gregtech.api.enums.OrePrefixes.gemFlawed;
 import static gregtech.api.enums.OrePrefixes.gemFlawless;
+import static gregtech.api.enums.OrePrefixes.gemPerfect;
 import static gregtech.api.enums.OrePrefixes.lens;
 import static gregtech.api.enums.OrePrefixes.ore;
 import static gregtech.api.enums.OrePrefixes.plate;
@@ -86,6 +87,10 @@ public class GemLoader implements IWerkstoffRunnable {
             }
 
             GTModHandler.addCraftingRecipe(
+                werkstoff.get(gemExquisite, 4),
+                0,
+                new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemPerfect) });
+            GTModHandler.addCraftingRecipe(
                 werkstoff.get(gemFlawless, 2),
                 0,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemExquisite) });
@@ -101,6 +106,13 @@ public class GemLoader implements IWerkstoffRunnable {
                 werkstoff.get(gemChipped, 2),
                 0,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemFlawed) });
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(gemPerfect))
+                .itemOutputs(werkstoff.get(gemExquisite, 4))
+                .duration(6 * SECONDS + 8 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2)
+                .addTo(hammerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(gemExquisite))

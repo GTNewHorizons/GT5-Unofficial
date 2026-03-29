@@ -183,15 +183,12 @@ import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Tea;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Tea;
 import static gregtech.common.items.IDMetaItem02.Vajra_Core;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 
 import com.google.common.collect.ImmutableList;
@@ -255,7 +252,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             OrePrefixes.springSmall,
             OrePrefixes.spring,
             OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
+            OrePrefixes.gemPerfect,
             OrePrefixes.gemChipped,
             OrePrefixes.gemFlawed,
             OrePrefixes.gemFlawless,
@@ -2335,25 +2332,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     public boolean hasProjectile(SubTag aProjectileType, ItemStack aStack) {
         int aDamage = aStack.getItemDamage();
         return ((aDamage >= 25000) && (aDamage < 27000)) || (super.hasProjectile(aProjectileType, aStack));
-    }
-
-    @Override
-    public boolean isItemStackUsable(ItemStack aStack) {
-        int aDamage = aStack.getItemDamage();
-        Materials aMaterial = GregTechAPI.sGeneratedMaterials[(aDamage % 1000)];
-        if ((aDamage >= 25000) && (aDamage < 27000) && (aMaterial != null) && (aMaterial.mToolEnchantment != null)) {
-            Enchantment tEnchant = aMaterial.mToolEnchantment == Enchantment.fortune ? Enchantment.looting
-                : aMaterial.mToolEnchantment;
-            if (tEnchant.type == EnumEnchantmentType.weapon) {
-                NBTTagCompound tNBT = GTUtility.ItemNBT.getNBT(aStack);
-                if (!tNBT.getBoolean("GT.HasBeenUpdated")) {
-                    tNBT.setBoolean("GT.HasBeenUpdated", true);
-                    GTUtility.ItemNBT.setNBT(aStack, tNBT);
-                    GTUtility.ItemNBT.addEnchantment(aStack, tEnchant, aMaterial.mToolEnchantmentLevel);
-                }
-            }
-        }
-        return super.isItemStackUsable(aStack);
     }
 
     private void setAllFluidContainerStats() {

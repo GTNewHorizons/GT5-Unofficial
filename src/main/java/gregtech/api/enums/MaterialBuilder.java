@@ -303,6 +303,7 @@ public class MaterialBuilder {
      * <li>{@link OrePrefixes#gemFlawed}</li>
      * <li>{@link OrePrefixes#gemFlawless}</li>
      * <li>{@link OrePrefixes#gemExquisite}</li>
+     * <li>{@link OrePrefixes#gemPerfect}</li>
      * <li>{@link OrePrefixes#gem}</li>
      * <li>{@link OrePrefixes#dustTiny}</li>
      * <li>{@link OrePrefixes#dustSmall}</li>

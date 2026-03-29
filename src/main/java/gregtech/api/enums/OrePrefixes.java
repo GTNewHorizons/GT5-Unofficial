@@ -382,6 +382,18 @@ public class OrePrefixes {
         .textureIndex(OrePrefixTextureID.GEM_EXQUISITE)
         .build();
 
+    /** A regular Gem worth sixteen Dusts. */
+    public static final OrePrefixes gemPerfect = new OrePrefixBuilder("gemPerfect")
+        .withDefaultLocalName("Perfect Gemstones")
+        .withPrefix("Perfect ")
+        .unifiable()
+        .materialBased()
+        .selfReferencing()
+        .materialGenerationBits(GEM)
+        .materialAmount(M * 16)
+        .textureIndex(OrePrefixTextureID.GEM_PERFECT)
+        .build();
+
     /** A regular Gem worth one Dust. Introduced by Eloraam */
     public static final OrePrefixes gem = new OrePrefixBuilder("gem").withDefaultLocalName("Gemstones")
         .unifiable()

@@ -815,6 +815,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             prefixLogic.put(OrePrefixes.gemExquisite, GEMS);
             prefixLogic.put(OrePrefixes.gemChipped, GEMS);
             prefixLogic.put(OrePrefixes.gemFlawless, GEMS);
+            prefixLogic.put(OrePrefixes.gemPerfect, GEMS);
             prefixLogic.put(OrePrefixes.lens, GEMS);
 
             prefixLogic.put(OrePrefixes.block, METALS | GEMS);

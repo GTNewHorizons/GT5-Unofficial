@@ -234,8 +234,8 @@ public class GTPreLoad {
                 "toolHeadHoe", "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw",
                 "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow",
                 "toolHeadBuzzSaw", "turbineBlade", null, "itemCasing", "wireFine", "gearGtSmall", "rotor", "stickLong",
-                "springSmall", "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless",
-                "gemExquisite", "gearGt" };
+                "springSmall", "spring", null, "gemPerfect", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite",
+                "gearGt" };
             final String[] prefixes3 = { "rawOre", "nanite", "plateSuperdense" };
             for (String text : scripts) {
                 Matcher m = p.matcher(text);
@@ -289,9 +289,9 @@ public class GTPreLoad {
             "cell", "cellPlasma", "toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe", "toolHeadHoe",
             "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench",
             "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow", "toolHeadBuzzSaw",
-            "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood",
-            "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt", "nanite",
-            "cellMolten", "rawOre", "plateSuperdense" };
+            "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "gemPerfect",
+            "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt", "nanite", "cellMolten", "rawOre",
+            "plateSuperdense" };
 
         final ArrayList<String> mMTTags = new ArrayList<>();
         // noinspection ForLoopReplaceableByForEach

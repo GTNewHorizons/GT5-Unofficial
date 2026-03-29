@@ -353,6 +353,40 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         .addTo(hammerRecipes);
                 }
             }
+            case "gemPerfect" -> {
+                // Fuel recipes
+                if (aFuelPower) {
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(GTUtility.copyAmount(1, aStack))
+                        .metadata(FUEL_VALUE, aMaterial.mFuelPower * 32)
+                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .addTo(GTRecipeConstants.Fuel);
+                }
+
+                if (!aNoWorking) {
+                    if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
+                        // Crafting recipes
+                        {
+                            if (aSpecialRecipeReq) {
+                                GTModHandler.addCraftingRecipe(
+                                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 16L),
+                                    GTModHandler.RecipeBits.BITS_STD,
+                                    new Object[] { "X", "m", 'X', OrePrefixes.gemPerfect.get(aMaterial) });
+                            }
+                        }
+                    }
+                }
+
+                // Forge hammer recipes
+                {
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(aStack)
+                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 4L))
+                        .duration(6 * SECONDS + 8 * TICKS)
+                        .eut(TierEU.RECIPE_LV / 2)
+                        .addTo(hammerRecipes);
+                }
+            }
             case "gemFlawed" -> {
                 // fuel recipes
                 if (aFuelPower) {

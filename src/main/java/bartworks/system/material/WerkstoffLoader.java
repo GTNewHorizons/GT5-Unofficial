@@ -38,6 +38,7 @@ import static gregtech.api.enums.OrePrefixes.gemChipped;
 import static gregtech.api.enums.OrePrefixes.gemExquisite;
 import static gregtech.api.enums.OrePrefixes.gemFlawed;
 import static gregtech.api.enums.OrePrefixes.gemFlawless;
+import static gregtech.api.enums.OrePrefixes.gemPerfect;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.ingotHot;
 import static gregtech.api.enums.OrePrefixes.lens;
@@ -1926,6 +1927,7 @@ public class WerkstoffLoader {
             WerkstoffLoader.items.put(gemExquisite, new BWMetaGeneratedItems(gemExquisite));
             WerkstoffLoader.items.put(gemFlawed, new BWMetaGeneratedItems(gemFlawed));
             WerkstoffLoader.items.put(gemFlawless, new BWMetaGeneratedItems(gemFlawless));
+            WerkstoffLoader.items.put(gemPerfect, new BWMetaGeneratedItems(gemPerfect));
             WerkstoffLoader.items.put(lens, new BWMetaGeneratedItems(lens));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b1000) != 0) {
