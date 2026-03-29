@@ -46,6 +46,19 @@ public class PowerGogglesConfigHandler {
     public static int textGoodColor;
     public static final Logger GOGGLES_LOGGER = LogManager.getLogger("GT5U Power Goggles");
 
+    private static final int DEFAULT_GRADIENT_BAD_COLOR = Color.rgb(255, 50, 50);
+    private static final int DEFAULT_GRADIENT_OK_COLOR = Color.rgb(50, 255, 50);
+    private static final int DEFAULT_GRADIENT_GOOD_COLOR = Color.rgb(50, 50, 255);
+    private static final int DEFAULT_CHART_BACKGROUND_COLOR = Color.argb(19, 14, 91, (int) (255 * 0.75f));
+    private static final int DEFAULT_CHART_BORDER_COLOR = Color.rgb(81, 79, 104);
+    private static final int DEFAULT_CHART_MIN_TEXT_COLOR = Color.rgb(237, 2, 158);
+    private static final int DEFAULT_CHART_MAX_TEXT_COLOR = Color.rgb(237, 2, 158);
+    private static final int DEFAULT_CHART_MANUAL_SCALE_INDICATOR_COLOR = Color.rgb(255, 210, 80);
+    private static final int DEFAULT_MEASUREMENTS_BACKGROUND_COLOR = Color.argb(47, 20, 76, (int) (255 * 0.85));
+    private static final int DEFAULT_TEXT_BAD_COLOR = Color.rgb(255, 0, 0);
+    private static final int DEFAULT_TEXT_OK_COLOR = Color.rgb(255, 255, 255);
+    private static final int DEFAULT_TEXT_GOOD_COLOR = Color.rgb(0, 255, 0);
+
     public static void init(File confFile) {
         config = new Configuration(confFile);
         config.load();
@@ -105,79 +118,22 @@ public class PowerGogglesConfigHandler {
                 .get(Configuration.CATEGORY_GENERAL, "Hide HUD", true, "Hide the HUD when the in-game chat is open")
                 .getBoolean(true);
 
-            gradientBadColor = config
-                .get(Configuration.CATEGORY_GENERAL, "Bad Gradient", Color.rgb(255, 50, 50), "", 0, Integer.MAX_VALUE)
-                .getInt();
-            gradientOkColor = config
-                .get(Configuration.CATEGORY_GENERAL, "Ok Gradient", Color.rgb(50, 255, 50), "", 0, Integer.MAX_VALUE)
-                .getInt();
-            gradientGoodColor = config
-                .get(Configuration.CATEGORY_GENERAL, "Good Gradient", Color.rgb(50, 50, 255), "", 0, Integer.MAX_VALUE)
-                .getInt();
-
-            chartBackgroundColor = config
-                .get(
-                    Configuration.CATEGORY_GENERAL,
-                    "Chart Background Color",
-                    Color.argb(19, 14, 91, (int) (255 * 0.75f)),
-                    "",
-                    0,
-                    Integer.MAX_VALUE)
-                .getInt();
-            chartBorderColor = config
-                .get(
-                    Configuration.CATEGORY_GENERAL,
-                    "Chart Border Color",
-                    Color.rgb(81, 79, 104),
-                    "",
-                    0,
-                    Integer.MAX_VALUE)
-                .getInt();
-            chartMinTextColor = config
-                .get(
-                    Configuration.CATEGORY_GENERAL,
-                    "Chart Min Text Color",
-                    Color.rgb(237, 2, 158),
-                    "",
-                    0,
-                    Integer.MAX_VALUE)
-                .getInt();
-            chartMaxTextColor = config
-                .get(
-                    Configuration.CATEGORY_GENERAL,
-                    "Chart Max Text Color",
-                    Color.rgb(237, 2, 158),
-                    "",
-                    0,
-                    Integer.MAX_VALUE)
-                .getInt();
-            chartManualScaleIndicatorColor = config
-                .get(
-                    Configuration.CATEGORY_GENERAL,
-                    "Chart Manual Scale Indicator Color",
-                    Color.rgb(255, 210, 80),
-                    "",
-                    0,
-                    Integer.MAX_VALUE)
-                .getInt();
-            masurementsBackgroundColor = config
-                .get(
-                    Configuration.CATEGORY_GENERAL,
-                    "Measurements Background Color",
-                    Color.argb(47, 20, 76, (int) (255 * 0.85)),
-                    "",
-                    0,
-                    Integer.MAX_VALUE)
-                .getInt();
-            textBadColor = config
-                .get(Configuration.CATEGORY_GENERAL, "Bad Text", Color.rgb(255, 0, 0), "", 0, Integer.MAX_VALUE)
-                .getInt();
-            textOkColor = config
-                .get(Configuration.CATEGORY_GENERAL, "Ok Text", Color.rgb(255, 255, 255), "", 0, Integer.MAX_VALUE)
-                .getInt();
-            textGoodColor = config
-                .get(Configuration.CATEGORY_GENERAL, "Good Text", Color.rgb(0, 255, 0), "", 0, Integer.MAX_VALUE)
-                .getInt();
+            gradientBadColor = getColorSetting("Bad Gradient", DEFAULT_GRADIENT_BAD_COLOR);
+            gradientOkColor = getColorSetting("Ok Gradient", DEFAULT_GRADIENT_OK_COLOR);
+            gradientGoodColor = getColorSetting("Good Gradient", DEFAULT_GRADIENT_GOOD_COLOR);
+            chartBackgroundColor = getColorSetting("Chart Background Color", DEFAULT_CHART_BACKGROUND_COLOR);
+            chartBorderColor = getColorSetting("Chart Border Color", DEFAULT_CHART_BORDER_COLOR);
+            chartMinTextColor = getColorSetting("Chart Min Text Color", DEFAULT_CHART_MIN_TEXT_COLOR);
+            chartMaxTextColor = getColorSetting("Chart Max Text Color", DEFAULT_CHART_MAX_TEXT_COLOR);
+            chartManualScaleIndicatorColor = getColorSetting(
+                "Chart Manual Scale Indicator Color",
+                DEFAULT_CHART_MANUAL_SCALE_INDICATOR_COLOR);
+            masurementsBackgroundColor = getColorSetting(
+                "Measurements Background Color",
+                DEFAULT_MEASUREMENTS_BACKGROUND_COLOR);
+            textBadColor = getColorSetting("Bad Text", DEFAULT_TEXT_BAD_COLOR);
+            textOkColor = getColorSetting("Ok Text", DEFAULT_TEXT_OK_COLOR);
+            textGoodColor = getColorSetting("Good Text", DEFAULT_TEXT_GOOD_COLOR);
 
         } catch (Exception e) {
             GOGGLES_LOGGER.error("Couldn't load goggles config.");
@@ -208,18 +164,18 @@ public class PowerGogglesConfigHandler {
         hudScale = 1.0;
         hideWhenChatOpen = true;
 
-        gradientBadColor = Color.rgb(255, 50, 50);
-        gradientOkColor = Color.rgb(50, 255, 50);
-        gradientGoodColor = Color.rgb(50, 50, 255);
-        chartBackgroundColor = Color.argb(19, 14, 91, (int) (255 * 0.75f));
-        chartBorderColor = Color.rgb(81, 79, 104);
-        chartMinTextColor = Color.rgb(237, 2, 158);
-        chartMaxTextColor = Color.rgb(237, 2, 158);
-        chartManualScaleIndicatorColor = Color.rgb(255, 210, 80);
-        masurementsBackgroundColor = Color.argb(47, 20, 76, (int) (255 * 0.85));
-        textBadColor = Color.rgb(255, 0, 0);
-        textOkColor = Color.rgb(255, 255, 255);
-        textGoodColor = Color.rgb(0, 255, 0);
+        gradientBadColor = DEFAULT_GRADIENT_BAD_COLOR;
+        gradientOkColor = DEFAULT_GRADIENT_OK_COLOR;
+        gradientGoodColor = DEFAULT_GRADIENT_GOOD_COLOR;
+        chartBackgroundColor = DEFAULT_CHART_BACKGROUND_COLOR;
+        chartBorderColor = DEFAULT_CHART_BORDER_COLOR;
+        chartMinTextColor = DEFAULT_CHART_MIN_TEXT_COLOR;
+        chartMaxTextColor = DEFAULT_CHART_MAX_TEXT_COLOR;
+        chartManualScaleIndicatorColor = DEFAULT_CHART_MANUAL_SCALE_INDICATOR_COLOR;
+        masurementsBackgroundColor = DEFAULT_MEASUREMENTS_BACKGROUND_COLOR;
+        textBadColor = DEFAULT_TEXT_BAD_COLOR;
+        textOkColor = DEFAULT_TEXT_OK_COLOR;
+        textGoodColor = DEFAULT_TEXT_GOOD_COLOR;
 
         config.get(Configuration.CATEGORY_GENERAL, "Render Offset X", 10, "")
             .set(mainOffsetX);
@@ -261,52 +217,29 @@ public class PowerGogglesConfigHandler {
         config.get(Configuration.CATEGORY_GENERAL, "Hide HUD", true, "Hide the HUD when the in-game chat is open")
             .set(hideWhenChatOpen);
 
-        config.get(Configuration.CATEGORY_GENERAL, "Bad Gradient", gradientBadColor, "", 0, Integer.MAX_VALUE)
-            .set(gradientBadColor);
-        config.get(Configuration.CATEGORY_GENERAL, "Ok Gradient", gradientOkColor, "", 0, Integer.MAX_VALUE)
-            .set(gradientOkColor);
-        config.get(Configuration.CATEGORY_GENERAL, "Good Gradient", gradientGoodColor, "", 0, Integer.MAX_VALUE)
-            .set(gradientGoodColor);
-        config
-            .get(
-                Configuration.CATEGORY_GENERAL,
-                "Chart Background Color",
-                chartBackgroundColor,
-                "",
-                0,
-                Integer.MAX_VALUE)
-            .set(chartBackgroundColor);
-        config.get(Configuration.CATEGORY_GENERAL, "Chart Border Color", chartBorderColor, "", 0, Integer.MAX_VALUE)
-            .set(chartBorderColor);
-        config.get(Configuration.CATEGORY_GENERAL, "Chart Min Text Color", chartMinTextColor, "", 0, Integer.MAX_VALUE)
-            .set(chartMinTextColor);
-        config.get(Configuration.CATEGORY_GENERAL, "Chart Max Text Color", chartMaxTextColor, "", 0, Integer.MAX_VALUE)
-            .set(chartMaxTextColor);
-        config
-            .get(
-                Configuration.CATEGORY_GENERAL,
-                "Chart Manual Scale Indicator Color",
-                chartManualScaleIndicatorColor,
-                "",
-                0,
-                Integer.MAX_VALUE)
-            .set(chartManualScaleIndicatorColor);
-        config
-            .get(
-                Configuration.CATEGORY_GENERAL,
-                "Measurements Background Color",
-                masurementsBackgroundColor,
-                "",
-                0,
-                Integer.MAX_VALUE)
-            .set(masurementsBackgroundColor);
-        config.get(Configuration.CATEGORY_GENERAL, "Bad Text", textBadColor, "", 0, Integer.MAX_VALUE)
-            .set(textBadColor);
-        config.get(Configuration.CATEGORY_GENERAL, "Ok Text", textOkColor, "", 0, Integer.MAX_VALUE)
-            .set(textOkColor);
-        config.get(Configuration.CATEGORY_GENERAL, "Good Text", textGoodColor, "", 0, Integer.MAX_VALUE)
-            .set(textGoodColor);
+        setColorSetting("Bad Gradient", gradientBadColor);
+        setColorSetting("Ok Gradient", gradientOkColor);
+        setColorSetting("Good Gradient", gradientGoodColor);
+        setColorSetting("Chart Background Color", chartBackgroundColor);
+        setColorSetting("Chart Border Color", chartBorderColor);
+        setColorSetting("Chart Min Text Color", chartMinTextColor);
+        setColorSetting("Chart Max Text Color", chartMaxTextColor);
+        setColorSetting("Chart Manual Scale Indicator Color", chartManualScaleIndicatorColor);
+        setColorSetting("Measurements Background Color", masurementsBackgroundColor);
+        setColorSetting("Bad Text", textBadColor);
+        setColorSetting("Ok Text", textOkColor);
+        setColorSetting("Good Text", textGoodColor);
 
         config.save();
+    }
+
+    private static int getColorSetting(String key, int defaultValue) {
+        return config.get(Configuration.CATEGORY_GENERAL, key, defaultValue, "", 0, Integer.MAX_VALUE)
+            .getInt();
+    }
+
+    private static void setColorSetting(String key, int value) {
+        config.get(Configuration.CATEGORY_GENERAL, key, value, "", 0, Integer.MAX_VALUE)
+            .set(value);
     }
 }

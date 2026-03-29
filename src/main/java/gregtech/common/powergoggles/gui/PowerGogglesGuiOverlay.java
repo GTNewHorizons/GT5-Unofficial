@@ -49,8 +49,12 @@ public class PowerGogglesGuiOverlay {
     private static IDrawable background = new Rectangle().setColor(Color.argb(0, 0, 0, 100));
     private static String manualGraphMinInput = "0";
     private static String manualGraphMaxInput = "1000";
-    private static boolean manualMinInvalid = false;
-    private static boolean manualMaxInvalid = false;
+    private static boolean manualScaleInvalid = false;
+    private static final IDrawable MANUAL_SCALE_INVALID_TEXT_FIELD_BACKGROUND = new DrawableStack(
+        GTGuiTextures.BACKGROUND_TEXT_FIELD,
+        new Rectangle().setColor(Color.argb(200, 40, 40, 110)));
+    private static final IDrawable MANUAL_SCALE_TEXT_FIELD_BACKGROUND = new DynamicDrawable(
+        () -> manualScaleInvalid ? MANUAL_SCALE_INVALID_TEXT_FIELD_BACKGROUND : GTGuiTextures.BACKGROUND_TEXT_FIELD);
 
     public static void init() {
 
@@ -257,13 +261,7 @@ public class PowerGogglesGuiOverlay {
                 new TextFieldWidget().size(110, 18)
                     .setTextAlignment(Alignment.Center)
                     .setFormatAsInteger(true)
-                    .background(
-                        new DynamicDrawable(
-                            () -> manualMinInvalid
-                                ? new DrawableStack(
-                                    GTGuiTextures.BACKGROUND_TEXT_FIELD,
-                                    new Rectangle().setColor(Color.argb(200, 40, 40, 110)))
-                                : GTGuiTextures.BACKGROUND_TEXT_FIELD))
+                    .background(MANUAL_SCALE_TEXT_FIELD_BACKGROUND)
                     .value(new StringValue.Dynamic(() -> manualGraphMinInput, val -> {
                         manualGraphMinInput = val == null ? "" : val.trim();
                         validateManualScaleInputs();
@@ -290,13 +288,7 @@ public class PowerGogglesGuiOverlay {
                 new TextFieldWidget().size(110, 18)
                     .setTextAlignment(Alignment.Center)
                     .setFormatAsInteger(true)
-                    .background(
-                        new DynamicDrawable(
-                            () -> manualMaxInvalid
-                                ? new DrawableStack(
-                                    GTGuiTextures.BACKGROUND_TEXT_FIELD,
-                                    new Rectangle().setColor(Color.argb(200, 40, 40, 110)))
-                                : GTGuiTextures.BACKGROUND_TEXT_FIELD))
+                    .background(MANUAL_SCALE_TEXT_FIELD_BACKGROUND)
                     .value(new StringValue.Dynamic(() -> manualGraphMaxInput, val -> {
                         manualGraphMaxInput = val == null ? "" : val.trim();
                         validateManualScaleInputs();
@@ -311,13 +303,11 @@ public class PowerGogglesGuiOverlay {
     private static void validateManualScaleInputs() {
         BigInteger min = parseNonNegativeBigInteger(manualGraphMinInput);
         BigInteger max = parseNonNegativeBigInteger(manualGraphMaxInput);
-        boolean invalidRange = min != null && max != null && min.compareTo(max) >= 0;
-        manualMinInvalid = min == null || invalidRange;
-        manualMaxInvalid = max == null || invalidRange;
+        manualScaleInvalid = min == null || max == null || min.compareTo(max) >= 0;
     }
 
     private static boolean isManualScaleInputValid() {
-        return !manualMinInvalid && !manualMaxInvalid;
+        return !manualScaleInvalid;
     }
 
     private static BigInteger parseNonNegativeBigInteger(String value) {
