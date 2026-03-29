@@ -8,5 +8,5 @@ public class MTEBasicGeneratorBaseGui<T extends MTEBasicTank> extends MTEBasicTa
         super(machine);
     }
 
-    // no new features yes...
+    // no new features yet...
 }
