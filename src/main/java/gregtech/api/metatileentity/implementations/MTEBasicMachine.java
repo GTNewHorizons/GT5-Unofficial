@@ -1610,4 +1610,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank
             default -> 256000;
         };
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
