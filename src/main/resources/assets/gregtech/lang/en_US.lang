@@ -2622,6 +2622,8 @@ GT5U.chat.turbine.texture.animated=Using Animated Turbine Texture.
 GT5U.chat.wireless_mode.enable=Wireless network mode enabled.
 GT5U.chat.wireless_mode.disable=Wireless network mode disabled.
 
+GT5U.chat.integrated_circuit.error_in_trans=Error in translation GT5U.item.programmed_circuit.no_screwdriver.count: %s
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3
