@@ -314,6 +314,14 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     }
 
+    private int progressContribution(int currentAmount, int maxAmount, int rate) {
+        if (currentAmount <= maxAmount) {
+            return rate;
+        } else {
+            return (currentAmount - maxAmount);
+        }
+    }
+
     @Override
     protected void incrementProgressTime() {
 
@@ -329,24 +337,30 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             // beamline input hatch array matches order of particles from recipe
             if (inputParticleIDA == this.currentRecipeParticleIDA) {
                 this.currentRecipeCurrentAmountA += inputParticleRateA;
-                if (this.currentRecipeCurrentAmountA <= currentRecipeMaxAmountA) {
-                    mProgresstime += inputParticleRateA;
-                }
+                mProgresstime += this.progressContribution(
+                    this.currentRecipeCurrentAmountA,
+                    this.currentRecipeMaxAmountA,
+                    inputParticleRateA);
+
                 this.currentRecipeCurrentAmountB += inputParticleRateB;
-                if (this.currentRecipeCurrentAmountB <= currentRecipeMaxAmountB) {
-                    mProgresstime += inputParticleRateB;
-                }
+                mProgresstime += this.progressContribution(
+                    this.currentRecipeCurrentAmountB,
+                    this.currentRecipeMaxAmountB,
+                    inputParticleRateB);
             }
             // beamline input hatch array does NOT match order of particles from recipe
             else {
                 this.currentRecipeCurrentAmountA += inputParticleRateB;
-                if (this.currentRecipeCurrentAmountA <= currentRecipeMaxAmountA) {
-                    mProgresstime += inputParticleRateB;
-                }
+                mProgresstime += this.progressContribution(
+                    this.currentRecipeCurrentAmountA,
+                    this.currentRecipeMaxAmountA,
+                    inputParticleRateB);
+
                 this.currentRecipeCurrentAmountB += inputParticleRateA;
-                if (this.currentRecipeCurrentAmountB <= currentRecipeMaxAmountB) {
-                    mProgresstime += inputParticleRateA;
-                }
+                mProgresstime += this.progressContribution(
+                    this.currentRecipeCurrentAmountB,
+                    this.currentRecipeMaxAmountB,
+                    inputParticleRateA);
             }
         }
     }
