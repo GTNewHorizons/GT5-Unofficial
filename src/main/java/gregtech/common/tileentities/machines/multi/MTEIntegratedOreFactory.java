@@ -227,8 +227,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         if (inputItem.isEmpty() || inputFluid.isEmpty()) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        final long availableEUt = getMaxInputVoltage() * getMaxInputAmps();
-        final int maxParallelFromPower = GTUtility.safeInt(availableEUt / RECIPE_EUT);
+        final int maxParallelFromPower = GTUtility.safeInt(getMaxInputEu() / RECIPE_EUT);
 
         int lubricantAmount = 0;
         int waterAmount = 0;
@@ -725,13 +724,12 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             doesVoidStone = !doesVoidStone;
-            GTUtility.sendChatTrans(
-                aPlayer,
-                StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", doesVoidStone));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.oreprocessor.void", doesVoidStone);
             return;
         }
         mode = mode.next();
-        GTUtility.sendChatTrans(aPlayer, String.join("", getDisplayMode(mode)));
+        // FIXME: localize the display mode.
+        GTUtility.sendChatToPlayer(aPlayer, String.join("", getDisplayMode(mode)));
     }
 
     @Override

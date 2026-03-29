@@ -32,7 +32,8 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GTValues;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -240,8 +241,8 @@ public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifug
             && tierMachineCasing == 1
             && tCountCasing >= 60
             && checkHatches()) {
-            tierMachine = 1;
             updateHatchTexture();
+            tierMachine = 1;
             return true;
         }
         if (tierGearBoxCasing == 2 && tierPipeCasing == 2
@@ -249,8 +250,8 @@ public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifug
             && tierMachineCasing == 2
             && tCountCasing >= 60
             && checkHatches()) {
-            tierMachine = 2;
             updateHatchTexture();
+            tierMachine = 2;
             return true;
         }
         return false;
@@ -331,7 +332,7 @@ public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifug
             .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "3x" + EnumChatFormatting.GRAY + " Steel Firebox Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
-            .toolTipFinisher(GTValues.AuthorEvgenWarGold);
+            .toolTipFinisher(GTAuthors.AuthorEvgenWarGold);
         return tt;
     }
 

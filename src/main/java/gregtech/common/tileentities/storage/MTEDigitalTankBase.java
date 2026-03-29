@@ -43,19 +43,20 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
 import gregtech.api.interfaces.metatileentity.IFluidLockable;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.SpecialChars;
 
-public abstract class MTEDigitalTankBase extends MTEBasicTank implements IFluidLockable, IAddGregtechLogo {
+public abstract class MTEDigitalTankBase extends MTEBasicTank
+    implements IFluidLockable, IFluidContainerItemMetaTile, IAddGregtechLogo {
 
     public boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
     protected String lockedFluidName = null;
@@ -119,16 +120,10 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank implements IFluidL
                 .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
                 tooltip.add(
-                    GTLanguageManager.addStringLocalization("TileEntity_TANK_INFO", "Contains Fluid: ")
-                        + EnumChatFormatting.YELLOW
-                        + tContents.getLocalizedName()
-                        + EnumChatFormatting.GRAY);
+                    StatCollector.translateToLocalFormatted("gt.tileentity.tank_info", tContents.getLocalizedName()));
                 tooltip.add(
-                    GTLanguageManager.addStringLocalization("TileEntity_TANK_AMOUNT", "Fluid Amount: ")
-                        + EnumChatFormatting.GREEN
-                        + formatNumber(tContents.amount)
-                        + " L"
-                        + EnumChatFormatting.GRAY);
+                    StatCollector
+                        .translateToLocalFormatted("gt.tileentity.tank_amount", formatNumber(tContents.amount)));
             } else if (stack.stackTagCompound.hasKey("lockedFluidName")) {
                 String fluidName = stack.stackTagCompound.getString("lockedFluidName");
                 Fluid fluid = FluidRegistry.getFluid(fluidName);
@@ -666,5 +661,10 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank implements IFluidL
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(116, 63)
                 .setSize(18, 18));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

@@ -36,7 +36,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -336,7 +336,7 @@ public class MTESteamForgeHammer extends MTESteamMultiBlockBase<MTESteamForgeHam
                     + " Steel Block"
                     + EnumChatFormatting.RED
                     + " from GregTech")
-            .toolTipFinisher(GTValues.AuthorEvgenWarGold);
+            .toolTipFinisher(GTAuthors.AuthorEvgenWarGold);
         return tt;
     }
 

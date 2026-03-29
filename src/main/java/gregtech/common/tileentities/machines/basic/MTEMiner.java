@@ -176,13 +176,8 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
                 }
             }
 
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                String.format(
-                    "%s %dx%d",
-                    StatCollector.translateToLocal("GT5U.machines.workareaset"),
-                    (radiusConfig * 2 + 1),
-                    (radiusConfig * 2 + 1)));
+            GTUtility
+                .sendChatTrans(aPlayer, "GT5U.machines.workareaset.s", (radiusConfig * 2 + 1), (radiusConfig * 2 + 1));
 
             // Rebuild ore cache after change config
             fillOreList(getBaseMetaTileEntity());
