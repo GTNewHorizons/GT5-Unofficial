@@ -771,4 +771,9 @@ public class MTETesseractGenerator extends MTEBasicTank {
         } catch (Exception t) {}
         super.onRemoval();
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
