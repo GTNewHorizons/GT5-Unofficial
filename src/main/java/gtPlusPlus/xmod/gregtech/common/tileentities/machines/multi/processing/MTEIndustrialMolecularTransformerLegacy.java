@@ -33,23 +33,23 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEIndustrialMolecularTransformer>
+public class MTEIndustrialMolecularTransformerLegacy extends GTPPMultiBlockBase<MTEIndustrialMolecularTransformerLegacy>
     implements ISurvivalConstructable {
 
     private static final int CASING_TEXTURE_ID = 48;
     private int mCasing = 0;
 
-    public MTEIndustrialMolecularTransformer(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialMolecularTransformerLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEIndustrialMolecularTransformer(final String aName) {
+    public MTEIndustrialMolecularTransformerLegacy(final String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialMolecularTransformer(this.mName);
+        return new MTEIndustrialMolecularTransformerLegacy(this.mName);
     }
 
     @Override
@@ -62,6 +62,7 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
 
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addInfo("Changes the structure of items to produce new ones")
             .addInfo("Maximum 1x of each bus/hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -84,12 +85,12 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<MTEIndustrialMolecularTransformer> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialMolecularTransformerLegacy> STRUCTURE_DEFINITION = null;
 
     @Override
-    public IStructureDefinition<MTEIndustrialMolecularTransformer> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialMolecularTransformerLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialMolecularTransformer>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialMolecularTransformerLegacy>builder()
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
                     (new String[][] { { "       ", "       ", "  xxx  ", "  x~x  ", "  xxx  ", "       ", "       " },
@@ -108,7 +109,7 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
                 .addElement('t', ofBlock(getCasingBlock3(), getTungstenCasingMeta()))
                 .addElement(
                     'h',
-                    buildHatchAdder(MTEIndustrialMolecularTransformer.class)
+                    buildHatchAdder(MTEIndustrialMolecularTransformerLegacy.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(getCasingTextureIndex())
                         .hint(1)

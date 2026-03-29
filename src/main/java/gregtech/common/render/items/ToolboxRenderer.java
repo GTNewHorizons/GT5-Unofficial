@@ -27,8 +27,8 @@ public class ToolboxRenderer implements IItemRenderer {
             && itemStack.getItem() instanceof ItemGTToolbox
             && (ToolboxUtil.getSelectedToolType(itemStack)
                 .isPresent()
-                || itemStack.getTagCompound()
-                    .hasKey(ItemGTToolbox.BROKEN_TOOL_ANIMATION_END_KEY));
+                || (itemStack.hasTagCompound() && itemStack.getTagCompound()
+                    .hasKey(ItemGTToolbox.BROKEN_TOOL_ANIMATION_END_KEY)));
     }
 
     @Override
@@ -55,6 +55,5 @@ public class ToolboxRenderer implements IItemRenderer {
                 });
             }
         }
-
     }
 }
