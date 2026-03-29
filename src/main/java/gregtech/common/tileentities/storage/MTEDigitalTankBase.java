@@ -333,32 +333,28 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             FluidStack tFluid = GTUtility.getFluidForFilledItem(mInventory[getInputSlot()], true);
             if (tFluid != null && isFluidInputAllowed(tFluid)) {
                 if (getFillableStack() == null) {
-                    if (isFluidInputAllowed(tFluid)) {
-                        if ((tFluid.amount <= getRealCapacity()) || mVoidFluidPart) {
-                            tFluid = tFluid.copy();
-                            if (aBaseMetaTileEntity.addStackToSlot(
-                                getOutputSlot(),
-                                GTUtility.getContainerForFilledItem(mInventory[getInputSlot()], true),
-                                1)) {
-                                setFillableStack(tFluid);
-                                this.onEmptyingContainerWhenEmpty();
-                                aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
-                            }
+                    if ((tFluid.amount <= getRealCapacity()) || mVoidFluidPart) {
+                        tFluid = tFluid.copy();
+                        if (aBaseMetaTileEntity.addStackToSlot(
+                            getOutputSlot(),
+                            GTUtility.getContainerForFilledItem(mInventory[getInputSlot()], true),
+                            1)) {
+                            setFillableStack(tFluid);
+                            this.onEmptyingContainerWhenEmpty();
+                            aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
                         }
                     }
-                } else {
-                    if (tFluid.isFluidEqual(getFillableStack())) {
-                        if ((((long) tFluid.amount + getFillableStack().amount) <= (long) getRealCapacity())
-                            || mVoidFluidPart
-                            || mVoidFluidFull) {
-                            if (aBaseMetaTileEntity.addStackToSlot(
-                                getOutputSlot(),
-                                GTUtility.getContainerForFilledItem(mInventory[getInputSlot()], true),
-                                1)) {
-                                getFillableStack().amount += Math
-                                    .min(tFluid.amount, getRealCapacity() - getFillableStack().amount);
-                                aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
-                            }
+                } else if (tFluid.isFluidEqual(getFillableStack())) {
+                    if ((((long) tFluid.amount + getFillableStack().amount) <= (long) getRealCapacity())
+                        || mVoidFluidPart
+                        || mVoidFluidFull) {
+                        if (aBaseMetaTileEntity.addStackToSlot(
+                            getOutputSlot(),
+                            GTUtility.getContainerForFilledItem(mInventory[getInputSlot()], true),
+                            1)) {
+                            getFillableStack().amount += Math
+                                .min(tFluid.amount, getRealCapacity() - getFillableStack().amount);
+                            aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
                         }
                     }
                 }
@@ -413,13 +409,14 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
 
         if (mOutputFluid && getDrainableStack() != null && (aTick % 20 == 0)) {
             IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
-            if (tTank != null) {
-                FluidStack tDrained = drain(20 * (1 << (3 + 2 * tierPump(mTier))), false);
-                if (tDrained != null) {
-                    int tFilledAmount = tTank.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
-                    if (tFilledAmount > 0)
-                        tTank.fill(aBaseMetaTileEntity.getBackFacing(), drain(tFilledAmount, true), true);
-                }
+            if (tTank == null) return;
+
+            FluidStack tDrained = drain(20 * (1 << (3 + 2 * tierPump(mTier))), false);
+            if (tDrained == null) return;
+
+            int tFilledAmount = tTank.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
+            if (tFilledAmount > 0) {
+                tTank.fill(aBaseMetaTileEntity.getBackFacing(), drain(tFilledAmount, true), true);
             }
         }
     }
