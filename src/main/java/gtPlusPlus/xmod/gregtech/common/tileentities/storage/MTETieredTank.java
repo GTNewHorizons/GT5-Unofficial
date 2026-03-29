@@ -28,7 +28,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.common.gui.modularui.singleblock.base.MTETieredTankGui;
+import gregtech.common.gui.modularui.singleblock.MTETieredTankGui;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 
