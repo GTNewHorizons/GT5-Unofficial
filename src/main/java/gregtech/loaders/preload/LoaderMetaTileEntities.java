@@ -146,6 +146,7 @@ import gregtech.common.tileentities.machines.multi.MTECleanroom;
 import gregtech.common.tileentities.machines.multi.MTECokeOven;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller1;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller2;
+import gregtech.common.tileentities.machines.multi.MTECrystalGrowthChamber;
 import gregtech.common.tileentities.machines.multi.MTEDecayWarehouse;
 import gregtech.common.tileentities.machines.multi.MTEDieselEngine;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
@@ -796,6 +797,15 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         addItemTooltip(
             ItemList.NanoChipModule_BiologicalCoordinator.get(1),
             GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
+
+        ItemList.CrystalGrowthChamber.set(
+            new MTECrystalGrowthChamber(
+                CRYSTAL_GROWTH_CHAMBER_CONTROLLER.ID,
+                "multimachine.crystalgrowthchamber",
+                "Crystal Growth Chamber").getStackForm(1));
+        addItemTooltip(
+            ItemList.CrystalGrowthChamber.get(1),
+            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorAuynonymous));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(

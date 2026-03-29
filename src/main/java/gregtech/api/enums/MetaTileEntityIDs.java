@@ -773,6 +773,7 @@ public enum MetaTileEntityIDs {
     BEAM_MIRROR(3016),
     BEAM_SPLITTER(3017),
     BEAM_STABILIZER(3018),
+    CRYSTAL_GROWTH_CHAMBER_CONTROLLER(3019),
     DraconicEvolutionFusionCrafterController(5001),
     CHEST_BUFFER_ULV(9230),
     CHEST_BUFFER_LV(9231),

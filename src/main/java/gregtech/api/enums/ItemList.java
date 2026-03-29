@@ -2829,6 +2829,8 @@ public enum ItemList implements IItemContainer {
 
     MegaChemicalReactor,
 
+    CrystalGrowthChamber,
+
     BasicCircuitBoard,
     EnhancedCircuitBoard,
     RefinedCircuitBoard,
