@@ -2617,9 +2617,10 @@ GT5U.chat.driller_base.chunk_loading.enable=Mining chunk loading enabled
 GT5U.chat.driller_base.chunk_loading.disabled=Mining chunk loading disabled
 GT5U.chat.laser.engraver.toggling_realism=Toggling realism!
 GT5U.chat.ore_drilling_plant_base.replace_with_cobblestone=Replace with cobblestone %s
-GT5U.chat.spinmatron.texture.static=Using Static Turbine Texture.
-GT5U.chat.spinmatron.texture.animated=Using Animated Turbine Texture.
-
+GT5U.chat.turbine.texture.static=Using Static Turbine Texture.
+GT5U.chat.turbine.texture.animated=Using Animated Turbine Texture.
+GT5U.chat.wireless_mode.enable=Wireless network mode enabled.
+GT5U.chat.wireless_mode.disable=Wireless network mode disabled.
 
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them

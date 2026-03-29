@@ -805,9 +805,9 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mIsOutputtingPower = !mIsOutputtingPower;
         if (mIsOutputtingPower) {
-            GTUtility.sendChatToPlayer(aPlayer, "Sub-Station is now outputting power from the controller.");
+            GTUtility.sendChatTrans(aPlayer, "gtpp.chat.power_sub_station.output");
         } else {
-            GTUtility.sendChatToPlayer(aPlayer, "Sub-Station is now inputting power into the controller.");
+            GTUtility.sendChatTrans(aPlayer, "gtpp.chat.power_sub_station.input");
         }
     }
 

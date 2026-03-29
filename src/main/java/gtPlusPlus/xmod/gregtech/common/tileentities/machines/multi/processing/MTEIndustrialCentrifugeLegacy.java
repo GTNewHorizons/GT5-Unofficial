@@ -239,9 +239,9 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
         this.mIsAnimated = !mIsAnimated;
         Logger.INFO("Is Centrifuge animated " + this.mIsAnimated);
         if (this.mIsAnimated) {
-            GTUtility.sendChatToPlayer(aPlayer, "Using Animated Turbine Texture. ");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.turbine.texture.animated");
         } else {
-            GTUtility.sendChatToPlayer(aPlayer, "Using Static Turbine Texture. ");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.turbine.texture.static");
         }
     }
 

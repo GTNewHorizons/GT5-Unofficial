@@ -295,7 +295,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (mSize <= 5) {
-            GTUtility.sendChatToPlayer(aPlayer, "Cannot change mode, structure not large enough.");
+            GTUtility.sendChatTrans(aPlayer, "gtpp.chat.industrial_arc_furnace.too_small");
             return;
         }
         setMachineMode(nextMachineMode());

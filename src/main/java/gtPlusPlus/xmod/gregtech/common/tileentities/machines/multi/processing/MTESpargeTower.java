@@ -25,6 +25,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -335,23 +337,19 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     @Override
     public boolean onPlungerRightClick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         int aLayerIndex = 0;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            "Trying to clear " + mOutputHatchesByLayer.size() + " layers of output hatches.");
+        GTUtility
+            .sendChatTrans(aPlayer, "gtpp.chat.sparge_tower.clear_output_hatch.layers", mOutputHatchesByLayer.size());
         for (List<MTEHatchOutput> layer : this.mOutputHatchesByLayer) {
             int aHatchIndex = 0;
             for (MTEHatchOutput hatch : layer) {
                 if (hatch.mFluid != null) {
-                    GTUtility.sendChatToPlayer(
+                    GTUtility.sendChatTrans(
                         aPlayer,
-                        "Clearing " + hatch.mFluid.amount
-                            + "L of "
-                            + hatch.mFluid.getLocalizedName()
-                            + " from hatch "
-                            + aHatchIndex
-                            + " on layer "
-                            + aLayerIndex
-                            + ".");
+                        "gtpp.chat.sparge_tower.clear_output_hatch",
+                        new ChatComponentNumber(hatch.mFluid.amount),
+                        new ChatComponentFluidName(hatch.mFluid),
+                        aHatchIndex,
+                        aLayerIndex);
                     hatch.mFluid = null;
                 }
                 aHatchIndex++;
