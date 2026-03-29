@@ -34,6 +34,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IFluidLockableMui2;
+import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
@@ -43,7 +44,8 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.SpecialChars;
 
-public abstract class MTEDigitalTankBase extends MTEBasicTank implements IFluidLockableMui2 {
+public abstract class MTEDigitalTankBase extends MTEBasicTank
+    implements IFluidLockableMui2, IFluidContainerItemMetaTile {
 
     protected boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
     protected Fluid lockedFluid = null;
