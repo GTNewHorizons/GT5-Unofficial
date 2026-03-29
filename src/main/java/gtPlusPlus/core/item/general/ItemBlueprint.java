@@ -92,7 +92,7 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
         } else {
             this.createNBT(itemStack);
             GTUtility
-                .sendChatTrans(par3Entity, "gtpp.chat.blue_print.holding.placeholder" + this.getNBT(itemStack, "mID"));
+                .sendChatTrans(par3Entity, "gtpp.chat.blue_print.holding.placeholder", this.getNBT(itemStack, "mID"));
         }
 
         return super.onItemRightClick(itemStack, world, par3Entity);

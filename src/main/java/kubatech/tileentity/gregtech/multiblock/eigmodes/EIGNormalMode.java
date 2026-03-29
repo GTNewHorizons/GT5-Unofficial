@@ -24,7 +24,7 @@ public class EIGNormalMode extends EIGMode {
 
     @Override
     public String getNameKey() {
-        return "kubatech.chat.eig.mode.ic2";
+        return "kubatech.chat.eig.mode.normal";
     }
 
     @Override

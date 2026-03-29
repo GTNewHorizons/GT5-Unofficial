@@ -326,7 +326,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
             GTUtility.sendChatTrans(player, "gtpp.chat.healing_device.healed.hunger", new ChatComponentNumber(hunger));
 
         if (saturation > 0) GTUtility
-            .sendChatTrans(player, "gtpp.chat.healing_device.satured.hunger", new ChatComponentNumber(saturation));
+            .sendChatTrans(player, "gtpp.chat.healing_device.saturated.hunger", new ChatComponentNumber(saturation));
 
         if (hp > 0 || hunger > 0 || saturation > 0) GTUtility.sendChatTrans(
             player,
