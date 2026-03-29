@@ -1224,7 +1224,7 @@ public class RecipesGregTech {
             .circuit(6)
             .fluidOutputs(GGMaterial.incoloy903.getMolten(37 * INGOTS))
             .eut(TierEU.RECIPE_EV)
-            .duration(1 * MINUTES)
+            .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
     }
 
