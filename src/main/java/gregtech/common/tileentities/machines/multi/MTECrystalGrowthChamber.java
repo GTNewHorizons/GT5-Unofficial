@@ -16,6 +16,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import gregtech.common.blocks.BlockCasings12;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -50,35 +51,58 @@ public class MTECrystalGrowthChamber extends MTEExtendedPowerMultiBlockBase<MTEC
             STRUCTURE_PIECE_MAIN,
             // spotless:off
             new String[][]{{
-                "BBB",
-                "BBB",
-                "B~B",
-                "BBB",
-                "C C"
+                "     ",
+                "  D  ",
+                " DDD ",
+                " DDD ",
+                " DDD ",
+                " B~B ",
+                " BBB "
             },{
-                "BBB",
-                "A A",
-                "A A",
-                "BBB",
-                "   "
+                "  D  ",
+                " D D ",
+                "D   D",
+                "D   D",
+                "B   B",
+                "B A B",
+                "BBBBB"
             },{
-                "BBB",
-                "BAB",
-                "BAB",
-                "BBB",
-                "C C"
+                " DDD ",
+                "D   D",
+                "D C D",
+                "B C B",
+                "B C B",
+                "BAAAB",
+                "BBBBB"
+            },{
+                "  D  ",
+                " D D ",
+                "D   D",
+                "B   B",
+                "B   B",
+                "B A B",
+                "BBBBB"
+            },{
+                "     ",
+                "  D  ",
+                " DDD ",
+                " DDD ",
+                " BBB ",
+                " BBB ",
+                " BBB "
             }})
         //spotless:on
+        .addElement('A', ofFrame(Materials.Iron))
         .addElement(
             'B',
             buildHatchAdder(MTECrystalGrowthChamber.class)
                 .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
-                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(15))
+                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3))
                 .hint(1)
                 .buildAndChain(
-                    onElementPass(MTECrystalGrowthChamber::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 15))))
-        .addElement('A', chainAllGlasses())
+                    onElementPass(MTECrystalGrowthChamber::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 3))))
         .addElement('C', ofFrame(Materials.Steel))
+        .addElement('D', chainAllGlasses())
         .build();
 
     public MTECrystalGrowthChamber(final int aID, final String aName, final String aNameRegional) {
@@ -107,7 +131,7 @@ public class MTECrystalGrowthChamber extends MTEExtendedPowerMultiBlockBase<MTEC
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE)
                         .extFacing()
@@ -120,7 +144,7 @@ public class MTECrystalGrowthChamber extends MTEExtendedPowerMultiBlockBase<MTEC
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_BREWERY)
                         .extFacing()
@@ -133,7 +157,7 @@ public class MTECrystalGrowthChamber extends MTEExtendedPowerMultiBlockBase<MTEC
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3)) };
         }
         return rTexture;
     }
@@ -143,7 +167,7 @@ public class MTECrystalGrowthChamber extends MTEExtendedPowerMultiBlockBase<MTEC
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Crystal Growth Chamber, CGC")
             .addBulkMachineInfo(4, 1.5F, 1F)
-            .beginStructureBlock(3, 5, 3, true)
+            .beginStructureBlock(5, 7, 5, true)
             .addController("Front Center")
             .addCasingInfoMin("Reinforced Wooden Casing", 14, false)
             .addCasingInfoExactly("Any Tiered Glass", 6, false)
@@ -161,13 +185,13 @@ public class MTECrystalGrowthChamber extends MTEExtendedPowerMultiBlockBase<MTEC
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 2, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 5, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 2, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 5, 0, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -179,7 +203,7 @@ public class MTECrystalGrowthChamber extends MTEExtendedPowerMultiBlockBase<MTEC
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0) && mCasingAmount >= 14;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 0, 5, 0) && mCasingAmount >= 14;
     }
 
     @Override
@@ -195,7 +219,7 @@ public class MTECrystalGrowthChamber extends MTEExtendedPowerMultiBlockBase<MTEC
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.brewingRecipes;
+        return RecipeMaps.autoclaveRecipes;
     }
 
     @Override
