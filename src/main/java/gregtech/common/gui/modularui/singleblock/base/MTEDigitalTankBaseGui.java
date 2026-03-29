@@ -13,6 +13,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.modularui2.widget.FluidLockSlotWidget;
@@ -22,11 +23,6 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
 
     public MTEDigitalTankBaseGui(T machine) {
         super(machine);
-    }
-
-    @Override
-    protected boolean supportsGauge() {
-        return false;
     }
 
     @Override
@@ -94,6 +90,16 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
         leftSide.child(buttonRow);
 
         return leftSide;
+    }
+
+    @Override
+    protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager) {
+        FluidSlotSyncHandler fluidSlotSH = new FluidSlotSyncHandler(machine.getFluidTank());
+        fluidSlotSH.setChangeListener(machine::setLockIfEmpty);
+
+        return new FluidSlot().syncHandler(fluidSlotSH)
+            .align(Alignment.BottomRight)
+            .background(IDrawable.EMPTY);
     }
 
     protected Flow createRightSide(ModularPanel panel, PanelSyncManager syncManager) {

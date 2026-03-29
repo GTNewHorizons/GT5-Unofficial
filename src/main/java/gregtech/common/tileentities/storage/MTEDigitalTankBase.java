@@ -536,12 +536,14 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank implements IFluidL
         else if (tag.hasKey("mFluid")) tag.removeTag("mFluid");
     }
 
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEDigitalTankBaseGui<>(this).build(data, syncManager, uiSettings);
+    public void setLockIfEmpty() {
+        if (mLockFluid && lockedFluid == null) {
+            FluidStack fluidStack = getFluid();
+            if (fluidStack != null) setLockedFluid(fluidStack.getFluid());
+        }
     }
 
-    @Override
-    protected boolean useMui2() {
-        return false;
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEDigitalTankBaseGui<>(this).build(data, syncManager, uiSettings);
     }
 }
