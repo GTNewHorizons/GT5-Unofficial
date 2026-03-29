@@ -89,6 +89,28 @@ public final class GTInflectionManager {
             .replace("\\}", "}");
     }
 
+    /**
+     * Formats a localized string with inflection (word form changes).
+     * <p>
+     * Template syntax: <code>%s{key}</code> or <code>%2$s{key}</code>, where {@code key} is the inflection rule type
+     * (e.g., plural).<br>
+     * Inflection rules are loaded from <code>inflection/&lt;lang&gt;.json</code> and apply regular expression matching
+     * and replacement.<br>
+     * Special cases can be defined via the localization key <code>formatterKey.key</code> to override the default
+     * inflection result.<br>
+     * See <code>assets/gregtech/inflection/en_US.example.json</code> for an example JSON format.
+     * <p>
+     * On the client side, words are replaced according to the inflection rules; on the server side, inflection markers
+     * are automatically removed (no inflection applied).<br>
+     * If implicit (<code>%s</code>) and explicit (<code>%2$s</code>) placeholders are mixed, or an index is out of
+     * bounds, a warning is logged and a fallback result without inflection is returned via {@link String#format}.<br>
+     * JSON content that does not conform to the expected format is ignored and logged.
+     * <p>
+     * 
+     * @param inputKey     localization key for the template string
+     * @param formatterKey varargs of localization keys corresponding to placeholders
+     * @return the formatted string
+     */
     public static String formatInflection(String inputKey, String... formatterKey) {
         final String input = StatCollector.translateToLocal(inputKey);
         if (!input.contains("s{")) {

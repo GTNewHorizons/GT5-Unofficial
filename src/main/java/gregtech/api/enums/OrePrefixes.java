@@ -2895,6 +2895,10 @@ public class OrePrefixes {
         return getLocalizedNameForItemWithInflection(getOreprefixKey(prefix, formatString), materialName);
     }
 
+    /**
+     * Gets the localized item name with inflection. Prioritizes the special key {@code prefixKey.materialName} if
+     * available; otherwise attempts inflection formatting.
+     */
     private static String getLocalizedNameForItemWithInflection(String prefixKey, IOreMaterial material) {
         final String key = prefixKey + "."
             + material.getInternalName()
@@ -2905,6 +2909,10 @@ public class OrePrefixes {
         return GTInflectionManager.formatInflection(prefixKey, material.getLocalizedNameKey());
     }
 
+    /**
+     * Gets the localized item name with inflection. Prioritizes the special key {@code prefixKey.materialKey} if
+     * available; otherwise attempts inflection formatting.
+     */
     private static String getLocalizedNameForItemWithInflection(String prefixKey, String materialKey) {
         final String key = prefixKey + "." + materialKey.toLowerCase();
         if (StatCollector.canTranslate(key)) {
