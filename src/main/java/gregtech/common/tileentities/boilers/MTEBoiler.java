@@ -456,11 +456,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     protected abstract GTGuiTheme getGuiTheme();
 
     // this is the mui1 fluid tank, but mui2 has compat with it
