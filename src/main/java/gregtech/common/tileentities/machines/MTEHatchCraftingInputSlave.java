@@ -385,6 +385,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
             GTUtility.sendChatTrans(aPlayer, "chat.proxy.reverse." + reverseRecipes);
         }
         // not calling super.onScrewdriverRightClick, because input filter is irrelevant for a proxy hatch
+    }
     @Override
     public String[] getDescription() {
         return GTSplit
