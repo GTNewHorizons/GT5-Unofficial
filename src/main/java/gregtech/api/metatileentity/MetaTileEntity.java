@@ -189,9 +189,13 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         return new ItemStack(GregTechAPI.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
     }
 
+    public String getLocalNameKey() {
+        return "gt.blockmachines." + mName + ".name";
+    }
+
     @Override
     public String getLocalName() {
-        return StatCollector.translateToLocal("gt.blockmachines." + mName + ".name");
+        return StatCollector.translateToLocal(getLocalNameKey());
     }
 
     @Override

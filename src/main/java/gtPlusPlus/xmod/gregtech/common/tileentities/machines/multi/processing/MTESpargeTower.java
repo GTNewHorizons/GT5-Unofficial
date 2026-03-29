@@ -25,8 +25,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluid;
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
-import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -346,7 +346,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
                     GTUtility.sendChatTrans(
                         aPlayer,
                         "gtpp.chat.sparge_tower.clear_output_hatch",
-                        new ChatComponentNumber(hatch.mFluid.amount),
+                        new ChatComponentFluid(hatch.mFluid.amount),
                         new ChatComponentFluidName(hatch.mFluid),
                         aHatchIndex,
                         aLayerIndex);

@@ -15,8 +15,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
@@ -65,17 +67,17 @@ public final class ItemParametrizerMemoryCard extends Item {
             if (aStack.getItemDamage() == 1) {
                 // Prevent pasting configuration from a different multiblock
                 if (!hasIdenticalParameterList(getControllerParameters(controller), tNBT)) {
-                    String reason;
                     if (!tNBT.hasKey("controller")) {
-                        reason = translateToLocal("item.em.parametrizerMemoryCard.noConfig");
+                        GTUtility.sendChatTrans(aPlayer, "item.em.parametrizerMemoryCard.noConfig");
                     } else {
-                        reason = translateToLocalFormatted(
+                        GTUtility.sendChatTrans(
+                            aPlayer,
                             "item.em.parametrizerMemoryCard.controllerMismatch",
-                            tNBT.getString("controller"),
-                            controller.getLocalName());
+                            tNBT.hasKey("controller.key")
+                                ? new ChatComponentTranslation(tNBT.getString("controller.key"))
+                                : tNBT.getString("controller"),
+                            new ChatComponentTranslation(controller.getLocalNameKey()));
                     }
-                    GTUtility.sendChatToPlayer(aPlayer, reason);
-
                     return true;
                 }
                 // write to controller
@@ -108,6 +110,7 @@ public final class ItemParametrizerMemoryCard extends Item {
                     tagList.appendTag(tagChild);
                 }
                 newTag.setString("controller", controller.getLocalName());
+                newTag.setString("controller.key", controller.getLocalNameKey());
                 newTag.setString("coords", aX + ", " + aY + ", " + aZ);
                 newTag.setTag("paramList", tagList);
                 aStack.setTagCompound(newTag);
@@ -195,7 +198,9 @@ public final class ItemParametrizerMemoryCard extends Item {
             aList.add(
                 translateToLocalFormatted(
                     "item.em.parametrizerMemoryCard.desc.copied_controller",
-                    EnumChatFormatting.RED + tNBT.getString("controller") + EnumChatFormatting.RESET,
+                    EnumChatFormatting.RED + (tNBT.hasKey("controller.key")
+                        ? StatCollector.translateToLocal(tNBT.getString("controller.key"))
+                        : tNBT.getString("controller")) + EnumChatFormatting.RESET,
                     EnumChatFormatting.GREEN + tNBT.getString("coords")));
         }
         if (tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {

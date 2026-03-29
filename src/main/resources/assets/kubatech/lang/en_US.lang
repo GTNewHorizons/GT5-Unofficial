@@ -98,7 +98,6 @@ kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_capacity=Remaining see
 kubatech.chat.forbidden_while_running=Cannot change mode while running!
 kubatech.chat.cannot_insert=§cCan't insert while running!
 
-
 kubatech.chat.eec.ritual_mode_enabled=Ritual mode enabled
 kubatech.chat.eec.ritual_mode_disabled=Ritual mode disabled
 kubatech.chat.eec.ritual_mode_connected=Successfully connected to ritual

@@ -31,8 +31,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluid;
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
-import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -810,7 +810,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 GTUtility.sendChatTrans(
                     aPlayer,
                     "gtpp.chat.multi_base.clear_output_hatch",
-                    new ChatComponentNumber(hatch.mFluid.amount),
+                    new ChatComponentFluid(hatch.mFluid.amount),
                     new ChatComponentFluidName(hatch.mFluid),
                     aHatchIndex);
                 hatch.mFluid = null;
