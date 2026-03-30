@@ -5,7 +5,6 @@ import static gregtech.api.util.GTUtility.translate;
 import java.text.DecimalFormat;
 
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 

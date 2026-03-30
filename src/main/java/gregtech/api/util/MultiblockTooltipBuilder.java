@@ -21,6 +21,8 @@ import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -34,14 +36,11 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.primitives.Ints;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 
-import gregtech.GTMod;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.structure.IStructureChannels;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
-
-import javax.annotation.Nullable;
 
 /**
  * This makes it easier to build multi tooltips, with a standardized format. <br>
@@ -1053,15 +1052,10 @@ public class MultiblockTooltipBuilder {
         addInfo("GT5U.MBTT.HoldDisplay");
 
         if (!authors.isEmpty() && !structureAuthors.isEmpty()) {
-            addInfo(
-                "GT5U.MBTT.AuthorsX",
-                GTAuthors.formatAuthors(authors), GTAuthors.formatAuthors(structureAuthors));
+            addInfo("GT5U.MBTT.AuthorsX", GTAuthors.formatAuthors(authors), GTAuthors.formatAuthors(structureAuthors));
         } else if (!this.authors.isEmpty()) {
-            addInfo(
-                "GT5U.MBTT.Authors",
-                GTAuthors.formatAuthors(authors));
+            addInfo("GT5U.MBTT.Authors", GTAuthors.formatAuthors(authors));
         }
-
 
         addStructureInfo(EnumChatFormatting.GRAY + STRUCTURE_SEPARATOR_MARK);
 

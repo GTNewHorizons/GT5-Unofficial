@@ -28,8 +28,8 @@ public class BWTooltipReference {
     public static final String TT_NO_RESET = BLUE + "Tec" + DARK_BLUE + "Tech";
     public static final String BW = BW_NO_RESET + GRAY;
     public static final String TT = TT_NO_RESET + GRAY;
-    public static final Supplier<String> ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS =
-        () -> StatCollector.translateToLocal("tooltip.bw.author_bart_via_bw.name");
+    public static final Supplier<String> ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS = () -> StatCollector
+        .translateToLocal("tooltip.bw.author_bart_via_bw.name");
 
     public static String addedByBartimaeusnekViaBartWorks() {
         return ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get();

@@ -1000,7 +1000,11 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addDynamoHatch("gt.wormhole_gen.info.2", 2)
             .addEnergyHatch("gt.wormhole_gen.info.2", 2)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTAuthors.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
+            .toolTipFinisher(
+                GTAuthors.AuthorPineapple + EnumChatFormatting.GRAY
+                    + ", Rendering by: "
+                    + EnumChatFormatting.WHITE
+                    + "BucketBrigade");
         // spotless:on
 
         return tt;

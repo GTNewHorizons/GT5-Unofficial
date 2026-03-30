@@ -9,7 +9,6 @@ import static org.apache.commons.lang3.StringUtils.removeStart;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -102,7 +101,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                         resolvedParams.add(stripGeneratedFormatMarkers(resolveJsonLocalization(paramStr)));
                     } else {
                         String translated = translateToLocal(paramStr);
-                        resolvedParams.add(stripGeneratedFormatMarkers(translated.equals(paramStr) ? paramStr : translated));
+                        resolvedParams
+                            .add(stripGeneratedFormatMarkers(translated.equals(paramStr) ? paramStr : translated));
                     }
                 }
             }
@@ -131,8 +131,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 if (metaTileEntity instanceof ILocalizedMetaPipeEntity localizedMetaPipeEntity) {
                     localizedMetaPipeEntity.addMaterialTooltip(aList);
                 }
-                if (!GregTechAPI.sPostloadFinished
-                    && metaTileEntity instanceof ISecondaryDescribable
+                if (!GregTechAPI.sPostloadFinished && metaTileEntity instanceof ISecondaryDescribable
                     && !shouldResolveDescriptionDirectly(metaTileEntity)) {
                     registerDescription(
                         ((ISecondaryDescribable) metaTileEntity).getSecondaryDescription(),
@@ -202,7 +201,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         final String key = "gt.blockmachines." + metaTileEntity.getMetaName() + ".tooltip" + tSuffix;
         final String tTranslated = StatCollector.translateToLocal(key);
         if (containsGeneratedFormatMarkers(aDescription)) {
-            addResolvedDescription(aList, GTSplit.split(resolveGeneratedFormatMarkers(joinDescriptionLines(aDescription), tTranslated)));
+            addResolvedDescription(
+                aList,
+                GTSplit.split(resolveGeneratedFormatMarkers(joinDescriptionLines(aDescription), tTranslated)));
         } else {
             addResolvedDescription(aList, GTSplit.split(tTranslated));
         }
@@ -254,10 +255,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     }
 
     private static boolean containsGeneratedFormatMarkers(@Nullable String[] aDescription) {
-        return aDescription != null
-            && Arrays.stream(aDescription)
-                .filter(GTUtility::isStringValid)
-                .anyMatch(line -> line.contains("%%%"));
+        return aDescription != null && Arrays.stream(aDescription)
+            .filter(GTUtility::isStringValid)
+            .anyMatch(line -> line.contains("%%%"));
     }
 
     @Nonnull
@@ -268,7 +268,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             .collect(Collectors.joining(GTSplit.LB));
     }
 
-    private String resolveGeneratedFormatMarkers(@Nullable String originalDescription, @Nonnull String translatedDescription) {
+    private String resolveGeneratedFormatMarkers(@Nullable String originalDescription,
+        @Nonnull String translatedDescription) {
         if (!GTUtility.isStringValid(originalDescription) || !originalDescription.contains("%%%")) {
             return stripGeneratedFormatMarkers(translatedDescription);
         }
