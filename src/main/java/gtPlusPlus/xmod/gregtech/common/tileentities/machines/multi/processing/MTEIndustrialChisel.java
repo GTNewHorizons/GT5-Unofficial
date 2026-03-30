@@ -88,7 +88,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
             .addInfo("Factory Grade Auto Chisel")
             .addInfo("Target block goes in Controller slot for common Input Buses")
             .addInfo("You can also set a target block in each Chisel Input Bus and use them as an Input Bus")
-            .addInfo("If no target is provided for common buses, the result of the first chisel is used")
+            .addInfo("If no target is provided for common buses, the result is the next chisel")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
@@ -282,7 +282,8 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
         } else if (aTarget != null && !canBeMadeFrom(aInput, aTarget)) {
             tOutput = null;
         } else {
-            tOutput = getItemsForChiseling(aInput).get(0);
+            int nextDamage = (aInput.getItemDamage() + 1) % getItemsForChiseling(aInput).size();
+            tOutput = getItemsForChiseling(aInput).get(nextDamage);
         }
         return tOutput;
     }
