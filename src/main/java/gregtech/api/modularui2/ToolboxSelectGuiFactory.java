@@ -1,5 +1,7 @@
 package gregtech.api.modularui2;
 
+import static gregtech.api.enums.Mods.GregTech;
+
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
@@ -19,6 +21,7 @@ import com.cleanroommc.modularui.factory.AbstractUIFactory;
 import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.factory.GuiManager;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
@@ -71,6 +74,11 @@ public class ToolboxSelectGuiFactory extends AbstractUIFactory<GuiData> {
         static final SelectGuiHolder INSTANCE = new SelectGuiHolder();
 
         private SelectGuiHolder() {}
+
+        @Override
+        public ModularScreen createScreen(final GuiData data, final ModularPanel mainPanel) {
+            return new ModularScreen(GregTech.ID, mainPanel);
+        }
 
         @SuppressWarnings("ResultOfMethodCallIgnored")
         @Override
