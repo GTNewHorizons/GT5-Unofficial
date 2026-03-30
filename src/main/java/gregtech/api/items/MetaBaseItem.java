@@ -251,7 +251,11 @@ public abstract class MetaBaseItem extends GTGenericItem
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         final Supplier<String> tooltipSupplier = getToolTipLocalizationSupplier(aStack);
         if (tooltipSupplier != null) {
-            Collections.addAll(aList, GTSplit.split(tooltipSupplier.get()));
+            Collections.addAll(
+                aList,
+                Arrays.stream(GTSplit.split(tooltipSupplier.get()))
+                    .filter(GTUtility::isStringValid)
+                    .toArray(String[]::new));
         }
         final String key = getUnlocalizedName() + "." + aStack.getItemDamage() + ".tooltip";
         if (StatCollector.canTranslate(key)) Collections.addAll(
