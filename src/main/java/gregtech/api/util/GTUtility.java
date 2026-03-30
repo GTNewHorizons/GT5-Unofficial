@@ -4236,15 +4236,25 @@ public class GTUtility {
             return locKey;
         }
 
+        return nestParamsAlways(locKey, params);
+    }
+
+    /**
+     * Same as {@link #nestParams(String, Object...)}, but always serializes into a JSON payload even when there are no
+     * parameters. Intended for compatibility layers that need an unambiguous delayed-localization marker.
+     */
+    public static String nestParamsAlways(String locKey, Object... params) {
         JsonObject json = new JsonObject();
         json.addProperty("k", locKey);
 
         JsonArray paramsArray = new JsonArray();
-        for (Object param : params) {
-            if (param == null) {
-                paramsArray.add(JsonNull.INSTANCE);
-            } else {
-                paramsArray.add(new JsonPrimitive(param.toString()));
+        if (params != null) {
+            for (Object param : params) {
+                if (param == null) {
+                    paramsArray.add(JsonNull.INSTANCE);
+                } else {
+                    paramsArray.add(new JsonPrimitive(param.toString()));
+                }
             }
         }
         json.add("p", paramsArray);

@@ -39,6 +39,7 @@ import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
+import gregtech.api.util.GTUtility;
 
 /**
  * Warning, this Interface has just been made to be able to add multiple kinds of MetaTileEntities (Cables, Pipes,
@@ -359,9 +360,10 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * Additional notes when the class is not annotated with {@link SkipGenerateDescription}:
      * </p>
      * <ul>
-     * <li>To use the %s format specifier, you can use the {@link #addFormattedString(String)}</li>
-     * <li>Only static text is supported(because of <code>GregTech.lang</code>); dynamic text (e.g. display different
-     * random text each time) should also use the {@link #addFormattedString(String)}</li>
+     * <li>For new code, prefer {@link #addDelayedLocalization(String, Object...)} over
+     * {@link #addFormattedString(String)}.</li>
+     * <li>{@link #addFormattedString(String)} remains only as a raw-text compatibility wrapper for older generated
+     * tooltip code.</li>
      * </ul>
      *
      * @return the description, will display in the tooltips
@@ -382,8 +384,23 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      *          When use this method, please replace all "(number)%" with "(number)%%".
      * @see #getDescription()
      */
+    @Deprecated
     default String addFormattedString(String formattedStr) {
         return "%%%" + formattedStr + "%%%";
+    }
+
+    /**
+     * Add a delayed-localization payload for generated machine descriptions.
+     * <p>
+     * This uses the same JSON payload format as {@link GTUtility#nestParams(String, Object...)}, but keeps the legacy
+     * compatibility wrapper so older generated-tooltip code paths can still resolve it.
+     *
+     * @apiNote This method should NOT be used when the class is annotated with {@link SkipGenerateDescription}; in
+     *          that case, return the delayed-localization payload directly from your tooltip builder / tooltip array.
+     * @see GTUtility#nestParamsAlways(String, Object...)
+     */
+    default String addDelayedLocalization(String locKey, Object... params) {
+        return "%%%" + GTUtility.nestParamsAlways(locKey, params) + "%%%";
     }
 
     /**
