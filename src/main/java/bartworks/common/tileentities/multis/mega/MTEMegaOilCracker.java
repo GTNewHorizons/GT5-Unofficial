@@ -33,7 +33,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -45,6 +44,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
@@ -144,42 +144,25 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Cracker, MOC")
-            .addInfo(
-                TooltipHelper.coloredText(
-                    TooltipHelper.italicText("\"Thermally cracks heavy hydrocarbons into lighter fractions\""),
-                    EnumChatFormatting.DARK_GRAY))
+        tt.addMachineType("machtype.moc")
+            .addInfo("gt.moc.tips.1")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo(
-                TooltipHelper.effText("-10%") + " EU Usage per " + TooltipHelper.tierText(TooltipTier.COIL) + " Tier")
-            .addInfo("up to a maximum of " + TooltipHelper.effText("-50%") + " EU Usage")
-            .addSeparator()
-            .addInfo("Gives different benefits whether it hydro or steam-cracks:")
-            .addInfo(
-                "Hydro - Consumes " + TooltipHelper.coloredText("20%", EnumChatFormatting.DARK_AQUA)
-                    + " less Hydrogen and outputs "
-                    + TooltipHelper.coloredText("25%", EnumChatFormatting.DARK_AQUA)
-                    + " more cracked fluid")
-            .addInfo(
-                "Steam - Outputs " + TooltipHelper.coloredText("50%", EnumChatFormatting.DARK_AQUA)
-                    + " more cracked fluid")
-            .addInfo(TooltipHelper.italicText("In comparison to a chemical reactor"))
-            .addSeparator()
+            .addInfo("gt.moc.tips.2", TooltipHelper.tierText(TooltipTier.COIL))
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(13, 7, 9, true)
-            .addController("Front bottom")
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 197, false)
-            .addCasingInfoExactly("Coil", 92, true)
-            .addCasingInfoExactly("Any Tiered Glass", 196, true)
-            .addEnergyHatch("Hint block", 1)
-            .addMaintenanceHatch("Hint block", 1)
-            .addInputHatch("Hint block", 2, 3)
-            .addOutputHatch("Hint block", 2, 3)
-            .addInputHatch("Steam/Hydrogen ONLY, Hint block", 4)
-            .addInputBus("Optional, for programmed circuit automation. Hint block", 1)
+            .addController("front_bottom_center")
+            .addCasingInfoExactly(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 197)
+            .addCasingInfoExactly("GT5U.tooltip.structure.heating_coil", 92)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 196, true)
+            .addEnergyHatch("<hint>", 1)
+            .addMaintenanceHatch("<hint>", 1)
+            .addInputHatch("<hint>", 2, 3)
+            .addOutputHatch("<hint>", 2, 3)
+            .addStructurePart("GT5U.MBTT.InputHatch", "gt.moc.info.i_hatch", true, 4)
+            .addStructurePart("GT5U.MBTT.InputBus", "gt.moc.info.i_bus", true, 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
