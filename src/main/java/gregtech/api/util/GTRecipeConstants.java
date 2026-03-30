@@ -409,8 +409,6 @@ public class GTRecipeConstants {
         if (wafer == null) return builder.addTo(RecipeMaps.laserEngraverRecipes);
         switch (wafer) {
             case Naquadah -> {
-                ArrayList<ItemStack> items = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
-                ItemStack[] itemInputs = items.toArray(new ItemStack[] {});
                 // Naquadah wafers can use grade 1-2 purified water for a bonus, otherwise use distilled so we don't
                 // have to
                 // deal with circuits
