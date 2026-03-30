@@ -1,4 +1,5 @@
 package gregtech.loaders.postload.recipes.beamcrafter;
+import bartworks.system.material.WerkstoffLoader;
 
 import static gregtech.api.recipe.RecipeMaps.BEAMCRAFTER_METADATA;
 import static gregtech.api.recipe.RecipeMaps.beamcrafterRecipes;
@@ -48,8 +49,8 @@ public class BeamCrafterRecipes implements Runnable {
                     .particleID_B(ELECTRON.getId())
                     .amount_A(1200)
                     .amount_B(7200)
-                    .energy_A(1)
-                    .energy_B(1)
+                    .energy_A(10000)
+                    .energy_B(4000)
                     .build())
             .outputChances(2085)
             .duration(1 * SECONDS)
@@ -67,8 +68,8 @@ public class BeamCrafterRecipes implements Runnable {
                     .particleID_B(NEUTRON.getId())
                     .amount_A(25 * 10)
                     .amount_B(25 * 10)
-                    .energy_A(1)
-                    .energy_B(1)
+                    .energy_A(10000)
+                    .energy_B(10000)
                     .build())
             .outputChances(100)
             .duration(1 * SECONDS)
@@ -86,8 +87,8 @@ public class BeamCrafterRecipes implements Runnable {
                     .particleID_B(ELECTRON.getId())
                     .amount_A(5000)
                     .amount_B(5000)
-                    .energy_A(1)
-                    .energy_B(1)
+                    .energy_A(4000)
+                    .energy_B(4000)
                     .build())
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UV)
@@ -104,8 +105,8 @@ public class BeamCrafterRecipes implements Runnable {
                     .particleID_B(TAU.getId())
                     .amount_A(5000)
                     .amount_B(5000)
-                    .energy_A(1)
-                    .energy_B(1)
+                    .energy_A(1_800_000)
+                    .energy_B(1_800_000)
                     .build())
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -140,8 +141,8 @@ public class BeamCrafterRecipes implements Runnable {
                     .particleID_B(OMEGA.getId())
                     .amount_A(5000)
                     .amount_B(5000)
-                    .energy_A(1)
-                    .energy_B(1)
+                    .energy_A(9_500_000)
+                    .energy_B(1_750_000)
                     .build())
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
@@ -158,8 +159,8 @@ public class BeamCrafterRecipes implements Runnable {
                     .particleID_B(NEUTRON.getId())
                     .amount_A(25 * 10)
                     .amount_B(25 * 10)
-                    .energy_A(1)
-                    .energy_B(1)
+                    .energy_A(1000)
+                    .energy_B(1000)
                     .build())
             .outputChances(500)
             .duration(2 * SECONDS)
@@ -179,8 +180,8 @@ public class BeamCrafterRecipes implements Runnable {
                     .particleID_B(NEUTRON.getId())
                     .amount_A(25 * 10)
                     .amount_B(25 * 10)
-                    .energy_A(1)
-                    .energy_B(1)
+                    .energy_A(3000)
+                    .energy_B(3000)
                     .build())
             .outputChances(2500)
             .duration(2 * SECONDS)
@@ -190,6 +191,7 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Quark_Catalyst_Housing.get(1))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Up.get(1))
+            .fluidInputs(Materials.Helium.getGas(1000))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -207,6 +209,7 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Quark_Catalyst_Housing.get(1))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Down.get(1))
+            .fluidInputs(WerkstoffLoader.Neon.getFluidOrGas(1000))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -224,6 +227,7 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Quark_Catalyst_Housing.get(1))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Charm.get(1))
+            .fluidInputs(Materials.Argon.getGas(1000))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -241,6 +245,7 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Quark_Catalyst_Housing.get(1))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Strange.get(1))
+            .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(1000))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -258,6 +263,7 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Quark_Catalyst_Housing.get(1))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Bottom.get(1))
+            .fluidInputs(WerkstoffLoader.Xenon.getFluidOrGas(1000))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -275,6 +281,7 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Quark_Catalyst_Housing.get(1))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Top.get(1))
+            .fluidInputs(Materials.Radon.getGas(1000))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -292,6 +299,7 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.StableEmptyContainmentUnit.get(1))
             .itemOutputs(ItemList.StableBaryonContainmentUnit.get(1))
+            .fluidInputs(Materials.Helium.getGas(100))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -309,6 +317,7 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.StableEmptyContainmentUnit.get(1))
             .itemOutputs(ItemList.StableLeptonContainmentUnit.get(1))
+            .fluidInputs(WerkstoffLoader.Neon.getFluidOrGas(100))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -326,6 +335,7 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.StableEmptyContainmentUnit.get(1))
             .itemOutputs(ItemList.StableMesonContainmentUnit.get(1))
+            .fluidInputs(Materials.Argon.getGas(100))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -343,6 +353,7 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.StableEmptyContainmentUnit.get(1))
             .itemOutputs(ItemList.StableBosonContainmentUnit.get(1))
+            .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(100))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
