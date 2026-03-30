@@ -314,12 +314,15 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     }
 
+    @Override
+    public boolean onRunningTick(ItemStack aStack){
+        return true;
+    }
+
     private int progressContribution(int currentAmount, int maxAmount, int rate) {
-        if (currentAmount <= maxAmount) {
-            return rate;
-        } else {
-            return (currentAmount - maxAmount);
-        }
+
+        return Math.max(0,Math.min(rate,(maxAmount-currentAmount)));
+
     }
 
     @Override
@@ -328,41 +331,44 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         BeamInformation inputParticle_A = this.getNthInputParticle(0);
         BeamInformation inputParticle_B = this.getNthInputParticle(1);
 
-        if (inputParticle_A != null && inputParticle_B != null) {
-            int inputParticleRateA = inputParticle_A.getRate();
-            int inputParticleRateB = inputParticle_B.getRate();
-            int inputParticleIDA = inputParticle_A.getParticleId();
-            int inputParticleIDB = inputParticle_B.getParticleId();
+        boolean isInputARecipeA = false;
+        boolean isInputARecipeB = false;
+        boolean isInputBRecipeA = false;
+        boolean isInputBRecipeB = false;
 
-            // beamline input hatch array matches order of particles from recipe
-            if (inputParticleIDA == this.currentRecipeParticleIDA) {
-                this.currentRecipeCurrentAmountA += inputParticleRateA;
-                mProgresstime += this.progressContribution(
-                    this.currentRecipeCurrentAmountA,
-                    this.currentRecipeMaxAmountA,
-                    inputParticleRateA);
-
-                this.currentRecipeCurrentAmountB += inputParticleRateB;
-                mProgresstime += this.progressContribution(
-                    this.currentRecipeCurrentAmountB,
-                    this.currentRecipeMaxAmountB,
-                    inputParticleRateB);
-            }
-            // beamline input hatch array does NOT match order of particles from recipe
-            else {
-                this.currentRecipeCurrentAmountA += inputParticleRateB;
-                mProgresstime += this.progressContribution(
-                    this.currentRecipeCurrentAmountA,
-                    this.currentRecipeMaxAmountA,
-                    inputParticleRateB);
-
-                this.currentRecipeCurrentAmountB += inputParticleRateA;
-                mProgresstime += this.progressContribution(
-                    this.currentRecipeCurrentAmountB,
-                    this.currentRecipeMaxAmountB,
-                    inputParticleRateA);
-            }
+        if (inputParticle_A != null) {
+            isInputARecipeA = inputParticle_A.getParticleId() == this.currentRecipeParticleIDA;
+            isInputARecipeB = inputParticle_A.getParticleId() == this.currentRecipeParticleIDB;
         }
+        if (inputParticle_B != null) {
+            isInputBRecipeA = inputParticle_B.getParticleId() == this.currentRecipeParticleIDA;
+            isInputBRecipeB = inputParticle_B.getParticleId() == this.currentRecipeParticleIDB;
+        }
+
+        // progress from input A. elseif prevents double count when A=B
+        if (isInputARecipeA){
+            int progressAA = progressContribution(currentRecipeCurrentAmountA,currentRecipeMaxAmountA,inputParticle_A.getRate());
+            mProgresstime += progressAA;
+            currentRecipeCurrentAmountA += progressAA;
+        }
+        else if (isInputARecipeB){
+            int progressAB = progressContribution(currentRecipeCurrentAmountB,currentRecipeMaxAmountB,inputParticle_A.getRate());
+            mProgresstime += progressAB;
+            currentRecipeCurrentAmountB += progressAB;
+
+        }
+        // progress from input B
+        if (isInputBRecipeB){
+            int progressBB = progressContribution(currentRecipeCurrentAmountB,currentRecipeMaxAmountB,inputParticle_B.getRate());
+            mProgresstime += progressBB;
+            currentRecipeCurrentAmountB += progressBB;
+        }
+        else if (isInputBRecipeA){
+            int progressBA = progressContribution(currentRecipeCurrentAmountA,currentRecipeMaxAmountA,inputParticle_B.getRate());
+            mProgresstime += progressBA;
+            currentRecipeCurrentAmountA += progressBA;
+        }
+
     }
 
     @Override
@@ -386,15 +392,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             .voltage(tVoltageActual)
             .filter((GTRecipe recipe) -> {
                 BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
-                if (metadata == null) return false;
-
-                BeamInformation inputParticle_A = this.getNthInputParticle(0);
-                BeamInformation inputParticle_B = this.getNthInputParticle(1);
-
-                if ((inputParticle_A != null) && (inputParticle_B != null)) {
-                    return isInputParticleInRecipe(inputParticle_A, inputParticle_B, metadata);
-                }
-                return false;
+                return metadata != null;
             })
             .cachedRecipe(this.lastRecipe)
             .find();
@@ -402,13 +400,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
         BeamCrafterMetadata metadata = tRecipe.getMetadata(BEAMCRAFTER_METADATA);
         if (metadata == null) return CheckRecipeResultRegistry.NO_RECIPE;
-
-        BeamInformation inputParticle_A = this.getNthInputParticle(0);
-        BeamInformation inputParticle_B = this.getNthInputParticle(1);
-        if (inputParticle_A == null || inputParticle_B == null) return CheckRecipeResultRegistry.NO_RECIPE;
-
-        if (!isInputParticleInRecipe(inputParticle_A, inputParticle_B, metadata))
-            return CheckRecipeResultRegistry.NO_RECIPE;
 
         this.currentRecipeParticleIDA = metadata.particleID_A;
         this.currentRecipeParticleIDB = metadata.particleID_B;
