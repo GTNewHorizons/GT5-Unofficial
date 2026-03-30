@@ -71,9 +71,9 @@ public class RadioHatchCompat {
                     UniqueIdentifierMap.replace(itemRod, "miscutils:" + itemRod.getUnlocalizedName());
                     GameRegistry.UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(itemRod);
                     ownerItems.replace(ui, bartworks, gtpp);
-                    String tanslate = itemRod.getUnlocalizedName() + ".name=" + mats.getLocalizedName() + " Rod";
-                    RadioHatchCompat.TranslateSet.add(tanslate);
-                    DebugLog.log(tanslate);
+                    String translate = itemRod.getUnlocalizedName() + ".name=" + mats.getDefaultLocalName() + " Rod";
+                    RadioHatchCompat.TranslateSet.add(translate);
+                    DebugLog.log(translate);
                     DebugLog.log("Generate: " + BaseItemComponent.ComponentTypes.ROD + mats.getUnlocalizedName());
                 }
 

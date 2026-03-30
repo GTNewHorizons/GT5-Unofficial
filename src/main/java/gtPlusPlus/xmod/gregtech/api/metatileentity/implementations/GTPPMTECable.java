@@ -6,23 +6,27 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.render.TextureFactory;
+import gtPlusPlus.core.material.Material;
 
 public class GTPPMTECable extends MTECable {
 
     private final short[] vRGB;
 
-    public GTPPMTECable(final int aID, final String aName, final String aNameRegional, final float aThickNess,
+    private Material material;
+
+    public GTPPMTECable(final int aID, final String aName, final String aPrefixKey, final float aThickNess,
         final Materials aMaterial, final long aCableLossPerMeter, final long aAmperage, final long aVoltage,
         final boolean aInsulated, final boolean aCanShock, final short[] aRGB) {
         super(
             aID,
             aName,
-            aNameRegional,
+            aPrefixKey,
             aThickNess,
             aMaterial,
             aCableLossPerMeter,
@@ -40,13 +44,13 @@ public class GTPPMTECable extends MTECable {
         this.vRGB = aRGB == null || aRGB.length != 4 ? Materials.Iron.mRGBa : aRGB;
     }
 
-    public GTPPMTECable(final int aID, final String aName, final String aNameRegional, final float aThickNess,
+    public GTPPMTECable(final int aID, final String aName, final String aPrefixKey, final float aThickNess,
         final long aCableLossPerMeter, final long aAmperage, final long aVoltage, final boolean aInsulated,
-        final boolean aCanShock, final short[] aRGB) {
+        final boolean aCanShock, final Material aMaterial) {
         this(
             aID,
             aName,
-            aNameRegional,
+            aPrefixKey,
             aThickNess,
             null,
             aCableLossPerMeter,
@@ -54,7 +58,8 @@ public class GTPPMTECable extends MTECable {
             aVoltage,
             aInsulated,
             aCanShock,
-            aRGB);
+            aMaterial.getRGBA());
+        this.material = aMaterial;
     }
 
     public GTPPMTECable(final String aName, final float aThickNess, final long aCableLossPerMeter, final long aAmperage,
@@ -130,5 +135,13 @@ public class GTPPMTECable extends MTECable {
         return new ITexture[] { TextureFactory.of(
             Textures.BlockIcons.INSULATION_FULL,
             Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
+    }
+
+    @Override
+    public IOreMaterial getMaterial() {
+        if (super.getMaterial() == null) {
+            return material;
+        }
+        return super.getMaterial();
     }
 }

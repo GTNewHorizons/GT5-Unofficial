@@ -14,7 +14,6 @@ import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.TAE;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.MaterialCasings;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -72,24 +71,6 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
             }
             TAE.registerTexture(1, i, TextureFactory.of(this, i));
         }
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Thermal Processing Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Hastelloy-N Sealant Block");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Hastelloy-X Structural Block");
-        GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + ".3.name", "Incoloy-DS Fluid Containment Block");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Wash Plant Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Industrial Sieve Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Large Sieve Grate");
-        GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + ".7.name", "Vanadium Redox Power Cell (EV)");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Sub-Station External Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Cyclotron Coil");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Cyclotron Outer Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Thermal Containment Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Bulk Production Frame");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Cutting Factory Frame");
-
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Sterile Farm Casing");
 
         GregtechItemList.Casing_ThermalCentrifuge.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Refinery_External.set(new ItemStack(this, 1, 1));

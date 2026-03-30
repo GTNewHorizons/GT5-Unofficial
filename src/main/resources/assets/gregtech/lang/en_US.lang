@@ -10,37 +10,294 @@ itemGroup.GregTech.Materials=Materials
 itemGroup.GregTech.Ores=Ores
 
 # Components
-gt.component.dust=%s Dust
-gt.component.dustsmall=Small Pile of %s Dust
-gt.component.dusttiny=Tiny Pile of %s Dust
-gt.component.ingot=%s Ingot
-gt.component.hotingot=Hot %s Ingot
-gt.component.plate=%s Plate
-gt.component.platedouble=Double %s Plate
-gt.component.rod=%s Rod
-gt.component.rodlong=Long %s Rod
-gt.component.gear=%s Gear
-gt.component.smallgear=Small %s Gear
-gt.component.screw=%s Screw
-gt.component.bolt=%s Bolt
-gt.component.rotor=%s Rotor
-gt.component.ring=%s Ring
-gt.component.foil=%s Foil
-gt.component.plasmacell=%s Plasma Cell
-gt.component.cell=%s Cell
-gt.component.nugget=%s Nugget
-gt.component.spring=%s Spring
-gt.component.smallspring=Small %s Spring
-gt.component.finewire=Fine %s Wire
-gt.component.platedense=Dense %s Plate
-gt.component.platesuperdense=Superdense %s Plate
-gt.component.sheetmetal=%s Sheetmetal
+gt.oreprefix.block_of_material=Block of %s
+gt.oreprefix.centrifuged_material=Centrifuged %s
+gt.oreprefix.centrifuged_material_crystals=Centrifuged %s Crystals
+gt.oreprefix.centrifuged_material_ore=Centrifuged %s Ore
+gt.oreprefix.chipped_material=Chipped %s
+gt.oreprefix.chipped_material_crystal=Chipped %s Crystal
+gt.oreprefix.crushed_material_crystals=Crushed %s Crystals
+gt.oreprefix.crushed_material_ore=Crushed %s Ore
+gt.oreprefix.dense_material_plate=Dense %s Plate
+gt.oreprefix.dense_material_sheet=Dense %s Sheet
+gt.oreprefix.double_material_plate=Double %s Plate
+gt.oreprefix.double_material_sheet=Double %s Sheet
+gt.oreprefix.exquisite_material=Exquisite %s
+gt.oreprefix.exquisite_material_crystal=Exquisite %s Crystal
+gt.oreprefix.fine_material_wire=Fine %s Wire
+gt.oreprefix.flawed_material=Flawed %s
+gt.oreprefix.flawed_material_crystal=Flawed %s Crystal
+gt.oreprefix.flawless_material=Flawless %s
+gt.oreprefix.flawless_material_crystal=Flawless %s Crystal
+gt.oreprefix.ground_material=Ground %s
+gt.oreprefix.hot_material_ingot=Hot %s Ingot
+gt.oreprefix.impure_pile_of_material=Impure Pile of %s
+gt.oreprefix.impure_pile_of_material_crystal_powder=Impure Pile of %s Crystal Powder
+gt.oreprefix.impure_pile_of_material_dust=Impure Pile of %s Dust
+gt.oreprefix.impure_pile_of_material_powder=Impure Pile of %s Powder
+gt.oreprefix.lightly_hydro-cracked_material=Lightly Hydro-Cracked %s
+gt.oreprefix.lightly_steam-cracked_material=Lightly Steam-Cracked %s
+gt.oreprefix.lightly_hydro-cracked_material_cell=Lightly Hydro-Cracked %s Cell
+gt.oreprefix.lightly_steam-cracked_material_cell=Lightly Steam-Cracked %s Cell
+gt.oreprefix.long_material_rod=Long %s Rod
+gt.oreprefix.long_material_stick=Long %s Stick
+gt.oreprefix.material=%s
+gt.oreprefix.material_bar=%s Bar
+gt.oreprefix.material_bolt=%s Bolt
+gt.oreprefix.material_buzzsaw_blade=%s Buzzsaw Blade
+gt.oreprefix.material_casing=%s Casing
+gt.oreprefix.material_cell=%s Cell
+gt.oreprefix.material_chainsaw_tip=%s Chainsaw Tip
+gt.oreprefix.material_chip=%s Chip
+gt.oreprefix.material_crystal=%s Crystal
+gt.oreprefix.material_crystal_plate=%s Crystal Plate
+gt.oreprefix.material_crystal_powder=%s Crystal Powder
+gt.oreprefix.material_drill_tip=%s Drill Tip
+gt.oreprefix.material_dust=%s Dust
+gt.oreprefix.material_file_head=%s File Head
+gt.oreprefix.material_foil=%s Foil
+gt.oreprefix.material_frame_box=%s Frame Box
+gt.oreprefix.material_gear=%s Gear
+gt.oreprefix.material_hammer_head=%s Hammer Head
+gt.oreprefix.material_ice=%s Ice
+gt.oreprefix.material_infused_stone=%s Infused Stone
+gt.oreprefix.material_ingot=%s Ingot
+gt.oreprefix.material_lens=%s Lens
+gt.oreprefix.material_nanites=%s Nanites
+gt.oreprefix.material_nugget=%s Nugget
+gt.oreprefix.material_ore=%s Ore
+gt.oreprefix.material_pane=%s Pane
+gt.oreprefix.material_plank=%s Plank
+gt.oreprefix.material_plasma=%s Plasma
+gt.oreprefix.material_plasma_cell=%s Plasma Cell
+gt.oreprefix.material_plate=%s Plate
+gt.oreprefix.material_powder=%s Powder
+gt.oreprefix.material_pulp=%s Pulp
+gt.oreprefix.material_ring=%s Ring
+gt.oreprefix.material_rod=%s Rod
+gt.oreprefix.material_rotor=%s Rotor
+gt.oreprefix.material_round=%s Round
+gt.oreprefix.material_saw_blade=%s Saw Blade
+gt.oreprefix.material_screw=%s Screw
+gt.oreprefix.material_sheet=%s Sheet
+gt.oreprefix.material_sheetmetal=%s Sheetmetal
+gt.oreprefix.material_spring=%s Spring
+gt.oreprefix.material_stick=%s Stick
+gt.oreprefix.material_turbine_blade=%s Turbine Blade
+gt.oreprefix.material_wrench_tip=%s Wrench Tip
+gt.oreprefix.moderately_hydro-cracked_material=Moderately Hydro-Cracked %s
+gt.oreprefix.moderately_steam-cracked_material=Moderately Steam-Cracked %s
+gt.oreprefix.moderately_hydro-cracked_material_cell=Moderately Hydro-Cracked %s Cell
+gt.oreprefix.moderately_steam-cracked_material_cell=Moderately Steam-Cracked %s Cell
+gt.oreprefix.molten_material=Molten %s
+gt.oreprefix.molten_material_cell=Molten %s Cell
+gt.oreprefix.purified_material=Purified %s
+gt.oreprefix.purified_material_crystals=Purified %s Crystals
+gt.oreprefix.purified_material_ore=Purified %s Ore
+gt.oreprefix.purified_pile_of_material=Purified Pile of %s
+gt.oreprefix.purified_pile_of_material_crystal_powder=Purified Pile of %s Crystal Powder
+gt.oreprefix.purified_pile_of_material_dust=Purified Pile of %s Dust
+gt.oreprefix.purified_pile_of_material_powder=Purified Pile of %s Powder
+gt.oreprefix.quadruple_material_plate=Quadruple %s Plate
+gt.oreprefix.quadruple_material_sheet=Quadruple %s Sheet
+gt.oreprefix.quintuple_material_plate=Quintuple %s Plate
+gt.oreprefix.quintuple_material_sheet=Quintuple %s Sheet
+gt.oreprefix.raw_material_ice=Raw %s Ice
+gt.oreprefix.raw_material_ore=Raw %s Ore
+gt.oreprefix.severely_hydro-cracked_material=Severely Hydro-Cracked %s
+gt.oreprefix.severely_steam-cracked_material=Severely Steam-Cracked %s
+gt.oreprefix.severely_hydro-cracked_material_cell=Severely Hydro-Cracked %s Cell
+gt.oreprefix.severely_steam-cracked_material_cell=Severely Steam-Cracked %s Cell
+gt.oreprefix.shard_of_material=Shard of %s
+gt.oreprefix.short_material_stick=Short %s Stick
+gt.oreprefix.small_material_gear=Small %s Gear
+gt.oreprefix.small_material_ore=Small %s Ore
+gt.oreprefix.small_material_spring=Small %s Spring
+gt.oreprefix.small_pile_of_material=Small Pile of %s
+gt.oreprefix.small_pile_of_material_crystal_powder=Small Pile of %s Crystal Powder
+gt.oreprefix.small_pile_of_material_dust=Small Pile of %s Dust
+gt.oreprefix.small_pile_of_material_powder=Small Pile of %s Powder
+gt.oreprefix.small_pile_of_material_pulp=Small Pile of %s Pulp
+gt.oreprefix.small_pile_of_mince_meat=Small Pile of Mince Meat
+gt.oreprefix.superdense_material_plate=Superdense %s Plate
+gt.oreprefix.superdense_material_sheet=Superdense %s Sheet
+gt.oreprefix.thin_material_sheet=Thin %s Sheet
+gt.oreprefix.tiny_pile_of_material=Tiny Pile of %s
+gt.oreprefix.tiny_pile_of_material_crystal_powder=Tiny Pile of %s Crystal Powder
+gt.oreprefix.tiny_pile_of_material_dust=Tiny Pile of %s Dust
+gt.oreprefix.tiny_pile_of_material_powder=Tiny Pile of %s Powder
+gt.oreprefix.tiny_pile_of_material_pulp=Tiny Pile of %s Pulp
+gt.oreprefix.triple_material_plate=Triple %s Plate
+gt.oreprefix.triple_material_sheet=Triple %s Sheet
+
+#Special Componets
+gt.oreprefix.cardboard=Cardboard
+gt.oreprefix.carton=Carton
+gt.oreprefix.chad=Chad
+gt.oreprefix.cooked_mince_meat=Cooked Mince Meat
+gt.oreprefix.crushed_ice=Crushed Ice
+gt.oreprefix.flour=Flour
+gt.oreprefix.mince_meat=Mince Meat
+gt.oreprefix.paperboard=Paperboard
+gt.oreprefix.small_pile_of_bone_meal=Small Pile of Bone Meal
+gt.oreprefix.small_pile_of_chad=Small Pile of Chad
+gt.oreprefix.small_pile_of_cooked_mince_meat=Small Pile of Cooked Mince Meat
+gt.oreprefix.small_pile_of_crushed_ice=Small Pile of Crushed Ice
+gt.oreprefix.small_pile_of_flour=Small Pile of Flour
+gt.oreprefix.thick_cardboard=Thick Cardboard
+gt.oreprefix.tiny_pile_of_bone_meal=Tiny Pile of Bone Meal
+gt.oreprefix.tiny_pile_of_chad=Tiny Pile of Chad
+gt.oreprefix.tiny_pile_of_cooked_mince_meat=Tiny Pile of Cooked Mince Meat
+gt.oreprefix.tiny_pile_of_crushed_ice=Tiny Pile of Crushed Ice
+gt.oreprefix.tiny_pile_of_flour=Tiny Pile of Flour
+gt.oreprefix.tiny_pile_of_mince_meat=Tiny Pile of Mince Meat
+
+#BlockMachines
+gt.oreprefix.1x_material_cable=1x %s Cable
+gt.oreprefix.2x_material_cable=2x %s Cable
+gt.oreprefix.4x_material_cable=4x %s Cable
+gt.oreprefix.8x_material_cable=8x %s Cable
+gt.oreprefix.12x_material_cable=12x %s Cable
+gt.oreprefix.16x_material_cable=16x %s Cable
+
+gt.oreprefix.1x_material_wire=1x %s Wire
+gt.oreprefix.2x_material_wire=2x %s Wire
+gt.oreprefix.4x_material_wire=4x %s Wire
+gt.oreprefix.8x_material_wire=8x %s Wire
+gt.oreprefix.12x_material_wire=12x %s Wire
+gt.oreprefix.16x_material_wire=16x %s Wire
+
+gt.oreprefix.tiny_material_fluid_pipe=Tiny %s Fluid Pipe
+gt.oreprefix.small_material_fluid_pipe=Small %s Fluid Pipe
+gt.oreprefix.material_fluid_pipe=%s Fluid Pipe
+gt.oreprefix.large_material_fluid_pipe=Large %s Fluid Pipe
+gt.oreprefix.huge_material_fluid_pipe=Huge %s Fluid Pipe
+gt.oreprefix.quadruple_material_fluid_pipe=Quadruple %s Fluid Pipe
+gt.oreprefix.nonuple_material_fluid_pipe=Nonuple %s Fluid Pipe
+
+gt.oreprefix.tiny_material_item_pipe=Tiny %s Item Pipe
+gt.oreprefix.small_material_item_pipe=Small %s Item Pipe
+gt.oreprefix.material_item_pipe=%s Item Pipe
+gt.oreprefix.large_material_item_pipe=Large %s Item Pipe
+gt.oreprefix.huge_material_item_pipe=Huge %s Item Pipe
+
+gt.oreprefix.tiny_restrictive_material_item_pipe=Tiny Restrictive %s Item Pipe
+gt.oreprefix.small_restrictive_material_item_pipe=Small Restrictive %s Item Pipe
+gt.oreprefix.restrictive_material_item_pipe=Restrictive %s Item Pipe
+gt.oreprefix.large_restrictive_material_item_pipe=Large Restrictive %s Item Pipe
+gt.oreprefix.huge_restrictive_material_item_pipe=Huge Restrictive %s Item Pipe
+
+gt.oreprefix.material_frame_box_tileentity=%s (TileEntity)
+
+gt.block.any_sub_block=Any Sub Block of this one
+
+gt.author=Author: %s
+gt.authors=Authors: %s
+
+gt.voltage.tier=-tier
+
+# Tooltip for Block Machines
+gt.blockmachines.cable.desc=Max Voltage: %s\nMax Amperage: %s\nLoss/Meter/Ampere: %s
+gt.blockmachines.gt_frame.desc.format=Just something you can put covers on.
+gt.blockmachines.transformer.desc=%s -> %s (Use Soft Mallet to invert)
+gt.blockmachines.transformer_advanced.desc=Accepts %sA and outputs %sA\nToggle 2A/8A half-mode with Screwdriver
+gt.blockmachines.bronze_hull.desc=For your first Steam Machines
+gt.blockmachines.highpressure_hull.desc=For improved Steam Machines
+gt.blockmachines.basic_hull.desc=§rYou just need §5I§dm§4a§cg§ei§an§ba§3t§9i§1o§5n§r to use this.
+gt.blockmachines.long_distance_item_pipeline.desc=Sends items over long distances
+gt.blockmachines.long_distance_fluid_pipeline.desc=Sends fluids over long distances
+gt.blockmachines.long_distance_pipeline.desc=Only one Input and Output are allowed per pipeline\nOnly Input and Output have to be chunkloaded\nTransfer rate is solely limited by input rate\nMinimum distance: %s blocks
+gt.blockmachines.dynamo_hatch.desc=Generating electric Energy from Multiblocks\nPuts out up to 1 Amp
+gt.blockmachines.dynamo_hatch_buffer.desc=Dynamo with internal storage and additional Amp capacity\nDoes not accept more than %sEU/t as input
+gt.blockmachines.energy_hatch.desc=Energy Injector for Multiblocks\nAccepts up to 2 Amps
+gt.blockmachines.energy_hatch_wireless.desc=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block withdraws EU from the network.
+gt.blockmachines.energy_hatch_debug.desc=§7Buffers EU internally\n§7Configure Amps and Voltage in the UI\n§o/gt global_energy_set Develo-... begone!
+gt.blockmachines.input_hatch.desc=Fluid Input for Multiblocks\nRight click with screwdriver to toggle input filter\nCapacity: %s L
+gt.blockmachines.input_hatch_multislot.desc=Fluid Input for Multiblocks\nCapacity: %s L\nCan hold %s types of fluid.
+gt.blockmachines.input_hatch_generator.desc=Fluid Input for Multiblocks\nCapacity: %s L\nHatch Tier: %s
+gt.blockmachines.input_hatch_generator.airintake.desc=§cDO NOT OBSTRUCT THE INPUT!\nDraws in Air from the surrounding environment\nCreates %s of Air every %s ticks
+gt.blockmachines.input_hatch_generator.atmosphere.desc=§cDO NOT OBSTRUCT THE INPUT!\nDraws in Air from the surrounding environment\nCompletelly fills up every %s ticks
+gt.blockmachines.input_hatch_generator.reservoir.desc=Infinite water supply hatch\nFills to max capacity every 5 seconds
+gt.blockmachines.input_hatch_me.desc=Machine Type: §eSIH§r\nAdvanced fluid input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
+gt.blockmachines.input_hatch_me.autopull.desc=Machine Type: §eASIH§r\nNext-gen item input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nAuto-Pull from ME mode will automatically stock the first\n16 fluid in the ME system, updated every 5 seconds.\nToggle by right-clicking with screwdriver, or use the GUI.\nUse the GUI to limit the minimum stack size for Auto-Pulling,\nadjust the slot refresh timer and enable fast recipe checks.\nWARNING: Fast recipe checks can be laggy. Use with caution.\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
+gt.blockmachines.input_hatch_solidifier.desc=Fluid Input with Mold for §eFluid Shaper§r\nCapacity: %s L
+gt.blockmachines.input_hatch_debug.desc=§7Stocks Fluids internally\n§7Configure Fluids in the UI\n§7Configured Fluids will not be consumed in processing\n§oWho knew it was this easy???
+gt.blockmachines.output_hatch.desc=Fluid Output for Multiblocks\nCapacity: %s L\nRight click with screwdriver to restrict output\nCan be restricted to put out Items and/or Steam/No Steam/1 specific Fluid\nRestricted Output Hatches are given priority for Multiblock Fluid output
+gt.blockmachines.output_hatch_antimatter.desc=Fluid Output for Multiblocks\nStores Antimatter\nAntimatter can be inserted from any side\nFront face input can be toggled with a screwdriver\nCapacity: 16,384,000L
+gt.blockmachines.output_hatch_me.desc=Fluid Output for Multiblocks\nStores directly into ME\nCan cache up to 128kL of fluids by default\nChange cache size by inserting a fluid storage cell\nChange ME connection behavior by right-clicking with wire cutter\nPartition the inserted Storage Cell to filter accepted outputs
+gt.blockmachines.output_hatch_void.desc=Voids fluids from Multiblocks\nMust be configured to work\nMimics behavior of restricted hatches
+gt.blockmachines.input_bus.desc=Item Input for Multiblocks\nShift + right click with screwdriver to turn Sort mode on/off\nCapacity: %s stacks
+gt.blockmachines.input_bus.singular.desc=Item Input for Multiblocks\nShift + right click with screwdriver to turn Sort mode on/off\nCapacity: %s stack
+gt.blockmachines.input_bus_chisel.desc=Item Input Bus for §eIndustrial Chisel§r\n%s + 1  Slots
+gt.blockmachines.input_bus_crafting_me.desc=Machine Type: §eCRIB§r\nAdvanced item input for Multiblocks\nHatch Tier: %s\nProcesses patterns directly from ME\n%sChange ME connection behavior by right-clicking with wire cutter\nIgnores the contents of other buses or hatches\nAlso ignores other patterns within the same bus
+gt.blockmachines.input_bus_crafting_me.support_fluid.desc=It supports patterns including fluids
+gt.blockmachines.input_bus_crafting_me.not_support_fluid.desc=It does not support patterns including fluids
+gt.blockmachines.input_bus_crafting_slave.desc=Proxy for Crafting Input Buffer/Bus (CRIB)\nHatch Tier: %s\nLink with Crafting Input Buffer/Bus using Data Stick to share inventory\nLeft click on the Crafting Input Buffer/Bus, then right click on this block to link them
+gt.blockmachines.input_bus_me.desc=Machine Type: §eSIB§r\nNext-gen item input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 item types in stock\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
+gt.blockmachines.input_bus_me.autopull.desc=Machine Type: §eASIB§r\nAdvanced item input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 item types in stock\nAuto-Pull from ME mode will automatically stock the first\n16 items in the ME system, updated every 5 seconds.\nToggle by right-clicking with screwdriver, or use the GUI.\nUse the GUI to limit the minimum stack size for Auto-Pulling,\nadjust the slot refresh timer and enable fast recipe checks.\nWARNING: Fast recipe checks can be laggy. Use with caution.\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
+gt.blockmachines.input_bus_lens.desc=Holds a lens for UV laser focusing.
+gt.blockmachines.input_bus_steam.desc=Item Input for Steam Multiblocks\nShift + right click with screwdriver to toggle automatic item shuffling\nCapacity: 4 stacks\nDoes not work with non-steam multiblocks
+gt.blockmachines.input_bus_super.desc=Item Input for Multiblocks\n%s Slots
+gt.blockmachines.input_bus_turbine.desc=An automation port for Large Turbines\nWill attempt once per 1200 ticks to fill the turbine slot of it's parent turbine\nYou may adjust this with a screwdriver\nHold shift to adjust in finer amounts\nHold control to adjust direction\nLeft Click with Screwdriver to reset\nThis module assumes the entire turbine is in the same Chunk
+gt.blockmachines.input_bus_linked.desc=%s slot input bus linked together wirelessly\nLink does not cross world boundary\nLeft/right click with data stick to copy/paste configuration\nAdded by §6GigaGram§rFab
+gt.blockmachines.input_bus_debug.desc=§7Stocks Items internally\n§7Configure Items in the UI\n§7Configured Items will not be consumed in processing\n§oWho knew it was this easy???
+gt.blockmachines.output_bus.desc=Item Output for Multiblocks\nCapacity: %s stacks\nLeft click with data stick to save filter config\nRight click with data stick to load filter config
+gt.blockmachines.output_bus.singular.desc=Item Output for Multiblocks\nCapacity: %s stack\nLeft click with data stick to save filter config\nRight click with data stick to load filter config
+gt.blockmachines.output_bus_me.desc=Item Output for Multiblocks\nStores directly into ME\nCan cache 1600 items by default\nChange cache size by inserting a storage cell\nChange ME connection behavior by right-clicking with wire cutter\nPartition the inserted Storage Cell to filter accepted outputs
+gt.blockmachines.output_bus_steam.desc=Item Output for Steam Multiblocks\nDoes not automatically export items\nCapacity: 4 stacks\nDoes not work with non-steam multiblocks
+gt.blockmachines.output_bus_void.desc=Voids items from Multiblocks\nMust be configured to work
+gt.blockmachines.output_bus_super.desc=Item Output for Multiblocks\n%s Slots\nLeft click with data stick to save filter config\nRight click with data stick to load filter config
+gt.blockmachines.muffler.desc=Outputs the Pollution (Might cause ... things)\nDO NOT OBSTRUCT THE OUTPUT!\nReduces Pollution to %s%%
+gt.blockmachines.boiler.solar.desc=Steam Power by the Sun\nProduces %sL of Steam per second\nCalcifies over time, reducing Steam output to %sL/s\nBreak and replace to descale
+gt.blockmachines.fluidpipe.capacity.desc=§9Fluid Capacity: %s L/sec§7
+gt.blockmachines.fluidpipe.heat.desc=§cHeat Limit: %s K§7
+gt.blockmachines.fluidpipe.no_gas_proof.desc=§2Cannot handle gas§7
+gt.blockmachines.fluidpipe.pipe_amount.desc=§bPipe Amount: %s§7
+gt.blockmachines.itempipe.capacity.second=Item Capacity: %s Stacks/%s sec
+gt.blockmachines.itempipe.capacity.persecond=Item Capacity: %s Stacks/sec
+gt.blockmachines.itempipe.capacity.tick=Item Capacity: %s Stacks/%s ticks
+gt.blockmachines.itempipe.rounting_value=Routing Value: %s
+
+Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver=Absorption range: %s blocks
+
+gt.hatch_element_or= or
+gt.hatch_element_of_type=of type
+gt.hatch_element_of_class=of class
+gt.hatch_element_of_id=of id
+
+#Behavious
+gt.behaviour.wrench=Rotates Blocks on right-click
+gt.behaviour.paintspray.uses=Remaining Uses: %s
+gt.behaviour.unstackable=Not usable when stacked!
+gt.behaviour.paintspray.chain=If used while sneaking it will spray a chain of blocks
+gt.behaviour.paintspray.chain_amount=Sprays up to %s blocks, in the direction you're looking at
+gt.behaviour.paintspray.tooltip=Can Color things in %s
+gt.behaviour.paintspray.solvent.tooltip=Can remove paint from things
+gt.behaviour.softmallet=Activates and Deactivates Machines
+gt.behaviour.sensorkit.tooltip=Used to display Information using the Mod Nuclear Control
+gt.behaviour.scoop=Catches Butterflies on Leftclick
+gt.behaviour.scanning=Can scan Blocks in World
+gt.behaviour.scanning.result=Block scan data result:
+gt.behaviour.prospecting=Usable for Prospecting
+gt.behaviour.plunger.item=Clears Items from Pipes
+gt.behaviour.plunger.fluid=Clears 1000 Liters of Fluid from Tanks. Fully clears when sneaking.
+gt.behaviour.plunger.essentia=Clears Essentia from Containers and Tubes
+gt.behaviour.lighter.tooltip=Can light things on Fire
+gt.behaviour.lighter.uses=Remaining Uses: %s
+gt.behaviour.cover_copy_paste=Can copy/paste cover data.
+gt.behaviour.cover_copy_paste.store=Stored Cover Data:
+gt.runfastertooltip=You can walk faster on this Block
+gt.laserplatingtooltip=Engineered to withstand extreme temperatures
 
 # Tooltip info of tile-entities
 gt.tileentity.eup_in=Voltage IN: %s
 gt.tileentity.eup_out=Voltage OUT: %s
 gt.tileentity.amperage=Amperage: %s
 gt.tileentity.throughput=Throughput: %s
+gt.tileentity.tank_info=Contains Fluid: §e%s§7
+gt.tileentity.tank_amount=Fluid Amount: §a%s L§7
+gt.tileentity.chest_info=Contains Item: §e%s§7
+gt.tileentity.chest_amount=Item Amount: §a%s§7
 gt.tileentity.has_muffler=is Muffled
 gt.tileentity.has_steam_upgrade=has Steam Upgrade
 gt.tileentity.colored=Colored (%s%s§7)
@@ -753,6 +1010,13 @@ GT5U.MBTT.EuDiscountBase=Uses %s of the EU normally required
 GT5U.MBTT.EuDiscountTiered=Uses %s less EU per %s Tier
 GT5U.MBTT.Parallel_Multiplicative=%s Parallels per %s Tier
 GT5U.MBTT.StructureBy=Structure by
+GT5U.MBTT.pHSensorHatch=pH Sensor Hatch
+GT5U.MBTT.ControlHatch=Control Hatch
+GT5U.MBTT.LensHousing=Lens Housing
+GT5U.MBTT.LensIndicator=Lens Indicator
+GT5U.MBTT.InputBus.WithFormat=Input Bus (%s)
+GT5U.MBTT.InputHatch.WithFormat=Input Hatch (%s)
+
 gt.unit.liter=L
 gt.unit.liter_per_second=L/s
 
@@ -1075,6 +1339,7 @@ gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
 gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
 gt.recipe.beamcrafter=Beam Crafter
+gt.recipe.large_hadron_collider=Large Hadron Collider
 gt.recipe.foundry_modules=Foundry Module Components
 
 # Recipe categories
@@ -2372,7 +2637,7 @@ GT5U.item.programmed_circuit.tooltip.2=Needs a screwdriver or programming tool
 GT5U.item.cable.max_voltage=Max Voltage
 GT5U.item.cable.max_amperage=Max Amperage
 GT5U.item.cable.loss=Loss/Meter/Ampere
-GT5U.item.cable.eu_volt=EU-Volt
+GT5U.item.cable.loss.eu_volt=%s EU-Volt
 GT5U.item.cable.swapped.s=Cable swapped: %s
 GT5U.item.tank.locked_to=Content locked to %s
 
@@ -3808,8 +4073,8 @@ gt.item.cover.wireless_activity_detector.tooltip=Transfers Activity as Redstone 
 ## Special items
 gt.item.display.its_free.name=ITS FREE
 gt.item.display.its_free.tooltip=(or at least almost free)
-gt.magnet.tooltip.base=Used in Magnetic Flux Exhibitor\n %sSpeed: +%d%%\n %sEU Usage: %d%%\n %sParallel: %d
-gt.magnet.tooltip.exotic=%s%sCan Use Multi-Amp Hatches\n %sLimit to one energy hatch if using Multi-Amp
+gt.magnet.tooltip.base=Used in Magnetic Flux Exhibitor\n%sSpeed: +%d%%\n%sEU Usage: %d%%\n%sParallel: %d
+gt.magnet.tooltip.exotic=%s%sCan Use Multi-Amp Hatches\n%sLimit to one energy hatch if using Multi-Amp
 gt.Item_Redstone_Sniffer.name=Redstone Sniffer
 gt.Item_Redstone_Sniffer.tooltip=What are these frequencies?!
 gt.Item_Drone_Remote_Interface.name=Drone Remote Interface
@@ -3848,7 +4113,7 @@ gt.item.circuit_part.transistor_smd.tooltip=Electronic Component
 gt.item.circuit_part.capacitor_smd.name=SMD Capacitor
 gt.item.circuit_part.capacitor_smd.tooltip=Electronic Component
 gt.item.circuit_part.glass_fiber.name=Glass Fiber
-gt.item.circuit_part.glass_fiber.tooltip=SiO2·B2O3·Na2O  # пример, может отличаться, но оставим как в коде
+gt.item.circuit_part.glass_fiber.tooltip=SiO2·B2O3·Na2O
 gt.item.circuit_part.petri_dish.name=Petri Dish
 gt.item.circuit_part.petri_dish.tooltip=For cultivating cells
 gt.item.circuit_part.reinforced_glass_tube.name=Reinforced Glass Tube
@@ -4404,6 +4669,7 @@ GT5U.waila.hatch.crafting_input_slave.linked=Linked
 GT5U.waila.hatch.crafting_input_slave.unlinked=Not linked
 GT5U.waila.hatch.crafting_input_slave.bound_to=Bound to %d, %d, %d
 GT5U.waila.hatch.outputme.storage_cache=Storage Cache:
+GT5U.waila.hatch.crafting_input_slave.reverseRecipes=Reverse recipes mode is %s
 GT5U.waila.hatch.outputme.item_cache_capacity=Item cache capacity: §e%s§r
 GT5U.waila.hatch.outputme.fluid_cache_capacity=Fluid cache capacity: §e%s L§r
 GT5U.waila.hatch.outputme.item_cache_empty=This bus has no cached stacks
@@ -5210,91 +5476,245 @@ gregtech.effectMachineBoost=Machine Booster
 
 entity.gregtech.GT_Entity_Arrow.name= a GregTech arrow
 
-fluid.Xenon=Xenon
-fluid.FermentedBacterialSludge=Fermented Bacterial Sludge
-fluid.NitricAcid=Nitric Acid
-fluid.EnrichedBacterialSludge=Enriched Bacterial Sludge
-fluid.Ammonia=Ammonia
-fluid.Neon=Neon
-fluid.Oganesson=Oganesson
-fluid.Aqua Regia=Aqua Regia
-fluid.Ammonium Chloride=Ammonium Chloride
-fluid.Platinum Concentrate=Platinum Concentrate
-fluid.Sodium Formate=Sodium Formate
-fluid.Formic Acid=Formic Acid
-fluid.Palladium Enriched Ammonia=Palladium Enriched Ammonia
-fluid.Ruthenium Tetroxide=Ruthenium Tetroxide
-fluid.Hot Ruthenium Tetroxide Solution=Hot Ruthenium Tetroxide Solution
-fluid.Ruthenium Tetroxide Solution=Ruthenium Tetroxide Solution
-fluid.Rhodium Sulfate=Rhodium Sulfate
-fluid.Rhodium Sulfate Solution=Rhodium Sulfate Solution
-fluid.Calcium Chloride=Calcium Chloride
-fluid.Acidic Osmium Solution=Acidic Osmium Solution
-fluid.Osmium Solution=Osmium Solution
-fluid.Acidic Iridium Solution=Acidic Iridium Solution
-fluid.Rhodium Salt Solution=Rhodium Salt Solution
-fluid.Rhodium Filter Cake Solution=Rhodium Filter Cake Solution
-fluid.Pollution=Pollution
-fluid.SodiumPotassium=Sodium Potassium
-fluid.Concrete=Concrete
-fluid.mushroomStew=Mushroom Stew
+# Fluids
+fluid.aniline=Aniline
+fluid.bioethanol=Bio Ethanol
+fluid.biomass=Biomass
+fluid.boricacid=Boric Acid
+fluid.butanol=Butanol
+fluid.cadaverine=Cadaverine
+fluid.carbondisulfide=Carbon Disulfide
+fluid.creosote=Creosote Oil
+fluid.cryotheum=Gelid Cryotheum
+fluid.cyclohexane=Cyclohexane
+fluid.cyclohexanone=Cyclohexanone
 
-fluid.Sodium Tungstate=Sodium Tungstate
-fluid.Phosgene=Phosgene
-fluid.Ethyl Chloroformate=Ethyl Chloroformate
-fluid.Ethyl Carbamate=Ethyl Carbamate
-fluid.Ethyl N-nitrocarbamate=Ethyl N-nitrocarbamate
-fluid.Ammonium N-nitrourethane=Ammonium N-nitrourethane
-fluid.Trinitramid=Trinitramid
-fluid.Ammonia Boronfluoride Solution=Ammonia Boronfluoride Solution
-fluid.Sodium Tetrafluoroborate=Sodium Tetrafluoroborate
-fluid.Tetrafluoroborate=Tetrafluoroborate
-fluid.Ethyl Acetate=Ethyl Acetate
-fluid.Acetylhydrazine=Acetylhydrazine
-fluid.Unsymmetrical Dimethylhydrazine=Unsymmetrical Dimethylhydrazine
-fluid.Monomethylhydrazine Fuel Mix=Monomethylhydrazine Fuel Mix
-fluid.Unsymmetrical Dimethylhydrazine Fuel Mix=Unsymmetrical Dimethylhydrazine Fuel Mix
-fluid.Boron Trifluoride=Boron Trifluoride
-fluid.Tert-Butylbenzene=Tert-Butylbenzene
-fluid.2-tert-butyl-anthraquinone=2-tert-butyl-anthraquinone
-fluid.2-tert-butyl-anthrahydroquinone=2-tert-butyl-anthrahydroquinone
-fluid.Hydrogen Peroxide=Hydrogen Peroxide
-fluid.hydrazine=Hydrazine
-fluid.Dimethyl Sulfate=Dimethyl Sulfate
-fluid.Ethyl Dinitrocarbamate=Ethyl Dinitrocarbamate
-fluid.Ammonium Dinitramide=Ammonium Dinitramide
-fluid.LMP-103S=LMP-103S
-fluid.Nitromethane=Nitromethane
-fluid.O-Xylene=O-Xylene
-# GT_MetaGenerated_Item_98 cells
-fluid.UnknownNutrientAgar=Unknown Nutrient Agar
-fluid.SeaweedBroth=Seaweed Broth
-fluid.EnzymesSollution=Enzyme Solution
+# Dyes
+fluid.dye.chemical.dyeblack=Chemical Black Dye
+fluid.dye.chemical.dyeblue=Chemical Blue Dye
+fluid.dye.chemical.dyebrown=Chemical Brown Dye
+fluid.dye.chemical.dyecyan=Chemical Cyan Dye
+fluid.dye.chemical.dyegray=Chemical Gray Dye
+fluid.dye.chemical.dyegreen=Chemical Green Dye
+fluid.dye.chemical.dyelightblue=Chemical Light Blue Dye
+fluid.dye.chemical.dyelightgray=Chemical Light Gray Dye
+fluid.dye.chemical.dyelime=Chemical Lime Dye
+fluid.dye.chemical.dyemagenta=Chemical Magenta Dye
+fluid.dye.chemical.dyeorange=Chemical Orange Dye
+fluid.dye.chemical.dyepink=Chemical Pink Dye
+fluid.dye.chemical.dyepurple=Chemical Purple Dye
+fluid.dye.chemical.dyered=Chemical Red Dye
+fluid.dye.chemical.dyewhite=Chemical White Dye
+fluid.dye.chemical.dyeyellow=Chemical Yellow Dye
+fluid.dye.watermixed.dyeblack=Water Mixed Black Dye
+fluid.dye.watermixed.dyeblue=Water Mixed Blue Dye
+fluid.dye.watermixed.dyebrown=Water Mixed Brown Dye
+fluid.dye.watermixed.dyecyan=Water Mixed Cyan Dye
+fluid.dye.watermixed.dyegray=Water Mixed Gray Dye
+fluid.dye.watermixed.dyegreen=Water Mixed Green Dye
+fluid.dye.watermixed.dyelightblue=Water Mixed Light Blue Dye
+fluid.dye.watermixed.dyelightgray=Water Mixed Light Gray Dye
+fluid.dye.watermixed.dyelime=Water Mixed Lime Dye
+fluid.dye.watermixed.dyemagenta=Water Mixed Magenta Dye
+fluid.dye.watermixed.dyeorange=Water Mixed Orange Dye
+fluid.dye.watermixed.dyepink=Water Mixed Pink Dye
+fluid.dye.watermixed.dyepurple=Water Mixed Purple Dye
+fluid.dye.watermixed.dyered=Water Mixed Red Dye
+fluid.dye.watermixed.dyewhite=Water Mixed White Dye
+fluid.dye.watermixed.dyeyellow=Water Mixed Yellow Dye
+
+fluid.enzymessollution=EnzymesSollution
 fluid.escherichiakolifluid=eColi Bacteria Fluid
-fluid.Penicillin=Penicillin
-fluid.FluorecentdDNA=Fluorescent DNA
-fluid.Polymerase=Polymerase
-# No cell, most from bart bio
-fluid.Monomethylhydrazine=Monomethylhydrazine
-fluid.binnibacteriafluid=binnibacteriafluid
-fluid.barnadafisarboriatorisfluid=barnadafisarboriatorisfluid
-fluid.GelatinMixture=GelatinMixture
-fluid.sludge=sludge
-fluid.Formaldehyde=Formaldehyde
-fluid.tcetieisfucusserratusfluid=tcetieisfucusserratusfluid
-fluid.MeatExtract=MeatExtract
-# No recipe
-fluid.CompressedOxygen=CompressedOxygen
-fluid.CompressedNitrogen=CompressedNitrogen
-fluid.redplasma=redplasma
-fluid.tile.fluidBlockSludge=fluidBlockSludge
-# No Texture
-fluid.guano=guano
-fluid.poo=poo
-fluid.sewerage=sewerage
-fluid.fuelgc=fuelgc
-fluid.dirtywater=dirtywater
-fluid.oilgc=oilgc
+fluid.fermentation.base=Fermentation Base
+fluid.fieryblood=Fiery Blood
+fluid.fluid.2ethylanthrahydroquinone=2-Ethylanthrahydroquinone
+fluid.fluid.2ethylanthraquinone=2-Ethylanthraquinone
+fluid.fluid.ammoniumnitrateslurry=Hydrated Ammonium Nitrate Slurry
+fluid.fluid.anthracene=Anthracene
+fluid.fluid.burntlifbef2thf4uf4=Burnt LiFBeF2ThF4UF4 Salt
+fluid.fluid.burntlifbef2zrf4u235=Burnt LiFBeF2ZrF4U235 Salt
+fluid.fluid.burntlifbef2zrf4uf4=Burnt LiFBeF2ZrF4UF4 Salt
+fluid.fluid.coalgas=Coal Gas
+fluid.fluid.coaltaroil=Coal Tar Oil
+fluid.fluid.ethylbenzene=Ethylbenzene
+fluid.fluid.formaldehyde=Formaldehyde
+fluid.fluid.geneticmutagen=Genetic Mutagen
+fluid.fluid.hydrazine=Hydrazine
+fluid.fluid.hydrogenperoxide=Hydrogen Peroxide
+fluid.fluid.impurelifbef2=Impure Molten Salt Base
+fluid.fluid.kerosene=Kerosene
+fluid.fluid.liquidhydrogen=Liquid Hydrogen
+fluid.fluid.monomethylhydrazine=Monomethylhydrazine
+fluid.fluid.naphthalene=Naphthalene
+fluid.fluid.nitrogentetroxide=Nitrogen Tetroxide
+fluid.fluid.raisinjuice=Raisin Juice
+fluid.fluid.rocketfuelmixa=H8N4C2O4 Rocket Fuel
+fluid.fluid.rocketfuelmixb=Rp-1 Rocket Fuel
+fluid.fluid.rocketfuelmixc=CN3H7O3 Rocket Fuel
+fluid.fluid.rocketfuelmixd=Dense Hydrazine Fuel Mixture
+fluid.fluid.rp1fuel=RP-1
+fluid.fluid.sulfuriccoaltaroil=Sulfuric Coal Tar Oil
+fluid.fluorecentddna=FluorecentdDNA
+fluid.froth.almandineflotation=Almandine Froth
+fluid.froth.copperflotation=Chalcopyrite Froth
+fluid.froth.grossularflotation=Grossular Froth
+fluid.froth.monaziteflotation=Monazite Froth
+fluid.froth.netherrackflotation=Netherrack Froth
+fluid.froth.nickelflotation=Nickel Froth
+fluid.froth.pentlanditeflotation=Pentlandite Froth
+fluid.froth.platinumflotation=Platinum Froth
+fluid.froth.pyropeflotation=Pyrope Froth
+fluid.froth.redstoneflotation=Redstone Froth
+fluid.froth.spessartineflotation=Spessartine Froth
+fluid.froth.zincflotation=Sphalerite Froth
+fluid.fulvic acid=Fulvic Acid
+fluid.heated fulvic acid=Heated Fulvic Acid
+fluid.hydrofluoricacid=Industrial Strength Hydrofluoric Acid
+fluid.hydrogenchloride=Industrial Strength Hydrogen Chloride
+fluid.ice=Crushed Ice
+fluid.indigo=Indigo Dye
+fluid.indiumconcentrate=Indium Concentrate
+fluid.kerogen=Kerogen
+fluid.leadzincsolution=Lead-Zinc Solution
+fluid.liquid_drillingfluid=Drilling Fluid
+fluid.liquid_sodium=Liquid Sodium
+fluid.liquidresin=Liquid Resin
+fluid.mobessence=Mob Essence
+fluid.mud.red.slurry=Red Mud Slurry
+fluid.nitrobenzene=Nitrobenzene
+fluid.nuclear.waste=Nuclear Waste
+fluid.penicillin=Penicillin
+fluid.pineoil=Pine Oil
+fluid.polymerase=Polymerase
+fluid.polyurethane=Polyurethane
+
+# Potions
+fluid.potion.alcopops=Alcopops
+fluid.potion.applejuice=Apple Juice
+fluid.potion.awkward=Awkward Brew
+fluid.potion.beer=Beer
+fluid.potion.cavejohnsonsgrenadejuice=Cave Johnsons Grenade Juice
+fluid.potion.chillysauce=Chilly Sauce
+fluid.potion.chocolatemilk=Chocolate Milk
+fluid.potion.cider=Cider
+fluid.potion.coffee=Coffee
+fluid.potion.damage=Harming Brew
+fluid.potion.damage.splash=Splash Harming Brew
+fluid.potion.damage.strong=Strong Harming Brew
+fluid.potion.damage.strong.splash=Strong Splash Harming Brew
+fluid.potion.darkbeer=Dark Beer
+fluid.potion.darkchocolatemilk=Dark Chocolate Milk
+fluid.potion.diablosauce=Diablo Sauce
+fluid.potion.diablosauce.strong=Old Man Snitches glitched Diablo Sauce
+fluid.potion.diabolosauce=Diabolo Sauce
+fluid.potion.dragonblood=Dragon Blood
+fluid.potion.fireresistance=Fire Resistant Brew
+fluid.potion.fireresistance.long=Stretched Fire Resistant Brew
+fluid.potion.fireresistance.long.splash=Stretched Splash Fire Resistant Brew
+fluid.potion.fireresistance.splash=Splash Fire Resistant Brew
+fluid.potion.glenmckenner=Glen McKenner
+fluid.potion.goldenapplejuice=Golden Apple Juice
+fluid.potion.goldencider=Golden Cider
+fluid.potion.grapejuice=Grape Juice
+fluid.potion.health=Healing Brew
+fluid.potion.health.splash=Splash Healing Brew
+fluid.potion.health.strong=Strong Healing Brew
+fluid.potion.health.strong.splash=Strong Splash Healing Brew
+fluid.potion.hopsjuice=Hops Juice
+fluid.potion.hotsauce=Hot Sauce
+fluid.potion.icetea=Ice Tea
+fluid.potion.idunsapplejuice=Idun's Apple Juice
+fluid.potion.invisibility=Invisible Brew
+fluid.potion.invisibility.long=Stretched Invisible Brew
+fluid.potion.invisibility.long.splash=Stretched Splash Invisible Brew
+fluid.potion.invisibility.splash=Splash Invisible Brew
+fluid.potion.latte=Latte
+fluid.potion.lemonade=Lemonade
+fluid.potion.lemonjuice=Lemon Juice
+fluid.potion.leninade=Leninade
+fluid.potion.limoncello=Limoncello
+fluid.potion.mineralwater=Mineral Water
+fluid.potion.mundane=Mundane Brew
+fluid.potion.nightvision=Night Vision Brew
+fluid.potion.nightvision.long=Stretched Night Vision Brew
+fluid.potion.nightvision.long.splash=Stretched Splash Night Vision Brew
+fluid.potion.nightvision.splash=Splash Night Vision Brew
+fluid.potion.notchesbrew=Notches Brew
+fluid.potion.piratebrew=Pirate Brew
+fluid.potion.poison=Poisonous Brew
+fluid.potion.poison.long=Stretched Poisonous Brew
+fluid.potion.poison.long.splash=Stretched Splash Poisonous Brew
+fluid.potion.poison.splash=Splash Poisonous Brew
+fluid.potion.poison.strong=Strong Poisonous Brew
+fluid.potion.poison.strong.splash=Strong Splash Poisonous Brew
+fluid.potion.potatojuice=Potato Juice
+fluid.potion.purpledrink=Purple Drink
+fluid.potion.reedwater=Reed Water
+fluid.potion.regen=Regenerating Brew
+fluid.potion.regen.long=Stretched Regenerating Brew
+fluid.potion.regen.long.splash=Stretched Splash Regenerating Brew
+fluid.potion.regen.splash=Splash Regenerating Brew
+fluid.potion.regen.strong=Strong Regenerating Brew
+fluid.potion.regen.strong.splash=Strong Splash Regenerating Brew
+fluid.potion.rum=Rum
+fluid.potion.saltywater=Salty Water
+fluid.potion.scotch=Scotch
+fluid.potion.slowness=Lame Brew
+fluid.potion.slowness.long=Stretched Lame Brew
+fluid.potion.slowness.long.splash=Stretched Splash Lame Brew
+fluid.potion.slowness.splash=Splash Lame Brew
+fluid.potion.speed=Swiftness Brew
+fluid.potion.speed.long=Stretched Swiftness Brew
+fluid.potion.speed.long.splash=Stretched Splash Swiftness Brew
+fluid.potion.speed.splash=Splash Swiftness Brew
+fluid.potion.speed.strong=Strong Swiftness Brew
+fluid.potion.speed.strong.splash=Strong Splash Swiftness Brew
+fluid.potion.strength=Strength Brew
+fluid.potion.strength.long=Stretched Strength Brew
+fluid.potion.strength.long.splash=Stretched Splash Strength Brew
+fluid.potion.strength.splash=Splash Strength Brew
+fluid.potion.strength.strong=Strong Strength Brew
+fluid.potion.strength.strong.splash=Strong Splash Strength Brew
+fluid.potion.sweetcoffee=Sweet Coffee
+fluid.potion.sweetjesuslatte=Sweet Jesus Latte
+fluid.potion.sweetlatte=Sweet Latte
+fluid.potion.sweettea=Sweet Tea
+fluid.potion.tea=Tea
+fluid.potion.thick=Thick Brew
+fluid.potion.vodka=Vodka
+fluid.potion.waterbreathing=Fishy Brew
+fluid.potion.waterbreathing.long=Stretched Fishy Brew
+fluid.potion.waterbreathing.long.splash=Stretched Splash Fishy Brew
+fluid.potion.waterbreathing.splash=Splash Fishy Brew
+fluid.potion.weakness=Weakening Brew
+fluid.potion.weakness.long=Stretched Weakening Brew
+fluid.potion.weakness.long.splash=Stretched Splash Weakening Brew
+fluid.potion.weakness.splash=Splash Weakening Brew
+fluid.potion.wheatyhopsjuice=Wheaty Hops Juice
+fluid.potion.wheatyjuice=Wheaty Juice
+fluid.potion.wine=Wine
+
+fluid.propionicacid=Propionic Acid
+fluid.pseudomonasveroniifluid=Anaerobic Oil Bacteria Fluid
+fluid.putrescine=Putrescine
+fluid.pyrotheum=Blazing Pyrotheum
+fluid.rocket_fuel=Rocket Fuel
+fluid.saccharomycescerevisiaefluid=Common Yeast Fluid
+fluid.saccharomycescerevisiaevarbayanusfluid=Whine Yeast Fluid
+fluid.saccharomycescerevisiaevarcerevisiaefluid=Beer Yeast Fluid
+fluid.saccharomycesescherichiafluid=General Purpose Fermenting Bacteria Fluid
+fluid.solution.bluevitriol=Blue Vitriol Water Solution
+fluid.solution.greenvitriol=Green Vitriol Water Solution
+fluid.solution.nickelsulfate=Nickel Sulfate Water Solution
+fluid.squidink=Squid Ink
+fluid.steam=Steam
+fluid.sulfuricapatite=Sulfuric Apatite Mix
+fluid.sulfuriclithium=Sulfuric Lithium Mix
+fluid.sulfurousacid=Sulfurous Acid
+fluid.ureamix=Urea Mix
+fluid.uuamplifier=UU Amplifier
+fluid.wet.concrete=Wet Concrete
+fluidHotWater=Heated Water
 
 # Space projects
 gt.solar.system.overworld=Overworld
@@ -5724,6 +6144,7 @@ GT5U.infodata.hatch.internal_inventory=Internal Inventory:
 GT5U.infodata.hatch.internal_inventory.slot=Slot %d %s
 GT5U.infodata.hatch.crafting_input_slave.linked_to=This bus is linked to the Crafting Input Buffer at %d, %d, %d.
 GT5U.infodata.hatch.crafting_input_slave.not_linked_to=This bus is not linked to any Crafting Input Buffer.
+GT5U.infodata.hatch.crafting_input_slave.reverseRecipes=Reverse recipes mode is %s
 GT5U.infodata.hatch.output_bus_me.cache_capacity=Item cache capacity: %s
 GT5U.infodata.hatch.output_bus_me.empty=The bus has no cached items
 GT5U.infodata.hatch.output_bus_me.contains=The bus contains %d cached stacks:
@@ -6432,6 +6853,7 @@ gt.blockcasings.12.name=Dimensionally Transcendent Casing
 gt.blockcasings.13.name=Dimensional Injection Casing
 gt.blockcasings.14.name=Dimensional Bridge
 gt.blockcasings.15.name=Superconducting Coil Block
+
 gt.blockcasings2.0.name=Solid Steel Machine Casing
 gt.blockcasings2.1.name=Frost Proof Machine Casing
 gt.blockcasings2.2.name=Bronze Gear Box Casing
@@ -6448,6 +6870,7 @@ gt.blockcasings2.12.name=Bronze Pipe Casing
 gt.blockcasings2.13.name=Steel Pipe Casing
 gt.blockcasings2.14.name=Titanium Pipe Casing
 gt.blockcasings2.15.name=Tungstensteel Pipe Casing
+
 gt.blockcasings3.0.name=Yellow Stripes Block
 gt.blockcasings3.1.name=Yellow Stripes Block
 gt.blockcasings3.2.name=Radioactive Hazard Sign Block
@@ -6464,6 +6887,7 @@ gt.blockcasings3.12.name=Radiation Proof Machine Casing
 gt.blockcasings3.13.name=Bronze Firebox Casing
 gt.blockcasings3.14.name=Steel Firebox Casing
 gt.blockcasings3.15.name=Tungstensteel Firebox Casing
+
 gt.blockcasings4.0.name=Robust Tungstensteel Machine Casing
 gt.blockcasings4.1.name=Clean Stainless Steel Machine Casing
 gt.blockcasings4.2.name=Stable Titanium Machine Casing
@@ -6478,6 +6902,7 @@ gt.blockcasings4.12.name=Tungstensteel Turbine Casing
 gt.blockcasings4.13.name=Engine Intake Casing
 gt.blockcasings4.14.name=Mining Osmiridium Casing
 gt.blockcasings4.15.name=Firebricks
+
 gt.blockcasings5.0.name=Cupronickel Coil Block
 gt.blockcasings5.1.name=Kanthal Coil Block
 gt.blockcasings5.2.name=Nichrome Coil Block
@@ -6492,6 +6917,7 @@ gt.blockcasings5.10.name=Trinium Coil Block
 gt.blockcasings5.11.name=Infinity Coil Block
 gt.blockcasings5.12.name=Hypogen Coil Block
 gt.blockcasings5.13.name=Eternal Coil Block
+
 gt.blockcasings6.0.name=Hermetic Casing
 gt.blockcasings6.1.name=Hermetic Casing I
 gt.blockcasings6.2.name=Hermetic Casing II
@@ -6507,6 +6933,7 @@ gt.blockcasings6.11.name=Hermetic Casing XI
 gt.blockcasings6.12.name=Hermetic Casing XII
 gt.blockcasings6.13.name=Hermetic Casing XIII
 gt.blockcasings6.14.name=Hermetic Casing XIV
+
 gt.blockcasings8.0.name=Chemically Inert Machine Casing
 gt.blockcasings8.1.name=PTFE Pipe Casing
 gt.blockcasings8.2.name=Mining Neutronium Casing
@@ -6521,6 +6948,7 @@ gt.blockcasings8.11.name=Basic Photolithographic Framework Casing
 gt.blockcasings8.12.name=Reinforced Photolithographic Framework Casing
 gt.blockcasings8.13.name=Radiation Proof Photolithographic Framework Casing
 gt.blockcasings8.14.name=Infinity Cooled Casing
+
 gt.blockcasings9.0.name=PBI Pipe Casing
 gt.blockcasings9.1.name=Advanced Filter Casing
 gt.blockcasings9.2.name=Primitive Wooden Casing
@@ -6537,6 +6965,7 @@ gt.blockcasings9.12.name=Naquadria-Reinforced Water Plant Casing
 gt.blockcasings9.13.name=High Energy Ultraviolet Emitter Casing
 gt.blockcasings9.14.name=Particle Beam Guidance Pipe Casing
 gt.blockcasings9.15.name=Femtometer-Calibrated Particle Beam Casing
+
 gt.blockcasings10.0.name=MagTech Casing
 gt.blockcasings10.1.name=Laser Containment Casing
 gt.blockcasings10.2.name=Quark Exclusion Casing
@@ -6553,6 +6982,7 @@ gt.blockcasings10.12.name=Background Radiation Absorbent Casing
 gt.blockcasings10.13.name=Solidifier Casing
 gt.blockcasings10.14.name=Solidifier Radiator
 gt.blockcasings10.15.name=Reinforced Wooden Casing
+
 gt.blockcasings11.0.name=Tin Item Pipe Casing
 gt.blockcasings11.1.name=Brass Item Pipe Casing
 gt.blockcasings11.2.name=Electrum Item Pipe Casing
@@ -6561,6 +6991,7 @@ gt.blockcasings11.4.name=Osmium Item Pipe Casing
 gt.blockcasings11.5.name=Quantium Item Pipe Casing
 gt.blockcasings11.6.name=Fluxed Electrum Item Pipe Casing
 gt.blockcasings11.7.name=Black Plutonium Item Pipe Casing
+
 gt.blockcasings12.0.name=Coke Oven Bricks
 gt.blockcasings12.1.name=Nanochip Mesh Interface Casing
 gt.blockcasings12.2.name=Nanochip Reinforcement Casing
@@ -6570,6 +7001,7 @@ gt.blockcasings12.9.name=Vibration-Safe Casing
 gt.blockcasings12.10.name=Alchemically Resistant Thaumium Casing
 gt.blockcasings12.11.name=Alchemically Inert Void Casing
 gt.blockcasings12.12.name=Alchemically Immune Ichorium Casing
+
 gt.blockcasings13.0.name=Cable Casing
 gt.blockcasings13.1.name=Graphite Moderator Casing
 gt.blockcasings13.2.name=Insulated Fluid Pipe Casing
@@ -6597,6 +7029,7 @@ gt.blockcasingsNH.11.name=UIV Machine Casing
 gt.blockcasingsNH.12.name=UMV Machine Casing
 gt.blockcasingsNH.13.name=UXV Machine Casing
 gt.blockcasingsNH.14.name=MAX Machine Casing
+
 gt.foundrycasings.name=Foundry Casing
 gt.foundrycasings.0.name=Primary Exo-Foundry Casing
 gt.foundrycasings.1.name=Infinite Magnetic Chassis
@@ -6611,6 +7044,7 @@ gt.foundrycasings.9.name=Hypercooler Casing
 gt.foundrycasings.10.name=Streamlined Casting Casing
 gt.foundrycasings.11.name=Inner Exo-Foundry Siphon Casing
 gt.foundrycasings.12.name=Central Exo-Foundry Regulation Casing
+
 gt.blockcasings.cyclotron_coils.0.name=MV Solenoid Superconductor Coil
 gt.blockcasings.cyclotron_coils.1.name=HV Solenoid Superconductor Coil
 gt.blockcasings.cyclotron_coils.2.name=EV Solenoid Superconductor Coil
@@ -6622,6 +7056,7 @@ gt.blockcasings.cyclotron_coils.7.name=UHV Solenoid Superconductor Coil
 gt.blockcasings.cyclotron_coils.8.name=UEV Solenoid Superconductor Coil
 gt.blockcasings.cyclotron_coils.9.name=UIV Solenoid Superconductor Coil
 gt.blockcasings.cyclotron_coils.10.name=UMV Solenoid Superconductor Coil
+
 gt.blockglass1.0.name=Chemical Grade Glass
 gt.blockglass1.1.name=Electron-Permeable Neutronium Coated Glass
 gt.blockglass1.2.name=Omni-Purpose Infinity Fused Glass
@@ -6631,10 +7066,87 @@ gt.blockglass1.5.name=Nanite Shielding Glass
 gt.blockglass1.6.name=Chamber Grate
 gt.blockglass1.7.name=Exo-Foundry Containment Glass
 gt.blockglass1.8.name=Nanochip Complex Glass
+
 gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
 gt.blocktintedglass.3.name=Tinted Industrial Glass (Black)
+
+# Block Granites
+gt.blockgranites.0.name=Black Granite
+gt.blockgranites.1.name=Black Granite Cobblestone
+gt.blockgranites.2.name=Mossy Black Granite Cobblestone
+gt.blockgranites.3.name=Black Granite Bricks
+gt.blockgranites.4.name=Cracked Black Granite Bricks
+gt.blockgranites.5.name=Mossy Black Granite Bricks
+gt.blockgranites.6.name=Chiseled Black Granite
+gt.blockgranites.7.name=Smooth Black Granite
+gt.blockgranites.8.name=Red Granite
+gt.blockgranites.9.name=Red Granite Cobblestone
+gt.blockgranites.10.name=Mossy Red Granite Cobblestone
+gt.blockgranites.11.name=Red Granite Bricks
+gt.blockgranites.12.name=Cracked Red Granite Bricks
+gt.blockgranites.13.name=Mossy Red Granite Bricks
+gt.blockgranites.14.name=Chiseled Red Granite
+gt.blockgranites.15.name=Smooth Red Granit
+
+# Block Long Distance Pipe
+gt.block.longdistancepipe.0.name=Long Distance Fluid Pipeline Pipe
+gt.block.longdistancepipe.1.name=Long Distance Item Pipeline Pipe
+
+# Concretes
+gt.blockconcretes.0.name=Dark Concrete
+gt.blockconcretes.1.name=Dark Concrete Cobblestone
+gt.blockconcretes.2.name=Mossy Dark Concrete Cobblestone
+gt.blockconcretes.3.name=Dark Concrete Bricks
+gt.blockconcretes.4.name=Cracked Dark Concrete Bricks
+gt.blockconcretes.5.name=Mossy Dark Concrete Bricks
+gt.blockconcretes.6.name=Chiseled Dark Concrete
+gt.blockconcretes.7.name=Smooth Dark Concrete
+gt.blockconcretes.8.name=Light Concrete
+gt.blockconcretes.9.name=Light Concrete Cobblestone
+gt.blockconcretes.10.name=Mossy Light Concrete Cobblestone
+gt.blockconcretes.11.name=Light Concrete Bricks
+gt.blockconcretes.12.name=Cracked Light Concrete Bricks
+gt.blockconcretes.13.name=Mossy Light Concrete Bricks
+gt.blockconcretes.14.name=Chiseled Light Concrete
+gt.blockconcretes.15.name=Smooth Light Concrete
+
+# BlockReinforced
+gt.blockreinforced.0.name=Bronzeplate Reinforced Block
+gt.blockreinforced.1.name=Iridium Reinforced Block
+gt.blockreinforced.2.name=Plascrete Block
+gt.blockreinforced.3.name=Tungstensteel Reinforced Block
+gt.blockreinforced.4.name=Brittle Charcoal
+gt.blockreinforced.5.name=Powderbarrel
+gt.blockreinforced.6.name=Solid Super Fuel
+gt.blockreinforced.7.name=Magic Solid Super Fuel
+gt.blockreinforced.8.name=Steel Reinforced Block
+gt.blockreinforced.9.name=Titanium Reinforced Block
+gt.blockreinforced.10.name=Naquadah Reinforced Block
+gt.blockreinforced.11.name=Neutronium Reinforced Block
+gt.blockreinforced.12.name=Raw Deep Dark Portal Block
+
+# BlockStones
+gt.blockstones.0.name=Marble
+gt.blockstones.1.name=Marble Cobblestone
+gt.blockstones.2.name=Mossy Marble Cobblestone
+gt.blockstones.3.name=Marble Bricks
+gt.blockstones.4.name=Cracked Marble Bricks
+gt.blockstones.5.name=Mossy Marble Bricks
+gt.blockstones.6.name=Chiseled Marble
+gt.blockstones.7.name=Smooth Marble
+gt.blockstones.8.name=Basalt
+gt.blockstones.9.name=Basalt Cobblestone
+gt.blockstones.10.name=Mossy Basalt Cobblestone
+gt.blockstones.11.name=Basalt Bricks
+gt.blockstones.12.name=Cracked Basalt Bricks
+gt.blockstones.13.name=Mossy Basalt Bricks
+gt.blockstones.14.name=Chiseled Basalt
+gt.blockstones.15.name=Smooth Basalt
+
+# Book
+gt.book.credits=Credits to %s for writing this Book. This was Book Nr. %d at its creation. Gotta get 'em all
 
 # Items — LoaderGTBlockFluid
 # Sensor Cards
@@ -6782,31 +7294,31 @@ gt.BWCircuitProgrammer.name=Circuit Programmer
 gt.BWCircuitProgrammer.tooltip=Programs Integrated Circuits
 
 # Printer Manual
-gt.Book.Printer Manual V2.0.Name=Printer Manual V2.0
-gt.Book.Printer Manual V2.0.Page00=This Manual explains the different Functionalities the GregTech Printing Factory has built in, which are not in NEI. Most got NEI Support now, but there is still some left without it.
-gt.Book.Printer Manual V2.0.Page01=1. Coloring Items and Blocks: You know those Crafting Recipes, which have a dye surrounded by 8 Item to dye them? Or the ones which have just one Item and one Dye in the Grid? Those two Recipe Types can be cheaply automated using the Printer.
-gt.Book.Printer Manual V2.0.Page02=The Colorization Functionality even optimizes the Recipes, which normally require 8 Items + 1 Dye to 1 Item and an 8th of the normally used Dye in Fluid Form, isn't that awesome?
-gt.Book.Printer Manual V2.0.Page03=2. Copying Books: This Task got slightly harder. The first Step is putting the written and signed Book inside the Scanner with a Data Stick ready to receive the Data.
-gt.Book.Printer Manual V2.0.Page04=Now insert the Stick into the Data Slot of the Printer and add 3 pieces of Paper together with 144 Liters of actual Ink Fluid. Water mixed and chemical Dyes won't work on Paper without messing things up!
-gt.Book.Printer Manual V2.0.Page05=You got a stack of Pages for your new Book, just put them into the Assembler with some Glue and a piece of Leather for the Binding, and you receive an identical copy of the Book, which would stack together with the original.
-gt.Book.Printer Manual V2.0.Page06=3. Renaming Items: This Functionality is no longer Part of the Printer. There is now a Name Mold for the Forming Press to imprint a Name into an Item, just rename the Mold in an Anvil and use it in the Forming Press on any Item.
-gt.Book.Printer Manual V2.0.Page07=4. Crafting of Books, Maps, Nametags etc etc etc: Those Recipes moved to other Machines, just look them up in NEI.
+gt.book.printer_manual.name=Printer Manual V2.0
+gt.book.printer_manual.page00=This Manual explains the different Functionalities the GregTech Printing Factory has built in, which are not in NEI. Most got NEI Support now, but there is still some left without it.
+gt.book.printer_manual.page01=1. Coloring Items and Blocks: You know those Crafting Recipes, which have a dye surrounded by 8 Item to dye them? Or the ones which have just one Item and one Dye in the Grid? Those two Recipe Types can be cheaply automated using the Printer.
+gt.book.printer_manual.page02=The Colorization Functionality even optimizes the Recipes, which normally require 8 Items + 1 Dye to 1 Item and an 8th of the normally used Dye in Fluid Form, isn't that awesome?
+gt.book.printer_manual.page03=2. Copying Books: This Task got slightly harder. The first Step is putting the written and signed Book inside the Scanner with a Data Stick ready to receive the Data.
+gt.book.printer_manual.page04=Now insert the Stick into the Data Slot of the Printer and add 3 pieces of Paper together with 144 Liters of actual Ink Fluid. Water mixed and chemical Dyes won't work on Paper without messing things up!
+gt.book.printer_manual.page05=You got a stack of Pages for your new Book, just put them into the Assembler with some Glue and a piece of Leather for the Binding, and you receive an identical copy of the Book, which would stack together with the original.
+gt.book.printer_manual.page06=3. Renaming Items: This Functionality is no longer Part of the Printer. There is now a Name Mold for the Forming Press to imprint a Name into an Item, just rename the Mold in an Anvil and use it in the Forming Press on any Item.
+gt.book.printer_manual.page07=4. Crafting of Books, Maps, Nametags etc etc etc: Those Recipes moved to other Machines, just look them up in NEI.
 
 # Punch Card Manual
-gt.Book.Punch Card Manual V0.0.Name=Punch Card Manual V0.0
-gt.Book.Punch Card Manual V0.0.Page00=This Manual will explain the Functionality of the Punch Cards, once they are fully implemented. And no, they won't be like the IRL Punch Cards. This is just a current Idea Collection.
-gt.Book.Punch Card Manual V0.0.Page01=(i1&&i2)?o1=15:o1=0;=10
-gt.Book.Punch Card Manual V0.0.Page02=ignore all Whitespace Characters, use Long for saving the Numbers
-gt.Book.Punch Card Manual V0.0.Page03=&& || ^^ & | ^ ! ++ -- + - % / // * ** << >> >>> < > <= >= == !=  ~ ( ) ?: , ; ;= ;=X; = i0 i1 i2 i3 i4 i5 o0 o1 o2 o3 o4 o5 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 A B C D E F
-gt.Book.Punch Card Manual V0.0.Page04='0' = false, 'everything but 0' = true, '!' turns '0' into '1' and everything else into '0'
-gt.Book.Punch Card Manual V0.0.Page05=',' is just a separator for multiple executed Codes in a row.
-gt.Book.Punch Card Manual V0.0.Page06=';' means that the Program waits until the next tick before continuing. ';=10' and ';=10;' both mean that it will wait 10 Ticks instead of 1. And ';=0' or anything < 0 will default to 0.
-gt.Book.Punch Card Manual V0.0.Page07=If the '=' Operator is used within Brackets, it returns the value the variable has been set to.
-gt.Book.Punch Card Manual V0.0.Page08=The Program saves the Char Index of the current Task, the 10 Variables (which reset to 0 as soon as the Program Loop stops), the 10 Member Variables and the remaining waiting Time in its NBT.
-gt.Book.Punch Card Manual V0.0.Page09=A = 10, B = 11, C = 12, D = 13, E = 14, F = 15, just for Hexadecimal Space saving, since Redstone has only 4 Bits.
-gt.Book.Punch Card Manual V0.0.Page10=For implementing Loops you just need 1 Punch Card per Loop, these Cards can restart once they are finished, depending on how many other Cards there are in the Program Loop you inserted your Card into, since it will process them procedurally.
-gt.Book.Punch Card Manual V0.0.Page11=A Punch Card Processor can run up to four Loops, each with the length of seven Punch Cards, parallel.
-gt.Book.Punch Card Manual V0.0.Page12=Why does the Punch Card need Ink to be made, you ask? Because the empty one needs to have some lines on, and the for the punched one it prints the Code to execute in a human readable format on the Card.
+gt.book.punch_card_manual_v0.name=Punch Card Manual V0.0
+gt.book.punch_card_manual_v0.page00=This Manual will explain the Functionality of the Punch Cards, once they are fully implemented. And no, they won't be like the IRL Punch Cards. This is just a current Idea Collection.
+gt.book.punch_card_manual_v0.page01=(i1&&i2)?o1=15:o1=0;=10
+gt.book.punch_card_manual_v0.page02=ignore all Whitespace Characters, use Long for saving the Numbers
+gt.book.punch_card_manual_v0.page03=&& || ^^ & | ^ ! ++ -- + - % / // * ** << >> >>> < > <= >= == !=  ~ ( ) ?: , ; ;= ;=X; = i0 i1 i2 i3 i4 i5 o0 o1 o2 o3 o4 o5 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 A B C D E F
+gt.book.punch_card_manual_v0.page04='0' = false, 'everything but 0' = true, '!' turns '0' into '1' and everything else into '0'
+gt.book.punch_card_manual_v0.page05=',' is just a separator for multiple executed Codes in a row.
+gt.book.punch_card_manual_v0.page06=';' means that the Program waits until the next tick before continuing. ';=10' and ';=10;' both mean that it will wait 10 Ticks instead of 1. And ';=0' or anything < 0 will default to 0.
+gt.book.punch_card_manual_v0.page07=If the '=' Operator is used within Brackets, it returns the value the variable has been set to.
+gt.book.punch_card_manual_v0.page08=The Program saves the Char Index of the current Task, the 10 Variables (which reset to 0 as soon as the Program Loop stops), the 10 Member Variables and the remaining waiting Time in its NBT.
+gt.book.punch_card_manual_v0.page09=A = 10, B = 11, C = 12, D = 13, E = 14, F = 15, just for Hexadecimal Space saving, since Redstone has only 4 Bits.
+gt.book.punch_card_manual_v0.page10=For implementing Loops you just need 1 Punch Card per Loop, these Cards can restart once they are finished, depending on how many other Cards there are in the Program Loop you inserted your Card into, since it will process them procedurally.
+gt.book.punch_card_manual_v0.page11=A Punch Card Processor can run up to four Loops, each with the length of seven Punch Cards, parallel.
+gt.book.punch_card_manual_v0.page12=Why does the Punch Card need Ink to be made, you ask? Because the empty one needs to have some lines on, and the for the punched one it prints the Code to execute in a human readable format on the Card.
 
 # Microwave Oven Manual
 gt.Book.Microwave Oven Manual.Name=Microwave Oven Manual
@@ -6818,269 +7330,3 @@ gt.Book.Microwave Oven Manual.Page04=Do not insert any Metals. It might result i
 gt.Book.Microwave Oven Manual.Page05=Do not dry Animals with it. It will result in a Hot Dog, no matter which Animal you put into it.
 gt.Book.Microwave Oven Manual.Page06=Do not insert inflammable Objects. The Oven will catch on Fire.
 gt.Book.Microwave Oven Manual.Page07=Do not insert Explosives such as Eggs. Just don't.
-
-# Fluids
-# Gases
-fluid.Air=Air
-fluid.LiquidOxygen=Liquid Oxygen
-fluid.LiquidNitrogen=Liquid Nitrogen
-fluid.LiquidAir=Liquid Air
-fluid.Oxygen=Oxygen
-fluid.Hydrogen=Hydrogen
-fluid.Deuterium=Deuterium
-fluid.Tritium=Tritium
-fluid.Helium=Helium
-fluid.Helium-3=Helium-3
-fluid.Argon=Argon
-fluid.Radon=Radon
-fluid.Fluorine=Fluorine
-fluid.Methane=Methane
-fluid.Nitrogen=Nitrogen
-fluid.NitrogenDioxide=Nitrogen Dioxide
-fluid.Steam=Steam
-fluid.gas_natural_gas=Natural Gas
-fluid.gas_sulfuricgas=Sulfuric Gas
-fluid.gas_gas=Refinery Gas
-fluid.liquid_hydricsulfur=Hydrogen Sulfide
-
-# Liquids — Petroleum & Fuels
-fluid.liquid_extra_heavy_oil=Very Heavy Oil
-fluid.liquid_heavy_oil=Heavy Oil
-fluid.liquid_medium_oil=Raw Oil
-fluid.liquid_light_oil=Light Oil
-fluid.liquid_naphtha=Naphtha
-fluid.liquid_sulfuricnaphtha=Sulfuric Naphtha
-fluid.liquid_sufluriclight_fuel=Sulfuric Light Fuel
-fluid.liquid_sulfuricheavy_fuel=Sulfuric Heavy Fuel
-fluid.liquid_light_fuel=Light Fuel
-fluid.liquid_heavy_fuel=Heavy Fuel
-fluid.liquid_lpg=LPG
-fluid.fuel=Diesel
-fluid.NitroFuel=Cetane-Boosted Diesel
-fluid.oil=Oil
-fluid.liquid_toluene=Toluene
-fluid.liquid_epichlorhydrin=Epichlorohydrin
-fluid.liquid_nitrationmixture=Nitration Mixture
-fluid.liquid_drillingfluid=Drilling Fluid
-
-# Liquids — Industrial / Chemical
-fluid.Titaniumtetrachloride=Titaniumtetrachloride
-fluid.Chlorine=Chlorine
-fluid.Mercury=Mercury
-fluid.SodiumPersulfate=Sodium Persulfate
-fluid.Glyceryl=Glyceryl Trinitrate
-fluid.sulfuricacid=Sulfuric Acid
-fluid.lubricant=Lubricant
-fluid.creosote=Creosote Oil
-fluid.UUAmplifier=UU Amplifier
-fluid.mcguffium=Mc Guffium 239
-fluid.refinedGlue=Refined Glue
-fluid.charcoal_byproducts=Charcoal Byproducts
-fluid.molten.bisphenol_a=Molten Bisphenol A
-fluid.liquid_sodium=Liquid Sodium
-
-# Liquids — Biological / Food
-fluid.seedoil=Seed Oil
-fluid.fishoil=Fish Oil
-fluid.for.honey=Honey
-fluid.biomass=Biomass
-fluid.bioethanol=Bio Ethanol
-fluid.milk=Milk
-fluid.hotfryingoil=Hot Frying Oil
-
-# Liquids — Special / Endgame
-fluid.fieryblood=Fiery Blood
-fluid.holywater=Holy Water
-fluid.DimensionallyTranscendentResidue=Dimensionally Transcendent Residue
-fluid.ExcitedDTCC=Excited Dimensionally Transcendent Crude Catalyst
-fluid.ExcitedDTPC=Excited Dimensionally Transcendent Prosaic Catalyst
-fluid.ExcitedDTRC=Excited Dimensionally Transcendent Resplendent Catalyst
-fluid.ExcitedDTEC=Excited Dimensionally Transcendent Exotic Catalyst
-fluid.ExcitedDTSC=Excited Dimensionally Transcendent Stellar Catalyst
-fluid.antimatter=Antimatter
-fluid.protomatter=Protomatter
-fluid.PrimordialMatter=Primordial Matter
-fluid.QuarkGluonPlasma=Quark-Gluon Plasma
-fluid.PhononMedium=Phonon Medium
-fluid.PhononCrystalSolution=Phonon Crystal Solution
-fluid.RawStarMatter=Raw Star Matter
-fluid.Space=Space
-fluid.Time=Time
-
-# Slurry
-fluid.ice=Crushed Ice
-
-# Molten
-fluid.molten.glass=Molten Glass
-fluid.molten.redstone=Molten Redstone
-fluid.molten.blaze=Molten Blaze
-fluid.wet.concrete=Wet Concrete
-fluid.molten.granitered=Molten Red Granite
-fluid.molten.graniteblack=Molten Black Granite
-fluid.molten.cosmicneutronium=Molten Cosmic Neutronium
-fluid.molten.ichorium=Molten Ichorium
-
-# Plasma
-fluid.plasma.infinity=Infinity Plasma
-fluid.plasma.bedrockium=Bedrockium Plasma
-fluid.plasma.cosmicneutronium=Cosmic Neutronium Plasma
-fluid.plasma.ichorium=Ichorium Plasma
-
-# Dyes
-fluid.dye.chemical.dyeblack=Chemical Black Dye
-fluid.dye.chemical.dyeblue=Chemical Blue Dye
-fluid.dye.chemical.dyebrown=Chemical Brown Dye
-fluid.dye.chemical.dyecyan=Chemical Cyan Dye
-fluid.dye.chemical.dyegray=Chemical Gray Dye
-fluid.dye.chemical.dyegreen=Chemical Green Dye
-fluid.dye.chemical.dyelightblue=Chemical Light Blue Dye
-fluid.dye.chemical.dyelightgray=Chemical Light Gray Dye
-fluid.dye.chemical.dyelime=Chemical Lime Dye
-fluid.dye.chemical.dyemagenta=Chemical Magenta Dye
-fluid.dye.chemical.dyeorange=Chemical Orange Dye
-fluid.dye.chemical.dyepink=Chemical Pink Dye
-fluid.dye.chemical.dyepurple=Chemical Purple Dye
-fluid.dye.chemical.dyered=Chemical Red Dye
-fluid.dye.chemical.dyewhite=Chemical White Dye
-fluid.dye.chemical.dyeyellow=Chemical Yellow Dye
-fluid.dye.watermixed.dyeblack=Water Mixed Black Dye
-fluid.dye.watermixed.dyeblue=Water Mixed Blue Dye
-fluid.dye.watermixed.dyebrown=Water Mixed Brown Dye
-fluid.dye.watermixed.dyecyan=Water Mixed Cyan Dye
-fluid.dye.watermixed.dyegray=Water Mixed Gray Dye
-fluid.dye.watermixed.dyegreen=Water Mixed Green Dye
-fluid.dye.watermixed.dyelightblue=Water Mixed Light Blue Dye
-fluid.dye.watermixed.dyelightgray=Water Mixed Light Gray Dye
-fluid.dye.watermixed.dyelime=Water Mixed Lime Dye
-fluid.dye.watermixed.dyemagenta=Water Mixed Magenta Dye
-fluid.dye.watermixed.dyeorange=Water Mixed Orange Dye
-fluid.dye.watermixed.dyepink=Water Mixed Pink Dye
-fluid.dye.watermixed.dyepurple=Water Mixed Purple Dye
-fluid.dye.watermixed.dyered=Water Mixed Red Dye
-fluid.dye.watermixed.dyewhite=Water Mixed White Dye
-fluid.dye.watermixed.dyeyellow=Water Mixed Yellow Dye
-fluid.squidink=Squid Ink
-fluid.indigo=Indigo Dye
-
-# Potions
-fluid.potion.awkward=Awkward Brew
-fluid.potion.thick=Thick Brew
-fluid.potion.mundane=Mundane Brew
-
-fluid.potion.damage=Harming Brew
-fluid.potion.damage.strong=Strong Harming Brew
-fluid.potion.damage.splash=Splash Harming Brew
-fluid.potion.damage.strong.splash=Strong Splash Harming Brew
-
-fluid.potion.health=Healing Brew
-fluid.potion.health.strong=Strong Healing Brew
-fluid.potion.health.splash=Splash Healing Brew
-fluid.potion.health.strong.splash=Strong Splash Healing Brew
-
-fluid.potion.speed=Swiftness Brew
-fluid.potion.speed.strong=Strong Swiftness Brew
-fluid.potion.speed.long=Stretched Swiftness Brew
-fluid.potion.speed.splash=Splash Swiftness Brew
-fluid.potion.speed.strong.splash=Strong Splash Swiftness Brew
-fluid.potion.speed.long.splash=Stretched Splash Swiftness Brew
-
-fluid.potion.strength=Strength Brew
-fluid.potion.strength.strong=Strong Strength Brew
-fluid.potion.strength.long=Stretched Strength Brew
-fluid.potion.strength.splash=Splash Strength Brew
-fluid.potion.strength.strong.splash=Strong Splash Strength Brew
-fluid.potion.strength.long.splash=Stretched Splash Strength Brew
-
-fluid.potion.regen=Regenerating Brew
-fluid.potion.regen.strong=Strong Regenerating Brew
-fluid.potion.regen.long=Stretched Regenerating Brew
-fluid.potion.regen.splash=Splash Regenerating Brew
-fluid.potion.regen.strong.splash=Strong Splash Regenerating Brew
-fluid.potion.regen.long.splash=Stretched Splash Regenerating Brew
-
-fluid.potion.poison=Poisonous Brew
-fluid.potion.poison.strong=Strong Poisonous Brew
-fluid.potion.poison.long=Stretched Poisonous Brew
-fluid.potion.poison.splash=Splash Poisonous Brew
-fluid.potion.poison.strong.splash=Strong Splash Poisonous Brew
-fluid.potion.poison.long.splash=Stretched Splash Poisonous Brew
-
-fluid.potion.fireresistance=Fire Resistant Brew
-fluid.potion.fireresistance.long=Stretched Fire Resistant Brew
-fluid.potion.fireresistance.splash=Splash Fire Resistant Brew
-fluid.potion.fireresistance.long.splash=Stretched Splash Fire Resistant Brew
-
-fluid.potion.nightvision=Night Vision Brew
-fluid.potion.nightvision.long=Stretched Night Vision Brew
-fluid.potion.nightvision.splash=Splash Night Vision Brew
-fluid.potion.nightvision.long.splash=Stretched Splash Night Vision Brew
-
-fluid.potion.weakness=Weakening Brew
-fluid.potion.weakness.long=Stretched Weakening Brew
-fluid.potion.weakness.splash=Splash Weakening Brew
-fluid.potion.weakness.long.splash=Stretched Splash Weakening Brew
-
-fluid.potion.slowness=Lame Brew
-fluid.potion.slowness.long=Stretched Lame Brew
-fluid.potion.slowness.splash=Splash Lame Brew
-fluid.potion.slowness.long.splash=Stretched Splash Lame Brew
-
-fluid.potion.waterbreathing=Fishy Brew
-fluid.potion.waterbreathing.long=Stretched Fishy Brew
-fluid.potion.waterbreathing.splash=Splash Fishy Brew
-fluid.potion.waterbreathing.long.splash=Stretched Splash Fishy Brew
-
-fluid.potion.invisibility=Invisible Brew
-fluid.potion.invisibility.long=Stretched Invisible Brew
-fluid.potion.invisibility.splash=Splash Invisible Brew
-fluid.potion.invisibility.long.splash=Stretched Splash Invisible Brew
-
-# Beverages (bottles)
-fluid.potion.purpledrink=Purple Drink
-fluid.potion.grapejuice=Grape Juice
-fluid.potion.wine=Wine
-fluid.potion.vinegar=Vinegar
-fluid.potion.potatojuice=Potato Juice
-fluid.potion.vodka=Vodka
-fluid.potion.leninade=Leninade
-fluid.potion.mineralwater=Mineral Water
-fluid.potion.saltywater=Salty Water
-fluid.potion.reedwater=Reed Water
-fluid.potion.rum=Rum
-fluid.potion.piratebrew=Pirate Brew
-fluid.potion.hopsjuice=Hops Juice
-fluid.potion.darkbeer=Dark Beer
-fluid.potion.dragonblood=Dragon Blood
-fluid.potion.wheatyjuice=Wheaty Juice
-fluid.potion.scotch=Scotch
-fluid.potion.glenmckenner=Glen McKenner
-fluid.potion.wheatyhopsjuice=Wheaty Hops Juice
-fluid.potion.beer=Beer
-fluid.potion.chillysauce=Chilly Sauce
-fluid.potion.hotsauce=Hot Sauce
-fluid.potion.diabolosauce=Diabolo Sauce
-fluid.potion.diablosauce=Diablo Sauce
-fluid.potion.diablosauce.strong=Old Man Snitches glitched Diablo Sauce
-fluid.potion.applejuice=Apple Juice
-fluid.potion.cider=Cider
-fluid.potion.goldenapplejuice=Golden Apple Juice
-fluid.potion.goldencider=Golden Cider
-fluid.potion.idunsapplejuice=Idun's Apple Juice
-fluid.potion.notchesbrew=Notches Brew
-fluid.potion.lemonjuice=Lemon Juice
-fluid.potion.limoncello=Limoncello
-fluid.potion.lemonade=Lemonade
-fluid.potion.alcopops=Alcopops
-fluid.potion.cavejohnsonsgrenadejuice=Cave Johnsons Grenade Juice
-
-# Beverages (thermos cans)
-fluid.potion.coffee=Coffee
-fluid.potion.sweetcoffee=Sweet Coffee
-fluid.potion.Latte=Latte
-fluid.potion.sweetlatte=Sweet Latte
-fluid.potion.sweetjesuslatte=Sweet Jesus Latte
-fluid.potion.darkchocolatemilk=Dark Chocolate Milk
-fluid.potion.chocolatemilk=Chocolate Milk
-fluid.potion.tea=Tea
-fluid.potion.sweettea=Sweet Tea
-fluid.potion.icetea=Ice Tea

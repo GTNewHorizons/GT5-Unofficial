@@ -42,6 +42,7 @@ import gregtech.common.items.MetaGeneratedItem02;
 import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
+import gregtech.loaders.postload.recipes.beamcrafter.LHCNEIHandler;
 import gregtech.nei.dumper.BatchModeSupportDumper;
 import gregtech.nei.dumper.InputSeparationSupportDumper;
 import gregtech.nei.dumper.MaterialDumper;
@@ -104,7 +105,12 @@ public class NEIGTConfig implements IConfigureNEI {
             .filter(
                 recipeCategory -> recipeCategory.recipeMap.getFrontend()
                     .getNEIProperties().registerNEI)
-            .map(GTNEIDefaultHandler::new)
+            .map(recipeCategory -> {
+                if (recipeCategory == RecipeMaps.largeHadronColliderRecipes.getDefaultRecipeCategory()) {
+                    return new LHCNEIHandler(recipeCategory);
+                }
+                return new GTNEIDefaultHandler(recipeCategory);
+            })
             .sorted(RECIPE_MAP_HANDLER_COMPARATOR)
             .forEach(NEIGTConfig::addHandler);
 
