@@ -312,30 +312,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         return checkPiece(STRUCTURE_PIECE_MAIN, 8, 2, 6);
     }
 
-    private boolean isInputParticleInRecipe(BeamInformation inputParticle_A, BeamInformation inputParticle_B,
-        BeamCrafterMetadata metadata) {
-
-        int particleID_x = metadata.particleID_A;
-        int particleID_y = metadata.particleID_B;
-        float minEnergy_x = metadata.minEnergy_A;
-        float minEnergy_y = metadata.minEnergy_B;
-
-        int inputParticleID_A = inputParticle_A.getParticleId();
-        int inputParticleID_B = inputParticle_B.getParticleId();
-        float inputEnergy_A = inputParticle_A.getEnergy();
-        float inputEnergy_B = inputParticle_B.getEnergy();
-
-        // possibilities: (A = x, B = y); (A = y, B = x)
-
-        return ((inputParticleID_A == particleID_x && inputParticleID_B == particleID_y
-            && inputEnergy_A > minEnergy_x
-            && inputEnergy_B > minEnergy_y)
-            || (inputParticleID_A == particleID_y && inputParticleID_B == particleID_x
-                && inputEnergy_A > minEnergy_y
-                && inputEnergy_B > minEnergy_x));
-
-    }
-
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         return true;
