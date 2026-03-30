@@ -43,6 +43,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
 import gregtech.api.interfaces.metatileentity.IFluidLockable;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -54,7 +55,8 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.SpecialChars;
 
-public abstract class MTEDigitalTankBase extends MTEBasicTank implements IFluidLockable, IAddGregtechLogo {
+public abstract class MTEDigitalTankBase extends MTEBasicTank
+    implements IFluidLockable, IFluidContainerItemMetaTile, IAddGregtechLogo {
 
     public boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
     protected String lockedFluidName = null;
@@ -659,5 +661,10 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank implements IFluidL
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(116, 63)
                 .setSize(18, 18));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

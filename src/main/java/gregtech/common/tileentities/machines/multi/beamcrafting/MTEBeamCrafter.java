@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER_ACTIVE;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.recipe.RecipeMaps.BEAMCRAFTER_METADATA;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -263,6 +264,14 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     }
 
+    private int progressContribution(int currentAmount, int maxAmount, int rate) {
+        if (currentAmount <= maxAmount) {
+            return rate;
+        } else {
+            return (currentAmount - maxAmount);
+        }
+    }
+
     @Override
     protected void incrementProgressTime() {
 
@@ -270,16 +279,38 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         BeamInformation inputParticle_B = this.getNthInputParticle(1);
 
         if (inputParticle_A != null && inputParticle_B != null) {
-            int particleRateA = inputParticle_A.getRate();
-            int particleRateB = inputParticle_B.getRate();
+            int inputParticleRateA = inputParticle_A.getRate();
+            int inputParticleRateB = inputParticle_B.getRate();
+            int inputParticleIDA = inputParticle_A.getParticleId();
+            int inputParticleIDB = inputParticle_B.getParticleId();
 
-            this.currentRecipeCurrentAmountA += particleRateA;
-            if (this.currentRecipeCurrentAmountA <= currentRecipeMaxAmountA) {
-                mProgresstime += particleRateA;
+            // beamline input hatch array matches order of particles from recipe
+            if (inputParticleIDA == this.currentRecipeParticleIDA) {
+                this.currentRecipeCurrentAmountA += inputParticleRateA;
+                mProgresstime += this.progressContribution(
+                    this.currentRecipeCurrentAmountA,
+                    this.currentRecipeMaxAmountA,
+                    inputParticleRateA);
+
+                this.currentRecipeCurrentAmountB += inputParticleRateB;
+                mProgresstime += this.progressContribution(
+                    this.currentRecipeCurrentAmountB,
+                    this.currentRecipeMaxAmountB,
+                    inputParticleRateB);
             }
-            this.currentRecipeCurrentAmountB += particleRateB;
-            if (this.currentRecipeCurrentAmountB <= currentRecipeMaxAmountB) {
-                mProgresstime += particleRateB;
+            // beamline input hatch array does NOT match order of particles from recipe
+            else {
+                this.currentRecipeCurrentAmountA += inputParticleRateB;
+                mProgresstime += this.progressContribution(
+                    this.currentRecipeCurrentAmountA,
+                    this.currentRecipeMaxAmountA,
+                    inputParticleRateB);
+
+                this.currentRecipeCurrentAmountB += inputParticleRateA;
+                mProgresstime += this.progressContribution(
+                    this.currentRecipeCurrentAmountB,
+                    this.currentRecipeMaxAmountB,
+                    inputParticleRateA);
             }
         }
     }
@@ -343,7 +374,16 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 
         tRecipe.consumeInput(1, inputFluids, inputItems);
-        this.mOutputItems = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
+
+        if (tRecipe.mOutputChances != null && tRecipe.mOutputs != null) {
+            for (int i = 0; i < tRecipe.mOutputChances.length; i++) {
+                if (XSTR_INSTANCE.nextInt(10000) < tRecipe.mOutputChances[i]) {
+                    this.mOutputItems[i] = tRecipe.mOutputs[i].copy();
+                }
+            }
+        } else {
+            this.mOutputItems = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
+        }
 
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;

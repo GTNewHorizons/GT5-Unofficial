@@ -133,6 +133,10 @@ public class MTEBasicHull extends MTEBasicTank {
     }
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
     public String[] getDescription() {
         return GTSplit.splitLocalized("gt.blockmachines.basic_hull.desc");
     }
