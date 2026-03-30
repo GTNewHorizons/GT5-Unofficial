@@ -98,6 +98,9 @@ public final class GTInflectionManager {
      * and replacement.<br>
      * Special cases can be defined via the localization key <code>formatterKey.key</code> to override the default
      * inflection result.<br>
+     * Supports a slash ({@code /}) in {@code key} for secondary replacement:<br>
+     * {@code "prefix/rest"} first attempts to translate {@code formatterKey.prefix} as the base word, then applies the
+     * {@code rest} inflection rule.<br>
      * See <code>assets/gregtech/inflection/en_US.example.json</code> for an example JSON format.
      * <p>
      * On the client side, words are replaced according to the inflection rules; on the server side, inflection markers
@@ -106,7 +109,7 @@ public final class GTInflectionManager {
      * bounds, a warning is logged and a fallback result without inflection is returned via {@link String#format}.<br>
      * JSON content that does not conform to the expected format is ignored and logged.
      * <p>
-     * 
+     *
      * @param inputKey     localization key for the template string
      * @param formatterKey varargs of localization keys corresponding to placeholders
      * @return the formatted string
@@ -184,6 +187,21 @@ public final class GTInflectionManager {
         String word = StatCollector.translateToLocal(formatterKey);
         if (key == null || key.isEmpty()) {
             return word;
+        }
+        if (key.contains("/")) {
+            String[] temp = key.split("/", 2);
+            String secondaryKey = formatterKey + "." + temp[0];
+            key = temp[1];
+            if (key.isEmpty()) {
+                GT_FML_LOGGER.warn("Rule key is empty");
+                return word;
+            }
+            if (StatCollector.canTranslate(secondaryKey)) {
+                word = StatCollector.translateToLocal(secondaryKey);
+            } else {
+                GT_FML_LOGGER
+                    .warn("Set key '{}', but unable to translate key '{}', using base word", temp[0], secondaryKey);
+            }
         }
         String specialCaseKey = formatterKey + "." + key;
         if (StatCollector.canTranslate(specialCaseKey)) {
