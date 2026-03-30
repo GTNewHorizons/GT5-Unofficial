@@ -47,6 +47,7 @@ import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoltageIndex;
@@ -157,49 +158,28 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace, MEBF, MBF")
+        tt.addMachineType("machtype.mebf")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo(
-                TooltipHelper.effText("-5%") + " EU Usage per "
-                    + TooltipHelper.coloredText("900K", EnumChatFormatting.RED)
-                    + " above the recipe requirement")
-            .addSeparator()
-            .addInfo(
-                "Increases Heat by " + EnumChatFormatting.RED
-                    + "100K"
-                    + EnumChatFormatting.GRAY
-                    + " for every "
-                    + TooltipHelper.tierText("Voltage")
-                    + " tier past "
-                    + EnumChatFormatting.AQUA
-                    + "MV")
-            .addInfo(
-                "Every " + EnumChatFormatting.RED
-                    + "1800K"
-                    + EnumChatFormatting.GRAY
-                    + " over the recipe requirement grants 1 "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Perfect Overclock")
-            .addSeparator()
+            .addInfo("gt.mebf.tips")
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 20, 15, true)
-            .addController("3rd layer center")
-            .addCasingInfoRange("Heat Proof Machine Casing", 0, 447, false)
-            .addCasingInfoExactly("Heating Coils", 864, true)
-            .addCasingInfoExactly("Any Tiered Glass", 1007, true)
-            .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addEnergyHatch("Any bottom layer casing")
-            .addMaintenanceHatch("Any bottom layer casing")
-            .addMufflerHatch("Top middle")
-            .addInputBus("Any bottom layer casing")
-            .addInputHatch("Any bottom layer casing")
-            .addOutputBus("Any bottom layer casing")
-            .addOutputHatch("Any Heat Proof Machine Casing")
-            .addStructureHint("This Mega Multiblock is too big to have its structure hologram displayed fully.")
+            .addController("gt.mebf.info.controller")
+            .addCasingInfoRange(Casings.HeatProofMachineCasing.getLocalizedName(), 0, 447, false)
+            .addCasingInfoExactly("GT5U.tooltip.structure.heating_coil", 864, true)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 1007, true)
+            .addStructureInfo("gt.mebf.info")
+            .addEnergyHatch("<bottom casing>")
+            .addMaintenanceHatch("<bottom casing>")
+            .addMufflerHatch("gt.ebf.info.muffler")
+            .addInputBus("<bottom casing>")
+            .addInputHatch("<bottom casing>")
+            .addOutputBus("<bottom casing>")
+            .addOutputHatch(TooltipHelper.anyCasingText(Casings.HeatProofMachineCasing))
+            .addStructureHint("GT5U.MBTT.Structure.MegaNoFullDisplay")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();

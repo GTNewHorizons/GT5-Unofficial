@@ -1075,6 +1075,7 @@ GT5U.MBTT.Structure.GlassEnergyLimitTier=Energy Hatch limited by Glass tier, %s%
 GT5U.MBTT.Structure.NoTierSkips=This machine can only run recipes matching its average energy hatch tier
 GT5U.MBTT.Structure.MaxTierSkips=This machine can run recipes at most %d tiers above its average energy hatch tier
 GT5U.MBTT.Structure.UnlimitedTierSkips=This machine can run recipes regardless of tier, if given enough energy
+GT5U.MBTT.Structure.MegaNoFullDisplay=This Mega Multiblock is too big to have its structure hologram displayed fully.
 gt.mbtt.structure.front_center=Front center
 gt.mbtt.structure.back_center=Back center
 gt.mbtt.structure.front_bottom_center=Front bottom center
@@ -6522,6 +6523,7 @@ machtype.bacvat=Bacterial Vat, Bac Vat
 machtype.manual_trafo=Transformer
 machtype.thtr=High Temperature Reactor, THTR
 machtype.cal=Circuit Assembler, CAL
+machtype.mebf=Blast Furnace, MEBF, MBF
 
 # Multiblock Tooltip lines
 gt.thtr.tips=Needs to be primed with %s of helium\nNeeds a constant supply of §bcoolant§7 while running\nNeeds at least §6100K§7 Fuel pebbles to start operation (can hold up to 675k pebbles)\nConsumes up to §60.5%%§7 of total Fuel Pellets per Operation depending on efficiency\nEfficiency decreases exponentially if the internal buffer is not completely filled\nReactor will take §b4800L/t§7 of coolant multiplied by efficiency\nUses %s EU/t\nOne Operation takes 9 hours
@@ -6896,8 +6898,12 @@ gt.lcr.info.1=Center
 gt.lcr.info.2=Adjacent to the PTFE Pipe Machine Casing
 gt.lcr.info.3=You can have multiple hatches/buses
 
-gt.ebf.tips=You can use some fluids to reduce recipe time. Place the circuit in the Input Bus\nIncreases Heat by §c100K §7for every §fVoltage §7tier past §bMV\nReduces §bEU Usage §7by §f5% §7every §c900K §7above the recipe requirement\nEvery §c1800K §7over the recipe requirement grants 1 §dPerfect Overclock\nThat means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)
+gt.ebf.tips=You can use some fluids to reduce recipe time. Place the circuit in the Input Bus\nIncreases Heat by §c100K§7 for every §fVoltage§7 tier past §bMV\nReduces §bEU Usage§7 by §f5%§7 every §c900K§7 above the recipe requirement\nEvery §c1800K§7 over the recipe requirement grants 1 §dPerfect Overclock\nThat means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)
 gt.ebf.info.muffler=Top middle
+
+gt.mebf.tips=§b-5% EU Usage per §c900K§7 above the recipe requirement<SEPARATOR>Increases Heat by §c100K§7 for every §fVoltage§7 tier past §bMV\nEvery §c1800K§7 over the recipe requirement grants 1 §dPerfect Overclock<SEPARATOR>
+gt.mebf.info.controller=3rd layer center
+gt.mebf.info=The glass tier limits the Energy Input tier
 
 gt.mfe.tips.1=Use screwdriver to switch mode\nInsert an electromagnet into the electromagnet housing to use\nBetter electromagnets give further bonuses\nWith Tengam electromagnet, multi-amp (NOT laser) hatches are allowed
 gt.mfe.info.1=1 Block Above/Behind Controller
