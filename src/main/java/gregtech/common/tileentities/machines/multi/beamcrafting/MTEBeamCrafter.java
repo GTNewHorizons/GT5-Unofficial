@@ -65,16 +65,16 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     private GTRecipe lastRecipe;
 
-
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("currentRecipeCurrentAmountA",this.currentRecipeCurrentAmountA);
-        aNBT.setInteger("currentRecipeCurrentAmountB",this.currentRecipeCurrentAmountB);
-        aNBT.setInteger("currentRecipeMaxAmountA",this.currentRecipeMaxAmountA);
-        aNBT.setInteger("currentRecipeMaxAmountB",this.currentRecipeMaxAmountB);
-        aNBT.setInteger("currentRecipeParticleIDA",this.currentRecipeParticleIDA);
-        aNBT.setInteger("currentRecipeParticleIDB",this.currentRecipeParticleIDB);
+        aNBT.setInteger("currentRecipeCurrentAmountA", this.currentRecipeCurrentAmountA);
+        aNBT.setInteger("currentRecipeCurrentAmountB", this.currentRecipeCurrentAmountB);
+        aNBT.setInteger("currentRecipeMaxAmountA", this.currentRecipeMaxAmountA);
+        aNBT.setInteger("currentRecipeMaxAmountB", this.currentRecipeMaxAmountB);
+        aNBT.setInteger("currentRecipeParticleIDA", this.currentRecipeParticleIDA);
+        aNBT.setInteger("currentRecipeParticleIDB", this.currentRecipeParticleIDB);
     }
+
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.currentRecipeCurrentAmountA = aNBT.getInteger("currentRecipeCurrentAmountA");
@@ -337,13 +337,13 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     }
 
     @Override
-    public boolean onRunningTick(ItemStack aStack){
+    public boolean onRunningTick(ItemStack aStack) {
         return true;
     }
 
     private int progressContribution(int currentAmount, int maxAmount, int rate) {
 
-        return Math.max(0,Math.min(rate,(maxAmount-currentAmount)));
+        return Math.max(0, Math.min(rate, (maxAmount - currentAmount)));
 
     }
 
@@ -368,25 +368,35 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         }
 
         // progress from input A. elseif prevents double count when A=B
-        if (isInputARecipeA){
-            int progressAA = progressContribution(currentRecipeCurrentAmountA,currentRecipeMaxAmountA,inputParticle_A.getRate());
+        if (isInputARecipeA) {
+            int progressAA = progressContribution(
+                currentRecipeCurrentAmountA,
+                currentRecipeMaxAmountA,
+                inputParticle_A.getRate());
             mProgresstime += progressAA;
             currentRecipeCurrentAmountA += progressAA;
-        }
-        else if (isInputARecipeB){
-            int progressAB = progressContribution(currentRecipeCurrentAmountB,currentRecipeMaxAmountB,inputParticle_A.getRate());
+        } else if (isInputARecipeB) {
+            int progressAB = progressContribution(
+                currentRecipeCurrentAmountB,
+                currentRecipeMaxAmountB,
+                inputParticle_A.getRate());
             mProgresstime += progressAB;
             currentRecipeCurrentAmountB += progressAB;
 
         }
         // progress from input B
-        if (isInputBRecipeB){
-            int progressBB = progressContribution(currentRecipeCurrentAmountB,currentRecipeMaxAmountB,inputParticle_B.getRate());
+        if (isInputBRecipeB) {
+            int progressBB = progressContribution(
+                currentRecipeCurrentAmountB,
+                currentRecipeMaxAmountB,
+                inputParticle_B.getRate());
             mProgresstime += progressBB;
             currentRecipeCurrentAmountB += progressBB;
-        }
-        else if (isInputBRecipeA){
-            int progressBA = progressContribution(currentRecipeCurrentAmountA,currentRecipeMaxAmountA,inputParticle_B.getRate());
+        } else if (isInputBRecipeA) {
+            int progressBA = progressContribution(
+                currentRecipeCurrentAmountA,
+                currentRecipeMaxAmountA,
+                inputParticle_B.getRate());
             mProgresstime += progressBA;
             currentRecipeCurrentAmountA += progressBA;
         }
@@ -438,20 +448,18 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
         tRecipe.consumeInput(1, inputFluids, inputItems);
 
-        if (tRecipe.mOutputs != null){
+        if (tRecipe.mOutputs != null) {
             this.mOutputItems = new ItemStack[tRecipe.mOutputs.length];
-            if (tRecipe.mOutputChances != null){
+            if (tRecipe.mOutputChances != null) {
                 for (int i = 0; i < tRecipe.mOutputChances.length; i++) {
                     if (XSTR_INSTANCE.nextInt(10000) < tRecipe.mOutputChances[i]) {
                         this.mOutputItems[i] = tRecipe.mOutputs[i].copy();
                     }
                 }
-            }
-            else {
+            } else {
                 this.mOutputItems = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
             }
         }
-
 
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;

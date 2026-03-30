@@ -1,5 +1,4 @@
 package gregtech.loaders.postload.recipes.beamcrafter;
-import bartworks.system.material.WerkstoffLoader;
 
 import static gregtech.api.recipe.RecipeMaps.BEAMCRAFTER_METADATA;
 import static gregtech.api.recipe.RecipeMaps.beamcrafterRecipes;
@@ -23,6 +22,7 @@ import static gtnhlanth.common.beamline.Particle.UPSILON;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
