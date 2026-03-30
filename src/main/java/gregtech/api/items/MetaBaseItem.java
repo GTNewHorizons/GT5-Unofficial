@@ -7,6 +7,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -251,6 +253,12 @@ public abstract class MetaBaseItem extends GTGenericItem
         if (tooltipSupplier != null) {
             Collections.addAll(aList, GTSplit.split(tooltipSupplier.get()));
         }
+        final String key = getUnlocalizedName() + "." + aStack.getItemDamage() + ".tooltip";
+        if (StatCollector.canTranslate(key)) Collections.addAll(
+            aList,
+            Arrays.stream(GTSplit.splitLocalized(key))
+                .filter(GTUtility::isStringValid)
+                .toArray(String[]::new));
         Long[] tStats = getElectricStats(aStack);
         if (tStats != null) {
             if (tStats[3] > 0) {
