@@ -329,6 +329,10 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         BeamInformation inputParticle_A = this.getNthInputParticle(0);
         BeamInformation inputParticle_B = this.getNthInputParticle(1);
 
+        // we need to check all four cases. two cases for the particles matching up with what's shown in NEI, two cases
+        // for when they're exactly opposite.
+        // in both sets, explicitly check that the particleIDs match what the recipe demands, so there is no chance of
+        // gaining progress from a completely different third particle (if it happens to be provided)
         boolean isInputARecipeA = false;
         boolean isInputARecipeB = false;
         boolean isInputBRecipeA = false;
