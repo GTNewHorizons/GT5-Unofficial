@@ -162,17 +162,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         tt.addMachineType("machtype.purif_plant")
             .addInfo("gt.purification_plant.tips.1", MAX_UNIT_DISTANCE)
             .addTecTechHatchInfo()
-            .addSeparator()
-            .addInfo("gt.purification_plant.tips.2", CYCLE_TIME_TICKS / SECONDS)
-            .addSeparator()
             .addInfo(
-                "gt.purification_plant.tips.3",
+                "gt.purification_plant.tips.2",
+                CYCLE_TIME_TICKS / SECONDS,
                 formatNumber(WATER_BOOST_NEEDED_FLUID * 100),
                 formatNumber(WATER_BOOST_BONUS_CHANCE * 100))
-            .addSeparator()
-            .addInfo("gt.purification_plant.tips.4")
-            .addSeparator()
-            .addInfo("gt.purification_plant.tips.5")
             .beginStructureBlock(7, 9, 8, false)
             .addController("front_center")
             .addCasingInfoExactly(
@@ -186,8 +180,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 77)
             .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Tungsten), 30)
             .addCasingInfoExactly("gt.blocktintedglass.name", 6)
-            .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
+            .addEnergyHatch("§61", 1)
+            .addMaintenanceHatch("§61", 1)
             .addStructureInfo("gt.purification_plant.info.1")
             .toolTipFinisher();
         return tt;
