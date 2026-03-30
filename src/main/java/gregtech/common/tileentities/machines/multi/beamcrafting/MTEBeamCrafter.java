@@ -17,6 +17,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -63,6 +64,27 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     private int currentRecipeParticleIDB;
 
     private GTRecipe lastRecipe;
+
+
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("currentRecipeCurrentAmountA",this.currentRecipeCurrentAmountA);
+        aNBT.setInteger("currentRecipeCurrentAmountB",this.currentRecipeCurrentAmountB);
+        aNBT.setInteger("currentRecipeMaxAmountA",this.currentRecipeMaxAmountA);
+        aNBT.setInteger("currentRecipeMaxAmountB",this.currentRecipeMaxAmountB);
+        aNBT.setInteger("currentRecipeParticleIDA",this.currentRecipeParticleIDA);
+        aNBT.setInteger("currentRecipeParticleIDB",this.currentRecipeParticleIDB);
+    }
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        this.currentRecipeCurrentAmountA = aNBT.getInteger("currentRecipeCurrentAmountA");
+        this.currentRecipeCurrentAmountB = aNBT.getInteger("currentRecipeCurrentAmountB");
+        this.currentRecipeMaxAmountA = aNBT.getInteger("currentRecipeMaxAmountA");
+        this.currentRecipeMaxAmountB = aNBT.getInteger("currentRecipeMaxAmountB");
+        this.currentRecipeParticleIDA = aNBT.getInteger("currentRecipeParticleIDA");
+        this.currentRecipeParticleIDB = aNBT.getInteger("currentRecipeParticleIDB");
+
+    }
 
     private static final IStructureDefinition<MTEBeamCrafter> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEBeamCrafter>builder()
