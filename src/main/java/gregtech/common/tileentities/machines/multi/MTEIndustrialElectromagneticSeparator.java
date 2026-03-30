@@ -33,7 +33,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -83,24 +83,23 @@ public class MTEIndustrialElectromagneticSeparator
         }
 
         public static String buildMagnetTooltip(MagnetTiers m) {
-            String tooltip = "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
-                + "Speed: +"
-                + Math.round((1F / m.speedBoost * 100) - 100)
-                + "%/n "
-                + EnumChatFormatting.DARK_PURPLE
-                + "EU Usage: "
-                + Math.round(m.euModifier * 100)
-                + "%/n "
-                + EnumChatFormatting.AQUA
-                + "Parallel: "
-                + m.maxParallel;
+            String tooltip = GTUtility.translate(
+                "gt.magnet.tooltip.base",
+                EnumChatFormatting.LIGHT_PURPLE,
+                Math.round((1F / m.speedBoost * 100) - 100),
+                EnumChatFormatting.DARK_PURPLE,
+                Math.round(m.euModifier * 100),
+                EnumChatFormatting.AQUA,
+                m.maxParallel);
 
-            if (m.supportsExotic) tooltip = tooltip + "/n "
-                + EnumChatFormatting.BOLD
-                + EnumChatFormatting.GREEN
-                + "Can Use Multi-Amp Hatches/n "
-                + EnumChatFormatting.RED
-                + "Limit to one energy hatch if using Multi-Amp";
+            if (m.supportsExotic) {
+                tooltip = tooltip + "\\n"
+                    + GTUtility.translate(
+                        "gt.magnet.tooltip.exotic",
+                        EnumChatFormatting.BOLD,
+                        EnumChatFormatting.GREEN,
+                        EnumChatFormatting.RED);
+            }
 
             return tooltip;
         }
@@ -223,7 +222,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addEnergyHatch("<casing>", 1)
             .addMaintenanceHatch("<casing>", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTValues.authorBaps);
+            .toolTipFinisher(GTAuthors.authorBaps);
         return tt;
     }
 

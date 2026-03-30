@@ -52,7 +52,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import appeng.api.AEApi;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
@@ -1000,7 +1000,8 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addDynamoHatch("gt.wormhole_gen.info.2", 2)
             .addEnergyHatch("gt.wormhole_gen.info.2", 2)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTValues.AuthorPineapple + GTUtility.translate("gt.wormhole_gen.extra_author_info"));
+            .toolTipFinisher(GTAuthors.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
+        // spotless:on
 
         return tt;
     }

@@ -15,7 +15,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -157,7 +157,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
             .addCasingInfoExactly("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch", 1)
             .addCasingInfoExactly("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTValues.AuthorHamCorp);
+            .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;
     }
 

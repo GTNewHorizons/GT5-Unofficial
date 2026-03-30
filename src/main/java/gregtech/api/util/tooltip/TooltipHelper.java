@@ -5,6 +5,7 @@ import static gregtech.api.util.GTUtility.translate;
 import java.text.DecimalFormat;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
@@ -156,7 +157,7 @@ public class TooltipHelper {
     public static String voltageTierText(int voltageIndex, boolean withTierSuffix) {
         if (voltageIndex < VoltageIndex.ULV || voltageIndex > VoltageIndex.MAX) return translate("GT5U.MBTT.ErrorTier");
         return translate(
-            withTierSuffix ? "GT5U.MBTT.Tier" : "%s",
+            withTierSuffix ? "gt.voltage.tier" : "%s",
             GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex] + EnumChatFormatting.GRAY);
     }
 
@@ -187,10 +188,9 @@ public class TooltipHelper {
      * @return A string of the form "[lossPerMeter] EU-Volt"
      */
     public static String cableLossText(long lossPerMeter) {
-        return CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter)
-            + " "
-            + EnumChatFormatting.GRAY
-            + GTUtility.translate("GT5U.item.cable.eu_volt");
+        return GTUtility.translate(
+            "GT5U.item.cable.loss.eu_volt",
+            CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter) + EnumChatFormatting.GRAY);
     }
 
     /**

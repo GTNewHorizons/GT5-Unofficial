@@ -86,8 +86,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         tt.addMachineType(getMachineType())
             .addInfo(
                 "gt.solar_tower.tips",
-                MaterialMisc.SOLAR_SALT_COLD.getTranslatedName(),
-                MaterialMisc.SOLAR_SALT_HOT.getTranslatedName())
+                MaterialMisc.SOLAR_SALT_COLD.getDefaultLocalName(),
+                MaterialMisc.SOLAR_SALT_HOT.getDefaultLocalName())
             .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false)
             .addController("top_center")
             .addCasingInfoMin("gtplusplus.blockspecialcasings.1.6.name", 229)

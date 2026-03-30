@@ -165,7 +165,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.blockmachines.multimachine.ig.siphon.type");
-        if (TooltipUtil.siphonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.siphonLoreText);
+        if (TooltipUtil.siphonLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.siphonLoreText));
         tt.addInfo("gt.blockmachines.multimachine.ig.siphon.desc1")
             .beginStructureBlock(3, 7, 3, false)
             .addController("front_bottom_center")

@@ -426,7 +426,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.blockmachines.multimachine.ig.dyson.type");
-        if (TooltipUtil.dysonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.dysonLoreText);
+        if (TooltipUtil.dysonLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.dysonLoreText));
 
         tt.addInfo(
             "gt.blockmachines.multimachine.ig.dyson.desc1",

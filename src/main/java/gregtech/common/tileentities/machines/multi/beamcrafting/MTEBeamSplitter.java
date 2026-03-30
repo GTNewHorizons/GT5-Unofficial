@@ -16,7 +16,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -163,7 +163,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
             .addCasingInfoExactly("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered", 4)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addTecTechHatchInfo()
-            .toolTipFinisher(GTValues.AuthorHamCorp);
+            .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;
     }
 

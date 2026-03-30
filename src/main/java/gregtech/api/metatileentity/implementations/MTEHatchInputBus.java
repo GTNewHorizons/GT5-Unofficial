@@ -32,19 +32,21 @@ import gregtech.GTMod;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputBusGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitSupport {
 
     private static final String SORTING_MODE_TOOLTIP = "GT5U.machines.sorting_mode.tooltip";
@@ -66,17 +68,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     public MTEHatchInputBus(int id, String name, String nameRegional, int tier, int slots) {
-        super(
-            id,
-            name,
-            nameRegional,
-            tier,
-            slots,
-            ArrayExt.of(
-                GTUtility.nestParams(
-                    "gt.te.input_bus.desc",
-                    getSlots(tier),
-                    (getSlots(tier) >= 2 ? "gt.te.stack.plural" : "gt.te.stack.singular"))));
+        super(id, name, nameRegional, tier, slots, (String) null);
     }
 
     public MTEHatchInputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -538,5 +530,12 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             }
         }
         super.onDescriptionPacket(data);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedFormatted(
+            getSlots(mTier) >= 2 ? "gt.blockmachines.input_bus.desc" : "gt.blockmachines.input_bus.singular.desc",
+            getSlots(mTier));
     }
 }

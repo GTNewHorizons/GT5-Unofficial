@@ -14,16 +14,16 @@
 package bartworks.common.tileentities.tiered;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEGiantOutputHatch extends MTEHatchOutput {
 
     public MTEGiantOutputHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
-        this.mDescriptionArray[0] = GTUtility.nestParams("gt.te.output_hatch.desc", getCapacity());
     }
 
     public MTEGiantOutputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

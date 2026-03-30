@@ -34,10 +34,14 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.primitives.Ints;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 
+import gregtech.GTMod;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.structure.IStructureChannels;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
+
+import javax.annotation.Nullable;
 
 /**
  * This makes it easier to build multi tooltips, with a standardized format. <br>
@@ -1000,7 +1004,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Call at the very end.<br>
-     * Adds a line jump with configurable color and length.<br>
+     * Adds a line jump with configurable color.<br>
      * Adds information on how to display the structure guidelines.<br>
      * Adds credit for creators of this multi, if any.<br>
      * <p>
@@ -1009,28 +1013,55 @@ public class MultiblockTooltipBuilder {
      * @param separatorColor Color of the separator line
      * @param authors        Formatted names of the creators of this multiblock machine - if any
      */
+    public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, @Nullable String... authors) {
+        this.addAuthors(authors);
+        return toolTipFinisher(separatorColor);
+    }
 
-    public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, String... authors) {
-        Collections.addAll(this.authors, authors);
+    /**
+     * Call at the very end.<br>
+     * Adds a line jump with configurable color and length.<br>
+     * Adds information on how to display the structure guidelines.<br>
+     * Adds credit for creators of this multi, if any.<br>
+     * <p>
+     * Ends the building process.
+     *
+     * @param separatorColor  Color of the separator line
+     * @param separatorLength Length of the separator line
+     * @param authors         Formatted names of the creators of this multiblock machine - if any
+     */
+    public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength,
+        @Nullable String... authors) {
+        this.addAuthors(authors);
+        return toolTipFinisher(separatorColor, separatorLength);
+    }
+
+    /**
+     * Call at the very end.<br>
+     * Adds a line jump with configurable color and length.<br>
+     * Adds information on how to display the structure guidelines.<br>
+     * Adds credit for creators of this multi, if any.<br>
+     * <p>
+     * Ends the building process.
+     *
+     * @param separatorColor Color of the separator line
+     */
+
+    public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor) {
 
         addInfo(separatorColor + FINISHER_MARK);
         addInfo("GT5U.MBTT.HoldDisplay");
 
-        if (!this.authors.isEmpty()) {
-            if (this.authors.size() == 1 && StatCollector.canTranslate(this.authors.get(0))) {
-                addInfo(this.authors.get(0));
-            } else {
-                addInfo(
-                    "GT5U.MBTT.Authors",
-                    String.join(EnumChatFormatting.GRAY + " & " + EnumChatFormatting.GREEN, this.authors));
-            }
-        }
-        if (!this.structureAuthors.isEmpty()) {
+        if (!authors.isEmpty() && !structureAuthors.isEmpty()) {
             addInfo(
-                translate(
-                    TT_StructureAuthor,
-                    String.join(EnumChatFormatting.GRAY + " & " + EnumChatFormatting.GREEN, this.structureAuthors)));
+                "GT5U.MBTT.AuthorsX",
+                GTAuthors.formatAuthors(authors), GTAuthors.formatAuthors(structureAuthors));
+        } else if (!this.authors.isEmpty()) {
+            addInfo(
+                "GT5U.MBTT.Authors",
+                GTAuthors.formatAuthors(authors));
         }
+
 
         addStructureInfo(EnumChatFormatting.GRAY + STRUCTURE_SEPARATOR_MARK);
 

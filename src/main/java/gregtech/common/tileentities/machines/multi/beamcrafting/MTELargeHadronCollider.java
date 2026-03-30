@@ -33,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -41,6 +42,8 @@ import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -309,7 +312,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             .addCasingInfoExactly("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch", 1)
             .addCasingInfoExactly("gt.blockmachines.multimachine.beamcrafting.ttanyneonite", 73)
             .addTecTechHatchInfo()
-            .toolTipFinisher(GTValues.AuthorHamCorp);
+            .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;
     }
 
@@ -445,6 +448,11 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     @Override
     public byte getUpdateData() {
         return (byte) ((machineMode == MACHINEMODE_COLLIDER) ? MACHINEMODE_COLLIDER : MACHINEMODE_ACCELERATOR);
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.largeHadronColliderRecipes;
     }
 
     @NotNull

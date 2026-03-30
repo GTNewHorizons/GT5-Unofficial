@@ -35,13 +35,16 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IFluidLockable;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLockable {
 
     protected String lockedFluidName = null;
@@ -49,13 +52,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     public byte mMode = 0;
 
     public MTEHatchOutput(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            4,
-            new String[] { GTUtility.nestParams("gt.te.output_hatch.desc", formatNumber(8000L * (1L << aTier))) });
+        super(aID, aName, aNameRegional, aTier, 4, (String) null);
     }
 
     public MTEHatchOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -445,5 +442,10 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                 .setMaxWidth(65)
                 .setPos(101, 30))
             .widget(new FakeSyncWidget.ByteSyncer(() -> mMode, val -> mMode = val));
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.output_hatch.desc", formatNumber(getCapacity()));
     }
 }

@@ -114,6 +114,7 @@ import gregtech.loaders.postload.GTPostLoad;
 import gregtech.loaders.postload.GTWorldgenloader;
 import gregtech.loaders.postload.ItemMaxStacksizeLoader;
 import gregtech.loaders.postload.MachineRecipeLoader;
+import gregtech.loaders.postload.MachineTooltipsLoader;
 import gregtech.loaders.postload.MissingMappingsHandler;
 import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.postload.RecyclerBlacklistLoader;
@@ -534,6 +535,7 @@ public class GTMod {
         GT_FML_LOGGER.info("Executed delayed Crafting Recipes (" + stopwatch.stop() + "). Have a Cake.");
 
         GTLog.out.println("GTMod: Saving Lang File.");
+        new MachineTooltipsLoader().run();
         GTLanguageManager.sEnglishFile.save();
         GregTechAPI.sPostloadFinished = true;
         GTLog.out.println("GTMod: PostLoad-Phase finished!");

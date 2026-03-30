@@ -9,18 +9,20 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class AntimatterOutputHatch extends MTEHatchOutput {
 
     private static final FluidStack ANTIMATTER = Materials.Antimatter.getFluid(1);
 
     public AntimatterOutputHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 11);
-        this.mDescriptionArray[0] = "gt.te.output_hatch_antimatter.desc";
     }
 
     public AntimatterOutputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -80,6 +82,11 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
     @Override
     public boolean isLiquidOutput(ForgeDirection side) {
         return side == getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.output_hatch_antimatter.desc");
     }
 
     @Override

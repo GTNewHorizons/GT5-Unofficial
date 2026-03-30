@@ -37,7 +37,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -153,7 +153,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             .addOutputHatch("<bottom casing>", 1)
             .addEnergyHatch("<bottom casing>", 1)
             .addMaintenanceHatch("<bottom casing>", 1)
-            .toolTipFinisher(GTValues.AuthorKuba, "Prometheus0000");
+            .toolTipFinisher(GTAuthors.AuthorKuba, "Prometheus0000");
         return tt;
     }
 

@@ -33,15 +33,17 @@ import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTItemTransfer;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.extensions.ArrayExt;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataCopyable, IAddGregtechLogo, IOutputBus {
 
     private static final String DATA_STICK_DATA_TYPE = "outputBusFilter";
@@ -54,17 +56,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
     }
 
     public MTEHatchOutputBus(int id, String name, String nameRegional, int tier, int slots) {
-        super(
-            id,
-            name,
-            nameRegional,
-            tier,
-            slots,
-            ArrayExt.of(
-                GTUtility.nestParams(
-                    "gt.te.output_bus.desc",
-                    getSlots(tier),
-                    (getSlots(tier) >= 2 ? "gt.te.stack.plural" : "gt.te.stack.singular"))));
+        super(id, name, nameRegional, tier, slots, (String) null);
     }
 
     public MTEHatchOutputBus(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -488,5 +480,12 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
 
             active = false;
         }
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedFormatted(
+            getSlots(mTier) >= 2 ? "gt.blockmachines.output_bus.desc" : "gt.blockmachines.output_bus.singular.desc",
+            getSlots(mTier));
     }
 }
