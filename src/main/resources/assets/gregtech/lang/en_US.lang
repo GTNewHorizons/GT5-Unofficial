@@ -3691,7 +3691,7 @@ gt.item.cover.needs_maintenance.tooltip=Attach to Multiblock Controller. Emits R
 
 ## Wireless Energy Cover
 gt.item.wireless_energy_cover.name=%s Wireless Energy Cover
-gt.item.wireless_energy_cover.tooltip=Stores energy globally in a network, up to 2^(2^31) EU.\nDoes not connect to wires. This cover withdraws EU from the network.\nIgnores voltage limitations (no explosions).
+gt.item.wireless_energy_cover.tooltip=Stores energy globally in a network, up to 2^(2^31) EU.\nDoes not connect to wires. This cover withdraws EU from the network.\nIgnores voltage limitations (no explosions).\n%s\n%s
 gt.item.wireless_energy_cover_debug.name=Debug Wireless Energy Cover
 gt.item.wireless_energy_cover_debug.tooltip=Infinite Power. Ignores Voltage Limitations.
 
@@ -7847,6 +7847,17 @@ gt.Book.Microwave Oven Manual.Page04=Do not insert any Metals. It might result i
 gt.Book.Microwave Oven Manual.Page05=Do not dry Animals with it. It will result in a Hot Dog, no matter which Animal you put into it.
 gt.Book.Microwave Oven Manual.Page06=Do not insert inflammable Objects. The Oven will catch on Fire.
 gt.Book.Microwave Oven Manual.Page07=Do not insert Explosives such as Eggs. Just don't.
+
+gt.item.stable_baryon_containment_unit.name=Stable Baryon Containment Unit
+gt.item.stable_baryon_containment_unit.tooltip=Maybe contains a bound baryon?
+gt.item.stable_lepton_containment_unit.name=Stable Lepton Containment Unit
+gt.item.stable_lepton_containment_unit.tooltip=Maybe contains a bound lepton?
+gt.item.stable_meson_containment_unit.name=Stable Meson Containment Unit
+gt.item.stable_meson_containment_unit.tooltip=Maybe contains a bound meson?
+gt.item.stable_boson_containment_unit.name=Stable Boson Containment Unit
+gt.item.stable_boson_containment_unit.tooltip=Maybe contains a bound boson?
+gt.item.stable_empty_containment_unit.name=Stable Empty Containment Unit
+gt.item.stable_empty_containment_unit.tooltip=Maybe contains nothing?
 
 # Misc strings
 gt.generic_error=ERROR! Fill a ticket on github if you read this

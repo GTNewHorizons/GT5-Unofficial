@@ -3355,20 +3355,19 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         for (int i = 1; i < 15; i++) {
             ItemList.WIRELESS_ENERGY_COVERS[i - 1].set(
-                addItem(
+                addItemWithLocalizationKeysAndArgs(
                     Cover_Wireless_Energy_LV.ID + i - 1,
-                    GTUtility.translate("gt.item.wireless_energy_cover.name", GTValues.VN[i]),
-                    String.join(
-                        "\\n",
-                        GTUtility.translate("gt.item.wireless_energy_cover.tooltip"),
-                        GTUtility.translate("gt.tileentity.amperage", EnumChatFormatting.YELLOW + "2"),
+                    "gt.item.wireless_energy_cover.name",
+                    new Object[] { GTValues.VN[i] },
+                    "gt.item.wireless_energy_cover.tooltip",
+                    new Object[] { GTUtility.translate("gt.tileentity.amperage", EnumChatFormatting.YELLOW + "2"),
                         GTUtility.translate(
                             "gt.tileentity.eup_in",
                             EnumChatFormatting.GREEN + formatNumber(GTValues.V[i])
                                 + " ("
                                 + GTUtility.getColoredTierNameFromTier((byte) i)
                                 + EnumChatFormatting.GREEN
-                                + ")")),
+                                + ")") },
                     new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
         }
         ItemList.Cover_Wireless_Energy_Debug.set(
@@ -3626,32 +3625,32 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electromagnet_Iron.set(
             addItem(
                 Electromagnet_Iron.ID,
-                GTUtility.translate("gt.item.electromagnet.iron.name"),
-                MagnetTiers.buildMagnetTooltip(MagnetTiers.Iron),
+                () -> GTUtility.translate("gt.item.electromagnet.iron.name"),
+                () -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Iron),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 8)));
         ItemList.Electromagnet_Steel.set(
             addItem(
                 Electromagnet_Steel.ID,
-                GTUtility.translate("gt.item.electromagnet.steel.name"),
-                MagnetTiers.buildMagnetTooltip(MagnetTiers.Steel),
+                () -> GTUtility.translate("gt.item.electromagnet.steel.name"),
+                () -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Steel),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 16)));
         ItemList.Electromagnet_Neodymium.set(
             addItem(
                 Electromagnet_Neodymium.ID,
-                GTUtility.translate("gt.item.electromagnet.neodymium.name"),
-                MagnetTiers.buildMagnetTooltip(MagnetTiers.Neodymium),
+                () -> GTUtility.translate("gt.item.electromagnet.neodymium.name"),
+                () -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Neodymium),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 24)));
         ItemList.Electromagnet_Samarium.set(
             addItem(
                 Electromagnet_Samarium.ID,
-                GTUtility.translate("gt.item.electromagnet.samarium.name"),
-                MagnetTiers.buildMagnetTooltip(MagnetTiers.Samarium),
+                () -> GTUtility.translate("gt.item.electromagnet.samarium.name"),
+                () -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Samarium),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 32)));
         ItemList.Electromagnet_Tengam.set(
             addItem(
                 Electromagnet_Tengam.ID,
-                GTUtility.translate("gt.item.electromagnet.tengam.name"),
-                MagnetTiers.buildMagnetTooltip(MagnetTiers.Tengam),
+                () -> GTUtility.translate("gt.item.electromagnet.tengam.name"),
+                () -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Tengam),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 40)));
 
         ItemList.Black_Hole_Opener.set(

@@ -2552,7 +2552,7 @@ public class GTUtility {
      * @return the translated string
      */
     public static String translate(String key, Object... parameters) {
-        return parameters.length == 0 ? StatCollector.translateToLocal(key)
+        return parameters == null || parameters.length == 0 ? StatCollector.translateToLocal(key)
             : StatCollector.translateToLocalFormatted(key, parameters);
     }
 

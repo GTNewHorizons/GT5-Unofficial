@@ -137,7 +137,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                         ((ISecondaryDescribable) metaTileEntity).getSecondaryDescription(),
                         "gt.blockmachines." + metaTileEntity.getMetaName() + ".tooltip_secondary");
                 }
-                addDescription(aList, metaTileEntity);
+                addDescription(aList, metaTileEntity, tDamage);
                 metaTileEntity.addAdditionalTooltipInformation(aStack, aList);
                 if (gtTileEntity.getEUCapacity() > 0L && !(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
                     if (gtTileEntity.getInputVoltage() > 0L) {
@@ -189,7 +189,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         }
     }
 
-    private void addDescription(List<String> aList, IMetaTileEntity metaTileEntity) {
+    private void addDescription(List<String> aList, IMetaTileEntity metaTileEntity, int damage) {
         final String[] aDescription = metaTileEntity.getDescription();
         if (aDescription == null) return;
         if (shouldResolveDescriptionDirectly(metaTileEntity)) {
@@ -198,7 +198,10 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         }
         final String tSuffix = (metaTileEntity instanceof ISecondaryDescribable
             && ((ISecondaryDescribable) metaTileEntity).isDisplaySecondaryDescription()) ? "_secondary" : "";
-        final String key = "gt.blockmachines." + metaTileEntity.getMetaName() + ".tooltip" + tSuffix;
+        String key = "gt.blockmachines." + metaTileEntity.getMetaName() + ".tooltip" + tSuffix;
+        if (StatCollector.canTranslate(key + "." + damage)) {
+            key = key + "." + damage;
+        }
         final String tTranslated = StatCollector.translateToLocal(key);
         if (containsGeneratedFormatMarkers(aDescription)) {
             addResolvedDescription(
@@ -238,18 +241,22 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             if (tMetaTileEntity instanceof ISecondaryDescribable) {
                 final String[] tSecondaryDescription = ((ISecondaryDescribable) tMetaTileEntity)
                     .getSecondaryDescription();
-                registerDescription(tSecondaryDescription, key + "_secondary");
+                registerDescription(tSecondaryDescription, key + "_secondary", aDamage);
             }
-            registerDescription(tMetaTileEntity.getDescription(), key);
+            registerDescription(tMetaTileEntity.getDescription(), key, aDamage);
         }
     }
 
     @SideOnly(Side.CLIENT)
-    private void registerDescription(@Nullable String[] aDescription, String key) {
+    private void registerDescription(@Nullable String[] aDescription, String key, int damage) {
         if (aDescription == null) return;
         String tDescription = joinDescriptionLines(aDescription);
         if (tDescription.contains("%%%")) {
             tDescription = tDescription.replaceAll("%%%.*?%%%", "%s");
+        }
+        if (StatCollector.canTranslate(key)) {
+            GTLanguageManager.addStringLocalization(key + "." + damage, tDescription);
+            return;
         }
         GTLanguageManager.addStringLocalization(key, tDescription);
     }
