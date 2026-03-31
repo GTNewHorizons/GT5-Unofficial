@@ -135,7 +135,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     && !shouldResolveDescriptionDirectly(metaTileEntity)) {
                     registerDescription(
                         ((ISecondaryDescribable) metaTileEntity).getSecondaryDescription(),
-                        "gt.blockmachines." + metaTileEntity.getMetaName() + ".tooltip_secondary");
+                        "gt.blockmachines." + metaTileEntity.getMetaName() + ".tooltip_secondary",
+                        tDamage);
                 }
                 addDescription(aList, metaTileEntity, tDamage);
                 metaTileEntity.addAdditionalTooltipInformation(aStack, aList);
