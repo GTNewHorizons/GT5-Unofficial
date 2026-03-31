@@ -2,35 +2,45 @@ package gtPlusPlus.core.client.renderer;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.client.model.ModelDecayChest;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 
 @SideOnly(Side.CLIENT)
-public class RenderDecayChest extends TileEntitySpecialRenderer {
+public class RenderDecayChest extends TileEntitySpecialRenderer implements IItemRenderer {
 
     private static final ResourceLocation mChestTexture = new ResourceLocation(
         GTPlusPlus.ID,
         "textures/blocks/TileEntities/DecayablesChest_full.png");
     private final ModelDecayChest mChestModel = new ModelDecayChest();
+    private static final TileEntityDecayablesChest ITEM_RENDER_TILE = new TileEntityDecayablesChest();
 
     public static RenderDecayChest INSTANCE;
     public final int mRenderID;
 
     public RenderDecayChest() {
         INSTANCE = this;
-        this.mRenderID = RenderingRegistry.getNextAvailableRenderId();
+        this.mRenderID = 22;
+        final Item chestItem = Item.getItemFromBlock(ModBlocks.blockDecayablesChest);
+        if (chestItem != null) {
+            MinecraftForgeClient.registerItemRenderer(chestItem, this);
+        }
         Logger.INFO("Registered Lead Lined Chest Renderer.");
     }
 
@@ -78,5 +88,40 @@ public class RenderDecayChest extends TileEntitySpecialRenderer {
             p_147500_4_,
             p_147500_6_,
             p_147500_8_);
+    }
+
+    @Override
+    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+        return type == ItemRenderType.ENTITY || type == ItemRenderType.EQUIPPED
+            || type == ItemRenderType.EQUIPPED_FIRST_PERSON
+            || type == ItemRenderType.INVENTORY;
+    }
+
+    @Override
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+        return true;
+    }
+
+    @Override
+    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+        if (type != ItemRenderType.INVENTORY) {
+            double offset = -0.5D;
+            if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
+                offset = 0.0D;
+            } else if (type == ItemRenderType.ENTITY) {
+                GL11.glScalef(0.5F, 0.5F, 0.5F);
+            }
+            if (data.length > 0 && data[0] instanceof RenderBlocks renderBlocks) {
+                CustomItemBlockRenderer.renderItemAsBlock(renderBlocks, item, offset, offset, offset);
+            }
+            return;
+        }
+
+        GL11.glPushMatrix();
+        GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        this.renderTileEntityAt(ITEM_RENDER_TILE, 0.0D, 0.0D, 0.0D, 0.0F);
+        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        GL11.glPopMatrix();
     }
 }

@@ -90,7 +90,7 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_top");
+        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_full");
     }
 
     @Override
