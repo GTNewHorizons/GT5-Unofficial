@@ -1,9 +1,16 @@
-package goodgenerator.blocks.tileEntity;
+package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
+import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -47,6 +55,10 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
     private static final Block[] coils = new Block[] { Loaders.FRF_Coil_1, Loaders.FRF_Coil_2, Loaders.FRF_Coil_3,
         Loaders.FRF_Coil_4 };
 
+    private static final int OFFSET_X = 13;
+    private static final int OFFSET_Y = 13;
+    private static final int OFFSET_Z = 0;
+
     public MTEFuelRefineFactory(String name) {
         super(name);
         useLongPower = true;
@@ -64,7 +76,7 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(mName, 7, 12, 1, itemStack, hintsOnly);
+        structureBuild_EM(mName, OFFSET_X, OFFSET_Y, OFFSET_Z, itemStack, hintsOnly);
     }
 
     @Override
@@ -73,47 +85,82 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
             multiDefinition = StructureDefinition.<MTEFuelRefineFactory>builder()
                 .addShape(
                     mName,
-                    transpose(
-                        new String[][] { { "               ", "      CCC      ", "               " },
-                            { "      XGX      ", "    CCFFFCC    ", "      XGX      " },
-                            { "    CC   CC    ", "   CFFCCCFFC   ", "    CC   CC    " },
-                            { "   C       C   ", "  CFCC   CCFC  ", "   C       C   " },
-                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
-                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
-                            { " X           X ", "CFC         CFC", " X           X " },
-                            { " G           G ", "CFC         CFC", " G           G " },
-                            { " X           X ", "CFC         CFC", " X           X " },
-                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
-                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
-                            { "   C       C   ", "  CFCC   CCFC  ", "   C       C   " },
-                            { "    CC   CC    ", "   CFFC~CFFC   ", "    CC   CC    " },
-                            { "      XGX      ", "    CCFFFCC    ", "      XGX      " },
-                            { "               ", "      CCC      ", "               " } }))
+                    new String[][] {
+                        { "                           ", "          AAAAAAA          ", "        AA       AA        ",
+                            "      AA           AA      ", "     A               A     ", "    A                 A    ",
+                            "   A                   A   ", "   A                   A   ", "  A                     A  ",
+                            "  A                     A  ", " A           A           A ", " A          AAA          A ",
+                            " A         AAAAA         A ", " A        AAA~AAA        A ", " A         AAAAA         A ",
+                            " A          AAA          A ", " A           A           A ", "  A                     A  ",
+                            "  A                     A  ", "   A                   A   ", "   A                   A   ",
+                            "    A                 A    ", "     A               A     ", "      AA           AA      ",
+                            "        AA       AA        ", "          AAAAAAA          ",
+                            "                           " },
+                        { "          AAAAAAA          ", "        AACCCCCCCAA        ", "      AACCEAAAAAECCAA      ",
+                            "     ACCEE   A   EECCA     ", "    AFEE     A     EEFA    ", "   AFE               EFA   ",
+                            "  ACE                 ECA  ", "  ACE                 ECA  ", " ACE                   ECA ",
+                            " ACE         A         ECA ", "ACE         A A         ECA", "ACA        A   A        ACA",
+                            "ACA       A     A       ACA", "ACAAA    A       A    AAACA", "ACA       A     A       ACA",
+                            "ACA        A   A        ACA", "ACE         A A         ECA", " ACE         A         ECA ",
+                            " ACE                   ECA ", "  ACE                 ECA  ", "  ACE                 ECA  ",
+                            "   AFE               EFA   ", "    AFEE     A     EEFA    ", "     ACCEE   A   EECCA     ",
+                            "      AACCEAAAAAECCAA      ", "        AACCCCCCCAA        ",
+                            "          AAAAAAA          " },
+                        { "          CCCCCCC          ", "        CCBBBBBBBCC        ", "      CCDDAAABAAADDCC      ",
+                            "     CDDEE FAFAF EEDDC     ", "    CDEE   FAFAF   EEDC    ", "   CDE     F A F     EDC   ",
+                            "  CDE        A        EDC  ", "  CDE        A        EDC  ", " CDE         A         EDC ",
+                            " CDE        AFA        EDC ", "CBA        AF FA        ABC", "CBAFFF    AF   FA    FFFABC",
+                            "CBAAA    AF     FA    AAABC", "CBBFFAAAAF       FAAAAFFBBC", "CBAAA    AF     FA    AAABC",
+                            "CBAFFF    AF   FA    FFFABC", "CBA        AF FA        ABC", " CDE        AFA        EDC ",
+                            " CDE         A         EDC ", "  CDE        A        EDC  ", "  CDE        A        EDC  ",
+                            "   CDE     F A F     EDC   ", "    CDEE   FAFAF   EEDC    ", "     CDDEE FAFAF EEDDC     ",
+                            "      CCDDAAABAAADDCC      ", "        CCBBBBBBBCC        ",
+                            "          CCCCCCC          " },
+                        { "          AAAAAAA          ", "        AACCCCCCCAA        ", "      AACCEAAAAAECCAA      ",
+                            "     ACCEE   A   EECCA     ", "    AFEE     A     EEFA    ", "   AFE               EFA   ",
+                            "  ACE                 ECA  ", "  ACE                 ECA  ", " ACE                   ECA ",
+                            " ACE         A         ECA ", "ACE         A A         ECA", "ACA        A   A        ACA",
+                            "ACA       A     A       ACA", "ACAAA    A       A    AAACA", "ACA       A     A       ACA",
+                            "ACA        A   A        ACA", "ACE         A A         ECA", " ACE         A         ECA ",
+                            " ACE                   ECA ", "  ACE                 ECA  ", "  ACE                 ECA  ",
+                            "   AFE               EFA   ", "    AFEE     A     EEFA    ", "     ACCEE   A   EECCA     ",
+                            "      AACCEAAAAAECCAA      ", "        AACCCCCCCAA        ",
+                            "          AAAAAAA          " },
+                        { "                           ", "          AAAAAAA          ", "        AA       AA        ",
+                            "      AA           AA      ", "     A               A     ", "    A                 A    ",
+                            "   A                   A   ", "   A                   A   ", "  A                     A  ",
+                            "  A                     A  ", " A           A           A ", " A          AAA          A ",
+                            " A         AAAAA         A ", " A        AAAAAAA        A ", " A         AAAAA         A ",
+                            " A          AAA          A ", " A           A           A ", "  A                     A  ",
+                            "  A                     A  ", "   A                   A   ", "   A                   A   ",
+                            "    A                 A    ", "     A               A     ", "      AA           AA      ",
+                            "        AA       AA        ", "          AAAAAAA          ",
+                            "                           " } })
                 .addElement(
-                    'X',
+                    'A',
                     buildHatchAdder(MTEFuelRefineFactory.class)
                         .atLeast(
-                            gregtech.api.enums.HatchElement.Maintenance,
-                            gregtech.api.enums.HatchElement.InputHatch,
-                            gregtech.api.enums.HatchElement.InputBus,
-                            gregtech.api.enums.HatchElement.OutputHatch,
-                            tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti
-                                .or(gregtech.api.enums.HatchElement.Energy),
-                            tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
-                                .or(gregtech.api.enums.HatchElement.Dynamo))
+                            Maintenance,
+                            InputHatch,
+                            InputBus,
+                            OutputHatch,
+                            EnergyMulti.or(Energy),
+                            DynamoMulti.or(Dynamo))
                         .casingIndex(179)
                         .hint(1)
                         .buildAndChain(ofBlock(Loaders.FRF_Casings, 0)))
-                .addElement('C', ofBlock(Loaders.FRF_Casings, 0))
-                .addElement('G', ofBlock(Loaders.fieldRestrictingGlass, 0))
+                .addElement('C', ofBlock(Loaders.fieldRestrictingGlass, 0))
                 .addElement(
-                    'F',
+                    'B',
                     ofBlocksTiered(
                         fieldCoilTierConverter(),
                         getAllFieldCoilTiers(),
                         -1,
                         MTEFuelRefineFactory::setCoilTier,
                         MTEFuelRefineFactory::getCoilTier))
+                .addElement('D', Casings.SuperconductingCoilBlock.asElement())
+                .addElement('E', Casings.EuropiumReinforcedRadiationProofMachineCasing.asElement())
+                .addElement('F', ofBlock(Loaders.radiationProtectionSteelFrame, 0))
                 .build();
         }
         return multiDefinition;
@@ -155,16 +202,20 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
             .addInfo("Use higher tier coils to unlock more fuel types and perform more perfect overclocks")
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
-            .beginStructureBlock(3, 15, 15, false)
-            .addController("Middle of the third layer")
-            .addCasingInfoExactly("Naquadah Fuel Refinery Casing", 114, false)
+            .beginStructureBlock(5, 27, 27, false)
+            .addController("Front Center")
+            .addCasingInfoExactly("Naquadah Fuel Refinery Casing", 483, false)
             .addCasingInfoExactly("Field Restriction Coil", 32, true)
-            .addCasingInfoExactly("Field Restriction Glass", 8, false)
-            .addInputHatch("The casings adjacent to field restriction glass.")
-            .addInputBus("The casings adjacent to field restriction glass.", 1)
-            .addOutputHatch("The casings adjacent to field restriction glass.", 1)
-            .addEnergyHatch("The casings adjacent to field restriction glass.", 1)
-            .addDynamoHatch("The casings adjacent to field restriction glass.", 1)
+            .addCasingInfoExactly("Field Restriction Glass", 192, false)
+            .addCasingInfoExactly("Radiation Proof Steel Frame Box", 64, false)
+            .addCasingInfoExactly("Superconducting Coil", 40, false)
+            .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 124, false)
+            .addMaintenanceHatch("Any Naquadah Fuel Refinery Casing", 1)
+            .addInputHatch("Any Naquadah Fuel Refinery Casing", 1)
+            .addInputBus("Any Naquadah Fuel Refinery Casing", 1)
+            .addOutputHatch("Any Naquadah Fuel Refinery Casing", 1)
+            .addEnergyHatch("Any Naquadah Fuel Refinery Casing", 1)
+            .addDynamoHatch("Any Naquadah Fuel Refinery Casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -189,7 +240,7 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tier = -1;
-        return structureCheck_EM(mName, 7, 12, 1);
+        return structureCheck_EM(mName, OFFSET_X, OFFSET_Y, OFFSET_Z);
     }
 
     @Override
@@ -283,7 +334,7 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(mName, stackSize, 7, 12, 1, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, OFFSET_X, OFFSET_Y, OFFSET_Z, elementBudget, env, false, true);
     }
 
     @Override

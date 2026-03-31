@@ -25,6 +25,7 @@ import com.jaquadro.minecraft.storagedrawers.StorageDrawers;
 
 import bartworks.common.loaders.ItemRegistry;
 import codechicken.nei.api.API;
+import goodgenerator.util.ItemRefer;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
@@ -1649,6 +1650,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.LargeThermalRefinery.get(1),
             new Object[] { GregtechItemList.Industrial_ThermalCentrifuge });
+
+        // Naquadah Fuel Refinery Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.NaquadahFuelRefinery.get(1),
+            new Object[] { ItemRefer.Naquadah_Fuel_Refinery.get(1) });
 
         // Amazon Packager Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
