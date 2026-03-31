@@ -167,4 +167,9 @@ public class MTEDebugPollutor extends MTETieredMachineBlock {
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEDebugPollutorGui(this).build(data, syncManager, uiSettings);
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

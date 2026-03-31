@@ -265,9 +265,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             env,
             true);
         if (built == -1) {
-            GTUtility.sendChatToPlayer(
-                env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
+            GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done.water");
             return 0;
         }
         return built;
@@ -310,6 +308,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX) };
     }
 
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
         return super.checkMachine(aBaseMetaTileEntity, aStack);

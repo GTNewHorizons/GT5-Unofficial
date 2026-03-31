@@ -226,4 +226,9 @@ public class MTEBuckConverter extends MTETieredMachineBlock {
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEBuckConverterGui(this).build(data, syncManager, uiSettings);
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

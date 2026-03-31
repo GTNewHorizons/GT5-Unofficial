@@ -348,4 +348,9 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEDebugPowerGeneratorGui(this).build(data, syncManager, uiSettings);
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

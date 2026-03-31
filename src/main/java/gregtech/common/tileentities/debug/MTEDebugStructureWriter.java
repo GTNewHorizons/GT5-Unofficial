@@ -338,4 +338,9 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock {
             tess.draw();
         }
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
