@@ -340,7 +340,8 @@ public class EyeOfHarmonyRecipe {
             this.put(material, value);
         }
 
-        void addGTpp(Material material, double value) {
+        void addGTpp(Material mat, double value) {
+            IOreMaterial material = mat.getGTMaterial() != null ? mat.getGTMaterial() : mat;
             // If key already exists.
             if (this.containsKey(material)) {
                 this.put(material, value + this.get(material));
