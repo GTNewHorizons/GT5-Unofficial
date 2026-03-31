@@ -2017,12 +2017,18 @@ tt.gui.tooltip.plasma_module.debug_window.multi_step=multi-step
 tt.gui.tooltip.plasma_module.debug_window.fusion_tier=fusion tier
 tt.gui.tooltip.plasma_module.debug_window.parallel=parallel
 
-tt.gui.text.debug.eut=EUT:
-tt.gui.text.debug.amp=AMP:
-tt.gui.text.debug.sum=SUM: %s
-tt.gui.text.debug.tier=TIER: %s
+tt.gui.text.debug.set_mode=Click to Set Machine to %s
+tt.gui.text.debug.status.inactive=Inactive
+tt.gui.text.debug.status.disabled=Disabled
 
-tt.gui.text.debug_pollutor.pollution=Pollution
+tt.gui.text.debug_power.status.produce=Producing
+tt.gui.text.debug_power.status.consume=Consuming
+tt.gui.text.debug_power.toggle_laser=Toggle Laser Mode
+
+tt.gui.text.debug_pollutor.pollution=Pollution/tick
+tt.gui.text.debug_pollutor.status=Status: %s
+tt.gui.text.debug_pollutor.status.produce=Polluting
+tt.gui.text.debug_pollutor.status.consume=Cleaning
 
 tt.gui.text.hatch.uncertainty.status.ok=Status: OK
 tt.gui.text.hatch.uncertainty.status.ng=Status: NG
