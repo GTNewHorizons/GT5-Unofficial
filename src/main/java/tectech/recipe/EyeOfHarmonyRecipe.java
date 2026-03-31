@@ -131,13 +131,16 @@ public class EyeOfHarmonyRecipe {
 
         this.recipeTriggerItem = new ItemStack(block);
 
-        this.outputItems = validDustGenerator(materialList);
+        final TMap<ItemStack, Long> outputItemsTemp = validDustGenerator(materialList);
 
-        this.sumOfItems = this.outputItems.stream()
-            .map(ItemStackLong::getStackSize)
+        this.sumOfItems = outputItemsTemp.values()
+            .stream()
             .reduce(0L, Long::sum);
 
-        this.outputItems.add(new ItemStackLong(getStoneDustType(block.getDimension()), this.sumOfItems * 3L));
+        outputItemsTemp.merge(getStoneDustType(block.getDimension()), this.sumOfItems * 3L, Long::sum);
+        this.outputItems = new ArrayList<>();
+        outputItemsTemp
+            .forEach((itemstack, stacksize) -> this.outputItems.add(new ItemStackLong(itemstack, stacksize)));
         this.outputItems.sort(Comparator.comparingLong(ItemStackLong::getStackSize));
         Collections.reverse(this.outputItems);
 
@@ -541,9 +544,8 @@ public class EyeOfHarmonyRecipe {
         return plasmaList;
     }
 
-    private static ArrayList<ItemStackLong> validDustGenerator(final ArrayList<Pair<IOreMaterial, Long>> planetList) {
-
-        ArrayList<ItemStackLong> dustList = new ArrayList<>();
+    private TMap<ItemStack, Long> validDustGenerator(final ArrayList<Pair<IOreMaterial, Long>> planetList) {
+        TMap<ItemStack, Long> dustList = new TCustomHashMap<>(itemStackHashingStrategy);
 
         for (Pair<IOreMaterial, Long> pair : planetList) {
             final IOreMaterial mat = pair.getLeft();
@@ -552,7 +554,7 @@ public class EyeOfHarmonyRecipe {
             else if (mat instanceof Material) dust = ((Material) mat).getDust(1);
             else dust = null;
             if (dust != null) {
-                dustList.add(new ItemStackLong(dust, pair.getRight()));
+                dustList.merge(dust, pair.getRight(), Long::sum);
             }
         }
         return dustList;
