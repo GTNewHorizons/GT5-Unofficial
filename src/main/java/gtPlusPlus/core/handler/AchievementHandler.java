@@ -17,6 +17,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
 import gregtech.GTMod;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLog;
 import gtPlusPlus.api.objects.Logger;
@@ -152,13 +153,7 @@ public class AchievementHandler {
             GregtechItemList.GT4_Thermal_Boiler.get(1),
             "multi.abs",
             false);
-        this.registerAchievement(
-            "multi.zhuhai",
-            -11,
-            -7,
-            GregtechItemList.Industrial_FishingPond.get(1),
-            aBaseAchievementName,
-            false);
+        this.registerAchievement("multi.zhuhai", -11, -7, ItemList.FishingPort.get(1), aBaseAchievementName, false);
 
         // Casings
         this.registerAchievement(

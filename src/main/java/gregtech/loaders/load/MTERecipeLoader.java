@@ -1680,6 +1680,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.MegaChemicalReactor.get(1),
             new Object[] { ItemRegistry.megaMachines[3] });
 
+        // Fishing Port Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.FishingPort.get(1),
+            new Object[] { GregtechItemList.Industrial_FishingPond });
+
         // Integrated Ore Factory Conversion Recipe
         GTModHandler
             .addShapelessCraftingRecipe(ItemList.IntegratedOreFactory.get(1), new Object[] { ItemList.Ore_Processor });
