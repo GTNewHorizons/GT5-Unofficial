@@ -925,11 +925,11 @@ public class RecipeLoader2 {
             80000);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
-            FluidRegistry.getFluidStack("ic2hotcoolant", 16_000),
-            GTModHandler.getIC2Coolant(16_000),
-            GTModHandler.getDistilledWater(20_000),
-            FluidRegistry.getFluidStack("ic2superheatedsteam", 3_200_000),
-            FluidRegistry.getFluidStack("supercriticalsteam", 3_200_000),
+            FluidRegistry.getFluidStack("ic2hotcoolant", 128_000),
+            GTModHandler.getIC2Coolant(128_000),
+            GTModHandler.getDistilledWater(160_000),
+            FluidRegistry.getFluidStack("ic2superheatedsteam", 25_600_000),
+            FluidRegistry.getFluidStack("supercriticalsteam", 25_600_000),
             8000);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
