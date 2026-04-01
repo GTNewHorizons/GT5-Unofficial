@@ -217,8 +217,7 @@ public class TooltipHelper {
         }
         String[] descriptionWithWarning = Arrays.copyOf(description, description.length + 1);
         System.arraycopy(descriptionWithWarning, 0, descriptionWithWarning, 1, description.length);
-        descriptionWithWarning[0] = EnumChatFormatting.RED
-            + "Pollution is OFF - This Block is Effectively Functionless";
+        descriptionWithWarning[0] = EnumChatFormatting.RED + "Pollution is OFF - This Block is Redundant";
         return descriptionWithWarning;
     }
 }
