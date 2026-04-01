@@ -14,6 +14,9 @@ public class BeamInformation {
         this.energy = energy;
         this.rate = rate;
         this.particleId = particleId;
+        if (particleId >= Particle.values().length || particleId < 0) {
+            throw new IllegalArgumentException("Invalid particleId");
+        }
         this.particle = Particle.values()[particleId];
         this.focus = focus;
     }
@@ -44,8 +47,22 @@ public class BeamInformation {
             + ",Rate="
             + this.getRate()
             + ",Particle="
+            + Particle.getParticleFromId(this.getParticleId())
+            + "("
             + this.getParticleId()
+            + ")"
             + ",Focus="
             + this.getFocus();
     }
+
+    public BeamInformation copy() {
+        return new BeamInformation(this.energy, this.rate, this.particleId, this.focus);
+    }
+
+    public boolean isEqual(BeamInformation other) {
+        return (Float.compare(this.energy, other.energy) == 0) && (Float.compare(this.rate, other.rate) == 0)
+            && (this.particleId == other.particleId)
+            && (this.focus == other.focus);
+    }
+
 }

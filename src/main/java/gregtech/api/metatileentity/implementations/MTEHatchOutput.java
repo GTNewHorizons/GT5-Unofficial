@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -21,6 +22,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -33,31 +35,24 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IFluidLockable;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
 
-public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLockable, IAddUIWidgets {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLockable {
 
     protected String lockedFluidName = null;
     private WeakReference<EntityPlayer> playerThatLockedfluid = null;
     public byte mMode = 0;
 
     public MTEHatchOutput(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            4,
-            new String[] { "Fluid Output for Multiblocks", "Capacity: " + formatNumber(8000L * (1L << aTier)) + "L",
-                "Right click with screwdriver to restrict output",
-                "Can be restricted to put out Items and/or Steam/No Steam/1 specific Fluid",
-                "Restricted Output Hatches are given priority for Multiblock Fluid output" });
+        super(aID, aName, aNameRegional, aTier, 4, (String) null);
     }
 
     public MTEHatchOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -196,7 +191,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         } else {
             mMode = (byte) ((mMode + 1) % 10);
         }
-        final String inBrackets;
+        final IChatComponent inBrackets;
         switch (mMode) {
             case 0 -> {
                 GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.fluid_steam_item");
@@ -234,39 +229,29 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                 playerThatLockedfluid = new WeakReference<>(aPlayer);
                 if (mFluid == null) {
                     this.setLockedFluidName(null);
-                    inBrackets = "GT5U.chat.hatch.output.in_brackets.none";
+                    inBrackets = new ChatComponentTranslation("GT5U.chat.hatch.output.in_brackets.none");
                 } else {
                     this.setLockedFluidName(
                         this.getDrainableStack()
                             .getFluid()
                             .getName());
-                    // FIXME: localize this
-                    inBrackets = this.getDrainableStack()
-                        .getLocalizedName();
+                    inBrackets = new ChatComponentFluidName(this.getDrainableStack());
                 }
-                GTUtility.sendChatTrans(
-                    aPlayer,
-                    "GT5U.chat.hatch.output.items_and_specific_fluid",
-                    new ChatComponentTranslation(inBrackets));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.items_and_specific_fluid", inBrackets);
             }
             case 9 -> {
                 playerThatLockedfluid = new WeakReference<>(aPlayer);
                 if (mFluid == null) {
                     this.setLockedFluidName(null);
-                    inBrackets = "GT5U.chat.hatch.output.in_brackets.none";
+                    inBrackets = new ChatComponentTranslation("GT5U.chat.hatch.output.in_brackets.none");
                 } else {
                     this.setLockedFluidName(
                         this.getDrainableStack()
                             .getFluid()
                             .getName());
-                    // FIXME: localize it
-                    inBrackets = this.getDrainableStack()
-                        .getLocalizedName();
+                    inBrackets = new ChatComponentFluidName(this.getDrainableStack());
                 }
-                GTUtility.sendChatTrans(
-                    aPlayer,
-                    "GT5U.chat.hatch.output.specific_fluid",
-                    new ChatComponentTranslation(inBrackets));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.specific_fluid", inBrackets);
             }
         }
     }
@@ -284,24 +269,21 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
             if (getLockedFluidName() != null && !getLockedFluidName().equals(
                 tFluid.getFluid()
                     .getName())) {
-                // FIXME: localize it
                 String fluidName = getLockedFluidName();
-                // FluidStack fluidStack = FluidRegistry.getFluidStack(fluidName, 1);
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.fluid.already_locked", fluidName);
+                FluidStack fluidStack = FluidRegistry.getFluidStack(fluidName, 1);
+                GTUtility.sendChatTrans(
+                    aPlayer,
+                    "GT5U.chat.hatch.output.fluid.already_locked",
+                    fluidStack == null ? fluidName : new ChatComponentFluidName(fluidStack));
             } else {
                 setLockedFluidName(
                     tFluid.getFluid()
                         .getName());
-                if (mMode == 8) GTUtility.sendChatTrans(
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    "GT5U.chat.hatch.output.items_and_specific_fluid",
-                    // FIXME: localize it
-                    tFluid.getLocalizedName());
-                else GTUtility.sendChatTrans(
-                    aPlayer,
-                    "GT5U.chat.hatch.output.specific_fluid",
-                    // FIXME: localize it
-                    tFluid.getLocalizedName());
+                    mMode == 8 ? "GT5U.chat.hatch.output.items_and_specific_fluid"
+                        : "GT5U.chat.hatch.output.specific_fluid",
+                    new ChatComponentFluidName(tFluid));
             }
             return true;
         }
@@ -398,8 +380,8 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                     .getName());
             final EntityPlayer player;
             if (playerThatLockedfluid == null || (player = playerThatLockedfluid.get()) == null) return;
-            // FIXME: localize it
-            GTUtility.sendChatTrans(player, "GT5U.chat.hatch.output.fluid.locked_to", mFluid.getLocalizedName());
+            GTUtility
+                .sendChatTrans(player, "GT5U.chat.hatch.output.fluid.locked_to", new ChatComponentFluidName(mFluid));
             playerThatLockedfluid = null;
         }
     }
@@ -460,5 +442,10 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                 .setMaxWidth(65)
                 .setPos(101, 30))
             .widget(new FakeSyncWidget.ByteSyncer(() -> mMode, val -> mMode = val));
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.output_hatch.desc", formatNumber(getCapacity()));
     }
 }

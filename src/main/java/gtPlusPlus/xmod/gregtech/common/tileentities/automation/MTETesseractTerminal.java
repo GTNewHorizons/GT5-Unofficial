@@ -551,7 +551,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
             ? new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
                 TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
             : new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
-                TextureFactory.of(Textures.BlockIcons.VOID) };
+                TextureFactory.of(Textures.GlobalIcons.VOID) };
     }
 
     // To-Do?
@@ -596,5 +596,10 @@ public class MTETesseractTerminal extends MTEBasicTank {
                 .remove(this.mFrequency);
         } catch (Exception t) {}
         super.onRemoval();
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

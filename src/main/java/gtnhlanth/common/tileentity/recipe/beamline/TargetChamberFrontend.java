@@ -26,6 +26,7 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
+    @Override
     public void drawDescription(RecipeDisplayInfo recipeInfo) {
         drawEnergyInfo(recipeInfo);
         // drawDurationInfo(recipeInfo);

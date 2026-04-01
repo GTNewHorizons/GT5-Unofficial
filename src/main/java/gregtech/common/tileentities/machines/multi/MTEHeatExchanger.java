@@ -364,7 +364,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                     if (dryHeatCounter < dryHeatMaximum) {
                         dryHeatCounter += 1;
                     } else {
-                        GTLog.exp.println(this.mName + " was too hot and had no more Distilled Water!");
+                        GTLog.writeExplosionLog(this, "was too hot and had no more Distilled Water!");
                         explodeMultiblock(); // Generate crater
                     }
                 }

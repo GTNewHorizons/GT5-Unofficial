@@ -230,6 +230,11 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
+import static gregtech.common.items.IDMetaItem03.StableBaryonContainmentUnit;
+import static gregtech.common.items.IDMetaItem03.StableBosonContainmentUnit;
+import static gregtech.common.items.IDMetaItem03.StableEmptyContainmentUnit;
+import static gregtech.common.items.IDMetaItem03.StableLeptonContainmentUnit;
+import static gregtech.common.items.IDMetaItem03.StableMesonContainmentUnit;
 import static gregtech.common.items.IDMetaItem03.Thermal_Superconductor;
 import static gregtech.common.items.IDMetaItem03.Timepiece;
 import static gregtech.common.items.IDMetaItem03.Transdimensional_Alignment_Matrix;
@@ -245,6 +250,7 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -283,99 +289,162 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             OrePrefixes.plateSuperdense);
         INSTANCE = this;
         Object[] o = GTValues.emptyObjectArray;
-        ItemList.Item_Power_Goggles.set(
-            new ItemPowerGoggles("Power_Goggles", "Power Goggles", "For when you need to look at power storage 24/7"));
+        final String RAW = "gt.item.circuit.raw_circuit.tooltip";
+        ItemList.Item_Power_Goggles
+            .set(new ItemPowerGoggles("Power_Goggles", "gt.item.power_goggles.name", "gt.item.power_goggles.tooltip"));
         /*
          * circuit boards tier 1-7: coated circuit board / wood plate + resin Plastic Circuit Board / Plastic + Copper
          * Foil + Sulfuric Acid phenolic circuit board /carton+glue+chemical bath epoxy circuit board /epoxy plate +
          * copper foil + sulfuric acid fiberglass circuit board (simple + multilayer) / glass + plastic + electrum foil
          * + sulfuric acid wetware lifesupport board / fiberglass CB + teflon +
          */
-        ItemList.Circuit_Board_Wetware.set(
-            addItem(Circuit_Board_Wetware.ID, "Wetware Lifesupport Circuit Board", "The Board that keeps life", o));
-        ItemList.Circuit_Board_Plastic
-            .set(addItem(Circuit_Board_Plastic.ID, "Plastic Circuit Board", "A Good Board", o));
-        ItemList.Circuit_Board_Bio
-            .set(addItem(Circuit_Board_Bio.ID, "Bio Circuit Board", "Bio genetic mutated Board", o));
 
+        ItemList.Circuit_Board_Wetware.set(
+            addItemWithLocalizationKeys(
+                Circuit_Board_Wetware.ID,
+                "gt.item.circuit_board.wetware.name",
+                "gt.item.circuit_board.wetware.tooltip",
+                o));
+        ItemList.Circuit_Board_Plastic.set(
+            addItemWithLocalizationKeys(
+                Circuit_Board_Plastic.ID,
+                "gt.item.circuit_board.plastic.name",
+                "gt.item.circuit_board.plastic.tooltip",
+                o));
+        ItemList.Circuit_Board_Bio.set(
+            addItemWithLocalizationKeys(
+                Circuit_Board_Bio.ID,
+                "gt.item.circuit_board.bio.name",
+                "gt.item.circuit_board.bio.tooltip",
+                o));
         /*
          * electronic components: vacuum tube (glass tube + red alloy cables) basic electronic circuits normal+smd coils
          * diodes normal+smd transistors normal+smd capacitors normal+smd Glass Fibers
          */
         ItemList.Circuit_Parts_ResistorSMD.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Parts_ResistorSMD.ID,
-                "SMD Resistor",
-                "Electronic Component",
+                "gt.item.circuit_part.resistor_smd.name",
+                "gt.item.circuit_part.resistor_smd.tooltip",
                 OrePrefixes.componentCircuit.get(Materials.Resistor),
                 SubTag.NO_UNIFICATION));
-        ItemList.Circuit_Parts_Glass_Tube.set(addItem(Circuit_Parts_Glass_Tube.ID, "Glass Tube", "", o));
-        ItemList.Circuit_Parts_Coil.set(addItem(Circuit_Parts_Coil.ID, "Small Coil", "Basic Electronic Component", o));
+        ItemList.Circuit_Parts_Glass_Tube.set(
+            addItemWithLocalizationKeys(Circuit_Parts_Glass_Tube.ID, "gt.item.circuit_part.glass_tube.name", "", o));
+        ItemList.Circuit_Parts_Coil.set(
+            addItemWithLocalizationKeys(
+                Circuit_Parts_Coil.ID,
+                "gt.item.circuit_part.coil.name",
+                "gt.item.circuit_part.coil.tooltip",
+                o));
         ItemList.Circuit_Parts_DiodeSMD.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Parts_DiodeSMD.ID,
-                "SMD Diode",
-                "Electronic Component",
+                "gt.item.circuit_part.diode_smd.name",
+                "gt.item.circuit_part.diode_smd.tooltip",
                 OrePrefixes.componentCircuit.get(Materials.Diode),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_TransistorSMD.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Parts_TransistorSMD.ID,
-                "SMD Transistor",
-                "Electronic Component",
+                "gt.item.circuit_part.transistor_smd.name",
+                "gt.item.circuit_part.transistor_smd.tooltip",
                 OrePrefixes.componentCircuit.get(Materials.Transistor),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_CapacitorSMD.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Parts_CapacitorSMD.ID,
-                "SMD Capacitor",
-                "Electronic Component",
+                "gt.item.circuit_part.capacitor_smd.name",
+                "gt.item.circuit_part.capacitor_smd.tooltip",
                 OrePrefixes.componentCircuit.get(Materials.Capacitor),
                 SubTag.NO_UNIFICATION));
-        ItemList.Circuit_Parts_GlassFiber
-            .set(addItem(Circuit_Parts_GlassFiber.ID, "Glass Fiber", Materials.BorosilicateGlass.mChemicalFormula, o));
-        ItemList.Circuit_Parts_PetriDish
-            .set(addItem(Circuit_Parts_PetriDish.ID, "Petri Dish", "For cultivating cells", o));
-        ItemList.Circuit_Parts_Reinforced_Glass_Tube
-            .set(addItem(Circuit_Parts_Reinforced_Glass_Tube.ID, "Reinforced Glass Tube", "", o));
+        ItemList.Circuit_Parts_GlassFiber.set(
+            addItemWithLocalizationKeys(
+                Circuit_Parts_GlassFiber.ID,
+                "gt.item.circuit_part.glass_fiber.name",
+                Materials.BorosilicateGlass.getChemicalFormula(),
+                o));
+        ItemList.Circuit_Parts_PetriDish.set(
+            addItemWithLocalizationKeys(
+                Circuit_Parts_PetriDish.ID,
+                "gt.item.circuit_part.petri_dish.name",
+                "gt.item.circuit_part.petri_dish.tooltip",
+                o));
+        ItemList.Circuit_Parts_Reinforced_Glass_Tube.set(
+            addItemWithLocalizationKeys(
+                Circuit_Parts_Reinforced_Glass_Tube.ID,
+                "gt.item.circuit_part.reinforced_glass_tube.name",
+                "",
+                o));
 
-        ItemList.Circuit_Parts_ResistorASMD
-            .set(addItem(Circuit_Parts_ResistorASMD.ID, "Advanced SMD Resistor", "Advanced Electronic Component", o));
-        ItemList.Circuit_Parts_DiodeASMD
-            .set(addItem(Circuit_Parts_DiodeASMD.ID, "Advanced SMD Diode", "Advanced Electronic Component", o));
+        ItemList.Circuit_Parts_ResistorASMD.set(
+            addItemWithLocalizationKeys(
+                Circuit_Parts_ResistorASMD.ID,
+                "gt.item.circuit_part.resistor_asmd.name",
+                "gt.item.circuit_part.resistor_asmd.tooltip",
+                o));
+        ItemList.Circuit_Parts_DiodeASMD.set(
+            addItemWithLocalizationKeys(
+                Circuit_Parts_DiodeASMD.ID,
+                "gt.item.circuit_part.diode_asmd.name",
+                "gt.item.circuit_part.diode_asmd.tooltip",
+                o));
         ItemList.Circuit_Parts_TransistorASMD.set(
-            addItem(Circuit_Parts_TransistorASMD.ID, "Advanced SMD Transistor", "Advanced Electronic Component", o));
-        ItemList.Circuit_Parts_CapacitorASMD
-            .set(addItem(Circuit_Parts_CapacitorASMD.ID, "Advanced SMD Capacitor", "Advanced Electronic Component", o));
+            addItemWithLocalizationKeys(
+                Circuit_Parts_TransistorASMD.ID,
+                "gt.item.circuit_part.transistor_asmd.name",
+                "gt.item.circuit_part.transistor_asmd.tooltip",
+                o));
+        ItemList.Circuit_Parts_CapacitorASMD.set(
+            addItemWithLocalizationKeys(
+                Circuit_Parts_CapacitorASMD.ID,
+                "gt.item.circuit_part.capacitor_asmd.name",
+                "gt.item.circuit_part.capacitor_asmd.tooltip",
+                o));
 
         ItemList.Circuit_Parts_ResistorXSMD.set(
-            addItem(Circuit_Parts_ResistorXSMD.ID, "Optical SMD Resistor", "Highly Advanced Electronic Component", o));
-        ItemList.Circuit_Parts_DiodeXSMD
-            .set(addItem(Circuit_Parts_DiodeXSMD.ID, "Optical SMD Diode", "Highly Advanced Electronic Component", o));
+            addItemWithLocalizationKeys(
+                Circuit_Parts_ResistorXSMD.ID,
+                "gt.item.circuit_part.resistor_xsmd.name",
+                "gt.item.circuit_part.resistor_xsmd.tooltip",
+                o));
+        ItemList.Circuit_Parts_DiodeXSMD.set(
+            addItemWithLocalizationKeys(
+                Circuit_Parts_DiodeXSMD.ID,
+                "gt.item.circuit_part.diode_xsmd.name",
+                "gt.item.circuit_part.diode_xsmd.tooltip",
+                o));
         ItemList.Circuit_Parts_TransistorXSMD.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Parts_TransistorXSMD.ID,
-                "Optical SMD Transistor",
-                "Highly Advanced Electronic Component",
+                "gt.item.circuit_part.transistor_xsmd.name",
+                "gt.item.circuit_part.transistor_xsmd.tooltip",
                 o));
         ItemList.Circuit_Parts_CapacitorXSMD.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Parts_CapacitorXSMD.ID,
-                "Optical SMD Capacitor",
-                "Highly Advanced Electronic Component",
+                "gt.item.circuit_part.capacitor_xsmd.name",
+                "gt.item.circuit_part.capacitor_xsmd.tooltip",
                 o));
 
         ItemList.Circuit_Parts_InductorSMD.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Parts_InductorSMD.ID,
-                "SMD Inductor",
-                "Electronic Component",
+                "gt.item.circuit_part.inductor_smd.name",
+                "gt.item.circuit_part.inductor_smd.tooltip",
                 OrePrefixes.componentCircuit.get(Materials.Inductor),
                 SubTag.NO_UNIFICATION));
-        ItemList.Circuit_Parts_InductorASMD
-            .set(addItem(Circuit_Parts_InductorASMD.ID, "Advanced SMD Inductor", "Advanced Electronic Component", o));
+        ItemList.Circuit_Parts_InductorASMD.set(
+            addItemWithLocalizationKeys(
+                Circuit_Parts_InductorASMD.ID,
+                "gt.item.circuit_part.inductor_asmd.name",
+                "gt.item.circuit_part.inductor_asmd.tooltip",
+                o));
         ItemList.Circuit_Parts_InductorXSMD.set(
-            addItem(Circuit_Parts_InductorXSMD.ID, "Optical SMD Inductor", "Highly Advanced Electronic Component", o));
+            addItemWithLocalizationKeys(
+                Circuit_Parts_InductorXSMD.ID,
+                "gt.item.circuit_part.inductor_xsmd.name",
+                "gt.item.circuit_part.inductor_xsmd.tooltip",
+                o));
 
         /*
          * ICs Lenses made from perfect crystals first instead of plates Monocrystalline silicon ingot
@@ -385,165 +454,447 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
          * interconnected circuit (H-IC + nanotubes) quantum chips
          */
 
-        final String RAW = "Raw Circuit";
+        ItemList.Circuit_Silicon_Ingot.set(
+            addItemWithLocalizationKeys(Circuit_Silicon_Ingot.ID, "gt.item.circuit.silicon_ingot.plain.name", RAW, o));
+        ItemList.Circuit_Silicon_Ingot2.set(
+            addItemWithLocalizationKeys(
+                Circuit_Silicon_Ingot2.ID,
+                "gt.item.circuit.silicon_ingot.phosphorus.name",
+                RAW,
+                o));
+        ItemList.Circuit_Silicon_Ingot3.set(
+            addItemWithLocalizationKeys(
+                Circuit_Silicon_Ingot3.ID,
+                "gt.item.circuit.silicon_ingot.naquadah.name",
+                RAW,
+                o));
+        ItemList.Circuit_Silicon_Ingot4.set(
+            addItemWithLocalizationKeys(
+                Circuit_Silicon_Ingot4.ID,
+                "gt.item.circuit.silicon_ingot.europium.name",
+                RAW,
+                o));
+        ItemList.Circuit_Silicon_Ingot5.set(
+            addItemWithLocalizationKeys(
+                Circuit_Silicon_Ingot5.ID,
+                "gt.item.circuit.silicon_ingot.americium.name",
+                RAW,
+                o));
+        ItemList.Circuit_Silicon_Ingot6.set(
+            addItemWithLocalizationKeys(
+                Circuit_Silicon_Ingot6.ID,
+                "gt.item.circuit.silicon_ingot.optical.name",
+                RAW,
+                o));
 
-        ItemList.Circuit_Silicon_Ingot.set(addItem(Circuit_Silicon_Ingot.ID, "Monocrystalline Silicon Boule", RAW, o));
-        ItemList.Circuit_Silicon_Ingot2
-            .set(addItem(Circuit_Silicon_Ingot2.ID, "Phosphorus doped Monocrystalline Silicon Boule", RAW, o));
-        ItemList.Circuit_Silicon_Ingot3
-            .set(addItem(Circuit_Silicon_Ingot3.ID, "Naquadah doped Monocrystalline Silicon Boule", RAW, o));
-        ItemList.Circuit_Silicon_Ingot4
-            .set(addItem(Circuit_Silicon_Ingot4.ID, "Europium doped Monocrystalline Silicon Boule", RAW, o));
-        ItemList.Circuit_Silicon_Ingot5
-            .set(addItem(Circuit_Silicon_Ingot5.ID, "Americium doped Monocrystalline Silicon Boule", RAW, o));
-        ItemList.Circuit_Silicon_Ingot6
-            .set(addItem(Circuit_Silicon_Ingot6.ID, "Optically Enriched Crystalline Boule", RAW, o));
-
-        ItemList.Circuit_Silicon_Wafer.set(addItem(Circuit_Silicon_Wafer.ID, "Wafer", RAW, "waferPlain", "wafer"));
-        ItemList.Circuit_Silicon_Wafer2
-            .set(addItem(Circuit_Silicon_Wafer2.ID, "Phosphorus doped Wafer", RAW, "waferPhosphorus", "wafer"));
-        ItemList.Circuit_Silicon_Wafer3
-            .set(addItem(Circuit_Silicon_Wafer3.ID, "Naquadah doped Wafer", RAW, "waferNaquadah", "wafer"));
-        ItemList.Circuit_Silicon_Wafer4
-            .set(addItem(Circuit_Silicon_Wafer4.ID, "Europium doped Wafer", RAW, "waferEuropium", "wafer"));
-        ItemList.Circuit_Silicon_Wafer5
-            .set(addItem(Circuit_Silicon_Wafer5.ID, "Americium doped Wafer", RAW, "waferAmericium", "wafer"));
+        ItemList.Circuit_Silicon_Wafer.set(
+            addItemWithLocalizationKeys(
+                Circuit_Silicon_Wafer.ID,
+                "gt.item.circuit.wafer.plain.name",
+                RAW,
+                "waferPlain",
+                "wafer"));
+        ItemList.Circuit_Silicon_Wafer2.set(
+            addItemWithLocalizationKeys(
+                Circuit_Silicon_Wafer2.ID,
+                "gt.item.circuit.wafer.phosphorus.name",
+                RAW,
+                "waferPhosphorus",
+                "wafer"));
+        ItemList.Circuit_Silicon_Wafer3.set(
+            addItemWithLocalizationKeys(
+                Circuit_Silicon_Wafer3.ID,
+                "gt.item.circuit.wafer.naquadah.name",
+                RAW,
+                "waferNaquadah",
+                "wafer"));
+        ItemList.Circuit_Silicon_Wafer4.set(
+            addItemWithLocalizationKeys(
+                Circuit_Silicon_Wafer4.ID,
+                "gt.item.circuit.wafer.europium.name",
+                RAW,
+                "waferEuropium",
+                "wafer"));
+        ItemList.Circuit_Silicon_Wafer5.set(
+            addItemWithLocalizationKeys(
+                Circuit_Silicon_Wafer5.ID,
+                "gt.item.circuit.wafer.americium.name",
+                RAW,
+                "waferAmericium",
+                "wafer"));
         ItemList.Circuit_Silicon_Wafer6.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Silicon_Wafer6.ID,
-                "Photonically Prepared Wafer",
+                "gt.item.circuit.wafer.optical_prepared.name",
                 RAW,
                 "waferPhotonicallyPrepared",
                 "wafer"));
         ItemList.Circuit_Silicon_Wafer7.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Silicon_Wafer7.ID,
-                "Photonically Enhanced Wafer",
+                "gt.item.circuit.wafer.optical_enhanced.name",
                 RAW,
                 "waferPhotonicallyEnhanced",
                 "wafer"));
 
-        ItemList.Circuit_Wafer_ILC
-            .set(addItem(Circuit_Wafer_ILC.ID, "Integrated Logic Circuit (Wafer)", RAW, "waferILC", "wafer"));
-        ItemList.Circuit_Chip_ILC
-            .set(addItem(Circuit_Chip_ILC.ID, "Integrated Logic Circuit", "Integrated Circuit", "chipILC", "chip"));
+        ItemList.Circuit_Wafer_ILC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_ILC.ID,
+                "gt.item.circuit.wafer.ilc.name",
+                RAW,
+                "waferILC",
+                "wafer"));
+        ItemList.Circuit_Chip_ILC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_ILC.ID,
+                "gt.item.circuit.chip.ilc.name",
+                "gt.item.circuit.chip.ilc.tooltip",
+                "chipILC",
+                "chip"));
 
-        ItemList.Circuit_Wafer_Ram
-            .set(addItem(Circuit_Wafer_Ram.ID, "Random Access Memory Chip (Wafer)", RAW, "waferRAM", "wafer"));
-        ItemList.Circuit_Chip_Ram
-            .set(addItem(Circuit_Chip_Ram.ID, "Random Access Memory Chip", "Integrated Circuit", "chipRAM", "chip"));
+        ItemList.Circuit_Wafer_Ram.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_Ram.ID,
+                "gt.item.circuit.wafer.ram.name",
+                RAW,
+                "waferRAM",
+                "wafer"));
+        ItemList.Circuit_Chip_Ram.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_Ram.ID,
+                "gt.item.circuit.chip.ram.name",
+                "gt.item.circuit.chip.ram.tooltip",
+                "chipRAM",
+                "chip"));
 
-        ItemList.Circuit_Wafer_NAND
-            .set(addItem(Circuit_Wafer_NAND.ID, "NAND Memory Chip (Wafer)", RAW, "waferNAND", "wafer"));
-        ItemList.Circuit_Chip_NAND
-            .set(addItem(Circuit_Chip_NAND.ID, "NAND Memory Chip", "Integrated Circuit", "chipNAND", "chip"));
+        ItemList.Circuit_Wafer_NAND.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_NAND.ID,
+                "gt.item.circuit.wafer.nand.name",
+                RAW,
+                "waferNAND",
+                "wafer"));
+        ItemList.Circuit_Chip_NAND.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_NAND.ID,
+                "gt.item.circuit.chip.nand.name",
+                "gt.item.circuit.chip.nand.tooltip",
+                "chipNAND",
+                "chip"));
 
-        ItemList.Circuit_Wafer_NOR
-            .set(addItem(Circuit_Wafer_NOR.ID, "NOR Memory Chip (Wafer)", RAW, "waferNOR", "wafer"));
-        ItemList.Circuit_Chip_NOR
-            .set(addItem(Circuit_Chip_NOR.ID, "NOR Memory Chip", "Integrated Circuit", "chipNOR", "chip"));
+        ItemList.Circuit_Wafer_NOR.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_NOR.ID,
+                "gt.item.circuit.wafer.nor.name",
+                RAW,
+                "waferNOR",
+                "wafer"));
+        ItemList.Circuit_Chip_NOR.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_NOR.ID,
+                "gt.item.circuit.chip.nor.name",
+                "gt.item.circuit.chip.nor.tooltip",
+                "chipNOR",
+                "chip"));
 
-        ItemList.Circuit_Wafer_CPU
-            .set(addItem(Circuit_Wafer_CPU.ID, "Central Processing Unit (Wafer)", RAW, "waferCPU", "wafer"));
-        ItemList.Circuit_Chip_CPU
-            .set(addItem(Circuit_Chip_CPU.ID, "Central Processing Unit", "Integrated Circuit", "chipCPU", "chip"));
+        ItemList.Circuit_Wafer_CPU.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_CPU.ID,
+                "gt.item.circuit.wafer.cpu.name",
+                RAW,
+                "waferCPU",
+                "wafer"));
+        ItemList.Circuit_Chip_CPU.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_CPU.ID,
+                "gt.item.circuit.chip.cpu.name",
+                "gt.item.circuit.chip.cpu.tooltip",
+                "chipCPU",
+                "chip"));
 
-        ItemList.Circuit_Wafer_SoC.set(addItem(Circuit_Wafer_SoC.ID, "SoC Wafer", RAW, "waferSoC", "wafer"));
-        ItemList.Circuit_Chip_SoC.set(addItem(Circuit_Chip_SoC.ID, "SoC", "System on a Chip", "chipSoC", "chip"));
+        ItemList.Circuit_Wafer_SoC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_SoC.ID,
+                "gt.item.circuit.wafer.soc.name",
+                RAW,
+                "waferSoC",
+                "wafer"));
+        ItemList.Circuit_Chip_SoC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_SoC.ID,
+                "gt.item.circuit.chip.soc.name",
+                "gt.item.circuit.chip.soc.tooltip",
+                "chipSoC",
+                "chip"));
 
-        ItemList.Circuit_Wafer_SoC2.set(addItem(Circuit_Wafer_SoC2.ID, "ASoC Wafer", RAW, "waferASoC", "wafer"));
-        ItemList.Circuit_Chip_SoC2
-            .set(addItem(Circuit_Chip_SoC2.ID, "ASoC", "Advanced System on a Chip", "chipASoC", "chip"));
+        ItemList.Circuit_Wafer_SoC2.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_SoC2.ID,
+                "gt.item.circuit.wafer.asoc.name",
+                RAW,
+                "waferASoC",
+                "wafer"));
+        ItemList.Circuit_Chip_SoC2.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_SoC2.ID,
+                "gt.item.circuit.chip.asoc.name",
+                "gt.item.circuit.chip.asoc.tooltip",
+                "chipASoC",
+                "chip"));
 
-        ItemList.Circuit_Wafer_PIC.set(addItem(Circuit_Wafer_PIC.ID, "PIC Wafer", RAW, "waferPIC", "wafer"));
-        ItemList.Circuit_Chip_PIC.set(addItem(Circuit_Chip_PIC.ID, "Power IC", "Power Circuit", "chipPIC", "chip"));
+        ItemList.Circuit_Wafer_PIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_PIC.ID,
+                "gt.item.circuit.wafer.pic.name",
+                RAW,
+                "waferPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_PIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_PIC.ID,
+                "gt.item.circuit.chip.pic.name",
+                "gt.item.circuit.chip.pic.tooltip",
+                "chipPIC",
+                "chip"));
 
-        ItemList.Circuit_Wafer_HPIC.set(addItem(Circuit_Wafer_HPIC.ID, "HPIC Wafer", RAW, "waferHPIC", "wafer"));
-        ItemList.Circuit_Chip_HPIC
-            .set(addItem(Circuit_Chip_HPIC.ID, "High Power IC", "High Power Circuit", "chipHPIC", "chip"));
+        ItemList.Circuit_Wafer_HPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_HPIC.ID,
+                "gt.item.circuit.wafer.hpic.name",
+                RAW,
+                "waferHPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_HPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_HPIC.ID,
+                "gt.item.circuit.chip.hpic.name",
+                "gt.item.circuit.chip.hpic.tooltip",
+                "chipHPIC",
+                "chip"));
 
-        ItemList.Circuit_Wafer_NanoCPU
-            .set(addItem(Circuit_Wafer_NanoCPU.ID, "NanoCPU Wafer", RAW, "waferNanoCPU", "wafer"));
+        ItemList.Circuit_Wafer_NanoCPU.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_NanoCPU.ID,
+                "gt.item.circuit.wafer.nanocpu.name",
+                RAW,
+                "waferNanoCPU",
+                "wafer"));
         ItemList.Circuit_Chip_NanoCPU.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Chip_NanoCPU.ID,
-                "Nanocomponent Central Processing Unit",
-                "Power Circuit",
+                "gt.item.circuit.chip.nanocpu.name",
+                "gt.item.circuit.chip.nanocpu.tooltip",
                 "chipNanoCPU",
                 "chip"));
 
-        ItemList.Circuit_Wafer_QuantumCPU
-            .set(addItem(Circuit_Wafer_QuantumCPU.ID, "QBit Wafer", RAW, "waferQuantumCPU", "wafer"));
-        ItemList.Circuit_Chip_QuantumCPU
-            .set(addItem(Circuit_Chip_QuantumCPU.ID, "QBit Processing Unit", "Quantum CPU", "chipQuantumCPU", "chip"));
+        ItemList.Circuit_Wafer_QuantumCPU.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_QuantumCPU.ID,
+                "gt.item.circuit.wafer.quantumcpu.name",
+                RAW,
+                "waferQuantumCPU",
+                "wafer"));
+        ItemList.Circuit_Chip_QuantumCPU.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_QuantumCPU.ID,
+                "gt.item.circuit.chip.quantumcpu.name",
+                "gt.item.circuit.chip.quantumcpu.tooltip",
+                "chipQuantumCPU",
+                "chip"));
 
-        ItemList.Circuit_Wafer_UHPIC.set(addItem(Circuit_Wafer_UHPIC.ID, "UHPIC Wafer", RAW, "waferUHPIC", "wafer"));
+        ItemList.Circuit_Wafer_UHPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_UHPIC.ID,
+                "gt.item.circuit.wafer.uhpic.name",
+                RAW,
+                "waferUHPIC",
+                "wafer"));
         ItemList.Circuit_Chip_UHPIC.set(
-            addItem(Circuit_Chip_UHPIC.ID, "Ultra High Power IC", "Ultra High Power Circuit", "chipUHPIC", "chip"));
+            addItemWithLocalizationKeys(
+                Circuit_Chip_UHPIC.ID,
+                "gt.item.circuit.chip.uhpic.name",
+                "gt.item.circuit.chip.uhpic.tooltip",
+                "chipUHPIC",
+                "chip"));
 
         ItemList.Circuit_Wafer_Simple_SoC.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Wafer_Simple_SoC.ID,
-                "Simple SoC Wafer",
-                "Raw Primitive Circuit",
+                "gt.item.circuit.wafer.simple_soc.name",
+                RAW,
                 "waferSimpleSoC",
                 "wafer"));
-        ItemList.Circuit_Chip_Simple_SoC
-            .set(addItem(Circuit_Chip_Simple_SoC.ID, "Simple SoC", "Simple System on a Chip", "chipSimpleSoC", "chip"));
+        ItemList.Circuit_Chip_Simple_SoC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_Simple_SoC.ID,
+                "gt.item.circuit.chip.simple_soc.name",
+                "gt.item.circuit.chip.simple_soc.tooltip",
+                "chipSimpleSoC",
+                "chip"));
 
-        ItemList.Circuit_Wafer_ULPIC.set(addItem(Circuit_Wafer_ULPIC.ID, "ULPIC Wafer", RAW, "waferULPIC", "wafer"));
-        ItemList.Circuit_Chip_ULPIC
-            .set(addItem(Circuit_Chip_ULPIC.ID, "Ultra Low Power IC", "Ultra Low Power Circuit", "chipULPIC", "chip"));
+        ItemList.Circuit_Wafer_ULPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_ULPIC.ID,
+                "gt.item.circuit.wafer.ulpic.name",
+                RAW,
+                "waferULPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_ULPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_ULPIC.ID,
+                "gt.item.circuit.chip.ulpic.name",
+                "gt.item.circuit.chip.ulpic.tooltip",
+                "chipULPIC",
+                "chip"));
 
-        ItemList.Circuit_Wafer_LPIC.set(addItem(Circuit_Wafer_LPIC.ID, "LPIC Wafer", RAW, "waferLPIC", "wafer"));
-        ItemList.Circuit_Chip_LPIC
-            .set(addItem(Circuit_Chip_LPIC.ID, "Low Power IC", "Low Power Circuit", "chipLPIC", "chip"));
+        ItemList.Circuit_Wafer_LPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_LPIC.ID,
+                "gt.item.circuit.wafer.lpic.name",
+                RAW,
+                "waferLPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_LPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_LPIC.ID,
+                "gt.item.circuit.chip.lpic.name",
+                "gt.item.circuit.chip.lpic.tooltip",
+                "chipLPIC",
+                "chip"));
 
-        ItemList.Circuit_Wafer_NPIC.set(addItem(Circuit_Wafer_NPIC.ID, "NPIC Wafer", RAW, "waferNPIC", "wafer"));
-        ItemList.Circuit_Chip_NPIC
-            .set(addItem(Circuit_Chip_NPIC.ID, "Nano Power IC", "Nano Power Circuit", "chipNPIC", "chip"));
+        ItemList.Circuit_Wafer_NPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_NPIC.ID,
+                "gt.item.circuit.wafer.npic.name",
+                RAW,
+                "waferNPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_NPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_NPIC.ID,
+                "gt.item.circuit.chip.npic.name",
+                "gt.item.circuit.chip.npic.tooltip",
+                "chipNPIC",
+                "chip"));
 
-        ItemList.Circuit_Wafer_PPIC.set(addItem(Circuit_Wafer_PPIC.ID, "PPIC Wafer", RAW, "waferPPIC", "wafer"));
-        ItemList.Circuit_Chip_PPIC
-            .set(addItem(Circuit_Chip_PPIC.ID, "Piko Power IC", "Piko Power Circuit", "chipPPIC", "chip"));
+        ItemList.Circuit_Wafer_PPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_PPIC.ID,
+                "gt.item.circuit.wafer.ppic.name",
+                RAW,
+                "waferPPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_PPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_PPIC.ID,
+                "gt.item.circuit.chip.ppic.name",
+                "gt.item.circuit.chip.ppic.tooltip",
+                "chipPPIC",
+                "chip"));
 
-        ItemList.Circuit_Wafer_QPIC.set(addItem(Circuit_Wafer_QPIC.ID, "QPIC Wafer", RAW, "waferQPIC", "wafer"));
-        ItemList.Circuit_Chip_QPIC
-            .set(addItem(Circuit_Chip_QPIC.ID, "Quantum Power IC", "Quantum Power Circuit", "chipQPIC", "chip"));
+        ItemList.Circuit_Wafer_QPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_QPIC.ID,
+                "gt.item.circuit.wafer.qpic.name",
+                RAW,
+                "waferQPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_QPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_QPIC.ID,
+                "gt.item.circuit.chip.qpic.name",
+                "gt.item.circuit.chip.qpic.tooltip",
+                "chipQPIC",
+                "chip"));
 
-        ItemList.Circuit_Wafer_Bioware
-            .set(addItem(Circuit_Wafer_Bioware.ID, "Living Bio Wafer", RAW, "waferBioware", "wafer"));
+        ItemList.Circuit_Wafer_Bioware.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_Bioware.ID,
+                "gt.item.circuit.wafer.bioware.name",
+                RAW,
+                "waferBioware",
+                "wafer"));
         ItemList.Circuit_Parts_Chip_Bioware.set(
-            addItem(Circuit_Parts_Chip_Bioware.ID, "Living Bio Chip", "Needed for Circuits", "chipBioware", "chip"));
-        /*
-         * Engraved Crystal Chip Engraved Lapotron Chip Crystal CPU SoCrystal stem cells (disassemble eggs)
-         */
+            /*
+             * Engraved Crystal Chip Engraved Lapotron Chip Crystal CPU SoCrystal stem cells (disassemble eggs)
+             */
+            addItemWithLocalizationKeys(
+                Circuit_Parts_Chip_Bioware.ID,
+                "gt.item.circuit.chip.bioware.name",
+                "gt.item.circuit.chip.bioware.tooltip",
+                "chipBioware",
+                "chip"));
+
         ItemList.Circuit_Chip_CrystalSoC2.set(
-            addItem(Circuit_Chip_CrystalSoC2.ID, "Raw Advanced Crystal Chip", "Raw Advanced Crystal Processor", o));
-        ItemList.Circuit_Parts_RawCrystalChip
-            .set(addItem(Circuit_Parts_RawCrystalChip.ID, "Raw Crystal Chip", "Raw Crystal Processor", o));
-        ItemList.Circuit_Chip_CrystalCPU
-            .set(addItem(Circuit_Chip_CrystalCPU.ID, "Crystal Processing Unit", "Crystal CPU", o)); // Crystal
-        // chip
-        // elite
-        // part
-        ItemList.Circuit_Chip_CrystalSoC
-            .set(addItem(Circuit_Chip_CrystalSoC.ID, "Crystal SoC", "Crystal System on a Chip", o));
-        ItemList.Circuit_Chip_NeuroCPU.set(addItem(Circuit_Chip_NeuroCPU.ID, "Neuro Processing Unit", "Neuro CPU", o));
-        ItemList.Circuit_Chip_Stemcell.set(addItem(Circuit_Chip_Stemcell.ID, "Stemcells", "Raw inteligence", o));
-        ItemList.Circuit_Parts_RawCrystalParts
-            .set(addItem(Circuit_Parts_RawCrystalParts.ID, "Raw Crystal Chip Parts", "Raw Crystal Processor Parts", o));
-        ItemList.Circuit_Chip_Biocell.set(addItem(Circuit_Chip_Biocell.ID, "Biocells", "Mutated Raw inteligence", o));
-        ItemList.Circuit_Chip_BioCPU.set(addItem(Circuit_Chip_BioCPU.ID, "Bio Processing Unit", "Bio CPU", o));
-        ItemList.Circuit_Chip_Optical
-            .set(addItem(Circuit_Chip_Optical.ID, "Raw Exposed Optical Chip", "Raw Optical Chip", o));
+            // chip
+            // elite
+            // part
+            addItemWithLocalizationKeys(
+                Circuit_Chip_CrystalSoC2.ID,
+                "gt.item.circuit.chip.crystal_soc2.name",
+                "gt.item.circuit.chip.crystal_soc2.tooltip",
+                o));
+        ItemList.Circuit_Parts_RawCrystalChip.set(
+            addItemWithLocalizationKeys(
+                Circuit_Parts_RawCrystalChip.ID,
+                "gt.item.circuit_part.raw_crystal_chip.name",
+                "gt.item.circuit_part.raw_crystal_chip.tooltip",
+                o));
+        ItemList.Circuit_Chip_CrystalCPU.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_CrystalCPU.ID,
+                "gt.item.circuit.chip.crystal_cpu.name",
+                "gt.item.circuit.chip.crystal_cpu.tooltip",
+                o));
+        ItemList.Circuit_Chip_CrystalSoC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_CrystalSoC.ID,
+                "gt.item.circuit.chip.crystal_soc.name",
+                "gt.item.circuit.chip.crystal_soc.tooltip",
+                o));
+        ItemList.Circuit_Chip_NeuroCPU.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_NeuroCPU.ID,
+                "gt.item.circuit.chip.neuro_cpu.name",
+                "gt.item.circuit.chip.neuro_cpu.tooltip",
+                o));
+        ItemList.Circuit_Chip_Stemcell.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_Stemcell.ID,
+                "gt.item.circuit.chip.stemcell.name",
+                "gt.item.circuit.chip.stemcell.tooltip",
+                o));
+        ItemList.Circuit_Parts_RawCrystalParts.set(
+            addItemWithLocalizationKeys(
+                Circuit_Parts_RawCrystalParts.ID,
+                "gt.item.circuit_part.raw_crystal_parts.name",
+                "gt.item.circuit_part.raw_crystal_parts.tooltip",
+                o));
+        ItemList.Circuit_Chip_Biocell.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_Biocell.ID,
+                "gt.item.circuit.chip.biocell.name",
+                "gt.item.circuit.chip.biocell.tooltip",
+                o));
+        ItemList.Circuit_Chip_BioCPU.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_BioCPU.ID,
+                "gt.item.circuit.chip.bio_cpu.name",
+                "gt.item.circuit.chip.bio_cpu.tooltip",
+                o));
+        ItemList.Circuit_Chip_Optical.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_Optical.ID,
+                "gt.item.circuit.chip.optical.name",
+                "gt.item.circuit.chip.optical.tooltip",
+                o));
 
         // Nand Chip
         ItemList.NandChip.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 NandChip.ID,
-                "NAND Chip",
-                "A very simple Circuit",
+                "gt.item.nand_chip.name",
+                "gt.item.nand_chip.tooltip",
                 OrePrefixes.circuit.get(Materials.ULV),
                 SubTag.NO_UNIFICATION));
 
@@ -552,732 +903,866 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         // Good Circuit Item01
 
         // Integrated Logic Circuit Item01
-        ItemList.Circuit_Integrated_Good.set(
-            addItem(
-                Circuit_Integrated_Good.ID,
-                "Good Integrated Circuit",
-                "Good Circuit",
-                OrePrefixes.circuit.get(Materials.MV),
-                SubTag.NO_UNIFICATION));
 
         // Good Integrated Circuit Item01
         // Advanced Circuit IC2
-
         ItemList.Circuit_Microprocessor.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Microprocessor.ID,
-                "Microprocessor",
-                "A Basic Circuit",
+                "gt.item.circuit.microprocessor.name",
+                "gt.item.circuit.microprocessor.tooltip",
                 OrePrefixes.circuit.get(Materials.LV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Processor.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Processor.ID,
-                "Integrated Processor",
-                "A Good Circuit",
+                "gt.item.circuit.integrated_processor.name",
+                "gt.item.circuit.integrated_processor.tooltip",
+                OrePrefixes.circuit.get(Materials.MV),
+                SubTag.NO_UNIFICATION));
+
+        ItemList.Circuit_Integrated_Good.set(
+            addItemWithLocalizationKeys(
+                Circuit_Integrated_Good.ID,
+                "gt.item.circuit.good_integrated.name",
+                "gt.item.circuit.good_integrated.tooltip",
                 OrePrefixes.circuit.get(Materials.MV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Nanoprocessor.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Nanoprocessor.ID,
-                "Nano Processor",
-                "An Advanced Circuit",
+                "gt.item.circuit.nano_processor.name",
+                "gt.item.circuit.nano_processor.tooltip",
                 OrePrefixes.circuit.get(Materials.HV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Nanocomputer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Nanocomputer.ID,
-                "Nano Assembly",
-                "An Extreme Circuit",
+                "gt.item.circuit.nano_assembly.name",
+                "gt.item.circuit.nano_assembly.tooltip",
                 OrePrefixes.circuit.get(Materials.EV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Elitenanocomputer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Elitenanocomputer.ID,
-                "Nano Supercomputer",
-                "An Elite Circuit",
+                "gt.item.circuit.nano_supercomputer.name",
+                "gt.item.circuit.nano_supercomputer.tooltip",
                 OrePrefixes.circuit.get(Materials.IV),
                 SubTag.NO_UNIFICATION));
 
         // Quantum circuits
         ItemList.Circuit_Quantumprocessor.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Quantumprocessor.ID,
-                "Quantum Processor",
-                "An Extreme Circuit",
+                "gt.item.circuit.quantum_processor.name",
+                "gt.item.circuit.quantum_processor.tooltip",
                 OrePrefixes.circuit.get(Materials.EV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Quantumcomputer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Quantumcomputer.ID,
-                "Quantum Assembly",
-                "An Elite Circuit",
+                "gt.item.circuit.quantum_assembly.name",
+                "gt.item.circuit.quantum_assembly.tooltip",
                 OrePrefixes.circuit.get(Materials.IV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Masterquantumcomputer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Masterquantumcomputer.ID,
-                "Quantum Supercomputer",
-                "A Master Circuit",
+                "gt.item.circuit.quantum_supercomputer.name",
+                "gt.item.circuit.quantum_supercomputer.tooltip",
                 OrePrefixes.circuit.get(Materials.LuV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Quantummainframe.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Quantummainframe.ID,
-                "Quantum Mainframe",
-                "An Ultimate Circuit",
+                "gt.item.circuit.quantum_mainframe.name",
+                "gt.item.circuit.quantum_mainframe.tooltip",
                 OrePrefixes.circuit.get(Materials.ZPM),
                 SubTag.NO_UNIFICATION));
 
         // Crystal circuits
         ItemList.Circuit_Crystalprocessor.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Crystalprocessor.ID,
-                "Crystal Processor",
-                "An Elite Circuit",
+                "gt.item.circuit.crystal_processor.name",
+                "gt.item.circuit.crystal_processor.tooltip",
                 OrePrefixes.circuit.get(Materials.IV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Crystalcomputer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Crystalcomputer.ID,
-                "Crystal Assembly",
-                "A Master Circuit",
+                "gt.item.circuit.crystal_assembly.name",
+                "gt.item.circuit.crystal_assembly.tooltip",
                 OrePrefixes.circuit.get(Materials.LuV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Ultimatecrystalcomputer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Ultimatecrystalcomputer.ID,
-                "Crystal Supercomputer",
-                "An Ultimate Circuit",
+                "gt.item.circuit.crystal_supercomputer.name",
+                "gt.item.circuit.crystal_supercomputer.tooltip",
                 OrePrefixes.circuit.get(Materials.ZPM),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Crystalmainframe.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Crystalmainframe.ID,
-                "Crystal Mainframe",
-                "A Super Circuit",
+                "gt.item.circuit.crystal_mainframe.name",
+                "gt.item.circuit.crystal_mainframe.tooltip",
                 OrePrefixes.circuit.get(Materials.UV),
                 SubTag.NO_UNIFICATION));
 
         // Wetware circuits
         ItemList.Circuit_Neuroprocessor.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Neuroprocessor.ID,
-                "Wetware Processor",
-                "A Master Circuit",
+                "gt.item.circuit.wetware_processor.name",
+                "gt.item.circuit.wetware_processor.tooltip",
                 OrePrefixes.circuit.get(Materials.LuV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Wetwarecomputer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Wetwarecomputer.ID,
-                "Wetware Assembly",
-                "An Ultimate Circuit",
+                "gt.item.circuit.wetware_assembly.name",
+                "gt.item.circuit.wetware_assembly.tooltip",
                 OrePrefixes.circuit.get(Materials.ZPM),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Wetwaresupercomputer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Wetwaresupercomputer.ID,
-                "Wetware Supercomputer",
-                "A Super Circuit",
+                "gt.item.circuit.wetware_supercomputer.name",
+                "gt.item.circuit.wetware_supercomputer.tooltip",
                 OrePrefixes.circuit.get(Materials.UV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Wetwaremainframe.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Wetwaremainframe.ID,
-                "Wetware Mainframe",
-                "An Infinite Circuit",
+                "gt.item.circuit.wetware_mainframe.name",
+                "gt.item.circuit.wetware_mainframe.tooltip",
                 OrePrefixes.circuit.get(Materials.UHV),
                 SubTag.NO_UNIFICATION));
 
-        // Bioware circuits.
+        // Bioware circuits
         ItemList.Circuit_Bioprocessor.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Bioprocessor.ID,
-                "Bioware Processor",
-                "An Ultimate Circuit",
+                "gt.item.circuit.bioware_processor.name",
+                "gt.item.circuit.bioware_processor.tooltip",
                 OrePrefixes.circuit.get(Materials.ZPM),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Biowarecomputer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Biowarecomputer.ID,
-                "Bioware Assembly",
-                "A Super Circuit",
+                "gt.item.circuit.bioware_assembly.name",
+                "gt.item.circuit.bioware_assembly.tooltip",
                 OrePrefixes.circuit.get(Materials.UV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Biowaresupercomputer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Biowaresupercomputer.ID,
-                "Bioware Supercomputer",
-                "An Infinite Circuit",
+                "gt.item.circuit.bioware_supercomputer.name",
+                "gt.item.circuit.bioware_supercomputer.tooltip",
                 OrePrefixes.circuit.get(Materials.UHV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Biomainframe.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Biomainframe.ID,
-                "Bioware Mainframe",
-                "A Bio Circuit",
+                "gt.item.circuit.bioware_mainframe.name",
+                "gt.item.circuit.bioware_mainframe.tooltip",
                 OrePrefixes.circuit.get(Materials.UEV),
                 SubTag.NO_UNIFICATION));
 
-        ItemList.Circuit_Board_Coated_Basic
-            .set(addItem(Circuit_Board_Coated_Basic.ID, "Circuit Board", "A basic Circuit Board", o));
-        ItemList.Circuit_Board_Phenolic_Good
-            .set(addItem(Circuit_Board_Phenolic_Good.ID, "Good Circuit Board", "A good Circuit Board", o));
-        ItemList.Circuit_Board_Epoxy_Advanced
-            .set(addItem(Circuit_Board_Epoxy_Advanced.ID, "Advanced Circuit Board", "A advanced Circuit Board", o));
+        // Circuit Boards
+        ItemList.Circuit_Board_Coated_Basic.set(
+            addItemWithLocalizationKeys(
+                Circuit_Board_Coated_Basic.ID,
+                "gt.item.circuit_board.coated_basic.name",
+                "gt.item.circuit_board.coated_basic.tooltip",
+                o));
+        ItemList.Circuit_Board_Phenolic_Good.set(
+            addItemWithLocalizationKeys(
+                Circuit_Board_Phenolic_Good.ID,
+                "gt.item.circuit_board.phenolic_good.name",
+                "gt.item.circuit_board.phenolic_good.tooltip",
+                o));
+        ItemList.Circuit_Board_Epoxy_Advanced.set(
+            addItemWithLocalizationKeys(
+                Circuit_Board_Epoxy_Advanced.ID,
+                "gt.item.circuit_board.epoxy_advanced.name",
+                "gt.item.circuit_board.epoxy_advanced.tooltip",
+                o));
         ItemList.Circuit_Board_Fiberglass_Advanced.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Board_Fiberglass_Advanced.ID,
-                "More Advanced Circuit Board",
-                "A more advanced Circuit Board",
+                "gt.item.circuit_board.fiberglass_advanced.name",
+                "gt.item.circuit_board.fiberglass_advanced.tooltip",
                 o));
-        ItemList.Circuit_Board_Multifiberglass_Elite
-            .set(addItem(Circuit_Board_Multifiberglass_Elite.ID, "Elite Circuit Board", "A elite Circuit Board", o));
+        ItemList.Circuit_Board_Multifiberglass_Elite.set(
+            addItemWithLocalizationKeys(
+                Circuit_Board_Multifiberglass_Elite.ID,
+                "gt.item.circuit_board.multifiberglass_elite.name",
+                "gt.item.circuit_board.multifiberglass_elite.tooltip",
+                o));
         ItemList.Circuit_Board_Wetware_Extreme.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Board_Wetware_Extreme.ID,
-                "Extreme Wetware Lifesupport Circuit Board",
-                "The Board that keeps life",
+                "gt.item.circuit_board.wetware_extreme.name",
+                "gt.item.circuit_board.wetware_extreme.tooltip",
                 o));
-        ItemList.Circuit_Board_Plastic_Advanced
-            .set(addItem(Circuit_Board_Plastic_Advanced.ID, "Plastic Circuit Board", "A good Board", o));
+        ItemList.Circuit_Board_Plastic_Advanced.set(
+            addItemWithLocalizationKeys(
+                Circuit_Board_Plastic_Advanced.ID,
+                "gt.item.circuit_board.plastic_advanced.name",
+                "gt.item.circuit_board.plastic_advanced.tooltip",
+                o));
         ItemList.Circuit_Board_Bio_Ultra.set(
-            addItem(Circuit_Board_Bio_Ultra.ID, "Ultra Bio Mutated Circuit Board", "Bio genetic mutated Board", o));
-        ItemList.Circuit_Board_Optical
-            .set(addItem(Circuit_Board_Optical.ID, "Optical Circuit Board", "Optically Infused Board", o));
+            addItemWithLocalizationKeys(
+                Circuit_Board_Bio_Ultra.ID,
+                "gt.item.circuit_board.bio_ultra.name",
+                "gt.item.circuit_board.bio_ultra.tooltip",
+                o));
+        ItemList.Circuit_Board_Optical.set(
+            addItemWithLocalizationKeys(
+                Circuit_Board_Optical.ID,
+                "gt.item.circuit_board.optical.name",
+                "gt.item.circuit_board.optical.tooltip",
+                o));
 
         // Optical circuits
         ItemList.Circuit_OpticalProcessor.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_OpticalProcessor.ID,
-                "Optical Processor",
-                "An Optical Circuit",
+                "gt.item.circuit.optical_processor.name",
+                "gt.item.circuit.optical_processor.tooltip",
                 OrePrefixes.circuit.get(Materials.UV),
                 SubTag.NO_UNIFICATION));
-
         ItemList.Circuit_OpticalAssembly.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_OpticalAssembly.ID,
-                "Optical Assembly",
-                "An Optical Circuit",
+                "gt.item.circuit.optical_assembly.name",
+                "gt.item.circuit.optical_assembly.tooltip",
                 OrePrefixes.circuit.get(Materials.UHV),
                 SubTag.NO_UNIFICATION));
-
         ItemList.Circuit_OpticalComputer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_OpticalComputer.ID,
-                "Optical Supercomputer",
-                "An Optical Circuit",
+                "gt.item.circuit.optical_computer.name",
+                "gt.item.circuit.optical_computer.tooltip",
                 OrePrefixes.circuit.get(Materials.UEV),
                 SubTag.NO_UNIFICATION));
-
         ItemList.Circuit_OpticalMainframe.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_OpticalMainframe.ID,
-                "Optical Mainframe",
-                "An Optical Circuit",
+                "gt.item.circuit.optical_mainframe.name",
+                "gt.item.circuit.optical_mainframe.tooltip",
                 OrePrefixes.circuit.get(Materials.UIV),
                 SubTag.NO_UNIFICATION));
 
         // Exotic circuits
         ItemList.Circuit_ExoticProcessor.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_ExoticProcessor.ID,
-                "Exotic Processor",
-                "An Exotic Circuit",
+                "gt.item.circuit.exotic_processor.name",
+                "gt.item.circuit.exotic_processor.tooltip",
                 OrePrefixes.circuit.get(Materials.UHV),
                 SubTag.NO_UNIFICATION));
-
         ItemList.Circuit_ExoticAssembly.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_ExoticAssembly.ID,
-                "Exotic Assembly",
-                "An Exotic Circuit",
+                "gt.item.circuit.exotic_assembly.name",
+                "gt.item.circuit.exotic_assembly.tooltip",
                 OrePrefixes.circuit.get(Materials.UEV),
                 SubTag.NO_UNIFICATION));
-
         ItemList.Circuit_ExoticComputer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_ExoticComputer.ID,
-                "Exotic Supercomputer",
-                "An Exotic Circuit",
+                "gt.item.circuit.exotic_computer.name",
+                "gt.item.circuit.exotic_computer.tooltip",
                 OrePrefixes.circuit.get(Materials.UIV),
                 SubTag.NO_UNIFICATION));
-
         ItemList.Circuit_ExoticMainframe.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_ExoticMainframe.ID,
-                "Exotic Mainframe",
-                "An Exotic Circuit",
+                "gt.item.circuit.exotic_mainframe.name",
+                "gt.item.circuit.exotic_mainframe.tooltip",
                 OrePrefixes.circuit.get(Materials.UMV),
                 SubTag.NO_UNIFICATION));
 
         // Cosmic circuits
         ItemList.Circuit_CosmicProcessor.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_CosmicProcessor.ID,
-                "Cosmic Processor",
-                "A Cosmic Circuit",
+                "gt.item.circuit.cosmic_processor.name",
+                "gt.item.circuit.cosmic_processor.tooltip",
                 OrePrefixes.circuit.get(Materials.UEV),
                 SubTag.NO_UNIFICATION));
-
         ItemList.Circuit_CosmicAssembly.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_CosmicAssembly.ID,
-                "Cosmic Assembly",
-                "A Cosmic Circuit",
+                "gt.item.circuit.cosmic_assembly.name",
+                "gt.item.circuit.cosmic_assembly.tooltip",
                 OrePrefixes.circuit.get(Materials.UIV),
                 SubTag.NO_UNIFICATION));
-
         ItemList.Circuit_CosmicComputer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_CosmicComputer.ID,
-                "Cosmic Supercomputer",
-                "A Cosmic Circuit",
+                "gt.item.circuit.cosmic_computer.name",
+                "gt.item.circuit.cosmic_computer.tooltip",
                 OrePrefixes.circuit.get(Materials.UMV),
                 SubTag.NO_UNIFICATION));
-
         ItemList.Circuit_CosmicMainframe.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_CosmicMainframe.ID,
-                "Cosmic Mainframe",
-                "A Cosmic Circuit",
+                "gt.item.circuit.cosmic_mainframe.name",
+                "gt.item.circuit.cosmic_mainframe.tooltip",
                 OrePrefixes.circuit.get(Materials.UXV),
                 SubTag.NO_UNIFICATION));
 
         // Transcendent circuits
         ItemList.Circuit_TranscendentProcessor.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_TranscendentProcessor.ID,
-                "Temporally Transcendent Processor",
-                "A circuit operating outside of known spacetime",
+                "gt.item.circuit.transcendent_processor.name",
+                "gt.item.circuit.transcendent_processor.tooltip",
                 OrePrefixes.circuit.get(Materials.UIV),
                 SubTag.NO_UNIFICATION));
-
         ItemList.Circuit_TranscendentAssembly.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_TranscendentAssembly.ID,
-                "Temporally Transcendent Assembly",
-                "A circuit operating outside of known spacetime",
+                "gt.item.circuit.transcendent_assembly.name",
+                "gt.item.circuit.transcendent_assembly.tooltip",
                 OrePrefixes.circuit.get(Materials.UMV),
                 SubTag.NO_UNIFICATION));
-
         ItemList.Circuit_TranscendentComputer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_TranscendentComputer.ID,
-                "Temporally Transcendent Supercomputer",
-                "A circuit operating outside of known spacetime",
+                "gt.item.circuit.transcendent_computer.name",
+                "gt.item.circuit.transcendent_computer.tooltip",
                 OrePrefixes.circuit.get(Materials.UXV),
                 SubTag.NO_UNIFICATION));
-
         ItemList.Circuit_TranscendentMainframe.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_TranscendentMainframe.ID,
-                "Temporally Transcendent Mainframe",
-                "A circuit operating outside of known spacetime",
+                "gt.item.circuit.transcendent_mainframe.name",
+                "gt.item.circuit.transcendent_mainframe.tooltip",
                 OrePrefixes.circuit.get(Materials.MAX),
                 SubTag.NO_UNIFICATION));
 
-        ItemList.Tube_Wires.set(addItem(Tube_Wires.ID, "Tube Wires", "For the Vacuum Tubes", o));
+        ItemList.Tube_Wires.set(
+            addItemWithLocalizationKeys(Tube_Wires.ID, "gt.item.tube_wires.name", "gt.item.tube_wires.tooltip", o));
 
         ItemList.Cover_SolarPanel_UHV.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_SolarPanel_UHV.ID,
-                "Solar Panel (UHV)",
-                "Ultimate High Voltage Solar Panel (Needs cleaning with right click)",
+                "gt.item.cover.solar_panel.uhv.name",
+                "gt.item.cover.solar_panel.uhv.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.TENEBRAE, 128L)));
         ItemList.Cover_SolarPanel_UEV.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_SolarPanel_UEV.ID,
-                "Solar Panel (UEV)",
-                "Ultimate Extreme Voltage Solar Panel (Needs cleaning with right click)",
+                "gt.item.cover.solar_panel.uev.name",
+                "gt.item.cover.solar_panel.uev.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 256L),
                 new TCAspects.TC_AspectStack(TCAspects.TENEBRAE, 256L)));
         ItemList.Cover_SolarPanel_UIV.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_SolarPanel_UIV.ID,
-                "Solar Panel (UIV)",
-                "Ultimate Insane Voltage Solar Panel (Needs cleaning with right click)",
+                "gt.item.cover.solar_panel.uiv.name",
+                "gt.item.cover.solar_panel.uiv.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.TENEBRAE, 512L)));
 
-        ItemList.ULV_Coil.set(addItem(ULV_Coil.ID, "Ultra Low Voltage Coil", "Primitive Coil", o));
-        ItemList.LV_Coil.set(addItem(LV_Coil.ID, "Low Voltage Coil", "Basic Coil", o));
-        ItemList.MV_Coil.set(addItem(MV_Coil.ID, "Medium Voltage Coil", "Good Coil", o));
-        ItemList.HV_Coil.set(addItem(HV_Coil.ID, "High Voltage Coil", "Advanced Coil", o));
-        ItemList.EV_Coil.set(addItem(EV_Coil.ID, "Extreme Voltage Coil", "Extreme Coil", o));
-        ItemList.IV_Coil.set(addItem(IV_Coil.ID, "Insane Voltage Coil", "Elite Coil", o));
-        ItemList.LuV_Coil.set(addItem(LuV_Coil.ID, "Ludicrous Voltage Coil", "Master Coil", o));
-        ItemList.ZPM_Coil.set(addItem(ZPM_Coil.ID, "ZPM Voltage Coil", "Ultimate Coil", o));
-        ItemList.UV_Coil.set(addItem(UV_Coil.ID, "Ultimate Voltage Coil", "Super Coil", o));
-        ItemList.UHV_Coil.set(addItem(UHV_Coil.ID, "Highly Ultimate Voltage Coil", "Infinite Coil", o));
+        ItemList.ULV_Coil
+            .set(addItemWithLocalizationKeys(ULV_Coil.ID, "gt.item.coil.ulv.name", "gt.item.coil.ulv.tooltip", o));
+        ItemList.LV_Coil
+            .set(addItemWithLocalizationKeys(LV_Coil.ID, "gt.item.coil.lv.name", "gt.item.coil.lv.tooltip", o));
+        ItemList.MV_Coil
+            .set(addItemWithLocalizationKeys(MV_Coil.ID, "gt.item.coil.mv.name", "gt.item.coil.mv.tooltip", o));
+        ItemList.HV_Coil
+            .set(addItemWithLocalizationKeys(HV_Coil.ID, "gt.item.coil.hv.name", "gt.item.coil.hv.tooltip", o));
+        ItemList.EV_Coil
+            .set(addItemWithLocalizationKeys(EV_Coil.ID, "gt.item.coil.ev.name", "gt.item.coil.ev.tooltip", o));
+        ItemList.IV_Coil
+            .set(addItemWithLocalizationKeys(IV_Coil.ID, "gt.item.coil.iv.name", "gt.item.coil.iv.tooltip", o));
+        ItemList.LuV_Coil
+            .set(addItemWithLocalizationKeys(LuV_Coil.ID, "gt.item.coil.luv.name", "gt.item.coil.luv.tooltip", o));
+        ItemList.ZPM_Coil
+            .set(addItemWithLocalizationKeys(ZPM_Coil.ID, "gt.item.coil.zpm.name", "gt.item.coil.zpm.tooltip", o));
+        ItemList.UV_Coil
+            .set(addItemWithLocalizationKeys(UV_Coil.ID, "gt.item.coil.uv.name", "gt.item.coil.uv.tooltip", o));
+        ItemList.UHV_Coil
+            .set(addItemWithLocalizationKeys(UHV_Coil.ID, "gt.item.coil.uhv.name", "gt.item.coil.uhv.tooltip", o));
 
-        ItemList.GalliumArsenideCrystal
-            .set(addItem(GalliumArsenideCrystal.ID, "Gallium Arsenide Crystal", "For making boules", o));
-        ItemList.GalliumArsenideCrystalSmallPart
-            .set(addItem(GalliumArsenideCrystalSmallPart.ID, "Small Gallium Arsenide Crystal", "For making boules", o));
-        ItemList.KevlarFiber.set(addItem(KevlarFiber.ID, "Kevlar Fiber", "For making Kevlar Plates", o));
-        ItemList.WovenKevlar.set(addItem(WovenKevlar.ID, "Woven Kevlar", "For making Kevlar Plates", o));
-        ItemList.Spinneret.set(addItem(Spinneret.ID, "Spinneret", "For making Kevlar Fiber", o));
+        ItemList.GalliumArsenideCrystal.set(
+            addItemWithLocalizationKeys(
+                GalliumArsenideCrystal.ID,
+                "gt.item.gallium_arsenide_crystal.name",
+                "gt.item.gallium_arsenide_crystal.tooltip",
+                o));
+        ItemList.GalliumArsenideCrystalSmallPart.set(
+            addItemWithLocalizationKeys(
+                GalliumArsenideCrystalSmallPart.ID,
+                "gt.item.small_gallium_arsenide_crystal.name",
+                "gt.item.small_gallium_arsenide_crystal.tooltip",
+                o));
+        ItemList.KevlarFiber.set(
+            addItemWithLocalizationKeys(
+                KevlarFiber.ID,
+                "gt.item.kevlar_fiber.name",
+                "gt.item.kevlar_fiber.tooltip",
+                o));
+        ItemList.WovenKevlar.set(
+            addItemWithLocalizationKeys(
+                WovenKevlar.ID,
+                "gt.item.woven_kevlar.name",
+                "gt.item.woven_kevlar.tooltip",
+                o));
+        ItemList.Spinneret
+            .set(addItemWithLocalizationKeys(Spinneret.ID, "gt.item.spinneret.name", "gt.item.spinneret.tooltip", o));
 
-        ItemList.IndustrialApiary_Upgrade_Frame
-            .set(addItem(IndustrialApiary_Upgrade_Frame.ID, "Upgrade Frame", "Crafting component", o));
+        ItemList.IndustrialApiary_Upgrade_Frame.set(
+            addItemWithLocalizationKeys(
+                IndustrialApiary_Upgrade_Frame.ID,
+                "gt.item.apiary_upgrade.frame.name",
+                "gt.item.apiary_upgrade.frame.tooltip",
+                o));
 
         ItemList.IndustrialApiary_Upgrade_Acceleration_1.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_Acceleration_1.ID,
-                "Acceleration Upgrade x2",
-                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 2x acceleration level/n * Energy Consumption +1 AMP LV",
+                "gt.item.apiary_upgrade.acceleration_1.name",
+                "gt.item.apiary_upgrade.acceleration_1.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_2.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_Acceleration_2.ID,
-                "Acceleration Upgrade x4",
-                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 4x acceleration level/n * Energy Consumption +1 AMP MV",
+                "gt.item.apiary_upgrade.acceleration_2.name",
+                "gt.item.apiary_upgrade.acceleration_2.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_3.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_Acceleration_3.ID,
-                "Acceleration Upgrade x8",
-                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 8x acceleration level/n * Energy Consumption +1 AMP HV",
+                "gt.item.apiary_upgrade.acceleration_3.name",
+                "gt.item.apiary_upgrade.acceleration_3.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_4.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_Acceleration_4.ID,
-                "Acceleration Upgrade x16",
-                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 16x acceleration level/n * Energy Consumption +1 AMP EV",
+                "gt.item.apiary_upgrade.acceleration_4.name",
+                "gt.item.apiary_upgrade.acceleration_4.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_5.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_Acceleration_5.ID,
-                "Acceleration Upgrade x32",
-                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 32x acceleration level/n * Energy Consumption +1 AMP IV",
+                "gt.item.apiary_upgrade.acceleration_5.name",
+                "gt.item.apiary_upgrade.acceleration_5.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_6.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_Acceleration_6.ID,
-                "Acceleration Upgrade x64",
-                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 64x acceleration level/n * Energy Consumption +1 AMP LuV",
+                "gt.item.apiary_upgrade.acceleration_6.name",
+                "gt.item.apiary_upgrade.acceleration_6.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_7.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_Acceleration_7.ID,
-                "Acceleration Upgrade x128",
-                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 128x acceleration level/n * Energy Consumption +1 AMP ZPM",
+                "gt.item.apiary_upgrade.acceleration_7.name",
+                "gt.item.apiary_upgrade.acceleration_7.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_8.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_Acceleration_8.ID,
-                "Acceleration Upgrade x256",
-                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 256x acceleration level/n * Energy Consumption +1 AMP UV",
+                "gt.item.apiary_upgrade.acceleration_8.name",
+                "gt.item.apiary_upgrade.acceleration_8.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_8_Upgraded.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_Acceleration_8_Upgraded.ID,
-                "Upgraded Acceleration Upgrade x256",
-                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 256x acceleration level/n * Will also grant 8x production upgrade/n * Energy Consumption +1 AMP UV",
+                "gt.item.apiary_upgrade.acceleration_8_upgraded.name",
+                "gt.item.apiary_upgrade.acceleration_8_upgraded.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_PRODUCTION.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_PRODUCTION.ID,
-                "Production Upgrade",
-                "Production upgrade for Industrial Apiary/n Maximum Installed: 8/n Increases production modifier by 0.25/n Energy Consumption +40%",
+                "gt.item.apiary_upgrade.production.name",
+                "gt.item.apiary_upgrade.production.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_PLAINS.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_PLAINS.ID,
-                "Plains Emulation Upgrade",
-                "Plains emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Plains/n * Energy Consumption +40%",
+                "gt.item.apiary_upgrade.plains.name",
+                "gt.item.apiary_upgrade.plains.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_LIGHT.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_LIGHT.ID,
-                "Light Upgrade",
-                "Light upgrade for Industrial Apiary/n Maximum Installed: 1/n * Internal Lighting/n * Energy Consumption +5%",
+                "gt.item.apiary_upgrade.light.name",
+                "gt.item.apiary_upgrade.light.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_FLOWERING.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_FLOWERING.ID,
-                "Flowering Upgrade",
-                "Flowering upgrade for Industrial Apiary/n Maximum Installed: 8/n * Flowering and Pollination +20%/n * Energy Consumption +10%",
+                "gt.item.apiary_upgrade.flowering.name",
+                "gt.item.apiary_upgrade.flowering.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_WINTER.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_WINTER.ID,
-                "Winter Emulation Upgrade",
-                "Winter emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Taiga/n * Energy Consumption +50%",
+                "gt.item.apiary_upgrade.winter.name",
+                "gt.item.apiary_upgrade.winter.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_DRYER.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_DRYER.ID,
-                "Dryer Upgrade",
-                "Dryer upgrade for Industrial Apiary/n Maximum Installed: 16/n * Humidity -12.5%/n * Energy Consumption +2.5%",
+                "gt.item.apiary_upgrade.dryer.name",
+                "gt.item.apiary_upgrade.dryer.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_AUTOMATION.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_AUTOMATION.ID,
-                "Automation Upgrade",
-                "Automation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Automation/n * Energy Consumption +10%",
+                "gt.item.apiary_upgrade.automation.name",
+                "gt.item.apiary_upgrade.automation.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_HUMIDIFIER.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_HUMIDIFIER.ID,
-                "Humidifier Upgrade",
-                "Humidifier upgrade for Industrial Apiary/n Maximum Installed: 16/n * Humidity +12.5%/n * Energy Consumption +2.5%",
+                "gt.item.apiary_upgrade.humidifier.name",
+                "gt.item.apiary_upgrade.humidifier.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_HELL.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_HELL.ID,
-                "HELL Emulation Upgrade",
-                "HELL emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: HELL/n * Energy Consumption +50%",
+                "gt.item.apiary_upgrade.hell.name",
+                "gt.item.apiary_upgrade.hell.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_POLLEN.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_POLLEN.ID,
-                "Pollen Scrubber Upgrade",
-                "Pollen scrubber upgrade for Industrial Apiary/n Maximum Installed: 1/n * Flowering and Pollination -100%/n * Energy Consumption +30%",
+                "gt.item.apiary_upgrade.pollen.name",
+                "gt.item.apiary_upgrade.pollen.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_DESERT.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_DESERT.ID,
-                "Desert Emulation Upgrade",
-                "Desert emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Desert/n * Energy Consumption +20%",
+                "gt.item.apiary_upgrade.desert.name",
+                "gt.item.apiary_upgrade.desert.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_COOLER.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_COOLER.ID,
-                "Cooler Upgrade",
-                "Cooler upgrade for Industrial Apiary/n Maximum Installed: 16/n * Temperature -12.5%/n * Energy Consumption +2.5%",
+                "gt.item.apiary_upgrade.cooler.name",
+                "gt.item.apiary_upgrade.cooler.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_LIFESPAN.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_LIFESPAN.ID,
-                "Lifespan Upgrade",
-                "Lifespan upgrade for Industrial Apiary/n Maximum Installed: 4/n * Lifespan -33%/n * Energy Consumption +5%",
+                "gt.item.apiary_upgrade.lifespan.name",
+                "gt.item.apiary_upgrade.lifespan.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_SEAL.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_SEAL.ID,
-                "Seal Upgrade",
-                "Seal upgrade for Industrial Apiary/n Maximum Installed: 1/n * Rain Protection/n * Energy Consumption +5%",
+                "gt.item.apiary_upgrade.seal.name",
+                "gt.item.apiary_upgrade.seal.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_STABILIZER.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_STABILIZER.ID,
-                "Genetic Stabilizer Upgrade",
-                "Genetic stabilizer upgrade for Industrial Apiary/n Maximum Installed: 1/n * Genetic Decay -100%/n * Energy Consumption +150%",
+                "gt.item.apiary_upgrade.stabilizer.name",
+                "gt.item.apiary_upgrade.stabilizer.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_JUNGLE.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_JUNGLE.ID,
-                "Jungle Emulation Upgrade",
-                "Jungle emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Jungle/n * Energy Consumption +20%",
+                "gt.item.apiary_upgrade.jungle.name",
+                "gt.item.apiary_upgrade.jungle.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_TERRITORY.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_TERRITORY.ID,
-                "Territory Upgrade",
-                "Territory upgrade for Industrial Apiary/n Maximum Installed: 4/n * Territory +50%/n * Energy Consumption +5%",
+                "gt.item.apiary_upgrade.territory.name",
+                "gt.item.apiary_upgrade.territory.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_OCEAN.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_OCEAN.ID,
-                "Ocean Emulation Upgrade",
-                "Ocean emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Ocean/n * Energy Consumption +20%",
+                "gt.item.apiary_upgrade.ocean.name",
+                "gt.item.apiary_upgrade.ocean.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_SKY.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_SKY.ID,
-                "Open Sky Upgrade",
-                "Open sky upgrade for Industrial Apiary/n Maximum Installed: 1/n * Open Sky Simulation/n * Energy Consumption +5%",
+                "gt.item.apiary_upgrade.sky.name",
+                "gt.item.apiary_upgrade.sky.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_HEATER.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_HEATER.ID,
-                "Heater Upgrade",
-                "Heater upgrade for Industrial Apiary/n Maximum Installed: 16/n * Temperature +12.5%/n * Energy Consumption +2.5%",
+                "gt.item.apiary_upgrade.heater.name",
+                "gt.item.apiary_upgrade.heater.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_SIEVE.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_SIEVE.ID,
-                "Sieve Upgrade",
-                "Sieve upgrade for Industrial Apiary/n Maximum Installed: 1/n * Pollen Collection/n * Energy Consumption +25%",
+                "gt.item.apiary_upgrade.sieve.name",
+                "gt.item.apiary_upgrade.sieve.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_UNLIGHT.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 IndustrialApiary_Upgrade_UNLIGHT.ID,
-                "Night Upgrade",
-                "Night upgrade for Industrial Apiary/n Maximum Installed: 1/n * Internal Darkness/n * Energy Consumption +5%",
+                "gt.item.apiary_upgrade.unlight.name",
+                "gt.item.apiary_upgrade.unlight.tooltip",
                 OrePrefixes.apiaryUpgrade.getName()));
 
         ItemList.NuclearStar
             .set(
-                addItem(
+                addItemWithLocalizationKeys(
                     NuclearStar.ID,
-                    "Nuclear Star",
-                    "By the powers of Greg, I command this star to be really hot.",
+                    "gt.item.nuclear_star.name",
+                    "gt.item.nuclear_star.tooltip",
                     SubTag.NO_UNIFICATION))
             .setRender(new InfinityMetaItemRenderer());
 
         ItemList.Cover_Metrics_Transmitter.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_Metrics_Transmitter.ID,
-                "Metrics Transmitter Cover",
-                String.join(
-                    "/n ",
-                    "Taking Information Panels to the next level!",
-                    "Creates a GregTech Advanced Sensor Card when attached",
-                    "Works across dimensions or if machine is dismantled",
-                    "Removing this cover will destroy the linked card",
-                    GTValues.AuthorQuerns)));
+                "gt.item.cover.metrics_transmitter.name",
+                "gt.item.cover.metrics_transmitter.tooltip"));
 
         ItemList.ActivatedCarbonFilterMesh.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Activated_Carbon_Filter_Mesh.ID,
-                "Activated Carbon Filter Mesh",
-                "The most granular filter you could possibly make.",
+                "gt.item.activated_carbon_filter_mesh.name",
+                "gt.item.activated_carbon_filter_mesh.tooltip",
                 SubTag.NO_UNIFICATION));
 
         ItemList.Quark_Catalyst_Housing.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Quark_Catalyst_Housing.ID,
-                "Empty Quark Release Catalyst Housing",
-                "Capable of holding Quark Release Catalysts",
+                "gt.item.quark_catalyst_housing.empty.name",
+                "gt.item.quark_catalyst_housing.empty.tooltip",
                 SubTag.NO_UNIFICATION));
         ItemList.Quark_Creation_Catalyst_Up.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Quark_Creation_Catalyst_Up.ID,
-                "Up-Quark Releasing Catalyst",
-                "Can release up-quarks into environment to reshape matter",
+                "gt.item.quark_catalyst.up.name",
+                "gt.item.quark_catalyst.up.tooltip",
                 SubTag.NO_UNIFICATION));
         ItemList.Quark_Creation_Catalyst_Down.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Quark_Creation_Catalyst_Down.ID,
-                "Down-Quark Releasing Catalyst",
-                "Can release down-quarks into environment to reshape matter",
+                "gt.item.quark_catalyst.down.name",
+                "gt.item.quark_catalyst.down.tooltip",
                 SubTag.NO_UNIFICATION));
         ItemList.Quark_Creation_Catalyst_Strange.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Quark_Creation_Catalyst_Strange.ID,
-                "Strange-Quark Releasing Catalyst",
-                "Can release strange-quarks into environment to reshape matter",
+                "gt.item.quark_catalyst.strange.name",
+                "gt.item.quark_catalyst.strange.tooltip",
                 SubTag.NO_UNIFICATION));
         ItemList.Quark_Creation_Catalyst_Charm.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Quark_Creation_Catalyst_Charm.ID,
-                "Charm-Quark Releasing Catalyst",
-                "Can release charm-quarks into environment to reshape matter",
+                "gt.item.quark_catalyst.charm.name",
+                "gt.item.quark_catalyst.charm.tooltip",
                 SubTag.NO_UNIFICATION));
         ItemList.Quark_Creation_Catalyst_Bottom.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Quark_Creation_Catalyst_Bottom.ID,
-                "Bottom-Quark Releasing Catalyst",
-                "Can release bottom-quarks into environment to reshape matter",
+                "gt.item.quark_catalyst.bottom.name",
+                "gt.item.quark_catalyst.bottom.tooltip",
                 SubTag.NO_UNIFICATION));
         ItemList.Quark_Creation_Catalyst_Top.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Quark_Creation_Catalyst_Top.ID,
-                "Top-Quark Releasing Catalyst",
-                "Can release top-quarks into environment to reshape matter",
+                "gt.item.quark_catalyst.top.name",
+                "gt.item.quark_catalyst.top.tooltip",
                 SubTag.NO_UNIFICATION));
         ItemList.Quark_Creation_Catalyst_Unaligned.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Quark_Creation_Catalyst_Unaligned.ID,
-                "Unaligned Quark Releasing Catalyst",
-                "Needs to be realigned before use",
+                "gt.item.quark_catalyst.unaligned.name",
+                "gt.item.quark_catalyst.unaligned.tooltip",
                 SubTag.NO_UNIFICATION));
 
-        ItemList.Optical_Cpu_Containment_Housing
-            .set(addItem(Optical_Cpu_Containment_Housing.ID, "Optical CPU Containment Housing", "CPU Housing", o));
-        ItemList.Optically_Perfected_CPU
-            .set(addItem(Optically_Perfected_CPU.ID, "Optically Perfected CPU", "Perfected CPU!", o));
-        ItemList.Optically_Compatible_Memory
-            .set(addItem(Optically_Compatible_Memory.ID, "Optically Compatible Memory", "Its in the name!", o));
-
-        ItemList.Timepiece.set(addItem(Timepiece.ID, "Timepiece", "Beware of the kid with the hat", o))
-            .setRender(new GlitchEffectMetaItemRenderer());
-        ItemList.Transdimensional_Alignment_Matrix.set(
-            addItem(
-                Transdimensional_Alignment_Matrix.ID,
-                "Transdimensional Alignment Matrix",
-                String.join(
-                    "/n ",
-                    "Device supporting the alignment of transdimensional spaces.",
-                    "Enables Dimensional Convergence on the DTPF."),
+        ItemList.Optical_Cpu_Containment_Housing.set(
+            addItemWithLocalizationKeys(
+                Optical_Cpu_Containment_Housing.ID,
+                "gt.item.optical_cpu_containment_housing.name",
+                "gt.item.optical_cpu_containment_housing.tooltip",
+                o));
+        ItemList.Optically_Perfected_CPU.set(
+            addItemWithLocalizationKeys(
+                Optically_Perfected_CPU.ID,
+                "gt.item.optically_perfected_cpu.name",
+                "gt.item.optically_perfected_cpu.tooltip",
+                o));
+        ItemList.Optically_Compatible_Memory.set(
+            addItemWithLocalizationKeys(
+                Optically_Compatible_Memory.ID,
+                "gt.item.optically_compatible_memory.name",
+                "gt.item.optically_compatible_memory.tooltip",
                 o));
 
-        ItemList.Thermal_Superconductor
-            .set(addItem(Thermal_Superconductor.ID, "Thermal Superconductor", "With the power of second sound!", o));
-        ItemList.Relativistic_Heat_Capacitor
-            .set(addItem(Relativistic_Heat_Capacitor.ID, "Relativistic Heat Capacitor", "Thermal Resonance?", o));
+        ItemList.Timepiece
+            .set(addItemWithLocalizationKeys(Timepiece.ID, "gt.item.timepiece.name", "gt.item.timepiece.tooltip", o))
+            .setRender(new GlitchEffectMetaItemRenderer());
+        ItemList.Transdimensional_Alignment_Matrix.set(
+            addItemWithLocalizationKeys(
+                Transdimensional_Alignment_Matrix.ID,
+                "gt.item.transdimensional_alignment_matrix.name",
+                "gt.item.transdimensional_alignment_matrix.tooltip",
+                o));
+
+        ItemList.Thermal_Superconductor.set(
+            addItemWithLocalizationKeys(
+                Thermal_Superconductor.ID,
+                "gt.item.thermal_superconductor.name",
+                "gt.item.thermal_superconductor.tooltip",
+                o));
+        ItemList.Relativistic_Heat_Capacitor.set(
+            addItemWithLocalizationKeys(
+                Relativistic_Heat_Capacitor.ID,
+                "gt.item.relativistic_heat_capacitor.name",
+                "gt.item.relativistic_heat_capacitor.tooltip",
+                o));
         ItemList.Phononic_Seed_Crystal
-            .set(addItem(Phononic_Seed_Crystal.ID, "Phononic Seed Crystal", "Perfect Thermal Conductance", o))
+            .set(
+                addItemWithLocalizationKeys(
+                    Phononic_Seed_Crystal.ID,
+                    "gt.item.phononic_seed_crystal.name",
+                    "gt.item.phononic_seed_crystal.tooltip",
+                    o))
             .setRender(new GlitchEffectMetaItemRenderer());
         ItemList.Harmonic_Compound
-            .set(addItem(Harmonic_Compound.ID, "Harmonic Compound", "Toxic violet with a red haze", "ingotHotHarmonic"))
+            .set(
+                addItemWithLocalizationKeys(
+                    Harmonic_Compound.ID,
+                    "gt.item.harmonic_compound.name",
+                    "gt.item.harmonic_compound.tooltip",
+                    "ingotHotHarmonic"))
             .setRender(new InfinityMetaItemRenderer());
 
-        ItemList.Heavy_Hellish_Mud.set(addItem(Heavy_Hellish_Mud.ID, "Heavy Hellish Mud", "God wouldn't touch this"));
-        ItemList.Netherite_Scrap_Seed.set(addItem(Netherite_Scrap_Seed.ID, "Netherite Scrap Seed", ""));
-        ItemList.Brittle_Netherite_Scrap.set(addItem(Brittle_Netherite_Scrap.ID, "Brittle Netherite Scrap", ""));
-        ItemList.Netherite_Nanoparticles.set(addItem(Netherite_Nanoparticles.ID, "Netherite Nanoparticles", ""));
-        ItemList.Intensely_Bonded_Netherite_Nanoparticles
-            .set(addItem(Intensely_Bonded_Netherite_Nanoparticles.ID, "Intensely Bonded Netherite Nanoparticles", ""));
-        ItemList.Hot_Netherite_Scrap.set(addItem(Hot_Netherite_Scrap.ID, "Hot Netherite Scrap", "Activated?"));
+        ItemList.Heavy_Hellish_Mud.set(
+            addItemWithLocalizationKeys(
+                Heavy_Hellish_Mud.ID,
+                "gt.item.heavy_hellish_mud.name",
+                "gt.item.heavy_hellish_mud.tooltip"));
+        ItemList.Netherite_Scrap_Seed.set(
+            addItemWithLocalizationKeys(
+                Netherite_Scrap_Seed.ID,
+                "gt.item.netherite_scrap_seed.name",
+                "gt.item.netherite_scrap_seed.tooltip"));
+        ItemList.Brittle_Netherite_Scrap.set(
+            addItemWithLocalizationKeys(
+                Brittle_Netherite_Scrap.ID,
+                "gt.item.brittle_netherite_scrap.name",
+                "gt.item.brittle_netherite_scrap.tooltip"));
+        ItemList.Netherite_Nanoparticles.set(
+            addItemWithLocalizationKeys(
+                Netherite_Nanoparticles.ID,
+                "gt.item.netherite_nanoparticles.name",
+                "gt.item.netherite_nanoparticles.tooltip"));
+        ItemList.Intensely_Bonded_Netherite_Nanoparticles.set(
+            addItemWithLocalizationKeys(
+                Intensely_Bonded_Netherite_Nanoparticles.ID,
+                "gt.item.intensely_bonded_netherite_nanoparticles.name",
+                "gt.item.intensely_bonded_netherite_nanoparticles.tooltip"));
+        ItemList.Hot_Netherite_Scrap.set(
+            addItemWithLocalizationKeys(
+                Hot_Netherite_Scrap.ID,
+                "gt.item.hot_netherite_scrap.name",
+                "gt.item.hot_netherite_scrap.tooltip"));
         ItemList.Beryllium_Shielding_Plate.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Beryllium_Shielding_Plate.ID,
-                "Beryllium Shielding Plate",
-                "A plate made of Beryllium, used for reactor shielding"));
+                "gt.item.beryllium_shielding_plate.name",
+                "gt.item.beryllium_shielding_plate.tooltip"));
         ItemList.Alumina_Support_Ring.set(
-            addItem(Alumina_Support_Ring.ID, "Alumina Support Ring", "A support ring used for insulated fluid pipes"));
+            addItemWithLocalizationKeys(
+                Alumina_Support_Ring.ID,
+                "gt.item.alumina_support_ring.name",
+                "gt.item.alumina_support_ring.tooltip"));
         ItemList.Alumina_Support_Ring_Raw.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Alumina_Support_Ring_Raw.ID,
-                "Raw Alumina Support Ring",
-                "An unfired support ring used for insulated fluid pipes"));
-        ItemList.Prismarine_Precipitate.set(addItem(Prismarine_Precipitate.ID, "Prismarine Precipitate", ""));
-        ItemList.Prismatic_Crystal.set(addItem(Prismatic_Crystal.ID, "Prismatic Crystal", ""));
+                "gt.item.alumina_support_ring_raw.name",
+                "gt.item.alumina_support_ring_raw.tooltip"));
+        ItemList.Prismarine_Precipitate.set(
+            addItemWithLocalizationKeys(
+                Prismarine_Precipitate.ID,
+                "gt.item.prismarine_precipitate.name",
+                "gt.item.prismarine_precipitate.tooltip"));
+        ItemList.Prismatic_Crystal.set(
+            addItemWithLocalizationKeys(
+                Prismatic_Crystal.ID,
+                "gt.item.prismatic_crystal.name",
+                "gt.item.prismatic_crystal.tooltip"));
         ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet
             .set(
-                addItem(
+                addItemWithLocalizationKeys(
                     Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.ID,
-                    "Radiation-Proof Prismatic Naquadah Composite Sheet",
-                    "Attenuates all forms of radiation almost perfectly"))
+                    "gt.item.radiation_proof_composite_sheet.name",
+                    "gt.item.radiation_proof_composite_sheet.tooltip"))
             .setRender(new RainbowOverlayMetaItemRenderer(new short[] { 255, 255, 255, 255 }));
         ItemList.Naquarite_Universal_Insulator_Foil.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Naquarite_Universal_Insulator_Foil.ID,
-                "Naquarite Universal Insulator Foil",
-                String.join("/n ", "The Perfect Insulator!", "Absorbs all heat, radiation and electricity.")));
+                "gt.item.naquarite_universal_insulator_foil.name",
+                "gt.item.naquarite_universal_insulator_foil.tooltip"));
 
         ItemList.ManaFly.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Manafly.ID,
-                "Manafly",
-                "If you sift this, you're a monster",
+                "gt.item.manafly.name",
+                "gt.item.manafly.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 10L)));
+
+        ItemList.StableBaryonContainmentUnit.set(
+            addItemWithLocalizationKeys(
+                StableBaryonContainmentUnit.ID,
+                "gt.item.stable_baryon_containment_unit.name",
+                "gt.item.stable_baryon_containment_unit.tooltip"));
+        ItemList.StableLeptonContainmentUnit.set(
+            addItemWithLocalizationKeys(
+                StableLeptonContainmentUnit.ID,
+                "gt.item.stable_lepton_containment_unit.name",
+                "gt.item.stable_lepton_containment_unit.tooltip"));
+        ItemList.StableMesonContainmentUnit.set(
+            addItemWithLocalizationKeys(
+                StableMesonContainmentUnit.ID,
+                "gt.item.stable_meson_containment_unit.name",
+                "gt.item.stable_meson_containment_unit.tooltip"));
+        ItemList.StableBosonContainmentUnit.set(
+            addItemWithLocalizationKeys(
+                StableBosonContainmentUnit.ID,
+                "gt.item.stable_boson_containment_unit.name",
+                "gt.item.stable_boson_containment_unit.tooltip"));
+
+        ItemList.StableEmptyContainmentUnit.set(
+            addItemWithLocalizationKeys(
+                StableEmptyContainmentUnit.ID,
+                "gt.item.stable_empty_containment_unit.name",
+                "gt.item.stable_empty_containment_unit.tooltip"));
 
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();
@@ -1329,7 +1814,9 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     private void registerAllAnimatedTooltips() {
-        addItemTooltip(ItemList.Transdimensional_Alignment_Matrix.get(1), GTValues.AuthorCloud);
+        addItemTooltip(
+            ItemList.Transdimensional_Alignment_Matrix.get(1),
+            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
     }
 
     private void initOreDictUnificatorEntries() {

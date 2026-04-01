@@ -442,12 +442,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     public void onBlockExploded(World aWorld, int aX, int aY, int aZ, Explosion aExplosion) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof BaseMetaTileEntity baseTE) {
-            GTLog.exp.printf(
-                "Explosion at : %d | %d | %d DIMID: %s due to near explosion!%n",
-                aX,
-                aY,
-                aZ,
-                aWorld.provider.dimensionId);
+            GTLog.writeExplosionLog(baseTE, this.getUnlocalizedName(), "exploded due to near explosion");
             baseTE.doEnergyExplosion();
         }
         super.onBlockExploded(aWorld, aX, aY, aZ, aExplosion);
@@ -568,12 +563,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
             final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if (tTileEntity != null && (chance < 1.0F)) {
                 if (tTileEntity instanceof BaseMetaTileEntity bmte && (GregTechAPI.sMachineNonWrenchExplosions)) {
-                    GTLog.exp.printf(
-                        "Explosion at : %d | %d | %d DIMID: %s NonWrench picking/Rain!%n",
-                        aX,
-                        aY,
-                        aZ,
-                        aWorld.provider.dimensionId);
+                    GTLog.writeExplosionLog(bmte, this.getUnlocalizedName(), "exploded due to NonWrench picking/Rain!");
                     bmte.doEnergyExplosion();
                 }
             } else {
@@ -712,8 +702,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                     .getFacadeBlock();
                 if (facadeBlock != null) return facadeBlock;
             } else {
-                // we do not allow more than one type of facade per block, so no need to check every side
-                // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
                 for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
                     final Block facadeBlock = tile.getCoverAtSide(tSide)
                         .getFacadeBlock();
@@ -735,16 +723,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 final Cover cover = tile.getCoverAtSide(dir);
                 final Block facadeBlock = cover.getFacadeBlock();
                 if (facadeBlock != null) return cover.getFacadeMeta();
-            } else {
-                // we do not allow more than one type of facade per block, so no need to check every side
-                // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
-                for (final ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
-                    final Cover cover = tile.getCoverAtSide(d);
-                    final Block facadeBlock = cover.getFacadeBlock();
-                    if (facadeBlock != null) {
-                        return cover.getFacadeMeta();
-                    }
-                }
             }
         }
         return 0;

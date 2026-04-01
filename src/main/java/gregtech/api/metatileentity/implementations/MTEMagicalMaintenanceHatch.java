@@ -12,6 +12,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -21,7 +22,7 @@ import thaumcraft.api.visnet.VisNetHandler;
 
 public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
 
-    private static Textures.BlockIcons.CustomIcon face;
+    private static IIconContainer face;
 
     private int airBuffer = 0;
     private int earthBuffer = 0;
@@ -56,7 +57,7 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        face = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_MAGICALMAINTENANCE");
+        face = Textures.BlockIcons.custom("iconsets/OVERLAY_MAGICALMAINTENANCE");
     }
 
     @Override

@@ -7,12 +7,14 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.util.Utils;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESuperBusOutput extends MTEHatchOutputBus {
 
     public MTESuperBusOutput(int id, String name, String nameRegional, int tier) {
@@ -61,9 +63,7 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Item Output for Multiblocks", getSlots(this.mTier) + " Slots",
-            "Left click with data stick to save filter config", "Right click with data stick to load filter config",
-            GTPPCore.GT_Tooltip.get() };
+        return Utils.splitLocalizedFormattedWithAlkalus("gt.blockmachines.output_bus_super.desc", getSlots(this.mTier));
     }
 
     @Override

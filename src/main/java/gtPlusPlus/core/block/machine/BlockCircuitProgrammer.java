@@ -85,11 +85,6 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
     }
 
     @Override
-    public void onBlockAdded(final World world, final int x, final int y, final int z) {
-        super.onBlockAdded(world, x, y, z);
-    }
-
-    @Override
     public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity,
         final ItemStack stack) {
         if (stack.hasDisplayName()) {
