@@ -1738,22 +1738,31 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 10L)));
 
         ItemList.StableBaryonContainmentUnit.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 StableBaryonContainmentUnit.ID,
-                "Stable Baryon Containment Unit",
-                "Maybe contains a bound baryon?"));
+                "gt.item.stable_baryon_containment_unit.name",
+                "gt.item.stable_baryon_containment_unit.tooltip"));
         ItemList.StableLeptonContainmentUnit.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 StableLeptonContainmentUnit.ID,
-                "Stable Lepton Containment Unit",
-                "Maybe contains a bound lepton?"));
+                "gt.item.stable_lepton_containment_unit.name",
+                "gt.item.stable_lepton_containment_unit.tooltip"));
         ItemList.StableMesonContainmentUnit.set(
-            addItem(StableMesonContainmentUnit.ID, "Stable Meson Containment Unit", "Maybe contains a bound meson?"));
+            addItemWithLocalizationKeys(
+                StableMesonContainmentUnit.ID,
+                "gt.item.stable_meson_containment_unit.name",
+                "gt.item.stable_meson_containment_unit.tooltip"));
         ItemList.StableBosonContainmentUnit.set(
-            addItem(StableBosonContainmentUnit.ID, "Stable Boson Containment Unit", "Maybe contains a bound boson?"));
+            addItemWithLocalizationKeys(
+                StableBosonContainmentUnit.ID,
+                "gt.item.stable_boson_containment_unit.name",
+                "gt.item.stable_boson_containment_unit.tooltip"));
 
-        ItemList.StableEmptyContainmentUnit
-            .set(addItem(StableEmptyContainmentUnit.ID, "Stable Empty Containment Unit", "Maybe contains nothing?"));
+        ItemList.StableEmptyContainmentUnit.set(
+            addItemWithLocalizationKeys(
+                StableEmptyContainmentUnit.ID,
+                "gt.item.stable_empty_containment_unit.name",
+                "gt.item.stable_empty_containment_unit.tooltip"));
 
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();
