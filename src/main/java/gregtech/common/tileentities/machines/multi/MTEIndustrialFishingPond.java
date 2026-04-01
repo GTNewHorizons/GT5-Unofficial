@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -36,11 +35,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import cofh.asmhooks.block.BlockTickingWater;
-import cofh.asmhooks.block.BlockWater;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -55,13 +51,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.ReflectionUtil;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import ic2.core.init.BlocksItems;
-import ic2.core.init.InternalName;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -76,14 +68,19 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
     public static final int JUNK_MODE = 15;
     public static final int TREASURE_MODE = 16;
 
+    private static String[][] shape = { { "           ", "    BBB    ", "    B~B    ", "    BBB    " },
+        { "           ", "  BB A BB  ", "  BBCACBB  ", "  BBBBBBB  " },
+        { "           ", " B   A   B ", " BCCCACCCB ", " BBBBBBBBB " },
+        { "           ", " B   A   B ", " BCCCACCCB ", " BBBBBBBBB " },
+        { "    BBB    ", "B   BBB   B", "BCCCBBBCCCB", "BBBBBBBBBBB" },
+        { "    BBB    ", "BAAABBBAAAB", "BAAABBBAAAB", "BBBBBBBBBBB" },
+        { "    BBB    ", "B   BBB   B", "BCCCBBBCCCB", "BBBBBBBBBBB" },
+        { "           ", " B   A   B ", " BCCCACCCB ", " BBBBBBBBB " },
+        { "           ", " B   A   B ", " BCCCACCCB ", " BBBBBBBBB " },
+        { "           ", "  BB A BB  ", "  BBCACBB  ", "  BBBBBBB  " },
+        { "           ", "    BBB    ", "    BBB    ", "    BBB    " } };
     private static IStructureDefinition<MTEIndustrialFishingPond> STRUCTURE_DEFINITION;
     private int casingAmount;
-
-    private static final Class<?> cofhWater;
-
-    static {
-        cofhWater = ReflectionUtil.getClass("cofh.asmhooks.block.BlockWater");
-    }
 
     public MTEIndustrialFishingPond(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -128,19 +125,7 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
     public IStructureDefinition<MTEIndustrialFishingPond> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialFishingPond>builder()
-                .addShape(
-                    mName,
-                    new String[][] { { "           ", "    BBB    ", "    B~B    ", "    BBB    " },
-                        { "           ", "  BB A BB  ", "  BBCACBB  ", "  BBBBBBB  " },
-                        { "           ", " B   A   B ", " BCCCACCCB ", " BBBBBBBBB " },
-                        { "           ", " B   A   B ", " BCCCACCCB ", " BBBBBBBBB " },
-                        { "    BBB    ", "B   BBB   B", "BCCCBBBCCCB", "BBBBBBBBBBB" },
-                        { "    BBB    ", "BAAABBBAAAB", "BAAABBBAAAB", "BBBBBBBBBBB" },
-                        { "    BBB    ", "B   BBB   B", "BCCCBBBCCCB", "BBBBBBBBBBB" },
-                        { "           ", " B   A   B ", " BCCCACCCB ", " BBBBBBBBB " },
-                        { "           ", " B   A   B ", " BCCCACCCB ", " BBBBBBBBB " },
-                        { "           ", "  BB A BB  ", "  BBCACBB  ", "  BBBBBBB  " },
-                        { "           ", "    BBB    ", "    BBB    ", "    BBB    " } })
+                .addShape(mName, shape)
                 .addElement(
                     'B',
                     buildHatchAdder(MTEIndustrialFishingPond.class)
@@ -189,7 +174,8 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
 
         if (errors.contains(StructureError.TOO_FEW_CASINGS)) {
             lines.add(
-                StatCollector.translateToLocalFormatted("GT5U.gui.missing_casings", 160, context.getInteger("casings")));
+                StatCollector
+                    .translateToLocalFormatted("GT5U.gui.missing_casings", 160, context.getInteger("casings")));
         }
     }
 
@@ -252,70 +238,57 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
         return PollutionConfig.pollutionPerSecondMultiIndustrialFishingPond;
     }
 
-    private Block getCasingBlock() {
-        return ModBlocks.blockCasings3Misc;
-    }
-
-    private byte getCasingMeta() {
-        return 0;
-    }
-
     private boolean checkForWater() {
-
-        // Get Facing direction
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
-        final int mCurrentDirectionX = 4;
-        final int mCurrentDirectionZ = 4;
-        final int mOffsetX_Lower = -4;
-        final int mOffsetX_Upper = 4;
-        final int mOffsetZ_Lower = -4;
-        final int mOffsetZ_Upper = 4;
-        final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * mCurrentDirectionX;
-        final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * mCurrentDirectionZ;
+        World world = aBaseMetaTileEntity.getWorld();
+        int controllerX = aBaseMetaTileEntity.getXCoord();
+        int controllerY = aBaseMetaTileEntity.getYCoord();
+        int controllerZ = aBaseMetaTileEntity.getZCoord();
 
-        int tAmount = 0;
-        for (int i = mOffsetX_Lower + 1; i <= mOffsetX_Upper - 1; ++i) {
-            for (int j = mOffsetZ_Lower + 1; j <= mOffsetZ_Upper - 1; ++j) {
-                for (int h = 0; h < 2; h++) {
-                    Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-                    int tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-                    if (isNotStaticWater(tBlock, tMeta)) {
+        boolean allFilled = true;
+
+        for (int sliceZ = 0; sliceZ < shape.length; sliceZ++) {
+            String[] layers = shape[sliceZ];
+            for (int layerY = 0; layerY < layers.length; layerY++) {
+                String row = layers[layerY];
+                for (int charX = 0; charX < row.length(); charX++) {
+                    if (row.charAt(charX) != 'C') continue;
+
+                    int[] abc = new int[] { charX - OFFSET_X, layerY - OFFSET_Y, sliceZ - OFFSET_Z };
+                    int[] xyz = new int[] { 0, 0, 0 };
+                    getExtendedFacing().getWorldOffset(abc, xyz);
+                    int wx = controllerX + xyz[0];
+                    int wy = controllerY + xyz[1];
+                    int wz = controllerZ + xyz[2];
+
+                    Block block = world.getBlock(wx, wy, wz);
+                    int meta = world.getBlockMetadata(wx, wy, wz);
+                    if (block == Blocks.water && meta == 0) continue;
+
+                    boolean isReplaceable = block == Blocks.air || block == Blocks.flowing_water
+                        || ((block == Blocks.water) && meta > 0);
+                    if (isReplaceable) {
+                        boolean consumed = false;
                         if (this.getStoredFluids() != null) {
                             for (FluidStack stored : this.getStoredFluids()) {
-                                if (stored.isFluidEqual(Materials.Water.getFluid(1))) {
-                                    if (stored.amount >= 1000) {
-                                        // Utils.LOG_WARNING("Going to try swap an air block for water from inut bus.");
-                                        stored.amount -= 1000;
-                                        aBaseMetaTileEntity.getWorld()
-                                            .setBlock(
-                                                aBaseMetaTileEntity.getXCoord() + xDir + i,
-                                                aBaseMetaTileEntity.getYCoord() + h,
-                                                aBaseMetaTileEntity.getZCoord() + zDir + j,
-                                                Blocks.water);
-                                    }
+                                if (stored.isFluidEqual(Materials.Water.getFluid(1)) && stored.amount >= 1000) {
+                                    stored.amount -= 1000;
+                                    world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
+                                    consumed = true;
+                                    break;
                                 }
                             }
                         }
+                        if (!consumed) allFilled = false;
+                    } else {
+                        allFilled = false;
                     }
-                    tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-                    if (tBlock == Blocks.water || tBlock == Blocks.flowing_water) {
-                        ++tAmount;
-                    } else if (Mods.COFHCore.isModLoaded()) {
-                        if (tBlock instanceof BlockWater || tBlock instanceof BlockTickingWater) {
-                            ++tAmount;
-                        }
-                    }
+
                 }
             }
         }
 
-        return tAmount >= 60;
-    }
-
-    private boolean isNotStaticWater(Block block, int meta) {
-        return block == Blocks.air || block == Blocks.flowing_water
-            || block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)
-            || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
+        return allFilled;
     }
 
     @Override
