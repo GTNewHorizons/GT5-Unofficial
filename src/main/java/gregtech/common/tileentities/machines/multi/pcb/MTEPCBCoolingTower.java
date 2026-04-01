@@ -1,8 +1,6 @@
 package gregtech.common.tileentities.machines.multi.pcb;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GTAuthors.AuthorBlueWeabo;
-import static gregtech.api.enums.GTAuthors.Authorguid118;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW;
@@ -226,7 +224,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
             .addInputHatch("Coolant Hatch")
             .addStructureInfoSeparator()
             .addStructureInfo(EnumChatFormatting.GRAY + "Does not require maintenance or power.")
-            .toolTipFinisher(AuthorBlueWeabo, Authorguid118);
+            .toolTipFinisher();
         return tt;
     }
 

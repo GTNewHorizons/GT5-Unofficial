@@ -23,8 +23,6 @@ package kubatech.tileentity.gregtech.multiblock;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorKuba;
-import static gregtech.api.enums.GTAuthors.AuthorPxx500;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -397,7 +395,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             .addInputHatch("Top of the short Coolant Tower - Accepts Distilled Water", 6)
             .addOutputHatch("Bottom of the short Coolant Tower - Outputs Steam", 7)
 
-            .toolTipFinisher(AuthorKuba, AuthorPxx500);
+            .toolTipFinisher();
         return tt;
     }
 

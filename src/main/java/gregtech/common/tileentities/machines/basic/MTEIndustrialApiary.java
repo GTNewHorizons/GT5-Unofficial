@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.api.enums.GTAuthors.AuthorKuba;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_INDUSTRIAL_APIARY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_INDUSTRIAL_APIARY_ACTIVE;
@@ -100,7 +99,6 @@ import forestry.apiculture.genetics.alleles.AlleleEffectThrottled;
 import forestry.core.errors.EnumErrorCode;
 import forestry.plugins.PluginApiculture;
 import gregtech.GTMod;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -143,9 +141,8 @@ public class MTEIndustrialApiary extends MTEBasicMachine
             aNameRegional,
             aTier,
             4,
-            new String[] { "BEES GOES BRRRR", EnumChatFormatting.GRAY + GTAuthors.buildAuthorsWithFormat(AuthorKuba),
-                "Effective production chance as a percent is", "2.8 * b^0.52 * (p + t)^0.52 * s^0.37",
-                "where b is the base production chance as a percent,",
+            new String[] { "BEES GOES BRRRR", "Effective production chance as a percent is",
+                "2.8 * b^0.52 * (p + t)^0.52 * s^0.37", "where b is the base production chance as a percent,",
                 "p is the production modifier (2 w/o upgrades, or 4 * 1.2^n with n production upgrades),",
                 "t is 8 for the industrial apiary, and", "s is the speed value for the bee",
                 "Outputs are generated at the end of every bee tick (...)",

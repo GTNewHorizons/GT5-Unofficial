@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorOmdaCZ;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -194,7 +193,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
             .addInputHatch("Any Solidifier Casing", 1)
             .addEnergyHatch("Any Solidifier Casing", 1)
             .addMaintenanceHatch("Any Solidifier Casing", 1)
-            .toolTipFinisher(AuthorOmdaCZ);
+            .toolTipFinisher();
         return tt;
     }
 

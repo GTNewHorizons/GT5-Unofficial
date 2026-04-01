@@ -13,7 +13,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -223,16 +222,11 @@ public abstract class MTEHatch extends MTEBasicTank {
     }
 
     public static String[] formatEnergyInfoDesc(boolean isDynamo, int tier, int amp, String key, Object... formatted) {
-        return MTEHatch.formatEnergyInfoDesc(null, null, isDynamo, tier, amp, key, formatted);
+        return MTEHatch.formatEnergyInfoDesc(null, isDynamo, tier, amp, key, formatted);
     }
 
     public static String[] formatEnergyInfoDesc(String suffixTooltip, boolean isDynamo, int tier, int amp, String key,
         Object... formatted) {
-        return MTEHatch.formatEnergyInfoDesc(null, suffixTooltip, isDynamo, tier, amp, key, formatted);
-    }
-
-    public static String[] formatEnergyInfoDesc(String[] author, String suffixTooltip, boolean isDynamo, int tier,
-        int amp, String key, Object... formatted) {
         final List<String> additionalTooltips = new LinkedList<>();
         if (suffixTooltip != null) {
             Collections.addAll(additionalTooltips, suffixTooltip);
@@ -246,9 +240,6 @@ public abstract class MTEHatch extends MTEBasicTank {
                 isDynamo ? "gt.tileentity.eup_out" : "gt.tileentity.eup_in",
                 TooltipHelper.voltageText(GTValues.V[tier])));
         additionalTooltips.add(GTUtility.translate("gt.tileentity.amperage", TooltipHelper.ampText(amp)));
-        if (author != null) {
-            additionalTooltips.add(GTAuthors.buildAuthorsWithFormat(author));
-        }
         final String[] suffixs = additionalTooltips.toArray(new String[0]);
         if (formatted.length == 0) {
             return GTSplit.splitLocalizedWithSuffix(key, suffixs);

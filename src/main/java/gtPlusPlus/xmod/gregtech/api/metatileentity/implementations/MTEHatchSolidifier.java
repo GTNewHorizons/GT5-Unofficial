@@ -21,7 +21,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import ggfab.GGItemList;
 import gregtech.GTMod;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -32,9 +31,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.net.GTPacketSetMold;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
-import gtPlusPlus.core.util.Utils;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationCircuitSupport {
@@ -68,10 +67,8 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedFormattedWithAuthor(
-            "gt.blockmachines.input_hatch_solidifier.desc",
-            GTAuthors.AuthorQuetz4l,
-            formatNumber(getCapacity()));
+        return GTSplit
+            .splitLocalizedFormatted("gt.blockmachines.input_hatch_solidifier.desc", formatNumber(getCapacity()));
     }
 
     public static ItemStack findMatchingMold(ItemStack stack) {

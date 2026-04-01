@@ -10,7 +10,6 @@ import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -67,9 +66,7 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus {
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalizedWithSuffix(
-            "gt.blockmachines.input_bus_debug.desc",
-            GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorChrom));
+        return GTSplit.splitLocalized("gt.blockmachines.input_bus_debug.desc");
     }
 
     @Override

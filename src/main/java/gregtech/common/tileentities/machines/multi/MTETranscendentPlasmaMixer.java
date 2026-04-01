@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GTAuthors.AuthorColen;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -124,7 +123,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
             .addInputBus("Any Dimensional Injection Casing", 1)
             .addInputHatch("Any Dimensional Injection Casing", 1)
             .addOutputHatch("Any Dimensional Injection Casing", 1)
-            .toolTipFinisher(AuthorColen);
+            .toolTipFinisher();
         return tt;
     }
 

@@ -48,7 +48,6 @@ import appeng.me.GridAccessException;
 import appeng.me.cache.helpers.TunnelCollection;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.parts.p2p.PartP2PSound;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -175,7 +174,6 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
                 .format("Headphones work anywhere, in %sany dimension", EnumChatFormatting.WHITE);
         });
         strings.add(String.format("Cost: %s%d EU/t", EnumChatFormatting.WHITE, BalanceMath.eutUsage(aTier)));
-        strings.add(GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorEigenRaven));
         return strings.toArray(new String[0]);
     }
 

@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorJulia;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
@@ -89,7 +88,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
                     + EnumChatFormatting.GRAY
                     + "Any Coke Oven Casing")
             .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
-            .toolTipFinisher(AuthorJulia);
+            .toolTipFinisher();
     }
 
     // spotless:off

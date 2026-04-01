@@ -1,7 +1,5 @@
 package gregtech.loaders.preload;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.ElectroMagicTools;
 import static gregtech.api.enums.Mods.Forestry;
@@ -47,7 +45,6 @@ import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
@@ -342,73 +339,46 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 PURIFICATION_PLANT_CONTROLLER.ID,
                 "multimachine.purificationplant",
                 "Water Purification Plant").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationPlant.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitClarifier.set(
             new MTEPurificationUnitClarifier(
                 PURIFICATION_UNIT_CLARIFIER.ID,
                 "multimachine.purificationunitclarifier",
                 "Clarifier Purification Unit").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationUnitClarifier.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitFlocculator.set(
             new MTEPurificationUnitFlocculation(
                 PURIFICATION_UNIT_FLOCCULATOR.ID,
                 "multimachine.purificationunitflocculator",
                 "Flocculation Purification Unit").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationUnitFlocculator.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitPhAdjustment.set(
             new MTEPurificationUnitPhAdjustment(
                 PURIFICATION_UNIT_PH_ADJUSTMENT.ID,
                 "multimachine.purificationunitphadjustment",
                 "pH Neutralization Purification Unit").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationUnitPhAdjustment.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitOzonation.set(
             new MTEPurificationUnitOzonation(
                 PURIFICATION_UNIT_OZONATION.ID,
                 "multimachine.purificationunitozonation",
                 "Ozonation Purification Unit").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationUnitOzonation.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitPlasmaHeater.set(
             new MTEPurificationUnitPlasmaHeater(
                 PURIFICATION_UNIT_PLASMA_HEATER.ID,
                 "multimachine.purificationunitplasmaheater",
                 "Extreme Temperature Fluctuation Purification Unit").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationUnitPlasmaHeater.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitUVTreatment.set(
             new MTEPurificationUnitUVTreatment(
                 PURIFICATION_UNIT_UV_TREATMENT.ID,
                 "multimachine.purificationunituvtreatment",
                 "High Energy Laser Purification Unit").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationUnitUVTreatment.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitDegasifier.set(
             new MTEPurificationUnitDegasser(
                 PURIFICATION_UNIT_DEGASIFIER.ID,
                 "multimachine.purificationunitdegasifier",
                 "Residual Decontaminant Degasser Purification Unit").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationUnitDegasifier.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitParticleExtractor.set(
             new MTEPurificationUnitBaryonicPerfection(
                 PURIFICATION_UNIT_PARTICLE_EXTRACTOR.ID,
                 "multimachine.purificationunitextractor",
                 "Absolute Baryonic Perfection Purification Unit").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationUnitParticleExtractor.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Hatch_DegasifierControl.set(
             new MTEHatchDegasifierControl(
                 HATCH_DEGASIFIER_CONTROL.ID,
@@ -594,10 +564,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Mass Solidifier").getStackForm(1));
         ItemList.Machine_Multi_ExoFoundry.set(
             new MTEExoFoundry(MultiExoFoundryController.ID, "multimachine.exofoundry", "Exo-Foundry").getStackForm(1));
-        addItemTooltip(
-            ItemList.Machine_Multi_ExoFoundry.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.fancyAuthorChrom, GTAuthors.AuthorAuynonymous));
-
         ItemList.WormholeGenerator.set(
             new MTEWormholeGenerator(
                 WORMHOLE_GENERATOR_CONTROLLER.ID,
@@ -647,10 +613,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_Multi_Spinmatron.set(
             new MTESpinmatron(SPINMATRON_CONTROLLER.ID, "multimachine.spinmatron", "Spinmatron-2737").getStackForm(1));
-        addItemTooltip(
-            ItemList.Machine_Multi_Spinmatron.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.fancyAuthorChrom, GTAuthors.AuthorNoc));
-
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")
                 .getStackForm(1));
@@ -686,7 +648,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1));
 
         ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
-        addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTAuthors.AuthorThree));
 
         if (Thaumcraft.isModLoaded() && ElectroMagicTools.isModLoaded()) {
             ItemList.MagicalMaintenanceHatch.set(
@@ -695,9 +656,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                     "hatch.maintenance.magic",
                     "Vis-Regulated Maintenance Hatch",
                     5).getStackForm(1));
-            addItemTooltip(
-                ItemList.MagicalMaintenanceHatch.get(1),
-                GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorJude));
         }
 
         ItemList.Machine_Multi_NanochipAssemblyComplex.set(
@@ -705,98 +663,61 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 NANOCHIP_ASSEMBLY_CONTROLLER.ID,
                 "multimachine.nanochipassemblycomplex",
                 "Nanochip Assembly Complex").getStackForm(1));
-        addItemTooltip(
-            ItemList.Machine_Multi_NanochipAssemblyComplex.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_AssemblyMatrix.set(
             new MTEAssemblyMatrixModule(
                 NANOCHIP_MODULE_ASSEMBLY_MATRIX.ID,
                 "multimachine.nanochipmodule.assemblymatrix",
                 "Nanochip Assembly Matrix").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_AssemblyMatrix.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_SMDProcessor.set(
             new MTESMDProcessorModule(
                 NANOCHIP_MODULE_SMD_PROCESSOR.ID,
                 "multimachine.nanochipmodule.smdprocessor",
                 "Part Preparation Apparatus").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_SMDProcessor.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_BoardProcessor.set(
             new MTEBoardProcessorModule(
                 NANOCHIP_MODULE_BOARD_PROCESSOR.ID,
                 "multimachine.nanochipmodule.boadprocessor",
                 "Full-Board Immersion Device").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_BoardProcessor.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNoc));
         ItemList.NanoChipModule_EtchingArray.set(
             new MTEEtchingArrayModule(
                 NANOCHIP_MODULE_ETCHING_ARRAY.ID,
                 "multimachine.nanochipmodule.etchingarray",
                 "Ultra-high Energy Etching Array").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_EtchingArray.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_CuttingChamber.set(
             new MTECuttingChamberModule(
                 NANOCHIP_MODULE_CUTTING_CHAMBER.ID,
                 "multimachine.nanochipmodule.cuttingchamber",
                 "Nanoprecision Cutting Chamber").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_CuttingChamber.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_WireTracer.set(
             new MTEWireTracerModule(
                 NANOCHIP_MODULE_WIRE_TRACER.ID,
                 "multimachine.nanochipmodule.wiretracer",
                 "Nanoprecision Wire Tracer").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_WireTracer.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_SuperconductorSplitter.set(
             new MTESuperconductorSplitterModule(
                 NANOCHIP_MODULE_SUPERCONDUCTOR_SPLITTER.ID,
                 "multimachine.nanochipmodule.superconductorsplitter",
                 "Superconductive Strand Splitter").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_SuperconductorSplitter.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_Splitter.set(
             new MTESplitterModule(
                 NANOCHIP_MODULE_SPLITTER.ID,
                 "multimachine.nanochipmodule.splitter",
                 "Nanopart Splitter").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_Splitter.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_OpticalOrganizer.set(
             new MTEOpticalOrganizerModule(
                 NANOCHIP_MODULE_OPTICAL_ORGANIZER.ID,
                 "multimachine.nanochipmodule.opticalorganizer",
                 "Optically Optimized Organizer").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_OpticalOrganizer.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.fancyAuthorChrom));
         ItemList.NanoChipModule_EncasementWrapper.set(
             new MTEEncasementWrapperModule(
                 NANOCHIP_MODULE_ENCASEMENT_WRAPPER.ID,
                 "multimachine.nanochipmodule.encasementwrapper",
                 "Nanometer Encasement Wrapper").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_EncasementWrapper.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_BiologicalCoordinator.set(
             new MTEBiologicalCoordinationModule(
                 NANOCHIP_MODULE_BIOLOGICAL_COORDINATOR.ID,
                 "multimachine.nanochipmodule.biologicalcoordinator",
                 "Accelerated Biological Coordinator").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_BiologicalCoordinator.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
-
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(
                 new MTEResearchCompleter(ResearchCompleter.ID, "Research Completer", "Research Completer")
