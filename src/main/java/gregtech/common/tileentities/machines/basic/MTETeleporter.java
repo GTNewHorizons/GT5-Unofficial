@@ -540,4 +540,9 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo {
                 .setSize(17, 17)
                 .setPos(113, 56));
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

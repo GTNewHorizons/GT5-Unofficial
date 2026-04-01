@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
@@ -85,11 +86,7 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     public abstract Long[] getFluidContainerStats(ItemStack aStack);
 
-    protected String getToolTipLocalizationKey(ItemStack aStack) {
-        return null;
-    }
-
-    protected Object[] getToolTipLocalizationArgs(ItemStack aStack) {
+    protected Supplier<String> getToolTipLocalizationSupplier(ItemStack aStack) {
         return null;
     }
 
@@ -252,6 +249,14 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     @Override
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
+        final Supplier<String> tooltipSupplier = getToolTipLocalizationSupplier(aStack);
+        if (tooltipSupplier != null) {
+            Collections.addAll(
+                aList,
+                Arrays.stream(GTSplit.split(tooltipSupplier.get()))
+                    .filter(GTUtility::isStringValid)
+                    .toArray(String[]::new));
+        }
         final String key = getUnlocalizedName() + "." + aStack.getItemDamage() + ".tooltip";
         if (StatCollector.canTranslate(key)) Collections.addAll(
             aList,
