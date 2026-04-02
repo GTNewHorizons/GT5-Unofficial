@@ -10,7 +10,6 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.api.util.tooltip.TooltipHelper.voltageTierText;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -62,6 +61,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.misc.GTStructureChannels;
 import kekztech.common.Blocks;
@@ -348,11 +348,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .addCasingInfoMin("tile.kekztech_tfftstoragefield_block.0.name", MIN_CASING_AMOUNT)
             .addCasingInfoRange("tile.kekztech_tfftstoragefield_block.generic.name", 7, 117, true)
             .addStructureInfo("gt.tfft.info.energy_tip")
-            .addCasingInfoRange(
-                GTUtility.nestParams("GT5U.MBTT.AnyGlass_Tier", voltageTierText(4, false)),
-                48,
-                208,
-                true)
+            .addCasingInfoRange(TooltipHelper.tieredGlassText(4), 48, 208, true)
             .addMaintenanceHatch("gt.tfft.info.maintenance")
             .addEnergyHatch("gt.tfft.info.maintenance")
             .addInputHatch("gt.tfft.info.i_hatch")

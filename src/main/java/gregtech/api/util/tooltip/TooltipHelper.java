@@ -229,6 +229,15 @@ public class TooltipHelper {
      *         used as a more specific `Any Casing`
      */
     public static String anyCasingText(Casings casing) {
-        return GTUtility.nestParams("GT5U.MBTT.HatchInfo", casing.getLocalizedName());
+        return translate("GT5U.MBTT.HatchInfo", casing.getLocalizedName());
+    }
+
+    /**
+     * @return "Any [casing name]"
+     *         <br>
+     *         used as a more specific `Any Casing`
+     */
+    public static String tieredGlassText(int voltageIndex) {
+        return translate("GT5U.MBTT.AnyGlass_Tier", voltageTierText(voltageIndex, false));
     }
 }

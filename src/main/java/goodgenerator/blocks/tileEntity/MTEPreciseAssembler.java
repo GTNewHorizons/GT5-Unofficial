@@ -80,6 +80,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
@@ -301,7 +302,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .beginStructureBlock(9, 5, 5, true)
             .addController("front_bottom_center")
             .addCasingInfoExactly("gt.blockcasings.name", 21, true)
-            .addCasingInfoExactly(GTUtility.nestParams("GT5U.MBTT.AnyGlass_Tier", voltageTierText(4, false)), 42, true)
+            .addCasingInfoExactly(TooltipHelper.tieredGlassText(4), 42, true)
             .addCasingInfoRange("preciseUnitCasing.name", 42, 86, true)
             .addInputHatch("<casing>")
             .addInputBus("<casing>")
