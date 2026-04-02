@@ -68,42 +68,42 @@ public class MTEHatchMaintenanceGui extends MTEHatchBaseGui<MTEHatchMaintenance>
                     .build()
                     .align(Alignment.CENTER));
         } else {
-            // maintenance slot
+            // maintenance slot background
             mainRow.child(
-                Flow.row()
-                    .align(Alignment.CENTER)
-                    .background(GTGuiTextures.SLOT_MAINTENANCE)
+                GTGuiTextures.SLOT_MAINTENANCE.asWidget()
                     .size(20)
-                    .child(new PhantomItemSlot() {
+                    .align(Alignment.CENTER));
+
+            // maintenance slot
+            mainRow.child(new PhantomItemSlot() {
+
+                @Override
+                public boolean handleDragAndDrop(@NotNull ItemStack draggedStack, int button) {
+                    return false;
+                }
+
+                @Override
+                public PhantomItemSlot slot(ModularSlot slot) {
+                    return syncHandler(new PhantomItemSlotSH(slot) {
 
                         @Override
-                        public boolean handleDragAndDrop(@NotNull ItemStack draggedStack, int button) {
-                            return false;
+                        protected void phantomClick(MouseData mouseData, ItemStack cursorStack) {
+                            if (cursorStack == null) return;
+                            EntityPlayer player = syncManager.getPlayer();
+
+                            if (player == null) return;
+
+                            hatch.onToolClick(cursorStack, player);
+                            // refresh held stack
+                            if (cursorStack.stackSize < 1) syncManager.setCursorItem(null);
+                            else syncManager.setCursorItem(cursorStack);
                         }
-
-                        @Override
-                        public PhantomItemSlot slot(ModularSlot slot) {
-                            return syncHandler(new PhantomItemSlotSH(slot) {
-
-                                @Override
-                                protected void phantomClick(MouseData mouseData, ItemStack cursorStack) {
-                                    if (cursorStack == null) return;
-                                    EntityPlayer player = syncManager.getPlayer();
-
-                                    if (player == null) return;
-
-                                    hatch.onToolClick(cursorStack, player);
-                                    // refresh held stack
-                                    if (cursorStack.stackSize < 1) syncManager.setCursorItem(null);
-                                    else syncManager.setCursorItem(cursorStack);
-                                }
-                            });
-                        }
-                    }.slot(new ModularSlot(hatch.inventoryHandler, 0))
-                        .size(25)
-                        .background(IDrawable.EMPTY)
-                        .align(Alignment.CENTER)));
-
+                    });
+                }
+            }.slot(new ModularSlot(hatch.inventoryHandler, 0))
+                .size(25)
+                .background(IDrawable.EMPTY)
+                .align(Alignment.CENTER));
         }
 
         return super.createContentSection(panel, syncManager).child(mainRow);
