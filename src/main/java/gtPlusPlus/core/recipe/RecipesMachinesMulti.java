@@ -455,7 +455,7 @@ public class RecipesMachinesMulti {
 
         // Industrial Maceration Stack
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_MacerationStack.get(1),
+            ItemList.MacerationStack.get(1),
             new Object[] { "PMP", "MCM", "PMP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'M',
                 ItemList.Machine_EV_Macerator, 'C', "circuitData" });
 

@@ -165,6 +165,7 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialElectrolyzer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialMacerator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialMolecularTransformer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialPackager;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialThermalCentrifuge;
@@ -836,6 +837,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.FlotationCell.set(
             new MTEFrothFlotationCell(FlotationCell.ID, "gtpp.multimachine.flotationcell", "Flotation Cell Regulator")
                 .getStackForm(1L));
+
+        ItemList.MacerationStack.set(
+            new MTEIndustrialMacerator(
+                MacerationStack.ID,
+                "industrialmacerator.controller.tier.single",
+                "Industrial Maceration Stack").getStackForm(1L));
 
         ItemList.MegaChemicalReactor.set(
             new MTEMegaChemicalReactor(
