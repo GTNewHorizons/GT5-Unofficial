@@ -18,6 +18,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -42,8 +43,11 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils
-            .addAll(this.mDescriptionArray, "A useful debug machine to create pollution.", GTPPCore.GT_Tooltip.get());
+        return TooltipHelper.pollutionDisabledTooltip(
+            ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "A useful debug machine to create pollution.",
+                GTPPCore.GT_Tooltip.get()));
     }
 
     @Override
