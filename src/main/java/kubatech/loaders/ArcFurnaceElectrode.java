@@ -18,6 +18,7 @@ import java.util.function.Consumer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.GTUtility;
@@ -51,7 +52,40 @@ public enum ArcFurnaceElectrode {
         }
     }),
     TritaniumElectrode(ZPM, 3d, 48, 2d, 4d, 600, 1.7d, 5d),
-    InfinityElectrode(UHV, 4.2d, 0, 3d, 4d, 800, 2.4d, 3d),
+    InfinityElectrode(UHV, 4.2d, 0, 1d, 4d, 800, 2.4d, 3d, event -> {
+        if (event instanceof ArcFurnaceProcessingEvent.EventConfigureProcessing configure) {
+            configure.processingLogic.setMaxParallel(getInfinityTargetParallel(configure.arcFurnace.getEffectState()));
+            return;
+        }
+        if (event instanceof ArcFurnaceProcessingEvent.EventCreateParallelHelper parallelHelperEvent) {
+            parallelHelperEvent.parallelHelper.setAvailableEUt(Long.MAX_VALUE);
+            return;
+        }
+        if (event instanceof ArcFurnaceProcessingEvent.EventConfigureOverclock configureOC) {
+            configureOC.overclockCalculator.setAmperage(1L);
+            configureOC.overclockCalculator.setEUt(Long.MAX_VALUE);
+            return;
+        }
+        if (event instanceof ArcFurnaceProcessingEvent.EventPostRecipeCheck afterRecipe) {
+            if (!afterRecipe.processingPhase || !afterRecipe.result.wasSuccessful()) return;
+            int actualParallel = Math.max(1, afterRecipe.helper.getCurrentParallel());
+            int targetParallel = getInfinityTargetParallel(afterRecipe.arcFurnace.getEffectState());
+            int chargedParallel = Math.max(actualParallel, targetParallel);
+            if (actualParallel < targetParallel) afterRecipe.eut = (afterRecipe.eut / chargedParallel) * actualParallel;
+            return;
+        }
+        if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
+            NBTTagCompound state = completed.arcFurnace.getEffectState();
+            int next = getInfinityTargetParallel(state);
+            next = next > Integer.MAX_VALUE / 2 ? Integer.MAX_VALUE : next * 2;
+            state.setInteger("infinityTargetParallel", next);
+            return;
+        }
+        if (event instanceof ArcFurnaceProcessingEvent.EventReset reset) {
+            reset.arcFurnace.getEffectState()
+                .setInteger("infinityTargetParallel", 1);
+        }
+    }),
     HypogenElectrode(UEV, 6.5d, 256, 1d, 4d, 1000, 1.5d, 3.5d),
 
     // nanite eletrodes
@@ -62,6 +96,7 @@ public enum ArcFurnaceElectrode {
     ;
 
     private static final HashMap<Integer, ArcFurnaceElectrode> ID_MAP = new HashMap<>();
+    private static final String INFINITY_TARGET_PARALLEL_KEY = "infinityTargetParallel";
 
     public final int id;
     public final GTTooltipHandler.Tier tier;
@@ -136,17 +171,20 @@ public enum ArcFurnaceElectrode {
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.parallel_limit",
                 this.parallelLimit == 0
-                    ? StatCollector.translateToLocal("item.arc_furnace_electrode.tip.parallel_limit.none")
+                    ? StatCollector.translateToLocal("item.arc_furnace_electrode.tip.parallel_limit_none")
                     : this.parallelLimit));
         tooltip.add(
-            StatCollector.translateToLocalFormatted("item.arc_furnace_electrode.tip.oc_speed", this.OCSpeedFactor));
+            StatCollector
+                .translateToLocalFormatted("item.arc_furnace_electrode.tip.oc_speed_factor", this.OCSpeedFactor));
         tooltip.add(
-            StatCollector.translateToLocalFormatted("item.arc_furnace_electrode.tip.oc_power", this.OCPowerFactor));
+            StatCollector
+                .translateToLocalFormatted("item.arc_furnace_electrode.tip.oc_power_factor", this.OCPowerFactor));
         tooltip
             .add(StatCollector.translateToLocalFormatted("item.arc_furnace_electrode.tip.durability", this.durability));
         tooltip.add(
-            StatCollector
-                .translateToLocalFormatted("item.arc_furnace_electrode.tip.amperage", this.amperagePerParallel));
+            StatCollector.translateToLocalFormatted(
+                "item.arc_furnace_electrode.tip.amperage_per_parallel",
+                this.amperagePerParallel));
         tooltip.add(
             StatCollector
                 .translateToLocalFormatted("item.arc_furnace_electrode.tip.startup_surge", this.startupSurge * 100));
@@ -156,6 +194,12 @@ public enum ArcFurnaceElectrode {
                     StatCollector.translateToLocal("item.arc_furnace_electrode.tip.special_effect." + this.name()),
                     300));
         }
+    }
+
+    private static int getInfinityTargetParallel(NBTTagCompound state) {
+        int parallel = Math.max(1, state.getInteger(INFINITY_TARGET_PARALLEL_KEY));
+        state.setInteger(INFINITY_TARGET_PARALLEL_KEY, parallel);
+        return parallel;
     }
 
 }

@@ -220,7 +220,7 @@ item.arc_furnace_electrode.tip.special_effect.GraphiteElectrode=§6§lBread and 
 item.arc_furnace_electrode.tip.special_effect.GrapheneElectrode=§6§lBread and Butter§r§6: No startup surge penalty
 item.arc_furnace_electrode.tip.special_effect.YBCOElectrode=§6§lRapid Oxidation§r§6: Every OC increases durability usage by 100%%
 item.arc_furnace_electrode.tip.special_effect.NetheriteElectrode=§6§lHot Restart§r§6: There is no shutdown cooldown. If machine is off for less than 4 seconds skip startup entirely
-
+item.arc_furnace_electrode.tip.special_effect.InfinityElectrode=§6§lTo Infinity!§r§6: Every successful processing the amount of parallels doubles, until powerfail or machine shutdown (power usage is equal to the amount of parallels regardless of provided items)
 
 #Tea
 kubaitem.tea.black_tea.name=Black Tea

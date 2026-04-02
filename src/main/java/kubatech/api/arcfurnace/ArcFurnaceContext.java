@@ -1,5 +1,7 @@
 package kubatech.api.arcfurnace;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 public interface ArcFurnaceContext {
 
     int getDurabilityConsumptionThisRun();
@@ -9,5 +11,9 @@ public interface ArcFurnaceContext {
     long getLastWorkingTick();
 
     long getTotalRunTime();
+
+    NBTTagCompound getEffectState();
+
+    void resetEffectState();
 
 }

@@ -1,5 +1,6 @@
 package kubatech.api.arcfurnace;
 
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.OverclockCalculator;
@@ -19,15 +20,19 @@ public class ArcFurnaceProcessingEvent {
         public final ParallelHelper helper;
         public final OverclockCalculator calculator;
         public final CheckRecipeResult result;
+        public final boolean processingPhase;
+        public long eut;
 
         public EventPostRecipeCheck(final ArcFurnaceContext arcFurnace, final GTRecipe recipe,
-            final ParallelHelper helper, final OverclockCalculator calculator, final CheckRecipeResult result) {
+            final ParallelHelper helper, final OverclockCalculator calculator, final CheckRecipeResult result,
+            final boolean processingPhase, long eut) {
             super(arcFurnace);
             this.recipe = recipe;
             this.helper = helper;
             this.calculator = calculator;
             this.result = result;
-
+            this.processingPhase = processingPhase;
+            this.eut = eut;
         }
     }
 
@@ -50,6 +55,50 @@ public class ArcFurnaceProcessingEvent {
             super(arcFurnace);
             this.duration = duration;
             this.eut = eut;
+        }
+    }
+
+    public static class EventConfigureProcessing extends ArcFurnaceProcessingEvent {
+
+        public final ProcessingLogic processingLogic;
+
+        public EventConfigureProcessing(final ArcFurnaceContext arcFurnace, final ProcessingLogic processingLogic) {
+            super(arcFurnace);
+            this.processingLogic = processingLogic;
+        }
+    }
+
+    public static class EventCreateParallelHelper extends ArcFurnaceProcessingEvent {
+
+        public final ParallelHelper parallelHelper;
+
+        public EventCreateParallelHelper(final ArcFurnaceContext arcFurnace, final ParallelHelper parallelHelper) {
+            super(arcFurnace);
+            this.parallelHelper = parallelHelper;
+        }
+    }
+
+    public static class EventConfigureOverclock extends ArcFurnaceProcessingEvent {
+
+        public final OverclockCalculator overclockCalculator;
+
+        public EventConfigureOverclock(final ArcFurnaceContext arcFurnace, OverclockCalculator overclockCalculator) {
+            super(arcFurnace);
+            this.overclockCalculator = overclockCalculator;
+        }
+    }
+
+    public static class EventRunCompleted extends ArcFurnaceProcessingEvent {
+
+        public EventRunCompleted(final ArcFurnaceContext arcFurnace) {
+            super(arcFurnace);
+        }
+    }
+
+    public static class EventReset extends ArcFurnaceProcessingEvent {
+
+        public EventReset(final ArcFurnaceContext arcFurnace) {
+            super(arcFurnace);
         }
     }
 

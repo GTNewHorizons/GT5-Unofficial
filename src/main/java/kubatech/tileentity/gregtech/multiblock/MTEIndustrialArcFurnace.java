@@ -94,6 +94,7 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
     private ArcFurnacePhase phase = ArcFurnacePhase.Standby;
     private ArcFurnaceElectrode electrode = null;
     private int durabilityCostThisRun = 1;
+    private NBTTagCompound effectState = new NBTTagCompound();
 
     private static final int OFFSET_H = 10;
     private static final int OFFSET_V = 7;
@@ -212,6 +213,7 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
             electrode = null;
         }
         durabilityCostThisRun = aNBT.getInteger("durabilityCostThisRun");
+        effectState = aNBT.hasKey("effectState") ? aNBT.getCompoundTag("effectState") : new NBTTagCompound();
     }
 
     @Override
@@ -220,6 +222,7 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
         aNBT.setInteger("phase", phase.ordinal());
         aNBT.setInteger("electrode", electrode == null ? -1 : electrode.ordinal());
         aNBT.setInteger("durabilityCostThisRun", durabilityCostThisRun);
+        aNBT.setTag("effectState", effectState);
     }
 
     @Override
@@ -287,6 +290,16 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
+    public NBTTagCompound getEffectState() {
+        return effectState;
+    }
+
+    @Override
+    public void resetEffectState() {
+        effectState = new NBTTagCompound();
+    }
+
+    @Override
     public RecipeMap<?> getRecipeMap() {
         return arcFurnaceRecipes;
     }
@@ -302,23 +315,35 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
         logic.setAvailableAmperage(getMaxInputAmps());
         logic.setMaxTierSkips(0);
         logic.noRecipeCaching();
+        applySpecialEffect(new ArcFurnaceProcessingEvent.EventConfigureProcessing(this, logic));
+    }
+
+    private void applySpecialEffect(ArcFurnaceProcessingEvent event) {
+        if (electrode != null && electrode.specialEffect != null) {
+            electrode.specialEffect.accept(event);
+        }
+    }
+
+    private void resetElectrodeEffectState() {
+        resetEffectState();
+        applySpecialEffect(new ArcFurnaceProcessingEvent.EventReset(this));
     }
 
     private void startShutDown() {
         phase = ArcFurnacePhase.ArcShutdown;
+        resetElectrodeEffectState();
         mMaxProgresstime = 20 * 6;
         lEUt = 0;
         checkRecipeResult = SimpleCheckRecipeResult.ofSuccess("arc_shutdown");
-        if (electrode != null && electrode.specialEffect != null) {
-            ArcFurnaceProcessingEvent.EventStartShutdown event = new ArcFurnaceProcessingEvent.EventStartShutdown(
-                this,
-                mMaxProgresstime);
-            electrode.specialEffect.accept(event);
-            mMaxProgresstime = event.duration;
-        }
+        ArcFurnaceProcessingEvent.EventStartShutdown event = new ArcFurnaceProcessingEvent.EventStartShutdown(
+            this,
+            mMaxProgresstime);
+        applySpecialEffect(event);
+        mMaxProgresstime = event.duration;
     }
 
     private void electrodeChanged() {
+        resetElectrodeEffectState();
         if (phase == ArcFurnacePhase.Processing || phase == ArcFurnacePhase.ArcIgnition) {
             stopMachine(SimpleShutDownReason.ofCritical("electrode_changed"));
             phase = ArcFurnacePhase.Standby;
@@ -346,6 +371,7 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
         } else if (phase == ArcFurnacePhase.ArcShutdown) {
             phase = ArcFurnacePhase.Standby;
         } else if (phase == ArcFurnacePhase.Processing) {
+            applySpecialEffect(new ArcFurnaceProcessingEvent.EventRunCompleted(this));
             if (electrode != null) {
                 ItemStack electrodeStack = electrodeHatch.getStackInSlot(0);
                 if (electrodeStack != null) {
@@ -367,6 +393,7 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
     public void stopMachine(@NotNull ShutDownReason reason) {
         super.stopMachine(reason);
         phase = ArcFurnacePhase.Standby;
+        resetElectrodeEffectState();
     }
 
     @Override
@@ -393,15 +420,16 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
             protected @NotNull CheckRecipeResult applyRecipe(@NotNull GTRecipe recipe, @NotNull ParallelHelper helper,
                 @NotNull OverclockCalculator calculator, @NotNull CheckRecipeResult result) {
                 CheckRecipeResult ret = super.applyRecipe(recipe, helper, calculator, result);
-                if (electrode.specialEffect != null) {
-                    electrode.specialEffect.accept(
-                        new ArcFurnaceProcessingEvent.EventPostRecipeCheck(
-                            MTEIndustrialArcFurnace.this,
-                            recipe,
-                            helper,
-                            calculator,
-                            ret));
-                }
+                ArcFurnaceProcessingEvent.EventPostRecipeCheck afterRecipe = new ArcFurnaceProcessingEvent.EventPostRecipeCheck(
+                    MTEIndustrialArcFurnace.this,
+                    recipe,
+                    helper,
+                    calculator,
+                    ret,
+                    phase == ArcFurnacePhase.Processing,
+                    this.calculatedEut);
+                applySpecialEffect(afterRecipe);
+                this.calculatedEut = afterRecipe.eut;
                 return ret;
             }
 
@@ -425,8 +453,13 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
                         .setEUt(this.availableVoltage * this.availableAmperage)
                         .setDurationModifier(1);
                 }
-                return super.createOverclockCalculator(recipe)
+                OverclockCalculator calculator = super.createOverclockCalculator(recipe)
                     .setMaxOverclocks((int) GTUtility.log4(this.availableVoltage / Math.max((long) recipe.mEUt, 32)));
+                ArcFurnaceProcessingEvent.EventConfigureOverclock event = new ArcFurnaceProcessingEvent.EventConfigureOverclock(
+                    MTEIndustrialArcFurnace.this,
+                    calculator);
+                applySpecialEffect(event);
+                return calculator;
             }
 
             @Override
@@ -434,25 +467,26 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
                 if (phase == ArcFurnacePhase.Standby) {
                     phase = ArcFurnacePhase.ArcIgnition;
                     GTRecipe ignitionRecipe = fakeRecipe();
-                    ignitionRecipe.mEUt = (int) (getAverageInputVoltage() * 30
-                        / 32
-                        * electrode.parallelLimit
+                    ignitionRecipe.mEUt = (int) (getAverageInputVoltage() * 30d
+                        / 32d
+                        * this.maxParallel
                         * (electrode.startupSurge + 1d));
                     ignitionRecipe.mDuration = 20 * 6;
-                    if (electrode.specialEffect != null) {
-                        ArcFurnaceProcessingEvent.EventStartIgnition event = new ArcFurnaceProcessingEvent.EventStartIgnition(
-                            MTEIndustrialArcFurnace.this,
-                            ignitionRecipe.mDuration,
-                            ignitionRecipe.mEUt);
-                        electrode.specialEffect.accept(event);
-                        ignitionRecipe.mEUt = event.eut;
-                        ignitionRecipe.mDuration = event.duration;
-                    }
+                    ArcFurnaceProcessingEvent.EventStartIgnition event = new ArcFurnaceProcessingEvent.EventStartIgnition(
+                        MTEIndustrialArcFurnace.this,
+                        ignitionRecipe.mDuration,
+                        ignitionRecipe.mEUt);
+                    applySpecialEffect(event);
+                    ignitionRecipe.mEUt = event.eut;
+                    ignitionRecipe.mDuration = event.duration;
                     return super.createParallelHelper(ignitionRecipe).setConsumption(false)
                         .setMaxParallel(1);
                 }
 
-                return super.createParallelHelper(recipe);
+                ParallelHelper helper = super.createParallelHelper(recipe);
+                applySpecialEffect(
+                    new ArcFurnaceProcessingEvent.EventCreateParallelHelper(MTEIndustrialArcFurnace.this, helper));
+                return helper;
             }
 
         };
