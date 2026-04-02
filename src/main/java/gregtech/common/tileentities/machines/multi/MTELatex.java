@@ -280,7 +280,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             .addSeparator()
             .addInfo(DARK_AQUA + "Make sure to cover up!")
             .beginStructureBlock(5, 8, 5, false)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Chemically Inert Machine Casing", 14, false)
             .addCasingInfoExactly("Any Tiered Glass", 24, false)
             .addCasingInfoExactly("Polyvinyl Chloride Frame Box", 16, false)
