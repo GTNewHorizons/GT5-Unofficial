@@ -6962,7 +6962,6 @@ gt.purification_plant.tips.2=Works in fixed time processing cycles of §4%s§7 s
 gt.purification_plant.info.1=Requires water to be placed in the tank
 
 gt.pu_clarifier.tips=§b§lWater Tier: §f%s\nMust be linked to a Purification Plant using a data stick to work<SEPARATOR>Requires a filter made of Activated Carbon to work\nEvery cycle, has a §c%s%%§7 chance to destroy the filter<SEPARATOR>§b§oThe first step to acquiring purified water is to filter out macroscopic contaminants through the\n§b§ouse of large physical filters. As more contaminants are captured, the efficacy of the filter\n§b§odecreases so continual replacements must be supplied to maintain full function of the Clarifier.
-gt.pu_clarifier.info=Requires water to be placed in the structure.
 
 gt.isamill.tips.1=§aG.O.G, Grinds Ores Good
 gt.isamill.tips.2=§aIt'sa mill!
