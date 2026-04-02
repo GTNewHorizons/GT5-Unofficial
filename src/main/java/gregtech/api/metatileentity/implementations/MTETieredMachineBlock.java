@@ -4,6 +4,10 @@ import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP_ALT;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
@@ -13,6 +17,7 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.base.MTETieredMachineBlockBaseGui;
 
 public abstract class MTETieredMachineBlock extends MetaTileEntity {
 
@@ -120,5 +125,15 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_CHARGER)
             .setPos(x, y);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTETieredMachineBlockBaseGui<>(this).build(guiData, syncManager, uiSettings);
     }
 }

@@ -459,39 +459,35 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         Map<GTUtility.ItemId, Long> outputs = new HashMap<>();
 
         int totalChance = 0;
+        final int[] mOutputChances;
         if (tRecipe.mOutputChances == null) {
             totalChance = tRecipe.mOutputs.length * 10000;
+            mOutputChances = new int[tRecipe.mOutputs.length];
+            Arrays.fill(mOutputChances, 10000);
         } else {
-            for (int mChance : tRecipe.mOutputChances) totalChance += mChance;
+            mOutputChances = tRecipe.mOutputChances;
+            for (int mChance : mOutputChances) totalChance += mChance;
         }
 
-        try {
-            for (int i = 0; i < data.maxSize * parallels; i++) {
-                int bonusStackChance = 0;
-                if (i >= data.minSize * parallels) {
-                    bonusStackChance = getBonusStackChance(availablePlasmaTier);
-                }
-                if (i < data.minSize * parallels || bonusStackChance > XSTR.XSTR_INSTANCE.nextInt(10000)) {
-                    int random = XSTR.XSTR_INSTANCE.nextInt(totalChance);
-                    int currentChance = 0;
-                    for (int j = 0; j < tRecipe.mOutputChances.length; j++) {
-                        currentChance += tRecipe.mOutputChances[j];
-                        if (random <= currentChance) {
-                            ItemStack generatedOre = tRecipe.mOutputs[j];
-                            if (configuredOres == null || configuredOres.isEmpty()
-                                || isWhitelisted == configuredOres.contains(getOreString(generatedOre))) {
-                                outputs.merge(
-                                    GTUtility.ItemId.createNoCopy(generatedOre),
-                                    (long) generatedOre.stackSize,
-                                    Long::sum);
-                            }
-                            break;
+        final int bonusStackChance = getBonusStackChance(availablePlasmaTier);
+        for (int i = 0; i < data.maxSize * parallels; i++) {
+            if (i < data.minSize * parallels || bonusStackChance > XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                int random = XSTR.XSTR_INSTANCE.nextInt(totalChance);
+                for (int j = 0; j < mOutputChances.length; j++) {
+                    random -= mOutputChances[j];
+                    if (random < 0) {
+                        ItemStack generatedOre = tRecipe.mOutputs[j];
+                        if (configuredOres == null || configuredOres.isEmpty()
+                            || isWhitelisted == configuredOres.contains(getOreString(generatedOre))) {
+                            outputs.merge(
+                                GTUtility.ItemId.createNoCopy(generatedOre),
+                                (long) generatedOre.stackSize,
+                                Long::sum);
                         }
+                        break;
                     }
                 }
             }
-        } catch (Exception ignored) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         plasma.amount = (int) Math.max(
@@ -1071,6 +1067,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
          *
          * @return Number of possible parallels
          */
+        @Override
         protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
         }
@@ -1170,6 +1167,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
          *
          * @return Number of possible parallels
          */
+        @Override
         protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
         }
@@ -1269,6 +1267,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
          *
          * @return Number of possible parallels
          */
+        @Override
         protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
         }

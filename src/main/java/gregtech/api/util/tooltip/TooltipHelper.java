@@ -1,11 +1,14 @@
 package gregtech.api.util.tooltip;
 
 import java.text.DecimalFormat;
+import java.util.Arrays;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
+import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.util.GTUtility;
@@ -154,7 +157,7 @@ public class TooltipHelper {
         if (voltageIndex < VoltageIndex.ULV || voltageIndex > VoltageIndex.MAX) return "Invalid Voltage Tier";
         return GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex]
             + EnumChatFormatting.GRAY
-            + (withTierSuffix ? "-tier" : "");
+            + (withTierSuffix ? StatCollector.translateToLocal("gt.voltage.tier") : "");
     }
 
     /**
@@ -184,10 +187,9 @@ public class TooltipHelper {
      * @return A string of the form "[lossPerMeter] EU-Volt"
      */
     public static String cableLossText(long lossPerMeter) {
-        return CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter)
-            + " "
-            + EnumChatFormatting.GRAY
-            + GTUtility.translate("GT5U.item.cable.eu_volt");
+        return GTUtility.translate(
+            "GT5U.item.cable.loss.eu_volt",
+            CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter) + EnumChatFormatting.GRAY);
     }
 
     /**
@@ -204,5 +206,18 @@ public class TooltipHelper {
     public static String fluidRateText(long litersPerSecond) {
         String text = NumberFormatUtil.formatNumber(litersPerSecond) + GTUtility.translate("gt.unit.liter_per_second");
         return coloredText(text, L_COLOR);
+    }
+
+    /**
+     * @return The tooltip as it was, but with a warning placed first if pollution is toggled off in config
+     */
+    public static String[] pollutionDisabledTooltip(String[] description) {
+        if (GTMod.proxy.mPollution) {
+            return description;
+        }
+        String[] descriptionWithWarning = Arrays.copyOf(description, description.length + 1);
+        System.arraycopy(descriptionWithWarning, 0, descriptionWithWarning, 1, description.length);
+        descriptionWithWarning[0] = EnumChatFormatting.RED + "Pollution is OFF - This Block is Redundant";
+        return descriptionWithWarning;
     }
 }

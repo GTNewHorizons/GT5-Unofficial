@@ -22,10 +22,6 @@ death.attack.plasmabolt=%s died by burning hot plasma.
 death.attack.plasmabolt.player=%1$s was killed by %2$s using plasma.
 death.attack.gtpp.grinder=%s was ground into nothingness by an IsaMill.
 
-# Batch mode chat message
-misc.BatchModeTextOn=Batch recipes (ME output bus recommended, will void excess outputs!)
-misc.BatchModeTextOff=Don't batch recipes
-
 # Alternative Materials
 item.itemPlateBatteryAlloy.name=Plate of Battery Alloy
 item.itemIngotBatteryAlloy.name=Ingot of Battery Alloy
@@ -61,9 +57,9 @@ item.itemSandstoneHammer.name=Cobblestone Breaker
 # Tooltips
 GTPP.machines.chisel_slot.tooltip=Target Slot
 GTPP.machines.chisel_slot.tooltip.1=§7Put chiseled item to specify output
-GTPP.core.GT_Tooltip=Added by: §2Alkalus §7- §c[GT++]
-GTPP.core.GT_Tooltip_Builder=§2Alkalus §7- §c[GT++]
-GTPP.core.GT_Tooltip_Radioactive=§7Warning: §aRadioactive! §6 Avoid direct handling without hazmat protection.
+GTPP.core.GT_Tooltip=Added by: %s §7- §c[GT++]
+GTPP.core.GT_Tooltip_Builder=%s §7- §c[GT++]
+GTPP.core.GT_Tooltip_Radioactive=§7Warning: §aRadioactive! §6 Avoid direct handling without hazmat protection. | Level: %s
 
 # RecipeMaps
 gtpp.recipe.cokeoven=Coke Oven
@@ -3944,14 +3940,6 @@ item.itemSimpleFiremaker.message.1=You somehow managed to set yourself on fire..
 item.itemSimpleFiremaker.message.2=You created a fire!
 item.itemSimpleFiremaker.message.3=Your attempt does nothing.
 
-# Added 17/07/23
-item.BasicGenericChemItem.29.name=Limpid Water Catalyst
-item.BasicGenericChemItem.30.name=Flawless Water Catalyst
-
-# Added 18/07/23
-item.BasicGenericChemItem.31.name=Particle Acceleration Catalyst
-item.BasicGenericChemItem.32.name=Synchrotron-Capable Catalyst
-
 # Added 19/09/23
 item.BasicGenericChemItem.33.name=Algagenic Growth Promoter Catalyst
 
@@ -3985,7 +3973,7 @@ gtpp.tooltip.base_particles.type.boson=Boson
 gtpp.tooltip.base_particles.type.baryon=Baryon
 gtpp.tooltip.base_particles.type.meson=Meson
 gtpp.tooltip.base_particles.type.unknown=Unknown
-gtpp.tooltip.integrated_circuit.configuration=Configuration == %d
+gtpp.tooltip.integrated_circuit.configuration=Configuration == %d\nRight click to reconfigure\nNeeds a screwdriver or circuit programming tool
 gtpp.tooltip.scrubber_turbine.early_tier=An early tier Turbine for Atmospheric Reconditioning.
 gtpp.tooltip.scrubber_turbine.uses_left=%d/%d uses left.
 gtpp.tooltip.buffer_core.key_crafting_component=A key crafting component for %s Appliances
@@ -4051,11 +4039,10 @@ gtpp.infodata.solar_heater.testificate=Testificate
 gtpp.infodata.energy_buffer.eu_stored=%s EU stored
 gtpp.infodata.energy_buffer.eu_capacity=%s EU capacity
 gtpp.infodata.tiered_chest.name=Super Storage Chest
-gtpp.infodata.tiered_tank.name=%s Fluid Tank
 gtpp.tiered_tank.desc.capacity=Stores %s of fluid
 gtpp.tiered_tank.desc.portable=A portable tank.
 gtpp.tiered_tank.desc.fluid=Fluid: %s %s L
-gtpp.tiered_tank.tooltip.contains=Contains Fluid: 
+gtpp.tiered_tank.tooltip.contains=Contains Fluid: %s
 gtpp.tiered_tank.tooltip.amount=Fluid Amount: %s L
 gtpp.infodata.tiered_tank.name=%s Tank
 gtpp.tiered_tank.infodata.amount=%s L
@@ -4103,3 +4090,174 @@ gtpp.chat.wireless_charger.lock=Locked to owner
 gtpp.chat.wireless_charger.unlock=Unlocked
 gtpp.chat.wireless_charger.enter=You have entered charging range. [%s m - %s]
 gtpp.chat.wireless_charger.leave=You have left charging range. [%s m - %s]
+
+gtpp.book.modular_baubles.name=How to: Modular Baubles
+gtpp.book.modular_baubles.page00=Concept: This idea came from wanting flexibility.\nFirst step, Build a Modularity table to begin customisation of your Bauble.\n After this has been constructed, you can now combine the upgrades listed within this book to improve the baubles level/100.
+gtpp.book.modular_baubles.page01=Defence:\nCan be upgraded by combining metal plates with the bauble.\n | +1 | Aluminium\n | +2 | Stainless Steel\n | +3 | Tungsten\n | +4 | Tungsten Steel\n | +5 | Naquadah
+gtpp.book.nuclear_chemistry_ffpp.name=Nuclear Chemistry [FFPP]
+gtpp.book.nuclear_chemistry_ffpp.page00=Fission Fuel Processing Plant\nSize: 3x9x3 [LxHxW]\nController: Center, Bottom\n4x Input Hatch\n2x Output Hatch\n1x Output Bus\n1x ZPM+ Muffler\n1x Maintenance Hatch\n1x Energy Hatch
+gtpp.book.nuclear_chemistry_ffpp.page01=[1] 7x Hastelloy-X or I/O\n[2] 5x Incoloy-DS Fluid Containment\n[3] 4x Reactor Shield Casing\n[4] 17x Hastelloy-N Sealant Case\nMultiblock Construction\nConvention is [LxHxW]\n
+gtpp.book.nuclear_chemistry_ffpp.page02=Layer 1/2:\n[1][1][1]\n[1][1][1]\n[1][1][1]\nLayer 3/5/6\n[ ][4][ ]\n[4][2][4]\n[ ][4][ ]
+gtpp.book.nuclear_chemistry_ffpp.page03=Layer 4\n[ ][3][ ]\n[3][2][3]\n[ ][3][ ]\nLayer 7/8/9\n[ ][ ][ ]\n[ ][3][ ]\n[ ][ ][ ]
+gtpp.book.nuclear_chemistry_ffpp.page04=Fission Fuel\nProcessing Plant----------------------\nThis structure is used to produce the Molten Salts required to run a Liquid Fluorine Thorium Reactor [LFTR].
+gtpp.book.power_storage_v064.name=Power Storage & You [Version 0.64]
+gtpp.book.power_storage_v064.page00=So, when it comes to power storage you really have three separate options:\nBattery Buffers,\nEnergy Buffers,\nThe Power Sub-Station
+gtpp.book.power_storage_v064.page01=Battery Buffer\nIs rather portable. Allowing you to throw set one up and insert batteries where ever you may need.\nThey output 1A for each battery stored inside, up to a maximum of 16A.
+gtpp.book.power_storage_v064.page02=Energy Buffer\nIs a more optimal choice for storage in your base. Once placed down, they cannot be moved without losing all stored power.\nEnergy Buffers can output 4A from the output side, however accept 16A as input.
+gtpp.book.power_storage_v064.page03=The Power Sub-Station \nIs used for storing Insane amounts of power later game.\nConsumes 2% of the average voltage of all energy type hatches every tick.
+gtpp.book.power_storage_v064.page04=Allows Insertion/Removal of power from the rear face of the controller, swap with a screwdriver.\nVariable Height Structure, between 4-16Y. Inserted Redox Cells dictate max energy tier of structure.
+gtpp.book.power_storage_v064.page05=Redox Cells cannot be placed into the Top or Bottom layer and only take up 3xhx3 internally.\nDifferent Tier cells CANNOT be mixed together.
+gtpp.book.power_storage_v064.page06=All Hatches Must be HV at a Minimum, this minimum tier is in place to stop people abusing ULV/LV hatches to lower the avg/t.\nCurrently the GUI will NOT display anything at all until the structure forms, this is a known bug.
+gtpp.book.power_storage_v064.page07=Valid Hatches:\nEnergy Hatch,\nDynamo Hatch,\nCharging Bus,\nDischarging Bus,\nDynamo Buffer,\nMulti-Amp Dynamo Hatch.\nStructure MUST contain at least one energy input and one energy output hatch.
+gtpp.book.thermal_boiler.name=Thermal Boiler Manual
+gtpp.book.thermal_boiler.page00=This Book explains how to set up and run your Thermal Boiler. We are not responsible for any Damage done by this Book itself nor its content.
+gtpp.book.thermal_boiler.page01=First you need to craft the following things for a Thermal Boiler to Function: The Main Boiler Block, 20 Thermal Containment Casings, two Input Hatches, two Output Hatches, a bunch of different Tools and a Maintenance Hatch.
+gtpp.book.thermal_boiler.page02=To begin the building, lay out the first 3x3 layer of Machine Casings on the ground (with a Hatch in the Middle), then place the Boiler Block facing outward in the middle of one of the 3m wide Sides.
+gtpp.book.thermal_boiler.page03=Now grab 3 other Hatches and place them on the remaining three 3m wide Sides also facing outwards. And now the four corners of the Machine need also a Machine Casing. There should only be a Hole left in the middle of the Cube.
+gtpp.book.thermal_boiler.page04=So, now place a 3x3 of Machine Casings on top, at the 3rd Layer with the last Hatch in the middle facing outwards as well.
+gtpp.book.thermal_boiler.page05=When accessing the Boiler Block, it should now stop telling you, that the structure is incomplete (bottom Line of that Screen). Now go with a bunch of different Tools (Metal Hammer, Rubber Hammer, Screwdriver, Wrench, Soldering Iron and Crowbar)
+gtpp.book.thermal_boiler.page06=to the Maintenance Hatch and access it. After that you grab the 6 Tools and rightclick the Slot with each of them in your Hand in the Maintenance GUI. Note that you need Soldering Tin/Lead in your Inventory to use the Soldering Iron.
+gtpp.book.thermal_boiler.page07=The Main Block should now tell you that you need to use the Rubber Hammer on it to (re)activate the Machine. The Rubber Hammer can enable and disable Machines. The Machine disables itself after something important broke.
+gtpp.book.thermal_boiler.page08=If you want to use Lava with this Device, then you should add a Lava Filter to extract additional Resources from the Lava. If the Filter breaks, the Machine won't explode like a Turbine would. If you use molten Salt, then you won't need a Filter.
+gtpp.book.thermal_boiler.page09=You will get Obsidian when processing Lava, however if a Filter is used, you will get sometimes an Ingot instead of a Block of Obsidian. When using molten Salt, you will get the Salt back.
+gtpp.book.thermal_boiler.page10=So, now for the Maintenance. After a few Hours of running nonstop, your Boiler will get small Problems, which don't prevent it from running, these Problems just decrease Efficiency. Every Problem listed on the Screen does -10% Efficiency.
+gtpp.book.thermal_boiler.page11=To fix these Problems, just go to the Maintenance Hatch and click with the problem corresponding Tool on the Slot to repair. If all six possible runtime Problems happen, the Machine will auto-shutdown no matter what. No Explosion, it's just stopping.
+gtpp.book.thermal_boiler.page12=The Thermal Boiler will produce 800 Liters of Steam per tick for about 5 or 6 Liters of Water per tick at reaching 100% Efficiency. In case of Lava it consumes 1666 Liters every Second.
+gtpp.book.thermal_boiler.page13=A Thermal Boiler is worth about 33 small Thermal Generators, and as the Boilers get much less Efficient, when not having enough Fuel, you should consider making a large Nether Pump for Lava, or a good Nuclear Reactor for molten Salt.
+gtpp.book.thermal_boiler.page14=Input and Output Slots are fully optional, you can place multiple ones of them or even none on the Machine. A Machine without Input couldn't process any Recipes, while a Machine without Output just voids all outputted Items and Liquids.
+gtpp.book.thermal_boiler.page15=It might be useful to use the Screwdriver on the Output Hatches to determine what is outputted where.
+
+miscutils.blockcasings.0.name=Centrifuge Casing
+miscutils.blockcasings.1.name=Structural Coke Oven Casing
+miscutils.blockcasings.2.name=Heat Resistant Coke Oven Casing
+miscutils.blockcasings.3.name=Heat Proof Coke Oven Casing
+miscutils.blockcasings.4.name=Material Press Machine Casing
+miscutils.blockcasings.5.name=Electrolyzer Casing
+miscutils.blockcasings.6.name=Wire Factory Casing
+miscutils.blockcasings.7.name=Maceration Stack Casing
+miscutils.blockcasings.8.name=Matter Generation Coil
+miscutils.blockcasings.9.name=Matter Fabricator Casing
+miscutils.blockcasings.10.name=Iron Plated Bricks
+miscutils.blockcasings.11.name=Multitank Exterior Casing
+miscutils.blockcasings.12.name=Hastelloy-N Reactor Casing
+miscutils.blockcasings.13.name=Reactor Shield Casing
+miscutils.blockcasings.14.name=Blast Smelter Heat Containment Coil
+miscutils.blockcasings.15.name=Blast Smelter Casing Block
+
+gtplusplus.blockcasings.2.0.name=Thermal Processing Casing
+gtplusplus.blockcasings.2.1.name=Hastelloy-N Sealant Block
+gtplusplus.blockcasings.2.2.name=Hastelloy-X Structural Block
+gtplusplus.blockcasings.2.3.name=Incoloy-DS Fluid Containment Block
+gtplusplus.blockcasings.2.4.name=Wash Plant Casing
+gtplusplus.blockcasings.2.5.name=Industrial Sieve Casing
+gtplusplus.blockcasings.2.6.name=Large Sieve Grate
+gtplusplus.blockcasings.2.7.name=Vanadium Redox Power Cell (EV)
+gtplusplus.blockcasings.2.8.name=Sub-Station External Casing
+gtplusplus.blockcasings.2.9.name=Cyclotron Coil
+gtplusplus.blockcasings.2.10.name=Cyclotron Outer Casing
+gtplusplus.blockcasings.2.11.name=Thermal Containment Casing
+gtplusplus.blockcasings.2.12.name=Bulk Production Frame
+gtplusplus.blockcasings.2.13.name=Cutting Factory Frame
+gtplusplus.blockcasings.2.15.name=Sterile Farm Casing
+
+gtplusplus.blockcasings.3.0.name=Aquatic Casing
+gtplusplus.blockcasings.3.1.name=Inconel Reinforced Casing
+gtplusplus.blockcasings.3.2.name=Multi-Use Casing
+gtplusplus.blockcasings.3.3.name=Trinium Plated Casing
+gtplusplus.blockcasings.3.4.name=Vanadium Redox Power Cell (IV)
+gtplusplus.blockcasings.3.5.name=Vanadium Redox Power Cell (LuV)
+gtplusplus.blockcasings.3.6.name=Vanadium Redox Power Cell (ZPM)
+gtplusplus.blockcasings.3.7.name=Vanadium Redox Power Cell (UV)
+gtplusplus.blockcasings.3.8.name=Vanadium Redox Power Cell (UHV)
+gtplusplus.blockcasings.3.9.name=Supply Depot Casing
+gtplusplus.blockcasings.3.10.name=Advanced Cryogenic Casing
+gtplusplus.blockcasings.3.11.name=Volcanus Casing
+gtplusplus.blockcasings.3.12.name=Fusion Machine Casing MK III
+gtplusplus.blockcasings.3.13.name=Advanced Fusion Coil
+gtplusplus.blockcasings.3.14.name=Unnamed
+gtplusplus.blockcasings.3.15.name=Containment Casing
+
+gtplusplus.blockcasings.4.3.name=Tempered Arc Furnace Casing
+gtplusplus.blockcasings.4.4.name=Quantum Force Transformer Coil Casings
+gtplusplus.blockcasings.4.10.name=Vacuum Casing
+gtplusplus.blockcasings.4.11.name=Turbodyne Casing
+
+gtplusplus.blockcasings.5.0.name=IsaMill Exterior Casing
+gtplusplus.blockcasings.5.1.name=IsaMill Piping
+gtplusplus.blockcasings.5.2.name=IsaMill Gearbox
+gtplusplus.blockcasings.5.3.name=Elemental Confinement Shell
+gtplusplus.blockcasings.5.4.name=Sparge Tower Exterior Casing
+gtplusplus.blockcasings.5.5.name=Sturdy Printer Casing
+gtplusplus.blockcasings.5.6.name=Forge Casing
+gtplusplus.blockcasings.5.7.name=Neutron Pulse Manipulator
+gtplusplus.blockcasings.5.8.name=Cosmic Fabric Manipulator
+gtplusplus.blockcasings.5.9.name=Infinity Infused Manipulator
+gtplusplus.blockcasings.5.10.name=SpaceTime Continuum Ripper
+gtplusplus.blockcasings.5.11.name=Neutron Shielding Core
+gtplusplus.blockcasings.5.12.name=Cosmic Fabric Shielding Core
+gtplusplus.blockcasings.5.13.name=Infinity Infused Shielding Core
+gtplusplus.blockcasings.5.14.name=SpaceTime Bending Core
+gtplusplus.blockcasings.5.15.name=Force Field Glass
+
+gtplusplus.blockcasings.6.0.name=Fusion Machine Casing MK IV
+gtplusplus.blockcasings.6.1.name=Advanced Fusion Coil II
+gtplusplus.blockcasings.6.2.name=Unnamed
+
+gtplusplus.blockcasings.pipesgears.0.name=Eglin Steel Gear Box Casing
+gtplusplus.blockcasings.pipesgears.1.name=Inconel-792 Gear Box Casing
+gtplusplus.blockcasings.pipesgears.2.name=Incoloy MA956 Gear Box Casing
+gtplusplus.blockcasings.pipesgears.3.name=Nitinol-60 Gear Box Casing
+gtplusplus.blockcasings.pipesgears.4.name=Zeron-100 Gear Box Casing
+gtplusplus.blockcasings.pipesgears.5.name=Pikyonium Gear Box Casing
+gtplusplus.blockcasings.pipesgears.6.name=Titansteel Gear Box Casing
+gtplusplus.blockcasings.pipesgears.7.name=Abyssal Gear Box Casing
+gtplusplus.blockcasings.pipesgears.8.name=Babbit Alloy Pipe Casing
+gtplusplus.blockcasings.pipesgears.9.name=Inconel-690 Pipe Casing
+gtplusplus.blockcasings.pipesgears.10.name=Stellite Pipe Casing
+gtplusplus.blockcasings.pipesgears.11.name=Nitinol-60 Pipe Casing
+gtplusplus.blockcasings.pipesgears.12.name=Lafium Pipe Casing
+gtplusplus.blockcasings.pipesgears.13.name=Cinobite Pipe Casing
+gtplusplus.blockcasings.pipesgears.14.name=Titansteel Pipe Casing
+gtplusplus.blockcasings.pipesgears.15.name=Abyssal Pipe Casing
+
+gtplusplus.blockspecialcasings.1.0.name=Turbine Shaft
+gtplusplus.blockspecialcasings.1.1.name=Reinforced Steam Turbine Casing
+gtplusplus.blockspecialcasings.1.2.name=Reinforced HP Steam Turbine Casing
+gtplusplus.blockspecialcasings.1.3.name=Reinforced Gas Turbine Casing
+gtplusplus.blockspecialcasings.1.4.name=Reinforced Plasma Turbine Casing
+gtplusplus.blockspecialcasings.1.5.name=Tesla Containment Casing
+gtplusplus.blockspecialcasings.1.6.name=Structural Solar Casing
+gtplusplus.blockspecialcasings.1.7.name=Salt Containment Casing
+gtplusplus.blockspecialcasings.1.8.name=Thermally Insulated Casing
+gtplusplus.blockspecialcasings.1.9.name=Flotation Cell Casings
+gtplusplus.blockspecialcasings.1.10.name=Reinforced Engine Casing
+gtplusplus.blockspecialcasings.1.11.name=Molecular Containment Casing
+gtplusplus.blockspecialcasings.1.12.name=High Voltage Current Capacitor
+gtplusplus.blockspecialcasings.1.13.name=Particle Containment Casing
+gtplusplus.blockspecialcasings.1.14.name=Reinforced Heat Exchanger Casing
+gtplusplus.blockspecialcasings.1.15.name=Reinforced SC Turbine Casing
+
+gtplusplus.blockspecialcasings.2.0.name=Strong Bronze Machine Casing
+gtplusplus.blockspecialcasings.2.1.name=Sturdy Aluminium Machine Casing
+gtplusplus.blockspecialcasings.2.2.name=Vigorous Laurenium Machine Casing
+gtplusplus.blockspecialcasings.2.3.name=Rugged Botmium Machine Casing
+
+gtplusplus.blockspecialcasings.3.0.name=Resonance Chamber I
+gtplusplus.blockspecialcasings.3.1.name=Resonance Chamber II
+gtplusplus.blockspecialcasings.3.2.name=Resonance Chamber III
+gtplusplus.blockspecialcasings.3.3.name=Resonance Chamber IV
+gtplusplus.blockspecialcasings.3.4.name=Modulator I
+gtplusplus.blockspecialcasings.3.5.name=Modulator II
+gtplusplus.blockspecialcasings.3.6.name=Modulator III
+gtplusplus.blockspecialcasings.3.7.name=Modulator IV
+
+gtplusplus.blocktieredcasings.1.0.name=Integral Encasement I
+gtplusplus.blocktieredcasings.1.1.name=Integral Encasement II
+gtplusplus.blocktieredcasings.1.2.name=Integral Encasement III
+gtplusplus.blocktieredcasings.1.3.name=Integral Encasement IV
+gtplusplus.blocktieredcasings.1.4.name=Integral Encasement V
+gtplusplus.blocktieredcasings.1.5.name=Integral Framework I
+gtplusplus.blocktieredcasings.1.6.name=Integral Framework II
+gtplusplus.blocktieredcasings.1.7.name=Integral Framework III
+gtplusplus.blocktieredcasings.1.8.name=Integral Framework IV
+gtplusplus.blocktieredcasings.1.9.name=Integral Framework V
