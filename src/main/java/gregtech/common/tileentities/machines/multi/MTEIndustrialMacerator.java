@@ -26,6 +26,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -34,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -55,7 +58,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMacerator>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, INEIPreviewModifier {
 
     private int controllerTier = 1;
     private int structureTier;
@@ -115,8 +118,8 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
                 .addShape(
                     STRUCTURE_PIECE_MAIN_T1,
                     transpose(
-                        new String[][] { { "FFF", "FFF", "FFF" }, { "FFF", "F F", "FFF" }, { "FFF", "F F", "FFF" },
-                            { "FFF", "F F", "FFF" }, { "FFF", "F F", "FFF" }, { "F~F", "FFF", "FFF" } }))
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "CCC", "C C", "CCC" }, { "CCC", "C C", "CCC" },
+                            { "CCC", "C C", "CCC" }, { "CCC", "C C", "CCC" }, { "C~C", "CCC", "CCC" } }))
                 .addShape(
                     STRUCTURE_PIECE_MAIN_T2,
                     transpose(
@@ -133,14 +136,7 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
                         .atLeast(Energy, Maintenance, InputBus, Muffler, OutputBus)
                         .casingIndex(Casings.StableTitaniumMachineCasing.textureId)
                         .hint(1)
-                        .buildAndChain(
-                            onElementPass(m -> m.casingAmount++, Casings.StableTitaniumMachineCasing.asElement())))
-                .addElement(
-                    'F',
-                    buildHatchAdder(MTEIndustrialMacerator.class)
-                        .atLeast(Energy, Maintenance, InputBus, Muffler, OutputBus)
-                        .casingIndex(Casings.StableTitaniumMachineCasing.textureId)
-                        .hint(1)
+                        .allowOnly(ForgeDirection.NORTH)
                         .buildAndChain(
                             onElementPass(m -> m.casingAmount++, Casings.StableTitaniumMachineCasing.asElement())))
                 .addElement('A', Casings.SteelGearBoxCasing.asElement())
@@ -403,5 +399,12 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     private int getTierFromHint(ItemStack stackSize) {
         if (stackSize == null || stackSize.stackSize <= 1) return 1;
         return 2;
+    }
+
+    @Override
+    public void onPreviewConstruct(@NotNull ItemStack trigger) {
+        if (trigger.stackSize >= 2) {
+            controllerTier = 2;
+        }
     }
 }
