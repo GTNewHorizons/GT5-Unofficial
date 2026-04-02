@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -48,6 +49,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.util.DescTextLocalization;
 
@@ -208,20 +210,20 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(Casings.CleanStainlessSteelMachineCasing);
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Dissolution Tank")
-            .addInfo("Input Water and Fluid, output Fluid")
-            .addInfo("Fluids must be input in the exact ratio as listed in NEI")
+        tt.addMachineType("machtype.dissolution_tank")
+            .addInfo("gt.dissolution_tank.tips")
             .beginStructureBlock(5, 5, 5, true)
-            .addController("Front bottom")
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 42, false)
-            .addCasingInfoExactly("Any Borosilicate Glass", 24, false)
-            .addCasingInfoExactly("Heat Proof Machine Casing", 9, false)
-            .addInputHatch("Any Stainless Steel Casing")
-            .addInputBus("Any Stainless Steel Casing")
-            .addOutputHatch("Any Stainless Steel Casing")
-            .addOutputBus("Any Stainless Steel Casing")
-            .addMaintenanceHatch("Any Stainless Steel Casing")
+            .addController("front_bottom_center")
+            .addCasingInfoExactly(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 42)
+            .addCasingInfoExactly("GT5U.MBTT.BoroGlassTiered", 24)
+            .addCasingInfoExactly(Casings.HeatProofMachineCasing.getLocalizedName(), 9)
+            .addInputHatch(anyCasing)
+            .addInputBus(anyCasing)
+            .addOutputHatch(anyCasing)
+            .addOutputBus(anyCasing)
+            .addMaintenanceHatch(anyCasing)
             .toolTipFinisher();
 
         return tt;

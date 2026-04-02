@@ -303,7 +303,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     private static String stripGeneratedFormatMarkers(@Nonnull String text) {
         if (!text.contains("%%%")) return text;
         final Matcher matcher = GENERATED_FORMAT_MARKER.matcher(text);
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         while (matcher.find()) {
             matcher.appendReplacement(buffer, Matcher.quoteReplacement(matcher.group(1)));
         }

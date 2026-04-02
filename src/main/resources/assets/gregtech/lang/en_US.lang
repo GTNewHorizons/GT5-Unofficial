@@ -6525,8 +6525,14 @@ machtype.thtr=High Temperature Reactor, THTR
 machtype.cal=Circuit Assembler, CAL
 machtype.mebf=Blast Furnace, MEBF, MBF
 machtype.moc=Cracker, MOC
+machtype.digester=Digester
+machtype.dissolution_tank=Dissolution Tank
 
 # Multiblock Tooltip lines
+gt.dissolution_tank.tips=Input Water and Fluid, output Fluid\nFluids must be input in the exact ratio as listed in NEI
+
+gt.digester.tips=Input ores and fluid, output water
+
 gt.moc.tips.1=§8§o"Thermally cracks heavy hydrocarbons into lighter fractions"
 gt.moc.tips.2=§b-10%%§7 EU Usage per %s Tier\nup to a maximum of §b-50%%§7 EU Usage<SEPARATOR>Gives different benefits whether it hydro or steam-cracks:\nHydro - Consumes §320%%§7 less Hydrogen and outputs §325%%§7 more cracked fluid\nSteam - Outputs §350%%§7 more cracked fluid\n§oIn comparison to a chemical reactor<SEPARATOR>
 gt.moc.info.i_hatch=Steam/Hydrogen ONLY
