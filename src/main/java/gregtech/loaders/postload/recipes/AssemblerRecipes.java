@@ -6672,48 +6672,6 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
 
-        // Water Tank
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 1))
-            .itemOutputs(getModItem(Railcraft.ID, "machine.alpha", 1L, 14))
-            .fluidInputs(Materials.Glue.getFluid(1 * HALF_INGOTS))
-            .duration(10 * SECONDS)
-            .eut(8)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.WroughtIron, 1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 2))
-            .itemOutputs(getModItem(Railcraft.ID, "machine.alpha", 2L, 14))
-            .fluidInputs(Materials.Glue.getFluid(1 * HALF_INGOTS))
-            .duration(10 * SECONDS)
-            .eut(8)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 4))
-            .itemOutputs(getModItem(Railcraft.ID, "machine.alpha", 4L, 14))
-            .fluidInputs(Materials.Rubber.getMolten(1 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.WroughtIron, 1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 8))
-            .itemOutputs(getModItem(Railcraft.ID, "machine.alpha", 8L, 14))
-            .fluidInputs(Materials.Rubber.getMolten(1 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
         // Steam Boilers
 
         GTValues.RA.stdBuilder()
