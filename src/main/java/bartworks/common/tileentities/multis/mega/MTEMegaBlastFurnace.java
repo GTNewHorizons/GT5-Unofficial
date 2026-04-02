@@ -187,7 +187,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 20, 15, true)
-            .addController("3rd layer center")
+            .addController("Front center, 3rd layer")
             .addCasingInfoRange("Heat Proof Machine Casing", 0, 447, false)
             .addCasingInfoExactly("Heating Coils", 864, true)
             .addCasingInfoExactly("Any Tiered Glass", 1007, true)
