@@ -142,6 +142,8 @@ import com.mojang.authlib.GameProfile;
 import buildcraft.api.transport.IPipeTile;
 import codechicken.translocator.TileItemTranslocator;
 import cofh.api.transport.IItemDuct;
+import cofh.asmhooks.block.BlockTickingWater;
+import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ModAPIManager;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -4262,5 +4264,16 @@ public class GTUtility {
         // Convert to degrees for consistency
         axisAngle.angle = (float) Math.toDegrees(axisAngle.angle);
         return axisAngle;
+    }
+
+    public static boolean canReplaceBlockWithWater(World world, int x, int y, int z) {
+        Block block = world.getBlock(x, y, z);
+        boolean isCOFHCore = Mods.COFHCore.isModLoaded()
+            && (block instanceof BlockWater || block instanceof BlockTickingWater);
+        boolean isFlowing = block == Blocks.flowing_water;
+        boolean isWater = isFlowing || block == Blocks.water || isCOFHCore;
+        isFlowing = isFlowing || (isWater && world.getBlockMetadata(x, y, z) > 0);
+        boolean isAir = block == Blocks.air;
+        return (isFlowing || isAir);
     }
 }

@@ -16,7 +16,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 import java.util.Objects;
 
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -51,6 +50,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -354,16 +354,11 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                         int wx = controllerX + xyz[0];
                         int wy = controllerY + xyz[1];
                         int wz = controllerZ + xyz[2];
-
-                        Block block = world.getBlock(wx, wy, wz);
-                        if (block != Blocks.water) {
-                            boolean isReplaceable = block == Blocks.air || block == Blocks.flowing_water
-                                || block.isReplaceable(world, wx, wy, wz);
-                            if (isReplaceable) {
-                                world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
-                            } else {
-                                allFilled = false;
-                            }
+                        boolean isReplaceable = GTUtility.canReplaceBlockWithWater(world, wx, wy, wz);
+                        if (isReplaceable) {
+                            world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
+                        } else {
+                            allFilled = false;
                         }
                     }
                 }
