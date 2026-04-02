@@ -14,24 +14,42 @@ import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.Consumer;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.GTUtility;
 import gregtech.client.GTTooltipHandler;
-import kubatech.api.arcfurnace.ArcFurnaceContext;
+import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 
 public enum ArcFurnaceElectrode {
 
-    GraphiteElectrode(LV, 1, 4, 2d, 4d, 100, 1, 0),
+    GraphiteElectrode(LV, 1, 4, 2d, 4d, 100, 1, 0, e -> {}),
     TantalumElectrode(MV, 1.2d, 2, 4d, 4d, 300, 1.2d, 3),
     MolybdenumElectrode(HV, 0.9d, 16, 3d, 4d, 200, 0.8d, 5),
     TungstenElectrode(IV, 1, 128, 1d, 4d, 500, 1.1d, 3),
     TungstenSteelElectrode(IV, 0.8d, 160, 1d, 4d, 700, 1.2d, 4),
-    GrapheneElectrode(IV, 2.5d, 4, 2d, 4d, 350, 1, 0),
-    YBCOElectrode(LuV, 2d, 8, 6d, 4d, 500, 0.7d, 1.2d),
-    NetheriteElectrode(LuV, 1.6d, 16, 1d, 4d, 600, 1.3d, 2d),
+    GrapheneElectrode(IV, 2.5d, 4, 2d, 4d, 350, 1, 0, e -> {}),
+    YBCOElectrode(LuV, 2d, 8, 6d, 4d, 500, 0.7d, 1.2d, event -> {
+        if (event instanceof ArcFurnaceProcessingEvent.EventPostRecipeCheck postRecipe) {
+            if (!postRecipe.result.wasSuccessful()) return;
+            int performedOC = postRecipe.calculator.getPerformedOverclocks();
+            postRecipe.arcFurnace.setDurabilityConsumptionThisRun(1 + performedOC);
+        }
+    }),
+    NetheriteElectrode(LuV, 1.6d, 16, 1d, 4d, 600, 1.3d, 2d, event -> {
+        if (event instanceof ArcFurnaceProcessingEvent.EventStartShutdown startShutdown) {
+            startShutdown.duration = 1;
+        }
+        if (event instanceof ArcFurnaceProcessingEvent.EventStartIgnition startIgnition) {
+            if (event.arcFurnace.getTotalRunTime() - event.arcFurnace.getLastWorkingTick() < 20 * 4) {
+                startIgnition.duration = 1;
+                startIgnition.eut = 1;
+            }
+        }
+    }),
     TritaniumElectrode(ZPM, 3d, 48, 2d, 4d, 600, 1.7d, 5d),
     InfinityElectrode(UHV, 4.2d, 0, 3d, 4d, 800, 2.4d, 3d),
     HypogenElectrode(UEV, 6.5d, 256, 1d, 4d, 1000, 1.5d, 3.5d),
@@ -54,7 +72,7 @@ public enum ArcFurnaceElectrode {
     public final int durability;
     public final double amperagePerParallel;
     public final double startupSurge;
-    public final Function<ArcFurnaceContext, Boolean> specialEffect;
+    public final Consumer<ArcFurnaceProcessingEvent> specialEffect;
 
     private ItemStack electrodeItem;
 
@@ -74,7 +92,7 @@ public enum ArcFurnaceElectrode {
 
     ArcFurnaceElectrode(GTTooltipHandler.Tier tier, double speedModifier, int parallelLimit, double OCSpeedFactor,
         double OCPowerFactor, int durability, double amperagePerParallel, double startupSurge,
-        Function<ArcFurnaceContext, Boolean> specialEffect) {
+        Consumer<ArcFurnaceProcessingEvent> specialEffect) {
         this.id = this.ordinal();
         this.tier = tier;
         this.speedModifier = speedModifier;
@@ -90,7 +108,7 @@ public enum ArcFurnaceElectrode {
     public static void registerElectrodes() {
         for (ArcFurnaceElectrode electrode : values()) {
             ID_MAP.put(electrode.id, electrode);
-            GTTooltipHandler.registerTieredTooltip(electrode.getElectrodeItem(1), electrode.tier);
+            // GTTooltipHandler.registerTieredTooltip(electrode.getElectrodeItem(1), electrode.tier);
             electrode.electrodeItem = ARC_FURNACE_ELECTRODE.getElectrodeStack(electrode);
         }
     }
@@ -112,13 +130,32 @@ public enum ArcFurnaceElectrode {
     }
 
     public void addInformation(List<String> tooltip) {
-        tooltip.add("Speed Modifier: " + this.speedModifier + "x");
-        tooltip.add("Parallel Limit: " + (this.parallelLimit == 0 ? "None" : this.parallelLimit));
-        tooltip.add("OC Speed Factor: " + this.OCSpeedFactor + "x");
-        tooltip.add("OC Power Factor: " + this.OCPowerFactor + "x");
-        tooltip.add("Durability: " + this.durability);
-        tooltip.add("Amperage per Parallel: " + this.amperagePerParallel + "A");
-        tooltip.add("Startup Surge: " + (this.startupSurge * 100) + "%");
+        tooltip
+            .add(StatCollector.translateToLocalFormatted("item.arc_furnace_electrode.tip.speed", this.speedModifier));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "item.arc_furnace_electrode.tip.parallel_limit",
+                this.parallelLimit == 0
+                    ? StatCollector.translateToLocal("item.arc_furnace_electrode.tip.parallel_limit.none")
+                    : this.parallelLimit));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted("item.arc_furnace_electrode.tip.oc_speed", this.OCSpeedFactor));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted("item.arc_furnace_electrode.tip.oc_power", this.OCPowerFactor));
+        tooltip
+            .add(StatCollector.translateToLocalFormatted("item.arc_furnace_electrode.tip.durability", this.durability));
+        tooltip.add(
+            StatCollector
+                .translateToLocalFormatted("item.arc_furnace_electrode.tip.amperage", this.amperagePerParallel));
+        tooltip.add(
+            StatCollector
+                .translateToLocalFormatted("item.arc_furnace_electrode.tip.startup_surge", this.startupSurge * 100));
+        if (specialEffect != null) {
+            tooltip.addAll(
+                Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
+                    StatCollector.translateToLocal("item.arc_furnace_electrode.tip.special_effect." + this.name()),
+                    300));
+        }
     }
 
 }

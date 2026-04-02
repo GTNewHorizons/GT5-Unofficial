@@ -1,5 +1,13 @@
 package kubatech.api.arcfurnace;
 
-public class ArcFurnaceContext {
+public interface ArcFurnaceContext {
+
+    int getDurabilityConsumptionThisRun();
+
+    void setDurabilityConsumptionThisRun(int durability);
+
+    long getLastWorkingTick();
+
+    long getTotalRunTime();
 
 }

@@ -60,11 +60,13 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.api.util.tooltip.TooltipHelper;
+import kubatech.api.arcfurnace.ArcFurnaceContext;
+import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 import kubatech.loaders.ArcFurnaceElectrode;
 import kubatech.tileentity.gregtech.hatch.MTEElectrodeHatch;
 
 public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEIndustrialArcFurnace>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ArcFurnaceContext {
 
     public MTEIndustrialArcFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -81,6 +83,17 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
 
     private int mCasing = 0;
     private MTEElectrodeHatch electrodeHatch;
+
+    enum ArcFurnacePhase {
+        Standby,
+        ArcIgnition,
+        Processing,
+        ArcShutdown
+    }
+
+    private ArcFurnacePhase phase = ArcFurnacePhase.Standby;
+    private ArcFurnaceElectrode electrode = null;
+    private int durabilityCostThisRun = 1;
 
     private static final int OFFSET_H = 10;
     private static final int OFFSET_V = 7;
@@ -198,6 +211,7 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
         } else {
             electrode = null;
         }
+        durabilityCostThisRun = aNBT.getInteger("durabilityCostThisRun");
     }
 
     @Override
@@ -205,6 +219,7 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
         super.saveNBTData(aNBT);
         aNBT.setInteger("phase", phase.ordinal());
         aNBT.setInteger("electrode", electrode == null ? -1 : electrode.ordinal());
+        aNBT.setInteger("durabilityCostThisRun", durabilityCostThisRun);
     }
 
     @Override
@@ -261,23 +276,21 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
         return new ITexture[] { casingTexture };
     }
 
-    enum ArcFurnacePhase {
-        Standby,
-        ArcIgnition,
-        Processing,
-        ArcShutdown
+    @Override
+    public int getDurabilityConsumptionThisRun() {
+        return durabilityCostThisRun;
     }
 
-    ArcFurnacePhase phase = ArcFurnacePhase.Standby;
-
-    ArcFurnaceElectrode electrode = null;
+    @Override
+    public void setDurabilityConsumptionThisRun(int durability) {
+        durabilityCostThisRun = durability;
+    }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
         return arcFurnaceRecipes;
     }
 
-    // GTUtility.getTier(this.getMaxInputVoltage())
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         if (electrode == null) return;
@@ -287,9 +300,22 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
         logic.setEuModifier(electrode.amperagePerParallel);
         logic.setAvailableVoltage(getAverageInputVoltage());
         logic.setAvailableAmperage(getMaxInputAmps());
-        // logic.setAmperageOC(false);
         logic.setMaxTierSkips(0);
         logic.noRecipeCaching();
+    }
+
+    private void startShutDown() {
+        phase = ArcFurnacePhase.ArcShutdown;
+        mMaxProgresstime = 20 * 6;
+        lEUt = 0;
+        checkRecipeResult = SimpleCheckRecipeResult.ofSuccess("arc_shutdown");
+        if (electrode != null && electrode.specialEffect != null) {
+            ArcFurnaceProcessingEvent.EventStartShutdown event = new ArcFurnaceProcessingEvent.EventStartShutdown(
+                this,
+                mMaxProgresstime);
+            electrode.specialEffect.accept(event);
+            mMaxProgresstime = event.duration;
+        }
     }
 
     private void electrodeChanged() {
@@ -305,16 +331,11 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.runMachine(aBaseMetaTileEntity, aTick);
         if (mMaxProgresstime <= 0 && phase != ArcFurnacePhase.Standby) {
-            phase = ArcFurnacePhase.ArcShutdown;
-            mMaxProgresstime = 20 * 6;
-            lEUt = 0;
-            checkRecipeResult = SimpleCheckRecipeResult.ofSuccess("arc_shutdown");
+            startShutDown();
         }
-        // if (phase != ArcFurnacePhase.Standby && phase != ArcFurnacePhase.ArcShutdown) {
         if (electrodeHatch != null && electrodeHatch.hasJustBeenUpdated()) {
             electrodeChanged();
         }
-        // }
     }
 
     @Override
@@ -328,12 +349,10 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
             if (electrode != null) {
                 ItemStack electrodeStack = electrodeHatch.getStackInSlot(0);
                 if (electrodeStack != null) {
-                    boolean shouldRemove = ARC_FURNACE_ELECTRODE.damageElectrode(electrodeStack, 1);
+                    boolean shouldRemove = ARC_FURNACE_ELECTRODE.damageElectrode(electrodeStack, durabilityCostThisRun);
+                    durabilityCostThisRun = 1;
                     if (shouldRemove) {
-                        phase = ArcFurnacePhase.ArcShutdown;
-                        mMaxProgresstime = 20 * 6;
-                        lEUt = 0;
-                        checkRecipeResult = SimpleCheckRecipeResult.ofSuccess("arc_shutdown");
+                        startShutDown();
                         electrodeHatch.setInventorySlotContents(0, null);
                         electrodeChanged();
                     } else {
@@ -348,50 +367,43 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
     public void stopMachine(@NotNull ShutDownReason reason) {
         super.stopMachine(reason);
         phase = ArcFurnacePhase.Standby;
-        // if (phase == ArcFurnacePhase.ArcIgnition) {
-        // phase = ArcFurnacePhase.Standby;
-        // } else if (phase == ArcFurnacePhase.Processing) {
-        // phase = ArcFurnacePhase.ArcShutdown;
-        // }
     }
 
     @Override
     protected @NotNull CheckRecipeResult postCheckRecipe(@NotNull CheckRecipeResult result,
         @NotNull ProcessingLogic processingLogic) {
         result = super.postCheckRecipe(result, processingLogic);
-        // if (!result.wasSuccessful()) {
-        // if (phase != ArcFurnacePhase.Standby) {
-        // phase = ArcFurnacePhase.ArcShutdown;
-        // processingLogic.overwriteCalculatedDuration(20 * 6);
-        // processingLogic.overwriteCalculatedEut(0);
-        // processingLogic.overwriteOutputFluids();
-        // processingLogic.overwriteOutputItems();
-        // result = SimpleCheckRecipeResult.ofSuccess("arc_shutdown");
-        // }
-        // }
         return result;
     }
 
+    GTRecipe fakeRecipeCache = null;
+
     private GTRecipe fakeRecipe() {
-        return new GTRecipe(
-            false,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            20 * 6,
-            (int) (getAverageInputVoltage() * 30 / 32 * electrode.parallelLimit * (electrode.startupSurge + 1d)),
-            0);
+        if (fakeRecipeCache == null) {
+            fakeRecipeCache = new GTRecipe(false, null, null, null, null, null, null, null, null, null, 1, 1, 0);
+        }
+        return fakeRecipeCache;
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
+
+            @Override
+            protected @NotNull CheckRecipeResult applyRecipe(@NotNull GTRecipe recipe, @NotNull ParallelHelper helper,
+                @NotNull OverclockCalculator calculator, @NotNull CheckRecipeResult result) {
+                CheckRecipeResult ret = super.applyRecipe(recipe, helper, calculator, result);
+                if (electrode.specialEffect != null) {
+                    electrode.specialEffect.accept(
+                        new ArcFurnaceProcessingEvent.EventPostRecipeCheck(
+                            MTEIndustrialArcFurnace.this,
+                            recipe,
+                            helper,
+                            calculator,
+                            ret));
+                }
+                return ret;
+            }
 
             @Override
             protected @NotNull CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
@@ -407,11 +419,12 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
 
             @Override
             protected @NotNull OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                if (phase == ArcFurnacePhase.ArcIgnition)
+                if (phase == ArcFurnacePhase.ArcIgnition) {
                     return super.createOverclockCalculator(fakeRecipe()).setNoOverclock(true)
                         .setAmperage(1)
                         .setEUt(this.availableVoltage * this.availableAmperage)
                         .setDurationModifier(1);
+                }
                 return super.createOverclockCalculator(recipe)
                     .setMaxOverclocks((int) GTUtility.log4(this.availableVoltage / Math.max((long) recipe.mEUt, 32)));
             }
@@ -420,8 +433,22 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
             protected @NotNull ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
                 if (phase == ArcFurnacePhase.Standby) {
                     phase = ArcFurnacePhase.ArcIgnition;
-
-                    return super.createParallelHelper(fakeRecipe()).setConsumption(false)
+                    GTRecipe ignitionRecipe = fakeRecipe();
+                    ignitionRecipe.mEUt = (int) (getAverageInputVoltage() * 30
+                        / 32
+                        * electrode.parallelLimit
+                        * (electrode.startupSurge + 1d));
+                    ignitionRecipe.mDuration = 20 * 6;
+                    if (electrode.specialEffect != null) {
+                        ArcFurnaceProcessingEvent.EventStartIgnition event = new ArcFurnaceProcessingEvent.EventStartIgnition(
+                            MTEIndustrialArcFurnace.this,
+                            ignitionRecipe.mDuration,
+                            ignitionRecipe.mEUt);
+                        electrode.specialEffect.accept(event);
+                        ignitionRecipe.mEUt = event.eut;
+                        ignitionRecipe.mDuration = event.duration;
+                    }
+                    return super.createParallelHelper(ignitionRecipe).setConsumption(false)
                         .setMaxParallel(1);
                 }
 

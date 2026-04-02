@@ -207,6 +207,21 @@ item.arc_furnace_electrode.NeutroniumNaniteElectrode.name=Neutronium Nanite Elec
 item.arc_furnace_electrode.TranscendentNaniteElectrode.name=Transcendent Nanite Electrode
 item.arc_furnace_electrode.UniversiumNaniteElectrode.name=Universium Nanite Electrode
 
+item.arc_furnace_electrode.tip.speed=Speed Modifier: %sx
+item.arc_furnace_electrode.tip.parallel_limit=Parallel Limit: %s
+item.arc_furnace_electrode.tip.parallel_limit_none=None
+item.arc_furnace_electrode.tip.oc_speed_factor=OC Speed Factor: %sx
+item.arc_furnace_electrode.tip.oc_power_factor=OC Power Factor: %sx
+item.arc_furnace_electrode.tip.durability=Durability: %s
+item.arc_furnace_electrode.tip.amperage_per_parallel=Amperage per Parallel: %sA
+item.arc_furnace_electrode.tip.startup_surge=Startup Surge: %s%%
+
+item.arc_furnace_electrode.tip.special_effect.GraphiteElectrode=§6§lBread and Butter§r§6: No startup surge penalty
+item.arc_furnace_electrode.tip.special_effect.GrapheneElectrode=§6§lBread and Butter§r§6: No startup surge penalty
+item.arc_furnace_electrode.tip.special_effect.YBCOElectrode=§6§lRapid Oxidation§r§6: Every OC increases durability usage by 100%%
+item.arc_furnace_electrode.tip.special_effect.NetheriteElectrode=§6§lHot Restart§r§6: There is no shutdown cooldown. If machine is off for less than 4 seconds skip startup entirely
+
+
 #Tea
 kubaitem.tea.black_tea.name=Black Tea
 kubaitem.tea.earl_gray_tea.name=Earl Gray Tea
