@@ -1725,7 +1725,7 @@ public class ChemicalRecipes implements Runnable {
             .itemOutputs(Materials.Salt.getDust(2))
             .fluidInputs(Materials.DilutedHydrochloricAcid.getFluid(2_000))
             .fluidOutputs(Materials.Water.getFluid(2000))
-            .duration(2 * SECONDS)
+            .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(UniversalChemical);
 
@@ -4962,7 +4962,7 @@ public class ChemicalRecipes implements Runnable {
                 Materials.SulfurDioxide.getGas(1_000),
                 Materials.DilutedSulfuricAcid.getFluid(3_000))
             .fluidOutputs(Materials.SulfuricAcid.getFluid(3_000))
-            .duration(2 * SECONDS)
+            .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
@@ -4970,7 +4970,7 @@ public class ChemicalRecipes implements Runnable {
             .circuit(23)
             .fluidInputs(Materials.SulfurTrioxide.getGas(1_000), Materials.DilutedSulfuricAcid.getFluid(3_000))
             .fluidOutputs(Materials.SulfuricAcid.getFluid(3_000))
-            .duration(2 * SECONDS)
+            .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
@@ -4979,7 +4979,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1))
             .fluidInputs(Materials.Oxygen.getGas(3_000), Materials.DilutedSulfuricAcid.getFluid(3_000))
             .fluidOutputs(Materials.SulfuricAcid.getFluid(3_000))
-            .duration(2 * SECONDS)
+            .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
@@ -4990,7 +4990,7 @@ public class ChemicalRecipes implements Runnable {
                 Materials.SulfurDioxide.getGas(9_000),
                 Materials.DilutedSulfuricAcid.getFluid(27_000))
             .fluidOutputs(Materials.SulfuricAcid.getFluid(27_000))
-            .duration(4 * SECONDS + 10 * TICKS)
+            .duration(8 * SECONDS + 20 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
@@ -4998,7 +4998,7 @@ public class ChemicalRecipes implements Runnable {
             .circuit(22)
             .fluidInputs(Materials.SulfurTrioxide.getGas(9_000), Materials.DilutedSulfuricAcid.getFluid(27_000))
             .fluidOutputs(Materials.SulfuricAcid.getFluid(27_000))
-            .duration(4 * SECONDS + 10 * TICKS)
+            .duration(8 * SECONDS + 20 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
@@ -5007,7 +5007,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 9))
             .fluidInputs(Materials.Oxygen.getGas(27_000), Materials.DilutedSulfuricAcid.getFluid(27_000))
             .fluidOutputs(Materials.SulfuricAcid.getFluid(27_000))
-            .duration(4 * SECONDS + 10 * TICKS)
+            .duration(8 * SECONDS + 20 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
