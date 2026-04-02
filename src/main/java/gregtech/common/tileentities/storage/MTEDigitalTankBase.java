@@ -317,7 +317,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
 
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isClientSide()) return;
+        if (!aBaseMetaTileEntity.isServerSide()) return;
 
         if (isFluidChangingAllowed() && getFillableStack() != null && getFillableStack().amount <= 0) {
             setFillableStack(null);
@@ -405,7 +405,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
-        if (aBaseMetaTileEntity.isClientSide()) return;
+        if (!aBaseMetaTileEntity.isServerSide()) return;
 
         if (mOutputFluid && getDrainableStack() != null && (aTick % 20 == 0)) {
             IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
