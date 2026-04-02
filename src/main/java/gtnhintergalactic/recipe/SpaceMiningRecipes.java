@@ -412,8 +412,8 @@ public class SpaceMiningRecipes {
             "phosphateAsteroid",
             null,
             null,
-            new int[] { 4500, 2500, 3000 },
-            new Materials[] { Materials.Phosphate, Materials.TricalciumPhosphate, Materials.Sulfur },
+            new int[] { 4500, 2500, 3000, 3000 },
+            new Materials[] { Materials.Phosphate, Materials.TricalciumPhosphate, Materials.Sulfur, Materials.Apatite },
             OrePrefixes.oreEndstone,
             20,
             150,
@@ -425,27 +425,6 @@ public class SpaceMiningRecipes {
             (int) TierEU.RECIPE_LuV,
             ItemMiningDrones.DroneTiers.IV.ordinal(),
             ItemMiningDrones.DroneTiers.UIV.ordinal(),
-            150);
-
-        // Apatite Asteroid
-        addRecipesToDrones(
-            "apatiteAsteroid",
-            null,
-            null,
-            new int[] { 4500, 2500, 3000, 2000 },
-            new Materials[] { Materials.Apatite, Materials.TricalciumPhosphate, Materials.Phosphate,
-                Materials.Niobium },
-            OrePrefixes.oreEndstone,
-            20,
-            150,
-            60,
-            250,
-            60,
-            1,
-            25 * SECONDS,
-            (int) TierEU.RECIPE_LuV,
-            ItemMiningDrones.DroneTiers.HV.ordinal(),
-            ItemMiningDrones.DroneTiers.UHV.ordinal(),
             150);
 
         // Space Ore Asteroid
