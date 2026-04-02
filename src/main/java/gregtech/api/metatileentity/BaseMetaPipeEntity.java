@@ -42,7 +42,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.net.GTPacketCreateTE;
 import gregtech.api.net.GTPacketTileEntity;
@@ -59,7 +58,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * This is the main TileEntity for EVERYTHING.
  */
 public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
-    implements IGregTechTileEntity, IPipeRenderedTileEntity, IDebugableTileEntity {
+    implements IPipeRenderedTileEntity, IDebugableTileEntity {
 
     public byte mConnections = IConnectable.NO_CONNECTION;
     protected MetaPipeEntity mMetaTileEntity;

@@ -49,10 +49,12 @@ public class CoverToggleVisual extends CoverLegacyData {
         return super.onCoverRightClick(aPlayer, aX, aY, aZ);
     }
 
+    @Override
     public boolean letsEnergyIn() {
         return getConnectionState();
     }
 
+    @Override
     public boolean letsEnergyOut() {
         return getConnectionState();
     }
@@ -77,6 +79,7 @@ public class CoverToggleVisual extends CoverLegacyData {
         return getConnectionState();
     }
 
+    @Override
     public int getMinimumTickRate() {
         return 1;
     }
