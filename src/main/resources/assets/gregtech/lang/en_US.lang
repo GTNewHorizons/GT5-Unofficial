@@ -2405,7 +2405,6 @@ gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip=Accepts and st
 gt.blockmachines.multimachine.beamcrafting.LHC.machinetype=Particle Accelerator, Particle Collider, LHC
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip=Accelerates particles to high energies and then collides them to generate new particles\nElectrically neutral particles are unaffected\nSet the §etarget beam energy§7 (up to 2TeV) and the §9maximum number of cycles§7\nCycles every second<SEPARATOR>§f§nAccelerator mode§7\nAccelerates the beam in the smaller LHC ring\nAccelerator mode increases the §6Beam Energy§7 by §bEnergy Hatch Voltage§7 * §f10eV§7, until the\n§eTarget Beam Energy§7 is reached, or the §9maximum number of cycles§7 is reached\nIf the §eTarget Beam Energy§7 is reached, multiply the current §cBeam Rate§7 by §f1.1§7\n§aPower§7 cost starts at §f1A§7 of §fUV§7 per §cBeam Rate§7 and increases quadratically\nwith the §dnumber of completed cycles§7\n§aP§7 = §f(1A UV)§7 * §cR§7 * §dN§7^2\nAutomatically switches to Collider mode when the §9maximum number of cycles§7 is reached<SEPARATOR>§f§nCollider mode§7\nSplits the beam into §ftwo§7 beams that go in opposite directions in the larger LHC ring, which\nthen collide to generate new particles\nThe §3Collision Energy§7 is two times the §6Beam Energy§7\nIf the §3Collision Energy§7 exceeds the rest mass of a particle, that particle will start\nappearing in the outputs\nA particle output can only appear in the modules that correspond to the forces that\ninteract with that particle\nFor example, Neutrinos cannot appear in the Strong force module, §fALICE§7, since they do\nnot interact via the strong force\n§fFiltered Beamline Output Hatches§7 will allow you to see the list of possible outputs, and\nfilter them<SEPARATOR>There are four LHC modules, marked by the letter on top of the module:\n§bE - Electromagnetism§7 - Charged Matter Sensor (§bCMS§7)\n§2W - Weak Interaction§7 - Advanced Total Lepton Assimilation Snare (§2ATLAS§7)\n§fS - Strong Force§7 - Absolute Lattice Integrated Chromodynamic Encapsulator (§fALICE§7)\n§5G - Gravity§7 - Localized Horizon Curvature Binder (§5LHCb§7)<SEPARATOR>
 
-gt.blockmachines.multimachine.beamcrafting.ttehatch=Energy Hatch
 gt.blockmachines.multimachine.beamcrafting.ttanyneonite=Neonite (Any, optional)
 gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch=Beamline Input Hatch
 gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch=Beamline Output Hatch
@@ -6527,8 +6526,14 @@ machtype.mebf=Blast Furnace, MEBF, MBF
 machtype.moc=Cracker, MOC
 machtype.digester=Digester
 machtype.dissolution_tank=Dissolution Tank
+machtype.linac=Particle Accelerator, LINAC
 
 # Multiblock Tooltip lines
+gt.linac.tips.1=Accelerates charged particles to higher energies by running them through an electric field\nElectrically neutral particles are therefore unaffected
+gt.linac.tips.2=<SEPARATOR>Increasing Structure Length increases output §9Beam Energy§7 but decreases §cBeam Focus\nRequires §fLength * kL/s§7 of §bcoolant§7 for operation\n§cBeam Focus§7 loss can be mitigated more effectively with lower temperature §bcoolant\nValid coolants:
+gt.linac.tips.3=<SEPARATOR>§9Output Beam Energy§f = max(§eV§f, 50) * 10^§cIE\nwhere §eV§f = (Length - 1) * cbrt(§2Machine Voltage§f) / 4\nand §cIE§f = 1 + min(§dInput Beam Energy§f, 7500) / §aMaximum Particle Energy\n§cInput Beam Energies§7 higher than 7500keV are treated as if they are 7500keV\n§aMaximum Particle Energy§7 refers to values in the Source Chamber Tooltip<SEPARATOR>§cOutput Beam Focus§f depends on the relation between §eInput Beam Focus§f and §3Machine Focus\nwhere §3Machine Focus§f = min(max((-0.9 * (Length-1) * 1.1^(0.2 * §6Coolant Temperature§f) + 110), 5), 90)\nIf §eInput Beam Focus§f > §3Machine Focus§f, §cOutput Beam Focus§f = (§eInput Beam Focus§f + §3Machine Focus§f)/2\nIf §eInput Beam Focus§f <= §3Machine Focus§f, §cOutput Beam Focus§f = §eInput Beam Focus§f * §3Machine Focus§f/100
+gt.linac.coolantlinetext=  §b%s§7 : §6%sK
+
 gt.dissolution_tank.tips=Input Water and Fluid, output Fluid\nFluids must be input in the exact ratio as listed in NEI
 
 gt.digester.tips=Input ores and fluid, output water

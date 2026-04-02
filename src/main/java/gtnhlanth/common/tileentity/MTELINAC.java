@@ -51,6 +51,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
 import gtnhlanth.common.beamline.BeamInformation;
@@ -169,49 +170,32 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
-        tt.addMachineType("Particle Accelerator, LINAC")
-            .addInfo("Accelerates charged particles to higher energies by running them through an electric field")
-            .addInfo("Electrically neutral particles are therefore unaffected")
-            .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .addSeparator()
-            .addInfo("Increasing Structure Length increases output "+createEnergyText("Beam Energy")+" but decreases "+createFocusText("Beam Focus"))
-            .addInfo("Requires " + EnumChatFormatting.WHITE + "Length * kL/s " + EnumChatFormatting.GRAY + "of " + EnumChatFormatting.AQUA + "coolant" + EnumChatFormatting.GRAY + " for operation")
-            .addInfo(createFocusText("Beam Focus") + " loss can be mitigated more effectively with lower temperature " + EnumChatFormatting.AQUA+"coolant")
-            .addInfo("Valid coolants:")
-            .addInfo(coolantLine("Liquid Nitrogen",90))
-            .addInfo(coolantLine("Liquid Oxygen",90))
-            .addInfo(coolantLine("Coolant",60))
-            .addInfo(coolantLine("Super Coolant",1))
-            .addSeparator()
-            .addInfo(createEnergyText("Output Beam Energy") + EnumChatFormatting.WHITE + " = max("+EnumChatFormatting.YELLOW+"V"+EnumChatFormatting.WHITE+", 50) * 10^"+EnumChatFormatting.RED+"IE")
-            .addInfo("where " + EnumChatFormatting.YELLOW + "V" + EnumChatFormatting.WHITE + " = (Length - 1) * cbrt(" + EnumChatFormatting.DARK_GREEN + "Machine Voltage" + EnumChatFormatting.WHITE + ") / 4")
-            .addInfo("and " + EnumChatFormatting.RED + "IE " + EnumChatFormatting.WHITE + "= 1 + min(" + EnumChatFormatting.LIGHT_PURPLE + "Input Beam Energy" + EnumChatFormatting.WHITE + ", 7500) / " + EnumChatFormatting.GREEN + "Maximum Particle Energy")
-            .addInfo(EnumChatFormatting.RED + "Input Beam Energies" + EnumChatFormatting.GRAY + " higher than 7500keV are treated as if they are 7500keV")
-            .addInfo(EnumChatFormatting.GREEN +"Maximum Particle Energy"+EnumChatFormatting.GRAY + " refers to values in the Source Chamber Tooltip")
-            .addSeparator()
-            .addInfo(createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + "depends on the relation between " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " and " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE)
-            .addInfo("where " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + " = min(max((-0.9 * (Length-1) * 1.1^(0.2 * " + EnumChatFormatting.GOLD + "Coolant Temperature" + EnumChatFormatting.WHITE + ") + 110), 5), 90)")
-            .addInfo("If " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " > " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ", " + createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = (" + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " + " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ")/2")
-            .addInfo("If " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " <= " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ", " + createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " * " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + "/100")
+        tt.addMachineType("machtype.linac")
+            .addInfo("gt.linac.tips.1")
+            .addInfo("gtnhlanth.tt.beaminfo")
+            .addInfo("gt.linac.tips.2")
+            .addInfo(coolantLine("fluid.liquidnitrogen", 90))
+            .addInfo(coolantLine("fluid.liquidoxygen", 90))
+            .addInfo(coolantLine("fluidCoolant", 60))
+            .addInfo(coolantLine("fluid.supercoolant", 1))
+            .addInfo("gt.linac.tips.3")
             .beginVariableStructureBlock(7, 7, 7, 7, 19, 83, false)
-            .addController("Front bottom")
+            .addController("front_bottom_center")
             .addCasingInfoRange(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 325, 1285, false)
             .addCasingInfoRange(LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), 148, 852, false)
             .addCasingInfoRange(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 127, 703, false)
             .addCasingInfoRange(Casings.SuperconductingCoilBlock.getLocalizedName(), 56, 312, false)
             .addCasingInfoRange(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 156, 732, false)
-            .addCasingInfoExactly(Casings.GrateMachineCasing.getLocalizedName(), 47, false)
-            .addCasingInfoExactly("Any Tiered Glass (LuV+)", 48, false)
+            .addCasingInfoExactly(Casings.GrateMachineCasing.getLocalizedName(), 47)
+            .addCasingInfoExactly(TooltipHelper.tieredGlassText(6), 48)
             .addEnergyHatch(addHintNumber(1))
             .addMaintenanceHatch(addHintNumber(1))
             .addInputHatch(addHintNumber(2))
             .addOutputHatch(addHintNumber(2))
-            .addOtherStructurePart("Beamline Input Hatch", addHintNumber(3))
-            .addOtherStructurePart("Beamline Output Hatch", addHintNumber(4))
+            .addStructurePart("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch", "<hint>", 3)
+            .addStructurePart("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch", "<hint>", 4)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-        //spotless:on
         return tt;
     }
 
@@ -602,21 +586,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         return false;
     }
 
-    private String createFocusText(String text) {
-        return String.format("%s%s%s", EnumChatFormatting.RED, text, EnumChatFormatting.GRAY);
-    }
-
-    private String createEnergyText(String text) {
-        return String.format("%s%s%s", EnumChatFormatting.BLUE, text, EnumChatFormatting.GRAY);
-    }
-
     private String coolantLine(String coolant, int kelvin) {
-        return "  " + EnumChatFormatting.AQUA
-            + coolant
-            + EnumChatFormatting.GRAY
-            + " : "
-            + EnumChatFormatting.GOLD
-            + kelvin
-            + "K";
+        return GTUtility.translate("gt.linac.coolantlinetext", GTUtility.translate(coolant), kelvin);
     }
 }
