@@ -107,7 +107,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin(mCasingName3, 9, false)
             .addCasingInfoMin(mCasingName2, 24, false)
             .addCasingInfoMin(mCasingName1, 36, false)
