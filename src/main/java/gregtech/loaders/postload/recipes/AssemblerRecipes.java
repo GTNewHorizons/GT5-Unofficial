@@ -6672,68 +6672,6 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
 
-        // Water Tank
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 2))
-            .itemOutputs(getModItem(Railcraft.ID, "machine.alpha", 1L, 14))
-            .fluidInputs(Materials.Glue.getFluid(1 * QUARTER_INGOTS))
-            .duration(10 * SECONDS)
-            .eut(8)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.IronMagnetic, 1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 2))
-            .itemOutputs(getModItem(Railcraft.ID, "machine.alpha", 1L, 14))
-            .fluidInputs(Materials.Glue.getFluid(1 * QUARTER_INGOTS))
-            .duration(10 * SECONDS)
-            .eut(8)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.WroughtIron, 1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 2))
-            .itemOutputs(getModItem(Railcraft.ID, "machine.alpha", 1L, 14))
-            .fluidInputs(Materials.Glue.getFluid(1 * QUARTER_INGOTS))
-            .duration(10 * SECONDS)
-            .eut(8)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 4),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 4))
-            .itemOutputs(getModItem(Railcraft.ID, "machine.alpha", 3L, 14))
-            .fluidInputs(Materials.Glue.getFluid(1 * HALF_INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 2),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.WoodSealed, 1))
-            .itemOutputs(getModItem(Railcraft.ID, "machine.alpha", 3L, 14))
-            .fluidInputs(Materials.Polyethylene.getMolten(1 * QUARTER_INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.bolt, Materials.StainlessSteel, 4),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.WoodSealed, 4))
-            .itemOutputs(getModItem(Railcraft.ID, "machine.alpha", 9L, 14))
-            .fluidInputs(Materials.Polyethylene.getMolten(1 * HALF_INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-
         // Steam Boilers
 
         GTValues.RA.stdBuilder()
