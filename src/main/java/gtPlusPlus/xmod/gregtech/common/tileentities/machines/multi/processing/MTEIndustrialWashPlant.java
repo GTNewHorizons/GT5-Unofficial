@@ -113,7 +113,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
             .addInfo("Will automatically fill water from input hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 3, 7, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Wash Plant Casings", 40, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
