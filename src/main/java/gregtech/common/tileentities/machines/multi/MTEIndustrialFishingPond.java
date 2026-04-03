@@ -108,7 +108,7 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo("Will automatically fill water from input hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 4, 11, false)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Aquatic Casings", 160, false)
             .addCasingInfoExactly("Eglin Steel Frame", 24, false)
             .addInputBus("Any Aquatic Casing", 1)
