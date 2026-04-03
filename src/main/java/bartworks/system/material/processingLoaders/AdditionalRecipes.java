@@ -248,16 +248,16 @@ public class AdditionalRecipes {
         }
 
         List<Pair<Materials, Integer>> liquidFuels = Arrays.asList(
-            ImmutablePair.of(Materials.PhosphoricAcid, 36),
-            ImmutablePair.of(Materials.DilutedHydrochloricAcid, 14),
-            ImmutablePair.of(Materials.HypochlorousAcid, 30),
-            ImmutablePair.of(Materials.HydrofluoricAcid, 40),
-            ImmutablePair.of(Materials.HydrochloricAcid, 28),
-            ImmutablePair.of(Materials.NitricAcid, 24),
+            ImmutablePair.of(Materials.PhosphoricAcid, 66),
+            ImmutablePair.of(Materials.DilutedHydrochloricAcid, 26),
+            ImmutablePair.of(Materials.HypochlorousAcid, 56),
+            ImmutablePair.of(Materials.HydrofluoricAcid, 60),
+            ImmutablePair.of(Materials.HydrochloricAcid, 52),
+            ImmutablePair.of(Materials.NitricAcid, 72),
             ImmutablePair.of(Materials.Mercury, 32),
-            ImmutablePair.of(Materials.DilutedSulfuricAcid, 9),
-            ImmutablePair.of(Materials.SulfuricAcid, 18),
-            ImmutablePair.of(Materials.AceticAcid, 11),
+            ImmutablePair.of(Materials.DilutedSulfuricAcid, 14),
+            ImmutablePair.of(Materials.SulfuricAcid, 28),
+            ImmutablePair.of(Materials.AceticAcid, 21),
             ImmutablePair.of(WerkstoffLoader.FormicAcid.getBridgeMaterial(), 40),
             ImmutablePair.of(WerkstoffLoader.HexafluorosilicicAcid.getBridgeMaterial(), 350),
             ImmutablePair.of(Materials.PhthalicAcid, 270),
@@ -274,7 +274,7 @@ public class AdditionalRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Redstone, 1))
             .itemOutputs(Materials.Empty.getCells(1))
-            .metadata(FUEL_VALUE, 10)
+            .metadata(FUEL_VALUE, 40)
             .addTo(BartWorksRecipeMaps.acidGenFuels);
         // should probably also find a way to auto-fill these with an array but i am too lazy to do that rn
         GTValues.RA.stdBuilder()
