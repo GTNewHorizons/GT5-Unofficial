@@ -362,7 +362,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ICellWorkbenchItem cellWorkbenchItem) {
             // FIXME: localize this msg
             String msg = filter.updateFilterFromCell(cellWorkbenchItem, upgradeItemStack);
-            if (!msg.isEmpty() && env.getLastClickedPlayer() != null) {
+            if (!msg.isEmpty() && env.getLastClickedPlayer() != null && GTUtility.isServer()) {
                 String modeKey = filter.getIsBlackList() ? BLACKLIST.getKey() : WHITELIST.getKey();
                 GTUtility.sendChatComp(
                     env.getLastClickedPlayer(),
@@ -372,7 +372,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             env.dispatchMarkDirty();
         } else {
             filter.clear();
-            if (env.getLastClickedPlayer() != null) {
+            if (env.getLastClickedPlayer() != null && GTUtility.isServer()) {
                 GTUtility.sendChatTrans(env.getLastClickedPlayer(), filter.getDisableKey());
             }
             env.dispatchMarkDirty();
