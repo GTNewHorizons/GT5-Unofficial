@@ -2,6 +2,8 @@ package gregtech.common.gui.modularui.multiblock;
 
 import static gtnhlanth.common.beamline.Particle.getParticleFromId;
 
+import java.util.Map;
+
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -17,8 +19,6 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
 
-import java.util.Map;
-
 public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
 
     public MTEBeamCrafterGui(MTEBeamCrafter multiblock) {
@@ -28,13 +28,10 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        Map<Integer,Integer> bufferMap = multiblock.getBufferMap();
+        Map<Integer, Integer> bufferMap = multiblock.getBufferMap();
 
         for (Integer key : bufferMap.keySet()) {
-            syncManager.syncValue(
-                "particleID" + key,
-                new IntSyncValue(() -> bufferMap.getOrDefault(key, 0))
-            );
+            syncManager.syncValue("particleID" + key, new IntSyncValue(() -> bufferMap.getOrDefault(key, 0)));
         }
 
     }
@@ -43,7 +40,7 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
 
         Map<Integer, Integer> bufferMap = multiblock.getBufferMap();
-        ListWidget<IWidget,?> outputWidget = new ListWidget<>().widthRel(1)
+        ListWidget<IWidget, ?> outputWidget = new ListWidget<>().widthRel(1)
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
         IKey guiHeaderKey = IKey.dynamic(this::formatGuiHeader);
@@ -52,14 +49,10 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
 
         for (Integer key : bufferMap.keySet()) {
 
-            IntSyncValue valueSync = syncManager.findSyncHandler(
-                "particleID" + key,
-                IntSyncValue.class
-            );
+            IntSyncValue valueSync = syncManager.findSyncHandler("particleID" + key, IntSyncValue.class);
 
-            IKey particleKey = IKey.dynamic(
-                () -> EnumChatFormatting.WHITE+getParticleNameFromID(key)+ ": " + valueSync.getValue()
-            );
+            IKey particleKey = IKey
+                .dynamic(() -> EnumChatFormatting.WHITE + getParticleNameFromID(key) + ": " + valueSync.getValue());
 
             outputWidget.child(new TextWidget<>(particleKey));
         }
@@ -68,8 +61,7 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
     }
 
     private String formatGuiHeader() {
-        return EnumChatFormatting.GOLD
-            + StatCollector.translateToLocalFormatted("GT5U.gui.text.beamcrafter.guiheader");
+        return EnumChatFormatting.GOLD + StatCollector.translateToLocalFormatted("GT5U.gui.text.beamcrafter.guiheader");
     }
 
     private String getParticleNameFromID(int particleID) {

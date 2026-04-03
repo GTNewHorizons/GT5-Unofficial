@@ -4,7 +4,6 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER;
@@ -18,11 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.ParallelHelper;
-import gregtech.common.pollution.PollutionConfig;
-import gtnhlanth.common.beamline.Particle;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -54,6 +48,7 @@ import gregtech.common.gui.modularui.multiblock.MTEBeamCrafterGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gtnhlanth.common.beamline.BeamInformation;
+import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 
 public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements ISurvivalConstructable {
@@ -78,7 +73,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     private int activeParallel = 1;
 
-    private Map<Integer,Integer> bufferMap = new HashMap<>();
+    private Map<Integer, Integer> bufferMap = new HashMap<>();
     private boolean bufferMapInitialized = false;
 
     private GTRecipe lastRecipe;
@@ -92,8 +87,8 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         aNBT.setInteger("currentRecipeParticleIDA", this.currentRecipeParticleIDA);
         aNBT.setInteger("currentRecipeParticleIDB", this.currentRecipeParticleIDB);
 
-        aNBT.setBoolean("bufferMapInitialized",this.bufferMapInitialized);
-        saveInputMapToNBT(aNBT,bufferMap);
+        aNBT.setBoolean("bufferMapInitialized", this.bufferMapInitialized);
+        saveInputMapToNBT(aNBT, bufferMap);
     }
 
     public void loadNBTData(NBTTagCompound aNBT) {
@@ -107,7 +102,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
         this.bufferMapInitialized = aNBT.getBoolean("bufferMapInitialized");
         initBufferMapIfNeeded();
-        loadInputMapFromNBT(aNBT,bufferMap);
+        loadInputMapFromNBT(aNBT, bufferMap);
     }
 
     private void initBufferMapIfNeeded() {
@@ -124,8 +119,8 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         initBufferMapIfNeeded();
     }
 
-    public void saveInputMapToNBT(NBTTagCompound aNBT, Map<Integer,Integer> map) {
-        for (Map.Entry<Integer,Integer> entry : map.entrySet()) {
+    public void saveInputMapToNBT(NBTTagCompound aNBT, Map<Integer, Integer> map) {
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
             int particleID = entry.getKey();
             int particleBuffer = entry.getValue();
 
@@ -144,6 +139,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
         }
     }
+
     private static final IStructureDefinition<MTEBeamCrafter> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEBeamCrafter>builder()
         .addShape(
@@ -306,11 +302,13 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 StatCollector
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5"))
             .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6",BEAM_AMOUNT_TO_BUFFER_FACTOR))
+                StatCollector.translateToLocalFormatted(
+                    "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6",
+                    BEAM_AMOUNT_TO_BUFFER_FACTOR))
             .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7",MAX_BUFFER))
+                StatCollector.translateToLocalFormatted(
+                    "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7",
+                    MAX_BUFFER))
             .addInfo(
                 StatCollector
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8"))
@@ -319,8 +317,9 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip9"))
             .addSeparator()
             .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip10",MAX_PARALLEL))
+                StatCollector.translateToLocalFormatted(
+                    "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip10",
+                    MAX_PARALLEL))
             .addSeparator()
             .beginStructureBlock(17, 5, 11, false)
             .addController(
@@ -378,39 +377,39 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     @Override
     protected void incrementProgressTime() {
 
-        for (int n = 0; n < this.mInputBeamline.size();n++){
+        for (int n = 0; n < this.mInputBeamline.size(); n++) {
             BeamInformation inputParticle = this.getNthInputParticle(n);
             int id = inputParticle.getParticleId();
             int rate = inputParticle.getRate();
 
-            int newAmount = bufferMap.getOrDefault(id,0) + BEAM_AMOUNT_TO_BUFFER_FACTOR *rate;
+            int newAmount = bufferMap.getOrDefault(id, 0) + BEAM_AMOUNT_TO_BUFFER_FACTOR * rate;
             bufferMap.put(id, Math.min(newAmount, MAX_BUFFER));
         }
 
-        contributeToProgress(this.currentRecipeParticleIDA,this.currentRecipeParticleIDB);
-        if (mProgresstime >= mMaxProgresstime){
+        contributeToProgress(this.currentRecipeParticleIDA, this.currentRecipeParticleIDB);
+        if (mProgresstime >= mMaxProgresstime) {
             currentRecipeCurrentAmountA = 0;
             currentRecipeCurrentAmountB = 0;
         }
     }
 
-    private void contributeToProgress(int recipeParticleIDA, int recipeParticleIDB){
-        int availableA = bufferMap.getOrDefault(recipeParticleIDA,0);
-        int availableB = bufferMap.getOrDefault(recipeParticleIDB,0);
+    private void contributeToProgress(int recipeParticleIDA, int recipeParticleIDB) {
+        int availableA = bufferMap.getOrDefault(recipeParticleIDA, 0);
+        int availableB = bufferMap.getOrDefault(recipeParticleIDB, 0);
 
-        int neededA = this.activeParallel*(currentRecipeMaxAmountA - currentRecipeCurrentAmountA);
-        int neededB = this.activeParallel*(currentRecipeMaxAmountB - currentRecipeCurrentAmountB);
+        int neededA = this.activeParallel * (currentRecipeMaxAmountA - currentRecipeCurrentAmountA);
+        int neededB = this.activeParallel * (currentRecipeMaxAmountB - currentRecipeCurrentAmountB);
 
-        int consumedA = Math.min(availableA,neededA);
-        int consumedB = Math.min(availableB,neededB);
+        int consumedA = Math.min(availableA, neededA);
+        int consumedB = Math.min(availableB, neededB);
 
-        bufferMap.put(recipeParticleIDA,availableA-consumedA);
-        bufferMap.put(recipeParticleIDB,availableB-consumedB);
+        bufferMap.put(recipeParticleIDA, availableA - consumedA);
+        bufferMap.put(recipeParticleIDB, availableB - consumedB);
 
         currentRecipeCurrentAmountA += consumedA;
         currentRecipeCurrentAmountB += consumedB;
 
-        mProgresstime += consumedA+consumedB;
+        mProgresstime += consumedA + consumedB;
 
     }
 
@@ -453,23 +452,21 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 
-
         // --- parallels ---
         int parallel = MAX_PARALLEL;
 
-        //limit by available items and fluids
-        parallel = (int) (tRecipe.maxParallelCalculatedByInputs(parallel,inputFluids,inputItems));
+        // limit by available items and fluids
+        parallel = (int) (tRecipe.maxParallelCalculatedByInputs(parallel, inputFluids, inputItems));
 
-        //limit by beam buffer
-        int availableA = bufferMap.getOrDefault(this.currentRecipeParticleIDA,0);
-        int availableB = bufferMap.getOrDefault(this.currentRecipeParticleIDB,0);
+        // limit by beam buffer
+        int availableA = bufferMap.getOrDefault(this.currentRecipeParticleIDA, 0);
+        int availableB = bufferMap.getOrDefault(this.currentRecipeParticleIDB, 0);
 
         parallel = Math.min(parallel, availableA / this.currentRecipeMaxAmountA);
         parallel = Math.min(parallel, availableB / this.currentRecipeMaxAmountB);
 
         parallel = Math.max(1, parallel); // so it can't be 0
         this.activeParallel = parallel;
-
 
         tRecipe.consumeInput(this.activeParallel, inputFluids, inputItems);
 
@@ -481,15 +478,13 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                         this.mOutputItems[i] = tRecipe.mOutputs[i].copy();
                     }
                 }
-            }
-            else
-            {
+            } else {
                 this.mOutputItems = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
             }
 
             // multiply everything by parallel count
             for (ItemStack mOutputItem : this.mOutputItems) {
-                if (mOutputItem != null){
+                if (mOutputItem != null) {
                     mOutputItem.stackSize *= this.activeParallel;
                 }
             }
@@ -523,6 +518,5 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     public int getMaxParallelRecipes() {
         return MAX_PARALLEL;
     }
-
 
 }
