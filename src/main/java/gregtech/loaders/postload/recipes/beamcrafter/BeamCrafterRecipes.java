@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes.beamcrafter;
 
 import static gregtech.api.recipe.RecipeMaps.BEAMCRAFTER_METADATA;
 import static gregtech.api.recipe.RecipeMaps.beamcrafterRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.core.material.MaterialsAlloy.ABYSSAL;
 import static gtPlusPlus.core.material.MaterialsAlloy.QUANTUM;
@@ -12,6 +13,7 @@ import static gtnhlanth.common.beamline.Particle.GRAVITON;
 import static gtnhlanth.common.beamline.Particle.HIGGS;
 import static gtnhlanth.common.beamline.Particle.JPSI;
 import static gtnhlanth.common.beamline.Particle.LAMBDA;
+import static gtnhlanth.common.beamline.Particle.MUON;
 import static gtnhlanth.common.beamline.Particle.MUONNEUTRINO;
 import static gtnhlanth.common.beamline.Particle.NEUTRON;
 import static gtnhlanth.common.beamline.Particle.OMEGA;
@@ -19,6 +21,7 @@ import static gtnhlanth.common.beamline.Particle.PROTON;
 import static gtnhlanth.common.beamline.Particle.TAU;
 import static gtnhlanth.common.beamline.Particle.UPSILON;
 
+import gtPlusPlus.core.fluids.GTPPFluids;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -47,12 +50,31 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(PROTON.getId())
                     .particleID_B(ELECTRON.getId())
-                    .amount_A(1200)
-                    .amount_B(7200)
+                    .amount_A(120)
+                    .amount_B(720)
                     .energy_A(10000)
                     .energy_B(4000)
                     .build())
             .outputChances(2085)
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(beamcrafterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(new FluidStack(GTPPFluids.LiquidHydrogen, 1000))
+            .itemOutputs(new ItemStack(ModItems.itemStandarParticleBase, 64, 24))
+            // unknown particle better recipe
+            .metadata(
+                BEAMCRAFTER_METADATA,
+                BeamCrafterMetadata.builder()
+                    .particleID_A(PROTON.getId())
+                    .particleID_B(MUON.getId())
+                    .amount_A(5)
+                    .amount_B(3)
+                    .energy_A(10000)
+                    .energy_B(10000)
+                    .build())
+            .outputChances(9900)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(beamcrafterRecipes);
@@ -85,8 +107,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(ELECTRON.getId())
                     .particleID_B(ELECTRON.getId())
-                    .amount_A(5000)
-                    .amount_B(5000)
+                    .amount_A(3000)
+                    .amount_B(3000)
                     .energy_A(4000)
                     .energy_B(4000)
                     .build())
@@ -103,8 +125,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(TAU.getId())
                     .particleID_B(TAU.getId())
-                    .amount_A(5000)
-                    .amount_B(5000)
+                    .amount_A(3000)
+                    .amount_B(3000)
                     .energy_A(1_800_000)
                     .energy_B(1_800_000)
                     .build())
@@ -121,8 +143,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(MUONNEUTRINO.getId())
                     .particleID_B(MUONNEUTRINO.getId())
-                    .amount_A(500)
-                    .amount_B(500)
+                    .amount_A(450)
+                    .amount_B(450)
                     .energy_A(1)
                     .energy_B(1)
                     .build())
@@ -139,8 +161,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(UPSILON.getId())
                     .particleID_B(OMEGA.getId())
-                    .amount_A(5000)
-                    .amount_B(5000)
+                    .amount_A(750)
+                    .amount_B(750)
                     .energy_A(9_500_000)
                     .energy_B(1_750_000)
                     .build())
@@ -197,8 +219,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(PROTON.getId())
                     .particleID_B(LAMBDA.getId())
-                    .amount_A(300 * 60 * 20)
-                    .amount_B(300 * 60 * 20)
+                    .amount_A(1000)
+                    .amount_B(1000)
                     .energy_A(1)
                     .energy_B(1)
                     .build())
@@ -215,8 +237,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(NEUTRON.getId())
                     .particleID_B(LAMBDA.getId())
-                    .amount_A(300 * 60 * 20)
-                    .amount_B(300 * 60 * 20)
+                    .amount_A(1000)
+                    .amount_B(1000)
                     .energy_A(1)
                     .energy_B(1)
                     .build())
@@ -233,8 +255,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(JPSI.getId())
                     .particleID_B(JPSI.getId())
-                    .amount_A(300 * 60 * 20)
-                    .amount_B(300 * 60 * 20)
+                    .amount_A(1000)
+                    .amount_B(1000)
                     .energy_A(1)
                     .energy_B(1)
                     .build())
@@ -251,8 +273,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(ETA.getId())
                     .particleID_B(ETA.getId())
-                    .amount_A(300 * 60 * 20)
-                    .amount_B(300 * 60 * 20)
+                    .amount_A(1000)
+                    .amount_B(1000)
                     .energy_A(1)
                     .energy_B(1)
                     .build())
@@ -269,8 +291,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(UPSILON.getId())
                     .particleID_B(UPSILON.getId())
-                    .amount_A(300 * 60 * 20)
-                    .amount_B(300 * 60 * 20)
+                    .amount_A(1000)
+                    .amount_B(1000)
                     .energy_A(1)
                     .energy_B(1)
                     .build())
@@ -287,8 +309,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(HIGGS.getId())
                     .particleID_B(HIGGS.getId())
-                    .amount_A(300 * 60 * 20)
-                    .amount_B(300 * 60 * 20)
+                    .amount_A(1000)
+                    .amount_B(1000)
                     .energy_A(1)
                     .energy_B(1)
                     .build())
@@ -305,8 +327,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(PROTON.getId())
                     .particleID_B(NEUTRON.getId())
-                    .amount_A(60 * 20)
-                    .amount_B(60 * 20)
+                    .amount_A(20)
+                    .amount_B(20)
                     .energy_A(1)
                     .energy_B(1)
                     .build())
@@ -323,8 +345,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(ELECTRON.getId())
                     .particleID_B(ELECTRON.getId())
-                    .amount_A(60 * 20)
-                    .amount_B(60 * 20)
+                    .amount_A(20)
+                    .amount_B(20)
                     .energy_A(1)
                     .energy_B(1)
                     .build())
@@ -341,8 +363,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(ETA.getId())
                     .particleID_B(JPSI.getId())
-                    .amount_A(60 * 20)
-                    .amount_B(60 * 20)
+                    .amount_A(20)
+                    .amount_B(20)
                     .energy_A(1)
                     .energy_B(1)
                     .build())
@@ -359,8 +381,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(GRAVITON.getId())
                     .particleID_B(GRAVITON.getId())
-                    .amount_A(60 * 20)
-                    .amount_B(60 * 20)
+                    .amount_A(20)
+                    .amount_B(20)
                     .energy_A(1)
                     .energy_B(1)
                     .build())
