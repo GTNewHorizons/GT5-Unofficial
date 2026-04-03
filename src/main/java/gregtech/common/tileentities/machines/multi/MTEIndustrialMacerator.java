@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -9,7 +10,6 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.List;
@@ -33,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -98,15 +99,23 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
             .addInfo("n=2 initially. n=8 after inserting Maceration Upgrade Chip")
             .addStaticSpeedInfo(1.6f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 6, 3, true)
+            .beginStructureBlock(5, 7, 5, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Maceration Stack Casings (After upgrade)", 26, false)
-            .addCasingInfoMin("Stable Titanium Casings (Before upgrade)", 26, false)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addMufflerHatch("Any casing", 1)
+            .addInputBus("Any Stable Titanium Casing", 1)
+            .addOutputBus("Any Stable Titanium Casing", 1)
+            .addEnergyHatch("Any Stable Titanium Casing", 1)
+            .addMaintenanceHatch("Any Stable Titanium Casing", 1)
+            .addMufflerHatch("Any Stable Titanium Casing", 1)
+            .addStructureInfo(
+                EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.BLUE + ":")
+            .addCasingInfoMin("Stable Titanium Casings", 26, false)
+            .addStructureInfo(
+                EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2 + EnumChatFormatting.BLUE + ":")
+            .addCasingInfoMin("Stable Titanium Casings", 69, false)
+            .addCasingInfoExactly("Grate Machine Casing", 6, false)
+            .addCasingInfoExactly("Steel Gear Box", 18, false)
+            .addCasingInfoExactly("Titanium Frame Box", 20, false)
+            .addCasingInfoExactly("Any Tinted Industrial Glass", 8, false)
             .toolTipFinisher();
         return tt;
     }
@@ -141,7 +150,7 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
                             onElementPass(m -> m.casingAmount++, Casings.StableTitaniumMachineCasing.asElement())))
                 .addElement('A', Casings.SteelGearBoxCasing.asElement())
                 .addElement('B', Casings.GrateMachineCasing.asElement())
-                .addElement('E', chainAllGlasses())
+                .addElement('E', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass))
                 .addElement('D', ofFrame(Materials.Titanium))
                 .build();
         }
@@ -178,7 +187,9 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
         if (controllerTier == 2) {
             structureTier = 2;
         } else structureTier = 1;
-        if (structureTier < 1 || casingAmount < 26 || !checkHatch()) return false;
+        if (structureTier < 1 || (structureTier == 1 && casingAmount < 26)
+            || (structureTier == 2 && casingAmount < 69)
+            || !checkHatch()) return false;
         updateHatchTexture();
         return true;
     }
