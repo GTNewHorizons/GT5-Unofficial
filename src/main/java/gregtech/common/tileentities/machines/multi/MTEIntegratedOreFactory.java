@@ -263,7 +263,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
         long totalWater = (long) effectiveParallel * 200L;
         while (totalWater > 0) {
-            int batch = (int) Math.min(totalWater, Integer. MAX_VALUE);
+            int batch = (int) Math.min(totalWater, Integer.MAX_VALUE);
             depleteInput(GTModHandler.getDistilledWater(batch));
             totalWater -= batch;
         }
