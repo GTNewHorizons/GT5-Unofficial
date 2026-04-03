@@ -5,7 +5,6 @@ import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1b
 
 import java.util.function.Supplier;
 
-import com.cleanroommc.modularui.widgets.ButtonWidget;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -22,6 +21,7 @@ import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.sizer.Area;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
@@ -62,7 +62,9 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
         IntSyncValue coverageSyncer = new IntSyncValue(hatch::getCoverage, value -> hatch.setCoverage((short) value));
         LongSyncValue timeSyncHandler = new LongSyncValue(hatch::getTimer, hatch::setTimer);
         LongSyncValue decayTimeSyncHandler = new LongSyncValue(hatch::getDecayTime, hatch::setDecayTime);
-        BooleanSyncValue mufflerSyncer = new BooleanSyncValue(baseMetaTileEntity::isMuffled, baseMetaTileEntity::setMuffler);
+        BooleanSyncValue mufflerSyncer = new BooleanSyncValue(
+            baseMetaTileEntity::isMuffled,
+            baseMetaTileEntity::setMuffler);
 
         syncManager.syncValue("decayTime", decayTimeSyncHandler);
         syncManager.syncValue("timer", timeSyncHandler);
