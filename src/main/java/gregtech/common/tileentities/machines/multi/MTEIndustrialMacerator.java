@@ -119,6 +119,7 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
             .addCasingInfoExactly("Steel Gear Box", 18, false)
             .addCasingInfoExactly("Titanium Frame Box", 20, false)
             .addCasingInfoExactly("Any Tinted Industrial Glass", 8, false)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
     }
