@@ -2370,9 +2370,7 @@ GT5U.gui.text.LHC.collidermode=Colliding beam...
 GT5U.gui.text.LHC.completedcycles=Completed Cycles
 GT5U.gui.text.LHC.targetbeamenergyeV=Target Beam Energy (eV):
 GT5U.gui.text.LHC.maxaccelerationcycles=Max Acceleration Cycles:
-GT5U.gui.text.beamcrafter.guiheader=Current Recipe Progress
-GT5U.gui.text.beamcrafter.particleA=Particle 1
-GT5U.gui.text.beamcrafter.particleB=Particle 2
+GT5U.gui.text.beamcrafter.guiheader=Current Particle Buffer
 
 gt.blockmachines.multimachine.beamcrafting.beamcrafter.machinetype=Beam Crafter, Beam Assembler
 gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip1=Collides two beams of particles into target materials to modify

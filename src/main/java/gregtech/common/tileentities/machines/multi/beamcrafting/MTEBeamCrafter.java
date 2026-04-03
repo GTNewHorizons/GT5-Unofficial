@@ -16,7 +16,6 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import gtnhlanth.common.beamline.Particle;
@@ -74,7 +73,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     private static final String NBT_VALUE_DESCRIPTOR = "VALUE";
 
 
-    private static final int BEAM_AMOUNT_TO_PROGRESS_FACTOR = 1000;
+    private static final int BEAM_AMOUNT_TO_BUFFER_FACTOR = 1000;
 
     private GTRecipe lastRecipe;
 
@@ -375,7 +374,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             int id = inputParticle.getParticleId();
             int rate = inputParticle.getRate();
 
-            int newAmount = bufferMap.getOrDefault(id,0) + BEAM_AMOUNT_TO_PROGRESS_FACTOR*rate;
+            int newAmount = bufferMap.getOrDefault(id,0) + BEAM_AMOUNT_TO_BUFFER_FACTOR *rate;
             bufferMap.put(id, Math.min(newAmount, MAX_BUFFER));
         }
 
@@ -475,32 +474,12 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         return RecipeMaps.beamcrafterRecipes;
     }
 
-    public int getCurrentRecipeCurrentAmountA() {
-        return this.currentRecipeCurrentAmountA;
-    }
-
-    public int getCurrentRecipeCurrentAmountB() {
-        return this.currentRecipeCurrentAmountB;
-    }
-
-    public int getCurrentRecipeMaxAmountA() {
-        return this.currentRecipeMaxAmountA;
-    }
-
-    public int getCurrentRecipeMaxAmountB() {
-        return this.currentRecipeMaxAmountB;
-    }
-
-    public int getCurrentRecipeParticleIDA() {
-        return this.currentRecipeParticleIDA;
-    }
-
-    public int getCurrentRecipeParticleIDB() {
-        return this.currentRecipeParticleIDB;
-    }
-
     @Override
     protected @NotNull MTEBeamCrafterGui getGui() {
         return new MTEBeamCrafterGui(this);
+    }
+
+    public Map<Integer, Integer> getBufferMap() {
+        return bufferMap;
     }
 }

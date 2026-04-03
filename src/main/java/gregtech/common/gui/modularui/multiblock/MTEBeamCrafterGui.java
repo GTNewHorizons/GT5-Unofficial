@@ -17,6 +17,8 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
 
+import java.util.Map;
+
 public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
 
     public MTEBeamCrafterGui(MTEBeamCrafter multiblock) {
@@ -26,61 +28,51 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager
-            .syncValue("currentRecipeCurrentAmountA", new IntSyncValue(multiblock::getCurrentRecipeCurrentAmountA));
-        syncManager
-            .syncValue("currentRecipeCurrentAmountB", new IntSyncValue(multiblock::getCurrentRecipeCurrentAmountB));
-        syncManager.syncValue("currentRecipeMaxAmountA", new IntSyncValue(multiblock::getCurrentRecipeMaxAmountA));
-        syncManager.syncValue("currentRecipeMaxAmountB", new IntSyncValue(multiblock::getCurrentRecipeMaxAmountB));
-        syncManager.syncValue("currentRecipeParticleIDA", new IntSyncValue(multiblock::getCurrentRecipeParticleIDA));
-        syncManager.syncValue("currentRecipeParticleIDB", new IntSyncValue(multiblock::getCurrentRecipeParticleIDB));
+        Map<Integer,Integer> bufferMap = multiblock.getBufferMap();
+
+        for (Integer key : bufferMap.keySet()) {
+            syncManager.syncValue(
+                "particleID" + key,
+                new IntSyncValue(() -> bufferMap.getOrDefault(key, 0))
+            );
+        }
+
     }
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
 
-        IntSyncValue currentRecipeCurrentAmountA = syncManager
-            .findSyncHandler("currentRecipeCurrentAmountA", IntSyncValue.class);
-        IntSyncValue currentRecipeCurrentAmountB = syncManager
-            .findSyncHandler("currentRecipeCurrentAmountB", IntSyncValue.class);
-        IntSyncValue currentRecipeMaxAmountA = syncManager
-            .findSyncHandler("currentRecipeMaxAmountA", IntSyncValue.class);
-        IntSyncValue currentRecipeMaxAmountB = syncManager
-            .findSyncHandler("currentRecipeMaxAmountB", IntSyncValue.class);
-        IntSyncValue currentRecipeParticleIDA = syncManager
-            .findSyncHandler("currentRecipeParticleIDA", IntSyncValue.class);
-        IntSyncValue currentRecipeParticleIDB = syncManager
-            .findSyncHandler("currentRecipeParticleIDB", IntSyncValue.class);
+        Map<Integer, Integer> bufferMap = multiblock.getBufferMap();
+        ListWidget<IWidget,?> outputWidget = new ListWidget<>().widthRel(1)
+            .crossAxisAlignment(Alignment.CrossAxis.START);
 
         IKey guiHeaderKey = IKey.dynamic(this::formatGuiHeader);
-        IKey particleAProgressKey = IKey.dynamic(
-            () -> formatParticle(currentRecipeParticleIDA, currentRecipeCurrentAmountA, currentRecipeMaxAmountA));
-        IKey particleBProgressKey = IKey.dynamic(
-            () -> formatParticle(currentRecipeParticleIDB, currentRecipeCurrentAmountB, currentRecipeMaxAmountB));
 
-        return new ListWidget<>().widthRel(1)
-            .crossAxisAlignment(Alignment.CrossAxis.START)
-            .child(new TextWidget<>(guiHeaderKey).marginBottom(18))
-            .child(new TextWidget<>(particleAProgressKey).marginBottom(9))
-            .child(new TextWidget<>(particleBProgressKey).marginBottom(9));
+        outputWidget.child(new TextWidget<>(guiHeaderKey).marginBottom(4));
+
+        for (Integer key : bufferMap.keySet()) {
+
+            IntSyncValue valueSync = syncManager.findSyncHandler(
+                "particleID" + key,
+                IntSyncValue.class
+            );
+
+            IKey particleKey = IKey.dynamic(
+                () -> EnumChatFormatting.WHITE+getParticleNameFromID(key)+ ": " + valueSync.getValue()
+            );
+
+            outputWidget.child(new TextWidget<>(particleKey));
+        }
+
+        return outputWidget;
     }
 
     private String formatGuiHeader() {
-        return EnumChatFormatting.WHITE
+        return EnumChatFormatting.GOLD
             + StatCollector.translateToLocalFormatted("GT5U.gui.text.beamcrafter.guiheader");
     }
 
     private String getParticleNameFromID(int particleID) {
         return getParticleFromId(particleID).getLocalisedName();
     }
-
-    private String formatParticle(IntSyncValue currParticleID, IntSyncValue currAmount, IntSyncValue maxAmount) {
-        return EnumChatFormatting.WHITE + getParticleNameFromID(currParticleID.getIntValue())
-            + ": "
-            + EnumChatFormatting.GRAY
-            + Math.min(currAmount.getIntValue(), maxAmount.getIntValue())
-            + "/"
-            + maxAmount.getIntValue();
-    }
-
 }
