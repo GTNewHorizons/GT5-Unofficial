@@ -5717,6 +5717,12 @@ fluid.uuamplifier=UU Amplifier
 fluid.wet.concrete=Wet Concrete
 fluidHotWater=Heated Water
 
+fluid.oil=Oil
+fluid.tile.fluidBlockSludge=fluidBlockSludge
+fluid.sludge=sludge
+fluid.oilgc=oilgc
+fluid.fuelgc=fuelgc
+
 # Space projects
 gt.solar.system.overworld=Overworld
 gt.solar.system.sol=Sol
