@@ -5,13 +5,13 @@ import static gtnhlanth.common.beamline.Particle.getParticleFromId;
 
 import java.util.Map;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
-import com.cleanroommc.modularui.drawable.UITexture;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
@@ -35,8 +35,8 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
         for (Integer key : bufferMap.keySet()) {
             syncManager.syncValue("particleID" + key, new IntSyncValue(() -> bufferMap.getOrDefault(key, 0)));
         }
-        syncManager.syncValue("currentRecipeParticleIDA",new IntSyncValue(multiblock::getCurrentRecipeParticleIDA));
-        syncManager.syncValue("currentRecipeParticleIDB",new IntSyncValue(multiblock::getCurrentRecipeParticleIDB));
+        syncManager.syncValue("currentRecipeParticleIDA", new IntSyncValue(multiblock::getCurrentRecipeParticleIDA));
+        syncManager.syncValue("currentRecipeParticleIDB", new IntSyncValue(multiblock::getCurrentRecipeParticleIDB));
 
     }
 
@@ -54,14 +54,11 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
         IntSyncValue syncIDB = syncManager.findSyncHandler("currentRecipeParticleIDB", IntSyncValue.class);
 
         outputWidget.child(new TextWidget<>(guiHeaderKeyCrafting).marginBottom(4));
-        IKey particleKeyA = IKey
-            .dynamic(() -> EnumChatFormatting.AQUA + getParticleNameFromID(syncIDA.getIntValue()));
-        IKey particleKeyB = IKey
-            .dynamic(() -> EnumChatFormatting.AQUA + getParticleNameFromID(syncIDB.getIntValue()));
+        IKey particleKeyA = IKey.dynamic(() -> EnumChatFormatting.AQUA + getParticleNameFromID(syncIDA.getIntValue()));
+        IKey particleKeyB = IKey.dynamic(() -> EnumChatFormatting.AQUA + getParticleNameFromID(syncIDB.getIntValue()));
         outputWidget.child(new TextWidget<>(particleKeyA));
-        outputWidget.child(new TextWidget<>(particleKeyB)).marginBottom(4);
-
-
+        outputWidget.child(new TextWidget<>(particleKeyB))
+            .marginBottom(4);
 
         outputWidget.child(new TextWidget<>(guiHeaderKeyBuffer).marginBottom(4));
 
@@ -69,21 +66,27 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
 
             IntSyncValue valueSync = syncManager.findSyncHandler("particleID" + key, IntSyncValue.class);
 
-            IKey particleKey = IKey
-                .dynamic(() -> EnumChatFormatting.WHITE + getParticleNameFromID(key)+ ": " + formatNumberCompact(valueSync.getValue()));
+            IKey particleKey = IKey.dynamic(
+                () -> EnumChatFormatting.WHITE + getParticleNameFromID(key)
+                    + ": "
+                    + formatNumberCompact(valueSync.getValue()));
 
-            outputWidget.child(new IDrawable.DrawableWidget(getParticleTexture(key)).setEnabledIf(w -> valueSync.getValue()>0));
-            outputWidget.child(new TextWidget<>(particleKey).setEnabledIf(w -> valueSync.getValue()>0));
+            outputWidget.child(
+                new IDrawable.DrawableWidget(getParticleTexture(key)).setEnabledIf(w -> valueSync.getValue() > 0));
+            outputWidget.child(new TextWidget<>(particleKey).setEnabledIf(w -> valueSync.getValue() > 0));
         }
 
         return outputWidget;
     }
 
     private String formatGuiHeaderBuffer() {
-        return EnumChatFormatting.GOLD + StatCollector.translateToLocalFormatted("GT5U.gui.text.beamcrafter.guiheaderbuffer");
+        return EnumChatFormatting.GOLD
+            + StatCollector.translateToLocalFormatted("GT5U.gui.text.beamcrafter.guiheaderbuffer");
     }
+
     private String formatGuiHeaderCrafting() {
-        return EnumChatFormatting.GOLD + StatCollector.translateToLocalFormatted("GT5U.gui.text.beamcrafter.guiheadercrafting");
+        return EnumChatFormatting.GOLD
+            + StatCollector.translateToLocalFormatted("GT5U.gui.text.beamcrafter.guiheadercrafting");
     }
 
     private String getParticleNameFromID(int particleID) {

@@ -384,7 +384,8 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
             int newAmount = bufferMap.getOrDefault(id, 0) + BEAM_AMOUNT_TO_BUFFER_FACTOR * rate;
             bufferMap.put(id, Math.min(newAmount, MAX_BUFFER));
-            this.mInputBeamline.get(n).setContents(null);
+            this.mInputBeamline.get(n)
+                .setContents(null);
         }
 
         contributeToProgress(this.currentRecipeParticleIDA, this.currentRecipeParticleIDB);
@@ -520,10 +521,11 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         return MAX_PARALLEL;
     }
 
-    public int getCurrentRecipeParticleIDA(){
+    public int getCurrentRecipeParticleIDA() {
         return currentRecipeParticleIDA;
     }
-    public int getCurrentRecipeParticleIDB(){
+
+    public int getCurrentRecipeParticleIDB() {
         return currentRecipeParticleIDB;
     }
 
