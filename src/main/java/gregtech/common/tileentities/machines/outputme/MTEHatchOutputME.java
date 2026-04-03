@@ -24,8 +24,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import appeng.api.AEApi;
 import appeng.api.implementations.IPowerChannelState;
@@ -60,6 +62,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEHatchOutputMEGui;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
 import gregtech.common.tileentities.machines.outputme.filter.MEFilterFluid;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -496,11 +499,6 @@ public class MTEHatchOutputME extends MTEHatchOutput
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        provider.addUIWidgets(builder, buildContext);
-    }
-
-    @Override
     public void onContentsChanged(int slot) {
         provider.onContentsChanged(slot);
     }
@@ -552,5 +550,15 @@ public class MTEHatchOutputME extends MTEHatchOutput
     @Override
     public MTEHatchOutputMEBase<IAEFluidStack, MEFilterFluid, FluidStack> getProvider() {
         return provider;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchOutputMEGui(this).build(guiData, syncManager, uiSettings);
     }
 }
