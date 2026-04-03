@@ -42,7 +42,7 @@ public class LHCNEIHandler extends GTNEIDefaultHandler {
 
     @Override
     public void loadTransferRects() {
-        transferRects.add(new RecipeTransferRect(new Rectangle(65, 30, 100, 20), "gt.recipe.large_hadron_collider"));
+        transferRects.add(new RecipeTransferRect(new Rectangle(66, 32, 100, 20), "gt.recipe.large_hadron_collider"));
     }
 
     private void drawCustomProgressBar(GTRecipe recipe) {
