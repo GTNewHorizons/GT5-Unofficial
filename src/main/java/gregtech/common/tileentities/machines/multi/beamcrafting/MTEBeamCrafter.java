@@ -15,7 +15,11 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import gtnhlanth.common.beamline.Particle;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -59,9 +63,18 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     private int currentRecipeCurrentAmountB = 0;
     private int currentRecipeMaxAmountA = 0;
     private int currentRecipeMaxAmountB = 0;
-
     private int currentRecipeParticleIDA;
     private int currentRecipeParticleIDB;
+
+    private static final int MAX_BUFFER = 2_000_000_000;
+    private Map<Integer,Integer> bufferMap = new HashMap<>();
+    private boolean bufferMapInitialized = false;
+
+    private static final String NBT_KEY_DESCRIPTOR = "KEY";
+    private static final String NBT_VALUE_DESCRIPTOR = "VALUE";
+
+
+    private static final int BEAM_AMOUNT_TO_PROGRESS_FACTOR = 1000;
 
     private GTRecipe lastRecipe;
 
@@ -73,6 +86,9 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         aNBT.setInteger("currentRecipeMaxAmountB", this.currentRecipeMaxAmountB);
         aNBT.setInteger("currentRecipeParticleIDA", this.currentRecipeParticleIDA);
         aNBT.setInteger("currentRecipeParticleIDB", this.currentRecipeParticleIDB);
+
+        aNBT.setBoolean("bufferMapInitialized",this.bufferMapInitialized);
+        saveInputMapToNBT(aNBT,bufferMap);
     }
 
     public void loadNBTData(NBTTagCompound aNBT) {
@@ -84,8 +100,45 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         this.currentRecipeParticleIDA = aNBT.getInteger("currentRecipeParticleIDA");
         this.currentRecipeParticleIDB = aNBT.getInteger("currentRecipeParticleIDB");
 
+        this.bufferMapInitialized = aNBT.getBoolean("bufferMapInitialized");
+        initBufferMapIfNeeded();
+        loadInputMapFromNBT(aNBT,bufferMap);
     }
 
+    private void initBufferMapIfNeeded() {
+        if (bufferMapInitialized) return;
+        for (int i = 0; i < Particle.VALUES.length; i++) {
+            bufferMap.put(i, 0);
+        }
+        bufferMapInitialized = true;
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {
+        super.onFirstTick(baseMetaTileEntity);
+        initBufferMapIfNeeded();
+    }
+
+    public void saveInputMapToNBT(NBTTagCompound aNBT, Map<Integer,Integer> map) {
+        for (Map.Entry<Integer,Integer> entry : map.entrySet()) {
+            int particleID = entry.getKey();
+            int particleBuffer = entry.getValue();
+
+            aNBT.setInteger(NBT_KEY_DESCRIPTOR + particleID, particleID);
+            aNBT.setInteger(NBT_VALUE_DESCRIPTOR + particleID, particleBuffer);
+        }
+    }
+
+    public void loadInputMapFromNBT(NBTTagCompound aNBT, Map<Integer, Integer> map) {
+        for (Particle p : Particle.VALUES) {
+            final int particleID = p.getId();
+            if (!aNBT.hasKey(NBT_KEY_DESCRIPTOR + particleID)) continue;
+            // assume that if key exists, value exists as well
+            // can skip the key nbt mapping, as the particle is in NBT
+            map.put(particleID, aNBT.getInteger(NBT_VALUE_DESCRIPTOR + particleID));
+
+        }
+    }
     private static final IStructureDefinition<MTEBeamCrafter> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEBeamCrafter>builder()
         .addShape(
@@ -317,77 +370,47 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         return true;
     }
 
-    private int progressContribution(int currentAmount, int maxAmount, int rate) {
-
-        return Math.max(0, Math.min(rate, (maxAmount - currentAmount)));
-
-    }
-
     @Override
     protected void incrementProgressTime() {
 
-        BeamInformation inputParticle_A = this.getNthInputParticle(0);
-        BeamInformation inputParticle_B = this.getNthInputParticle(1);
+        for (int n = 0; n < this.mInputBeamline.size();n++){
+            BeamInformation inputParticle = this.getNthInputParticle(n);
+            int id = inputParticle.getParticleId();
+            int rate = inputParticle.getRate();
 
-        // we need to check all four cases. two cases for the particles matching up with what's shown in NEI, two cases
-        // for when they're exactly opposite.
-        // in both sets, explicitly check that the particleIDs match what the recipe demands, so there is no chance of
-        // gaining progress from a completely different third particle (if it happens to be provided)
-        boolean isInputARecipeA = false;
-        boolean isInputARecipeB = false;
-        boolean isInputBRecipeA = false;
-        boolean isInputBRecipeB = false;
-
-        if (inputParticle_A != null) {
-            isInputARecipeA = inputParticle_A.getParticleId() == this.currentRecipeParticleIDA;
-            isInputARecipeB = inputParticle_A.getParticleId() == this.currentRecipeParticleIDB;
-        }
-        if (inputParticle_B != null) {
-            isInputBRecipeA = inputParticle_B.getParticleId() == this.currentRecipeParticleIDA;
-            isInputBRecipeB = inputParticle_B.getParticleId() == this.currentRecipeParticleIDB;
+            int newAmount = bufferMap.getOrDefault(id,0) + BEAM_AMOUNT_TO_PROGRESS_FACTOR*rate;
+            bufferMap.put(id, Math.min(newAmount, MAX_BUFFER));
         }
 
-        // progress from input A. elseif prevents double count when A=B
-        if (isInputARecipeA) {
-            int progressAA = progressContribution(
-                currentRecipeCurrentAmountA,
-                currentRecipeMaxAmountA,
-                inputParticle_A.getRate());
-            mProgresstime += progressAA;
-            currentRecipeCurrentAmountA += progressAA;
-        } else if (isInputARecipeB) {
-            int progressAB = progressContribution(
-                currentRecipeCurrentAmountB,
-                currentRecipeMaxAmountB,
-                inputParticle_A.getRate());
-            mProgresstime += progressAB;
-            currentRecipeCurrentAmountB += progressAB;
+        contributeToProgress(this.currentRecipeParticleIDA,this.currentRecipeParticleIDB);
+        if (mProgresstime >= mMaxProgresstime){
+            currentRecipeCurrentAmountA = 0;
+            currentRecipeCurrentAmountB = 0;
+        }
+    }
 
-        }
-        // progress from input B
-        if (isInputBRecipeB) {
-            int progressBB = progressContribution(
-                currentRecipeCurrentAmountB,
-                currentRecipeMaxAmountB,
-                inputParticle_B.getRate());
-            mProgresstime += progressBB;
-            currentRecipeCurrentAmountB += progressBB;
-        } else if (isInputBRecipeA) {
-            int progressBA = progressContribution(
-                currentRecipeCurrentAmountA,
-                currentRecipeMaxAmountA,
-                inputParticle_B.getRate());
-            mProgresstime += progressBA;
-            currentRecipeCurrentAmountA += progressBA;
-        }
+    private void contributeToProgress(int recipeParticleIDA, int recipeParticleIDB){
+        int availableA = bufferMap.getOrDefault(recipeParticleIDA,0);
+        int availableB = bufferMap.getOrDefault(recipeParticleIDB,0);
+
+        int neededA = currentRecipeMaxAmountA - currentRecipeCurrentAmountA;
+        int neededB = currentRecipeMaxAmountB - currentRecipeCurrentAmountB;
+
+        int consumedA = Math.min(availableA,neededA);
+        int consumedB = Math.min(availableB,neededB);
+
+        bufferMap.put(recipeParticleIDA,availableA-consumedA);
+        bufferMap.put(recipeParticleIDB,availableB-consumedB);
+
+        currentRecipeCurrentAmountA += consumedA;
+        currentRecipeCurrentAmountB += consumedB;
+
+        mProgresstime += consumedA+consumedB;
 
     }
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
-
-        this.currentRecipeCurrentAmountA = 0;
-        this.currentRecipeCurrentAmountB = 0;
         this.currentRecipeMaxAmountA = 0;
         this.currentRecipeMaxAmountB = 0;
 
