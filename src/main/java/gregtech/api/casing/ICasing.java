@@ -97,9 +97,7 @@ public interface ICasing extends ImmutableBlockMeta {
 
             @Override
             public ITexture getCasingTexture() {
-                return TextureFactory.builder()
-                    .setFromBlock(getBlock(), getBlockMeta())
-                    .build();
+                return TextureFactory.of(getBlock(), getBlockMeta());
             }
 
             @Override

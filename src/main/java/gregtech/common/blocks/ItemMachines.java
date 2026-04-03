@@ -1,11 +1,17 @@
 package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
-import static gregtech.api.util.GTUtility.formatStringSafe;
+import static gregtech.api.util.GTUtility.translate;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -19,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -30,23 +37,21 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.metatileentity.IConnectable;
+import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.api.metatileentity.implementations.MTECable;
-import gregtech.api.metatileentity.implementations.MTEFluidPipe;
-import gregtech.api.metatileentity.implementations.MTEFrame;
-import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gregtech.common.tileentities.storage.MTEDigitalTankBase;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTEFluidPipe;
 
 public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
@@ -73,48 +78,32 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             }
 
             if (GregTechAPI.METATILEENTITIES[tDamage] != null) {
-                final IGregTechTileEntity tTileEntity = GregTechAPI.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
-                if (!GregTechAPI.sPostloadFinished
-                    && tTileEntity.getMetaTileEntity() instanceof ISecondaryDescribable) {
-                    final String[] tSecondaryDescription = ((ISecondaryDescribable) tTileEntity.getMetaTileEntity())
-                        .getSecondaryDescription();
-                    addDescription(null, tSecondaryDescription, tDamage, "_Secondary");
+                final IGregTechTileEntity gtTileEntity = GregTechAPI.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
+                final IMetaTileEntity metaTileEntity = gtTileEntity.getMetaTileEntity();
+                if (metaTileEntity instanceof ILocalizedMetaPipeEntity localizedMetaPipeEntity) {
+                    localizedMetaPipeEntity.addMaterialTooltip(aList);
                 }
-                {
-                    final IMetaTileEntity tMetaTileEntity = tTileEntity.getMetaTileEntity();
-                    final String tSuffix = (tMetaTileEntity instanceof ISecondaryDescribable
-                        && ((ISecondaryDescribable) tMetaTileEntity).isDisplaySecondaryDescription()) ? "_Secondary"
-                            : "";
-                    addDescription(aList, tTileEntity.getDescription(), tDamage, tSuffix);
-                    tMetaTileEntity.addAdditionalTooltipInformation(aStack, aList);
-                }
-                if (tTileEntity.getEUCapacity() > 0L) {
-                    if (tTileEntity.getInputVoltage() > 0L) {
-                        final byte inputTier = GTUtility.getTier(tTileEntity.getInputVoltage());
+                addDescription(aList, metaTileEntity, tDamage);
+                metaTileEntity.addAdditionalTooltipInformation(aStack, aList);
+                if (gtTileEntity.getEUCapacity() > 0L && !(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
+                    if (gtTileEntity.getInputVoltage() > 0L) {
                         aList.add(
-                            translateToLocalFormatted(
+                            translate(
                                 "gt.tileentity.eup_in",
-                                GTUtility.formatNumbers(tTileEntity.getInputVoltage()),
-                                GTUtility.getColoredTierNameFromTier(inputTier)));
+                                TooltipHelper.voltageText(gtTileEntity.getInputVoltage())));
                     }
-                    if (tTileEntity.getOutputVoltage() > 0L) {
-                        final byte outputTier = GTUtility.getTier(tTileEntity.getOutputVoltage());
+                    if (gtTileEntity.getOutputVoltage() > 0L) {
                         aList.add(
-                            translateToLocalFormatted(
+                            translate(
                                 "gt.tileentity.eup_out",
-                                GTUtility.formatNumbers(tTileEntity.getOutputVoltage()),
-                                GTUtility.getColoredTierNameFromTier(outputTier)));
+                                TooltipHelper.voltageText(gtTileEntity.getOutputVoltage())));
                     }
-                    if (tTileEntity.getOutputAmperage() > 1L) {
+                    if (gtTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
-                            translateToLocalFormatted(
-                                "gt.tileentity.eup_amount",
-                                GTUtility.formatNumbers(tTileEntity.getOutputAmperage())));
+                            translate(
+                                "gt.tileentity.amperage",
+                                TooltipHelper.ampText(gtTileEntity.getOutputAmperage())));
                     }
-                    aList.add(
-                        translateToLocalFormatted(
-                            "gt.tileentity.eup_store",
-                            GTUtility.formatNumbers(tTileEntity.getEUCapacity())));
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();
@@ -142,31 +131,31 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         }
     }
 
-    private void addDescription(@Nullable List<String> aList, @Nullable String[] aDescription, int aDamage,
-        String aSuffix) {
+    private void addDescription(List<String> aList, IMetaTileEntity metaTileEntity, int damage) {
+        final String[] aDescription = metaTileEntity.getDescription();
         if (aDescription == null) return;
-        for (int i = 0, tLength = aDescription.length; i < tLength; i++) {
-            String tDescLine = aDescription[i];
-            if (!GTUtility.isStringValid(tDescLine)) continue;
-
-            String tKey = String.format("TileEntity_DESCRIPTION_%05d%s_Index_%02d", aDamage, aSuffix, i);
-            if (tDescLine.contains("%%%")) {
-                final String[] tSplitStrings = tDescLine.split("%%%");
-                final StringBuilder tBuffer = new StringBuilder();
-                final String[] tRep = new String[tSplitStrings.length / 2];
-                for (int j = 0; j < tSplitStrings.length; j++) if (j % 2 == 0) tBuffer.append(tSplitStrings[j]);
-                else {
-                    tBuffer.append("%s");
-                    tRep[j / 2] = tSplitStrings[j];
-                }
-                final String tTranslated = formatStringSafe(
-                    GTLanguageManager.addStringLocalization(tKey, tBuffer.toString()),
-                    (Object[]) tRep);
-                if (aList != null) aList.add(tTranslated);
-            } else {
-                String tTranslated = GTLanguageManager.addStringLocalization(tKey, tDescLine);
-                if (aList != null) aList.add(tTranslated.isEmpty() ? tDescLine : tTranslated);
-            }
+        if (isSkipGenerateDescription(metaTileEntity)) {
+            Collections.addAll(aList, aDescription);
+            return;
+        }
+        final String tSuffix = (metaTileEntity instanceof ISecondaryDescribable
+            && ((ISecondaryDescribable) metaTileEntity).isDisplaySecondaryDescription()) ? "_secondary" : "";
+        String key = "gt.blockmachines." + metaTileEntity.getMetaName() + ".tooltip" + tSuffix;
+        if (StatCollector.canTranslate(key + "." + damage)) {
+            key = key + "." + damage;
+        }
+        final String tTranslated = StatCollector.translateToLocal(key);
+        if (tTranslated.contains("%s")) {
+            final String tDescription = Arrays.stream(aDescription)
+                .filter(GTUtility::isStringValid)
+                .collect(Collectors.joining(""));
+            List<String> parameters = new ArrayList<>();
+            final Matcher matcher = Pattern.compile("%%%(.*?)%%%")
+                .matcher(tDescription);
+            while (matcher.find()) parameters.add(matcher.group(1));
+            Collections.addAll(aList, GTSplit.splitFormatted(tTranslated, parameters.toArray()));
+        } else {
+            Collections.addAll(aList, GTSplit.split(tTranslated));
         }
     }
 
@@ -176,13 +165,31 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (GregTechAPI.METATILEENTITIES[aDamage] != null) {
             final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[aDamage].getBaseMetaTileEntity()
                 .getMetaTileEntity();
+            if (isSkipGenerateDescription(tMetaTileEntity)) return;
+            String key = "gt.blockmachines." + tMetaTileEntity.getMetaName() + ".tooltip";
             if (tMetaTileEntity instanceof ISecondaryDescribable) {
                 final String[] tSecondaryDescription = ((ISecondaryDescribable) tMetaTileEntity)
                     .getSecondaryDescription();
-                addDescription(null, tSecondaryDescription, aDamage, "_Secondary");
+                registerDescription(tSecondaryDescription, key + "_secondary", aDamage);
             }
-            addDescription(null, tMetaTileEntity.getDescription(), aDamage, "");
+            registerDescription(tMetaTileEntity.getDescription(), key, aDamage);
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void registerDescription(@Nullable String[] aDescription, String key, int damage) {
+        if (aDescription == null) return;
+        String tDescription = Arrays.stream(aDescription)
+            .filter(GTUtility::isStringValid)
+            .collect(Collectors.joining(GTSplit.LB));
+        if (tDescription.contains("%%%")) {
+            tDescription = tDescription.replaceAll("%%%.*?%%%", "%s");
+        }
+        if (StatCollector.canTranslate(key)) {
+            GTLanguageManager.addStringLocalization(key + "." + damage, tDescription);
+            return;
+        }
+        GTLanguageManager.addStringLocalization(key, tDescription);
     }
 
     @Override
@@ -201,22 +208,10 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     public String getItemStackDisplayName(ItemStack aStack) {
         String aName = super.getItemStackDisplayName(aStack);
         final short aDamage = (short) getDamage(aStack);
-        if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length
-            && GregTechAPI.METATILEENTITIES[aDamage] != null) {
-            Materials aMaterial = null;
-            if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEItemPipe itemPipe) {
-                aMaterial = itemPipe.mMaterial;
-            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof GTPPMTEFluidPipe gtppFluidPipe) {
-                aName = gtppFluidPipe.pipeStats.getLocalizedNameForItem(aName);
-            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFluidPipe fluidPipe) {
-                aMaterial = fluidPipe.mMaterial;
-            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTECable cable) {
-                aMaterial = cable.mMaterial;
-            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFrame frame) {
-                aMaterial = frame.mMaterial;
-            }
-            if (aMaterial != null) {
-                aName = aMaterial.getLocalizedNameForItem(aName);
+        final IMetaTileEntity metaTE = GregTechAPI.METATILEENTITIES[aDamage];
+        if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length && metaTE != null) {
+            if (metaTE instanceof ILocalizedMetaPipeEntity localMetaTE) {
+                return localMetaTE.getLocalizedName();
             }
         }
         return aName;
@@ -317,12 +312,27 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         }
     }
 
+    @Nullable
+    private static IFluidContainerItemMetaTile getFluidContainerItemMeta(@Nonnull ItemStack container) {
+        final int tDamage = container.getItemDamage();
+        if (tDamage < 0 || tDamage >= GregTechAPI.METATILEENTITIES.length) {
+            return null;
+        }
+        final IMetaTileEntity tMetaTile = GregTechAPI.METATILEENTITIES[tDamage];
+        return tMetaTile instanceof IFluidContainerItemMetaTile fluidMeta ? fluidMeta : null;
+    }
+
     @Override
     public FluidStack getFluid(ItemStack container) {
         if (container != null) {
+            final IFluidContainerItemMetaTile fluidMeta = getFluidContainerItemMeta(container);
+            if (fluidMeta == null) {
+                return null;
+            }
+            final String fluidKey = fluidMeta.getFluidNbtKey();
             final NBTTagCompound tNBT = container.stackTagCompound;
-            if (tNBT != null && tNBT.hasKey("mFluid", 10)) {
-                return FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("mFluid"));
+            if (tNBT != null && tNBT.hasKey(fluidKey, 10)) {
+                return FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag(fluidKey));
             }
         }
         return null;
@@ -350,11 +360,11 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     @Override
     public int fill(ItemStack container, FluidStack resource, boolean doFill) {
         if (container != null && resource != null) {
-            final int tDamage = container.getItemDamage();
-            final IMetaTileEntity tMetaTile = GregTechAPI.METATILEENTITIES[tDamage];
-            if (!(tMetaTile instanceof MTEDigitalTankBase)) {
+            final IFluidContainerItemMetaTile fluidMeta = getFluidContainerItemMeta(container);
+            if (fluidMeta == null) {
                 return 0;
             }
+            final String fluidKey = fluidMeta.getFluidNbtKey();
             if (container.stackSize > 1) {
                 return 0;
             }
@@ -370,7 +380,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 final int tAmount = Math.min(tCapacity - tStoredFluid.amount, resource.amount);
                 if (doFill) {
                     final FluidStack tNewFluid = new FluidStack(tStoredFluid, tAmount + tStoredFluid.amount);
-                    container.stackTagCompound.setTag("mFluid", tNewFluid.writeToNBT(new NBTTagCompound()));
+                    container.stackTagCompound.setTag(fluidKey, tNewFluid.writeToNBT(new NBTTagCompound()));
                 }
                 return tAmount;
             }
@@ -378,7 +388,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 final int tAmount = Math.min(tCapacity, resource.amount);
                 if (doFill) {
                     final FluidStack tNewFluid = new FluidStack(resource, tAmount);
-                    container.stackTagCompound.setTag("mFluid", tNewFluid.writeToNBT(new NBTTagCompound()));
+                    container.stackTagCompound.setTag(fluidKey, tNewFluid.writeToNBT(new NBTTagCompound()));
                 }
                 return tAmount;
             }
@@ -389,11 +399,11 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     @Override
     public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
         if (container != null && container.hasTagCompound()) {
-            final int tDamage = container.getItemDamage();
-            final IMetaTileEntity tMetaTile = GregTechAPI.METATILEENTITIES[tDamage];
-            if (!(tMetaTile instanceof MTEDigitalTankBase)) {
+            final IFluidContainerItemMetaTile fluidMeta = getFluidContainerItemMeta(container);
+            if (fluidMeta == null) {
                 return null;
             }
+            final String fluidKey = fluidMeta.getFluidNbtKey();
             final FluidStack tStoredFluid = getFluid(container);
             if (tStoredFluid != null) {
                 final int tAmount = Math.min(maxDrain, tStoredFluid.amount);
@@ -401,15 +411,20 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 final FluidStack tOutputFluid = new FluidStack(tStoredFluid, tAmount);
                 if (doDrain) {
                     if (tNewFluid.amount <= 0) {
-                        container.stackTagCompound.removeTag("mFluid");
+                        container.stackTagCompound.removeTag(fluidKey);
                         if (container.stackTagCompound.hasNoTags()) container.setTagCompound(null);
                     } else {
-                        container.stackTagCompound.setTag("mFluid", tNewFluid.writeToNBT(new NBTTagCompound()));
+                        container.stackTagCompound.setTag(fluidKey, tNewFluid.writeToNBT(new NBTTagCompound()));
                     }
                 }
                 return tOutputFluid;
             }
         }
         return null;
+    }
+
+    private static boolean isSkipGenerateDescription(IMetaTileEntity metaTE) {
+        return metaTE.getClass()
+            .getAnnotation(IMetaTileEntity.SkipGenerateDescription.class) != null;
     }
 }

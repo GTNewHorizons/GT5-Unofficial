@@ -238,8 +238,17 @@ public class SingleRecipeCheck {
         if (recipe.mOutputs != null) {
             tag.setTag("outputs", writeList(recipe.mOutputs, GTUtility::saveItem));
         }
-        if (recipe.mChances != null) {
-            tag.setIntArray("chances", recipe.mChances);
+        if (recipe.mInputChances != null) {
+            tag.setIntArray("inputChances", recipe.mInputChances);
+        }
+        if (recipe.mOutputChances != null) {
+            tag.setIntArray("chances", recipe.mOutputChances);
+        }
+        if (recipe.mFluidInputChances != null) {
+            tag.setIntArray("fluidInputChances", recipe.mFluidInputChances);
+        }
+        if (recipe.mOutputChances != null) {
+            tag.setIntArray("fluidOutputChances", recipe.mFluidOutputChances);
         }
         if (recipe.mFluidInputs != null) {
             tag.setTag(
@@ -394,12 +403,21 @@ public class SingleRecipeCheck {
             .voltage(GTValues.V[GTUtility.getTier(eut)])
             .find();
         // need call to ArrayExt.fixChancesArray for backward compat
-        int[] chances = ArrayExt.fixChancesArray(tag.hasKey("chances") ? tag.getIntArray("chances") : null, -1);
+        int[] inputChances = ArrayExt
+            .fixChancesArray(tag.hasKey("inputChances") ? tag.getIntArray("inputChances") : null, -1);
+        int[] outputChances = ArrayExt.fixChancesArray(tag.hasKey("chances") ? tag.getIntArray("chances") : null, -1);
+        int[] fluidInputChances = ArrayExt
+            .fixChancesArray(tag.hasKey("fluidInputChances") ? tag.getIntArray("fluidInputChances") : null, -1);
+        int[] fluidOutputChances = ArrayExt
+            .fixChancesArray(tag.hasKey("fluidOutputChances") ? tag.getIntArray("fluidOutputChances") : null, -1);
         if (found == null || !GTUtility.equals(inputs, found.mInputs)
             || !Arrays.equals(fInputs, found.mFluidInputs)
             || !GTUtility.equals(outputs, found.mOutputs)
             || !Arrays.equals(fOutputs, found.mFluidOutputs)
-            || !Arrays.equals(chances, found.mChances)
+            || !Arrays.equals(inputChances, found.mInputChances)
+            || !Arrays.equals(outputChances, found.mOutputChances)
+            || !Arrays.equals(fluidInputChances, found.mFluidInputChances)
+            || !Arrays.equals(fluidOutputChances, found.mFluidOutputChances)
             || found.mDuration != tag.getInteger("duration")
             || found.mEUt != eut
             || found.mSpecialValue != tag.getInteger("specialValue")) return null;

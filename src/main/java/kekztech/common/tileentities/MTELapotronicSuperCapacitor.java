@@ -1,5 +1,6 @@
 package kekztech.common.tileentities;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -392,7 +393,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addInfo("Loses energy equal to 1% of the total capacity every 24 hours")
             .addInfo(
                 "Capped at " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(max_passive_drain_eu_per_tick_per_uhv_cap)
+                    + formatNumber(max_passive_drain_eu_per_tick_per_uhv_cap)
                     + EnumChatFormatting.GRAY
                     + " EU/t passive loss per "
                     + GTValues.TIER_COLORS[9]
@@ -420,14 +421,13 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + "+ capacitor in the multiblock.")
             .addInfo(
                 "When enabled every " + EnumChatFormatting.BLUE
-                    + GTUtility
-                        .formatNumbers(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)
+                    + formatNumber(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)
                     + EnumChatFormatting.GRAY
                     + " ticks the LSC will attempt to re-balance against your")
             .addInfo("wireless EU network.")
             .addInfo(
                 "If there is less than " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap)
+                    + formatNumber(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap)
                     + EnumChatFormatting.GRAY
                     + "("
                     + GTValues.TIER_COLORS[9]
@@ -452,7 +452,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + " for every capacitor tier above")
             .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
             .addStructureInfo("Modular height of 4-50 blocks.")
-            .addController("Front center bottom")
+            .addController("Front bottom center")
             .addOtherStructurePart("Lapotronic Super Capacitor Casing", "5x2x5 base (at least 17x)")
             .addOtherStructurePart(
                 "Lapotronic Capacitor (" + GTValues.TIER_COLORS[4]
@@ -916,11 +916,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         ll.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.eu_in",
-                GTUtility.formatNumbers(inputLastTick)));
+                formatNumber(inputLastTick)));
         ll.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.eu_out",
-                GTUtility.formatNumbers(outputLastTick)));
+                formatNumber(outputLastTick)));
         ll.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.sec",
@@ -1120,11 +1120,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + "+ capacitor.");
             wireless_mode = false;
         }
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 
     @Override

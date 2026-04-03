@@ -32,7 +32,6 @@ import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.common.blocks.BlockFrameBox;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
-import ic2.core.crop.TileEntityCrop;
 import mods.railcraft.common.blocks.machine.TileMultiBlock;
 import thaumcraft.common.tiles.TileOwned;
 
@@ -50,6 +49,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         this.tooltip = aTooltip;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> itemList) {
         ItemStack itemStack = new ItemStack(this, 1);
@@ -175,6 +175,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
             if (target.removedByPlayer(world, player, x, y, z, true)) {
                 target.onBlockDestroyedByPlayer(world, x, y, z, metaData);
                 target.harvestBlock(world, player, x, y, z, metaData);
+                world.notifyBlocksOfNeighborChange(x, y, z, target);
             }
         }
         stack.getTagCompound()
@@ -189,7 +190,6 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     }
 
     private boolean isHarvestableTileEntity(TileEntity tileEntity, Block target, EntityPlayer player) {
-        if (tileEntity instanceof TileEntityCrop) return false;
         if (Mods.Railcraft.isModLoaded() && isUnformedRCMulti(tileEntity)) return true;
         if (tileEntity instanceof IInventory inv && inv.getSizeInventory() > 0) return false;
         if (isHarvestableGTSpecial(target, tileEntity) && !player.isSneaking()) return true;

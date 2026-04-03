@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -107,7 +108,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             .addStaticSpeedInfo(1.6f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 6, 3, true)
-            .addController("Bottom center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Maceration Stack Casings (After upgrade)", 26, false)
             .addCasingInfoMin("Stable Titanium Casings (Before upgrade)", 26, false)
             .addInputBus("Any casing", 1)
@@ -387,7 +388,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             currentTip.add(
                 StatCollector.translateToLocal("GT5U.machines.tier") + ": "
                     + EnumChatFormatting.YELLOW
-                    + GTUtility.formatNumbers(tag.getInteger("tier"))
+                    + formatNumber(tag.getInteger("tier"))
                     + EnumChatFormatting.RESET);
         }
     }

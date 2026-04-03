@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
@@ -18,7 +19,6 @@ import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.util.GTTextBuilder;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import tectech.thing.metaTileEntity.multi.MTEActiveTransformer;
 
@@ -93,7 +93,7 @@ public class MTEActiveTransformerGui extends TTMultiblockBaseGui<MTEActiveTransf
     }
 
     private static String formatUIEUt(double eut) {
-        if (eut < 1_000_000_000) return GTUtility.formatNumbers(eut);
+        if (eut < 1_000_000_000) return formatNumber(eut);
 
         int exp = 0;
 
@@ -102,6 +102,6 @@ public class MTEActiveTransformerGui extends TTMultiblockBaseGui<MTEActiveTransf
             exp += 3;
         }
 
-        return GTUtility.formatNumbers(eut) + "e" + exp;
+        return formatNumber(eut) + "e" + exp;
     }
 }

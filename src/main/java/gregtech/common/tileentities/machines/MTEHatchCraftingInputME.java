@@ -17,7 +17,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
 
@@ -45,6 +48,10 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.glodblock.github.common.item.ItemFluidPacket;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -90,6 +97,7 @@ import appeng.util.IWideReadableNumberConverter;
 import appeng.util.PatternMultiplierHelper;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
+import appeng.util.ScheduledReason;
 import appeng.util.inv.MEInventoryCrafting;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
@@ -97,32 +105,28 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.config.Gregtech;
+import gregtech.common.gui.modularui.hatch.MTEHatchCraftingInputMEGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchCraftingInputME extends MTEHatchInputBus
-    implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
-    IGridProxyable, IDualInputHatchWithPattern, ICustomNameObject, IInterfaceViewable, IMEConnectable {
-
-    @Override
-    protected boolean useMui2() {
-        return false;
-    }
+    implements IAddGregtechLogo, IPowerChannelState, ICraftingProvider, IGridProxyable, IDualInputHatchWithPattern,
+    ICustomNameObject, IInterfaceViewable, IMEConnectable {
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
     public static class PatternSlot<P extends IMetaTileEntity & IDualInputHatch>
@@ -459,11 +463,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private static final int SLOT_MANUAL_SIZE = 9;
     private static final int MAX_INV_COUNT = MAX_PATTERN_COUNT + SLOT_MANUAL_SIZE + 1;
     private static final int SLOT_CIRCUIT = MAX_PATTERN_COUNT;
-    private static final int SLOT_MANUAL_START = SLOT_CIRCUIT + 1;
+    public static final int SLOT_MANUAL_START = SLOT_CIRCUIT + 1;
     private static final int MANUAL_SLOT_WINDOW = 10;
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
-    public List<ProcessingLogic> processingLogics = new ArrayList<>();
+    public Set<ProcessingLogic> processingLogics = Collections.newSetFromMap(new WeakHashMap<>());
     private final List<MTEHatchCraftingInputSlave> proxyHatches = new ArrayList<>();
 
     // holds all internal inventories
@@ -480,23 +484,13 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private String customName = null;
     private final boolean supportFluids;
     private boolean additionalConnection = false;
-    private boolean disablePatternOptimization = false;
-    private boolean showPattern = true;
+    public boolean disablePatternOptimization = false;
+    public boolean showPattern = true;
+
+    private ScheduledReason scheduledReason = ScheduledReason.UNDEFINED;
 
     public MTEHatchCraftingInputME(int aID, String aName, String aNameRegional, boolean supportFluids) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            supportFluids ? 10 : 6,
-            MAX_INV_COUNT,
-            new String[] { "Advanced item input for Multiblocks",
-                "Hatch Tier: " + TIER_COLORS[supportFluids ? 10 : 6] + VN[supportFluids ? 10 : 6],
-                "Processes patterns directly from ME",
-                supportFluids ? "It supports patterns including fluids"
-                    : "It does not support patterns including fluids",
-                "Change ME connection behavior by right-clicking with wire cutter",
-                "Ignores the contents of other buses or hatches", "Also ignores other patterns within the same bus" });
+        super(aID, aName, aNameRegional, supportFluids ? 10 : 6, MAX_INV_COUNT, null);
         disableSort = true;
         this.supportFluids = supportFluids;
     }
@@ -616,6 +610,18 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
+        if (aPlayer.isSneaking()) {
+            IGregTechTileEntity te = getBaseMetaTileEntity();
+            aPlayer.openGui(
+                AppEng.instance(),
+                GuiBridge.GUI_RENAMER.ordinal() << 5 | (side.ordinal()),
+                te.getWorld(),
+                te.getXCoord(),
+                te.getYCoord(),
+                te.getZCoord());
+            return true;
+        }
+
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
@@ -915,6 +921,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     }
 
     @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchCraftingInputMEGui(this).build(data, syncManager, uiSettings);
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(MANUAL_SLOT_WINDOW, this::createSlotManualWindow);
         builder.widget(
@@ -1019,7 +1030,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         return requestSource;
     }
 
-    private void onPatternChange(int index, ItemStack newItem) {
+    public void onPatternChange(int index, ItemStack newItem) {
         if (!getBaseMetaTileEntity().isServerSide()) return;
 
         World world = getBaseMetaTileEntity().getWorld();
@@ -1067,12 +1078,19 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
     }
 
-    private void resetCraftingInputRecipeMap() {
+    @Override
+    public void resetCraftingInputRecipeMap(ProcessingLogic pl) {
+        for (PatternSlot<MTEHatchCraftingInputME> sl : internalInventory) {
+            if (sl == null) continue;
+            pl.removeInventoryRecipeCache(sl);
+        }
+
+    }
+
+    @Override
+    public void resetCraftingInputRecipeMap() {
         for (ProcessingLogic pl : processingLogics) {
-            for (PatternSlot<MTEHatchCraftingInputME> sl : internalInventory) {
-                if (sl == null) continue;
-                pl.removeInventoryRecipeCache(sl);
-            }
+            resetCraftingInputRecipeMap(pl);
         }
     }
 
@@ -1160,17 +1178,29 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         if (!getBaseMetaTileEntity().isAllowedToWork()) return false;
         if (!(table instanceof MEInventoryCrafting meic)) return false;
 
-        if (!supportFluids) {
-            for (int i = 0; i < table.getSizeInventory(); ++i) {
-                if (meic.getAEStackInSlot(i) instanceof IAEFluidStack) return false;
+        for (int i = 0; i < table.getSizeInventory(); ++i) {
+            IAEStack<?> stackInSlot = meic.getAEStackInSlot(i);
+            if (stackInSlot == null || stackInSlot instanceof IAEItemStack
+                || (supportFluids && stackInSlot instanceof IAEFluidStack)) {
+                continue;
             }
+
+            scheduledReason = ScheduledReason.UNSUPPORTED_STACK;
+            return false;
         }
+
         if (!patternDetailsPatternSlotMap.get(patternDetails)
             .insertItemsAndFluids(meic)) {
+            scheduledReason = ScheduledReason.SOMETHING_STUCK;
             return false;
         }
         justHadNewItems = true;
         return true;
+    }
+
+    @Override
+    public ScheduledReason getScheduledReason() {
+        return scheduledReason;
     }
 
     @Override
@@ -1185,13 +1215,21 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             .iterator();
     }
 
+    public Iterator<PatternSlot<MTEHatchCraftingInputME>> inventoriesReversed() {
+        return IntStream.range(0, internalInventory.length)
+            .map(i -> internalInventory.length - 1 - i)
+            .mapToObj(i -> internalInventory[i])
+            .filter(Objects::nonNull)
+            .iterator();
+    }
+
     @Override
     public void onBlockDestroyed() {
         refundAll(true);
         super.onBlockDestroyed();
     }
 
-    private void refundAll(boolean shouldDrop) {
+    public void refundAll(boolean shouldDrop) {
         for (PatternSlot<MTEHatchCraftingInputME> slot : internalInventory) {
             if (slot == null) continue;
             try {
@@ -1295,7 +1333,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 .endAtSlot(SLOT_MANUAL_START + SLOT_MANUAL_SIZE - 1)
                 .phantom(false)
                 .background(getGUITextureSet().getItemSlot())
-                .widgetCreator(slot -> new SlotWidget(slot).setChangeListener(this::resetCraftingInputRecipeMap))
+                .widgetCreator(slot -> new SlotWidget(slot).setChangeListener(() -> resetCraftingInputRecipeMap()))
                 .build()
                 .setPos(7, 7));
         return builder.build();
@@ -1376,5 +1414,18 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             }
         } catch (Exception ignored) {}
         CraftingGridCache.unpauseRebuilds();
+    }
+
+    @Override
+    public String[] getDescription() {
+        if (supportFluids) return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.input_bus_crafting_me.desc",
+            TIER_COLORS[10] + VN[10],
+            StatCollector.translateToLocal("gt.blockmachines.input_bus_crafting_me.support_fluid.desc") + GTSplit.LB);
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.input_bus_crafting_me.desc",
+            TIER_COLORS[6] + VN[6],
+            StatCollector.translateToLocal("gt.blockmachines.input_bus_crafting_me.not_support_fluid.desc")
+                + GTSplit.LB);
     }
 }

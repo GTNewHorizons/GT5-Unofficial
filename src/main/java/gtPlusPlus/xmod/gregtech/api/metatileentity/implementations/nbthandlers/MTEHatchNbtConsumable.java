@@ -52,12 +52,6 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
         allowDuplicateUsageTypes = aAllowDuplicateTypes;
     }
 
-    @Override
-    public abstract ITexture[] getTexturesActive(ITexture aBaseTexture);
-
-    @Override
-    public abstract ITexture[] getTexturesInactive(ITexture aBaseTexture);
-
     public abstract int getInputSlotCount();
 
     @Override

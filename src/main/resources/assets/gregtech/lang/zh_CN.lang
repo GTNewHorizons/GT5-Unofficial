@@ -108,6 +108,15 @@ GT5U.machines.digitaltank.tooltip=存储 %sL 流体
 GT5U.machines.digitaltank.tooltip1=拆卸后可保留其中流体
 GT5U.machines.digitaltank.tooltip2=潜行拆卸可销毁内部流体
 GT5U.machines.digitaltank.autooutput.tooltip=流体自动输出
+GT5U.machines.digitaltank.autooutput.enabled=流体自动输出已启用
+GT5U.machines.digitaltank.autooutput.disabled=流体自动输出已禁用
+GT5U.machines.digitaltank.lockfluid.enabled=锁定单一流体（%s）
+GT5U.machines.digitaltank.lockfluid.disabled=流体锁定模式已禁用
+GT5U.machines.digitaltank.lockfluid.none=当前未指定，将锁定为下一种输入流体
+GT5U.machines.digitaltank.voidoverflow.enabled=溢出销毁模式已启用
+GT5U.machines.digitaltank.voidoverflow.disabled=溢出销毁模式已禁用
+GT5U.machines.digitaltank.voidfull.enabled=完全销毁模式已启用
+GT5U.machines.digitaltank.voidfull.disabled=完全销毁模式已禁用
 GT5U.machines.digitaltank.lockfluid.tooltip=流体锁定模式
 GT5U.machines.digitaltank.lockfluid.tooltip.1=§7锁定本容器，只接受一种流体
 GT5U.machines.digitaltank.lockfluid.tooltip.2=§7将锁定为进入容器的第一种流体
@@ -183,15 +192,15 @@ GT5U.machines.industrialapiary.infoextended.tooltip.5=寿命：%6$d %%
 GT5U.machines.industrialapiary.infoextended.tooltip.6=范围：%7$d x %8$d x %9$d
 GT5U.machines.industrialapiary.upgradeslot.tooltip=升级槽
 GT5U.machines.industrialapiary.upgradeslot.tooltip.1=§7同时兼容基因工业(gendustry)升级
-GT5U.machines.advdebugstructurewriter.tooltip=扫描周围的方块
-GT5U.machines.advdebugstructurewriter.tooltip.1=打印多方块非-方块实体结构验证码
-GT5U.machines.advdebugstructurewriter.tooltip.2=ABC轴与机器正面对齐
-GT5U.machines.advdebugstructurewriter.printed=已打印到控制台的结构
-GT5U.machines.advdebugstructurewriter.gui.origin=原点
-GT5U.machines.advdebugstructurewriter.gui.size=结构尺寸
-GT5U.machines.advdebugstructurewriter.gui.print.tooltip=打印结构
-GT5U.machines.advdebugstructurewriter.gui.highlight.tooltip=显示边框
-GT5U.machines.advdebugstructurewriter.gui.transpose.tooltip=转置
+GT5U.machines.debugstructurewriter.tooltip=扫描周围的方块
+GT5U.machines.debugstructurewriter.tooltip.1=打印多方块非-方块实体结构验证码
+GT5U.machines.debugstructurewriter.tooltip.2=ABC轴与机器正面对齐
+GT5U.machines.debugstructurewriter.printed=已打印到控制台的结构
+GT5U.machines.debugstructurewriter.gui.origin=原点
+GT5U.machines.debugstructurewriter.gui.size=结构尺寸
+GT5U.machines.debugstructurewriter.gui.print.tooltip=打印结构
+GT5U.machines.debugstructurewriter.gui.highlight.tooltip=显示边框
+GT5U.machines.debugstructurewriter.gui.transpose.tooltip=转置
 
 GT5U.recipe_filter.representation_slot.tooltip=手持机器右键以设置过滤
 
@@ -227,6 +236,14 @@ GT5U.multiblock.problems=问题
 GT5U.multiblock.mei=最大输入
 GT5U.multiblock.usage=大概功率
 GT5U.multiblock.runningMode=§e运行模式：
+
+GT5U.multiblock.scanner.pollution=污染减少到: §a%s§r%%
+GT5U.multiblock.scanner.energy=存储能量: §a%s §rEU / §e%s §rEU
+GT5U.multiblock.scanner.Progress=工作时间: §a%s §rs / §e%s §rs
+GT5U.multiblock.scanner.efficiency=效率: §e%s§r%%
+GT5U.multiblock.scanner.problems=问题: §c%s
+GT5U.multiblock.scanner.mei=最大输入: §e%s §rEU/t (*2A) Tier: §e%s
+GT5U.multiblock.scanner.usage=大概功率: §c%s §rEU/t
 
 # NEI recipe handlers
 
@@ -314,24 +331,6 @@ GT5U.waila.facing.unknown=未知
 
 achievement.gettingstartedwithgt=第一把工具
 achievement.gettingstartedwithgt.desc=制造一把燧石镐
-achievement.crops=农业
-achievement.crops.desc=制造农作物
-achievement.havestlead=收获铅
-achievement.havestlead.desc=得到铅叶子
-achievement.havestcopper=收获铜
-achievement.havestcopper.desc=得到铜纤维
-achievement.havesttin=收获锡
-achievement.havesttin.desc=得到锡叶子
-achievement.havestoil=收获石油
-achievement.havestoil.desc=得到石油浆果
-achievement.havestiron=收获铁
-achievement.havestiron.desc=得到铁叶子
-achievement.havestgold=收获金
-achievement.havestgold.desc=得到金叶子
-achievement.havestsilver=收获银
-achievement.havestsilver.desc=得到银叶子
-achievement.havestemeralds=收获绿宝石
-achievement.havestemeralds.desc=得到易如反掌浆果
 achievement.tools=更多的工具
 achievement.tools.desc=制造一把锤子
 achievement.driltime=电钻时间!
@@ -1055,12 +1054,11 @@ GTPP.machines.output=输出
 GTPP.multiblock.pollutionreduced=减少污染至
 GTPP.multiblock.pollution=污染
 GTPP.multiblock.energy=能量存储
-GTPP.multiblock.progress=进程
 GTPP.multiblock.efficiency=效率
-GTPP.multiblock.problems=维护问题
 GTPP.multiblock.mei=最大能量输入
 GTPP.multiblock.usage=NEI功率
 GTPP.multiblock.generation=可能生成
+
 GTPP.multiblock.specialvalue=特殊值
 GTPP.multiblock.duration=NEI时间
 

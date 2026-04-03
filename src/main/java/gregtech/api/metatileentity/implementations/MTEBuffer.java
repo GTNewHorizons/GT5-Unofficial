@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.ARROW_DOWN;
 import static gregtech.api.enums.Textures.BlockIcons.ARROW_DOWN_GLOW;
@@ -14,19 +15,24 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.OptionalInt;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -42,6 +48,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIWidgets {
 
@@ -52,11 +60,14 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     private static final int ARROW_UP_INDEX = 4;
     private static final int FRONT_INDEX = 5;
 
+    private static final int NBT_INTEGER = 3;
+
     private static final String EMIT_ENERGY_TOOLTIP = "GT5U.machines.emit_energy.tooltip";
     private static final String EMIT_REDSTONE_IF_FULL_TOOLTIP = "GT5U.machines.emit_redstone_if_full.tooltip";
     private static final String INVERT_REDSTONE_TOOLTIP = "GT5U.machines.invert_redstone.tooltip";
     private static final String STOCKING_MODE_TOOLTIP = "GT5U.machines.buffer_stocking_mode.tooltip";
     private static final String SORTING_MODE_TOOLTIP = "GT5U.machines.sorting_mode.tooltip";
+    private static final String TARGET_STACK_SIZE_TOOLTIP = "GT5U.machines.target_stack_size.tooltip";
     private static final int BUTTON_SIZE = 18;
 
     public int mMaxStackSize = 64;
@@ -267,6 +278,13 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     }
 
     @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("mTargetStackSize", mTargetStackSize);
+    }
+
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         bInvert = aNBT.getBoolean("bInvert");
         bOutput = aNBT.getBoolean("bOutput");
@@ -283,20 +301,53 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     }
 
     @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        super.addAdditionalTooltipInformation(stack, tooltip);
+        if (!stack.hasTagCompound()) {
+            return;
+        }
+        addAdditionalTooltipInformation(stack.getTagCompound(), tooltip);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        addAdditionalTooltipInformation(accessor.getNBTData(), currentTip);
+    }
+
+    public void addAdditionalTooltipInformation(NBTTagCompound nbt, List<String> tooltip) {
+        if (nbt.hasKey("mTargetStackSize", NBT_INTEGER)) {
+            addTargetStackTooltip(nbt.getInteger("mTargetStackSize"), tooltip);
+        }
+    }
+
+    public void addTargetStackTooltip(int targetStackSize, List<String> tooltip) {
+        if (targetStackSize > 0) {
+            tooltip.add(GTUtility.translate(TARGET_STACK_SIZE_TOOLTIP) + String.format(": %s", targetStackSize));
+        }
+    }
+
+    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        if (side == getBaseMetaTileEntity().getBackFacing()) {
+        ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
+        onScrewdriverRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
+    }
+
+    public void onScrewdriverRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (wrenchingSide == getBaseMetaTileEntity().getBackFacing()) {
 
             mTargetStackSize = (byte) ((mTargetStackSize + (aPlayer.isSneaking() ? -1 : 1)) % 65);
             if (mTargetStackSize < 0) {
                 mTargetStackSize = mMaxStackSize;
             }
             if (mTargetStackSize == 0) {
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("098", "Do not regulate Item Stack Size"));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.buffer.not_regulate");
             } else {
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    GTUtility.trans("099", "Regulate Item Stack Size to: ") + mTargetStackSize);
+                GTUtility
+                    .sendChatTrans(aPlayer, "GT5U.chat.buffer.regulate", new ChatComponentNumber(mTargetStackSize));
             }
         }
     }
@@ -423,7 +474,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     private GTTooltipDataCache.TooltipData getEmitEnergyButtonTooltip() {
         return mTooltipCache.getData(
             EMIT_ENERGY_TOOLTIP,
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(V[mTier])
+            EnumChatFormatting.GREEN + formatNumber(V[mTier])
                 + " ("
                 + GTUtility.getColoredTierNameFromTier(mTier)
                 + EnumChatFormatting.GREEN
@@ -498,5 +549,10 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
                 .endAtSlot(26)
                 .build()
                 .setPos(7, 4));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

@@ -6,7 +6,7 @@ import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.massFabFakeRecipes;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -28,8 +29,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.ImmutableSet;
 
 import cpw.mods.fml.common.ProgressManager;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -47,8 +50,9 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeRegistrator;
+import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
-import gregtech.common.items.behaviors.BehaviourDataOrb;
+import gregtech.common.config.Other;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTERockBreaker;
 import ic2.api.recipe.IRecipeInput;
@@ -115,7 +119,7 @@ public class GTPostLoad {
                 .fluidInputs(tData.fluid)
                 .duration((tData.fluid.amount / 62) * TICKS)
                 .eut(1)
-                .addTo(fluidCannerRecipes);
+                .addTo(cannerRecipes);
             GTRecipeBuilder builder = GTValues.RA.stdBuilder()
                 .itemInputs(tData.filledContainer);
             if (tData.emptyContainer.stackSize > 0) {
@@ -124,7 +128,7 @@ public class GTPostLoad {
             builder.fluidOutputs(tData.fluid)
                 .duration((tData.fluid.amount / 62) * TICKS)
                 .eut(1)
-                .addTo(fluidCannerRecipes);
+                .addTo(cannerRecipes);
         }
     }
 
@@ -135,16 +139,6 @@ public class GTPostLoad {
             GTForestryCompat.populateFakeNeiRecipes();
         }
 
-        if (ItemList.IC2_Crop_Seeds.get(1L) != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.IC2_Crop_Seeds.getWildcard(1L))
-                .itemOutputs(ItemList.IC2_Crop_Seeds.getWithName(1L, "Scanned Seeds"))
-                .duration(8 * SECONDS)
-                .eut(8)
-                .ignoreCollision()
-                .fake()
-                .addTo(scannerFakeRecipes);
-        }
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.written_book, 1, 32767))
             .itemOutputs(ItemList.Tool_DataStick.getWithName(1L, "Scanned Book Data"))
@@ -168,6 +162,7 @@ public class GTPostLoad {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tool_DataOrb.getWithName(1L, "Orb to overwrite"))
             .itemOutputs(ItemList.Tool_DataOrb.getWithName(1L, "Copy of the Orb"))
+            .special(ItemList.Tool_DataOrb.getWithName(0L, "Orb to copy"))
             .duration(25 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .ignoreCollision()
@@ -242,54 +237,52 @@ public class GTPostLoad {
         Materials.getMaterialsMap()
             .values()
             .forEach(tMaterial -> {
-                if ((tMaterial.mElement != null) && (!tMaterial.mElement.mIsIsotope)
-                    && (tMaterial != Materials.Magic)
-                    && (tMaterial.getMass() > 0L)) {
-                    ItemStack dataOrb = ItemList.Tool_DataOrb.get(1L);
-                    BehaviourDataOrb.setDataTitle(dataOrb, "Elemental-Scan");
-                    BehaviourDataOrb.setDataName(dataOrb, tMaterial.mElement.name());
-                    ItemStack dustItem = GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L);
-                    if (dustItem != null) {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(dustItem)
-                            .itemOutputs(dataOrb)
-                            .special(ItemList.Tool_DataOrb.get(1L))
-                            .duration((int) (tMaterial.getMass() * 8192L))
-                            .eut(TierEU.RECIPE_LV)
-                            .fake()
-                            .ignoreCollision()
-                            .addTo(scannerFakeRecipes);
-                        GTValues.RA.stdBuilder()
-                            .itemOutputs(dustItem)
-                            .special(dataOrb)
-                            .metadata(GTRecipeConstants.MATERIAL, tMaterial)
-                            .addTo(RecipeMaps.replicatorRecipes);
-                        return;
-                    }
-                    ItemStack cellItem = GTOreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L);
-                    if (cellItem != null) {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(cellItem)
-                            .itemOutputs(dataOrb)
-                            .special(ItemList.Tool_DataOrb.get(1L))
-                            .duration((int) (tMaterial.getMass() * 8192L))
-                            .eut(TierEU.RECIPE_LV)
-                            .fake()
-                            .ignoreCollision()
-                            .addTo(scannerFakeRecipes);
-                        FluidStack fluidStack = GTUtility.getFluidForFilledItem(cellItem, false);
-                        GTRecipeBuilder builder = GTValues.RA.stdBuilder();
-                        if (fluidStack != null) {
-                            builder.fluidOutputs(fluidStack);
-                        } else {
-                            builder.itemInputs(Materials.Empty.getCells(1))
-                                .itemOutputs(cellItem);
-                        }
-                        builder.special(dataOrb)
-                            .metadata(GTRecipeConstants.MATERIAL, tMaterial)
-                            .addTo(RecipeMaps.replicatorRecipes);
-                    }
+                // check if material is scannable
+                GTScannerResult scannerResult = ScannerHandlerLoader.getElementScanResult(tMaterial);
+                if (scannerResult == null || scannerResult.isNotMet()) return;
+
+                // add recipe if a dust exists.
+                GTRecipeBuilder builder = null;
+                ItemStack dustItem = GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L);
+                if (dustItem != null) {
+                    builder = GTValues.RA.stdBuilder()
+                        .itemInputs(dustItem);
+                    // add corresponding fluid replicator recipe.
+                    GTValues.RA.stdBuilder()
+                        .itemOutputs(dustItem)
+                        .special(scannerResult.output)
+                        .metadata(GTRecipeConstants.MATERIAL, tMaterial)
+                        .addTo(RecipeMaps.replicatorRecipes);
                 }
+                // else try to add a recipe for the cell.
+                if (builder == null) {
+                    ItemStack cellItem = GTOreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L);
+                    if (cellItem == null) return;
+                    // create builder
+                    builder = GTValues.RA.stdBuilder()
+                        .itemInputs(cellItem);
+                    // add corresponding replicator recipe
+                    FluidStack fluidStack = GTUtility.getFluidForFilledItem(cellItem, false);
+                    GTRecipeBuilder replicatorRecipeBuilder = GTValues.RA.stdBuilder();
+                    if (fluidStack != null) {
+                        replicatorRecipeBuilder.fluidOutputs(fluidStack);
+                    } else {
+                        // if there is no fluid for some reason, add a cell recipe, with cell input.
+                        replicatorRecipeBuilder.itemInputs(Materials.Empty.getCells(1))
+                            .itemOutputs(cellItem);
+                    }
+                    replicatorRecipeBuilder.special(scannerResult.output)
+                        .metadata(GTRecipeConstants.MATERIAL, tMaterial)
+                        .addTo(RecipeMaps.replicatorRecipes);
+                }
+
+                builder.itemOutputs(scannerResult.output)
+                    .special(ItemList.Tool_DataOrb.get(1L))
+                    .duration(scannerResult.duration)
+                    .eut(scannerResult.eut)
+                    .fake()
+                    .ignoreCollision()
+                    .addTo(scannerFakeRecipes);
             });
 
         if (!MTEMassfabricator.sRequiresUUA) {
@@ -480,5 +473,22 @@ public class GTPostLoad {
             .filter(Objects::nonNull)
             .map(FluidRegistry::getFluidID)
             .collect(Collectors.toList());
+    }
+
+    public static void processToolboxBans() {
+        final ImmutableSet.Builder<Item> builder = ImmutableSet.builder();
+
+        for (final String name : Other.toolboxBans) {
+            final String[] nameParts = name.split(":");
+
+            if (nameParts.length == 2) {
+                final Item item = GameRegistry.findItem(nameParts[0], nameParts[1]);
+                if (item != null) {
+                    builder.add(item);
+                }
+            }
+        }
+
+        GTMod.proxy.toolboxBans = builder.build();
     }
 }

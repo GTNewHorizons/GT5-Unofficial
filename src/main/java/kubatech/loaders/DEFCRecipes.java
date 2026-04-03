@@ -76,7 +76,7 @@ public class DEFCRecipes {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "tile.BloodyIchorium", 1, 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "BloodyIchorium", 1, 0),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 6L))
             .fluidInputs(Materials.Void.getMolten(8 * INGOTS))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingT1.get(1))

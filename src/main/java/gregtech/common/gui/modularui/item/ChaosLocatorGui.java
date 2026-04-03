@@ -56,7 +56,7 @@ public class ChaosLocatorGui {
                 tag.setInteger("zCoordinate", z);
             });
 
-        panel.flex()
+        panel.resizer()
             .size(100, 100);
 
         panel.child(

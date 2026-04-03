@@ -28,6 +28,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.util.GTModHandler;
@@ -167,14 +168,14 @@ public class BlockStonesAbstract extends GTGenericBlock implements IOreRecipeReg
                 .itemInputs(new ItemStack(this, 1, 7), GTUtility.copyAmount(0, aStack))
                 .itemOutputs(new ItemStack(this, 1, 6))
                 .duration(2 * SECONDS + 10 * TICKS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(laserEngraverRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(this, 1, 15), GTUtility.copyAmount(0, aStack))
                 .itemOutputs(new ItemStack(this, 1, 14))
                 .duration(2 * SECONDS + 10 * TICKS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(laserEngraverRecipes);
 
         }

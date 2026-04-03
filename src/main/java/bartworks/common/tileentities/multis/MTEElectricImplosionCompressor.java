@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
@@ -231,7 +230,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addMaxTierSkips(1)
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 9, 3, false)
-            .addController("Front 3rd layer center")
+            .addController("Front center, 3rd layer")
             .addCasingInfoMin("Solid Steel Machine Casing", 8, false)
             .addStructureInfo("Casings can be replaced with Explosion Hazard Signs")
             .addOtherStructurePart("Transformer-Winding Blocks", "Outer layer 2,3,7,8")
@@ -325,7 +324,8 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         if (!aBaseMetaTileEntity.isServerSide()) return;
         if (!this.piston) {
             List<Pair<Block, Integer>> tiers = getTierBlockList();
-            Pair<Block, Integer> tieredBlock = tiers.get(Math.min(tier, tiers.size()) - 1);
+            final int index = Math.max(0, Math.min(tier, tiers.size()) - 1);
+            Pair<Block, Integer> tieredBlock = tiers.get(index);
             this.chunkCoordinates.forEach(c -> {
                 // Don't replace real blocks in case user has placed something (e.g. tier upgrade)
                 if (aBaseMetaTileEntity.getWorld()
@@ -470,21 +470,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     public boolean supportsBatchMode() {
         return true;
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
     }
 
     @Override

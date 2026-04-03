@@ -1,16 +1,19 @@
 package gregtech.api.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
@@ -22,6 +25,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -31,11 +35,13 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import com.gtnewhorizons.modularui.api.KeyboardUtil;
 
 import gregtech.GTMod;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -54,7 +60,7 @@ public abstract class MetaBaseItem extends GTGenericItem
      * @param aUnlocalized The Unlocalized Name of this Item.
      */
     public MetaBaseItem(String aUnlocalized) {
-        super(aUnlocalized, "Generated Item", null);
+        super(aUnlocalized, null, null);
         setHasSubtypes(true);
         setMaxDamage(0);
     }
@@ -79,6 +85,10 @@ public abstract class MetaBaseItem extends GTGenericItem
     public abstract Long[] getElectricStats(ItemStack aStack);
 
     public abstract Long[] getFluidContainerStats(ItemStack aStack);
+
+    protected Supplier<String> getToolTipLocalizationSupplier(ItemStack aStack) {
+        return null;
+    }
 
     @Override
     public boolean hasProjectile(SubTag aProjectileType, ItemStack aStack) {
@@ -148,11 +158,11 @@ public abstract class MetaBaseItem extends GTGenericItem
         try {
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
                 if (tBehavior.onLeftClickEntity(this, aStack, aPlayer, aEntity)) {
-                    if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+                    if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
                     return true;
                 }
             if (aStack.stackSize <= 0) {
-                aPlayer.destroyCurrentEquippedItem();
+                GTUtility.destroyCurrentItem(aPlayer);
                 return false;
             }
         } catch (Exception e) {
@@ -170,11 +180,11 @@ public abstract class MetaBaseItem extends GTGenericItem
         try {
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
                 if (tBehavior.onItemUse(this, aStack, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ)) {
-                    if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+                    if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
                     return true;
                 }
             if (aStack.stackSize <= 0) {
-                aPlayer.destroyCurrentEquippedItem();
+                GTUtility.destroyCurrentItem(aPlayer);
                 return false;
             }
         } catch (Exception e) {
@@ -202,11 +212,11 @@ public abstract class MetaBaseItem extends GTGenericItem
                 hitX,
                 hitY,
                 hitZ)) {
-                    if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+                    if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
                     return true;
                 }
             if (aStack.stackSize <= 0) {
-                aPlayer.destroyCurrentEquippedItem();
+                GTUtility.destroyCurrentItem(aPlayer);
                 return false;
             }
         } catch (Exception e) {
@@ -229,14 +239,30 @@ public abstract class MetaBaseItem extends GTGenericItem
         return aStack;
     }
 
+    /** Returns null for item damage out of bounds. */
+    public Materials getMaterial(int damage) {
+        if (!Materials.isMaterialItem(damage)) {
+            return null;
+        }
+        return GregTechAPI.sGeneratedMaterials[damage % 1_000];
+    }
+
     @Override
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        String tKey = getUnlocalizedName(aStack) + ".tooltip";
-        String[] tStrings = GTLanguageManager.getTranslation(tKey)
-            .split("/n ");
-        for (String tString : tStrings)
-            if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) aList.add(tString);
-
+        final Supplier<String> tooltipSupplier = getToolTipLocalizationSupplier(aStack);
+        if (tooltipSupplier != null) {
+            Collections.addAll(
+                aList,
+                Arrays.stream(GTSplit.split(tooltipSupplier.get()))
+                    .filter(GTUtility::isStringValid)
+                    .toArray(String[]::new));
+        }
+        final String key = getUnlocalizedName() + "." + aStack.getItemDamage() + ".tooltip";
+        if (StatCollector.canTranslate(key)) Collections.addAll(
+            aList,
+            Arrays.stream(GTSplit.splitLocalized(key))
+                .filter(GTUtility::isStringValid)
+                .toArray(String[]::new));
         Long[] tStats = getElectricStats(aStack);
         if (tStats != null) {
             if (tStats[3] > 0) {
@@ -244,7 +270,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                     EnumChatFormatting.AQUA
                         + translateToLocalFormatted(
                             "gt.item.desc.stored_eu",
-                            formatNumbers(tStats[3]),
+                            formatNumber(tStats[3]),
                             "" + (tStats[2] >= 0 ? tStats[2] : 0))
                         + EnumChatFormatting.GRAY);
             } else {
@@ -258,9 +284,9 @@ public abstract class MetaBaseItem extends GTGenericItem
                         EnumChatFormatting.AQUA
                             + translateToLocalFormatted(
                                 "gt.item.desc.eu_info",
-                                formatNumbers(tCharge),
-                                formatNumbers(Math.abs(tStats[0])),
-                                formatNumbers(V[voltageTier]))
+                                formatNumber(tCharge),
+                                formatNumber(Math.abs(tStats[0])),
+                                formatNumber(V[voltageTier]))
                             + EnumChatFormatting.GRAY);
                 }
             }
@@ -276,8 +302,8 @@ public abstract class MetaBaseItem extends GTGenericItem
                 EnumChatFormatting.BLUE
                     + translateToLocalFormatted(
                         "gt.item.desc.fluid_info",
-                        tFluid == null ? 0 : formatNumbers(tFluid.amount),
-                        formatNumbers(tStats[0]))
+                        tFluid == null ? 0 : formatNumber(tFluid.amount),
+                        formatNumber(tStats[0]))
                     + EnumChatFormatting.GRAY);
         }
 
@@ -666,4 +692,26 @@ public abstract class MetaBaseItem extends GTGenericItem
         return false;
     }
 
+    @Override
+    public String getItemStackDisplayName(final ItemStack itemStack) {
+        final String base = super.getItemStackDisplayName(itemStack);
+
+        ArrayList<IItemBehaviour<MetaBaseItem>> behaviorList = mItemBehaviors.get((short) getDamage(itemStack));
+        if (behaviorList == null) {
+            return base;
+        }
+
+        try {
+            for (IItemBehaviour<MetaBaseItem> behavior : behaviorList) {
+                final String newName = behavior.getNameOverride(base, itemStack);
+                if (newName != null) {
+                    return newName;
+                }
+            }
+        } catch (Exception e) {
+            if (D1) e.printStackTrace(GTLog.err);
+        }
+
+        return base;
+    }
 }

@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -256,8 +257,8 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
         final double roundOff = Math.round(c * 100.00) / 100.00;
         GTUtility.sendChatToPlayer(
             playerIn,
-            "Energy: " + GTUtility.formatNumbers(tempStorage) + " EU at " + V[this.mTier] + "v (" + roundOff + "%)");
-        GTUtility.sendChatToPlayer(playerIn, "Amperage: " + GTUtility.formatNumbers(maxAmperesOut()) + "A");
+            "Energy: " + formatNumber(tempStorage) + " EU at " + V[this.mTier] + "v (" + roundOff + "%)");
+        GTUtility.sendChatToPlayer(playerIn, "Amperage: " + formatNumber(maxAmperesOut()) + "A");
     }
     // Utils.LOG_WARNING("Begin Show Energy");
     /*
@@ -288,10 +289,10 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     @Override
     public String[] getInfoData() {
-        String cur = GTUtility.formatNumbers(
+        String cur = formatNumber(
             this.getBaseMetaTileEntity()
                 .getStoredEU());
-        String max = GTUtility.formatNumbers(
+        String max = formatNumber(
             this.getBaseMetaTileEntity()
                 .getEUCapacity());
 
@@ -340,11 +341,6 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     @Override
     public void setInventorySlotContents(final int p_70299_1_, final ItemStack p_70299_2_) {}
-
-    @Override
-    public String getInventoryName() {
-        return super.getInventoryName();
-    }
 
     @Override
     public int getInventoryStackLimit() {

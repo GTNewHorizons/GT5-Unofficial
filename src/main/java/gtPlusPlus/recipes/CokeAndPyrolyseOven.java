@@ -80,7 +80,7 @@ public class CokeAndPyrolyseOven {
             .itemOutputs(GTOreDictUnificator.get("fuelCoke", 14))
             .fluidInputs(Materials.Steam.getGas(2_000))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 5040))
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .duration(1 * MINUTES)
             .addTo(cokeOvenRecipes);
     }
@@ -92,7 +92,7 @@ public class CokeAndPyrolyseOven {
             .circuit(3)
             .itemOutputs(charcoal)
             .fluidOutputs(Materials.Creosote.getFluid(2_000))
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .duration(25 * SECONDS)
             .addTo(pyrolyseRecipes);
 
@@ -102,7 +102,7 @@ public class CokeAndPyrolyseOven {
             .itemOutputs(charcoal)
             .fluidInputs(Materials.Nitrogen.getGas(2_000))
             .fluidOutputs(Materials.CharcoalByproducts.getGas(4_000))
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .duration(250 * TICKS)
             .addTo(pyrolyseRecipes);
 
@@ -112,7 +112,7 @@ public class CokeAndPyrolyseOven {
             .circuit(3)
             .itemOutputs(coke)
             .fluidOutputs(Materials.Creosote.getFluid(4_000))
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .duration(50 * SECONDS)
             .addTo(pyrolyseRecipes);
 
@@ -122,7 +122,7 @@ public class CokeAndPyrolyseOven {
             .itemOutputs(coke)
             .fluidInputs(Materials.Nitrogen.getGas(1_000))
             .fluidOutputs(Materials.CharcoalByproducts.getGas(2_000))
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .duration(25 * SECONDS)
             .addTo(pyrolyseRecipes);
 
@@ -133,7 +133,7 @@ public class CokeAndPyrolyseOven {
             .itemOutputs(Materials.Ash.getDust(5))
             .fluidInputs(Materials.Steam.getGas(2_000))
             .fluidOutputs(Materials.WoodTar.getFluid(4_000))
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .duration(75 * SECONDS)
             .addTo(pyrolyseRecipes);
 
@@ -143,7 +143,7 @@ public class CokeAndPyrolyseOven {
             .itemOutputs(Materials.Ash.getDust(5))
             .fluidInputs(Materials.Steam.getGas(2_000))
             .fluidOutputs(Materials.WoodGas.getGas(6_000))
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .duration(75 * SECONDS)
             .addTo(pyrolyseRecipes);
     }

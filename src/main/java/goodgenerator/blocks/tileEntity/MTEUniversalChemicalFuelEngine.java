@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.Textures.BlockIcons.*;
@@ -20,13 +21,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
@@ -50,9 +49,9 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
-    implements IConstructable, ISurvivalConstructable {
+public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements ISurvivalConstructable {
 
     protected final double DIESEL_EFFICIENCY_COEFFICIENT = 0.04D;
     protected final double GAS_EFFICIENCY_COEFFICIENT = 0.04D;
@@ -167,10 +166,10 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
             .addInfo("When turned on, there is a 10-second period where the machine will not stop")
             .addInfo("Even if it doesn't stop, all the fuel in the hatch will be consumed")
             .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel")
+            .addInfo("The higher the amount of promoter, the higher the efficiency")
             .addInfo(
-                "The higher the amount of promoter, the higher the efficiency"
-                    + "It follows an exponential curve exp(-C/(p/x))*1.5 ")
-            .addInfo("Where x is the amount of fuel in liters, p is the amount of promoter in liters")
+                "Follows an exponential curve exp(-C/(p/x))*1.5, "
+                    + "where x is the amount of fuel in liters, p is the amount of promoter in liters")
             .addInfo("and C depends on the fuel type. Diesel: C=0.04; Gas: C=0.04; Rocket fuel: C=0.005")
             .addInfo("It creates sqrt(Current Output Power) pollution every second")
             .addInfo(
@@ -180,7 +179,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
             .addInfo("The efficiency is up to 150%")
             .addTecTechHatchInfo()
             .beginStructureBlock(5, 4, 9, false)
-            .addController("Mid of the second layer")
+            .addController("Front center, 2nd layer")
             .addCasingInfoExactly("Stable Titanium Machine Casing", 93, false)
             .addCasingInfoExactly("Titanium Gear Box Casing", 14, false)
             .addCasingInfoExactly("Engine Intake Casing", 14, false)
@@ -263,17 +262,16 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
         String[] info = super.getInfoData();
         info[4] = StatCollector.translateToLocalFormatted(
             "gg.scanner.info.generator.generates",
-            EnumChatFormatting.RED + GTUtility.formatNumbers(this.getPowerFlow() * tEff / 10000)
-                + EnumChatFormatting.RESET);
+            EnumChatFormatting.RED + formatNumber(this.getPowerFlow() * tEff / 10000) + EnumChatFormatting.RESET);
         info[6] = StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "
             + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(this.getIdealStatus() - this.getRepairStatus())
+            + formatNumber(this.getIdealStatus() - this.getRepairStatus())
             + EnumChatFormatting.RESET
             + " "
             + StatCollector.translateToLocal("gg.scanner.info.generator.efficiency")
             + " "
             + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(tEff / 100D)
+            + formatNumber(tEff / 100D)
             + EnumChatFormatting.RESET
             + " %";
         return info;

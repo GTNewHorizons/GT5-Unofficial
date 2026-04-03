@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item.general;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.ModIDs;
 
@@ -20,7 +21,6 @@ import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Mods;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
 import ic2.api.item.ElectricItem;
@@ -135,17 +135,17 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
         list.add(
             StatCollector.translateToLocalFormatted(
                 "item.personalCloakingDevice.tooltip.3",
-                GTUtility.formatNumbers(this.getTier(this.thisStack)),
-                GTUtility.formatNumbers(this.getTransferLimit(this.thisStack))));
+                formatNumber(this.getTier(this.thisStack)),
+                formatNumber(this.getTransferLimit(this.thisStack))));
         list.add(
             StatCollector.translateToLocalFormatted(
                 "item.personalCloakingDevice.tooltip.4",
-                GTUtility.formatNumbers(this.getCharge(stack)),
+                formatNumber(this.getCharge(stack)),
                 MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack))));
         list.add(
             StatCollector.translateToLocalFormatted(
                 "item.personalCloakingDevice.tooltip.5",
-                GTUtility.formatNumbers(this.secondsLeft(stack))));
+                formatNumber(this.secondsLeft(stack))));
         super.addInformation(stack, aPlayer, list, bool);
     }
 

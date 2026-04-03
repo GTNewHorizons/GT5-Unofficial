@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -35,6 +34,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
@@ -131,7 +131,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             "High Efficiency: Removes full pollution, Turbine takes 100% dmg",
             "Turbine Rotor will not break in LE mode",
             "Insert an equal tier Conveyor Module to enable automation");
-        return A;
+        return TooltipHelper.pollutionDisabledTooltip(A);
     }
 
     @Override
@@ -728,12 +728,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
-    }
-
-    @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         if (aIndex == -120) {
             GTUtility.doSoundAtClient(SoundResource.IC2_TOOLS_BATTERY_USE, MathUtils.randInt(5, 50), 0.05F, aX, aY, aZ);
@@ -784,11 +778,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             return false;
         }
         return super.allowCoverOnSide(side, coverItem);
-    }
-
-    @Override
-    public ITexture[] getTopFacingInactive(byte aColor) {
-        return super.getTopFacingInactive(aColor);
     }
 
     @Override

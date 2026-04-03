@@ -56,6 +56,9 @@ tile.kekztech_lapotronicenergyunit_block.6.name=空电容(-)
 tile.kekztech_lapotronicenergyunit_block.7.name=兰波顿电容(EV)
 tile.kekztech_lapotronicenergyunit_block.desc=兰波顿超级电容库的组成部分
 
+# -------- Lapotronic Super Capacitor Tooltip
+tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer=每 %s§7 电容器可支持高达 §c%s§7 EU/t 的无线能量提取
+
 # -------- Thaumium Reinforced Jar: Block
 tile.kekztech_thaumiumreinforcedjar_block.0.name=神秘源质罐子
 tile.kekztech_thaumiumreinforcedjar_block.3.name=神秘虚空罐子

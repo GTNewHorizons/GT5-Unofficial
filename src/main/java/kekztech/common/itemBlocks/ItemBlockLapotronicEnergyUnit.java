@@ -1,6 +1,7 @@
 package kekztech.common.itemBlocks;
 
 import static com.google.common.math.LongMath.pow;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -12,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.util.GTUtility;
 
 public class ItemBlockLapotronicEnergyUnit extends ItemBlock {
 
@@ -86,35 +86,35 @@ public class ItemBlockLapotronicEnergyUnit extends ItemBlock {
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        GTUtility.formatNumbers(IV_cap_storage)));
+                        formatNumber(IV_cap_storage)));
                 break;
             case 2:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        GTUtility.formatNumbers(LuV_cap_storage)));
+                        formatNumber(LuV_cap_storage)));
                 break;
             case 3:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        GTUtility.formatNumbers(ZPM_cap_storage)));
+                        formatNumber(ZPM_cap_storage)));
                 break;
             case 4:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        GTUtility.formatNumbers(UV_cap_storage)));
+                        formatNumber(UV_cap_storage)));
                 break;
             case 5:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        GTUtility.formatNumbers(UHV_cap_storage)));
+                        formatNumber(UHV_cap_storage)));
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer",
-                        GTUtility.formatNumbers(UHV_cap_eu_per_tick),
+                        formatNumber(UHV_cap_eu_per_tick),
                         GTValues.TIER_COLORS[9] + GTValues.VN[9]));
                 break;
             case 6:
@@ -124,39 +124,39 @@ public class ItemBlockLapotronicEnergyUnit extends ItemBlock {
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        GTUtility.formatNumbers(EV_cap_storage)));
+                        formatNumber(EV_cap_storage)));
                 break;
             case 8:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        GTUtility.formatNumbers(UEV_cap_storage)));
+                        formatNumber(UEV_cap_storage)));
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer",
-                        GTUtility.formatNumbers(UEV_cap_eu_per_tick),
+                        formatNumber(UEV_cap_eu_per_tick),
                         GTValues.TIER_COLORS[10] + GTValues.VN[10]));
                 break;
             case 9:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        GTUtility.formatNumbers(UIV_cap_storage)));
+                        formatNumber(UIV_cap_storage)));
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer",
-                        GTUtility.formatNumbers(UIV_cap_eu_per_tick),
+                        formatNumber(UIV_cap_eu_per_tick),
                         GTValues.TIER_COLORS[11] + GTValues.VN[11]));
                 break;
             case 10:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        GTUtility.formatNumbers(UMV_cap_storage)));
+                        formatNumber(UMV_cap_storage)));
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer",
-                        GTUtility.formatNumbers(UMV_cap_eu_per_tick),
+                        formatNumber(UMV_cap_eu_per_tick),
                         GTValues.TIER_COLORS[12] + GTValues.VN[12]));
                 break;
         }

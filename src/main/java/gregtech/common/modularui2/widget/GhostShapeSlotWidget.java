@@ -67,17 +67,15 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
     @Override
     public boolean onMouseScroll(UpOrDown scrollDirection, int amount) {
         if (isSelectorPanelOpen()) return true;
-        if (getSyncHandler() != null) {
-            MouseData mouseData = MouseData.create(scrollDirection.modifier);
-            getSyncHandler().syncToServer(PhantomItemSlotSH.SYNC_SCROLL, mouseData::writeToPacket);
-        }
+        MouseData mouseData = MouseData.create(scrollDirection.modifier);
+        getSyncHandler().syncToServer(PhantomItemSlotSH.SYNC_SCROLL, mouseData::writeToPacket);
         return true;
     }
 
     @Override
     public PhantomItemSlot slot(ModularSlot slot) {
         shapeSyncHandler = new GhostShapeSyncHandler(slot, hatch);
-        setSyncHandler(shapeSyncHandler);
+        setSyncOrValue(shapeSyncHandler);
         return this;
     }
 
@@ -103,7 +101,7 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
 
     private IPanelHandler buildSelectorPanel() {
 
-        return syncManager.panel("shapeSlotPanel", (mainPanel, player) -> {
+        return syncManager.syncedPanel("shapeSlotPanel", true, (mainPanel, player) -> {
             ModularPanel panel = GTGuis.createPopUpPanel(GUI_ID);
             return new SelectItemGuiBuilder(panel, Arrays.asList(MTEHatchExtrusion.extruderShapes))
                 .setHeaderItem(hatch.getStackForm(1))
@@ -112,13 +110,13 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
                 .setOnSelectedClientAction((selected, mouseData) -> {
                     shapeSyncHandler.setSelectedIndex(selected);
                     if (mouseData.shift) {
-                        panel.animateClose();
+                        panel.closeIfOpen();
                     }
                 })
                 .setAllowDeselected(false)
                 .setCurrentItemSlotOverlay(GTGuiTextures.OVERLAY_SLOT_EXTRUDER_SHAPE)
                 .build();
-        }, true);
+        });
     }
 
     @NotNull

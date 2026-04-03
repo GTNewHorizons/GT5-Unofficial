@@ -3,7 +3,6 @@ package gregtech.common.render.items;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
@@ -13,12 +12,11 @@ import org.lwjgl.opengl.GL11;
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import gregtech.api.items.MetaGeneratedItem;
+import gregtech.common.config.Client;
 
 public class GlitchEffectMetaItemRenderer implements IItemRenderer {
 
     public Random rand = new Random();
-    int[] red = new int[] { 255, 50, 50, 192 };
-    int[] cyan = new int[] { 0, 220, 220, 160 };
 
     final long frameTimeNanos = 10_000_000L;
     final int loopFrameCount = 200;
@@ -30,9 +28,10 @@ public class GlitchEffectMetaItemRenderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(final ItemStack item, final ItemRenderType type) {
-        return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON
-            || type == ItemRenderType.INVENTORY
-            || type == ItemRenderType.ENTITY;
+        return Client.render.renderGlitchFancy
+            && (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON
+                || type == ItemRenderType.INVENTORY
+                || type == ItemRenderType.ENTITY);
 
     }
 
@@ -46,8 +45,6 @@ public class GlitchEffectMetaItemRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(final ItemRenderType type, final ItemStack item, final Object... data) {
-        GL11.glPushMatrix();
-
         if (item.getItem() instanceof MetaGeneratedItem mgItem) {
             IIcon[] icons = mgItem.mIconList[item.getItemDamage() - mgItem.mOffset];
             if (icons != null && icons.length > 0 && icons[0] != null) {
@@ -69,32 +66,12 @@ public class GlitchEffectMetaItemRenderer implements IItemRenderer {
 
                 if (type == ItemRenderType.INVENTORY && timing) {
                     GL11.glDisable(GL11.GL_DEPTH_TEST);
-                    applyGlitchEffect(type, offsetCyan, cyan, icons[0]);
+                    GlitchEffectRenderer.applyCyanGlitchEffect(type, offsetCyan, icons[0]);
                     GL11.glEnable(GL11.GL_DEPTH_TEST);
-                    applyGlitchEffect(type, offsetRed, red, icons[0]);
+                    GlitchEffectRenderer.applyRedGlitchEffect(type, offsetRed, icons[0]);
                 }
                 GL11.glDisable(GL11.GL_BLEND);
             }
         }
-
-        GL11.glPopMatrix();
     }
-
-    private void applyGlitchEffect(ItemRenderType type, double offset, int[] color, IIcon... icons) {
-        for (IIcon icon : icons) {
-            if (icon == null) continue;
-            Tessellator t = Tessellator.instance;
-
-            if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-                t.startDrawingQuads();
-                t.setColorRGBA_F(color[0] / 255.0F, color[1] / 255.0F, color[2] / 255.0F, color[3] / 255.0F);
-                t.addVertexWithUV(0 + offset, 0 + offset, 0, icon.getMinU(), icon.getMinV());
-                t.addVertexWithUV(0 + offset, 16 + offset, 0, icon.getMinU(), icon.getMaxV());
-                t.addVertexWithUV(16 + offset, 16 + offset, 0, icon.getMaxU(), icon.getMaxV());
-                t.addVertexWithUV(16 + offset, 0 + offset, 0, icon.getMaxU(), icon.getMinV());
-                t.draw();
-            }
-        }
-    }
-
 }

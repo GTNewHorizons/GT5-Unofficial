@@ -143,6 +143,9 @@ public class ProcessingLogic {
      *         cached successfully. {@code false} if there is no recipe found.
      */
     public boolean tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern inv) {
+        // call getCurrentRecipeMap here to clear dualInv recipe cache if recipe map changes
+        RecipeMap<?> recipeMap = getCurrentRecipeMap();
+
         if (!inv.shouldBeCached()) {
             return true;
         }
@@ -155,10 +158,9 @@ public class ProcessingLogic {
 
         // get recipes from the pattern
         GTDualInputPattern inputs = inv.getPatternInputs();
-        setInputItems(inputs.inputItems);
+        setInputItems(prepareCatalyst(inputs.inputItems));
         setInputFluids(inputs.inputFluid);
-        Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap())
-            .collect(Collectors.toCollection(LinkedHashSet::new));
+        Set<GTRecipe> recipes = findRecipeMatches(recipeMap).collect(Collectors.toCollection(LinkedHashSet::new));
 
         // reset the status
         setInputItems();
@@ -383,7 +385,7 @@ public class ProcessingLogic {
         if (inputFluids == null) {
             inputFluids = GTValues.emptyFluidStackArray;
         }
-
+        inputItems = prepareCatalyst(inputItems);
         if (activeDualInv != null) {
             Set<GTRecipe> matchedRecipes = dualInvWithPatternToRecipeCache.get(activeDualInv);
             for (GTRecipe matchedRecipe : matchedRecipes) {
@@ -392,8 +394,12 @@ public class ProcessingLogic {
                     return foundResult.checkRecipeResult;
                 }
             }
+
+            // recipe cache does not match, this might be caused by changes of return value of
+            // prepareCatalyst(ItemStack[])
+            // so clear the cache and proceed, the new cache will be generated in the next recipe check
+            dualInvWithPatternToRecipeCache.remove(activeDualInv);
             activeDualInv = null;
-            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (isRecipeLocked && recipeLockableMachine != null && recipeLockableMachine.getSingleRecipeCheck() != null) {
@@ -573,6 +579,14 @@ public class ProcessingLogic {
     @Nonnull
     protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    /**
+     * Add some catalyst items into input items array, like Milling Ball or Chemical Plant Catalyst.
+     * Do not modify, return a new array if something is changed.
+     */
+    protected ItemStack[] prepareCatalyst(ItemStack[] inputs) {
+        return inputs;
     }
 
     // endregion

@@ -44,6 +44,7 @@ import ggfab.mte.MTELinkedInputBus;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -108,6 +109,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     protected static int PLASMA_TECHNETIUM_USAGE = 250;
     /** Usage of plutonium 241 plasma per mining operation */
     protected static int PLASMA_PLUTONIUM241_USAGE = 150;
+
+    @Override
+    protected long getAvailableData_EM() {
+        if (eInputData.isEmpty()) return this.parent.getAvailableDataForModules();
+        return super.getAvailableData_EM();
+    }
 
     /* Size of the whitelist in stacks **/
     protected static int WHITELIST_SIZE = 64;
@@ -279,7 +286,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         mPollution = 0;
         mOutputItems = null;
         mOutputFluids = null;
-        List<FluidStack> inputFluids = getStoredFluids();
+        List<FluidStack> inputFluids = new ArrayList<>();
+        inputFluids.addAll(parent.getStoredFluids());
+        inputFluids.addAll(this.getStoredFluids());
         if (inputFluids.isEmpty()) {
             return SimpleCheckRecipeResult.ofFailure("no_plasma");
         }
@@ -317,6 +326,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             validatedInputs.add(controllerSlot);
         }
         Map<GTUtility.ItemId, ItemStack> inputsFromME = new HashMap<>();
+
         for (MTEHatchInputBus inputBus : validMTEList(mInputBusses)) {
             IGregTechTileEntity tileEntity = inputBus.getBaseMetaTileEntity();
             boolean isMEBus = inputBus instanceof MTEHatchInputBusME;
@@ -449,39 +459,35 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         Map<GTUtility.ItemId, Long> outputs = new HashMap<>();
 
         int totalChance = 0;
-        if (tRecipe.mChances == null) {
+        final int[] mOutputChances;
+        if (tRecipe.mOutputChances == null) {
             totalChance = tRecipe.mOutputs.length * 10000;
+            mOutputChances = new int[tRecipe.mOutputs.length];
+            Arrays.fill(mOutputChances, 10000);
         } else {
-            for (int mChance : tRecipe.mChances) totalChance += mChance;
+            mOutputChances = tRecipe.mOutputChances;
+            for (int mChance : mOutputChances) totalChance += mChance;
         }
 
-        try {
-            for (int i = 0; i < data.maxSize * parallels; i++) {
-                int bonusStackChance = 0;
-                if (i >= data.minSize * parallels) {
-                    bonusStackChance = getBonusStackChance(availablePlasmaTier);
-                }
-                if (i < data.minSize * parallels || bonusStackChance > XSTR.XSTR_INSTANCE.nextInt(10000)) {
-                    int random = XSTR.XSTR_INSTANCE.nextInt(totalChance);
-                    int currentChance = 0;
-                    for (int j = 0; j < tRecipe.mChances.length; j++) {
-                        currentChance += tRecipe.mChances[j];
-                        if (random <= currentChance) {
-                            ItemStack generatedOre = tRecipe.mOutputs[j];
-                            if (configuredOres == null || configuredOres.isEmpty()
-                                || isWhitelisted == configuredOres.contains(getOreString(generatedOre))) {
-                                outputs.merge(
-                                    GTUtility.ItemId.createNoCopy(generatedOre),
-                                    (long) generatedOre.stackSize,
-                                    Long::sum);
-                            }
-                            break;
+        final int bonusStackChance = getBonusStackChance(availablePlasmaTier);
+        for (int i = 0; i < data.maxSize * parallels; i++) {
+            if (i < data.minSize * parallels || bonusStackChance > XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                int random = XSTR.XSTR_INSTANCE.nextInt(totalChance);
+                for (int j = 0; j < mOutputChances.length; j++) {
+                    random -= mOutputChances[j];
+                    if (random < 0) {
+                        ItemStack generatedOre = tRecipe.mOutputs[j];
+                        if (configuredOres == null || configuredOres.isEmpty()
+                            || isWhitelisted == configuredOres.contains(getOreString(generatedOre))) {
+                            outputs.merge(
+                                GTUtility.ItemId.createNoCopy(generatedOre),
+                                (long) generatedOre.stackSize,
+                                Long::sum);
                         }
+                        break;
                     }
                 }
             }
-        } catch (Exception ignored) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         plasma.amount = (int) Math.max(
@@ -501,8 +507,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
         lEUt = (long) -tRecipe.mEUt * parallels;
         eAmpereFlow = 1;
-        // TODO: Implement way to get computation from master controller. Or maybe keep it this way so
-        // people can route computation to their liking?
         eRequiredData = (int) Math.ceil(data.computation * parallels * compModifier);
         mMaxProgresstime = getRecipeTime(tRecipe.mDuration, availablePlasmaTier);
         mEfficiencyIncrease = 10000;
@@ -957,7 +961,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     }
 
     /** Texture that will be displayed on the side of the module */
-    protected static Textures.BlockIcons.CustomIcon engraving;
+    protected static IIconContainer engraving;
 
     /**
      * Get the texture of this controller
@@ -988,7 +992,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        engraving = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_SIDE_MINER_MODULE");
+        engraving = Textures.BlockIcons.custom("iconsets/OVERLAY_SIDE_MINER_MODULE");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -1063,6 +1067,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
          *
          * @return Number of possible parallels
          */
+        @Override
         protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
         }
@@ -1162,6 +1167,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
          *
          * @return Number of possible parallels
          */
+        @Override
         protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
         }
@@ -1261,6 +1267,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
          *
          * @return Number of possible parallels
          */
+        @Override
         protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
         }

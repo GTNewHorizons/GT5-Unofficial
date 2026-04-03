@@ -1,5 +1,7 @@
 package gtnhlanth.common.tileentity.recipe.beamline;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.List;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -24,6 +26,7 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
+    @Override
     public void drawDescription(RecipeDisplayInfo recipeInfo) {
         drawEnergyInfo(recipeInfo);
         // drawDurationInfo(recipeInfo);
@@ -84,17 +87,15 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
 
     // todo: use an OverclockDescriber here
     private String getEUtDisplay(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted(
-            "GT5U.nei.display.usage",
-            GTUtility.formatNumbers(calculator.getConsumption()),
-            "");
+        return StatCollector
+            .translateToLocalFormatted("GT5U.nei.display.usage", formatNumber(calculator.getConsumption()), "");
     }
 
     private String getVoltageString(OverclockCalculator calculator) {
         long voltage = computeVoltageForEURate(calculator.getConsumption());
         return StatCollector.translateToLocalFormatted(
             "GT5U.nei.display.voltage",
-            GTUtility.formatNumbers(voltage),
+            formatNumber(voltage),
             GTUtility.getTierNameWithParentheses(voltage));
     }
 
@@ -103,7 +104,7 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
     }
 
     private String getAmperageString(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", GTUtility.formatNumbers(1));
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", formatNumber(1));
     }
 
 }

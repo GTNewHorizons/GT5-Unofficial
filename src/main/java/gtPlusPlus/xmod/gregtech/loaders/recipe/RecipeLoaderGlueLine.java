@@ -330,7 +330,7 @@ public class RecipeLoaderGlueLine {
             .itemOutputs(ItemList.SFMixture.get(32))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(100))
             .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -342,7 +342,7 @@ public class RecipeLoaderGlueLine {
             .itemOutputs(ItemList.SFMixture.get(64))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(100))
             .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -437,7 +437,7 @@ public class RecipeLoaderGlueLine {
                 .itemOutputs(getModItem(Mods.GalaxySpace.ID, "item.ThermalClothT2", 1))
                 .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(576))
                 .duration(30 * SECONDS)
-                .eut(1024)
+                .eut(TierEU.RECIPE_EV / 2)
                 .addTo(assemblerRecipes);
 
         }

@@ -48,12 +48,11 @@ import appeng.me.GridAccessException;
 import appeng.me.cache.helpers.TunnelCollection;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.parts.p2p.PartP2PSound;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.recipe.BasicUIProperties;
@@ -62,7 +61,7 @@ import gregtech.api.util.GTMusicSystem;
 import gregtech.common.gui.modularui.UIHelper;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
-public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, ISoundP2PHandler {
+public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandler {
 
     // Stored state
     public UUID jukeboxUuid = UNSET_UUID;
@@ -176,7 +175,7 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
                 .format("Headphones work anywhere, in %sany dimension", EnumChatFormatting.WHITE);
         });
         strings.add(String.format("Cost: %s%d EU/t", EnumChatFormatting.WHITE, BalanceMath.eutUsage(aTier)));
-        strings.add(GTValues.AuthorEigenRaven);
+        strings.add(GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorEigenRaven));
         return strings.toArray(new String[0]);
     }
 
@@ -249,8 +248,8 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
                 resource = mrmp.getMusicRecordResource(mInventory[getInputSlot() + playbackSlot]);
                 playPath = resource;
             } else {
-                resource = record.getRecordResource(record.recordName);
-                playPath = new ResourceLocation(resource.getResourceDomain(), "records." + resource.getResourcePath());
+                resource = record.getRecordResource("records." + record.recordName);
+                playPath = resource;
             }
             currentlyPlaying = record;
             // Assume a safe disc duration of 500 seconds if not known in the registry
@@ -341,10 +340,8 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
                         resource = mrmp.getMusicRecordResource(mInventory[getInputSlot() + playbackSlot]);
                         playPath = resource;
                     } else {
-                        resource = record.getRecordResource(record.recordName);
-                        playPath = new ResourceLocation(
-                            resource.getResourceDomain(),
-                            "records." + resource.getResourcePath());
+                        resource = record.getRecordResource("records." + record.recordName);
+                        playPath = resource;
                     }
                     currentlyPlaying = record;
                     musicSource.setRecord(playPath);

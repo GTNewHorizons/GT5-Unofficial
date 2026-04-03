@@ -16,15 +16,12 @@ public final class GTGuiThemes {
         .panel(GTTextureIds.BACKGROUND_STANDARD)
         .itemSlot(GTTextureIds.SLOT_ITEM_STANDARD)
         .fluidSlot(GTTextureIds.SLOT_FLUID_STANDARD)
-        .color(Dyes.MACHINE_METAL.toInt())
+        .color(Dyes.GUI_METAL.toInt())
         .textColor(0x404040)
         .textField(Dyes.dyeWhite.toInt())
         .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0x404040)
         .button(GTTextureIds.BUTTON_STANDARD)
-        .simpleToggleButton(
-            GTTextureIds.BUTTON_STANDARD,
-            GTTextureIds.BUTTON_STANDARD_PRESSED,
-            Dyes.MACHINE_METAL.toInt())
+        .simpleToggleButton(GTTextureIds.BUTTON_STANDARD, GTTextureIds.BUTTON_STANDARD_PRESSED, Dyes.GUI_METAL.toInt())
         .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_STANDARD)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE.getFullName(), GTTextureIds.BACKGROUND_TITLE_STANDARD)
         .themedOverlayItemSlot(
@@ -324,5 +321,22 @@ public final class GTGuiThemes {
             GTWidgetThemes.BUTTON_COVER_TAB_DISABLED.getFullName(),
             GTTextureIds.BUTTON_COVER_TAB_DISABLED_PRIMITIVE)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
+        .build();
+
+    public static final GTGuiTheme NANOCHIP = GTGuiTheme.builder("nanochip")
+        .parent(STANDARD)
+        .panel(GTTextureIds.BACKGROUND_NANOCHIP)
+        .itemSlot(GTTextureIds.SLOT_ITEM_NANOCHIP)
+        .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_NANOCHIP)
+        .themedTexture(GTWidgetThemes.BACKGROUND_TITLE.getFullName(), GTTextureIds.BACKGROUND_TITLE_NANOCHIP)
+        .button(GTTextureIds.BUTTON_NANOCHIP)
+        .simpleToggleButton(
+            GTTextureIds.BUTTON_NANOCHIP,
+            GTTextureIds.BUTTON_NANOCHIP_PRESSED,
+            Dyes.MACHINE_METAL.toInt())
+        .color(Dyes.dyeWhite.toInt())
+        .textColor(new Color(0xFFDBE0).getRGB())
+        .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), new Color(0xFFDBE0).getRGB())
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_LOGO_NANOCHIP)
         .build();
 }

@@ -68,7 +68,6 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAgrichemBase;
-import gtPlusPlus.plugin.agrichem.item.algae.ItemAlgaeBase;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
@@ -191,8 +190,6 @@ public final class ModItems {
         GregtechItemList.AirFilter_Tier2.set(new ItemStack(airFilter, 1, 1));
         GregtechItemList.LavaFilter.set(new ItemLavaFilter());
 
-        GregtechItemList.Algae.set(new ItemAlgaeBase());
-
         // Agrichem Items
         Item agrichemItem = new ItemAgrichemBase();
         GregtechItemList.AlgaeBiomass.set(new ItemStack(agrichemItem));
@@ -306,10 +303,6 @@ public final class ModItems {
             .registerOre("catalystBiologicalIntelligence");
         GregtechItemList.TemporalHarmonyCatalyst.set(new ItemStack(genericChemItem, 1, 28))
             .registerOre("catalystTemporalHarmony");
-        GregtechItemList.ParticleAccelerationCatalyst.set(new ItemStack(genericChemItem, 1, 31))
-            .registerOre("catalystParticleAcceleration");
-        GregtechItemList.SynchrotronCapableCatalyst.set(new ItemStack(genericChemItem, 1, 32))
-            .registerOre("catalystSynchrotronCapable");
         GregtechItemList.AlgagenicGrowthPromoterCatalyst.set(new ItemStack(genericChemItem, 1, 33))
             .registerOre("catalystAlgagenicGrowthPromoter");
         GregtechItemList.HellishForceCatalyst.set(new ItemStack(genericChemItem, 1, 34))
@@ -725,33 +718,6 @@ public final class ModItems {
         GregtechItemList.SmallAmmoniumNitrateDust.set(ammoniumNitrate[1]);
         GregtechItemList.TinyAmmoniumNitrateDust.set(ammoniumNitrate[2]);
 
-        // Farm Animal Fun
-        // Nitrogen, Ammonium Nitrate, Phosphates, Calcium, Copper, Carbon
-        Item[] manureByproducts = ItemUtils.generateSpecialUseDusts(
-            "ManureByproducts",
-            "Manure Byproduct",
-            "(N2H4O3)N2P2Ca3CuC8",
-            Utils.rgbtoHexValue(110, 75, 25));
-        GregtechItemList.ManureByproductsDust.set(manureByproducts[0]);
-        GregtechItemList.SmallManureByproductsDust.set(manureByproducts[1]);
-        GregtechItemList.TinyManureByproductsDust.set(manureByproducts[2]);
-
-        // Basically Guano
-        Item[] organicFertilizer = ItemUtils.generateSpecialUseDusts(
-            "OrganicFertilizer",
-            "Organic Fertilizer",
-            "Ca5(PO4)3(OH)",
-            Utils.rgbtoHexValue(240, 240, 240));
-        GregtechItemList.OrganicFertilizerDust.set(organicFertilizer[0]);
-        GregtechItemList.SmallOrganicFertilizerDust.set(organicFertilizer[1]);
-        GregtechItemList.TinyOrganicFertilizerDust.set(organicFertilizer[2]);
-
-        // Dirt Dust :)
-        Item[] dirt = ItemUtils.generateSpecialUseDusts("Dirt", "Dried Earth", Utils.rgbtoHexValue(65, 50, 15));
-        GregtechItemList.DriedEarthDust.set(dirt[0]);
-        GregtechItemList.SmallDriedEarthDust.set(dirt[1]);
-        GregtechItemList.TinyDriedEarthDust.set(dirt[2]);
-
         // Zirconium
         // Cinter Pellet.
         GregtechItemList.ZirconiumPellet.set(
@@ -770,10 +736,6 @@ public final class ModItems {
         GregtechItemList.CookedZrCl4Dust.set(cookedZrCl4[0]);
         GregtechItemList.SmallCookedZrCl4Dust.set(cookedZrCl4[1]);
         GregtechItemList.TinyCookedZrCl4Dust.set(cookedZrCl4[2]);
-
-        // Load Tree Farmer
-        ItemUtils.generateSpecialUseDusts("UN18Fertiliser", "UN-18 Fertiliser", Utils.rgbtoHexValue(60, 155, 60));
-        ItemUtils.generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55));
 
         GregtechItemList.Neptunium238Dust.set(
             new DustDecayable(

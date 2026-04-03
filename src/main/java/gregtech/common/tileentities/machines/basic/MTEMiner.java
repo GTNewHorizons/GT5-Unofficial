@@ -24,7 +24,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.recipe.BasicUIProperties;
@@ -34,7 +33,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.misc.DrillingLogicDelegate;
 import gregtech.common.misc.IDrillingLogicDelegateOwner;
 
-public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateOwner, IAddUIWidgets {
+public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateOwner {
 
     static final int[] RADIUS = { 8, 8, 16, 24, 32 }; // Miner radius per tier
     static final int[] SPEED = { 160, 160, 80, 40, 20 }; // Miner cycle time per tier
@@ -50,6 +49,16 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
 
     private final int mSpeed;
 
+    private static String[] MTEMinerTooltip(int aTier) {
+        return new String[] { StatCollector.translateToLocal(("GT5U.tooltip.miner.0")),
+            StatCollector.translateToLocal("GT5U.tooltip.miner.1"),
+            StatCollector.translateToLocal("GT5U.tooltip.miner.2"),
+            StatCollector.translateToLocalFormatted("GT5U.tooltip.miner.3", ENERGY[aTier], SPEED[aTier] / 20),
+            StatCollector
+                .translateToLocalFormatted("GT5U.tooltip.miner.4", (RADIUS[aTier] * 2 + 1), (RADIUS[aTier] * 2 + 1)),
+            StatCollector.translateToLocalFormatted("GT5U.tooltip.miner.5", aTier) };
+    }
+
     public MTEMiner(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -57,59 +66,55 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
             aNameRegional,
             aTier,
             1,
-            new String[] { "Digging ore instead of you", "Use Screwdriver to regulate work area",
-                "Use Soft Mallet to disable and retract the pipe",
-                String.format("%d EU/t, %d sec per block, no stuttering", ENERGY[aTier], SPEED[aTier] / 20),
-                String.format("Maximum work area %dx%d", (RADIUS[aTier] * 2 + 1), (RADIUS[aTier] * 2 + 1)),
-                String.format("Small ore fortune bonus of %d", aTier) },
+            MTEMinerTooltip(aTier),
             2,
             2,
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_ACTIVE")),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/miner/OVERLAY_SIDE_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_ACTIVE_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/miner/OVERLAY_SIDE_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE")),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/miner/OVERLAY_SIDE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/miner/OVERLAY_SIDE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_ACTIVE")),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/miner/OVERLAY_FRONT_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_ACTIVE_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/miner/OVERLAY_FRONT_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT")),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/miner/OVERLAY_FRONT")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/miner/OVERLAY_FRONT_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_ACTIVE")),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/miner/OVERLAY_TOP_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_ACTIVE_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/miner/OVERLAY_TOP_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP")),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/miner/OVERLAY_TOP")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/miner/OVERLAY_TOP_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE")),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM")),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/miner/OVERLAY_BOTTOM")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/miner/OVERLAY_BOTTOM_GLOW"))
                     .glow()
                     .build()));
         mSpeed = SPEED[aTier];
@@ -171,13 +176,8 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
                 }
             }
 
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                String.format(
-                    "%s %dx%d",
-                    StatCollector.translateToLocal("GT5U.machines.workareaset"),
-                    (radiusConfig * 2 + 1),
-                    (radiusConfig * 2 + 1)));
+            GTUtility
+                .sendChatTrans(aPlayer, "GT5U.machines.workareaset.s", (radiusConfig * 2 + 1), (radiusConfig * 2 + 1));
 
             // Rebuild ore cache after change config
             fillOreList(getBaseMetaTileEntity());

@@ -63,7 +63,6 @@ import static goodgenerator.loader.Loaders.radiationProtectionSteelFrame;
 import static goodgenerator.loader.Loaders.radioactiveWaste;
 import static goodgenerator.loader.Loaders.rawAtomicSeparationCatalyst;
 import static goodgenerator.loader.Loaders.rawCylinder;
-import static goodgenerator.loader.Loaders.saltyRoot;
 import static goodgenerator.loader.Loaders.specialCeramics;
 import static goodgenerator.loader.Loaders.specialCeramicsPlate;
 import static goodgenerator.loader.Loaders.speedingPipe;
@@ -122,7 +121,6 @@ public final class ItemRefer {
     public static ItemRefer Fluid_Storage_Core_T9 = getItemStack(fluidCore, 8);
     public static ItemRefer Fluid_Storage_Core_T10 = getItemStack(fluidCore, 9);
     public static ItemRefer High_Energy_Mixture = getItemStack(highEnergyMixture);
-    public static ItemRefer Salty_Root = getItemStack(saltyRoot);
     public static ItemRefer HiC_T1 = getItemStack(huiCircuit, 0);
     public static ItemRefer HiC_T2 = getItemStack(huiCircuit, 1);
     public static ItemRefer HiC_T3 = getItemStack(huiCircuit, 2);

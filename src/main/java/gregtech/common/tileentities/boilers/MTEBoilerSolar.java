@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.boilers;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static mcp.mobius.waila.api.SpecialChars.GOLD;
 
 import java.util.List;
@@ -18,25 +19,21 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTSplit;
 import gregtech.common.config.MachineStats;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBoilerSolar extends MTEBoiler {
 
     public static final String LPS_FMT = "%s L/s";
-    private static final String localizedDescFormat = GTLanguageManager.addStringLocalization(
-        "gt.blockmachines.boiler.solar.desc.format",
-        "Steam Power by the Sun%n" + "Produces %sL of Steam per second%n"
-            + "Calcifies over time, reducing Steam output to %sL/s%n"
-            + "Break and replace to descale");
     protected int calcificationTicks = MachineStats.bronzeSolarBoiler.calcificationTicks;
     protected int cooldownTicks = MachineStats.bronzeSolarBoiler.cooldownTicks;
     protected int maxOutputPerSecond = MachineStats.bronzeSolarBoiler.maxOutputPerSecond;
@@ -59,12 +56,10 @@ public class MTEBoilerSolar extends MTEBoiler {
 
     @Override
     public String[] getDescription() {
-        return String
-            .format(
-                localizedDescFormat,
-                GTUtility.formatNumbers(getMaxOutputPerSecond()),
-                GTUtility.formatNumbers(getMinOutputPerSecond()))
-            .split("\\R");
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.boiler.solar.desc",
+            formatNumber(getMaxOutputPerSecond()),
+            formatNumber(getMinOutputPerSecond()));
     }
 
     public int getMinOutputPerSecond() {
@@ -245,28 +240,26 @@ public class MTEBoilerSolar extends MTEBoiler {
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.boiler_solar.heat",
-                String.format(
-                    EnumChatFormatting.GREEN + "%s %%" + EnumChatFormatting.RESET,
-                    GTUtility.formatNumbers(getHeatCapacityPercent())),
-                String.format(
-                    EnumChatFormatting.RED + "%s s" + EnumChatFormatting.RESET,
-                    GTUtility.formatNumbers(getHotTimeSeconds()))),
+        return new String[] { StatCollector.translateToLocalFormatted(
+            "GT5U.infodata.boiler_solar.heat",
+            String.format(
+                EnumChatFormatting.GREEN + "%s %%" + EnumChatFormatting.RESET,
+                formatNumber(getHeatCapacityPercent())),
+            String
+                .format(EnumChatFormatting.RED + "%s s" + EnumChatFormatting.RESET, formatNumber(getHotTimeSeconds()))),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.boiler_solar.output",
                 String.format(
                     EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET,
-                    GTUtility.formatNumbers(getMinOutputPerSecond())),
+                    formatNumber(getMinOutputPerSecond())),
                 String.format(
                     EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET,
-                    GTUtility.formatNumbers(getMaxOutputPerSecond()))),
+                    formatNumber(getMaxOutputPerSecond()))),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.boiler_solar.current_output",
                 String.format(
                     EnumChatFormatting.YELLOW + LPS_FMT + EnumChatFormatting.RESET,
-                    GTUtility.formatNumbers(getProductionPerSecond()))) };
+                    formatNumber(getProductionPerSecond()))) };
     }
 
     public int getHeatCapacityPercent() {

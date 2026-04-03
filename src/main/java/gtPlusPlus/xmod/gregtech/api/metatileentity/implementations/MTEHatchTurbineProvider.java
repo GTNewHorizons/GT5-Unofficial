@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.GTMod;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -22,9 +23,9 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTETurbineHousingGui;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
+import gtPlusPlus.core.util.Utils;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchTurbineProvider extends MTEHatchInputBus {
 
     public MTEHatchTurbineProvider(int aID, String aName, String aNameRegional, int aTier) {
@@ -41,22 +42,13 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTETurbineHousingGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] { "An automation port for Large Turbines",
-            "Will attempt once per 1200 ticks to fill the turbine slot of it's parent turbine",
-            "You may adjust this with a screwdriver", "Hold shift to adjust in finer amounts",
-            "Hold control to adjust direction", "Left Click with Screwdriver to reset",
-            "This module assumes the entire turbine is in the same Chunk", GTPPCore.GT_Tooltip.get() };
+        return Utils.splitLocalizedWithAlkalus("gt.blockmachines.input_bus_turbine.desc");
     }
 
     private MTELargeTurbine mParent = null;
@@ -166,12 +158,12 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (aPlayer != null) {
-            if (KeyboardUtils.isCtrlKeyDown()) {
+            if (GTMod.proxy.CTRL_KEYBIND.isKeyDown(aPlayer)) {
                 mDescending = !mDescending;
                 GTUtility.sendChatToPlayer(aPlayer, "Direction: " + (mDescending ? "DOWN" : "UP"));
             } else {
                 int aAmount = 0;
-                if (KeyboardUtils.isShiftKeyDown()) {
+                if (aPlayer.isSneaking()) {
                     aAmount = 10;
                 } else {
                     aAmount = 100;

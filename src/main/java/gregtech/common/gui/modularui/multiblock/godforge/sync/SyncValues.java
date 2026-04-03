@@ -203,11 +203,12 @@ public class SyncValues {
         "fog.sync.star_color_clicked",
         data -> {
             MutableObject<ForgeOfGodsStarColor> mut = new MutableObject<>(data.getStarColors().newTemplateColor());
-            return new GenericSyncValue<>(
+
+            return new GenericSyncValue<>(ForgeOfGodsStarColor.class,
                 mut::getValue,
                 mut::setValue,
                 ForgeOfGodsStarColor::readFromBuffer,
-                ForgeOfGodsStarColor::writeToBuffer) {
+                ForgeOfGodsStarColor::writeToBuffer, null, null, false) {
 
                 @Override
                 public void setValue(ForgeOfGodsStarColor value, boolean setSource, boolean sync) {

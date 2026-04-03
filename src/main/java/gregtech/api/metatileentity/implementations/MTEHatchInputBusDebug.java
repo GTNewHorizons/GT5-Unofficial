@@ -1,11 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -14,15 +10,18 @@ import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputBusDebugGui;
 
-public class MTEHatchInputBusDebug extends MTEHatchInputBus implements IConfigurationCircuitSupport {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEHatchInputBusDebug extends MTEHatchInputBus {
 
     private static final int SLOT_COUNT = 16;
     public final ItemStackHandler phantomHolder = new LimitingItemStackHandler(SLOT_COUNT, 1);
@@ -67,16 +66,10 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus implements IConfigur
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        super.onPostTick(aBaseMetaTileEntity, aTimer);
-    }
-
-    @Override
     public String[] getDescription() {
-        return new String[] { EnumChatFormatting.GRAY + "Stocks Items internally",
-            EnumChatFormatting.GRAY + "Configure Items in the UI",
-            EnumChatFormatting.GRAY + "Configured Items will not be consumed in processing",
-            EnumChatFormatting.ITALIC + "Who knew it was this easy???", "Author: " + GREEN + BOLD + "Chrom" };
+        return GTSplit.splitLocalizedWithSuffix(
+            "gt.blockmachines.input_bus_debug.desc",
+            GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorChrom));
     }
 
     @Override

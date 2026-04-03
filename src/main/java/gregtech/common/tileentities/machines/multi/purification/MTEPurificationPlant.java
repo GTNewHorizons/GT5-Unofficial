@@ -1,10 +1,10 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -142,9 +142,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = survivalBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 3, 6, 0, elementBudget, env, true);
         if (built == -1) {
-            GTUtility.sendChatToPlayer(
-                env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
+            GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done.water");
             return 0;
         }
         return built;
@@ -183,13 +181,13 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addInfo("Every recipe has a base chance of success. Success rate can be boosted")
             .addInfo("by using a portion of the target output as a secondary input")
             .addInfo(
-                EnumChatFormatting.RED + GTUtility.formatNumbers(WATER_BOOST_NEEDED_FLUID * 100)
+                EnumChatFormatting.RED + formatNumber(WATER_BOOST_NEEDED_FLUID * 100)
                     + "%"
                     + EnumChatFormatting.GRAY
                     + " of output yield will be consumed in exchange for an")
             .addInfo(
                 "additive " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(WATER_BOOST_BONUS_CHANCE * 100)
+                    + formatNumber(WATER_BOOST_BONUS_CHANCE * 100)
                     + "%"
                     + EnumChatFormatting.GRAY
                     + " increase to success")
@@ -257,7 +255,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
             .addStructureInfo("Requires water to be placed in the tank.")
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -416,8 +414,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         for (LinkedPurificationUnit unit : this.linkedUnits) {
             MTEPurificationUnitBase<?> metaTileEntity = unit.metaTileEntity();
             PurificationUnitStatus status = metaTileEntity.status();
-            // Unit needs to be online to be considered active.
-            if (status == PurificationUnitStatus.ONLINE) {
+            // Unit needs to be idle at first before active if it is active it will only check if running recipes.
+            if (status == PurificationUnitStatus.IDLE || status == PurificationUnitStatus.ACTIVE) {
                 // Perform recipe check for unit and start it if successful
                 if (metaTileEntity.doPurificationRecipeCheck()) {
                     unit.setActive(true);
@@ -498,7 +496,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         ret.add(
             translateToLocal("GT5U.multiblock.recipesDone") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
+                + formatNumber(recipesDone)
                 + EnumChatFormatting.RESET);
         // Show linked purification units and their status
         ret.add(translateToLocal("GT5U.infodata.purification_plant.linked_units"));
@@ -508,9 +506,13 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             PurificationUnitStatus status = unit.metaTileEntity()
                 .status();
             switch (status) {
-                case ONLINE -> {
+                case ACTIVE -> {
                     text = text + EnumChatFormatting.GREEN
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.online");
+                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.active");
+                }
+                case IDLE -> {
+                    text = text + EnumChatFormatting.GREEN
+                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.idle");
                 }
                 case DISABLED -> {
                     text = text + EnumChatFormatting.YELLOW

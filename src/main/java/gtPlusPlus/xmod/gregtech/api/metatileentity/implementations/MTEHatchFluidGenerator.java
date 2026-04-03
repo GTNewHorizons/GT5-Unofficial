@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import java.util.Arrays;
-import java.util.stream.Stream;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +16,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
 public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
@@ -43,14 +43,11 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
 
     @Override
     public synchronized String[] getDescription() {
-        return Stream
-            .concat(
-                Stream.of(
-                    mDescriptionArray[0],
-                    "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
-                    "Hatch Tier: " + GTUtility.getColoredTierNameFromTier(mTier)),
-                Arrays.stream(getCustomTooltip()))
-            .toArray(String[]::new);
+        return GTSplit.splitLocalizedFormattedWithSuffix(
+            "gt.blockmachines.input_hatch_generator.desc",
+            getCustomTooltip(),
+            formatNumber(getCapacity()),
+            GTUtility.getColoredTierNameFromTier(mTier));
     }
 
     @Override
@@ -71,11 +68,13 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
     @Override
     public abstract MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity);
 
+    @Override
     public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
         final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
+    @Override
     public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
         final ForgeDirection side, final ItemStack aStack) {
         return false;

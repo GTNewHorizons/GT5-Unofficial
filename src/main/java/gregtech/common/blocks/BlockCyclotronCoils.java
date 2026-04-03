@@ -7,22 +7,27 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.common.misc.GTStructureChannels;
 
+/**
+ * The base class for casings. Casings are the blocks that are mainly used to build multiblocks.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
+ */
 public class BlockCyclotronCoils extends BlockCasingsAbstract {
 
     public BlockCyclotronCoils() {
         super(ItemCasings.class, "gt.blockcasings.cyclotron_coils", MaterialCasings.INSTANCE, 16);
 
-        register(0, ItemList.Superconducting_Magnet_Solenoid_MV, "MV Solenoid Superconductor Coil");
-        register(1, ItemList.Superconducting_Magnet_Solenoid_HV, "HV Solenoid Superconductor Coil");
-        register(2, ItemList.Superconducting_Magnet_Solenoid_EV, "EV Solenoid Superconductor Coil");
-        register(3, ItemList.Superconducting_Magnet_Solenoid_IV, "IV Solenoid Superconductor Coil");
-        register(4, ItemList.Superconducting_Magnet_Solenoid_LuV, "LuV Solenoid Superconductor Coil");
-        register(5, ItemList.Superconducting_Magnet_Solenoid_ZPM, "ZPM Solenoid Superconductor Coil");
-        register(6, ItemList.Superconducting_Magnet_Solenoid_UV, "UV Solenoid Superconductor Coil");
-        register(7, ItemList.Superconducting_Magnet_Solenoid_UHV, "UHV Solenoid Superconductor Coil");
-        register(8, ItemList.Superconducting_Magnet_Solenoid_UEV, "UEV Solenoid Superconductor Coil");
-        register(9, ItemList.Superconducting_Magnet_Solenoid_UIV, "UIV Solenoid Superconductor Coil");
-        register(10, ItemList.Superconducting_Magnet_Solenoid_UMV, "UMV Solenoid Superconductor Coil");
+        register(0, ItemList.Superconducting_Magnet_Solenoid_MV);
+        register(1, ItemList.Superconducting_Magnet_Solenoid_HV);
+        register(2, ItemList.Superconducting_Magnet_Solenoid_EV);
+        register(3, ItemList.Superconducting_Magnet_Solenoid_IV);
+        register(4, ItemList.Superconducting_Magnet_Solenoid_LuV);
+        register(5, ItemList.Superconducting_Magnet_Solenoid_ZPM);
+        register(6, ItemList.Superconducting_Magnet_Solenoid_UV);
+        register(7, ItemList.Superconducting_Magnet_Solenoid_UHV);
+        register(8, ItemList.Superconducting_Magnet_Solenoid_UEV);
+        register(9, ItemList.Superconducting_Magnet_Solenoid_UIV);
+        register(10, ItemList.Superconducting_Magnet_Solenoid_UMV);
 
         for (int i = 0; i < 11; i++) {
             GTStructureChannels.SOLENOID.registerAsIndicator(new ItemStack(this, 1, i), i + 1);

@@ -35,7 +35,7 @@ public class WiremillRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Steel, 1))
             .itemOutputs(GTModHandler.getIC2Item("miningPipe", 1))
             .duration(10 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(wiremillRecipes);
     }
 }

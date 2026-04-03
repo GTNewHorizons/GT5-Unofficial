@@ -14,7 +14,7 @@ public class ModBlocks {
     public static final Map<String, Block> blocks = new HashMap<>();
 
     public static void init() {
-        for (String dimension : DimensionHelper.DimNameDisplayed) {
+        for (String dimension : DimensionHelper.getAllDisplayedNames()) {
             Block block = new BlockDimensionDisplay(dimension);
             GameRegistry.registerBlock(block, ItemDimensionDisplay.class, "blockDimensionDisplay_" + dimension);
             blocks.put(dimension, block);

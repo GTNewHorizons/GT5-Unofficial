@@ -36,7 +36,7 @@ public class FluidHeaterRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(6))
             .fluidOutputs(Materials.Steam.getGas(960))
             .duration(1 * SECONDS + 10 * TICKS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(fluidHeaterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -44,7 +44,7 @@ public class FluidHeaterRecipes implements Runnable {
             .fluidInputs(GTModHandler.getDistilledWater(6))
             .fluidOutputs(Materials.Steam.getGas(960))
             .duration(1 * SECONDS + 10 * TICKS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(fluidHeaterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -52,7 +52,7 @@ public class FluidHeaterRecipes implements Runnable {
             .fluidInputs(Materials.SeedOil.getFluid(16))
             .fluidOutputs(Materials.FryingOilHot.getFluid(16))
             .duration(16 * TICKS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(fluidHeaterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -60,7 +60,7 @@ public class FluidHeaterRecipes implements Runnable {
             .fluidInputs(Materials.FishOil.getFluid(16))
             .fluidOutputs(Materials.FryingOilHot.getFluid(16))
             .duration(16 * TICKS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(fluidHeaterRecipes);
         // Ca(CH3COO)2 = CH3COCH3 + CaO + CO2
 
@@ -69,7 +69,7 @@ public class FluidHeaterRecipes implements Runnable {
             .fluidInputs(Materials.CalciumAcetateSolution.getFluid(1_000))
             .fluidOutputs(Materials.Acetone.getFluid(1_000))
             .duration(4 * SECONDS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(fluidHeaterRecipes);
         // Fluid Sodium
 

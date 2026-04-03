@@ -94,14 +94,14 @@ public enum Panels {
 
         PanelSyncManager syncManager = hypervisor.getSyncManager(fromModule, fromPanel);
 
-        return syncManager.panel(getPanelId(fromModule, hypervisor), (p_syncManager, syncHandler) -> {
+        return syncManager.syncedPanel(getPanelId(fromModule, hypervisor), true, (p_syncManager, syncHandler) -> {
             ModularPanel panel = createPanel(fromModule, hypervisor);
             hypervisor.setModularPanel(fromModule, this, panel);
             hypervisor.setSyncManager(fromModule, this, p_syncManager);
 
             // noinspection ConstantConditions
             return panelSupplier.apply(hypervisor, fromModule);
-        }, true);
+        });
     }
 
     private ModularPanel createPanel(Modules<?> fromModule, SyncHypervisor hypervisor) {

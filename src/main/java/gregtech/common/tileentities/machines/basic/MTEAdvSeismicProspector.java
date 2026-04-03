@@ -3,7 +3,7 @@ package gregtech.common.tileentities.machines.basic;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SEISMIC_PROSPECTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.VOID;
+import static gregtech.api.enums.Textures.GlobalIcons.VOID;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 
 import java.util.ArrayList;

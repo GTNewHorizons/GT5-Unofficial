@@ -1,5 +1,6 @@
 package gtnhintergalactic.tile.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -117,6 +118,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     /** Cached fluid stack using for displaying the pumped fluid */
     private FluidStack fluid = new FluidStack(FluidRegistry.WATER, 0) {
 
+        @Override
         public String getLocalizedName() {
             return "None";
         }
@@ -163,7 +165,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.type"));
-        if (TooltipUtil.siphonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.siphonLoreText);
+        if (TooltipUtil.siphonLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.siphonLoreText));
         tt.addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc1"))
             .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc2"))
             .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc3"))
@@ -222,15 +224,24 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstone) {
         if (side == facing) {
-            if (active)
-                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_SIPHON),
-                    TextureFactory.of(IGTextures.SIPHON_OVERLAY_FRONT), TextureFactory.builder()
-                        .addIcon(IGTextures.SIPHON_OVERLAY_FRONT_ACTIVE_GLOW)
-                        .glow()
-                        .build() };
+            if (active) return new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_SIPHON), TextureFactory.builder()
+                    .addIcon(IGTextures.SIPHON_OVERLAY_FRONT)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(IGTextures.SIPHON_OVERLAY_FRONT_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_SIPHON),
-                TextureFactory.of(IGTextures.SIPHON_OVERLAY_FRONT), TextureFactory.builder()
+                TextureFactory.builder()
+                    .addIcon(IGTextures.SIPHON_OVERLAY_FRONT)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(IGTextures.SIPHON_OVERLAY_FRONT_GLOW)
+                    .extFacing()
                     .glow()
                     .build() };
         }
@@ -426,10 +437,10 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
         float x, float y, float z, ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             mChunkLoadingEnabled = !mChunkLoadingEnabled;
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 player,
-                mChunkLoadingEnabled ? GTUtility.trans("502", "Mining chunk loading enabled")
-                    : GTUtility.trans("503", "Mining chunk loading disabled"));
+                mChunkLoadingEnabled ? "GT5U.chat.driller_base.chunk_loading.enable"
+                    : "GT5U.chat.driller_base.chunk_loading.disabled");
             return true;
         }
         return super.onSolderingToolRightClick(side, wrenchingSide, player, x, y, z, aTool);
@@ -477,7 +488,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     public String[] getInfoData() {
         return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET, "Depth: " + YELLOW + depth + RESET,
             "Fluid: " + YELLOW + fluid.amount + RESET + "L/s " + BLUE + fluid.getLocalizedName() + RESET,
-            "EU/t required: " + YELLOW + GTUtility.formatNumbers(-mEUt) + RESET + " EU/t",
+            "EU/t required: " + YELLOW + formatNumber(-mEUt) + RESET + " EU/t",
             "Maintenance Status: " + (getRepairStatus() == getIdealStatus() ? GREEN + "Working perfectly" + RESET
                 : RED + "Has problems" + RESET),
             "---------------------------------------------" };

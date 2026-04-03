@@ -55,7 +55,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.render.TileEntityLaser;
+import gregtech.common.tileentities.render.RenderingTileEntityLaser;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
@@ -91,7 +91,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                 .build())
         .build();
 
-    protected TileEntityLaser renderer;
+    protected RenderingTileEntityLaser renderer;
     private int glassTier = -1;
     private MTEHatchDynamoTunnel laserSource = null;
     private int laserAmps = 0;
@@ -190,30 +190,22 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         ItemStack aTool) {
         stopAllRendering = !stopAllRendering;
         if (stopAllRendering) {
-            GTUtility.sendChatToPlayer(aPlayer, "Rendering off");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.rendering.off");
             if (renderer != null) renderer.setShouldRender(false);
-        } else GTUtility.sendChatToPlayer(aPlayer, "Rendering on");
+        } else GTUtility.sendChatTrans(aPlayer, "GT5U.chat.rendering.on");
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        } else {
+        if (!aPlayer.isSneaking()) {
             if (renderer != null) {
                 renderer.toggleRealism();
-                GTUtility.sendChatToPlayer(aPlayer, "Toggling realism!");
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.laser.engraver.toggling_realism");
                 return true;
             }
         }
-        return false;
+        return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
@@ -241,7 +233,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("Use screwdriver to disable laser rendering")
             .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
             .beginStructureBlock(5, 5, 5, false)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Laser Containment Casing", 35, false)
             .addCasingInfoExactly("Tungstensteel Frame Box", 9, false)
             .addCasingInfoExactly("Any Tiered Glass", 3, true)
@@ -280,7 +272,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         x = x + opposite.offsetX;
         y = y + opposite.offsetY;
         z = z + opposite.offsetZ;
-        if (w.getTileEntity(x, y, z) instanceof TileEntityLaser laser) {
+        if (w.getTileEntity(x, y, z) instanceof RenderingTileEntityLaser laser) {
             renderer = laser;
             renderer.setRotationFields(getExtendedFacing());
             return true;

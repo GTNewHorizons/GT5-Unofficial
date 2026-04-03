@@ -12,29 +12,31 @@ import gregtech.api.enums.Textures;
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
 public class BlockCasings9 extends BlockCasingsAbstract {
 
     public BlockCasings9() {
         super(ItemCasings.class, "gt.blockcasings9", MaterialCasings.INSTANCE, 16);
 
-        register(0, ItemList.Casing_Pipe_Polybenzimidazole, "PBI Pipe Casing");
-        register(1, ItemList.Casing_Vent_T2, "Advanced Filter Casing", translatedText("gt.casings.advanced-filter"));
-        register(2, ItemList.WoodenCasing, "Primitive Wooden Casing");
-        register(3, ItemList.BlockIndustrialStrengthConcrete, "Superplasticizer-Treated High Strength Concrete");
-        register(4, ItemList.BlockIndustrialWaterPlantCasing, "Sterile Water Plant Casing");
-        register(5, ItemList.BlockSterileWaterPlantCasing, "Reinforced Sterile Water Plant Casing");
-        register(6, ItemList.BlockFlocculationCasing, "Slick Sterile Flocculation Casing");
-        register(7, ItemList.BlockNaquadahReinforcedWaterPlantCasing, "Stabilized Naquadah Water Plant Casing");
-        register(8, ItemList.BlockExtremeCorrosionResistantCasing, "Inert Neutralization Water Plant Casing");
-        register(9, ItemList.BlockHighPressureResistantCasing, "Reactive Gas Containment Casing");
-        register(10, ItemList.BlockOzoneCasing, "Inert Filtration Casing");
-        register(11, ItemList.BlockPlasmaHeatingCasing, "Heat-Resistant Trinium Plated Casing");
-        register(12, ItemList.BlockNaquadriaReinforcedWaterPlantCasing, "Naquadria-Reinforced Water Plant Casing");
-        register(13, ItemList.BlockUltraVioletLaserEmitter, "High Energy Ultraviolet Emitter Casing");
+        register(0, ItemList.Casing_Pipe_Polybenzimidazole);
+        register(1, ItemList.Casing_Vent_T2, translatedText("gt.casings.advanced-filter"));
+        register(2, ItemList.WoodenCasing);
+        register(3, ItemList.BlockIndustrialStrengthConcrete);
+        register(4, ItemList.BlockIndustrialWaterPlantCasing);
+        register(5, ItemList.BlockSterileWaterPlantCasing);
+        register(6, ItemList.BlockFlocculationCasing);
+        register(7, ItemList.BlockNaquadahReinforcedWaterPlantCasing);
+        register(8, ItemList.BlockExtremeCorrosionResistantCasing);
+        register(9, ItemList.BlockHighPressureResistantCasing);
+        register(10, ItemList.BlockOzoneCasing);
+        register(11, ItemList.BlockPlasmaHeatingCasing);
+        register(12, ItemList.BlockNaquadriaReinforcedWaterPlantCasing);
+        register(13, ItemList.BlockUltraVioletLaserEmitter);
         // placeholder name
-        register(14, ItemList.BlockQuarkPipe, "Particle Beam Guidance Pipe Casing");
-        register(15, ItemList.BlockQuarkReleaseChamber, "Femtometer-Calibrated Particle Beam Casing");
+        register(14, ItemList.BlockQuarkPipe);
+        register(15, ItemList.BlockQuarkReleaseChamber);
     }
 
     @Override

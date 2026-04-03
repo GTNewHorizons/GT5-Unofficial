@@ -163,6 +163,10 @@ public class VoidMinerUtility {
             return totalWeight;
         }
 
+        public GTUtility.ItemId[] getOres() {
+            return ores;
+        }
+
         public Map<GTUtility.ItemId, Float> getInternalMap() {
             return internalMap;
         }

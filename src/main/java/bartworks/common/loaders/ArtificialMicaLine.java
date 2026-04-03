@@ -25,8 +25,8 @@ import gregtech.api.util.GTModHandler;
 public class ArtificialMicaLine {
 
     public static void runArtificialMicaRecipe() {
-        // Mg + O = MgO
 
+        // Mg + O = MgO
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Magnesium.getDust(1))
             .itemOutputs(Materials.Magnesia.getDust(2))
@@ -34,8 +34,8 @@ public class ArtificialMicaLine {
             .duration(2 * SECONDS)
             .eut(8)
             .addTo(UniversalChemical);
-        // Si + 6HF = H2SiF6 + 4H
 
+        // Si + 6HF = H2SiF6 + 4H
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Silicon.getDust(1), Materials.Empty.getCells(4))
             .itemOutputs(Materials.Hydrogen.getCells(4))
@@ -44,8 +44,8 @@ public class ArtificialMicaLine {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);
-        // K + Cl = KCl
 
+        // K + Cl = KCl
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Potassium.getDust(1))
             .circuit(2)
@@ -66,21 +66,20 @@ public class ArtificialMicaLine {
             .addTo(mixerRecipes);
 
         // 2K + CO2 + O = K2CO3
-
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Potassium.getDust(2), Materials.CarbonDioxide.getCells(1))
             .itemOutputs(WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 6), Materials.Empty.getCells(1))
             .fluidInputs(Materials.Oxygen.getGas(1_000))
-            .duration(2 * SECONDS)
-            .eut(8)
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
-        // K2O + CO2 = K2CO3
 
+        // K2O + CO2 = K2CO3
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Potash.getDust(3), Materials.CarbonDioxide.getCells(1))
             .itemOutputs(WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 6), Materials.Empty.getCells(1))
-            .duration(2 * SECONDS)
-            .eut(8)
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
         // 55Quartz Dust + 20K2SiF6 + 12Al2O3 + 4K2CO3 = 91Raw Fluorophlogopite Dust
@@ -147,7 +146,6 @@ public class ArtificialMicaLine {
             .addTo(mixerRecipes);
 
         // MgO(s) = MgO(l)
-
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Magnesia.getDust(1))
             .fluidOutputs(Materials.Magnesia.getMolten(1 * INGOTS))
@@ -183,7 +181,7 @@ public class ArtificialMicaLine {
                 .circuit(1)
                 .itemOutputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MicaInsulatorFoil", 4))
                 .duration(10 * TICKS)
-                .eut(600)
+                .eut(TierEU.RECIPE_HV)
                 .addTo(benderRecipes);
 
         }

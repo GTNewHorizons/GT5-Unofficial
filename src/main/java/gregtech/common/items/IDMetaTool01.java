@@ -28,7 +28,9 @@ public enum IDMetaTool01 {
     WRENCH_LV(120),
     WRENCH_MV(122),
     WRENCH_HV(124),
-    JACKHAMMER(130),
+    JACKHAMMER_LV(130),
+    JACKHAMMER_MV(132),
+    JACKHAMMER_HV(134),
     BUZZSAW_LV(140),
     BUZZSAW_MV(142),
     BUZZSAW_HV(144),
@@ -49,7 +51,13 @@ public enum IDMetaTool01 {
     POCKET_SAW(188),
     POCKET_SCREWDRIVER(190),
     POCKET_WIRECUTTER(192),
-    TROWEL(194);
+    TROWEL(194),
+    WIRECUTTER_LV(196),
+    WIRECUTTER_MV(198),
+    WIRECUTTER_HV(200),
+    FILE_LV(202),
+    FILE_MV(204),
+    FILE_HV(206);
 
     public final int ID;
 

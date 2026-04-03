@@ -38,11 +38,13 @@ public class GTRecipeUtils {
                 }
             }
             GTRecipe newRecipe = new GTRecipe(
-                false,
                 itemInputsWithoutProgrammableCircuit.toArray(new ItemStack[0]),
                 recipeInput.mOutputs,
                 recipeInput.mSpecialItems,
-                recipeInput.mChances,
+                recipeInput.mInputChances,
+                recipeInput.mOutputChances,
+                recipeInput.mFluidInputChances,
+                recipeInput.mFluidOutputChances,
                 recipeInput.mFluidInputs,
                 recipeInput.mFluidOutputs,
                 recipeInput.mDuration,
@@ -81,11 +83,13 @@ public class GTRecipeUtils {
             }
 
             GTRecipe finalRecipe = new GTRecipe(
-                filteredRecipe.mCanBeBuffered,
                 finalInputs,
                 filteredRecipe.mOutputs,
                 filteredRecipe.mSpecialItems,
-                filteredRecipe.mChances,
+                filteredRecipe.mInputChances,
+                filteredRecipe.mOutputChances,
+                filteredRecipe.mFluidInputChances,
+                filteredRecipe.mFluidOutputChances,
                 filteredRecipe.mFluidInputs,
                 filteredRecipe.mFluidOutputs,
                 filteredRecipe.mDuration,
