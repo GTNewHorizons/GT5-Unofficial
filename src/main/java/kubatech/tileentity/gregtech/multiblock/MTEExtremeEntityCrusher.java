@@ -350,7 +350,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     + " 16x Time, Output, Weapon Damage")
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
-            .addController("Front Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Solid Steel Machine Casing", 35, false)
             .addCasingInfoExactly("Any Tiered Glass", 60, false)
             .addCasingInfoExactly("Steel Frame Box", 20, false)

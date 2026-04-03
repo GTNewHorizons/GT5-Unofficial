@@ -84,7 +84,7 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
             .addBulkMachineInfo(4, 6f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Material Press Machine Casings", 6, false)
             .addInputHatch("Any Casing", 1)
             .addInputBus("Any Casing", 1)
