@@ -208,7 +208,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             .addInfo("  to double pollution cleaning amount (30 uses per item)")
             .addInfo("Each maintenance issue reduces cleaning amount by 10%")
             .beginStructureBlock(3, 4, 3, true)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addOtherStructurePart(getCasingString(), "Top and bottom layers")
             .addOtherStructurePart(getPipeString(), "Corners of the middle two layers")
             .addOtherStructurePart("Muffler Hatch", "Sides of the middle two layers")

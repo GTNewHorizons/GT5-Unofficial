@@ -2424,7 +2424,7 @@ gt.blockmachines.multimachine.beamcrafting.LHC.tooltip28=§2W - Weak Interaction
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29=§fS - Strong Force§7 - Absolute Lattice Integrated Chromodynamic Encapsulator (§fALICE§7)
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip30=§5G - Gravity§7 - Localized Horizon Curvature Binder (§5LHCb§7)
 
-gt.blockmachines.multimachine.beamcrafting.ttcontroller=Front Center
+gt.blockmachines.multimachine.beamcrafting.ttcontroller=Front center
 gt.blockmachines.multimachine.beamcrafting.ttehatch=Energy Hatch
 gt.blockmachines.multimachine.beamcrafting.ttcasing=Collider Casing
 gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing=Shielded Accelerator Casing
@@ -5703,6 +5703,12 @@ fluid.ureamix=Urea Mix
 fluid.uuamplifier=UU Amplifier
 fluid.wet.concrete=Wet Concrete
 fluidHotWater=Heated Water
+
+fluid.oil=Oil
+fluid.tile.fluidBlockSludge=fluidBlockSludge
+fluid.sludge=sludge
+fluid.oilgc=oilgc
+fluid.fuelgc=fuelgc
 
 # Space projects
 gt.solar.system.overworld=Overworld
