@@ -57,10 +57,11 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
         IKey particleKeyA = IKey.dynamic(() -> EnumChatFormatting.AQUA + getParticleNameFromID(syncIDA.getIntValue()));
         IKey particleKeyB = IKey.dynamic(() -> EnumChatFormatting.AQUA + getParticleNameFromID(syncIDB.getIntValue()));
         outputWidget.child(new TextWidget<>(particleKeyA));
-        outputWidget.child(new TextWidget<>(particleKeyB))
-            .marginBottom(4);
+        outputWidget.child(new TextWidget<>(particleKeyB));
 
-        outputWidget.child(new TextWidget<>(guiHeaderKeyBuffer).marginBottom(4));
+
+        outputWidget.child(new TextWidget<>(guiHeaderKeyBuffer)
+            .marginTop(4).marginBottom(4));
 
         for (Integer key : bufferMap.keySet()) {
 
