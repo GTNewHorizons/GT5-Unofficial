@@ -185,7 +185,7 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
 
     @Override
     public String getMachineType() {
-        return "Large Gas Turbine, XLGT";
+        return "Gas Turbine, XLGT";
     }
 
     @Override
