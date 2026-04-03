@@ -340,9 +340,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             .addEnergyHatch(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
                 1)
-            .addMaintenanceHatch(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addTecTechHatchInfo()
             .toolTipFinisher(GTAuthors.AuthorHamCorp);
