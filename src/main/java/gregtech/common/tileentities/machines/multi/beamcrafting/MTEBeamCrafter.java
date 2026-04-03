@@ -520,4 +520,11 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         return MAX_PARALLEL;
     }
 
+    public int getCurrentRecipeParticleIDA(){
+        return currentRecipeParticleIDA;
+    }
+    public int getCurrentRecipeParticleIDB(){
+        return currentRecipeParticleIDB;
+    }
+
 }

@@ -1,9 +1,12 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumberCompact;
 import static gtnhlanth.common.beamline.Particle.getParticleFromId;
 
 import java.util.Map;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.drawable.UITexture;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -29,10 +32,11 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
         Map<Integer, Integer> bufferMap = multiblock.getBufferMap();
-
         for (Integer key : bufferMap.keySet()) {
             syncManager.syncValue("particleID" + key, new IntSyncValue(() -> bufferMap.getOrDefault(key, 0)));
         }
+        syncManager.syncValue("currentRecipeParticleIDA",new IntSyncValue(multiblock::getCurrentRecipeParticleIDA));
+        syncManager.syncValue("currentRecipeParticleIDB",new IntSyncValue(multiblock::getCurrentRecipeParticleIDB));
 
     }
 
@@ -43,28 +47,50 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
         ListWidget<IWidget, ?> outputWidget = new ListWidget<>().widthRel(1)
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
-        IKey guiHeaderKey = IKey.dynamic(this::formatGuiHeader);
+        IKey guiHeaderKeyCrafting = IKey.dynamic(this::formatGuiHeaderCrafting);
+        IKey guiHeaderKeyBuffer = IKey.dynamic(this::formatGuiHeaderBuffer);
 
-        outputWidget.child(new TextWidget<>(guiHeaderKey).marginBottom(4));
+        IntSyncValue syncIDA = syncManager.findSyncHandler("currentRecipeParticleIDA", IntSyncValue.class);
+        IntSyncValue syncIDB = syncManager.findSyncHandler("currentRecipeParticleIDB", IntSyncValue.class);
+
+        outputWidget.child(new TextWidget<>(guiHeaderKeyCrafting).marginBottom(4));
+        IKey particleKeyA = IKey
+            .dynamic(() -> EnumChatFormatting.AQUA + getParticleNameFromID(syncIDA.getIntValue()));
+        IKey particleKeyB = IKey
+            .dynamic(() -> EnumChatFormatting.AQUA + getParticleNameFromID(syncIDB.getIntValue()));
+        outputWidget.child(new TextWidget<>(particleKeyA));
+        outputWidget.child(new TextWidget<>(particleKeyB)).marginBottom(4);
+
+
+
+        outputWidget.child(new TextWidget<>(guiHeaderKeyBuffer).marginBottom(4));
 
         for (Integer key : bufferMap.keySet()) {
 
             IntSyncValue valueSync = syncManager.findSyncHandler("particleID" + key, IntSyncValue.class);
 
             IKey particleKey = IKey
-                .dynamic(() -> EnumChatFormatting.WHITE + getParticleNameFromID(key) + ": " + valueSync.getValue());
+                .dynamic(() -> EnumChatFormatting.WHITE + getParticleNameFromID(key)+ ": " + formatNumberCompact(valueSync.getValue()));
 
-            outputWidget.child(new TextWidget<>(particleKey));
+            outputWidget.child(new IDrawable.DrawableWidget(getParticleTexture(key)).setEnabledIf(w -> valueSync.getValue()>0));
+            outputWidget.child(new TextWidget<>(particleKey).setEnabledIf(w -> valueSync.getValue()>0));
         }
 
         return outputWidget;
     }
 
-    private String formatGuiHeader() {
-        return EnumChatFormatting.GOLD + StatCollector.translateToLocalFormatted("GT5U.gui.text.beamcrafter.guiheader");
+    private String formatGuiHeaderBuffer() {
+        return EnumChatFormatting.GOLD + StatCollector.translateToLocalFormatted("GT5U.gui.text.beamcrafter.guiheaderbuffer");
+    }
+    private String formatGuiHeaderCrafting() {
+        return EnumChatFormatting.GOLD + StatCollector.translateToLocalFormatted("GT5U.gui.text.beamcrafter.guiheadercrafting");
     }
 
     private String getParticleNameFromID(int particleID) {
         return getParticleFromId(particleID).getLocalisedName();
+    }
+
+    private UITexture getParticleTexture(int particleID) {
+        return getParticleFromId(particleID).getTexture();
     }
 }
