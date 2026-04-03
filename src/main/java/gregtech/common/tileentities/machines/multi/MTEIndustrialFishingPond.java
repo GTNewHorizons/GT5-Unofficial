@@ -117,6 +117,7 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
             .addEnergyHatch("Any Aquatic Casing", 1)
             .addMaintenanceHatch("Any Aquatic Casing", 1)
             .addMufflerHatch("Any Aquatic Casing", 1)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
     }
