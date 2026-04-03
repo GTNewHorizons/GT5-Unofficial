@@ -298,26 +298,29 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             .addInfo(
                 StatCollector
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip3"))
-            .addSeparator()
             .addInfo(
                 StatCollector
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip4"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5"))
             .addSeparator()
             .addInfo(
                 StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6"))
+                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5"))
             .addInfo(
                 StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7"))
+                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6",BEAM_AMOUNT_TO_BUFFER_FACTOR))
+            .addInfo(
+                StatCollector
+                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7",MAX_BUFFER))
             .addInfo(
                 StatCollector
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8"))
             .addInfo(
                 StatCollector
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip9"))
+            .addSeparator()
+            .addInfo(
+                StatCollector
+                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip10",MAX_PARALLEL))
             .addSeparator()
             .beginStructureBlock(17, 5, 11, false)
             .addController(
