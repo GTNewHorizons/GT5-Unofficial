@@ -103,7 +103,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
             .addInfo("Right-click controller with a Screwdriver to change modes")
             .addInfo("Max Size required to process Plasma recipes")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addController("Top center")
+            .addController("Front center")
             .addStructureInfo("Size: nxnx3 [WxHxL] (Hollow)")
             .addStructureInfo("n can be 3, 5 or 7")
             .addCasingInfoMin(mCasingName, 10, false)

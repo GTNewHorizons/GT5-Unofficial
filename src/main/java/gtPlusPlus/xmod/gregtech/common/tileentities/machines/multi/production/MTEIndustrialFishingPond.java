@@ -107,7 +107,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             .addInfo("Will automatically fill water from input hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 3, 9, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Aquatic Casings", 64, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
