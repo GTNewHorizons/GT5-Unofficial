@@ -76,6 +76,9 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     private static final int OFFSET_Y_T2 = 6;
     private static final int OFFSET_Z_T2 = 0;
 
+    private static final int PARALLEL_T1 = 2;
+    private static final int PARALLEL_T2 = 8;
+
     private static IStructureDefinition<MTEIndustrialMacerator> STRUCTURE_DEFINITION = null;
 
     public MTEIndustrialMacerator(final int aID, final String aName, final String aNameRegional) {
@@ -96,7 +99,7 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Macerator, IMS")
             .addInfo(TooltipHelper.parallelText("Voltage Tier * n") + " Parallels")
-            .addInfo("n=2 initially. n=8 after inserting Maceration Upgrade Chip")
+            .addInfo("n=" + PARALLEL_T1 + " initially. n=" + PARALLEL_T2 + " after inserting Maceration Upgrade Chip")
             .addStaticSpeedInfo(1.6f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 7, 5, false)
@@ -362,7 +365,7 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     public int getMaxParallelRecipes() {
         final long tVoltage = getMaxInputVoltage();
         final byte tTier = (byte) Math.max(1, GTUtility.getTier(tVoltage));
-        return Math.max(1, (controllerTier == 1 ? 2 : 8) * tTier);
+        return Math.max(1, (controllerTier == 1 ? PARALLEL_T1 : PARALLEL_T2) * tTier);
     }
 
     @Override
