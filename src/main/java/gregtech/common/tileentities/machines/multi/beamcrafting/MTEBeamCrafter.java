@@ -59,7 +59,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     private static final int MAX_BUFFER = 2_000_000_000;
     private static final int MAX_PARALLEL = 1024;
-    private static final int BEAM_AMOUNT_TO_BUFFER_FACTOR = 1024;
+    private static final int BEAM_AMOUNT_TO_BUFFER_FACTOR = 1;
 
     private static final String NBT_KEY_DESCRIPTOR = "KEY";
     private static final String NBT_VALUE_DESCRIPTOR = "VALUE";
@@ -384,6 +384,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
             int newAmount = bufferMap.getOrDefault(id, 0) + BEAM_AMOUNT_TO_BUFFER_FACTOR * rate;
             bufferMap.put(id, Math.min(newAmount, MAX_BUFFER));
+            this.mInputBeamline.get(n).setContents(null);
         }
 
         contributeToProgress(this.currentRecipeParticleIDA, this.currentRecipeParticleIDB);
