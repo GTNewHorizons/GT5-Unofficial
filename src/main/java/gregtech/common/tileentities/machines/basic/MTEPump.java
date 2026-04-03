@@ -75,7 +75,7 @@ public class MTEPump extends MTEBasicMachine {
         return GTUtility.translateMultiline(
             "GT5U.tooltip.pump",
             TooltipHelper.euText(getEuUsagePerTier(aTier)),
-            NumberFormatUtil.formatNumber(GTUtility.safeInt(160 / 20 / (long) GTUtility.powInt(2, aTier))),
+            NumberFormatUtil.formatNumber(Math.max(1, 160 >> aTier) / 20d),
             NumberFormatUtil.formatNumber(getMaxDistanceForTier(aTier) * 2 + 1),
             NumberFormatUtil.formatNumber(getMaxDistanceForTier(aTier) * 2 + 1));
     }
