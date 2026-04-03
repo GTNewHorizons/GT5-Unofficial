@@ -300,7 +300,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             ))
             .addInfo("The energy hatch tier is limited by the glass tier. UEV glass unlocks all tiers")
             .beginStructureBlock(5, 9, 5, false)
-            .addController("Front Center (Bottom Layer)")
+            .addController("Front bottom center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)
             .addCasingInfoExactly("Any Tiered Glass", 9 * 4, true)
             .addCasingInfoExactly("Solenoid Superconducting Coil", 7, true)

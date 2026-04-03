@@ -51,7 +51,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_ZPM;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import gregtech.GTMod;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -77,9 +76,7 @@ public class GregtechCustomHatches {
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Custom Fluid Hatches.");
         run1();
-        if (GTMod.proxy.mPollution) {
-            run2();
-        }
+        run2();
         run3();
         run4(); // Chisel buses
         run6(); // Solidifier hatches

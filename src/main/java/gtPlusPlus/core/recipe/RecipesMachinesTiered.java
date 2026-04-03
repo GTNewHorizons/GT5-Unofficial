@@ -11,7 +11,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -1274,7 +1273,6 @@ public class RecipesMachinesTiered {
     }
 
     private static void airFilters() {
-        if (!GTMod.proxy.mPollution) return;
 
         // Air Filter [Tier 1]
         GTModHandler.addCraftingRecipe(
