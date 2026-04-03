@@ -6,7 +6,7 @@ import static gregtech.api.gui.modularui.GTUITextures.PROGRESSBAR_LHC_S;
 import static gregtech.api.gui.modularui.GTUITextures.PROGRESSBAR_LHC_W;
 import static gregtech.api.recipe.RecipeMaps.LARGE_HADRON_COLLIDER_METADATA;
 
-import java.awt.*;
+import java.awt.Rectangle;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
