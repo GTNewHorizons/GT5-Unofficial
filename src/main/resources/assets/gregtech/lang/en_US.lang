@@ -827,9 +827,9 @@ item.GTPP.air_filter.name.t2=Air Filter [Tier 2]
 GTPP.tooltip.air_filter.0=An Air filter for Atmospheric Reconditioning.
 GTPP.tooltip.air_filter.1=%d/%d uses left.
 
-GT5U.tooltip.pump=The best way to empty Oceans!\n§e%d§7 EU/operation, §f%d§7 sec per bucket, no stuttering\nMaximum pumping area: §f%dx%d\nUse Screwdriver to regulate pumping area\nUse Soft Mallet to disable and retract the pipe\nDisable the bottom pump to retract the pipe!\nUse Soldering Iron to auto retract the pipe when hitting a rock
+GT5U.tooltip.pump=The best way to empty Oceans!\n§e%s§7 EU/operation, §f%s§7 sec per bucket, no stuttering\nMaximum pumping area: §f%sx%s\nUse Screwdriver to regulate pumping area\nUse Soft Mallet to disable and retract the pipe\nDisable the bottom pump to retract the pipe!\nUse Soldering Iron to auto retract the pipe when hitting a rock
 
-GT5U.tooltip.miner=Digging ore instead of you\nUse Screwdriver to regulate work area\nUse Soft Mallet to disable and retract the pipe\n§e%d§7 EU/t, §f%d§7 sec per block, no stuttering\nMaximum work area: §f%dx%d\nSmall ore fortune bonus of §f%d
+GT5U.tooltip.miner=Digging ore instead of you\nUse Screwdriver to regulate work area\nUse Soft Mallet to disable and retract the pipe\n§e%s§7 EU/t, §f%s§7 sec per block, no stuttering\nMaximum work area: §f%sx%s\nSmall ore fortune bonus of §f%s
 
 # Fish trap
 GTPP.tooltip.fish_trap.0=This trap catches fish faster if surrounded by more water blocks
