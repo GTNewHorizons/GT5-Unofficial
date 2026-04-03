@@ -163,6 +163,7 @@ public class GlassTier {
             // --- EV ---
             addCustomGlass(ItemRegistry.bw_realglas, 1, 4, 0);
             addCustomGlass(GregTechAPI.sBlockGlass1, 0, 4, 1);
+            addCustomGlass(GregTechAPI.sBlockGlass1,9, 4, 9);
             for (int i = 0; i < 4; i++) {
                 addCustomGlass(GregTechAPI.sBlockTintedGlass, i, 4, i + 2);
             }

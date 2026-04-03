@@ -371,6 +371,12 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings12, 11, gt(16, 5, 11)),
     AlchemicallyImmuneIchoriumCasing
         (() -> GregTechAPI.sBlockCasings12, 12, gt(16, 5, 12)),
+    CGCT1
+        (() -> GregTechAPI.sBlockCasings12, 13, gt(16, 5, 13)),
+    CGCT2
+        (() -> GregTechAPI.sBlockCasings12, 14, gt(16, 5, 14)),
+    CGCT3
+        (() -> GregTechAPI.sBlockCasings12, 15, gt(16, 5, 15)),
     AlchemicalCasing(() -> GregTechAPI.sBlockCasings12, 10, gt(16, 5, 10)) {
         @Override
         public String getLocalizedName() {
@@ -531,6 +537,37 @@ public enum Casings implements ICasing {
     CentralCasingExoFoundryCasing
         (() -> GregTechAPI.sBlockCasingsFoundry, 12, gt(8, 5, 12)),
 
+    // Emitter Casings
+    EmitterCasingLV
+        (() -> GregTechAPI.sBlockCasingsEmitter, 0, gt(8, 5, 0)),
+    EmitterCasingMV
+        (() -> GregTechAPI.sBlockCasingsEmitter, 1, gt(8, 5, 1)),
+    EmitterCasingHV
+        (() -> GregTechAPI.sBlockCasingsEmitter, 2, gt(8, 5, 2)),
+    EmitterCasingEV
+        (() -> GregTechAPI.sBlockCasingsEmitter, 3, gt(8, 5, 3)),
+    EmitterCasingIV
+        (() -> GregTechAPI.sBlockCasingsEmitter, 4, gt(8, 5, 4)),
+    EmitterCasingLuV
+        (() -> GregTechAPI.sBlockCasingsEmitter, 5, gt(8, 5, 5)),
+    EmitterCasingZPM
+        (() -> GregTechAPI.sBlockCasingsEmitter, 6, gt(8, 5, 6)),
+    EmitterCasingUV
+        (() -> GregTechAPI.sBlockCasingsEmitter, 7, gt(8, 5, 7)),
+    EmitterCasingUHV
+        (() -> GregTechAPI.sBlockCasingsEmitter, 8, gt(8, 5, 8)),
+    EmitterCasingUEV
+        (() -> GregTechAPI.sBlockCasingsEmitter, 9, gt(8, 5, 9)),
+    EmitterCasingUIV
+        (() -> GregTechAPI.sBlockCasingsEmitter, 10, gt(8, 5, 10)),
+    EmitterCasingUMV
+        (() -> GregTechAPI.sBlockCasingsEmitter, 11, gt(8, 5, 11)),
+    EmitterCasingUXV
+        (() -> GregTechAPI.sBlockCasingsEmitter, 12, gt(8, 5, 12)),
+
+    // Gem Clusters
+
+
     // Block Casings NH
     AirFilterTurbineCasing
         (() -> GregTechAPI.sBlockCasingsNH, 0, gt(8, 4, 0)),
@@ -600,6 +637,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockGlass1, 7, gt(16, 0, 7)),
     NanochipComplexGlass
         (() -> GregTechAPI.sBlockGlass1, 8,  gt(16, 0, 8)),
+    SapphireGlass
+        (() -> GregTechAPI.sBlockGlass1, 9,  gt(16, 0, 9)),
 
     // ------------------ Bartworks Casings -----------------
 

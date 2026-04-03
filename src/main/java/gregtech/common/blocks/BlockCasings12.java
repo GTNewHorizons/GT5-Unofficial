@@ -29,6 +29,9 @@ public class BlockCasings12 extends BlockCasingsAbstract {
         register(10, ItemList.CasingThaumium);
         register(11, ItemList.CasingVoid);
         register(12, ItemList.CasingIchorium);
+        register(13, ItemList.CGCT1);
+        register(14, ItemList.CGCT2);
+        register(15, ItemList.CGCT3);
         for (int i = 0; i < 3; i++) {
             GTStructureChannels.METAL_MACHINE_CASING.registerAsIndicator(new ItemStack(this, 1, i + 10), i + 1);
         }
@@ -70,6 +73,9 @@ public class BlockCasings12 extends BlockCasingsAbstract {
             case 10 -> Textures.BlockIcons.MACHINE_CASING_THAUMIUM.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VOID.getIcon();
             case 12 -> Textures.BlockIcons.MACHINE_CASING_ICHORIUM.getIcon();
+            case 13 -> Textures.BlockIcons.CGC_T1_CASING.getIcon();
+            case 14 -> Textures.BlockIcons.CGC_T2_CASING.getIcon();
+            case 15 -> Textures.BlockIcons.CGC_T3_CASING.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

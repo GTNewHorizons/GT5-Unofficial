@@ -6998,6 +6998,9 @@ gt.blockcasings12.9.name=Vibration-Safe Casing
 gt.blockcasings12.10.name=Alchemically Resistant Thaumium Casing
 gt.blockcasings12.11.name=Alchemically Inert Void Casing
 gt.blockcasings12.12.name=Alchemically Immune Ichorium Casing
+gt.blockcasings12.13.name=Crystal Growth Chamber Tier 1 Casing
+gt.blockcasings12.14.name=Crystal Growth Chamber Tier 2 Casing
+gt.blockcasings12.15.name=Crystal Growth Chamber Tier 3 Casing
 
 gt.blockcasings13.0.name=Cable Casing
 gt.blockcasings13.1.name=Graphite Moderator Casing
@@ -7063,11 +7066,26 @@ gt.blockglass1.5.name=Nanite Shielding Glass
 gt.blockglass1.6.name=Chamber Grate
 gt.blockglass1.7.name=Exo-Foundry Containment Glass
 gt.blockglass1.8.name=Nanochip Complex Glass
+gt.blockglass1.9.name=Growth Immune Sapphire Glass
 
 gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
 gt.blocktintedglass.3.name=Tinted Industrial Glass (Black)
+
+gt.blockcasingsemitter.0.name=Basic Acoustic Frequency Emitter (LV)
+gt.blockcasingsemitter.1.name=Advanced Acoustic Frequency Emitter (MV)
+gt.blockcasingsemitter.2.name=Elite Acoustic Frequency Emitter (HV)
+gt.blockcasingsemitter.3.name=Basic Ultrasound Frequency Emitter (EV)
+gt.blockcasingsemitter.4.name=Advanced Ultrasound Frequency Emitter (IV)
+gt.blockcasingsemitter.5.name=Elite Ultrasound Frequency Emitter (LuV)
+gt.blockcasingsemitter.6.name=Basic Melodic Frequency Emitter (ZPM)
+gt.blockcasingsemitter.7.name=Advanced Melodic Frequency Emitter (UV)
+gt.blockcasingsemitter.8.name=Elite Melodic Frequency Emitter (UHV)
+gt.blockcasingsemitter.9.name=Ultimate Melodic Frequency Emitter (UEV)
+gt.blockcasingsemitter.10.name=Basic Harmonic Frequency Emitter (UIV)
+gt.blockcasingsemitter.11.name=Advanced Harmonic Frequency Emitter (UMV)
+gt.blockcasingsemitter.12.name=Elite Harmonic Frequency Emitter (UXV)
 
 # Block Granites
 gt.blockgranites.0.name=Black Granite

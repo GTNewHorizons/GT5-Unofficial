@@ -8,12 +8,11 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CGCT1;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CGCT1_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CGCT1_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CGCT1_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import gregtech.common.blocks.BlockCasings12;
@@ -38,7 +37,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTECrystalGrowthChamber extends MTEExtendedPowerMultiBlockBase<MTECrystalGrowthChamber>
@@ -97,12 +95,12 @@ public class MTECrystalGrowthChamber extends MTEExtendedPowerMultiBlockBase<MTEC
             'B',
             buildHatchAdder(MTECrystalGrowthChamber.class)
                 .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
-                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3))
+                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(13))
                 .hint(1)
                 .buildAndChain(
-                    onElementPass(MTECrystalGrowthChamber::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 3))))
+                    onElementPass(MTECrystalGrowthChamber::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 13))))
         .addElement('C', ofFrame(Materials.Steel))
-        .addElement('D', chainAllGlasses())
+        .addElement('D', ofBlock(GregTechAPI.sBlockGlass1, 9)) // Sapphire Glass
         .build();
 
     public MTECrystalGrowthChamber(final int aID, final String aName, final String aNameRegional) {
@@ -131,33 +129,33 @@ public class MTECrystalGrowthChamber extends MTEExtendedPowerMultiBlockBase<MTEC
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 13)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_CGCT1_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_FRONT_CGCT1_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 13)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY)
+                        .addIcon(OVERLAY_FRONT_CGCT1)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_GLOW)
+                        .addIcon(OVERLAY_FRONT_CGCT1_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 13)) };
         }
         return rTexture;
     }

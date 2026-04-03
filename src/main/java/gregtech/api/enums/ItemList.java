@@ -2829,8 +2829,6 @@ public enum ItemList implements IItemContainer {
 
     MegaChemicalReactor,
 
-    CrystalGrowthChamber,
-
     BasicCircuitBoard,
     EnhancedCircuitBoard,
     RefinedCircuitBoard,
@@ -2992,6 +2990,26 @@ public enum ItemList implements IItemContainer {
     ComputationalMatrixNanochipCasing,
     FirewallProjectionNanochipCasing,
     ComplexNanochipGlass,
+
+    CrystalGrowthChamber,
+    SapphireGlass,
+    CGCT1,
+    CGCT2,
+    CGCT3,
+
+    EmitterCasingLV,
+    EmitterCasingMV,
+    EmitterCasingHV,
+    EmitterCasingEV,
+    EmitterCasingIV,
+    EmitterCasingLuV,
+    EmitterCasingZPM,
+    EmitterCasingUV,
+    EmitterCasingUHV,
+    EmitterCasingUEV,
+    EmitterCasingUIV,
+    EmitterCasingUMV,
+    EmitterCasingUXV,
 
     // semicolon after the comment to reduce merge conflicts
     ;
