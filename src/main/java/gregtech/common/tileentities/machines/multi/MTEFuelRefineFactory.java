@@ -203,7 +203,7 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(5, 27, 27, false)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoExactly("Naquadah Fuel Refinery Casing", 483, false)
             .addCasingInfoExactly("Field Restriction Coil", 32, true)
             .addCasingInfoExactly("Field Restriction Glass", 192, false)
@@ -216,6 +216,7 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
             .addOutputHatch("Any Naquadah Fuel Refinery Casing", 1)
             .addEnergyHatch("Any Naquadah Fuel Refinery Casing", 1)
             .addDynamoHatch("Any Naquadah Fuel Refinery Casing", 1)
+            .addStructureAuthors("GregTech Odyssey")
             .toolTipFinisher();
         return tt;
     }
