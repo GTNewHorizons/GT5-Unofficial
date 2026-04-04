@@ -755,6 +755,14 @@ gt.blockmachines.basicmachine.press.tier.09.name=Epic Surface Shifter
 gt.blockmachines.basicmachine.press.tier.10.name=Epic Surface Shifter II
 gt.blockmachines.basicmachine.press.tier.11.name=Epic Surface Shifter III
 gt.blockmachines.basicmachine.press.tier.12.name=Epic Surface Shifter IV
+gt.blockmachines.basicmachine.printer.tier.01.name=Basic Printer
+gt.blockmachines.basicmachine.printer.tier.02.name=Advanced Printer
+gt.blockmachines.basicmachine.printer.tier.03.name=Advanced Printer II
+gt.blockmachines.basicmachine.printer.tier.04.name=Advanced Printer III
+gt.blockmachines.basicmachine.printer.tier.05.name=Advanced Printer IV
+gt.blockmachines.basicmachine.printer.tier.06.name=Advanced Printer V
+gt.blockmachines.basicmachine.printer.tier.07.name=Advanced Printer VI
+gt.blockmachines.basicmachine.printer.tier.08.name=Advanced Printer VII
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
 gt.behaviour.paintspray.uses=Remaining Uses: %s
