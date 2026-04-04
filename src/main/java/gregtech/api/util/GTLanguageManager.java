@@ -131,14 +131,15 @@ public class GTLanguageManager {
     }
 
     private static synchronized String writeToLangFile(String trimmedKey, String aEnglish) {
+        // If the key is already provided by the standard lang system, don't touch GregTech.lang.
+        if (StatCollector.canTranslate(trimmedKey)) {
+            return StatCollector.translateToLocal(trimmedKey);
+        }
         addToMCLangListFallBack(trimmedKey, aEnglish);
         Property tProperty = sEnglishFile.get("LanguageFile", trimmedKey, aEnglish);
         if (hasUnsavedEntry && GregTechAPI.sPostloadFinished) {
             sEnglishFile.save();
             hasUnsavedEntry = false;
-        }
-        if (StatCollector.canTranslate(trimmedKey)) {
-            return StatCollector.translateToLocal(trimmedKey);
         }
         String translation = tProperty.getString();
         if (tProperty.wasRead()) {
