@@ -813,6 +813,18 @@ gt.blockmachines.basicmachine.seismicprospector.05.name=Advanced Seismic Prospec
 gt.blockmachines.basicmachine.seismicprospector.06.name=Advanced Seismic Prospector MV
 gt.blockmachines.basicmachine.seismicprospector.07.name=Advanced Seismic Prospector LV
 gt.blockmachines.basicmachine.seismicprospector.tooltip=Place, activate with explosives\n2 Powder Barrels, 4 Glyceryl Trinitrate, 16 TNT, or 8 ITNT\nUse Data Stick, Scan Data Stick, Print Data Stick, Bind Pages into Book\nOre prospecting area = %sx%s ONLY blocks below prospector\nOil prospecting area 3x3 oilfields, each is 8x8 chunks
+gt.blockmachines.basicmachine.sifter.tier.01.name=Basic Sifting Machine
+gt.blockmachines.basicmachine.sifter.tier.02.name=Advanced Sifting Machine
+gt.blockmachines.basicmachine.sifter.tier.03.name=Advanced Sifting Machine II
+gt.blockmachines.basicmachine.sifter.tier.04.name=Advanced Sifting Machine III
+gt.blockmachines.basicmachine.sifter.tier.05.name=Advanced Sifting Machine IV
+gt.blockmachines.basicmachine.sifter.tier.06.name=Elite Sifting Machine
+gt.blockmachines.basicmachine.sifter.tier.07.name=Elite Sifting Machine II
+gt.blockmachines.basicmachine.sifter.tier.08.name=Ultimate Pulsation Filter
+gt.blockmachines.basicmachine.sifter.tier.09.name=Epic Pulsation Filter
+gt.blockmachines.basicmachine.sifter.tier.10.name=Epic Pulsation Filter II
+gt.blockmachines.basicmachine.sifter.tier.11.name=Epic Pulsation Filter III
+gt.blockmachines.basicmachine.sifter.tier.12.name=Epic Pulsation Filter IV
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
 gt.behaviour.paintspray.uses=Remaining Uses: %s
