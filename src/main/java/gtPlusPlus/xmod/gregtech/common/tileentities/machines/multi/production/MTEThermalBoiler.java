@@ -251,7 +251,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
             if (dryHeatCounter < dryHeatMaximum) {
                 ++dryHeatCounter;
             } else {
-                GTLog.exp.println(this.mName + " was too hot and had no more Water!");
+                GTLog.writeExplosionLog(this, "was too hot and had no more Water!");
                 explodeMultiblock(); // Generate crater
             }
             return false;
@@ -278,7 +278,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
             .addInfo("Consult user manual for more information")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Thermal Containment Casings", 10, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)

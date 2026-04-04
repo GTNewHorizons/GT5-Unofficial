@@ -8,7 +8,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchMillingBalls;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIsaMill;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEFrothFlotationCell;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEFrothFlotationCellLegacy;
 
 public class GregtechIsaMill {
 
@@ -20,7 +20,7 @@ public class GregtechIsaMill {
             new MTEIsaMill(Controller_IsaMill.ID, "gtpp.multimachine.isamill", "IsaMill Grinding Machine")
                 .getStackForm(1L));
         GregtechItemList.Controller_Flotation_Cell.set(
-            new MTEFrothFlotationCell(
+            new MTEFrothFlotationCellLegacy(
                 Controller_Flotation_Cell.ID,
                 "gtpp.multimachine.flotationcell",
                 "Flotation Cell Regulator").getStackForm(1L));

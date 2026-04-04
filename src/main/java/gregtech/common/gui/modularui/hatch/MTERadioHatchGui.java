@@ -36,7 +36,7 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
         super(base);
     }
 
-    // credit to purebluez
+    // credit to purebluez @Override
     public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         IPanelHandler popupPanel = syncManager
             .syncedPanel("popup", true, (manager, handler) -> createShutterUI(syncManager));

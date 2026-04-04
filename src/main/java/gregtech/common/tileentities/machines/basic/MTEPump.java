@@ -14,7 +14,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -42,6 +41,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.DrillingLogicDelegate;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPump extends MTEBasicMachine {
 
     private static final ItemStack MINING_PIPE = GTModHandler.getIC2Item("miningPipe", 0);
@@ -72,19 +72,12 @@ public class MTEPump extends MTEBasicMachine {
     private boolean mDisallowRetract = true;
 
     private static String[] MTEPumpTooltip(int aTier) {
-        return new String[] { StatCollector.translateToLocal("GT5U.tooltip.pump.0"),
-            StatCollector.translateToLocalFormatted(
-                "GT5U.tooltip.pump.1",
-                TooltipHelper.euText(getEuUsagePerTier(aTier)),
-                NumberFormatUtil.formatNumber(GTUtility.safeInt(160 / 20 / (long) GTUtility.powInt(2, aTier)))),
-            StatCollector.translateToLocalFormatted(
-                "GT5U.tooltip.pump.2",
-                NumberFormatUtil.formatNumber(getMaxDistanceForTier(aTier) * 2 + 1),
-                NumberFormatUtil.formatNumber(getMaxDistanceForTier(aTier) * 2 + 1)),
-            StatCollector.translateToLocal("GT5U.tooltip.pump.3"),
-            StatCollector.translateToLocal("GT5U.tooltip.pump.4"),
-            StatCollector.translateToLocal("GT5U.tooltip.pump.5"),
-            StatCollector.translateToLocal("GT5U.tooltip.pump.6") };
+        return GTUtility.translateMultiline(
+            "GT5U.tooltip.pump",
+            TooltipHelper.euText(getEuUsagePerTier(aTier)),
+            NumberFormatUtil.formatNumber(Math.max(1, 160 >> aTier) / 20d),
+            NumberFormatUtil.formatNumber(getMaxDistanceForTier(aTier) * 2 + 1),
+            NumberFormatUtil.formatNumber(getMaxDistanceForTier(aTier) * 2 + 1));
     }
 
     public MTEPump(int aID, String aName, String aNameRegional, int aTier) {
@@ -292,12 +285,7 @@ public class MTEPump extends MTEBasicMachine {
             }
             if (radiusConfig > max) radiusConfig = 0;
         }
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
-                + (radiusConfig * 2 + 1)
-                + "x"
-                + (radiusConfig * 2 + 1)); // TODO Add translation support
+        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.workareaset.s", (radiusConfig * 2 + 1), (radiusConfig * 2 + 1));
 
         clearQueue(false);
     }
@@ -815,14 +803,13 @@ public class MTEPump extends MTEBasicMachine {
         int aLogLevel, ArrayList<String> aList) {
         aList.addAll(
             Arrays.asList(
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.pump")
-                    + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
+                EnumChatFormatting.BLUE + GTUtility.translate("GT5U.machines.pump") + EnumChatFormatting.RESET,
+                GTUtility.translate("GT5U.machines.workarea") + ": "
                     + EnumChatFormatting.GREEN
                     + (radiusConfig * 2 + 1)
                     + EnumChatFormatting.RESET
                     + " "
-                    + StatCollector.translateToLocal("GT5U.machines.blocks"),
+                    + GTUtility.translate("GT5U.machines.blocks"),
                 "Primary pumping fluid:   "
                     + (this.mPrimaryPumpedBlock != null ? this.mPrimaryPumpedBlock.getLocalizedName() : "None"),
                 "Secondary pumping fluid: "
@@ -847,13 +834,13 @@ public class MTEPump extends MTEBasicMachine {
     @Override
     public String[] getInfoData() {
         return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.pump") + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
+            EnumChatFormatting.BLUE + GTUtility.translate("GT5U.machines.pump") + EnumChatFormatting.RESET,
+            GTUtility.translate("GT5U.machines.workarea") + ": "
                 + EnumChatFormatting.GREEN
                 + (radiusConfig * 2 + 1)
                 + EnumChatFormatting.RESET
                 + " "
-                + StatCollector.translateToLocal("GT5U.machines.blocks") };
+                + GTUtility.translate("GT5U.machines.blocks") };
     }
 
     @SideOnly(Side.CLIENT)

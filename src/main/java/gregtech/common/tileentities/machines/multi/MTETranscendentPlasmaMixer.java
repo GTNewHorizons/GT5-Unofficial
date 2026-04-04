@@ -2,7 +2,7 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GTValues.AuthorColen;
+import static gregtech.api.enums.GTAuthors.AuthorColen;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -111,7 +111,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
             .addInfo("All inputs will scale, except time...")
             .addInfo("All EU is deducted from wireless EU networks only")
             .beginStructureBlock(5, 7, 5, false)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoExactly("Dimensionally Transcendent Casing", 48, false)
             .addCasingInfoExactly("Dimensional Bridge", 16, false)
             .addCasingInfoRangeColored(

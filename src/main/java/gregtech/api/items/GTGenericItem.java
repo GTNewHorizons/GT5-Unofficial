@@ -28,7 +28,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.util.GTConfig;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
@@ -37,27 +36,14 @@ import gregtech.api.util.GTUtility;
  */
 public class GTGenericItem extends Item implements IProjectileItem {
 
-    private final String mName, mTooltip;
+    private final String mName, mEnglish, mTooltip;
     protected IIcon mIcon;
 
     public GTGenericItem(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super();
         mName = "gt." + aUnlocalized;
-        GTLanguageManager.addStringLocalization(mName + ".name", aEnglish);
-        if (GTUtility.isStringValid(aEnglishTooltip)) {
-            GTLanguageManager.addStringLocalization(mTooltip = mName + ".tooltip_main", aEnglishTooltip);
-        } else {
-            mTooltip = null;
-        }
-        setCreativeTab(GregTechAPI.TAB_GREGTECH);
-        GameRegistry.registerItem(this, mName, GregTech.ID);
-        BlockDispenser.dispenseBehaviorRegistry.putObject(this, new GT_Item_Dispense());
-    }
-
-    /// An alternate constructor that doesn't require a tooltip
-    public GTGenericItem(String unlocalized) {
-        mName = "gt." + unlocalized;
-        mTooltip = null;
+        mEnglish = GTUtility.isStringValid(aEnglish) ? aEnglish : null;
+        mTooltip = GTUtility.isStringValid(aEnglishTooltip) ? aEnglishTooltip : null;
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
         GameRegistry.registerItem(this, mName, GregTech.ID);
         BlockDispenser.dispenseBehaviorRegistry.putObject(this, new GT_Item_Dispense());
@@ -76,6 +62,15 @@ public class GTGenericItem extends Item implements IProjectileItem {
     @Override
     public String getUnlocalizedName(ItemStack aStack) {
         return getHasSubtypes() ? mName + "." + getDamage(aStack) : mName;
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack aStack) {
+        if (mEnglish != null) {
+            String key = mName + ".name";
+            return StatCollector.canTranslate(key) ? GTUtility.translate(key) : mEnglish;
+        }
+        return super.getItemStackDisplayName(aStack);
     }
 
     @Override
@@ -102,15 +97,17 @@ public class GTGenericItem extends Item implements IProjectileItem {
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         if (getMaxDamage() > 0 && !getHasSubtypes())
             aList.add((aStack.getMaxDamage() - getDamage(aStack)) + " / " + aStack.getMaxDamage());
-        if (mTooltip != null) aList.add(GTLanguageManager.getTranslation(mTooltip));
-        if (showElectricTier() && GTModHandler.isElectricItem(aStack)) {
-            aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier", getTier(aStack)));
+        if (mTooltip != null) {
+            String key = mName + ".tooltip";
+            if (StatCollector.canTranslate(key)) {
+                GTUtility.translateMultiline(aList, key);
+            } else {
+                GTUtility.translateMultiline(aList, mTooltip);
+            }
         }
+        if (GTModHandler.isElectricItem(aStack))
+            aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier", getTier(aStack)));
         addAdditionalToolTips(aList, aStack, aPlayer);
-    }
-
-    protected boolean showElectricTier() {
-        return true;
     }
 
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {

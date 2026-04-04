@@ -103,14 +103,17 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
         return STRUCTURE_DEFINITION;
     }
 
+    @Override
     public int structureOffsetX() {
         return SMD_OFFSET_X;
     }
 
+    @Override
     public int structureOffsetY() {
         return SMD_OFFSET_Y;
     }
 
+    @Override
     public int structureOffsetZ() {
         return SMD_OFFSET_Z;
     }

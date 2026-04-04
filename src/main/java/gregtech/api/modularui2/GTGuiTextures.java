@@ -735,12 +735,6 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/overlay_slot/implosion")
         .build();
 
-    public static final UITexture OVERLAY_SLOT_IN = UITexture.builder()
-        .canApplyTheme()
-        .fullImage()
-        .location(GregTech.ID, "gui/overlay_slot/in")
-        .build();
-
     public static final UITexture OVERLAY_SLOT_LENS = UITexture.builder()
         .canApplyTheme()
         .fullImage()
@@ -1803,6 +1797,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
     public static final UITexture PICTURE_PLUS_RED = UITexture.fullImage(GregTech.ID, "gui/picture/plus_red");
+    public static final UITexture PICTURE_SCREEN_BLACK = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/screen_black")
+        .imageSize(16, 16)
+        .canApplyTheme()
+        .adaptable(2)
+        .build();
     // endregion picture
 
     // region machine modes
@@ -1888,6 +1888,28 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_STEAM = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_dehp_steam");
+
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_FORGE = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_iof_forge");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_MACERATOR = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_iof_macerator");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_WASHER = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_iof_washer");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_SIFTER = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_iof_sifter");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_THERMAL = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_iof_thermal");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_CENTRIFUGE = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_iof_centrifuge");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_BATH = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_iof_bath");
 
     public static final UITexture OVERLAY_BUTTON_PARTICLE_ALPHA = fullImage(GTNHLanthanides.ID, "items/particle/alpha");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_ELECTRON = fullImage(

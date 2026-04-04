@@ -25,18 +25,13 @@ public abstract class ItemAugmentAbstract extends GTGenericItem {
     private final IArmorPart part;
 
     public ItemAugmentAbstract(IArmorPart part) {
-        super(part.getItemId());
+        super(part.getItemId(), part.getLocalizedName(), part.getTooltip());
         this.part = part;
     }
 
     @Override
     public String getItemStackDisplayName(ItemStack p_77653_1_) {
         return part.getLocalizedName();
-    }
-
-    @Override
-    protected boolean showElectricTier() {
-        return false;
     }
 
     protected boolean showAllInfo() {

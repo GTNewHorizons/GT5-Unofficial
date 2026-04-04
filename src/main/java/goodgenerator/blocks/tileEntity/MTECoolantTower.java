@@ -11,13 +11,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -34,7 +32,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
+public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstructable {
 
     protected IStructureDefinition<MTECoolantTower> multiDefinition = null;
     private static final int CASING_INDEX = 1539;
@@ -107,7 +105,7 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coolant Tower")
             .addInfo("Turn Steam back to Distilled Water")
-            .addController("Front middle of the second layer")
+            .addController("Front center, 2nd layer")
             .addCasingInfoExactly("Light Concrete", 277, false)
             .addCasingInfoExactly("Tungstencarbide Frame Box", 28, false)
             .addInputHatch("Any Light Concrete of the second layer", 1)

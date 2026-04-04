@@ -202,6 +202,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
+    @Override
     long fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
         if (!aFluids.isEmpty()) {
             int tEU = 0;

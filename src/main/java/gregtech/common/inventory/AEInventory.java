@@ -33,7 +33,7 @@ import gregtech.common.gui.modularui.widget.IAEItemHandlerModifiable;
  * An inventory that stores AE item stacks. This also sends monitor updates as needed.
  */
 public abstract class AEInventory
-    implements IAEInventory, IMEMonitor<IAEItemStack>, IAEItemHandlerModifiable, INBTSerializable<NBTTagCompound> {
+    implements IMEMonitor<IAEItemStack>, IAEItemHandlerModifiable, INBTSerializable<NBTTagCompound> {
 
     private final Map<IMEMonitorHandlerReceiver<IAEItemStack>, Object> listeners = new HashMap<>();
 

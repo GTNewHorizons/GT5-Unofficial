@@ -158,6 +158,8 @@ beamline.out_pre=Multiblock Beamline Output
 beamline.pipe.desc.0=Transport for particles
 beamline.pipe.desc.1=Signal does not cross or bend
 
+gt.blockmachines.beamline_pipe.name=Beamline Pipe
+
 tile.recipe.tc=Target Chamber
 tile.recipe.sc=Source Chamber
 
@@ -181,12 +183,6 @@ particle.eta=Eta
 particle.jpsi=J/Psi
 particle.upsilon=Upsilon
 particle.alpha=Alpha
-particle.Electron=Electron
-particle.Photon=Photon
-particle.Alpha=Alpha
-particle.Neutron=Neutron
-particle.Proton=Proton
-particle.Positron=Positron
 GT5U.gui.text.dissolution_ratio=§7Wrong fluid input ratio
 
 beamcrafting.energy_A=min Energy 1
