@@ -181,7 +181,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                     + " to hold fluids and molds in the same hatch")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginStructureBlock(5, 6, 9, false)
-            .addController("Front Center Bottom")
+            .addController("Front bottom center")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addCasingInfoMin("Solidifier Casing", MIN_CASINGS, false)
             .addCasingInfoExactly("Solidifier Radiator", 34, false)

@@ -65,7 +65,7 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
             .addBulkMachineInfo(8, 2.2f, 0.9f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 6, 5, true)
-            .addController("Front Center")
+            .addController("Front center, 2nd layer")
             .addCasingInfoMin("Top/Bottom layer: Multi-use Casings", 34, false)
             .addCasingInfoMin("Middle layers: Thermal Containment Casing", 47, false)
             .addInputBus("Bottom Layer (optional)", 1)
