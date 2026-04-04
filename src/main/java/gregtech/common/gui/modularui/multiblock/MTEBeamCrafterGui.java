@@ -7,20 +7,10 @@ import static gtnhlanth.common.beamline.Particle.getParticleFromId;
 
 import java.util.Map;
 
-import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.value.BoolValue;
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.GenericMapSyncHandler;
-import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
-import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
-import gtnhlanth.common.beamline.Particle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -29,11 +19,16 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
+import gtnhlanth.common.beamline.Particle;
 
 public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
 
@@ -46,11 +41,16 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
         super.registerSyncValues(syncManager);
         Map<Integer, Integer> bufferMap = multiblock.getBufferMap();
         for (Integer key : bufferMap.keySet()) {
-            syncManager.syncValue("particleID" + key, new IntSyncValue(() -> bufferMap.getOrDefault(key, 0)));
+            syncManager.syncValue("particleID" + key, new IntSyncValue(() -> key));
         }
+        for (Integer key : bufferMap.keySet()) {
+            syncManager.syncValue(
+                "valueID" + key,
+                new IntSyncValue(() -> multiblock.bufferMap.get(key), i -> multiblock.bufferMap.put(key, i)));
+        }
+
         syncManager.syncValue("currentRecipeParticleIDA", new IntSyncValue(multiblock::getCurrentRecipeParticleIDA));
         syncManager.syncValue("currentRecipeParticleIDB", new IntSyncValue(multiblock::getCurrentRecipeParticleIDB));
-
     }
 
     @Override
@@ -72,13 +72,13 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
         outputWidget.child(new TextWidget<>(particleKeyA));
         outputWidget.child(new TextWidget<>(particleKeyB));
 
-
-        outputWidget.child(new TextWidget<>(guiHeaderKeyBuffer)
-            .marginTop(4).marginBottom(4));
+        outputWidget.child(
+            new TextWidget<>(guiHeaderKeyBuffer).marginTop(4)
+                .marginBottom(4));
 
         for (Integer key : bufferMap.keySet()) {
 
-            IntSyncValue valueSync = syncManager.findSyncHandler("particleID" + key, IntSyncValue.class);
+            IntSyncValue valueSync = syncManager.findSyncHandler("valueID" + key, IntSyncValue.class);
 
             IKey particleKey = IKey.dynamic(
                 () -> EnumChatFormatting.WHITE + getParticleNameFromID(key)
@@ -86,8 +86,8 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
                     + formatNumberCompact(valueSync.getValue()));
 
             outputWidget.child(
-                new IDrawable.DrawableWidget(getParticleTexture(key)).setEnabledIf(w -> valueSync.getValue() > 0));
-            outputWidget.child(new TextWidget<>(particleKey).setEnabledIf(w -> valueSync.getValue() > 0));
+                new IDrawable.DrawableWidget(getParticleTexture(key)).setEnabledIf(w -> valueSync.getIntValue() > 0));
+            outputWidget.child(new TextWidget<>(particleKey).setEnabledIf(w -> valueSync.getIntValue() > 0));
         }
 
         return outputWidget;
@@ -119,10 +119,12 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
     }
 
     private ModularPanel openInfoPanel(PanelSyncManager p_syncManager, ModularPanel parent,
-                                       PanelSyncManager syncManager) {
+        PanelSyncManager syncManager) {
         return new ModularPanel("statsPanel").relative(parent)
             .leftRel(1)
-            .topRel(0).width(110).height(160)
+            .topRel(0)
+            .width(110)
+            .height(160)
             .widgetTheme("backgroundPopup")
             .child(
                 new Row().sizeRel(1)
@@ -135,14 +137,12 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
                                     IKey.dynamic(
                                         () -> StatCollector.translateToLocalFormatted(
                                             "gt.blockmachines.multimachine.beamcrafting.beamcrafter.dumpbuffer")))
-                                    .size(100, 20)
-                                    .alignment(Alignment.CENTER))
-                            .child(createParticleButtonGrid())
-                    )
-            );
+                                                .size(100, 20)
+                                                .alignment(Alignment.CENTER))
+                            .child(createParticleButtonGrid(syncManager))));
     }
 
-    private IWidget createParticleButtonGrid() {
+    private IWidget createParticleButtonGrid(PanelSyncManager syncManager) {
 
         Column column = new Column();
 
@@ -150,26 +150,35 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
         int index = 0;
 
         for (int row = 0; row < 4; row++) {
-            Row r = (Row) new Row().size(100,20);
+            Row r = (Row) new Row().size(100, 20);
             for (int col = 0; col < 5; col++) {
                 if (index >= particles.length) break;
 
                 Particle particle = particles[index++];
 
-                r.child(createButtonForParticle(particle)).marginRight(2);
+                r.child(createButtonForParticle(syncManager, particle))
+                    .marginRight(2);
             }
 
-            column.child(r).marginBottom(2);
+            column.child(r)
+                .marginBottom(2);
         }
 
         return column;
     }
-    protected IWidget createButtonForParticle(Particle particle) {
-        return new ButtonWidget<>()
-            .size(18, 18)
+
+    protected IWidget createButtonForParticle(PanelSyncManager syncManager, Particle particle) {
+        return new ButtonWidget<>().size(18, 18)
             .topRel(0)
             .overlay(particle.getTexture())
-            .onMousePressed(d -> multiblock.clearBufferForParticle(particle)); // sync manager or something idk man
+            .onMousePressed(d -> {
+                IntSyncValue valueSync = syncManager.findSyncHandler("valueID" + particle.getId(), IntSyncValue.class);
+                // int id = particle.getId();
+                valueSync.setIntValue(0);
+                // multiblock.setBufferToZeroForParticle(particle.getId());
+                // System.out.println("particle" + particle.getId() + "set to 0:" + valueSync.getIntValue());
+                return true;
+            });
     }
 
     private String formatGuiHeaderBuffer() {

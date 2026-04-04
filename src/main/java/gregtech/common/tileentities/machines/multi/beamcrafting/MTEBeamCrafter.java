@@ -73,7 +73,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     private int activeParallel = 1;
 
-    private Map<Integer, Integer> bufferMap = new HashMap<>();
+    public Map<Integer, Integer> bufferMap = new HashMap<>();
     private boolean bufferMapInitialized = false;
 
     private GTRecipe lastRecipe;
@@ -516,6 +516,10 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         return bufferMap;
     }
 
+    public void setBufferToZeroForParticle(int id) {
+        bufferMap.put(id, 0);
+    }
+
     @Override
     public int getMaxParallelRecipes() {
         return MAX_PARALLEL;
@@ -527,15 +531,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     public int getCurrentRecipeParticleIDB() {
         return currentRecipeParticleIDB;
-    }
-
-    public boolean clearBufferForParticle(Particle particle){
-        int particleID = particle.getId();
-        if (this.bufferMap.containsKey(particleID)){
-            this.bufferMap.put(particleID,0);
-            return true;
-        }
-        return false;
     }
 
 }
