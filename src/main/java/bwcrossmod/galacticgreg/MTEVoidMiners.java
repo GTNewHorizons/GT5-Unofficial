@@ -83,6 +83,7 @@ public class MTEVoidMiners {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = super.createTooltip();
             tt.beginStructureBlock(7, 9, 7, false)
+            .addController("Front center, 2nd layer")
                 .addStructureInfo(
                     EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Mining Osmiridium Casing")
                 .addStructureInfo(EnumChatFormatting.GOLD + "42x" + EnumChatFormatting.GRAY + " Osmiridium Frame Box")
@@ -192,6 +193,7 @@ public class MTEVoidMiners {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = super.createTooltip();
             tt.beginStructureBlock(9, 13, 8, false)
+            .addController("Front center, 3rd layer")
                 .addStructureInfo(
                     EnumChatFormatting.GOLD + "29x" + EnumChatFormatting.GRAY + " Mining Black Plutonium Casing")
                 .addStructureInfo(
@@ -299,6 +301,7 @@ public class MTEVoidMiners {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = super.createTooltip();
             tt.beginStructureBlock(9, 16, 9, false)
+            .addController("Front center, 2nd layer")
                 .addStructureInfo(
                     EnumChatFormatting.GOLD + "47x" + EnumChatFormatting.GRAY + " Mining Neutronium Casing")
                 .addStructureInfo(
