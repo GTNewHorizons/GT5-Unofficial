@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.machines.outputme.base;
 
-import static gregtech.common.covers.modes.FilterType.BLACKLIST;
-import static gregtech.common.covers.modes.FilterType.WHITELIST;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
@@ -20,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -360,20 +359,15 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         ItemStack upgradeItemStack = env.getCellStack();
 
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ICellWorkbenchItem cellWorkbenchItem) {
-            // FIXME: localize this msg
-            String msg = filter.updateFilterFromCell(cellWorkbenchItem, upgradeItemStack);
-            if (!msg.isEmpty() && env.getLastClickedPlayer() != null) {
-                String modeKey = filter.getIsBlackList() ? BLACKLIST.getKey() : WHITELIST.getKey();
-                GTUtility.sendChatComp(
-                    env.getLastClickedPlayer(),
-                    new ChatComponentTranslation(modeKey).appendText(": ")
-                        .appendSibling(new ChatComponentTranslation(filter.getEnableKey(), msg)));
+            IChatComponent msg = filter.updateFilterFromCell(cellWorkbenchItem, upgradeItemStack);
+            if (env.getLastClickedPlayer() != null) {
+                GTUtility.sendChatComp(env.getLastClickedPlayer(), msg);
             }
             env.dispatchMarkDirty();
         } else {
-            filter.clear();
+            IChatComponent msg = filter.clearAndGetNotify();
             if (env.getLastClickedPlayer() != null) {
-                GTUtility.sendChatTrans(env.getLastClickedPlayer(), filter.getDisableKey());
+                GTUtility.sendChatComp(env.getLastClickedPlayer(), msg);
             }
             env.dispatchMarkDirty();
         }

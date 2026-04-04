@@ -29,12 +29,6 @@ public class MEFilterFluid extends MEFilterBase<IAEFluidStack, String, FluidStac
     }
 
     @Override
-    protected String getDisplayName(IAEFluidStack stack) {
-        return stack.getFluidStack()
-            .getLocalizedName();
-    }
-
-    @Override
     public void onLoadNBTData(NBTTagCompound aNBT) {
         NBTBase lockedFluidsTag = aNBT.getTag("lockedFluids");
 
