@@ -83,7 +83,7 @@ public class MTEFrothFlotationCellLegacy extends GTPPMultiBlockBase<MTEFrothFlot
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, true)
-            .addController("Front Center")
+            .addController("Top center")
             .addCasingInfoMin("Inconel Reinforced Casing", 68, false)
             .addCasingInfoMin("Flotation Casing", 52, false)
             .addInputBus("Bottom Casing", 1)
