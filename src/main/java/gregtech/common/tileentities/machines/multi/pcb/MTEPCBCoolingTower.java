@@ -159,7 +159,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
             .addInfo(EnumChatFormatting.GRAY + "Can connect to many PCB Factories!")
             .beginStructureBlock(5, 10, 5, false)
             .addStructureInfo("Tier 1")
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoExactlyColored(
                 "Reinforced Photolithographic Framework Casing",
                 EnumChatFormatting.GRAY,
@@ -192,7 +192,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
                 false)
             .addInputHatch("Coolant Hatch")
             .addStructureInfo("Tier 2")
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoExactlyColored(
                 "Reinforced Photolithographic Framework Casing",
                 EnumChatFormatting.GRAY,
