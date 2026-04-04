@@ -10667,8 +10667,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerSolarPanels() {
         ItemList.Machine_ULV_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_ULV.ID, "basicgenerator.solarpanel.00", "Ultra Low Voltage Solar Panel", 0)
-                .getStackForm(1));
+            new MTESolarGenerator(
+                SOLAR_PANEL_ULV.ID,
+                "basicgenerator.solarpanel.00",
+                "Ultra Low Voltage Solar Panel",
+                0).getStackForm(1));
         ItemList.Machine_LV_SolarPanel.set(
             new MTESolarGenerator(SOLAR_PANEL_LV.ID, "basicgenerator.solarpanel.01", "Basic Solar Panel", 1)
                 .getStackForm(1));
