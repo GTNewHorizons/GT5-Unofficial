@@ -486,6 +486,11 @@ gt.blockmachines.basicmachine.e_furnace.tier.09.name=Epic Atom Stimulator
 gt.blockmachines.basicmachine.e_furnace.tier.10.name=Epic Atom Stimulator II
 gt.blockmachines.basicmachine.e_furnace.tier.11.name=Epic Atom Stimulator III
 gt.blockmachines.basicmachine.e_furnace.tier.12.name=Epic Atom Stimulator IV
+gt.blockmachines.basicmachine.e_oven.tier.01.name=Basic Electric Oven
+gt.blockmachines.basicmachine.e_oven.tier.02.name=Advanced Electric Oven
+gt.blockmachines.basicmachine.e_oven.tier.03.name=Advanced Electric Oven II
+gt.blockmachines.basicmachine.e_oven.tier.04.name=Advanced Electric Oven III
+gt.blockmachines.basicmachine.e_oven.tier.05.name=Advanced Electric Oven IV
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
 gt.behaviour.paintspray.uses=Remaining Uses: %s
