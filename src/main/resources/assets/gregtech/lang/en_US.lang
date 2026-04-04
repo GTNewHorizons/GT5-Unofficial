@@ -698,6 +698,15 @@ gt.blockmachines.basicmachine.mixer.tier.09.name=Epic Matter Organizer
 gt.blockmachines.basicmachine.mixer.tier.10.name=Epic Matter Organizer II
 gt.blockmachines.basicmachine.mixer.tier.11.name=Epic Matter Organizer III
 gt.blockmachines.basicmachine.mixer.tier.12.name=Epic Matter Organizer IV
+gt.blockmachines.basicmachine.mobrep.tier.01.name=Basic Monster Repellator
+gt.blockmachines.basicmachine.mobrep.tier.02.name=Advanced Monster Repellator
+gt.blockmachines.basicmachine.mobrep.tier.03.name=Advanced Monster Repellator II
+gt.blockmachines.basicmachine.mobrep.tier.04.name=Advanced Monster Repellator III
+gt.blockmachines.basicmachine.mobrep.tier.05.name=Advanced Monster Repellator IV
+gt.blockmachines.basicmachine.mobrep.tier.06.name=Advanced Monster Repellator V
+gt.blockmachines.basicmachine.mobrep.tier.07.name=Advanced Monster Repellator VI
+gt.blockmachines.basicmachine.mobrep.tier.08.name=Advanced Monster Repellator VII
+gt.blockmachines.basicmachine.mobrep.tooltip=Repels nasty Creatures. Radius: %s unpowered / %s powered. Costs %s EU/t
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
 gt.behaviour.paintspray.uses=Remaining Uses: %s
