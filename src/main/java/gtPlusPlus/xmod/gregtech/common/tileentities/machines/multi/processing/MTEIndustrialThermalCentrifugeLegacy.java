@@ -37,23 +37,23 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndustrialThermalCentrifuge>
+public class MTEIndustrialThermalCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustrialThermalCentrifugeLegacy>
     implements ISurvivalConstructable {
 
     private int mCasing;
-    private static IStructureDefinition<MTEIndustrialThermalCentrifuge> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialThermalCentrifugeLegacy> STRUCTURE_DEFINITION = null;
 
-    public MTEIndustrialThermalCentrifuge(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialThermalCentrifugeLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEIndustrialThermalCentrifuge(final String aName) {
+    public MTEIndustrialThermalCentrifugeLegacy(final String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialThermalCentrifuge(this.mName);
+        return new MTEIndustrialThermalCentrifugeLegacy(this.mName);
     }
 
     @Override
@@ -65,10 +65,11 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addBulkMachineInfo(8, 2.5f, 0.8f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 2, 3, false)
-            .addController("Front Center")
+            .addController("Front center, 2nd layer")
             .addCasingInfoMin("Thermal Processing Casings/Noise Hazard Sign Blocks", 8, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -80,14 +81,14 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
     }
 
     @Override
-    public IStructureDefinition<MTEIndustrialThermalCentrifuge> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialThermalCentrifugeLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialThermalCentrifuge>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialThermalCentrifugeLegacy>builder()
                 .addShape(mName, transpose(new String[][] { { "C~C", "CCC", "CCC" }, { "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
                     ofChain(
-                        buildHatchAdder(MTEIndustrialThermalCentrifuge.class)
+                        buildHatchAdder(MTEIndustrialThermalCentrifugeLegacy.class)
                             .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                             .casingIndex(getCasingTextureIndex())
                             .hint(1)
@@ -137,11 +138,6 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
     }
 
     @Override
-    protected int getCasingTextureId() {
-        return getCasingTextureIndex();
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.thermalCentrifugeRecipes;
     }
@@ -170,6 +166,11 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
 
     public byte getCasingMeta() {
         return 0;
+    }
+
+    @Override
+    protected int getCasingTextureId() {
+        return getCasingTextureIndex();
     }
 
     public byte getCasingTextureIndex() {

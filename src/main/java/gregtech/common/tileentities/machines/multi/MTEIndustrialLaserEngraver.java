@@ -190,9 +190,9 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         ItemStack aTool) {
         stopAllRendering = !stopAllRendering;
         if (stopAllRendering) {
-            GTUtility.sendChatToPlayer(aPlayer, "Rendering off");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.rendering.off");
             if (renderer != null) renderer.setShouldRender(false);
-        } else GTUtility.sendChatToPlayer(aPlayer, "Rendering on");
+        } else GTUtility.sendChatTrans(aPlayer, "GT5U.chat.rendering.on");
     }
 
     @Override
@@ -201,7 +201,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         if (!aPlayer.isSneaking()) {
             if (renderer != null) {
                 renderer.toggleRealism();
-                GTUtility.sendChatToPlayer(aPlayer, "Toggling realism!");
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.laser.engraver.toggling_realism");
                 return true;
             }
         }
@@ -233,7 +233,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("Use screwdriver to disable laser rendering")
             .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
             .beginStructureBlock(5, 5, 5, false)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Laser Containment Casing", 35, false)
             .addCasingInfoExactly("Tungstensteel Frame Box", 9, false)
             .addCasingInfoExactly("Any Tiered Glass", 3, true)

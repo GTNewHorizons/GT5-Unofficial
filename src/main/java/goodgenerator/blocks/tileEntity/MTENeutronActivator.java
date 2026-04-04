@@ -35,7 +35,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronAccelerator;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
-import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
@@ -62,8 +61,9 @@ import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements ISurvivalConstructable {
+public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalConstructable {
 
     public Parameters.Group.ParameterIn batchSetting;
 
@@ -200,7 +200,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                     + EnumChatFormatting.GRAY
                     + ".")
             .addInfo("Inputting Graphite/Beryllium dust can reduce 10MeV per dust immediately.")
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addCasingInfoRange("Clean Stainless Steel Machine Casing", 7, 31, false)
             .addCasingInfoExactly("Processor Machine Casing", 18, false)
             .addCasingInfoMin("Steel Frame Box", 16, false)

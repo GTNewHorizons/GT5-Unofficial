@@ -20,7 +20,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -361,21 +360,20 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         ItemStack upgradeItemStack = env.getCellStack();
 
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ICellWorkbenchItem cellWorkbenchItem) {
+            // FIXME: localize this msg
             String msg = filter.updateFilterFromCell(cellWorkbenchItem, upgradeItemStack);
             if (!msg.isEmpty() && env.getLastClickedPlayer() != null) {
                 String modeKey = filter.getIsBlackList() ? BLACKLIST.getKey() : WHITELIST.getKey();
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatComp(
                     env.getLastClickedPlayer(),
-                    StatCollector.translateToLocal(modeKey)
-                        + StatCollector.translateToLocalFormatted(filter.getEnableKey(), msg));
+                    new ChatComponentTranslation(modeKey).appendText(": ")
+                        .appendSibling(new ChatComponentTranslation(filter.getEnableKey(), msg)));
             }
             env.dispatchMarkDirty();
         } else {
             filter.clear();
             if (env.getLastClickedPlayer() != null) {
-                GTUtility.sendChatToPlayer(
-                    env.getLastClickedPlayer(),
-                    StatCollector.translateToLocal(filter.getDisableKey()));
+                GTUtility.sendChatTrans(env.getLastClickedPlayer(), filter.getDisableKey());
             }
             env.dispatchMarkDirty();
         }
@@ -524,8 +522,10 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     }
 
     public void addToCache(T stack) {
-        if (!isVoidCell) cache.insert(stack, stack.getStackSize());
-        lastInputTick = tickCounter;
+        if (!isVoidCell) {
+            cache.insert(stack, stack.getStackSize());
+            env.dispatchMarkDirty();
+        }
     }
 
     public boolean storePartial(I stack, boolean simulate) {
@@ -533,8 +533,8 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             return false;
         }
         if (!simulate) {
-            env.dispatchMarkDirty();
             addToCache(stack);
+            lastInputTick = tickCounter;
         }
         return true;
     }

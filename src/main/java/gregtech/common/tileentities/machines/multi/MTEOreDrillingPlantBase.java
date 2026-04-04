@@ -160,19 +160,11 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             final String blockDiameter = formatNumber(chunkRadiusConfig * 32L);
             GTUtility.sendChatTrans(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
-                    + chunkDiameter
-                    + "x"
-                    + chunkDiameter
-                    + " "
-                    + StatCollector.translateToLocal("GT5U.machines.chunks")
-                    + " ("
-                    + blockDiameter
-                    + "x"
-                    + blockDiameter
-                    + " "
-                    + StatCollector.translateToLocal("GT5U.machines.blocks")
-                    + ")");
+                "GT5U.machines.workareaset.blocks",
+                chunkDiameter,
+                chunkDiameter,
+                blockDiameter,
+                blockDiameter);
         }
     }
 
@@ -180,7 +172,10 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         replaceWithCobblestone = !replaceWithCobblestone;
-        GTUtility.sendChatTrans(aPlayer, "Replace with cobblestone " + replaceWithCobblestone);
+        GTUtility.sendChatTrans(
+            aPlayer,
+            "GT5U.chat.ore_drilling_plant_base.replace_with_cobblestone",
+            replaceWithCobblestone);
         return true;
     }
 
@@ -661,7 +656,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
                     : formatNumber(baseCycleTime / 20.0) + " seconds"))
             .beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
             .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")

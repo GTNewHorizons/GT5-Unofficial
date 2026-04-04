@@ -30,7 +30,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.api.recipe.ExtremeHeatExchangerRecipe;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
-import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
@@ -51,8 +50,9 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM implements ISurvivalConstructable {
+public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurvivalConstructable {
 
     protected IStructureDefinition<MTEExtremeHeatExchanger> multiDefinition = null;
 
@@ -214,7 +214,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM implemen
             .addInfo("Maximum input and output values per second are shown in NEI")
             .addInfo("Actual output is proportional to the amount of hot fluid inserted")
             .addInfo(EnumChatFormatting.RED + "Explodes if it runs out of water")
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addCasingInfoRange("Robust Tungstensteel Machine Casings", 25, 120, false)
             .addCasingInfoExactly("Any Tiered Glass", 72, false)
             .addCasingInfoExactly("Pressure Resistant Wall", 48, false)
@@ -307,7 +307,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM implemen
                 }
                 addOutput(new FluidStack(tReadySteam, steamToOutput));
             } else {
-                GTLog.exp.println(this.mName + " had no more Distilled water!");
+                GTLog.writeExplosionLog(this, "had no more distilled water!");
                 mHotFluidHatch.getBaseMetaTileEntity()
                     .doExplosion(V[8]);
                 return false;

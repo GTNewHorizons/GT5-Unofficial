@@ -59,7 +59,8 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderFaceXPos(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = mIconContainer.getOverlayIcon();
-        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && ctx.canRenderInPass(pass -> pass == 1)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
+            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.EAST, 0xffffff);
             renderFaceXPos(ctx, overlayIcon, rotation);
         }
@@ -89,7 +90,8 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderFaceXNeg(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = mIconContainer.getOverlayIcon();
-        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && ctx.canRenderInPass(pass -> pass == 1)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
+            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.WEST, 0xffffff);
             renderFaceXNeg(ctx, overlayIcon, rotation);
         }
@@ -119,7 +121,8 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderFaceYPos(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = mIconContainer.getOverlayIcon();
-        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && ctx.canRenderInPass(pass -> pass == 1)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
+            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.UP, 0xffffff);
             renderFaceYPos(ctx, overlayIcon, rotation);
         }
@@ -149,7 +152,8 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderFaceYNeg(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = mIconContainer.getOverlayIcon();
-        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && ctx.canRenderInPass(pass -> pass == 1)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
+            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.DOWN, 0xffffff);
             renderFaceYNeg(ctx, overlayIcon, rotation);
         }
@@ -179,7 +183,8 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderFaceZPos(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = mIconContainer.getOverlayIcon();
-        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && ctx.canRenderInPass(pass -> pass == 1)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
+            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.SOUTH, 0xffffff);
             renderFaceZPos(ctx, overlayIcon, rotation);
         }
@@ -209,7 +214,8 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderFaceZNeg(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = mIconContainer.getOverlayIcon();
-        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && ctx.canRenderInPass(pass -> pass == 1)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
+            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.NORTH, 0xffffff);
             renderFaceZNeg(ctx, overlayIcon, rotation);
         }

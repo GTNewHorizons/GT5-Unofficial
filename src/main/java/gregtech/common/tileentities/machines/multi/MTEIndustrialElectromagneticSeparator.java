@@ -9,8 +9,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -34,7 +33,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -82,24 +81,23 @@ public class MTEIndustrialElectromagneticSeparator
         }
 
         public static String buildMagnetTooltip(MagnetTiers m) {
-            String tooltip = "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
-                + "Speed: +"
-                + Math.round((1F / m.speedBoost * 100) - 100)
-                + "%/n "
-                + EnumChatFormatting.DARK_PURPLE
-                + "EU Usage: "
-                + Math.round(m.euModifier * 100)
-                + "%/n "
-                + EnumChatFormatting.AQUA
-                + "Parallel: "
-                + m.maxParallel;
+            String tooltip = GTUtility.translate(
+                "gt.magnet.tooltip.base",
+                EnumChatFormatting.LIGHT_PURPLE,
+                Math.round((1F / m.speedBoost * 100) - 100),
+                EnumChatFormatting.DARK_PURPLE,
+                Math.round(m.euModifier * 100),
+                EnumChatFormatting.AQUA,
+                m.maxParallel);
 
-            if (m.supportsExotic) tooltip = tooltip + "/n "
-                + EnumChatFormatting.BOLD
-                + EnumChatFormatting.GREEN
-                + "Can Use Multi-Amp Hatches/n "
-                + EnumChatFormatting.RED
-                + "Limit to one energy hatch if using Multi-Amp";
+            if (m.supportsExotic) {
+                tooltip = tooltip + "\\n"
+                    + GTUtility.translate(
+                        "gt.magnet.tooltip.exotic",
+                        EnumChatFormatting.BOLD,
+                        EnumChatFormatting.GREEN,
+                        EnumChatFormatting.RED);
+            }
 
             return tooltip;
         }
@@ -213,12 +211,12 @@ public class MTEIndustrialElectromagneticSeparator
             .addInfo("Better electromagnets give further bonuses")
             .addInfo("With Tengam electromagnet, multi-amp (NOT laser) hatches are allowed")
             .beginStructureBlock(7, 6, 7, false)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
             .addCasingInfoExactly("Any Tiered Glass", 12, false)
             .addOtherStructurePart("Magnetic Neodymium Frame Box", "x37")
             .addOtherStructurePart(
-                translateToLocal("GT5U.tooltip.structure.electromagnet_housing"),
+                GTUtility.translate("GT5U.tooltip.structure.electromagnet_housing"),
                 "1 Block Above/Behind Controller",
                 2)
             .addInputBus("Any Casing", 1)
@@ -226,7 +224,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTValues.authorBaps);
+            .toolTipFinisher(GTAuthors.authorBaps);
         return tt;
     }
 
@@ -332,7 +330,7 @@ public class MTEIndustrialElectromagneticSeparator
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
         GTUtility
-            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+            .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
     }
 
     @Override
@@ -342,8 +340,8 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    public String getMachineModeName() {
-        return translateToLocal("GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode." + machineMode);
+    public String getMachineModeKey() {
+        return "GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode." + machineMode;
     }
 
     @Override

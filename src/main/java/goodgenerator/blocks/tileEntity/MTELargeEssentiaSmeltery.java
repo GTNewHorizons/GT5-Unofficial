@@ -44,7 +44,6 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.GTMod;
@@ -72,7 +71,7 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
-public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM implements ISurvivalConstructable {
+public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvivalConstructable {
 
     private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_On");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
@@ -225,6 +224,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM impleme
             .addInfo("You can find more information about this machine in the Thaumonomicon")
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
+            .beginVariableStructureBlock(5, 5, 5, 5, 5, 8, true)
             .addController("Front center")
             .addCasingInfoMin("Magic Casing", 24, false)
             .addMaintenanceHatch("Hint Block Number 1")

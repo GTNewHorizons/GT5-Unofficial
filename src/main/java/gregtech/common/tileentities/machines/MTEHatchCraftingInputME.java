@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
 
@@ -114,6 +115,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.config.Gregtech;
@@ -121,6 +123,7 @@ import gregtech.common.gui.modularui.hatch.MTEHatchCraftingInputMEGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchCraftingInputME extends MTEHatchInputBus
     implements IAddGregtechLogo, IPowerChannelState, ICraftingProvider, IGridProxyable, IDualInputHatchWithPattern,
     ICustomNameObject, IInterfaceViewable, IMEConnectable {
@@ -487,21 +490,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private ScheduledReason scheduledReason = ScheduledReason.UNDEFINED;
 
     public MTEHatchCraftingInputME(int aID, String aName, String aNameRegional, boolean supportFluids) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            supportFluids ? 10 : 6,
-            MAX_INV_COUNT,
-            new String[] {
-                StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": " + EnumChatFormatting.YELLOW + "CRIB",
-                "Advanced item input for Multiblocks",
-                "Hatch Tier: " + TIER_COLORS[supportFluids ? 10 : 6] + VN[supportFluids ? 10 : 6],
-                "Processes patterns directly from ME",
-                supportFluids ? "It supports patterns including fluids"
-                    : "It does not support patterns including fluids",
-                "Change ME connection behavior by right-clicking with wire cutter",
-                "Ignores the contents of other buses or hatches", "Also ignores other patterns within the same bus" });
+        super(aID, aName, aNameRegional, supportFluids ? 10 : 6, MAX_INV_COUNT, null);
         disableSort = true;
         this.supportFluids = supportFluids;
     }
@@ -1226,6 +1215,14 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             .iterator();
     }
 
+    public Iterator<PatternSlot<MTEHatchCraftingInputME>> inventoriesReversed() {
+        return IntStream.range(0, internalInventory.length)
+            .map(i -> internalInventory.length - 1 - i)
+            .mapToObj(i -> internalInventory[i])
+            .filter(Objects::nonNull)
+            .iterator();
+    }
+
     @Override
     public void onBlockDestroyed() {
         refundAll(true);
@@ -1417,5 +1414,18 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             }
         } catch (Exception ignored) {}
         CraftingGridCache.unpauseRebuilds();
+    }
+
+    @Override
+    public String[] getDescription() {
+        if (supportFluids) return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.input_bus_crafting_me.desc",
+            TIER_COLORS[10] + VN[10],
+            StatCollector.translateToLocal("gt.blockmachines.input_bus_crafting_me.support_fluid.desc") + GTSplit.LB);
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.input_bus_crafting_me.desc",
+            TIER_COLORS[6] + VN[6],
+            StatCollector.translateToLocal("gt.blockmachines.input_bus_crafting_me.not_support_fluid.desc")
+                + GTSplit.LB);
     }
 }
