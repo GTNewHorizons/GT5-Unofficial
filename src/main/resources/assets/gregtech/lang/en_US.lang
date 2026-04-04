@@ -808,6 +808,11 @@ gt.blockmachines.basicmachine.scanner.tier.09.name=Epic Electron Microscope
 gt.blockmachines.basicmachine.scanner.tier.10.name=Epic Electron Microscope II
 gt.blockmachines.basicmachine.scanner.tier.11.name=Epic Electron Microscope III
 gt.blockmachines.basicmachine.scanner.tier.12.name=Epic Electron Microscope IV
+gt.blockmachines.basicmachine.seismicprospector.04.name=Advanced Seismic Prospector EV
+gt.blockmachines.basicmachine.seismicprospector.05.name=Advanced Seismic Prospector HV
+gt.blockmachines.basicmachine.seismicprospector.06.name=Advanced Seismic Prospector MV
+gt.blockmachines.basicmachine.seismicprospector.07.name=Advanced Seismic Prospector LV
+gt.blockmachines.basicmachine.seismicprospector.tooltip=Place, activate with explosives\n2 Powder Barrels, 4 Glyceryl Trinitrate, 16 TNT, or 8 ITNT\nUse Data Stick, Scan Data Stick, Print Data Stick, Bind Pages into Book\nOre prospecting area = %sx%s ONLY blocks below prospector\nOil prospecting area 3x3 oilfields, each is 8x8 chunks
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
 gt.behaviour.paintspray.uses=Remaining Uses: %s
