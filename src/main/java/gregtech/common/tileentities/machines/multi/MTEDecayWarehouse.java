@@ -237,9 +237,9 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
         tt.addSubChannelUsage(GTStructureChannels.SUPER_CHEST);
 
-        tt.beginStructureBlock(true)
-            .addController("Front center")
-            .addAllCasingInfo();
+        tt.beginStructureBlock(true);
+        tt.addController("Front center");
+        tt.addAllCasingInfo();
 
         tt.toolTipFinisher();
 

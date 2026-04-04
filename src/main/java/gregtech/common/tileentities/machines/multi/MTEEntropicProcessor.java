@@ -223,9 +223,9 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
             .addSeparator()
             .addInfo("Performs one perfect overclock per casing tier (Thaumium = 1 perfect OC)");
 
-        tt.beginStructureBlock(true)
-            .addController("Front center")
-            .addAllCasingInfo();
+        tt.beginStructureBlock(true);
+        tt.addController("Front center");
+        tt.addAllCasingInfo();
 
         tt.addSubChannelUsage(GTStructureChannels.ALCHEMICAL_CASING);
         tt.addSubChannelUsage(GTStructureChannels.ALCHEMICAL_CONSTRUCT);
