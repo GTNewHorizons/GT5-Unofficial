@@ -1,11 +1,9 @@
 package gtPlusPlus.core.item.wearable.base;
 
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ISpecialArmor;
 
 public abstract class BaseItemWearable extends ItemArmor implements ISpecialArmor {
@@ -15,17 +13,9 @@ public abstract class BaseItemWearable extends ItemArmor implements ISpecialArmo
     }
 
     @Override
-    public abstract ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source,
-        double damage, int slot);
-
-    @Override
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
         return 0;
     }
-
-    @Override
-    public abstract void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage,
-        int slot);
 
     @Override
     public void func_82813_b(ItemStack p_82813_1_, int p_82813_2_) {

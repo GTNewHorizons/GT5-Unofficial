@@ -348,11 +348,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEMicrowaveEnergyTransmitterGui(this).build(data, syncManager, uiSettings);
     }
