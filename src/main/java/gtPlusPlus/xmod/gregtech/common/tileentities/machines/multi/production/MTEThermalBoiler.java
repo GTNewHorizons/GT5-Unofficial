@@ -90,7 +90,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
 
     @Override
     public String getMachineType() {
-        return "Boiler";
+        return "Heat Exchanger";
     }
 
     @Override
@@ -271,11 +271,10 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Converts Water & Heat into Steam")
-            .addInfo("Filters raw materials from lava")
-            .addInfo("Requires a Lava Filter in the controller slot for some byproducts")
-            .addInfo("Explodes if water is not supplied")
-            .addInfo("Consult user manual for more information")
+            .addInfo("Uses the heat from hot fluids to evaporate water into steam")
+            .addInfo("Filters raw materials from lava and pahoehoe lava")
+            .addInfo("Requires a Lava Filter in the controller slot for byproducts")
+            .addInfo("Explodes after 10s if it runs out of water")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")

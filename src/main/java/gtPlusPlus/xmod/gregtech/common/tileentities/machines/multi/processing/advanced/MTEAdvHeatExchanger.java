@@ -163,6 +163,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                     + " if the input rate of hot fluid is above a certain"
                     + EnumChatFormatting.LIGHT_PURPLE
                     + " threshold")
+            .addInfo("Explodes immediately if it runs out of distilled water")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.RED + "Lava"
@@ -177,7 +178,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                     + EnumChatFormatting.GRAY
                     + " : Max Output"
                     + EnumChatFormatting.WHITE
-                    + " 5,120,000 SH Steam/s")
+                    + " 256,000 L/t SH Steam")
             .addInfo(
                 EnumChatFormatting.RED + "Hot Coolant"
                     + EnumChatFormatting.GRAY
@@ -191,7 +192,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                     + EnumChatFormatting.GRAY
                     + " : Max Output"
                     + EnumChatFormatting.WHITE
-                    + " 10,240,000 SH Steam/s")
+                    + " 512,000 L/t SH Steam")
             .addInfo(
                 EnumChatFormatting.RED + "Hot Solar Salt"
                     + EnumChatFormatting.GRAY
@@ -205,17 +206,17 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                     + EnumChatFormatting.GRAY
                     + " : Max Output"
                     + EnumChatFormatting.WHITE
-                    + " 10,240,000 SH Steam/s")
+                    + " 512,000 L/t SH Steam")
             .addSeparator()
             .addInfo("A circuit in the controller lowers the SH threshold at the cost of steam")
             .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + "3.75%"
+                EnumChatFormatting.LIGHT_PURPLE + "-3.75%"
                     + EnumChatFormatting.GRAY
-                    + " reduced SH threshold and"
+                    + " SH threshold and"
                     + EnumChatFormatting.WHITE
-                    + " 1.5%"
+                    + " -1.5%"
                     + EnumChatFormatting.GRAY
-                    + " reduced steam per circuit over 1")
+                    + " steam output per circuit over 1")
             .beginStructureBlock(5, 9, 5, false)
             .addController("Front center, 4th layer")
             .addCasingInfoMin("Reinforced Heat Exchanger Casing", 90, false)

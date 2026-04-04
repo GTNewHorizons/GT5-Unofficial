@@ -152,6 +152,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                     + " if the input rate of hot fluid is above a certain"
                     + EnumChatFormatting.LIGHT_PURPLE
                     + " threshold")
+            .addInfo("Explodes after 100s if it runs out of distilled water")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.RED + "Lava"
@@ -166,7 +167,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                     + EnumChatFormatting.GRAY
                     + " : Max Output"
                     + EnumChatFormatting.WHITE
-                    + " 160,000 SH Steam/s")
+                    + " 8,000 L/t SH Steam")
             .addInfo(
                 EnumChatFormatting.RED + "Hot Coolant"
                     + EnumChatFormatting.GRAY
@@ -180,7 +181,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                     + EnumChatFormatting.GRAY
                     + " : Max Output"
                     + EnumChatFormatting.WHITE
-                    + " 320,000 SH Steam/s")
+                    + " 16,000 L/t SH Steam")
             .addInfo(
                 EnumChatFormatting.RED + "Hot Solar Salt"
                     + EnumChatFormatting.GRAY
@@ -194,24 +195,24 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                     + EnumChatFormatting.GRAY
                     + " : Max Output"
                     + EnumChatFormatting.WHITE
-                    + " 320,000 SH Steam/s")
+                    + " 16,000 L/t SH Steam")
             .addSeparator()
             .addInfo("A circuit in the controller lowers the SH threshold at the cost of steam")
             .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + "3.75%"
+                EnumChatFormatting.LIGHT_PURPLE + "-3.75%"
                     + EnumChatFormatting.GRAY
-                    + " reduced SH threshold and"
+                    + " SH threshold and"
                     + EnumChatFormatting.WHITE
-                    + " 1.5%"
+                    + " -1.5%"
                     + EnumChatFormatting.GRAY
-                    + " reduced steam per circuit over 1")
+                    + " steam output per circuit over 1")
             .beginStructureBlock(3, 4, 3, false)
             .addController("Front bottom center")
             .addCasingInfoRange("Stable Titanium Machine Casing", 20, 28, false)
             .addOtherStructurePart("Titanium Pipe Casing", "Center 2 blocks")
             .addMaintenanceHatch("Any casing", 1)
             .addInputHatch("Hot Fluid, bottom center casing", 2)
-            .addInputHatch("Distilled water, any casing", 1)
+            .addInputHatch("Distilled Water, any casing", 1)
             .addOutputHatch("Cold Fluid, top center casing", 3)
             .addOutputHatch("Steam/SH Steam, any casing", 1)
             .toolTipFinisher();

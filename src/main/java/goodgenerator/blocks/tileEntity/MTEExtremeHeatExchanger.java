@@ -207,32 +207,138 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger, EHE")
-            .addInfo("Outputs SH steam by cooling hot fluids with distilled water")
-            .addInfo("Supplying more hot fluid than the threshold causes overheating,")
-            .addInfo("producing SC steam instead")
-            .addInfo(EnumChatFormatting.YELLOW + "Plasma always produces SC steam")
-            .addInfo("Maximum input and output values per second are shown in NEI")
-            .addInfo("Actual output is proportional to the amount of hot fluid inserted")
-            .addInfo(EnumChatFormatting.RED + "Explodes if it runs out of water")
+            .addInfo(
+                "Inputs are" + EnumChatFormatting.RED
+                    + " Lava"
+                    + EnumChatFormatting.GRAY
+                    + ","
+                    + EnumChatFormatting.RED
+                    + " Hot Coolant"
+                    + EnumChatFormatting.GRAY
+                    + ","
+                    + EnumChatFormatting.RED
+                    + " Hot Solar Salt"
+                    + EnumChatFormatting.GRAY
+                    + ", or"
+                    + EnumChatFormatting.RED
+                    + " Plasma")
+            .addInfo(
+                "Outputs are" + EnumChatFormatting.BLUE
+                    + " Pahoehoe Lava"
+                    + EnumChatFormatting.GRAY
+                    + ","
+                    + EnumChatFormatting.BLUE
+                    + " IC2 Coolant"
+                    + EnumChatFormatting.GRAY
+                    + ","
+                    + EnumChatFormatting.BLUE
+                    + " Cold Solar Salt"
+                    + EnumChatFormatting.GRAY
+                    + ", or"
+                    + EnumChatFormatting.BLUE
+                    + " Molten Metal")
+            .addInfo(
+                "Converts Distilled Water into" + EnumChatFormatting.WHITE
+                    + " SH Steam"
+                    + EnumChatFormatting.GRAY
+                    + " or"
+                    + EnumChatFormatting.WHITE
+                    + " SC Steam"
+                    + EnumChatFormatting.GRAY
+                    + " in the process")
+            .addInfo(
+                "Outputs" + EnumChatFormatting.WHITE
+                    + " SC Steam"
+                    + EnumChatFormatting.GRAY
+                    + " if the input rate of hot fluid is above a certain"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " threshold")
+            .addInfo("Explodes immediately if it runs out of distilled water")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.RED + "Lava"
+                    + EnumChatFormatting.GRAY
+                    + " : SC Threshold"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " 80,000 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Input"
+                    + EnumChatFormatting.RED
+                    + " 160,000 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Output"
+                    + EnumChatFormatting.WHITE
+                    + " 640,000 L/t SC Steam")
+            .addInfo(
+                EnumChatFormatting.RED + "Hot Coolant"
+                    + EnumChatFormatting.GRAY
+                    + " : SC Threshold"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " 8,000 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Input"
+                    + EnumChatFormatting.RED
+                    + " 16,000 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Output"
+                    + EnumChatFormatting.WHITE
+                    + " 160,000 L/t SC Steam")
+            .addInfo(
+                EnumChatFormatting.RED + "Hot Solar Salt"
+                    + EnumChatFormatting.GRAY
+                    + " : SC Threshold"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " 1,600 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Input"
+                    + EnumChatFormatting.RED
+                    + " 3,200 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Output"
+                    + EnumChatFormatting.WHITE
+                    + " 160,000 L/t SC Steam")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.RED + "Plasma"
+                    + EnumChatFormatting.GRAY
+                    + " always outputs"
+                    + EnumChatFormatting.WHITE
+                    + " Dense SC Steam"
+                    + EnumChatFormatting.GRAY
+                    + " regardless of input rate")
+            .addInfo("The max input and output rates depend on the plasma's density (EU/L)")
+            .addSeparator()
+            .addInfo("A circuit in the controller lowers the SC threshold at the cost of steam")
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + "-1.5%"
+                    + EnumChatFormatting.GRAY
+                    + " SC threshold and"
+                    + EnumChatFormatting.WHITE
+                    + " -1.5%"
+                    + EnumChatFormatting.GRAY
+                    + " steam output per circuit over 1")
             .addController("Front bottom center")
             .addCasingInfoRange("Robust Tungstensteel Machine Casings", 25, 120, false)
-            .addCasingInfoExactly("Any Tiered Glass", 72, false)
+            .addCasingInfoExactly("Tiered Glass (EV+)", 72, false)
             .addCasingInfoExactly("Pressure Resistant Wall", 48, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 60, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
-                "Distilled water",
+                "Hot fluid, front center casing",
+                3)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
+                "Distilled water, any bottom layer casing",
                 1)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"),
-                "SC Steam/SH Steam",
-                2)
+                "Cold fluid, back center casing",
+                4)
             .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
-                "Hot fluid or plasma",
-                3)
-            .addOtherStructurePart(StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"), "Cold fluid", 4)
-            .addMaintenanceHatch("Any Casing", 1, 2, 5)
+                StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"),
+                "SH Steam/SC Steam, any top layer casing",
+                2)
+            .addMaintenanceHatch("Any casing", 1, 2, 5)
             .toolTipFinisher();
         return tt;
     }
