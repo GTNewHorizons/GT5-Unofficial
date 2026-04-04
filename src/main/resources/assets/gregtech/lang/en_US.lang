@@ -682,6 +682,10 @@ gt.blockmachines.basicmachine.microwave.tier.09.name=Epic UFO Engine
 gt.blockmachines.basicmachine.microwave.tier.10.name=Epic UFO Engine II
 gt.blockmachines.basicmachine.microwave.tier.11.name=Epic UFO Engine III
 gt.blockmachines.basicmachine.microwave.tier.12.name=Epic UFO Engine IV
+gt.blockmachines.basicmachine.miner.tier.01.name=Basic Miner
+gt.blockmachines.basicmachine.miner.tier.02.name=Good Miner
+gt.blockmachines.basicmachine.miner.tier.03.name=Advanced Miner
+gt.blockmachines.basicmachine.miner.tooltip=Digging ore instead of you\nUse Screwdriver to regulate work area\nUse Soft Mallet to disable and retract the pipe\n§e%s§7 EU/t, §f%s§7 sec per block, no stuttering\nMaximum work area: §f%sx%s\nSmall ore fortune bonus of §f%s
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
 gt.behaviour.paintspray.uses=Remaining Uses: %s

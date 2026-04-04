@@ -51,7 +51,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
 
     private static String[] MTEMinerTooltip(int aTier) {
         return GTUtility.translateMultiline(
-            "GT5U.tooltip.miner",
+            "gt.blockmachines.basicmachine.miner.tooltip",
             ENERGY[aTier],
             SPEED[aTier] / 20,
             (RADIUS[aTier] * 2 + 1),
