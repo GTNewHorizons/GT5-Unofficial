@@ -338,7 +338,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
                 this.mHadNoWater = true;
             } else {
                 if (this.mHadNoWater) {
-                    GTLog.exp.println("Boiler " + this.mName + " had no Water!");
+                    GTLog.writeExplosionLog(this, "Boiler had no water");
                     onDangerousWaterLack(aBaseMetaTileEntity, aTick);
                     return true;
                 }
@@ -454,11 +454,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     }
 
     protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
-
-    @Override
-    protected boolean useMui2() {
-        return true;
-    }
 
     @Override
     protected abstract GTGuiTheme getGuiTheme();

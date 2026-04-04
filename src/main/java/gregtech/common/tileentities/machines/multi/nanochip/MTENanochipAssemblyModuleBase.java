@@ -177,6 +177,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTENanochipAssemblyModuleBase<?>> adder() {
             return adder;
         }
@@ -282,17 +283,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     }
 
     @Override
-    public boolean supportsBatchMode() {
-        return false;
-    }
-
-    @Override
     protected boolean supportsCraftingMEBuffer() {
-        return false;
-    }
-
-    @Override
-    public boolean supportsInputSeparation() {
         return false;
     }
 

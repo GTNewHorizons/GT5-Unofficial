@@ -606,7 +606,7 @@ public class RecipesGregTech {
             .metadata(SCANNING, new Scanning(60 * SECONDS, TierEU.RECIPE_UEV))
             .itemInputs(
                 GregtechItemList.Battery_Casing_Gem_4.get(1),
-                ItemList.StableBosonContainmentUnit.get(16),
+                ItemList.StableBosonContainmentUnit.get(2),
                 MaterialsAlloy.ABYSSAL.getPlate(16),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 32),
@@ -1223,8 +1223,8 @@ public class RecipesGregTech {
                 Materials.Aluminium.getDust(1))
             .circuit(6)
             .fluidOutputs(GGMaterial.incoloy903.getMolten(37 * INGOTS))
-            .eut(TierEU.RECIPE_IV)
-            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_EV)
+            .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
     }
 
@@ -1844,6 +1844,7 @@ public class RecipesGregTech {
         }
     }
 
+    // TODO: remove cyclotron recipes for 2.10
     private static void cyclotronRecipes() {
         // Polonium
         GTValues.RA.stdBuilder()

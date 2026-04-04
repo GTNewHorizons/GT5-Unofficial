@@ -23,7 +23,6 @@ import java.util.Arrays;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -301,7 +300,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             ))
             .addInfo("The energy hatch tier is limited by the glass tier. UEV glass unlocks all tiers")
             .beginStructureBlock(5, 9, 5, false)
-            .addController("Front Center (Bottom Layer)")
+            .addController("Front bottom center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)
             .addCasingInfoExactly("Any Tiered Glass", 9 * 4, true)
             .addCasingInfoExactly("Solenoid Superconducting Coil", 7, true)
@@ -402,20 +401,5 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             : GTUtility.powInt(HEATING_COIL_EU_MULTIPLIER, coilLevel.getTier()));
 
         return (float) (BASE_EU_MULTIPLIER * heatingBonus);
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
     }
 }

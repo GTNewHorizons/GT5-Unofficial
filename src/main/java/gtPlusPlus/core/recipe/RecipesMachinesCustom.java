@@ -432,7 +432,7 @@ public class RecipesMachinesCustom {
             2048,
             (int) TierEU.RECIPE_UIV,
             16,
-            new Object[] { GregtechItemList.Controller_MolecularTransformer.get(1),
+            new Object[] { ItemList.MolecularTransformer.get(1),
                 GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 8 }, ItemList.Electric_Pump_UEV.get(4),
                 ItemList.Field_Generator_UEV.get(4), GregtechItemList.Laser_Lens_Special.get(1) },
@@ -614,20 +614,6 @@ public class RecipesMachinesCustom {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
-        // COMET - Compact Cyclotron
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Hull_IV.get(1),
-                GregtechItemList.Casing_Cyclotron_Coil.get(2),
-                MaterialsAlloy.INCOLOY_020.getPlate(8),
-                MaterialsAlloy.TANTALLOY_61.getGear(2),
-                MaterialsAlloy.INCOLOY_MA956.getScrew(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 16))
-            .itemOutputs(GregtechItemList.COMET_Cyclotron.get(1))
-            .fluidInputs(MaterialsAlloy.INCOLOY_020.getFluidStack(9 * INGOTS))
-            .duration(5 * MINUTES)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
     }
 
     private static void powerSubstation() {
@@ -830,7 +816,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.INCONEL_625.getFluidStack(16 * INGOTS),
                 MaterialsAlloy.INCONEL_792.getFluidStack(32 * INGOTS),
                 MaterialsAlloy.HASTELLOY_N.getFluidStack(32 * INGOTS))
-            .itemOutputs(GregtechItemList.Controller_Flotation_Cell.get(1))
+            .itemOutputs(ItemList.FlotationCell.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(60 * SECONDS)
             .addTo(AssemblyLine);
@@ -968,7 +954,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.NITINOL_60.getFluidStack(18 * INGOTS),
                 MaterialsAlloy.INCOLOY_MA956.getFluidStack(72 * INGOTS),
                 MaterialsAlloy.KANTHAL.getFluidStack(4 * INGOTS))
-            .itemOutputs(GregtechItemList.Controller_MolecularTransformer.get(1))
+            .itemOutputs(ItemList.MolecularTransformer.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * MINUTES)
             .addTo(AssemblyLine);

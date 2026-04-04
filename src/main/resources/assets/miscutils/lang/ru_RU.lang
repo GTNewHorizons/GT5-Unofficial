@@ -22,10 +22,6 @@ death.attack.plasmabolt=%s died by burning hot plasma.
 death.attack.plasmabolt.player=%1$s was killed by %2$s using plasma.
 death.attack.gtpp.grinder=%s was ground into nothingness by an IsaMill.
 
-# Batch mode chat message
-misc.BatchModeTextOn=Включён пакетный режим (рекомендуется использовать МЭ выходной люк, излишки на выходе будут уничтожены!)
-misc.BatchModeTextOff=Отключён пакетный режим
-
 # Alternative Materials
 item.itemPlateBatteryAlloy.name=Пластина из аккумуляторного сплава
 item.itemIngotBatteryAlloy.name=Слиток из аккумуляторного сплава
@@ -3941,14 +3937,6 @@ item.itemSimpleFiremaker.message.0=Вы разжигаете костер.
 item.itemSimpleFiremaker.message.1=Тебе каким-то образом удалось поджечь себя...
 item.itemSimpleFiremaker.message.2=Вы устроили пожар!
 item.itemSimpleFiremaker.message.3=Ваша попытка ничего не даёт.
-
-# Added 17/07/23
-item.BasicGenericChemItem.29.name=Прозрачный водный катализатор
-item.BasicGenericChemItem.30.name=Безупречный водный катализатор
-
-# Added 18/07/23
-item.BasicGenericChemItem.31.name=Particle Acceleration Catalyst
-item.BasicGenericChemItem.32.name=Synchrotron-Capable Catalyst
 
 # Added 19/09/23
 item.BasicGenericChemItem.33.name=Катализатор стимулятора роста водорослей

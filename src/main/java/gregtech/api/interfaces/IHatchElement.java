@@ -7,6 +7,7 @@ import java.util.function.BiPredicate;
 import java.util.function.ToLongFunction;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
@@ -14,6 +15,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.IGTHatchAdder;
 
@@ -26,7 +28,8 @@ public interface IHatchElement<T> {
     String name();
 
     default String getDisplayName() {
-        return name();
+        GTLanguageManager.addStringLocalization("hatch_type_" + name().toLowerCase(), name());
+        return StatCollector.translateToLocal("hatch_type_" + name().toLowerCase());
     }
 
     long count(T t);

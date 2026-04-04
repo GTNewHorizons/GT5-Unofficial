@@ -28,6 +28,7 @@ public class CoverPump extends CoverIOBase {
         this.mTransferRate = aTransferRate;
     }
 
+    @Override
     public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }

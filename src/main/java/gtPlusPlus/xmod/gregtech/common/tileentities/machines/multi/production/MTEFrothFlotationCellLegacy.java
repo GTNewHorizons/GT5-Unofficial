@@ -49,22 +49,23 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationCell> implements ISurvivalConstructable {
+public class MTEFrothFlotationCellLegacy extends GTPPMultiBlockBase<MTEFrothFlotationCellLegacy>
+    implements ISurvivalConstructable {
 
     private int mCasing;
-    private static IStructureDefinition<MTEFrothFlotationCell> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEFrothFlotationCellLegacy> STRUCTURE_DEFINITION = null;
 
-    public MTEFrothFlotationCell(final int aID, final String aName, final String aNameRegional) {
+    public MTEFrothFlotationCellLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEFrothFlotationCell(final String aName) {
+    public MTEFrothFlotationCellLegacy(final String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEFrothFlotationCell(this.mName);
+        return new MTEFrothFlotationCellLegacy(this.mName);
     }
 
     @Override
@@ -76,12 +77,13 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addInfo("Process that milled ore!")
             .addInfo("You can only ever process one type of material per controller")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, true)
-            .addController("Front Center")
+            .addController("Top center")
             .addCasingInfoMin("Inconel Reinforced Casing", 68, false)
             .addCasingInfoMin("Flotation Casing", 52, false)
             .addInputBus("Bottom Casing", 1)
@@ -129,9 +131,9 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
     }
 
     @Override
-    public IStructureDefinition<MTEFrothFlotationCell> getStructureDefinition() {
+    public IStructureDefinition<MTEFrothFlotationCellLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEFrothFlotationCell>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEFrothFlotationCellLegacy>builder()
                 .addShape(
                     mName,
                     new String[][] { { "       ", "       ", "   X   ", "  X~X  ", "   X   ", "       ", "       " },
@@ -145,7 +147,7 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
                         { "  CCC  ", " CCCCC ", "CCCCCCC", "CCCCCCC", "CCCCCCC", " CCCCC ", "  CCC  " }, })
                 .addElement(
                     'C',
-                    buildHatchAdder(MTEFrothFlotationCell.class)
+                    buildHatchAdder(MTEFrothFlotationCellLegacy.class)
                         .atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy)
                         .casingIndex(getCasingTextureId())
                         .hint(1)
