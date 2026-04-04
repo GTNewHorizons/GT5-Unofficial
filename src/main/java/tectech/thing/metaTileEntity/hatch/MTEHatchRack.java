@@ -9,7 +9,9 @@ import static gregtech.api.util.GTRecipeConstants.QUANTUM_COMPUTER_DATA;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -19,6 +21,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -41,6 +47,7 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.recipe.QuantumComputerRecipeData;
+import gregtech.common.gui.modularui.hatch.MTEHatchRackGui;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
@@ -55,9 +62,10 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo {
 
     private static IIconContainer EM_R;
     private static IIconContainer EM_R_ACTIVE;
-    public int heat = 0;
+    private int heat = 0;
     private float overClock = 1, overVolt = 1;
     private static final Map<String, RackComponent> componentBinds = new HashMap<>();
+    public static final List<ItemStack> validRackItems = new ArrayList<>();
 
     private String clientLocale = "en_US";
 
@@ -128,6 +136,10 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo {
     @Override
     public int getInventoryStackLimit() {
         return 1;
+    }
+
+    public int getHeat() {
+        return Math.max(0, heat);
     }
 
     @Override
@@ -379,6 +391,8 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo {
                 .eut(0)
                 .fake()
                 .addTo(quantumComputerFakeRecipes);
+
+            MTEHatchRack.validRackItems.add(is);
         }
 
         RackComponent(String is, float computation, float heatConstant, float coolConstant, float maxHeat,
@@ -407,5 +421,15 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo {
             }
             return false;
         }
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchRackGui(this).build(guiData, syncManager, uiSettings);
     }
 }

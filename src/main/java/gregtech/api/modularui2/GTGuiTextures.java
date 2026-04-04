@@ -440,6 +440,8 @@ public final class GTGuiTextures {
 
     public static final UITexture OVERLAY_SLOT_ARROW_4 = UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_slot/arrow_4");
 
+    public static final UITexture OVERLAY_SLOT_RACK = UITexture.fullImage(MODID, "gui/overlay_slot/rack");
+
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
         .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_none")
@@ -1160,6 +1162,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BUTTON_STANDARD)
         .build();
+    public static final UITexture BUTTON_STANDARD_LIGHT_16x16 = UITexture.builder()
+        .location(MODID, "gui/button/standard_light_16x16")
+        .imageSize(16, 16)
+        .adaptable(1)
+        .canApplyTheme()
+        .build();
     private static final SteamTextureRegisterer BUTTON_STEAM = SteamTextureRegisterer.builder()
         .location("gui/button/%s")
         .imageSize(18, 18)
@@ -1345,6 +1353,8 @@ public final class GTGuiTextures {
     public static final UITexture TT_OVERLAY_BUTTON_STATISTICS = UITexture
         .fullImage(MODID, "gui/overlay_button/statistics");
     public static final UITexture TT_OVERLAY_BUTTON_HEAT_ON = UITexture.fullImage(MODID, "gui/overlay_button/heat_on");
+    public static final UITexture TT_OVERLAY_BUTTON_HEAT_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/heat_off");
     public static final UITexture TT_OVERLAY_BUTTON_INPUT_SEPARATION = UITexture
         .fullImage(MODID, "gui/overlay_button/input_separation_on");
     public static final UITexture TT_OVERLAY_BUTTON_INPUT_SEPARATION_OFF = UITexture
@@ -1454,6 +1464,7 @@ public final class GTGuiTextures {
         .fullImage()
         .name(GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
         .build();
+    public static final UITexture PICTURE_TECTECH_LOGO = UITexture.fullImage(MODID, "gui/picture/tectech_logo");
     public static final UITexture PICTURE_GODFORGE_LOGO = UITexture.fullImage(MODID, "gui/picture/gorge_logo");
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
@@ -1733,6 +1744,11 @@ public final class GTGuiTextures {
     public static final UITexture PICTURE_UPGRADE_CONNECTOR_RED_OPAQUE = UITexture
         .fullImage(MODID, "gui/picture/connector_red_opaque");
     public static final UITexture PICTURE_HEAT_SINK_16x8 = UITexture.fullImage(MODID, "gui/picture/heat_sink_16x8");
+    public static final UITexture PICTURE_HEAT_SINK = UITexture.builder()
+        .location(MODID, "gui/picture/heat_sink")
+        .fullImage()
+        .canApplyTheme()
+        .build();
     public static final UITexture GREEN_CHECKMARK_11x9 = UITexture.fullImage(MODID, "gui/picture/green_checkmark");
     public static final UITexture BUTTON_OUTLINE_HOLLOW = UITexture.builder()
         .location(MODID, "gui/button/transparent_16x16")
