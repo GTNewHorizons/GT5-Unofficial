@@ -2748,7 +2748,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEBasicMachineWithRecipe(
                 CHEMICAL_REACTOR_UV.ID,
                 "basicmachine.chemicalreactor.tier.08",
-                "Ultimate Chemical Perforer",
+                "Ultimate Chemical Performer",
                 8,
                 MachineType.CHEMICAL_REACTOR.tooltipDescription(),
                 chemicalReactorRecipes,

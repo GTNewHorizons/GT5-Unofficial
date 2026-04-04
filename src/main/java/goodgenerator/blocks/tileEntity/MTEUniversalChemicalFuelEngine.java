@@ -179,7 +179,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
             .addInfo("The efficiency is up to 150%")
             .addTecTechHatchInfo()
             .beginStructureBlock(5, 4, 9, false)
-            .addController("Mid of the second layer")
+            .addController("Front center, 2nd layer")
             .addCasingInfoExactly("Stable Titanium Machine Casing", 93, false)
             .addCasingInfoExactly("Titanium Gear Box Casing", 14, false)
             .addCasingInfoExactly("Engine Intake Casing", 14, false)
