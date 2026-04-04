@@ -847,6 +847,19 @@ gt.blockmachines.basicmachine.unboxinator.tier.05.name=Unboxinator
 gt.blockmachines.basicmachine.unboxinator.tier.06.name=Unboxinator
 gt.blockmachines.basicmachine.unboxinator.tier.07.name=Unboxinator
 gt.blockmachines.basicmachine.unboxinator.tier.08.name=Unboxinator
+gt.blockmachines.basicmachine.wiremill.tier.01.name=Basic Wiremill
+gt.blockmachines.basicmachine.wiremill.tier.02.name=Advanced Wiremill
+gt.blockmachines.basicmachine.wiremill.tier.03.name=Advanced Wiremill II
+gt.blockmachines.basicmachine.wiremill.tier.04.name=Advanced Wiremill III
+gt.blockmachines.basicmachine.wiremill.tier.05.name=Advanced Wiremill IV
+gt.blockmachines.basicmachine.wiremill.tier.06.name=Elite Wiremill
+gt.blockmachines.basicmachine.wiremill.tier.07.name=Elite Wiremill II
+gt.blockmachines.basicmachine.wiremill.tier.08.name=Ultimate Wire Transfigurator
+gt.blockmachines.basicmachine.wiremill.tier.09.name=Epic Wire Transfigurator
+gt.blockmachines.basicmachine.wiremill.tier.10.name=Epic Wire Transfigurator II
+gt.blockmachines.basicmachine.wiremill.tier.11.name=Epic Wire Transfigurator III
+gt.blockmachines.basicmachine.wiremill.tier.12.name=Epic Wire Transfigurator IV
+
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
 gt.behaviour.paintspray.uses=Remaining Uses: %s
