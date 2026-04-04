@@ -4,18 +4,18 @@ import static gregtech.api.enums.MetaTileEntityIDs.Industrial_ThermalCentrifuge;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialThermalCentrifuge;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialThermalCentrifugeLegacy;
 
 public class GregtechIndustrialThermalCentrifuge {
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Industrial Thermal Centrifuge Multiblock.");
+        Logger.INFO("Gregtech5u Content | Registering Large Thermal Refinery Multiblock.");
         run1();
     }
 
     private static void run1() {
         GregtechItemList.Industrial_ThermalCentrifuge.set(
-            new MTEIndustrialThermalCentrifuge(
+            new MTEIndustrialThermalCentrifugeLegacy(
                 Industrial_ThermalCentrifuge.ID,
                 "industrialthermalcentrifuge.controller.tier.single",
                 "Large Thermal Refinery").getStackForm(1L));

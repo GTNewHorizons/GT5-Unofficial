@@ -19,7 +19,6 @@ import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
@@ -37,16 +36,13 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
     protected float mThickness = 0.5f;
 
     public MTEBaseFactoryPipe(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 0);
+        super(aID, aName, 0);
     }
 
     protected MTEBaseFactoryPipe(MTEBaseFactoryPipe prototype) {
         super(prototype.mName, 0);
         mThickness = prototype.mThickness;
     }
-
-    @Override
-    public abstract IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity base, ForgeDirection side, int aConnections, int colorIndex,

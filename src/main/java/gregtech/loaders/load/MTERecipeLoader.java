@@ -1632,7 +1632,6 @@ public class MTERecipeLoader implements Runnable {
             .duration(1 * HOURS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
-
     }
 
     // This method is for all the structure rework shapeless crafing migration recipes
@@ -1646,10 +1645,20 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialWireFactory.get(1),
             new Object[] { GregtechItemList.Industrial_WireFactory });
 
+        // Large Thermal Refinery Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.LargeThermalRefinery.get(1),
+            new Object[] { GregtechItemList.Industrial_ThermalCentrifuge });
+
         // Amazon Packager Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialPackager.get(1),
             new Object[] { GregtechItemList.Amazon_Warehouse_Controller });
+
+        // Molecular Transformer Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.MolecularTransformer.get(1),
+            new Object[] { GregtechItemList.Controller_MolecularTransformer });
 
         // Industrial Centrifuge Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
@@ -1661,10 +1670,19 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialElectrolyzer.get(1),
             new Object[] { GregtechItemList.Industrial_Electrolyzer });
 
+        // Flotation Cell Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.FlotationCell.get(1),
+            new Object[] { GregtechItemList.Controller_Flotation_Cell });
+
         // Mega Chemical Reactor Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.MegaChemicalReactor.get(1),
             new Object[] { ItemRegistry.megaMachines[3] });
+
+        // Integrated Ore Factory Conversion Recipe
+        GTModHandler
+            .addShapelessCraftingRecipe(ItemList.IntegratedOreFactory.get(1), new Object[] { ItemList.Ore_Processor });
     }
 
     private static void registerSifter() {

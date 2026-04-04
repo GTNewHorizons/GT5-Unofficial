@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -15,7 +14,6 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -249,9 +247,6 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     @SideOnly(Side.CLIENT)
     public final void registerBlockIcons(final IIconRegister aRegisterer) {}
 
-    @Override
-    public abstract TileEntity createNewTileEntity(final World world, final int p_149915_2_);
-
     /**
      * Called when {@link #breakBlock}() is called, but before {@link InventoryUtils#dropInventoryItems} and the super
      * call.
@@ -290,11 +285,6 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     @Override
     public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
         return aWorld.getBlockMetadata(aX, aY, aZ);
-    }
-
-    @Override
-    public Item getItemDropped(int meta, Random rand, int p_149650_3_) {
-        return Item.getItemFromBlock(this);
     }
 
     @Override

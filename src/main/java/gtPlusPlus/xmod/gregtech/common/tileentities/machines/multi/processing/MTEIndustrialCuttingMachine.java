@@ -68,7 +68,7 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
             .addBulkMachineInfo(4, 3f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 5, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Cutting Factory Frames", 14, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)

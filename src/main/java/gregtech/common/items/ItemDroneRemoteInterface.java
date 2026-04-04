@@ -9,7 +9,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
@@ -28,6 +27,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTModularScreen;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.item.DroneRemoteInterfaceGUI;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 
@@ -61,8 +61,8 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
             int y = centreNbt.getInteger("y");
             int z = centreNbt.getInteger("z");
             int dim = centreNbt.getInteger("dim");
-            aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.drone_remote_connected", x, y, z, dim));
-        } else aList.add(StatCollector.translateToLocal("GT5U.tooltip.drone_remote_disconnected"));
+            aList.add(GTUtility.translate("GT5U.tooltip.drone_remote_connected", x, y, z, dim));
+        } else aList.add(GTUtility.translate("GT5U.tooltip.drone_remote_disconnected"));
     }
 
     @Override
