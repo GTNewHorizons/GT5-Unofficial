@@ -413,7 +413,6 @@ public enum IDMetaItem01 {
     QuantumStar(725),
     Gravistar(726),
     // Muffler upgrade was 727
-    Cover_AdvancedWirelessController(727),
     Upgrade_Lock(728),
     Component_Filter(729),
     Cover_Controller(730),
@@ -443,6 +442,7 @@ public enum IDMetaItem01 {
     Cover_SolarPanel_LuV(757),
     Cover_SolarPanel_ZPM(758),
     Cover_SolarPanel_UV(759),
+    Cover_AdvancedWirelessController(760),
     Tool_Cheat(761),
     Tool_Scanner(762),
     NC_SensorKit(763),
