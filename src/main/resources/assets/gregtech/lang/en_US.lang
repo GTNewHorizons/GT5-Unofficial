@@ -827,20 +827,9 @@ item.GTPP.air_filter.name.t2=Air Filter [Tier 2]
 GTPP.tooltip.air_filter.0=An Air filter for Atmospheric Reconditioning.
 GTPP.tooltip.air_filter.1=%d/%d uses left.
 
-GT5U.tooltip.pump.0=The best way to empty Oceans!
-GT5U.tooltip.pump.1=§e%d§7 EU/operation, §f%d§7 sec per bucket, no stuttering
-GT5U.tooltip.pump.2=Maximum pumping area: §f%dx%d
-GT5U.tooltip.pump.3=Use Screwdriver to regulate pumping area
-GT5U.tooltip.pump.4=Use Soft Mallet to disable and retract the pipe
-GT5U.tooltip.pump.5=Disable the bottom pump to retract the pipe!
-GT5U.tooltip.pump.6=Use Soldering Iron to auto retract the pipe when hitting a rock
+GT5U.tooltip.pump=The best way to empty Oceans!\n§e%s§7 EU/operation, §f%s§7 sec per bucket, no stuttering\nMaximum pumping area: §f%sx%s\nUse Screwdriver to regulate pumping area\nUse Soft Mallet to disable and retract the pipe\nDisable the bottom pump to retract the pipe!\nUse Soldering Iron to auto retract the pipe when hitting a rock
 
-GT5U.tooltip.miner.0=Digging ore instead of you
-GT5U.tooltip.miner.1=Use Screwdriver to regulate work area
-GT5U.tooltip.miner.2=Use Soft Mallet to disable and retract the pipe
-GT5U.tooltip.miner.3=§e%d§7 EU/t, §f%d§7 sec per block, no stuttering
-GT5U.tooltip.miner.4=Maximum work area: §f%dx%d
-GT5U.tooltip.miner.5=Small ore fortune bonus of §f%d
+GT5U.tooltip.miner=Digging ore instead of you\nUse Screwdriver to regulate work area\nUse Soft Mallet to disable and retract the pipe\n§e%s§7 EU/t, §f%s§7 sec per block, no stuttering\nMaximum work area: §f%sx%s\nSmall ore fortune bonus of §f%s
 
 # Fish trap
 GTPP.tooltip.fish_trap.0=This trap catches fish faster if surrounded by more water blocks
@@ -5714,6 +5703,12 @@ fluid.ureamix=Urea Mix
 fluid.uuamplifier=UU Amplifier
 fluid.wet.concrete=Wet Concrete
 fluidHotWater=Heated Water
+
+fluid.oil=Oil
+fluid.tile.fluidBlockSludge=fluidBlockSludge
+fluid.sludge=sludge
+fluid.oilgc=oilgc
+fluid.fuelgc=fuelgc
 
 # Space projects
 gt.solar.system.overworld=Overworld
