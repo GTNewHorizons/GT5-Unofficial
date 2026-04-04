@@ -62,7 +62,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
 
     @Override
     public String getMachineType() {
-        return "Reactor Processing Unit, Cold Trap";
+        return "Reactor Processing Unit, Cold Trap, NSPP";
     }
 
     @Override
