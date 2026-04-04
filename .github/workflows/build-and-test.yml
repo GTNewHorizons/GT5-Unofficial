@@ -3,10 +3,10 @@ name: Build and test
 
 on:
   pull_request:
-    branches: [ master, main, release/** ]
+    branches: [ master, main, dev, release/** ]
 
   push:
-    branches: [ master, main, release/** ]
+    branches: [ master, main, dev, release/** ]
 
 jobs:
   build-and-test:
