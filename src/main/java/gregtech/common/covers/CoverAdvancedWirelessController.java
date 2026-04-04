@@ -33,11 +33,11 @@ public class CoverAdvancedWirelessController extends CoverAdvancedRedstoneReceiv
         DISABLE_WITH_SIGNAL_SAFE;
     }
 
-    private CoverAdvancedWirelessController.State state = CoverAdvancedWirelessController.State.DISABLED;
+    private State state = State.DISABLED;
     private boolean handledShutdown = false;
     protected WeakReference<EntityPlayer> lastPlayer = null;
     private boolean mPlayerNotified = false;
-    private CoverAdvancedRedstoneReceiverBase.GateMode mode;
+    private GateMode mode;
 
     public CoverAdvancedWirelessController(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
@@ -48,13 +48,13 @@ public class CoverAdvancedWirelessController extends CoverAdvancedRedstoneReceiv
     protected void readDataFromNbt(NBTBase nbt) {
         super.readDataFromNbt(nbt);
         NBTTagCompound tag = (NBTTagCompound) nbt;
-        state = CoverAdvancedWirelessController.State.values()[tag.getByte("state")];
+        state = State.values()[tag.getByte("state")];
     }
 
     @Override
     public void readDataFromPacket(ByteArrayDataInput byteData) {
         super.readDataFromPacket(byteData);
-        state = CoverAdvancedWirelessController.State.values()[byteData.readByte()];
+        state = State.values()[byteData.readByte()];
     }
 
     @Override
@@ -79,7 +79,7 @@ public class CoverAdvancedWirelessController extends CoverAdvancedRedstoneReceiv
         if (coverable instanceof IMachineProgress machine) {
             switch (state) {
                 case ENABLE_WITH_SIGNAL, DISABLE_WITH_SIGNAL -> {
-                    if ((signal > 0) == (state == CoverAdvancedWirelessController.State.ENABLE_WITH_SIGNAL)) {
+                    if ((signal > 0) == (state == State.ENABLE_WITH_SIGNAL)) {
                         if (!machine.isAllowedToWork()) {
                             machine.enableWorking();
                             handledShutdown = false;
@@ -111,9 +111,9 @@ public class CoverAdvancedWirelessController extends CoverAdvancedRedstoneReceiv
                             }
                         }
                         handledShutdown = true;
-                        state = CoverAdvancedWirelessController.State.DISABLED;
+                        state = State.DISABLED;
                     } else {
-                        if ((signal > 0) == (state == CoverAdvancedWirelessController.State.ENABLE_WITH_SIGNAL_SAFE)) {
+                        if ((signal > 0) == (state == State.ENABLE_WITH_SIGNAL_SAFE)) {
                             if (!machine.isAllowedToWork()) {
                                 machine.enableWorking();
                                 handledShutdown = false;
@@ -138,9 +138,9 @@ public class CoverAdvancedWirelessController extends CoverAdvancedRedstoneReceiv
     public void setRedstoneCondition(RedstoneCondition mode) {
         final boolean safeMode = isSafeMode();
         state = switch (mode) {
-            case ENABLE_WITH_REDSTONE -> safeMode ? CoverAdvancedWirelessController.State.ENABLE_WITH_SIGNAL_SAFE : CoverAdvancedWirelessController.State.ENABLE_WITH_SIGNAL;
-            case DISABLE_WITH_REDSTONE -> safeMode ? CoverAdvancedWirelessController.State.DISABLE_WITH_SIGNAL_SAFE : CoverAdvancedWirelessController.State.DISABLE_WITH_SIGNAL;
-            case DISABLE -> CoverAdvancedWirelessController.State.DISABLED;
+            case ENABLE_WITH_REDSTONE -> safeMode ? State.ENABLE_WITH_SIGNAL_SAFE : State.ENABLE_WITH_SIGNAL;
+            case DISABLE_WITH_REDSTONE -> safeMode ? State.DISABLE_WITH_SIGNAL_SAFE : State.DISABLE_WITH_SIGNAL;
+            case DISABLE -> State.DISABLED;
         };
     }
 
@@ -153,11 +153,11 @@ public class CoverAdvancedWirelessController extends CoverAdvancedRedstoneReceiv
 
     public void setSafeMode(boolean safeMode) {
         state = switch (state) {
-            case ENABLE_WITH_SIGNAL, ENABLE_WITH_SIGNAL_SAFE -> safeMode ? CoverAdvancedWirelessController.State.ENABLE_WITH_SIGNAL_SAFE
-                : CoverAdvancedWirelessController.State.ENABLE_WITH_SIGNAL;
-            case DISABLE_WITH_SIGNAL, DISABLE_WITH_SIGNAL_SAFE -> safeMode ? CoverAdvancedWirelessController.State.DISABLE_WITH_SIGNAL_SAFE
-                : CoverAdvancedWirelessController.State.DISABLE_WITH_SIGNAL;
-            case DISABLED -> CoverAdvancedWirelessController.State.DISABLED;
+            case ENABLE_WITH_SIGNAL, ENABLE_WITH_SIGNAL_SAFE -> safeMode ? State.ENABLE_WITH_SIGNAL_SAFE
+                : State.ENABLE_WITH_SIGNAL;
+            case DISABLE_WITH_SIGNAL, DISABLE_WITH_SIGNAL_SAFE -> safeMode ? State.DISABLE_WITH_SIGNAL_SAFE
+                : State.DISABLE_WITH_SIGNAL;
+            case DISABLED -> State.DISABLED;
         };
     }
 

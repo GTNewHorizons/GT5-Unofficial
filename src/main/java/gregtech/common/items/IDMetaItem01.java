@@ -413,6 +413,7 @@ public enum IDMetaItem01 {
     QuantumStar(725),
     Gravistar(726),
     // Muffler upgrade was 727
+    Cover_AdvancedWirelessController(727),
     Upgrade_Lock(728),
     Component_Filter(729),
     Cover_Controller(730),
@@ -446,8 +447,9 @@ public enum IDMetaItem01 {
     Tool_Scanner(762),
     NC_SensorKit(763),
     Duct_Tape(764),
-    McGuffium_239(765),
-    Cover_AdvancedWirelessController(766);
+    McGuffium_239(765);
+
+    //Maximum Item ID is 765, if you want to add items, choose from the IDs not yet occupied.
 
     public final int ID;
 
