@@ -622,4 +622,9 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
     public MTEHatchOutputMEBase<IAEItemStack, MEFilterItem, ItemStack> getProvider() {
         return provider;
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
