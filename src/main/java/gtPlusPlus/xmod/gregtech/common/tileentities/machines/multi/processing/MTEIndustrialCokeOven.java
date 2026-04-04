@@ -75,7 +75,7 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
             .addDynamicEuEffInfo(0.04f, TooltipTier.VOLTAGE)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front middle at bottom")
+            .addController("Front bottom center")
             .addCasingInfoMin("Structural Coke Oven Casings", 8, false)
             .addCasingInfoExactly("Heat Resistant/Proof Coke Oven Casings", 8, false)
             .addInputBus("Any Structural Coke Oven Casing", 1)

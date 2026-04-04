@@ -219,7 +219,7 @@ gt.blockmachines.input_hatch_generator.airintake.desc=§cDO NOT OBSTRUCT THE INP
 gt.blockmachines.input_hatch_generator.atmosphere.desc=§cDO NOT OBSTRUCT THE INPUT!\nDraws in Air from the surrounding environment\nCompletelly fills up every %s ticks
 gt.blockmachines.input_hatch_generator.reservoir.desc=Infinite water supply hatch\nFills to max capacity every 5 seconds
 gt.blockmachines.input_hatch_me.desc=Machine Type: §eSIH§r\nAdvanced fluid input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
-gt.blockmachines.input_hatch_me.autopull.desc=Machine Type: §eASIH§r\nNext-gen item input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nAuto-Pull from ME mode will automatically stock the first\n16 fluid in the ME system, updated every 5 seconds.\nToggle by right-clicking with screwdriver, or use the GUI.\nUse the GUI to limit the minimum stack size for Auto-Pulling,\nadjust the slot refresh timer and enable fast recipe checks.\nWARNING: Fast recipe checks can be laggy. Use with caution.\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
+gt.blockmachines.input_hatch_me.autopull.desc=Machine Type: §eASIH§r\nNext-gen fluid input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nAuto-Pull from ME mode will automatically stock the first\n16 fluid in the ME system, updated every 5 seconds.\nToggle by right-clicking with screwdriver, or use the GUI.\nUse the GUI to limit the minimum stack size for Auto-Pulling,\nadjust the slot refresh timer and enable fast recipe checks.\nWARNING: Fast recipe checks can be laggy. Use with caution.\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
 gt.blockmachines.input_hatch_solidifier.desc=Fluid Input with Mold for §eFluid Shaper§r\nCapacity: %s L
 gt.blockmachines.input_hatch_debug.desc=§7Stocks Fluids internally\n§7Configure Fluids in the UI\n§7Configured Fluids will not be consumed in processing\n§oWho knew it was this easy???
 gt.blockmachines.output_hatch.desc=Fluid Output for Multiblocks\nCapacity: %s L\nRight click with screwdriver to restrict output\nCan be restricted to put out Items and/or Steam/No Steam/1 specific Fluid\nRestricted Output Hatches are given priority for Multiblock Fluid output
@@ -827,20 +827,9 @@ item.GTPP.air_filter.name.t2=Air Filter [Tier 2]
 GTPP.tooltip.air_filter.0=An Air filter for Atmospheric Reconditioning.
 GTPP.tooltip.air_filter.1=%d/%d uses left.
 
-GT5U.tooltip.pump.0=The best way to empty Oceans!
-GT5U.tooltip.pump.1=§e%d§7 EU/operation, §f%d§7 sec per bucket, no stuttering
-GT5U.tooltip.pump.2=Maximum pumping area: §f%dx%d
-GT5U.tooltip.pump.3=Use Screwdriver to regulate pumping area
-GT5U.tooltip.pump.4=Use Soft Mallet to disable and retract the pipe
-GT5U.tooltip.pump.5=Disable the bottom pump to retract the pipe!
-GT5U.tooltip.pump.6=Use Soldering Iron to auto retract the pipe when hitting a rock
+GT5U.tooltip.pump=The best way to empty Oceans!\n§e%s§7 EU/operation, §f%s§7 sec per bucket, no stuttering\nMaximum pumping area: §f%sx%s\nUse Screwdriver to regulate pumping area\nUse Soft Mallet to disable and retract the pipe\nDisable the bottom pump to retract the pipe!\nUse Soldering Iron to auto retract the pipe when hitting a rock
 
-GT5U.tooltip.miner.0=Digging ore instead of you
-GT5U.tooltip.miner.1=Use Screwdriver to regulate work area
-GT5U.tooltip.miner.2=Use Soft Mallet to disable and retract the pipe
-GT5U.tooltip.miner.3=§e%d§7 EU/t, §f%d§7 sec per block, no stuttering
-GT5U.tooltip.miner.4=Maximum work area: §f%dx%d
-GT5U.tooltip.miner.5=Small ore fortune bonus of §f%d
+GT5U.tooltip.miner=Digging ore instead of you\nUse Screwdriver to regulate work area\nUse Soft Mallet to disable and retract the pipe\n§e%s§7 EU/t, §f%s§7 sec per block, no stuttering\nMaximum work area: §f%sx%s\nSmall ore fortune bonus of §f%s
 
 # Fish trap
 GTPP.tooltip.fish_trap.0=This trap catches fish faster if surrounded by more water blocks
@@ -2425,7 +2414,7 @@ gt.blockmachines.multimachine.beamcrafting.LHC.tooltip28=§2W - Weak Interaction
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29=§fS - Strong Force§7 - Absolute Lattice Integrated Chromodynamic Encapsulator (§fALICE§7)
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip30=§5G - Gravity§7 - Localized Horizon Curvature Binder (§5LHCb§7)
 
-gt.blockmachines.multimachine.beamcrafting.ttcontroller=Front Center
+gt.blockmachines.multimachine.beamcrafting.ttcontroller=Front center
 gt.blockmachines.multimachine.beamcrafting.ttehatch=Energy Hatch
 gt.blockmachines.multimachine.beamcrafting.ttcasing=Collider Casing
 gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing=Shielded Accelerator Casing
@@ -3719,7 +3708,7 @@ gt.item.cover.needs_maintenance.tooltip=Attach to Multiblock Controller. Emits R
 
 ## Wireless Energy Cover
 gt.item.wireless_energy_cover.name=%s Wireless Energy Cover
-gt.item.wireless_energy_cover.tooltip=Stores energy globally in a network, up to 2^(2^31) EU.\nDoes not connect to wires. This cover withdraws EU from the network.\nIgnores voltage limitations (no explosions).
+gt.item.wireless_energy_cover.tooltip=Stores energy globally in a network, up to 2^(2^31) EU.\nDoes not connect to wires. This cover withdraws EU from the network.\nIgnores voltage limitations (no explosions).\n%s\n%s
 gt.item.wireless_energy_cover_debug.name=Debug Wireless Energy Cover
 gt.item.wireless_energy_cover_debug.tooltip=Infinite Power. Ignores Voltage Limitations.
 
@@ -4660,6 +4649,7 @@ GT5U.waila.boiler_solar.output=Solar Boiler Output:§r %d/%d L/s
 GT5U.waila.hatch.crafting_input_slave.linked=Linked
 GT5U.waila.hatch.crafting_input_slave.unlinked=Not linked
 GT5U.waila.hatch.crafting_input_slave.bound_to=Bound to %d, %d, %d
+GT5U.waila.hatch.crafting_input_slave.reverseRecipes=Reverse recipes mode is %s
 GT5U.waila.hatch.outputme.item_cache_capacity=Item cache capacity: §e%s§r
 GT5U.waila.hatch.outputme.fluid_cache_capacity=Fluid cache capacity: §e%s L§r
 GT5U.waila.hatch.outputme.item_cache_empty=This bus has no cached stacks
@@ -5706,6 +5696,12 @@ fluid.uuamplifier=UU Amplifier
 fluid.wet.concrete=Wet Concrete
 fluidHotWater=Heated Water
 
+fluid.oil=Oil
+fluid.tile.fluidBlockSludge=fluidBlockSludge
+fluid.sludge=sludge
+fluid.oilgc=oilgc
+fluid.fuelgc=fuelgc
+
 # Space projects
 gt.solar.system.overworld=Overworld
 gt.solar.system.sol=Sol
@@ -6134,6 +6130,7 @@ GT5U.infodata.hatch.internal_inventory=Internal Inventory:
 GT5U.infodata.hatch.internal_inventory.slot=Slot %d %s
 GT5U.infodata.hatch.crafting_input_slave.linked_to=This bus is linked to the Crafting Input Buffer at %d, %d, %d.
 GT5U.infodata.hatch.crafting_input_slave.not_linked_to=This bus is not linked to any Crafting Input Buffer.
+GT5U.infodata.hatch.crafting_input_slave.reverseRecipes=Reverse recipes mode is %s
 GT5U.infodata.hatch.output_bus_me.cache_capacity=Item cache capacity: %s
 GT5U.infodata.hatch.output_bus_me.empty=The bus has no cached items
 GT5U.infodata.hatch.output_bus_me.contains=The bus contains %d cached stacks:
@@ -7319,3 +7316,14 @@ gt.Book.Microwave Oven Manual.Page04=Do not insert any Metals. It might result i
 gt.Book.Microwave Oven Manual.Page05=Do not dry Animals with it. It will result in a Hot Dog, no matter which Animal you put into it.
 gt.Book.Microwave Oven Manual.Page06=Do not insert inflammable Objects. The Oven will catch on Fire.
 gt.Book.Microwave Oven Manual.Page07=Do not insert Explosives such as Eggs. Just don't.
+
+gt.item.stable_baryon_containment_unit.name=Stable Baryon Containment Unit
+gt.item.stable_baryon_containment_unit.tooltip=Maybe contains a bound baryon?
+gt.item.stable_lepton_containment_unit.name=Stable Lepton Containment Unit
+gt.item.stable_lepton_containment_unit.tooltip=Maybe contains a bound lepton?
+gt.item.stable_meson_containment_unit.name=Stable Meson Containment Unit
+gt.item.stable_meson_containment_unit.tooltip=Maybe contains a bound meson?
+gt.item.stable_boson_containment_unit.name=Stable Boson Containment Unit
+gt.item.stable_boson_containment_unit.tooltip=Maybe contains a bound boson?
+gt.item.stable_empty_containment_unit.name=Stable Empty Containment Unit
+gt.item.stable_empty_containment_unit.tooltip=Maybe contains nothing?
