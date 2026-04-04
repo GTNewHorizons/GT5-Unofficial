@@ -647,6 +647,10 @@ gt.blockmachines.basicmachine.macerator.tier.09.name=Epic Shape Eliminator
 gt.blockmachines.basicmachine.macerator.tier.10.name=Epic Shape Eliminator II
 gt.blockmachines.basicmachine.macerator.tier.11.name=Epic Shape Eliminator III
 gt.blockmachines.basicmachine.macerator.tier.12.name=Epic Shape Eliminator IV
+gt.blockmachines.basicmachine.maglev.tier.02.name=Advanced MagLev Pylon
+gt.blockmachines.basicmachine.maglev.tier.03.name=Advanced MagLev Pylon II
+gt.blockmachines.basicmachine.maglev.tier.04.name=Advanced MagLev Pylon III
+gt.blockmachines.basicmachine.maglev.tooltip=Grants creative flight to everyone wearing a MagLev Harness in range.\nRange is a cube centered on the pylon.\nUnpowered Range: §f%s blocks\nPowered Range: §f%s blocks (§a%s EU/t§f)\nOnly consumes power while any players are tethered.
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
 gt.behaviour.paintspray.uses=Remaining Uses: %s
