@@ -60,7 +60,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.hatch.MTEHatchOutputMEGui;
+import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusMEGui;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
 import gregtech.common.tileentities.machines.outputme.filter.MEFilterItem;
 import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
@@ -628,6 +628,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
 
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEHatchOutputMEGui(this).build(guiData, syncManager, uiSettings);
+        return new MTEHatchOutputBusMEGui(this).build(guiData, syncManager, uiSettings);
     }
 }
