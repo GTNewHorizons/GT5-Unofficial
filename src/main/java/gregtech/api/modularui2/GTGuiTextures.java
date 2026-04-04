@@ -1229,6 +1229,13 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BUTTON_STANDARD)
         .build();
+    public static final UITexture BUTTON_STANDARD_LIGHT_16x16 = UITexture.builder()
+        .location(MODID, "gui/button/standard_light_16x16")
+        .imageSize(16, 16)
+        .adaptable(1)
+        .canApplyTheme()
+        .build();
+
     private static final SteamTextureRegisterer BUTTON_STEAM = SteamTextureRegisterer.builder()
         .location("gui/button/%s")
         .imageSize(18, 18)
@@ -1558,6 +1565,7 @@ public final class GTGuiTextures {
         .fullImage()
         .name(GTTextureIds.PICTURE_INTERGALACTIC_LOGO)
         .build();
+    public static final UITexture PICTURE_TECTECH_LOGO = UITexture.fullImage(MODID, "gui/picture/tectech_logo");
     public static final UITexture PICTURE_GODFORGE_LOGO = UITexture.fullImage(MODID, "gui/picture/gorge_logo");
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
@@ -1837,6 +1845,16 @@ public final class GTGuiTextures {
     public static final UITexture PICTURE_UPGRADE_CONNECTOR_RED_OPAQUE = UITexture
         .fullImage(MODID, "gui/picture/connector_red_opaque");
     public static final UITexture PICTURE_HEAT_SINK_16x8 = UITexture.fullImage(MODID, "gui/picture/heat_sink_16x8");
+    public static final UITexture PICTURE_RACK_LARGE = UITexture.builder()
+        .location(MODID, "gui/picture/rack_large")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture PICTURE_HEAT_SINK = UITexture.builder()
+        .location(MODID, "gui/picture/heat_sink")
+        .fullImage()
+        .canApplyTheme()
+        .build();
     public static final UITexture GREEN_CHECKMARK_11x9 = UITexture.fullImage(MODID, "gui/picture/green_checkmark");
     public static final UITexture BUTTON_OUTLINE_HOLLOW = UITexture.builder()
         .location(MODID, "gui/button/transparent_16x16")
