@@ -27,9 +27,9 @@ import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
 import gregtech.common.tileentities.machines.outputme.filter.MEFilterItem;
 
-public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputBusME> {
+public class MTEHatchOutputBusMEGui extends MTEHatchBaseGui<MTEHatchOutputBusME> {
 
-    public MTEHatchOutputMEGui(MTEHatchOutputBusME hatch) {
+    public MTEHatchOutputBusMEGui(MTEHatchOutputBusME hatch) {
         super(hatch);
     }
 
