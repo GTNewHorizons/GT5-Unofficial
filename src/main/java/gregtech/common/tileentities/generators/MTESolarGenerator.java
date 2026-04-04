@@ -249,6 +249,9 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
 
     @Override
     public long maxEUStore() {
+        if (mTier == 0) {
+            return 2;
+        }
         return V[mTier] * 10000;
     }
 
