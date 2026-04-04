@@ -106,7 +106,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             .addInfo("Check NEI to see the other 3 outputs - they differ between fuels")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 4, 7, true)
-            .addController("Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Hastelloy-N Reactor Casing", 27, false)
             .addCasingInfoMin("Reactor Shield Casing", 26, false)
             .addInputHatch("Top or bottom layer edges", 1)
