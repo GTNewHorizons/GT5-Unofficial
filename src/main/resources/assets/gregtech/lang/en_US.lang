@@ -356,6 +356,14 @@ gt.blockmachines.basicmachine.bender.tier.09.name=Epic Bending Unit
 gt.blockmachines.basicmachine.bender.tier.10.name=Epic Bending Unit II
 gt.blockmachines.basicmachine.bender.tier.11.name=Epic Bending Unit III
 gt.blockmachines.basicmachine.bender.tier.12.name=Epic Bending Unit IV
+gt.blockmachines.basicmachine.boxinator.tier.01.name=Basic Packager
+gt.blockmachines.basicmachine.boxinator.tier.02.name=Advanced Packager
+gt.blockmachines.basicmachine.boxinator.tier.03.name=Advanced Packager II
+gt.blockmachines.basicmachine.boxinator.tier.04.name=Advanced Packager III
+gt.blockmachines.basicmachine.boxinator.tier.05.name=Boxinator
+gt.blockmachines.basicmachine.boxinator.tier.06.name=Boxinator
+gt.blockmachines.basicmachine.boxinator.tier.07.name=Boxinator
+gt.blockmachines.basicmachine.boxinator.tier.08.name=Boxinator
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
 gt.behaviour.paintspray.uses=Remaining Uses: %s
