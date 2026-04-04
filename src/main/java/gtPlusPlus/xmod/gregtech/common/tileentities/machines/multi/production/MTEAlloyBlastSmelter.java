@@ -84,7 +84,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
             .addInfo("Recipe tier is limited to hatch tier")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
-            .addController("Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Blast Smelter Casings", 3, false)
             .addCasingInfoMin("Blast Smelter Heat Containment Coils", 16, false)
             .addInputBus("Any Casing", 1)

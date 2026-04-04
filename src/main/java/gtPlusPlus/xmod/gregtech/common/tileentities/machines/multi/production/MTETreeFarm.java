@@ -327,7 +327,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                     return SimpleCheckRecipeResult.ofFailure("no_output_for_sapling");
                 }
 
-                int tier = Math.max(1, GTUtility.getTier(availableVoltage * availableAmperage));
+                int tier = Math.max(1, GTUtility.getTierExtended(availableVoltage * availableAmperage));
                 int tierMultiplier = getTierMultiplier(tier);
 
                 List<ItemStack> outputs = new ArrayList<>();
