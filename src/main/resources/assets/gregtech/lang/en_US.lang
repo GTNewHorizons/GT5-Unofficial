@@ -1069,6 +1069,8 @@ gt.mbtt.structure.front_center=Front center
 gt.mbtt.structure.back_center=Back center
 gt.mbtt.structure.front_bottom_center=Front bottom center
 gt.mbtt.structure.top_center=Top center
+gt.mbtt.structure.front_center_layer2=Front center, 2nd layer
+gt.mbtt.structure.front_center_layer3=Front center, 3rd layer
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
 GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
@@ -6594,7 +6596,6 @@ gt.sc_turbine.info.i_hatch=Supercritical Fluid, Side centered
 gt.sc_turbine.info.o_hatch=Superheated Steam, Side centered
 
 gt.yottank.tips=The max output speed is decided by the amount of stored liquid and the output hatch's capacity\nThe max fluid cell tier is limited by the glass tier\nHV glass for T1, EV glass for T2, IV glass for T3. . .\nThe max height of the cell blocks is 15
-gt.yottank.info.controller=Front of the second layer
 
 gt.slam.tips=Annihilating Antimatter like it's 2205!<SEPARATOR>Generates energy by reacting §bSemi-Stable Antimatter§7 with §6Matter\nAnnihilation uses an equal amount of §bAntimatter§7 and §6Matter\nConsumes §6all inputs§7 every processing cycle\n§cVoids any invalid fluid!\nA cycle lasts 5 seconds\nAn imbalance between §bAntimatter§7 and §6Matter §cdecreases efficiency!§7\nEfficiency formula: Min(§bAntimatter§7/§6Matter§7, §6Matter§7/§bAntimatter§7)\nAny excess EU generated will be §cvoided!§7\nCannot produce more than §a%s§7 EU per cycle<SEPARATOR>Energy production formula: §a§l§nA§r§7 * (§bAntimatter§7 ^ §6§l§nE§r§7) EU/Cycle\n§a§l§nA§r§antimatter energy§7 base value: §a%s§7 EU/L\n§6§l§nE§r§6nergy production boost§7:\n1. Molten Copper: §61.00\n2. Molten Superconductor Base UIV: §61.02\n3. Molten Superconductor Base UMV: §61.03<SEPARATOR>Switch the power destination to your wireless network with a screwdriver\nWireless mode requires Superconductor Base UMV to work\nWireless mode is still limited by hatch capacity
 
@@ -6813,7 +6814,6 @@ gt.htgr.info.o_hatch.a=Top of the tall Coolant Tower - Outputs Hot Coolant
 gt.htgr.info.o_hatch.b=Bottom of the short Coolant Tower - Outputs Steam
 
 gt.eic.tips=Explosions are fun!\nUses electricity instead of Explosives\n§6Parallels§7 are determined by §fContainment Block§7 Tier\n§fNeutronium§7 : §61§7 Parallel\n§cInfinity§7 : §64§7 Parallels\n§8Transcendent Metal§7 : §616§7 Parallels\n§dSpacetime§7 : §664§7 Parallels\n§3Universium§7 : §6256§7 Parallels
-gt.eic.info.controller=Front 3rd layer center
 gt.eic.info.replacement=Casings can be replaced with Explosion Hazard Signs
 gt.eic.info.casing.a=Outer layer 2,3,7,8
 gt.eic.info.casing.b=Inner layer 2,3,7,8
@@ -6828,7 +6828,6 @@ gt.hi_engraver.tips.1=Laser source hatch determines maximum recipe tier and para
 
 gt.ore_factory.tips.1=Does all ore processing in one step\nParallel count scales with total input power: EU/t / 30\nEvery ore costs 30EU/t, 2L lubricant, 200L distilled water\nRecipes that need extra input require their extra inputs on top of the normal costs\nProcessing time is dependent on mode\nUse a screwdriver to switch mode\nSneak click with screwdriver to void the stone dust
 gt.ore_factory.tips.2=§aOP stands for Ore Processor ;)
-gt.ore_factory.info.controller=The third layer
 gt.ore_factory.info.i_bus=Input ore/crushed ore
 gt.ore_factory.info.i_hatch=Input lubricant/distilled water/washing chemicals
 gt.ore_factory.info.muffler=Output Pollution
@@ -6887,7 +6886,6 @@ gt.massfab.tips.2=Produces UU-A, UU-M & Scrap\nChange mode with screwdriver
 
 gt.mega_abs.tips.1=§8§o"all it does is make metals hot"
 gt.mega_abs.tips.2=§a-5%% §7Recipe Time per %1$s Tier above TPV (additive)\nif the equivalent or better %2$s is present\n§b-5%% §7EU Usage per %1$s Tier above the Recipe Tier (multiplicative)<SEPARATOR>Recipe Tier limited by %2$s Tier, %3$s unlocks all\nCan also use normal ABS coils in their place instead, if you don't like the bonuses :)
-gt.mega_abs.info.controller=Mid of the fourth layer
 gt.mega_abs.info.maintenance=Around the controller
 gt.mega_abs.info.muffler=1 in the center of the top layer
 
@@ -6914,7 +6912,6 @@ gt.ebf.tips=You can use some fluids to reduce recipe time. Place the circuit in 
 gt.ebf.info.muffler=Top middle
 
 gt.mebf.tips=§b-5% EU Usage per §c900K§7 above the recipe requirement<SEPARATOR>Increases Heat by §c100K§7 for every §fVoltage§7 tier past §bMV\nEvery §c1800K§7 over the recipe requirement grants 1 §dPerfect Overclock<SEPARATOR>
-gt.mebf.info.controller=3rd layer center
 gt.mebf.info=The glass tier limits the Energy Input tier
 
 gt.mfe.tips.1=Use screwdriver to switch mode\nInsert an electromagnet into the electromagnet housing to use\nBetter electromagnets give further bonuses\nWith Tengam electromagnet, multi-amp (NOT laser) hatches are allowed
@@ -6950,6 +6947,7 @@ gt.nuclear_salt_processing_plant.info.4=Bottom Side, 2 Required
 gt.nuclear_salt_processing_plant.info.5=Back Side, Opposite of Controller
 
 gt.wwxl.tips=Works as fast as 32 Large Heat Exchangers\nInputs are §cLava§7, §cHot Coolant§7, or §cHot Solar Salt\nOutputs are §9Pahoehoe Lava§7, §9IC2 Coolant§7, or §9Cold Solar Salt\nConverts Distilled Water into §fSteam §7or §fSH Steam §7in the process\nOutputs §fSH Steam §7if the input rate of hot fluid is above a certain §dthreshold<SEPARATOR>§cLava §7: SH Threshold §d32,000 L/s §7: Max Input §c64,000 L/s §7: Max Output §f5,120,000 SH Steam/s\n§cHot Coolant §7: SH Threshold §d25,600 L/s §7: Max Input §c51,200 L/s §7: Max Output §f10,240,000 SH Steam/s\n§cHot Solar Salt §7: SH Threshold §d5,120 L/s §7: Max Input §c10,240 L/s §7: Max Output §f10,240,000 SH Steam/s<SEPARATOR>A circuit in the controller lowers the SH threshold at the cost of steam\n§d3.75% §7reduced SH threshold and §f1.5% §7reduced steam per circuit over 1
+gt.wwxl.info.controller=Front center, 4th layer
 gt.wwxl.info.casing=Center 3x5x3 (45 blocks)
 gt.wwxl.info.i_hatch.1=Hot fluid, bottom center casing
 gt.wwxl.info.i_hatch.2=Distilled water, any bottom layer casing

@@ -215,7 +215,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
         tt.addMachineType("machtype.dissolution_tank")
             .addInfo("gt.dissolution_tank.tips")
             .beginStructureBlock(5, 5, 5, true)
-            .addController("front_bottom_center")
+            .addController("front_center_layer2")
             .addCasingInfoExactly(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 42)
             .addCasingInfoExactly("GT5U.MBTT.BoroGlassTiered", 24)
             .addCasingInfoExactly(Casings.HeatProofMachineCasing.getLocalizedName(), 9)

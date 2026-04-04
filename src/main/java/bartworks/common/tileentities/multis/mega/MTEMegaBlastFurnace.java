@@ -167,7 +167,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 20, 15, true)
-            .addController("gt.mebf.info.controller")
+            .addController("front_center_layer3")
             .addCasingInfoRange(Casings.HeatProofMachineCasing.getLocalizedName(), 0, 447, false)
             .addCasingInfoExactly("GT5U.tooltip.structure.heating_coil", 864, true)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 1007, true)

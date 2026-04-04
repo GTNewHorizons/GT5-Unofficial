@@ -219,7 +219,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addMaxTierSkips(1)
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 9, 3, false)
-            .addController("gt.eic.info.controller")
+            .addController("front_center_layer3")
             .addCasingInfoMin(Casings.SolidSteelMachineCasing.getLocalizedName(), 8)
             .addStructureInfo("gt.eic.info.replacement")
             .addStructurePart(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 1).getDisplayName(), "gt.eic.info.casing.a")

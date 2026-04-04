@@ -449,7 +449,7 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
         tt.addMachineType("machtype.fluid_tank")
             .addInfo("gt.yottank.tips")
             .beginVariableStructureBlock(5, 5, 1, 15, 5, 5, false)
-            .addController("gt.yottank.info.controller")
+            .addController("front_center_layer2")
             .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Steel), 16, false)
             .addCasingInfoRange("GT5U.MBTT.AnyGlass", 16, 240, true)
             .addCasingInfoRange("yottaFluidTankCell.name", 9, 135, true)
