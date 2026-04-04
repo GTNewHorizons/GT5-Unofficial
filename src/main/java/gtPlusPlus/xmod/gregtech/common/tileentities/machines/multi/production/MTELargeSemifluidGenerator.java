@@ -73,7 +73,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
             .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 4, false)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Stable Titanium Machine Casing", 16, false)
             .addCasingInfoMin("Steel Gear Box Machine Casing", 2, false)
             .addCasingInfoMin("Engine Intake Machine Casing", 8, false)

@@ -200,7 +200,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
                     + EnumChatFormatting.GRAY
                     + ".")
             .addInfo("Inputting Graphite/Beryllium dust can reduce 10MeV per dust immediately.")
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addCasingInfoRange("Clean Stainless Steel Machine Casing", 7, 31, false)
             .addCasingInfoExactly("Processor Machine Casing", 18, false)
             .addCasingInfoMin("Steel Frame Box", 16, false)
