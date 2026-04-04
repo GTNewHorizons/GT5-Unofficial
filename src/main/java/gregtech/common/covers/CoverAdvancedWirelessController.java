@@ -37,11 +37,9 @@ public class CoverAdvancedWirelessController extends CoverAdvancedRedstoneReceiv
     private boolean handledShutdown = false;
     protected WeakReference<EntityPlayer> lastPlayer = null;
     private boolean mPlayerNotified = false;
-    private GateMode mode;
 
     public CoverAdvancedWirelessController(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
-        GateMode mode = GateMode.AND;
     }
 
     @Override
@@ -160,7 +158,6 @@ public class CoverAdvancedWirelessController extends CoverAdvancedRedstoneReceiv
             case DISABLED -> State.DISABLED;
         };
     }
-
 
     // GUI stuff
 
