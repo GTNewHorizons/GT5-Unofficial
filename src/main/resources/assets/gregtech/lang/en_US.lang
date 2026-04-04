@@ -825,6 +825,8 @@ gt.blockmachines.basicmachine.sifter.tier.09.name=Epic Pulsation Filter
 gt.blockmachines.basicmachine.sifter.tier.10.name=Epic Pulsation Filter II
 gt.blockmachines.basicmachine.sifter.tier.11.name=Epic Pulsation Filter III
 gt.blockmachines.basicmachine.sifter.tier.12.name=Epic Pulsation Filter IV
+gt.blockmachines.basicmachine.teleporter.name=Teleporter
+gt.blockmachines.basicmachine.teleporter.tooltip=Teleport long distances with this little device.\nUse a Dragon Egg or Nitrogen Plasma\nfor Inter-dimensional transmission
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
 gt.behaviour.paintspray.uses=Remaining Uses: %s
