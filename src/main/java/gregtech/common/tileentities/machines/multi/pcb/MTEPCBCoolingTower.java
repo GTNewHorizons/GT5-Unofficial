@@ -1,8 +1,8 @@
 package gregtech.common.tileentities.machines.multi.pcb;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GTValues.AuthorBlueWeabo;
-import static gregtech.api.enums.GTValues.Authorguid118;
+import static gregtech.api.enums.GTAuthors.AuthorBlueWeabo;
+import static gregtech.api.enums.GTAuthors.Authorguid118;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW;
@@ -159,7 +159,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
             .addInfo(EnumChatFormatting.GRAY + "Can connect to many PCB Factories!")
             .beginStructureBlock(5, 10, 5, false)
             .addStructureInfo("Tier 1")
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoExactlyColored(
                 "Reinforced Photolithographic Framework Casing",
                 EnumChatFormatting.GRAY,
@@ -192,7 +192,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
                 false)
             .addInputHatch("Coolant Hatch")
             .addStructureInfo("Tier 2")
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoExactlyColored(
                 "Reinforced Photolithographic Framework Casing",
                 EnumChatFormatting.GRAY,

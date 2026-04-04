@@ -28,14 +28,18 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
+import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDualInputHatchWithPattern, IDataCopyable {
 
     @Override
@@ -47,17 +51,11 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     private MTEHatchCraftingInputME master; // use getMaster() to access
     private int masterX, masterY, masterZ;
     private boolean masterSet = false; // indicate if values of masterX, masterY, masterZ are valid
+    private boolean reverseRecipes = false; // if true, the slave will show the recipes in reverse order compared to the
+                                            // master CRIB
 
     public MTEHatchCraftingInputSlave(int aID, String aName, String aNameRegional) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            11,
-            0,
-            new String[] { "Proxy for Crafting Input Buffer/Bus (CRIB)", "Hatch Tier: " + TIER_COLORS[11] + VN[11],
-                "Link with Crafting Input Buffer/Bus using Data Stick to share inventory",
-                "Left click on the Crafting Input Buffer/Bus, then right click on this block to link them" });
+        super(aID, aName, aNameRegional, 11, 0, null);
         disableSort = true;
     }
 
@@ -100,6 +98,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
             masterZ = masterNBT.getInteger("z");
             masterSet = true;
         }
+        reverseRecipes = aNBT.getBoolean("reverseRecipes");
     }
 
     @Override
@@ -112,6 +111,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
             masterNBT.setInteger("z", masterZ);
             aNBT.setTag("master", masterNBT);
         }
+        aNBT.setBoolean("reverseRecipes", reverseRecipes);
     }
 
     @Override
@@ -131,6 +131,10 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
                     masterZ));
             ret.addAll(Arrays.asList(getMaster().getInfoData()));
         } else ret.add(StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_slave.not_linked_to"));
+        ret.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.hatch.crafting_input_slave.reverseRecipes",
+                reverseRecipes ? "on" : "off"));
         return ret.toArray(new String[0]);
     }
 
@@ -161,7 +165,8 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
 
     @Override
     public Iterator<MTEHatchCraftingInputME.PatternSlot<MTEHatchCraftingInputME>> inventories() {
-        return getMaster() != null ? getMaster().inventories() : Collections.emptyIterator();
+        return getMaster() != null ? (reverseRecipes ? getMaster().inventoriesReversed() : getMaster().inventories())
+            : Collections.emptyIterator();
     }
 
     @Override
@@ -276,6 +281,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
             NBTTagCompound masterNBT = nbt.getCompoundTag("master");
             trySetMasterFromCoord(masterNBT.getInteger("x"), masterNBT.getInteger("y"), masterNBT.getInteger("z"));
         }
+        reverseRecipes = nbt.getBoolean("reverseRecipes");
         return true;
     }
 
@@ -290,6 +296,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
             masterNBT.setInteger("z", masterZ);
             tag.setTag("master", masterNBT);
         }
+        tag.setBoolean("reverseRecipes", reverseRecipes);
         return tag;
     }
 
@@ -311,6 +318,11 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
                     tag.getInteger("masterZ")));
         }
 
+        currenttip.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.hatch.crafting_input_slave.reverseRecipes",
+                tag.getBoolean("reverseRecipes") ? "on" : "off"));
+
         if (tag.hasKey("masterName")) {
             currenttip.add(EnumChatFormatting.GOLD + tag.getString("masterName") + EnumChatFormatting.RESET);
         }
@@ -323,6 +335,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         int z) {
 
         tag.setBoolean("linked", getMaster() != null);
+        tag.setBoolean("reverseRecipes", reverseRecipes);
         if (masterSet) {
             tag.setInteger("masterX", masterX);
             tag.setInteger("masterY", masterY);
@@ -358,5 +371,25 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     @Override
     public void resetCraftingInputRecipeMap() {
         if (getMaster() != null) getMaster().resetCraftingInputRecipeMap();
+    }
+
+    private void toggleReverseRecipes() {
+        reverseRecipes = !reverseRecipes;
+    }
+
+    @Override
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        if (getBaseMetaTileEntity().isServerSide()) {
+            toggleReverseRecipes();
+            GTUtility.sendChatTrans(aPlayer, "chat.proxy.reverse." + reverseRecipes);
+        }
+        // not calling super.onScrewdriverRightClick, because input filter is irrelevant for a proxy hatch
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit
+            .splitLocalizedFormatted("gt.blockmachines.input_bus_crafting_slave.desc", TIER_COLORS[11] + VN[11]);
     }
 }

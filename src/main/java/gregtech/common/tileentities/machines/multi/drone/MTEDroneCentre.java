@@ -3,7 +3,7 @@ package gregtech.common.tileentities.machines.multi.drone;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.AuthorSilverMoon;
+import static gregtech.api.enums.GTAuthors.AuthorSilverMoon;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -181,7 +181,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addInfo("There is a chance per second that the drone will crash")
             .addInfo("Chance is determined by drone tier: T1: 1/28800, T2: 1/172800, T3 & T4: 0")
             .beginStructureBlock(5, 4, 9, false)
-            .addController("Front center")
+            .addController("Front center, 3rd layer")
             .addCasingInfoRange("Stable Titanium Machine Casing", CASINGS_MIN, 91, false)
             .addCasingInfoExactly("Heat Proof Machine Casing", 8, false)
             .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 1, false)

@@ -217,7 +217,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                     + EnumChatFormatting.GRAY
                     + " reduced steam per circuit over 1")
             .beginStructureBlock(5, 9, 5, false)
-            .addController("Front bottom")
+            .addController("Front center, 4th layer")
             .addCasingInfoMin("Reinforced Heat Exchanger Casing", 90, false)
             .addOtherStructurePart("Tungstensteel Pipe Casing", "Center 3x5x3 (45 blocks)")
             .addMaintenanceHatch("Any casing", 1)

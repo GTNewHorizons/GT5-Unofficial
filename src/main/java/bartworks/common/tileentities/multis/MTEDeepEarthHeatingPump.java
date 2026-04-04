@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.multis;
 
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static gregtech.api.enums.GTValues.VN;
 
 import java.util.Arrays;
@@ -115,7 +114,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInfo("Base cycle time: 1 tick");
 
         tt.beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
             .addOtherStructurePart(
@@ -126,7 +125,12 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInputBus("Mining Pipes, optional, any base casing")
             .addInputHatch("Any base casing")
             .addOutputHatch("Any base casing")
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
+            .toolTipFinisher(
+                EnumChatFormatting.GREEN + "bartimaeusnek"
+                    + EnumChatFormatting.GRAY
+                    + " via "
+                    + EnumChatFormatting.DARK_GREEN
+                    + "BartWorks");
         return tt;
     }
 

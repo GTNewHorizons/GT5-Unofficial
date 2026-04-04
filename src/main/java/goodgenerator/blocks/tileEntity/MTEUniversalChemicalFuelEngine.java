@@ -166,10 +166,10 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
             .addInfo("When turned on, there is a 10-second period where the machine will not stop")
             .addInfo("Even if it doesn't stop, all the fuel in the hatch will be consumed")
             .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel")
+            .addInfo("The higher the amount of promoter, the higher the efficiency")
             .addInfo(
-                "The higher the amount of promoter, the higher the efficiency"
-                    + "It follows an exponential curve exp(-C/(p/x))*1.5 ")
-            .addInfo("Where x is the amount of fuel in liters, p is the amount of promoter in liters")
+                "Follows an exponential curve exp(-C/(p/x))*1.5, "
+                    + "where x is the amount of fuel in liters, p is the amount of promoter in liters")
             .addInfo("and C depends on the fuel type. Diesel: C=0.04; Gas: C=0.04; Rocket fuel: C=0.005")
             .addInfo("It creates sqrt(Current Output Power) pollution every second")
             .addInfo(
@@ -179,7 +179,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
             .addInfo("The efficiency is up to 150%")
             .addTecTechHatchInfo()
             .beginStructureBlock(5, 4, 9, false)
-            .addController("Mid of the second layer")
+            .addController("Front center, 2nd layer")
             .addCasingInfoExactly("Stable Titanium Machine Casing", 93, false)
             .addCasingInfoExactly("Titanium Gear Box Casing", 14, false)
             .addCasingInfoExactly("Engine Intake Casing", 14, false)

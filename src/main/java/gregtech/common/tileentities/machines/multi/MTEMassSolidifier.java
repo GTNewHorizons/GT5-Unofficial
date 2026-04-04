@@ -3,7 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.AuthorOmdaCZ;
+import static gregtech.api.enums.GTAuthors.AuthorOmdaCZ;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -181,7 +181,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                     + " to hold fluids and molds in the same hatch")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginStructureBlock(5, 6, 9, false)
-            .addController("Front Center Bottom")
+            .addController("Front bottom center")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addCasingInfoMin("Solidifier Casing", MIN_CASINGS, false)
             .addCasingInfoExactly("Solidifier Radiator", 34, false)

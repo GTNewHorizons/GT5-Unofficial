@@ -4,7 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.AuthorVolence;
+import static gregtech.api.enums.GTAuthors.AuthorVolence;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -208,7 +208,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addDynamicSpeedBonusInfo(0.25f, TooltipTier.COIL)
             .addDynamicEuEffInfo(0.0833f, TooltipTier.PIPE_CASING)
             .beginStructureBlock(7, 7, 9, true)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Pressure Containment Casings", 128, false)
             .addCasingInfoExactly("Any Tiered Glass", 42, false)
             .addCasingInfoExactly("Item Pipe Casings", 7, true)

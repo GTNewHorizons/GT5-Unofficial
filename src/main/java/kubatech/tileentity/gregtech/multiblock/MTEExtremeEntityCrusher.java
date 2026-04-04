@@ -127,7 +127,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -350,7 +350,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     + " 16x Time, Output, Weapon Damage")
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
-            .addController("Front Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Solid Steel Machine Casing", 35, false)
             .addCasingInfoExactly("Any Tiered Glass", 60, false)
             .addCasingInfoExactly("Steel Frame Box", 20, false)
@@ -360,7 +360,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addEnergyHatch("Any bottom casing", 1)
             .addMaintenanceHatch("Any bottom casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTValues.AuthorKuba);
+            .toolTipFinisher(GTAuthors.AuthorKuba);
         return tt;
     }
 
