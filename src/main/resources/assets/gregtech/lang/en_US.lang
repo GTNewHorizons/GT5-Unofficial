@@ -791,6 +791,11 @@ gt.blockmachines.basicmachine.replicator.tier.09.name=Epic Elemental Composer
 gt.blockmachines.basicmachine.replicator.tier.10.name=Epic Elemental Composer II
 gt.blockmachines.basicmachine.replicator.tier.11.name=Epic Elemental Composer III
 gt.blockmachines.basicmachine.replicator.tier.12.name=Epic Elemental Composer IV
+gt.blockmachines.basicmachine.rockbreaker.tier.01.name=Basic Rock Breaker
+gt.blockmachines.basicmachine.rockbreaker.tier.02.name=Advanced Rock Breaker
+gt.blockmachines.basicmachine.rockbreaker.tier.03.name=Advanced Rock Breaker II
+gt.blockmachines.basicmachine.rockbreaker.tier.04.name=Advanced Rock Breaker III
+gt.blockmachines.basicmachine.rockbreaker.tier.05.name=Cryogenic Magma Solidifier R-8200
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
 gt.behaviour.paintspray.uses=Remaining Uses: %s
