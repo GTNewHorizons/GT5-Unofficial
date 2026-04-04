@@ -763,6 +763,10 @@ gt.blockmachines.basicmachine.printer.tier.05.name=Advanced Printer IV
 gt.blockmachines.basicmachine.printer.tier.06.name=Advanced Printer V
 gt.blockmachines.basicmachine.printer.tier.07.name=Advanced Printer VI
 gt.blockmachines.basicmachine.printer.tier.08.name=Advanced Printer VII
+gt.blockmachines.basicmachine.pump.tier.01.name=Basic Pump
+gt.blockmachines.basicmachine.pump.tier.02.name=Good Pump
+gt.blockmachines.basicmachine.pump.tier.03.name=Advanced Pump
+gt.blockmachines.basicmachine.pump.tooltip=The best way to empty Oceans!\n§e%s§7 EU/operation, §f%s§7 sec per bucket, no stuttering\nMaximum pumping area: §f%sx%s\nUse Screwdriver to regulate pumping area\nUse Soft Mallet to disable and retract the pipe\nDisable the bottom pump to retract the pipe!\nUse Soldering Iron to auto retract the pipe when hitting a rock
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
 gt.behaviour.paintspray.uses=Remaining Uses: %s

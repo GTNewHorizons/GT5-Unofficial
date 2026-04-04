@@ -73,7 +73,7 @@ public class MTEPump extends MTEBasicMachine {
 
     private static String[] MTEPumpTooltip(int aTier) {
         return GTUtility.translateMultiline(
-            "GT5U.tooltip.pump",
+            "gt.blockmachines.basicmachine.pump.tooltip",
             TooltipHelper.euText(getEuUsagePerTier(aTier)),
             NumberFormatUtil.formatNumber(Math.max(1, 160 >> aTier) / 20d),
             NumberFormatUtil.formatNumber(getMaxDistanceForTier(aTier) * 2 + 1),
