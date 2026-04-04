@@ -137,7 +137,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                     + EnumChatFormatting.BLUE
                     + " Cold Solar Salt")
             .addInfo(
-                "Converts Distilled Water into" + EnumChatFormatting.WHITE
+                "Converts distilled water into" + EnumChatFormatting.WHITE
                     + " Steam"
                     + EnumChatFormatting.GRAY
                     + " or"

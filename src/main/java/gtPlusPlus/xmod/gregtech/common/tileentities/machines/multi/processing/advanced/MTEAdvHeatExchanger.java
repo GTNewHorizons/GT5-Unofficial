@@ -148,7 +148,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                     + EnumChatFormatting.BLUE
                     + " Cold Solar Salt")
             .addInfo(
-                "Converts Distilled Water into" + EnumChatFormatting.WHITE
+                "Converts distilled water into" + EnumChatFormatting.WHITE
                     + " Steam"
                     + EnumChatFormatting.GRAY
                     + " or"

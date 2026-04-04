@@ -238,7 +238,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
                     + EnumChatFormatting.BLUE
                     + " Molten Metal")
             .addInfo(
-                "Converts Distilled Water into" + EnumChatFormatting.WHITE
+                "Converts distilled water into" + EnumChatFormatting.WHITE
                     + " SH Steam"
                     + EnumChatFormatting.GRAY
                     + " or"
