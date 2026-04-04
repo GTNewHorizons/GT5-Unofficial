@@ -108,7 +108,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             .addStaticSpeedInfo(1.6f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 6, 3, true)
-            .addController("Bottom center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Maceration Stack Casings (After upgrade)", 26, false)
             .addCasingInfoMin("Stable Titanium Casings (Before upgrade)", 26, false)
             .addInputBus("Any casing", 1)

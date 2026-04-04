@@ -315,7 +315,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("Subsequent Overclocks:")
             .addInfo("-Double the number of Jobs finished at once")
             .beginStructureBlock(5, 5, 5, true)
-            .addController("Front center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", MIN_CASING_COUNT, false)
             .addCasingInfoExactly(
                 AEApi.instance()

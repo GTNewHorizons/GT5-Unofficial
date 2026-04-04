@@ -264,7 +264,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginVariableStructureBlock(15, 15, 16, 56, 15, 15, true)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addOtherStructurePart("Clean Stainless Steel Machine Casing", "15 x h - 5 (minimum)")
             .addEnergyHatch("Any casing")
             .addMaintenanceHatch("Any casing")
