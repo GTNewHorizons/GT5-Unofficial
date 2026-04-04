@@ -590,7 +590,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addSeparator()
             .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
             .beginStructureBlock(15, 9, 13, false)
-            .addController("The third layer")
+            .addController("Front center")
             .addCasingInfoExactly("Awakened Draconium Coil Block", 7, false)
             .addCasingInfoExactly("Centrifuge Casing", 7, false)
             .addCasingInfoExactly("Grate Machine Casing", 7, false)
