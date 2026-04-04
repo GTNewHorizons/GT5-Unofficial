@@ -839,6 +839,14 @@ gt.blockmachines.basicmachine.thermalcentrifuge.tier.09.name=Epic Fire Cyclone
 gt.blockmachines.basicmachine.thermalcentrifuge.tier.10.name=Epic Fire Cyclone II
 gt.blockmachines.basicmachine.thermalcentrifuge.tier.11.name=Epic Fire Cyclone III
 gt.blockmachines.basicmachine.thermalcentrifuge.tier.12.name=Epic Fire Cyclone IV
+gt.blockmachines.basicmachine.unboxinator.tier.01.name=Basic Unpackager
+gt.blockmachines.basicmachine.unboxinator.tier.02.name=Advanced Unpackager
+gt.blockmachines.basicmachine.unboxinator.tier.03.name=Advanced Unpackager II
+gt.blockmachines.basicmachine.unboxinator.tier.04.name=Advanced Unpackager III
+gt.blockmachines.basicmachine.unboxinator.tier.05.name=Unboxinator
+gt.blockmachines.basicmachine.unboxinator.tier.06.name=Unboxinator
+gt.blockmachines.basicmachine.unboxinator.tier.07.name=Unboxinator
+gt.blockmachines.basicmachine.unboxinator.tier.08.name=Unboxinator
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
 gt.behaviour.paintspray.uses=Remaining Uses: %s
