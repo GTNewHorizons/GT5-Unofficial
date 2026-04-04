@@ -35,7 +35,7 @@ public class CoverAdvancedWirelessControllerGui extends CoverBaseGui<CoverAdvanc
 
     @Override
     protected int getGUIWidth() {
-        return 204;
+        return 256;
     }
 
     @Override
