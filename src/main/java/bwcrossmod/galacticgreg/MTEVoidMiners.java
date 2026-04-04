@@ -301,7 +301,7 @@ public class MTEVoidMiners {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = super.createTooltip();
             tt.beginStructureBlock(9, 16, 9, false)
-            .addController("Front center, 2nd layer")
+            .addController("Front center, 3rd layer")
                 .addStructureInfo(
                     EnumChatFormatting.GOLD + "47x" + EnumChatFormatting.GRAY + " Mining Neutronium Casing")
                 .addStructureInfo(
