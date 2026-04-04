@@ -214,7 +214,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
             .addInfo("Maximum input and output values per second are shown in NEI")
             .addInfo("Actual output is proportional to the amount of hot fluid inserted")
             .addInfo(EnumChatFormatting.RED + "Explodes if it runs out of water")
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addCasingInfoRange("Robust Tungstensteel Machine Casings", 25, 120, false)
             .addCasingInfoExactly("Any Tiered Glass", 72, false)
             .addCasingInfoExactly("Pressure Resistant Wall", 48, false)

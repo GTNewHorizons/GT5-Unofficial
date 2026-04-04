@@ -89,7 +89,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             .addPollutionAmount(getPollutionPerSecond(null))
             .addInfo(EnumChatFormatting.GREEN + "It'sa mill!")
             .beginStructureBlock(3, 3, 7, false)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("IsaMill Exterior Casing", 40, false)
             .addOtherStructurePart("IsaMill Gearbox", "5x, Inner Blocks")
             .addOtherStructurePart("IsaMill Piping", "8x, ring around controller")

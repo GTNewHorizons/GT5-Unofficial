@@ -34,6 +34,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
@@ -130,7 +131,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             "High Efficiency: Removes full pollution, Turbine takes 100% dmg",
             "Turbine Rotor will not break in LE mode",
             "Insert an equal tier Conveyor Module to enable automation");
-        return A;
+        return TooltipHelper.pollutionDisabledTooltip(A);
     }
 
     @Override

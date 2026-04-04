@@ -4799,7 +4799,7 @@ public class MaterialsInit {
     private static Materials loadGlue() {
         return new MaterialBuilder().setName("Glue")
             .setDefaultLocalName("Refined Glue")
-            .setChemicalFormula("No Horses were harmed in the the making of this substance", true)
+            .setChemicalFormula("No Horses were harmed in the making of this substance", true)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeOrange)
             .setARGB(0x00c8c400)
