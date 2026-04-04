@@ -412,10 +412,12 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         BigInteger minReading = getMinimumMeasurement(lastMeasurements);
         BigInteger maxReading = getMaximumMeasurement(lastMeasurements);
 
-        if (!minReading.equals(BigInteger.ZERO)) {
+        if (minReading.signum() > 0) {
             int exponent = BigIntegerMath.log10(minReading, RoundingMode.DOWN);
             minReading = BigInteger.valueOf(10)
                 .pow(exponent);
+        } else {
+            minReading = BigInteger.ZERO;
         }
 
         renderPowerChartBounds(minReading, maxReading);
