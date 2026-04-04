@@ -69,7 +69,7 @@ public class MTEIndustrialThermalCentrifugeLegacy extends GTPPMultiBlockBase<MTE
             .addBulkMachineInfo(8, 2.5f, 0.8f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 2, 3, false)
-            .addController("Front Center")
+            .addController("Front center, 2nd layer")
             .addCasingInfoMin("Thermal Processing Casings/Noise Hazard Sign Blocks", 8, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)

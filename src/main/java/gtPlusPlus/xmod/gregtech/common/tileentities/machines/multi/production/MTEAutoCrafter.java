@@ -70,7 +70,7 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
             .addBulkMachineInfo(2, 3f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoRange("Bulk Production Frame", 10, 25, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
