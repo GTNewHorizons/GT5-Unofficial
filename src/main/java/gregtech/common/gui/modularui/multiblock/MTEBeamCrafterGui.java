@@ -1,10 +1,23 @@
 package gregtech.common.gui.modularui.multiblock;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumberCompact;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gtnhlanth.common.beamline.Particle.getParticleFromId;
 
 import java.util.Map;
 
+import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.value.BoolValue;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericMapSyncHandler;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
+import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import gtnhlanth.common.beamline.Particle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -78,6 +91,85 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
         }
 
         return outputWidget;
+    }
+
+    @Override
+    protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createButtonColumn(panel, syncManager).child(createOverviewButton(syncManager, panel));
+    }
+
+    protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
+        IPanelHandler statsPanel = syncManager.syncedPanel(
+            "statsPanel",
+            true,
+            (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager));
+        return new ButtonWidget<>().size(18, 18)
+            .topRel(0)
+            .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
+            .onMousePressed(d -> {
+                if (!statsPanel.isPanelOpen()) {
+                    statsPanel.openPanel();
+                } else {
+                    statsPanel.closePanel();
+                }
+                return true;
+            })
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.machineinfo")))
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
+    }
+
+    private ModularPanel openInfoPanel(PanelSyncManager p_syncManager, ModularPanel parent,
+                                       PanelSyncManager syncManager) {
+        return new ModularPanel("statsPanel").relative(parent)
+            .leftRel(1)
+            .topRel(0).width(110).height(160)
+            .widgetTheme("backgroundPopup")
+            .child(
+                new Row().sizeRel(1)
+                    .widgetTheme("backgroundPopup")
+                    .child(
+                        new Column().size(100, 120)
+                            .paddingLeft(20)
+                            .child(
+                                new TextWidget<>(
+                                    IKey.dynamic(
+                                        () -> StatCollector.translateToLocalFormatted(
+                                            "gt.blockmachines.multimachine.beamcrafting.beamcrafter.dumpbuffer")))
+                                    .size(100, 20)
+                                    .alignment(Alignment.CENTER))
+                            .child(createParticleButtonGrid())
+                    )
+            );
+    }
+
+    private IWidget createParticleButtonGrid() {
+
+        Column column = new Column();
+
+        Particle[] particles = Particle.values();
+        int index = 0;
+
+        for (int row = 0; row < 4; row++) {
+            Row r = (Row) new Row().size(100,20);
+            for (int col = 0; col < 5; col++) {
+                if (index >= particles.length) break;
+
+                Particle particle = particles[index++];
+
+                r.child(createButtonForParticle(particle)).marginRight(2);
+            }
+
+            column.child(r).marginBottom(2);
+        }
+
+        return column;
+    }
+    protected IWidget createButtonForParticle(Particle particle) {
+        return new ButtonWidget<>()
+            .size(18, 18)
+            .topRel(0)
+            .overlay(particle.getTexture())
+            .onMousePressed(d -> multiblock.clearBufferForParticle(particle)); // sync manager or something idk man
     }
 
     private String formatGuiHeaderBuffer() {

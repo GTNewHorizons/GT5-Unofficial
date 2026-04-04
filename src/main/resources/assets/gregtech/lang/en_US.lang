@@ -2373,6 +2373,8 @@ gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7=Up to §b%s§7 p
 gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8=Recipe progress is determined purely by particles consumed
 gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip9=from the buffer
 gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip10=Has §6%s§7 parallels
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.dumpbuffer=Click to dump
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.dumpall=Dump all
 
 gt.blockmachines.multimachine.beamcrafting.beammirror.machinetype=Beam Mirror
 gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip1=Takes in particle beams and sends them back out

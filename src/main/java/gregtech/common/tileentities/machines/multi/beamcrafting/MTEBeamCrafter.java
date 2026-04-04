@@ -529,4 +529,13 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         return currentRecipeParticleIDB;
     }
 
+    public boolean clearBufferForParticle(Particle particle){
+        int particleID = particle.getId();
+        if (this.bufferMap.containsKey(particleID)){
+            this.bufferMap.put(particleID,0);
+            return true;
+        }
+        return false;
+    }
+
 }
