@@ -335,6 +335,15 @@ gt.blockmachines.basicmachine.autoclave.tier.09.name=Epic Pressure Cooker
 gt.blockmachines.basicmachine.autoclave.tier.10.name=Epic Pressure Cooker II
 gt.blockmachines.basicmachine.autoclave.tier.11.name=Epic Pressure Cooker III
 gt.blockmachines.basicmachine.autoclave.tier.12.name=Epic Pressure Cooker IV
+gt.blockmachines.basicmachine.automation.autoworkbench.01.name=Auto Workbench (LV)
+gt.blockmachines.basicmachine.automation.autoworkbench.02.name=Auto Workbench (MV)
+gt.blockmachines.basicmachine.automation.autoworkbench.03.name=Auto Workbench (HV)
+gt.blockmachines.basicmachine.automation.autoworkbench.04.name=Auto Workbench (EV)
+gt.blockmachines.basicmachine.automation.autoworkbench.05.name=Auto Workbench (IV)
+gt.blockmachines.basicmachine.automation.autoworkbench.06.name=Auto Workbench (LuV)
+gt.blockmachines.basicmachine.automation.autoworkbench.07.name=Auto Workbench (ZPM)
+gt.blockmachines.basicmachine.automation.autoworkbench.08.name=Auto Workbench (UV)
+gt.blockmachines.basicmachine.automation.autoworkbench.tooltip=Automatic Crafting Table Mk III
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
 gt.behaviour.paintspray.uses=Remaining Uses: %s
