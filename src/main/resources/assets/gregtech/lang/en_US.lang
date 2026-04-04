@@ -663,6 +663,13 @@ gt.blockmachines.basicmachine.massfab.tier.09.name=Epic Existence Initiator
 gt.blockmachines.basicmachine.massfab.tier.10.name=Epic Existence Initiator II
 gt.blockmachines.basicmachine.massfab.tier.11.name=Epic Existence Initiator III
 gt.blockmachines.basicmachine.massfab.tier.12.name=Epic Existence Initiator IV
+gt.blockmachines.basicmachine.microtransmitter.03.name=HV Microwave Energy Transmitter
+gt.blockmachines.basicmachine.microtransmitter.04.name=EV Microwave Energy Transmitter
+gt.blockmachines.basicmachine.microtransmitter.05.name=IV Microwave Energy Transmitter
+gt.blockmachines.basicmachine.microtransmitter.06.name=LuV Microwave Energy Transmitter
+gt.blockmachines.basicmachine.microtransmitter.07.name=ZPM Microwave Energy Transmitter
+gt.blockmachines.basicmachine.microtransmitter.08.name=UV Microwave Energy Transmitter
+gt.blockmachines.basicmachine.microtransmitter.tooltip=Transmits Energy Wirelessly\nUse Nitrogen Plasma\nfor Inter-dimensional transmission\n0.004EU Loss per 100 Blocks
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
 gt.behaviour.paintspray.uses=Remaining Uses: %s

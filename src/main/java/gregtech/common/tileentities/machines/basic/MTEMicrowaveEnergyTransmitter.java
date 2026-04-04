@@ -36,6 +36,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.singleblock.MTEMicrowaveEnergyTransmitterGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
@@ -61,8 +62,12 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
             aNameRegional,
             aTier,
             3,
-            new String[] { "Transmits Energy Wirelessly", "Use Nitrogen Plasma", "for Inter-dimensional transmission",
-                "0.004EU Loss per 100 Blocks" });
+            new String[] { "gt.blockmachines.basicmachine.microtransmitter.tooltip" });
+    }
+
+    public String[] getDescription() {
+        return new String[] { GTUtility.translate("gt.blockmachines.basicmachine.microtransmitter.tooltip") };
+
     }
 
     public MTEMicrowaveEnergyTransmitter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
