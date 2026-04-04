@@ -510,7 +510,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addSeparator()
             .addInfo(EnumChatFormatting.RED + "Glorious Evolution!")
             .beginStructureBlock(15, 55, 15, true)
-            .addController("Front Center")
+            .addController("Front center, 2nd layer")
             .addCasingInfoMinColored(
                 "Primary Exo-Foundry Casing",
                 EnumChatFormatting.GRAY,

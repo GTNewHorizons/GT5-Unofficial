@@ -159,7 +159,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
             .addInfo("gt.ucfe.tips")
             .addTecTechHatchInfo()
             .beginStructureBlock(5, 4, 9, false)
-            .addController("gt.ucfe.info.controller")
+            .addController("front_center_layer2")
             .addCasingInfoExactly(Casings.StableTitaniumMachineCasing.getLocalizedName(), 93)
             .addCasingInfoExactly(Casings.TitaniumGearBoxCasing.getLocalizedName(), 14)
             .addCasingInfoExactly(Casings.EngineIntakeCasing.getLocalizedName(), 14)

@@ -103,7 +103,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
             .addShiftInfo("GT5U.MBTT.Dimensions", "n", "n", 3, "GT5U.MBTT.Hollow")
             .addShiftInfo("gt.iaf.info.1")
             .addShiftInfo("GT5U.MBTT.Structure")
-            .addController("top_center")
+            .addController("front_center")
             .addCasingInfoMin(Casings.TemperedArcFurnaceCasing.getLocalizedName(), 10)
             .addInputBus("<casing>", 1)
             .addOutputBus("<casing>", 1)

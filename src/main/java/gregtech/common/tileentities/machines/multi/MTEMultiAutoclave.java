@@ -214,7 +214,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addDynamicSpeedBonusInfo(0.25f, TooltipTier.COIL)
             .addDynamicEuEffInfo(0.0833f, TooltipTier.PIPE_CASING)
             .beginStructureBlock(7, 7, 9, true)
-            .addController("front_center")
+            .addController("front_bottom_center")
             .addCasingInfoMin(
                 ItemList.Casing_Autoclave.get(1)
                     .getDisplayName(),

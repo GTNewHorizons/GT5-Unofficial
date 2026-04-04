@@ -267,7 +267,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             .addSeparator()
             .addInfo("gt.latex.tips.3")
             .beginStructureBlock(5, 8, 5, false)
-            .addController("front_center")
+            .addController("front_bottom_center")
             .addCasingInfoMin("gt.blockcasings8.0.name", 14)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 24, true)
             .addCasingInfoExactly(

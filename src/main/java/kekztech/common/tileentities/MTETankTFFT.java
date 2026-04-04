@@ -344,7 +344,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         tt.addMachineType("machtype.fluid_tank")
             .addInfo("gt.tfft.tips")
             .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false)
-            .addController("top_center")
+            .addController("front_center")
             .addCasingInfoMin("tile.kekztech_tfftstoragefield_block.0.name", MIN_CASING_AMOUNT)
             .addCasingInfoRange("tile.kekztech_tfftstoragefield_block.generic.name", 7, 117, true)
             .addStructureInfo("gt.tfft.info.energy_tip")

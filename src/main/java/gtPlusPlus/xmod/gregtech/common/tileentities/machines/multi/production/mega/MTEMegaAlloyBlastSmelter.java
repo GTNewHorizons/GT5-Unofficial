@@ -277,7 +277,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 20, 11, false)
-            .addController("gt.mega_abs.info.controller")
+            .addController("front_center")
             .addCasingInfoExactly("miscutils.blockcasings.15.name", 218, false)
             .addCasingInfoExactly("miscutils.blockcasings.14.name", 56, false)
             .addCasingInfoExactly("GT5U.tooltip.structure.heating_coil", 360, true)

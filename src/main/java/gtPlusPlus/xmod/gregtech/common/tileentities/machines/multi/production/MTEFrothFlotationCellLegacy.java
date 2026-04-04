@@ -82,7 +82,7 @@ public class MTEFrothFlotationCellLegacy extends GTPPMultiBlockBase<MTEFrothFlot
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, true)
-            .addController("front_center")
+            .addController("top_center")
             .addCasingInfoMin("gtplusplus.blockcasings.3.1.name", 68)
             .addCasingInfoMin("gtplusplus.blockspecialcasings.1.9.name", 52)
             .addInputBus("<bottom casing>", 1)

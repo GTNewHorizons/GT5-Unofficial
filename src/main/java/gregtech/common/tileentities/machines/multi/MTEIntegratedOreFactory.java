@@ -586,7 +586,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addSeparator()
             .addInfo("gt.ore_factory.tips.2")
             .beginStructureBlock(15, 9, 13, false)
-            .addController("gt.ore_factory.info.controller")
+            .addController("front_center")
             .addCasingInfoExactly(Casings.AwakenedDraconiumCoilBlock.getLocalizedName(), 7)
             .addCasingInfoExactly(Casings.CentrifugeCasing.getLocalizedName(), 7)
             .addCasingInfoExactly(Casings.GrateMachineCasing.getLocalizedName(), 7)
