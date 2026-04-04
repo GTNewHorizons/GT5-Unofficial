@@ -141,37 +141,21 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
         FluidStack majorGenericFluid = tRecipe.mFluidInputs[0];
         FluidStack minorGenericFluid = tRecipe.mFluidInputs[1];
 
-        int majorAmount;
-        int minorAmount;
+        int majorAmount = 0;
+        int minorAmount = 0;
 
-        FluidStack fluidInputOne = tFluidInputs.get(0);
-        FluidStack fluidInputTwo = tFluidInputs.get(1);
-
-        if (fluidInputOne.getUnlocalizedName()
-            .equals(majorGenericFluid.getUnlocalizedName())) {
-            if (fluidInputTwo.getUnlocalizedName()
+        for (int i = 0; i < tFluidInputs.size(); i++) {
+            FluidStack f = tFluidInputs.get(i);
+            if (f.getUnlocalizedName()
+                .equals(majorGenericFluid.getUnlocalizedName())) {
+                majorAmount += f.amount;
+            } else if (f.getUnlocalizedName()
                 .equals(minorGenericFluid.getUnlocalizedName())) {
-                // majorInput = fluidInputOne;
-                majorAmount = fluidInputOne.amount;
-                // minorInput = fluidInputTwo;
-                minorAmount = fluidInputTwo.amount;
-                // GTLog.out.print("in first IF");
-            } else return false; // No valid other input
+                    minorAmount += f.amount;
+                }
+        }
 
-        } else if (fluidInputTwo.getUnlocalizedName()
-            .equals(majorGenericFluid.getUnlocalizedName())) {
-                if (fluidInputOne.getUnlocalizedName()
-                    .equals(minorGenericFluid.getUnlocalizedName())) {
-                    // majorInput = fluidInputTwo;
-                    majorAmount = fluidInputTwo.amount;
-                    // minorInput = fluidInputOne;
-                    minorAmount = fluidInputOne.amount;
-                    // GTLog.out.print("in second if");
-                } else return false;
-
-            } else return false;
-
-        return majorAmount / tRecipe.mSpecialValue == minorAmount;
+        return majorAmount == minorAmount * tRecipe.mSpecialValue;
     }
 
     @Override
@@ -229,7 +213,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
             .addInfo("Input Water and Fluid, output Fluid")
             .addInfo("Fluids must be input in the exact ratio as listed in NEI")
             .beginStructureBlock(5, 5, 5, true)
-            .addController("Front bottom")
+            .addController("Front center, 2nd layer")
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 42, false)
             .addCasingInfoExactly("Any Borosilicate Glass", 24, false)
             .addCasingInfoExactly("Heat Proof Machine Casing", 9, false)

@@ -62,7 +62,7 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
             .addInfo("All recipe times in this multi are very long, watch out!")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 9, 3, false)
-            .addController("Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Hastelloy-X Structural Block", 7, false)
             .addCasingInfoMin("Incoloy-DS Fluid Containment Block", 5, false)
             .addCasingInfoMin("Reactor Shield Casing", 4, false)

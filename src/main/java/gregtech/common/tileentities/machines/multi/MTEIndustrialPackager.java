@@ -162,7 +162,7 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addStaticEuEffInfo(EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 3, 3, true)
-            .addController("Front center")
+            .addController("Front right, 2nd layer")
             .addCasingInfoMin("Supply Depot Casings", 4, false)
             .addCasingInfoExactly("Item Pipe", 3, true)
             .addCasingInfoExactly("Iron Frame Box", 2, false)

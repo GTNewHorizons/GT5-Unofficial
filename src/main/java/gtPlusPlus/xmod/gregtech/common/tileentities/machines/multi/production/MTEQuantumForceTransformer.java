@@ -209,7 +209,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 21, 15, true)
-            .addController("Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Bulk Production Frame", 80, false)
             .addCasingInfoMin("Quantum Force Conductor", 177, false)
             .addCasingInfoMin("Force Field Glass", 224, false)
