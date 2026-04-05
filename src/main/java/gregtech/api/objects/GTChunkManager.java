@@ -28,7 +28,7 @@ import gregtech.api.util.GTLog;
  */
 public class GTChunkManager implements OrderedLoadingCallback, PlayerOrderedLoadingCallback {
 
-    public final static GTChunkManager instance = new GTChunkManager();
+    public static final GTChunkManager instance = new GTChunkManager();
 
     private final Map<TileEntity, Ticket> registeredTickets = new HashMap<>();
 
