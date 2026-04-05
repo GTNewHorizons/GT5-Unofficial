@@ -214,7 +214,8 @@ public class NEIGTConfig implements IConfigureNEI {
         // Infer icon from recipe catalysts
         final RecipeMapWorkable catalyst = RECIPE_CATALYST_INDEX.get(recipeCategory)
             .stream()
-            .findFirst().orElse(null);
+            .findFirst()
+            .orElse(null);
 
         return new HandlerInfo.Builder(
             recipeCategory.unlocalizedName,

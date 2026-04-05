@@ -140,7 +140,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             () -> currentRecipe,
             WINDOW_OFFSET);
 
-        this.modularWindow = frontend.createNEITemplate(templateContext).build();
+        this.modularWindow = frontend.createNEITemplate(templateContext)
+            .build();
         UIInfos.initializeWindow(Minecraft.getMinecraft().thePlayer, modularWindow);
     }
 
