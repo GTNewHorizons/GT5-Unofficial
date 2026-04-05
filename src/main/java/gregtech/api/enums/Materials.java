@@ -731,6 +731,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Perlite;
     public static Materials Pitchblende;
     public static Materials Pollucite;
+    public static Materials Pollution;
     public static Materials PotassiumFeldspar;
     public static Materials QuartzSand;
     public static Materials RawStyreneButadieneRubber;

@@ -7349,8 +7349,6 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeLime)
             .setARGB(0x0016ff24)
-            .addCell()
-            .addFluid()
             .addMaterial(Materials.Sodium, 1)
             .addMaterial(Materials.Potassium, 1)
             .constructMaterial();
@@ -9510,6 +9508,7 @@ public class MaterialsInit {
         Materials.Perlite = loadPerlite();
         Materials.Pitchblende = loadPitchblende();
         Materials.Pollucite = loadPollucite();
+        Materials.Pollution = loadPollution();
         Materials.PotassiumFeldspar = loadPotassiumFeldspar();
         Materials.QuartzSand = loadQuartzSand();
         Materials.RawStyreneButadieneRubber = loadRawStyreneButadieneRubber();
@@ -10856,6 +10855,15 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Caesium)
             .addOreByproduct(() -> Materials.Aluminiumoxide)
             .addOreByproduct(() -> Materials.Rubidium)
+            .constructMaterial();
+    }
+
+    private static Materials loadPollution() {
+        return new MaterialBuilder().setName("Pollution")
+            .setDefaultLocalName("Pollution")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setARGB(0x00d0b361)
             .constructMaterial();
     }
 

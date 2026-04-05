@@ -1456,6 +1456,29 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.FryingOilHot, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        // region NewHorizonsCoreMod fluids
+        // These fluids have to get registered manually so they use the MetaGeneratedItem98 cells instead of generating
+        // new MetaGeneratedItem01 fluid cells.
+        GTFluidFactory.builder("sodiumpotassium")
+            .withDefaultLocalName("Sodium Potassium")
+            .withStateAndTemperature(LIQUID, 295)
+            .buildAndRegister()
+            .configureMaterials(Materials.SodiumPotassium)
+            .addLocalizedName(Materials.SodiumPotassium)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.SodiumPotassium, 1L),
+                ItemList.Cell_Empty.get(1L));
+        GTFluidFactory.builder("pollution")
+            .withDefaultLocalName("Pollution")
+            .withStateAndTemperature(LIQUID, 295)
+            .buildAndRegister()
+            .configureMaterials(Materials.Pollution)
+            .addLocalizedName(Materials.Pollution)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Pollution, 1L),
+                ItemList.Cell_Empty.get(1L));
+        // endregion
+
         GTFluidFactory.builder("DimensionallyTranscendentResidue")
             .withDefaultLocalName("Dimensionally Transcendent Residue")
             .withStateAndTemperature(LIQUID, 2000000000)
