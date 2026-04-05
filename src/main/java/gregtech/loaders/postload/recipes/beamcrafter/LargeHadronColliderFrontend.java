@@ -77,15 +77,8 @@ public class LargeHadronColliderFrontend extends RecipeMapFrontend {
             // draw background (upper half of texture file)
             currentProgressBarTexture.drawSubArea(x, y, width, height, 0f, 0f, 1f, 0.5f);
             // draw progress arrow (lower half of texture file, clipped to progress)
-            currentProgressBarTexture.drawSubArea(
-                x,
-                y,
-                filledWidth,
-                height,
-                0f,
-                0.5f,
-                MIN_FRACTION + (1f - MIN_FRACTION) * progress,
-                1f);
+            currentProgressBarTexture
+                .drawSubArea(x, y, filledWidth, height, 0f, 0.5f, MIN_FRACTION + (1f - MIN_FRACTION) * progress, 1f);
         };
 
         builder.widget(

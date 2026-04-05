@@ -344,7 +344,8 @@ public final class RecipeMaps {
         .dontUseProgressBar()
         .frontend(QuantumComputerFrontend::new)
         .neiHandlerInfo(
-            builder -> builder.setMultipleWidgetsAllowed(true).setHeight(110))
+            builder -> builder.setMultipleWidgetsAllowed(true)
+                .setHeight(110))
         .build();
     public static final RecipeMap<ReplicatorBackend> replicatorRecipes = RecipeMapBuilder
         .of("gt.recipe.replicator", ReplicatorBackend::new)
@@ -809,7 +810,9 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> plasmaForgeRecipes = RecipeMapBuilder.of("gt.recipe.plasmaforge")
         .maxIO(9, 9, 9, 9)
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
-        .neiHandlerInfo(builder -> builder.setShiftY(8).setHeight(156))
+        .neiHandlerInfo(
+            builder -> builder.setShiftY(8)
+                .setHeight(156))
         .frontend(LargeNEIFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> transcendentPlasmaMixerRecipes = RecipeMapBuilder
@@ -818,7 +821,9 @@ public final class RecipeMaps {
         .progressBarPos(86, 44)
         .logoPos(87, 99)
         .neiRecipeBackgroundSize(170, 118)
-        .neiHandlerInfo(builder -> builder.setShiftY(8).setHeight(146))
+        .neiHandlerInfo(
+            builder -> builder.setShiftY(8)
+                .setHeight(146))
         .frontend(TranscendentPlasmaMixerFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> spaceProjectFakeRecipes = RecipeMapBuilder
@@ -1683,8 +1688,7 @@ public final class RecipeMaps {
                 StatCollector.translateToLocal("beamcrafting.energy_B") + ": " + formatNumber(minEnergy_B) + "keV",
 
                 StatCollector.translateToLocal("beamcrafting.amount_A") + ": " + formatNumber(amount_A),
-                StatCollector.translateToLocal("beamcrafting.amount_B") + ": " + formatNumber(amount_B)
-            );
+                StatCollector.translateToLocal("beamcrafting.amount_B") + ": " + formatNumber(amount_B));
         }))
         .neiItemInputsGetter(recipe -> {
             BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);

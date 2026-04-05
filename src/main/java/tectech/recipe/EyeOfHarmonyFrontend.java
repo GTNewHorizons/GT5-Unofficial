@@ -1,9 +1,7 @@
 package tectech.recipe;
 
-import static com.google.common.math.LongMath.pow;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static java.lang.Math.min;
-import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
 import static tectech.util.TTUtility.toExponentForm;
@@ -109,7 +107,8 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
         final EyeOfHarmonyRecipe EOHRecipe = (EyeOfHarmonyRecipe) neiCachedRecipe.mRecipe.mSpecialItems;
 
         for (PositionedStack stack : neiCachedRecipe.mInputs) {
-            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed && stack.item.isItemEqual(EOHRecipe.getRecipeTriggerItem())) {
+            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed
+                && stack.item.isItemEqual(EOHRecipe.getRecipeTriggerItem())) {
                 fixed.setMaxSize(0);
             }
         }

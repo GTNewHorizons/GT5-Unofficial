@@ -2,7 +2,6 @@ package gtnhintergalactic.recipe;
 
 import java.util.Comparator;
 
-import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
