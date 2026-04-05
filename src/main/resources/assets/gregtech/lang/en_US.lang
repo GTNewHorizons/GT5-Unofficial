@@ -2796,6 +2796,7 @@ GT5U.nei.purified_water.grade_3.2=Returned in amount equivalent to consumed floc
 GT5U.nei.purified_water.grade_4.0=+%s pH/stack
 GT5U.nei.purified_water.grade_4.1=%s pH/1000L
 GT5U.nei.cauldron.consumed=Consumed per operation
+GT5U.nei.foundry_module.chassis_tier=Chassis must match Foundry Tier!
 
 
 GT5U.config.colormodulation=Color Modulator
