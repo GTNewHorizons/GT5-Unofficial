@@ -3012,6 +3012,21 @@ public enum ItemList implements IItemContainer {
     EmitterCasingUXV,
     EmitterCasingMAX,
 
+    GemClusterLV,
+    GemClusterMV,
+    GemClusterHV,
+    GemClusterEV,
+    GemClusterIV,
+    GemClusterLuV,
+    GemClusterZPM,
+    GemClusterUV,
+    GemClusterUHV,
+    GemClusterUEV,
+    GemClusterUIV,
+    GemClusterUMV,
+    GemClusterUXV,
+    GemClusterMAX,
+
     // semicolon after the comment to reduce merge conflicts
     ;
 

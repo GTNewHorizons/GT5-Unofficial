@@ -566,6 +566,32 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasingsEmitter, 12, gt(8, 5, 12)),
 
     // Gem Clusters
+    GemClusterLV
+        (() -> GregTechAPI.sBlockGemCluster, 0, gt(8, 5, 0)),
+    GemClusterMV
+        (() -> GregTechAPI.sBlockGemCluster, 1, gt(8, 5, 1)),
+    GemClusterHV
+        (() -> GregTechAPI.sBlockGemCluster, 2, gt(8, 5, 2)),
+    GemClusterEV
+        (() -> GregTechAPI.sBlockGemCluster, 3, gt(8, 5, 3)),
+    GemClusterIV
+        (() -> GregTechAPI.sBlockGemCluster, 4, gt(8, 5, 4)),
+    GemClusterLuV
+        (() -> GregTechAPI.sBlockGemCluster, 5, gt(8, 5, 5)),
+    GemClusterZPM
+        (() -> GregTechAPI.sBlockGemCluster, 6, gt(8, 5, 6)),
+    GemClusterUV
+        (() -> GregTechAPI.sBlockGemCluster, 7, gt(8, 5, 7)),
+    GemClusterUHV
+        (() -> GregTechAPI.sBlockGemCluster, 8, gt(8, 5, 8)),
+    GemClusterUEV
+        (() -> GregTechAPI.sBlockGemCluster, 9, gt(8, 5, 9)),
+    GemClusterUIV
+        (() -> GregTechAPI.sBlockGemCluster, 10, gt(8, 5, 10)),
+    GemClusterUMV
+        (() -> GregTechAPI.sBlockGemCluster, 11, gt(8, 5, 11)),
+    GemClusterUXV
+        (() -> GregTechAPI.sBlockGemCluster, 12, gt(8, 5, 12)),
 
 
     // Block Casings NH

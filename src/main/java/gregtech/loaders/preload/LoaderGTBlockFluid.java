@@ -70,6 +70,7 @@ import gregtech.common.blocks.BlockCasingsNH;
 import gregtech.common.blocks.BlockConcretes;
 import gregtech.common.blocks.BlockCyclotronCoils;
 import gregtech.common.blocks.BlockFrameBox;
+import gregtech.common.blocks.BlockGemCluster;
 import gregtech.common.blocks.BlockGlass1;
 import gregtech.common.blocks.BlockGranites;
 import gregtech.common.blocks.BlockLaser;
@@ -740,6 +741,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockCasingsNH = new BlockCasingsNH();
         GregTechAPI.sBlockCasingsFoundry = new BlockCasingsFoundry();
         GregTechAPI.sBlockCasingsEmitter = new BlockCasingsEmitter();
+        GregTechAPI.sBlockGemCluster = new BlockGemCluster();
         GregTechAPI.sBlockGranites = new BlockGranites();
         GregTechAPI.sBlockLongDistancePipes = new BlockLongDistancePipe();
         GregTechAPI.sBlockConcretes = new BlockConcretes();
