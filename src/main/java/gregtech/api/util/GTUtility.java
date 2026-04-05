@@ -87,7 +87,6 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
@@ -523,25 +522,6 @@ public class GTUtility {
      */
     public static void sendChatComp(EntityPlayer player, @Nonnull IChatComponent component) {
         player.addChatComponentMessage(component);
-    }
-
-    /**
-     * Send a message to all players on the server
-     * 
-     * @deprecated Use {@link #sendServerMessage(IChatComponent)} instead
-     */
-    @Deprecated
-    public static void sendServerMessage(String message) {
-        sendServerMessage(new ChatComponentText(message));
-    }
-
-    /**
-     * Send a message to all players on the server
-     */
-    public static void sendServerMessage(IChatComponent chatComponent) {
-        MinecraftServer.getServer()
-            .getConfigurationManager()
-            .sendChatMsg(chatComponent);
     }
 
     public static void sendMessageInRadius(World world, double x, double y, double z, double range,
