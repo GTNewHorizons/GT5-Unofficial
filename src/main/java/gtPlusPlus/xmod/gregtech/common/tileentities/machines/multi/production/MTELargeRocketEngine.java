@@ -124,7 +124,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             .addInfo("formula: x = input of energy (30000^(1/3)/ x^(1/3)) * (80000^(1/3)/ x^(1/3))")
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 3, 10, false)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin(mCasingName, 64, false)
             .addCasingInfoMin(mGearboxName, 8, false)
             .addStructureHint("item.GTPP.air_intake_hatch.name", 1)
@@ -446,6 +446,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         return injected > 0;
     }
 
+    @Override
     protected boolean requiresMuffler() {
         return true;
     }

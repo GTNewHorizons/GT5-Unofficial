@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static goodgenerator.loader.Loaders.advancedRadiationProtectionPlate;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
-import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -10,7 +9,6 @@ import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -31,7 +29,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
@@ -39,7 +36,6 @@ import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
 import tectech.recipe.TTRecipeAdder;
@@ -308,7 +304,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Oxygen.getGas(2_000),
                 Materials.Nitrogen.getGas(24_000))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 16))
-            .fluidOutputs(Materials.PrismaticAcid.getFluid(32_000))
+            .fluidOutputs(Materials.PrismaticAcid.getFluid(32_000), Materials.Strontium.getMolten(144L * 16))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .metadata(QFT_CATALYST, GregtechItemList.CrystalColorizationCatalyst.get(0))
@@ -327,20 +323,6 @@ public class RecipeLoaderChemicalSkips {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .metadata(QFT_CATALYST, GregtechItemList.RawIntelligenceCatalyst.get(0))
-            .metadata(QFT_FOCUS_TIER, 3)
-            .addTo(quantumForceTransformerRecipes);
-        // Unknown Particles
-        GTValues.RA.stdBuilder()
-            .itemOutputs(
-                Particle.getBaseParticle(Particle.UNKNOWN),
-                Particle.getBaseParticle(Particle.GRAVITON),
-                Particle.getBaseParticle(Particle.PROTON),
-                Particle.getBaseParticle(Particle.ELECTRON))
-            .fluidInputs(Materials.Hydrogen.getGas(10_000), Materials.Deuterium.getGas(1_000))
-            .fluidOutputs(Materials.Hydrogen.getPlasma(1_000))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_UEV)
-            .metadata(QFT_CATALYST, GregtechItemList.ParticleAccelerationCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 3)
             .addTo(quantumForceTransformerRecipes);
         // Lategame Plastics (Missing Radox Polymer and Heavy Radox)
@@ -400,26 +382,6 @@ public class RecipeLoaderChemicalSkips {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .metadata(QFT_CATALYST, GregtechItemList.BiologicalIntelligenceCatalyst.get(0))
-            .metadata(QFT_FOCUS_TIER, 4)
-            .addTo(quantumForceTransformerRecipes);
-        // Rare Particles
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.Laser_Lens_Special.get(1))
-            .itemOutputs(
-                Particle.getBaseParticle(Particle.Z_BOSON),
-                Particle.getBaseParticle(Particle.W_BOSON),
-                Particle.getBaseParticle(Particle.LAMBDA),
-                Particle.getBaseParticle(Particle.OMEGA),
-                Particle.getBaseParticle(Particle.HIGGS_BOSON),
-                Particle.getBaseParticle(Particle.ETA_MESON))
-            .fluidInputs(
-                Materials.Hydrogen.getPlasma(30_000),
-                Materials.Helium.getPlasma(30_000),
-                Materials.Americium.getPlasma(30_000),
-                new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 30_000))
-            .duration(3 * MINUTES + 20 * SECONDS)
-            .eut(TierEU.RECIPE_UIV)
-            .metadata(QFT_CATALYST, GregtechItemList.SynchrotronCapableCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 4)
             .addTo(quantumForceTransformerRecipes);
 
@@ -632,17 +594,6 @@ public class RecipeLoaderChemicalSkips {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
-                GregtechItemList.Laser_Lens_Special.get(64),
-                GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 10))
-            .circuit(10)
-            .itemOutputs(GregtechItemList.ParticleAccelerationCatalyst.get(1))
-            .fluidInputs(Materials.SpaceTime.getMolten(1 * STACKS))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_UIV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.EmptyCatalystCarrier.get(1),
                 Materials.Kevlar.getDust(64),
                 Materials.TranscendentMetal.getNanite(1))
             .circuit(10)
@@ -658,19 +609,6 @@ public class RecipeLoaderChemicalSkips {
                 Materials.TranscendentMetal.getNanite(1))
             .circuit(10)
             .itemOutputs(GregtechItemList.BiologicalIntelligenceCatalyst.get(1))
-            .fluidInputs(GGMaterial.shirabon.getMolten(10 * STACKS))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_UMV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.EmptyCatalystCarrier.get(1),
-                Particle.getBaseParticle(Particle.HIGGS_BOSON),
-                Particle.getIon("Helium", 0),
-                Particle.getIon("Hydrogen", 0),
-                Materials.Eternity.getNanite(16))
-            .circuit(10)
-            .itemOutputs(GregtechItemList.SynchrotronCapableCatalyst.get(1))
             .fluidInputs(GGMaterial.shirabon.getMolten(10 * STACKS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)

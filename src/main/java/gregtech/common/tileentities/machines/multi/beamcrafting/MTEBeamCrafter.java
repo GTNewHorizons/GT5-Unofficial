@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER_ACTIVE;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.recipe.RecipeMaps.BEAMCRAFTER_METADATA;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -27,9 +28,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -39,10 +40,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.extensions.ArrayExt;
-import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.gui.modularui.multiblock.MTEBeamCrafterGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
@@ -53,7 +52,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
+    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
 
     private int currentRecipeCurrentAmountA = 0;
     private int currentRecipeCurrentAmountB = 0;
@@ -72,9 +71,9 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             // spotless:off
             new String[][]{{
                 "                 ",
-                " BBB         BBB ",
-                " BCB         BCB ",
-                " BBB         BBB ",
+                " DDD         DDD ",
+                " DCD         DCD ",
+                " DDD         DDD ",
                 "                 "
             },{
                 " BBB         BBB ",
@@ -139,20 +138,21 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             }})
         //spotless:on
         .addElement(
-            'B', // collider casing
+            'B',
             buildHatchAdder(MTEBeamCrafter.class)
                 .atLeast(Energy, ExoticEnergy, Maintenance, InputBus, InputHatch, OutputBus, OutputHatch)
-                .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(1)
-                .buildAndChain(GregTechAPI.sBlockCasings13, 10))
+                .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
         .addElement('A', chainAllGlasses())
         .addElement(
             'C',
             buildHatchAdder(MTEBeamCrafter.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(CASING_INDEX_CENTRE)
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(2)
                 .adder(MTEBeamCrafter::addBeamLineInputHatch)
                 .build()) // beamline input hatch
+        .addElement('D', Casings.GrateMachineCasing.asElement())
         .build();
 
     public MTEBeamCrafter(final int aID, final String aName, final String aNameRegional) {
@@ -179,9 +179,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BEAMCRAFTER)
                         .extFacing()
@@ -192,17 +190,14 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BEAMCRAFTER)
                         .extFacing()
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)) };
+            rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture() };
         }
         return rTexture;
     }
@@ -275,7 +270,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addTecTechHatchInfo()
-            .toolTipFinisher(GTValues.AuthorHamCorp);
+            .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;
     }
 
@@ -319,6 +314,14 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     }
 
+    private int progressContribution(int currentAmount, int maxAmount, int rate) {
+        if (currentAmount <= maxAmount) {
+            return rate;
+        } else {
+            return (currentAmount - maxAmount);
+        }
+    }
+
     @Override
     protected void incrementProgressTime() {
 
@@ -326,16 +329,38 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         BeamInformation inputParticle_B = this.getNthInputParticle(1);
 
         if (inputParticle_A != null && inputParticle_B != null) {
-            int particleRateA = inputParticle_A.getRate();
-            int particleRateB = inputParticle_B.getRate();
+            int inputParticleRateA = inputParticle_A.getRate();
+            int inputParticleRateB = inputParticle_B.getRate();
+            int inputParticleIDA = inputParticle_A.getParticleId();
+            int inputParticleIDB = inputParticle_B.getParticleId();
 
-            this.currentRecipeCurrentAmountA += particleRateA;
-            if (this.currentRecipeCurrentAmountA <= currentRecipeMaxAmountA) {
-                mProgresstime += particleRateA;
+            // beamline input hatch array matches order of particles from recipe
+            if (inputParticleIDA == this.currentRecipeParticleIDA) {
+                this.currentRecipeCurrentAmountA += inputParticleRateA;
+                mProgresstime += this.progressContribution(
+                    this.currentRecipeCurrentAmountA,
+                    this.currentRecipeMaxAmountA,
+                    inputParticleRateA);
+
+                this.currentRecipeCurrentAmountB += inputParticleRateB;
+                mProgresstime += this.progressContribution(
+                    this.currentRecipeCurrentAmountB,
+                    this.currentRecipeMaxAmountB,
+                    inputParticleRateB);
             }
-            this.currentRecipeCurrentAmountB += particleRateB;
-            if (this.currentRecipeCurrentAmountB <= currentRecipeMaxAmountB) {
-                mProgresstime += particleRateB;
+            // beamline input hatch array does NOT match order of particles from recipe
+            else {
+                this.currentRecipeCurrentAmountA += inputParticleRateB;
+                mProgresstime += this.progressContribution(
+                    this.currentRecipeCurrentAmountA,
+                    this.currentRecipeMaxAmountA,
+                    inputParticleRateB);
+
+                this.currentRecipeCurrentAmountB += inputParticleRateA;
+                mProgresstime += this.progressContribution(
+                    this.currentRecipeCurrentAmountB,
+                    this.currentRecipeMaxAmountB,
+                    inputParticleRateA);
             }
         }
     }
@@ -399,7 +424,16 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 
         tRecipe.consumeInput(1, inputFluids, inputItems);
-        this.mOutputItems = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
+
+        if (tRecipe.mOutputChances != null && tRecipe.mOutputs != null) {
+            for (int i = 0; i < tRecipe.mOutputChances.length; i++) {
+                if (XSTR_INSTANCE.nextInt(10000) < tRecipe.mOutputChances[i]) {
+                    this.mOutputItems[i] = tRecipe.mOutputs[i].copy();
+                }
+            }
+        } else {
+            this.mOutputItems = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
+        }
 
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;

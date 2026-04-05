@@ -24,7 +24,7 @@ public class CircuitComponentFakeItem extends GTGenericItem {
     private final Map<Integer, IIcon> iconMap = new HashMap<>();
 
     public CircuitComponentFakeItem() {
-        super("gt.fakecircuitcomponent", "Fake Circuit Component Item", null);
+        super("fakecircuitcomponent", "Fake Circuit Component Item", null);
         setMaxStackSize(Integer.MAX_VALUE);
         setMaxDamage(0);
         setHasSubtypes(true);

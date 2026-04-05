@@ -238,7 +238,7 @@ public class CompatHandler {
                 r.run();
                 Logger.INFO(
                     "[FIND] " + r.getInfoData()
-                        .getLocalizedName() + " recipes generated.");
+                        .getDefaultLocalName() + " recipes generated.");
             }
         }
         RecipeGenRecycling.executeGenerators();

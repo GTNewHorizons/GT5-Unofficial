@@ -72,7 +72,7 @@ public class GTPacketToolboxEvent extends GTPacket {
     @Override
     public void process(final IBlockAccess world) {
         final ItemStack itemStack = player.inventory.getStackInSlot(slot);
-        if (itemStack == null) {
+        if (itemStack == null || !(itemStack.getItem() instanceof ItemGTToolbox)) {
             return;
         }
 
