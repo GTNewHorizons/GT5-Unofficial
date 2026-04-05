@@ -511,6 +511,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials SodaAsh;
     public static Materials Sodalite;
     public static Materials SodiumPersulfate;
+    public static Materials SodiumPotassium;
     public static Materials SodiumSulfide;
     public static Materials Titaniumtetrachloride;
     public static Materials Water, Steam; // Steam.getGas(..) reads better than Water.getGas(..)

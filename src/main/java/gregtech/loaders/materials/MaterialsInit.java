@@ -5393,6 +5393,7 @@ public class MaterialsInit {
         Materials.SodaAsh = loadSodaAsh();
         Materials.Sodalite = loadSodalite();
         Materials.SodiumPersulfate = loadSodiumPersulfate();
+        Materials.SodiumPotassium = loadSodiumPotassium();
         Materials.SodiumSulfide = loadSodiumSulfide();
         Materials.Titaniumtetrachloride = loadTitaniumtetrachloride();
         Materials.Water = Materials.Steam = loadWater();
@@ -7339,6 +7340,19 @@ public class MaterialsInit {
             .addMaterial(Materials.Sodium, 2)
             .addMaterial(Materials.Sulfur, 2)
             .addMaterial(Materials.Oxygen, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumPotassium() {
+        return new MaterialBuilder().setName("SodiumPotassium")
+            .setDefaultLocalName("Sodium Potassium")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setARGB(0x0016ff24)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Potassium, 1)
             .constructMaterial();
     }
 

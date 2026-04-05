@@ -364,6 +364,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(569, Materials.StableBaryonicMatter);
         r(570, Materials.OilExtraHeavy);
         r(576, Materials.TPV);
+        r(577, Materials.SodiumPotassium);
         r(581, Materials.TranscendentMetal);
         r(582, Materials.EnrichedHolmium);
         r(583, Materials.MHDCSM);
