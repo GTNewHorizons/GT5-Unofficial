@@ -480,8 +480,8 @@ public class PowerGogglesGuiOverlay {
             .child(
                 makeColorConfigButton(
                     overlayPanel,
-                    () -> PowerGogglesConfigHandler.masurementsBackgroundColor,
-                    val -> { PowerGogglesConfigHandler.masurementsBackgroundColor = val; },
+                    () -> PowerGogglesConfigHandler.measurementsBackgroundColor,
+                    val -> { PowerGogglesConfigHandler.measurementsBackgroundColor = val; },
                     "Measurements Background Color",
                     "GT5U.power_goggles_config.background_lines_color",
                     "GT5U.power_goggles_config.background_lines_color_tooltip"))

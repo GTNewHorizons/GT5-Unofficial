@@ -39,7 +39,7 @@ public class PowerGogglesConfigHandler {
     public static int chartMinTextColor;
     public static int chartMaxTextColor;
     public static int chartManualScaleIndicatorColor;
-    public static int masurementsBackgroundColor;
+    public static int measurementsBackgroundColor;
 
     public static int textBadColor;
     public static int textOkColor;
@@ -128,7 +128,7 @@ public class PowerGogglesConfigHandler {
             chartManualScaleIndicatorColor = getColorSetting(
                 "Chart Manual Scale Indicator Color",
                 DEFAULT_CHART_MANUAL_SCALE_INDICATOR_COLOR);
-            masurementsBackgroundColor = getColorSetting(
+            measurementsBackgroundColor = getColorSetting(
                 "Measurements Background Color",
                 DEFAULT_MEASUREMENTS_BACKGROUND_COLOR);
             textBadColor = getColorSetting("Bad Text", DEFAULT_TEXT_BAD_COLOR);
@@ -172,7 +172,7 @@ public class PowerGogglesConfigHandler {
         chartMinTextColor = DEFAULT_CHART_MIN_TEXT_COLOR;
         chartMaxTextColor = DEFAULT_CHART_MAX_TEXT_COLOR;
         chartManualScaleIndicatorColor = DEFAULT_CHART_MANUAL_SCALE_INDICATOR_COLOR;
-        masurementsBackgroundColor = DEFAULT_MEASUREMENTS_BACKGROUND_COLOR;
+        measurementsBackgroundColor = DEFAULT_MEASUREMENTS_BACKGROUND_COLOR;
         textBadColor = DEFAULT_TEXT_BAD_COLOR;
         textOkColor = DEFAULT_TEXT_OK_COLOR;
         textGoodColor = DEFAULT_TEXT_GOOD_COLOR;
@@ -225,7 +225,7 @@ public class PowerGogglesConfigHandler {
         setColorSetting("Chart Min Text Color", chartMinTextColor);
         setColorSetting("Chart Max Text Color", chartMaxTextColor);
         setColorSetting("Chart Manual Scale Indicator Color", chartManualScaleIndicatorColor);
-        setColorSetting("Measurements Background Color", masurementsBackgroundColor);
+        setColorSetting("Measurements Background Color", measurementsBackgroundColor);
         setColorSetting("Bad Text", textBadColor);
         setColorSetting("Ok Text", textOkColor);
         setColorSetting("Good Text", textGoodColor);

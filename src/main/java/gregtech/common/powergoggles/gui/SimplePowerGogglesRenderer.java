@@ -362,7 +362,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
     private void renderBackground() {
 
-        int bgColor = PowerGogglesConfigHandler.masurementsBackgroundColor;
+        int bgColor = PowerGogglesConfigHandler.measurementsBackgroundColor;
 
         double mainStringHeight = fontRenderer.FONT_HEIGHT * mainScale;
         double subStringHeight = fontRenderer.FONT_HEIGHT * subScale * 2;
