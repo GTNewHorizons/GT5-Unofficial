@@ -199,24 +199,17 @@ public class NEIGTConfig implements IConfigureNEI {
         RecipeCategory.ALL_RECIPE_CATEGORIES.values()
             .forEach(recipeCategory -> {
                 HandlerInfo.Builder builder = createHandlerInfoBuilderTemplate(recipeCategory);
-                HandlerInfo handlerInfo;
+
                 if (recipeCategory.handlerInfoCreator != null) {
-                    handlerInfo = recipeCategory.handlerInfoCreator.apply(builder)
-                        .build();
-                } else {
-                    // Infer icon from recipe catalysts
-                    RECIPE_CATALYST_INDEX.get(recipeCategory)
-                        .stream()
-                        .findFirst()
-                        .ifPresent(catalyst -> builder.setDisplayStack(catalyst.getStackForm(1)));
-                    handlerInfo = builder.build();
+                    builder = recipeCategory.handlerInfoCreator.apply(builder);
                 }
-                event.registerHandlerInfo(handlerInfo);
+
+                event.registerHandlerInfo(builder.build());
             });
 
         event.registerHandlerInfo(
             new HandlerInfo.Builder(CAL_IMPRINT_HANDLER.getOverlayIdentifier(), "GregTech", Mods.ModIDs.GREG_TECH)
-                .setMaxRecipesPerPage(100)
+                .setMultipleWidgetsAllowed(true)
                 .setDisplayStack(
                     CircuitPartsItem.getCircuitParts()
                         .getStack(0))
@@ -224,12 +217,19 @@ public class NEIGTConfig implements IConfigureNEI {
     }
 
     private HandlerInfo.Builder createHandlerInfoBuilderTemplate(RecipeCategory recipeCategory) {
+        // Infer icon from recipe catalysts
+        final RecipeMapWorkable catalyst = RECIPE_CATALYST_INDEX.get(recipeCategory)
+            .stream()
+            .findFirst().orElse(null);
+
         return new HandlerInfo.Builder(
             recipeCategory.unlocalizedName,
             recipeCategory.ownerMod.getName(),
             recipeCategory.ownerMod.getModId()).setShiftY(6)
                 .setHeight(135)
-                .setMaxRecipesPerPage(2);
+                .setShowBadge(true)
+                .setDisplayStack(catalyst != null ? catalyst.getStackForm(1) : null)
+                .setMultipleWidgetsAllowed(true);
     }
 
     private static void generateRecipeCatalystIndex() {

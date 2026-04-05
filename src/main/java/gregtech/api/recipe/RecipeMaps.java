@@ -112,7 +112,6 @@ import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.register.LanthItemList;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
-import tectech.thing.CustomItemList;
 
 @SuppressWarnings("SimplifyOptionalCallChains")
 public final class RecipeMaps {
@@ -345,8 +344,7 @@ public final class RecipeMaps {
         .dontUseProgressBar()
         .frontend(QuantumComputerFrontend::new)
         .neiHandlerInfo(
-            builder -> builder.setMaxRecipesPerPage(4)
-                .setDisplayStack(CustomItemList.Machine_Multi_Computer.get(1)))
+            builder -> builder.setMultipleWidgetsAllowed(true).setHeight(110))
         .build();
     public static final RecipeMap<ReplicatorBackend> replicatorRecipes = RecipeMapBuilder
         .of("gt.recipe.replicator", ReplicatorBackend::new)
@@ -811,9 +809,7 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> plasmaForgeRecipes = RecipeMapBuilder.of("gt.recipe.plasmaforge")
         .maxIO(9, 9, 9, 9)
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
-        .neiHandlerInfo(
-            builder -> builder.setDisplayStack(ItemList.Machine_Multi_PlasmaForge.get(1))
-                .setMaxRecipesPerPage(1))
+        .neiHandlerInfo(builder -> builder.setShiftY(8).setHeight(156))
         .frontend(LargeNEIFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> transcendentPlasmaMixerRecipes = RecipeMapBuilder
@@ -822,9 +818,7 @@ public final class RecipeMaps {
         .progressBarPos(86, 44)
         .logoPos(87, 99)
         .neiRecipeBackgroundSize(170, 118)
-        .neiHandlerInfo(
-            builder -> builder.setDisplayStack(ItemList.Machine_Multi_TranscendentPlasmaMixer.get(1))
-                .setMaxRecipesPerPage(1))
+        .neiHandlerInfo(builder -> builder.setShiftY(8).setHeight(146))
         .frontend(TranscendentPlasmaMixerFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> spaceProjectFakeRecipes = RecipeMapBuilder
@@ -1554,10 +1548,7 @@ public final class RecipeMaps {
                     recipe -> recipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f))
                 .thenComparing(GTRecipe::compareTo))
         .frontend(PurificationUnitOzonationFrontend::new)
-        .neiHandlerInfo(
-            builder -> builder.setMaxRecipesPerPage(1)
-                // When setting a builder, apparently setting a display stack is also necessary
-                .setDisplayStack(ItemList.Machine_Multi_PurificationUnitOzonation.get(1)))
+        .neiHandlerInfo(builder -> builder.setMultipleWidgetsAllowed(false))
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationFlocculationRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantflocculation")
@@ -1665,6 +1656,8 @@ public final class RecipeMaps {
 
             return ret.toArray(new ItemStack[0]);
         })
+        .neiTransferRect(70, 41, 101, 22)
+        .neiHandlerInfo(builder -> builder.setHeight(107))
         .frontend(LargeHadronColliderFrontend::new)
         .build();
 
@@ -1685,18 +1678,13 @@ public final class RecipeMaps {
             float amount_A = metadata.amount_A;
             float amount_B = metadata.amount_B;
 
-            Particle particle_A = Particle.getParticleFromId(metadata.particleID_A);
-            Particle particle_B = Particle.getParticleFromId(metadata.particleID_B);
-
             return Arrays.asList(
                 StatCollector.translateToLocal("beamcrafting.energy_A") + ": " + formatNumber(minEnergy_A) + "keV",
-
                 StatCollector.translateToLocal("beamcrafting.energy_B") + ": " + formatNumber(minEnergy_B) + "keV",
 
                 StatCollector.translateToLocal("beamcrafting.amount_A") + ": " + formatNumber(amount_A),
                 StatCollector.translateToLocal("beamcrafting.amount_B") + ": " + formatNumber(amount_B)
-
-        );
+            );
         }))
         .neiItemInputsGetter(recipe -> {
             BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
@@ -1712,7 +1700,7 @@ public final class RecipeMaps {
             return ret.toArray(new ItemStack[0]);
         })
         .progressBarPos(70, 22)
-        .neiTransferRect(100, 22, 28, 18)
+        .neiTransferRect(70, 22, 50, 30)
         .maxIO(4, 2, 2, 2)
         .progressBar(GTUITextures.PROGRESSBAR_BEAMCRAFTER)
         .progressBarSize(50, 30)
@@ -1743,9 +1731,7 @@ public final class RecipeMaps {
         .dontUseProgressBar()
         .neiTransferRect(87, 38, 30, 13)
         .frontend(FoundryModuleFrontend::new)
-        .neiHandlerInfo(
-            builder -> builder.setDisplayStack(ItemList.Machine_Multi_ExoFoundry.get(1))
-                .setHeight(100))
+        .neiHandlerInfo(builder -> builder.setHeight(100))
         .build();
 
     public static final ScannerHandlerRegistry scannerHandlers = new ScannerHandlerRegistry();

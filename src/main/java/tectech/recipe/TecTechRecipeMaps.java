@@ -68,9 +68,9 @@ public class TecTechRecipeMaps {
         .progressBarPos(78, 24 + 2)
         .logoPos(10, 10)
         .neiHandlerInfo(
-            builder -> builder.setDisplayStack(CustomItemList.Machine_Multi_EyeOfHarmony.get(1))
+            builder -> builder
                 .setHeight(314)
-                .setMaxRecipesPerPage(1))
+                .setMultipleWidgetsAllowed(false))
         .frontend(EyeOfHarmonyFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> researchStationFakeRecipes = RecipeMapBuilder
@@ -129,9 +129,7 @@ public class TecTechRecipeMaps {
         .dontUseProgressBar()
         .neiTransferRect(83, 38, 30, 13)
         .frontend(GodforgeUpgradeCostFrontend::new)
-        .neiHandlerInfo(
-            builder -> builder.setDisplayStack(CustomItemList.Machine_Multi_ForgeOfGods.get(1))
-                .setHeight(100))
+        .neiHandlerInfo(builder -> builder.setHeight(100))
         .build();
 
 }
