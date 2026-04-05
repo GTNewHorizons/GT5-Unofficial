@@ -2,7 +2,6 @@ package gregtech.common.powergoggles;
 
 import static gregtech.api.enums.GTValues.NW;
 
-import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.UUID;
