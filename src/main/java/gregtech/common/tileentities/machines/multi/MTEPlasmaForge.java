@@ -600,7 +600,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             .addInputHatch(GOLD + min_input_hatch + GRAY + "-" + GOLD + max_input_hatch)
             .addOutputHatch(GOLD + min_output_hatch + GRAY + "-" + GOLD + max_output_hatch)
             .addInputBus(GOLD + min_input_bus + GRAY + "-" + GOLD + max_input_bus)
-            .addOutputBus(GOLD + min_output_bus + GRAY + "-" + GOLD + max_input_bus)
+            .addOutputBus(GOLD + min_output_bus + GRAY + "-" + GOLD + min_output_bus)
             .addStructureInfo("")
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .addTecTechHatchInfo()
