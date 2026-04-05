@@ -4,8 +4,8 @@ import static gregtech.api.enums.GTValues.V;
 
 import java.awt.Rectangle;
 import java.lang.ref.SoftReference;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,6 +25,7 @@ import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -33,13 +35,13 @@ import org.lwjgl.opengl.GL11;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.ICraftingHandler;
@@ -82,10 +84,6 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     private static final int RECIPE_NAME_WIDTH = 140;
 
     /**
-     * Static version of {@link TemplateRecipeHandler#cycleticks}. Can be referenced from cached recipes.
-     */
-    private static int cycleTicksStatic = Math.abs((int) System.currentTimeMillis());
-    /**
      * Basically {@link #cycleTicksStatic} but always updated even while holding shift
      */
     private static int drawTicks;
@@ -98,11 +96,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     protected final NEIRecipeProperties neiProperties;
 
     protected final ModularWindow modularWindow;
-    protected final ItemStackHandler itemInputsInventory;
-    protected final ItemStackHandler itemOutputsInventory;
-    protected final ItemStackHandler specialSlotInventory;
-    protected final ItemStackHandler fluidInputsInventory;
-    protected final ItemStackHandler fluidOutputsInventory;
+    protected final NEITemplateContext templateContext;
 
     protected OverclockDescriber overclockDescriber;
     /**
@@ -113,6 +107,12 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
      * Tooltip shown while hovering over header of this handler. Can be null if the full name fits in the screen.
      */
     private NEIHandlerAbsoluteTooltip recipeNameTooltip;
+
+    /**
+     * The recipe currently being displayed in the NEI. Updated each frame in {@link #drawBackground}.
+     * Exposed via {@link NEITemplateContext#recipeSupplier} for widgets that need to react to recipe changes.
+     */
+    private CachedDefaultRecipe currentRecipe;
 
     protected final GUIColorOverride colorOverride = GUIColorOverride
         .get(GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE.location);
@@ -130,15 +130,17 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             this.transferRects.add(new RecipeTransferRect(transferRect, recipeMap.unlocalizedName));
         });
 
-        ModularWindow.Builder builder = frontend.createNEITemplate(
-            itemInputsInventory = new ItemStackHandler(uiProperties.maxItemInputs),
-            itemOutputsInventory = new ItemStackHandler(uiProperties.maxItemOutputs),
-            specialSlotInventory = new ItemStackHandler(1),
-            fluidInputsInventory = new ItemStackHandler(uiProperties.maxFluidInputs),
-            fluidOutputsInventory = new ItemStackHandler(uiProperties.maxFluidOutputs),
+        this.templateContext = new NEITemplateContext(
+            new ItemStackHandler(uiProperties.maxItemInputs),
+            new ItemStackHandler(uiProperties.maxItemOutputs),
+            new ItemStackHandler(1),
+            new ItemStackHandler(uiProperties.maxFluidInputs),
+            new ItemStackHandler(uiProperties.maxFluidOutputs),
             () -> ((float) getDrawTicks() % PROGRESSBAR_CYCLE_TICKS) / PROGRESSBAR_CYCLE_TICKS,
+            () -> currentRecipe,
             WINDOW_OFFSET);
-        modularWindow = builder.build();
+
+        this.modularWindow = frontend.createNEITemplate(templateContext).build();
         UIInfos.initializeWindow(Minecraft.getMinecraft().thePlayer, modularWindow);
     }
 
@@ -366,6 +368,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
     @Override
     public void drawBackground(int recipe) {
+        this.currentRecipe = (CachedDefaultRecipe) this.arecipes.get(recipe);
         drawUI(modularWindow);
     }
 
@@ -379,7 +382,6 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if (!NEIClientUtils.shiftKey()) cycleTicksStatic++;
         drawTicks++;
     }
 
@@ -459,7 +461,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
     @Override
     public void drawExtras(int aRecipeIndex) {
-        CachedDefaultRecipe cachedRecipe = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex));
+        final CachedDefaultRecipe cachedRecipe = (CachedDefaultRecipe) this.arecipes.get(aRecipeIndex);
 
         drawDescription(cachedRecipe);
         frontend.drawNEIOverlays(cachedRecipe);
@@ -591,6 +593,32 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         }
     }
 
+    public static class NEITemplateContext {
+
+        public final IItemHandlerModifiable itemInputsInventory;
+        public final IItemHandlerModifiable itemOutputsInventory;
+        public final IItemHandlerModifiable specialSlotInventory;
+        public final IItemHandlerModifiable fluidInputsInventory;
+        public final IItemHandlerModifiable fluidOutputsInventory;
+        public final Supplier<Float> progressSupplier;
+        public final Supplier<CachedDefaultRecipe> recipeSupplier;
+        public final Pos2d windowOffset;
+
+        public NEITemplateContext(IItemHandlerModifiable itemInputsInventory,
+            IItemHandlerModifiable itemOutputsInventory, IItemHandlerModifiable specialSlotInventory,
+            IItemHandlerModifiable fluidInputsInventory, IItemHandlerModifiable fluidOutputsInventory,
+            Supplier<Float> progressSupplier, Supplier<CachedDefaultRecipe> recipeSupplier, Pos2d windowOffset) {
+            this.itemInputsInventory = itemInputsInventory;
+            this.itemOutputsInventory = itemOutputsInventory;
+            this.specialSlotInventory = specialSlotInventory;
+            this.fluidInputsInventory = fluidInputsInventory;
+            this.fluidOutputsInventory = fluidOutputsInventory;
+            this.progressSupplier = progressSupplier;
+            this.recipeSupplier = recipeSupplier;
+            this.windowOffset = windowOffset;
+        }
+    }
+
     public class CachedDefaultRecipe extends TemplateRecipeHandler.CachedRecipe {
 
         public final GTRecipe mRecipe;
@@ -606,7 +634,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             for (Widget child : modularWindow.getChildren()) {
                 if (child instanceof SlotWidget widget) {
                     if (widget.getMcSlot()
-                        .getItemHandler() == itemInputsInventory) {
+                        .getItemHandler() == templateContext.itemInputsInventory) {
                         int i = widget.getMcSlot()
                             .getSlotIndex();
                         final Object input;
@@ -632,7 +660,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                     true));
                         }
                     } else if (widget.getMcSlot()
-                        .getItemHandler() == itemOutputsInventory) {
+                        .getItemHandler() == templateContext.itemOutputsInventory) {
                             int i = widget.getMcSlot()
                                 .getSlotIndex();
                             ItemStack[] outputs = GTNEIDefaultHandler.this.neiProperties.itemOutputsGetter
@@ -649,7 +677,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                         false));
                             }
                         } else if (widget.getMcSlot()
-                            .getItemHandler() == specialSlotInventory) {
+                            .getItemHandler() == templateContext.specialSlotInventory) {
                                 if (aRecipe.mSpecialItems != null) {
                                     mInputs.add(
                                         new FixedPositionedStack(
@@ -660,7 +688,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                 }
 
                             } else if (widget.getMcSlot()
-                                .getItemHandler() == fluidInputsInventory) {
+                                .getItemHandler() == templateContext.fluidInputsInventory) {
                                     int i = widget.getMcSlot()
                                         .getSlotIndex();
                                     FluidStack[] inputs = GTNEIDefaultHandler.this.neiProperties.fluidInputsGetter
@@ -678,7 +706,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                     }
 
                                 } else if (widget.getMcSlot()
-                                    .getItemHandler() == fluidOutputsInventory) {
+                                    .getItemHandler() == templateContext.fluidOutputsInventory) {
                                         int i = widget.getMcSlot()
                                             .getSlotIndex();
                                         FluidStack[] outputs = GTNEIDefaultHandler.this.neiProperties.fluidOutputsGetter
@@ -763,7 +791,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         @Override
         public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(cycleTicksStatic / 20, this.mInputs);
+            return this.mInputs;
         }
 
         @Override

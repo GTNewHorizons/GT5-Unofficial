@@ -5,7 +5,6 @@ import static kubatech.api.gui.KubaTechUITextures.PICTURE_KUBATECH_LOGO;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 
@@ -47,15 +46,14 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
     }
 
     @Override
-    public void addProgressBar(ModularWindow.Builder builder, @NotNull Supplier<Float> progressSupplier,
-        @NotNull Pos2d windowOffset) {
+    public void addProgressBar(ModularWindow.Builder builder, GTNEIDefaultHandler.NEITemplateContext ctx) {
         assert uiProperties.progressBarTexture != null;
         builder.widget(
             new ProgressBar().setTexture(uiProperties.progressBarTexture.get(), 170)
                 .setDirection(uiProperties.progressBarDirection)
-                .setProgress(() -> (0.31f + progressSupplier.get() * 0.26f)) // start 76 = 0.31 end 138 = 0.57 d = 0.26
+                .setProgress(() -> (0.31f + ctx.progressSupplier.get() * 0.26f)) // start 76 = 0.31 end 138 = 0.57 d = 0.26
                 .setSynced(false, false)
-                .setPos(uiProperties.progressBarPos.add(windowOffset))
+                .setPos(uiProperties.progressBarPos.add(ctx.windowOffset))
                 .setSize(new Size(170, 245)));
     }
 

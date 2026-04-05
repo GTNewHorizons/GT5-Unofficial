@@ -23,11 +23,7 @@ public class LargeHadronColliderFrontend extends RecipeMapFrontend {
                 .progressBarSize(new Size(0, 0))
                 .progressBarPos(new Pos2d(0, 0)),
             neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 164)));
-
     }
-
-    @Override
-    public void addProgressBar(ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {}
 
     @Override
     public void drawDescription(RecipeDisplayInfo recipeInfo) {}

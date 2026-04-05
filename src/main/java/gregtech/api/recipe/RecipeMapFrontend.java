@@ -90,38 +90,39 @@ public class RecipeMapFrontend {
     /**
      * Creates NEI recipe layout, except for actual items / fluids.
      */
-    public ModularWindow.Builder createNEITemplate(IItemHandlerModifiable itemInputsInventory,
-        IItemHandlerModifiable itemOutputsInventory, IItemHandlerModifiable specialSlotInventory,
-        IItemHandlerModifiable fluidInputsInventory, IItemHandlerModifiable fluidOutputsInventory,
-        Supplier<Float> progressSupplier, Pos2d windowOffset) {
+    public ModularWindow.Builder createNEITemplate(GTNEIDefaultHandler.NEITemplateContext ctx) {
         ModularWindow.Builder builder = ModularWindow.builder(neiProperties.recipeBackgroundSize)
             .setBackground(GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE);
 
+        if (uiProperties.useProgressBar) {
+            addProgressBar(builder, ctx);
+        }
+
         UIHelper.forEachSlots(
             (i, backgrounds, pos) -> builder.widget(
-                SlotWidget.phantom(itemInputsInventory, i)
+                SlotWidget.phantom(ctx.itemInputsInventory, i)
                     .setBackground(backgrounds)
                     .setPos(pos)
                     .setSize(18, 18)),
             (i, backgrounds, pos) -> builder.widget(
-                SlotWidget.phantom(itemOutputsInventory, i)
+                SlotWidget.phantom(ctx.itemOutputsInventory, i)
                     .setBackground(backgrounds)
                     .setPos(pos)
                     .setSize(18, 18)),
             (i, backgrounds, pos) -> {
                 if (uiProperties.useSpecialSlot) builder.widget(
-                    SlotWidget.phantom(specialSlotInventory, 0)
+                    SlotWidget.phantom(ctx.specialSlotInventory, 0)
                         .setBackground(backgrounds)
                         .setPos(pos)
                         .setSize(18, 18));
             },
             (i, backgrounds, pos) -> builder.widget(
-                SlotWidget.phantom(fluidInputsInventory, i)
+                SlotWidget.phantom(ctx.fluidInputsInventory, i)
                     .setBackground(backgrounds)
                     .setPos(pos)
                     .setSize(18, 18)),
             (i, backgrounds, pos) -> builder.widget(
-                SlotWidget.phantom(fluidOutputsInventory, i)
+                SlotWidget.phantom(ctx.fluidOutputsInventory, i)
                     .setBackground(backgrounds)
                     .setPos(pos)
                     .setSize(18, 18)),
@@ -133,12 +134,9 @@ public class RecipeMapFrontend {
             uiProperties.maxFluidInputs,
             uiProperties.maxFluidOutputs,
             SteamVariant.NONE,
-            windowOffset);
+            ctx.windowOffset);
 
-        if (uiProperties.useProgressBar) {
-            addProgressBar(builder, progressSupplier, windowOffset);
-        }
-        addGregTechLogo(builder, windowOffset);
+        addGregTechLogo(builder, ctx.windowOffset);
 
         for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : uiProperties.specialTextures) {
             builder.widget(
@@ -149,20 +147,20 @@ public class RecipeMapFrontend {
                     .setPos(
                         specialTexture.getRight()
                             .getRight()
-                            .add(windowOffset)));
+                            .add(ctx.windowOffset)));
         }
 
         return builder;
     }
 
-    public void addProgressBar(ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
+    public void addProgressBar(ModularWindow.Builder builder, GTNEIDefaultHandler.NEITemplateContext ctx) {
         assert uiProperties.progressBarTexture != null;
         builder.widget(
             new ProgressBar().setTexture(uiProperties.progressBarTexture.get(), 20)
                 .setDirection(uiProperties.progressBarDirection)
-                .setProgress(progressSupplier)
+                .setProgress(ctx.progressSupplier)
                 .setSynced(false, false)
-                .setPos(uiProperties.progressBarPos.add(windowOffset))
+                .setPos(uiProperties.progressBarPos.add(ctx.windowOffset))
                 .setSize(uiProperties.progressBarSize));
     }
 
