@@ -803,9 +803,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 CRYSTAL_GROWTH_CHAMBER_CONTROLLER.ID,
                 "multimachine.crystalgrowthchamber",
                 "Crystal Growth Chamber").getStackForm(1));
-        addItemTooltip(
-            ItemList.CrystalGrowthChamber.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorAuynonymous));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(

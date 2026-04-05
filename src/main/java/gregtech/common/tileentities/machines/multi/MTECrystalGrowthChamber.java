@@ -15,7 +15,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CGCT1_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import gregtech.common.blocks.BlockCasings12;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -37,6 +36,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTECrystalGrowthChamber extends MTEExtendedPowerMultiBlockBase<MTECrystalGrowthChamber>

@@ -3010,6 +3010,7 @@ public enum ItemList implements IItemContainer {
     EmitterCasingUIV,
     EmitterCasingUMV,
     EmitterCasingUXV,
+    EmitterCasingMAX,
 
     // semicolon after the comment to reduce merge conflicts
     ;

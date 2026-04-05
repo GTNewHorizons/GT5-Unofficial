@@ -1,13 +1,14 @@
 package gregtech.common.blocks;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.common.misc.GTStructureChannels;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
@@ -17,14 +18,6 @@ import net.minecraft.world.IBlockAccess;
  */
 public class BlockCasingsEmitter extends BlockCasingsAbstract {
 
-    /**
-     * Texture Index Information Textures.BlockIcons.casingTexturePages[0][0-63] - Gregtech
-     * Textures.BlockIcons.casingTexturePages[0][64-127] - GT++ Textures.BlockIcons.casingTexturePages[1][0-127] -
-     * Gregtech Textures.BlockIcons.casingTexturePages[2][0-127] - Free Textures.BlockIcons.casingTexturePages[3][0-127]
-     * - Free Textures.BlockIcons.casingTexturePages[4][0-127] - Free Textures.BlockIcons.casingTexturePages[5][0-127] -
-     * Free Textures.BlockIcons.casingTexturePages[6][0-127] - Free Textures.BlockIcons.casingTexturePages[7][0-127] -
-     * TecTech Textures.BlockIcons.casingTexturePages[8][0-127] - TecTech
-     */
     public BlockCasingsEmitter() {
         super(ItemCasings.class, "gt.blockcasingsemitter", MaterialCasings.INSTANCE, 16);
 
@@ -41,8 +34,9 @@ public class BlockCasingsEmitter extends BlockCasingsAbstract {
         register(10, ItemList.EmitterCasingUIV);
         register(11, ItemList.EmitterCasingUMV);
         register(12, ItemList.EmitterCasingUXV);
+        register(13, ItemList.EmitterCasingMAX);
 
-        for (int i = 0; i < 13; i++) {
+        for (int i = 0; i < 14; i++) {
             GTStructureChannels.TIER_EMITTER_CASING.registerAsIndicator(new ItemStack(this, 1, i), i + 1);
         }
     }
@@ -55,21 +49,50 @@ public class BlockCasingsEmitter extends BlockCasingsAbstract {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
-        return switch (aMeta) {
-            case 1 -> Textures.BlockIcons.COLLIDER_CASING.getIcon();
-            case 2 -> Textures.BlockIcons.COLLIDER_CASING.getIcon();
-            case 3 -> Textures.BlockIcons.COLLIDER_CASING.getIcon();
-            case 4 -> Textures.BlockIcons.COLLIDER_CASING.getIcon();
-            case 5 -> Textures.BlockIcons.COLLIDER_CASING.getIcon();
-            case 6 -> Textures.BlockIcons.COLLIDER_CASING.getIcon();
-            case 7 -> Textures.BlockIcons.COLLIDER_CASING.getIcon();
-            case 8 -> Textures.BlockIcons.COLLIDER_CASING.getIcon();
-            case 9 -> Textures.BlockIcons.COLLIDER_CASING.getIcon();
-            case 10 -> Textures.BlockIcons.COLLIDER_CASING.getIcon();
-            case 11 -> Textures.BlockIcons.COLLIDER_CASING.getIcon();
-            case 12 -> Textures.BlockIcons.COLLIDER_CASING.getIcon();
-            default -> Textures.BlockIcons.COLLIDER_CASING.getIcon();
+        ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
+
+        return switch (side) {
+            case UP, DOWN -> getTopIcon(aMeta);
+            case NORTH, SOUTH, EAST, WEST -> getSideIcon(aMeta);
+            case UNKNOWN -> throw new IllegalStateException("cannot determine texture for emitter casing");
         };
     }
 
+    private IIcon getSideIcon(int meta) {
+        return switch (meta) {
+            case 1 -> Textures.BlockIcons.EMITTER_CASING_SIDE_MV.getIcon();
+            case 2 -> Textures.BlockIcons.EMITTER_CASING_SIDE_HV.getIcon();
+            case 3 -> Textures.BlockIcons.EMITTER_CASING_SIDE_EV.getIcon();
+            case 4 -> Textures.BlockIcons.EMITTER_CASING_SIDE_IV.getIcon();
+            case 5 -> Textures.BlockIcons.EMITTER_CASING_SIDE_LuV.getIcon();
+            case 6 -> Textures.BlockIcons.EMITTER_CASING_SIDE_ZPM.getIcon();
+            case 7 -> Textures.BlockIcons.EMITTER_CASING_SIDE_UV.getIcon();
+            case 8 -> Textures.BlockIcons.EMITTER_CASING_SIDE_UHV.getIcon();
+            case 9 -> Textures.BlockIcons.EMITTER_CASING_SIDE_UEV.getIcon();
+            case 10 -> Textures.BlockIcons.EMITTER_CASING_SIDE_UIV.getIcon();
+            case 11 -> Textures.BlockIcons.EMITTER_CASING_SIDE_UMV.getIcon();
+            case 12 -> Textures.BlockIcons.EMITTER_CASING_SIDE_UXV.getIcon();
+            case 13 -> Textures.BlockIcons.EMITTER_CASING_SIDE_MAX.getIcon();
+            default -> Textures.BlockIcons.EMITTER_CASING_SIDE_LV.getIcon();
+        };
+    }
+
+    private IIcon getTopIcon(int meta) {
+        return switch (meta) {
+            case 1 -> Textures.BlockIcons.EMITTER_CASING_TOP_MV.getIcon();
+            case 2 -> Textures.BlockIcons.EMITTER_CASING_TOP_HV.getIcon();
+            case 3 -> Textures.BlockIcons.EMITTER_CASING_TOP_EV.getIcon();
+            case 4 -> Textures.BlockIcons.EMITTER_CASING_TOP_IV.getIcon();
+            case 5 -> Textures.BlockIcons.EMITTER_CASING_TOP_LuV.getIcon();
+            case 6 -> Textures.BlockIcons.EMITTER_CASING_TOP_ZPM.getIcon();
+            case 7 -> Textures.BlockIcons.EMITTER_CASING_TOP_UV.getIcon();
+            case 8 -> Textures.BlockIcons.EMITTER_CASING_TOP_UHV.getIcon();
+            case 9 -> Textures.BlockIcons.EMITTER_CASING_TOP_UEV.getIcon();
+            case 10 -> Textures.BlockIcons.EMITTER_CASING_TOP_UIV.getIcon();
+            case 11 -> Textures.BlockIcons.EMITTER_CASING_TOP_UMV.getIcon();
+            case 12 -> Textures.BlockIcons.EMITTER_CASING_TOP_UXV.getIcon();
+            case 13 -> Textures.BlockIcons.EMITTER_CASING_TOP_MAX.getIcon();
+            default -> Textures.BlockIcons.EMITTER_CASING_TOP_LV.getIcon();
+        };
+    }
 }
