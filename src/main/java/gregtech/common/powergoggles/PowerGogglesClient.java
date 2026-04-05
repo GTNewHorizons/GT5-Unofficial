@@ -117,8 +117,7 @@ public class PowerGogglesClient {
             measurements
                 .addLast(new PowerGogglesMeasurement(true, WirelessNetworkManager.getUserEU(playerMP.getUniqueID())));
         } else {
-            measurements
-                .addLast(new PowerGogglesMeasurement(false, BigInteger.valueOf(lsc.getEUVar()), lsc.maxEUStore()));
+            measurements.addLast(new PowerGogglesMeasurement(false, lsc.getStored(), lsc.maxEUStore()));
         }
         if (measurements.size() > PowerGogglesConstants.STORED_MEASUREMENTS) {
             measurements.removeFirst();
