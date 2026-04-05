@@ -54,6 +54,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
@@ -794,82 +795,36 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Stellar Forge")
-            .addInfo(EnumChatFormatting.ITALIC + "Also known as Godforge or Gorge for short")
-            .addSeparator(EnumChatFormatting.AQUA)
-            .addInfo("A massive structure harnessing the thermal, gravitational and")
-            .addInfo("kinetic energy of a stabilised neutron star for material processing")
-            .addInfo(
-                "This multiblock can house " + EnumChatFormatting.RED
-                    + "up to 16 modules "
-                    + EnumChatFormatting.GRAY
-                    + "which utilize the star to energize materials")
-            .addInfo("to varying degrees, ranging from regular smelting to matter degeneration")
-            .addInfo("EU requirements for all modules are handled via wireless energy directly")
-            .addSeparator(EnumChatFormatting.AQUA)
-            .addInfo(
-                "This multiblock has an " + EnumChatFormatting.GOLD
-                    + "extensive upgrade tree "
-                    + EnumChatFormatting.GRAY
-                    + "which influences all of its functions,")
-            .addInfo(
-                "such as " + EnumChatFormatting.GOLD
-                    + "unlocking new module types"
-                    + EnumChatFormatting.GRAY
-                    + ", "
-                    + EnumChatFormatting.GOLD
-                    + "increasing heat levels "
-                    + EnumChatFormatting.GRAY
-                    + "and "
-                    + EnumChatFormatting.GOLD
-                    + "granting")
-            .addInfo(
-                EnumChatFormatting.GOLD + "various processing speed bonuses"
-                    + EnumChatFormatting.GRAY
-                    + ". "
-                    + EnumChatFormatting.GRAY
-                    + "These upgrades can be unlocked by reaching")
-            .addInfo("certain milestones and/or spending materials")
-            .addSeparator(EnumChatFormatting.AQUA)
-            .addInfo(
-                EnumChatFormatting.GREEN
-                    + "Clicking on the logo in the controller gui opens an extensive information window"
-                    + EnumChatFormatting.GRAY
-                    + ",")
-            .addInfo("explaining everything there is to know about this multiblock")
+        tt.addMachineType("machtype.forge_of_gods")
+            .addInfo("gt.forge_of_gods.tips")
             .beginStructureBlock(127, 29, 186, false)
-            .addStructureInfo("Total blocks needed for the structure with " + getRingText("1", "2", "3") + "rings:")
+            .addStructureInfo(GTUtility.translate("gt.forge_of_gods.info", getRingText("1", "2", "3")))
             .addStructureInfo(
-                getRingText("3943", "7279", "11005") + "Transcendentally Amplified Magnetic Confinement Casing")
-            .addStructureInfo(getRingText("2818", "4831", "6567") + "Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(getRingText("272", "512", "824") + "Celestial Matter Guidance Casing")
-            .addStructureInfo(getRingText("130", "144", "158") + "Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(getRingText("9", "54", "155") + "Spatially Transcendent Gravitational Lens Block")
+                getRingText("3943", "7279", "11005")
+                    + Casings.TranscendentallyAmplifiedMagneticConfinementCasing.getLocalizedName())
             .addStructureInfo(
-                getRingText("345", "357", "397") + getRingText("Remote", "Medial", "Central")
-                    + "Graviton Flow Modulator")
+                getRingText("2818", "4831", "6567")
+                    + Casings.SingularityReinforcedStellarShieldingCasing.getLocalizedName())
             .addStructureInfo(
-                EnumChatFormatting.GOLD + "36" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
+                getRingText("272", "512", "824") + Casings.CelestialMatterGuidanceCasing.getLocalizedName())
+            .addStructureInfo(
+                getRingText("130", "144", "158")
+                    + Casings.BoundlessGravitationallySeveredStructureCasing.getLocalizedName())
+            .addStructureInfo(
+                getRingText("9", "54", "155") + Casings.SpatiallyTranscendentGravitationalLens.getLocalizedName())
+            .addStructureInfo(
+                getRingText("345", "357", "397") + GTUtility.translate("gt.forge_of_gods.info.casingsbyring"))
+            .addCasingInfoExactly(Casings.StellarEnergySiphonCasing.getLocalizedName(), 36)
             .addStructureInfoSeparator()
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Hatch")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus (ME)")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Bus")
+            .addInputHatch("§61x")
+            .addStructurePart("gt.blockmachines.hatch.output_bus.me.name", "§61x")
+            .addInputBus("§61x")
             .toolTipFinisher(EnumChatFormatting.AQUA);
         return tt;
     }
 
     private static String getRingText(String oneRing, String twoRings, String threeRings) {
-        return EnumChatFormatting.DARK_PURPLE + oneRing
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.DARK_GREEN
-            + twoRings
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.AQUA
-            + threeRings
-            + EnumChatFormatting.GRAY
-            + " ";
+        return "§5" + oneRing + "§7/§2" + twoRings + "§7/§b" + threeRings + "§7 ";
     }
 
     @Override

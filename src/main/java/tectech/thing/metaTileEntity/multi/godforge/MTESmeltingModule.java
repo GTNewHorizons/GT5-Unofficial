@@ -19,6 +19,7 @@ import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -206,28 +207,14 @@ public class MTESmeltingModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace, Furnace")
-            .addInfo("This is a module of the Godforge")
-            .addInfo("Must be part of a Godforge to function")
-            .addInfo("Used for basic smelting operations at various temperatures")
-            .addSeparator(EnumChatFormatting.AQUA)
-            .addInfo("As the first of the Godforge modules, this module performs the most basic")
-            .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace")
-            .addInfo("The desired method of processing can be selected in the gui")
-            .addInfo("This module is specialized towards speed and high heat levels")
+        tt.addMachineType("gt.recipe.blastfurnace", "gt.recipe.furnace")
+            .addInfo("gt.smelting_module.tips")
             .beginStructureBlock(7, 7, 13, false)
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Hypogen Coil Block")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
+            .addCasingInfoExactly(Casings.SingularityReinforcedStellarShieldingCasing.getLocalizedName(), 20)
+            .addCasingInfoExactly(Casings.BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), 20)
+            .addCasingInfoExactly(Casings.HypogenCoilBlock.getLocalizedName(), 5)
+            .addCasingInfoExactly(Casings.CelestialMatterGuidanceCasing.getLocalizedName(), 5)
+            .addStructureInfo(Casings.StellarEnergySiphonCasing.getLocalizedName(), 1)
             .toolTipFinisher(EnumChatFormatting.AQUA);
         return tt;
     }

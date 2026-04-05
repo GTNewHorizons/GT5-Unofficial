@@ -52,6 +52,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -583,18 +584,9 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             .addUnlimitedTierSkips()
             .beginStructureBlock(33, 24, 33, false)
             .addCasingInfoExactly("GT5U.tooltip.structure.heating_coil", 2112)
-            .addCasingInfoExactly(
-                ItemList.Casing_Dim_Bridge.get(1)
-                    .getDisplayName(),
-                120)
-            .addCasingInfoExactly(
-                ItemList.Casing_Dim_Injector.get(1)
-                    .getDisplayName(),
-                1270)
-            .addCasingInfoExactly(
-                ItemList.Casing_Dim_Trans.get(1)
-                    .getDisplayName(),
-                2121)
+            .addCasingInfoExactly(Casings.DimensionalBridge.getLocalizedName(), 120)
+            .addCasingInfoExactly(Casings.DimensionalInjectionCasing.getLocalizedName(), 1270)
+            .addCasingInfoExactly(Casings.DimensionallyTranscendentCasing.getLocalizedName(), 2121)
             .addStructureInfo("")
             .addEnergyHatch("gt.dtpf.info.e_hatch")
             .addInputHatch(GOLD + min_input_hatch + GRAY + "-" + GOLD + max_input_hatch)
