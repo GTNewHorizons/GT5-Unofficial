@@ -1477,6 +1477,28 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Pollution, 1L),
                 ItemList.Cell_Empty.get(1L));
+        GTFluidFactory.builder("enrichedbacterialsludge")
+            .withDefaultLocalName("Enriched Bacterial Sludge")
+            .withStateAndTemperature(LIQUID, 300)
+            .buildAndRegister()
+            .configureMaterials(Materials.EnrichedBacterialSludge)
+            .addLocalizedName(Materials.EnrichedBacterialSludge)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.EnrichedBacterialSludge, 1L),
+                ItemList.Cell_Empty.get(1L))
+            .asFluid()
+            .setLuminosity(15);
+        GTFluidFactory.builder("fermentedbacterialsludge")
+            .withDefaultLocalName("Fermented Bacterial Sludge")
+            .withStateAndTemperature(LIQUID, 300)
+            .buildAndRegister()
+            .configureMaterials(Materials.FermentedBacterialSludge)
+            .addLocalizedName(Materials.FermentedBacterialSludge)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.FermentedBacterialSludge, 1L),
+                ItemList.Cell_Empty.get(1L))
+            .asFluid()
+            .setLuminosity(8);
         // endregion
 
         GTFluidFactory.builder("DimensionallyTranscendentResidue")

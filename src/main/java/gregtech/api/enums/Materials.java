@@ -395,6 +395,11 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials WoodVinegar;
     // endregion
 
+    // region Bio Vat Bacterial Sludges
+    public static Materials EnrichedBacterialSludge;
+    public static Materials FermentedBacterialSludge;
+    // endregion
+
     // region TODO: this
     public static Materials AluminiumBrass;
     public static Materials Endstone;

@@ -28,6 +28,7 @@ public class MaterialsInit {
         loadTiers();
         loadCircuitry();
         loadNotExact();
+        loadBioVatBacterialSludges();
         loadTODOThis();
         loadDegree1Compounds();
         loadUnclassified01();
@@ -5178,6 +5179,29 @@ public class MaterialsInit {
             .setARGB(0x00d45500)
             .addCell()
             .addFluid()
+            .constructMaterial();
+    }
+
+    private static void loadBioVatBacterialSludges() {
+        Materials.EnrichedBacterialSludge = loadEnrichedBacterialSludge();
+        Materials.FermentedBacterialSludge = loadFermentedBacterialSludge();
+    }
+
+    private static Materials loadEnrichedBacterialSludge() {
+        return new MaterialBuilder().setName("EnrichedBacterialSludge")
+            .setDefaultLocalName("Enriched Bacterial Sludge")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setARGB(0x0036f60e)
+            .constructMaterial();
+    }
+
+    private static Materials loadFermentedBacterialSludge() {
+        return new MaterialBuilder().setName("FermentedBacterialSludge")
+            .setDefaultLocalName("Fermented Bacterial Sludge")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0x00008c10)
             .constructMaterial();
     }
 
