@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.cover;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.UUID;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -14,7 +16,6 @@ import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.layout.Row;
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -22,15 +23,12 @@ import gregtech.common.covers.CoverAdvancedWirelessController;
 import gregtech.common.covers.conditions.RedstoneCondition;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverBase;
 import gregtech.common.gui.modularui.cover.base.CoverAdvancedWirelessRedstoneBaseGui;
-import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
 import gregtech.common.modularui2.widget.builder.EnumColumnBuilder;
-import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
-public class CoverAdvancedWirelessControllerGui extends CoverAdvancedWirelessRedstoneBaseGui<CoverAdvancedWirelessController> {
+public class CoverAdvancedWirelessControllerGui
+    extends CoverAdvancedWirelessRedstoneBaseGui<CoverAdvancedWirelessController> {
 
     public CoverAdvancedWirelessControllerGui(CoverAdvancedWirelessController cover) {
         super(cover);
@@ -74,12 +72,8 @@ public class CoverAdvancedWirelessControllerGui extends CoverAdvancedWirelessRed
                     .crossAxisAlignment(Alignment.CrossAxis.START)
                     .child(
                         new Column().coverChildren()
-                            .child(
-                                makeFrequencyRow()
-                            )
-                            .child(
-                                makeButtonRow(uuid)
-                            )
+                            .child(makeFrequencyRow())
+                            .child(makeButtonRow(uuid))
                             .child(
                                 new Grid().coverChildren()
                                     .minElementMarginRight(WIDGET_MARGIN)
@@ -89,20 +83,25 @@ public class CoverAdvancedWirelessControllerGui extends CoverAdvancedWirelessRed
                                     .alignment(Alignment.CenterLeft)
                                     .row(
                                         new SelectButton()
-                                            .value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.ENABLE_WITH_REDSTONE))
+                                            .value(
+                                                LinkedBoolValue
+                                                    .of(conditionModeSyncValue, RedstoneCondition.ENABLE_WITH_REDSTONE))
                                             .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
                                             .size(16),
                                         IKey.lang("gt.interact.desc.MachContr.EnRedstone")
                                             .asWidget())
                                     .row(
-                                        new SelectButton()
-                                            .value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.DISABLE_WITH_REDSTONE))
+                                        new SelectButton().value(
+                                            LinkedBoolValue
+                                                .of(conditionModeSyncValue, RedstoneCondition.DISABLE_WITH_REDSTONE))
                                             .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF)
                                             .size(16),
                                         IKey.lang("gt.interact.desc.MachContr.DisRedstone")
                                             .asWidget())
                                     .row(
-                                        new SelectButton().value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.DISABLE))
+                                        new SelectButton()
+                                            .value(
+                                                LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.DISABLE))
                                             .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
                                             .size(16),
                                         IKey.lang("gt.interact.desc.MachContr.DisMachine")
@@ -113,14 +112,9 @@ public class CoverAdvancedWirelessControllerGui extends CoverAdvancedWirelessRed
                                             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                                             .size(16),
                                         IKey.lang("gt.interact.desc.MachContr.SafeMode")
-                                            .asWidget())
-                            )
-                    )
-                .childPadding(40)
-                .child(
-                    makeThirdFlow(syncManager, data)
-                )
-            );
+                                            .asWidget())))
+                    .childPadding(40)
+                    .child(makeThirdFlow(syncManager, data)));
     }
 
     @Override

@@ -71,8 +71,7 @@ public class CoverAdvancedWirelessController extends CoverAdvancedRedstoneReceiv
     @Override
     public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
-        byte signal = CoverAdvancedWirelessRedstoneBase
-            .getSignalAt(uuid, frequency, mode);
+        byte signal = CoverAdvancedWirelessRedstoneBase.getSignalAt(uuid, frequency, mode);
 
         if (coverable instanceof IMachineProgress machine) {
             switch (state) {

@@ -449,7 +449,7 @@ public enum IDMetaItem01 {
     Duct_Tape(764),
     McGuffium_239(765);
 
-    //Maximum Item ID is 765, if you want to add items, choose from the IDs not yet occupied.
+    // Maximum Item ID is 765, if you want to add items, choose from the IDs not yet occupied.
 
     public final int ID;
 
