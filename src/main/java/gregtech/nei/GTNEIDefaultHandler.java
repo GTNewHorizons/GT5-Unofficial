@@ -191,6 +191,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                     .filter(r -> !r.mHidden)
                     .sorted(neiProperties.comparator)
                     .map(CachedDefaultRecipe::new)
+                    .peek(frontend::prepareRecipe)
                     .collect(Collectors.toList());
                 // while the NEI parallelize handlers, for each individual handler it still uses sequential execution
                 // model,
@@ -528,24 +529,24 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
     public static class FixedPositionedStack extends PositionedStack {
 
-        public static final DecimalFormat chanceFormat = new DecimalFormat("##0.##%");
-        public final int mChance;
         public final boolean mIsInput;
         public final int realStackSize;
         public final boolean renderRealStackSize;
+        public String customBadgeText;
+        public List<String> customBadgeTooltip = Collections.emptyList();
 
         public FixedPositionedStack(Object object, boolean renderRealStackSizes, int x, int y) {
-            this(object, renderRealStackSizes, x, y, -1, true, false);
+            this(object, renderRealStackSizes, x, y, PositionedStack.CHANCE_FULL, true, false);
         }
 
         public FixedPositionedStack(Object object, boolean renderRealStackSizes, int x, int y, boolean aUnificate) {
-            this(object, renderRealStackSizes, x, y, -1, aUnificate, false);
+            this(object, renderRealStackSizes, x, y, PositionedStack.CHANCE_FULL, aUnificate, false);
         }
 
         public FixedPositionedStack(Object object, boolean renderRealStackSize, int x, int y, int aChance,
             boolean aUnificate, boolean aIsInput) {
             super(aUnificate ? GTOreDictUnificator.getNonUnifiedStacks(object) : object, x, y, true);
-            this.mChance = aChance;
+            this.chance = aChance;
             this.mIsInput = aIsInput;
             realStackSize = item != null ? item.stackSize : 0;
             this.renderRealStackSize = renderRealStackSize;
@@ -560,22 +561,24 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             return mIsInput;
         }
 
-        public boolean isChanceBased() {
-            return mChance >= 0 && mChance < 10000;
+        public void setCustomBadge(String text, String... tooltip) {
+            this.customBadgeText = text;
+            this.customBadgeTooltip = Arrays.stream(tooltip)
+                .map(t -> EnumChatFormatting.GRAY + t)
+                .collect(Collectors.toList());
         }
 
-        public String getChanceText() {
-            return chanceFormat.format((float) mChance / 10000);
+        public void setChance(int chance) {
+            this.chance = chance;
         }
 
-        public boolean isNotConsumedParallel() {
-            if (!mIsInput) return false;
-            if (isFluid()) {
-                FluidStack fluidStack = GTUtility.getFluidFromDisplayStack(item);
-                if (fluidStack == null) return false;
-                return mChance == 0;
-            }
-            return mChance == 0;
+        @Override
+        public String getCustomBadge() {
+            return this.customBadgeText;
+        }
+
+        public List<String> getCustomBadgeTooltip() {
+            return this.customBadgeTooltip;
         }
 
         public boolean isNotConsumed() {

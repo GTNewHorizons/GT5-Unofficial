@@ -76,8 +76,7 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
     }
 
     @Override
-    public void drawNEIOverlays(GTNEIDefaultHandler.@NotNull CachedDefaultRecipe neiCachedRecipe) {
-        super.drawNEIOverlays(neiCachedRecipe);
+    public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         if (neiCachedRecipe.mInputs.size() == 1) {
             GTRecipe recipe = neiCachedRecipe.mRecipe;
             Materials material = GTOreDictUnificator.getAssociation(recipe.mInputs[0]).mMaterial.mMaterial;
@@ -115,7 +114,7 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
             for (Pair<ItemStack, Integer> fuel : recipe.getMetadata(HTGRLoader.FUEL)) {
                 ItemStack stack = fuel.getLeft()
                     .copy();
-                stack.stackSize = fuel.getRight();
+                stack.stackSize = Math.max(fuel.getRight(), 1);
                 neiCachedRecipe.mInputs.add(new PositionedStack(stack, x, y, false));
                 x += 18;
                 if (x >= 75 + 18) {

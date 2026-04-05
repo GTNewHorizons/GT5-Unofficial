@@ -1,7 +1,5 @@
 package gregtech.api.recipe;
 
-import static net.minecraft.util.EnumChatFormatting.GRAY;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +18,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -274,24 +271,26 @@ public class RecipeMapFrontend {
         }
     }
 
+    public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe recipe) {
+
+    }
+
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
         GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         for (PositionedStack pStack : neiCachedRecipe.mInputs) {
             if (stack == pStack.item) {
-                if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
-                    currentTip = handleNEIItemInputTooltip(
-                        currentTip,
-                        (GTNEIDefaultHandler.FixedPositionedStack) pStack);
+                if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed) {
+                    currentTip.addAll(fixed.getCustomBadgeTooltip());
+                    currentTip = handleNEIItemInputTooltip(currentTip, fixed);
                 }
                 break;
             }
         }
         for (PositionedStack pStack : neiCachedRecipe.mOutputs) {
             if (stack == pStack.item) {
-                if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
-                    currentTip = handleNEIItemOutputTooltip(
-                        currentTip,
-                        (GTNEIDefaultHandler.FixedPositionedStack) pStack);
+                if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed) {
+                    currentTip.addAll(fixed.getCustomBadgeTooltip());
+                    currentTip = handleNEIItemOutputTooltip(currentTip, fixed);
                 }
                 break;
             }
@@ -301,53 +300,33 @@ public class RecipeMapFrontend {
 
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
         GTNEIDefaultHandler.FixedPositionedStack pStack) {
-        if (pStack.isNotConsumed()) {
-            currentTip.add(GRAY + StatCollector.translateToLocal("GT5U.recipes.not_consume"));
-        } else if (pStack.isNotConsumedParallel()) {
-            currentTip.add(GRAY + StatCollector.translateToLocal("GT5U.recipes.not_consume_parallel"));
-        } else if (pStack.isChanceBased()) {
-            String key = "GT5U.recipes.chance." + (pStack.isInput() ? "consume" : "output");
-            currentTip.add(GRAY + StatCollector.translateToLocalFormatted(key, pStack.getChanceText()));
-        }
         return currentTip;
     }
 
     protected List<String> handleNEIItemOutputTooltip(List<String> currentTip,
         GTNEIDefaultHandler.FixedPositionedStack pStack) {
-        if (pStack.isChanceBased()) {
-            String key = "GT5U.recipes.chance." + (pStack.isInput() ? "consume" : "output");
-            currentTip.add(GRAY + StatCollector.translateToLocalFormatted(key, pStack.getChanceText()));
-        }
         return currentTip;
     }
 
     public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         for (PositionedStack stack : neiCachedRecipe.mInputs) {
-            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
-                drawNEIOverlayForInput((GTNEIDefaultHandler.FixedPositionedStack) stack);
+            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed) {
+                drawNEIOverlayForInput(fixed);
             }
         }
         for (PositionedStack stack : neiCachedRecipe.mOutputs) {
-            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
-                drawNEIOverlayForOutput((GTNEIDefaultHandler.FixedPositionedStack) stack);
+            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed) {
+                drawNEIOverlayForOutput(fixed);
             }
         }
     }
 
     protected void drawNEIOverlayForInput(GTNEIDefaultHandler.FixedPositionedStack stack) {
-        if (stack.isNotConsumed()) {
-            drawNEIOverlayText("NC", stack);
-        } else if (stack.isNotConsumedParallel()) {
-            drawNEIOverlayText("NC(P)", stack);
-        } else if (stack.isChanceBased()) {
-            drawNEIOverlayText(stack.getChanceText(), stack);
-        }
+
     }
 
     protected void drawNEIOverlayForOutput(GTNEIDefaultHandler.FixedPositionedStack stack) {
-        if (stack.isChanceBased()) {
-            drawNEIOverlayText(stack.getChanceText(), stack);
-        }
+
     }
 
     @SuppressWarnings("SameParameterValue")

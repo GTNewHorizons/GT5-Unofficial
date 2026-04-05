@@ -3,7 +3,6 @@ package bartworks.API.recipe;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTRecipeConstants.GLASS;
 import static gregtech.api.util.GTUtility.getTierNameWithParentheses;
-import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import java.util.List;
 
@@ -16,6 +15,7 @@ import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import bartworks.common.loaders.BioItemList;
+import codechicken.nei.PositionedStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
@@ -37,16 +37,24 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
     }
 
     @Override
+    public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe recipe) {
+        for (PositionedStack stack : recipe.mInputs) {
+            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed
+                && GTUtility.areStacksEqual(fixed.item, BioItemList.getPetriDish(null), true)) {
+                fixed.setMaxSize(0);
+            }
+        }
+    }
+
+    @Override
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
         GTNEIDefaultHandler.FixedPositionedStack pStack) {
+
         if (pStack.isFluid()) {
             currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("nei.biovat.input.tooltip"));
             return currentTip;
         }
-        if (GTUtility.areStacksEqual(pStack.item, BioItemList.getPetriDish(null), true)) {
-            currentTip.add(GRAY + StatCollector.translateToLocal("GT5U.recipes.not_consume"));
-            return currentTip;
-        }
+
         return super.handleNEIItemInputTooltip(currentTip, pStack);
     }
 
@@ -64,9 +72,6 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
     protected void drawNEIOverlayForInput(GTNEIDefaultHandler.FixedPositionedStack stack) {
         super.drawNEIOverlayForInput(stack);
         drawFluidOverlay(stack);
-        if (!stack.isFluid() && GTUtility.areStacksEqual(stack.item, BioItemList.getPetriDish(null), true)) {
-            drawNEIOverlayText("NC", stack);
-        }
     }
 
     @Override

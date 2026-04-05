@@ -119,6 +119,8 @@ gtpp.nei.tgs.1=The sapling is not consumed.
 gtpp.nei.tgs.2=If %s is provided,
 gtpp.nei.tgs.3=Saplings are made instead.
 gtpp.nei.tgs.sapling=Outputted if %s is provided
+gtpp.nei.chemical_plant.not_consumed=Does not always get consumed in the process
+gtpp.nei.chemical_plant.higher_tier_casing=Higher tier pipe casings allow this item to last longer
 
 gtpp.nei.tgs.tooltip.sapling=Place in machine controller slot
 gtpp.nei.tgs.tooltip.saw=Place in an input bus to harvest logs
