@@ -32,6 +32,8 @@ public class GTChunkManager implements OrderedLoadingCallback, PlayerOrderedLoad
 
     private final Map<TileEntity, Ticket> registeredTickets = new HashMap<>();
 
+    private GTChunkManager() {}
+
     public static void init() {
         ForgeChunkManager.setForcedChunkLoadingCallback(GTMod.GT, instance);
     }
