@@ -90,6 +90,7 @@ public class GTPreLoad {
                 .getLanguageManager()
                 .getCurrentLanguage()
                 .getLanguageCode();
+            GTLanguageManager.LanguageCode = userLang;
             GT_FML_LOGGER.info("User lang is " + userLang);
             if (userLang.equals("en_US")) {
                 GT_FML_LOGGER.info("Loading GregTech.lang");
@@ -118,8 +119,10 @@ public class GTPreLoad {
             .parallelStream()
             .filter(Objects::nonNull)
             .forEach(
-                aMaterial -> aMaterial.mLocalizedName = GTLanguageManager
-                    .addStringLocalization("Material." + aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName));
+                aMaterial -> {
+                    GTLanguageManager
+                        .addStringLocalization(aMaterial.getLocalizedNameKey(), aMaterial.mDefaultLocalName);
+                });
     }
 
     public static void getConfiguration(File configDir) {
@@ -157,7 +160,7 @@ public class GTPreLoad {
                     GTLog.mOreDictLogFile.createNewFile();
                 } catch (Exception ignored) {}
             }
-            List<String> tList = ((GTLog.LogBuffer) GTLog.ore).mBufferedOreDictLog;
+            List<String> tList = ((GTLog.LogBuffer) GTLog.ore).lineBuffer;
             try {
                 GTLog.ore = new PrintStream(GTLog.mOreDictLogFile);
             } catch (Exception ignored) {}
@@ -178,6 +181,23 @@ public class GTPreLoad {
             }
             try {
                 GTLog.exp = new PrintStream(GTLog.mExplosionLog);
+            } catch (Exception ignored) {}
+        }
+        if (Gregtech.debug.logRegisterIcons) {
+            GTLog.mRegisterIconsLog = new File(parentFile, "logs/RegisterIcon.log");
+
+            try {
+                List<String> tList = ((GTLog.LogBuffer) GTLog.ico).lineBuffer;
+
+                GTLog.ico = new PrintStream(GTLog.mRegisterIconsLog);
+
+                GTLog.ico.println("*****************************************************************");
+                GTLog.ico.println("* This is the log of texture icons registered in GT5-Unofficial *");
+                GTLog.ico.println("* First column R|O tells if resource is (Required or Optional)  *");
+                GTLog.ico.println("* Second column is the resource path                            *");
+                GTLog.ico.println("*****************************************************************");
+
+                tList.forEach(GTLog.ico::println);
             } catch (Exception ignored) {}
         }
     }

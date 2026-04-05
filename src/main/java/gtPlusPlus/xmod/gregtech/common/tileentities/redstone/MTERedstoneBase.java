@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -48,12 +47,6 @@ public abstract class MTERedstoneBase extends MTETieredMachineBlock {
     public final boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
-
-    @Override
-    public abstract void saveNBTData(NBTTagCompound aNBT);
-
-    @Override
-    public abstract void loadNBTData(NBTTagCompound aNBT);
 
     public boolean hasRedstoneSignal() {
         if (getBaseMetaTileEntity().getStrongestRedstone() > 0) {

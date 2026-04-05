@@ -16,7 +16,6 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
-import gregtech.api.recipe.NEIRecipeProperties;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
@@ -85,8 +84,4 @@ public class FoundryModuleFrontend extends RecipeMapFrontend {
         return currentTip;
     }
 
-    @Override
-    public NEIRecipeProperties getNEIProperties() {
-        return super.getNEIProperties();
-    }
 }

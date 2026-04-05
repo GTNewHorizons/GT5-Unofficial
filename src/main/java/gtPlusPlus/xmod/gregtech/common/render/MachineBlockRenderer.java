@@ -129,8 +129,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
             }
         }
     }
-    // spotless:on
-
+    // spotless:on @Override
     public boolean renderStandardBlock(ISBRWorldContext ctx) {
         final TileEntity te = ctx.getBlockAccess()
             .getTileEntity(ctx.getX(), ctx.getY(), ctx.getZ());
@@ -144,6 +143,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
                 GTMethodHelper.getTexture(te, ctx.getBlock(), ForgeDirection.EAST) });
     }
 
+    @Override
     public boolean renderStandardBlock(ISBRWorldContext ctx, ITexture[][] aTextures) {
         ctx.getBlock()
             .setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);

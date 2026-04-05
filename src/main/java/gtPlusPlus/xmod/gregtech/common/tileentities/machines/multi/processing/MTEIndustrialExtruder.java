@@ -63,7 +63,7 @@ public class MTEIndustrialExtruder extends GTPPMultiBlockBase<MTEIndustrialExtru
             .addBulkMachineInfo(4, 3.5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 5, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Inconel Reinforced Casings", 14, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)

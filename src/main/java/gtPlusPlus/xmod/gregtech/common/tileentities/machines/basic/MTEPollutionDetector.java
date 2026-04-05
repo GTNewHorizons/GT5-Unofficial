@@ -18,6 +18,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -44,12 +45,13 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Right click to check pollution levels.",
-            "Configure with screwdriver to set redstone output amount.",
-            "Does not use power.",
-            GTPPCore.GT_Tooltip.get());
+        return TooltipHelper.pollutionDisabledTooltip(
+            ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "Right click to check pollution levels.",
+                "Configure with screwdriver to set redstone output amount.",
+                "Does not use power.",
+                GTPPCore.GT_Tooltip.get()));
     }
 
     @Override
@@ -59,7 +61,7 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
             ? new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
                 TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
             : new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
-                TextureFactory.of(Textures.BlockIcons.VOID) };
+                TextureFactory.of(Textures.GlobalIcons.VOID) };
     }
 
     @Override
@@ -317,11 +319,6 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
         this.mRedstoneLevel = aNBT.getLong("mRedstoneLevel");
     }
 
-    @Override
-    public void onFirstTick(final IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-    }
-
     public boolean allowCoverOnSide(final ForgeDirection side, final int aCoverID) {
         return side != this.getBaseMetaTileEntity()
             .getFrontFacing();
@@ -397,14 +394,4 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
         return false;
     }
 
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-    }
-
-    @Override
-    public void onMachineBlockUpdate() {
-        super.onMachineBlockUpdate();
-    }
 }

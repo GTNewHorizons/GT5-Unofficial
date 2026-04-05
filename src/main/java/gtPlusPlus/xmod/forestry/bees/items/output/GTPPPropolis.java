@@ -73,7 +73,7 @@ public class GTPPPropolis extends Item {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return GTPPPropolisType.get(stack.getItemDamage())
-            .getName();
+            .getLocalizedName();
     }
 
     public static void initPropolisRecipes() {
