@@ -1209,7 +1209,10 @@ public class GTUtility {
             && container.getCapacity(stack) > 0) {
 
             ItemStack stackCopy = copyAmount(1, stack);
-            container.drain(stackCopy, Integer.MAX_VALUE, true);
+            FluidStack drained = container.drain(stackCopy, Integer.MAX_VALUE, true);
+            if (drained == null || drained.amount == 0) {
+                return null;
+            }
             return stackCopy;
         }
 
@@ -2545,7 +2548,7 @@ public class GTUtility {
      * @return the translated string
      */
     public static String translate(String key, Object... parameters) {
-        return parameters.length == 0 ? StatCollector.translateToLocal(key)
+        return parameters == null || parameters.length == 0 ? StatCollector.translateToLocal(key)
             : StatCollector.translateToLocalFormatted(key, parameters);
     }
 
