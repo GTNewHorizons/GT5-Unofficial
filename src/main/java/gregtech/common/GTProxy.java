@@ -1281,6 +1281,7 @@ public class GTProxy implements IFuelHandler {
         PowerGogglesEventHandler.getInstance()
             .onServerStopped(event);
         GTChunkManager.instance.onServerStopped();
+        dimensionWisePollution.clear();
     }
 
     /**
