@@ -37,10 +37,17 @@ public class GTPPMTECable extends MTECable {
         this.vRGB = aRGB == null || aRGB.length != 4 ? Materials.Iron.mRGBa : aRGB;
     }
 
+    public GTPPMTECable(final String aName, final float aThickNess, final Materials aMaterial,
+        final long aCableLossPerMeter, final long aAmperage, final long aVoltage, final boolean aInsulated,
+        final boolean aCanShock, final short[] aRGB) {
+        super(aName, aThickNess, aMaterial, aCableLossPerMeter, aAmperage, aVoltage, aInsulated, aCanShock);
+        this.vRGB = aRGB == null || aRGB.length != 4 ? Materials.Iron.mRGBa : aRGB;
+    }
+
     public GTPPMTECable(final int aID, final String aName, final String aPrefixKey, final float aThickNess,
-        final long aCableLossPerMeter, final long aAmperage, final long aVoltage,
-        final boolean aInsulated, final boolean aCanShock, final Material aMaterial) {
-        super(
+        final long aCableLossPerMeter, final long aAmperage, final long aVoltage, final boolean aInsulated,
+        final boolean aCanShock, final Material aMaterial) {
+        this(
             aID,
             aName,
             aPrefixKey,
@@ -55,9 +62,11 @@ public class GTPPMTECable extends MTECable {
         this.material = aMaterial;
     }
 
-    public GTPPMTECable(final String aName, final float aThickNess, final long aCableLossPerMeter, final long aAmperage,
-                        final long aVoltage, final boolean aInsulated, final boolean aCanShock, final short[] aRGB) {
-        this(aName, aThickNess, null, aCableLossPerMeter, aAmperage, aVoltage, aInsulated, aCanShock, aRGB);
+    public GTPPMTECable(final String aName, final float aThickNess, final Material aMaterial,
+        final long aCableLossPerMeter, final long aAmperage, final long aVoltage, final boolean aInsulated,
+        final boolean aCanShock, final short[] aRGB) {
+        this(aName, aThickNess, (Materials) null, aCableLossPerMeter, aAmperage, aVoltage, aInsulated, aCanShock, aRGB);
+        this.material = aMaterial;
     }
 
     @Override
