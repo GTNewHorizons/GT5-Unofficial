@@ -1,6 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -13,18 +15,22 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CGCT1_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CGCT1_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CGCT1_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
+
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -43,7 +49,7 @@ public class MTECrystalGrowthChamber extends MTEExtendedPowerMultiBlockBase<MTEC
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<MTECrystalGrowthChamber> STRUCTURE_DEFINITION = StructureDefinition
+    private final IStructureDefinition<MTECrystalGrowthChamber> STRUCTURE_DEFINITION = StructureDefinition
         .<MTECrystalGrowthChamber>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
@@ -90,7 +96,7 @@ public class MTECrystalGrowthChamber extends MTEExtendedPowerMultiBlockBase<MTEC
                 " BBB "
             }})
         //spotless:on
-        .addElement('A', ofFrame(Materials.Iron))
+        .addElement('A', chainEmitterCasings())
         .addElement(
             'B',
             buildHatchAdder(MTECrystalGrowthChamber.class)
@@ -99,9 +105,13 @@ public class MTECrystalGrowthChamber extends MTEExtendedPowerMultiBlockBase<MTEC
                 .hint(1)
                 .buildAndChain(
                     onElementPass(MTECrystalGrowthChamber::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 13))))
-        .addElement('C', ofFrame(Materials.Steel))
+        .addElement('C', chainGemClusters())
         .addElement('D', ofBlock(GregTechAPI.sBlockGlass1, 9)) // Sapphire Glass
         .build();
+
+    private int structureTier = -1;
+    private int emitterTier = -1;
+    private int gemClusterTier = -1;
 
     public MTECrystalGrowthChamber(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -114,6 +124,34 @@ public class MTECrystalGrowthChamber extends MTEExtendedPowerMultiBlockBase<MTEC
     @Override
     public IStructureDefinition<MTECrystalGrowthChamber> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
+    }
+
+    private <T> IStructureElement<T> chainEmitterCasings() {
+        return GTStructureChannels.TIER_EMITTER_CASING.use(lazy(t -> ofBlocksTiered((block, meta) -> {
+            if (block != GregTechAPI.sBlockCasingsEmitter) return null;
+            if (meta < 0 || meta > 13) return null;
+            return meta + 1;
+        },
+            IntStream.range(0, 14)
+                .mapToObj(i -> Pair.of(GregTechAPI.sBlockCasingsEmitter, i))
+                .collect(Collectors.toList()),
+            -1,
+            (v1, v2) -> this.emitterTier = v2,
+            v -> this.emitterTier)));
+    }
+
+    private <T> IStructureElement<T> chainGemClusters() {
+        return GTStructureChannels.TIER_GEM_CLUSTER.use(lazy(t -> ofBlocksTiered((block, meta) -> {
+            if (block != GregTechAPI.sBlockGemCluster) return null;
+            if (meta < 0 || meta > 13) return null;
+            return meta + 1;
+        },
+            IntStream.range(0, 14)
+                .mapToObj(i -> Pair.of(GregTechAPI.sBlockGemCluster, i))
+                .collect(Collectors.toList()),
+            -1,
+            (v1, v2) -> this.gemClusterTier = v2,
+            v -> this.gemClusterTier)));
     }
 
     @Override
