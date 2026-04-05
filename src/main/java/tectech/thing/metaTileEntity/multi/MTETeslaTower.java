@@ -598,37 +598,16 @@ public class MTETeslaTower extends TTMultiblockBase
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.name")) // Machine Type: Tesla
-                                                                                               // Tower
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.0")) // Controller block of
-                                                                                            // the Tesla Tower
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.1")) // Used to transmit
-                                                                                            // power to Tesla
-            // Coil Covers and Tesla
-            // Transceivers
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.2")) // Can be fed with
-            // Helium/Nitrogen/Radon Plasma to
-            // increase the range
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.3")) // Transmitted voltage
-                                                                                            // depends on
-            // the used Tesla Capacitor tier
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.4")) // Primary Tesla
-                                                                                            // Windings need to
-            // be at least the same tier as
-            // the Tesla Capacitor
+        tt.addMachineType("gt.blockmachines.multimachine.tm.teslaCoil.name")
+            .addInfo("gt.blockmachines.multimachine.tm.teslaCoil.desc")
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 17, 7, false)
-            .addOtherStructurePart(
-                translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"),
-                translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"),
-                1) // Capacitor Hatch: Any outer Tesla Base Casing
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Energy Hatch:
-                                                                                                 // Any outer Tesla
-                                                                                                 // Base Casing
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Maintenance
-                                                                                                      // Hatch: Any
-                                                                                                      // outer Tesla
-                                                                                                      // Base Casing
+            .addStructurePart(
+                "gt.blockmachines.hatch.capacitor.tier.03.name",
+                "tt.keyword.Structure.AnyTeslaBaseCasingOuter",
+                1)
+            .addEnergyHatch("tt.keyword.Structure.AnyTeslaBaseCasingOuter", 1)
+            .addMaintenanceHatch("tt.keyword.Structure.AnyTeslaBaseCasingOuter", 1)
             .toolTipFinisher();
         return tt;
     }
