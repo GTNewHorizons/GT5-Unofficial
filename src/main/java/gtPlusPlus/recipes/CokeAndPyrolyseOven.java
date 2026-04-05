@@ -7,22 +7,19 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
 
-import java.util.ArrayList;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
@@ -37,18 +34,16 @@ public class CokeAndPyrolyseOven {
     public static void postInit() {
         // Wood to Charcoal
         // Try use all woods found
-        ArrayList<ItemStack> aLogData = OreDictionary.getOres("logWood");
-        for (ItemStack stack : aLogData) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(20, stack))
-                .circuit(20)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 24))
-                .fluidInputs(Materials.Steam.getGas(1_000))
-                .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 1440))
-                .duration(72 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(pyrolyseRecipes);
-        }
+        var logWood20 = new OreDictItemStack("logWood", 20);
+        GTValues.RA.stdBuilder()
+            .itemInputs(logWood20)
+            .circuit(20)
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 24))
+            .fluidInputs(Materials.Steam.getGas(1_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 1440))
+            .duration(72 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(pyrolyseRecipes);
 
         // Coal to Coke
         GTValues.RA.stdBuilder()
