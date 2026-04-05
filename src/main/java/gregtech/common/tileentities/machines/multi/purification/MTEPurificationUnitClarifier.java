@@ -86,31 +86,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             { "           ", "   AAAAA   ", "   AHAHA   ", "   AAAAA   " } };
     // spotless:on
 
-    private static final IStructureDefinition<MTEPurificationUnitClarifier> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEPurificationUnitClarifier>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
-        // Hatches
-        .addElement(
-            'H',
-            ofChain(
-                lazy(
-                    t -> GTStructureUtility.<MTEPurificationUnitClarifier>buildHatchAdder()
-                        .atLeastList(t.getAllowedHatches())
-                        .casingIndex(CASING_TEXTURE_INDEX)
-                        .hint(1)
-                        .build()),
-                // Reinforced Sterile Water Plant Casing
-                ofBlock(GregTechAPI.sBlockCasings9, 5)))
-        // Reinforced Sterile Water Plant Casing
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings9, 5))
-        // PTFE pipe casing
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 1))
-        .addElement('C', ofFrame(Materials.Iridium))
-        .addElement('D', ofFrame(Materials.DamascusSteel))
-        .addElement('W', ofChain(isAir(), ofAnyWater(false)))
-        // Filter machine casing
-        .addElement('F', ofBlock(GregTechAPI.sBlockCasings3, 11))
-        .build();
+    private static IStructureDefinition<MTEPurificationUnitClarifier> STRUCTURE_DEFINITION = null;
 
     public MTEPurificationUnitClarifier(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -159,6 +135,32 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
 
     @Override
     public IStructureDefinition<MTEPurificationUnitClarifier> getStructureDefinition() {
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEPurificationUnitClarifier>builder()
+                .addShape(STRUCTURE_PIECE_MAIN, structure)
+                // Hatches
+                .addElement(
+                    'H',
+                    ofChain(
+                        lazy(
+                            t -> GTStructureUtility.<MTEPurificationUnitClarifier>buildHatchAdder()
+                                .atLeastList(t.getAllowedHatches())
+                                .casingIndex(CASING_TEXTURE_INDEX)
+                                .hint(1)
+                                .build()),
+                        // Reinforced Sterile Water Plant Casing
+                        ofBlock(GregTechAPI.sBlockCasings9, 5)))
+                // Reinforced Sterile Water Plant Casing
+                .addElement('A', ofBlock(GregTechAPI.sBlockCasings9, 5))
+                // PTFE pipe casing
+                .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 1))
+                .addElement('C', ofFrame(Materials.Iridium))
+                .addElement('D', ofFrame(Materials.DamascusSteel))
+                .addElement('W', ofChain(isAir(), ofAnyWater(false)))
+                // Filter machine casing
+                .addElement('F', ofBlock(GregTechAPI.sBlockCasings3, 11))
+                .build();
+        }
         return STRUCTURE_DEFINITION;
     }
 
