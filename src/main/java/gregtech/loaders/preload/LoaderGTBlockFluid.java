@@ -1459,7 +1459,7 @@ public class LoaderGTBlockFluid implements Runnable {
         // region NewHorizonsCoreMod fluids
         // These fluids have to get registered manually so they use the MetaGeneratedItem98 cells instead of generating
         // new MetaGeneratedItem01 fluid cells.
-        GTFluidFactory.builder("sodiumpotassium")
+        GTFluidFactory.builder("SodiumPotassium")
             .withDefaultLocalName("Sodium Potassium")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
@@ -1468,7 +1468,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.SodiumPotassium, 1L),
                 ItemList.Cell_Empty.get(1L));
-        GTFluidFactory.builder("pollution")
+        GTFluidFactory.builder("Pollution")
             .withDefaultLocalName("Pollution")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
@@ -1477,7 +1477,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Pollution, 1L),
                 ItemList.Cell_Empty.get(1L));
-        GTFluidFactory.builder("enrichedbacterialsludge")
+        GTFluidFactory.builder("EnrichedBacterialSludge")
             .withDefaultLocalName("Enriched Bacterial Sludge")
             .withStateAndTemperature(LIQUID, 300)
             .buildAndRegister()
@@ -1488,7 +1488,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L))
             .asFluid()
             .setLuminosity(15);
-        GTFluidFactory.builder("fermentedbacterialsludge")
+        GTFluidFactory.builder("FermentedBacterialSludge")
             .withDefaultLocalName("Fermented Bacterial Sludge")
             .withStateAndTemperature(LIQUID, 300)
             .buildAndRegister()
