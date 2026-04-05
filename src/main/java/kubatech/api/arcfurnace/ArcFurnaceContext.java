@@ -1,5 +1,6 @@
 package kubatech.api.arcfurnace;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public interface ArcFurnaceContext {
@@ -15,5 +16,9 @@ public interface ArcFurnaceContext {
     NBTTagCompound getEffectState();
 
     void resetEffectState();
+
+    boolean depleteInputAndUpdate(ItemStack stack);
+
+    int getRandomNumber(int range);
 
 }

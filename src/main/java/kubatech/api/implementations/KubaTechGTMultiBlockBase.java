@@ -65,6 +65,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import kubatech.Tags;
 
@@ -268,6 +269,11 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
     @Override
     protected boolean useMui2() {
         return false;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new KubaTechGTMultiBlockBaseGUI<>(this);
     }
 
     @Override

@@ -25,6 +25,7 @@ public class ElectrodeItem extends Item {
         setMaxDamage(0);
         setUnlocalizedName("arc_furnace_electrode");
         setCreativeTab(KT);
+        setMaxStackSize(1);
     }
 
     public ItemStack getElectrodeStack(ArcFurnaceElectrode electrode) {
@@ -52,7 +53,7 @@ public class ElectrodeItem extends Item {
     public boolean damageElectrode(ItemStack stack, int damage) {
         ArcFurnaceElectrode electrode = getElectrodeFromStack(stack);
         if (electrode == null) return false;
-        int used = usedDurability(stack) + damage;
+        int used = Math.max(0, usedDurability(stack) + damage);
         if (used >= electrode.durability) {
             return true;
         } else {

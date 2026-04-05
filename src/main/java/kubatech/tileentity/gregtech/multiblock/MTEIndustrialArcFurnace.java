@@ -25,6 +25,7 @@ import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.Ar
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,6 +33,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -46,7 +48,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -62,10 +63,11 @@ import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.api.util.tooltip.TooltipHelper;
 import kubatech.api.arcfurnace.ArcFurnaceContext;
 import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
+import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.ArcFurnaceElectrode;
 import kubatech.tileentity.gregtech.hatch.MTEElectrodeHatch;
 
-public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEIndustrialArcFurnace>
+public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustrialArcFurnace>
     implements ISurvivalConstructable, ArcFurnaceContext {
 
     public MTEIndustrialArcFurnace(int aID, String aName, String aNameRegional) {
@@ -305,6 +307,22 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
+    public boolean depleteInputAndUpdate(ItemStack stack) {
+        startRecipeProcessing();
+        boolean result = depleteInput(stack);
+        if (result) {
+            updateSlots();
+        }
+        endRecipeProcessing();
+        return result;
+    }
+
+    @Override
+    public int getRandomNumber(int range) {
+        return getBaseMetaTileEntity().getRandomNumber(range);
+    }
+
+    @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         if (electrode == null) return;
         logic.setSpeedBonus(1d / electrode.speedModifier);
@@ -400,6 +418,9 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
     protected @NotNull CheckRecipeResult postCheckRecipe(@NotNull CheckRecipeResult result,
         @NotNull ProcessingLogic processingLogic) {
         result = super.postCheckRecipe(result, processingLogic);
+        if (!result.wasSuccessful() && phase == ArcFurnacePhase.ArcIgnition) {
+            phase = ArcFurnacePhase.Standby;
+        }
         return result;
     }
 
@@ -415,6 +436,11 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
+
+            @Override
+            protected @NotNull Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                return super.findRecipeMatches(map).limit(1);
+            }
 
             @Override
             protected @NotNull CheckRecipeResult applyRecipe(@NotNull GTRecipe recipe, @NotNull ParallelHelper helper,
@@ -441,8 +467,10 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
             @Override
             protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (electrode == null) return SimpleCheckRecipeResult.ofFailure("no_electrode");
+                CheckRecipeResult result = super.validateRecipe(recipe);
+                if (!result.wasSuccessful()) return result;
                 if (phase == ArcFurnacePhase.ArcIgnition) return SimpleCheckRecipeResult.ofSuccess("arc_ignition");
-                return super.validateRecipe(recipe);
+                return result;
             }
 
             @Override
@@ -524,4 +552,8 @@ public class MTEIndustrialArcFurnace extends MTEExtendedPowerMultiBlockBase<MTEI
         }
     }
 
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
 }

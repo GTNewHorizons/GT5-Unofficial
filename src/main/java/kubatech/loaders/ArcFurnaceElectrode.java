@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GTUtility;
 import gregtech.client.GTTooltipHandler;
 import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
@@ -89,9 +90,31 @@ public enum ArcFurnaceElectrode {
     HypogenElectrode(UEV, 6.5d, 256, 1d, 4d, 1000, 1.5d, 3.5d),
 
     // nanite eletrodes
-    NeutroniumNaniteElectrode(UHV, 5d, 64, 2d, 4d, 1000, 4d, 5d),
-    TranscendentNaniteElectrode(UIV, 7.5d, 512, 4d, 4d, 1000, 3.5d, 2d),
-    UniversiumNaniteElectrode(UXV, 10d, 1024, 8d, 4d, 1000, 2d, 1d),
+    NeutroniumNaniteElectrode(UHV, 5d, 64, 2d, 4d, 1000, 4d, 5d, event -> {
+        if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
+            if (completed.arcFurnace.depleteInputAndUpdate(Materials.Neutronium.getDust(1))
+                && completed.arcFurnace.getRandomNumber(100) < 70) {
+                completed.arcFurnace.setDurabilityConsumptionThisRun(0);
+            }
+        }
+    }),
+    TranscendentNaniteElectrode(UIV, 7.5d, 512, 4d, 4d, 1000, 3.5d, 2d, event -> {
+        if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
+            if (completed.arcFurnace.depleteInputAndUpdate(Materials.TranscendentMetal.getDust(1))
+                && completed.arcFurnace.getRandomNumber(100) < 90) {
+                completed.arcFurnace.setDurabilityConsumptionThisRun(0);
+            }
+        }
+    }),
+    UniversiumNaniteElectrode(UXV, 10d, 1024, 8d, 4d, 1000, 2d, 1d, event -> {
+        if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
+            if (completed.arcFurnace.depleteInputAndUpdate(Materials.Universium.getDust(1))) {
+                if (completed.arcFurnace.getRandomNumber(100) < 10)
+                    completed.arcFurnace.setDurabilityConsumptionThisRun(-1);
+                else completed.arcFurnace.setDurabilityConsumptionThisRun(0);
+            }
+        }
+    }),
 
     ;
 
