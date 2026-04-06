@@ -30,6 +30,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -55,6 +56,8 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructable {
+
+    private static final String hpCasing = Casings.HighPowerCasing.getLocalizedName();
 
     // region variables
     private final ArrayList<MTEHatchDataItemsOutput> eStacksDataOutputs = new ArrayList<>();
@@ -121,38 +124,35 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.type")) // Machine Type: Data
-                                                                                              // Bank, DB
+            // Bank, DB
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.0")) // Controller block of
-                                                                                           // the Data Bank
+            // the Data Bank
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.1")) // Used to supply
-                                                                                           // Assembling Lines
+            // Assembling Lines
             // with more Data Sticks
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.2")) // and give multiple
-                                                                                           // Assembling Lines
-                                                                                           // access to
-                                                                                           // the same Data
+            // Assembling Lines
+            // access to
+            // the same Data
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to
-                                                                                           // toggle
-                                                                                           // wireless mode
+            // toggle
+            // wireless mode
             .addTecTechHatchInfo()
             .beginStructureBlock(5, 3, 3, false)
-            .addController("Front center")
-            .addCasingInfoExactly("Computer Heat Vent", 18, false)
-            .addCasingInfoExactly("High Power Casing", 7, false)
-            .addCasingInfoMin("Computer Casing", 3, false)
-            .addOtherStructurePart(
+            .addController("front_center")
+            .addCasingInfoExactly("Computer Heat Vent", 18)
+            .addCasingInfoExactly(hpCasing, 7)
+            .addCasingInfoMin("Computer Casing", 3)
+            .addStructurePart(
                 translateToLocal("tt.keyword.Structure.DataAccessHatch"),
                 translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
-                2) // Data Access Hatch: Any Computer Casing
-            .addOtherStructurePart(
+                2)
+            .addStructurePart(
                 translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"),
                 translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
                 2) // Data Bank Master Connector: Any Computer Casing
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any
-                                                                                            // High Power Casing
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance
-                                                                                                 // Hatch: Any High
-                                                                                                 // Power Casing
+            .addEnergyHatch(GTUtility.translate("GT5U.MBTT.HatchInfo", hpCasing), 1)
+            .addMaintenanceHatch(GTUtility.translate("GT5U.MBTT.HatchInfo", hpCasing), 1)
             .toolTipFinisher();
         return tt;
     }

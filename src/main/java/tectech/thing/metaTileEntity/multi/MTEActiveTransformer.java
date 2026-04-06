@@ -27,6 +27,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -70,6 +71,8 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     private static final double INV_5SECS = 1d / 5d;
     private static final double INV_30SECS = 1d / 30d;
     private static final double INV_60SECS = 1d / 60d;
+
+    private static final String hpCasing = Casings.HighPowerCasing.getLocalizedName();
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
@@ -171,25 +174,15 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.transformer.machinetype")) // Machine Type:
-            // Transformer
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.1")) // Can transform to
-                                                                                              // and from any
-                                                                                              // voltage
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.2")) // Only 0.004% power
-                                                                                              // loss, HAYO!
+        tt.addMachineType("gt.blockmachines.multimachine.em.transformer.machinetype")
+            .addInfo("gt.blockmachines.multimachine.em.transformer.desc")
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 3, 3, false)
-            .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
-            .addCasingInfoMin(translateToLocal("gt.blockcasingsTT.0.name"), 5, false) // 5x High Power Casing
-                                                                                      // (minimum)
-            .addOtherStructurePart(
-                translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"),
-                translateToLocal("tt.keyword.Structure.Center")) // SuperconductingCoilBlock: Center
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any
-                                                                                            // High Power Casing
-            .addDynamoHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Dynamo Hatch: Any
-                                                                                            // High Power Casing
+            .addController("front_center")
+            .addCasingInfoMin(hpCasing, 5)
+            .addStructurePart(hpCasing, "tt.keyword.Structure.Center")
+            .addEnergyHatch(GTUtility.translate("GT5U.MBTT.HatchInfo", hpCasing), 1)
+            .addDynamoHatch(GTUtility.translate("GT5U.MBTT.HatchInfo", hpCasing), 1)
             .toolTipFinisher();
         return tt;
     }

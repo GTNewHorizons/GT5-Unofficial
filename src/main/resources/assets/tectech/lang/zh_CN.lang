@@ -759,7 +759,6 @@ tt.keyword.ID=ID
 tt.keyword.at=
 # Any X
 tt.keyword.Structure.AnyComputerCasing=任意电子计算机械方块
-tt.keyword.Structure.AnyHighPowerCasing=任意超能机械方块
 tt.keyword.Structure.AnyHighPowerCasing1D=任意提示方块：1号的超能机械方块
 tt.keyword.Structure.AnyHighPowerCasing2D=任意提示方块：2号的超能机械方块
 tt.keyword.Structure.AnyHighPowerCasingFront=任意正面超能机械方块
@@ -778,7 +777,6 @@ tt.keyword.Structure.AnyOuterCasingOnBottom=任意底层外侧机械方块
 # Optional
 tt.keyword.Structure.Optional=(可选)
 # Placement specification
-tt.keyword.Structure.FrontCenter=正面中央
 tt.keyword.Structure.BackCenter=背面中央
 tt.keyword.Structure.SideCenter=侧面中央
 tt.keyword.Structure.FrontCenter3rd=正面第三层中央
@@ -792,7 +790,6 @@ tt.keyword.Structure.ElementalOverflow=元物质溢流仓
 tt.keyword.Structure.ElementalInput=元物质输入仓
 tt.keyword.Structure.EssentiaStorage=源质存储装置
 tt.keyword.Structure.DataConnector=光学接口
-tt.keyword.Structure.SuperconductingCoilBlock=超导线圈方块
 tt.keyword.Structure.StainlessSteelCasing=不锈钢机械方块
 
 

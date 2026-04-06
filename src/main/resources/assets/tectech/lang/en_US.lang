@@ -616,8 +616,7 @@ gt.blockcasingsBA0.12.name=Infinite Spacetime Energy Boundary Casing
 gt.blockmachines.multimachine.em.transformer.name=Active Transformer
 gt.blockmachines.multimachine.em.transformer.machinetype=Active Transformer, AT
 gt.blockmachines.multimachine.em.transformer.hint=1 - Energy IO Hatches or High Power Casing
-gt.blockmachines.multimachine.em.transformer.desc.1=Can transform to and from any voltage
-gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.004% power loss, HAYO!
+gt.blockmachines.multimachine.em.transformer.desc=Can transform to and from any voltage\nOnly 0.004% power loss, HAYO!
 
 gt.blockmachines.multimachine.tm.microwave.name=Microwave Grinder
 gt.blockmachines.multimachine.tm.microwave.hint.0=1 - Classic Hatches or Clean Stainless Steel Casing
@@ -1383,7 +1382,6 @@ tt.keyword.ID=ID
 tt.keyword.at=at
 # Any X
 tt.keyword.Structure.AnyComputerCasing=Any Computer Casing
-tt.keyword.Structure.AnyHighPowerCasing=Any High Power Casing
 tt.keyword.Structure.AnyHighPowerCasing1D=Any High Power Casing with 1 dot
 tt.keyword.Structure.AnyHighPowerCasing2D=Any High Power Casing with 2 dots
 tt.keyword.Structure.AnyHighPowerCasingFront=Any High Power Casing on the front side
@@ -1404,7 +1402,6 @@ tt.keyword.Structure.AnyOuterCasingOnBottom=Any outer casing on the bottom layer
 # Optional
 tt.keyword.Structure.Optional=(optional)
 # Placement specification
-tt.keyword.Structure.FrontCenter=Front center
 tt.keyword.Structure.BackCenter=Back center
 tt.keyword.Structure.SideCenter=Side center
 tt.keyword.Structure.FrontCenter3rd=Front 3rd layer center
@@ -1420,7 +1417,6 @@ tt.keyword.Structure.EssentiaStorage=Essentia Storage
 tt.keyword.Structure.DataConnector=Data Connector
 tt.keyword.Structure.DataInput=Data Input Hatch
 tt.keyword.Structure.DataOutput=Data Output Hatch
-tt.keyword.Structure.SuperconductingCoilBlock=Superconducting Coil Block
 tt.keyword.Structure.StainlessSteelCasing=Stainless Steel Casing
 tt.wirelessInputData.config.text=Configure how much computation to pull from wireless network
 

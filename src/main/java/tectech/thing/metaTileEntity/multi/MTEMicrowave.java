@@ -230,32 +230,27 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.microwave.name")) // Machine Type:
-                                                                                               // Microwave Grinder
+            // Microwave Grinder
             .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.0")) // Controller block of
-                                                                                            // the
+            // the
             // Microwave Grinder
             .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.1")) // Starts a timer when
-                                                                                            // enabled
+            // enabled
             .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.2")) // While the timer is
-                                                                                            // running
+            // running
             // anything inside the machine
             // will take damage
             .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.3")) // The machine will also
-                                                                                            // collect
+            // collect
             // any items inside of it
             .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.4")) // Can be configured
-                                                                                            // with a Parametrizer
+            // with a Parametrizer
             .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.5")) // (Do not insert a
-                                                                                            // Wither)
+            // Wither)
             .beginStructureBlock(5, 4, 5, true)
-            .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller:
-                                                                                 // Front
-                                                                                 // center
-            .addCasingInfoMin(translateToLocal("tt.keyword.Structure.StainlessSteelCasing"), 60, false) // 60x
-                                                                                                        // Stainless
-                                                                                                        // Steel
-            // Casing (minimum)
-            .addOtherStructurePart(
+            .addController("front_center")
+            .addCasingInfoMin(translateToLocal("tt.keyword.Structure.StainlessSteelCasing"), 60, false)
+            .addStructurePart(
                 translateToLocal("tt.keyword.Structure.DataConnector"),
                 translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"),
                 2) // Output Bus: Any outer casing on the bottom layer

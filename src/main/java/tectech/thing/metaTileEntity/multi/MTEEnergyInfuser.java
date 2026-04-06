@@ -33,6 +33,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import ic2.api.item.ElectricItem;
@@ -45,6 +46,8 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
  * Created by danie_000 on 17.12.2016.
  */
 public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConstructable {
+
+    private static final String hpCasing = Casings.HighPowerCasing.getLocalizedName();
 
     private static final int maxRepairedDamagePerOperation = 1000;
     private static final long usedEuPerDurability = 1000;
@@ -249,31 +252,25 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
             .beginStructureBlock(3, 5, 3, false)
             // Controller: Front 3rd layer center
             .addController(translateToLocal("tt.keyword.Structure.FrontCenter3rd"))
-            .addOtherStructurePart(
+            .addStructurePart(
                 // High Power
                 translateToLocal("gt.blockcasingsTT.0.name"),
                 translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.HighPowerCasing"))
-            // Casing: Layer
-            // 1 and 5
-            .addOtherStructurePart(
+            .addStructurePart(
                 // Molecular Coil
                 translateToLocal("gt.blockcasingsTT.7.name"),
                 translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.MolecularCoil"))
             // Layer 2 and 4
-            .addOtherStructurePart(
+            .addStructurePart(
                 // Molecular
                 translateToLocal("gt.blockcasingsTT.4.name"),
                 translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.MolecularCasing"))
             // Casing: Layer
             // 3 (hollow)
-            // Energy Hatch: Any High Power Casing
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
-            // Maintenance Hatch: Any High Power Casing
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
-            // Input Bus: Any High Power Casing
-            .addInputBus(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
-            // Output Bus: Any High Power Casing
-            .addOutputBus(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            .addEnergyHatch(GTUtility.translate("GT5U.MBTT.HatchInfo", hpCasing), 1)
+            .addMaintenanceHatch(GTUtility.translate("GT5U.MBTT.HatchInfo", hpCasing), 1)
+            .addInputBus(GTUtility.translate("GT5U.MBTT.HatchInfo", hpCasing), 1)
+            .addOutputBus(GTUtility.translate("GT5U.MBTT.HatchInfo", hpCasing), 1)
             .toolTipFinisher();
         return tt;
     }

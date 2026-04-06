@@ -618,8 +618,7 @@ gt.blockcasingsBA0.8.desc.1=Смертельно опасно!
 gt.blockmachines.multimachine.em.transformer.name=Активный трансформатор
 gt.blockmachines.multimachine.em.transformer.machinetype=Активный трансформатор, AT
 gt.blockmachines.multimachine.em.transformer.hint=1 - Энерговывод/вывод и Высокоэнергетический корпус
-gt.blockmachines.multimachine.em.transformer.desc.1=Может преобразовывать в любой вольтаж и обратно
-gt.blockmachines.multimachine.em.transformer.desc.2=Всего 0.004% энергопотерь, ВАУ!!!
+gt.blockmachines.multimachine.em.transformer.desc=Может преобразовывать в любой вольтаж и обратно\nВсего 0.004% энергопотерь, ВАУ!!!
 
 gt.blockmachines.multimachine.tm.microwave.name=Совершенная микроволновая печь
 gt.blockmachines.multimachine.tm.microwave.hint.0=1 - Шлюзы или Чистый корпус из нержавеющей стали
@@ -1353,7 +1352,6 @@ tt.keyword.ID=ID
 tt.keyword.at=при
 # Any X
 tt.keyword.Structure.AnyComputerCasing=Любой Корпус компьютера
-tt.keyword.Structure.AnyHighPowerCasing=Любой Высокоэнергетический корпус
 tt.keyword.Structure.AnyHighPowerCasing1D=Любой Высокоэнергетический корпус с 1 точками
 tt.keyword.Structure.AnyHighPowerCasing2D=Любой Высокоэнергетический корпус с 2 точками
 tt.keyword.Structure.AnyHighPowerCasingFront=Любой Высокоэнергетический корпус на передней стороне
@@ -1373,7 +1371,6 @@ tt.keyword.Structure.AnyOuterCasingOnBottom=Любой внешний корпу
 # Optional
 tt.keyword.Structure.Optional=(Необязательно)
 # Placement specification
-tt.keyword.Structure.FrontCenter=Спереди в центре
 tt.keyword.Structure.BackCenter=Сзади посередине
 tt.keyword.Structure.SideCenter=Сбоку посередине
 tt.keyword.Structure.FrontCenter3rd=3-й слой спереди в центре
@@ -1389,7 +1386,6 @@ tt.keyword.Structure.EssentiaStorage=Хранилище Эссенции
 tt.keyword.Structure.DataConnector=Коннектор данных
 tt.keyword.Structure.DataInput=Входной шлюз данных
 tt.keyword.Structure.DataOutput=Выходной шлюз данных
-tt.keyword.Structure.SuperconductingCoilBlock=Блок сверхпроводящей катушки
 tt.keyword.Structure.StainlessSteelCasing=Корпус из нержавеющая стали
 tt.wirelessInputData.config.text=Настройте объём вычислений, извлекаемых из беспроводной сети
 
