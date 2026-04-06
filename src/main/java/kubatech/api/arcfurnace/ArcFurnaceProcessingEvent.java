@@ -16,6 +16,7 @@ public class ArcFurnaceProcessingEvent {
 
     public static class EventPostRecipeCheck extends ArcFurnaceProcessingEvent {
 
+        public final ProcessingLogic logic;
         public final GTRecipe recipe;
         public final ParallelHelper helper;
         public final OverclockCalculator calculator;
@@ -23,10 +24,11 @@ public class ArcFurnaceProcessingEvent {
         public final boolean processingPhase;
         public long eut;
 
-        public EventPostRecipeCheck(final ArcFurnaceContext arcFurnace, final GTRecipe recipe,
-            final ParallelHelper helper, final OverclockCalculator calculator, final CheckRecipeResult result,
-            final boolean processingPhase, long eut) {
+        public EventPostRecipeCheck(final ArcFurnaceContext arcFurnace, final ProcessingLogic logic,
+            final GTRecipe recipe, final ParallelHelper helper, final OverclockCalculator calculator,
+            final CheckRecipeResult result, final boolean processingPhase, long eut) {
             super(arcFurnace);
+            this.logic = logic;
             this.recipe = recipe;
             this.helper = helper;
             this.calculator = calculator;

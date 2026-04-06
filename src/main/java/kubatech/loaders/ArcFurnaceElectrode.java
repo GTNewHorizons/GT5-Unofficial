@@ -38,7 +38,8 @@ public enum ArcFurnaceElectrode {
         if (event instanceof ArcFurnaceProcessingEvent.EventPostRecipeCheck postRecipe) {
             if (!postRecipe.result.wasSuccessful()) return;
             int performedOC = postRecipe.calculator.getPerformedOverclocks();
-            postRecipe.arcFurnace.setDurabilityConsumptionThisRun(1 + performedOC);
+            postRecipe.arcFurnace.setDurabilityConsumptionThisRun(
+                postRecipe.arcFurnace.getDurabilityConsumptionThisRun() * (1 + performedOC));
         }
     }),
     NetheriteElectrode(LuV, 1.6d, 16, 1d, 4d, 600, 1.3d, 2d, event -> {
@@ -109,8 +110,8 @@ public enum ArcFurnaceElectrode {
     UniversiumNaniteElectrode(UXV, 10d, 1024, 8d, 4d, 1000, 2d, 1d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.Universium.getDust(1))) {
-                if (completed.arcFurnace.getRandomNumber(100) < 10)
-                    completed.arcFurnace.setDurabilityConsumptionThisRun(-1);
+                if (completed.arcFurnace.getRandomNumber(100) < 10) completed.arcFurnace
+                    .setDurabilityConsumptionThisRun(completed.arcFurnace.getDurabilityConsumptionThisRun() * -1);
                 else completed.arcFurnace.setDurabilityConsumptionThisRun(0);
             }
         }

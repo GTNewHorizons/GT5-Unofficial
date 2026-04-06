@@ -97,6 +97,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     private ArcFurnaceElectrode electrode = null;
     private int durabilityCostThisRun = 1;
     private NBTTagCompound effectState = new NBTTagCompound();
+    private double electrodeDamagePercentage = 0d;
 
     private static final int OFFSET_H = 10;
     private static final int OFFSET_V = 7;
@@ -176,6 +177,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         mCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D)) return false;
         if (mCasing < 10) return false;
+        if (electrodeHatch == null) return false;
+        if (electrode == null && electrodeHatch.getStackInSlot(0) != null) electrodeChanged();
         return true;
     }
 
@@ -307,6 +310,16 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     }
 
     @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
     public boolean depleteInputAndUpdate(ItemStack stack) {
         startRecipeProcessing();
         boolean result = depleteInput(stack);
@@ -368,6 +381,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         }
         ItemStack electrodeStack = electrodeHatch.getStackInSlot(0);
         electrode = ArcFurnaceElectrode.getByStack(electrodeStack);
+        if (electrode != null) {
+            electrodeDamagePercentage = (double) ARC_FURNACE_ELECTRODE.usedDurability(electrodeStack)
+                / (double) electrode.durability;
+        }
     }
 
     @Override
@@ -401,6 +418,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                         electrodeChanged();
                     } else {
                         electrodeHatch.markDirty();
+                        electrodeDamagePercentage = (double) ARC_FURNACE_ELECTRODE.usedDurability(electrodeStack)
+                            / (double) electrode.durability;
                     }
                 }
             }
@@ -446,8 +465,26 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             protected @NotNull CheckRecipeResult applyRecipe(@NotNull GTRecipe recipe, @NotNull ParallelHelper helper,
                 @NotNull OverclockCalculator calculator, @NotNull CheckRecipeResult result) {
                 CheckRecipeResult ret = super.applyRecipe(recipe, helper, calculator, result);
+                if (result.wasSuccessful() && phase == ArcFurnacePhase.Processing) {
+                    double batchedRecipes = (double) helper.getCurrentParallel()
+                        / (double) calculator.getCurrentParallel();
+                    if (batchedRecipes > 1d) {
+                        batchedRecipes -= 1;
+                        int bint = (int) batchedRecipes;
+                        batchedRecipes -= bint;
+                        if (batchedRecipes > 0d && getRandomNumber(100) < (batchedRecipes * 100d)) {
+                            bint += 1;
+                        }
+                        durabilityCostThisRun += bint;
+                    }
+                    if (electrodeDamagePercentage > 0.9d && getRandomNumber(100) < 10) {
+                        this.overwriteOutputItems();
+                        this.overwriteOutputFluids();
+                    }
+                }
                 ArcFurnaceProcessingEvent.EventPostRecipeCheck afterRecipe = new ArcFurnaceProcessingEvent.EventPostRecipeCheck(
                     MTEIndustrialArcFurnace.this,
+                    this,
                     recipe,
                     helper,
                     calculator,
@@ -492,8 +529,11 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
             @Override
             protected @NotNull ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
-                if (phase == ArcFurnacePhase.Standby) {
+                if (phase == ArcFurnacePhase.Standby
+                    || (phase == ArcFurnacePhase.Processing && electrodeDamagePercentage > 0.7d
+                        && getRandomNumber(100) < 10)) {
                     phase = ArcFurnacePhase.ArcIgnition;
+                    this.setBatchSize(1);
                     GTRecipe ignitionRecipe = fakeRecipe();
                     ignitionRecipe.mEUt = (int) (getAverageInputVoltage() * 30d
                         / 32d
