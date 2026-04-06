@@ -4681,6 +4681,7 @@ GT5U.waila.boiler_solar.output=Solar Boiler Output:§r %d/%d L/s
 GT5U.waila.hatch.crafting_input_slave.linked=Linked
 GT5U.waila.hatch.crafting_input_slave.unlinked=Not linked
 GT5U.waila.hatch.crafting_input_slave.bound_to=Bound to %d, %d, %d
+GT5U.waila.hatch.outputme.storage_cache=Storage Cache:
 GT5U.waila.hatch.crafting_input_slave.reverseRecipes=Reverse recipes mode is %s
 GT5U.waila.hatch.outputme.item_cache_capacity=Item cache capacity: §e%s§r
 GT5U.waila.hatch.outputme.fluid_cache_capacity=Fluid cache capacity: §e%s L§r
