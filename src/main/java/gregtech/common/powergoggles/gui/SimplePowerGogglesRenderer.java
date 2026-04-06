@@ -67,16 +67,18 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         GL11.glScaled(PowerGogglesConfigHandler.hudScale, PowerGogglesConfigHandler.hudScale, 1);
         GL11.glTranslated(-scaleOffsetX, -scaleOffsetY, 0);
 
-        renderStorageText();
-        if (PowerGogglesConfigHandler.showPowerBar) {
-            renderGradientRectangle();
+        if (PowerGogglesConfigHandler.showMeasurements) {
+            renderStorageText();
+            if (PowerGogglesConfigHandler.showPowerBar) {
+                renderGradientRectangle();
+            }
+            renderTimedDifferenceText();
+            renderBackground();
         }
-        renderTimedDifferenceText();
 
         if (PowerGogglesConfigHandler.showPowerChart) {
             renderPowerChart();
         }
-        renderBackground();
 
         GL11.glPopMatrix();
 
@@ -365,8 +367,9 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int bgColor = PowerGogglesConfigHandler.measurementsBackgroundColor;
 
         double mainStringHeight = fontRenderer.FONT_HEIGHT * mainScale;
-        double subStringHeight = fontRenderer.FONT_HEIGHT * subScale * 2;
-        double gapHeight = gapBetweenLines * 4;
+        double subStringHeight = PowerGogglesConfigHandler.showMeasurements ? fontRenderer.FONT_HEIGHT * subScale * 2
+            : 0;
+        double gapHeight = gapBetweenLines * (PowerGogglesConfigHandler.showMeasurements ? 4 : 2);
 
         int bgHeight = (int) (mainStringHeight + gradientRectangleHeight + subStringHeight + gapHeight);
 
