@@ -30,6 +30,7 @@ public class FluidHeaterRecipes implements Runnable {
             .addTo(fluidHeaterRecipes);
 
         GTValues.RA.stdBuilder()
+            .circuit(1)
             .fluidInputs(Materials.Water.getFluid(6))
             .fluidOutputs(Materials.Steam.getGas(960))
             .duration(1 * SECONDS + 10 * TICKS)
@@ -37,6 +38,7 @@ public class FluidHeaterRecipes implements Runnable {
             .addTo(fluidHeaterRecipes);
 
         GTValues.RA.stdBuilder()
+            .circuit(1)
             .fluidInputs(GTModHandler.getDistilledWater(6))
             .fluidOutputs(Materials.Steam.getGas(960))
             .duration(1 * SECONDS + 10 * TICKS)
