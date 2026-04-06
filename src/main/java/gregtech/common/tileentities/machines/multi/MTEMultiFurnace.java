@@ -108,7 +108,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             .addDynamicMultiplicativeParallelInfo(2, TooltipTier.COIL)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addCasingInfoRange("Heat Proof Machine Casing", 8, 14, false)
             .addOtherStructurePart("Heating Coils", "Middle layer")
             .addEnergyHatch("Any bottom casing", 1)

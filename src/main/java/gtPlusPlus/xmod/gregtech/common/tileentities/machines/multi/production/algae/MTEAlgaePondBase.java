@@ -103,7 +103,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 3, 9, true)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Machine Casings", MINIMUM_CASINGS, true)
             .addCasingInfoExactly("Sterile Farm Casings", 64, false)
             .addInputBus("Any Casing", 1)

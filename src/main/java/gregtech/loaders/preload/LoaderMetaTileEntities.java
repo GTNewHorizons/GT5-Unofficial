@@ -2748,7 +2748,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEBasicMachineWithRecipe(
                 CHEMICAL_REACTOR_UV.ID,
                 "basicmachine.chemicalreactor.tier.08",
-                "Ultimate Chemical Perforer",
+                "Ultimate Chemical Performer",
                 8,
                 MachineType.CHEMICAL_REACTOR.tooltipDescription(),
                 chemicalReactorRecipes,
@@ -10666,6 +10666,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerSolarPanels() {
+        ItemList.Machine_ULV_SolarPanel.set(
+            new MTESolarGenerator(SOLAR_PANEL_ULV.ID, "basicgenerator.solarpanel.00", "1-volt Solar Panel", 0)
+                .getStackForm(1));
         ItemList.Machine_LV_SolarPanel.set(
             new MTESolarGenerator(SOLAR_PANEL_LV.ID, "basicgenerator.solarpanel.01", "Basic Solar Panel", 1)
                 .getStackForm(1));

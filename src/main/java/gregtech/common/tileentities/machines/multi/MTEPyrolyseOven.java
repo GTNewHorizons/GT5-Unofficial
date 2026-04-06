@@ -98,7 +98,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
             .addInfo("EU/t is not affected by Coil tier")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)
-            .addController("Front center")
+            .addController("Front bottom center")
             .addCasingInfoRange("Pyrolyse Oven Casing", 60, 80, false)
             .addOtherStructurePart("Heating Coils", "Center 3x1x3 of the bottom layer")
             .addEnergyHatch("Any bottom layer casing", 1)
