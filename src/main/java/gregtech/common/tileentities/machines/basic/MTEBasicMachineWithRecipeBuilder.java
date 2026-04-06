@@ -11,27 +11,123 @@ public final class MTEBasicMachineWithRecipeBuilder {
 
     private MTEBasicMachineWithRecipeBuilder() {}
 
-    public static MTEBasicMachineWithRecipeBuilder builder() {
-        return new MTEBasicMachineWithRecipeBuilder();
+    public static NameStep builder(int id) {
+        return new Builder(id);
     }
 
-    private int id;
-    private String unlocalizedName;
-    private String englishName;
-    private int tier;
-    private String[] description;
-    private RecipeMap<?> recipes;
-    private int inputSlotCount;
-    private int outputSlotCount;
-    private boolean hasInputFluidSlot = false;
-    private boolean hasOutputFluidSlot = false;
-    private int fluidTankCapacity = 0;
-    private SoundResource sound;
-    private SpecialEffects specialEffect = SpecialEffects.NONE;
-    private String overlays;
+    private static final class Builder
+        implements NameStep, TierStep, DescriptionStep, RecipesStep, SlotsStep, SoundStep, OverlaysStep, OptionalStep {
 
-    public MTEBasicMachineWithRecipe build() {
-        if (fluidTankCapacity == 0) {
+        private final int id;
+        private String unlocalizedName;
+        private String englishName;
+        private int tier;
+        private String[] description;
+        private RecipeMap<?> recipes;
+        private int inputSlotCount;
+        private int outputSlotCount;
+        private SoundResource sound;
+        private String overlays;
+        private boolean hasInputFluidSlot = false;
+        private boolean hasOutputFluidSlot = false;
+        private int fluidTankCapacityOverride = 0;
+        private SpecialEffects specialEffect = SpecialEffects.NONE;
+
+        public Builder(int id) {
+            this.id = id;
+        }
+
+        @Override
+        public TierStep setName(String unlocalizedName, String englishName) {
+            this.unlocalizedName = unlocalizedName;
+            this.englishName = englishName;
+            return this;
+        }
+
+        @Override
+        public TierStep setName(String unlocalizedName) {
+            this.unlocalizedName = unlocalizedName;
+            this.englishName = StatCollector.translateToFallback(unlocalizedName);
+            return this;
+        }
+
+        @Override
+        public DescriptionStep setTier(int tier) {
+            this.tier = tier;
+            return this;
+        }
+
+        @Override
+        public RecipesStep setDescription(String[] descriptions) {
+            this.description = descriptions;
+            return this;
+        }
+
+        @Override
+        public SlotsStep setRecipes(RecipeMap<?> recipes) {
+            this.recipes = recipes;
+            return this;
+        }
+
+        @Override
+        public SoundStep setSlotsCount(int inputSlotCount, int outputSlotCount) {
+            this.inputSlotCount = inputSlotCount;
+            this.outputSlotCount = outputSlotCount;
+            return this;
+        }
+
+        @Override
+        public OverlaysStep setSound(SoundResource sound) {
+            this.sound = sound;
+            return this;
+        }
+
+        @Override
+        public OptionalStep setOverlays(String overlays) {
+            this.overlays = overlays;
+            return this;
+        }
+
+        @Override
+        public OptionalStep setFluidSlots(boolean hasInput, boolean hasOutput) {
+            this.hasInputFluidSlot = hasInput;
+            this.hasOutputFluidSlot = hasOutput;
+            this.fluidTankCapacityOverride = 0;
+            return this;
+        }
+
+        @Override
+        public OptionalStep setFluidSlots(boolean hasInput, boolean hasOutput, int capacityOverride) {
+            this.hasInputFluidSlot = hasInput;
+            this.hasOutputFluidSlot = hasOutput;
+            this.fluidTankCapacityOverride = capacityOverride;
+            return this;
+        }
+
+        @Override
+        public OptionalStep setSpecialEffect(SpecialEffects specialEffect) {
+            this.specialEffect = specialEffect;
+            return this;
+        }
+
+        @Override
+        public MTEBasicMachineWithRecipe build() {
+            if (fluidTankCapacityOverride == 0) {
+                return new MTEBasicMachineWithRecipe(
+                    id,
+                    unlocalizedName,
+                    englishName,
+                    tier,
+                    description,
+                    recipes,
+                    inputSlotCount,
+                    outputSlotCount,
+                    hasInputFluidSlot || hasOutputFluidSlot,
+                    sound,
+                    specialEffect,
+                    overlays);
+            }
+
             return new MTEBasicMachineWithRecipe(
                 id,
                 unlocalizedName,
@@ -41,95 +137,58 @@ public final class MTEBasicMachineWithRecipeBuilder {
                 recipes,
                 inputSlotCount,
                 outputSlotCount,
-                hasInputFluidSlot || hasOutputFluidSlot,
+                fluidTankCapacityOverride,
                 sound,
                 specialEffect,
                 overlays);
         }
-
-        return new MTEBasicMachineWithRecipe(
-            id,
-            unlocalizedName,
-            englishName,
-            tier,
-            description,
-            recipes,
-            inputSlotCount,
-            outputSlotCount,
-            fluidTankCapacity,
-            sound,
-            specialEffect,
-            overlays);
     }
 
-    public MTEBasicMachineWithRecipeBuilder setId(int id) {
-        this.id = id;
-        return this;
+    public interface NameStep {
+
+        TierStep setName(String unlocalizedName, String englishName);
+
+        TierStep setName(String unlocalizedName);
     }
 
-    public MTEBasicMachineWithRecipeBuilder setName(String unlocalizedName, String englishName) {
-        this.unlocalizedName = unlocalizedName;
-        this.englishName = englishName;
-        return this;
+    public interface TierStep {
+
+        DescriptionStep setTier(int tier);
     }
 
-    public MTEBasicMachineWithRecipeBuilder setName(String unlocalizedName) {
-        this.unlocalizedName = unlocalizedName;
-        this.englishName = StatCollector.translateToFallback(unlocalizedName);
-        return this;
+    public interface DescriptionStep {
+
+        RecipesStep setDescription(String[] descriptions);
     }
 
-    public MTEBasicMachineWithRecipeBuilder setTier(int tier) {
-        this.tier = tier;
-        return this;
+    public interface RecipesStep {
+
+        SlotsStep setRecipes(RecipeMap<?> recipes);
     }
 
-    public MTEBasicMachineWithRecipeBuilder setDescription(String description) {
-        this.description = new String[] { description };
-        return this;
+    public interface SlotsStep {
+
+        SoundStep setSlotsCount(int inputSlotCount, int outputSlotCount);
     }
 
-    public MTEBasicMachineWithRecipeBuilder setDescription(String[] descriptions) {
-        this.description = descriptions;
-        return this;
+    public interface SoundStep {
+
+        OverlaysStep setSound(SoundResource sound);
     }
 
-    public MTEBasicMachineWithRecipeBuilder setRecipes(RecipeMap<?> recipes) {
-        this.recipes = recipes;
-        return this;
+    public interface OverlaysStep {
+
+        OptionalStep setOverlays(String overlays);
     }
 
-    public MTEBasicMachineWithRecipeBuilder setSlotsCount(int inputSlotCount, int outputSlotCount) {
-        this.inputSlotCount = inputSlotCount;
-        this.outputSlotCount = outputSlotCount;
-        return this;
-    }
+    public interface OptionalStep {
 
-    public MTEBasicMachineWithRecipeBuilder setFluidSlots(boolean hasInput, boolean hasOutput) {
-        this.hasInputFluidSlot = hasInput;
-        this.hasOutputFluidSlot = hasOutput;
-        return this;
-    }
+        OptionalStep setFluidSlots(boolean hasInput, boolean hasOutput);
 
-    public MTEBasicMachineWithRecipeBuilder setFluidSlots(boolean hasInput, boolean hasOutput, int capacity) {
-        this.hasInputFluidSlot = hasInput;
-        this.hasOutputFluidSlot = hasOutput;
-        this.fluidTankCapacity = capacity;
-        return this;
-    }
+        OptionalStep setFluidSlots(boolean hasInput, boolean hasOutput, int capacityOverride);
 
-    public MTEBasicMachineWithRecipeBuilder setSound(SoundResource sound) {
-        this.sound = sound;
-        return this;
-    }
+        OptionalStep setSpecialEffect(SpecialEffects specialEffect);
 
-    public MTEBasicMachineWithRecipeBuilder setSpecialEffect(SpecialEffects specialEffect) {
-        this.specialEffect = specialEffect;
-        return this;
-    }
-
-    public MTEBasicMachineWithRecipeBuilder setOverlays(String overlays) {
-        this.overlays = overlays;
-        return this;
+        MTEBasicMachineWithRecipe build();
     }
 }

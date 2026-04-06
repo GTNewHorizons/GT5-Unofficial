@@ -86,17 +86,16 @@ public class GregtechSimpleWasher {
 
     private static void registerSimpleWasher(GregtechItemList washer, int id, String unloc, String loc, int tier) {
         washer.set(
-            MTEBasicMachineWithRecipeBuilder.builder()
-                .setId(id)
+            MTEBasicMachineWithRecipeBuilder.builder(id)
                 .setName(unloc, loc)
                 .setTier(tier)
                 .setDescription(
                     new String[] { "It's like an automatic Cauldron for washing dusts.", GTPPCore.GT_Tooltip.get() })
                 .setRecipes(simpleWasherRecipes)
                 .setSlotsCount(1, 1)
-                .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("SIMPLE_WASHER")
+                .setFluidSlots(true, false)
                 .build()
                 .setRecipeCatalystPriority(-tier)
                 .getStackForm(1L));
