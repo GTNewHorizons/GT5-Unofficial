@@ -21,8 +21,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import com.jaquadro.minecraft.storagedrawers.StorageDrawers;
-
 import bartworks.common.loaders.ItemRegistry;
 import codechicken.nei.api.API;
 import gregtech.GTMod;
