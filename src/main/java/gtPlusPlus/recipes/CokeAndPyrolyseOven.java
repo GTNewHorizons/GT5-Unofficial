@@ -17,33 +17,24 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class CokeAndPyrolyseOven {
 
-    public static void onLoadComplete() {
-        convertPyroToCokeOven();
-    }
-
     public static void postInit() {
         // Wood to Charcoal
         // Try use all woods found
-        var logWood20 = new OreDictItemStack("logWood", 20);
         GTValues.RA.stdBuilder()
-            .itemInputs(logWood20)
+            .itemInputs(new OreDictItemStack("logWood", 20))
             .circuit(20)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 24))
             .fluidInputs(Materials.Steam.getGas(1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 1440))
             .duration(72 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         // Coal to Coke
         GTValues.RA.stdBuilder()
@@ -54,7 +45,7 @@ public class CokeAndPyrolyseOven {
             .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 20 * INGOTS))
             .duration(36 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         // Cactus and Sugar charcoal/coke, copied over from the ICO and adjusted for pyrolyse (*20 input and output,
         // duration*1.25 per item.)
@@ -89,7 +80,7 @@ public class CokeAndPyrolyseOven {
             .fluidOutputs(Materials.Creosote.getFluid(2_000))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(25 * SECONDS)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(plant)
@@ -99,7 +90,7 @@ public class CokeAndPyrolyseOven {
             .fluidOutputs(Materials.CharcoalByproducts.getGas(4_000))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(250 * TICKS)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         // Charcoal to Coke
         GTValues.RA.stdBuilder()
@@ -109,7 +100,7 @@ public class CokeAndPyrolyseOven {
             .fluidOutputs(Materials.Creosote.getFluid(4_000))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(50 * SECONDS)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
@@ -119,7 +110,7 @@ public class CokeAndPyrolyseOven {
             .fluidOutputs(Materials.CharcoalByproducts.getGas(2_000))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(25 * SECONDS)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         // Coke to Wood tar/Wood gas
         GTValues.RA.stdBuilder()
@@ -130,7 +121,7 @@ public class CokeAndPyrolyseOven {
             .fluidOutputs(Materials.WoodTar.getFluid(4_000))
             .eut(TierEU.RECIPE_HV / 2)
             .duration(75 * SECONDS)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(coke)
@@ -140,16 +131,6 @@ public class CokeAndPyrolyseOven {
             .fluidOutputs(Materials.WoodGas.getGas(6_000))
             .eut(TierEU.RECIPE_HV / 2)
             .duration(75 * SECONDS)
-            .addTo(pyrolyseRecipes);
-    }
-
-    private static void convertPyroToCokeOven() {
-        int aCount = 0;
-        for (GTRecipe g : RecipeMaps.pyrolyseRecipes.getAllRecipes()) {
-            if (AddGregtechRecipe.importPyroRecipe(g.copy())) {
-                aCount++;
-            }
-        }
-        Logger.INFO("Converted " + aCount + " Pyrolyse recipes into Industrial Coke Oven recipes.");
+            .addTo(pyrolyseRecipes, cokeOvenRecipes);
     }
 }
