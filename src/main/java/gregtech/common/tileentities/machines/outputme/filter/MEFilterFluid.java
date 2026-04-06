@@ -55,12 +55,12 @@ public class MEFilterFluid extends MEFilterBase<IAEFluidStack, String, FluidStac
 
     @Override
     public String getEnableKey() {
-        return "GT5U.hatch.item.filter.enable";
+        return "GT5U.hatch.fluid.filter.enable";
     }
 
     @Override
     public String getDisableKey() {
-        return "GT5U.hatch.item.filter.disable";
+        return "GT5U.hatch.fluid.filter.disable";
     }
 
     @Override
