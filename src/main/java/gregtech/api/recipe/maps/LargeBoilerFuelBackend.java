@@ -55,7 +55,7 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
     }
 
     public GTRecipe addDieselRecipe(GTRecipe recipe) {
-        return addRecipe(recipe, ((double) recipe.mSpecialValue) / 40, true, false);
+        return addRecipe(recipe, ((double) recipe.mSpecialValue) / 20, true, false);
     }
 
     public void addSolidRecipes(ItemStack... itemStacks) {
