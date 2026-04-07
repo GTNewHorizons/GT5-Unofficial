@@ -179,6 +179,7 @@ public class MTEMoltenModule extends MTEBaseModule {
             .addInfo("as a regular solid instead")
             .addInfo("This module is specialized towards parallel processing")
             .beginStructureBlock(7, 7, 13, false)
+            .addController("Front center")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"
                     + EnumChatFormatting.GRAY

@@ -171,13 +171,15 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
+        int realBudget = elementBudget >= 500 ? elementBudget : Math.min(500, elementBudget * 5);
+
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
             MAIN_OFFSET_X,
             MAIN_OFFSET_Y,
             MAIN_OFFSET_Z,
-            elementBudget,
+            realBudget,
             env,
             false,
             true);
