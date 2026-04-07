@@ -614,6 +614,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             .addInfo("but the extra power cost is instead added in form of increased catalyst amounts")
             .addUnlimitedTierSkips()
             .beginStructureBlock(33, 24, 33, false)
+            .addController("Middle of the structure, 3rd layer")
             .addStructureInfo(EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "120" + EnumChatFormatting.GRAY + " Dimensional bridge blocks required.")
@@ -670,7 +671,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + EnumChatFormatting.GRAY
                     + "-"
                     + EnumChatFormatting.GOLD
-                    + max_input_bus
+                    + max_output_bus
                     + EnumChatFormatting.GRAY
                     + " output buses")
             .addStructureInfo("")
