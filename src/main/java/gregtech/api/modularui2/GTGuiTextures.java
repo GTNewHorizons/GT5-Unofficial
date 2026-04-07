@@ -440,8 +440,6 @@ public final class GTGuiTextures {
 
     public static final UITexture OVERLAY_SLOT_ARROW_4 = UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_slot/arrow_4");
 
-    public static final UITexture OVERLAY_SLOT_RACK = UITexture.fullImage(MODID, "gui/overlay_slot/rack");
-
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
         .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_none")
@@ -544,6 +542,12 @@ public final class GTGuiTextures {
     public static final UITexture TT_OVERLAY_SLOT_MESH = UITexture.builder()
         .location(MODID, "gui/overlay_slot/mesh")
         .canApplyTheme()
+        .build();
+
+    public static final UITexture TT_OVERLAY_SLOT_RACK = UITexture.builder()
+        .location(MODID, "gui/overlay_slot/rack")
+        .canApplyTheme()
+        .fullImage()
         .build();
 
     public static final UITexture OVERLAY_BUTTON_TESLA_TOWER_CHART = UITexture.builder()

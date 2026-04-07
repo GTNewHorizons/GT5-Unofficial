@@ -2,8 +2,6 @@ package gregtech.common.gui.modularui.hatch;
 
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.awt.*;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -94,7 +92,7 @@ public class MTEHatchRackGui extends MTEHatchBaseGui<MTEHatchRack> {
                 }
             }.slotGroup("item_inv")
                 .filter(t -> isValidItem(t) && !isActiveSyncer.getBoolValue() && heatSyncer.getIntValue() <= 0))
-                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_RACK)
+                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.TT_OVERLAY_SLOT_RACK)
                 .margin(2))
                 .align(Alignment.CENTER)
                 .coverChildren());
