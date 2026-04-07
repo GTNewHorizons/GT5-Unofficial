@@ -74,7 +74,7 @@ public class MTEHatchObjectHolderGui extends MTEHatchBaseGui<MTEHatchObjectHolde
 
     @Override
     protected IDrawable.DrawableWidget createLogo() {
-        return new IDrawable.DrawableWidget(GTGuiTextures.PICTURE_TECTECH_LOGO).size(18);
+        return new IDrawable.DrawableWidget(GTGuiTextures.TT_PICTURE_TECTECH_LOGO).size(18);
     }
 
     @Override
