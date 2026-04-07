@@ -1087,6 +1087,17 @@ public class GTRecipeBuilder {
         return recipeMap.doAdd(this);
     }
 
+    public Collection<GTRecipe> addTo(IRecipeMap... recipeMaps) {
+        if (skip) {
+            return Collections.emptyList();
+        }
+
+        Collection<GTRecipe> addedRecipes = new ArrayList<>();
+        for (IRecipeMap recipeMap : recipeMaps) addedRecipes.addAll(recipeMap.doAdd(this));
+
+        return addedRecipes;
+    }
+
     public GTRecipeBuilder reset() {
         metadataStorage = null;
         alts = null;
