@@ -1,13 +1,14 @@
 package gregtech.common.tileentities.machines.outputme.base;
 
-import static gregtech.common.covers.modes.FilterType.BLACKLIST;
-import static gregtech.common.covers.modes.FilterType.WHITELIST;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
@@ -20,6 +21,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -55,11 +59,14 @@ import appeng.me.storage.MEInventoryHandler;
 import appeng.util.IterationCounter;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.outputme.filter.MEFilterBase;
 import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFilterBase<T, ?, I>, I> {
 
@@ -351,20 +358,15 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         ItemStack upgradeItemStack = env.getCellStack();
 
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ICellWorkbenchItem cellWorkbenchItem) {
-            // FIXME: localize this msg
-            String msg = filter.updateFilterFromCell(cellWorkbenchItem, upgradeItemStack);
-            if (!msg.isEmpty() && env.getLastClickedPlayer() != null) {
-                String modeKey = filter.getIsBlackList() ? BLACKLIST.getKey() : WHITELIST.getKey();
-                GTUtility.sendChatComp(
-                    env.getLastClickedPlayer(),
-                    new ChatComponentTranslation(modeKey).appendText(": ")
-                        .appendSibling(new ChatComponentTranslation(filter.getEnableKey(), msg)));
+            IChatComponent msg = filter.updateFilterFromCell(cellWorkbenchItem, upgradeItemStack);
+            if (env.getLastClickedPlayer() != null && GTUtility.isServer()) {
+                GTUtility.sendChatComp(env.getLastClickedPlayer(), msg);
             }
             env.dispatchMarkDirty();
         } else {
-            filter.clear();
-            if (env.getLastClickedPlayer() != null) {
-                GTUtility.sendChatTrans(env.getLastClickedPlayer(), filter.getDisableKey());
+            IChatComponent msg = filter.clearAndGetNotify();
+            if (env.getLastClickedPlayer() != null && GTUtility.isServer()) {
+                GTUtility.sendChatComp(env.getLastClickedPlayer(), msg);
             }
             env.dispatchMarkDirty();
         }
@@ -647,15 +649,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     public List<T> getCacheList() {
         List<T> stackList = new ArrayList<>();
 
-        if (cacheMode && cell != null) {
-            final Iterable<T> iter = cell.getAvailableItems(
-                cell.getStackType()
-                    .createPrimitiveList(),
-                IterationCounter.fetchNewId());
-            iter.forEach(stackList::add);
-        } else {
-            cache.iterateAll((stack, amount) -> stackList.add(stack.setStackSize(amount)));
-        }
+        cache.iterateAll((stack, amount) -> stackList.add(stack.setStackSize(amount)));
 
         return stackList;
     }
@@ -670,24 +664,128 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         }
     }
 
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        tag.setLong("cacheCapacity", getCacheCapacity());
-        List<T> stackList = getCacheList();
-        tag.setInteger("stackCount", stackList.size());
-
-        stackList.sort((a, b) -> Long.compare(b.getStackSize(), a.getStackSize()));
+    private void processWailaNBTData(NBTTagCompound tag, String listKey, String countKey, List<T> stacks) {
+        tag.setInteger(countKey, stacks.size());
 
         NBTTagList tagList = new NBTTagList();
-        tag.setTag("stacks", tagList);
+        tag.setTag(listKey, tagList);
 
-        stackList.stream()
+        stacks.sort((a, b) -> Long.compare(b.getStackSize(), a.getStackSize()));
+        stacks.stream()
             .limit(10)
             .forEach(stack -> {
                 NBTTagCompound stackTag = new NBTTagCompound();
                 stack.writeToNBT(stackTag);
+                stackTag.setString("Name", stack.getDisplayName());
                 stackTag.setLong("Amount", stack.getStackSize());
                 tagList.appendTag(stackTag);
             });
+    }
+
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        tag.setLong("cacheCapacity", getCacheCapacity());
+        processWailaNBTData(tag, "stacks", "stackCount", getCacheList());
+
+        if (cacheMode && cell != null) {
+            List<T> cacheList = new ArrayList<>();
+            final Iterable<T> iter = cell.getAvailableItems(
+                cell.getStackType()
+                    .createPrimitiveList(),
+                IterationCounter.fetchNewId());
+            iter.forEach(cacheList::add);
+            processWailaNBTData(tag, "cacheStacks", "cacheCount", cacheList);
+        }
+    }
+
+    private void processInfoData(String langBaseKey, Function<T, String> nameGetter, List<T> list, List<String> ss) {
+        if (list.isEmpty()) {
+            ss.add(StatCollector.translateToLocal(langBaseKey + ".empty"));
+        } else {
+            ss.add(StatCollector.translateToLocalFormatted(langBaseKey + ".contains", list.size()));
+            list.stream()
+                .limit(100)
+                .forEach(s -> {
+                    ss.add(
+                        nameGetter.apply(s) + ": "
+                            + EnumChatFormatting.GOLD
+                            + formatNumber(s.getStackSize())
+                            + " L"
+                            + EnumChatFormatting.RESET);
+                });
+        }
+    }
+
+    public String[] getInfoData(String AEDiagnostics, String langBaseKey, Function<T, String> nameGetter) {
+        List<String> ss = new ArrayList<>();
+        ss.add(
+            (getProxy() != null && getProxy().isActive())
+                ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
+                : StatCollector
+                    .translateToLocalFormatted("GT5U.infodata.hatch.crafting_input_me.bus.offline", AEDiagnostics));
+        ss.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.hatch.output_me.cache_capacity",
+                EnumChatFormatting.GOLD + formatNumber(getCacheCapacity()) + " L" + EnumChatFormatting.RESET));
+        processInfoData(langBaseKey, nameGetter, getCacheList(), ss);
+        if (cacheMode && cell != null) {
+            List<T> cacheList = new ArrayList<>();
+            final Iterable<T> iter = cell.getAvailableItems(
+                cell.getStackType()
+                    .createPrimitiveList(),
+                IterationCounter.fetchNewId());
+            iter.forEach(cacheList::add);
+            ss.add(translateToLocal("GT5U.waila.hatch.outputme.storage_cache"));
+            processInfoData(langBaseKey, nameGetter, cacheList, ss);
+        }
+        return ss.toArray(new String[0]);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static class WailaHelper {
+
+        private static void processWailaAdvancedBody(String prefix, List<String> ss, String listKey, String countKey,
+            NBTTagCompound tag) {
+            NBTTagList stacks = tag.getTagList(listKey, 10);
+            int stackCount = tag.getInteger(countKey);
+
+            if (stackCount == 0) {
+                ss.add(translateToLocal("GT5U.waila.hatch.outputme." + prefix + "_cache_empty"));
+                return;
+            }
+            ss.add(
+                translateToLocalFormatted(
+                    "GT5U.waila.hatch.outputme." + prefix + "_cache_detail",
+                    stackCount,
+                    stackCount > 1 ? "s" : ""));
+
+            for (int i = 0; i < stacks.tagCount(); i++) {
+                NBTTagCompound stackTag = stacks.getCompoundTagAt(i);
+
+                ss.add(
+                    String.format(
+                        "%s: %s%s%s",
+                        stackTag.getString("Name"),
+                        EnumChatFormatting.GOLD,
+                        formatNumber(stackTag.getLong("Amount")),
+                        EnumChatFormatting.RESET));
+            }
+
+            if (stackCount > stacks.tagCount()) {
+                ss.add(
+                    translateToLocalFormatted(
+                        "GT5U.waila.hatch.outputme." + prefix + "_cache_detail.more",
+                        stackCount - stacks.tagCount()));
+            }
+        }
+
+        public static void getWailaAdvancedBody(String prefix, List<String> ss, IWailaDataAccessor accessor) {
+            NBTTagCompound tag = accessor.getNBTData();
+            processWailaAdvancedBody(prefix, ss, "stacks", "stackCount", tag);
+            if (tag.hasKey("cacheCount")) {
+                ss.add(translateToLocal("GT5U.waila.hatch.outputme.storage_cache"));
+                processWailaAdvancedBody(prefix, ss, "cacheStacks", "cacheCount", tag);
+            }
+        }
     }
 }
