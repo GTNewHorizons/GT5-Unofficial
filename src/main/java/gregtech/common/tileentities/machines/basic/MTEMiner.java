@@ -49,14 +49,15 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
 
     private final int mSpeed;
 
-    private static String[] MTEMinerTooltip(int aTier) {
+    @Override
+    public String[] getDescription() {
         return GTUtility.translateMultiline(
             "gt.blockmachines.basicmachine.miner.tooltip",
-            ENERGY[aTier],
-            SPEED[aTier] / 20,
-            (RADIUS[aTier] * 2 + 1),
-            (RADIUS[aTier] * 2 + 1),
-            aTier);
+            ENERGY[mTier],
+            SPEED[mTier] / 20,
+            (RADIUS[mTier] * 2 + 1),
+            (RADIUS[mTier] * 2 + 1),
+            mTier);
     }
 
     public MTEMiner(int aID, String aName, String aNameRegional, int aTier) {
@@ -66,7 +67,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
             aNameRegional,
             aTier,
             1,
-            MTEMinerTooltip(aTier),
+            new String[0],
             2,
             2,
             TextureFactory.of(
