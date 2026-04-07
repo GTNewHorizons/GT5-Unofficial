@@ -83,7 +83,7 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo {
     }
 
     public String[] getDescription() {
-        return new String[] { GTUtility.translate("gt.blockmachines.basicmachine.teleporter.tooltip") };
+        return GTUtility.translateMultiline("gt.blockmachines.basicmachine.teleporter.tooltip");
     }
 
     public MTETeleporter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

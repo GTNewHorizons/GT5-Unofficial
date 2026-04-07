@@ -66,7 +66,7 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
     }
 
     public String[] getDescription() {
-        return new String[] { GTUtility.translate("gt.blockmachines.basicmachine.microtransmitter.tooltip") };
+        return GTUtility.translateMultiline("gt.blockmachines.basicmachine.microtransmitter.tooltip");
 
     }
 
