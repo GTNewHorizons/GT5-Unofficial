@@ -262,6 +262,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .beginStructureBlock(3, 3, 3, true)
+            .addController("Front center")
             .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addStructureInfo(

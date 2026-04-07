@@ -38,14 +38,22 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import appeng.api.config.Actionable;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
+import appeng.api.networking.IGridNode;
 import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
+import appeng.api.networking.storage.IStackWatcher;
+import appeng.api.networking.storage.IStackWatcherHost;
 import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEFluidStack;
+import appeng.api.storage.data.IAEStack;
+import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
+import appeng.api.util.DimensionalCoord;
+import appeng.core.localization.WailaText;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
@@ -77,8 +85,8 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchInputME extends MTEHatchInput
-    implements IPowerChannelState, IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable, IMEConnectable {
+public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState,
+    IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable, IMEConnectable, IGridProxyable, IStackWatcherHost {
 
     public static final int SLOT_COUNT = 16;
     public static final String COPIED_DATA_IDENTIFIER = "stockingHatch";
@@ -215,34 +223,42 @@ public class MTEHatchInputME extends MTEHatchInput
         }
 
         int index = 0;
-
-        clearSlotConfigs();
-
+        boolean configChanged = false;
         while (iterator.hasNext() && index < SLOT_COUNT) {
             IAEFluidStack curr = iterator.next();
 
             if (curr.getStackSize() < minAutoPullAmount) continue;
 
             Slot oldSlot = slots[index];
-
-            // Prevent weird reference problems by copying the slot
-            if (oldSlot != null) oldSlot = oldSlot.copy();
+            FluidStack oldStack = null;
+            if (oldSlot != null && oldSlot.extracted != null) oldStack = oldSlot.extracted.copy();
 
             setSlotConfig(index, GTUtility.copyAmount(1, curr.getFluidStack()));
 
             Slot newSlot = slots[index];
-
+            FluidStack newStack = null;
             if (newSlot != null) {
-                newSlot.extracted = curr.getFluidStack();
+                newSlot.extracted = newStack = curr.getFluidStack();
                 newSlot.extractedAmount = newSlot.extracted.amount;
             }
-
-            if (!Objects.equals(oldSlot, newSlot)) {
-                justHadNewFluids = true;
+            boolean sametype = GTUtility.areFluidsEqual(oldStack, newStack);
+            if (newStack != null) {
+                // lower amount/disappearance is not considered 'new fluids'
+                if (sametype) {
+                    if (newStack.amount > oldStack.amount) {
+                        justHadNewFluids = true; // same type, higher amount
+                    }
+                } else {
+                    justHadNewFluids = true; // different type
+                }
             }
-
+            if (expediteRecipeCheck && !((oldStack == null && newStack == null) || sametype)) {
+                configChanged = true;
+            }
             index++;
         }
+        Arrays.fill(slots, index, slots.length, null);
+        if (configChanged) configureWatchers();
     }
 
     public FluidStack[] getStoredFluids() {
@@ -333,7 +349,7 @@ public class MTEHatchInputME extends MTEHatchInput
 
     public void setRecipeCheck(boolean value) {
         expediteRecipeCheck = value;
-
+        configureWatchers();
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
         // Changing this field requires a structure check/update, so let's do that automatically
@@ -498,7 +514,7 @@ public class MTEHatchInputME extends MTEHatchInput
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
-                    (IGridProxyable) getBaseMetaTileEntity(),
+                    this,
                     "proxy",
                     autoPullAvailable ? ItemList.Hatch_Input_ME_Advanced.get(1) : ItemList.Hatch_Input_ME.get(1),
                     true);
@@ -603,15 +619,9 @@ public class MTEHatchInputME extends MTEHatchInput
 
         IAEFluidStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
 
-        FluidStack previous = slot.extracted;
-
         slot.extracted = result != null ? result.getFluidStack() : null;
         slot.extractedAmount = slot.extracted == null ? 0 : slot.extracted.amount;
 
-        // We want to track changes in any FluidStack to notify any connected controllers to make a recipe check early
-        if (expediteRecipeCheck && slot.extracted != null) {
-            justHadNewFluids = !GTUtility.areFluidsEqual(slot.extracted, previous);
-        }
     }
 
     protected void clearSlotConfigs() {
@@ -930,7 +940,7 @@ public class MTEHatchInputME extends MTEHatchInput
     public static class Slot {
 
         /** The fluid to pull into this slot. */
-        public FluidStack config;
+        public final FluidStack config;
 
         /** The amount of stuff initially in the ME system when the recipe check started. */
         public int extractedAmount;
@@ -1002,5 +1012,47 @@ public class MTEHatchInputME extends MTEHatchInput
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchInputMEGui(this, slots).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public IGridNode getGridNode(ForgeDirection dir) {
+        return getProxy().getNode();
+    }
+
+    @Override
+    public void securityBreak() {}
+
+    @Override
+    public DimensionalCoord getLocation() {
+        return new DimensionalCoord(
+            getBaseMetaTileEntity().getWorld(),
+            getBaseMetaTileEntity().getXCoord(),
+            getBaseMetaTileEntity().getYCoord(),
+            getBaseMetaTileEntity().getZCoord());
+    }
+
+    private IStackWatcher watcher;
+
+    private void configureWatchers() {
+        if (this.watcher != null) {
+            this.watcher.clear();
+            if (expediteRecipeCheck) for (Slot slot : slots) {
+                if (slot != null && slot.config != null) {
+                    watcher.add(AEFluidStack.create(slot.config));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void updateWatcher(IStackWatcher newWatcher) {
+        watcher = newWatcher;
+        configureWatchers();
+    }
+
+    @Override
+    public void onStackChange(IItemList o, IAEStack fullStack, IAEStack diffStack, BaseActionSource src,
+        StorageChannel chan) {
+        if (expediteRecipeCheck && diffStack.getStackSize() > 0) justHadNewFluids = true;
     }
 }

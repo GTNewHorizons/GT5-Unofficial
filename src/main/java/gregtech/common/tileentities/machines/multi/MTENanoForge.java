@@ -762,6 +762,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(30, 38, 13, false)
+            .addController("Front bottom center")
             .addStructureInfo("Total blocks needed for the structure at tier " + getTieredText("1", "2", "3"))
             .addStructureInfo(getTieredText("522", "670", "898") + "Radiant Naquadah Alloy Casing")
             .addStructureInfo(getTieredText("170", "170", "254") + "Stellar Alloy Frame Box")
