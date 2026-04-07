@@ -1030,8 +1030,6 @@ fluid.Formaldehyde=甲醛
 fluid.tcetieisfucusserratusfluid=鲸鱼座T星藻类培养液
 fluid.MeatExtract=肉汁
 //No recipe
-fluid.CompressedOxygen=压缩氧气
-fluid.CompressedNitrogen=压缩氮气
 fluid.redplasma=红等离子体
 fluid.tile.fluidBlockSludge=污泥
 //No Textrue
