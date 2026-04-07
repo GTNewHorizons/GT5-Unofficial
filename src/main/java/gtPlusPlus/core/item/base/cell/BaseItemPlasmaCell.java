@@ -1,7 +1,5 @@
 package gtPlusPlus.core.item.base.cell;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -35,13 +33,13 @@ public class BaseItemPlasmaCell extends BaseItemComponent {
 
     @Override
     public void registerIcons(final IIconRegister i) {
-        this.base = i.registerIcon(GTPlusPlus.ID + ":" + "item" + this.PlasmaCell.getComponent());
-        this.overlay = i.registerIcon(GTPlusPlus.ID + ":" + "item" + this.PlasmaCell.getComponent() + "_Overlay");
+        this.base = i.registerIcon(getCorrectTextures());
+        this.overlay = i.registerIcon(getCorrectTextures() + "_OVERLAY");
     }
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
-        if (renderPass == 0) {
+        if (renderPass == 1) {
             return Utils.rgbtoHexValue(255, 255, 255);
         }
         return this.componentColour;
