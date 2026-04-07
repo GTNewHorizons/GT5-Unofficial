@@ -42,6 +42,8 @@ public class GTPPRecipeMaps {
         .minInputs(0, 0)
         .progressBar(GTUITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_SIFT, ProgressWidget.Direction.DOWN)
+        // from the recently deceased AddGregtechRecipe.java
+        .recipeTransformer(recipe -> { recipe.mDuration = (int) (recipe.mDuration * 0.8); })
         .build();
     public static final RecipeMap<RecipeMapBackend> multiblockMassFabricatorRecipes = RecipeMapBuilder
         .of("gtpp.recipe.matterfab2")
