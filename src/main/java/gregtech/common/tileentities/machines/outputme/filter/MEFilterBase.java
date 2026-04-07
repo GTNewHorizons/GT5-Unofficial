@@ -1,10 +1,17 @@
 package gregtech.common.tileentities.machines.outputme.filter;
 
+import static gregtech.common.covers.modes.FilterType.BLACKLIST;
+import static gregtech.common.covers.modes.FilterType.WHITELIST;
+
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 
 import appeng.api.config.Upgrades;
 import appeng.api.implementations.items.IUpgradeModule;
@@ -46,10 +53,9 @@ public abstract class MEFilterBase<T extends IAEStack<T>, E, I> {
         return isBlacklist;
     }
 
-    private String updateFilterFromConfig(CellConfig cfg) {
+    private IChatComponent updateFilterFromConfig(CellConfig cfg) {
         lockedElements.clear();
-        StringBuilder builder = new StringBuilder();
-        boolean isFirst = true;
+        List<IChatComponent> list = new ArrayList<>();
 
         for (int i = 0; i < cfg.getSizeInventory(); i++) {
             IAEStack<?> stack = cfg.getAEStackInSlot(i);
@@ -57,18 +63,22 @@ public abstract class MEFilterBase<T extends IAEStack<T>, E, I> {
                 E element = extractElement(toNative((T) stack));
                 lockedElements.add(element);
 
-                String name = getDisplayName((T) stack);
-                if (isFirst) {
-                    builder.append(name);
-                    isFirst = false;
-                } else {
-                    builder.append(", ")
-                        .append(name);
-                }
+                list.add(stack.getChatComponent());
             }
         }
 
-        return builder.toString();
+        String modeKey = getIsBlackList() ? BLACKLIST.getKey() : WHITELIST.getKey();
+        IChatComponent result = new ChatComponentTranslation(getEnableKey())
+            .appendSibling(new ChatComponentTranslation(modeKey).appendText(": "));
+        for (IChatComponent chat : list) {
+            result.appendSibling(chat);
+        }
+        return result;
+    }
+
+    public IChatComponent clearAndGetNotify() {
+        clear();
+        return new ChatComponentTranslation(getDisableKey());
     }
 
     private void updateBlacklistMode(ICellWorkbenchItem cell, ItemStack stack) {
@@ -86,7 +96,7 @@ public abstract class MEFilterBase<T extends IAEStack<T>, E, I> {
         }
     }
 
-    public String updateFilterFromCell(ICellWorkbenchItem cell, ItemStack stack) {
+    public IChatComponent updateFilterFromCell(ICellWorkbenchItem cell, ItemStack stack) {
         updateBlacklistMode(cell, stack);
 
         CellConfig cfg = (CellConfig) cell.getConfigAEInventory(stack);
@@ -96,8 +106,6 @@ public abstract class MEFilterBase<T extends IAEStack<T>, E, I> {
     protected abstract E extractElement(I stack);
 
     protected abstract boolean isCorrectType(IAEStack<?> stack);
-
-    protected abstract String getDisplayName(T stack);
 
     public final void loadNBTData(NBTTagCompound tag) {
         isBlacklist = tag.getBoolean("blackList");

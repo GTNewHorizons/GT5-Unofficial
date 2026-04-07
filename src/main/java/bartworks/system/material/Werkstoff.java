@@ -365,7 +365,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             if (count > 0) this.stats = stats.setMass(tmpmass / count);
         }
 
-        if (this.stats.meltingPoint == 0) this.stats.meltingPoint = 1123;
+        if (this.stats.meltingPoint == 0) this.stats.meltingPoint = -1;
 
         if (this.stats.meltingVoltage == 0) this.stats.meltingVoltage = 120;
 
@@ -1052,6 +1052,10 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         }
 
         public int getMeltingPoint() {
+            return this.meltingPoint == -1 ? 1123 : this.meltingPoint;
+        }
+
+        public int getMeltingPointDirect() {
             return this.meltingPoint;
         }
 
