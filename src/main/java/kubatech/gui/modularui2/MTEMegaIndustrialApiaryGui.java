@@ -1,7 +1,21 @@
 package kubatech.gui.modularui2;
 
-import codechicken.nei.LayoutManager;
-import codechicken.nei.SearchField;
+import static forestry.api.apiculture.BeeManager.beeRoot;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+
 import com.cleanroommc.modularui.ModularUI;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -27,6 +41,9 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
+
+import codechicken.nei.LayoutManager;
+import codechicken.nei.SearchField;
 import forestry.api.apiculture.EnumBeeType;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
@@ -36,23 +53,9 @@ import gregtech.common.modularui2.widget.SlotLikeButtonWidget;
 import kubatech.api.helpers.GTHelper;
 import kubatech.tileentity.gregtech.multiblock.MTEMegaIndustrialApiary;
 import kubatech.tileentity.gregtech.multiblock.MTEMegaIndustrialApiary.BeeSimulator;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static forestry.api.apiculture.BeeManager.beeRoot;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndustrialApiary> {
+
     private static final int SLOTS_PER_ROW = 9;
 
     private boolean isInInventory = true;
@@ -108,31 +111,26 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     }
 
     private GenericListSyncHandler<GTHelper.StackableItemSlot> createBeeListSyncer() {
-        return new GenericListSyncHandler<>(
-            this::buildAggregatedBeeList,
-            val -> beeSlots = val,
-            buffer -> {
-                try {
-                    return GTHelper.StackableItemSlot.read(buffer);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            },
-            (buffer, slot) -> {
-                try {
-                    slot.write(buffer);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            },
+        return new GenericListSyncHandler<>(this::buildAggregatedBeeList, val -> beeSlots = val, buffer -> {
+            try {
+                return GTHelper.StackableItemSlot.read(buffer);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }, (buffer, slot) -> {
+            try {
+                slot.write(buffer);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        },
             (a, b) -> a.count == b.count && a.stack.isItemEqual(b.stack) && a.stack.stackSize == b.stack.stackSize,
             null);
     }
 
     private void registerQueenBufferSlot(PanelSyncManager syncManager) {
         ItemStackHandler queenBufferInv = new ItemStackHandler(1);
-        ModularSlot queenBufferSlot = new ModularSlot(queenBufferInv, 0)
-            .filter(this::canAcceptQueen)
+        ModularSlot queenBufferSlot = new ModularSlot(queenBufferInv, 0).filter(this::canAcceptQueen)
             .singletonSlotGroup(SlotGroup.STORAGE_SLOT_PRIO)
             .changeListener((newItem, onlyAmountChanged, client, init) -> {
                 if (client || init || newItem == null) return;
@@ -148,7 +146,8 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     }
 
     private void tryAddBeeToStorage(ItemStack queenStack) {
-        World world = multiblock.getBaseMetaTileEntity().getWorld();
+        World world = multiblock.getBaseMetaTileEntity()
+            .getWorld();
         float voltageTier = (float) multiblock.getVoltageTierExact();
         BeeSimulator bee = new BeeSimulator(queenStack, world, voltageTier);
         if (bee.isValid) {
@@ -298,8 +297,10 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     private static boolean isNEIFilteredOut(ItemStack item) {
         if (!ModularUI.Mods.NEI.isLoaded()) return false;
         if (!SearchField.searchInventories()) return false;
-        if (item == null) return !codechicken.nei.NEIClientConfig.getSearchExpression().isEmpty();
-        return !LayoutManager.searchField.getFilter().matches(item);
+        if (item == null) return !codechicken.nei.NEIClientConfig.getSearchExpression()
+            .isEmpty();
+        return !LayoutManager.searchField.getFilter()
+            .matches(item);
     }
 
     private int getBeeSlotCount(int idx) {
@@ -329,7 +330,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     }
 
     private void handleOccupiedSlotClick(GTHelper.StackableItemSlot serverSlot, int mouseButton, boolean shift,
-                                         EntityPlayer player, EntityPlayerMP playerMP) {
+        EntityPlayer player, EntityPlayerMP playerMP) {
         if (mouseButton == 2) {
             creativePickBee(serverSlot, player, playerMP);
         } else if (shift) {
@@ -341,8 +342,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
         }
     }
 
-    private void creativePickBee(GTHelper.StackableItemSlot serverSlot, EntityPlayer player,
-                                 EntityPlayerMP playerMP) {
+    private void creativePickBee(GTHelper.StackableItemSlot serverSlot, EntityPlayer player, EntityPlayerMP playerMP) {
         if (!player.capabilities.isCreativeMode || player.inventory.getItemStack() != null) return;
         int realID = serverSlot.realSlots.get(0);
         if (realID >= multiblock.mStorage.size()) return;
@@ -354,7 +354,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     }
 
     private void extractBeeToInventory(GTHelper.StackableItemSlot serverSlot, EntityPlayer player,
-                                       EntityPlayerMP playerMP) {
+        EntityPlayerMP playerMP) {
         int realID = serverSlot.realSlots.get(0);
         if (realID >= multiblock.mStorage.size()) return;
         BeeSimulator removed = multiblock.mStorage.remove(realID);
@@ -368,12 +368,13 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     }
 
     private void replaceBeeWithHeldItem(GTHelper.StackableItemSlot serverSlot, EntityPlayer player,
-                                        EntityPlayerMP playerMP) {
+        EntityPlayerMP playerMP) {
         ItemStack input = player.inventory.getItemStack();
         if (input.stackSize != 1) return;
         int realID = serverSlot.realSlots.get(0);
         if (realID >= multiblock.mStorage.size()) return;
-        World world = multiblock.getBaseMetaTileEntity().getWorld();
+        World world = multiblock.getBaseMetaTileEntity()
+            .getWorld();
         float voltageTier = (float) multiblock.getVoltageTierExact();
         BeeSimulator bee = new BeeSimulator(input, world, voltageTier);
         if (!bee.isValid) return;
@@ -386,7 +387,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     }
 
     private void extractBeeToCursor(GTHelper.StackableItemSlot serverSlot, EntityPlayer player,
-                                    EntityPlayerMP playerMP) {
+        EntityPlayerMP playerMP) {
         int realID = serverSlot.realSlots.get(0);
         if (realID >= multiblock.mStorage.size()) return;
         BeeSimulator removed = multiblock.mStorage.remove(realID);
@@ -435,7 +436,8 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     }
 
     private boolean tryAddBeeToStorage(ItemStack queenStack, EntityPlayer player) {
-        World world = multiblock.getBaseMetaTileEntity().getWorld();
+        World world = multiblock.getBaseMetaTileEntity()
+            .getWorld();
         float voltageTier = (float) multiblock.getVoltageTierExact();
         BeeSimulator bee = new BeeSimulator(queenStack, world, voltageTier);
         if (!bee.isValid) return false;
@@ -488,7 +490,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     }
 
     private ModularPanel createConfigurationPanel(PanelSyncManager p_syncManager, ModularPanel parent,
-                                                  PanelSyncManager mainSyncManager) {
+        PanelSyncManager mainSyncManager) {
         IntSyncValue primaryModeSyncer = mainSyncManager.findSyncHandler("apiaryPrimaryMode", IntSyncValue.class);
         IntSyncValue secondaryModeSyncer = mainSyncManager.findSyncHandler("apiarySecondaryMode", IntSyncValue.class);
 
@@ -504,17 +506,25 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
                         new TextWidget<>(
                             EnumChatFormatting.UNDERLINE
                                 + StatCollector.translateToLocal("kubatech.gui.text.configuration"))
-                            .alignment(Alignment.Center)
-                            .height(18)
-                            .marginBottom(4))
-                    .child(createModeRow(primaryModeSyncer, "kubatech.gui.text.mia.primary_mode", 3,
-                        MTEMegaIndustrialApiaryGui::getPrimaryModeText))
-                    .child(createModeRow(secondaryModeSyncer, "kubatech.gui.text.mia.secondary_mode", 2,
-                        MTEMegaIndustrialApiaryGui::getSecondaryModeText))
+                                    .alignment(Alignment.Center)
+                                    .height(18)
+                                    .marginBottom(4))
+                    .child(
+                        createModeRow(
+                            primaryModeSyncer,
+                            "kubatech.gui.text.mia.primary_mode",
+                            3,
+                            MTEMegaIndustrialApiaryGui::getPrimaryModeText))
+                    .child(
+                        createModeRow(
+                            secondaryModeSyncer,
+                            "kubatech.gui.text.mia.secondary_mode",
+                            2,
+                            MTEMegaIndustrialApiaryGui::getSecondaryModeText))
                     .child(
                         IKey.str(
-                                EnumChatFormatting.RED
-                                    + StatCollector.translateToLocal("GT5U.gui.text.cannot_change_when_running"))
+                            EnumChatFormatting.RED
+                                + StatCollector.translateToLocal("GT5U.gui.text.cannot_change_when_running"))
                             .asWidget()
                             .widthRel(1)
                             .height(18)
@@ -522,14 +532,13 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     }
 
     private IWidget createModeRow(IntSyncValue modeSyncer, String labelKey, int cycleLength,
-                                  java.util.function.IntFunction<String> modeTextProvider) {
+        java.util.function.IntFunction<String> modeTextProvider) {
         return new Row().widthRel(1)
             .height(18)
             .marginBottom(2)
             .setEnabledIf(w -> multiblock.mMaxProgresstime == 0)
             .child(
-                new TextWidget<>(StatCollector.translateToLocal(labelKey))
-                    .width(100)
+                new TextWidget<>(StatCollector.translateToLocal(labelKey)).width(100)
                     .height(18))
             .child(
                 new CycleButtonWidget().length(cycleLength)
