@@ -1,8 +1,6 @@
 package gregtech.common.tileentities.machines.outputme.base;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.common.covers.modes.FilterType.BLACKLIST;
-import static gregtech.common.covers.modes.FilterType.WHITELIST;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -24,6 +22,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -368,20 +367,15 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         ItemStack upgradeItemStack = env.getCellStack();
 
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ICellWorkbenchItem cellWorkbenchItem) {
-            // FIXME: localize this msg
-            String msg = filter.updateFilterFromCell(cellWorkbenchItem, upgradeItemStack);
-            if (!msg.isEmpty() && env.getLastClickedPlayer() != null && GTUtility.isServer()) {
-                String modeKey = filter.getIsBlackList() ? BLACKLIST.getKey() : WHITELIST.getKey();
-                GTUtility.sendChatComp(
-                    env.getLastClickedPlayer(),
-                    new ChatComponentTranslation(modeKey).appendText(": ")
-                        .appendSibling(new ChatComponentTranslation(filter.getEnableKey(), msg)));
+            IChatComponent msg = filter.updateFilterFromCell(cellWorkbenchItem, upgradeItemStack);
+            if (env.getLastClickedPlayer() != null && GTUtility.isServer()) {
+                GTUtility.sendChatComp(env.getLastClickedPlayer(), msg);
             }
             env.dispatchMarkDirty();
         } else {
-            filter.clear();
+            IChatComponent msg = filter.clearAndGetNotify();
             if (env.getLastClickedPlayer() != null && GTUtility.isServer()) {
-                GTUtility.sendChatTrans(env.getLastClickedPlayer(), filter.getDisableKey());
+                GTUtility.sendChatComp(env.getLastClickedPlayer(), msg);
             }
             env.dispatchMarkDirty();
         }
