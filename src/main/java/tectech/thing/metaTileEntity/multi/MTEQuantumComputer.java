@@ -240,8 +240,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             && aTick % 20 == CommonValues.MULTI_CHECK_AT) {
             double maxTemp = 0;
             for (MTEHatchRack rack : validMTEList(eRacks)) {
-                if (rack.heat > maxTemp) {
-                    maxTemp = rack.heat;
+                if (rack.getHeat() > maxTemp) {
+                    maxTemp = rack.getHeat();
                 }
             }
             maxCurrentTemp.set(maxTemp);
@@ -271,8 +271,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             int rackComputation;
 
             for (MTEHatchRack rack : validMTEList(eRacks)) {
-                if (rack.heat > maxTemp) {
-                    maxTemp = rack.heat;
+                if (rack.getHeat() > maxTemp) {
+                    maxTemp = rack.getHeat();
                 }
                 rackComputation = rack.tickComponents((float) overClockRatio, (float) overVoltageRatio);
                 if (rackComputation > 0) {
