@@ -1418,6 +1418,8 @@ tt.keyword.Structure.DataInput=Data Input Hatch
 tt.keyword.Structure.DataOutput=Data Output Hatch
 tt.keyword.Structure.StainlessSteelCasing=Stainless Steel Casing
 tt.wirelessInputData.config.text=Configure how much computation to pull from wireless network
+# Controller
+tt.keyword.Structure.ResearchStationController=Front center on the frontside of the main body
 
 
 tt.keyphrase.Hint_Details=Hint Details

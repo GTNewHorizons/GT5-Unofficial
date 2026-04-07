@@ -6661,6 +6661,7 @@ gt.turbocan.tips=§9It's uncanny!
 gt.thermal_boiler.tips=Converts Water & Heat into Steam\nFilters raw materials from lava\nRequires a Lava Filter in the controller slot for some byproducts\nExplodes if water is not supplied\nConsult user manual for more information
 
 gt.dtpf.tips=Transcending Dimensional Boundaries.\nTakes §c%s§7 hours of continuous run time to fully breach dimensional\nboundaries and achieve maximum efficiency, reducing fuel consumption by up to §c%s%%\nWhen no recipe is running, fuel discount decays x§c%s§7 as fast as it builds up, draining\nthe total amount of stored runtime<SEPARATOR>Multidimensional spaces can be perfectly aligned and synchronized in this state,\nallowing §6Dimensional Convergence§7 to occur. To reach the required stability threshold,\na §bTransdimensional Alignment Matrix§7 must be placed in the controller\nWhen §6Convergence§7 is active, it allows the forge to perform §cPerfect Overclocks§7,\nbut the extra power cost is instead added in form of increased catalyst amounts
+gt.dtpf.info.controller=Middle of the structure, 3rd layer
 gt.dtpf.info.e_hatch=§61§7-§62§7 (for TT Energy Hatch only §61§7 allowed)
 
 gt.tpm.tips=Assisting in all your DTPF needs!\nThis multiblock will run in parallel according to the amount set in the parallel menu\nAll inputs will scale, except time...\nAll EU is deducted from wireless EU networks only
@@ -6764,6 +6765,7 @@ gt.distillation_tower.info.3=2-11x Output Hatches (At least one per layer except
 gt.mb_coke_oven.tips=Turns coal into coke and produces creosote oil
 
 gt.charcoal_pit.tips.1=Converts Logs into Brittle Charcoal blocks\nAutomatically starts when formed
+gt.charcoal_pit.info.controller=Top layer, directly touching a wood log
 gt.charcoal_pit.info.1=Can be up to 13x7x13 in size, including the dirt; shape doesn't matter
 gt.charcoal_pit.info.2=Top layer, directly touching a wood log
 gt.charcoal_pit.info.3=Dirt/Grass
