@@ -401,6 +401,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addInfo("  ZPM-UV Solar Panels can be made without the previous panel, but at a higher cost")
             .addInfo("  Bonus per increased wafer tier is raised to 50%")
             .beginStructureBlock(7, 10, 9, false)
+            .addController("Front bottom center")
             .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "1:")
             .addCasingInfoRange("Clean Stainless Steel Machine Casing", 15, 41, false)
             .addCasingInfoExactly("Any Tiered Glass", 24, false)
