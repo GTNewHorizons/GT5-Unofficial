@@ -1092,6 +1092,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             .addInfo("Animations can be disabled by using a screwdriver on the multiblock")
             .addInfo("Planet block can be inserted directly by right-clicking the controller with planet block")
             .beginStructureBlock(33, 33, 33, false)
+            .addController("Front center")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "896" + EnumChatFormatting.GRAY + " Reinforced Spatial Structure Casing.")
             .addStructureInfo(
