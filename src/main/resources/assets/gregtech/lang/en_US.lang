@@ -6551,8 +6551,11 @@ machtype.moc=Cracker, MOC
 machtype.digester=Digester
 machtype.dissolution_tank=Dissolution Tank
 machtype.linac=Particle Accelerator, LINAC
+machtype.energy_infuser=Restorer
 
 # Multiblock Tooltip lines
+gt.energy_infuser.tips=Simultaneously recharges and repairs equipment\nStocking input buses are not supported\n§6Recharging§7: No max speed or energy loss\n§6Repairing§7: Max 1k durability/t, consumes 1k EU + 1L UUM per point
+
 gt.linac.tips.1=Accelerates charged particles to higher energies by running them through an electric field\nElectrically neutral particles are therefore unaffected
 gt.linac.tips.2=<SEPARATOR>Increasing Structure Length increases output §9Beam Energy§7 but decreases §cBeam Focus\nRequires §fLength * kL/s§7 of §bcoolant§7 for operation\n§cBeam Focus§7 loss can be mitigated more effectively with lower temperature §bcoolant\nValid coolants:
 gt.linac.tips.3=<SEPARATOR>§9Output Beam Energy§f = max(§eV§f, 50) * 10^§cIE\nwhere §eV§f = (Length - 1) * cbrt(§2Machine Voltage§f) / 4\nand §cIE§f = 1 + min(§dInput Beam Energy§f, 7500) / §aMaximum Particle Energy\n§cInput Beam Energies§7 higher than 7500keV are treated as if they are 7500keV\n§aMaximum Particle Energy§7 refers to values in the Source Chamber Tooltip<SEPARATOR>§cOutput Beam Focus§f depends on the relation between §eInput Beam Focus§f and §3Machine Focus\nwhere §3Machine Focus§f = min(max((-0.9 * (Length-1) * 1.1^(0.2 * §6Coolant Temperature§f) + 110), 5), 90)\nIf §eInput Beam Focus§f > §3Machine Focus§f, §cOutput Beam Focus§f = (§eInput Beam Focus§f + §3Machine Focus§f)/2\nIf §eInput Beam Focus§f <= §3Machine Focus§f, §cOutput Beam Focus§f = §eInput Beam Focus§f * §3Machine Focus§f/100

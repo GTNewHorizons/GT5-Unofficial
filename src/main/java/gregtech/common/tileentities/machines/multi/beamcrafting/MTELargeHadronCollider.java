@@ -305,7 +305,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             .addInfo("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip")
             .beginStructureBlock(109, 13, 122, false)
             .addController("gt.mbtt.structure.front_center")
-            .addCasingInfoExactly(Casings.ColliderCasing.getLocalizedName(), 6034, false)
+            .addCasingInfoExactly(Casings.ColliderCasing.getLocalizedName(), 6034)
             .addCasingInfoExactly("GT5U.MBTT.EnergyHatch", 1)
             .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 16)
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 20)

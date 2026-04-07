@@ -779,7 +779,6 @@ tt.keyword.Structure.Optional=(可选)
 # Placement specification
 tt.keyword.Structure.BackCenter=背面中央
 tt.keyword.Structure.SideCenter=侧面中央
-tt.keyword.Structure.FrontCenter3rd=正面第三层中央
 tt.keyword.Structure.CenterPillar=正面立柱中央
 tt.keyword.Structure.Center=中央
 # Additional structure components

@@ -1404,7 +1404,6 @@ tt.keyword.Structure.Optional=(optional)
 # Placement specification
 tt.keyword.Structure.BackCenter=Back center
 tt.keyword.Structure.SideCenter=Side center
-tt.keyword.Structure.FrontCenter3rd=Front 3rd layer center
 tt.keyword.Structure.CenterPillar=Center of the front pillar
 tt.keyword.Structure.Center=Center
 # Additional structure components

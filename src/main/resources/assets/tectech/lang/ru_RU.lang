@@ -1373,7 +1373,6 @@ tt.keyword.Structure.Optional=(Необязательно)
 # Placement specification
 tt.keyword.Structure.BackCenter=Сзади посередине
 tt.keyword.Structure.SideCenter=Сбоку посередине
-tt.keyword.Structure.FrontCenter3rd=3-й слой спереди в центре
 tt.keyword.Structure.CenterPillar=Центр передней стойки
 tt.keyword.Structure.Center=Центр
 # Additional structure components

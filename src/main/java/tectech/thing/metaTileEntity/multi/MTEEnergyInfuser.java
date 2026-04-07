@@ -47,7 +47,8 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
  */
 public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConstructable {
 
-    private static final String hpCasing = Casings.HighPowerCasing.getLocalizedName();
+    private static final String hpCasingText = GTUtility
+        .translate("GT5U.MBTT.HatchInfo", Casings.HighPowerCasing.getLocalizedName());
 
     private static final int maxRepairedDamagePerOperation = 1000;
     private static final long usedEuPerDurability = 1000;
@@ -240,37 +241,24 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Restorer")
-            .addInfo("Simultaneously recharges and repairs equipment")
-            .addInfo("Stocking input buses are not supported")
-            .addInfo(EnumChatFormatting.GOLD + "Recharging" + EnumChatFormatting.GRAY + ": No max speed or energy loss")
-            .addInfo(
-                EnumChatFormatting.GOLD + "Repairing"
-                    + EnumChatFormatting.GRAY
-                    + ": Max 1k durability/t, consumes 1k EU + 1L UUM per point")
+        tt.addMachineType("machtype.energy_infuser")
+            .addInfo("gt.energy_infuser.tips")
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 5, 3, false)
-            // Controller: Front 3rd layer center
-            .addController(translateToLocal("tt.keyword.Structure.FrontCenter3rd"))
+            .addController("front_center_layer3")
             .addStructurePart(
-                // High Power
-                translateToLocal("gt.blockcasingsTT.0.name"),
-                translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.HighPowerCasing"))
+                Casings.HighPowerCasing.getLocalizedName(),
+                "gt.blockmachines.multimachine.em.infuser.Structure.HighPowerCasing")
             .addStructurePart(
-                // Molecular Coil
-                translateToLocal("gt.blockcasingsTT.7.name"),
-                translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.MolecularCoil"))
-            // Layer 2 and 4
+                Casings.MolecularCoil.getLocalizedName(),
+                "gt.blockmachines.multimachine.em.infuser.Structure.MolecularCoil")
             .addStructurePart(
-                // Molecular
-                translateToLocal("gt.blockcasingsTT.4.name"),
-                translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.MolecularCasing"))
-            // Casing: Layer
-            // 3 (hollow)
-            .addEnergyHatch(GTUtility.translate("GT5U.MBTT.HatchInfo", hpCasing), 1)
-            .addMaintenanceHatch(GTUtility.translate("GT5U.MBTT.HatchInfo", hpCasing), 1)
-            .addInputBus(GTUtility.translate("GT5U.MBTT.HatchInfo", hpCasing), 1)
-            .addOutputBus(GTUtility.translate("GT5U.MBTT.HatchInfo", hpCasing), 1)
+                Casings.MolecularCasing.getLocalizedName(),
+                "gt.blockmachines.multimachine.em.infuser.Structure.MolecularCasing")
+            .addEnergyHatch(hpCasingText, 1)
+            .addMaintenanceHatch(hpCasingText, 1)
+            .addInputBus(hpCasingText, 1)
+            .addOutputBus(hpCasingText, 1)
             .toolTipFinisher();
         return tt;
     }
