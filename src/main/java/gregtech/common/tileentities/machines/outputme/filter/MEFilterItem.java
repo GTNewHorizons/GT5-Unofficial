@@ -29,11 +29,6 @@ public class MEFilterItem extends MEFilterBase<IAEItemStack, GTUtility.ItemId, I
     }
 
     @Override
-    protected String getDisplayName(IAEItemStack stack) {
-        return stack.getDisplayName();
-    }
-
-    @Override
     public void onLoadNBTData(NBTTagCompound aNBT) {
         NBTBase lockedItemsTag = aNBT.getTag("lockedItems");
 
