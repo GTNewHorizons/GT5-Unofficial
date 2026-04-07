@@ -72,12 +72,11 @@ public class MTEHatchRackGui extends MTEHatchBaseGui<MTEHatchRack> {
 
         // central decoration
         mainRow.child(
-            GTGuiTextures.PICTURE_HEAT_SINK.asWidget()
+            GTGuiTextures.TT_PICTURE_HEAT_SINK.asWidget()
                 .size(84, 60)
                 .align(Alignment.CENTER));
 
         // input slots
-        // TODO fix sizing
         mainRow
             .child(new Grid().mapTo(2, 4, index -> new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, index) {
 
@@ -102,7 +101,7 @@ public class MTEHatchRackGui extends MTEHatchBaseGui<MTEHatchRack> {
 
     @Override
     protected IDrawable.DrawableWidget createLogo() {
-        return new IDrawable.DrawableWidget(GTGuiTextures.PICTURE_TECTECH_LOGO).size(18);
+        return new IDrawable.DrawableWidget(GTGuiTextures.TT_PICTURE_TECTECH_LOGO).size(18);
     }
 
     @Override
