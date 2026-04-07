@@ -135,7 +135,6 @@ import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.IDualInputHatch;
-import gregtech.common.tileentities.machines.IDualInputHatchWithPattern;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
@@ -2039,12 +2038,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            if (hatch instanceof IDualInputHatchWithPattern withPattern) {
-                if (this.processingLogic != null) {
-                    // processingLogic might be null, like a Space Elevator
-                    withPattern.setProcessingLogic(processingLogic);
-                }
-            }
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
@@ -2189,12 +2182,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (!supportsCraftingMEBuffer()) return false;
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            if (hatch instanceof IDualInputHatchWithPattern withPattern) {
-                if (this.processingLogic != null) {
-                    // processingLogic might be null, like a Space Elevator
-                    withPattern.setProcessingLogic(processingLogic);
-                }
-            }
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchSteamBusInput) return false;
