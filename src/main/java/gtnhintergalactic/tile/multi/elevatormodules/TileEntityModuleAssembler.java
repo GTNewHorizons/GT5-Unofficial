@@ -273,6 +273,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.assembler.t1.desc2"))
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
                 .beginStructureBlock(1, 5, 2, false)
+                .addController("Front, 4th layer")
                 .addCasingInfoMin(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, false)
                 .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
