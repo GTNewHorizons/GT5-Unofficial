@@ -439,6 +439,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                 .getLocalizedName())
             .addTecTechHatchInfo()
             .beginStructureBlock(16, 20, 16, false)
+            .addController("gt.blockmachines.multimachine.ig.dyson.desc.controller")
             .addDynamoHatch("ig.dyson.structure.dynamo", 1)
             .addInputBus("1 - 11", 2)
             .addInputHatch("1 - 11", 2)

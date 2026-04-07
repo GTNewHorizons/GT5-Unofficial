@@ -500,6 +500,7 @@ public class MTEExoticModule extends MTEBaseModule {
         tt.addMachineType("machtype.exotic_module")
             .addInfo("gt.exotic_module.tips")
             .beginStructureBlock(7, 7, 13, false)
+            .addController("front_center")
             .addCasingInfoExactly(Casings.SingularityReinforcedStellarShieldingCasing.getLocalizedName(), 20)
             .addCasingInfoExactly(Casings.BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), 20)
             .addCasingInfoExactly(Casings.HarmonicPhononTransmissionConduit.getLocalizedName(), 5)

@@ -246,6 +246,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             .addInfo("gt.blockmachines.multimachine.em.research.desc")
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 7, 7, false)
+            .addController("tt.keyword.Structure.ResearchStationController")
             .addStructurePart("gt.blockmachines.hatch.holder.tier.09.name", "tt.keyword.Structure.CenterPillar", 2)
             .addStructurePart("tt.keyword.Structure.DataConnector", "tt.keyword.Structure.AnyComputerCasingBackMain", 1)
             .addEnergyHatch("tt.keyword.Structure.AnyComputerCasingBackMain", 1)

@@ -210,6 +210,7 @@ public class MTESmeltingModule extends MTEBaseModule {
         tt.addMachineType("gt.recipe.blastfurnace", "gt.recipe.furnace")
             .addInfo("gt.smelting_module.tips")
             .beginStructureBlock(7, 7, 13, false)
+            .addController("front_center")
             .addCasingInfoExactly(Casings.SingularityReinforcedStellarShieldingCasing.getLocalizedName(), 20)
             .addCasingInfoExactly(Casings.BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), 20)
             .addCasingInfoExactly(Casings.HypogenCoilBlock.getLocalizedName(), 5)

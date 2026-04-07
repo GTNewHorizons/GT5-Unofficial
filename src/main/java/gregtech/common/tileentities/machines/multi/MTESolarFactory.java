@@ -379,6 +379,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                 tieredTextLine("Mk-I", "MK-II", "MK-III", "MK-IV"),
                 tieredTextLine("8", "16", "32", "64"))
             .beginStructureBlock(7, 10, 9, false)
+            .addController("front_bottom_center")
             .addStructureInfo("gt.solar_factory.tier_head", "1")
             .addCasingInfoRange(
                 ItemList.Casing_CleanStainlessSteel.get(1)

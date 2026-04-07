@@ -269,6 +269,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
                 GTUtility.scientificFormat(Long.MAX_VALUE),
                 GTUtility.scientificFormat(ANTIMATTER_FUEL_VALUE))
             .beginStructureBlock(35, 43, 35, false)
+            .addController("front_center_layer2")
             .addCasingInfoMin(getGlassBlock().getLocalizedName(), 1008)
             .addCasingInfoMin(
                 ItemRefer.MagneticFluxCasing.get(1)

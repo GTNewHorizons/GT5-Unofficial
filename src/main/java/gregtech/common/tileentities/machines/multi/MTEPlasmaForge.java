@@ -583,6 +583,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 formatNumber(efficiency_decay_rate))
             .addUnlimitedTierSkips()
             .beginStructureBlock(33, 24, 33, false)
+            .addController("gt.dtpf.info.controller")
             .addCasingInfoExactly("GT5U.tooltip.structure.heating_coil", 2112)
             .addCasingInfoExactly(Casings.DimensionalBridge.getLocalizedName(), 120)
             .addCasingInfoExactly(Casings.DimensionalInjectionCasing.getLocalizedName(), 1270)

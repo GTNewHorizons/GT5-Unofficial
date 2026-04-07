@@ -217,8 +217,9 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         tt.addMachineType("machtype.decay_warehouse")
             .addInfo("gt.decay_warehouse.tips", CAPACITY_DIVISOR, EU_PER_IO);
 
-        tt.beginStructureBlock(true)
-            .addAllCasingInfo();
+        tt.beginStructureBlock(true);
+        tt.addController("Front center");
+        tt.addAllCasingInfo();
 
         tt.addSubChannelUsage(GTStructureChannels.SUPER_CHEST);
 

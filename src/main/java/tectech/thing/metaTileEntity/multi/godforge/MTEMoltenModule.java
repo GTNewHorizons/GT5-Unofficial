@@ -173,6 +173,7 @@ public class MTEMoltenModule extends MTEBaseModule {
         tt.addMachineType("machtype.molten_module")
             .addInfo("gt.molten_module.tips")
             .beginStructureBlock(7, 7, 13, false)
+            .addController("front_center")
             .addCasingInfoExactly(Casings.SingularityReinforcedStellarShieldingCasing.getLocalizedName(), 20)
             .addCasingInfoExactly(Casings.BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), 20)
             .addCasingInfoExactly(Casings.HarmonicPhononTransmissionConduit.getLocalizedName(), 5)

@@ -798,6 +798,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         tt.addMachineType("machtype.forge_of_gods")
             .addInfo("gt.forge_of_gods.tips")
             .beginStructureBlock(127, 29, 186, false)
+            .addController("front_center")
             .addStructureInfo(GTUtility.translate("gt.forge_of_gods.info", getRingText("1", "2", "3")))
             .addStructureInfo(
                 getRingText("3943", "7279", "11005")

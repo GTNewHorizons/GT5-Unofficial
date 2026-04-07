@@ -602,6 +602,7 @@ public class MTETeslaTower extends TTMultiblockBase
             .addInfo("gt.blockmachines.multimachine.tm.teslaCoil.desc")
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 17, 7, false)
+            .addController("front_bottom_center")
             .addStructurePart(
                 "gt.blockmachines.hatch.capacitor.tier.03.name",
                 "tt.keyword.Structure.AnyTeslaBaseCasingOuter",

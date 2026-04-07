@@ -228,6 +228,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase {
             .addInfo("gt.charcoal_pit.tips.1")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 13, 3, 7, 3, 13, false)
+            .addController("gt.charcoal_pit.info.controller")
             .addStructureInfo("gt.charcoal_pit.info.1")
             .addController("gt.charcoal_pit.info.2")
             .addStructurePart("gt.charcoal_pit.info.3", "gt.charcoal_pit.info.4")

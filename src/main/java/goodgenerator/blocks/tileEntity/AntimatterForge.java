@@ -176,6 +176,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 coefficientBaseExp,
                 baseSkew)
             .beginStructureBlock(53, 53, 47, false)
+            .addController("front_center")
             .addCasingInfoMin(
                 ItemRefer.AntimatterContainmentCasing.get(1)
                     .getDisplayName(),
