@@ -736,6 +736,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc8"))
             .addTecTechHatchInfo()
             .beginStructureBlock(35, 43, 35, false)
+            .addController("Front center of the middle structure piece")
             .addOtherStructurePart(
                 GTUtility.translate("ig.elevator.structure.ProjectModule"),
                 GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber2"),
