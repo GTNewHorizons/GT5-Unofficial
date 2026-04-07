@@ -778,6 +778,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo("Configure Trace Size in UI")
             .addTecTechHatchInfo()
             .beginStructureBlock(30, 38, 13, false)
+            .addController("Front bottom center")
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
             .addEnergyHatch(
                 EnumChatFormatting.GOLD + "1"
