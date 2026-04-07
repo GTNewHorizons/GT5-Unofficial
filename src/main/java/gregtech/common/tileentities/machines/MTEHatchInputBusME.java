@@ -36,14 +36,22 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import appeng.api.config.Actionable;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
+import appeng.api.networking.IGridNode;
 import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
+import appeng.api.networking.storage.IStackWatcher;
+import appeng.api.networking.storage.IStackWatcherHost;
 import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.data.IAEStack;
+import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
+import appeng.api.util.DimensionalCoord;
+import appeng.core.localization.WailaText;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
@@ -73,8 +81,8 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchInputBusME extends MTEHatchInputBus
-    implements IRecipeProcessingAwareHatch, IPowerChannelState, ISmartInputHatch, IDataCopyable, IMEConnectable {
+public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProcessingAwareHatch,
+    IPowerChannelState, ISmartInputHatch, IDataCopyable, IMEConnectable, IGridProxyable, IStackWatcherHost {
 
     public static final int SLOT_COUNT = 16;
     public static final String COPIED_DATA_IDENTIFIER = "stockingBus";
@@ -238,7 +246,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
-                    (IGridProxyable) getBaseMetaTileEntity(),
+                    this,
                     "proxy",
                     autoPullAvailable ? ItemList.Hatch_Input_Bus_ME_Advanced.get(1)
                         : ItemList.Hatch_Input_Bus_ME.get(1),
@@ -508,7 +516,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             if (nbt.hasKey("refreshTime")) {
                 autoPullRefreshTime = nbt.getInteger("refreshTime");
             }
-            expediteRecipeCheck = nbt.getBoolean("expediteRecipeCheck");
+            setRecipeCheck(nbt.getBoolean("expediteRecipeCheck"));
         }
 
         additionalConnection = nbt.getBoolean("additionalConnection");
@@ -666,34 +674,42 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         }
 
         int index = 0;
-
-        clearSlotConfigs();
-
+        boolean configChanged = false;
         while (iterator.hasNext() && index < SLOT_COUNT) {
             IAEItemStack curr = iterator.next();
 
             if (curr.getStackSize() < minAutoPullStackSize) continue;
 
             Slot oldSlot = slots[index];
-
-            // Prevent weird reference problems by copying the slot
-            if (oldSlot != null) oldSlot = oldSlot.copy();
+            ItemStack oldStack = null;
+            if (oldSlot != null && oldSlot.extracted != null) oldStack = oldSlot.extracted.copy();
 
             setSlotConfig(index, GTUtility.copyAmount(1, curr.getItemStack()));
 
             Slot newSlot = slots[index];
-
+            ItemStack newStack = null;
             if (newSlot != null) {
-                newSlot.extracted = curr.getItemStack();
+                newSlot.extracted = newStack = curr.getItemStack();
                 newSlot.extractedAmount = newSlot.extracted.stackSize;
             }
-
-            if (!Objects.equals(oldSlot, newSlot)) {
-                justHadNewItems = true;
+            boolean sametype = GTUtility.areStacksEqual(oldStack, newStack);
+            if (newStack != null) {
+                // lower amount/disappearance is not considered 'new items'
+                if (sametype) {
+                    if (newStack.stackSize > oldStack.stackSize) {
+                        justHadNewItems = true; // same type, higher amount
+                    }
+                } else {
+                    justHadNewItems = true; // different type
+                }
             }
-
+            if (expediteRecipeCheck && !((oldStack == null && newStack == null) || sametype)) {
+                configChanged = true;
+            }
             index++;
         }
+        Arrays.fill(slots, index, slots.length, null);
+        if (configChanged) configureWatchers();
     }
 
     protected void updateAllInformationSlots() {
@@ -779,15 +795,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
         IAEItemStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
 
-        ItemStack previous = slot.extracted;
-
         slot.extracted = result != null ? result.getItemStack() : null;
         slot.extractedAmount = slot.extracted == null ? 0 : slot.extracted.stackSize;
 
-        // We want to track changes in any ItemStack to notify any connected controllers to make a recipe check early
-        if (expediteRecipeCheck && slot.extracted != null) {
-            justHadNewItems = !ItemStack.areItemStacksEqual(slot.extracted, previous);
-        }
     }
 
     protected void clearSlotConfigs() {
@@ -1055,5 +1065,47 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             }
         }
         return false;
+    }
+
+    @Override
+    public IGridNode getGridNode(ForgeDirection dir) {
+        return getProxy().getNode();
+    }
+
+    @Override
+    public void securityBreak() {}
+
+    @Override
+    public DimensionalCoord getLocation() {
+        return new DimensionalCoord(
+            getBaseMetaTileEntity().getWorld(),
+            getBaseMetaTileEntity().getXCoord(),
+            getBaseMetaTileEntity().getYCoord(),
+            getBaseMetaTileEntity().getZCoord());
+    }
+
+    private IStackWatcher watcher;
+
+    private void configureWatchers() {
+        if (this.watcher != null) {
+            this.watcher.clear();
+            if (expediteRecipeCheck) for (Slot slot : slots) {
+                if (slot != null && slot.config != null) {
+                    watcher.add(AEItemStack.create(slot.config));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void updateWatcher(IStackWatcher newWatcher) {
+        watcher = newWatcher;
+        configureWatchers();
+    }
+
+    @Override
+    public void onStackChange(IItemList o, IAEStack fullStack, IAEStack diffStack, BaseActionSource src,
+        StorageChannel chan) {
+        if (expediteRecipeCheck && diffStack.getStackSize() > 0) justHadNewItems = true;
     }
 }
