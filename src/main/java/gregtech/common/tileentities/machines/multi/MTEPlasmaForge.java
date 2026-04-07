@@ -671,7 +671,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + EnumChatFormatting.GRAY
                     + "-"
                     + EnumChatFormatting.GOLD
-                    + max_input_bus
+                    + max_output_bus
                     + EnumChatFormatting.GRAY
                     + " output buses")
             .addStructureInfo("")
