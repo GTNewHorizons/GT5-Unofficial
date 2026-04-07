@@ -398,6 +398,7 @@ ig.sp.upgrade.reinforcedstructure=Reinforced Structure Upgrade
 ig.sp.upgrade.reinforcedstructure.description=This upgrade reinforces the structure to survive hits from any fast moving asteroids and protects the drones from accidents
 
 # Asteroids
+ig.asteroid=Asteroid
 ig.asteroid.coalAsteroid=Coal
 ig.asteroid.saltAsteroid=Salt
 ig.asteroid.ironAsteroid=Iron
