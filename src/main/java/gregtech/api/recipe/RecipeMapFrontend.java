@@ -280,7 +280,6 @@ public class RecipeMapFrontend {
         for (PositionedStack pStack : neiCachedRecipe.mInputs) {
             if (stack == pStack.item) {
                 if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed) {
-                    currentTip.addAll(fixed.getCustomBadgeTooltip());
                     currentTip = handleNEIItemInputTooltip(currentTip, fixed);
                 }
                 break;
@@ -289,7 +288,6 @@ public class RecipeMapFrontend {
         for (PositionedStack pStack : neiCachedRecipe.mOutputs) {
             if (stack == pStack.item) {
                 if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed) {
-                    currentTip.addAll(fixed.getCustomBadgeTooltip());
                     currentTip = handleNEIItemOutputTooltip(currentTip, fixed);
                 }
                 break;

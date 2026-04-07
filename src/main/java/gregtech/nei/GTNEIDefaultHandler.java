@@ -5,7 +5,6 @@ import static gregtech.api.enums.GTValues.V;
 import java.awt.Rectangle;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,7 +24,6 @@ import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -43,6 +41,7 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.Badge;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.ICraftingHandler;
 import codechicken.nei.recipe.IUsageHandler;
@@ -533,8 +532,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         public final boolean mIsInput;
         public final int realStackSize;
         public final boolean renderRealStackSize;
-        public String customBadgeText;
-        public List<String> customBadgeTooltip = Collections.emptyList();
+        public List<Badge> customBadge;
 
         public FixedPositionedStack(Object object, boolean renderRealStackSizes, int x, int y) {
             this(object, renderRealStackSizes, x, y, PositionedStack.CHANCE_FULL, true, false);
@@ -562,24 +560,17 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             return mIsInput;
         }
 
-        public void setCustomBadge(String text, String... tooltip) {
-            this.customBadgeText = text;
-            this.customBadgeTooltip = Arrays.stream(tooltip)
-                .map(t -> EnumChatFormatting.GRAY + t)
-                .collect(Collectors.toList());
+        public void setCustomBadge(Badge badge) {
+            this.customBadge = badge != null ? Collections.singletonList(badge) : null;
         }
 
-        public void setChance(int chance) {
-            this.chance = chance;
+        public void setCustomBadge(String text, String... tooltip) {
+            this.customBadge = Collections.singletonList(new Badge(text, tooltip));
         }
 
         @Override
-        public String getCustomBadge() {
-            return this.customBadgeText;
-        }
-
-        public List<String> getCustomBadgeTooltip() {
-            return this.customBadgeTooltip;
+        public List<Badge> getBadges() {
+            return this.customBadge;
         }
 
         public boolean isNotConsumed() {
