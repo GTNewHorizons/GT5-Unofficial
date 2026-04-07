@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -50,6 +51,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -205,24 +207,20 @@ public class MTEIndustrialElectromagneticSeparator
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Electromagnetic Separator/Polarizer, MFE")
-            .addInfo("Use screwdriver to switch mode")
-            .addInfo("Insert an electromagnet into the electromagnet housing to use")
-            .addInfo("Better electromagnets give further bonuses")
-            .addInfo("With Tengam electromagnet, multi-amp (NOT laser) hatches are allowed")
+        tt.addMachineType("gt.recipe.polarizer", "gt.recipe.electromagneticseparator")
+            .addInfo("gt.mfe.tips.1")
             .beginStructureBlock(7, 6, 7, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
-            .addCasingInfoExactly("Any Tiered Glass", 12, false)
-            .addOtherStructurePart("Magnetic Neodymium Frame Box", "x37")
-            .addOtherStructurePart(
-                GTUtility.translate("GT5U.tooltip.structure.electromagnet_housing"),
-                "1 Block Above/Behind Controller",
-                2)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
+            .addController("front_bottom_center")
+            .addCasingInfoMin("gt.blockcasings10.0.name", MIN_CASING)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 12, true)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.NeodymiumMagnetic),
+                37)
+            .addStructurePart("gt.blockmachines.hatch.mag_hatch.name", "gt.mfe.info.1", 2)
+            .addInputBus("<casing>", 1)
+            .addOutputBus("<casing>", 1)
+            .addEnergyHatch("<casing>", 1)
+            .addMaintenanceHatch("<casing>", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.authorBaps);
         return tt;

@@ -33,9 +33,12 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.structures.AntimatterStructures;
 import goodgenerator.loader.Loaders;
+import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -44,6 +47,7 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -259,129 +263,34 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Antimatter Generator, SLAM")
-            .addInfo("Annihilating Antimatter like it's 2205!")
-            .addSeparator()
+        tt.addMachineType("machtype.slam")
             .addInfo(
-                "Generates energy by reacting " + EnumChatFormatting.AQUA
-                    + "Semi-Stable Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + " with "
-                    + EnumChatFormatting.GOLD
-                    + "Matter")
-            .addInfo(
-                "Annihilation uses an equal amount of " + EnumChatFormatting.AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + " and "
-                    + EnumChatFormatting.GOLD
-                    + "Matter")
-            .addInfo(
-                "Consumes " + EnumChatFormatting.GOLD
-                    + "all inputs"
-                    + EnumChatFormatting.GRAY
-                    + " every processing cycle")
-            .addInfo(EnumChatFormatting.RED + "Voids any invalid fluid!")
-            .addInfo("A cycle lasts 5 seconds")
-            .addInfo(
-                "An imbalance between " + EnumChatFormatting.AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + " and "
-                    + EnumChatFormatting.GOLD
-                    + "Matter"
-                    + EnumChatFormatting.RED
-                    + " decreases efficiency!"
-                    + EnumChatFormatting.GRAY)
-            .addInfo(
-                "Efficiency formula: Min(" + EnumChatFormatting.AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.GOLD
-                    + "Matter"
-                    + EnumChatFormatting.GRAY
-                    + ", "
-                    + EnumChatFormatting.GOLD
-                    + "Matter"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + ")")
-            .addInfo("Any excess EU generated will be " + EnumChatFormatting.RED + "voided!" + EnumChatFormatting.GRAY)
-            .addInfo(
-                "Cannot produce more than " + EnumChatFormatting.GREEN
-                    + GTUtility.scientificFormat(Long.MAX_VALUE)
-                    + EnumChatFormatting.GRAY
-                    + " EU per cycle")
-            .addSeparator()
-            .addInfo(
-                "Energy production formula: " + EnumChatFormatting.GREEN
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "A"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + " * ("
-                    + EnumChatFormatting.AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + " ^ "
-                    + EnumChatFormatting.GOLD
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "E"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + ") EU/Cycle")
-            .addInfo(
-                "" + EnumChatFormatting.GREEN
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "A"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GREEN
-                    + "ntimatter energy"
-                    + EnumChatFormatting.GRAY
-                    + " base value: "
-                    + EnumChatFormatting.GREEN
-                    + GTUtility.scientificFormat(ANTIMATTER_FUEL_VALUE)
-                    + EnumChatFormatting.GRAY
-                    + " EU/L")
-            .addInfo(
-                "" + EnumChatFormatting.GOLD
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "E"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GOLD
-                    + "nergy production boost"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + ":")
-            .addInfo("1. Molten Copper: " + EnumChatFormatting.GOLD + "1.00")
-            .addInfo("2. Molten Superconductor Base UIV: " + EnumChatFormatting.GOLD + "1.02")
-            .addInfo("3. Molten Superconductor Base UMV: " + EnumChatFormatting.GOLD + "1.03")
-            .addSeparator()
-            .addInfo("Switch the power destination to your wireless network with a screwdriver")
-            .addInfo("Wireless mode requires Superconductor Base UMV to work")
-            .addInfo("Wireless mode is still limited by hatch capacity")
+                "gt.slam.tips",
+                GTUtility.scientificFormat(Long.MAX_VALUE),
+                GTUtility.scientificFormat(ANTIMATTER_FUEL_VALUE))
             .beginStructureBlock(35, 43, 35, false)
-            .addController("Front center, 2nd layer")
-            .addCasingInfoMin("Transcendentally Reinforced Borosilicate Glass", 1008, false)
-            .addCasingInfoMin("Magnetic Flux Casing", 4122, false)
-            .addCasingInfoMin("Gravity Stabilization Casing", 2418, false)
-            .addCasingInfoMin("Protomatter Activation Coil", 32, false)
-            .addCasingInfoMin("Antimatter Annihilation Matrix", 600, false)
-            .addCasingInfoMin("Naquadria Frame Box", 293, false)
-            .addCasingInfoMin("Advanced Filter Casing", 209, false)
-            .addInputHatch("2, Hint Block Number 1", 1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.laser_source_hatch"),
-                "1-64, Hint Block Number 2",
-                2)
+            .addController("front_center_layer2")
+            .addCasingInfoMin(getGlassBlock().getLocalizedName(), 1008)
+            .addCasingInfoMin(
+                ItemRefer.MagneticFluxCasing.get(1)
+                    .getDisplayName(),
+                4122)
+            .addCasingInfoMin(
+                ItemRefer.GravityStabilizationCasing.get(1)
+                    .getDisplayName(),
+                2418)
+            .addCasingInfoMin(
+                ItemRefer.ProtomatterActivationCoil.get(1)
+                    .getDisplayName(),
+                32)
+            .addCasingInfoMin(
+                ItemRefer.AntimatterAnnihilationMatrix.get(1)
+                    .getDisplayName(),
+                600)
+            .addCasingInfoMin(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Naquadria), 293)
+            .addCasingInfoMin(Casings.AdvancedFilterCasing.getLocalizedName(), 209)
+            .addStructurePart("GT5U.MBTT.InputHatch", "2", true, 1)
+            .addStructurePart("gg.structure.tooltip.laser_source_hatch", "1-64", true, 2)
             .toolTipFinisher();
         return tt;
     }

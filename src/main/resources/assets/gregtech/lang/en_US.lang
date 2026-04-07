@@ -471,6 +471,16 @@ gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%%
 gt.interact.desc.filtering_fuild=Filtering Fluid: %s - %s
 gt.interact.desc.ban_screwdriver=Do not attempt to use a screwdriver!
 
+# GT Tile Entity Descriptions
+gt.te.stack.singular=stack
+gt.te.stack.plural=stacks
+gt.te.input_hatch.desc=Fluid Input for Multiblocks\nRight click with screwdriver to toggle input filter\nCapacity: %sL
+gt.te.input_bus.desc=Item Input for Multiblocks\nShift + right click with screwdriver to turn Sort mode on/off\nCapacity: %s %s
+gt.te.output_hatch.desc=Fluid Output for Multiblocks\nCapacity: %sL\nRight click with screwdriver to restrict output\nCan be restricted to put out Items and/or Steam/No Steam/1 specific Fluid\nRestricted Output Hatches are given priority for Multiblock Fluid output
+gt.te.output_bus.desc=Item Output for Multiblocks\nCapacity: %s %s\nLeft click with data stick to save filter config\nRight click with data stick to load filter config
+gt.te.output_hatch_antimatter.desc=Fluid Output for Multiblocks\nStores Antimatter\nAntimatter can be inserted from any side\nFront face input can be toggled with a screwdriver\nCapacity: 16,384,000L
+gt.te.black_hole_util_hatch.desc=Optional hatch for Pseudostable Black Hole Containment Field.\nStatic Mode: Emit a constant redstone signal when a black hole is open\nPulse Mode: Emit a pulse every second while a black hole is open\nPulse is perfectly synced to the internal timing of the machine\nRight click to open the GUI and change settings.
+
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch
 item.GTPP.catalyst_housing.name=Catalyst Housing
@@ -979,14 +989,25 @@ GT5U.providesgashazmatprotection=Provides gas protection.
 
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
-GT5U.MBTT.MachineType=Machine Type
+GT5U.MBTT.Tier=%s-tier
+GT5U.MBTT.ErrorTier=Invalid Voltage Tier
+GT5U.MBTT.MachineType=Machine Type: §e
 GT5U.MBTT.StaticParallels=Processes up to %s recipes at once
-GT5U.MBTT.Dimensions=Dimensions
-GT5U.MBTT.Hollow=(Hollow)
-GT5U.MBTT.Structure=Structure
-GT5U.MBTT.Controller=Controller
-GT5U.MBTT.Minimum=(minimum)
-GT5U.MBTT.Tiered=(tiered)
+GT5U.MBTT.Dimensions=§fDimensions: §6%d§7x§6%d§7x§6%d §7(§6W§7x§6H§7x§6L§7) %s
+GT5U.MBTT.DimensionsVariable=§fDimensions: §6%d-%d§7x§6%d-%d§7x§6%d-%d §7(§6W§7x§6H§7x§6L§7) %s
+GT5U.MBTT.Hollow=§c(Hollow)
+GT5U.MBTT.Structure=§fStructure:
+GT5U.MBTT.Controller=§fController
+GT5U.MBTT.Minimum= (minimum)
+GT5U.MBTT.Tiered= (tiered)
+GT5U.MBTT.PartInfo=§f%s: §7%s
+GT5U.MBTT.PartInfoWithHint=§f%s: §7%s, Hint block with dot %s
+GT5U.MBTT.PartHintDesc=Hint block with dot %s
+GT5U.MBTT.AnyGlass=Any Glass
+GT5U.MBTT.AnyGlass_Tier=Any Glass (%s+)
+GT5U.MBTT.AnyCasing=Any Casing
+GT5U.MBTT.AnyBottomCasing=Any Bottom Layer Casing
+GT5U.MBTT.AnyTopCasing=Any Top Layer Casing
 GT5U.MBTT.MaintenanceHatch=Maintenance Hatch
 GT5U.MBTT.MufflerHatch=Muffler Hatch
 GT5U.MBTT.EnergyHatch=Energy Hatch
@@ -1001,19 +1022,19 @@ GT5U.MBTT.InputBus=Input Bus
 GT5U.MBTT.InputHatch=Input Hatch
 GT5U.MBTT.OutputBus=Output Bus
 GT5U.MBTT.OutputHatch=Output Hatch
-GT5U.MBTT.TecTechMultiAmp=Supports TecTech Multi-Amp Hatches!
-GT5U.MBTT.TecTechHatch=Supports TecTech Multi-Amp and Laser Hatches!
+GT5U.MBTT.TecTechMultiAmp=§aSupports TecTech Multi-Amp Hatches!
+GT5U.MBTT.TecTechHatch=§aSupports TecTech Multi-Amp and Laser Hatches!
 GT5U.MBTT.Param=Parametrizer Hatch
 GT5U.MBTT.Uncertainty=Uncertainty Hatch
 GT5U.MBTT.InputData=Data Reception Connector
 GT5U.MBTT.OutputData=Data Transmission Connector
-GT5U.MBTT.Causes=Causes
+GT5U.MBTT.CausesPollution=Causes: §5%d §7pollution per second
 GT5U.MBTT.Produces=Produces
 GT5U.MBTT.PPS=Pollution per second
-GT5U.MBTT.Hold=Hold
-GT5U.MBTT.Display=to display structure guidelines
+GT5U.MBTT.HoldDisplay=Hold §l[LSHIFT]§7 to display structure guidelines
 GT5U.MBTT.StructureHint=Some blocks have multiple candidates or can use any tier
-GT5U.MBTT.Mod=Added by
+GT5U.MBTT.Authors=Added by: %s
+GT5U.MBTT.AuthorsX=Added by: %s§r§7; Structure by: %s
 GT5U.MBTT.Air=Mandatory Air
 GT5U.MBTT.ParallelBase=Processes %s items per %s Tier
 GT5U.MBTT.ParallelBase_Singular=Processes %s item per %s Tier
@@ -1022,7 +1043,7 @@ GT5U.MBTT.SpeedTiered=%s faster than single block machines of the same voltage, 
 GT5U.MBTT.EuDiscountBase=Uses %s of the EU normally required
 GT5U.MBTT.EuDiscountTiered=Uses %s less EU per %s Tier
 GT5U.MBTT.Parallel_Multiplicative=%s Parallels per %s Tier
-GT5U.MBTT.StructureBy=Structure by
+GT5U.MBTT.StructureBy=Structure by: %s
 GT5U.MBTT.pHSensorHatch=pH Sensor Hatch
 GT5U.MBTT.ControlHatch=Control Hatch
 GT5U.MBTT.LensHousing=Lens Housing
@@ -1032,6 +1053,11 @@ GT5U.MBTT.InputHatch.WithFormat=Input Hatch (%s)
 
 gt.unit.liter=L
 gt.unit.liter_per_second=L/s
+gt.structure.controller.front_bottom=Front bottom
+gt.structure.energy_hatch.tier_base=%s+, any base casing
+gt.structure.mining_pipes_optional=Mining Pipes, optional, any base casing
+gt.structure.drilling_fluid_base=Drilling Fluid, any base casing
+gt.structure.oil_mining_pipes_optional=Mining Pipes or Circuits, optional, any base casing
 
 GT5U.MBTT.Parallel.Base=%s Parallels
 GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier
@@ -1055,22 +1081,26 @@ GT5U.MBTT.Tiers.Glass=Glass
 GT5U.MBTT.Tiers.ComponentAssemblyLineCasing=Component Assembly Line Casing
 GT5U.MBTT.Steam.Speed=%s faster than using single block steam machines of the same pressure
 GT5U.MBTT.Steam.Eff=Only consumes steam at %s of the steam flowrate normally required
-GT5U.MBTT.Structure.SeeStructure1=To see the structure, use a
-GT5U.MBTT.Structure.SeeStructure2=Hologram Projector on the Controller!
-GT5U.MBTT.Structure.MinGlassForLaser=-tier §fGlass§7 required for §9Tec§1Tech§7 Laser Hatches
+GT5U.MBTT.Structure.SeeStructure=To see the structure, use a §9Structure §1Lib §fHologram Projector §7on the Controller!
+GT5U.MBTT.Structure.MinGlassForLaser=%s%s§7-tier §fGlass§7 required for §9Tec§1Tech§7 Laser Hatches
 GT5U.MBTT.Structure.GlassEnergyLimit=Energy Hatch limited by §fGlass§7 Tier
-GT5U.MBTT.Structure.GlassEnergyLimitTier=-tier unlocks all
+GT5U.MBTT.Structure.GlassEnergyLimitTier=Energy Hatch limited by Glass tier, %s%s§7-tier Glass unlocks all
 GT5U.MBTT.Structure.NoTierSkips=This machine can only run recipes matching its average energy hatch tier
 GT5U.MBTT.Structure.MaxTierSkips=This machine can run recipes at most %d tiers above its average energy hatch tier
 GT5U.MBTT.Structure.UnlimitedTierSkips=This machine can run recipes regardless of tier, if given enough energy
+GT5U.MBTT.Structure.MegaNoFullDisplay=This Mega Multiblock is too big to have its structure hologram displayed fully.
 gt.mbtt.structure.front_center=Front center
 gt.mbtt.structure.back_center=Back center
+gt.mbtt.structure.front_bottom_center=Front bottom center
+gt.mbtt.structure.top_center=Top center
+gt.mbtt.structure.front_center_layer2=Front center, 2nd layer
+gt.mbtt.structure.front_center_layer3=Front center, 3rd layer
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
 GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
 GT5U.MBTT.BoroGlassTiered=Borosilicate Glass (any)
 GT5U.MBTT.ConfigMenu=Configuration Menu
-GT5U.MBTT.PerfectOC=Machine does not lose efficiency when overclocked
+GT5U.MBTT.PerfectOC=§bMachine does not lose efficiency when overclocked
 GT5U.MBTT.Deprecated=§4DEPRECATED - %s
 GT5U.MBTT.Deprecated.Removal=Controller will be removed in next major update!
 GT5U.MBTT.Deprecated.NEI=§4Check NEI for new Controller and conversion recipe
@@ -1104,13 +1134,11 @@ GT5U.MBTT.AlchemyCasingAny=Alchemically Resistant/Inert/Immune Casing
 GT5U.MBTT.AlchemicalConstructAny=Alchemical Construct
 GT5U.MBTT.SuperChest=Super/Quantum Chest
 
+gt.multiblock.ore_drill.machine_type=Miner, MBM
+gt.multiblock.ore_drill.desc=Use a Screwdriver to configure working area\nMaximum area is %s chunks (%s blocks)\nIn chunk mode, working area center is the chunk corner nearest to the drill\nUse Soldering iron to turn off chunk mode\nUse Wire Cutter to toggle replacing mined blocks with cobblestone\nGives %s as much crushed ore vs normal processing\nFortune bonus of %s. Only works on small ores
+
 gt.multiblock.DieselEngine.machine_type=Combustion Generator, LCE
-gt.multiblock.DieselEngine.desc1=Supply Diesel Fuels and %s of Lubricant per hour to run
-gt.multiblock.DieselEngine.desc2=Supply %s of Oxygen to boost output (optional)
-gt.multiblock.DieselEngine.default_output=Default: Produces %s at %s fuel efficiency
-gt.multiblock.DieselEngine.boosted_output=Boosted: Produces %s at %s fuel efficiency
-gt.multiblock.DieselEngine.wait_power=You need to wait for it to reach %s to output full power
-gt.multiblock.DieselEngine.intake_warning=Engine Intake Casings must not be obstructed in front (only air blocks)
+gt.multiblock.DieselEngine.desc=Supply Diesel Fuels and %s of Lubricant per hour to run\nSupply %s of Oxygen to boost output (optional)\nDefault: Produces %s at %s fuel efficiency\nBoosted: Produces %s at %s fuel efficiency\nYou need to wait for it to reach %s to output full power\nEngine Intake Casings must not be obstructed in front (only air blocks)
 gt.multiblock.DieselEngine.gear_box_inner=Inner 2 blocks
 gt.multiblock.DieselEngine.engine_intake_ring=8x, ring around controller
 gt.multiblock.DieselEngine.maintenance_hatch=One of the casings next to a Gear Box
@@ -1119,7 +1147,7 @@ gt.multiblock.DieselEngine.diesel_fuel=Diesel Fuel, next to a Gear Box
 gt.multiblock.DieselEngine.lubricant=Lubricant, next to a Gear Box
 gt.multiblock.DieselEngine.oxygen_optional=Oxygen, optional, next to a Gear Box
 
-GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
+GT5U.MBTT.subchannel=Uses sub channel §6%s§7 for §6%s
 
 GT5U.MBTT.CokeOvenHatch=Coke Oven Hatch
 
@@ -1740,6 +1768,8 @@ GT5U.gui.text.per_second=§fPer second:
 GT5U.gui.text.per_minute=§fPer minute:
 GT5U.gui.text.per_hour=§fPer hour:
 GT5U.gui.text.per_day=§fPer day:
+GT5U.gui.text.second_each=%ss/each
+GT5U.gui.text.each_per_second=%s/s
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
 GT5U.gui.text.item_output_full=§7Not enough item output space
@@ -1993,20 +2023,6 @@ GT5U.tooltip.nac.interface.structure.module_controller=Middle of the Mesh Interf
 GT5U.tooltip.nac.interface.structure.module_description=§fMaterial Count§r §c§lNOT§r §fIncluding Mesh Interface Platform§r
 
 GT5U.tooltip.nac.main.machine_type=NAC, Nanochip-Assembly-Complex
-GT5U.tooltip.nac.main.action=Uses Circuit Components (%s) to create circuits at unimaginable speeds
-GT5U.tooltip.nac.main.logo=Click the Logo Icon in the GUI for more information
-GT5U.tooltip.nac.main.flavor.1=Home of the Gestalt Rapidly Evolving Genesis Optimization System (GREGOS),
-GT5U.tooltip.nac.main.flavor.2=a pseudo-sentient program overseeing circuit production in the NAC
-GT5U.tooltip.nac.main.flavor.3=It seems to be eager to learn more, maybe you can become friends?
-GT5U.tooltip.nac.main.body.1=%s can only exist in the perfect environment present in %s
-GT5U.tooltip.nac.main.body.2=Convert items to %s in the control room by placing them in a %s input bus
-GT5U.tooltip.nac.main.body.3=Every §45§7 seconds, all items in %s input buses are placed
-GT5U.tooltip.nac.main.body.4=in Vacuum Conveyor Outputs (%s) of the same %s
-GT5U.tooltip.nac.main.body.5=Finished circuit %s are converted back into circuits by routing them to a %s in the control room
-GT5U.tooltip.nac.main.body.6=%s in a %s %s are placed in an output bus of the same %s
-GT5U.tooltip.nac.main.body.7=%s must be processed into a refined version by §f§nmodules§r§7 before they
-GT5U.tooltip.nac.main.body.8=can be assembled into a circuit in the §aNanochip Assembly Matrix
-GT5U.tooltip.nac.main.body.9=All power from the energy hatch is distributed to the modules as they need it
 GT5U.tooltip.nac.module.assembly_matrix.name=Assembly Matrix
 GT5U.tooltip.nac.module.assembly_matrix.flavor.1=After processing your CCs through an intricate pipeline, they are finally
 GT5U.tooltip.nac.module.assembly_matrix.flavor.2=ready to be assembled into a circuit. This circuit can be converted into a real
@@ -2187,6 +2203,7 @@ GT5U.gui.hoverable.incomplete=Structure incomplete.
 GT5U.gui.hoverable.powerloss=Lost Power.
 GT5U.gui.hoverable.norepair=Machine too damaged.
 GT5U.gui.hoverable.manualshutdown=Manual shutdown (get it?).
+GT5U.gui.hoverable.noissue=No maintenance issues!
 GT5U.gui.hoverable.error=ERROR! REPORT ME!
 
 GT5U.gui.config.client=Client
@@ -2388,73 +2405,21 @@ GT5U.gui.text.beamcrafter.particleA=Particle 1
 GT5U.gui.text.beamcrafter.particleB=Particle 2
 
 gt.blockmachines.multimachine.beamcrafting.beamcrafter.machinetype=Beam Crafter, Beam Assembler
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip1=Collides two beams of particles into target materials to modify
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip2=their subatomic structure
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip3=The Input Beams can be supplied to either Beamline Input Hatch
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip4=Recipes will not start unless both beams have sufficiently high
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5=§eBeam Energies§7
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6=Processing speed is determined purely by the Input §cBeam Rates§7
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7=Each particle §cAmount§7 provided corresponds to one tick of progress
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8=Once the required §cAmount§7 of a specific §bPart§6icle§7 have been input,
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip9=excess particles of that type are voided
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip=Collides two beams of particles into target materials to modify\ntheir subatomic structure<SEPARATOR>The Input Beams can be supplied to either Beamline Input Hatch<SEPARATOR>Recipes will not start unless both beams have sufficiently high\n§eBeam Energies§7<SEPARATOR>Processing speed is determined purely by the Input §cBeam Rates§7\nEach particle §cAmount§7 provided corresponds to one tick of progress\nOnce the required §cAmount§7 of a specific §bPart§6icle§7 have been input,\nexcess particles of that type are voided<SEPARATOR>
 
 gt.blockmachines.multimachine.beamcrafting.beammirror.machinetype=Beam Mirror
-gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip1=Takes in particle beams and sends them back out
-gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip2=§6That's literally it.
+gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip=Takes in particle beams and sends them back out\n§6That's literally it.
 
 gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetype=Beam Splitter
 gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetypefake=Beam Splitter, Bean Splitter
-gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip1=Select which particles to blacklist in the output hatches
-gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip2=Input particles will be split evenly among all valid output hatches
+gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip=Select which particles to blacklist in the output hatches\nInput particles will be split evenly among all valid output hatches
 
 gt.blockmachines.multimachine.beamcrafting.beamstabilizer.machinetype=Beam Stabilizer
-gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip1=Accepts and stores up to 100000 §aParticles§7 from
-gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip2=potentially intermittent high §cRate§7 particle beam packets
-gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip3=and re-releases those particles as a stable beam at a
-gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip4=§cRate§7 of your choosing
-gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip5=If a particle beam with a different §aParticle§7, §6Energy§7 or
-gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip6=§bFocus§7 is sent to the machine during operation, it is
-gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip7=ignored UNLESS there are no currently stored §aParticles
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip=Accepts and stores up to 100000 §aParticles§7 from\npotentially intermittent high §cRate§7 particle beam packets\nand re-releases those particles as a stable beam at a\n§cRate§7 of your choosing<SEPARATOR>If a particle beam with a different §aParticle§7, §6Energy§7 or\n§bFocus§7 is sent to the machine during operation, it is\nignored UNLESS there are no currently stored §aParticles
 
 gt.blockmachines.multimachine.beamcrafting.LHC.machinetype=Particle Accelerator, Particle Collider, LHC
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip1=Accelerates particles to high energies and then collides them to generate new particles
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip2=Electrically neutral particles are unaffected
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip3=Set the §etarget beam energy§7 (up to 2TeV) and the §9maximum number of cycles§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip4=Cycles every second
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip5=§f§nAccelerator mode§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6=Accelerates the beam in the smaller LHC ring
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Accelerator mode increases the §6Beam Energy§7 by §bEnergy Hatch Voltage§7 * §f10eV§7, until the
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8=§eTarget Beam Energy§7 is reached, or the §9maximum number of cycles§7 is reached
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §eTarget Beam Energy§7 is reached, multiply the current §cBeam Rate§7 by §f1.1§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=§aPower§7 cost starts at §f1A§7 of §fUV§7 per §cBeam Rate§7 and increases quadratically
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11=with the §dnumber of completed cycles§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=§aP§7 = §f(1A UV)§7 * §cR§7 * §dN§7^2
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13=Automatically switches to Collider mode when the §9maximum number of cycles§7 is reached
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip14=§f§nCollider mode§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip15=Splits the beam into §ftwo§7 beams that go in opposite directions in the larger LHC ring, which
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip16=then collide to generate new particles
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip17=The §3Collision Energy§7 is two times the §6Beam Energy§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip18=If the §3Collision Energy§7 exceeds the rest mass of a particle, that particle will start
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip19=appearing in the outputs
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip20=A particle output can only appear in the modules that correspond to the forces that
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip21=interact with that particle
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip22=For example, Neutrinos cannot appear in the Strong force module, §fALICE§7, since they do
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip23=not interact via the strong force
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip24=§fFiltered Beamline Output Hatches§7 will allow you to see the list of possible outputs, and
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip25=filter them
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip26=There are four LHC modules, marked by the letter on top of the module:
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip27=§bE - Electromagnetism§7 - Charged Matter Sensor (§bCMS§7)
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip28=§2W - Weak Interaction§7 - Advanced Total Lepton Assimilation Snare (§2ATLAS§7)
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29=§fS - Strong Force§7 - Absolute Lattice Integrated Chromodynamic Encapsulator (§fALICE§7)
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip30=§5G - Gravity§7 - Localized Horizon Curvature Binder (§5LHCb§7)
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip=Accelerates particles to high energies and then collides them to generate new particles\nElectrically neutral particles are unaffected\nSet the §etarget beam energy§7 (up to 2TeV) and the §9maximum number of cycles§7\nCycles every second<SEPARATOR>§f§nAccelerator mode§7\nAccelerates the beam in the smaller LHC ring\nAccelerator mode increases the §6Beam Energy§7 by §bEnergy Hatch Voltage§7 * §f10eV§7, until the\n§eTarget Beam Energy§7 is reached, or the §9maximum number of cycles§7 is reached\nIf the §eTarget Beam Energy§7 is reached, multiply the current §cBeam Rate§7 by §f1.1§7\n§aPower§7 cost starts at §f1A§7 of §fUV§7 per §cBeam Rate§7 and increases quadratically\nwith the §dnumber of completed cycles§7\n§aP§7 = §f(1A UV)§7 * §cR§7 * §dN§7^2\nAutomatically switches to Collider mode when the §9maximum number of cycles§7 is reached<SEPARATOR>§f§nCollider mode§7\nSplits the beam into §ftwo§7 beams that go in opposite directions in the larger LHC ring, which\nthen collide to generate new particles\nThe §3Collision Energy§7 is two times the §6Beam Energy§7\nIf the §3Collision Energy§7 exceeds the rest mass of a particle, that particle will start\nappearing in the outputs\nA particle output can only appear in the modules that correspond to the forces that\ninteract with that particle\nFor example, Neutrinos cannot appear in the Strong force module, §fALICE§7, since they do\nnot interact via the strong force\n§fFiltered Beamline Output Hatches§7 will allow you to see the list of possible outputs, and\nfilter them<SEPARATOR>There are four LHC modules, marked by the letter on top of the module:\n§bE - Electromagnetism§7 - Charged Matter Sensor (§bCMS§7)\n§2W - Weak Interaction§7 - Advanced Total Lepton Assimilation Snare (§2ATLAS§7)\n§fS - Strong Force§7 - Absolute Lattice Integrated Chromodynamic Encapsulator (§fALICE§7)\n§5G - Gravity§7 - Localized Horizon Curvature Binder (§5LHCb§7)<SEPARATOR>
 
-gt.blockmachines.multimachine.beamcrafting.ttcontroller=Front center
-gt.blockmachines.multimachine.beamcrafting.ttehatch=Energy Hatch
-gt.blockmachines.multimachine.beamcrafting.ttcasing=Collider Casing
-gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing=Shielded Accelerator Casing
-gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass=Shielded Accelerator Glass
-gt.blockmachines.multimachine.beamcrafting.ttanyglass=Any Tiered Glass
-gt.blockmachines.multimachine.beamcrafting.ttanycasing=Any Collider Casing
 gt.blockmachines.multimachine.beamcrafting.ttanyneonite=Neonite (Any, optional)
 gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch=Beamline Input Hatch
 gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch=Beamline Output Hatch
@@ -2647,9 +2612,9 @@ GT5U.item.programmed_circuit.tooltip.0=Configuration %s
 GT5U.item.programmed_circuit.tooltip.1=Right click to reconfigure
 GT5U.item.programmed_circuit.tooltip.2=Needs a screwdriver or programming tool
 
-GT5U.item.cable.max_voltage=Max Voltage
-GT5U.item.cable.max_amperage=Max Amperage
-GT5U.item.cable.loss=Loss/Meter/Ampere
+GT5U.item.cable.max_voltage=Max Voltage: §a%s (%s§a)
+GT5U.item.cable.max_amperage=Max Amperage: §e%s
+GT5U.item.cable.loss=Loss/Meter/Ampere: §c%s §7EU-Volt
 GT5U.item.cable.loss.eu_volt=%s EU-Volt
 GT5U.item.cable.swapped.s=Cable swapped: %s
 GT5U.item.tank.locked_to=Content locked to %s
@@ -5928,17 +5893,6 @@ GTPP.monsterkiller.tooltip.4=Target Type:
 # 17/08/19
 GTPP.container.decaychest.name=Decayables
 
-
-
-
-
-
-
-
-
-
-
-
 # NEI INFORMATION
 GTPP.nei.info=Information
 GTPP.nei.eutick=Eu/t
@@ -6000,8 +5954,6 @@ GT5U.tooltip.pollution.produces.rocket.ignited=Produces %d Pollution/Second when
 GT5U.tooltip.pollution.produces.rocket.flying=Produces %d Pollution/Second when flying
 
 # GT structure hints
-GT5U.tooltip.structure.data_access_hatch=Data Access Hatch
-GT5U.tooltip.structure.electromagnet_housing=Electromagnet Housing
 GT5U.tooltip.structure.laser_source_hatch=Laser Source Hatch
 GT5U.tooltip.structure.heating_coil=Heating Coil
 GT5U.tooltip.structure.four_item_pipe_casings=4 Item Pipe Casings
@@ -6018,6 +5970,15 @@ GT5U.tooltip.structure.input_hatch_plasma=Input Hatch (Plasma)
 GT5U.tooltip.structure.input_hatch_output_hatch=Input Hatch, Output Hatch
 GT5U.tooltip.structure.lens_housing=Lens Housing
 GT5U.tooltip.structure.lens_indicator=Lens Indicator
+GT5U.tooltip.structure.manipulator=Manipulator
+GT5U.tooltip.structure.shielding=Shielding Core
+GT5U.tooltip.structure.eoh_tdfg=Time Dilation Field Generator
+GT5U.tooltip.structure.eoh_sfg=Stabilisation Field Generator
+GT5U.tooltip.structure.eoh_scfg=Spacetime Compression Field Generator
+GT5U.tooltip.structure.kaboom_containment=Containment Block
+GT5U.tooltip.structure.tiered_fusion_casing=Tiered Fusion Casing
+GT5U.tooltip.structure.neutron_accelerator=Neutron Accelerator
+GT5U.tooltip.structure.neutron_sensor=Neutron Sensor
 
 GT5U.tooltip.fluid.registry=Registry: %s
 GT5U.tooltip.fluid.amount=Amount: %s
@@ -6042,8 +6003,8 @@ GT5U.die.frozen=%s froze to death
 GT5U.die.boiled=%s was boiled alive
 GT5U.die.exploded=%s exploded
 
-gt.coilheattooltip=Base Heating Capacity =
-gt.coilunittooltip= Kelvin
+gt.coilheattooltip=Base Heating Capacity = %s %s
+gt.coilunittooltip=Kelvin
 
 GT5U.tootlip.tool.turbine.steam=Steam
 GT5U.tootlip.tool.turbine.loose=Loose
@@ -6474,6 +6435,589 @@ achievement.gt.blockmachines.moleculartransformer.controller.tier.single=Molecul
 achievement.gt.blockmachines.moleculartransformer.controller.tier.single.desc=[AL] Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.gtpp.multimachine.replicator=Elemental Duplicator
 achievement.gt.blockmachines.gtpp.multimachine.replicator.desc=[AL] Pickup this item to see the recipe in NEI
+
+#-----------------------------------#
+# Multiblock Descriptions and stuff #
+#-----------------------------------#
+# Used in addSubChannelUsage, replaces the second placeholder of
+# GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
+#
+# CONTEXT: Uses sub channel (subchannel) for (channelfor)
+# (subchannel) is provided by the code and shouldn't be localized
+gt.channelfor.manipulator=Manipulator Tier
+gt.channelfor.shielding=Shielding Tier
+gt.channelfor.coil=Heating Coils Tier
+gt.channelfor.glass=Glass Tier
+gt.channelfor.unit_casing=Precise Electronic Unit Casing Tier
+gt.channelfor.casing=Metal Machine Casing Tier
+gt.channelfor.machine_casing=Machine Casing Tier
+gt.channelfor.solenoid=Solenoid Tier
+gt.channelfor.capacitor=Capacitor Tier
+gt.channelfor.height=Structure Height
+gt.channelfor.length=Structure Length
+gt.channelfor.pipe=Pipe Casing Tier
+gt.channelfor.item_pipe=Item Pipe Casing Tier
+gt.channelfor.cell=Vanadium Redox Power Cell Tier
+gt.channelfor.antenna=Antenna Casing Tier
+gt.channelfor.spacetime_compression=Spacetime Compression Field Generator Tier
+gt.channelfor.stabilisation=Stabilisation Field Generator Tier
+gt.channelfor.time_dilation=Time Dilation Field Generator Tier
+gt.channelfor.gt_no_hatch=(disabled)
+gt.channelfor.field=Storage Field Tier
+gt.channelfor.piston_block=Metal Block Tier
+gt.channelfor.alchemical_casing=Alchemical Casing Tier
+gt.channelfor.construct=Alchemical Construct Tier
+gt.channelfor.super_chest=Super Chest Tier
+
+# Used in addMachineType
+# CONTEXT: Machine type: (machtype)
+machtype.bbf=Blast Furnace, BBF
+machtype.ebf=Blast Furnace, EBF
+machtype.vf=Vacuum Freezer, VF
+machtype.mvf=Vacuum Freezer, MVF
+machtype.lcr=Chemical Reactor, LCR
+machtype.purif_plant=Purification Plant, WPP
+machtype.purif_unit=Purification Unit
+machtype.fluid_tank=Fluid Tank
+machtype.mega_apiary=Mega Apiary, Mapiary
+machtype.isamill=Grinding Machine, IGM
+machtype.sparge=Gas Sparge Tower
+machtype.cyclotron=Particle Accelerator
+machtype.wwxl=Heat Exchanger, WWXL
+machtype.reactor_processing_unit=Reactor Processing Unit
+machtype.cold_trap=Cold Trap
+machtype.energy_storage=Energy Storage
+machtype.gas_turbine=Gas Turbine
+machtype.adv_assline=Assembly Line, AAL
+machtype.fishtrap=Fish Trap
+machtype.flotation_cell=Flotation Cell, FCR
+machtype.chem_plant=Chemical Plant
+machtype.mega_abs=Fluid Alloy Cooker, MABS
+machtype.lsaa=Assembler, LSAA
+machtype.qft=Quantum Force Transformer, QFT
+machtype.solar_tower=Solar Tower
+machtype.eoh=Spacetime Manipulator, EOH
+machtype.windmill=Windmill
+machtype.adv_nt_compressor=Advanced Neutronium Compressor
+machtype.cleanroom=Cleanroom
+machtype.ore_factory=Ore Processor, IOF
+machtype.hi_engraver=Laser Engraver, HILE
+machtype.dehp=Geothermal Heat Pump, DEHP
+machtype.latex=Cable Coater, LATEX
+machtype.eic=Implosion Compressor, EIC
+machtype.htgr=Breeder Reactor, HTGR
+machtype.eec=Powered Spawner, EEC
+machtype.defc=Fusion Crafter, DEFC
+machtype.mapiary=Mega Apiary, Mapiary
+machtype.nano_forge=Nanite Fabricator
+machtype.ece=Combustion Generator, ECE
+machtype.entropic_processor=Entropic Processor
+machtype.distillation_tower=Distillery, DT
+machtype.assline=Assembly Line, Assline, AL
+machtype.mb_air_filter=Air Filter, EAF
+machtype.completer=Research Completer
+machtype.decay_warehouse=Decay Warehouse
+machtype.backfiller=Concrete Backfiller
+machtype.solar_factory=Solar Factory
+machtype.wormhole_gen=Wormhole Generator, MWG
+machtype.tpm=Transcendent Mixer, TPM
+machtype.dtpf=Plasma Forge, DTPF
+machtype.thermal_boiler=Boiler
+machtype.iwf=Wiremill, IWF
+machtype.chisel=Chisel
+machtype.les=Essentia Smeltery, LES
+machtype.cpi=Charcoal Pile Igniter, CPI
+machtype.ssass=Antimatter Forge, SSASS
+machtype.oil_drill=Pump, FDR
+machtype.ore_drill=Miner, MBM
+machtype.slam=Antimatter Generator, SLAM
+machtype.sc_turbine=Supercritical Steam Turbine
+machtype.lhe=Heat Exchanger, LHE
+machtype.exotic_module=Exotic Matter Producer
+machtype.molten_module=Blast Smelter
+machtype.forge_of_gods=Stellar Forge
+machtype.ucfe=Chemical Engine, UCFE
+machtype.neutron_activator=Neutron Activator, NA
+machtype.multi_nq_gen=Naquadah Reactor, LNR
+machtype.prass=Precise Assembler, PrAss
+machtype.bbb=Brewery, BBB
+machtype.lst=Steam Turbine, LST
+machtype.mcr=Chemical Reactor, MCR
+machtype.bacvat=Bacterial Vat, Bac Vat
+machtype.manual_trafo=Transformer
+machtype.thtr=High Temperature Reactor, THTR
+machtype.cal=Circuit Assembler, CAL
+machtype.mebf=Blast Furnace, MEBF, MBF
+machtype.moc=Cracker, MOC
+machtype.digester=Digester
+machtype.dissolution_tank=Dissolution Tank
+machtype.linac=Particle Accelerator, LINAC
+machtype.energy_infuser=Restorer
+
+# Multiblock Tooltip lines
+gt.energy_infuser.tips=Simultaneously recharges and repairs equipment\nStocking input buses are not supported\n§6Recharging§7: No max speed or energy loss\n§6Repairing§7: Max 1k durability/t, consumes 1k EU + 1L UUM per point
+
+gt.linac.tips.1=Accelerates charged particles to higher energies by running them through an electric field\nElectrically neutral particles are therefore unaffected
+gt.linac.tips.2=<SEPARATOR>Increasing Structure Length increases output §9Beam Energy§7 but decreases §cBeam Focus\nRequires §fLength * kL/s§7 of §bcoolant§7 for operation\n§cBeam Focus§7 loss can be mitigated more effectively with lower temperature §bcoolant\nValid coolants:
+gt.linac.tips.3=<SEPARATOR>§9Output Beam Energy§f = max(§eV§f, 50) * 10^§cIE\nwhere §eV§f = (Length - 1) * cbrt(§2Machine Voltage§f) / 4\nand §cIE§f = 1 + min(§dInput Beam Energy§f, 7500) / §aMaximum Particle Energy\n§cInput Beam Energies§7 higher than 7500keV are treated as if they are 7500keV\n§aMaximum Particle Energy§7 refers to values in the Source Chamber Tooltip<SEPARATOR>§cOutput Beam Focus§f depends on the relation between §eInput Beam Focus§f and §3Machine Focus\nwhere §3Machine Focus§f = min(max((-0.9 * (Length-1) * 1.1^(0.2 * §6Coolant Temperature§f) + 110), 5), 90)\nIf §eInput Beam Focus§f > §3Machine Focus§f, §cOutput Beam Focus§f = (§eInput Beam Focus§f + §3Machine Focus§f)/2\nIf §eInput Beam Focus§f <= §3Machine Focus§f, §cOutput Beam Focus§f = §eInput Beam Focus§f * §3Machine Focus§f/100
+gt.linac.coolantlinetext=  §b%s§7 : §6%sK
+
+gt.dissolution_tank.tips=Input Water and Fluid, output Fluid\nFluids must be input in the exact ratio as listed in NEI
+
+gt.digester.tips=Input ores and fluid, output water
+
+gt.moc.tips.1=§8§o"Thermally cracks heavy hydrocarbons into lighter fractions"
+gt.moc.tips.2=§b-10%%§7 EU Usage per %s Tier\nup to a maximum of §b-50%%§7 EU Usage<SEPARATOR>Gives different benefits whether it hydro or steam-cracks:\nHydro - Consumes §320%%§7 less Hydrogen and outputs §325%%§7 more cracked fluid\nSteam - Outputs §350%%§7 more cracked fluid\n§oIn comparison to a chemical reactor<SEPARATOR>
+gt.moc.info.i_hatch=Steam/Hydrogen ONLY
+gt.moc.info.i_bus=Optional, for programmed circuit automation
+
+gt.thtr.tips=Needs to be primed with %s of helium\nNeeds a constant supply of §bcoolant§7 while running\nNeeds at least §6100K§7 Fuel pebbles to start operation (can hold up to 675k pebbles)\nConsumes up to §60.5%%§7 of total Fuel Pellets per Operation depending on efficiency\nEfficiency decreases exponentially if the internal buffer is not completely filled\nReactor will take §b4800L/t§7 of coolant multiplied by efficiency\nUses %s EU/t\nOne Operation takes 9 hours
+gt.thtr.info=Corners and the 2 touching blocks are air (cylindric)
+
+gt.manual_trafo.tips=Operates in 4 diffrent modes:\nMode 1: Circuit 0 in controller: Direct-Upstep\nMode 2: Circuit 1 in controller: Direct-Downstep\nMode 3: Circuit 2 in controller: Tapped-Upstep (currently disabled)\nMode 4: Circuit 2 in controller: Tapped-Downstep (currently disabled)
+gt.manual_trafo.info=\n\nTapped Mode :
+gt.manual_trafo.info.winding=1 Layer for each tier transformed
+gt.manual_trafo.info.nzf_block=Middle of Transformer-Winding Blocks
+gt.manual_trafo.info.e_hatches=Touching Transformer-Winding Blocks
+gt.manual_trafo.info.e_hatches_req=Hatches touching Transformer-Winding Blocks must be tiered from bottom to top
+
+gt.bacvat.tips=§bAdvanced Bio Processing<SEPARATOR>Some recipes require §aR§2A§aD§2I§aA§2T§aI§2O§aN§7 supplied with a §l§aRadio Hatch\nRadiation can be either a minimum requirement or an exact value§Efficiency depends on Output Hatch fluid level§Efficiency peaks at §d50%
+gt.bacvat.info.glass=Hollow two middle layers
+gt.bacvat.info.glass_req=Some Recipes need more advanced Glass Types
+
+gt.mcr.flavor=§8§oInfinite Potential!
+
+gt.lst.tips=Needs a Turbine, place inside controller\nOutputs Distilled Water as well as producing power\nPower output depends on turbine and fitting\nUse screwdriver to adjust fitting of turbine
+gt.lst.info.maintenance=Side centered
+gt.lst.info.i_hatch=Steam, Side centered
+gt.lst.info.o_hatch=Distilled Water, Side centered
+
+gt.multi_centrifuge.tips=Disable animations with a screwdriver
+
+gt.implosion_compressor.flavor=Explosions are fun
+gt.implosion_compressor.info=Casings can be replaced with Explosion Hazard Signs
+
+gt.prass.tips.1=No more than 7nm of error\nHas Two Modes: Precise and Normal\nUse a Screwdriver to change modes<SEPARATOR>Precise Mode unlocks the ability to assemble precise components\nCasing Tier determines Maximum Recipe Tier<SEPARATOR>\nNormal Mode allows standard assembler recipes\n§fPrecise Casing§7 Tier determines §6Parallels\n%s->%s Parallels
+gt.prass.tips.2=<SEPARATOR>Machine Casing limits the voltage tier the machine can work on, %s-tier Machine Casing unlocks all.
+gt.prass.text.imprecise=Imprecise
+
+gt.multi_nq_gen.tips.1=Environmentally Friendly!\nGenerate power from high-energy liquids\nConsumes §b%d L/s Liquid Air§ to keep running, otherwise §eit will void your fuel§7.\nThe reactor will explode when there is more than §cONE§7 type of fuel in hatches!\nInput liquid nuclear fuel or liquid naquadah fuel<SEPARATOR>Can increase §defficiency§7 by §fconsuming §9coolants:
+gt.multi_nq_gen.tips.2=<SEPARATOR>Can increase §doutput power and fuel usage§7 by §fconsuming §cexcited liquid:
+gt.multi_nq_gen.info.dynamo=Any bottom layer casing, only accept ONE!
+gt.multi_nq_gen.coolanttext=§f%s L/s§7 : §d%d%%§7 : §9%s
+gt.multi_nq_gen.excitedtext=§f%s L/s§7 : §d%dx power§7 : §c%s
+
+gt.neutron_activator.tips=Superluminal-velocity Motion.\nThe minimum height of the Speeding Pipe Casing is 4\nPer extra Speeding Pipe Casing will give time discount\nBut it will reduce the Neutron Accelerator efficiency\nYou need to input energy to the Neutron Accelerator to get it running\nIt will output correct products with Specific Neutron Kinetic Energy\nOtherwise it will output trash\nThe Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running\nIt will explode when the Neutron Kinetic Energy is over §c1200MeV§7.\nInputting Graphite/Beryllium dust can reduce 10MeV per dust immediately.
+
+gt.ucfe.tips=BURNING BURNING BURNING\nUse combustible liquid to generate power\nYou need to supply Combustion Promoter to keep it running\nIt will consume all the fuel and combustion promoter in the hatch every second\nEnergy output to the dynamo will be distributed over the next second\nIf the Dynamo Hatch's buffer fills up, the machine will stop\nIf the amount of energy to be produced is higher than the dynamo hatch can handle then all produced energy will void\nWhen turned on, there is a 10-second period where the machine will not stop\nEven if it doesn't stop, all the fuel in the hatch will be consumed\nThe efficiency is determined by the proportion of Combustion Promoter to fuel\nThe higher the amount of promoter, the higher the efficiency\nFollows an exponential curve exp(-C/(p/x))*1.5, where x is the amount of fuel in liters, p is the amount of promoter in liters\nand C depends on the fuel type. Diesel: C=0.04; Gas: C=0.04; Rocket fuel: C=0.005\nIt creates sqrt(Current Output Power) pollution every second\nIf you forget to supply Combustion Promoter, this engine will swallow all the fuel §ewithout outputting energy\nThe efficiency is up to 150%
+gt.ucfe.info.controller=Mid of the second layer
+gt.ucfe.info.muffler=Hint Block Number 2 (fill all slots with mufflers)
+gt.ucfe.info.i_hatch=Hint Block Number 3 (fill all slots with input hatches)
+
+gt.forge_of_gods.tips=§oAlso known as Godforge or Gorge for short§b<SEPARATOR>A massive structure harnessing the thermal, gravitational and\nkinetic energy of a stabilised neutron star for material processing\nThis multiblock can house §cup to 16 modules§7 which utilize the star to energize materials\nto varying degrees, ranging from regular smelting to matter degeneration\nEU requirements for all modules are handled via wireless energy directly§b<SEPARATOR>This multiblock has an §6extensive upgrade tree§7 which influences all of its functions,\nsuch as §6unlocking new module types§7, §6increasing heat levels§7 and §6granting\n§6various processing speed bonuses§7. These upgrades can be unlocked by reaching\ncertain milestones and/or spending materials§b<SEPARATOR>§aClicking on the logo in the controller gui opens an extensive information window§7,\nexplaining everything there is to know about this multiblock
+gt.forge_of_gods.info=Total blocks needed for the structure with %s rings:
+gt.forge_of_gods.info.casingsbyring=§5Remote§7/§2Medial§7/§bCentral§7 Graviton Flow Modulator
+
+gt.molten_module.tips=This is a module of the Godforge\nMust be part of a Godforge to function\nUsed for high temperature material liquefaction§b<SEPARATOR>The second module of the Godforge, this module melts materials directly into\ntheir liquid form. If an output material does not have a liquid form, it will be output\nas a regular solid instead\nThis module is specialized towards parallel processing
+
+gt.smelting_module.tips=This is a module of the Godforge\nMust be part of a Godforge to function\nUsed for basic smelting operations at various temperatures§b<SEPARATOR>As the first of the Godforge modules, this module performs the most basic\nthermal processing, namely smelting materials identically to a furnace or blast furnace\nThe desired method of processing can be selected in the gui\nThis module is specialized towards speed and high heat levels
+
+gt.exotic_module.tips=This is a module of the Godforge\nMust be part of a Godforge to function\nUsed for ultra high temperature matter degeneration§b<SEPARATOR>The fourth and final module of the Godforge, this module breaks apart the very\nbuilding blocks of matter, producing exotic mixtures in the process. Quark-Gluon Plasma\ncan be manufactured right away, but production of Magnetic Monopole Matter (Magmatter)\nrequires a fully upgraded Godforge\nThis module is specialized towards acquisition of unique materials
+
+gt.lhe.tips=Inputs are §cLava§7, §cHot Coolant§7, or §cHot Solar Salt\nOutputs are §9Pahoehoe Lava§7, §9IC2 Coolant§7, or §9Cold Solar Salt\nConverts Distilled Water into §fSteam§7 or §fSH Steam§7 in the process\nOutputs §fSH Steam§7 if the input rate of hot fluid is above a certain §dthreshold<SEPARATOR>§cLava§7 : SH Threshold §d1,000 L/s§7 : Max Input §c2,000 L/s§7 : Max Output §f160,000 SH Steam/s\n§cHot Coolant§7 : SH Threshold §d800 L/s§7 : Max Input §c1,600 L/s§7 : Max Output §f320,000 SH Steam/s\n§cHot Solar Salt§7 : SH Threshold §d160 L/s§7 : Max Input §c320 L/s§7 : Max Output §f320,000 SH Steam/s<SEPARATOR>A circuit in the controller lowers the SH threshold at the cost of steam\n§d3.75%%§7 reduced SH threshold and §f1.5%%§7 reduced steam per circuit over 1
+gt.lhe.info.ti_pipe=Center 2 blocks
+gt.lhe.info.i_hatch.1=Hot Fluid, bottom center casing
+gt.lhe.info.i_hatch.2=Distilled water, any casing
+gt.lhe.info.o_hatch.1=Cold Fluid, top center casing
+gt.lhe.info.o_hatch.2=Steam/SH Steam, any casing
+
+gt.sc_turbine.tips=Needs a Turbine, place inside controller\nUse Supercritical Steam to generate power\nOutputs 1L of SH Steam per 1L of SC Steam as well as producing power\nPower output depends on turbine and fitting\nUse screwdriver to adjust fitting of turbine
+gt.sc_turbine.info.maintenance=Side centered
+gt.sc_turbine.info.i_hatch=Supercritical Fluid, Side centered
+gt.sc_turbine.info.o_hatch=Superheated Steam, Side centered
+
+gt.yottank.tips=The max output speed is decided by the amount of stored liquid and the output hatch's capacity\nThe max fluid cell tier is limited by the glass tier\nHV glass for T1, EV glass for T2, IV glass for T3. . .\nThe max height of the cell blocks is 15
+
+gt.slam.tips=Annihilating Antimatter like it's 2205!<SEPARATOR>Generates energy by reacting §bSemi-Stable Antimatter§7 with §6Matter\nAnnihilation uses an equal amount of §bAntimatter§7 and §6Matter\nConsumes §6all inputs§7 every processing cycle\n§cVoids any invalid fluid!\nA cycle lasts 5 seconds\nAn imbalance between §bAntimatter§7 and §6Matter §cdecreases efficiency!§7\nEfficiency formula: Min(§bAntimatter§7/§6Matter§7, §6Matter§7/§bAntimatter§7)\nAny excess EU generated will be §cvoided!§7\nCannot produce more than §a%s§7 EU per cycle<SEPARATOR>Energy production formula: §a§l§nA§r§7 * (§bAntimatter§7 ^ §6§l§nE§r§7) EU/Cycle\n§a§l§nA§r§antimatter energy§7 base value: §a%s§7 EU/L\n§6§l§nE§r§6nergy production boost§7:\n1. Molten Copper: §61.00\n2. Molten Superconductor Base UIV: §61.02\n3. Molten Superconductor Base UMV: §61.03<SEPARATOR>Switch the power destination to your wireless network with a screwdriver\nWireless mode requires Superconductor Base UMV to work\nWireless mode is still limited by hatch capacity
+
+gt.ssass.tips=§dDimensions not included!§7\nConverts protomatter into antimatter\nUse screwdriver to disable rendering\nPassively consumes %s + (§3Antimatter§7 * %s)^(%s - §a§l§nM§r§7) EU/t\nThe consumption decays by 0.5%% every tick when empty\nActively uses (§3Antimatter§7 * %s)^(%s - §5§l§nG§r§7) EU per cycle to produce antimatter<SEPARATOR>Cycles every second\nEvery cycle, the lowest amount of antimatter in the 16 antimatter hatches is recorded\nAll hatches with more than the lowest amount §close half the difference!§7\n§cVoids 10%% of antimatter§7 if it runs out of energy/protomatter during a cycle\nBase production per hatch is (1/16) * (§3Antimatter§7^(%s + §6§l§nC§r§7)) of antimatter each cycle\nEach hatch multiplies the base production per hatch with a random number pulled from\na normal distribution with a mean of %s + §b§l§nA§r§7 and a variance of 1\nThe total gain of antimatter can be negative!<SEPARATOR>Can be supplied with stabilization fluids to improve antimatter generation\nEach stabilization can only use one of the fluids at a time\n§a§l§nM§r§aagnetic Stabilization§7 (Consumes §3Antimatter§7^0.5 L of fluid per cycle)\n1. Molten Purified Tengam = §a0.1§7\n2. Tachyon Rich Fluid = §a0.2§7\n3. Molten MagMatter = §a0.3§7\n§5§l§nG§r§5ravity Stabilization§7 (Consumes §3Antimatter§7^0.5 L of fluid per cycle)\n1. Molten Spacetime = §50.05§7\n2. Spatially Enlarged Fluid = §50.10§7\n3. Molten Eternity = §50.15§7\n§6§l§nC§r§6ontainment Stabilization§7 (Consumes §3Antimatter§7^(2/7) L of fluid per cycle)\n1. Molten Shirabon = §60.05§7\n2. Molten MHDCSM = §60.10§7\n§b§l§nA§r§bctivation Stabilization§7 (Consumes §3Antimatter§7^(1/3) L of fluid per cycle)\n1. Depleted Naquadah Fuel Mk V = §b0.05§7\n2. Depleted Naquadah Fuel Mk VI = §b0.10§7
+
+gt.les.tips=Necessary evil\nAdvanced Essentia smelting technology\nMaximum parallel = 2^Tier * (Length - 1)\nDiffusion Cell Tiers start from 0, Length is full multi length\nEnergy Hatch tier: HV+\nYou can find more information about this machine in the Thaumonomicon
+
+gt.mass_solidifier.tips.1=Speeds up to a maximum of %s\nDecays at double the rate that it speeds up at
+gt.mass_solidifier.tips.2=Can use §eSolidifier Hatches§7 to hold fluids and molds in the same hatch\n§9Pretty Ⱄⱁⰾⰻⰴ, isn't it
+
+gt.fluid_shaper.tips.1=Can use §eSolidifier Hatches§7 to hold different molds
+gt.fluid_shaper.tips.2=Gains %s Parallels per §fVoltage§7 Tier per width expansion\nSpeeds up to a maximum of %s\nDecays at double the rate that it speeds up at
+gt.fluid_shaper.flavor=§9Pretty Ⱄⱁⰾⰻⰴ, isn't it
+
+gt.i_chisel.tips=Factory Grade Auto Chisel\nTarget block goes in Controller slot for common Input Buses\nYou can also set a target block in each Chisel Input Bus and use them as an Input Bus\nIf no target is provided for common buses, the result is the next chisel
+
+gt.nac.tips.1=Uses Circuit Components (%1$s) to create circuits at unimaginable speeds\nClick the Logo Icon in the GUI for more information<SEPARATOR>%1$s can only exist in the perfect environment present in %2$s\nConvert items to %1$s in the control room by placing them in a %3$s input bus\nEvery §45§7 seconds, all items in %3$s input buses are placed\nin Vacuum Conveyor Outputs (%4$s) of the same %5$s\nFinished circuit %1$s are converted back into circuits by routing them to a %6$s in the control room\n%1$s in a %3$s %6$s are placed in an output bus of the same %5$s<SEPARATOR>%1$s must be processed into a refined version by §f§nmodules§r§7 before they\ncan be assembled into a circuit in the §aNanochip Assembly Matrix\nAll power from the energy hatch is distributed to the modules as they need it
+gt.nac.tips.2=<SEPARATOR>§d§oHome of the Gestalt Rapidly Evolving Genesis Optimization System (GREGOS),\n§d§oa pseudo-sentient program overseeing circuit production in the NAC\n§d§oIt seems to be eager to learn more, maybe you can become friends?
+
+gt.turbocan.tips=§9It's uncanny!
+
+gt.thermal_boiler.tips=Converts Water & Heat into Steam\nFilters raw materials from lava\nRequires a Lava Filter in the controller slot for some byproducts\nExplodes if water is not supplied\nConsult user manual for more information
+
+gt.dtpf.tips=Transcending Dimensional Boundaries.\nTakes §c%s§7 hours of continuous run time to fully breach dimensional\nboundaries and achieve maximum efficiency, reducing fuel consumption by up to §c%s%%\nWhen no recipe is running, fuel discount decays x§c%s§7 as fast as it builds up, draining\nthe total amount of stored runtime<SEPARATOR>Multidimensional spaces can be perfectly aligned and synchronized in this state,\nallowing §6Dimensional Convergence§7 to occur. To reach the required stability threshold,\na §bTransdimensional Alignment Matrix§7 must be placed in the controller\nWhen §6Convergence§7 is active, it allows the forge to perform §cPerfect Overclocks§7,\nbut the extra power cost is instead added in form of increased catalyst amounts
+gt.dtpf.info.controller=Middle of the structure, 3rd layer
+gt.dtpf.info.e_hatch=§61§7-§62§7 (for TT Energy Hatch only §61§7 allowed)
+
+gt.tpm.tips=Assisting in all your DTPF needs!\nThis multiblock will run in parallel according to the amount set in the parallel menu\nAll inputs will scale, except time...\nAll EU is deducted from wireless EU networks only
+
+gt.wormhole_gen.tips=Transfers EU between two wormhole generators\nWormholes are linked by placing an AE2 Entangled Singularity in each controller slot\nThe transfer rate is limited by the wormhole size, and the wormhole size is governed by the transfer rate\nIf the transfer rate is completely stable, the transfer efficiency is %s%%\nEU will only be transferred if there is space in the laser source hatch\nEach laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side\nConsumes an AE2 Singularity from an input bus each time the wormhole is kick-started\nRight click the controller with a screwdriver to disable overclocking
+gt.wormhole_gen.info.1=§61§r (Hint Block Number 1)
+gt.wormhole_gen.info.2=§60§r - §64§r (Laser Only, Hint Block Number 2)
+gt.wormhole_gen.extra_author_info=§7, Rendering by: §fBucketBrigade
+
+gt.solar_factory.tips=Controller block for the Solar Factory\nProduces solar panels in bulk\nThe structure has 3 tiers, each allowing greater production than the last\n§f§lTier §b§l2 §f§land above:\n  §aSupports Multi-Amp energy hatches\n  25%% more outputs for every Wafer tier used above the minimum required\n  The bonus to output occurs after parallels, and cannot be greater than 100%%\n  The recipes shown in NEI display the minimum wafer tier required\n  LV-LuV Solar Panels can be made without the previous panel, but at a higher cost\n  §fPrecise Casing §7Tier determines §6Parallels\n  %s->%s Parallels\n§f§lTier §b§l3§f§l:\n  §aSupports Laser energy hatches\n  ZPM-UV Solar Panels can be made without the previous panel, but at a higher cost\n  Bonus per increased wafer tier is raised to 50%%
+gt.solar_factory.tier_head=§f§lTier §b§l%s:
+gt.solar_factory.tier_head.all=§f§lAll Tiers:
+gt.solar_factory.info=§fImprecise Unit Casings cannot be used
+
+gt.decay_warehouse.tips=Stores a single type of radioactive isotope and allows it to decay over time\nDecay speed is dependent on the isotopes' half-lives (lower is faster)\nIsotopes decay regardless of whether the warehouse is on or powered<SEPARATOR>The warehouse's capacity equals the super chest's capacity divided by §9%s§7.\nThe warehouse will pull in up to §9N / %s§7 items per second,\nwhere §9N§7 is the warehouse's EU input (standard energy hatch rules)<SEPARATOR>Right click the controller with a screwdriver to dump stored isotopes into the output bus\nRight click the controller with a plunger to empty it\nThe warehouse's contents are §c§nvoided§7 when the controller is broken
+
+gt.rfpp.tips=Refines fluorides and Uranium into nuclear fuel for the LFTR\nLFTR Fuel 2 and Fuel 3 have alternative, much more efficient recipes\nOnly one Energy Hatch is allowed per Processing Unit\nAll recipe times in this multi are very long, watch out!
+gt.rfpp.info.hatches=Base platform
+gt.rfpp.info=Muffler's Tier must be IV+\n2+ Input Hatches, 1+ Output Hatches\n1 Muffler Hatch, 1 Maintenance Hatch, 1 Energy Hatch
+
+gt.boldarnator.tips=Use Integrated Circuit to determine recipe\n1 = Cobble, 2 = Stone, 3 = Obsidian, 4 = Basalt, 5 = Deepslate, 6 = Netherrack\nNeeds Water and Lava in input hatch\nNeeds Soul Sand and Blue Ice in input bus for basalt\nNeeds Soul Sand and Magma in input bus for deepslate
+
+gt.completer.tips=Completes Thaumcraft research notes using EU and Thaumcraft nodes\nPlace nodes in the center row
+gt.completer.info.casing=Top and bottom layers outside. 3 x L minimum
+gt.completer.info.glass=Middle layer outside
+
+gt.driller_shaped_mb.info.casing.1=form the 3x1x3 Base
+gt.driller_shaped_mb.info.casing.2=1x3x1 pillar above the center of the base (2 minimum total)
+gt.driller_shaped_mb.info.frame=Each pillar's side and 1x3x1 on top
+gt.driller_shaped_mb.info.replace=Any base casing
+
+gt.ore_drill.tips=Use a Screwdriver to configure working area\nMaximum area is %1$sx%1$s chunks (%2$sx%2$s blocks)\nIn chunk mode, working area center is the chunk corner nearest to the drill\nUse Soldering iron to turn off chunk mode\nUse Wire Cutter to toggle replacing mined blocks with cobblestone\nGives ~3x as much crushed ore vs normal processing\nFortune bonus of %3$s. Only works on small ores\nMinimum energy hatch tier: %4$s\nBase cycle time: %5$s %6$s
+gt.ore_drill.info.e_hatch=%s+, Any base casing
+gt.ore_drill.info.i_bus=Mining Pipes, optional, any base casing
+gt.ore_drill.info.i_hatch=Drilling Fluid, any base casing
+
+gt.oil_drill.tips=Works on %1$sx%1$s chunks\nUse a Screwdriver to configure range\nUse Programmed Circuits to ignore near exhausted oil field\nIf total circuit # is greater than output per operation, the machine will halt.\nMinimum energy hatch tier: %2$s\nBase cycle time: %3$s %4$s
+gt.oil_drill.info.e_hatch=1x %s+, Any base casing
+gt.oil_drill.info.i_bus=Mining Pipes or Circuits, optional, any base casing
+
+gt.backfiller.tips=Will fill in areas below it with light concrete. This goes through walls\nUse it to remove any spawning locations beneath your base to reduce lag\nWill pull back the pipes after it finishes that layer\nRange is %1$sx%1$s blocks horizontally\nMinimum energy hatch tier: %2$s\nBase cycle time: %3$s %4$s
+gt.backfiller.info.energy=1x %s+, Any base casing
+gt.backfiller.info.i_bus=Mining Pipes, optional, any base casing
+gt.backfiller.info.i_hatch=GT Concrete, any base casing
+gt.backfiller.info.o_bus=Mining Pipes, optional, any base casing
+
+gt.dehp.tips=Consumes %sEU/t\nHas 2 Modes, use the Screwdriver to change them:\nDirect Steam and Coolant Heating\nDirect Steam Mode: Consumes §9Distilled Water§7 to produce §f%s§7L/s of §fSuperheated Steam\nCoolant Heating Mode: Converts %sL/s §bCoolant§7 to §cHot Coolant\nEach maintenance issue lowers output efficiency by §a10%%\nExplodes when it runs out of Distilled Water/Coolant\nBase cycle time: 1 tick
+gt.dehp.info.energy=%s+, Any base casing
+gt.dehp.info.i_bus=Mining Pipes, optional, any base casing
+
+gt.mb_air_filter.tips=Needs a Turbine in the controller\nCan process %1$sx%1$s chunks\nEach muffler hatch reduces pollution in one chunk of the working area by:\n  §f%s * multiTierBonus * turbineEff * FLOOR(%s^mufflerTier)\nevery second\n- multiTierBonus for this controller is %s\n- turbineEff is the efficiency of the Turbine in controller slot\n- Effective muffler tier is limited by energy input tier\n- Uses %s EU/t while working<SEPARATOR>Insert Absorption Filter in an input bus\n  to double pollution cleaning amount (30 uses per item)\nEach maintenance issue reduces cleaning amount by 10%
+gt.mb_air_filter.info.casing=Top and bottom layers
+gt.mb_air_filter.info.pipe=Corners of the middle two layers
+gt.mb_air_filter.info.muffler=Sides of the middle two layers
+
+gt.mb_boiler.tips.1a=Produces %sL of Superheated Steam with 1 Coal at %sL/s\nA programmed circuit in the main block throttles the boiler (-1000L/s per config)\nOnly some solid fuels are allowed (check the NEI Large Boiler tab for details)\nIf there are any disallowed fuels in the input bus, the boiler won't run!
+gt.mb_boiler.tips.1b=Produces %sL of Steam with 1 Coal at %sL/s\nA programmed circuit in the main block throttles the boiler (-1000L/s per config)\nSolid Fuels with a burn value that is too high or too low will not work
+gt.mb_boiler.tips.2=Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up
+gt.mb_boiler.info.firebox=Bottom layer, 3 minimum
+gt.mb_boiler.info.pipe=Inner 3 blocks
+gt.mb_boiler.info.maintenance=Any firebox
+gt.mb_boiler.info.i_bus=Solid fuel, Any firebox
+gt.mb_boiler.info.i_hatch.1=Liquid fuel, Any firebox
+gt.mb_boiler.info.i_hatch.1.tip=You can use either, or both
+gt.mb_boiler.info.i_hatch.2=Water, Any firebox
+gt.mb_boiler.info.o_hatch=Steam, any casing
+
+gt.spinmatron.tips.1=3 Modes: §dLight§7 | §6Standard§7 | §aHeavy\nOverclocks limited to §fHatch Tier + 1
+gt.spinmatron.tips.2=Gains §f2§7 Turbine Slots per Structure Tier
+gt.spinmatron.tips.3=Non-Huge Turbines have reduced effectiveness...
+gt.spinmatron.tips.4=Requires Recipe Tier * §910L/s§7 of §5Kerosene§7 to operate by default\nSupply §5Biocatalyzed Propulsion Fluid§7 instead for a §f1.25x§7 Parallel multiplier<SEPARATOR>§dLight Mode§7: +§d100%§7 Speed Bonus, Maximum Recipe Tier is §dVoltage Tier - 3\n§6Standard Mode§7: No Changes\n§aHeavy Mode§7: Divides Parallels by §a32§7, Requires T3+ Structure and §5Biocatalyzed Propulsion Fluid\nMultiplies EU Cost by §c16\nSome recipes §c§lrequire§a Heavy Mode<SEPARATOR>§4§oMaahes guides the way...
+gt.spinmatron.info.frame=Central Frame Blocks
+gt.spinmatron.info.rotor=Central Rotor Blocks
+
+gt.assline.tips=Used to craft complex machine parts (LuV+)\nItems & Fluids are inserted in NEI order, one per slice\nDoes not run Assembler recipes
+gt.assline.info.controller=Either Grate Machine Casing on the first slice
+
+gt.adv_assline.tips=Assembly Line with item pipelining\nAll fluids are consumed at the start of the recipe\nRecipe tier is limited by the lowest Energy Hatch tier\n§6<SEPARATOR>\nRuns imperfect overclocks until Energy Hatch tier\nAdditional overclocks are increasingly more expensive\n§bMultiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)\n§bPower usage = Multiplier × (Active Slices) × (Recipe EU/t)\nOverclocking assumes all recipe slices are active\n§lDoes not overclock beyond 1 tick\nConstructed identically to the Assembly Line
+gt.adv_assline.info.controller=Either Grate on layer 3 of the first slice
+
+gt.cal.tips.1=Change Mode with Screwdriver
+gt.cal.tips.2=<SEPARATOR>§6%s:\nImprint this machine with a Circuit Imprint,\nby putting the imprint in the controller\nEvery Circuit Assembly Line can only be imprinted ONCE<SEPARATOR>§6%s:\nDoes Circuit Assembler recipes, Minimum Length: §c%s\nRecipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1\nThis mode supports Crafting Input Buffer/Bus and allows bus separation
+gt.cal.info=From Bottom to Top, Left to Right\nLayer 1 - Solid Steel Machine Casing, Input bus (Last Output bus), Solid Steel Machine Casing\nLayer 2 - %1$s+ Tier Glass, Assembly Line Casing, %1$s+ Tier Glass\nLayer 3 - Grate Machine Casing\nUp to 7 repeating slices, last is Output Bus
+gt.cal.controller=Layer 3 first slice front
+gt.cal.info.e_hatch=1x, Any layer 3 casing
+gt.cal.info.o_bus=As specified in final slice on layer 1
+gt.cal.info.glass=As specified on layer 2
+
+gt.asslike.info=From Bottom to Top, Left to Right\nLayer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing\nLayer 2 - Glass, Assembly Line Casing, Glass\nLayer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing\nLayer 4 - Empty, Solid Steel Machine Casing, Empty\nUp to 16 repeating slices, each one allows for 1 more item in recipes
+gt.asslike.info.energy=Any layer 4 casing
+gt.asslike.info.i_hatch=Any layer 1 casing
+gt.asslike.info.i_bus=As specified on layer 1
+gt.asslike.info.o_bus=Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice
+gt.asslike.info.dataaccess=Any Grate Machine Casing NOT on the first slice
+
+gt.distillation_tower.tips.1=Fluids are only put out at the correct height\nThe correct height equals the slot number in the NEI recipe
+gt.distillation_tower.info.1=7 x h - 5 (minimum)
+gt.distillation_tower.info.2=Any casing except top centre
+gt.distillation_tower.info.3=2-11x Output Hatches (At least one per layer except bottom layer)
+
+gt.mb_coke_oven.tips=Turns coal into coke and produces creosote oil
+
+gt.charcoal_pit.tips.1=Converts Logs into Brittle Charcoal blocks\nAutomatically starts when formed
+gt.charcoal_pit.info.controller=Top layer, directly touching a wood log
+gt.charcoal_pit.info.1=Can be up to 13x7x13 in size, including the dirt; shape doesn't matter
+gt.charcoal_pit.info.2=Top layer, directly touching a wood log
+gt.charcoal_pit.info.3=Dirt/Grass
+gt.charcoal_pit.info.4=Top and middle layers, covering wood logs
+gt.charcoal_pit.info.5=Bottom layer, under all wood logs
+gt.charcoal_pit.info.6=Wood Logs
+gt.charcoal_pit.info.7=Up to 5 layers, inside the previously mentioned blocks
+gt.charcoal_pit.info.8=No air between logs allowed.\nAll logs must be within 6 x/z of the controller, so it must be dead-center for a full 11x11 square of wood.
+
+gt.fusion.tips.a=It's over 9000!!!
+gt.fusion.tips.b=A SUN DOWN ON EARTH
+gt.fusion.tips.c=HARNESSING THE POWER OF A BLUE GIANT
+gt.fusion.tips.d=HARNESSING THE POWER OF A NEUTRON STAR
+gt.fusion.tips=§b%s§7 EU/t and §b%s§7 EU capacity per Energy Hatch\nIf the recipe has a startup cost greater than the\nnumber of energy hatches * cap, you can't do it
+gt.fusion.tips.overclock=Performs 4/4 overclocks
+gt.fusion.info.1=See diagram when placed
+gt.fusion.info.2=Cover the coils with casing
+gt.fusion.info.3=Center part of the ring
+gt.fusion.info.4=1-16, Specified casings
+gt.fusion.info.5=2-16, Specified casings
+gt.fusion.info.6=ALL Hatches must be %s or better
+
+gt.entropic_processor.tips.1=Processes substances by increasing or decreasing their entropy
+gt.entropic_processor.tips.2=Has %s parallels by default\nUsing Advanced Alchemical Constructs increases the machine's parallels to %s
+gt.entropic_processor.tips.3=Mixes fluids or solids with a magical catalyst\nCatalyst is consumed by the recipe, then returned upon completion
+gt.entropic_processor.tips.4=Performs one perfect overclock per casing tier (Thaumium = 1 perfect OC)
+
+gt.ece.tips=Supply high rating fuel and 8000L of Lubricant per hour to run\nSupply 40L/s of Liquid Oxygen to boost output (optional)\nDefault: Produces 10900EU/t at 100% fuel efficiency\nBoosted: Produces 32700EU/t at 150% fuel efficiency\nYou need to wait for it to reach 300% to output full power
+gt.ece.info.ti_gearbox=Inner 2 blocks
+gt.ece.info.intake=8x, ring around controller
+gt.ece.info.intake_caution=Extreme Engine Intake Casings must not be obstructed in front (only air blocks)
+gt.ece.info.maintenance=One of the casings next to a Gear Box
+gt.ece.info.muffler=Top middle back, above the rear Gear Box
+gt.ece.info.i_hatch.1=HOG, next to a Gear Box
+gt.ece.info.i_hatch.2=Lubricant, next to a Gear Box
+gt.ece.info.i_hatch.3=Liquid Oxygen, optional, next to a Gear Box
+
+gt.owp.tips.1=Can be configured with a screwdriver to also do Simple Washer and process Chemical Bathing\nAlways requires an Input Hatch full of water to refill structure\nNeed to be filled with water\nWill automatically fill water from input hatch
+
+gt.zyngen.tips.1=Processes §6Voltage Tier * Coil Tier§7 items
+gt.zyngen.tips.2=Each 900K of heat upgrades an overclock to a perfect overclock
+gt.zyngen.info.1=Middle Layer
+gt.zyngen.info.2=Above and below Integral Encasements
+
+gt.sledgehammer.tips.1=§6Voltage Tier * Anvil Tier * 8§7 Parallels
+gt.sledgehammer.tips.2=T1 - Vanilla Anvil
+gt.sledgehammer.tips.3=T2 - Steel Anvil
+gt.sledgehammer.tips.4=T3 - Dark Steel Anvil
+gt.sledgehammer.tips.5=T3 - Thaumium Anvil\nT4 - Void Metal Anvil
+gt.sledgehammer.info.1=In the center of 3x3x3 structure
+
+gt.cryo_freezer.tips.1=Factory Grade Advanced Vacuum Freezer
+gt.cryo_freezer.tips.2=Consumes 10L of %s/s during operation\nConstructed exactly the same as a normal Vacuum Freezer
+
+gt.iaf.tips.1=§6Width * Voltage Tier§7 Parallels\n§68x§7 Parallels in Plasma Mode
+gt.iaf.tips.2=Right-click controller with a Screwdriver to change modes\nMax Size required to process Plasma recipes
+gt.iaf.info.1=n can be 3, 5 or 7
+
+gt.nano_forge.tips=Requires insane amounts of power to create nanites\nEach tier requires some structural changes\nMachine tier depends on Nanite in controller slot\nTier 4 has additional mechanics, check the controller<SEPARATOR>Requires a Carbon Nanite to use tier §51\nRequires a Neutronium Nanite to use tier §12\nRequires a Transcendent Metal Nanite to use tier §b3\nRequires an Eternity Nanite to use tier §24<SEPARATOR>Performs §dperfect overclocks§7 on lower-tier recipes
+gt.nano_forge.info=Total blocks needed for the structure at tier %s\n%s Radiant Naquadah Alloy Casing\n%s Stellar Alloy Frame Box\n%s Assembly Line Casing<S_SEPARATOR>Tier §24 §7requires a whole new set of blocks\nCheck the NEI preview for specifics\nMaintenance hatch is not required for tier §24<S_SEPARATOR>Requires §61§7-§62§7 energy hatches or §61§7 TT energy hatch\nRequires §61§7 maintenance hatch\nRequires §61§7+ input hatches\nRequires §60§7+ output hatches\nRequires §61§7+ input buses\nRequires §61§7+ output buses
+
+gt.mapiary.tips=The ideal home for your bees\nUse screwdriver to change primary mode (INPUT/OUTPUT/OPERATING)\nUse screwdriver + shift to change operation mode (NORMAL/SWARMER)<SEPARATOR>§6Input Mode:\n- Does not take power\n- Put your queens in the input bus to put them in the internal buffer<SEPARATOR>§6Output Mode:\n- Does not take power\n- Will give your bees back to output bus<SEPARATOR>§6Operating Mode:\n- NORMAL:\n  - Processing time: 5 seconds\n  - Uses 1 %s amp per queen\n  - All bees are accelerated 64 times\n  - 8 production upgrades are applied\n  - Genetic Stabilizer upgrade applied\n  - Simulates perfect environment for your bees\n  - Additionally you can provide royal jelly to increase the outputs:\n    - 1 royal jelly grants 5%% bonus per bee\n    - They will be consumed on each start of operation\n    - and be applied to that operation only\n    - Max bonus: 200%%\n- SWARMER:\n  - You can only insert 1 queen\n  - It will slowly produce ignoble princesses\n  - Consumes 100 royal jelly per operation\n  - Base processing time: 1 minute\n  - Uses 1 amp %s\n  - Can overclock
+gt.mapiary.info=The glass tier limits the Energy Input tier\nRegular water and IC2 Distilled Water are accepted
+gt.mapiary.info.flowers=On dirt/grass
+
+gt.defc.tips=Gains 1 §dperfect overclock§7 per casing tier above recipe\nNormal EU OC still applies!
+gt.defc.info.coil=Center pillar
+gt.defc.info.casing=Touching Fusion Coil Block at every side
+gt.defc.info.tiered_casing=Rings (5x5 hollow) at layer 4 and 7
+gt.defc.info.tiers=Bloody Ichorium for tier 1, Draconium for tier 2, etc\nTo use tier 3 + you have to use fusion casing MK II
+
+gt.eec.tips=Spawns and kills monsters for you!\nProduces §a120 Liquid XP§7 per operation\nPowered Spawner goes in Controller Slot\nBase energy usage: §b1920§7 EU/t\nSupports §dperfect OC!<SEPARATOR>Has a minimum recipe time of 20 ticks, further overclocks multiply outputs by 4x\nRecipe time is based on mob health\nYou can additionally put a weapon inside the GUI\nIt will speed up the process and apply the looting level from the weapon (maximum %s levels)\nEnable Weapon Preservation to prevent the weapon from breaking on it's last hit\nEnable Weapon Cycling to pull a weapon from input when the current one breaks or is moved to an output\n§cEnchanting the spikes inside the structure does nothing!<SEPARATOR>If the mob spawns §cinfernal§7, it will drain 8 times more power!\nYou can prevent §cinfernal§7 spawns by shift clicking with a screwdriver\nMobs who are always §cinfernal§7 will ignore this factor<SEPARATOR>You can enable ritual mode with a screwdriver\nWhen in ritual mode, can link to above Well of Suffering rituals\nThe Ritual must be built directly centered above the machine\nWhen linked, mobs will start to buffer and die very slowly, providing blood to the linked altar<SEPARATOR>You can disable mob animation with a soldering iron\nYou can enable batch mode with wire cutters. Providing §9 16x Time, Output, Weapon Damage
+
+gt.ei_greenhouse.tips.1=Uses 1L of %s per operation per seed if it contains more than %s seeds\nOtherwise, around 1% of seeds will be voided each operation\nYou can insert fertilizer each operation to get more drops (max + %s)
+gt.ei_greenhouse.tips.2=<SEPARATOR>§6Setup Mode:\nDoes not take power\nThere are two modes: input / output\nInput mode: machine will take seeds from input bus and plant them\n[IC2] You need to also input block that is required under the crop\nOutput mode: machine will take planted seeds and output them
+gt.ei_greenhouse.tips.normal=§6Normal Crops:\nMinimal voltage tier: %s\nStarting with %s slot\nEvery tier past %s, slots are multiplied by %s\nEvery slot adds %s seed to the total seed capacity\nBase process time: 5 sec\nProcess time is divided by number of tiers past %s (Minimum 1 sec)\nAll crops are grown at the end of the operation\nDoes not drop seeds\nCan consume up to %s fertilizer per seed per cycle\nBoost per fertilizer: %s
+gt.ei_greenhouse.tips.ic2=§cDEPRECATED§r\n§6IC2 Crops:\nMinimal voltage tier: %s\nMinimal glass tier: %s\nStarting with %s slot\nEvery tier past %s, slots are multiplied by %s\nEvery slot adds %s seed to the total seed capacity\nProcess time: 5 sec\nAll crops are accelerated by x%s times\nCan consume up to %s fertilizer per seed per cycle\nBoost per fertilizer: %s\nWeed-EX 9000 consumption is multiplied by %s
+gt.ei_greenhouse.info.glass=Hollow two middle layers
+gt.ei_greenhouse.info.parts=Tiered glass\nThe glass tier limits the Energy Input tier\nThe dirt is from RandomThings, must be tilled\nRegular water and IC2 Distilled Water are accepted\nPurple lamps are from ProjectRedIllumination. They can be powered and/or inverted
+gt.ei_greenhouse.info.hatches=Any casing (Except inner bottom ones)
+
+gt.htgr.tips=Uses up to §c%s§7%% of fuel per operation, §c10§7%% of this value is flat and §c90§7%% dependent on the formula y=1-(1-x)^3 (x is % of pellet fill level)\nMaintenance problems decrease the efficiency of cooling by §c20§7%% for each issue\nUses §c%s§7  EU/t increasing by up to §c%s§7 times when lacking Helium Gas\nHelium gas increases effectiveness of heat exchangers linearly up to §c100§7%% at max capacity\nThe Reactor loses §c%s§7%% helium per operation and requires at least §c%s§7%% helium to start operation\nOne Operation takes longer based on reactor fill level (between §c%s§7s and §c%s§7s)\nProviding coolant/water/both speeds up recipe by §c%s§7%%/§c%s§7%%/§c%s§7%% total recipe time/second\nThe amount of necessary fluid for maximum bonus speed scales with pellets, §c%s§7 coolant/tick/pellet and §c%s§7 distilled water/tick/pellet
+gt.htgr.info.i_bus=Top of the Reactor - Accepts Fuel
+gt.htgr.info.o_bus=Bottom of the Reactor - Outputs Fuel
+gt.htgr.info.i_hatch.a=Top of the Pump - Accepts Helium
+gt.htgr.info.i_hatch.b=Bottom of the tall Coolant Tower - Accepts Coolant
+gt.htgr.info.i_hatch.c=Top of the short Coolant Tower - Accepts Distilled Water
+gt.htgr.info.o_hatch.a=Top of the tall Coolant Tower - Outputs Hot Coolant
+gt.htgr.info.o_hatch.b=Bottom of the short Coolant Tower - Outputs Steam
+
+gt.eic.tips=Explosions are fun!\nUses electricity instead of Explosives\n§6Parallels§7 are determined by §fContainment Block§7 Tier\n§fNeutronium§7 : §61§7 Parallel\n§cInfinity§7 : §64§7 Parallels\n§8Transcendent Metal§7 : §616§7 Parallels\n§dSpacetime§7 : §664§7 Parallels\n§3Universium§7 : §6256§7 Parallels
+gt.eic.info.replacement=Casings can be replaced with Explosion Hazard Signs
+gt.eic.info.casing.a=Outer layer 2,3,7,8
+gt.eic.info.casing.b=Inner layer 2,3,7,8
+gt.eic.info.casing.c=Layer 4,5,6
+gt.eic.info.e_hatch=Bottom middle and/or top middle
+
+gt.latex.tips.1=§8§oAKA Laminated Application and Thermal Enclosure eXpert
+gt.latex.tips.2=Recipes have an additive §26.25%%§7 rubber discount based on %s\nAn Elastic Singularity can be inserted into the controller to gain the following bonuses\n§62x§7 parallels, +§225%%§7 rubber discount, and the use of a singular §aMulti-Amp energy hatch
+gt.latex.tips.3=§3Make sure to cover up!
+
+gt.hi_engraver.tips.1=Laser source hatch determines maximum recipe tier and parallels\nRecipe tier and overclocks limited to laser source tier + 1\nWhen using a UEV+ laser source, one multi-amp energy hatch is allowed instead of regular energy hatches\nParallels equal to the cube root of laser source amperage input\nGlass tier determines maximum laser source tier\n%s glass accepts all laser source hatches\nUse screwdriver to disable laser rendering\nUse wire cutter to toggle realism mode if you hate angled lasers
+
+gt.ore_factory.tips.1=Does all ore processing in one step\nParallel count scales with total input power: EU/t / 30\nEvery ore costs 30EU/t, 2L lubricant, 200L distilled water\nRecipes that need extra input require their extra inputs on top of the normal costs\nProcessing time is dependent on mode\nUse a screwdriver to switch mode\nSneak click with screwdriver to void the stone dust
+gt.ore_factory.tips.2=§aOP stands for Ore Processor ;)
+gt.ore_factory.info.i_bus=Input ore/crushed ore
+gt.ore_factory.info.i_hatch=Input lubricant/distilled water/washing chemicals
+gt.ore_factory.info.muffler=Output Pollution
+gt.ore_factory.info.o_bus=Output products
+
+gt.advdistill.tips.1=Stats dictated by tower mode\nRight click the controller with screwdriver to change mode<SEPARATOR>Distillery Mode (requires full height tower)\n§68 * Voltage Tier§7 Parallels
+gt.advdistill.tips.2=<SEPARATOR>Distillation Tower Mode
+gt.advdistill.info.o_hatch=One per layer except bottom
+
+gt.mvf.flavor=§8§o"Handles all things cooling!"
+gt.mvf.tips=<SEPARATOR>Upgrade to Tier 2 to unlock §3Subspace Cooling\nWill gain §6perfect overclocks§7 by §aconsuming §dcoolants:\n§a75 L/s§7 : §61§7 : §d%s\n§a50 L/s§7 : §62§7 : §d%s\n§a25 L/s§7 : §63§7 : §d%s<SEPARATOR>§3Reinforcing the structure allows the injection of exotic coolants,\n§3enabling the capture of heat energy from miniature tears in spacetime,\n§3massively increasing the efficiency of the cooling process.
+gt.mvf.info.t1_multi=§9Base Multi (Tier §51§9):
+gt.mvf.info.t2_multi=§9Tier §52§9 (Upgrades from Tier §51§9):
+
+gt.tfft.tips=High-Tech fluid tank that can hold up to 25 different fluids!\nHas 1/25th of the total capacity as capacity for each fluid\nRight clicking the controller with a screwdriver will turn on excess voiding\nFluid storage amount and running cost depends on the storage field blocks used<SEPARATOR>Note on hatch locking:\nUse an Integrated Circuit in the GUI slot to limit which fluid is output\nThe index of a stored fluid can be obtained through the Tricorder
+gt.tfft.info.energy_tip=Energy hatch is not required when running cost is 0
+gt.tfft.info.maintenance=Any top or bottom casing
+gt.tfft.info.i_hatch=Instead of any casing or glass, has to touch storage field block
+gt.tfft.info.hatch_tip=You can have a bunch of hatches
+gt.tfft.info.fluid_tip=Use MIOH with conduits or fluid storage buses to see all fluids at once.
+
+gt.cleanroom.tips=Consumes 40 EU/t when first turned on, and 4 EU/t once at 100% efficiency\nCan accept 2A from an LV energy hatch\nWill overclock and gain efficiency faster starting from HV<SEPARATOR>§cWarning:\nBelow 100% efficiency machines inside have a chance to void outputs!\nEach maintenance issue reduces maximum efficiency by 10%\nGenerating any pollution inside causes the cleanroom to shut down
+gt.cleanroom.info.controller=  If width or length is even, it can be in either of the two middle positions
+gt.cleanroom.info.filter=Top layer, except for edges
+gt.cleanroom.info.plascrete=§f%s: §7Edges of top layer, all walls and floor. Minimum §6%s§7
+gt.cleanroom.info.energy=Any Plascrete Block. Exactly one
+gt.cleanroom.info.replacements=Up to §6%s%%§7 of plascrete blocks can be replaced by other valid blocks\nTry some of the following:\n- Any §8EV+§7 tier glass\n- Machine hulls or diodes for item and power transfer\n- Reinforced Doors (§oIC2§r§7). Keep closed, no gaps allowed or efficiency will drop!\n- Elevators (§oOpenBlocks§r§7) or Travel Anchors (§oEnderIO§r§7)\See §8config/GregTech/MachineStats.cfg§7 for more valid blocks\n§eAll non-plascrete blocks now share the same limit. Feel free to mix and match!
+
+gt.bbf.tips.1=Usable for Steel and general Pyrometallurgy\nHas a useful interface, unlike other gregtech multis
+gt.bbf.info.1=Everything except the controller
+gt.bbf.info.2=The top block is also empty\nYou can share the walls of GT multis, so\neach additional one costs less, up to 4
+
+gt.bhc.tips.1=§dUses the immense power of the event horizon to compress things\n§dNo longer requires heat management to perform superdense compression\n§dCan create advanced singularities!<SEPARATOR>Insert a §fBlack Hole Seed§7 to open a black hole\nThe black hole will begin its life at §c100§7 stability and slowly decay\nStability decays by §c1/s§7 until it reaches 0\nAt 0 stability, the black hole is §4UNSTABLE\nOnce the black hole becomes unstable, it will void recipes and eventually close itself!<SEPARATOR>The decay can be §lhalted§r§7 by inserting 1 L/s of spacetime into specific hatches\nEvery §c30§7 total seconds saved by spacetime insertion will §cdouble§7 the cost per second!\nInsert a §fBlack Hole Collapser§7 to close the black hole\nTo restore stability and reset spacetime costs, close the black hole and open a new one<SEPARATOR>§fUse circuit 20 for Compressor and 21 for Neutronium Compressor
+gt.bhc.tips.2=§c2x/4x§7 parallels when stability is BELOW §c50/20
+gt.bhc.tips.3=§cRecipe tier is limited to hatch tier + 1. Will not perform overclocks above the hatch tier\n§cLimited to one energy hatch if using a Multi-Amp or Laser hatch
+gt.bhc.info.i_hatch=Spacetime Insertion, Behind Laser
+
+gt.windmill.tips.1=A primitive Grinder powered by Kinetic energy\nSpeed and output will be affected by wind speed, recipe and rotor\nPlease use the Primitive Rotor\nMacerates 16 items at a time
+gt.windmill.info.1=Any Hardened Clay block
+gt.windmill.info.2=0-1, Any Hardened Clay block
+
+gt.eoh.tips=Creates a pocket of spacetime that is bigger on the inside using transdimensional engineering\nCertified Time Lord regulation compliant\nThis multi uses too much EU to be handled with conventional means\nAll EU requirements are handled directly by your wireless EU network§6<SEPARATOR>This multiblock will constantly consume hydrogen and helium\nwhen it is not running arecipe once per second.\nIt will store this internally, you can see the totals by using a scanner\nThis multi also has three tiered blocks with §c9§7 tiers each.\nThey are as follows and have the associated effects on the multi:\n§9Spacetime Compression Field Generator:\n- The tier of this block determines what recipes can be run. If the multiblocks\n  spacetime compression field block exceeds the requirements of the recipe it\n  will decrease the processing time by §c%1$s%%§7 per tier over the requirement (multiplicative)\n§9Time Dilation Field Generator:\n- Decreases the time required for a recipe by §c50%%§7 per tier of block (multiplicative)\n  Decreases the probability of a recipe succeeding by §c%2$s%%§7 per tier (additive)\n§9Stabilisation Field Generator:\n- Increases the probability of a recipe succeeding by §c%3$s%%§7 per tier (additive)\n  Decreases the yield of a recipe by §c%3$s%%§7 per tier (additive).\n  > Low tier stabilisation field generators have a power output penalty\n     The power output penalty for using Crude Stabilisation Field Generators is §c%4$s%%\n     This penalty decreases by §c%3$s%%§7 per tier (additive)§6<SEPARATOR>Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe chance\nAll stored hydrogen and helium is consumed during a craft. The associated formulas are:\n§aOverflow ratio = (Stored fluid / Recipe requirement) - 1\n§aAdjustment value = 1 - exp(-(30 * Overflow ratio)^2)\nThe Adjustment value is then subtracted from the total yield and recipe chance§6<SEPARATOR>It should be noted that base recipe chance is determined per recipe and yield always starts\nat 1 and subtracts depending on penalties. All fluid/item outputs are multiplied by the\nyield. Failure fluid is exempt§6<SEPARATOR>This multiblock can only output to ME output buses/hatches§6<SEPARATOR>This multiblock can be overclocked by placing a programmed circuit into the input bus\nE.g. A circuit of 2 will provide 2 OCs, 16x EU input and 0.25x the time. EU output is unaffected\nAll outputs are equal. All item and fluid output chances & amounts per recipe are unaffected§6<SEPARATOR>If a recipe fails the EOH will output §aSuccess chance * %5$s * (%6$s)^(Recipe tier) §7L of molten\n%7$s instead of fluid/item outputs and output as much EU as a successful recipe§6<SEPARATOR>This multiblock can perform parallel processing by placing Astral Array Fabricators into the input bus\nThey are stored internally and can be retrieved via right-clicking the controller with a wire cutter\nThe maximum amount of stored Astral Arrays is %8$s. Parallel amount is calculated via these formulas:\n§aParallel exponent = floor(log(%9$s * Astral Array amount) / log(%10$s))\n§aParallel = 2^(Parallel exponent)\nIf the EOH is running parallel recipes, the power calculation changes\nThe power needed for parallel processing is calculated as follows:\n§atotal EU = ((EU output - EU input * %11$s) / %12$s) * %13$s^(Parallel exponent)\nFurthermore, if parallel recipes are run, the recipes consume %14$s\ninstead of helium and hydrogen. Overflow penalties still apply\nThe required amount of fluid to start a recipe is §a12.4 / 10^6 * Helium amount * Parallel\nThe success or failure of each parallel is determined independently§6<SEPARATOR>Animations can be disabled by using a screwdriver on the multiblock\nPlanet block can be inserted directly by right-clicking the controller with planet block
+gt.eoh.info=Requires §62§7 input hatches\nRequires §61§7 ME output hatch\nRequires §61§7 input bus\nRequires §61§7 ME output bus
+
+gt.solar_tower.tips=Contributing Green Energy towards the future\nSurround with rings of Solar Reflectors\nThe Reflectors increase the internal heat value of the Tower (see below for formula)\nEach Reflector ring increases tier, the first ring is required for the Tower to work\nInput: %s\nOutput: %s\nEvery cycle (10 seconds), heat increases and all the Cold Solar Salt is heated\nConverting Cold to Hot Solar Salt reduces heat, equal to the amount converted\nThis conversion only happens if heat >= 30000 and controller efficiency = 100%%\nIf there's more Cold Salt than heat, all the heat is used up and returns to 0\nThe heat increase is most efficient at exactly half of maximum heat\nMinimum efficiency at 0 or 100000 heat, maximum efficiency at 50000\nHeat Efficiency formula: ( 7000 - [|currentHeat - 50000| ^ 0.8] ) / 7000\nHeat gain per cycle: numberHeaters * heatEfficiency * (10 + bonus)\nBonus: 1 ring  = +1, 2 rings = +2, 3 rings = +4, 4 rings = +8, 5 rings = +16\nTotal number of reflectors based on how many rings are built:\n1 ring = 36, 2 rings = 88, 3 rings = 156, 4 rings = 240, 5 rings = 340
+gt.solar_tower.info.hatch=min 1
+
+gt.qft.tips=Allows Complex processing lines to be performed instantly in one step<SEPARATOR>§dPulse Manipulator Tier§7 determines maximum recipe tier\nEvery recipe requires a specific §dcatalyst\n§dCatalysts§7 have to be placed in a Bulk Catalyst Housing\nGains %s Parallel per §dCatalyst<SEPARATOR>§aShielding Core§7 Tier determines §aFocusing§7 Bonuses\nPut a circuit in the controller to specify the focused output, based on NEI order\nIf Input Separation is on: put the circuit in the circuit slot of the bus\nConsumes 4 * §aFocus Tier§7 * sqrt(§6parallels§7) L §9Neptunium Plasma§7 to §afocus\nThe better the §aFocus Tier§7, the §astronger§7 the effect\n§aFocused§7 Output will have its §bprobability boosted§7, with other output's being reduced evenly by the total boost\nConsumes 4 * §aFocus Tier§7 * sqrt(§6parallels§7) L §2Fermium Plasma§7 to §2boost all outputs<SEPARATOR>Use a screwdriver to enable §9Fluid mode\nFluid mode turns all possible outputs into their fluid variant, if avaliable
+gt.qft.info.i_bus=§9Bottom §7Layer
+gt.qft.info.o_hatch=§bTop §7Layer
+
+gt.lsaa.tips=Highly Advanced Assembling Machine
+
+gt.massfab.tips.1=Parallel: Scrap = 64 | UU = 8 * Tier
+gt.massfab.tips.2=Produces UU-A, UU-M & Scrap\nChange mode with screwdriver
+
+gt.mega_abs.tips.1=§8§o"all it does is make metals hot"
+gt.mega_abs.tips.2=§a-5%% §7Recipe Time per %1$s Tier above TPV (additive)\nif the equivalent or better %2$s is present\n§b-5%% §7EU Usage per %1$s Tier above the Recipe Tier (multiplicative)<SEPARATOR>Recipe Tier limited by %2$s Tier, %3$s unlocks all\nCan also use normal ABS coils in their place instead, if you don't like the bonuses :)
+gt.mega_abs.info.maintenance=Around the controller
+gt.mega_abs.info.muffler=1 in the center of the top layer
+
+gt.multi_furnace.info.coil=Middle layer
+gt.multi_furnace.info.muffler=Top Middle
+
+gt.vf.tips=Cools hot ingots and cells
+
+gt.exxonmobil.tips.1=Heavy Industry, now right at your doorstep!\nPlant tier is determined by casing tier\nHatch tiers can't be higher than machine casing tier, UHV casing unlocks all tiers
+gt.exxonmobil.tips.2=+20%% chance of not damaging catalyst per %s Tier
+gt.exxonmobil.tips.3=Any catalyst must be placed in the catalyst housing\nAwakened Draconium coils combined with Tungstensteel pipe casing makes catalyst unbreakable
+gt.exxonmobil.info.1=metal machine casing (minimum 70)
+
+gt.flotation_cell.tips.1=Process that milled ore!\nYou can only ever process one type of material per controller
+
+gt.zhuhai.tips.1=Can process (Tier + 1) * 2 recipes\nPut a numbered circuit into the input bus\nCircuit %s for Fish\nCircuit %s for Junk\nCircuit %s for Treasure\nNeeds to be filled with water\nWill automatically fill water from input hatch
+
+gt.lcr.tips.1=Accepts fluids instead of fluid cells
+gt.lcr.info.1=Center
+gt.lcr.info.2=Adjacent to the PTFE Pipe Machine Casing
+gt.lcr.info.3=You can have multiple hatches/buses
+
+gt.ebf.tips=You can use some fluids to reduce recipe time. Place the circuit in the Input Bus\nIncreases Heat by §c100K§7 for every §fVoltage§7 tier past §bMV\nReduces §bEU Usage§7 by §f5%§7 every §c900K§7 above the recipe requirement\nEvery §c1800K§7 over the recipe requirement grants 1 §dPerfect Overclock\nThat means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)
+gt.ebf.info.muffler=Top middle
+
+gt.mebf.tips=§b-5% EU Usage per §c900K§7 above the recipe requirement<SEPARATOR>Increases Heat by §c100K§7 for every §fVoltage§7 tier past §bMV\nEvery §c1800K§7 over the recipe requirement grants 1 §dPerfect Overclock<SEPARATOR>
+gt.mebf.info=The glass tier limits the Energy Input tier
+
+gt.mfe.tips.1=Use screwdriver to switch mode\nInsert an electromagnet into the electromagnet housing to use\nBetter electromagnets give further bonuses\nWith Tengam electromagnet, multi-amp (NOT laser) hatches are allowed
+gt.mfe.info.1=1 Block Above/Behind Controller
+
+gt.so_fuel_cell.tips.1=Oxidizes gas fuels to generate electricity without polluting the environment\nConsumes up to %sEU worth of fuel with up to 100%% efficiency each second
+gt.so_fuel_cell.tips.2=Steam production requires the SOFC to heat up completely first\nOutputs %sEU/t and %sL/s %s\nAdditionally, requires %sL/s Oxygen gas
+gt.so_fuel_cell_ii.tips=Nitrobenzene and other gas fuels above 1M EU/bucket are more efficient
+gt.so_fuel_cell.info.ysz=3x, Center 1x1x3
+gt.so_fuel_cell.info.glass=6x, touching the electrolyte units on the horizontal sides
+gt.so_fuel_cell.info.i_hatch.1=Fuel, any casing
+gt.so_fuel_cell.info.i_hatch.2=Oxygen, any casing
+gt.so_fuel_cell_i.info.o_hatch=Steam, any casing
+gt.so_fuel_cell_ii.info.o_hatch=Superheated Steam, any casing
+
+gt.lapo_super_capacitor.tips.1=Loses energy equal to 1%% of the total capacity every 24 hours\nCapped at §c%s §7EU/t passive loss per %s%s §7capacitor\nThe passive loss increases §4100§7-fold for every capacitor tier above\nPassive loss is multiplied by the number of maintenance issues present<SEPARATOR>Glass shell has to be Tier - 3 of the highest capacitor tier
+gt.lapo_super_capacitor.tips.2=Add more or better capacitors to increase capacity<SEPARATOR>Wireless mode can be enabled by right clicking with a screwdriver\nThis mode can only be enabled if you have a %1$s%2$s§7+ capacitor in the multiblock\nWhen enabled every §9%3$s §7ticks the LSC will attempt to re-balance\nagainst your wireless EU network\nIf there is less than §c%4$s §7(%1$s%2$s§7) EU in the LSC\nit will withdraw from the network and add to the LSC\nIf there is more it will add §4§l§nall excess §r§7EU to the network, removing it from the LSC\nThis can potentially brick your base, be careful\nThe threshold increases §4100§7-fold for every capacitor tier above
+gt.lapo_super_capacitor.info.height=Modular height of 4-50 blocks
+gt.lapo_super_capacitor.info.casing=5x2x5 base (at least 17x)
+gt.lapo_super_capacitor.info.caps=Lapotronic Capacitor §7(%s-%s), §fUltimate Capacitor §7(%s-%s)
+gt.lapo_super_capacitor.info.caps.pos=Center 3x(1-47)x3 above base (9-423 blocks)
+gt.lapo_super_capacitor.info.caps.tips=You can also use the Empty Capacitor to save materials if you use it for less than half the blocks
+gt.lapo_super_capacitor.info.lasers=Laser Target/Source Hatches
+gt.lapo_super_capacitor.info.lasers.pos=Any casing, must be using %s+-tier glass
+gt.lapo_super_capacitor.info.energy.tip=You can have several I/O Hatches
+gt.lapo_super_capacitor.info.channel_purpose=Capacitor Tier if specified. Otherwise pick any acceptable capacitor
+
+gt.nuclear_salt_processing_plant.tips.1=Processes depleted nuclear salts that come from the LFTR\nHandles the recipes of the Reactor Processor Unit and Cold Trap\nOnly Thermally Insulated Casings can be replaced with hatches\nMufflers on top, Energy Hatches on bottom, exactly 2 of each are required\nMaintenance Hatch goes on the back, opposite of the controller block\nInputs go on the left side of the multi, outputs on the right side
+gt.nuclear_salt_processing_plant.info.1=Left Half
+gt.nuclear_salt_processing_plant.info.2=Right Half
+gt.nuclear_salt_processing_plant.info.3=Top Side, 2 Required
+gt.nuclear_salt_processing_plant.info.4=Bottom Side, 2 Required
+gt.nuclear_salt_processing_plant.info.5=Back Side, Opposite of Controller
+
+gt.wwxl.tips=Works as fast as 32 Large Heat Exchangers\nInputs are §cLava§7, §cHot Coolant§7, or §cHot Solar Salt\nOutputs are §9Pahoehoe Lava§7, §9IC2 Coolant§7, or §9Cold Solar Salt\nConverts Distilled Water into §fSteam §7or §fSH Steam §7in the process\nOutputs §fSH Steam §7if the input rate of hot fluid is above a certain §dthreshold<SEPARATOR>§cLava §7: SH Threshold §d32,000 L/s §7: Max Input §c64,000 L/s §7: Max Output §f5,120,000 SH Steam/s\n§cHot Coolant §7: SH Threshold §d25,600 L/s §7: Max Input §c51,200 L/s §7: Max Output §f10,240,000 SH Steam/s\n§cHot Solar Salt §7: SH Threshold §d5,120 L/s §7: Max Input §c10,240 L/s §7: Max Output §f10,240,000 SH Steam/s<SEPARATOR>A circuit in the controller lowers the SH threshold at the cost of steam\n§d3.75% §7reduced SH threshold and §f1.5% §7reduced steam per circuit over 1
+gt.wwxl.info.controller=Front center, 4th layer
+gt.wwxl.info.casing=Center 3x5x3 (45 blocks)
+gt.wwxl.info.i_hatch.1=Hot fluid, bottom center casing
+gt.wwxl.info.i_hatch.2=Distilled water, any bottom layer casing
+gt.wwxl.info.o_hatch.1=Cold fluid, top center casing
+gt.wwxl.info.o_hatch.2=Steam/SH Steam, any bottom layer casing
+
+gt.duplicator.tips.1=Produces raw elements from UU-Matter
+gt.duplicator.tips.2=Maximum 1x Data Orb Repository\nThe programmed circuit selects which Data Orb to use (1-16)
+
+gt.cyclotron.tips.1=Super Magnetic Speed Shooter
+gt.cyclotron.tips.2=Particles are accelerated over 186 revolutions to 80% light speed\nCan produce a continuous beam current of 2.2 mA at 590 MeV,\nwhich will be extracted from the Isochronous Cyclotron
+gt.cyclotron.tips.3=Similar structure to the Fusion Reactor\nAny external casing can be a hatch/bus, unlike Fusion\nCyclotron Machine Casings around Cyclotron Coil Blocks<SEPARATOR>§4DEPRECATED
+
+gt.purification_plant.tips.1=Main controller block for the Water Purification Plant\nFreely place §ePurification Units§7 within §4%s§7 blocks along each axis\nLeft click this controller with a data stick, then right click a purification unit to link\nSupplies power to linked purification units.
+gt.purification_plant.tips.2=Works in fixed time processing cycles of §4%s§7 seconds\nAll linked units follow this cycle.<SEPARATOR>Every recipe has a base chance of success. Success rate can be boosted\nby using a portion of the target output as a secondary input\n§4%s%%§7 of output yield will be consumed in exchange for an\nadditive §4%s%%§7 increase to success\nOn recipe failure, each purification unit has a §450%%§7 chance\nto return water of the same quality as the input or lower<SEPARATOR>Every purification unit has a configuration window to configure maximum parallel amount\nThis will only scale purified water input, ALL fluid output and power usage\nOther catalysts and outputs are unchanged.\nToggle debug mode to reduce cycle time to 30s but disable water I/O<SEPARATOR>§b§oContaminants and ionized particles in water can cause significant imperfections in delicate\n§b§oprocesses related to the cutting and engraving of silicon wafers and chips. It is crucial that\n§b§othe water is systematically purified through a series of increasingly precise and complex\n§b§opurification processes, and this multiblock is the heart of the operation.
+gt.purification_plant.info.1=Requires water to be placed in the tank
+
+gt.pu_clarifier.tips=§b§lWater Tier: §f%s\nMust be linked to a Purification Plant using a data stick to work<SEPARATOR>Requires a filter made of Activated Carbon to work\nEvery cycle, has a §c%s%%§7 chance to destroy the filter<SEPARATOR>§b§oThe first step to acquiring purified water is to filter out macroscopic contaminants through the\n§b§ouse of large physical filters. As more contaminants are captured, the efficacy of the filter\n§b§odecreases so continual replacements must be supplied to maintain full function of the Clarifier.
+
+gt.isamill.tips.1=§aG.O.G, Grinds Ores Good
+gt.isamill.tips.2=§aIt'sa mill!
+gt.isamill.info.gearbox=5x, Inner Blocks
+gt.isamill.info.piping=8x, ring around controller
+
+gt.sparge_tower.tips=Runs gases through depleted molten salts to extract precious fluids\nWorks the same way as the Distillation Tower, but with a fixed height of 8\nFluids are only put out at the correct height\nThe correct height equals the slot number in the NEI recipe
+gt.sparge_tower.info.i_hatch=2x, Any bottom layer casing
+gt.sparge_tower.info.o_hatch=6x, At least one per layer except bottom layer
 
 # Fission Fuels
 item.gt.rodLithium.name=Fuel Rod (Lithium)
@@ -7360,3 +7904,8 @@ gt.item.stable_boson_containment_unit.name=Stable Boson Containment Unit
 gt.item.stable_boson_containment_unit.tooltip=Maybe contains a bound boson?
 gt.item.stable_empty_containment_unit.name=Stable Empty Containment Unit
 gt.item.stable_empty_containment_unit.tooltip=Maybe contains nothing?
+
+# Misc strings
+gt.generic_error=ERROR! Fill a ticket on github if you read this
+gt.string.colon=:
+gt.string.separator=,

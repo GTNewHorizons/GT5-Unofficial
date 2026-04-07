@@ -33,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gcewing.architecture.common.item.ArchitectureItemBlock;
 import gcewing.architecture.common.shape.Shape;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -77,7 +78,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
 
     @Override
     public String getMachineType() {
-        return "Chisel";
+        return "machtype.chisel";
     }
 
     @Override
@@ -85,19 +86,16 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addBulkMachineInfo(16, 3f, 0.75f)
-            .addInfo("Factory Grade Auto Chisel")
-            .addInfo("Target block goes in Controller slot for common Input Buses")
-            .addInfo("You can also set a target block in each Chisel Input Bus and use them as an Input Bus")
-            .addInfo("If no target is provided for common buses, the result is the next chisel")
+            .addInfo("gt.i_chisel.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
-            .addCasingInfoMin("Sturdy Printer Casing", 6, false)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addMufflerHatch("Any casing", 1)
+            .addController("front_center")
+            .addCasingInfoMin(Casings.SturdyPrinterCasing.getLocalizedName(), 6)
+            .addInputBus("<casing>", 1)
+            .addOutputBus("<casing>", 1)
+            .addEnergyHatch("<casing>", 1)
+            .addMaintenanceHatch("<casing>", 1)
+            .addMufflerHatch("<casing>", 1)
             .toolTipFinisher();
         return tt;
     }

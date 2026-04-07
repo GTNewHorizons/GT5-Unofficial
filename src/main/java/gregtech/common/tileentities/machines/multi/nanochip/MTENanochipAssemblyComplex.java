@@ -14,8 +14,6 @@ import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_X;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Y;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Z;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.math.BigInteger;
 import java.util.ArrayDeque;
@@ -44,7 +42,9 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -61,6 +61,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
@@ -232,52 +233,35 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType(translateToLocal("GT5U.tooltip.nac.main.machine_type"))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.action", TOOLTIP_CCs))
-            .addInfo(translateToLocal("GT5U.tooltip.nac.main.logo"))
-            .addSeparator()
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.1", TOOLTIP_CCs, VC_HATCHES))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.2", TOOLTIP_CCs, TOOLTIP_COLORED))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.3", TOOLTIP_COLORED))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.4", TOOLTIP_VCOs, TOOLTIP_COLOR))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.5", TOOLTIP_CCs, TOOLTIP_VCI))
+        return new MultiblockTooltipBuilder().addMachineType("GT5U.tooltip.nac.main.machine_type")
             .addInfo(
-                translateToLocalFormatted(
-                    "GT5U.tooltip.nac.main.body.6",
-                    TOOLTIP_CCs,
-                    TOOLTIP_COLORED,
-                    TOOLTIP_VCI,
-                    TOOLTIP_COLOR))
-            .addSeparator()
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.7", TOOLTIP_CCs))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.8", TOOLTIP_COLORED))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.9", TOOLTIP_COLORED))
+                "gt.nac.tips.1",
+                TOOLTIP_CCs,
+                VC_HATCHES,
+                TOOLTIP_COLORED,
+                TOOLTIP_VCOs,
+                TOOLTIP_COLOR,
+                TOOLTIP_VCI)
             .addTecTechHatchInfo()
-            .addSeparator()
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.1")))
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.2")))
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.3")))
+            .addInfo("gt.nac.tips.2")
             .beginStructureBlock(63, 49, 63, false)
-            .addOtherStructurePart(
-                translateToLocal("GT5U.tooltip.nac.interface.nac_module"),
-                translateToLocal("GT5U.tooltip.nac.interface.structure_outer_ring_base_casing"))
-            // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 3956, false)
-            // Nanochip Complex Glass
-            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 2226, false)
-            // Nanochip Mesh Interface Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 1720, false)
-            // Nanochip Computational Matrix Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.3.name"), 721, false)
-            // Naquadah Frame Box
-            .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Naquadah.getLocalizedName()),
-                53,
-                false)
-            // Nanochip Firewall Projection Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.4.name"), 32, false)
-            .addStructureInfo(TOOLTIP_VCI_LONG + " " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
-            .addStructureInfo(TOOLTIP_VCO_LONG + " " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
+            .addStructurePart(
+                "GT5U.tooltip.nac.interface.nac_module",
+                "GT5U.tooltip.nac.interface.structure_outer_ring_base_casing")
+            .addCasingInfoExactly(Casings.NanochipReinforcementCasing.getLocalizedName(), 3956)
+            .addCasingInfoExactly(Casings.NanochipComplexGlass.getLocalizedName(), 2226)
+            .addCasingInfoExactly(Casings.NanochipMeshInterfaceCasing.getLocalizedName(), 1720)
+            .addCasingInfoExactly(Casings.NanochipComputationalMatrixCasing.getLocalizedName(), 721)
+            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Naquadah), 53)
+            .addCasingInfoExactly(Casings.NanochipFirewallProjectionCasing.getLocalizedName(), 32)
+            .addStructurePart(
+                ItemList.Hatch_VacuumConveyor_Input.get(1)
+                    .getDisplayName(),
+                TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
+            .addStructurePart(
+                ItemList.Hatch_VacuumConveyor_Output.get(1)
+                    .getDisplayName(),
+                TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
             .addInputBus(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
             .addOutputBus(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
             .addEnergyHatch(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)

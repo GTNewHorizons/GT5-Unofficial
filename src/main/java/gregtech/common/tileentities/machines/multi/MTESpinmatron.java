@@ -16,7 +16,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static net.minecraft.util.EnumChatFormatting.BOLD;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +27,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -71,6 +69,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.gui.modularui.multiblock.MTESpinmatronGui;
@@ -381,97 +380,36 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(Casings.VibrationSafeCasing);
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Centrifuge")
-            .addInfo(
-                "3 Modes: " + EnumChatFormatting.LIGHT_PURPLE
-                    + "Light"
-                    + EnumChatFormatting.GRAY
-                    + " | "
-                    + EnumChatFormatting.GOLD
-                    + "Standard"
-                    + EnumChatFormatting.GRAY
-                    + " | "
-                    + EnumChatFormatting.GREEN
-                    + "Heavy")
-
-            .addInfo("Overclocks limited to " + EnumChatFormatting.WHITE + "Hatch Tier + 1")
+        tt.addMachineType("gt.recipe.centrifuge")
+            .addInfo("gt.spinmatron.tips.1")
             .addTecTechHatchInfo()
             .addSeparator()
-            .addInfo(
-                "Gains " + EnumChatFormatting.WHITE
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " Turbine Slots per Structure Tier")
+            .addInfo("gt.spinmatron.tips.2")
             .addDynamicParallelInfo(4, TooltipTier.TURBINE)
-            .addInfo("Non-Huge Turbines have reduced effectiveness...")
+            .addInfo("gt.spinmatron.tips.3")
             .addStaticSpeedInfo(3f)
             .addStaticEuEffInfo(0.7f)
-            .addInfo(
-                "Requires Recipe Tier * " + EnumChatFormatting.BLUE
-                    + "10L/s"
-                    + EnumChatFormatting.GRAY
-                    + " of "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "Kerosene"
-                    + EnumChatFormatting.GRAY
-                    + " to operate by default")
-            .addInfo(
-                "Supply " + EnumChatFormatting.DARK_PURPLE
-                    + "Biocatalyzed Propulsion Fluid"
-                    + EnumChatFormatting.GRAY
-                    + " instead for a "
-                    + EnumChatFormatting.WHITE
-                    + "1.25x "
-                    + EnumChatFormatting.GRAY
-                    + "Parallel multiplier")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + "Light Mode"
-                    + EnumChatFormatting.GRAY
-                    + ": +"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "100%"
-                    + EnumChatFormatting.GRAY
-                    + " Speed Bonus, "
-                    + "Maximum Recipe Tier is "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Voltage Tier - 3")
-            .addInfo(EnumChatFormatting.GOLD + "Standard Mode" + EnumChatFormatting.GRAY + ": No Changes")
-            .addInfo(
-                EnumChatFormatting.GREEN + "Heavy Mode"
-                    + EnumChatFormatting.GRAY
-                    + ": Divides Parallels by "
-                    + EnumChatFormatting.GREEN
-                    + "32"
-                    + EnumChatFormatting.GRAY
-                    + ", Requires T3+ Structure and "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "Biocatalyzed Propulsion Fluid")
-            .addInfo("Multiplies EU Cost by " + EnumChatFormatting.RED + "16")
-            .addInfo(
-                "Some recipes " + EnumChatFormatting.RED + BOLD + "require" + EnumChatFormatting.GREEN + " Heavy Mode")
-
-            .addSeparator()
-            .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
+            .addInfo("gt.spinmatron.tips.4")
             .beginStructureBlock(17, 17, 17, false)
-            .addController("Front center")
-            .addCasingInfoExactly("Any Tiered Glass", 81, true)
-            .addCasingInfoMin("Vibration-Safe Casing", 550, false)
-            .addCasingInfoExactly("Chamber Grate", 144, false)
-            .addCasingInfoExactly("Central Frame Blocks", 9, true)
-            .addCasingInfoExactly("Central Rotor Blocks", 56, true)
-            .addCasingInfoExactly("IsaMill Gearbox Casing", 54, false)
-            .addCasingInfoExactly("PBI Pipe Casing", 160, false)
-            .addCasingInfoExactly("Turbine Shaft", 24, false)
-            .addCasingInfoExactly("Rotor Assembly", 8, false)
-            .addCasingInfoExactly("SC Turbine Casing", 264, false)
-            .addInputBus("Any Vibration-Safe Casing", 1)
-            .addOutputBus("Any Vibration-Safe Casing", 1)
-            .addInputHatch("Any Vibration-Safe Casing", 1)
-            .addOutputHatch("Any Vibration-Safe Casing", 1)
-            .addEnergyHatch("Any Vibration-Safe Casing", 1)
-            .addMaintenanceHatch("Any Vibration-Safe Casing", 1)
+            .addController("front_center")
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 81, true)
+            .addCasingInfoMin(Casings.VibrationSafeCasing.getLocalizedName(), 550)
+            .addCasingInfoExactly(Casings.ChamberGrate.getLocalizedName(), 144)
+            .addCasingInfoExactly("gt.spinmatron.info.frame", 9, true)
+            .addCasingInfoExactly("gt.spinmatron.info.rotor", 56, true)
+            .addCasingInfoExactly(Casings.IsaMillGearboxCasing.getLocalizedName(), 54)
+            .addCasingInfoExactly(Casings.PBIPipeCasing.getLocalizedName(), 160)
+            .addCasingInfoExactly(Casings.TurbineShaft.getLocalizedName(), 24)
+            .addCasingInfoExactly("gt.blockmachines.hatch.turbine.name", 8)
+            .addCasingInfoExactly(Casings.TurbineShaft.getLocalizedName(), 264)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputHatch(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
 

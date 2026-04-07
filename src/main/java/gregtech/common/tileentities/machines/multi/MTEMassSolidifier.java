@@ -40,6 +40,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
@@ -167,33 +168,28 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(Casings.SolidifierCasing);
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Solidifier")
+        tt.addMachineType("gt.recipe.fluidsolidifier")
             .addVoltageParallelInfo(10)
-            .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
-            .addInfo("Decays at double the rate that it speeds up at")
+            .addInfo("gt.mass_solidifier.tips.1", TooltipHelper.speedText(3f))
             .addStaticEuEffInfo(0.8f)
             .addGlassEnergyLimitInfo(VoltageIndex.UEV)
-            .addInfo(
-                "Can use " + EnumChatFormatting.YELLOW
-                    + "Solidifier Hatches"
-                    + EnumChatFormatting.GRAY
-                    + " to hold fluids and molds in the same hatch")
-            .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
+            .addInfo("gt.mass_solidifier.tips.2")
             .beginStructureBlock(5, 6, 9, false)
-            .addController("Front bottom center")
+            .addController("front_bottom_center")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addCasingInfoMin("Solidifier Casing", MIN_CASINGS, false)
-            .addCasingInfoExactly("Solidifier Radiator", 34, false)
-            .addCasingInfoExactly("Heat Proof Machine Casing", 13, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 7, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 3, false)
-            .addCasingInfoExactly("Any Tiered Glass", 42, true)
-            .addInputBus("Any Solidifier Casing", 1)
-            .addOutputBus("Any Solidifier Casing", 1)
-            .addInputHatch("Any Solidifier Casing", 1)
-            .addEnergyHatch("Any Solidifier Casing", 1)
-            .addMaintenanceHatch("Any Solidifier Casing", 1)
+            .addCasingInfoMin(Casings.SolidifierCasing.getLocalizedName(), MIN_CASINGS)
+            .addCasingInfoExactly(Casings.SolidifierRadiator.getLocalizedName(), 34)
+            .addCasingInfoExactly(Casings.HeatProofMachineCasing.getLocalizedName(), 13)
+            .addCasingInfoExactly(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 7)
+            .addCasingInfoExactly(Casings.SteelPipeCasing.getLocalizedName(), 3)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 42, true)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
             .toolTipFinisher(AuthorOmdaCZ);
         return tt;
     }

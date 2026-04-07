@@ -27,16 +27,6 @@ public class MTELargeBoilerTitanium extends MTELargeBoiler {
     }
 
     @Override
-    public String getCasingMaterial() {
-        return "Titanium";
-    }
-
-    @Override
-    public String getCasingBlockType() {
-        return "Machine Casings";
-    }
-
-    @Override
     public Block getCasingBlock() {
         return GregTechAPI.sBlockCasings4;
     }

@@ -301,90 +301,16 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(
-            StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.machinetype"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip1"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip2"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip3"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip4"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip5"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13"))
-            .addSeparator()
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip14"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip15"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip16"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip17"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip18"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip19"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip20"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip21"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip22"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip23"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip24"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip25"))
-            .addSeparator()
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip26"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip27"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip28"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip30"))
-            .addSeparator()
+        tt.addMachineType("gt.blockmachines.multimachine.beamcrafting.LHC.machinetype")
+            .addInfo("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip")
             .beginStructureBlock(109, 13, 122, false)
-            .addController(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                6034,
-                false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttehatch"),
-                1,
-                false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
-                16,
-                false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
-                20,
-                false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
-                1,
-                false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
-                73,
-                false)
+            .addController("gt.mbtt.structure.front_center")
+            .addCasingInfoExactly(Casings.ColliderCasing.getLocalizedName(), 6034)
+            .addCasingInfoExactly("GT5U.MBTT.EnergyHatch", 1)
+            .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 16)
+            .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 20)
+            .addCasingInfoExactly("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch", 1)
+            .addCasingInfoExactly("gt.blockmachines.multimachine.beamcrafting.ttanyneonite", 73)
             .addTecTechHatchInfo()
             .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;

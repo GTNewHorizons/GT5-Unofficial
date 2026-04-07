@@ -2,12 +2,13 @@ package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.util.GTUtility.translate;
+import static gregtech.api.util.tooltip.TooltipMarkupProcessor.INDENT_MARK;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+import static org.apache.commons.lang3.StringUtils.removeStart;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,6 +34,11 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -45,15 +51,19 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.metatileentity.implementations.MTETooltipMultiBlockBase;
 import gregtech.api.util.GTItsNotMyFaultException;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipMarkupProcessor;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
 
 public class ItemMachines extends ItemBlock implements IFluidContainerItem {
+
+    private static final Pattern GENERATED_FORMAT_MARKER = Pattern.compile("%%%(.*?)%%%");
 
     public ItemMachines(Block block) {
         super(block);
@@ -69,6 +79,43 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         return GregTechAPI.METATILEENTITIES[aStack.getItemDamage()];
     }
 
+    private String resolveJsonLocalization(String json) {
+        try {
+            JsonObject obj = new JsonParser().parse(json)
+                .getAsJsonObject();
+
+            String key = obj.get("k")
+                .getAsString();
+            JsonArray paramsArray = obj.getAsJsonArray("p");
+
+            boolean hasIndent = key.startsWith(INDENT_MARK);
+            String cleanKey = removeStart(key, INDENT_MARK);
+
+            List<Object> resolvedParams = new ArrayList<>();
+            for (JsonElement elem : paramsArray) {
+                if (elem.isJsonNull()) {
+                    resolvedParams.add("");
+                } else {
+                    String paramStr = elem.getAsString();
+                    if (paramStr.startsWith("{\"k\":")) {
+                        resolvedParams.add(stripGeneratedFormatMarkers(resolveJsonLocalization(paramStr)));
+                    } else {
+                        String translated = translateToLocal(paramStr);
+                        resolvedParams
+                            .add(stripGeneratedFormatMarkers(translated.equals(paramStr) ? paramStr : translated));
+                    }
+                }
+            }
+
+            String result = translate(cleanKey, resolvedParams.toArray());
+            if (result.isEmpty()) return key;
+            return hasIndent ? INDENT_MARK + result : result;
+        } catch (Exception e) {
+            GT_FML_LOGGER.error("Failed to parse localization JSON: {}", json, e);
+            return json;
+        }
+    }
+
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         try {
@@ -77,11 +124,19 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 return;
             }
 
-            if (GregTechAPI.METATILEENTITIES[tDamage] != null) {
-                final IGregTechTileEntity gtTileEntity = GregTechAPI.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
+            final IMetaTileEntity mte = GregTechAPI.METATILEENTITIES[tDamage];
+            if (mte != null) {
+                final IGregTechTileEntity gtTileEntity = mte.getBaseMetaTileEntity();
                 final IMetaTileEntity metaTileEntity = gtTileEntity.getMetaTileEntity();
                 if (metaTileEntity instanceof ILocalizedMetaPipeEntity localizedMetaPipeEntity) {
                     localizedMetaPipeEntity.addMaterialTooltip(aList);
+                }
+                if (!GregTechAPI.sPostloadFinished && metaTileEntity instanceof ISecondaryDescribable
+                    && !shouldResolveDescriptionDirectly(metaTileEntity)) {
+                    registerDescription(
+                        ((ISecondaryDescribable) metaTileEntity).getSecondaryDescription(),
+                        "gt.blockmachines." + metaTileEntity.getMetaName() + ".tooltip_secondary",
+                        tDamage);
                 }
                 addDescription(aList, metaTileEntity, tDamage);
                 metaTileEntity.addAdditionalTooltipInformation(aStack, aList);
@@ -114,6 +169,10 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 if (aNBT.getBoolean("mSteamConverter")) {
                     aList.add(translateToLocal("gt.tileentity.has_steam_upgrade"));
                 }
+                int tAmount;
+                if ((tAmount = aNBT.getByte("mSteamTanks")) > 0) {
+                    aList.add(translateToLocalFormatted("gt.tileentity.steamtanks", tAmount));
+                }
 
                 CoverableTileEntity.addInstalledCoversInformation(aNBT, aList);
                 if (aNBT.hasKey("mColor") && aNBT.getByte("mColor") != -1) {
@@ -134,8 +193,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     private void addDescription(List<String> aList, IMetaTileEntity metaTileEntity, int damage) {
         final String[] aDescription = metaTileEntity.getDescription();
         if (aDescription == null) return;
-        if (isSkipGenerateDescription(metaTileEntity)) {
-            Collections.addAll(aList, aDescription);
+        if (shouldResolveDescriptionDirectly(metaTileEntity)) {
+            addResolvedDescription(aList, aDescription);
             return;
         }
         final String tSuffix = (metaTileEntity instanceof ISecondaryDescribable
@@ -145,18 +204,31 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             key = key + "." + damage;
         }
         final String tTranslated = StatCollector.translateToLocal(key);
-        if (tTranslated.contains("%s")) {
-            final String tDescription = Arrays.stream(aDescription)
-                .filter(GTUtility::isStringValid)
-                .collect(Collectors.joining(""));
-            List<String> parameters = new ArrayList<>();
-            final Matcher matcher = Pattern.compile("%%%(.*?)%%%")
-                .matcher(tDescription);
-            while (matcher.find()) parameters.add(matcher.group(1));
-            Collections.addAll(aList, GTSplit.splitFormatted(tTranslated, parameters.toArray()));
+        if (containsGeneratedFormatMarkers(aDescription)) {
+            addResolvedDescription(
+                aList,
+                GTSplit.split(resolveGeneratedFormatMarkers(joinDescriptionLines(aDescription), tTranslated)));
         } else {
-            Collections.addAll(aList, GTSplit.split(tTranslated));
+            addResolvedDescription(aList, GTSplit.split(tTranslated));
         }
+    }
+
+    private void addResolvedDescription(@Nullable List<String> aList, @Nullable String[] aDescription) {
+        if (aDescription == null) return;
+        for (String tDescLine : aDescription) {
+            if (!GTUtility.isStringValid(tDescLine)) continue;
+
+            String translated;
+            if (tDescLine.startsWith("{\"k\":")) {
+                translated = stripGeneratedFormatMarkers(resolveJsonLocalization(tDescLine));
+            } else {
+                translated = stripGeneratedFormatMarkers(translate(removeStart(tDescLine, INDENT_MARK)));
+            }
+
+            final String formatted = TooltipMarkupProcessor.formatTranslatedLine(tDescLine, translated);
+            if (aList != null) aList.add(formatted.isEmpty() ? tDescLine : formatted);
+        }
+        TooltipMarkupProcessor.processTooltips(aList);
     }
 
     @SideOnly(Side.CLIENT)
@@ -165,7 +237,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (GregTechAPI.METATILEENTITIES[aDamage] != null) {
             final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[aDamage].getBaseMetaTileEntity()
                 .getMetaTileEntity();
-            if (isSkipGenerateDescription(tMetaTileEntity)) return;
+            if (shouldResolveDescriptionDirectly(tMetaTileEntity)) return;
             String key = "gt.blockmachines." + tMetaTileEntity.getMetaName() + ".tooltip";
             if (tMetaTileEntity instanceof ISecondaryDescribable) {
                 final String[] tSecondaryDescription = ((ISecondaryDescribable) tMetaTileEntity)
@@ -179,9 +251,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     @SideOnly(Side.CLIENT)
     private void registerDescription(@Nullable String[] aDescription, String key, int damage) {
         if (aDescription == null) return;
-        String tDescription = Arrays.stream(aDescription)
-            .filter(GTUtility::isStringValid)
-            .collect(Collectors.joining(GTSplit.LB));
+        String tDescription = joinDescriptionLines(aDescription);
         if (tDescription.contains("%%%")) {
             tDescription = tDescription.replaceAll("%%%.*?%%%", "%s");
         }
@@ -190,6 +260,55 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             return;
         }
         GTLanguageManager.addStringLocalization(key, tDescription);
+    }
+
+    private static boolean containsGeneratedFormatMarkers(@Nullable String[] aDescription) {
+        return aDescription != null && Arrays.stream(aDescription)
+            .filter(GTUtility::isStringValid)
+            .anyMatch(line -> line.contains("%%%"));
+    }
+
+    @Nonnull
+    private static String joinDescriptionLines(@Nullable String[] aDescription) {
+        if (aDescription == null) return "";
+        return Arrays.stream(aDescription)
+            .filter(GTUtility::isStringValid)
+            .collect(Collectors.joining(GTSplit.LB));
+    }
+
+    private String resolveGeneratedFormatMarkers(@Nullable String originalDescription,
+        @Nonnull String translatedDescription) {
+        if (!GTUtility.isStringValid(originalDescription) || !originalDescription.contains("%%%")) {
+            return stripGeneratedFormatMarkers(translatedDescription);
+        }
+        String resolvedDescription = translatedDescription;
+        final Matcher matcher = GENERATED_FORMAT_MARKER.matcher(originalDescription);
+        while (matcher.find()) {
+            final int placeholderIndex = resolvedDescription.indexOf("%s");
+            if (placeholderIndex < 0) break;
+            resolvedDescription = resolvedDescription.substring(0, placeholderIndex)
+                + resolveGeneratedFormatPayload(matcher.group(1))
+                + resolvedDescription.substring(placeholderIndex + 2);
+        }
+        return stripGeneratedFormatMarkers(resolvedDescription);
+    }
+
+    private String resolveGeneratedFormatPayload(@Nonnull String payload) {
+        if (payload.startsWith("{\"k\":")) {
+            return stripGeneratedFormatMarkers(resolveJsonLocalization(payload));
+        }
+        return stripGeneratedFormatMarkers(payload);
+    }
+
+    private static String stripGeneratedFormatMarkers(@Nonnull String text) {
+        if (!text.contains("%%%")) return text;
+        final Matcher matcher = GENERATED_FORMAT_MARKER.matcher(text);
+        final StringBuffer buffer = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(buffer, Matcher.quoteReplacement(matcher.group(1)));
+        }
+        matcher.appendTail(buffer);
+        return buffer.toString();
     }
 
     @Override
@@ -426,5 +545,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     private static boolean isSkipGenerateDescription(IMetaTileEntity metaTE) {
         return metaTE.getClass()
             .getAnnotation(IMetaTileEntity.SkipGenerateDescription.class) != null;
+    }
+
+    private static boolean shouldResolveDescriptionDirectly(IMetaTileEntity metaTE) {
+        return isSkipGenerateDescription(metaTE) || metaTE instanceof MTETooltipMultiBlockBase;
     }
 }

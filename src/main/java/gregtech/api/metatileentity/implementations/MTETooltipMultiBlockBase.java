@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 import org.lwjgl.input.Keyboard;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -27,6 +28,9 @@ public abstract class MTETooltipMultiBlockBase extends MTEMultiBlockBase impleme
     protected abstract MultiblockTooltipBuilder createTooltip();
 
     protected final MultiblockTooltipBuilder getTooltip() {
+        if (GTValues.debugTooltips) {
+            return createTooltip();
+        }
         int tId = getBaseMetaTileEntity().getMetaTileID();
         MultiblockTooltipBuilder tooltip = tooltips.get(tId);
         if (tooltip == null) {

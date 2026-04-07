@@ -77,6 +77,7 @@ import bartworks.util.Coords;
 import bartworks.util.MathUtils;
 import bartworks.util.ResultWrongSievert;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -166,52 +167,21 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Bacterial Vat, Bac Vat")
-            .addInfo(EnumChatFormatting.AQUA + "Advanced Bio Processing")
-            .addSeparator()
-            .addInfo(
-                "Some recipes require " + EnumChatFormatting.GREEN
-                    + "R"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "A"
-                    + EnumChatFormatting.GREEN
-                    + "D"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "I"
-                    + EnumChatFormatting.GREEN
-                    + "A"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "T"
-                    + EnumChatFormatting.GREEN
-                    + "I"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "O"
-                    + EnumChatFormatting.GREEN
-                    + "N"
-                    + EnumChatFormatting.GRAY
-                    + " supplied with a "
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.GREEN
-                    + "Radio Hatch")
-            .addInfo("Radiation can be either a minimum requirement or an exact value")
-            .addInfo("Efficiency depends on Output Hatch fluid level")
-            .addInfo("Efficiency peaks at " + EnumChatFormatting.LIGHT_PURPLE + "50%")
+        tt.addMachineType("machtype.bacvat")
+            .addInfo("gt.bacvat.tips")
             .beginStructureBlock(5, 4, 5, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Clean Stainless Steel Casings", 19, false)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("tooltip.bw.structure.glass"),
-                "Hollow two middle layers",
-                2)
-            .addCasingInfoExactly("Any Tiered Glass", 32, true)
-            .addStructureInfo("Some Recipes need more advanced Glass Types")
-            .addMaintenanceHatch("Any casing", 1)
-            .addOtherStructurePart(StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), "Any casing", 1)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addInputHatch("Any casing", 1)
-            .addOutputHatch("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
+            .addController("front_bottom_center")
+            .addCasingInfoMin(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 19)
+            .addStructurePart("tooltip.bw.structure.glass", "gt.bacvat.info.glass", 2)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 32, true)
+            .addStructureInfo("gt.bacvat.info.glass_req")
+            .addMaintenanceHatch("<casing>", 1)
+            .addStructurePart("tooltip.bw.structure.radio_hatch", "<casing>", 1)
+            .addInputBus("<casing>", 1)
+            .addOutputBus("<casing>", 1)
+            .addInputHatch("<casing>", 1)
+            .addOutputHatch("<casing>", 1)
+            .addEnergyHatch("<casing>", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

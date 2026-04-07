@@ -6,7 +6,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -149,40 +148,19 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         int randomInt = (int) (Math.random() * 101);
-        String beanOrBeamSplitter = StatCollector
-            .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetype");
+        String beanOrBeamSplitter = "gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetype";
         if (randomInt == 69) {
-            beanOrBeamSplitter = StatCollector
-                .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetypefake");
+            beanOrBeamSplitter = "gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetypefake";
         }
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(beanOrBeamSplitter)
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip1"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip2"))
+            .addInfo("gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip")
             .beginStructureBlock(9, 3, 9, false)
-            .addController(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                68,
-                false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"),
-                9,
-                true)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
-                1,
-                false)
-            .addCasingInfoExactly(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered"),
-                4,
-                false)
+            .addController("gt.mbtt.structure.front_center")
+            .addCasingInfoExactly(Casings.ColliderCasing.getLocalizedName(), 68)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 9, true)
+            .addCasingInfoExactly("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch", 1)
+            .addCasingInfoExactly("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered", 4)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addTecTechHatchInfo()
             .toolTipFinisher(GTAuthors.AuthorHamCorp);

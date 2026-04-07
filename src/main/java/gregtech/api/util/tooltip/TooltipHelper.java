@@ -1,14 +1,16 @@
 package gregtech.api.util.tooltip;
 
+import static gregtech.api.util.GTUtility.translate;
+
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import gregtech.GTMod;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.util.GTUtility;
@@ -154,10 +156,10 @@ public class TooltipHelper {
      * @return A formatted string representing the voltage tier.
      */
     public static String voltageTierText(int voltageIndex, boolean withTierSuffix) {
-        if (voltageIndex < VoltageIndex.ULV || voltageIndex > VoltageIndex.MAX) return "Invalid Voltage Tier";
-        return GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex]
-            + EnumChatFormatting.GRAY
-            + (withTierSuffix ? StatCollector.translateToLocal("gt.voltage.tier") : "");
+        if (voltageIndex < VoltageIndex.ULV || voltageIndex > VoltageIndex.MAX) return translate("GT5U.MBTT.ErrorTier");
+        return translate(
+            withTierSuffix ? "gt.voltage.tier" : "%s",
+            GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex] + EnumChatFormatting.GRAY);
     }
 
     /**
@@ -219,5 +221,23 @@ public class TooltipHelper {
         System.arraycopy(descriptionWithWarning, 0, descriptionWithWarning, 1, description.length);
         descriptionWithWarning[0] = EnumChatFormatting.RED + "Pollution is OFF - This Block is Redundant";
         return descriptionWithWarning;
+    }
+
+    /**
+     * @return "Any [casing name]"
+     *         <br>
+     *         used as a more specific `Any Casing`
+     */
+    public static String anyCasingText(Casings casing) {
+        return translate("GT5U.MBTT.HatchInfo", casing.getLocalizedName());
+    }
+
+    /**
+     * @return "Any [casing name]"
+     *         <br>
+     *         used as a more specific `Any Casing`
+     */
+    public static String tieredGlassText(int voltageIndex) {
+        return translate("GT5U.MBTT.AnyGlass_Tier", voltageTierText(voltageIndex, false));
     }
 }

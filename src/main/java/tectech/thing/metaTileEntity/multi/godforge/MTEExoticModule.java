@@ -5,6 +5,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
+import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
@@ -22,7 +23,6 @@ import java.util.stream.Stream;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -35,6 +35,7 @@ import org.jetbrains.annotations.Nullable;
 import com.cleanroommc.modularui.utils.fluid.FluidTanksHandler;
 import com.cleanroommc.modularui.utils.fluid.IFluidTanksHandler;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -496,34 +497,18 @@ public class MTEExoticModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Exotic Matter Producer")
-            .addInfo("This is a module of the Godforge")
-            .addInfo("Must be part of a Godforge to function")
-            .addInfo("Used for ultra high temperature matter degeneration")
-            .addSeparator(EnumChatFormatting.AQUA, 75)
-            .addInfo("The fourth and final module of the Godforge, this module breaks apart the very")
-            .addInfo("building blocks of matter, producing exotic mixtures in the process. Quark-Gluon Plasma")
-            .addInfo("can be manufactured right away, but production of Magnetic Monopole Matter (Magmatter)")
-            .addInfo("requires a fully upgraded Godforge")
-            .addInfo("This module is specialized towards acquisition of unique materials")
+        tt.addMachineType("machtype.exotic_module")
+            .addInfo("gt.exotic_module.tips")
             .beginStructureBlock(7, 7, 13, false)
-            .addController("Front center")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Harmonic Phonon Transmission Conduit")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Hatch")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 75);
+            .addController("front_center")
+            .addCasingInfoExactly(Casings.SingularityReinforcedStellarShieldingCasing.getLocalizedName(), 20)
+            .addCasingInfoExactly(Casings.BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), 20)
+            .addCasingInfoExactly(Casings.HarmonicPhononTransmissionConduit.getLocalizedName(), 5)
+            .addCasingInfoExactly(Casings.CelestialMatterGuidanceCasing.getLocalizedName(), 5)
+            .addCasingInfoExactly(Casings.StellarEnergySiphonCasing.getLocalizedName(), 1)
+            .addOutputHatch("§61x")
+            .addOutputBus("§61x")
+            .toolTipFinisher(AQUA);
         return tt;
     }
 

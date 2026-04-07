@@ -27,16 +27,6 @@ public class MTELargeBoilerSteel extends MTELargeBoiler {
     }
 
     @Override
-    public String getCasingMaterial() {
-        return "Steel";
-    }
-
-    @Override
-    public String getCasingBlockType() {
-        return "Machine Casings";
-    }
-
-    @Override
     public Block getCasingBlock() {
         return GregTechAPI.sBlockCasings2;
     }

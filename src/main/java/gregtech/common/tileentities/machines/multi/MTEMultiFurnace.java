@@ -37,6 +37,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -52,6 +53,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 
@@ -103,19 +105,19 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Furnace")
+        tt.addMachineType("gt.recipe.furnace")
             .addStaticParallelInfo(4)
             .addDynamicMultiplicativeParallelInfo(2, TooltipTier.COIL)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front bottom center")
-            .addCasingInfoRange("Heat Proof Machine Casing", 8, 14, false)
-            .addOtherStructurePart("Heating Coils", "Middle layer")
-            .addEnergyHatch("Any bottom casing", 1)
-            .addMaintenanceHatch("Any Heat Proof Machine Casing", 1)
-            .addMufflerHatch("Top Middle", 2)
-            .addInputBus("Any bottom casing", 1)
-            .addOutputBus("Any bottom casing", 1)
+            .addController("front_bottom_center")
+            .addCasingInfoRange(Casings.HeatProofMachineCasing.getLocalizedName(), 8, 14, false)
+            .addStructurePart("GT5U.tooltip.structure.heating_coil", "gt.multi_furnace.info.coil")
+            .addEnergyHatch("<bottom casing>", 1)
+            .addMaintenanceHatch(TooltipHelper.anyCasingText(Casings.HeatProofMachineCasing), 1)
+            .addMufflerHatch("gt.multi_furnace.info.muffler", 2)
+            .addInputBus("<bottom casing>", 1)
+            .addOutputBus("<bottom casing>", 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;

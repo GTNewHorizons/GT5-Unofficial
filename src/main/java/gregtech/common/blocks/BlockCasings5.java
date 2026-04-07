@@ -16,6 +16,7 @@ import static gregtech.api.enums.HeatingCoilLevel.UMV;
 import static gregtech.api.enums.HeatingCoilLevel.UV;
 import static gregtech.api.enums.HeatingCoilLevel.UXV;
 import static gregtech.api.enums.HeatingCoilLevel.ZPM;
+import static gregtech.api.util.GTUtility.translate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -260,7 +261,7 @@ public class BlockCasings5 extends BlockCasingsAbstract
         int metadata = stack.getItemDamage();
 
         HeatingCoilLevel coilLevel = BlockCasings5.getCoilHeatFromDamage(metadata);
-        tooltip.add(COIL_HEAT_TOOLTIP.get() + coilLevel.getHeat() + COIL_UNIT_TOOLTIP.get());
+        tooltip.add(translate(COIL_HEAT_TOOLTIP.get(), coilLevel.getHeat(), COIL_UNIT_TOOLTIP.get()));
     }
 
     @Override

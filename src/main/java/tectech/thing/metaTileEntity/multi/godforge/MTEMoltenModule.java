@@ -16,6 +16,7 @@ import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -169,31 +170,16 @@ public class MTEMoltenModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Smelter")
-            .addInfo("This is a module of the Godforge")
-            .addInfo("Must be part of a Godforge to function")
-            .addInfo("Used for high temperature material liquefaction")
-            .addSeparator(EnumChatFormatting.AQUA, 74)
-            .addInfo("The second module of the Godforge, this module melts materials directly into")
-            .addInfo("their liquid form. If an output material does not have a liquid form, it will be output")
-            .addInfo("as a regular solid instead")
-            .addInfo("This module is specialized towards parallel processing")
+        tt.addMachineType("machtype.molten_module")
+            .addInfo("gt.molten_module.tips")
             .beginStructureBlock(7, 7, 13, false)
-            .addController("Front center")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Harmonic Phonon Transmission Conduit")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
+            .addController("front_center")
+            .addCasingInfoExactly(Casings.SingularityReinforcedStellarShieldingCasing.getLocalizedName(), 20)
+            .addCasingInfoExactly(Casings.BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), 20)
+            .addCasingInfoExactly(Casings.HarmonicPhononTransmissionConduit.getLocalizedName(), 5)
+            .addCasingInfoExactly(Casings.CelestialMatterGuidanceCasing.getLocalizedName(), 5)
+            .addCasingInfoExactly(Casings.StellarEnergySiphonCasing.getLocalizedName(), 1)
+            .toolTipFinisher(EnumChatFormatting.AQUA);
         return tt;
     }
 

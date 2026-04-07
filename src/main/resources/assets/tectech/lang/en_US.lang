@@ -616,8 +616,7 @@ gt.blockcasingsBA0.12.name=Infinite Spacetime Energy Boundary Casing
 gt.blockmachines.multimachine.em.transformer.name=Active Transformer
 gt.blockmachines.multimachine.em.transformer.machinetype=Active Transformer, AT
 gt.blockmachines.multimachine.em.transformer.hint=1 - Energy IO Hatches or High Power Casing
-gt.blockmachines.multimachine.em.transformer.desc.1=Can transform to and from any voltage
-gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.004% power loss, HAYO!
+gt.blockmachines.multimachine.em.transformer.desc=Can transform to and from any voltage\nOnly 0.004% power loss, HAYO!
 
 gt.blockmachines.multimachine.tm.microwave.name=Microwave Grinder
 gt.blockmachines.multimachine.tm.microwave.hint.0=1 - Classic Hatches or Clean Stainless Steel Casing
@@ -636,11 +635,7 @@ gt.blockmachines.multimachine.tm.microwave.cfgo.1=Timer remaining
 gt.blockmachines.multimachine.tm.teslaCoil.name=Tesla Tower
 gt.blockmachines.multimachine.tm.teslaCoil.hint.0=1 - Classic Hatches, Capacitor Hatches or Tesla Base Casing
 gt.blockmachines.multimachine.tm.teslaCoil.hint.1=2 - Titanium Frames
-gt.blockmachines.multimachine.tm.teslaCoil.desc.0=Controller block of the Tesla Tower
-gt.blockmachines.multimachine.tm.teslaCoil.desc.1=Used to transmit power to Tesla Coil Covers and Tesla Transceivers
-gt.blockmachines.multimachine.tm.teslaCoil.desc.2=Can be fed with Helium/Nitrogen/Radon Plasma to increase the range
-gt.blockmachines.multimachine.tm.teslaCoil.desc.3=Transmitted voltage depends on the used Tesla Capacitor tier
-gt.blockmachines.multimachine.tm.teslaCoil.desc.4=Primary Tesla Windings need to be at least the same tier as the Tesla Capacitor
+gt.blockmachines.multimachine.tm.teslaCoil.desc=Controller block of the Tesla Tower\nUsed to transmit power to Tesla Coil Covers and Tesla Transceivers\nCan be fed with Helium/Nitrogen/Radon Plasma to increase the range\nTransmitted voltage depends on the used Tesla Capacitor tier\nPrimary Tesla Windings need to be at least the same tier as the Tesla Capacitor
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0=Hysteresis Low
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1=Hysteresis High
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2=Transfer Radius
@@ -747,16 +742,10 @@ gt.blockmachines.multimachine.em.scanner.hint.2=3 - Elemental Output Hatches or 
 gt.blockmachines.multimachine.em.scanner.hint.3=4 - Elemental Overflow Hatches or Molecular Casing
 gt.blockmachines.multimachine.em.scanner.desc.0=Controller block of the Elemental Scanner
 
-gt.blockmachines.multimachine.em.research.type=Research Station, Scanner
 gt.blockmachines.multimachine.em.research.hint.0=1 - Classic/Data Hatches or Computer casing
 gt.blockmachines.multimachine.em.research.hint.1=2 - Holder Hatch
 gt.blockmachines.multimachine.em.research.hint.2=3 - Output Bus, Input Hatch, or Advanced Computer Casing
-gt.blockmachines.multimachine.em.research.desc.1=Used to scan Data Sticks for Assembly Line Recipes
-gt.blockmachines.multimachine.em.research.desc.2=Needs to be fed with computation to work
-gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until the Data Stick is written
-gt.blockmachines.multimachine.em.research.desc.4=Use screwdriver to change mode
-gt.blockmachines.multimachine.em.research.desc.5=Computation required in scanner mode follows the formula:
-gt.blockmachines.multimachine.em.research.desc.6=Recipe duration in ticks * (2 ^ (Recipe voltage tier - 1))
+gt.blockmachines.multimachine.em.research.desc=Used to scan Data Sticks for Assembly Line Recipes\nNeeds to be fed with computation to work\nDoes not consume the item until the Data Stick is written\nUse screwdriver to change mode\nComputation required in scanner mode follows the formula:\nRecipe duration in ticks * (2 ^ (Recipe voltage tier - 1))
 gt.blockmachines.multimachine.em.research.mode.Assembly_line=Mode: Research Station
 gt.blockmachines.multimachine.em.research.mode.Scanner=Mode: Scanner
 gt.blockmachines.multimachine.em.research.computation=Computation: %,d / %,d
@@ -1393,7 +1382,6 @@ tt.keyword.ID=ID
 tt.keyword.at=at
 # Any X
 tt.keyword.Structure.AnyComputerCasing=Any Computer Casing
-tt.keyword.Structure.AnyHighPowerCasing=Any High Power Casing
 tt.keyword.Structure.AnyHighPowerCasing1D=Any High Power Casing with 1 dot
 tt.keyword.Structure.AnyHighPowerCasing2D=Any High Power Casing with 2 dots
 tt.keyword.Structure.AnyHighPowerCasingFront=Any High Power Casing on the front side
@@ -1414,10 +1402,8 @@ tt.keyword.Structure.AnyOuterCasingOnBottom=Any outer casing on the bottom layer
 # Optional
 tt.keyword.Structure.Optional=(optional)
 # Placement specification
-tt.keyword.Structure.FrontCenter=Front center
 tt.keyword.Structure.BackCenter=Back center
 tt.keyword.Structure.SideCenter=Side center
-tt.keyword.Structure.FrontCenter3rd=Front 3rd layer center
 tt.keyword.Structure.CenterPillar=Center of the front pillar
 tt.keyword.Structure.Center=Center
 # Additional structure components
@@ -1430,9 +1416,10 @@ tt.keyword.Structure.EssentiaStorage=Essentia Storage
 tt.keyword.Structure.DataConnector=Data Connector
 tt.keyword.Structure.DataInput=Data Input Hatch
 tt.keyword.Structure.DataOutput=Data Output Hatch
-tt.keyword.Structure.SuperconductingCoilBlock=Superconducting Coil Block
 tt.keyword.Structure.StainlessSteelCasing=Stainless Steel Casing
 tt.wirelessInputData.config.text=Configure how much computation to pull from wireless network
+# Controller
+tt.keyword.Structure.ResearchStationController=Front center on the frontside of the main body
 
 
 tt.keyphrase.Hint_Details=Hint Details

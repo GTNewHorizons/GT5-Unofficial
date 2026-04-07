@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import goodgenerator.blocks.tileEntity.base.MTELargeTurbineBase;
 import goodgenerator.loader.Loaders;
+import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -139,19 +140,18 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Supercritical Steam Turbine")
-            .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Use Supercritical Steam to generate power")
-            .addInfo("Outputs 1L of SH Steam per 1L of SC Steam as well as producing power")
-            .addInfo("Power output depends on turbine and fitting")
-            .addInfo("Use screwdriver to adjust fitting of turbine")
+        tt.addMachineType("machtype.sc_turbine")
+            .addInfo("gt.sc_turbine.tips")
             .beginStructureBlock(3, 3, 4, true)
-            .addController("Front center")
-            .addCasingInfoMin("SC Turbine Casing", 24, false)
-            .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Side centered", 2)
-            .addInputHatch("Supercritical Fluid, Side centered", 2)
-            .addOutputHatch("Superheated Steam, Side centered", 3)
+            .addController("front_center")
+            .addCasingInfoMin(
+                ItemRefer.SC_Turbine_Casing.get(1)
+                    .getDisplayName(),
+                24)
+            .addDynamoHatch("gt.mbtt.structure.back_center", 1)
+            .addMaintenanceHatch("gt.sc_turbine.info.maintenance", 2)
+            .addInputHatch("gt.sc_turbine.info.i_hatch", 2)
+            .addOutputHatch("gt.sc_turbine.info.o_hatch", 3)
             .toolTipFinisher();
         return tt;
     }

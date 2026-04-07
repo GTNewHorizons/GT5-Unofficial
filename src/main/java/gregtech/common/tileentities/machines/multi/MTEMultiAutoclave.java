@@ -48,8 +48,11 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -61,8 +64,10 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
@@ -202,25 +207,31 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(Casings.PressureContainmentCasing);
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Autoclave")
+        tt.addMachineType("gt.recipe.autoclave")
             .addDynamicParallelInfo(12, TooltipTier.ITEM_PIPE_CASING)
             .addDynamicSpeedBonusInfo(0.25f, TooltipTier.COIL)
             .addDynamicEuEffInfo(0.0833f, TooltipTier.PIPE_CASING)
             .beginStructureBlock(7, 7, 9, true)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Pressure Containment Casings", 128, false)
-            .addCasingInfoExactly("Any Tiered Glass", 42, false)
-            .addCasingInfoExactly("Item Pipe Casings", 7, true)
-            .addCasingInfoExactly("Pipe Casings", 14, true)
-            .addCasingInfoExactly("Heating Coils", 7, true)
-            .addCasingInfoExactly("PTFE Frame", 42, false)
-            .addInputBus("Any Pressure Containment Casing", 1)
-            .addOutputBus("Any Pressure Containment Casing", 1)
-            .addInputHatch("Any Pressure Containment Casing", 1)
-            .addOutputHatch("Any Pressure Containment Casing", 1)
-            .addEnergyHatch("Any Pressure Containment Casing", 1)
-            .addMaintenanceHatch("Any Pressure Containment Casing", 1)
+            .addController("front_bottom_center")
+            .addCasingInfoMin(
+                ItemList.Casing_Autoclave.get(1)
+                    .getDisplayName(),
+                128)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 42, true)
+            .addCasingInfoExactly("GT5U.MBTT.Tiers.ItemPipe", 7, true)
+            .addCasingInfoExactly("GT5U.MBTT.Tiers.FluidPipe", 14, true)
+            .addCasingInfoExactly("GT5U.MBTT.Tiers.Coil", 7, true)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Polytetrafluoroethylene),
+                42)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputHatch(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
             .addSubChannelUsage(GTStructureChannels.PIPE_CASING)

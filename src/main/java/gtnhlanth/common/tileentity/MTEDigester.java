@@ -29,6 +29,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -201,22 +202,22 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Digester")
-            .addInfo("Input ores and fluid, output water")
+        tt.addMachineType("machtype.digester")
+            .addInfo("gt.digester.tips")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 4, true)
-            .addController("Front bottom center")
-            .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 52, false)
-            .addCasingInfoExactly("Heat Proof Machine Casing", 16, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 9, false)
-            .addCasingInfoExactly("Coil", 16, true)
-            .addInputHatch("Hint Block Number 1")
-            .addInputBus("Hint Block Number 1")
-            .addOutputHatch("Hint Block Number 1")
-            .addOutputBus("Hint Block Number 1")
-            .addMaintenanceHatch("Hint Block Number 1")
-            .addMufflerHatch("Hint Block Number 1")
+            .addController("front_bottom_center")
+            .addCasingInfoExactly(Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), 52)
+            .addCasingInfoExactly(Casings.HeatProofMachineCasing.getLocalizedName(), 16)
+            .addCasingInfoExactly(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 9)
+            .addCasingInfoExactly("GT5U.tooltip.structure.heating_coil", 16, true)
+            .addInputHatch("<hint>", 1)
+            .addInputBus("<hint>", 1)
+            .addOutputHatch("<hint>", 1)
+            .addOutputBus("<hint>", 1)
+            .addMaintenanceHatch("<hint>", 1)
+            .addMufflerHatch("<hint>", 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;

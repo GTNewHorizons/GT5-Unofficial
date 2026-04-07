@@ -33,7 +33,6 @@ import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.MainMod;
 import bartworks.common.loaders.RadioHatchMaterialLoader.RadioHatchMaterial;
 import bartworks.util.BWColorUtil;
-import bartworks.util.BWTooltipReference;
 import bartworks.util.MathUtils;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -72,7 +71,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
             1,
             new String[] { StatCollector.translateToLocal("tooltip.tile.radhatch.0.name"),
                 StatCollector.translateToLocal("tooltip.tile.radhatch.1.name"),
-                BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get(), });
+                StatCollector.translateToLocal("tooltip.bw.author_bart_via_bw.name"), });
     }
 
     public MTERadioHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

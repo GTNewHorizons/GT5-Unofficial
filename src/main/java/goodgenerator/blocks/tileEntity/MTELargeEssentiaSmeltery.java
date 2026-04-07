@@ -47,6 +47,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.GTMod;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -215,24 +216,19 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Essentia Smeltery, LES")
-            .addInfo("Necessary evil")
-            .addInfo("Advanced Essentia smelting technology")
-            .addInfo("Maximum parallel = 2^Tier * (Length - 1)")
-            .addInfo("Diffusion Cell Tiers start from 0, Length is full multi length")
-            .addInfo("Energy Hatch tier: HV+")
-            .addInfo("You can find more information about this machine in the Thaumonomicon")
+        tt.addMachineType("machtype.les")
+            .addInfo("gt.les.tips")
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(5, 5, 5, 5, 5, 8, true)
-            .addController("Front center")
-            .addCasingInfoMin("Magic Casing", 24, false)
-            .addMaintenanceHatch("Hint Block Number 1")
-            .addInputBus("Hint Block Number 1")
-            .addInputHatch("Hint Block Number 1")
-            .addEnergyHatch("Hint Block Number 1")
-            .addOtherStructurePart("Essentia Output Hatch", "Hint Block Number 1")
-            .addMufflerHatch("Hint Block Number 2")
+            .addController("front_center")
+            .addCasingInfoMin(Casings.MagicCasing.getLocalizedName(), 24)
+            .addMaintenanceHatch("<hint>", 1)
+            .addInputBus("<hint>", 1)
+            .addInputHatch("<hint>", 1)
+            .addEnergyHatch("<hint>", 1)
+            .addStructurePart(Loaders.essentiaOutputHatch.getLocalizedName(), "<hint>", 1)
+            .addMufflerHatch("<hint>", 2)
             .toolTipFinisher();
         return tt;
     }

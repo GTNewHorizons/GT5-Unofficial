@@ -22,7 +22,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -37,7 +36,9 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -49,6 +50,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -171,68 +173,21 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.BOLD
-                    + "Water Tier: "
-                    + EnumChatFormatting.WHITE
-                    + formatNumber(getWaterTier())
-                    + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work")
-            .addSeparator()
-            .addInfo("Requires a filter made of Activated Carbon to work")
-            .addInfo(
-                "Every cycle, has a " + EnumChatFormatting.RED
-                    + formatNumber(FILTER_DAMAGE_RATE)
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " chance to destroy the filter")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "The first step to acquiring purified water is to filter out macroscopic contaminants through the")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "use of large physical filters. As more contaminants are captured, the efficacy of the filter")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "decreases so continual replacements must be supplied to maintain full function of the Clarifier.")
+        tt.addMachineType("machtype.purif_unit")
+            .addInfo("gt.pu_clarifier.tips", formatNumber(getWaterTier()), formatNumber(FILTER_DAMAGE_RATE))
             .beginStructureBlock(11, 4, 11, false)
-            .addController("Front center")
-            .addCasingInfoRangeColored(
-                "Reinforced Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                123,
-                131,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Filter Machine Casing",
-                EnumChatFormatting.GRAY,
-                21,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Iridium Frame Box",
-                EnumChatFormatting.GRAY,
-                12,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Damascus Steel Frame Box",
-                EnumChatFormatting.GRAY,
-                12,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored("PTFE Pipe Casing", EnumChatFormatting.GRAY, 3, EnumChatFormatting.GOLD, false)
-            .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+            .addController("front_center")
+            .addCasingInfoRange(Casings.ReinforcedSterileWaterPlantCasing.getLocalizedName(), 123, 131, false)
+            .addCasingInfoExactly(Casings.FilterMachineCasing.getLocalizedName(), 21)
+            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Iridium), 12)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.DamascusSteel),
+                12)
+            .addCasingInfoExactly(Casings.PTFEPipeCasing.getLocalizedName(), 3)
+            .addInputBus("§61§7+", 1)
+            .addOutputBus("§61§7+", 1)
+            .addInputHatch("§61§7+", 1)
+            .addOutputHatch("§61§7+", 1)
             .toolTipFinisher();
         return tt;
     }

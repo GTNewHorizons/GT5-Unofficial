@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTAuthors.AuthorColen;
@@ -50,6 +52,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -572,108 +575,25 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Plasma Forge, DTPF")
-            .addInfo("Transcending Dimensional Boundaries.")
+        tt.addMachineType("machtype.dtpf")
             .addInfo(
-                "Takes " + EnumChatFormatting.RED
-                    + formatNumber(max_efficiency_time_in_ticks / (3600 * 20))
-                    + EnumChatFormatting.GRAY
-                    + " hours of continuous run time to fully breach dimensional")
-            .addInfo(
-                "boundaries and achieve maximum efficiency, reducing fuel consumption by up to "
-                    + EnumChatFormatting.RED
-                    + formatNumber(100 * maximum_discount)
-                    + "%")
-            .addInfo(
-                "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
-                    + formatNumber(efficiency_decay_rate)
-                    + EnumChatFormatting.GRAY
-                    + " as fast as it builds up, draining")
-            .addInfo("the total amount of stored runtime")
-            .addSeparator()
-            .addInfo("Multidimensional spaces can be perfectly aligned and synchronized in this state, ")
-            .addInfo(
-                "allowing " + EnumChatFormatting.GOLD
-                    + "Dimensional Convergence "
-                    + EnumChatFormatting.GRAY
-                    + "to occur. To reach the required stability threshold,")
-            .addInfo(
-                "a " + EnumChatFormatting.AQUA
-                    + "Transdimensional Alignment Matrix "
-                    + EnumChatFormatting.GRAY
-                    + "must be placed in the controller")
-            .addInfo(
-                "When " + EnumChatFormatting.GOLD
-                    + "Convergence "
-                    + EnumChatFormatting.GRAY
-                    + "is active, it allows the forge to perform "
-                    + EnumChatFormatting.RED
-                    + "Perfect Overclocks"
-                    + EnumChatFormatting.GRAY
-                    + ",")
-            .addInfo("but the extra power cost is instead added in form of increased catalyst amounts")
+                "gt.dtpf.tips",
+                formatNumber(max_efficiency_time_in_ticks / (3600 * 20)),
+                formatNumber(100 * maximum_discount),
+                formatNumber(efficiency_decay_rate))
             .addUnlimitedTierSkips()
             .beginStructureBlock(33, 24, 33, false)
-            .addController("Middle of the structure, 3rd layer")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "120" + EnumChatFormatting.GRAY + " Dimensional bridge blocks required.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "1,270" + EnumChatFormatting.GRAY + " Dimensional injection casings required")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "2,121"
-                    + EnumChatFormatting.GRAY
-                    + " Dimensionally transcendent casings required")
+            .addController("gt.dtpf.info.controller")
+            .addCasingInfoExactly("GT5U.tooltip.structure.heating_coil", 2112)
+            .addCasingInfoExactly(Casings.DimensionalBridge.getLocalizedName(), 120)
+            .addCasingInfoExactly(Casings.DimensionalInjectionCasing.getLocalizedName(), 1270)
+            .addCasingInfoExactly(Casings.DimensionallyTranscendentCasing.getLocalizedName(), 2121)
             .addStructureInfo("")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " energy hatches or "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " TT energy hatch")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + min_input_hatch
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + max_input_hatch
-                    + EnumChatFormatting.GRAY
-                    + " input hatches")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + min_output_hatch
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + max_output_hatch
-                    + EnumChatFormatting.GRAY
-                    + " output hatches")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + min_input_bus
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + max_input_bus
-                    + EnumChatFormatting.GRAY
-                    + " input buses")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + min_output_bus
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + max_output_bus
-                    + EnumChatFormatting.GRAY
-                    + " output buses")
+            .addEnergyHatch("gt.dtpf.info.e_hatch")
+            .addInputHatch(GOLD + min_input_hatch + GRAY + "-" + GOLD + max_input_hatch)
+            .addOutputHatch(GOLD + min_output_hatch + GRAY + "-" + GOLD + max_output_hatch)
+            .addInputBus(GOLD + min_input_bus + GRAY + "-" + GOLD + max_input_bus)
+            .addOutputBus(GOLD + min_output_bus + GRAY + "-" + GOLD + min_output_bus)
             .addStructureInfo("")
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .addTecTechHatchInfo()

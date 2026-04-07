@@ -7,7 +7,6 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -227,50 +226,14 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(
-            StatCollector
-                .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.machinetype"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip1"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip2"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip3"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip4"))
-            .addSeparator()
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip5"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip6"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip7"))
+        tt.addMachineType("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.machinetype")
+            .addInfo("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip")
             .beginStructureBlock(7, 7, 11, false)
-            .addController(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                109,
-                false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"),
-                9,
-                true)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
-                1,
-                false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch"),
-                1,
-                false)
+            .addController("gt.mbtt.structure.front_center")
+            .addCasingInfoExactly(Casings.ColliderCasing.getLocalizedName(), 109)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 9, true)
+            .addCasingInfoExactly("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch", 1)
+            .addCasingInfoExactly("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorHamCorp, GTAuthors.Authorzub);
         return tt;

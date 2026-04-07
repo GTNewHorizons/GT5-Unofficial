@@ -42,6 +42,9 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -53,6 +56,7 @@ import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -137,25 +141,22 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> im
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Transformer")
-            .addInfo("Operates in 4 diffrent modes:")
-            .addInfo("Mode 1: Circuit 0 in controller: Direct-Upstep")
-            .addInfo("Mode 2: Circuit 1 in controller: Direct-Downstep")
-            .addInfo("Mode 3: Circuit 2 in controller: Tapped-Upstep (currently disabled)")
-            .addInfo("Mode 4: Circuit 2 in controller: Tapped-Downstep (currently disabled)")
+        tt.addMachineType("machtype.manual_trafo")
+            .addInfo("gt.manual_trafo.tips")
             .beginVariableStructureBlock(3, 3, 3, 10, 3, 3, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("MV Machine Casing", 0, false)
-            .addOtherStructurePart("Transformer-Winding Blocks", "1 Layer for each tier transformed")
-            .addOtherStructurePart("Nickel-Zinc-Ferrite Blocks", "Middle of Transformer-Winding Blocks")
-            .addMaintenanceHatch("Any bottom layer casing", 1)
-            .addEnergyHatch("Any bottom layer casing", 1)
-            .addDynamoHatch("Any top layer casing", 2)
-            .addStructureInfo("")
-            .addStructureInfo("Tapped Mode :")
-            .addEnergyHatch("Touching Transformer-Winding Blocks", 3)
-            .addDynamoHatch("Touching Transformer-Winding Blocks", 3)
-            .addStructureInfo("Hatches touching Transformer-Winding Blocks must be tiered from bottom to top")
+            .addController("front_bottom_center")
+            .addCasingInfoMin(Casings.MVMachineCasing.getLocalizedName(), 0)
+            .addStructurePart("BW_Machinery_Casings.1.name", "gt.manual_trafo.info.winding")
+            .addStructurePart(
+                GTOreDictUnificator.getLocalizedName(OrePrefixes.block, Materials.NickelZincFerrite),
+                "gt.manual_trafo.info.nzf_block")
+            .addMaintenanceHatch("<bottom casing>", 1)
+            .addEnergyHatch("<bottom casing>", 1)
+            .addDynamoHatch("<top casing>", 2)
+            .addStructureInfo("gt.manual_trafo.info")
+            .addEnergyHatch("gt.manual_trafo.info.e_hatches", 3)
+            .addDynamoHatch("gt.manual_trafo.info.e_hatches", 3)
+            .addStructureInfo("gt.manual_trafo.info.e_hatches_req")
             .toolTipFinisher();
         return tt;
     }

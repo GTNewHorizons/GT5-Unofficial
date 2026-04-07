@@ -39,6 +39,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ParticleFX;
@@ -135,16 +136,13 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity
     protected MultiblockTooltipBuilder getTooltip() {
         if (tooltipBuilder == null) {
             tooltipBuilder = new MultiblockTooltipBuilder();
-            tooltipBuilder.addMachineType("Blast Furnace, BBF")
-                .addInfo("Usable for Steel and general Pyrometallurgy")
-                .addInfo("Has a useful interface, unlike other gregtech multis")
+            tooltipBuilder.addMachineType("machtype.bbf")
+                .addInfo("gt.bbf.tips.1")
                 .addPollutionAmount(GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond)
                 .beginStructureBlock(3, 4, 3, true)
-                .addController("Front center")
-                .addOtherStructurePart("Firebricks", "Everything except the controller")
-                .addStructureInfo("The top block is also empty")
-                .addStructureInfo("You can share the walls of GT multis, so")
-                .addStructureInfo("each additional one costs less, up to 4")
+                .addController("front_center")
+                .addStructurePart(Casings.Firebricks.getLocalizedName(), "gt.bbf.info.1")
+                .addStructureInfo("gt.bbf.info.2")
                 .toolTipFinisher();
         }
         return tooltipBuilder;

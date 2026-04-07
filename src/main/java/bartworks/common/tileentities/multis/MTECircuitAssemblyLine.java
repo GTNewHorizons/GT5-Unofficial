@@ -28,7 +28,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.api.util.GTUtility.getColoredTierNameFromTier;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -88,6 +87,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -189,47 +189,19 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Circuit Assembler, CAL")
-            .addInfo("Change Mode with Screwdriver")
+        tt.addMachineType("machtype.cal")
+            .addInfo("gt.cal.tips.1")
             .addPerfectOCInfo()
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("chat.cal.mode.0") + ":")
-            .addInfo("Imprint this machine with a Circuit Imprint,")
-            .addInfo("by putting the imprint in the controller")
-            .addInfo("Every Circuit Assembly Line can only be imprinted ONCE")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("chat.cal.mode.1") + ":")
-            .addInfo(
-                "Does Circuit Assembler recipes, Minimum Length: " + EnumChatFormatting.RED
-                    + MINIMUM_CIRCUIT_ASSEMBLER_LENGTH
-                    + EnumChatFormatting.GRAY)
-            .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1")
-            .addInfo("This mode supports Crafting Input Buffer/Bus and allows bus separation")
+            .addInfo("gt.cal.tips.2", "chat.cal.mode.0", "chat.cal.mode.1", MINIMUM_CIRCUIT_ASSEMBLER_LENGTH)
             .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
-            .addStructureInfo("From Bottom to Top, Left to Right")
-            .addStructureInfo(
-                "Layer 1 - Solid Steel Machine Casing, Input bus (Last Output bus), Solid Steel Machine Casing")
-            .addStructureInfo(
-                "Layer 2 - " + getColoredTierNameFromTier((byte) 4)
-                    + "+ Tier Glass, Assembly Line Casing, "
-                    + getColoredTierNameFromTier((byte) 4)
-                    + "+ Tier Glass")
-            .addStructureInfo("Layer 3 - Grate Machine Casing")
-            .addStructureInfo("Up to 7 repeating slices, last is Output Bus")
-            .addController("Layer 3 first slice front")
-            .addOtherStructurePart(
-                "1x " + StatCollector.translateToLocal("GT5U.MBTT.EnergyHatch"),
-                "Any layer 3 casing",
-                1)
-            .addInputHatch("Any layer 1 casing", 2)
-            .addInputBus("As specified on layer 1", 3, 4)
-            .addOutputBus("As specified in final slice on layer 1", 4)
-            .addOtherStructurePart(
-                StatCollector
-                    .translateToLocalFormatted("tooltip.bw.structure.tier_glass", getColoredTierNameFromTier((byte) 4)),
-                "As specified on layer 2",
-                5)
-            .addMaintenanceHatch("Any layer 1 casing", 2)
+            .addStructureInfo("gt.cal.info", TooltipHelper.voltageTierText(4, false))
+            .addController("gt.cal.controller")
+            .addEnergyHatch("gt.cal.info.e_hatch", 1)
+            .addInputHatch("gt.asslike.info.i_hatch", 2)
+            .addInputBus("gt.asslike.info.i_bus", 3, 4)
+            .addOutputBus("gt.cal.info.o_bus", 4)
+            .addStructurePart(TooltipHelper.tieredGlassText(4), "gt.cal.info.glass", 5)
+            .addMaintenanceHatch("gt.asslike.info.i_hatch", 2)
 
             .toolTipFinisher();
         return tt;

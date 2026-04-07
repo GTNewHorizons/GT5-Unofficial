@@ -70,7 +70,7 @@ public class MTEFrothFlotationCellLegacy extends GTPPMultiBlockBase<MTEFrothFlot
 
     @Override
     public String getMachineType() {
-        return "Flotation Cell, FCR";
+        return "machtype.flotation_cell";
     }
 
     @Override
@@ -78,19 +78,18 @@ public class MTEFrothFlotationCellLegacy extends GTPPMultiBlockBase<MTEFrothFlot
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addStructureDeprecatedLine()
-            .addInfo("Process that milled ore!")
-            .addInfo("You can only ever process one type of material per controller")
+            .addInfo("gt.flotation_cell.tips.1")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, true)
-            .addController("Top center")
-            .addCasingInfoMin("Inconel Reinforced Casing", 68, false)
-            .addCasingInfoMin("Flotation Casing", 52, false)
-            .addInputBus("Bottom Casing", 1)
-            .addInputHatch("Bottom Casing", 1)
-            .addOutputHatch("Bottom Casing", 1)
-            .addEnergyHatch("Bottom Casing", 1)
-            .addMaintenanceHatch("Bottom Casing", 1)
+            .addController("top_center")
+            .addCasingInfoMin("gtplusplus.blockcasings.3.1.name", 68)
+            .addCasingInfoMin("gtplusplus.blockspecialcasings.1.9.name", 52)
+            .addInputBus("<bottom casing>", 1)
+            .addInputHatch("<bottom casing>", 1)
+            .addOutputHatch("<bottom casing>", 1)
+            .addEnergyHatch("<bottom casing>", 1)
+            .addMaintenanceHatch("<bottom casing>", 1)
             .toolTipFinisher();
         return tt;
     }

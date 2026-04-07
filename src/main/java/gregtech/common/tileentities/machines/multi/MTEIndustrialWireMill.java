@@ -134,19 +134,19 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Wiremill, IWF")
+        tt.addMachineType("machtype.iwf")
             .addVoltageParallelInfo(PARALLEL_PER_TIER)
             .addDynamicSpeedBonusInfo(SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
             .addStaticEuEffInfo(EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 3, 3, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Wire Factory Casings", 14, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .addController("front_bottom_center")
+            .addCasingInfoMin(Casings.WireFactoryCasing.getLocalizedName(), 14, false)
+            .addInputBus("<casing>", 1)
+            .addOutputBus("<casing>", 1)
+            .addEnergyHatch("<casing>", 1)
+            .addMaintenanceHatch("<casing>", 1)
+            .addMufflerHatch("<casing>", 1)
             .toolTipFinisher();
         return tt;
     }

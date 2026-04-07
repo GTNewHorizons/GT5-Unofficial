@@ -39,7 +39,9 @@ import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
@@ -52,6 +54,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -185,34 +188,24 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Neutron Activator, NA")
-            .addInfo("Superluminal-velocity Motion.")
-            .addInfo("The minimum height of the Speeding Pipe Casing is 4")
-            .addInfo("Per extra Speeding Pipe Casing will give time discount")
-            .addInfo("But it will reduce the Neutron Accelerator efficiency")
-            .addInfo("You need to input energy to the Neutron Accelerator to get it running")
-            .addInfo("It will output correct products with Specific Neutron Kinetic Energy")
-            .addInfo("Otherwise it will output trash")
-            .addInfo("The Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running")
-            .addInfo(
-                "It will explode when the Neutron Kinetic Energy is over" + EnumChatFormatting.RED
-                    + " 1200MeV"
-                    + EnumChatFormatting.GRAY
-                    + ".")
-            .addInfo("Inputting Graphite/Beryllium dust can reduce 10MeV per dust immediately.")
-            .addController("Front bottom center")
-            .addCasingInfoRange("Clean Stainless Steel Machine Casing", 7, 31, false)
-            .addCasingInfoExactly("Processor Machine Casing", 18, false)
-            .addCasingInfoMin("Steel Frame Box", 16, false)
-            .addCasingInfoMin("Speeding Pipe Casing", 4, false)
-            .addCasingInfoMin("Any Tiered Glass", 32, false)
-            .addInputHatch("Hint Block Number 1")
-            .addInputBus("Hint Block Number 1")
-            .addOutputHatch("Hint Block Number 2")
-            .addOutputBus("Hint Block Number 2")
-            .addMaintenanceHatch("Hint Block Number 2")
-            .addOtherStructurePart("Neutron Accelerator", "Hint Block Number 2")
-            .addOtherStructurePart("Neutron Sensor", "Hint Block Number 2")
+        tt.addMachineType("machtype.neutron_activator")
+            .addInfo("gt.neutron_activator.tips")
+            .addController("front_bottom_center")
+            .addCasingInfoRange(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 7, 31, false)
+            .addCasingInfoExactly(Casings.ProcessorMachineCasing.getLocalizedName(), 18)
+            .addCasingInfoMin(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Steel), 16)
+            .addCasingInfoMin(
+                ItemRefer.Speeding_Pipe.get(1)
+                    .getDisplayName(),
+                4)
+            .addCasingInfoMin("GT5U.MBTT.AnyGlass", 32, true)
+            .addInputHatch("<hint>", 1)
+            .addInputBus("<hint>", 1)
+            .addOutputHatch("<hint>", 2)
+            .addOutputBus("<hint>", 2)
+            .addMaintenanceHatch("<hint>", 2)
+            .addStructurePart("GT5U.tooltip.structure.neutron_accelerator", "<hint>", 2)
+            .addStructurePart("GT5U.tooltip.structure.neutron_sensor", "<hint>", 2)
             .toolTipFinisher();
         return tt;
     }

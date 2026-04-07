@@ -9,7 +9,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -18,6 +17,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -29,6 +29,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings2;
 
 public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanner> implements ISurvivalConstructable {
@@ -113,20 +114,21 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(Casings.SolidSteelMachineCasing);
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Canner")
+        tt.addMachineType("gt.recipe.canner")
             .addBulkMachineInfo(8, 2f, 1)
-            .addInfo(EnumChatFormatting.BLUE + "It's uncanny!")
+            .addInfo("gt.turbocan.tips")
             .beginStructureBlock(7, 5, 7, true)
-            .addController("Front center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 24, false)
-            .addInputBus("Any Solid Steel Casing", 1)
-            .addOutputBus("Any Solid Steel Casing", 1)
-            .addInputHatch("Any Solid Steel Casing", 1)
-            .addOutputHatch("Any Solid Steel Casing", 1)
-            .addEnergyHatch("Any Solid Steel Casing", 1)
-            .addMaintenanceHatch("Any Solid Steel Casing", 1)
+            .addController("front_center")
+            .addCasingInfoMin(Casings.SolidSteelMachineCasing.getLocalizedName(), 85, false)
+            .addCasingInfoExactly(Casings.SteelPipeCasing.getLocalizedName(), 24, false)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputHatch(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
             .toolTipFinisher();
         return tt;
     }

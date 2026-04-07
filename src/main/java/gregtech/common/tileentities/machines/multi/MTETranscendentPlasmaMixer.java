@@ -40,6 +40,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -54,6 +55,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.MTETranscendentPlasmaMixerGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
@@ -104,26 +106,18 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(Casings.DimensionalInjectionCasing);
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Transcendent Mixer, TPM")
-            .addInfo("Assisting in all your DTPF needs!")
-            .addInfo("This multiblock will run in parallel according to the amount set in the parallel menu")
-            .addInfo("All inputs will scale, except time...")
-            .addInfo("All EU is deducted from wireless EU networks only")
+        tt.addMachineType("machtype.tpm")
+            .addInfo("gt.tpm.tips")
             .beginStructureBlock(5, 7, 5, false)
-            .addController("Front center")
-            .addCasingInfoExactly("Dimensionally Transcendent Casing", 48, false)
-            .addCasingInfoExactly("Dimensional Bridge", 16, false)
-            .addCasingInfoRangeColored(
-                "Dimensional Injection Casing",
-                EnumChatFormatting.GRAY,
-                0,
-                33,
-                EnumChatFormatting.GOLD,
-                false)
-            .addInputBus("Any Dimensional Injection Casing", 1)
-            .addInputHatch("Any Dimensional Injection Casing", 1)
-            .addOutputHatch("Any Dimensional Injection Casing", 1)
+            .addController("front_center")
+            .addCasingInfoExactly(Casings.DimensionallyTranscendentCasing.getLocalizedName(), 48, false)
+            .addCasingInfoExactly(Casings.DimensionalBridge.getLocalizedName(), 16, false)
+            .addCasingInfoRange(Casings.DimensionalInjectionCasing.getLocalizedName(), 0, 33, false)
+            .addInputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputHatch(anyCasing, 1)
             .toolTipFinisher(AuthorColen);
         return tt;
     }

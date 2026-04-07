@@ -38,6 +38,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
@@ -107,48 +108,20 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace, EBF")
-            .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
-            .addInfo(
-                "Increases Heat by " + EnumChatFormatting.RED
-                    + "100K"
-                    + EnumChatFormatting.GRAY
-                    + " for every "
-                    + TooltipHelper.tierText("Voltage")
-                    + " tier past "
-                    + EnumChatFormatting.AQUA
-                    + "MV")
-            .addInfo(
-                "Reduces " + TooltipHelper.effText("EU Usage")
-                    + " by "
-                    + EnumChatFormatting.WHITE
-                    + "5%"
-                    + EnumChatFormatting.GRAY
-                    + " every "
-                    + EnumChatFormatting.RED
-                    + "900K"
-                    + EnumChatFormatting.GRAY
-                    + " above the recipe requirement")
-            .addInfo(
-                "Every " + EnumChatFormatting.RED
-                    + "1800K"
-                    + EnumChatFormatting.GRAY
-                    + " over the recipe requirement grants 1 "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Perfect Overclock")
-            .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)")
+        tt.addMachineType("machtype.ebf")
+            .addInfo("gt.ebf.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
-            .addController("Front bottom center")
-            .addCasingInfoRange("Heat Proof Machine Casing", 0, 15, false)
-            .addCasingInfoExactly("Heating Coils", 16, true)
-            .addEnergyHatch("Any bottom layer casing", 1)
-            .addMaintenanceHatch("Any bottom layer casing", 1)
-            .addMufflerHatch("Top middle", 2)
-            .addInputBus("Any bottom layer casing", 1)
-            .addInputHatch("Any bottom layer casing", 1)
-            .addOutputBus("Any bottom layer casing", 1)
-            .addOutputHatch("Any Heat Proof Machine Casing", 3)
+            .addController("front_bottom_center")
+            .addCasingInfoRange("gt.blockcasings.11.name", 0, 15, false)
+            .addCasingInfoExactly("GT5U.tooltip.structure.heating_coil", 16, true)
+            .addEnergyHatch("<bottom casing>", 1)
+            .addMaintenanceHatch("<bottom casing>", 1)
+            .addMufflerHatch("gt.ebf.info.muffler", 2)
+            .addInputBus("<bottom casing>", 1)
+            .addInputHatch("<bottom casing>", 1)
+            .addOutputBus("<bottom casing>", 1)
+            .addOutputHatch(TooltipHelper.anyCasingText(Casings.HeatProofMachineCasing), 3)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;

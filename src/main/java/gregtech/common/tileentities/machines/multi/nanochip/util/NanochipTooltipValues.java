@@ -35,8 +35,7 @@ public interface NanochipTooltipValues {
 
     String TOOLTIP_MODULE_DESCRIPTION = translateToLocal("GT5U.tooltip.nac.interface.module_description");
 
-    String TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING = translateToLocal(
-        "GT5U.tooltip.nac.interface.structure_control_room_base_casing");
+    String TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING = "GT5U.tooltip.nac.interface.structure_control_room_base_casing";
     String TOOLTIP_STRUCTURE_BASE_CASING = translateToLocal("GT5U.tooltip.nac.interface.structure_base_casing");
     String TOOLTIP_STRUCTURE_BASE_VCI = translateToLocalFormatted(
         "GT5U.tooltip.nac.interface.structure_base_vci",

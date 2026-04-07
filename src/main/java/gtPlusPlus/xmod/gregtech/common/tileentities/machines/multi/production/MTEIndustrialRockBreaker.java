@@ -15,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -27,6 +26,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -40,6 +40,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -67,34 +68,27 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
 
     @Override
     public String getMachineType() {
-        return "Rock Breaker";
+        return "gt.recipe.rockbreaker";
     }
-
-    private static final String casingBaseName = StatCollector.translateToLocal("gtplusplus.blockcasings.2.0.name");
-    private static final String casingMiddleName = StatCollector.translateToLocal("gtplusplus.blockcasings.2.11.name");
-    private static final String anyBaseCasing = "Any " + casingBaseName;
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = TooltipHelper.anyCasingText(Casings.ThermalProcessingCasing);
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addBulkMachineInfo(8, 3f, 0.75f)
-            .addInfo("Use Integrated Circuit to determine recipe")
-            .addInfo("1 = Cobble, 2 = Stone, 3 = Obsidian, 4 = Basalt, 5 = Deepslate, 6 = Netherrack")
-            .addInfo("Needs Water and Lava in input hatch")
-            .addInfo("Needs Soul Sand and Blue Ice in input bus for basalt")
-            .addInfo("Needs Soul Sand and Magma in input bus for deepslate")
+            .addInfo("gt.boldarnator.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
-            .addController("Front bottom center")
-            .addCasingInfoMin(casingBaseName, 9, false)
-            .addCasingInfoExactly(casingMiddleName, 16, false)
-            .addInputBus(anyBaseCasing, 1)
-            .addInputHatch(anyBaseCasing, 1)
-            .addOutputBus(anyBaseCasing, 1)
-            .addEnergyHatch(anyBaseCasing, 1)
-            .addMaintenanceHatch(anyBaseCasing, 1)
-            .addMufflerHatch(anyBaseCasing, 1)
+            .addController("front_bottom_center")
+            .addCasingInfoMin(Casings.ThermalProcessingCasing.getLocalizedName(), 9, false)
+            .addCasingInfoExactly(Casings.ThermalContainmentCasing.getLocalizedName(), 16, false)
+            .addInputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
+            .addMufflerHatch(anyCasing, 1)
             .toolTipFinisher();
         return tt;
     }

@@ -40,8 +40,10 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -49,6 +51,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -156,105 +159,30 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Plant, WPP")
-            .addInfo("Main controller block for the Water Purification Plant")
-            .addInfo(
-                "Freely place " + EnumChatFormatting.YELLOW
-                    + "Purification Units "
-                    + EnumChatFormatting.GRAY
-                    + "within "
-                    + EnumChatFormatting.RED
-                    + MAX_UNIT_DISTANCE
-                    + EnumChatFormatting.GRAY
-                    + " blocks along each axis")
-            .addInfo("Left click this controller with a data stick, then right click a purification unit to link")
-            .addInfo("Supplies power to linked purification units")
+        tt.addMachineType("machtype.purif_plant")
+            .addInfo("gt.purification_plant.tips.1", MAX_UNIT_DISTANCE)
             .addTecTechHatchInfo()
-            .addSeparator()
             .addInfo(
-                "Works in fixed time processing cycles of " + EnumChatFormatting.RED
-                    + CYCLE_TIME_TICKS / SECONDS
-                    + EnumChatFormatting.GRAY
-                    + " seconds")
-            .addInfo("All linked units follow this cycle")
-            .addSeparator()
-            .addInfo("Every recipe has a base chance of success. Success rate can be boosted")
-            .addInfo("by using a portion of the target output as a secondary input")
-            .addInfo(
-                EnumChatFormatting.RED + formatNumber(WATER_BOOST_NEEDED_FLUID * 100)
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " of output yield will be consumed in exchange for an")
-            .addInfo(
-                "additive " + EnumChatFormatting.RED
-                    + formatNumber(WATER_BOOST_BONUS_CHANCE * 100)
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " increase to success")
-            .addInfo(
-                "On recipe failure, each purification unit has a " + EnumChatFormatting.RED
-                    + "50%"
-                    + EnumChatFormatting.GRAY
-                    + " chance")
-            .addInfo("to return water of the same quality as the input or lower")
-            .addSeparator()
-            .addInfo("Every purification unit has a configuration window to configure maximum parallel amount")
-            .addInfo(
-                "This will only scale purified water input, ALL fluid output and power usage. Other catalysts and outputs are unchanged")
-            .addInfo("Toggle debug mode to reduce cycle time to 30s but disable water I/O")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "Contaminants and ionized particles in water can cause significant imperfections in delicate")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "processes related to the cutting and engraving of silicon wafers and chips. It is crucial that")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "the water is systematically purified through a series of increasingly precise and complex")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "purification processes, and this multiblock is the heart of the operation")
+                "gt.purification_plant.tips.2",
+                CYCLE_TIME_TICKS / SECONDS,
+                formatNumber(WATER_BOOST_NEEDED_FLUID * 100),
+                formatNumber(WATER_BOOST_BONUS_CHANCE * 100))
             .beginStructureBlock(7, 9, 8, false)
-            .addController("Front center")
-            .addCasingInfoExactlyColored(
-                "Superplasticizer-Treated High Strength Concrete",
-                EnumChatFormatting.GRAY,
-                56,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoRangeColored(
-                "Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                71,
-                72,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Reinforced Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                77,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Tungsten Frame Box",
-                EnumChatFormatting.GRAY,
-                30,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Tinted Industrial Glass",
-                EnumChatFormatting.GRAY,
-                6,
-                EnumChatFormatting.GOLD,
-                false)
-            .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addStructureInfo("Requires water to be placed in the tank.")
+            .addController("front_center")
+            .addCasingInfoExactly(
+                ItemList.BlockIndustrialStrengthConcrete.get(1)
+                    .getDisplayName(),
+                56)
+            .addCasingInfoRange(Casings.SterileWaterPlantCasing.getLocalizedName(), 71, 72, false)
+            .addCasingInfoExactly(
+                ItemList.BlockIndustrialWaterPlantCasing.get(1)
+                    .getDisplayName(),
+                77)
+            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Tungsten), 30)
+            .addCasingInfoExactly("gt.blocktintedglass.name", 6)
+            .addEnergyHatch("§61", 1)
+            .addMaintenanceHatch("§61", 1)
+            .addStructureInfo("gt.purification_plant.info.1")
             .toolTipFinisher();
         return tt;
     }

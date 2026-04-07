@@ -312,90 +312,32 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Breeder Reactor, HTGR")
+        tt.addMachineType("machtype.htgr")
             .addInfo(
-                "Uses up to " + EnumChatFormatting.RED
-                    + formatNumber(CONVERSION_FACTOR * 100)
-                    + EnumChatFormatting.GRAY
-                    + "% of fuel per operation, "
-                    + EnumChatFormatting.RED
-                    + "10"
-                    + EnumChatFormatting.GRAY
-                    + "% of this value is flat and "
-                    + EnumChatFormatting.RED
-                    + "90"
-                    + EnumChatFormatting.GRAY
-                    + "% dependent on the formula y=1-(1-x)^3 (x is % of pellet fill level)")
-            .addInfo(
-                "Maintenance problems decrease the efficiency of cooling by " + EnumChatFormatting.RED
-                    + "20"
-                    + EnumChatFormatting.GRAY
-                    + "% for each issue")
-            .addInfo(
-                "Uses " + EnumChatFormatting.RED
-                    + formatNumber(POWER_USAGE)
-                    + EnumChatFormatting.GRAY
-                    + " EU/t increasing by up to "
-                    + EnumChatFormatting.RED
-                    + formatNumber(POWER_PENALTY_WHEN_MINIMUM_HELIUM + 1)
-                    + EnumChatFormatting.GRAY
-                    + " times when lacking Helium Gas")
-            .addInfo(
-                "Helium gas increases effectiveness of heat exchangers linearly up to " + EnumChatFormatting.RED
-                    + "100"
-                    + EnumChatFormatting.GRAY
-                    + "% at max capacity")
-            .addInfo(
-                "The Reactor loses " + EnumChatFormatting.RED
-                    + formatNumber(HELIUM_LOST_PER_CYCLE * 100)
-                    + EnumChatFormatting.GRAY
-                    + "% helium per operation and requires at least "
-                    + EnumChatFormatting.RED
-                    + formatNumber(100 * MIN_HELIUM_NEEDED / HELIUM_NEEDED)
-                    + EnumChatFormatting.GRAY
-                    + "% helium to start operation")
-            .addInfo(
-                "One Operation takes longer based on reactor fill level (between " + EnumChatFormatting.RED
-                    + formatNumber(BASE_PROCESSING_TIME / 20)
-                    + EnumChatFormatting.GRAY
-                    + "s and "
-                    + EnumChatFormatting.RED
-                    + formatNumber((BASE_PROCESSING_TIME + SCALING_PROCESSING_TIME) / 20)
-                    + EnumChatFormatting.GRAY
-                    + "s)")
-            .addInfo(
-                "Providing coolant/water/both speeds up recipe by " + EnumChatFormatting.RED
-                    + formatNumber(COOLANT_SPEEDUP * 20 * 100)
-                    + EnumChatFormatting.GRAY
-                    + "%/"
-                    + EnumChatFormatting.RED
-                    + formatNumber(WATER_SPEEDUP * 20 * 100)
-                    + EnumChatFormatting.GRAY
-                    + "%/"
-                    + EnumChatFormatting.RED
-                    + formatNumber(((COOLANT_SPEEDUP + WATER_SPEEDUP) * 20 * 100))
-                    + EnumChatFormatting.GRAY
-                    + "% total recipe time/second")
-            .addInfo(
-                "The amount of necessary fluid for maximum bonus speed scales with pellets, " + EnumChatFormatting.RED
-                    + formatNumber(COOLANT_PER_PELLET)
-                    + EnumChatFormatting.GRAY
-                    + " coolant/tick/pellet and "
-                    + EnumChatFormatting.RED
-                    + formatNumber(WATER_PER_PELLET)
-                    + EnumChatFormatting.GRAY
-                    + " distilled water/tick/pellet")
+                "gt.htgr.tips",
+                formatNumber(CONVERSION_FACTOR * 100),
+                formatNumber(POWER_USAGE),
+                formatNumber(POWER_PENALTY_WHEN_MINIMUM_HELIUM + 1),
+                formatNumber(HELIUM_LOST_PER_CYCLE * 100),
+                formatNumber(100 * MIN_HELIUM_NEEDED / HELIUM_NEEDED),
+                formatNumber(BASE_PROCESSING_TIME / 20),
+                formatNumber((BASE_PROCESSING_TIME + SCALING_PROCESSING_TIME) / 20),
+                formatNumber(COOLANT_SPEEDUP * 20 * 100),
+                formatNumber(WATER_SPEEDUP * 20 * 100),
+                formatNumber(((COOLANT_SPEEDUP + WATER_SPEEDUP) * 20 * 100)),
+                formatNumber(COOLANT_PER_PELLET),
+                formatNumber(WATER_PER_PELLET))
             .beginStructureBlock(29, 16, 18, true)
-            .addController("Front center")
-            .addInputHatch("Top of the Pump - Accepts Helium", 1)
-            .addEnergyHatch("Top of the Pump", 1)
-            .addMaintenanceHatch("Top of the Pump", 1)
-            .addInputBus("Top of the Reactor - Accepts Fuel", 2)
-            .addOutputBus("Bottom of the Reactor - Outputs Fuel", 3)
-            .addInputHatch("Bottom of the tall Coolant Tower - Accepts Coolant", 4)
-            .addOutputHatch("Top of the tall Coolant Tower - Outputs Hot Coolant", 5)
-            .addInputHatch("Top of the short Coolant Tower - Accepts Distilled Water", 6)
-            .addOutputHatch("Bottom of the short Coolant Tower - Outputs Steam", 7)
+            .addController("front_center")
+            .addInputHatch("gt.htgr.info.i_hatch.a", 1)
+            .addEnergyHatch("gt.htgr.info.i_hatch.a", 1)
+            .addMaintenanceHatch("gt.htgr.info.i_hatch.a", 1)
+            .addInputBus("gt.htgr.info.i_bus", 2)
+            .addOutputBus("gt.htgr.info.o_bus", 3)
+            .addInputHatch("gt.htgr.info.i_hatch.b", 4)
+            .addOutputHatch("gt.htgr.info.o_hatch.a", 5)
+            .addInputHatch("gt.htgr.info.i_hatch.c", 6)
+            .addOutputHatch("gt.htgr.info.o_hatch.b", 7)
 
             .toolTipFinisher(AuthorKuba, AuthorPxx500);
         return tt;
@@ -779,13 +721,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 .append("\n");
         }
         sb.append(EnumChatFormatting.WHITE)
-            .append(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.infodata.htgr.fuel_supply",
-                    formatNumber(this.fuelsupply),
-                    formatNumber(MAX_CAPACITY)))
-            .append("\n");
-        sb.append(EnumChatFormatting.WHITE)
             .append(StatCollector.translateToLocal("kubatech.infodata.htgr.burned_fuel"))
             .append("\n");
         for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
@@ -806,12 +741,13 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             .append(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.infodata.htgr.coolant_per_tick",
-                    formatNumber(this.coolanttaking)))
+                    formatNumber(this.heliumSupply)))
             .append("\n");
         sb.append(EnumChatFormatting.WHITE)
             .append(
-                StatCollector
-                    .translateToLocalFormatted("kubatech.infodata.htgr.water_per_tick", formatNumber(this.watertaking)))
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.infodata.htgr.water_per_tick",
+                    formatNumber(this.heliumSupply)))
             .append("\n");
         return sb.toString();
     }

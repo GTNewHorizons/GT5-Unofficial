@@ -3,8 +3,6 @@ package kubatech.tileentity.gregtech.multiblock.eigmodes;
 import static gregtech.api.util.StringUtils.voltageTooltipFormatted;
 import static kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse.EIG_BALANCE_IC2_ACCELERATOR_TIER;
 
-import net.minecraft.util.EnumChatFormatting;
-
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.api.eig.EIGMode;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
@@ -74,19 +72,18 @@ public class EIGIC2Mode extends EIGMode {
         String fertilizerBonus = String.format("%.0f%%", fertilizerBonusMultiplier);
 
         return builder.addSeparator()
-            .addInfo(EnumChatFormatting.RED + "DEPRECATED" + EnumChatFormatting.RESET)
-            .addInfo(EnumChatFormatting.GOLD + "IC2 Crops:")
-            .addInfo("Minimal voltage tier: " + minVoltageTier)
-            .addInfo("Minimal glass tier: " + minGlassTier)
-            .addInfo("Starting with " + this.getStartingSlotCount() + " slot")
             .addInfo(
-                "Every tier past " + minVoltageTier + ", slots are multiplied by " + this.getSlotPerTierMultiplier())
-            .addInfo("Every slot adds " + this.getSeedCapacityPerSlot() + " seed to the total seed capacity")
-            .addInfo("Process time: 5 sec")
-            .addInfo("All crops are accelerated by x" + acceleration + " times")
-            .addInfo("Can consume up to " + this.getMaxFertilizerUsagePerSeed() + " fertilizer per seed per cycle")
-            .addInfo("Boost per fertilizer: " + fertilizerBonus)
-            .addInfo("Weed-EX 9000 consumption is multiplied by " + this.getWeedEXMultiplier());
+                "gt.ei_greenhouse.tips.ic2",
+                minVoltageTier,
+                minGlassTier,
+                this.getStartingSlotCount(),
+                minVoltageTier,
+                this.getSlotPerTierMultiplier(),
+                this.getSeedCapacityPerSlot(),
+                acceleration,
+                this.getMaxFertilizerUsagePerSeed(),
+                fertilizerBonus,
+                this.getWeedEXMultiplier());
     }
 
     @Override
