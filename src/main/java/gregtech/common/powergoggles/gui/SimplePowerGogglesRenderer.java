@@ -145,19 +145,25 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
         if (measurementData.isWireless()) {
             BigDecimal decimalMaximumMeasurement = new BigDecimal(getMaximumMeasurement(measurements));
-            if (decimalMeasurement.equals(BigDecimal.ZERO)) {
+            if (decimalMeasurement.equals(BigDecimal.ZERO) || decimalMaximumMeasurement.equals(BigDecimal.ZERO)) {
                 return 0;
             }
-            return decimalMeasurement.divide(decimalMaximumMeasurement, RoundingMode.HALF_EVEN)
-                .doubleValue();
+            return clampPercentage(
+                decimalMeasurement.divide(decimalMaximumMeasurement, 8, RoundingMode.HALF_EVEN)
+                    .doubleValue());
         } else {
             BigDecimal decimalCapacity = BigDecimal.valueOf(measurementData.getCapacity());
             if (decimalCapacity.equals(BigDecimal.ZERO)) {
                 return 0;
             }
-            return decimalMeasurement.divide(decimalCapacity, RoundingMode.HALF_EVEN)
-                .doubleValue();
+            return clampPercentage(
+                decimalMeasurement.divide(decimalCapacity, 8, RoundingMode.HALF_EVEN)
+                    .doubleValue());
         }
+    }
+
+    private double clampPercentage(double percentage) {
+        return Math.max(0, Math.min(1, percentage));
     }
 
     private int getTextColor(BigInteger measurement) {
