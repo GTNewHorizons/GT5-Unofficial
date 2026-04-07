@@ -87,4 +87,9 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
                     .setBackground(PhantomItemButton.FILTER_BACKGROUND));
         }
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
