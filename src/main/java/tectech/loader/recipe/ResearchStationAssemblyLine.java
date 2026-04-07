@@ -40,7 +40,7 @@ import static kubatech.api.enums.ItemList.DEFCDraconicSchematic;
 import static kubatech.api.enums.ItemList.DEFCWyvernSchematic;
 import static kubatech.api.enums.ItemList.DraconicEvolutionFusionCrafter;
 import static kubatech.loaders.BlockLoader.defcCasingBlock;
-import static tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
+import static tectech.loader.recipe.BaseRecipeLoader.getNHCoreModItem;
 import static tectech.thing.CustomItemList.eM_dynamoTunnel5_UMV;
 
 import net.minecraft.item.ItemStack;
@@ -647,13 +647,13 @@ public class ResearchStationAssemblyLine implements Runnable {
                     Materials.PhononMedium.getFluid(256_000),
                     Materials.SuperconductorUMVBase.getMolten(64 * STACKS),
                     Materials.ExcitedDTSC.getFluid(512_000) },
-                getItemContainer("StargateShieldingFoil").get(1L),
+                getNHCoreModItem("StargateShieldingFoil", 1),
                 baseStargateTime,
                 (int) TierEU.RECIPE_UXV);
 
             // Stargate Chevron
             TTRecipeAdder.addResearchableAssemblylineRecipe(
-                getItemContainer("StargateShieldingFoil").get(1L),
+                getNHCoreModItem("StargateShieldingFoil", 1),
                 (int) TierEU.RECIPE_MAX,
                 32768,
                 (int) TierEU.RECIPE_UXV,
@@ -680,7 +680,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     Materials.PhononMedium.getFluid(256_000L),
                     Materials.MagMatter.getMolten(128 * STACKS),
                     Materials.ExcitedDTSC.getFluid(512_000L) },
-                getItemContainer("StargateChevron").get(1L),
+                getNHCoreModItem("StargateChevron", 1),
                 baseStargateTime,
                 (int) TierEU.RECIPE_UXV);
 
@@ -713,7 +713,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     Materials.PhononMedium.getFluid(256_000L),
                     Materials.Universium.getMolten(16 * STACKS),
                     Materials.ExcitedDTSC.getFluid(512_000L) },
-                getItemContainer("StargateFramePart").get(1L),
+                getNHCoreModItem("StargateFramePart", 1),
                 baseStargateTime,
                 (int) TierEU.RECIPE_UXV);
 
@@ -1026,7 +1026,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1L },
                 new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1L },
                 GTOreDictUnificator.get("plateDenseMetastableOganesson", 4), ItemList.Field_Generator_UEV.get(2),
-                getItemContainer("PicoWafer").get(64L),
+                getNHCoreModItem("PicoWafer", 64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 32) },
             new FluidStack[] { MaterialsElements.getInstance().CURIUM.getFluidStack(1 * STACKS),
                 MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(1 * STACKS),
@@ -3078,8 +3078,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                     Particle.getBaseParticle(Particle.GRAVITON)
                         .getItem(),
                     32),
-                getItemContainer("RadoxPolymerLens").get(6), getItemContainer("ChromaticLens").get(6),
-                getItemContainer("MysteriousCrystalLens").get(6),
+                getNHCoreModItem("RadoxPolymerLens", 6), getNHCoreModItem("ChromaticLens", 6),
+                getNHCoreModItem("MysteriousCrystalLens", 6),
                 WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.lens, 6),
                 MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlateDense(36),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Creon, 6),

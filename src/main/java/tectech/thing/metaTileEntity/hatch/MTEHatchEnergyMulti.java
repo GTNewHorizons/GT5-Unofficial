@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
@@ -19,7 +20,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.util.CommonValues;
@@ -162,7 +162,7 @@ public class MTEHatchEnergyMulti extends MTEHatch {
         currenttip.add(
             translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(
+                + formatNumber(
                     accessor.getNBTData()
                         .getLong("amperage") * V[mTier])
                 + EnumChatFormatting.RESET
@@ -173,7 +173,7 @@ public class MTEHatchEnergyMulti extends MTEHatch {
     public String[] getInfoData() {
         return new String[] { translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
             + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(Amperes * V[mTier])
+            + formatNumber(Amperes * V[mTier])
             + EnumChatFormatting.RESET
             + " EU/t" };
     }

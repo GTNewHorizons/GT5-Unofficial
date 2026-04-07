@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -47,7 +49,7 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
             .concat(
                 Stream.of(
                     mDescriptionArray[0],
-                    "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
+                    "Capacity: " + formatNumber(getCapacity()) + "L",
                     "Hatch Tier: " + GTUtility.getColoredTierNameFromTier(mTier)),
                 Arrays.stream(getCustomTooltip()))
             .toArray(String[]::new);

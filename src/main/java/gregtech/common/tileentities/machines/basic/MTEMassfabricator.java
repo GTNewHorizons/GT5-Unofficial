@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE;
@@ -223,7 +224,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
             long voltage = V[mTier];
             String voltageString = StatCollector.translateToLocalFormatted(
                 "GT5U.nei.display.voltage",
-                GTUtility.formatNumbers(voltage),
+                formatNumber(voltage),
                 GTUtility.getTierNameWithParentheses(voltage));
 
             if (wasOverclocked(calculator)) {
@@ -244,7 +245,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
                 }
             }
             if (amperage > 0) {
-                amperageValue = GTUtility.formatNumbers(amperage);
+                amperageValue = formatNumber(amperage);
             } else {
                 amperageValue = "1/" + denominator;
             }

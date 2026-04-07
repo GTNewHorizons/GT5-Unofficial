@@ -4,7 +4,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 
 /**
@@ -16,12 +15,12 @@ public class IGTextures implements Runnable {
 
     public static IIconContainer SIPHON_OVERLAY_FRONT_GLOW;
     public static IIconContainer SIPHON_OVERLAY_FRONT_ACTIVE_GLOW;
-    public static ITexture SIPHON_OVERLAY_FRONT;
+    public static IIconContainer SIPHON_OVERLAY_FRONT;
 
     public static IIconContainer DYSON_OVERLAY_FRONT_GLOW;
     public static IIconContainer DYSON_OVERLAY_FRONT_ACTIVE_GLOW;
-    public static ITexture DYSON_OVERLAY_FRONT;
-    public static ITexture DYSON_OVERLAY_FRONT_ACTIVE;
+    public static IIconContainer DYSON_OVERLAY_FRONT;
+    public static IIconContainer DYSON_OVERLAY_FRONT_ACTIVE;
 
     public static final int CASING_INDEX_RECEIVER = 150;
     public static final int CASING_INDEX_COMMAND = 151;
@@ -34,12 +33,12 @@ public class IGTextures implements Runnable {
      */
     @Override
     public void run() {
-        SIPHON_OVERLAY_FRONT = TextureFactory.of(new CustomIcon("iconsets/OVERLAY_FRONT_PLANETARYSIPHON"));
+        SIPHON_OVERLAY_FRONT = new CustomIcon("iconsets/OVERLAY_FRONT_PLANETARYSIPHON");
         SIPHON_OVERLAY_FRONT_GLOW = new CustomIcon("iconsets/OVERLAY_FRONT_PLANETARYSIPHON_GLOW");
         SIPHON_OVERLAY_FRONT_ACTIVE_GLOW = new CustomIcon("iconsets/OVERLAY_FRONT_PLANETARYSIPHON_ACTIVE_GLOW");
 
-        DYSON_OVERLAY_FRONT = TextureFactory.of(new CustomIcon("iconsets/OVERLAY_FRONT_DYSONSPHERE"));
-        DYSON_OVERLAY_FRONT_ACTIVE = TextureFactory.of(new CustomIcon("iconsets/OVERLAY_FRONT_DYSONSPHERE_ACTIVE"));
+        DYSON_OVERLAY_FRONT = new CustomIcon("iconsets/OVERLAY_FRONT_DYSONSPHERE");
+        DYSON_OVERLAY_FRONT_ACTIVE = new CustomIcon("iconsets/OVERLAY_FRONT_DYSONSPHERE_ACTIVE");
         DYSON_OVERLAY_FRONT_GLOW = new CustomIcon("iconsets/OVERLAY_FRONT_DYSONSPHERE_GLOW");
         DYSON_OVERLAY_FRONT_ACTIVE_GLOW = new CustomIcon("iconsets/OVERLAY_FRONT_DYSONSPHERE_ACTIVE_GLOW");
 

@@ -13,6 +13,7 @@
 
 package bartworks.system.material.CircuitGeneration;
 
+import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -31,7 +32,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.MainMod;
 import bartworks.common.loaders.ItemRegistry;
@@ -50,10 +50,8 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 
 public class BWMetaItems {
@@ -82,18 +80,15 @@ public class BWMetaItems {
             .eut(TierEU.RECIPE_HV)
             .addTo(formingPressRecipes);
 
-        RecipeMaps.autoclaveRecipes.add(
-            new GTRecipe(
-                false,
-                new ItemStack[] { BWMetaItems.NEW_CIRCUIT_PARTS.getStack(2) },
-                new ItemStack[] { BWMetaItems.NEW_CIRCUIT_PARTS.getStack(3) },
-                null,
-                new int[] { 7500 },
-                new FluidStack[] { Materials.SolderingAlloy.getMolten(4 * INGOTS) },
-                null,
-                300,
-                (int) TierEU.RECIPE_EV,
-                BWUtil.CLEANROOM));
+        GTValues.RA.stdBuilder()
+            .itemInputs(BWMetaItems.NEW_CIRCUIT_PARTS.getStack(2))
+            .itemOutputs(BWMetaItems.NEW_CIRCUIT_PARTS.getStack(3))
+            .outputChances(75_00)
+            .fluidInputs(Materials.SolderingAlloy.getMolten(4 * INGOTS))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .requiresCleanRoom()
+            .addTo(autoclaveRecipes);
     }
 
     public static class BW_GT_MetaGenCircuits extends BWMetaItems.BW_GT_MetaGen_Item_Hook {
@@ -131,7 +126,7 @@ public class BWMetaItems {
         @SideOnly(Side.CLIENT)
         public final void registerIcons(IIconRegister aIconRegister) {
 
-            for (short i = 0; i < CircuitImprintLoader.reverseIDs; ++i) {
+            for (short i = 0; i < CircuitWraps.getMinimalID(); ++i) {
                 if (this.mEnabledItems.get(i)) {
                     BWUtil.set2DCoordTo1DArray(
                         i,
@@ -142,18 +137,18 @@ public class BWMetaItems {
                 }
             }
 
-            for (short i = CircuitImprintLoader.reverseIDs; i < Short.MAX_VALUE; i++) {
-                if (this.mEnabledItems.get(i)) {
+            for (CircuitWraps wrap : CircuitWraps.values()) {
+                if (this.mEnabledItems.get(wrap.id)) {
                     BWUtil.set2DCoordTo1DArray(
-                        i,
+                        wrap.id,
                         0,
                         2,
-                        Objects.requireNonNull(CircuitImprintLoader.circuitIIconRefs.get(i))
+                        Objects.requireNonNull(wrap.itemSingle)
                             .get(1)
                             .getIconIndex(),
                         this.mIconList);
                     BWUtil.set2DCoordTo1DArray(
-                        i,
+                        wrap.id,
                         1,
                         2,
                         aIconRegister.registerIcon(MainMod.MOD_ID + ":WrapOverlay"),

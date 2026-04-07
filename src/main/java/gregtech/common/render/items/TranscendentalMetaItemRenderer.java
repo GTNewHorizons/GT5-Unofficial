@@ -1,7 +1,5 @@
 package gregtech.common.render.items;
 
-import java.util.Random;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
@@ -17,8 +15,6 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.common.config.Client;
 
 public class TranscendentalMetaItemRenderer implements IItemRenderer {
-
-    public Random rand = new Random();
 
     @Override
     public boolean handleRenderType(final ItemStack item, final ItemRenderType type) {
@@ -99,7 +95,7 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
 
         GL11.glRotatef(
             (GTMod.clientProxy()
-                .getAnimationTicks() * 3.5f) % 360,
+                .getAnimationRenderTicks() * 3.5f) % 360,
             0.3f,
             0.5f,
             0.2f);

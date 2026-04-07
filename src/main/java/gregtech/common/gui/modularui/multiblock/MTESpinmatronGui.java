@@ -29,11 +29,11 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.tileentities.machines.multi.MTEChamberCentrifuge;
+import gregtech.common.tileentities.machines.multi.MTESpinmatron;
 
-public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui<MTEChamberCentrifuge> {
+public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
 
-    public MTEChamberCentrifugeGui(MTEChamberCentrifuge multiblock) {
+    public MTESpinmatronGui(MTESpinmatron multiblock) {
         super(multiblock);
     }
 
@@ -49,13 +49,7 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui<MTEChamberCent
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        return Flow.row()
-            .mainAxisAlignment(Alignment.MainAxis.END)
-            .align(Alignment.CenterRight)
-            .coverChildrenWidth()
-            .heightRel(1)
-            .child(createConfigButton(syncManager, parent))
-            .childIf(multiblock.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
+        return super.createRightPanelGapRow(parent, syncManager).child(createConfigButton(syncManager, parent));
     }
 
     @Override

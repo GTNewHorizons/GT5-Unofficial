@@ -24,9 +24,19 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DrawableStack;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.UITexture;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -36,16 +46,17 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -56,9 +67,10 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     // 862
     private static final int mCasingTextureID = TAE.getIndexFromPage(3, 3);
-    private static final int MACHINEMODE_ELECTRIC = 0;
-    private static final int MACHINEMODE_PLASMA = 1;
     public static String mCasingName = "Tempered Arc Furnace Casing";
+
+    final static int MACHINE_MODE_ARC = 0;
+    final static int MACHINE_MODE_PLASMA = 1;
 
     private int mSize = 0;
     private int mCasing;
@@ -239,7 +251,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return machineMode == MACHINEMODE_ELECTRIC ? RecipeMaps.arcFurnaceRecipes : RecipeMaps.plasmaArcFurnaceRecipes;
+        return machineMode == MACHINE_MODE_PLASMA ? RecipeMaps.plasmaArcFurnaceRecipes : RecipeMaps.arcFurnaceRecipes;
     }
 
     @Nonnull
@@ -261,7 +273,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     @Override
     public int getMaxParallelRecipes() {
-        return (this.mSize * (machineMode == MACHINEMODE_ELECTRIC ? 1 : 8)
+        return (this.mSize * (machineMode == MACHINE_MODE_PLASMA ? 8 : 1)
             * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
@@ -283,37 +295,20 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     }
 
     @Override
-    public boolean supportsMachineModeSwitch() {
-        return true;
-    }
-
-    @Override
     public int nextMachineMode() {
-        if (mSize <= 5) return MACHINEMODE_ELECTRIC;
+        if (mSize <= 5) return MACHINE_MODE_ARC;
         else return super.nextMachineMode();
     }
 
     @Override
-    public void setMachineModeIcons() {
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_ELECTRIC_ARC);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_PLASMA_ARC);
-    }
-
-    @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (this.mSize > 5) {
-            setMachineMode(nextMachineMode());
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
-        } else {
+        if (mSize <= 5) {
             GTUtility.sendChatToPlayer(aPlayer, translateToLocal("GT5U.GTPP_MULTI_ARC_FURNACE_INSUFFICIENT"));
+            return;
         }
-    }
-
-    @Override
-    public String getMachineModeName() {
-        return translateToLocal("GT5U.GTPP_MULTI_ARC_FURNACE.mode." + machineMode);
+        setMachineMode(nextMachineMode());
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override
@@ -324,24 +319,67 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        // Migrates old NBT tag to the new one
+        super.loadNBTData(aNBT);
         if (aNBT.hasKey("mPlasmaMode")) {
-            machineMode = aNBT.getBoolean("mPlasmaMode") ? MACHINEMODE_PLASMA : MACHINEMODE_ELECTRIC;
+            machineMode = aNBT.getBoolean("mPlasmaMode") ? MACHINE_MODE_PLASMA : MACHINE_MODE_ARC;
+            aNBT.removeTag("mPlasmaMode");
         }
         mSize = aNBT.getInteger("mSize");
-        super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_ARC_FURNACE.mode." + machineMode);
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode);
+        tag.setString("mode", getMachineModeName());
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_ARC_FURNACE_LOOP;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMultiBlockBaseGui<>(this) {
+
+            @Override
+            protected IWidget createModeSwitchButton(PanelSyncManager syncManager) {
+                IntSyncValue machineModeSyncer = syncManager.findSyncHandler("machineMode", IntSyncValue.class);
+                IntSyncValue sizeSyncer = new IntSyncValue(() -> mSize);
+                syncManager.syncValue("arcSize", sizeSyncer);
+                return new CycleButtonWidget() {
+
+                    @NotNull
+                    @Override
+                    public Result onMousePressed(int mouseButton) {
+                        if (sizeSyncer.getIntValue() <= 5) return Result.IGNORE;
+                        return super.onMousePressed(mouseButton);
+                    }
+                }.size(18, 18)
+                    .syncHandler("machineMode")
+                    .length(machineModeIcons.size())
+                    .overlay(new DynamicDrawable(() -> {
+                        UITexture mode = getMachineModeIcon(machineModeSyncer.getValue());
+                        return sizeSyncer.getIntValue() <= 5
+                            ? new DrawableStack(mode, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN)
+                            : mode;
+                    }))
+                    .tooltipBuilder(this::createModeSwitchTooltip);
+            }
+        }.withMachineModeIcons(
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_ARC,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_PLASMA_ARC);
     }
 }

@@ -72,7 +72,7 @@ import gregtech.common.gui.modularui.UIHelper;
 
 public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
-    private static final int offsetX = 3;
+    private static final int offsetX = 5;
     private static final int offsetY = 11;
     protected static final Pos2d WINDOW_OFFSET = new Pos2d(-offsetX, -offsetY);
 

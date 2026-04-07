@@ -302,11 +302,4 @@ public class MathUtils {
         return Math.max(Math.min(aInput, aMax), aMin);
     }
 
-    public static String formatNumbers(long aNumber) {
-        return sNumberFormat.format(aNumber);
-    }
-
-    public static String formatNumbers(double aNumber) {
-        return sNumberFormat.format(aNumber);
-    }
 }

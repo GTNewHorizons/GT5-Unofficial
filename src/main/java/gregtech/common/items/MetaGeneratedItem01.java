@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.COVER_WOOD_PLATE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR;
@@ -680,6 +681,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(addItem(IDMetaItem01.Credit_Platinum.ID, "Industrial Platinum Credit", "512 Credits"));
         ItemList.Credit_Osmium.set(addItem(IDMetaItem01.Credit_Osmium.ID, "Industrial Osmium Credit", "4096 Credits"));
 
+        ItemList.NandChipArray.set(
+            addItem(
+                IDMetaItem01.NandChipArray.ID,
+                "NAND Chip Array",
+                "Chips on Board",
+                "circuitPrimitiveArray",
+                SubTag.NO_UNIFICATION));
         ItemList.Component_Minecart_Wheels_Iron.set(
             addItem(
                 Component_Minecraft_Wheels_Iron.ID,
@@ -1867,7 +1875,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_LV.ID,
                 "Electric Pump (LV)",
-                GTUtility.formatNumbers(32) + PartCoverText + GTUtility.formatNumbers(32 * 20) + PartCoverText2,
+                formatNumber(32) + PartCoverText + formatNumber(32 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L),
@@ -1876,7 +1884,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_MV.ID,
                 "Electric Pump (MV)",
-                GTUtility.formatNumbers(128) + PartCoverText + GTUtility.formatNumbers(128 * 20) + PartCoverText2,
+                formatNumber(128) + PartCoverText + formatNumber(128 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 2L),
@@ -1885,7 +1893,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_HV.ID,
                 "Electric Pump (HV)",
-                GTUtility.formatNumbers(512) + PartCoverText + GTUtility.formatNumbers(512 * 20) + PartCoverText2,
+                formatNumber(512) + PartCoverText + formatNumber(512 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 4L),
@@ -1894,7 +1902,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_EV.ID,
                 "Electric Pump (EV)",
-                GTUtility.formatNumbers(2048) + PartCoverText + GTUtility.formatNumbers(2048 * 20) + PartCoverText2,
+                formatNumber(2048) + PartCoverText + formatNumber(2048 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 8L),
@@ -1903,7 +1911,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_IV.ID,
                 "Electric Pump (IV)",
-                GTUtility.formatNumbers(8192) + PartCoverText + GTUtility.formatNumbers(8192 * 20) + PartCoverText2,
+                formatNumber(8192) + PartCoverText + formatNumber(8192 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 16L),
@@ -1912,7 +1920,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_LuV.ID,
                 "Electric Pump (LuV)",
-                GTUtility.formatNumbers(32768) + PartCoverText + GTUtility.formatNumbers(32768 * 20) + PartCoverText2,
+                formatNumber(32768) + PartCoverText + formatNumber(32768 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 32L),
@@ -1921,7 +1929,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_ZPM.ID,
                 "Electric Pump (ZPM)",
-                GTUtility.formatNumbers(131072) + PartCoverText + GTUtility.formatNumbers(131072 * 20) + PartCoverText2,
+                formatNumber(131072) + PartCoverText + formatNumber(131072 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 64L),
@@ -1930,7 +1938,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_UV.ID,
                 "Electric Pump (UV)",
-                GTUtility.formatNumbers(524288) + PartCoverText + GTUtility.formatNumbers(524288 * 20) + PartCoverText2,
+                formatNumber(524288) + PartCoverText + formatNumber(524288 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 128L),
@@ -1940,9 +1948,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Electric_Pump_UHV.ID,
                     "Electric Pump (UHV)",
-                    GTUtility.formatNumbers(8388608) + PartCoverText
-                        + GTUtility.formatNumbers(8388608 * 20)
-                        + PartCoverText2,
+                    formatNumber(8388608) + PartCoverText + formatNumber(8388608 * 20) + PartCoverText2,
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 256L),
@@ -1953,9 +1959,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Electric_Pump_UEV.ID,
                     "Electric Pump (UEV)",
-                    GTUtility.formatNumbers(16777216) + PartCoverText
-                        + GTUtility.formatNumbers(16777216 * 20)
-                        + PartCoverText2,
+                    formatNumber(16777216) + PartCoverText + formatNumber(16777216 * 20) + PartCoverText2,
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -1966,9 +1970,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Electric_Pump_UIV.ID,
                     "Electric Pump (UIV)",
-                    GTUtility.formatNumbers(33554432) + PartCoverText
-                        + GTUtility.formatNumbers(33554432 * 20)
-                        + PartCoverText2,
+                    formatNumber(33554432) + PartCoverText + formatNumber(33554432 * 20) + PartCoverText2,
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -1978,9 +1980,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_UMV.ID,
                 "Electric Pump (UMV)",
-                GTUtility.formatNumbers(67108864) + PartCoverText
-                    + GTUtility.formatNumbers(67108864 * 20)
-                    + PartCoverText2,
+                formatNumber(67108864) + PartCoverText + formatNumber(67108864 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -1989,9 +1989,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_UXV.ID,
                 "Electric Pump (UXV)",
-                GTUtility.formatNumbers(134217728) + PartCoverText
-                    + GTUtility.formatNumbers(134217728 * 20L)
-                    + PartCoverText2,
+                formatNumber(134217728) + PartCoverText + formatNumber(134217728 * 20L) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -2000,9 +1998,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_MAX.ID,
                 "Electric Pump (MAX)",
-                GTUtility.formatNumbers(268435456) + PartCoverText
-                    + GTUtility.formatNumbers(268435456 * 20L)
-                    + PartCoverText2,
+                formatNumber(268435456) + PartCoverText + formatNumber(268435456 * 20L) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -2012,7 +2008,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Steam_Valve_LV.ID,
                 "Steam Valve (LV)",
-                GTUtility.formatNumbers(1024) + PartCoverText + GTUtility.formatNumbers(1024 * 20) + PartCoverText2,
+                formatNumber(1024) + PartCoverText + formatNumber(1024 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L),
@@ -2021,7 +2017,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Steam_Valve_MV.ID,
                 "Steam Valve (MV)",
-                GTUtility.formatNumbers(2048) + PartCoverText + GTUtility.formatNumbers(2048 * 20) + PartCoverText2,
+                formatNumber(2048) + PartCoverText + formatNumber(2048 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 2L),
@@ -2030,7 +2026,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Steam_Valve_HV.ID,
                 "Steam Valve (HV)",
-                GTUtility.formatNumbers(4096) + PartCoverText + GTUtility.formatNumbers(4096 * 20) + PartCoverText2,
+                formatNumber(4096) + PartCoverText + formatNumber(4096 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 4L),
@@ -2039,7 +2035,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Steam_Valve_EV.ID,
                 "Steam Valve (EV)",
-                GTUtility.formatNumbers(8192) + PartCoverText + GTUtility.formatNumbers(8192 * 20) + PartCoverText2,
+                formatNumber(8192) + PartCoverText + formatNumber(8192 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 8L),
@@ -2048,88 +2044,44 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Steam_Valve_IV.ID,
                 "Steam Valve (IV)",
-                GTUtility.formatNumbers(16384) + PartCoverText + GTUtility.formatNumbers(16384 * 20) + PartCoverText2,
+                formatNumber(16384) + PartCoverText + formatNumber(16384 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 16L)));
 
-        ItemList.FluidRegulator_LV.set(
-            addItem(
-                FluidRegulator_LV.ID,
-                "Fluid Regulator (LV)",
-                FRText1 + GTUtility.formatNumbers(32 * 20) + FRText2));
-        ItemList.FluidRegulator_MV.set(
-            addItem(
-                FluidRegulator_MV.ID,
-                "Fluid Regulator (MV)",
-                FRText1 + GTUtility.formatNumbers(128 * 20) + FRText2));
-        ItemList.FluidRegulator_HV.set(
-            addItem(
-                FluidRegulator_HV.ID,
-                "Fluid Regulator (HV)",
-                FRText1 + GTUtility.formatNumbers(512 * 20) + FRText2));
-        ItemList.FluidRegulator_EV.set(
-            addItem(
-                FluidRegulator_EV.ID,
-                "Fluid Regulator (EV)",
-                FRText1 + GTUtility.formatNumbers(2048 * 20) + FRText2));
-        ItemList.FluidRegulator_IV.set(
-            addItem(
-                FluidRegulator_IV.ID,
-                "Fluid Regulator (IV)",
-                FRText1 + GTUtility.formatNumbers(8192 * 20) + FRText2));
-        ItemList.FluidRegulator_LuV.set(
-            addItem(
-                FluidRegulator_LuV.ID,
-                "Fluid Regulator (LuV)",
-                FRText1 + GTUtility.formatNumbers(32768 * 20) + FRText2));
+        ItemList.FluidRegulator_LV
+            .set(addItem(FluidRegulator_LV.ID, "Fluid Regulator (LV)", FRText1 + formatNumber(32 * 20) + FRText2));
+        ItemList.FluidRegulator_MV
+            .set(addItem(FluidRegulator_MV.ID, "Fluid Regulator (MV)", FRText1 + formatNumber(128 * 20) + FRText2));
+        ItemList.FluidRegulator_HV
+            .set(addItem(FluidRegulator_HV.ID, "Fluid Regulator (HV)", FRText1 + formatNumber(512 * 20) + FRText2));
+        ItemList.FluidRegulator_EV
+            .set(addItem(FluidRegulator_EV.ID, "Fluid Regulator (EV)", FRText1 + formatNumber(2048 * 20) + FRText2));
+        ItemList.FluidRegulator_IV
+            .set(addItem(FluidRegulator_IV.ID, "Fluid Regulator (IV)", FRText1 + formatNumber(8192 * 20) + FRText2));
+        ItemList.FluidRegulator_LuV
+            .set(addItem(FluidRegulator_LuV.ID, "Fluid Regulator (LuV)", FRText1 + formatNumber(32768 * 20) + FRText2));
         ItemList.FluidRegulator_ZPM.set(
-            addItem(
-                FluidRegulator_ZPM.ID,
-                "Fluid Regulator (ZPM)",
-                FRText1 + GTUtility.formatNumbers(131072 * 20) + FRText2));
-        ItemList.FluidRegulator_UV.set(
-            addItem(
-                FluidRegulator_UV.ID,
-                "Fluid Regulator (UV)",
-                FRText1 + GTUtility.formatNumbers(524288 * 20) + FRText2));
+            addItem(FluidRegulator_ZPM.ID, "Fluid Regulator (ZPM)", FRText1 + formatNumber(131072 * 20) + FRText2));
+        ItemList.FluidRegulator_UV
+            .set(addItem(FluidRegulator_UV.ID, "Fluid Regulator (UV)", FRText1 + formatNumber(524288 * 20) + FRText2));
         ItemList.FluidRegulator_UHV
             .set(
-                addItem(
-                    FluidRegulator_UHV.ID,
-                    "Fluid Regulator (UHV)",
-                    FRText1 + GTUtility.formatNumbers(8388608 * 20) + FRText2))
+                addItem(FluidRegulator_UHV.ID, "Fluid Regulator (UHV)", FRText1 + formatNumber(8388608 * 20) + FRText2))
             .setRender(new CosmicNeutroniumMetaItemRenderer());
-        ItemList.FluidRegulator_UEV
-            .set(
-                addItem(
-                    FluidRegulator_UEV.ID,
-                    "Fluid Regulator (UEV)",
-                    FRText1 + GTUtility.formatNumbers(16777216 * 20) + FRText2))
+        ItemList.FluidRegulator_UEV.set(
+            addItem(FluidRegulator_UEV.ID, "Fluid Regulator (UEV)", FRText1 + formatNumber(16777216 * 20) + FRText2))
             .setRender(new InfinityMetaItemRenderer());
-        ItemList.FluidRegulator_UIV
-            .set(
-                addItem(
-                    FluidRegulator_UIV.ID,
-                    "Fluid Regulator (UIV)",
-                    FRText1 + GTUtility.formatNumbers(33554432 * 20) + FRText2))
+        ItemList.FluidRegulator_UIV.set(
+            addItem(FluidRegulator_UIV.ID, "Fluid Regulator (UIV)", FRText1 + formatNumber(33554432 * 20) + FRText2))
             .setRender(new TranscendentalMetaItemRenderer());
         ItemList.FluidRegulator_UMV.set(
-            addItem(
-                FluidRegulator_UMV.ID,
-                "Fluid Regulator (UMV)",
-                FRText1 + GTUtility.formatNumbers(67108864 * 20) + FRText2));
+            addItem(FluidRegulator_UMV.ID, "Fluid Regulator (UMV)", FRText1 + formatNumber(67108864 * 20) + FRText2));
         ItemList.FluidRegulator_UXV.set(
-            addItem(
-                FluidRegulator_UXV.ID,
-                "Fluid Regulator (UXV)",
-                FRText1 + GTUtility.formatNumbers(134217728 * 20L) + FRText2));
+            addItem(FluidRegulator_UXV.ID, "Fluid Regulator (UXV)", FRText1 + formatNumber(134217728 * 20L) + FRText2));
         ItemList.FluidRegulator_MAX.set(
-            addItem(
-                FluidRegulator_MAX.ID,
-                "Fluid Regulator (MAX)",
-                FRText1 + GTUtility.formatNumbers(268435456 * 20L) + FRText2));
+            addItem(FluidRegulator_MAX.ID, "Fluid Regulator (MAX)", FRText1 + formatNumber(268435456 * 20L) + FRText2));
 
         ItemList.FluidFilter.set(
             addItem(FluidFilter.ID, "Fluid Filter Cover", "Set with Fluid Container to only accept one Fluid Type"));
@@ -3030,7 +2982,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                         "Ignores voltage limitations (no explosions).",
                         "Amperage: " + EnumChatFormatting.YELLOW + "2" + EnumChatFormatting.GRAY,
                         "Voltage IN: " + EnumChatFormatting.GREEN
-                            + GTUtility.formatNumbers(GTValues.V[i])
+                            + formatNumber(GTValues.V[i])
                             + " ("
                             + GTUtility.getColoredTierNameFromTier((byte) (i))
                             + EnumChatFormatting.GREEN
@@ -3231,7 +3183,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Steam_Regulator_LV.ID,
                 "Steam Regulator (LV)",
-                GTUtility.formatNumbers(1024) + PartCoverText + GTUtility.formatNumbers(1024 * 20) + PartCoverText2,
+                formatNumber(1024) + PartCoverText + formatNumber(1024 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L),
@@ -3240,7 +3192,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Steam_Regulator_MV.ID,
                 "Steam Regulator (MV)",
-                GTUtility.formatNumbers(2048) + PartCoverText + GTUtility.formatNumbers(2048 * 20) + PartCoverText2,
+                formatNumber(2048) + PartCoverText + formatNumber(2048 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 2L),
@@ -3249,7 +3201,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Steam_Regulator_HV.ID,
                 "Steam Regulator (HV)",
-                GTUtility.formatNumbers(4096) + PartCoverText + GTUtility.formatNumbers(4096 * 20) + PartCoverText2,
+                formatNumber(4096) + PartCoverText + formatNumber(4096 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 4L),
@@ -3258,7 +3210,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Steam_Regulator_EV.ID,
                 "Steam Regulator (EV)",
-                GTUtility.formatNumbers(8192) + PartCoverText + GTUtility.formatNumbers(8192 * 20) + PartCoverText2,
+                formatNumber(8192) + PartCoverText + formatNumber(8192 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 8L),
@@ -3267,7 +3219,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Steam_Regulator_IV.ID,
                 "Steam Regulator (IV)",
-                GTUtility.formatNumbers(16384) + PartCoverText + GTUtility.formatNumbers(16384 * 20) + PartCoverText2,
+                formatNumber(16384) + PartCoverText + formatNumber(16384 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 16L),
