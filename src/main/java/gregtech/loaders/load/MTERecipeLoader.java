@@ -1675,6 +1675,20 @@ public class MTERecipeLoader implements Runnable {
             ItemList.FlotationCell.get(1),
             new Object[] { GregtechItemList.Controller_Flotation_Cell });
 
+        // Large Boilers Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.BronzeBoilerLarge.get(1),
+            new Object[] { ItemList.Machine_Multi_LargeBoiler_Bronze });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.SteelBoilerLarge.get(1),
+            new Object[] { ItemList.Machine_Multi_LargeBoiler_Steel });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.TitaniumBoilerLarge.get(1),
+            new Object[] { ItemList.Machine_Multi_LargeBoiler_Titanium });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.TungstensteelBoilerLarge.get(1),
+            new Object[] { ItemList.Machine_Multi_LargeBoiler_TungstenSteel });
+
         // Mega Chemical Reactor Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.MegaChemicalReactor.get(1),
@@ -3136,22 +3150,22 @@ public class MTERecipeLoader implements Runnable {
                 OrePrefixes.cableGt01.get(Materials.AnnealedCopper) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.Machine_Multi_LargeBoiler_Bronze.get(1L),
+            ItemList.BronzeBoilerLarge.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { aTextWireCoil, aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_Firebox_Bronze, 'C',
                 OrePrefixes.circuit.get(Materials.MV), 'W', OrePrefixes.cableGt01.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Machine_Multi_LargeBoiler_Steel.get(1L),
+            ItemList.SteelBoilerLarge.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { aTextWireCoil, aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_Firebox_Steel, 'C',
                 OrePrefixes.circuit.get(Materials.HV), 'W', OrePrefixes.cableGt01.get(Materials.AnyCopper) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Machine_Multi_LargeBoiler_Titanium.get(1L),
+            ItemList.TitaniumBoilerLarge.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { aTextWireCoil, aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_Firebox_Titanium, 'C',
                 OrePrefixes.circuit.get(Materials.EV), 'W', OrePrefixes.cableGt01.get(Materials.Gold) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Machine_Multi_LargeBoiler_TungstenSteel.get(1L),
+            ItemList.TungstensteelBoilerLarge.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { aTextWireCoil, aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_Firebox_TungstenSteel,
                 'C', OrePrefixes.circuit.get(Materials.IV), 'W', OrePrefixes.cableGt01.get(Materials.Aluminium) });

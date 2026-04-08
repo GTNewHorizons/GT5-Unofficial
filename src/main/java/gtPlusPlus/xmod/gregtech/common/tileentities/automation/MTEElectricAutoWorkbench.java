@@ -18,6 +18,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
@@ -30,6 +31,7 @@ import gregtech.common.gui.modularui.singleblock.MTEElectricAutoWorkbenchGui;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEElectricAutoWorkbench extends MTEBasicTank {
 
     public int mMode = 0, mCurrentSlot = 0, mThroughPut = 0, mTicksUntilNextUpdate = 20;
@@ -678,7 +680,7 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Automatic Crafting Table Mk III",
+        return new String[] { GTUtility.translate("gt.blockmachines.basicmachine.automation.autoworkbench.tooltip"),
             // this.mDescription,
             GTPPCore.GT_Tooltip.get() };
     }

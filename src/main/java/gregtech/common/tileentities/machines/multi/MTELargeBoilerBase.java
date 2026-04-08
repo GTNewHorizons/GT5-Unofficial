@@ -1,10 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.STEAM_PER_WATER;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -20,9 +18,9 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -37,14 +35,14 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -58,66 +56,145 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
-// TODO remove after structure rework cycle, only used for backwards-compatibility
-public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeBoiler>
+public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<MTELargeBoilerBase>
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final ClassValue<IStructureDefinition<MTELargeBoiler>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
-        @Override
-        protected IStructureDefinition<MTELargeBoiler> computeValue(Class<?> type) {
-            return StructureDefinition.<MTELargeBoiler>builder()
-                .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    transpose(
-                        new String[][] { { "ccc", "ccc", "ccc" }, { "ccc", "cPc", "ccc" }, { "ccc", "cPc", "ccc" },
-                            { "ccc", "cPc", "ccc" }, { "f~f", "fff", "fff" }, }))
-                .addElement('P', lazy(t -> ofBlock(t.getPipeBlock(), t.getPipeMeta())))
-                .addElement(
-                    'c',
-                    lazy(
-                        t -> buildHatchAdder(MTELargeBoiler.class).atLeast(OutputHatch)
-                            .casingIndex(t.getCasingTextureIndex())
-                            .hint(2)
-                            .buildAndChain(
-                                onElementPass(
-                                    MTELargeBoiler::onCasingAdded,
-                                    ofBlock(t.getCasingBlock(), t.getCasingMeta())))))
-                .addElement(
-                    'f',
-                    lazy(
-                        t -> buildHatchAdder(MTELargeBoiler.class).atLeast(Maintenance, InputHatch, InputBus, Muffler)
-                            .casingIndex(t.getFireboxTextureIndex())
-                            .hint(1)
-                            .buildAndChain(
-                                onElementPass(
-                                    MTELargeBoiler::onFireboxAdded,
-                                    ofBlock(t.getFireboxBlock(), t.getFireboxMeta())))))
-                .build();
-        }
-    };
+    private static final int OFFSET_X = 2;
+    private static final int OFFSET_Y = 4;
+    private static final int OFFSET_Z = 0;
+
+    protected Casings casing;
+    protected Casings pipeCasing;
+    protected Casings fireboxCasing;
+
+    private final int eut;
+    private final int efficiencyIncrease;
+    private final boolean isSuperheated;
+
     private boolean firstRun = true;
-    private int mSuperEfficencyIncrease = 0;
-    private int integratedCircuitConfig = 0; // Steam output is reduced by 1000L per config
-    private int excessWater = 0; // Eliminate rounding errors for water
-    private int excessFuel = 0; // Eliminate rounding errors for fuels that burn half items
-    private int excessProjectedEU = 0; // Eliminate rounding errors from throttling the boiler
-    private int mCasingAmount;
-    private int mFireboxAmount;
-    protected int pollutionPerSecond = 1; // placeholder for the child classes
+    private int superEfficencyIncrease = 0;
+    private int integratedCircuitConfig = 0;
+    private int excessWater = 0;
+    private int excessFuel = 0;
+    private int excessProjectedEU = 0;
+    private int casingAmount;
+    private int fireboxAmount;
+    protected final int pollutionPerSecond;
+    private final IStructureDefinition<MTELargeBoilerBase> structureDefinition;
+    private final int superToNormalSteam = 3;
 
-    public MTELargeBoiler(int aID, String aName, String aNameRegional) {
+    protected MTELargeBoilerBase(int aID, String aName, String aNameRegional, Casings casing, Casings pipeCasing,
+        Casings fireboxCasing, int eut, int efficiencyIncrease, boolean isSuperheated, int pollutionPerSecond) {
         super(aID, aName, aNameRegional);
+        this.casing = casing;
+        this.pipeCasing = pipeCasing;
+        this.fireboxCasing = fireboxCasing;
+        this.eut = eut;
+        this.efficiencyIncrease = efficiencyIncrease;
+        this.isSuperheated = isSuperheated;
+        this.pollutionPerSecond = pollutionPerSecond;
+        this.structureDefinition = createStructureDefinition();
     }
 
-    public MTELargeBoiler(String aName) {
+    protected MTELargeBoilerBase(String aName, Casings casing, Casings pipeCasing, Casings fireboxCasing, int eut,
+        int efficiencyIncrease, boolean isSuperheated, int pollutionPerSecond) {
         super(aName);
+        this.casing = casing;
+        this.pipeCasing = pipeCasing;
+        this.fireboxCasing = fireboxCasing;
+        this.eut = eut;
+        this.efficiencyIncrease = efficiencyIncrease;
+        this.isSuperheated = isSuperheated;
+        this.pollutionPerSecond = pollutionPerSecond;
+        this.structureDefinition = createStructureDefinition();
     }
 
-    @Override
-    public boolean supportsPowerPanel() {
-        return false;
+    private IStructureDefinition<MTELargeBoilerBase> createStructureDefinition() {
+        return StructureDefinition.<MTELargeBoilerBase>builder()
+            .addShape(
+                STRUCTURE_PIECE_MAIN,
+                // spotless:off
+                new String[][]{{
+                    "   C ",
+                    "   C ",
+                    "   C ",
+                    " CCC ",
+                    "CC~CC",
+                    "CFFFC"
+                }, {
+                    "  CCC",
+                    "  C C",
+                    "PPC C",
+                    "PCC P",
+                    "C   C",
+                    "FFFFF"
+                }, {
+                    "   C ",
+                    "   C ",
+                    "   C ",
+                    " CCC ",
+                    "CCCCC",
+                    "CFFFC"
+                }})
+            //spotless:on
+            .addElement(
+                'P',
+                buildHatchAdder(MTELargeBoilerBase.class).atLeast(InputHatch, InputBus, OutputHatch)
+                    .casingIndex(pipeCasing.getTextureId())
+                    .hint(1)
+                    .buildAndChain(
+                        onElementPass(
+                            MTELargeBoilerBase::onCasingAdded,
+                            ofBlock(pipeCasing.getBlock(), pipeCasing.getBlockMeta()))))
+            .addElement(
+                'C',
+                buildHatchAdder(MTELargeBoilerBase.class).atLeast(Maintenance, InputBus, Muffler)
+                    .casingIndex(casing.getTextureId())
+                    .hint(2)
+                    .buildAndChain(
+                        onElementPass(
+                            MTELargeBoilerBase::onCasingAdded,
+                            ofBlock(casing.getBlock(), casing.getBlockMeta()))))
+            .addElement(
+                'F',
+                buildHatchAdder(MTELargeBoilerBase.class).atLeast(Maintenance, InputBus, Muffler)
+                    .casingIndex(fireboxCasing.getTextureId())
+                    .hint(2)
+                    .buildAndChain(
+                        onElementPass(
+                            MTELargeBoilerBase::onFireboxAdded,
+                            ofBlock(fireboxCasing.getBlock(), fireboxCasing.getBlockMeta()))))
+            .build();
+    }
+
+    public Casings getCasing() {
+        return casing;
+    }
+
+    public Casings getPipeCasing() {
+        return pipeCasing;
+    }
+
+    public Casings getFireboxCasing() {
+        return fireboxCasing;
+    }
+
+    public abstract String getCasingMaterial();
+
+    public abstract String getCasingBlockType();
+
+    public final int getEUt() {
+        return eut;
+    }
+
+    public final int getEfficiencyIncrease() {
+        return efficiencyIncrease;
+    }
+
+    boolean isSuperheated() {
+        return isSuperheated;
     }
 
     @Override
@@ -125,15 +202,12 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
 
         tt.addMachineType("Boiler");
-        tt.addStructureDeprecatedLine();
-        // Tooltip differs between the boilers that output Superheated Steam (Titanium and Tungstensteel) and the ones
-        // that do not (Bronze and Steel)
         if (isSuperheated()) {
             tt.addInfo(
-                "Produces " + formatNumber((getEUt() * 40) * ((runtimeBoost(20) / (20f)) / superToNormalSteam))
+                "Produces " + formatNumber((getEUt() * 40) * ((runtimeBoost(20) / (20f)) / 3))
                     + "L of Superheated Steam with 1 Coal at "
-                    + formatNumber((getEUt() * 40L) / superToNormalSteam)
-                    + "L/s") // ?
+                    + formatNumber((getEUt() * 40L) / 3)
+                    + "L/s")
                 .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
                 .addInfo("Only some solid fuels are allowed (check the NEI Large Boiler tab for details)")
                 .addInfo("If there are any disallowed fuels in the input bus, the boiler won't run!");
@@ -142,18 +216,18 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 "Produces " + formatNumber((getEUt() * 40) * (runtimeBoost(20) / 20f))
                     + "L of Steam with 1 Coal at "
                     + formatNumber(getEUt() * 40L)
-                    + "L/s") // ?
+                    + "L/s")
                 .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
                 .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
         }
         tt.addInfo(
             String.format(
                 "Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up",
-                formatNumber(500.0 / getEfficiencyIncrease()))) // ? check semifluid again
+                formatNumber(500.0 / getEfficiencyIncrease())))
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 5, 3, false)
-            .addController("Front bottom center")
-            .addCasingInfoRange(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24, 31, false) // ?
+            .beginStructureBlock(5, 6, 3, false)
+            .addController("Front bottom")
+            .addCasingInfoMin(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24, false)
             .addOtherStructurePart(getCasingMaterial() + " Fire Boxes", "Bottom layer, 3 minimum")
             .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Blocks", "Inner 3 blocks")
             .addMaintenanceHatch("Any firebox", 1)
@@ -163,52 +237,17 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
             .addStructureInfo("You can use either, or both")
             .addInputHatch("Water, Any firebox", 1)
             .addOutputHatch("Steam, any casing", 2)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "PCGMatt")
             .toolTipFinisher();
 
         return tt;
-    }
-
-    public abstract String getCasingMaterial();
-
-    public abstract Block getCasingBlock();
-
-    public abstract String getCasingBlockType();
-
-    public abstract byte getCasingMeta();
-
-    public abstract byte getCasingTextureIndex();
-
-    public abstract Block getPipeBlock();
-
-    public abstract byte getPipeMeta();
-
-    public abstract Block getFireboxBlock();
-
-    public abstract byte getFireboxMeta();
-
-    public abstract byte getFireboxTextureIndex();
-
-    public abstract int getEUt();
-
-    public abstract int getEfficiencyIncrease();
-
-    public int getIntegratedCircuitConfig() {
-        return integratedCircuitConfig;
-    }
-
-    @Override
-    public int getPollutionPerSecond(ItemStack aStack) {
-        // allows for 0 pollution if circuit throttle is too high
-        return Math.max(
-            0,
-            (int) (pollutionPerSecond * (1 - GTMod.proxy.mPollutionReleasedByThrottle * getIntegratedCircuitConfig())));
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { BlockIcons.getCasingTextureForId(getCasingTextureIndex()),
+            if (aActive) return new ITexture[] { BlockIcons.getCasingTextureForId(casing.getTextureId()),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_LARGE_BOILER_ACTIVE)
                     .extFacing()
@@ -218,7 +257,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { BlockIcons.getCasingTextureForId(getCasingTextureIndex()), TextureFactory.builder()
+            return new ITexture[] { BlockIcons.getCasingTextureForId(casing.getTextureId()), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_LARGE_BOILER)
                 .extFacing()
                 .build(),
@@ -228,7 +267,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
+        return new ITexture[] { BlockIcons.getCasingTextureForId(casing.getTextureId()) };
     }
 
     boolean isFuelValid() {
@@ -273,7 +312,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
             this.integratedCircuitConfig = 0;
         }
 
-        this.mSuperEfficencyIncrease = 0;
+        this.superEfficencyIncrease = 0;
         if (!isSuperheated()) {
             for (GTRecipe tRecipe : RecipeMaps.dieselFuels.getAllRecipes()) {
                 FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
@@ -285,7 +324,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                         this.mEUt = adjustEUtForConfig(getEUt());
                         if (this.mEfficiencyIncrease > 5000) {
                             this.mEfficiencyIncrease = 0;
-                            this.mSuperEfficencyIncrease = 20;
+                            this.superEfficencyIncrease = 20;
                         }
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
@@ -302,7 +341,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                         this.mEUt = adjustEUtForConfig(getEUt());
                         if (this.mEfficiencyIncrease > 5000) {
                             this.mEfficiencyIncrease = 0;
-                            this.mSuperEfficencyIncrease = 20;
+                            this.superEfficencyIncrease = 20;
                         }
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
@@ -328,7 +367,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                             updateSlots();
                             if (this.mEfficiencyIncrease > 5000) {
                                 this.mEfficiencyIncrease = 0;
-                                this.mSuperEfficencyIncrease = 20;
+                                this.superEfficencyIncrease = 20;
                             }
                             return CheckRecipeResultRegistry.SUCCESSFUL;
                         }
@@ -354,7 +393,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                             updateSlots();
                             if (this.mEfficiencyIncrease > 5000) {
                                 this.mEfficiencyIncrease = 0;
-                                this.mSuperEfficencyIncrease = 20;
+                                this.superEfficencyIncrease = 20;
                             }
                             return CheckRecipeResultRegistry.SUCCESSFUL;
                         }
@@ -374,16 +413,12 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
 
     abstract int runtimeBoost(int mTime);
 
-    abstract boolean isSuperheated();
-
-    private final int superToNormalSteam = 3;
-
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mEUt > 0) {
             int maxEff = getCorrectedMaxEfficiency(mInventory[1]);
-            if (this.mSuperEfficencyIncrease > 0 && mEfficiency < maxEff) {
-                mEfficiency = Math.max(0, Math.min(mEfficiency + mSuperEfficencyIncrease, maxEff));
+            if (this.superEfficencyIncrease > 0 && mEfficiency < maxEff) {
+                mEfficiency = Math.max(0, Math.min(mEfficiency + superEfficencyIncrease, maxEff));
             }
             int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
@@ -450,25 +485,24 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     }
 
     @Override
-    public IStructureDefinition<MTELargeBoiler> getStructureDefinition() {
-        return STRUCTURE_DEFINITION.get(getClass());
+    public IStructureDefinition<MTELargeBoilerBase> getStructureDefinition() {
+        return structureDefinition;
     }
 
     private void onCasingAdded() {
-        mCasingAmount++;
+        casingAmount++;
     }
 
     private void onFireboxAdded() {
-        mFireboxAmount++;
+        fireboxAmount++;
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCasingAmount = 0;
-        mFireboxAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0) && mCasingAmount >= 24
-            && mFireboxAmount >= 3
-            && mMaintenanceHatches.size() == 1
+        casingAmount = 0;
+        fireboxAmount = 0;
+        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 24
+            && fireboxAmount >= 3
             && !mMufflerHatches.isEmpty();
     }
 
@@ -482,9 +516,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     }
 
     private int adjustBurnTimeForConfig(int rawBurnTime) {
-        // Checks if the fuel is eligible for a super efficiency increase and if so, we want to immediately apply the
-        // adjustment!
-        // We also want to check that the fuel
+        // Checks if the fuel is eligible for a super efficiency increase and if so, we want to immediately adjust
         if (mEfficiencyIncrease <= 5000 && mEfficiency < getCorrectedMaxEfficiency(mInventory[1])) {
             return rawBurnTime;
         }
@@ -498,13 +530,22 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 4, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            OFFSET_X,
+            OFFSET_Y,
+            OFFSET_Z,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @SideOnly(Side.CLIENT)
@@ -513,4 +554,15 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         return SoundResource.GTCEU_LOOP_BOILER;
     }
 
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
+    public int getPollutionPerSecond(ItemStack aStack) {
+        return Math.max(
+            0,
+            (int) (pollutionPerSecond * (1 - GTMod.proxy.mPollutionReleasedByThrottle * integratedCircuitConfig)));
+    }
 }
