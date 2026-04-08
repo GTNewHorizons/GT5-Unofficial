@@ -455,7 +455,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addSeparator()
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
             .beginStructureBlock(17, 17, 17, false)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoExactly("Any Tiered Glass", 81, true)
             .addCasingInfoMin("Vibration-Safe Casing", 550, false)
             .addCasingInfoExactly("Chamber Grate", 144, false)
@@ -793,11 +793,13 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         return "Unset";
     }
 
+    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         staticAnimations = !staticAnimations;
-        GTUtility
-            .sendChatToPlayer(aPlayer, "Using " + (staticAnimations ? "Static" : "Animated") + " Turbine Texture.");
+        GTUtility.sendChatTrans(
+            aPlayer,
+            staticAnimations ? "GT5U.chat.spinmatron.texture.static" : "GT5U.chat.spinmatron.texture.animated");
         for (MTEHatchTurbine h : validMTEList(this.turbineRotorHatchList)) {
             h.mUsingAnimation = staticAnimations;
         }
@@ -867,6 +869,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTESpinmatron> adder() {
             return adder;
         }

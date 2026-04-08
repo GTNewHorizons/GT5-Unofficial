@@ -1,11 +1,11 @@
 package gregtech.common.covers;
 
-import static gregtech.api.util.GTUtility.sendChatToPlayer;
-import static gregtech.common.gui.mui1.cover.NeedMaintainanceUIFactory.getMaintenanceIssuesCount;
-import static net.minecraft.util.StatCollector.translateToLocal;
+import static gregtech.api.util.GTUtility.*;
+import static gregtech.common.gui.mui1.cover.NeedMaintainanceUIFactory.getMaintenanceIssuesCountChat;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
@@ -59,6 +59,7 @@ public class CoverNeedMaintainance extends CoverLegacyData {
         setVariable(redstoneMode == RedstoneMode.NORMAL ? coverData & ~0x1 : coverData | 0x1);
     }
 
+    @Override
     public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }
@@ -113,19 +114,19 @@ public class CoverNeedMaintainance extends CoverLegacyData {
             this.coverData = 13;
         }
         switch (this.coverData) {
-            case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 -> sendChatToPlayer(
+            case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 -> sendChatComp(
                 aPlayer,
-                getMaintenanceIssuesCount(this.coverData / 2 + 1, this.coverData % 2 != 0));
-            case 10 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.need_maint_rotor_lo"));
-            case 11 -> sendChatToPlayer(
+                getMaintenanceIssuesCountChat(this.coverData / 2 + 1, this.coverData % 2 != 0));
+            case 10 -> sendChatTrans(aPlayer, "gt.interact.desc.need_maint_rotor_lo");
+            case 11 -> sendChatComp(
                 aPlayer,
-                translateToLocal("gt.interact.desc.need_maint_rotor_lo")
-                    + translateToLocal("gt.interact.desc.inverted_b"));
-            case 12 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.need_maint_rotor_hi"));
-            case 13 -> sendChatToPlayer(
+                new ChatComponentTranslation("gt.interact.desc.need_maint_rotor_lo")
+                    .appendSibling(new ChatComponentTranslation("gt.interact.desc.inverted_b")));
+            case 12 -> sendChatTrans(aPlayer, "gt.interact.desc.need_maint_rotor_hi");
+            case 13 -> sendChatComp(
                 aPlayer,
-                translateToLocal("gt.interact.desc.need_maint_rotor_hi")
-                    + translateToLocal("gt.interact.desc.inverted_b"));
+                new ChatComponentTranslation("gt.interact.desc.need_maint_rotor_hi")
+                    .appendSibling(new ChatComponentTranslation("gt.interact.desc.inverted_b")));
         }
     }
 

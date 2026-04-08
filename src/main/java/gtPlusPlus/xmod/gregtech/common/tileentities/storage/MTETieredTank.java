@@ -13,19 +13,26 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.gui.modularui.singleblock.MTETieredTankGui;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 
-public class MTETieredTank extends MTEBasicTank {
+public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMetaTile {
 
     public MTETieredTank(final int aID, final String aName, final String aNameRegional, final int aTier) {
         super(
@@ -82,9 +89,9 @@ public class MTETieredTank extends MTEBasicTank {
                 .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
                 tooltip.add(
-                    GTUtility.translate("gtpp.tiered_tank.tooltip.contains") + EnumChatFormatting.YELLOW
-                        + tContents.getLocalizedName()
-                        + EnumChatFormatting.GRAY);
+                    GTUtility.translate(
+                        "gtpp.tiered_tank.tooltip.contains",
+                        EnumChatFormatting.YELLOW + tContents.getLocalizedName() + EnumChatFormatting.GRAY));
 
                 tooltip.add(
                     GTUtility.translate(
@@ -165,5 +172,10 @@ public class MTETieredTank extends MTEBasicTank {
                 Logger.WARNING("Set mFluid to NBT.");
             }
         }
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTETieredTankGui(this).build(guiData, syncManager, uiSettings);
     }
 }

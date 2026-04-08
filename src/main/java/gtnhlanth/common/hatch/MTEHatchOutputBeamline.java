@@ -14,7 +14,7 @@ import gregtech.api.render.TextureFactory;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
 
-public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector implements IConnectsToBeamline {
+public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector {
 
     private static final String activeIconPath = "iconsets/OVERLAY_BO_ACTIVE";
     private static final String sideIconPath = "iconsets/OVERLAY_BO_SIDES";
@@ -140,4 +140,5 @@ public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector implements
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
         return new MTEHatchOutputBeamline(mName, mTier, mDescriptionArray, mTextures);
     }
+
 }

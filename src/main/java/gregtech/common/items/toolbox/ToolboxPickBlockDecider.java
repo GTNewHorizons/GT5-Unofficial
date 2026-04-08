@@ -1,6 +1,7 @@
 package gregtech.common.items.toolbox;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -13,6 +14,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import appeng.api.util.IOrientable;
@@ -21,11 +23,15 @@ import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
+import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.toolbox.pickblock.CoverableAction;
 import gregtech.common.items.toolbox.pickblock.EnderIOAction;
+import gregtech.common.items.toolbox.pickblock.ForceDeselectAction;
 import gregtech.common.items.toolbox.pickblock.IDeciderAction;
+import gregtech.common.items.toolbox.pickblock.MaintenanceHatchAction;
+import gregtech.common.items.toolbox.pickblock.PickResults;
 import gregtech.common.items.toolbox.pickblock.ProjectRedAction;
 import gregtech.common.items.toolbox.pickblock.RailcraftAction;
 import gregtech.common.items.toolbox.pickblock.SimpleAction;
@@ -83,6 +89,9 @@ public class ToolboxPickBlockDecider {
         new EnderIOAction(),
         new RailcraftAction());
 
+    private static final Map<Class<?>, ForceDeselectAction<?>> FORCE_DESELECT = ImmutableMap
+        .of(MTEHatchMaintenance.class, new MaintenanceHatchAction());
+
     private ToolboxPickBlockDecider() {}
 
     /**
@@ -96,18 +105,17 @@ public class ToolboxPickBlockDecider {
      * @return A list of {@link ToolboxSlot ToolboxSlots}, in order of descending priority. Empty list returned if
      *         nothing matches
      */
-    public static List<ToolboxSlot> getSuggestedTool(final EntityPlayer player, MovingObjectPosition position) {
-
+    public static PickResults getSuggestedTool(final EntityPlayer player, MovingObjectPosition position) {
         if (position != null && position.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
             final Block block = player.worldObj.getBlock(position.blockX, position.blockY, position.blockZ);
 
             if (block != Blocks.air) {
                 if (WRENCH_BLOCKS.contains(block)) {
-                    return ImmutableList.of(ToolboxSlot.WRENCH);
+                    return new PickResults(ToolboxSlot.WRENCH);
                 } else if (SOFT_MALLET_BLOCKS.contains(block)) {
-                    return ImmutableList.of(ToolboxSlot.SOFT_MALLET);
+                    return new PickResults(ToolboxSlot.SOFT_MALLET);
                 } else if (CROWBAR_BLOCKS.contains(block)) {
-                    return ImmutableList.of(ToolboxSlot.CROWBAR);
+                    return new PickResults(ToolboxSlot.CROWBAR);
                 }
 
                 if (block.hasTileEntity(
@@ -117,33 +125,43 @@ public class ToolboxPickBlockDecider {
 
                     if (baseTE != null) {
                         final Object chosen = Objects.firstNonNull(GTUtility.getMetaTileEntity(baseTE), baseTE);
+                        final ForgeDirection side = ForgeDirection.getOrientation(position.sideHit);
+
+                        if (chosen != null && FORCE_DESELECT.containsKey(chosen.getClass())
+                            && FORCE_DESELECT.get(chosen.getClass())
+                                .test(chosen, side)) {
+                            return new PickResults(true);
+                        }
 
                         for (IDeciderAction action : CLASS_ACTIONS) {
                             if (action.isValid(chosen)) {
-                                return action.apply(
-                                    chosen,
-                                    GTUtility.determineWrenchingSide(
-                                        ForgeDirection.getOrientation(position.sideHit),
-                                        (float) position.hitVec.xCoord,
-                                        (float) position.hitVec.yCoord,
-                                        (float) position.hitVec.zCoord));
+                                return new PickResults(
+                                    action.apply(
+                                        chosen,
+                                        GTUtility.determineWrenchingSide(
+                                            side,
+                                            (float) position.hitVec.xCoord,
+                                            (float) position.hitVec.yCoord,
+                                            (float) position.hitVec.zCoord)));
                             }
                         }
                     }
                 }
+
             }
         }
 
-        return ImmutableList.of();
+        return new PickResults(false);
     }
 
     /** @see #getSuggestedTool(EntityPlayer, MovingObjectPosition) */
-    public static List<ToolboxSlot> getSuggestedTool(final EntityPlayer player) {
+    public static PickResults getSuggestedTool(final EntityPlayer player) {
         return getSuggestedTool(player, GTUtility.getPlayerLookingTarget(player));
     }
 
     /** @see #getSuggestedTool(EntityPlayer, MovingObjectPosition) */
-    public static List<ToolboxSlot> getSuggestedTool(final DrawBlockHighlightEvent event) {
+    public static PickResults getSuggestedTool(final DrawBlockHighlightEvent event) {
         return getSuggestedTool(event.player, event.target);
     }
+
 }

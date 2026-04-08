@@ -52,7 +52,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -60,7 +59,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -72,14 +71,12 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;
@@ -97,7 +94,7 @@ import tectech.util.FluidStackLong;
 import tectech.util.ItemStackLong;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
+public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstructable {
 
     public static final boolean EOH_DEBUG_MODE = false;
     private static final long MOLTEN_SPACETIME_PER_FAILURE_TIER = 14_400L;
@@ -1095,6 +1092,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addInfo("Animations can be disabled by using a screwdriver on the multiblock")
             .addInfo("Planet block can be inserted directly by right-clicking the controller with planet block")
             .beginStructureBlock(33, 33, 33, false)
+            .addController("Front center")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "896" + EnumChatFormatting.GRAY + " Reinforced Spatial Structure Casing.")
             .addStructureInfo(
@@ -1117,7 +1115,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addSubChannelUsage(GTStructureChannels.EOH_STABILISATION)
             .addSubChannelUsage(GTStructureChannels.EOH_DILATION)
             .addSubChannelUsage(GTStructureChannels.EOH_COMPRESSION)
-            .toolTipFinisher(EnumChatFormatting.GOLD, 87, GTValues.AuthorColen);
+            .toolTipFinisher(EnumChatFormatting.GOLD, 87, GTAuthors.AuthorColen);
         return tt;
     }
 
@@ -1479,6 +1477,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
     }
 
+    @Override
     public void outputAfterRecipe_EM() {
         recipeRunning = false;
         eRequiredData = 0L;
@@ -1549,12 +1548,12 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         while (amount >= Integer.MAX_VALUE) {
             FluidStack tmpFluid = fluid.copy();
             tmpFluid.amount = Integer.MAX_VALUE;
-            ((MTEHatchOutputME) mOutputHatches.get(0)).tryFillAE(tmpFluid);
+            dumpFluid(mOutputHatches, tmpFluid, false);
             amount -= Integer.MAX_VALUE;
         }
         FluidStack tmpFluid = fluid.copy();
         tmpFluid.amount = (int) amount;
-        ((MTEHatchOutputME) mOutputHatches.get(0)).tryFillAE(tmpFluid);
+        dumpFluid(mOutputHatches, tmpFluid, false);
     }
 
     @Override
@@ -1732,16 +1731,16 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             if (nbt.hasKey(PLANET_BLOCK)) {
                 tooltip.add(
                     1,
-                    GTLanguageManager.addStringLocalization("EOH_Controller_PlanetBlock", "Current Planet Block: ")
-                        + AQUA
-                        + new ItemStack(ModBlocks.getBlock(nbt.getString(PLANET_BLOCK))).getDisplayName());
+                    StatCollector.translateToLocalFormatted(
+                        "EOH_Controller_PlanetBlock",
+                        AQUA + new ItemStack(ModBlocks.getBlock(nbt.getString(PLANET_BLOCK))).getDisplayName()));
             }
             if (nbt.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG) > 0) {
                 tooltip.add(
                     1,
-                    GTLanguageManager
-                        .addStringLocalization("EOH_Controller_AstralArrayAmount", "Stored Astral Arrays: ") + AQUA
-                        + formatNumber(nbt.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG)));
+                    StatCollector.translateToLocalFormatted(
+                        "EOH_Controller_AstralArrayAmount",
+                        AQUA + formatNumber(nbt.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG))));
             }
         }
     }
