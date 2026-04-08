@@ -92,7 +92,7 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
             .addInfo("Disable animations with a screwdriver")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Centrifuge Casings", 6, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)

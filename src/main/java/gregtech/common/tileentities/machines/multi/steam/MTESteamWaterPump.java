@@ -244,6 +244,7 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
                     + " of Steam"
                     + EnumChatFormatting.RESET)
             .beginStructureBlock(3, 3, 4, false)
+            .addController("Front bottom center")
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addStructureInfo(
                 EnumChatFormatting.WHITE + "Steam Input Hatch "

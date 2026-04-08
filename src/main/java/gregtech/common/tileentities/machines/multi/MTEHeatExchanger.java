@@ -206,7 +206,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                     + EnumChatFormatting.GRAY
                     + " reduced steam per circuit over 1")
             .beginStructureBlock(3, 4, 3, false)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addCasingInfoRange("Stable Titanium Machine Casing", 20, 28, false)
             .addOtherStructurePart("Titanium Pipe Casing", "Center 2 blocks")
             .addMaintenanceHatch("Any casing", 1)
