@@ -1,11 +1,13 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -28,6 +30,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -54,9 +57,11 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
     private static final int OFFSET_Z = 0;
 
     private static final int PARALLEL_PER_TIER = 8;
-    private static final float SPEED_INCREASE_TIER = 0.5f;
+    private static final float SPEED_INCREASE_TIER = 1f;
     private static final float SPEED_BASIC = 1f;
     private static final float EU_EFFICIENCY = 1f;
+
+    private int glassTier = -1;
 
     public MTEIndustrialMixer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -120,7 +125,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
                         " DDD "
                     }})
                 //spotless:on
-                .addElement('A', chainAllGlasses())
+                .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement(
                     'B',
                     chainItemPipeCasings(-1, MTEIndustrialMixer::setItemPipeTier, MTEIndustrialMixer::getItemPipeTier))
@@ -129,7 +134,15 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
                 .addElement(
                     'E',
                     buildHatchAdder(MTEIndustrialMixer.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+                        .atLeast(
+                            InputBus,
+                            OutputBus,
+                            Maintenance,
+                            Energy,
+                            Muffler,
+                            InputHatch,
+                            OutputHatch,
+                            MultiAmpEnergy)
                         .casingIndex(Casings.MixerCasing.textureId)
                         .hint(1)
                         .buildAndChain(
@@ -173,6 +186,11 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
             .addStaticSpeedInfo(SPEED_BASIC)
             .addDynamicSpeedBonusInfo(SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
             .addStaticEuEffInfo(1)
+            .addInfo(
+                TIER_COLORS[VoltageIndex.UIV] + "UIV+ "
+                    + EnumChatFormatting.GRAY
+                    + "glass allows for single multi-amp energy hatch")
+            .addMultiAmpHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 7, 5, false)
             .addController("Second Layer Front Center")
@@ -200,7 +218,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
             @Override
             public CheckRecipeResult process() {
                 setEuModifier(EU_EFFICIENCY);
-                setSpeedBonus(1F / SPEED_BASIC + (SPEED_INCREASE_TIER * (itemPipeTier + 1)));
+                setSpeedBonus(1F / SPEED_BASIC / (SPEED_INCREASE_TIER + (itemPipeTier + 1)));
                 return super.process();
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
@@ -250,9 +268,13 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         itemPipeTier = -1;
+        glassTier = -1;
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 4
-            && !mMufflerHatches.isEmpty();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z)) return false;
+        if (!(casingAmount >= 5)) return false;
+        if (mMufflerHatches.isEmpty()) return false;
+        if (mExoticEnergyHatches.size() == 1) return glassTier >= VoltageIndex.UIV;
+        return true;
     }
 
     @Override

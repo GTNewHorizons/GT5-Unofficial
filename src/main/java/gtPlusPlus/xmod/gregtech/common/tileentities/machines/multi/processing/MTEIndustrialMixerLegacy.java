@@ -85,6 +85,7 @@ public class MTEIndustrialMixerLegacy extends GTPPMultiBlockBase<MTEIndustrialMi
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addBulkMachineInfo(8, 3.5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, false)
