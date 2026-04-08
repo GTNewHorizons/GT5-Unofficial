@@ -42,6 +42,11 @@ public final class GTWidgetThemes {
         .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, 0x404040, false, 0))
         .defaultHoverTheme(null)
         .register();
+    public static WidgetThemeKey<WidgetTheme> DISPLAY_TEXT = themeApi
+        .widgetThemeKeyBuilder("displayText", WidgetTheme.class)
+        .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, Color.WHITE.main, false, 0))
+        .defaultHoverTheme(null)
+        .register();
 
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_POPUP = registerThemedTexture("backgroundPopup");
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_TITLE = registerThemedTexture("backgroundTitle");
