@@ -33,23 +33,23 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosionCompressor>
+public class MTEAdvImplosionCompressorLegacy extends GTPPMultiBlockBase<MTEAdvImplosionCompressorLegacy>
     implements ISurvivalConstructable {
 
     private int mCasing;
-    private static IStructureDefinition<MTEAdvImplosionCompressor> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEAdvImplosionCompressorLegacy> STRUCTURE_DEFINITION = null;
 
-    public MTEAdvImplosionCompressor(int aID, String aName, String aNameRegional) {
+    public MTEAdvImplosionCompressorLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEAdvImplosionCompressor(String aName) {
+    public MTEAdvImplosionCompressorLegacy(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEAdvImplosionCompressor(this.mName);
+        return new MTEAdvImplosionCompressorLegacy(this.mName);
     }
 
     @Override
@@ -61,6 +61,7 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addInfo("Factory Grade Advanced Implosion Compressor")
             .addInfo(TooltipHelper.parallelText("1 + (Tier/2)") + " Parallels")
             .addStaticSpeedInfo(2f)
@@ -80,9 +81,9 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
     }
 
     @Override
-    public IStructureDefinition<MTEAdvImplosionCompressor> getStructureDefinition() {
+    public IStructureDefinition<MTEAdvImplosionCompressorLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEAdvImplosionCompressor>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEAdvImplosionCompressorLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
@@ -90,7 +91,7 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
                 .addElement(
                     'C',
                     ofChain(
-                        buildHatchAdder(MTEAdvImplosionCompressor.class)
+                        buildHatchAdder(MTEAdvImplosionCompressorLegacy.class)
                             .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                             .casingIndex(getCasingTextureId())
                             .hint(1)
