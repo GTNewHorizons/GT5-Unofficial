@@ -1216,7 +1216,10 @@ public class GTUtility {
             && container.getCapacity(stack) > 0) {
 
             ItemStack stackCopy = copyAmount(1, stack);
-            container.drain(stackCopy, Integer.MAX_VALUE, true);
+            FluidStack drained = container.drain(stackCopy, Integer.MAX_VALUE, true);
+            if (drained == null || drained.amount == 0) {
+                return null;
+            }
             return stackCopy;
         }
 

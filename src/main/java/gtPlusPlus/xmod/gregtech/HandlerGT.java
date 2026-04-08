@@ -41,7 +41,6 @@ public class HandlerGT {
     }
 
     public static void onLoadComplete(FMLLoadCompleteEvent event) {
-        CokeAndPyrolyseOven.onLoadComplete();
         MetaGTProxy.fixIC2FluidNames();
         RecipeLoaderTreeFarm.generateRecipes();
         RecipeLoaderMolecularTransformer.run();

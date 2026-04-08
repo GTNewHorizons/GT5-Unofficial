@@ -206,7 +206,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 4, true)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 52, false)
             .addCasingInfoExactly("Heat Proof Machine Casing", 16, false)
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 9, false)

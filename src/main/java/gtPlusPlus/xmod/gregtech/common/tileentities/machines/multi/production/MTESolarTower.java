@@ -102,7 +102,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             .addInfo("Total number of reflectors based on how many rings are built:")
             .addInfo("1 ring = 36, 2 rings = 88, 3 rings = 156, 4 rings = 240, 5 rings = 340")
             .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false)
-            .addController("Top Middle")
+            .addController("Top center")
             .addCasingInfoMin("Structural Solar Casing", 229, false)
             .addCasingInfoMin("Thermally Insulated Casing", 60, false)
             .addCasingInfoMin("Salt Containment Casing", 66, false)
