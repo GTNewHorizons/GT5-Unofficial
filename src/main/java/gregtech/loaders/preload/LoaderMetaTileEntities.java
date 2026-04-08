@@ -172,9 +172,13 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialWireMill;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactoryLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerBronze;
+import gregtech.common.tileentities.machines.multi.MTELargeBoilerBronzeLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteel;
+import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteelLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerTitanium;
+import gregtech.common.tileentities.machines.multi.MTELargeBoilerTitaniumLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerTungstenSteel;
+import gregtech.common.tileentities.machines.multi.MTELargeBoilerTungstenSteelLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeFluidExtractor;
 import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
@@ -416,20 +420,22 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Degasser Control Hatch",
                 8).getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_Bronze.set(
-            new MTELargeBoilerBronze(
+            new MTELargeBoilerBronzeLegacy(
                 LARGE_BRONZE_BOILER_CONTROLLER.ID,
                 "multimachine.boiler.bronze",
                 "Large Bronze Boiler").getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_Steel.set(
-            new MTELargeBoilerSteel(LARGE_STEEL_BOILER_CONTROLLER.ID, "multimachine.boiler.steel", "Large Steel Boiler")
-                .getStackForm(1L));
+            new MTELargeBoilerSteelLegacy(
+                LARGE_STEEL_BOILER_CONTROLLER.ID,
+                "multimachine.boiler.steel",
+                "Large Steel Boiler").getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_Titanium.set(
-            new MTELargeBoilerTitanium(
+            new MTELargeBoilerTitaniumLegacy(
                 LARGE_TITANIUM_BOILER_CONTROLLER.ID,
                 "multimachine.boiler.titanium",
                 "Large Titanium Boiler").getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_TungstenSteel.set(
-            new MTELargeBoilerTungstenSteel(
+            new MTELargeBoilerTungstenSteelLegacy(
                 LARGE_TUNGSTENSTEEL_BOILER_CONTROLLER.ID,
                 "multimachine.boiler.tungstensteel",
                 "Large Tungstensteel Boiler").getStackForm(1L));
@@ -832,6 +838,24 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 IndustrialElectrolyzer.ID,
                 "industrialelectrolyzer.controller.tier.single",
                 "Industrial Electrolyzer").getStackForm(1L));
+
+        ItemList.BronzeBoilerLarge.set(
+            new MTELargeBoilerBronze(BronzeBoilerLarge.ID, "multimachine.boiler.bronze", "Large Bronze Boiler")
+                .getStackForm(1L));
+
+        ItemList.SteelBoilerLarge.set(
+            new MTELargeBoilerSteel(SteelBoilerLarge.ID, "multimachine.boiler.steel", "Large Steel Boiler")
+                .getStackForm(1L));
+
+        ItemList.TitaniumBoilerLarge.set(
+            new MTELargeBoilerTitanium(TitaniumBoilerLarge.ID, "multimachine.boiler.titanium", "Large Titanium Boiler")
+                .getStackForm(1L));
+
+        ItemList.TungstensteelBoilerLarge.set(
+            new MTELargeBoilerTungstenSteel(
+                TungstensteelBoilerLarge.ID,
+                "multimachine.boiler.tungstensteel",
+                "Large Tungstensteel Boiler").getStackForm(1L));
 
         ItemList.FlotationCell.set(
             new MTEFrothFlotationCell(FlotationCell.ID, "gtpp.multimachine.flotationcell", "Flotation Cell Regulator")
