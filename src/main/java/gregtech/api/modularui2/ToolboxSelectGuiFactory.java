@@ -4,8 +4,10 @@ import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
+import java.util.stream.IntStream;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
@@ -24,6 +26,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ToolboxSlot;
@@ -146,11 +149,24 @@ public class ToolboxSelectGuiFactory extends AbstractUIFactory<GuiData> {
         }
 
         private static Optional<Integer> getToolboxSlot(EntityPlayer player) {
-            for (int slot : new Integer[] { player.inventory.currentItem, Backhand.getOffhandSlot(player) }) {
-                if (slot == -1) {
-                    continue;
-                }
+            final ImmutableList.Builder<Integer> builder = ImmutableList.builder();
+            builder.add(player.inventory.currentItem);
 
+            final int offhandSlot = Backhand.getOffhandSlot(player);
+            if (offhandSlot != -1) {
+                builder.add(offhandSlot);
+            }
+
+            // Included for players with slippery scroll wheels. Check the entire hotbar if the current item or offhand
+            // both lack a toolbox and use the first one we find.
+            IntStream.rangeClosed(0, InventoryPlayer.getHotbarSize())
+                .forEach(slot -> {
+                    if (slot != player.inventory.currentItem) {
+                        builder.add(slot);
+                    }
+                });
+
+            for (int slot : builder.build()) {
                 final ItemStack stack = player.inventory.getStackInSlot(slot);
                 if (stack != null && stack.getItem() instanceof ItemGTToolbox) {
                     return Optional.of(slot);
