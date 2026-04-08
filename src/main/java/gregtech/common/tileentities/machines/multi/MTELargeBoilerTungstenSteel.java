@@ -8,6 +8,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 public class MTELargeBoilerTungstenSteel extends MTELargeBoilerBase {
 
     public static final int EUT_GENERATED = 16000;
+    public static final int EFFICIENCY_INCREASE = 4;
+    public static final boolean SUPERHEATED = true;
 
     public MTELargeBoilerTungstenSteel(int aID, String aName, String aNameRegional) {
         super(
@@ -18,8 +20,8 @@ public class MTELargeBoilerTungstenSteel extends MTELargeBoilerBase {
             Casings.TungstensteelPipeCasing,
             Casings.TungstensteelFireboxCasing,
             EUT_GENERATED,
-            4,
-            true,
+            EFFICIENCY_INCREASE,
+            SUPERHEATED,
             GTMod.proxy.mPollutionLargeTungstenSteelBoilerPerSecond);
     }
 
@@ -30,8 +32,8 @@ public class MTELargeBoilerTungstenSteel extends MTELargeBoilerBase {
             Casings.TungstensteelPipeCasing,
             Casings.TungstensteelFireboxCasing,
             EUT_GENERATED,
-            4,
-            true,
+            EFFICIENCY_INCREASE,
+            SUPERHEATED,
             GTMod.proxy.mPollutionLargeTungstenSteelBoilerPerSecond);
     }
 

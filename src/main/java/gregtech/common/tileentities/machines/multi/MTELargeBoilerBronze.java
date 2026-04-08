@@ -8,6 +8,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 public class MTELargeBoilerBronze extends MTELargeBoilerBase {
 
     public static final int EUT_GENERATED = 400;
+    public static final int EFFICIENCY_INCREASE = 16;
+    public static final boolean SUPERHEATED = false;
 
     public MTELargeBoilerBronze(int aID, String aName, String aNameRegional) {
         super(
@@ -18,8 +20,8 @@ public class MTELargeBoilerBronze extends MTELargeBoilerBase {
             Casings.BronzePipeCasing,
             Casings.BronzeFireboxCasing,
             EUT_GENERATED,
-            16,
-            false,
+            EFFICIENCY_INCREASE,
+            SUPERHEATED,
             GTMod.proxy.mPollutionLargeBronzeBoilerPerSecond);
     }
 
@@ -30,8 +32,8 @@ public class MTELargeBoilerBronze extends MTELargeBoilerBase {
             Casings.BronzePipeCasing,
             Casings.BronzeFireboxCasing,
             EUT_GENERATED,
-            16,
-            false,
+            EFFICIENCY_INCREASE,
+            SUPERHEATED,
             GTMod.proxy.mPollutionLargeBronzeBoilerPerSecond);
     }
 

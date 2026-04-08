@@ -7,6 +7,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class MTELargeBoilerTitanium extends MTELargeBoilerBase {
 
+    public static final int EUT_GENERATED = 4000;
+    public static final int EFFICIENCY_INCREASE = 8;
+    public static final boolean SUPERHEATED = true;
+
     public MTELargeBoilerTitanium(int aID, String aName, String aNameRegional) {
         super(
             aID,
@@ -15,9 +19,9 @@ public class MTELargeBoilerTitanium extends MTELargeBoilerBase {
             Casings.StableTitaniumMachineCasing,
             Casings.TitaniumPipeCasing,
             Casings.TitaniumFireboxCasing,
-            4000,
-            8,
-            true,
+            EUT_GENERATED,
+            EFFICIENCY_INCREASE,
+            SUPERHEATED,
             GTMod.proxy.mPollutionLargeTitaniumBoilerPerSecond);
     }
 
@@ -27,9 +31,9 @@ public class MTELargeBoilerTitanium extends MTELargeBoilerBase {
             Casings.StableTitaniumMachineCasing,
             Casings.TitaniumPipeCasing,
             Casings.TitaniumFireboxCasing,
-            4000,
-            8,
-            true,
+            EUT_GENERATED,
+            EFFICIENCY_INCREASE,
+            SUPERHEATED,
             GTMod.proxy.mPollutionLargeTitaniumBoilerPerSecond);
     }
 

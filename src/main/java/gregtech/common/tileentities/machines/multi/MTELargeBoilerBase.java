@@ -74,15 +74,16 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     private final boolean isSuperheated;
 
     private boolean firstRun = true;
-    private int mSuperEfficencyIncrease = 0;
+    private int superEfficencyIncrease = 0;
     private int integratedCircuitConfig = 0;
     private int excessWater = 0;
     private int excessFuel = 0;
     private int excessProjectedEU = 0;
-    private int mCasingAmount;
-    private int mFireboxAmount;
+    private int casingAmount;
+    private int fireboxAmount;
     protected final int pollutionPerSecond;
     private final IStructureDefinition<MTELargeBoilerBase> structureDefinition;
+    private final int superToNormalSteam = 3;
 
     protected MTELargeBoilerBase(int aID, String aName, String aNameRegional, Casings casing, Casings pipeCasing,
         Casings fireboxCasing, int eut, int efficiencyIncrease, boolean isSuperheated, int pollutionPerSecond) {
@@ -311,7 +312,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             this.integratedCircuitConfig = 0;
         }
 
-        this.mSuperEfficencyIncrease = 0;
+        this.superEfficencyIncrease = 0;
         if (!isSuperheated()) {
             for (GTRecipe tRecipe : RecipeMaps.dieselFuels.getAllRecipes()) {
                 FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
@@ -323,7 +324,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                         this.mEUt = adjustEUtForConfig(getEUt());
                         if (this.mEfficiencyIncrease > 5000) {
                             this.mEfficiencyIncrease = 0;
-                            this.mSuperEfficencyIncrease = 20;
+                            this.superEfficencyIncrease = 20;
                         }
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
@@ -340,7 +341,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                         this.mEUt = adjustEUtForConfig(getEUt());
                         if (this.mEfficiencyIncrease > 5000) {
                             this.mEfficiencyIncrease = 0;
-                            this.mSuperEfficencyIncrease = 20;
+                            this.superEfficencyIncrease = 20;
                         }
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
@@ -366,7 +367,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                             updateSlots();
                             if (this.mEfficiencyIncrease > 5000) {
                                 this.mEfficiencyIncrease = 0;
-                                this.mSuperEfficencyIncrease = 20;
+                                this.superEfficencyIncrease = 20;
                             }
                             return CheckRecipeResultRegistry.SUCCESSFUL;
                         }
@@ -392,7 +393,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                             updateSlots();
                             if (this.mEfficiencyIncrease > 5000) {
                                 this.mEfficiencyIncrease = 0;
-                                this.mSuperEfficencyIncrease = 20;
+                                this.superEfficencyIncrease = 20;
                             }
                             return CheckRecipeResultRegistry.SUCCESSFUL;
                         }
@@ -412,14 +413,12 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
 
     abstract int runtimeBoost(int mTime);
 
-    private final int superToNormalSteam = 3;
-
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mEUt > 0) {
             int maxEff = getCorrectedMaxEfficiency(mInventory[1]);
-            if (this.mSuperEfficencyIncrease > 0 && mEfficiency < maxEff) {
-                mEfficiency = Math.max(0, Math.min(mEfficiency + mSuperEfficencyIncrease, maxEff));
+            if (this.superEfficencyIncrease > 0 && mEfficiency < maxEff) {
+                mEfficiency = Math.max(0, Math.min(mEfficiency + superEfficencyIncrease, maxEff));
             }
             int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
@@ -491,19 +490,19 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     }
 
     private void onCasingAdded() {
-        mCasingAmount++;
+        casingAmount++;
     }
 
     private void onFireboxAdded() {
-        mFireboxAmount++;
+        fireboxAmount++;
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCasingAmount = 0;
-        mFireboxAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && mCasingAmount >= 24
-            && mFireboxAmount >= 3
+        casingAmount = 0;
+        fireboxAmount = 0;
+        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 24
+            && fireboxAmount >= 3
             && !mMufflerHatches.isEmpty();
     }
 
@@ -517,9 +516,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     }
 
     private int adjustBurnTimeForConfig(int rawBurnTime) {
-        // Checks if the fuel is eligible for a super efficiency increase and if so, we want to immediately apply the
-        // adjustment!
-        // We also want to check that the fuel
+        // Checks if the fuel is eligible for a super efficiency increase and if so, we want to immediately adjust
         if (mEfficiencyIncrease <= 5000 && mEfficiency < getCorrectedMaxEfficiency(mInventory[1])) {
             return rawBurnTime;
         }
