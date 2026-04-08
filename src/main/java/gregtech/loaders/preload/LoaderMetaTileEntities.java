@@ -202,6 +202,7 @@ import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant3;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant4;
 import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
+import gregtech.common.tileentities.machines.multi.MTEPyrolyseOvenLegacy;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
 import gregtech.common.tileentities.machines.multi.MTESolarFactory;
 import gregtech.common.tileentities.machines.multi.MTESpinmatron;
@@ -536,7 +537,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1));
 
         ItemList.PyrolyseOven.set(
-            new MTEPyrolyseOven(PYROLYSE_OVEN_CONTROLLER.ID, "multimachine.pyro", "Pyrolyse Oven").getStackForm(1));
+            new MTEPyrolyseOvenLegacy(PYROLYSE_OVEN_CONTROLLER.ID, "multimachine.pyro", "Pyrolyse Oven")
+                .getStackForm(1));
         ItemList.OilCracker.set(
             new MTEOilCracker(OIL_CRACKER_CONTROLLER.ID, "multimachine.cracker", "Oil Cracking Unit").getStackForm(1));
 
@@ -842,6 +844,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MegaChemicalReactor.ID,
                 "multimachine.mega-chemical-reactor",
                 "Mega Chemical Reactor").getStackForm(1));
+
+        ItemList.PyrolyzeOven
+            .set(new MTEPyrolyseOven(PyrolyzeOven.ID, "multimachine.pyro", "Pyrolyse Oven").getStackForm(1));
 
         ItemList.MolecularTransformer.set(
             new MTEIndustrialMolecularTransformer(

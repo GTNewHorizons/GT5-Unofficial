@@ -1680,6 +1680,10 @@ public class MTERecipeLoader implements Runnable {
             ItemList.MegaChemicalReactor.get(1),
             new Object[] { ItemRegistry.megaMachines[3] });
 
+        // Pyrolyse Oven Conversion Recipe
+        GTModHandler
+            .addShapelessCraftingRecipe(ItemList.PyrolyzeOven.get(1), new Object[] { ItemList.PyrolyseOven.get(1) });
+
         // Integrated Ore Factory Conversion Recipe
         GTModHandler
             .addShapelessCraftingRecipe(ItemList.IntegratedOreFactory.get(1), new Object[] { ItemList.Ore_Processor });
@@ -3429,7 +3433,7 @@ public class MTERecipeLoader implements Runnable {
                 ItemList.Electric_Pump_EV });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.PyrolyseOven.get(1L),
+            ItemList.PyrolyzeOven.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "WEP", "EME", "WCP", 'M', ItemList.Hull_MV, 'W', ItemList.Electric_Piston_MV, 'P',
                 OrePrefixes.wireGt04.get(Materials.Cupronickel), 'E', OrePrefixes.circuit.get(Materials.MV), 'C',
