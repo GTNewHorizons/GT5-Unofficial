@@ -1650,6 +1650,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.LargeThermalRefinery.get(1),
             new Object[] { GregtechItemList.Industrial_ThermalCentrifuge });
 
+        // Boldarnator Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.Boldarnator.get(1),
+            new Object[] { GregtechItemList.Controller_IndustrialRockBreaker });
+
         // Amazon Packager Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialPackager.get(1),
