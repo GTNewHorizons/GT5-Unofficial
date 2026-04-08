@@ -45,8 +45,6 @@ import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
-import net.minecraft.util.EnumChatFormatting;
-
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
@@ -286,32 +284,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTETrans
 // registration+recipe methods, they should be split and brought here to register all in preload.
 
 public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT RECIPES AND USAGES
-
-    public static final String imagination = EnumChatFormatting.RESET + "You just need "
-        + EnumChatFormatting.DARK_PURPLE
-        + "I"
-        + EnumChatFormatting.LIGHT_PURPLE
-        + "m"
-        + EnumChatFormatting.DARK_RED
-        + "a"
-        + EnumChatFormatting.RED
-        + "g"
-        + EnumChatFormatting.YELLOW
-        + "i"
-        + EnumChatFormatting.GREEN
-        + "n"
-        + EnumChatFormatting.AQUA
-        + "a"
-        + EnumChatFormatting.DARK_AQUA
-        + "t"
-        + EnumChatFormatting.BLUE
-        + "i"
-        + EnumChatFormatting.DARK_BLUE
-        + "o"
-        + EnumChatFormatting.DARK_PURPLE
-        + "n"
-        + EnumChatFormatting.RESET
-        + " to use this.";
 
     private static void registerMultiblockControllers() {
         ItemList.CokeOvenController
