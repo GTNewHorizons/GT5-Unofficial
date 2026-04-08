@@ -7,7 +7,6 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import net.minecraft.util.EnumChatFormatting;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE;
@@ -19,6 +18,7 @@ import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -51,6 +51,7 @@ import gregtech.common.misc.GTStructureChannels;
 
 public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseOven> implements ISurvivalConstructable {
 
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 3;
     private static final int OFFSET_Y = 4;
     private static final int OFFSET_Z = 0;
@@ -60,7 +61,7 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
     private static final IStructureDefinition<MTEPyrolyseOven> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPyrolyseOven>builder()
         .addShape(
-            "main",
+            STRUCTURE_PIECE_MAIN,
             new String[][] { { "       ", "       ", " F   F ", "FBF FBF", "DBD~DBD", "GGGGGGG" },
                 { "       ", "       ", " C   C ", "F FFF F", "D D D D", "GCGGGCG" },
                 { "       ", "       ", " C   C ", "F FFF F", "D     D", "GCGGGCG" },
@@ -196,7 +197,8 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         coilHeat = HeatingCoilLevel.None;
         casingAmount = 0;
-        return checkPiece("main", OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 60 && !mMufflerHatches.isEmpty();
+        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 60
+            && !mMufflerHatches.isEmpty();
     }
 
     @Override
@@ -211,13 +213,22 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece("main", stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece("main", stackSize, OFFSET_X, OFFSET_Y, OFFSET_Z, elementBudget, env, false, true);
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            OFFSET_X,
+            OFFSET_Y,
+            OFFSET_Z,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override
