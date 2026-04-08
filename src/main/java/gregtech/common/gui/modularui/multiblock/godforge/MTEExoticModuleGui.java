@@ -3,6 +3,7 @@ package gregtech.common.gui.modularui.multiblock.godforge;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -93,7 +94,9 @@ public class MTEExoticModuleGui extends MTEBaseModuleGui<MTEExoticModule> {
     protected IWidget createTerminalLeftButton() {
         IPanelHandler expectedInputsPanel = Panels.EXOTIC_INPUTS_LIST.getFrom(getMainPanel(), hypervisor);
         return new ButtonWidget<>().size(16)
-            .background(GTGuiTextures.PICTURE_INFO)
+            .overlay(GTGuiTextures.PICTURE_INFO)
+            .background(IDrawable.EMPTY)
+            .disableHoverBackground()
             .onMousePressed(d -> {
                 if (!expectedInputsPanel.isPanelOpen()) {
                     expectedInputsPanel.openPanel();

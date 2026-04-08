@@ -206,14 +206,14 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     protected ToggleButton createMufflerButton() {
         return CommonWidgets.createMuffleButton("mufflerSyncer")
             .background(IDrawable.EMPTY)
-            .selectedBackground(IDrawable.EMPTY);
+            .disableHoverBackground();
     }
 
     protected ToggleButton createPowerSwitchButton() {
         return CommonWidgets.createSmallPowerSwitchButton("powerSwitch", machine.getBaseMetaTileEntity())
             .background(IDrawable.EMPTY)
             .tooltipShowUpTimer(TOOLTIP_DELAY)
-            .selectedBackground(IDrawable.EMPTY);
+            .disableHoverBackground();
     }
 
 }

@@ -5,6 +5,8 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule.NUMBER_OF_INPUTS;
 import static tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule.RECIPE_REFRESH_LIMIT;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.value.sync.SyncHandler;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -72,6 +74,11 @@ public class ExoticInputsListPanel {
             .registerFor(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST, hypervisor, hypervisor.getModule(Modules.EXOTIC));
 
         for (int i = 0; i < NUMBER_OF_INPUTS; i++) {
+            SyncHandler sh = hypervisor.getSyncManager(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST).findSyncHandlerNullable("exotic_fluid_tanks:"+i);
+            if (sh != null){
+                int a = 0;
+            }
+
             hypervisor.getSyncManager(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST)
                 .syncValue(
                     "exotic_fluid_tanks",
@@ -109,7 +116,9 @@ public class ExoticInputsListPanel {
         row.child(
             new ButtonWidget<>().size(18)
                 .marginRight(1)
-                .background(GTGuiTextures.TT_OVERLAY_CYCLIC_BLUE)
+                .overlay(GTGuiTextures.TT_OVERLAY_CYCLIC_BLUE)
+                .background(IDrawable.EMPTY)
+                .disableHoverBackground()
                 .onMousePressed(d -> {
                     if (tickerSyncer.getLongValue() > RECIPE_REFRESH_LIMIT) {
                         SyncActions.REFRESH_EXOTIC_RECIPE
@@ -143,10 +152,12 @@ public class ExoticInputsListPanel {
         row.child(
             new ButtonWidget<>().size(18)
                 .marginLeft(1)
-                .background(
+                .overlay(
                     GTGuiTextures.PICTURE_INFO.asIcon()
                         .size(16)
                         .margin(1))
+                .background(IDrawable.EMPTY)
+                .disableHoverBackground()
                 .onMousePressed(d -> {
                     if (!possibleInputsPanel.isPanelOpen()) {
                         possibleInputsPanel.openPanel();

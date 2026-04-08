@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -52,6 +53,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import org.jetbrains.annotations.NotNull;
 
 public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTEPurificationUnitFlocculation>
     implements ISurvivalConstructable {
