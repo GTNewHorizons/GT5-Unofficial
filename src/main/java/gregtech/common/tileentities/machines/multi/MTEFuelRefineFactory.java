@@ -272,19 +272,13 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(getMaxInputEu());
-        logic.setAvailableAmperage(1);
+        super.setProcessingLogicPower(logic);
         logic.setUnlimitedTierSkips();
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEFuelRefineFactory(this.mName);
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return true;
     }
 
     @Override
