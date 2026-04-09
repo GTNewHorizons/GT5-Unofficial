@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
 import java.util.Collection;
 import java.util.List;
@@ -53,7 +54,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -68,17 +68,17 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
     public static final int JUNK_MODE = 15;
     public static final int TREASURE_MODE = 16;
 
-    private static String[][] shape = { { "           ", "    BBB    ", "    B~B    ", "    BBB    " },
-        { "           ", "  BB A BB  ", "  BBCACBB  ", "  BBBBBBB  " },
-        { "           ", " B   A   B ", " BCCCACCCB ", " BBBBBBBBB " },
-        { "           ", " B   A   B ", " BCCCACCCB ", " BBBBBBBBB " },
-        { "    BBB    ", "B   BBB   B", "BCCCBBBCCCB", "BBBBBBBBBBB" },
-        { "    BBB    ", "BAAABBBAAAB", "BAAABBBAAAB", "BBBBBBBBBBB" },
-        { "    BBB    ", "B   BBB   B", "BCCCBBBCCCB", "BBBBBBBBBBB" },
-        { "           ", " B   A   B ", " BCCCACCCB ", " BBBBBBBBB " },
-        { "           ", " B   A   B ", " BCCCACCCB ", " BBBBBBBBB " },
-        { "           ", "  BB A BB  ", "  BBCACBB  ", "  BBBBBBB  " },
-        { "           ", "    BBB    ", "    BBB    ", "    BBB    " } };
+    private static String[][] shape = { { "           ", "    CCC    ", "    C~C    ", "    CCC    " },
+        { "           ", "  CC A CC  ", "  CCDBDCC  ", "  CCCCCCC  " },
+        { "           ", " C   A   C ", " CDDDBDDDC ", " CCCCCCCCC " },
+        { "           ", " C   A   C ", " CDDDBDDDC ", " CCCCCCCCC " },
+        { "    CCC    ", "C   CCC   C", "CDDDCCCDDDC", "CCCCCCCCCCC" },
+        { "    CCC    ", "CAAACCCAAAC", "CBBBCCCBBBC", "CCCCCCCCCCC" },
+        { "    CCC    ", "C   CCC   C", "CDDDCCCDDDC", "CCCCCCCCCCC" },
+        { "           ", " C   A   C ", " CDDDBDDDC ", " CCCCCCCCC " },
+        { "           ", " C   A   C ", " CDDDBDDDC ", " CCCCCCCCC " },
+        { "           ", "  CC A CC  ", "  CCDBDCC  ", "  CCCCCCC  " },
+        { "           ", "    CCC    ", "    CCC    ", "    CCC    " } };
     private static IStructureDefinition<MTEIndustrialFishingPond> STRUCTURE_DEFINITION;
     private int casingAmount;
 
@@ -110,7 +110,8 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
             .beginStructureBlock(11, 4, 11, false)
             .addController("Front center")
             .addCasingInfoMin("Aquatic Casings", 160, false)
-            .addCasingInfoExactly("Eglin Steel Frame", 24, false)
+            .addCasingInfoExactly("Stainless Steel Frame Box", 12, false)
+            .addCasingInfoExactly("Stainless Steel Sheetmetal", 12, false)
             .addInputBus("Any Aquatic Casing", 1)
             .addOutputBus("Any Aquatic Casing", 1)
             .addInputHatch("Any Aquatic Casing", 1)
@@ -128,14 +129,15 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
             STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialFishingPond>builder()
                 .addShape(mName, shape)
                 .addElement(
-                    'B',
+                    'C',
                     buildHatchAdder(MTEIndustrialFishingPond.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
                         .casingIndex(Casings.AquaticCasing.textureId)
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.AquaticCasing.asElement())))
-                .addElement('A', ofFrame(MaterialsAlloy.EGLIN_STEEL))
-                .addElement('C', ofChain(isAir(), ofAnyWater(false)))
+                .addElement('A', ofFrame(Materials.StainlessSteel))
+                .addElement('B', ofSheetMetal(Materials.StainlessSteel))
+                .addElement('D', ofChain(isAir(), ofAnyWater(false)))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -253,7 +255,7 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
             for (int layerY = 0; layerY < layers.length; layerY++) {
                 String row = layers[layerY];
                 for (int charX = 0; charX < row.length(); charX++) {
-                    if (row.charAt(charX) != 'C') continue;
+                    if (row.charAt(charX) != 'D') continue;
 
                     int[] abc = new int[] { charX - OFFSET_X, layerY - OFFSET_Y, sliceZ - OFFSET_Z };
                     int[] xyz = new int[] { 0, 0, 0 };

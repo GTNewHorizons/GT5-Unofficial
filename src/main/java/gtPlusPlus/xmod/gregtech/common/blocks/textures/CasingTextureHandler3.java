@@ -11,7 +11,8 @@ public class CasingTextureHandler3 {
             return switch (aMeta) {
                 case 0 ->
                     // Aquatic Casing
-                    TexturesGtBlock.TEXTURE_METAL_PANEL_B.getIcon();
+                    ordinalSide < 2 ? TexturesGtBlock.TEXTURE_METAL_PANEL_B_A.getIcon()
+                        : TexturesGtBlock.TEXTURE_METAL_PANEL_B.getIcon();
                 case 1 ->
                     // Inconel Reinforced Casing
                     TexturesGtBlock.TEXTURE_METAL_PANEL_D.getIcon();
