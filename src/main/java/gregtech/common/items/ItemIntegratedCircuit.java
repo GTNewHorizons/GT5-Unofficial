@@ -1,7 +1,7 @@
 package gregtech.common.items;
 
-import static ggfab.GGItemList.SingleUseScrewdriver;
 import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.api.enums.ItemList.SingleUseScrewdriver;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.ArrayList;

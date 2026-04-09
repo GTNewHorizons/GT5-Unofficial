@@ -120,6 +120,7 @@ import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.postload.RecyclerBlacklistLoader;
 import gregtech.loaders.postload.ScannerHandlerLoader;
 import gregtech.loaders.postload.ScrapboxDropLoader;
+import gregtech.loaders.postload.SingleUseToolRecipeLoader;
 import gregtech.loaders.preload.GTPreLoad;
 import gregtech.loaders.preload.LoaderCircuitBehaviors;
 import gregtech.loaders.preload.LoaderGTBlockFluid;
@@ -128,6 +129,7 @@ import gregtech.loaders.preload.LoaderGTOreDictionary;
 import gregtech.loaders.preload.LoaderMetaPipeEntities;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
 import gregtech.loaders.preload.LoaderOreProcessing;
+import gregtech.loaders.preload.SingleUseToolRegistration;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
@@ -399,10 +401,13 @@ public class GTMod {
             return;
         }
 
-        // Seems only used by GGFab so far
+        // only used by BartWorks
         for (Runnable tRunnable : GregTechAPI.sBeforeGTPostload) {
             tRunnable.run();
         }
+
+        new SingleUseToolRegistration().run();
+        new SingleUseToolRecipeLoader().run();
 
         proxy.onPostInitialization(event);
 

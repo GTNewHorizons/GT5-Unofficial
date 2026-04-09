@@ -387,10 +387,26 @@ import static gregtech.common.items.IDMetaItem01.Shape_Mold_Rod_Long;
 import static gregtech.common.items.IDMetaItem01.Shape_Mold_Rotor;
 import static gregtech.common.items.IDMetaItem01.Shape_Mold_Round;
 import static gregtech.common.items.IDMetaItem01.Shape_Mold_Screw;
+import static gregtech.common.items.IDMetaItem01.Shape_Mold_Single_Use_Crowbar;
+import static gregtech.common.items.IDMetaItem01.Shape_Mold_Single_Use_File;
+import static gregtech.common.items.IDMetaItem01.Shape_Mold_Single_Use_Hard_Hammer;
+import static gregtech.common.items.IDMetaItem01.Shape_Mold_Single_Use_Saw;
+import static gregtech.common.items.IDMetaItem01.Shape_Mold_Single_Use_Screwdriver;
+import static gregtech.common.items.IDMetaItem01.Shape_Mold_Single_Use_SoftMallet;
+import static gregtech.common.items.IDMetaItem01.Shape_Mold_Single_Use_Wire_Cutter;
+import static gregtech.common.items.IDMetaItem01.Shape_Mold_Single_Use_Wrench;
 import static gregtech.common.items.IDMetaItem01.Shape_Mold_Tool_Head_Drill;
 import static gregtech.common.items.IDMetaItem01.Shape_Mold_Turbine_Blade;
 import static gregtech.common.items.IDMetaItem01.Shape_Slicer_Flat;
 import static gregtech.common.items.IDMetaItem01.Shape_Slicer_Stripes;
+import static gregtech.common.items.IDMetaItem01.Single_Use_Crowbar;
+import static gregtech.common.items.IDMetaItem01.Single_Use_File;
+import static gregtech.common.items.IDMetaItem01.Single_Use_Hard_Hammer;
+import static gregtech.common.items.IDMetaItem01.Single_Use_Saw;
+import static gregtech.common.items.IDMetaItem01.Single_Use_Screwdriver;
+import static gregtech.common.items.IDMetaItem01.Single_Use_Soft_Mallet;
+import static gregtech.common.items.IDMetaItem01.Single_Use_Wire_Cutter;
+import static gregtech.common.items.IDMetaItem01.Single_Use_Wrench;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_0;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_1;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_10;
@@ -756,6 +772,47 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(addItemWithLocalizationKeys(Firebrick.ID, "gt.item.firebrick.name", "gt.item.firebrick.tooltip"));
         GTOreDictUnificator.addItemDataFromInputs(ItemList.Firebrick.get(1), Materials.Fireclay.getDust(1));
 
+        ItemList.SingleUseFile.set(
+            addItemWithLocalizationKeys(
+                Single_Use_File.ID,
+                "gt.tool.single_use_file.name",
+                "gt.tool.single_use_file.tooltip"));
+        ItemList.SingleUseWrench.set(
+            addItemWithLocalizationKeys(
+                Single_Use_Wrench.ID,
+                "gt.tool.single_use_wrench.name",
+                "gt.tool.single_use_wrench.tooltip"));
+        ItemList.SingleUseCrowbar.set(
+            addItemWithLocalizationKeys(
+                Single_Use_Crowbar.ID,
+                "gt.tool.single_use_crowbar.name",
+                "gt.tool.single_use_crowbar.tooltip"));
+        ItemList.SingleUseWireCutter.set(
+            addItemWithLocalizationKeys(
+                Single_Use_Wire_Cutter.ID,
+                "gt.tool.single_use_wire_cutter.name",
+                "gt.tool.single_use_wire_cutter.tooltip"));
+        ItemList.SingleUseHardHammer.set(
+            addItemWithLocalizationKeys(
+                Single_Use_Hard_Hammer.ID,
+                "gt.tool.single_use_hard_hammer.name",
+                "gt.tool.single_use_hard_hammer.tooltip"));
+        ItemList.SingleUseSoftMallet.set(
+            addItemWithLocalizationKeys(
+                Single_Use_Soft_Mallet.ID,
+                "gt.tool.single_use_soft_mallet.name",
+                "gt.tool.single_use_soft_mallet.tooltip"));
+        ItemList.SingleUseScrewdriver.set(
+            addItemWithLocalizationKeys(
+                Single_Use_Screwdriver.ID,
+                "gt.tool.single_use_screwdriver.name",
+                "gt.tool.single_use_screwdriver.tooltip"));
+        ItemList.SingleUseSaw.set(
+            addItemWithLocalizationKeys(
+                Single_Use_Saw.ID,
+                "gt.tool.single_use_saw.name",
+                "gt.tool.single_use_saw.tooltip"));
+
         ItemList.Shape_Empty.set(
             addItemWithLocalizationKeys(
                 Shape_Empty.ID,
@@ -919,6 +976,47 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Shape_Mold_Tool_Head_Drill.ID,
                 "gt.item.shape_mold.tool_head_drill.name",
                 "gt.item.shape_mold.tool_head_drill.tooltip"));
+
+        ItemList.Shape_Mold_SingleUseFile.set(
+            addItemWithLocalizationKeys(
+                Shape_Mold_Single_Use_File.ID,
+                "gt.item.shape_mold.single_use_file.name",
+                "gt.item.shape_mold.single_use_file.tooltip"));
+        ItemList.Shape_Mold_SingleUseWrench.set(
+            addItemWithLocalizationKeys(
+                Shape_Mold_Single_Use_Wrench.ID,
+                "gt.item.shape_mold.single_use_wrench.name",
+                "gt.item.shape_mold.single_use_wrench.tooltip"));
+        ItemList.Shape_Mold_SingleUseCrowbar.set(
+            addItemWithLocalizationKeys(
+                Shape_Mold_Single_Use_Crowbar.ID,
+                "gt.item.shape_mold.single_use_crowbar.name",
+                "gt.item.shape_mold.single_use_crowbar.tooltip"));
+        ItemList.Shape_Mold_SingleUseWireCutter.set(
+            addItemWithLocalizationKeys(
+                Shape_Mold_Single_Use_Wire_Cutter.ID,
+                "gt.item.shape_mold.single_use_wire_cutter.name",
+                "gt.item.shape_mold.single_use_wire_cutter.tooltip"));
+        ItemList.Shape_Mold_SingleUseHardHammer.set(
+            addItemWithLocalizationKeys(
+                Shape_Mold_Single_Use_Hard_Hammer.ID,
+                "gt.item.shape_mold.single_use_hard_hammer.name",
+                "gt.item.shape_mold.single_use_hard_hammer.tooltip"));
+        ItemList.Shape_Mold_SingleUseSoftMallet.set(
+            addItemWithLocalizationKeys(
+                Shape_Mold_Single_Use_SoftMallet.ID,
+                "gt.item.shape_mold.single_use_soft_mallet.name",
+                "gt.item.shape_mold.single_use_soft_mallet.tooltip"));
+        ItemList.Shape_Mold_SingleUseScrewdriver.set(
+            addItemWithLocalizationKeys(
+                Shape_Mold_Single_Use_Screwdriver.ID,
+                "gt.item.shape_mold.single_use_screwdriver.name",
+                "gt.item.shape_mold.single_use_screwdriver.tooltip"));
+        ItemList.Shape_Mold_SingleUseSaw.set(
+            addItemWithLocalizationKeys(
+                Shape_Mold_Single_Use_Saw.ID,
+                "gt.item.shape_mold.single_use_saw.name",
+                "gt.item.shape_mold.single_use_saw.tooltip"));
 
         ItemList.Shape_Extruder_Plate.set(
             addItemWithLocalizationKeys(

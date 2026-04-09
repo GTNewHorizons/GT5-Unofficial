@@ -134,6 +134,7 @@ import gregtech.common.tileentities.machines.basic.MTETurboCharger;
 import gregtech.common.tileentities.machines.basic.MTEWorldAccelerator;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineItem;
+import gregtech.common.tileentities.machines.multi.MTEAdvAssLine;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter1;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
@@ -186,6 +187,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
 import gregtech.common.tileentities.machines.multi.MTELatex;
+import gregtech.common.tileentities.machines.multi.MTELinkedInputBus;
 import gregtech.common.tileentities.machines.multi.MTEMassSolidifier;
 import gregtech.common.tileentities.machines.multi.MTEMegaChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
@@ -526,6 +528,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_Multi_Assemblyline.set(
             new MTEAssemblyLine(ASSEMBLING_LINE_CONTROLLER.ID, "multimachine.assemblyline", "Assembly Line")
                 .getStackForm(1L));
+        ItemList.Machine_Multi_AdvancedAssemblyline.set(
+            new MTEAdvAssLine(AdvancedAssline.ID, "gt.machine.adv_assline", "Advanced Assembly Line").getStackForm(1));
+
         ItemList.Machine_Multi_DieselEngine.set(
             new MTEDieselEngine(COMBUSTION_ENGINE_CONTROLLER.ID, "multimachine.dieselengine", "Large Combustion Engine")
                 .getStackForm(1L));
@@ -9157,6 +9162,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEHatchCokeOven(COKE_OVEN_HATCH.ID, "hatch.cokeoven", "Coke Oven Hatch").getStackForm(1L));
     }
 
+    private static void registerLinkedBus() {
+        ItemList.LinkedInputBus.set(
+            new MTELinkedInputBus(LinkedInputBus.ID, "gt.machine.linked_input_bus", "Linked Input Bus", 5)
+                .getStackForm(1));
+    }
+
     private static void registerCompressedBus() {
         ItemList.CompressedOutputBusLuV.set(
             new MTEHatchOutputBusCompressed(
@@ -10950,6 +10961,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerOutputBus();
         registerVoidBus();
         registerCokeOvenHatch();
+        registerLinkedBus();
         registerCompressedBus();
         registerMufflerHatch();
         registerBoiler();

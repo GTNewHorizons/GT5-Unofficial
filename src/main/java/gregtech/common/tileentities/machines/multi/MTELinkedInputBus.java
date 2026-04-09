@@ -1,4 +1,4 @@
-package ggfab.mte;
+package gregtech.common.tileentities.machines.multi;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -91,7 +91,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
                 .setTextColor(Color.WHITE.dark(1))
                 .setTextAlignment(Alignment.CenterLeft)
                 .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                .setGTTooltip(() -> mTooltipCache.getData("ggfab.tooltip.linked_input_bus.change_freq_warn"))
+                .setGTTooltip(() -> mTooltipCache.getData("gt.tooltip.linked_input_bus.change_freq_warn"))
                 .setSize(60, 18)
                 .setPos(48, 3))
             .widget(
@@ -100,7 +100,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
                         i -> i == 1 ? GTUITextures.OVERLAY_BUTTON_CHECKMARK : GTUITextures.OVERLAY_BUTTON_CROSS)
                     .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
                     .setSynced(true, true)
-                    .setGTTooltip(() -> mTooltipCache.getData("ggfab.tooltip.linked_input_bus.private"))
+                    .setGTTooltip(() -> mTooltipCache.getData("gt.tooltip.linked_input_bus.private"))
                     .setSize(18, 18)
                     .setPos(150, 3))
             .widget(
@@ -123,12 +123,11 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
                     .build()
                     .setPos(7, 24))
             .widget(
-                new TextWidget(new Text(StatCollector.translateToLocal("ggfab.gui.linked_input_bus.private")))
+                new TextWidget(new Text(StatCollector.translateToLocal("gt.gui.linked_input_bus.private")))
                     .setPos(110, 3)
                     .setSize(43, 20))
             .widget(
-                new TextWidget(new Text(StatCollector.translateToLocal("ggfab.gui.linked_input_bus.channel")))
-                    .setPos(5, 3)
+                new TextWidget(new Text(StatCollector.translateToLocal("gt.gui.linked_input_bus.channel"))).setPos(5, 3)
                     .setSize(43, 20));
     }
 
@@ -309,7 +308,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
             .isGUIClickable()) return;
         if (aPlayer.isSneaking()) {
             if (this.mRealInventory == null) {
-                aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_channel"));
+                aPlayer.addChatMessage(new ChatComponentTranslation("gt.info.linked_input_bus.no_channel"));
                 return;
             }
             if (mRealInventory.disableSort) {
@@ -368,7 +367,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     @Override
     public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
         // backwards compat
-        if (nbt == null || (!COPIED_DATA_IDENTIFIER.equals(nbt.getString("ggfab.type"))
+        if (nbt == null || (!COPIED_DATA_IDENTIFIER.equals(nbt.getString("gt.type"))
             && !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type")))) {
             return false;
         }
@@ -405,34 +404,34 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         ItemStack stick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(stick, false, true))
             return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-        if (!stick.hasTagCompound() || (!COPIED_DATA_IDENTIFIER.equals(stick.stackTagCompound.getString("ggfab.type"))
+        if (!stick.hasTagCompound() || (!COPIED_DATA_IDENTIFIER.equals(stick.stackTagCompound.getString("gt.type"))
             && !COPIED_DATA_IDENTIFIER.equals(stick.stackTagCompound.getString("type")))) {
-            aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_data"));
+            aPlayer.addChatMessage(new ChatComponentTranslation("gt.info.linked_input_bus.no_data"));
             return true;
         }
         ItemStack circuit = GTUtility.loadItem(stick.stackTagCompound, "circuit");
         String channel = stick.stackTagCompound.getString("channel");
         if (GTUtility.isStackInvalid(circuit)) circuit = null;
         if ("".equals(channel)) {
-            aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_data"));
+            aPlayer.addChatMessage(new ChatComponentTranslation("gt.info.linked_input_bus.no_data"));
             return true;
         } else if (circuit != null && GTUtility.getAllIntegratedCircuits()
             .stream()
             .noneMatch(circuit::isItemEqual)) {
-                aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.invalid_circuit"));
+                aPlayer.addChatMessage(new ChatComponentTranslation("gt.info.linked_input_bus.invalid_circuit"));
                 return true;
             }
         UUID owner = stick.stackTagCompound.hasKey("owner1")
             ? new UUID(stick.stackTagCompound.getLong("owner1"), stick.stackTagCompound.getLong("owner2"))
             : null;
         if (owner != null && !owner.equals(getBaseMetaTileEntity().getOwnerUuid())) {
-            aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.not_owned"));
+            aPlayer.addChatMessage(new ChatComponentTranslation("gt.info.linked_input_bus.not_owned"));
             return true;
         }
         setPrivate(owner != null);
         setChannel(channel);
         setInventorySlotContents(getCircuitSlot(), circuit);
-        aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.data_pasted", channel));
+        aPlayer.addChatMessage(new ChatComponentTranslation("gt.info.linked_input_bus.data_pasted", channel));
         return true;
     }
 
@@ -442,10 +441,10 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         ItemStack stick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(stick, false, true)) return;
         if (getChannel() == null) {
-            aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_channel"));
+            aPlayer.addChatMessage(new ChatComponentTranslation("gt.info.linked_input_bus.no_channel"));
             return;
         }
-        aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.data_copied", getChannel()));
+        aPlayer.addChatMessage(new ChatComponentTranslation("gt.info.linked_input_bus.data_copied", getChannel()));
         stick.stackTagCompound = getCopiedData(aPlayer);
         stick.setStackDisplayName("Linked Input Bus configuration");
         // abuse the title mechanism here. I assure you it will be fine (tm).

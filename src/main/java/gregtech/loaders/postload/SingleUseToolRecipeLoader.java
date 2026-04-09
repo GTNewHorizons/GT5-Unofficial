@@ -1,25 +1,41 @@
-package ggfab;
+package gregtech.loaders.postload;
 
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 
-import ggfab.api.GigaGramFabAPI;
-import ggfab.items.SingleUseTool;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SingleUseTool;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-class SingleUseToolRecipeLoader implements Runnable {
+public class SingleUseToolRecipeLoader implements Runnable {
+
+    private static final Map<ToolDictNames, IToolStats> SINGLE_USE_TOOLS_STORE = new HashMap<>();
+    public static final Map<ToolDictNames, IToolStats> SINGLE_USE_TOOLS = Collections
+        .unmodifiableMap(SINGLE_USE_TOOLS_STORE);
+
+    private static final Map<ToolDictNames, Long> COST_SINGLE_USE_TOOLS_STORE = new HashMap<>();
+    public static final Map<ToolDictNames, Long> COST_SINGLE_USE_TOOLS = Collections
+        .unmodifiableMap(COST_SINGLE_USE_TOOLS_STORE);
+
+    public static void addSingleUseToolType(ToolDictNames type, IToolStats stat, long materialCost) {
+        SINGLE_USE_TOOLS_STORE.put(type, stat);
+        COST_SINGLE_USE_TOOLS_STORE.put(type, materialCost);
+    }
 
     public static final int SOLIDIFIER_RECIPE_DURATION = 2 * SECONDS;
     public static final int SOLIDIFIER_QUANTITY_MIN = 32;
@@ -61,8 +77,8 @@ class SingleUseToolRecipeLoader implements Runnable {
         }
 
         for (SingleUseTool singleUseTool : singleUseTools) {
-            IToolStats toolStats = GigaGramFabAPI.SINGLE_USE_TOOLS.get(singleUseTool.toolDictName);
-            Long toolCost = GigaGramFabAPI.COST_SINGLE_USE_TOOLS.get(singleUseTool.toolDictName);
+            IToolStats toolStats = SINGLE_USE_TOOLS.get(singleUseTool.toolDictName);
+            Long toolCost = COST_SINGLE_USE_TOOLS.get(singleUseTool.toolDictName);
 
             if (toolStats == null || toolCost == null) {
                 throw new IllegalArgumentException(singleUseTool + " not registered");

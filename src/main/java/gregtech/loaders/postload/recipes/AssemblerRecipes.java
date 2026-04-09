@@ -3652,6 +3652,20 @@ public class AssemblerRecipes implements Runnable {
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
         }
+
+        // Linked bus
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_Bus_IV.get(1L),
+                ItemList.Emitter_IV.get(1L),
+                ItemList.Sensor_IV.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Enderium, 1L))
+            .circuit(12)
+            .itemOutputs(ItemList.LinkedInputBus.get(1L))
+            .fluidInputs(Materials.Polybenzimidazole.getMolten(144))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
     }
 
     /**

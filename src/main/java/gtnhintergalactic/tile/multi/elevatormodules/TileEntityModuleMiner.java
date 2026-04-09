@@ -40,7 +40,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ggfab.mte.MTELinkedInputBus;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -64,6 +63,7 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
+import gregtech.common.tileentities.machines.multi.MTELinkedInputBus;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.item.ItemMiningDrones;

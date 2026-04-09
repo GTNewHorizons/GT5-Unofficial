@@ -840,6 +840,22 @@ public class AssemblyLineRecipes implements Runnable {
             .eut(TierEU.RECIPE_UV)
             .addTo(AssemblyLine);
 
+        // Advanced Assembly line
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_Assemblyline.get(1L))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
+            .itemInputs(
+                ItemList.Machine_Multi_Assemblyline.get(1L),
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
+                new Object[] { OrePrefixes.circuit.get(Materials.IV), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.EV), 8 },
+                ItemList.Automation_ChestBuffer_LuV.get(1L))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(9 * INGOTS), Materials.Lubricant.getFluid(2_000))
+            .itemOutputs(ItemList.Machine_Multi_AdvancedAssemblyline.get(1L))
+            .eut(TierEU.RECIPE_LuV)
+            .duration(3 * MINUTES)
+            .addTo(AssemblyLine);
+
         // Drone T2
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.TierdDrone0.get(1))

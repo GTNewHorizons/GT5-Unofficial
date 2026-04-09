@@ -19,7 +19,6 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import ggfab.GGItemList;
 import gregtech.GTMod;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
@@ -53,10 +52,10 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
         ItemList.Shape_Mold_Pipe_Tiny.get(1), ItemList.Shape_Mold_Pipe_Small.get(1),
         ItemList.Shape_Mold_Pipe_Medium.get(1), ItemList.Shape_Mold_Pipe_Large.get(1),
         ItemList.Shape_Mold_Pipe_Huge.get(1), ItemList.Shape_Mold_ToolHeadDrill.get(1),
-        GGItemList.SingleUseFileMold.get(1), GGItemList.SingleUseWrenchMold.get(1),
-        GGItemList.SingleUseCrowbarMold.get(1), GGItemList.SingleUseWireCutterMold.get(1),
-        GGItemList.SingleUseHardHammerMold.get(1), GGItemList.SingleUseSoftMalletMold.get(1),
-        GGItemList.SingleUseScrewdriverMold.get(1), GGItemList.SingleUseSawMold.get(1) };
+        ItemList.Shape_Mold_SingleUseFile.get(1), ItemList.Shape_Mold_SingleUseWrench.get(1),
+        ItemList.Shape_Mold_SingleUseCrowbar.get(1), ItemList.Shape_Mold_SingleUseWireCutter.get(1),
+        ItemList.Shape_Mold_SingleUseHardHammer.get(1), ItemList.Shape_Mold_SingleUseSoftMallet.get(1),
+        ItemList.Shape_Mold_SingleUseScrewdriver.get(1), ItemList.Shape_Mold_SingleUseSaw.get(1) };
 
     public MTEHatchSolidifier(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);

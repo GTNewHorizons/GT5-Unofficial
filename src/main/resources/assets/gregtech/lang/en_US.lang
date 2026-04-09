@@ -7964,3 +7964,70 @@ gt.item.stable_boson_containment_unit.name=Stable Boson Containment Unit
 gt.item.stable_boson_containment_unit.tooltip=Maybe contains a bound boson?
 gt.item.stable_empty_containment_unit.name=Stable Empty Containment Unit
 gt.item.stable_empty_containment_unit.tooltip=Maybe contains nothing?
+
+# GGFab
+gt.waila.advassline.slice=Slice #%s: %s s / %s s
+gt.waila.advassline.slice.small=Slice #%s: %s ticks / %s ticks
+gt.waila.advassline.slice.idle=Slice #%s: Idle
+gt.waila.advassline.slice.stuck=Slice #%s: §4STUCK
+gt.gui.advassline.slice.idle=Slice #%s: Idle
+gt.gui.advassline.slice.stuck=Slice #%s: §4STUCK
+gt.gui.advassline.slice.unknown=Slice #%s: ?
+gt.gui.advassline.shutdown=§4Last abnormal shutdown reason:
+gt.gui.advassline.shutdown_clear=§6Clear
+gt.gui.advassline.shutdown.input_buses=§4Too few input buses to support current recipe
+gt.gui.advassline.shutdown.recipe_null=§4Recipe is null (report to author)
+gt.gui.advassline.shutdown.fluid_null=§4Fluid draining failed (check your ME fluid storage)
+gt.gui.advassline.shutdown.structure=§4Incompatible structural change
+gt.gui.advassline.shutdown.energy=§4Insufficient power
+gt.gui.advassline.shutdown.load.energy=§4Loaded invalid electric stat
+gt.gui.advassline.shutdown.load.recipe=§4Incompatible recipe change
+
+gt.info.linked_input_bus.not_owned=§6The settings were copied from a different owner!
+gt.info.linked_input_bus.no_data=§6Configuration data not found!
+gt.info.linked_input_bus.invalid_data=§6Configuration data was found but it is invalid!
+gt.info.linked_input_bus.invalid_circuit=§6Configuration data was found but it contains a circuit not valid on this bus!
+gt.info.linked_input_bus.data_pasted=§2Pasted channel ("%s§2") and configuration circuit setting!
+gt.info.linked_input_bus.data_copied=§2Copied channel ("%s§2") and configuration circuit setting!
+gt.info.linked_input_bus.no_channel=§6No channel specified yet!
+
+gt.tooltip.linked_input_bus.change_freq_warn=Changing channel while this is the last one on this channel will spill all items left!
+gt.tooltip.linked_input_bus.private=Private channel are not shared with others.
+gt.tooltip.linked_input_bus.private.1=Changing channel while this is the last one on this channel will spill all items left!
+
+gt.gui.linked_input_bus.private=Private
+gt.gui.linked_input_bus.channel=Channel
+
+gt.tool.single_use_file.name=Single Use File
+gt.tool.single_use_file.tooltip=File that is single use
+gt.tool.single_use_wrench.name=Single Use Wrench
+gt.tool.single_use_wrench.tooltip=Wrench that is single use
+gt.tool.single_use_crowbar.name=Single Use Crowbar
+gt.tool.single_use_crowbar.tooltip=Crowbar that is single use
+gt.tool.single_use_wire_cutter.name=Single Use Wire Cutter
+gt.tool.single_use_wire_cutter.tooltip=Wire Cutter that is single use
+gt.tool.single_use_hard_hammer.name=Single Use Hammer
+gt.tool.single_use_hard_hammer.tooltip=Hammer that is single use
+gt.tool.single_use_soft_mallet.name=Single Use Mallet
+gt.tool.single_use_soft_mallet.tooltip=Mallet that is single use
+gt.tool.single_use_screwdriver.name=Single Use Screwdriver
+gt.tool.single_use_screwdriver.tooltip=Screwdriver that is single use
+gt.tool.single_use_saw.name=Single Use Saw
+gt.tool.single_use_saw.tooltip=Saw that is single use
+
+gt.item.shape_mold.single_use_file.name=Mold (File)
+gt.item.shape_mold.single_use_file.tooltip=Mold for making Files
+gt.item.shape_mold.single_use_wrench.name=Mold (Wrench)
+gt.item.shape_mold.single_use_wrench.tooltip=Mold for making Wrenches
+gt.item.shape_mold.single_use_crowbar.name=Mold (Crowbar)
+gt.item.shape_mold.single_use_crowbar.tooltip=Mold for making Crowbars
+gt.item.shape_mold.single_use_wire_cutter.name=Mold (Wire Cutter)
+gt.item.shape_mold.single_use_wire_cutter.tooltip=Mold for making Wire Cutters
+gt.item.shape_mold.single_use_hard_hammer.name=Mold (Hammer)
+gt.item.shape_mold.single_use_hard_hammer.tooltip=Mold for making Hammers
+gt.item.shape_mold.single_use_soft_mallet.name=Mold (Mallet)
+gt.item.shape_mold.single_use_soft_mallet.tooltip=Mold for making Mallets
+gt.item.shape_mold.single_use_screwdriver.name=Mold (Screwdriver)
+gt.item.shape_mold.single_use_screwdriver.tooltip=Mold for making Screwdrivers
+gt.item.shape_mold.single_use_saw.name=Mold (Saw)
+gt.item.shape_mold.single_use_saw.tooltip=Mold for making Saws

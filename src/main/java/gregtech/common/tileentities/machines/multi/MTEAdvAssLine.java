@@ -1,14 +1,8 @@
-package ggfab.mte;
+package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE;
-import static ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_ACTIVE;
-import static ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_ACTIVE_GLOW;
-import static ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_GLOW;
-import static ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_STUCK;
-import static ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_STUCK_GLOW;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -17,6 +11,12 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_STUCK;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_STUCK_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -40,11 +40,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -57,17 +55,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.widget.ISyncedWidget;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import ggfab.ConfigurationHandler;
-import ggfab.mui.ClickableTextWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.VoidingMode;
@@ -108,7 +96,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  */
 public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine> implements ISurvivalConstructable {
 
-    public static final double LASER_OVERCLOCK_PENALTY_FACTOR = ConfigurationHandler.laserOCPenaltyFactor;
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
@@ -424,12 +411,12 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             baseEUt = aNBT.getLong("baseEU");
             currentRecipeParallel = aNBT.getInteger("currentParallel");
             if (inputVoltage <= 0 || inputEUt <= 0 || baseEUt >= 0) {
-                criticalStopMachine("ggfab.gui.advassline.shutdown.load.energy");
+                criticalStopMachine("gt.gui.advassline.shutdown.load.energy");
                 recipe = null;
             }
             if (recipe != null && aNBT.hasKey(TAG_KEY_RECIPE_HASH, Constants.NBT.TAG_INT)) {
                 if (aNBT.getInteger(TAG_KEY_RECIPE_HASH) != recipe.getPersistentHash()) {
-                    criticalStopMachine("ggfab.gui.advassline.shutdown.load.recipe");
+                    criticalStopMachine("gt.gui.advassline.shutdown.load.recipe");
                     recipe = null;
                 }
             }
@@ -478,7 +465,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             mEnergyHatches.forEach(this::recordEnergySupplier);
             mExoticEnergyHatches.forEach(this::recordEnergySupplier);
             if (mMaxProgresstime > 0 && (oV != inputVoltage || oEut != inputEUt)) {
-                criticalStopMachine("ggfab.gui.advassline.shutdown.structure");
+                criticalStopMachine("gt.gui.advassline.shutdown.structure");
             }
             return true;
         } else {
@@ -529,38 +516,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-        /*
-         * SliceStatusWidget[] arr =
-         * Arrays.stream(slices).map(SliceStatusWidget::new).toArray(SliceStatusWidget[]::new);
-         * screenElements.widgets(arr); screenElements.widget(new FakeSyncWidget.IntegerSyncer(() -> currentInputLength,
-         * l -> { currentInputLength = l; for (SliceStatusWidget w : arr) { w.updateText(); } }));
-         */
-        screenElements.widget(
-            new TextWidget(Text.localised("ggfab.gui.advassline.shutdown")).setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(this::hasAbnormalStopReason));
-        screenElements.widget(
-            new TextWidget().setTextSupplier(() -> Text.localised(lastStopReason))
-                .setTextAlignment(Alignment.CenterLeft)
-                .attachSyncer(
-                    new FakeSyncWidget.StringSyncer(() -> lastStopReason, r -> this.lastStopReason = r),
-                    screenElements)
-                .setEnabled(this::hasAbnormalStopReason));
-        screenElements.widget(
-            new ClickableTextWidget(
-                Text.localised("ggfab.gui.advassline.shutdown_clear")
-                    .alignment(Alignment.CenterLeft)).setMarginInLines(0)
-                        .setOnClick((d, w) -> lastStopReason = "")
-                        .setSize(36, 20)
-                        .setEnabled(this::hasAbnormalStopReason));
-    }
-
-    private Boolean hasAbnormalStopReason(Widget w) {
-        return !StringUtils.isNullOrEmpty(lastStopReason);
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.assemblylineVisualRecipes;
     }
@@ -568,7 +523,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (currentRecipe == null) {
-            criticalStopMachine("ggfab.gui.advassline.shutdown.recipe_null");
+            criticalStopMachine("gt.gui.advassline.shutdown.recipe_null");
             return false;
         }
         for (MTEHatchDataAccess hatch_dataAccess : mDataAccessHatches) {
@@ -576,7 +531,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         }
 
         if (mInputBusses.size() < currentInputLength) {
-            criticalStopMachine("ggfab.gui.advassline.shutdown.input_buses");
+            criticalStopMachine("gt.gui.advassline.shutdown.input_buses");
             return false;
         }
         boolean oStuck = stuck;
@@ -620,7 +575,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             lEUt = Long.MIN_VALUE;
             for (int i = 0; i < working; i++) {
                 if (!drainEnergyInput(-baseEUt)) {
-                    criticalStopMachine("ggfab.gui.advassline.shutdown.energy");
+                    criticalStopMachine("gt.gui.advassline.shutdown.energy");
                     return false;
                 }
             }
@@ -893,15 +848,15 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 NBTTagInt t = list.get(i);
                 int progress = t.func_150287_d();
                 if (progress == 0) {
-                    currentTip.add(I18n.format("ggfab.waila.advassline.slice.stuck", i + 1));
+                    currentTip.add(I18n.format("gt.waila.advassline.slice.stuck", i + 1));
                 } else if (progress < 0) {
-                    currentTip.add(I18n.format("ggfab.waila.advassline.slice.idle", i + 1));
+                    currentTip.add(I18n.format("gt.waila.advassline.slice.idle", i + 1));
                 } else if (duration > 40) {
                     currentTip.add(
-                        I18n.format("ggfab.waila.advassline.slice", i + 1, (duration - progress) / 20, duration / 20));
+                        I18n.format("gt.waila.advassline.slice", i + 1, (duration - progress) / 20, duration / 20));
                 } else {
                     currentTip
-                        .add(I18n.format("ggfab.waila.advassline.slice.small", i + 1, duration - progress, duration));
+                        .add(I18n.format("gt.waila.advassline.slice.small", i + 1, duration - progress, duration));
                 }
             }
         }
@@ -939,64 +894,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     public boolean supportsBatchMode() {
         return true;
-    }
-
-    private class SliceStatusWidget extends TextWidget implements ISyncedWidget {
-
-        private final Slice slice;
-        private int lastProgress = -2;
-        private Text text;
-
-        private SliceStatusWidget(Slice slice) {
-            this.slice = slice;
-            updateText();
-            setEnabled(w -> slice.progress == 0 && currentInputLength > slice.id);
-        }
-
-        @Override
-        public Text getText() {
-            return text;
-        }
-
-        @Override
-        public void readOnClient(int id, PacketBuffer buf) {
-            if (id == 0) {
-                slice.progress = buf.readVarIntFromBuffer();
-                updateText();
-                checkNeedsRebuild();
-            }
-        }
-
-        public void updateText() {
-            String type = "unknown";
-            if (slice.progress == 0) type = "stuck";
-            else if (slice.progress < 0) type = "idle";
-            text = Text.localised("ggfab.gui.advassline.slice." + type, slice.id);
-        }
-
-        @Override
-        public void readOnServer(int id, PacketBuffer buf) {}
-
-        @Override
-        public void detectAndSendChanges(boolean init) {
-            if (slice.progress != lastProgress) {
-                // suppress small normal progress update
-                if (slice.progress > 0 && lastProgress > 0 && lastProgress - slice.progress < 10) return;
-                lastProgress = slice.progress;
-                syncToClient(0, b -> b.writeVarIntToBuffer(slice.progress));
-            }
-        }
-
-        @Override
-        public void markForUpdate() {}
-
-        @Override
-        public void unMarkForUpdate() {}
-
-        @Override
-        public boolean isMarkedForUpdate() {
-            return false;
-        }
     }
 
     private class Slice {
