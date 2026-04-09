@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
+package gregtech.common.tileentities.machines.multi.steam;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTechAPI.*;
@@ -44,7 +44,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -65,16 +64,14 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings1;
-import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.gui.modularui.multiblock.base.MTESteamMultiBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTESteamMultiBlockBaseGui;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements ISurvivalConstructable {
+public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> implements ISurvivalConstructable {
 
     public MTESteamWasher(String aName) {
         super(aName);
@@ -94,7 +91,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         return "Ore Washer, Simple Washer";
     }
 
-    private static final String STRUCTUR_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private IStructureDefinition<MTESteamWasher> STRUCTURE_DEFINITION = null;
 
@@ -157,10 +154,8 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
     }
 
     @Override
-    protected int getCasingTextureId() {
-        if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierMachineCasing == 2)
-            return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
-        return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
+    protected boolean isHighPressure() {
+        return tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierMachineCasing == 2;
     }
 
     @Override
@@ -189,7 +184,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
 
             STRUCTURE_DEFINITION = StructureDefinition.<MTESteamWasher>builder()
 
-                .addShape(STRUCTUR_PIECE_MAIN, transpose(shape))
+                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
                 .addElement(
                     'B',
                     ofBlocksTiered(
@@ -235,14 +230,20 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        this.buildPiece(STRUCTUR_PIECE_MAIN, stackSize, hintsOnly, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+        this.buildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            hintsOnly,
+            HORIZONTAL_OFF_SET,
+            VERTICAL_OFF_SET,
+            DEPTH_OFF_SET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         return this.survivalBuildPiece(
-            STRUCTUR_PIECE_MAIN,
+            STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
             VERTICAL_OFF_SET,
@@ -259,7 +260,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         tierPipeCasing = -1;
         tierMachineCasing = -1;
         tCountCasing = 0;
-        if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
             && tierMachineCasing == 1
             && tCountCasing >= 55
@@ -433,7 +434,9 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
     }
 
     @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         setMachineMode(nextMachineMode());
         GTUtility
             .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
@@ -553,7 +556,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTESteamMultiBaseGui(this).withMachineModeIcons(
+        return new MTESteamMultiBlockBaseGui(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
     }
