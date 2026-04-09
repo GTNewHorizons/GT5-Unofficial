@@ -13,7 +13,6 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
-import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -74,12 +73,6 @@ public class ExoticInputsListPanel {
             .registerFor(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST, hypervisor, hypervisor.getModule(Modules.EXOTIC));
 
         for (int i = 0; i < NUMBER_OF_INPUTS; i++) {
-            SyncHandler sh = hypervisor.getSyncManager(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST)
-                .findSyncHandlerNullable("exotic_fluid_tanks:" + i);
-            if (sh != null) {
-                int a = 0;
-            }
-
             hypervisor.getSyncManager(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST)
                 .syncValue(
                     "exotic_fluid_tanks",
