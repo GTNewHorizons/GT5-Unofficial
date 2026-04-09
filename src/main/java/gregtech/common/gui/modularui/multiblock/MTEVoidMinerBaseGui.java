@@ -120,10 +120,11 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                 })
                 .wrap()
                 .crossAxisAlignment(Alignment.CrossAxis.START)
-                .widthRel(1F)
+                .width(18 * buttonsPerRow)
                 .coverChildrenHeight()
                 .collapseDisabledChild())
-            .size(18 * buttonsPerRow, 18 * Math.min(rowCount, 8));
+            .coverChildrenWidth()
+            .height(18 * Math.min(rowCount, 8));
     }
 
     private Flow createRightButtonColumn(GenericSyncValue<ItemStackHandler> syncer, GTUtility.ItemId[] ores) {
