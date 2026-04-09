@@ -2182,6 +2182,7 @@ public enum ItemList implements IItemContainer {
     CasingThaumium,
     CasingVoid,
     CasingIchorium,
+    CasingMixer,
     EntropicProcessor,
     DecayWarehouse,
     LATEX,
@@ -2827,7 +2828,7 @@ public enum ItemList implements IItemContainer {
     ElectricImplosionCompressor,
     IntegratedOreFactory,
     CryogenicFreezer,
-
+    IndustrialMixer,
     MegaChemicalReactor,
 
     BasicCircuitBoard,
