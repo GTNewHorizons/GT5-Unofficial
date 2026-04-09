@@ -249,7 +249,7 @@ public class ComponentAssemblyLineLoader {
                 get(plate, EnderPearl, 48),
                 get(wrapCircuit, HV, 12))
             .fluidInputs(
-                RedSteel.getMolten(1 * STACKS + 32 * INGOTS))
+                VibrantAlloy.getMolten(1 * STACKS + 32 * INGOTS))
             .duration(24 * MINUTES)
             .eut(RECIPE_ULV)
             .metadata(COAL_CASING_TIER, COAL_LV)
