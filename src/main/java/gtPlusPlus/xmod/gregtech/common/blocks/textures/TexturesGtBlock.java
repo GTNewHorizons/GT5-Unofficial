@@ -652,6 +652,7 @@ public class TexturesGtBlock {
 
     // Metroid related
     public static final CustomIcon TEXTURE_METAL_PANEL_A = new CustomIcon("metro/TEXTURE_METAL_PANEL_A");
+    public static final CustomIcon TEXTURE_METAL_PANEL_B_A = new CustomIcon("metro/TEXTURE_METAL_PANEL_B_A");
     public static final CustomIcon TEXTURE_METAL_PANEL_B = new CustomIcon("metro/TEXTURE_METAL_PANEL_B");
     public static final CustomIcon TEXTURE_METAL_PANEL_C = new CustomIcon("metro/TEXTURE_METAL_PANEL_C");
     public static final CustomIcon TEXTURE_METAL_PANEL_D = new CustomIcon("metro/TEXTURE_METAL_PANEL_D");

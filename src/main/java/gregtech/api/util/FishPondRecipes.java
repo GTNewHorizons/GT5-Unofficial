@@ -11,10 +11,10 @@ import net.minecraftforge.common.FishingHooks;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialFishingPond;
 import gregtech.mixin.interfaces.accessors.WeightedRandomFishableAccessor;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEIndustrialFishingPond;
 
 public class FishPondRecipes {
 
