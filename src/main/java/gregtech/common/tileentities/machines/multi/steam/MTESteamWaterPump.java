@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
+package gregtech.common.tileentities.machines.multi.steam;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -44,15 +45,14 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.blocks.BlockCasings9;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> implements ISurvivalConstructable {
+public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump> implements ISurvivalConstructable {
 
     public MTESteamWaterPump(String aName) {
         super(aName);
@@ -92,11 +92,6 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     private FluidStack[] getWater() {
         return new FluidStack[] { Materials.Water.getFluid(
             calculateFinalWaterOutput() <= 250 && isMinWaterAllowedDim() ? 250 : calculateFinalWaterOutput()) };
-    }
-
-    @Override
-    protected int getCasingTextureId() {
-        return GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 2);
     }
 
     private int mCountCasing;
@@ -295,6 +290,16 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     @Override
     public int getTierRecipes() {
         return 0;
+    }
+
+    @Override
+    protected boolean isHighPressure() {
+        return false;
+    }
+
+    @Override
+    protected Casings getCurrentCasing() {
+        return Casings.PrimitiveWoodenCasing;
     }
 
     @Override
