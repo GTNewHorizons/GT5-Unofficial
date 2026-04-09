@@ -27,10 +27,12 @@ public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
 
     public MTEHatchCreativeMaintenance(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
+        this.mWrench = this.mScrewdriver = this.mSoftMallet = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
     }
 
     public MTEHatchCreativeMaintenance(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures, false);
+        this.mWrench = this.mScrewdriver = this.mSoftMallet = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
     }
 
     @Override
@@ -67,11 +69,6 @@ public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        this.mWrench = this.mScrewdriver = this.mSoftMallet = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
-    }
-
-    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
         return false;
@@ -80,6 +77,7 @@ public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
     @Override
     public void onMaintenancePerformed(MTEMultiBlockBase aMaintenanceTarget) {
         setMaintenanceSound(SoundResource.GT_MAINTENANCE_CREATIVE_HATCH, 1.0F, 1.0F);
+        this.mWrench = this.mScrewdriver = this.mSoftMallet = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
         super.onMaintenancePerformed(aMaintenanceTarget);
     }
 
