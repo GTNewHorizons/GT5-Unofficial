@@ -184,7 +184,6 @@ public class DroneConnectionListPanel extends ModularPanel {
             .child(
                 new UpdatableToggleButton(droneListHandler, groupHandler).size(16)
                     .value(syncManager.findSyncHandler("editMode", BooleanSyncValue.class))
-                    // .background(GTGuiTextures.BUTTON_STANDARD)
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON)
                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF)
                     .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_editmode"))))
