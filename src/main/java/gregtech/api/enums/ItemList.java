@@ -2071,6 +2071,7 @@ public enum ItemList implements IItemContainer {
     Machine_HV_LightningRod,
     Machine_EV_LightningRod,
 
+    Machine_ULV_SolarPanel,
     Machine_LV_SolarPanel,
     Machine_MV_SolarPanel,
     Machine_HV_SolarPanel,
@@ -2181,6 +2182,7 @@ public enum ItemList implements IItemContainer {
     CasingThaumium,
     CasingVoid,
     CasingIchorium,
+    CasingMixer,
     EntropicProcessor,
     DecayWarehouse,
     LATEX,
@@ -2826,7 +2828,7 @@ public enum ItemList implements IItemContainer {
     ElectricImplosionCompressor,
     IntegratedOreFactory,
     CryogenicFreezer,
-
+    IndustrialMixer,
     MegaChemicalReactor,
 
     BasicCircuitBoard,
