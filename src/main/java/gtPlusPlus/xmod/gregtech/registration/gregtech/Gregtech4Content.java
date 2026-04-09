@@ -20,7 +20,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTEElectricAutoWo
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractTerminal;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEAutoCrafter;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEThermalBoiler;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEThermalBoilerLegacy;
 
 public class Gregtech4Content {
 
@@ -78,7 +78,7 @@ public class Gregtech4Content {
         // Gregtech 4 Thermal Boiler
         Logger.INFO("Gregtech 4 Content | Registering Thermal Boiler.");
         GregtechItemList.GT4_Thermal_Boiler.set(
-            new MTEThermalBoiler(GT4_Thermal_Boiler.ID, "gtplusplus.thermal.boiler", "Thermal Boiler")
+            new MTEThermalBoilerLegacy(GT4_Thermal_Boiler.ID, "gtplusplus.thermal.boiler", "Thermal Boiler")
                 .getStackForm(1L));
 
     }
