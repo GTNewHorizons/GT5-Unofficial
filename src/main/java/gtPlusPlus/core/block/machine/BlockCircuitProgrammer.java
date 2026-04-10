@@ -1,8 +1,5 @@
 package gtPlusPlus.core.block.machine;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
-
-import gregtech.api.enums.Textures;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,10 +10,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import gregtech.api.enums.Textures;
 import gregtech.api.util.GTLog;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.objects.minecraft.CubicObject;
 import gtPlusPlus.core.block.base.BasicTileBlockWithTooltip;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
@@ -127,7 +124,7 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
     @Override
     public final IIcon getIcon(int side, int meta) {
         IIcon sideIcon = Textures.BlockIcons.CIRCUIT_PROGRAMMER_SIDE.getIcon();
-        IIcon topIcon  = Textures.BlockIcons.CIRCUIT_PROGRAMMER_TOP.getIcon();
+        IIcon topIcon = Textures.BlockIcons.CIRCUIT_PROGRAMMER_TOP.getIcon();
         if (side == 1) return topIcon;
         return sideIcon;
     }

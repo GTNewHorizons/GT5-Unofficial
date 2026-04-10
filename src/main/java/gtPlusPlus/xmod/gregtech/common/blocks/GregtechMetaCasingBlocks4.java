@@ -19,7 +19,17 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
     public GregtechMetaCasingBlocks4() {
         super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.4", MaterialCasings.INSTANCE);
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            if (i==0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6 || i == 7 || i == 8 || i == 12 || i == 13 || i == 14 || i == 15) {
+            if (i == 0 || i == 1
+                || i == 2
+                || i == 4
+                || i == 5
+                || i == 6
+                || i == 7
+                || i == 8
+                || i == 12
+                || i == 13
+                || i == 14
+                || i == 15) {
                 continue;
             }
             TAE.registerTexture(3, i, TextureFactory.of(this, i));
@@ -69,9 +79,9 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
 
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
-        //aList.add(new ItemStack(aItem, 1, 0));
-        //aList.add(new ItemStack(aItem, 1, 1));
-        //aList.add(new ItemStack(aItem, 1, 2));
+        // aList.add(new ItemStack(aItem, 1, 0));
+        // aList.add(new ItemStack(aItem, 1, 1));
+        // aList.add(new ItemStack(aItem, 1, 2));
         aList.add(new ItemStack(aItem, 1, 3));
         aList.add(new ItemStack(aItem, 1, 4));
 

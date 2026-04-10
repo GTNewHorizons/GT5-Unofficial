@@ -8,21 +8,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
 import gregtech.api.enums.TAE;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler6;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract {
-
-    public static boolean mConnectedMachineTextures = false;
 
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
@@ -53,6 +46,14 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
 
     @Override
     public IIcon getIcon(final int ordinalSide, final int aMeta) {
-        return CasingTextureHandler6.getIcon(ordinalSide, aMeta);
+        if ((aMeta >= 0) && (aMeta < 16)) {
+            return switch (aMeta) {
+                case 0 -> TexturesGtBlock.TEXTURE_CASING_FUSION_4.getIcon();
+                case 1 -> TexturesGtBlock.TEXTURE_CASING_FUSION_COIL_4.getIcon();
+                case 2 -> TexturesGtBlock.TEXTURE_CASING_FUSION_OVERLAY.getIcon();
+                default -> TexturesGtBlock._PlaceHolder.getIcon();
+            };
+        }
+        return TexturesGtBlock._PlaceHolder.getIcon();
     }
 }

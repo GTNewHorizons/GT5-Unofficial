@@ -1,11 +1,9 @@
 package toxiceverglades.block;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
-
-import gregtech.api.enums.Textures;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
+import gregtech.api.enums.Textures;
 import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
@@ -17,7 +15,9 @@ public class BlockDarkWorldPortalFrame extends Block implements ITileTooltip {
         this.setBlockName("blockDarkWorldPortalFrame");
         this.setHardness(3.0F);
         this.setLightLevel(0.5F);
-        this.setBlockTextureName(Textures.BlockIcons.CONTAINMENT_FRAME.getTextureFile().getResourcePath());
+        this.setBlockTextureName(
+            Textures.BlockIcons.CONTAINMENT_FRAME.getTextureFile()
+                .getResourcePath());
     }
 
     @Override
