@@ -141,31 +141,6 @@ public class TexturesGtBlock {
     public static final CustomIcon Casing_Material_Centrifuge = new CustomIcon(
         "TileEntities/MACHINE_CASING_CENTRIFUGE");
 
-    // Quantum Force Transformer Casing
-    // spotless:off
-    public static final CustomIcon Casing_Coil_QFT = new CustomIcon("TileEntities/MACHINE_CASING_QFT_COIL");
-    public static final CustomIcon NeutronPulseManipulator = mAnimated ? new CustomIcon(
-        "qft/NeutronPulseManipulator") : new CustomIcon("qft/NeutronPulseManipulatorStatic");
-    public static final CustomIcon CosmicFabricManipulator = mAnimated ? new CustomIcon(
-        "qft/CosmicFabricManipulator") : new CustomIcon("qft/CosmicFabricManipulatorStatic");
-    public static final CustomIcon InfinityInfusedManipulator = mAnimated ? new CustomIcon(
-        "qft/InfinityInfusedManipulator") : new CustomIcon("qft/InfinityInfusedManipulatorStatic");
-    public static final CustomIcon SpaceTimeContinuumRipper = mAnimated ? new CustomIcon(
-        "qft/SpaceTimeContinuumRipper") : new CustomIcon("qft/SpaceTimeContinuumRipperStatic");
-    public static final CustomIcon Manipulator_Top = new CustomIcon("qft/Manipulator_Top");
-    public static final CustomIcon NeutronShieldingCore = mAnimated ? new CustomIcon(
-        "qft/NeutronShieldingCore") : new CustomIcon("qft/NeutronShieldingCoreStatic");
-    public static final CustomIcon CosmicFabricShieldingCore = mAnimated ? new CustomIcon(
-        "qft/CosmicFabricShieldingCore") : new CustomIcon("qft/CosmicFabricShieldingCoreStatic");
-    public static final CustomIcon InfinityInfusedShieldingCore = mAnimated ? new CustomIcon(
-        "qft/InfinityInfusedShieldingCore") : new CustomIcon("qft/InfinityInfusedShieldingCoreStatic");
-    public static final CustomIcon SpaceTimeBendingCore = mAnimated ? new CustomIcon(
-        "qft/SpaceTimeBendingCore") : new CustomIcon("qft/SpaceTimeBendingCoreStatic");
-    public static final CustomIcon ForceFieldGlass = new CustomIcon("qft/ForceFieldGlass");
-    public static final CustomIcon ForceField = new CustomIcon("qft/ForceField");
-    public static final CustomIcon Blank = new CustomIcon("qft/blank");
-    //spotless:on
-
     // Sterile Casing
     public static final CustomIcon Sterile_Casing = new CustomIcon("TileEntities/sterileCasing");
 

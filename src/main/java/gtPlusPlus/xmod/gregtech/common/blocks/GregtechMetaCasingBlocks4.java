@@ -51,7 +51,7 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
         if ((aMeta >= 0) && (aMeta < 16)) {
             return switch (aMeta) {
                 case 3 -> Textures.BlockIcons.TEMPERED_ARC_FURNACE_CASING.getIcon();
-                case 4 -> TexturesGtBlock.Casing_Coil_QFT.getIcon();
+                case 4 -> Textures.BlockIcons.Casing_Coil_QFT.getIcon();
                 case 9 -> TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
                 case 10 -> aSide < 2 ? Textures.BlockIcons.VACUUM_CASING_TOP.getIcon()
                     : Textures.BlockIcons.VACUUM_CASING_SIDE.getIcon();

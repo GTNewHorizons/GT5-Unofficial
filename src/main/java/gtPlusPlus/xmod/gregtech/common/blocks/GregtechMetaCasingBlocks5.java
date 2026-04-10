@@ -62,71 +62,30 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
 
     public static IIcon getStaticIcon(final int ordinalSide, final int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
-            switch (aMeta) {
-                case 0 -> {
-                    return TexturesGtBlock.TEXTURE_PIPE_GRINDING_MILL.getIcon();
-                }
-                case 1 -> {
-                    return TexturesGtBlock.TEXTURE_CASING_GRINDING_MILL.getIcon();
-                }
-                case 2 -> {
-                    return TexturesGtBlock.TEXTURE_GEARBOX_GRINDING_MILL.getIcon();
-                }
-                case 3 -> {
-                    return Textures.BlockIcons.ELEMENTAL_CONFINEMENT_SHELL.getIcon();
-                }
-                case 4 -> {
-                    return TexturesGtBlock.Casing_Machine_Metal_Sheet_H.getIcon();
-                }
-                case 5 -> {
-                    return TexturesGtBlock.Casing_Machine_Metal_Sheet_I.getIcon();
-                }
-                case 6 -> {
-                    return Textures.BlockIcons.FORGE_CASING.getIcon();
-                }
-                case 7 -> {
-                    if (ordinalSide == 0 || ordinalSide == 1) {
-                        return TexturesGtBlock.Manipulator_Top.getIcon();
-                    }
-                    return TexturesGtBlock.NeutronPulseManipulator.getIcon();
-                }
-                case 8 -> {
-                    if (ordinalSide == 0 || ordinalSide == 1) {
-                        return TexturesGtBlock.Manipulator_Top.getIcon();
-                    }
-                    return TexturesGtBlock.CosmicFabricManipulator.getIcon();
-                }
-                case 9 -> {
-                    if (ordinalSide == 0 || ordinalSide == 1) {
-                        return TexturesGtBlock.Manipulator_Top.getIcon();
-                    }
-                    return TexturesGtBlock.InfinityInfusedManipulator.getIcon();
-                }
-                case 10 -> {
-                    if (ordinalSide == 0 || ordinalSide == 1) {
-                        return TexturesGtBlock.Manipulator_Top.getIcon();
-                    }
-                    return TexturesGtBlock.SpaceTimeContinuumRipper.getIcon();
-                }
-                case 11 -> {
-                    return TexturesGtBlock.NeutronShieldingCore.getIcon();
-                }
-                case 12 -> {
-                    return TexturesGtBlock.CosmicFabricShieldingCore.getIcon();
-                }
-                case 13 -> {
-                    return TexturesGtBlock.InfinityInfusedShieldingCore.getIcon();
-                }
-                case 14 -> {
-                    return TexturesGtBlock.SpaceTimeBendingCore.getIcon();
-                }
-                case 15 -> {
-                    if (ordinalSide == 0 || ordinalSide == 1) {
-                        return TexturesGtBlock.Blank.getIcon();
-                    }
-                    return TexturesGtBlock.ForceFieldGlass.getIcon();
-                }
-            }
+            return switch (aMeta) {
+                case 0 -> TexturesGtBlock.TEXTURE_PIPE_GRINDING_MILL.getIcon();
+                case 1 -> TexturesGtBlock.TEXTURE_CASING_GRINDING_MILL.getIcon();
+                case 2 -> TexturesGtBlock.TEXTURE_GEARBOX_GRINDING_MILL.getIcon();
+                case 3 -> Textures.BlockIcons.ELEMENTAL_CONFINEMENT_SHELL.getIcon();
+                case 4 -> TexturesGtBlock.Casing_Machine_Metal_Sheet_H.getIcon();
+                case 5 -> TexturesGtBlock.Casing_Machine_Metal_Sheet_I.getIcon();
+                case 6 -> Textures.BlockIcons.FORGE_CASING.getIcon();
+                case 7 -> ordinalSide < 2 ? Textures.BlockIcons.Manipulator_Top.getIcon()
+                    : Textures.BlockIcons.NeutronPulseManipulator.getIcon();
+                case 8 -> ordinalSide < 2 ? Textures.BlockIcons.Manipulator_Top.getIcon()
+                    : Textures.BlockIcons.CosmicFabricManipulator.getIcon();
+                case 9 -> ordinalSide < 2 ? Textures.BlockIcons.Manipulator_Top.getIcon()
+                    : Textures.BlockIcons.InfinityInfusedManipulator.getIcon();
+                case 10 -> ordinalSide < 2 ? Textures.BlockIcons.Manipulator_Top.getIcon()
+                    : Textures.BlockIcons.SpaceTimeContinuumRipper.getIcon();
+                case 11 -> Textures.BlockIcons.NeutronShieldingCore.getIcon();
+                case 12 -> Textures.BlockIcons.CosmicFabricShieldingCore.getIcon();
+                case 13 -> Textures.BlockIcons.InfinityInfusedShieldingCore.getIcon();
+                case 14 -> Textures.BlockIcons.SpaceTimeBendingCore.getIcon();
+                case 15 -> ordinalSide < 2 ? Textures.BlockIcons.ForceFieldGlassTop.getIcon()
+                    : Textures.BlockIcons.ForceFieldGlass.getIcon();
+                default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
+            };
         }
         return Textures.GlobalIcons.RENDERING_ERROR.getIcon();
     }
