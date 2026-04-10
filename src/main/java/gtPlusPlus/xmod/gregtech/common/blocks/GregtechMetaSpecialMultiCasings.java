@@ -82,7 +82,7 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
             case 10, 14 -> TexturesGtBlock.Casing_Material_Talonite.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
             case 12 -> TexturesGtBlock.Casing_Redox_5.getIcon();
-            case 13 -> TexturesGtBlock.TEXTURE_MAGIC_PANEL_B.getIcon();
+            case 13 -> Textures.BlockIcons.PARTICLE_CONTAINMENT_CASING.getIcon();
             case 15 -> TexturesGtBlock.Turbine_SC_Material_Casing.getIcon();
             default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
         };

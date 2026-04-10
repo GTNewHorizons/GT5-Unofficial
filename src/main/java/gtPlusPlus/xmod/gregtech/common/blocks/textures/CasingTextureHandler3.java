@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
+import gregtech.api.enums.Textures;
 import net.minecraft.util.IIcon;
 
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks3;
@@ -11,13 +12,13 @@ public class CasingTextureHandler3 {
             return switch (aMeta) {
                 case 0 ->
                     // Aquatic Casing
-                    TexturesGtBlock.TEXTURE_METAL_PANEL_B.getIcon();
+                    Textures.BlockIcons.AQUATIC_CASING.getIcon();
                 case 1 ->
                     // Inconel Reinforced Casing
-                    TexturesGtBlock.TEXTURE_METAL_PANEL_D.getIcon();
+                    Textures.BlockIcons.INCONEL_REINFORCED_CASING.getIcon();
                 case 2 ->
                     // Multi-Use Casing
-                    TexturesGtBlock.TEXTURE_METAL_PANEL_C.getIcon();
+                    Textures.BlockIcons.MULTI_USE_CASING.getIcon();
                 case 3 ->
                     // Trinium Plated Mining Platform Casing
                     TexturesGtBlock.Casing_Trinium_Naquadah_Vent.getIcon();
@@ -48,7 +49,7 @@ public class CasingTextureHandler3 {
                 case 12 -> TexturesGtBlock.TEXTURE_CASING_FUSION_COIL_II.getIcon();
                 case 13 -> TexturesGtBlock.TEXTURE_CASING_FUSION_COIL_II_INNER.getIcon();
                 case 14 -> TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA.getIcon();
-                case 15 -> TexturesGtBlock.TEXTURE_MAGIC_PANEL_A.getIcon();
+                case 15 -> Textures.BlockIcons.CONTAINMENT_CASING.getIcon();
                 default -> TexturesGtBlock._PlaceHolder.getIcon();
             };
         }

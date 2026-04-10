@@ -73,7 +73,7 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
                     return TexturesGtBlock.TEXTURE_GEARBOX_GRINDING_MILL.getIcon();
                 }
                 case 3 -> {
-                    return TexturesGtBlock.TEXTURE_TECH_PANEL_D.getIcon();
+                    return Textures.BlockIcons.ELEMENTAL_CONFINEMENT_SHELL.getIcon();
                 }
                 case 4 -> {
                     return TexturesGtBlock.Casing_Machine_Metal_Sheet_H.getIcon();
@@ -82,7 +82,7 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
                     return TexturesGtBlock.Casing_Machine_Metal_Sheet_I.getIcon();
                 }
                 case 6 -> {
-                    return TexturesGtBlock.TEXTURE_TECH_PANEL_H.getIcon();
+                    return Textures.BlockIcons.FORGE_CASING.getIcon();
                 }
                 case 7 -> {
                     if (ordinalSide == 0 || ordinalSide == 1) {

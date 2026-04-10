@@ -50,9 +50,9 @@ public class CasingTextureHandler2 {
                 }
                 case 13 -> {
                     if (ordinalSide < 2) {
-                        return TexturesGtBlock.TEXTURE_TECH_A.getIcon();
+                        return Textures.BlockIcons.CUTTING_FACTORY_FRAME_TOP.getIcon();
                     } else {
-                        return TexturesGtBlock.TEXTURE_TECH_B.getIcon();
+                        return Textures.BlockIcons.CUTTING_FACTORY_FRAME_SIDE.getIcon();
                     }
                 }
                 case 14 -> {

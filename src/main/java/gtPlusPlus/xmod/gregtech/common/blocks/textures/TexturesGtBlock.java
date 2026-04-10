@@ -69,8 +69,6 @@ public class TexturesGtBlock {
 
     // PlaceHolder Texture
     public static final CustomIcon _PlaceHolder = new CustomIcon("TileEntities/_PlaceHolder");
-    public static final CustomIcon OVERLAY_ENERGY_OUT_MULTI_BUFFER = new CustomIcon(
-        "iconsets/OVERLAY_ENERGY_OUT_MULTI_BUFFER");
 
     // Machine Casings
     // Simple
@@ -113,9 +111,7 @@ public class TexturesGtBlock {
     public static final CustomIcon Casing_Material_Laurenium = new CustomIcon("TileEntities/MACHINE_CASING_LAURENIUM");
     public static final CustomIcon Casing_Material_Botmium = new CustomIcon("TileEntities/MACHINE_CASING_BOTMIUM");
 
-    // Trinium Alloys
-    public static final CustomIcon Casing_Trinium_Titanium = new CustomIcon(
-        "TileEntities/MACHINE_CASING_STABLE_TRINIUM_TITANIUM");
+    // Trinium Alloy
     public static final CustomIcon Casing_Trinium_Naquadah_Vent = new CustomIcon(
         "TileEntities/MACHINE_CASING_STABLE_TRINIUM_NAQUADAH_VENT");
 
@@ -175,14 +171,8 @@ public class TexturesGtBlock {
     public static final CustomIcon Blank = new CustomIcon("qft/blank");
     //spotless:on
 
-    // MACHINE_CASING_FARM_MANAGER_STRUCTURAL
-    // Farm Manager Casings
-    public static final CustomIcon Casing_Machine_Farm_Manager = new CustomIcon(
-        "TileEntities/MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
     // Sterile Casing
     public static final CustomIcon Sterile_Casing = new CustomIcon("TileEntities/sterileCasing");
-    // Podzol Top
-    public static final CustomIcon Casing_Machine_Podzol = new CustomIcon("TileEntities/dirt_podzol_top");
 
     // Structural Blocks
     public static final CustomIcon Casing_Machine_Metal_Grate_A = new CustomIcon("chrono/MetalGrate");
@@ -649,41 +639,6 @@ public class TexturesGtBlock {
     public static final CustomIcon TEXTURE_CASING_TIERED_ZPM = new CustomIcon("iconsets/TieredHulls/CASING_ZPM");
     public static final CustomIcon TEXTURE_CASING_TIERED_UV = new CustomIcon("iconsets/TieredHulls/CASING_UV");
     public static final CustomIcon TEXTURE_CASING_TIERED_MAX = new CustomIcon("iconsets/TieredHulls/CASING_MAX");
-
-    // Metroid related
-    public static final CustomIcon TEXTURE_METAL_PANEL_A = new CustomIcon("metro/TEXTURE_METAL_PANEL_A");
-    public static final CustomIcon TEXTURE_METAL_PANEL_B = new CustomIcon("metro/TEXTURE_METAL_PANEL_B");
-    public static final CustomIcon TEXTURE_METAL_PANEL_C = new CustomIcon("metro/TEXTURE_METAL_PANEL_C");
-    public static final CustomIcon TEXTURE_METAL_PANEL_D = new CustomIcon("metro/TEXTURE_METAL_PANEL_D");
-    public static final CustomIcon TEXTURE_METAL_PANEL_F = new CustomIcon("metro/TEXTURE_METAL_PANEL_F");
-
-    public static final CustomIcon TEXTURE_MAGIC_PANEL_A = new CustomIcon("metro/TEXTURE_MAGIC_A");
-    public static final CustomIcon TEXTURE_MAGIC_PANEL_B = new CustomIcon("metro/TEXTURE_MAGIC_B");
-
-    public static final CustomIcon TEXTURE_ORGANIC_PANEL_A_GLOWING = new CustomIcon(
-        "metro/TEXTURE_ORGANIC_PANEL_A_GLOWING");
-
-    public static final CustomIcon TEXTURE_STONE_RED_A = new CustomIcon("metro/TEXTURE_STONE_RED_A");
-    public static final CustomIcon TEXTURE_STONE_RED_B = new CustomIcon("metro/TEXTURE_STONE_RED_B");
-
-    public static final CustomIcon TEXTURE_TECH_A = new CustomIcon("metro/TEXTURE_TECH_A");
-    public static final CustomIcon TEXTURE_TECH_B = new CustomIcon("metro/TEXTURE_TECH_B");
-    public static final CustomIcon TEXTURE_TECH_C = new CustomIcon("metro/TEXTURE_TECH_C");
-
-    public static final CustomIcon TEXTURE_TECH_PANEL_D = new CustomIcon("metro/TEXTURE_TECH_PANEL_D");
-    public static final CustomIcon TEXTURE_TECH_PANEL_H = new CustomIcon("metro/TEXTURE_TECH_PANEL_H");
-
-    public static ITexture[] OVERLAYS_ENERGY_OUT_MULTI_BUFFER = new ITexture[] {
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 100, 0, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 255, 30, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 128, 128, 128, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }) };
 
     public static IIconContainer[] CONNECTED_FUSION_HULLS = new IIconContainer[] { TEXTURE_CASING_FUSION_COIL_II_1,
         TEXTURE_CASING_FUSION_COIL_II_2, TEXTURE_CASING_FUSION_COIL_II_3, TEXTURE_CASING_FUSION_COIL_II_4,

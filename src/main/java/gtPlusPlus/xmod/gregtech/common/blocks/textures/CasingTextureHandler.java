@@ -29,9 +29,9 @@ public class CasingTextureHandler {
                 // Maceration Stack Casings
                 case 7 -> TexturesGtBlock.Casing_Material_Tumbaga.getIcon();
                 // Broken Pink Fusion Casings
-                case 8 -> TexturesGtBlock.TEXTURE_ORGANIC_PANEL_A_GLOWING.getIcon();
+                case 8 -> Textures.BlockIcons.MATTER_GENERATION_COIL.getIcon();
                 // Matter Fabricator Casings
-                case 9 -> TexturesGtBlock.TEXTURE_METAL_PANEL_F.getIcon();
+                case 9 -> Textures.BlockIcons.MATTER_FABRICATOR_CASING.getIcon();
                 // Iron Blast Fuance Textures
                 case 10 -> TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
                 // Multitank Exterior Casing

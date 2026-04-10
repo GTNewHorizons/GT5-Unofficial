@@ -136,7 +136,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final IIcon getIcon(final int ordinalSide, final int aMeta) {
+    public IIcon getIcon(final int ordinalSide, final int aMeta) {
         return mSidedTextureArray.get(aMeta)
             .get(ForgeDirection.getOrientation(ordinalSide))
             .getIcon();

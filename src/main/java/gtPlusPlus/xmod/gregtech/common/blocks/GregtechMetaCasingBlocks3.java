@@ -5,7 +5,9 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -56,10 +58,7 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
             }
             TAE.registerTexture(2, i, TextureFactory.of(this, i));
         }
-        // GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Unnamed"); // Can Use, don't
-        // change texture
-        // (Used for Fusion
-        // MK4)
+
         GregtechItemList.Casing_FishPond.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Extruder.set(new ItemStack(this, 1, 1));
         GregtechItemList.Casing_Multi_Use.set(new ItemStack(this, 1, 2));
@@ -81,6 +80,15 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
         }
 
         GTMod.proxy.mCTMBlockCache.put(this, (byte) 12, true);
+    }
+
+    // exclude meta 14 to not create "Unnamed" casing
+    @Override
+    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+        for (int i = 0; i < 16; i++) {
+            if (i == 14) continue;
+            list.add(new ItemStack(item, 1, i));
+        }
     }
 
     @Override

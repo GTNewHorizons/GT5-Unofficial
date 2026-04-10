@@ -2,6 +2,7 @@ package gtPlusPlus.core.block.machine;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
+import gregtech.api.enums.Textures;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import gregtech.api.util.GTLog;
@@ -127,11 +129,10 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
     }
 
     @Override
-    public CubicObject<String>[] getCustomTextureDirectoryObject() {
-        String[] aTexData = new String[] { GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H",
-            GTPlusPlus.ID + ":metro/TEXTURE_TECH_PANEL_C", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H",
-            GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H",
-            GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H" };
-        return (CubicObject<String>[]) new CubicObject[] { new CubicObject<>(aTexData) };
+    public final IIcon getIcon(int side, int meta) {
+        IIcon sideIcon   = Textures.BlockIcons.VOLUMETRIC_FLASK_CONFIGURATOR_SIDE.getIcon();
+        IIcon topIcon    = Textures.BlockIcons.VOLUMETRIC_FLASK_CONFIGURATOR_TOP.getIcon();
+        if (side == 1) return topIcon;
+        return sideIcon;
     }
 }
