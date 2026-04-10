@@ -110,7 +110,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
             .addCasingInfoMin("Flotation Cell Casing", 118, false)
             .addCasingInfoExactly("Inconel Reinforced Casing", 31, false)
             .addCasingInfoExactly("Staballoy Frame Box", 20, false)
-            .addCasingInfoExactly("Ironwood Frame Box", 8, false)
+            .addCasingInfoExactly("PTFE Frame Box", 8, false)
             .addInputBus("Bottom Casing", 1)
             .addInputHatch("Bottom Casing", 1)
             .addOutputHatch("Bottom Casing", 1)
