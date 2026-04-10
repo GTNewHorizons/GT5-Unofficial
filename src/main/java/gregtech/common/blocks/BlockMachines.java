@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.MTERedstoneLamp;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -60,7 +61,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
-import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.MTERedstoneBase;
 
 @Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = Mods.ModIDs.CHISEL_API)
 public class BlockMachines extends GTGenericBlock implements IDebugableBlock, ITileEntityProvider, IFacade {
@@ -190,7 +190,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         };
         final TileEntity machineEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (machineEntity instanceof BaseMetaTileEntity bmte) {
-            return bmte.hasCoverAtSide(forgeSide) || bmte.getMetaTileEntity() instanceof MTERedstoneBase;
+            return bmte.hasCoverAtSide(forgeSide) || bmte.getMetaTileEntity() instanceof MTERedstoneLamp;
         }
         if (machineEntity instanceof BaseMetaPipeEntity bmpe) {
             return bmpe.hasCoverAtSide(forgeSide);
