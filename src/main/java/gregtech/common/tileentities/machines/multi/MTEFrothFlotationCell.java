@@ -38,6 +38,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
@@ -106,10 +107,10 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 5, 11, false)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMin("Inconel Reinforced Casing", 118, false)
-            .addCasingInfoExactly("Flotation Cell Casing", 31, false)
+            .addCasingInfoMin("Flotation Cell Casing", 118, false)
+            .addCasingInfoExactly("Inconel Reinforced Casing", 31, false)
             .addCasingInfoExactly("Staballoy Frame Box", 20, false)
-            .addCasingInfoExactly("Inconel-690 Frame Box", 8, false)
+            .addCasingInfoExactly("Ironwood Frame Box", 8, false)
             .addInputBus("Bottom Casing", 1)
             .addInputHatch("Bottom Casing", 1)
             .addOutputHatch("Bottom Casing", 1)
@@ -138,13 +139,13 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                     'C',
                     buildHatchAdder(MTEFrothFlotationCell.class)
                         .atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy)
-                        .casingIndex(Casings.InconelReinforcedCasing.textureId)
+                        .casingIndex(Casings.FlotationCellCasings.textureId)
                         .hint(1)
                         .buildAndChain(
-                            onElementPass(x -> ++x.casingAmount, Casings.InconelReinforcedCasing.asElement())))
-                .addElement('D', Casings.FlotationCellCasings.asElement())
-                .addElement('E', Casings.InconelReinforcedCasing.asElement())
-                .addElement('A', ofFrame(MaterialsAlloy.INCONEL_690))
+                            onElementPass(x -> ++x.casingAmount, Casings.FlotationCellCasings.asElement())))
+                .addElement('D', Casings.InconelReinforcedCasing.asElement())
+                .addElement('E', Casings.FlotationCellCasings.asElement())
+                .addElement('A', ofFrame(Materials.Polytetrafluoroethylene))
                 .addElement('B', ofFrame(MaterialsAlloy.STABALLOY))
                 .addElement('W', ofChain(isAir(), ofAnyWater(false)))
                 .build();
@@ -156,7 +157,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.FlotationCellCasings.getCasingTexture(),
+            if (aActive) return new ITexture[] { Casings.InconelReinforcedCasing.getCasingTexture(),
                 TextureFactory.builder()
                     .addIcon(TexturesGtBlock.oMCDFrothFlotationCellActive)
                     .extFacing()
@@ -166,7 +167,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Casings.FlotationCellCasings.getCasingTexture(), TextureFactory.builder()
+            return new ITexture[] { Casings.InconelReinforcedCasing.getCasingTexture(), TextureFactory.builder()
                 .addIcon(TexturesGtBlock.oMCDFrothFlotationCell)
                 .extFacing()
                 .build(),
@@ -176,7 +177,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Casings.FlotationCellCasings.getCasingTexture() };
+        return new ITexture[] { Casings.InconelReinforcedCasing.getCasingTexture() };
     }
 
     @Override
