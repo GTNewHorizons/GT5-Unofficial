@@ -2183,6 +2183,7 @@ public enum ItemList implements IItemContainer {
     CasingVoid,
     CasingIchorium,
     CasingMixer,
+    FormingCore,
     EntropicProcessor,
     DecayWarehouse,
     LATEX,
