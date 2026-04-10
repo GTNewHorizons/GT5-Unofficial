@@ -76,8 +76,6 @@ import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
-import gtPlusPlus.GTplusplus;
-import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.config.ASMConfiguration;
@@ -365,12 +363,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
         if (aList.isEmpty()) {
             if (aTileEntity instanceof MTEHatch) {
-                if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
-                    log(
-                        "Adding " + aTileEntity.getInventoryName()
-                            + " at "
-                            + new BlockPos(aTileEntity.getBaseMetaTileEntity()).getLocationString());
-                }
                 updateTexture(aTileEntity, aBaseCasingIndex);
                 return aList.add((E) aTileEntity);
             }
@@ -384,23 +376,16 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 return false;
             }
             BlockPos aCurPos = new BlockPos(aCur);
-            boolean aExists = false;
             for (E m : aList) {
                 IGregTechTileEntity b = ((IMetaTileEntity) m).getBaseMetaTileEntity();
                 if (b != null) {
                     BlockPos aPos = new BlockPos(b);
                     if (aCurPos.equals(aPos)) {
-                        if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
-                            log("Found Duplicate " + b.getInventoryName() + " at " + aPos.getLocationString());
-                        }
                         return false;
                     }
                 }
             }
             if (aTileEntity instanceof MTEHatch) {
-                if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
-                    log("Adding " + aCur.getInventoryName() + " at " + aCurPos.getLocationString());
-                }
                 updateTexture(aTileEntity, aBaseCasingIndex);
                 return aList.add((E) aTileEntity);
             }
