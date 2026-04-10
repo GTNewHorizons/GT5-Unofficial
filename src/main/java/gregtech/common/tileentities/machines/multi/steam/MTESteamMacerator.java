@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
+package gregtech.common.tileentities.machines.multi.steam;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -16,7 +16,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -35,8 +34,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -51,84 +48,58 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings1;
-import gregtech.common.blocks.BlockCasings2;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> implements ISurvivalConstructable {
+public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator> implements ISurvivalConstructable {
 
-    public MTESteamForgeHammer(String aName) {
+    public MTESteamMacerator(String aName) {
         super(aName);
     }
 
-    public MTESteamForgeHammer(int aID, String aName, String aNameRegional) {
+    public MTESteamMacerator(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTESteamForgeHammer(this.mName);
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
+        return new MTESteamMacerator(this.mName);
     }
 
     @Override
     public String getMachineType() {
-        return "Forge Hammer";
+        return "Macerator";
     }
 
-    private static final String STRUCTUR_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private IStructureDefinition<MTESteamForgeHammer> STRUCTURE_DEFINITION = null;
+    private IStructureDefinition<MTESteamMacerator> STRUCTURE_DEFINITION = null;
 
-    // spotless:off
-    private final String[][] shape = new String[][] {
-        {"     ","     ","  B  ","     ","     "},
-        {"     ","  A  ","AABAA","  A  ","     "},
-        {"     ","     ","A C A","     ","     "},
-        {"     ","     ","A C A","     ","     "},
-        {"     ","     ","A   A","     ","     "},
-        {"     "," A~A ","AA AA"," AAA ","     "},
-        {" AAA ","AAAAA","AAAAA","AAAAA"," AAA "} };
-    //spotless:on
+    private final String[][] shape = new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
+        { "CCC", "CCC", "CCC" } };
+    // spotless:on
 
-    private static final int HORIZONTAL_OFF_SET = 2;
-    private static final int VERTICAL_OFF_SET = 5;
-    private static final int DEPTH_OFF_SET = 1;
+    private static final int HORIZONTAL_OFF_SET = 1;
+    private static final int VERTICAL_OFF_SET = 1;
+    private static final int DEPTH_OFF_SET = 0;
 
-    private int tierPipeCasing = -1;
+    private int mCounCasing = 0;
+
+    private int tierMachine = 0;
+
     private int tierMachineCasing = -1;
-
-    private int tCountCasing = 0;
-
-    private int tierMachine = 1;
-
-    private int tierSimpleBlock = -1;
-
-    @Nullable
-    public static Integer getTierSimpleBlock(Block block, int meta) {
-        if (block == Blocks.iron_block && meta == 0) return 1;
-        if (block == GregTechAPI.sBlockMetal6 && meta == 13) return 2;
-        return null;
-    }
 
     @Nullable
     public Integer getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
-            tCountCasing++;
+            mCounCasing++;
             return 1;
         }
         if (block == sBlockCasings2 && 0 == meta) {
-            tCountCasing++;
+            mCounCasing++;
             return 2;
         }
-        return null;
-    }
-
-    @Nullable
-    public static Integer getTierPipeCasing(Block block, int meta) {
-        if (block == sBlockCasings2 && 12 == meta) return 1;
-        if (block == sBlockCasings2 && 13 == meta) return 2;
         return null;
     }
 
@@ -139,10 +110,8 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
     }
 
     @Override
-    protected int getCasingTextureId() {
-        if (tierPipeCasing == 2 || tierMachineCasing == 2 || tierSimpleBlock == 2)
-            return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
-        return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
+    protected boolean isHighPressure() {
+        return tierMachineCasing == 2;
     }
 
     @Override
@@ -156,45 +125,27 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
     }
 
     @Override
-    protected IIconContainer getInactiveOverlay() {
-        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_FORGE_HAMMER;
-    }
-
-    @Override
     protected IIconContainer getActiveOverlay() {
-        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE;
+        return Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_ACTIVE;
     }
 
     @Override
-    public IStructureDefinition<MTESteamForgeHammer> getStructureDefinition() {
+    protected IIconContainer getInactiveOverlay() {
+        return Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR;
+    }
+
+    @Override
+    public IStructureDefinition<MTESteamMacerator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-
-            STRUCTURE_DEFINITION = StructureDefinition.<MTESteamForgeHammer>builder()
-
-                .addShape(STRUCTUR_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'B',
-                    ofBlocksTiered(
-                        MTESteamForgeHammer::getTierPipeCasing,
-                        ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
-                        -1,
-                        (t, m) -> t.tierPipeCasing = m,
-                        t -> t.tierPipeCasing))
+            STRUCTURE_DEFINITION = StructureDefinition.<MTESteamMacerator>builder()
+                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
                 .addElement(
                     'C',
-                    ofBlocksTiered(
-                        MTESteamForgeHammer::getTierSimpleBlock,
-                        ImmutableList.of(Pair.of(Blocks.iron_block, 0), Pair.of(GregTechAPI.sBlockMetal6, 13)),
-                        -1,
-                        (t, m) -> t.tierSimpleBlock = m,
-                        t -> t.tierSimpleBlock))
-                .addElement(
-                    'A',
                     ofChain(
-                        buildSteamInput(MTESteamForgeHammer.class).casingIndex(10)
+                        buildSteamInput(MTESteamMacerator.class).casingIndex(10)
                             .hint(1)
                             .build(),
-                        buildHatchAdder(MTESteamForgeHammer.class)
+                        buildHatchAdder(MTESteamMacerator.class)
                             .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
                             .casingIndex(10)
                             .hint(1)
@@ -206,21 +157,19 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
                             (t, m) -> t.tierMachineCasing = m,
                             t -> t.tierMachineCasing)))
                 .build();
-
         }
         return STRUCTURE_DEFINITION;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        this.buildPiece(STRUCTUR_PIECE_MAIN, stackSize, hintsOnly, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (this.mMachine) return -1;
-        return this.survivalBuildPiece(
-            STRUCTUR_PIECE_MAIN,
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
             VERTICAL_OFF_SET,
@@ -233,27 +182,20 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierPipeCasing = -1;
         tierMachineCasing = -1;
-        tierSimpleBlock = -1;
-        tCountCasing = 0;
-        if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierPipeCasing == 1 && tierMachineCasing == 1
-            && tierSimpleBlock == 1
-            && tCountCasing >= 35
-            && checkHatches()) {
+        mCounCasing = 0;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (tierMachineCasing == 1 && mCounCasing >= 14 && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
-        if (tierPipeCasing == 2 && tierMachineCasing == 2
-            && tierSimpleBlock == 2
-            && tCountCasing >= 35
-            && checkHatches()) {
+        if (tierMachineCasing == 2 && mCounCasing >= 14 && checkHatches()) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
         }
+
         return false;
     }
 
@@ -271,13 +213,12 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.hammerRecipes;
+        return RecipeMaps.maceratorRecipes;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getActivitySoundLoop() {
-        return SoundResource.GTCEU_LOOP_FORGE_HAMMER;
+    public int getItemOutputLimit() {
+        return 1;
     }
 
     @Override
@@ -293,6 +234,7 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
+            // note that a basic steam machine has .setEUtDiscount(2F).setSpeedBoost(2F). So these here are bonuses.
             @Override
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
@@ -315,8 +257,8 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
         tt.addMachineType(getMachineType())
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .beginStructureBlock(6, 5, 5, false)
-            .addController("Front center, 2nd layer")
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front center")
             .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addStructureInfo(
@@ -327,21 +269,12 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
                     + " Any casing")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "35-39x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Iron Block")
+            .addStructureInfo(EnumChatFormatting.GOLD + "14-22x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(
-                EnumChatFormatting.GOLD + "35-39x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "2x"
-                    + EnumChatFormatting.GRAY
-                    + " Steel Block"
-                    + EnumChatFormatting.RED
-                    + " from GregTech")
-            .toolTipFinisher(GTAuthors.AuthorEvgenWarGold);
+                EnumChatFormatting.GOLD + "14-22x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
+            .toolTipFinisher();
         return tt;
     }
 
@@ -398,9 +331,14 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
         tierMachineCasing = aNBT.getInteger("tierMachineCasing");
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_MACERATOR;
+    }
+
     @Override
     public int getThemeTier() {
         return tierMachineCasing;
     }
-
 }

@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,46 +34,56 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.StructureError;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IOutputBus;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.gui.modularui.multiblock.base.MTESteamMultiBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTESteamMultiBlockBaseGui;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends GTPPMultiBlockBase<T>
-    implements IOverclockDescriptionProvider {
+public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>>
+    extends MTEExtendedPowerMultiBlockBase<T> implements IOverclockDescriptionProvider {
 
     private final OverclockDescriber overclockDescriber;
 
     public ArrayList<MTEHatchSteamBusInput> mSteamInputs = new ArrayList<>();
     public ArrayList<MTEHatchSteamBusOutput> mSteamOutputs = new ArrayList<>();
     public ArrayList<MTEHatchCustomFluidBase> mSteamInputFluids = new ArrayList<>();
+
+    public static final Casings bronzeCasing = Casings.BronzePlatedBricks;
+    public static final Casings steelCasing = Casings.SolidSteelMachineCasing;
 
     protected static final String HIGH_PRESSURE_TOOLTIP_NOTICE = "High Pressure Doubles " + EnumChatFormatting.GREEN
         + "Speed"
@@ -81,22 +92,112 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         + EnumChatFormatting.AQUA
         + "Steam Usage";
 
-    public MTESteamMultiBase(String aName) {
+    public MTESteamMultiBlockBase(String aName) {
         super(aName);
         this.overclockDescriber = createOverclockDescriber();
     }
 
-    @Override
-    protected int getCasingTextureId() {
-        return 10;
-    }
-
-    public MTESteamMultiBase(int aID, String aName, String aNameRegional) {
+    public MTESteamMultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
         this.overclockDescriber = createOverclockDescriber();
     }
 
+    public abstract String getMachineType();
+
     public abstract int getTierRecipes();
+
+    /**
+     * Returns true when the structure is fully tier-2 (High Pressure / Steel).
+     * Subclasses implement this based on their own tier fields, e.g.:
+     * return tierMachineCasing == 2;
+     * return tierGearBoxCasing == 2 && tierPipeCasing == 2 && ...;
+     */
+    protected abstract boolean isHighPressure();
+
+    protected Casings getCurrentCasing() {
+        return isHighPressure() ? steelCasing : bronzeCasing;
+    }
+
+    protected int getCasingTextureId() {
+        return getCurrentCasing().textureId;
+    }
+
+    /**
+     * Front-face active overlay icon. Must be implemented by every steam multi.
+     */
+    protected abstract IIconContainer getActiveOverlay();
+
+    /**
+     * Front-face inactive overlay icon. Must be implemented by every steam multi.
+     */
+    protected abstract IIconContainer getInactiveOverlay();
+
+    /**
+     * Optional glow layer shown only when active. Returns null by default (no glow).
+     */
+    @Nullable
+    protected IIconContainer getActiveGlowOverlay() {
+        return null;
+    }
+
+    /**
+     * Optional glow layer shown only when disabled. Returns null by default (no glow).
+     */
+    @Nullable
+    protected IIconContainer getInactiveGlowOverlay() {
+        return null;
+    }
+
+    /**
+     * Builds the texture array from the overlay hooks above, using the correct tier
+     * casing automatically. Subclasses no longer need to override getTexture().
+     */
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        Casings casing = getCurrentCasing();
+        if (side != aFacing) {
+            return new ITexture[] { casing.getCasingTexture() };
+        }
+        IIconContainer overlayIcon = aActive ? getActiveOverlay() : getInactiveOverlay();
+        IIconContainer glowIcon = aActive ? getActiveGlowOverlay() : getInactiveGlowOverlay();
+
+        if (glowIcon != null) {
+            return new ITexture[] { casing.getCasingTexture(), TextureFactory.builder()
+                .addIcon(overlayIcon)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(glowIcon)
+                    .extFacing()
+                    .glow()
+                    .build() };
+        }
+        return new ITexture[] { casing.getCasingTexture(), TextureFactory.builder()
+            .addIcon(overlayIcon)
+            .extFacing()
+            .build() };
+    }
+
+    /**
+     * Updates all steam hatch textures to match the current casing tier.
+     * Call at the end of checkMachine() once the tier has been determined.
+     */
+    protected void updateHatchTexture() {
+        int id = getCasingTextureId();
+        for (MTEHatch h : mSteamInputs) h.updateTexture(id);
+        for (MTEHatch h : mSteamOutputs) h.updateTexture(id);
+        for (MTEHatch h : mSteamInputFluids) h.updateTexture(id);
+        for (MTEHatch h : mOutputHatches) h.updateTexture(id);
+    }
+
+    // tierMachine isn't synced to client - getThemeTier() it is instead of a syncHandler
+    public abstract int getThemeTier();
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return isHighPressure() ? GTGuiThemes.STEEL : GTGuiThemes.BRONZE;
+    }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
@@ -172,7 +273,6 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     public boolean onRunningTick(ItemStack aStack) {
         if (lEUt < 0) {
             long aSteamVal = ((-lEUt * 10000) / Math.max(1000, mEfficiency));
-            // Logger.INFO("Trying to drain "+aSteamVal+" steam per tick.");
             if (!tryConsumeSteam((int) aSteamVal)) {
                 stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                 return false;
@@ -181,43 +281,64 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         return true;
     }
 
-    @Override
-    public boolean addToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            log("Invalid IGregTechTileEntity");
-            return false;
-        }
-        final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            log("Invalid IMetaTileEntity");
-            return false;
+    public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IMetaTileEntity aTileEntity,
+        final int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+
+        if (aTileEntity instanceof MTEHatch mteHatch) {
+            mteHatch.updateTexture(aBaseCasingIndex);
+            mteHatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
 
-        // Use this to determine the correct value, then update the hatch texture after.
-        boolean aDidAdd = false;
+        // Set recipe map for input hatches.
+        if (aTileEntity instanceof MTEHatchInput hatch) hatch.mRecipeMap = getRecipeMap();
+        if (aTileEntity instanceof MTEHatchInputBus hatch) hatch.mRecipeMap = getRecipeMap();
 
-        if (aMetaTileEntity instanceof MTEHatchCustomFluidBase) {
-            log("Adding Steam Input Hatch");
-            aDidAdd = addToMachineListInternal(mSteamInputFluids, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof MTEHatchSteamBusInput) {
-            log(
-                "Trying to set recipe map. Type: "
-                    + (getRecipeMap() != null ? getRecipeMap().unlocalizedName : "Null"));
-            this.resetRecipeMapForHatch(aTileEntity, getRecipeMap());
-            log("Adding Steam Input Bus");
-            aDidAdd = addToMachineListInternal(mSteamInputs, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof MTEHatchSteamBusOutput || aMetaTileEntity instanceof MTEHatchVoidBus) {
-            log("Adding Steam Output Bus");
-            aDidAdd = addToMachineListInternal(mSteamOutputs, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof MTEHatchInput)
-            aDidAdd = addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
+        if (aList.contains(aTileEntity)) return false;
 
-        return aDidAdd;
+        // noinspection unchecked
+        return aList.add((E) aTileEntity);
     }
 
-    /*
-     * Handle I/O with custom hatches
-     */
+    @Override
+    public boolean addToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+
+        if (aMetaTileEntity instanceof MTEHatchCustomFluidBase) {
+            return addToMachineListInternal(mSteamInputFluids, aMetaTileEntity, aBaseCasingIndex);
+        } else if (aMetaTileEntity instanceof MTEHatchSteamBusInput) {
+            this.resetRecipeMapForHatch(aTileEntity, getRecipeMap());
+            return addToMachineListInternal(mSteamInputs, aMetaTileEntity, aBaseCasingIndex);
+        } else if (aMetaTileEntity instanceof MTEHatchSteamBusOutput || aMetaTileEntity instanceof MTEHatchVoidBus) {
+            return addToMachineListInternal(mSteamOutputs, aMetaTileEntity, aBaseCasingIndex);
+        } else if (aMetaTileEntity instanceof MTEHatchInput) {
+            return addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
+        }
+
+        return false;
+    }
+
+    public boolean resetRecipeMapForHatch(IGregTechTileEntity aTileEntity, RecipeMap<?> aMap) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity meta = aTileEntity.getMetaTileEntity();
+        if (meta instanceof MTEHatch hatch) return resetRecipeMapForHatch(hatch, aMap);
+        return false;
+    }
+
+    public boolean resetRecipeMapForHatch(MTEHatch aTileEntity, RecipeMap<?> aMap) {
+        if (aTileEntity == null) return false;
+        if (aTileEntity instanceof MTEHatchInput hatch) {
+            hatch.mRecipeMap = aMap;
+            return true;
+        }
+        if (aTileEntity instanceof MTEHatchInputBus hatch) {
+            hatch.mRecipeMap = aMap;
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public boolean depleteInput(FluidStack aLiquid) {
@@ -284,11 +405,13 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
                 rList.add(tHatch.getFillableStack());
             }
         }
-        for (MTEHatchInput hatch : this.mInputHatches) if (hatch.getFillableStack() != null) {
-            byte hatchColor = hatch.getBaseMetaTileEntity()
-                .getColorization();
-            if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
-            rList.add(hatch.getFillableStack());
+        for (MTEHatchInput hatch : this.mInputHatches) {
+            if (hatch.getFillableStack() != null) {
+                byte hatchColor = hatch.getBaseMetaTileEntity()
+                    .getColorization();
+                if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
+                rList.add(hatch.getFillableStack());
+            }
         }
         return rList;
     }
@@ -317,13 +440,9 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     @Override
     public List<IOutputBus> getOutputBusses() {
         List<IOutputBus> output = new ArrayList<>(mSteamOutputs.size());
-
-        for (int i = 0, mOutputBussesSize = mSteamOutputs.size(); i < mOutputBussesSize; i++) {
-            MTEHatchSteamBusOutput outputBus = mSteamOutputs.get(i);
-
+        for (MTEHatchSteamBusOutput outputBus : mSteamOutputs) {
             if (outputBus.isValid()) output.add(outputBus);
         }
-
         return output;
     }
 
@@ -334,11 +453,9 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     }
 
     /*
-     * With batch mode enabled (True by default from config), HP steam multi processing times get rounded and look weird
-     * Setting them to false here will make it look normal again. (Steam multi's can't process every tick anyway)
-     * Batch mode is also now supported to account for players who wish to change this behavior
+     * With batch mode enabled (true by default from config), HP steam multi processing times get rounded and look weird
+     * Setting to false makes it look normal. Steam multis can't process every tick anyway
      */
-
     @Override
     public boolean getDefaultBatchMode() {
         return false;
@@ -378,38 +495,17 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     }
 
     @Override
-    public boolean resetRecipeMapForAllInputHatches(RecipeMap<?> aMap) {
-        boolean ret = super.resetRecipeMapForAllInputHatches(aMap);
-        for (MTEHatchSteamBusInput hatch : mSteamInputs) {
-            if (resetRecipeMapForHatch(hatch, aMap)) {
-                ret = true;
-            }
-        }
-        for (MTEHatchInput g : this.mInputHatches) {
-            if (resetRecipeMapForHatch(g, aMap)) {
-                ret = true;
-            }
-        }
-
-        return ret;
-    }
-
-    private int uiSteamStored = 0;
-    private int uiSteamCapacity = 0;
-
-    // tierMachine isn't synced to client. Adding a syncHandler for it will not work because
-    // You will still get one opening with the incorrect theme, so getThemeTier it is
-    public abstract int getThemeTier();
-
-    @Override
-    protected GTGuiTheme getGuiTheme() {
-        return getThemeTier() != 2 ? GTGuiThemes.BRONZE : GTGuiThemes.STEEL;
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTESteamMultiBaseGui(this);
+        return new MTESteamMultiBlockBaseGui(this);
     }
+
+    private int uiSteamStored = 0;
+    private int uiSteamCapacity = 0;
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
@@ -482,19 +578,13 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     protected static String getSteamTierTextForWaila(NBTTagCompound tag) {
         int tierMachine = tag.getInteger("tierMachine");
-        String tierMachineText;
-        if (tierMachine == 1) {
-            tierMachineText = "Basic";
-        } else if (tierMachine == 2) {
-            tierMachineText = "High Pressure";
-        } else {
-            tierMachineText = String.valueOf(tierMachine);
-        }
-        return tierMachineText;
+        if (tierMachine == 1) return "Basic";
+        if (tierMachine == 2) return "High Pressure";
+        return String.valueOf(tierMachine);
     }
 
-    protected static <T extends MTESteamMultiBase<T>> HatchElementBuilder<T> buildSteamInput(Class<T> typeToken) {
-        return buildHatchAdder(typeToken).adder(MTESteamMultiBase::addToMachineList)
+    protected static <T extends MTESteamMultiBlockBase<T>> HatchElementBuilder<T> buildSteamInput(Class<T> typeToken) {
+        return buildHatchAdder(typeToken).adder(MTESteamMultiBlockBase::addToMachineList)
             .hatchIds(31040)
             .shouldReject(t -> !t.mSteamInputFluids.isEmpty());
     }
@@ -508,7 +598,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         return overclockDescriber;
     }
 
-    protected enum SteamHatchElement implements IHatchElement<MTESteamMultiBase<?>> {
+    protected enum SteamHatchElement implements IHatchElement<MTESteamMultiBlockBase<?>> {
 
         InputBus_Steam {
 
@@ -518,7 +608,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             }
 
             @Override
-            public long count(MTESteamMultiBase<?> t) {
+            public long count(MTESteamMultiBlockBase<?> t) {
                 return t.mSteamInputs.size();
             }
         },
@@ -530,19 +620,14 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             }
 
             @Override
-            public long count(MTESteamMultiBase<?> t) {
+            public long count(MTESteamMultiBlockBase<?> t) {
                 return t.mSteamOutputs.size();
             }
-        },;
+        };
 
         @Override
-        public IGTHatchAdder<? super MTESteamMultiBase<?>> adder() {
-            return MTESteamMultiBase::addToMachineList;
+        public IGTHatchAdder<? super MTESteamMultiBlockBase<?>> adder() {
+            return MTESteamMultiBlockBase::addToMachineList;
         }
-    }
-
-    @Override
-    public boolean getDefaultHasMaintenanceChecks() {
-        return false;
     }
 }
