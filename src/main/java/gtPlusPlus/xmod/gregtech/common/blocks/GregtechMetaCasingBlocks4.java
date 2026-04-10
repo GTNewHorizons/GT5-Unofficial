@@ -53,7 +53,8 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
                 case 3 -> Textures.BlockIcons.TEMPERED_ARC_FURNACE_CASING.getIcon();
                 case 4 -> TexturesGtBlock.Casing_Coil_QFT.getIcon();
                 case 9 -> TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
-                case 10 -> aSide < 2 ? Textures.BlockIcons.VACUUM_CASING_TOP.getIcon() : Textures.BlockIcons.VACUUM_CASING_SIDE.getIcon();
+                case 10 -> aSide < 2 ? Textures.BlockIcons.VACUUM_CASING_TOP.getIcon()
+                    : Textures.BlockIcons.VACUUM_CASING_SIDE.getIcon();
                 case 11 -> TexturesGtBlock.TEXTURE_CASING_ROCKETDYNE.getIcon();
                 default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
             };

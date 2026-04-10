@@ -1522,6 +1522,16 @@ public class Textures {
             VACUUM_CASING_SIDE = create("VACUUM_CASING_SIDE"),
             VACUUM_CASING_TOP = create("VACUUM_CASING_TOP"),
 
+            INTEGRAL_FRAMEWORK_ULV = create("INTEGRAL_FRAMEWORK_ULV"),
+            INTEGRAL_FRAMEWORK_LV = create("INTEGRAL_FRAMEWORK_LV"),
+            INTEGRAL_FRAMEWORK_MV = create("INTEGRAL_FRAMEWORK_MV"),
+            INTEGRAL_FRAMEWORK_HV = create("INTEGRAL_FRAMEWORK_HV"),
+            INTEGRAL_FRAMEWORK_EV = create("INTEGRAL_FRAMEWORK_EV"),
+            INTEGRAL_FRAMEWORK_IV = create("INTEGRAL_FRAMEWORK_IV"),
+            INTEGRAL_FRAMEWORK_LuV = create("INTEGRAL_FRAMEWORK_LuV"),
+            INTEGRAL_FRAMEWORK_ZPM = create("INTEGRAL_FRAMEWORK_ZPM"),
+            INTEGRAL_FRAMEWORK_UV = create("INTEGRAL_FRAMEWORK_UV"),
+            INTEGRAL_FRAMEWORK_MAX = create("INTEGRAL_FRAMEWORK_MAX"),
 
             MACHINE_CASING_TURBINE_HSSS = create("MACHINE_CASING_TURBINE_HSSS"),
             MACHINE_CASING_TURBINE_STAINLESSSTEEL = create("MACHINE_CASING_TURBINE_STAINLESSSTEEL"),
@@ -2527,6 +2537,19 @@ public class Textures {
             TextureFactory.of(OVERLAY_LOCKER_009), TextureFactory.of(OVERLAY_LOCKER_010),
             TextureFactory.of(OVERLAY_LOCKER_011), TextureFactory.of(OVERLAY_LOCKER_012),
             TextureFactory.of(OVERLAY_LOCKER_013), };
+
+        public static final IIconContainer[] INTEGRAL_FRAMEWORK = {
+            INTEGRAL_FRAMEWORK_ULV,
+            INTEGRAL_FRAMEWORK_LV,
+            INTEGRAL_FRAMEWORK_MV,
+            INTEGRAL_FRAMEWORK_HV,
+            INTEGRAL_FRAMEWORK_EV,
+            INTEGRAL_FRAMEWORK_IV,
+            INTEGRAL_FRAMEWORK_LuV,
+            INTEGRAL_FRAMEWORK_ZPM,
+            INTEGRAL_FRAMEWORK_UV,
+            INTEGRAL_FRAMEWORK_MAX
+        };
 
         private static final int TIERS = 15;
         private static final int CASING_COLORS = Dyes.VALUES.length + 1; // MACHINE_METAL followed by Dyes.VALUES

@@ -596,21 +596,4 @@ public class TexturesGtBlock {
     public static final CustomIcon Overlay_Water = new CustomIcon("TileEntities/adv_machine_water");
     public static final CustomIcon Overlay_UU_Matter = new CustomIcon("TileEntities/adv_machine_uum");
 
-    // GT++ Tiered Hulls
-    public static final CustomIcon TEXTURE_CASING_TIERED_ULV = new CustomIcon("iconsets/TieredHulls/CASING_ULV");
-    public static final CustomIcon TEXTURE_CASING_TIERED_LV = new CustomIcon("iconsets/TieredHulls/CASING_LV");
-    public static final CustomIcon TEXTURE_CASING_TIERED_MV = new CustomIcon("iconsets/TieredHulls/CASING_MV");
-    public static final CustomIcon TEXTURE_CASING_TIERED_HV = new CustomIcon("iconsets/TieredHulls/CASING_HV");
-    public static final CustomIcon TEXTURE_CASING_TIERED_EV = new CustomIcon("iconsets/TieredHulls/CASING_EV");
-    public static final CustomIcon TEXTURE_CASING_TIERED_IV = new CustomIcon("iconsets/TieredHulls/CASING_IV");
-    public static final CustomIcon TEXTURE_CASING_TIERED_LuV = new CustomIcon("iconsets/TieredHulls/CASING_LuV");
-    public static final CustomIcon TEXTURE_CASING_TIERED_ZPM = new CustomIcon("iconsets/TieredHulls/CASING_ZPM");
-    public static final CustomIcon TEXTURE_CASING_TIERED_UV = new CustomIcon("iconsets/TieredHulls/CASING_UV");
-    public static final CustomIcon TEXTURE_CASING_TIERED_MAX = new CustomIcon("iconsets/TieredHulls/CASING_MAX");
-
-    public static IIconContainer[] TIERED_MACHINE_HULLS = new IIconContainer[] { TEXTURE_CASING_TIERED_ULV,
-        TEXTURE_CASING_TIERED_LV, TEXTURE_CASING_TIERED_MV, TEXTURE_CASING_TIERED_HV, TEXTURE_CASING_TIERED_EV,
-        TEXTURE_CASING_TIERED_IV, TEXTURE_CASING_TIERED_LuV, TEXTURE_CASING_TIERED_ZPM, TEXTURE_CASING_TIERED_UV,
-        TEXTURE_CASING_TIERED_MAX };
-
 }
