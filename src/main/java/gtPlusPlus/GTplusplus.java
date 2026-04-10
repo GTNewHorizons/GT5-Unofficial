@@ -1,6 +1,5 @@
 package gtPlusPlus;
 
-import static gregtech.api.enums.Mods.ModIDs;
 import static gregtech.api.enums.Mods.Thaumcraft;
 
 import net.minecraft.init.Blocks;
@@ -24,7 +23,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.FishPondRecipes;
 import gregtech.api.util.SemiFluidFuelHandler;
@@ -45,7 +43,7 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
 @Mod(
-    modid = ModIDs.G_T_PLUS_PLUS,
+    modid = "miscutils",
     name = GTPPCore.name,
     version = GTPPCore.VERSION,
     guiFactory = "gtPlusPlus.core.gui.config.GTPPGuiFactory",
@@ -70,37 +68,6 @@ import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
         + " required-after:gtnhlib@[0.0.10,);")
 public class GTplusplus {
 
-    public enum INIT_PHASE {
-
-        SUPER(null),
-        PRE_INIT(SUPER),
-        INIT(PRE_INIT),
-        POST_INIT(INIT),
-        SERVER_START(POST_INIT),
-        STARTED(SERVER_START);
-
-        private boolean mIsPhaseActive = false;
-        private final INIT_PHASE mPrev;
-
-        INIT_PHASE(INIT_PHASE aPreviousPhase) {
-            mPrev = aPreviousPhase;
-        }
-
-        public final synchronized boolean isPhaseActive() {
-            return mIsPhaseActive;
-        }
-
-        public final synchronized void setPhaseActive(boolean aIsPhaseActive) {
-            if (mPrev != null && mPrev.isPhaseActive()) {
-                mPrev.setPhaseActive(false);
-            }
-            mIsPhaseActive = aIsPhaseActive;
-            if (CURRENT_LOAD_PHASE != this) {
-                CURRENT_LOAD_PHASE = this;
-            }
-        }
-    }
-
     static {
         try {
             ConfigurationManager.registerConfig(Configuration.class);
@@ -108,9 +75,8 @@ public class GTplusplus {
             throw new RuntimeException(e);
         }
     }
-    public static INIT_PHASE CURRENT_LOAD_PHASE = INIT_PHASE.SUPER;
 
-    @Mod.Instance(Mods.ModIDs.G_T_PLUS_PLUS)
+    @Mod.Instance("miscutils")
     public static GTplusplus instance;
 
     @SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.common.CommonProxy")
@@ -125,14 +91,8 @@ public class GTplusplus {
                 .getResourcePath());
     }
 
-    public GTplusplus() {
-        super();
-        INIT_PHASE.SUPER.setPhaseActive(true);
-    }
-
     @EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
-        INIT_PHASE.PRE_INIT.setPhaseActive(true);
         PacketHandler.init();
 
         // Give this a go mate.
@@ -149,7 +109,6 @@ public class GTplusplus {
 
     @EventHandler
     public void init(final FMLInitializationEvent event) {
-        INIT_PHASE.INIT.setPhaseActive(true);
         proxy.init(event);
         proxy.registerNetworkStuff();
         MetaGTProxy.init();
@@ -161,7 +120,6 @@ public class GTplusplus {
 
     @EventHandler
     public void postInit(final FMLPostInitializationEvent event) {
-        INIT_PHASE.POST_INIT.setPhaseActive(true);
         proxy.postInit(event);
         BookHandler.runLater();
         MetaGTProxy.postInit();
@@ -194,11 +152,9 @@ public class GTplusplus {
 
     @EventHandler
     public synchronized void serverStarting(final FMLServerStartingEvent event) {
-        INIT_PHASE.SERVER_START.setPhaseActive(true);
         if (Thaumcraft.isModLoaded()) {
             event.registerServerCommand(new CommandDumpAspects());
         }
-        INIT_PHASE.STARTED.setPhaseActive(true);
     }
 
     /**
