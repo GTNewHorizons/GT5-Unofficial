@@ -156,7 +156,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.InconelReinforcedCasing.getCasingTexture(),
+            if (aActive) return new ITexture[] { Casings.FlotationCellCasings.getCasingTexture(),
                 TextureFactory.builder()
                     .addIcon(TexturesGtBlock.oMCDFrothFlotationCellActive)
                     .extFacing()
@@ -166,7 +166,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Casings.InconelReinforcedCasing.getCasingTexture(), TextureFactory.builder()
+            return new ITexture[] { Casings.FlotationCellCasings.getCasingTexture(), TextureFactory.builder()
                 .addIcon(TexturesGtBlock.oMCDFrothFlotationCell)
                 .extFacing()
                 .build(),
@@ -176,7 +176,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Casings.InconelReinforcedCasing.getCasingTexture() };
+        return new ITexture[] { Casings.FlotationCellCasings.getCasingTexture() };
     }
 
     @Override
