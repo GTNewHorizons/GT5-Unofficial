@@ -17,7 +17,7 @@ public class BlockDarkWorldPortalFrame extends Block implements ITileTooltip {
         this.setLightLevel(0.5F);
         this.setBlockTextureName(
             Textures.BlockIcons.CONTAINMENT_FRAME.getTextureFile()
-                .getResourcePath());
+                .toString());
     }
 
     @Override
