@@ -123,7 +123,8 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
                 // Hack the recipe logic to not consume water, so that we can explode.
                 for (FluidStack inputFluid : adjustedRecipe.mFluidInputs) {
                     if (inputFluid != null && (inputFluid.getFluid() == FluidRegistry.WATER
-                        || inputFluid.getFluid() == GTModHandler.getDistilledWater(1).getFluid())) {
+                        || inputFluid.getFluid() == GTModHandler.getDistilledWater(1)
+                            .getFluid())) {
                         inputFluid.amount = 0;
                     }
                 }
