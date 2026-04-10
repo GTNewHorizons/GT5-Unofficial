@@ -36,6 +36,7 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
     public GregtechMetaSpecialMultiCasings() {
         super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.1", MaterialCasings.INSTANCE);
         TAE.registerTexture(1, 12, TextureFactory.of(this, 14));
+        TAE.registerTexture(3, 2, TextureFactory.of(this, 9));
 
         GregtechItemList.Casing_Turbine_Shaft.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Turbine_LP.set(new ItemStack(this, 1, 1));
