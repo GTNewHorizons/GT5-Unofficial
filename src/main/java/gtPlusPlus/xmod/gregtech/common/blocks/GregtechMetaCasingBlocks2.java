@@ -96,63 +96,26 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
     @Override
     public IIcon getIcon(final int ordinalSide, final int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
-            switch (aMeta) {
-                case 0 -> {
-                    return TexturesGtBlock.Casing_Material_RedSteel.getIcon();
-                }
-                case 1 -> {
-                    return TexturesGtBlock.Casing_Material_HastelloyX.getIcon();
-                }
-                case 2 -> {
-                    return TexturesGtBlock.Casing_Material_HastelloyN.getIcon();
-                }
-                case 3 -> {
-                    return TexturesGtBlock.Casing_Material_Fluid_IncoloyDS.getIcon();
-                }
-                case 4 -> {
-                    return TexturesGtBlock.Casing_Material_Grisium.getIcon();
-                }
-                case 5 -> {
-                    return TexturesGtBlock.Casing_Machine_Metal_Panel_A.getIcon();
-                }
-                case 6 -> {
-                    return TexturesGtBlock.Casing_Machine_Metal_Grate_A.getIcon();
-                }
-                case 7 -> {
-                    return TexturesGtBlock.Casing_Redox_1.getIcon();
-                }
-                case 8 -> {
-                    return TexturesGtBlock.Casing_Machine_Metal_Sheet_A.getIcon();
-                }
-                case 9 -> {
-                    return TexturesGtBlock.Overlay_Machine_Cyber_A.getIcon();
-                }
-                case 10 -> {
-                    return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
-                }
-                case 11 -> {
-                    return TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();
-                }
-                case 12 -> {
-                    return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
-                }
-                case 13 -> {
-                    if (ordinalSide < 2) {
-                        return Textures.BlockIcons.CUTTING_FACTORY_FRAME_TOP.getIcon();
-                    } else {
-                        return Textures.BlockIcons.CUTTING_FACTORY_FRAME_SIDE.getIcon();
-                    }
-                }
-                case 14 -> {
-                    return Textures.GlobalIcons.RENDERING_ERROR.getIcon();
-                }
-                case 15 -> {
-                    return TexturesGtBlock.Sterile_Casing.getIcon();
-                }
-                default -> {
-                    return TexturesGtBlock.Overlay_UU_Matter.getIcon();
-                }
-            }
+            return switch (aMeta) {
+                case 0 -> TexturesGtBlock.Casing_Material_RedSteel.getIcon();
+                case 1 -> TexturesGtBlock.Casing_Material_HastelloyX.getIcon();
+                case 2 -> TexturesGtBlock.Casing_Material_HastelloyN.getIcon();
+                case 3 -> TexturesGtBlock.Casing_Material_Fluid_IncoloyDS.getIcon();
+                case 4 -> TexturesGtBlock.Casing_Material_Grisium.getIcon();
+                case 5 -> Textures.BlockIcons.INDUSTRIAL_SIEVE_CASING.getIcon();
+                case 6 -> Textures.BlockIcons.LARGE_SIEVE_GRATE.getIcon();
+                case 7 -> TexturesGtBlock.Casing_Redox_1.getIcon();
+                case 8 -> Textures.BlockIcons.SUB_STATION_EXTERNAL_CASING.getIcon();
+                case 9 -> Textures.BlockIcons.CYCLOTRON_COIL.getIcon();
+                case 10 -> Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
+                case 11 -> TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();
+                case 12 -> TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
+                case 13 -> ordinalSide < 2 ? Textures.BlockIcons.CUTTING_FACTORY_FRAME_TOP.getIcon()
+                    : Textures.BlockIcons.CUTTING_FACTORY_FRAME_SIDE.getIcon();
+                case 14 -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
+                case 15 -> TexturesGtBlock.Sterile_Casing.getIcon();
+                default -> TexturesGtBlock.Overlay_UU_Matter.getIcon();
+            };
         }
         return Textures.GlobalIcons.RENDERING_ERROR.getIcon();
     }

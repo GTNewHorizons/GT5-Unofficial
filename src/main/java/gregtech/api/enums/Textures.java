@@ -1520,7 +1520,7 @@ public class Textures {
             VACUUM_CASING_SIDE = create("VACUUM_CASING_SIDE"),
             VACUUM_CASING_TOP = create("VACUUM_CASING_TOP"),
 
-            Casing_Coil_QFT = create("TileEntities/MACHINE_CASING_QFT_COIL"),
+            Casing_Coil_QFT = create("MACHINE_CASING_QFT_COIL"),
             NeutronPulseManipulator = create("NeutronPulseManipulator"),
             CosmicFabricManipulator = create("CosmicFabricManipulator"),
             InfinityInfusedManipulator = create("InfinityInfusedManipulator"),
@@ -1533,6 +1533,15 @@ public class Textures {
             ForceFieldGlass = create("ForceFieldGlass"),
             ForceField = create("ForceField"),
             ForceFieldGlassTop = create("ForceFieldGlassTop"),
+
+            LARGE_SIEVE_GRATE = create("LARGE_SIEVE_GRATE"),
+            INDUSTRIAL_SIEVE_CASING = create("INDUSTRIAL_SIEVE_CASING"),
+            SUB_STATION_EXTERNAL_CASING = create("SUB_STATION_EXTERNAL_CASING"),
+            SPARGE_TOWER_EXTERIOR_CASING = create("SPARGE_TOWER_EXTERIOR_CASING"),
+            STURDY_PRINTER_CASING = create("STURDY_PRINTER_CASING"),
+            CYCLOTRON_COIL = create("CYCLOTRON_COIL"),
+            MINING_EXPLOSIVES_SIDE = create("MINING_EXPLOSIVES_SIDE"),
+            MINING_EXPLOSIVES_TOP = create("MINING_EXPLOSIVES_TOP"),
 
             INTEGRAL_FRAMEWORK_ULV = create("INTEGRAL_FRAMEWORK_ULV"),
             INTEGRAL_FRAMEWORK_LV = create("INTEGRAL_FRAMEWORK_LV"),

@@ -144,14 +144,6 @@ public class TexturesGtBlock {
     // Sterile Casing
     public static final CustomIcon Sterile_Casing = new CustomIcon("TileEntities/sterileCasing");
 
-    // Structural Blocks
-    public static final CustomIcon Casing_Machine_Metal_Grate_A = new CustomIcon("chrono/MetalGrate");
-    public static final CustomIcon Casing_Machine_Metal_Panel_A = new CustomIcon("chrono/MetalPanel");
-    public static final CustomIcon Casing_Machine_Metal_Sheet_A = new CustomIcon("chrono/MetalSheet");
-    public static final CustomIcon Casing_Machine_Metal_Sheet_H = new CustomIcon("chrono/MetalSheet8");
-    public static final CustomIcon Casing_Machine_Metal_Sheet_I = new CustomIcon("chrono/MetalSheet9");
-    public static final CustomIcon Overlay_Machine_Cyber_A = new CustomIcon("chrono/CyberPanel");
-
     public static final CustomIcon TEXTURE_CASING_AMAZON = new CustomIcon("TileEntities/CASING_AMAZON");
     public static final CustomIcon TEXTURE_CASING_ADVANCED_CRYOGENIC = new CustomIcon(
         "TileEntities/MACHINE_CASING_ADVANCED_CRYOGENIC");

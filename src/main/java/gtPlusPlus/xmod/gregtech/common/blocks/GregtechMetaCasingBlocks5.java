@@ -67,8 +67,8 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
                 case 1 -> TexturesGtBlock.TEXTURE_CASING_GRINDING_MILL.getIcon();
                 case 2 -> TexturesGtBlock.TEXTURE_GEARBOX_GRINDING_MILL.getIcon();
                 case 3 -> Textures.BlockIcons.ELEMENTAL_CONFINEMENT_SHELL.getIcon();
-                case 4 -> TexturesGtBlock.Casing_Machine_Metal_Sheet_H.getIcon();
-                case 5 -> TexturesGtBlock.Casing_Machine_Metal_Sheet_I.getIcon();
+                case 4 -> Textures.BlockIcons.SPARGE_TOWER_EXTERIOR_CASING.getIcon();
+                case 5 -> Textures.BlockIcons.STURDY_PRINTER_CASING.getIcon();
                 case 6 -> Textures.BlockIcons.FORGE_CASING.getIcon();
                 case 7 -> ordinalSide < 2 ? Textures.BlockIcons.Manipulator_Top.getIcon()
                     : Textures.BlockIcons.NeutronPulseManipulator.getIcon();
