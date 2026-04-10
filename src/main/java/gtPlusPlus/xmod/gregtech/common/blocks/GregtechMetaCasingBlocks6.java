@@ -51,7 +51,6 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
             return switch (aMeta) {
                 case 0 -> TexturesGtBlock.TEXTURE_CASING_FUSION_4.getIcon();
                 case 1 -> TexturesGtBlock.TEXTURE_CASING_FUSION_COIL_4.getIcon();
-                case 2 -> TexturesGtBlock.TEXTURE_CASING_FUSION_OVERLAY.getIcon();
                 default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
             };
         }
