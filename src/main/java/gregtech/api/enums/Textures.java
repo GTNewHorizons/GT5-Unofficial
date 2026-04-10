@@ -1543,6 +1543,13 @@ public class Textures {
             MINING_EXPLOSIVES_SIDE = create("MINING_EXPLOSIVES_SIDE"),
             MINING_EXPLOSIVES_TOP = create("MINING_EXPLOSIVES_TOP"),
 
+            CASING_REDOX_EV = create("CASING_REDOX_EV"),
+            CASING_REDOX_IV = create("CASING_REDOX_IV"),
+            CASING_REDOX_LUV = create("CASING_REDOX_LUV"),
+            CASING_REDOX_ZPM = create("CASING_REDOX_ZPM"),
+            CASING_REDOX_UV = create("CASING_REDOX_UV"),
+            CASING_REDOX_UHV = create("CASING_REDOX_UHV"),
+
             INTEGRAL_FRAMEWORK_ULV = create("INTEGRAL_FRAMEWORK_ULV"),
             INTEGRAL_FRAMEWORK_LV = create("INTEGRAL_FRAMEWORK_LV"),
             INTEGRAL_FRAMEWORK_MV = create("INTEGRAL_FRAMEWORK_MV"),

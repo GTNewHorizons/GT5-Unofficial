@@ -101,19 +101,19 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
                     TexturesGtBlock.Casing_Trinium_Naquadah_Vent.getIcon();
                 case 4 ->
                     // Vanadium Redox IV
-                    TexturesGtBlock.Casing_Redox_2.getIcon();
+                    Textures.BlockIcons.CASING_REDOX_IV.getIcon();
                 case 5 ->
                     // Vanadium Redox LuV
-                    TexturesGtBlock.Casing_Redox_3.getIcon();
+                    Textures.BlockIcons.CASING_REDOX_LUV.getIcon();
                 case 6 ->
                     // Vanadium Redox ZPM
-                    TexturesGtBlock.Casing_Redox_4.getIcon();
+                    Textures.BlockIcons.CASING_REDOX_ZPM.getIcon();
                 case 7 ->
                     // Vanadium Redox UV
-                    TexturesGtBlock.Casing_Redox_5.getIcon();
+                    Textures.BlockIcons.CASING_REDOX_UV.getIcon();
                 case 8 ->
                     // Vanadium Redox MAX
-                    TexturesGtBlock.Casing_Redox_6.getIcon();
+                    Textures.BlockIcons.CASING_REDOX_UHV.getIcon();
                 case 9 ->
                     // Amazon Warehouse Casing
                     TexturesGtBlock.TEXTURE_CASING_AMAZON.getIcon();

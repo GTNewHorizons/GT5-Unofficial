@@ -104,7 +104,7 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
                 case 4 -> TexturesGtBlock.Casing_Material_Grisium.getIcon();
                 case 5 -> Textures.BlockIcons.INDUSTRIAL_SIEVE_CASING.getIcon();
                 case 6 -> Textures.BlockIcons.LARGE_SIEVE_GRATE.getIcon();
-                case 7 -> TexturesGtBlock.Casing_Redox_1.getIcon();
+                case 7 -> Textures.BlockIcons.CASING_REDOX_EV.getIcon();
                 case 8 -> Textures.BlockIcons.SUB_STATION_EXTERNAL_CASING.getIcon();
                 case 9 -> Textures.BlockIcons.CYCLOTRON_COIL.getIcon();
                 case 10 -> Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();

@@ -119,14 +119,6 @@ public class TexturesGtBlock {
         "TileEntities/cover_redstone_conductor");
     public static final CustomIcon Casing_Machine_Redstone_On = new CustomIcon("TileEntities/cover_redstone_emitter");
 
-    // Redox Cells
-    public static final CustomIcon Casing_Redox_1 = new CustomIcon("redox/redox1");
-    public static final CustomIcon Casing_Redox_2 = new CustomIcon("redox/redox2");
-    public static final CustomIcon Casing_Redox_3 = new CustomIcon("redox/redox3");
-    public static final CustomIcon Casing_Redox_4 = new CustomIcon("redox/redox4");
-    public static final CustomIcon Casing_Redox_5 = new CustomIcon("redox/redox5");
-    public static final CustomIcon Casing_Redox_6 = new CustomIcon("redox/redox6");
-
     // Special Block 2
     public static final CustomIcon Casing_Resonance_1 = new CustomIcon("special/block_1");
     public static final CustomIcon Casing_Resonance_2 = new CustomIcon("special/block_2");
