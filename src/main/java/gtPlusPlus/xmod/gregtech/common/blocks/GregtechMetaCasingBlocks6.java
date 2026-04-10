@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.blocks;
 
 import java.util.List;
 
+import gregtech.api.enums.Textures;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,9 +52,9 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
                 case 0 -> TexturesGtBlock.TEXTURE_CASING_FUSION_4.getIcon();
                 case 1 -> TexturesGtBlock.TEXTURE_CASING_FUSION_COIL_4.getIcon();
                 case 2 -> TexturesGtBlock.TEXTURE_CASING_FUSION_OVERLAY.getIcon();
-                default -> TexturesGtBlock._PlaceHolder.getIcon();
+                default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
             };
         }
-        return TexturesGtBlock._PlaceHolder.getIcon();
+        return Textures.GlobalIcons.RENDERING_ERROR.getIcon();
     }
 }

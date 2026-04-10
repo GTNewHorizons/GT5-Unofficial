@@ -127,9 +127,9 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
                 case 13 -> TexturesGtBlock.TEXTURE_CASING_FUSION_COIL_II_INNER.getIcon();
                 case 14 -> TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA.getIcon();
                 case 15 -> Textures.BlockIcons.CONTAINMENT_CASING.getIcon();
-                default -> TexturesGtBlock._PlaceHolder.getIcon();
+                default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
             };
         }
-        return TexturesGtBlock._PlaceHolder.getIcon();
+        return Textures.GlobalIcons.RENDERING_ERROR.getIcon();
     }
 }
