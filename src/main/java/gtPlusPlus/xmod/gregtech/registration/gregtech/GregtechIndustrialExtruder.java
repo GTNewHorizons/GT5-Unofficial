@@ -4,7 +4,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Industrial_Extruder;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialExtruder;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialExtruderLegacy;
 
 public class GregtechIndustrialExtruder {
 
@@ -16,7 +16,7 @@ public class GregtechIndustrialExtruder {
     private static void run1() {
         // Industrial Presser Multiblock
         GregtechItemList.Industrial_Extruder.set(
-            new MTEIndustrialExtruder(
+            new MTEIndustrialExtruderLegacy(
                 Industrial_Extruder.ID,
                 "industrialextruder.controller.tier.single",
                 "Industrial Extrusion Machine").getStackForm(1L));

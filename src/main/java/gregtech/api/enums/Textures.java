@@ -471,6 +471,7 @@ public class Textures {
             MACHINE_CASING_ICHORIUM = create("MACHINE_CASING_ICHORIUM"),
 
             MIXING_CASING = create("MIXING_CASING"),
+            FORMING_CORE = create("FORMING_CORE"),
 
             DECAY_WAREHOUSE_BACKGROUND = create("DECAY_WAREHOUSE_BACKGROUND"),
             DECAY_WAREHOUSE_GLOW = createOptional("DECAY_WAREHOUSE_GLOW"),
