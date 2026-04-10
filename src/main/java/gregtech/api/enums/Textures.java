@@ -1550,6 +1550,15 @@ public class Textures {
             CASING_REDOX_UV = create("CASING_REDOX_UV"),
             CASING_REDOX_UHV = create("CASING_REDOX_UHV"),
 
+            Casing_Resonance_1 = create("ResonanceChamber_I"),
+            Casing_Resonance_2 = create("ResonanceChamber_II"),
+            Casing_Resonance_3 = create("ResonanceChamber_III"),
+            Casing_Resonance_4 = create("ResonanceChamber_IV"),
+            Casing_Modulator_1 = create("Modulator_1"),
+            Casing_Modulator_2 = create("Modulator_2"),
+            Casing_Modulator_3 = create("Modulator_3"),
+            Casing_Modulator_4 = create("Modulator_4"),
+
             INTEGRAL_FRAMEWORK_ULV = create("INTEGRAL_FRAMEWORK_ULV"),
             INTEGRAL_FRAMEWORK_LV = create("INTEGRAL_FRAMEWORK_LV"),
             INTEGRAL_FRAMEWORK_MV = create("INTEGRAL_FRAMEWORK_MV"),

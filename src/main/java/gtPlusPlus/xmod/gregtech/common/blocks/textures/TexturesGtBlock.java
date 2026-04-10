@@ -119,16 +119,6 @@ public class TexturesGtBlock {
         "TileEntities/cover_redstone_conductor");
     public static final CustomIcon Casing_Machine_Redstone_On = new CustomIcon("TileEntities/cover_redstone_emitter");
 
-    // Special Block 2
-    public static final CustomIcon Casing_Resonance_1 = new CustomIcon("special/block_1");
-    public static final CustomIcon Casing_Resonance_2 = new CustomIcon("special/block_2");
-    public static final CustomIcon Casing_Resonance_3 = new CustomIcon("special/block_3");
-    public static final CustomIcon Casing_Resonance_4 = new CustomIcon("special/block_4");
-    public static final CustomIcon Casing_Modulator_1 = new CustomIcon("special/block_5");
-    public static final CustomIcon Casing_Modulator_2 = new CustomIcon("special/block_6");
-    public static final CustomIcon Casing_Modulator_3 = new CustomIcon("special/block_7");
-    public static final CustomIcon Casing_Modulator_4 = new CustomIcon("special/block_8");
-
     // Centrifuge Casing
     public static final CustomIcon Casing_Material_Centrifuge = new CustomIcon(
         "TileEntities/MACHINE_CASING_CENTRIFUGE");
