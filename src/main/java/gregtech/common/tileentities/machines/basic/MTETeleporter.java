@@ -56,7 +56,6 @@ import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
@@ -66,7 +65,8 @@ import gregtech.common.config.MachineStats;
 import ic2.core.block.EntityItnt;
 import ic2.core.block.EntityNuke;
 
-public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAddUIWidgets {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
     private static int sPassiveEnergyDrain = 2048;
@@ -79,14 +79,11 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
     public boolean mDebug = false;
 
     public MTETeleporter(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            3,
-            new String[] { "Teleport long distances with this little device.", "Use a Dragon Egg or Nitrogen Plasma",
-                "for Inter-dimensional transmission" });
+        super(aID, aName, aNameRegional, aTier, 3, new String[] { "gt.blockmachines.basicmachine.teleporter.tooltip" });
+    }
+
+    public String[] getDescription() {
+        return GTUtility.translateMultiline("gt.blockmachines.basicmachine.teleporter.tooltip");
     }
 
     public MTETeleporter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -540,5 +537,10 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
             new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
                 .setSize(17, 17)
                 .setPos(113, 56));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

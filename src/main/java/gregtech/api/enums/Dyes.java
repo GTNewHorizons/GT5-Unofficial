@@ -42,7 +42,8 @@ public enum Dyes implements IColorModulationContainer {
     // Additional Colors only used for direct Color referencing
     _NULL(           -1,   0xffffff00,    "INVALID COLOR"),
     CABLE_INSULATION(-2, cableInsulation(), "Cable Insulation"),
-    MACHINE_METAL(   -3,    machineMetal(),    "Machine Metal");
+    MACHINE_METAL(   -3,    machineMetal(),    "Machine Metal"),
+    GUI_METAL(   -4,    guiMetal(),    "Gui Metal");
     // spotless:on
 
     /** Constructs the configured cable insulation color. */
@@ -57,6 +58,15 @@ public enum Dyes implements IColorModulationContainer {
     /** Constructs the configured machine metal color. */
     private static int machineMetal() {
         final Client.ColorModulation.MachineMetal metal = Client.colorModulation.machineMetal;
+        final int r = GTUtility.clamp(metal.red, 0, 255);
+        final int g = GTUtility.clamp(metal.green, 0, 255);
+        final int b = GTUtility.clamp(metal.blue, 0, 255);
+        return (r << 24) | (g << 16) | (b << 8);
+    }
+
+    /** Constructs the configured gui metal color. */
+    private static int guiMetal() {
+        final Client.ColorModulation.GuiMetal metal = Client.colorModulation.guiMetal;
         final int r = GTUtility.clamp(metal.red, 0, 255);
         final int g = GTUtility.clamp(metal.green, 0, 255);
         final int b = GTUtility.clamp(metal.blue, 0, 255);

@@ -25,7 +25,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -51,10 +50,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.AntimatterGeneratorGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
-public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
-    implements IConstructable, ISurvivalConstructable {
+public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implements ISurvivalConstructable {
 
     public static final String MAIN_NAME = "antimatterGenerator";
     protected IStructureDefinition<AntimatterGenerator> multiDefinition = null;
@@ -84,8 +81,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     'H',
                     lazy(
                         x -> HatchElementBuilder.<AntimatterGenerator>builder()
-                            .anyOf(HatchElement.ExoticEnergy)
-                            .adder(AntimatterGenerator::addLaserSource)
+                            .anyOf(HatchElement.ExoticDynamo)
                             .casingIndex(x.textureIndex(2))
                             .hint(2)
                             .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
@@ -99,16 +95,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                 .build();
         }
     };
-
-    private boolean addLaserSource(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
-        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchDynamoTunnel tHatch) {
-            tHatch.updateTexture(aBaseCasingIndex);
-            return mExoticEnergyHatches.add(tHatch);
-        }
-        return false;
-    }
 
     public AntimatterGenerator(String name) {
         super(name);
@@ -186,10 +172,8 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         if (wirelessEnabled && modifier >= 1.03F) {
             // Clamp the EU to the maximum of the hatches so wireless cannot bypass the limitations
             long euCapacity = 0;
-            for (MTEHatch tHatch : getExoticEnergyHatches()) {
-                if (tHatch instanceof MTEHatchDynamoTunnel tLaserSource) {
-                    euCapacity += tLaserSource.maxEUStore();
-                }
+            for (MTEHatch tHatch : getExoticDynamoHatches()) {
+                euCapacity += tHatch.maxEUStore();
             }
 
             // Prevent -Generation when long overflow
@@ -201,11 +185,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             addEUToGlobalEnergyMap(owner_uuid, generatedEU);
         } else {
             this.euLastCycle = generatedEU;
-            float invHatchCount = 1.0F / (float) mExoticEnergyHatches.size();
-            for (MTEHatch tHatch : getExoticEnergyHatches()) {
-                if (tHatch instanceof MTEHatchDynamoTunnel tLaserSource) {
-                    tLaserSource.setEUVar(tLaserSource.getEUVar() + (long) (generatedEU * invHatchCount));
-                }
+            float invHatchCount = 1.0F / (float) mExoticDynamoHatches.size();
+            for (MTEHatch tHatch : getExoticDynamoHatches()) {
+                tHatch.setEUVar(tHatch.getEUVar() + (long) (generatedEU * invHatchCount));
             }
         }
     }
@@ -387,6 +369,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addInfo("Wireless mode requires Superconductor Base UMV to work")
             .addInfo("Wireless mode is still limited by hatch capacity")
             .beginStructureBlock(35, 43, 35, false)
+            .addController("Front center, 2nd layer")
             .addCasingInfoMin("Transcendentally Reinforced Borosilicate Glass", 1008, false)
             .addCasingInfoMin("Magnetic Flux Casing", 4122, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 2418, false)
@@ -412,7 +395,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         long storedEnergy = 0;
         long maxEnergy = 0;
 
-        for (MTEHatch tHatch : mExoticEnergyHatches) {
+        for (MTEHatch tHatch : mExoticDynamoHatches) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()

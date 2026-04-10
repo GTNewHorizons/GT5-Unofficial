@@ -131,6 +131,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
             .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.desc2"))
             .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
             .beginStructureBlock(1, 5, 2, false)
+            .addController("Front, 4th layer")
             .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
             .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
             .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
@@ -172,8 +173,10 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                 .isFinished()) {
             ISpaceProject.ISP_Upgrade upgrade = projectWorkingOn.getUpgradeBeingBuilt();
             recipe = new GTRecipe(
-                false,
                 upgrade.getItemsCostPerStage(),
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -184,8 +187,10 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                 0);
         } else if (!projectWorkingOn.isFinished()) {
             recipe = new GTRecipe(
-                false,
                 projectWorkingOn.getItemsCostPerStage(),
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,

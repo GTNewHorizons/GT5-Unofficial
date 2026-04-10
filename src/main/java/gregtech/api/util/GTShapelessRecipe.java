@@ -50,17 +50,16 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
         if (mKeepingNBT) {
             ItemStack tStack = null;
             for (int i = 0; i < aGrid.getSizeInventory(); i++) {
-                if (aGrid.getStackInSlot(i) != null) {
+                final ItemStack stack = aGrid.getStackInSlot(i); // cache once per slot
+                if (stack != null) {
                     if (tStack != null) {
-                        if ((tStack.hasTagCompound() != aGrid.getStackInSlot(i)
-                            .hasTagCompound()) || (tStack.hasTagCompound()
-                                && !tStack.getTagCompound()
-                                    .equals(
-                                        aGrid.getStackInSlot(i)
-                                            .getTagCompound())))
-                            return false;
+                        final boolean tHas = tStack.hasTagCompound();
+                        final boolean sHas = stack.hasTagCompound();
+                        if (tHas != sHas) return false;
+                        if (tHas && !tStack.getTagCompound()
+                            .equals(stack.getTagCompound())) return false;
                     }
-                    tStack = aGrid.getStackInSlot(i);
+                    tStack = stack;
                 }
             }
         }

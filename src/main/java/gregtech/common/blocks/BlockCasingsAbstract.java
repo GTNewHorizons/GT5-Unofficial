@@ -5,7 +5,6 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedTex
 import java.util.List;
 import java.util.function.Supplier;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -28,15 +27,17 @@ import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.render.GTRendererCasing;
 
 /**
  * The base class for casings. Casings are the blocks that are mainly used to build multiblocks.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
 public abstract class BlockCasingsAbstract extends GTGenericBlock
     implements gregtech.api.interfaces.IHasIndexedTexture {
@@ -50,7 +51,6 @@ public abstract class BlockCasingsAbstract extends GTGenericBlock
         setStepSound(soundTypeMetal);
         setCreativeTab(GregTechAPI.TAG_GREGTECH_CASINGS);
         GregTechAPI.registerMachineBlock(this, -1);
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
     }
 
     public BlockCasingsAbstract(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial, int aMaxMeta) {
@@ -163,23 +163,21 @@ public abstract class BlockCasingsAbstract extends GTGenericBlock
 
     @Override
     public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return gregtech.api.enums.Dyes.MACHINE_METAL.toInt();
+        return Dyes.MACHINE_METAL.toInt();
     }
 
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
         // add whatever dynamic info you need in the subclass
     }
 
-    protected void register(int meta, @Nullable IItemContainer container, @Nonnull String defaultLocalName) {
-        register(meta, container, defaultLocalName, (Supplier<String>) null);
+    protected void register(int meta, @Nullable IItemContainer container) {
+        register(meta, container, (Supplier<String>) null);
     }
 
     @SafeVarargs
-    protected final void register(int meta, @Nullable IItemContainer container, @Nonnull String defaultLocalName,
+    protected final void register(int meta, @Nullable IItemContainer container,
         @Nullable Supplier<String>... tooltips) {
         ItemStack stack = new ItemStack(this, 1, meta);
-
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + meta + ".name", defaultLocalName);
 
         if (container != null) {
             container.set(stack.copy());

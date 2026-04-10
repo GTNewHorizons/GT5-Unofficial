@@ -139,8 +139,4 @@ public class BlockFluidTankInfinite extends BlockContainer {
         return new TileEntityInfiniteFluid();
     }
 
-    @Override
-    public void onBlockAdded(World world, int x, int y, int z) {
-        super.onBlockAdded(world, x, y, z);
-    }
 }

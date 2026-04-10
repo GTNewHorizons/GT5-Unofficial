@@ -384,7 +384,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             GTOreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cableGt02, aMaterial, 1L))
                         .duration(10 * SECONDS)
-                        .eut(16)
+                        .eut(TierEU.RECIPE_LV / 2)
                         .addTo(alloySmelterRecipes);
                 } else if (correspondingCable == OrePrefixes.cableGt04) {
                     GTValues.RA.stdBuilder()

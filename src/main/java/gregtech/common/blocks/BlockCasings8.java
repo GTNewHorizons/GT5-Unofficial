@@ -10,6 +10,8 @@ import gregtech.api.enums.Textures;
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
 public class BlockCasings8 extends BlockCasingsAbstract {
 
@@ -24,26 +26,20 @@ public class BlockCasings8 extends BlockCasingsAbstract {
          * special case for this ID in #getTextureIndex()
          */
 
-        register(0, ItemList.Casing_Chemically_Inert, "Chemically Inert Machine Casing");
-        register(1, ItemList.Casing_Pipe_Polytetrafluoroethylene, "PTFE Pipe Casing");
-        register(2, ItemList.Casing_MiningNeutronium, "Mining Neutronium Casing");
-        register(3, ItemList.Casing_MiningBlackPlutonium, "Mining Black Plutonium Casing");
-        register(4, ItemList.Casing_ExtremeEngineIntake, "Extreme Engine Intake Casing");
-        register(5, ItemList.Casing_AdvancedRadiationProof, "Europium Reinforced Radiation Proof Machine Casing");
-        register(6, ItemList.Casing_Advanced_Rhodium_Palladium, "Advanced Rhodium Plated Palladium Machine Casing");
-        register(7, ItemList.Casing_Advanced_Iridium, "Advanced Iridium Plated Machine Casing");
-        register(8, ItemList.Casing_Magical, "Magical Machine Casing");
-        register(10, ItemList.RadiantNaquadahAlloyCasing, "Radiant Naquadah Alloy Casing");
-        register(11, ItemList.BasicPhotolithographicFrameworkCasing, "Basic Photolithographic Framework Casing");
-        register(
-            12,
-            ItemList.ReinforcedPhotolithographicFrameworkCasing,
-            "Reinforced Photolithographic Framework Casing");
-        register(
-            13,
-            ItemList.RadiationProofPhotolithographicFrameworkCasing,
-            "Radiation Proof Photolithographic Framework Casing");
-        register(14, ItemList.InfinityCooledCasing, "Infinity Cooled Casing");
+        register(0, ItemList.Casing_Chemically_Inert);
+        register(1, ItemList.Casing_Pipe_Polytetrafluoroethylene);
+        register(2, ItemList.Casing_MiningNeutronium);
+        register(3, ItemList.Casing_MiningBlackPlutonium);
+        register(4, ItemList.Casing_ExtremeEngineIntake);
+        register(5, ItemList.Casing_AdvancedRadiationProof);
+        register(6, ItemList.Casing_Advanced_Rhodium_Palladium);
+        register(7, ItemList.Casing_Advanced_Iridium);
+        register(8, ItemList.Casing_Magical);
+        register(10, ItemList.RadiantNaquadahAlloyCasing);
+        register(11, ItemList.BasicPhotolithographicFrameworkCasing);
+        register(12, ItemList.ReinforcedPhotolithographicFrameworkCasing);
+        register(13, ItemList.RadiationProofPhotolithographicFrameworkCasing);
+        register(14, ItemList.InfinityCooledCasing);
     }
 
     @Override

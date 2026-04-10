@@ -16,6 +16,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class FormingPressRecipes implements Runnable {
@@ -94,7 +95,7 @@ public class FormingPressRecipes implements Runnable {
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 13))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 16))
                 .duration(10 * SECONDS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(formingPressRecipes);
 
             GTValues.RA.stdBuilder()
@@ -103,7 +104,7 @@ public class FormingPressRecipes implements Runnable {
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 13))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 16))
                 .duration(10 * SECONDS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(formingPressRecipes);
 
             GTValues.RA.stdBuilder()
@@ -112,7 +113,7 @@ public class FormingPressRecipes implements Runnable {
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 14))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 17))
                 .duration(10 * SECONDS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(formingPressRecipes);
 
             GTValues.RA.stdBuilder()
@@ -121,7 +122,7 @@ public class FormingPressRecipes implements Runnable {
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 15))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 18))
                 .duration(10 * SECONDS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(formingPressRecipes);
 
             GTValues.RA.stdBuilder()
@@ -130,7 +131,7 @@ public class FormingPressRecipes implements Runnable {
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 19))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 20))
                 .duration(10 * SECONDS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(formingPressRecipes);
         }
 
@@ -147,7 +148,7 @@ public class FormingPressRecipes implements Runnable {
                 ItemList.Shape_Mold_Credit.get(0L))
             .itemOutputs(ItemList.Credit_Greg_Cupronickel.get(4L))
             .duration(5 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(formingPressRecipes);
 
         GTValues.RA.stdBuilder()
@@ -156,7 +157,7 @@ public class FormingPressRecipes implements Runnable {
                 ItemList.Shape_Mold_Credit.get(0L))
             .itemOutputs(ItemList.Coin_Doge.get(4L))
             .duration(5 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(formingPressRecipes);
 
         GTValues.RA.stdBuilder()
@@ -165,7 +166,7 @@ public class FormingPressRecipes implements Runnable {
                 ItemList.Shape_Mold_Credit.get(0L))
             .itemOutputs(ItemList.Credit_Iron.get(4L))
             .duration(5 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(formingPressRecipes);
 
         GTValues.RA.stdBuilder()
@@ -174,7 +175,7 @@ public class FormingPressRecipes implements Runnable {
                 ItemList.Shape_Mold_Credit.get(0L))
             .itemOutputs(ItemList.Credit_Iron.get(4L))
             .duration(5 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(formingPressRecipes);
 
         GTValues.RA.stdBuilder()
@@ -183,7 +184,7 @@ public class FormingPressRecipes implements Runnable {
                 ItemList.Shape_Mold_Ingot.get(0L))
             .itemOutputs(new ItemStack(Items.brick, 1, 0))
             .duration(5 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(formingPressRecipes);
         // Bartworks Glass Tube
         GTValues.RA.stdBuilder()
@@ -192,7 +193,7 @@ public class FormingPressRecipes implements Runnable {
                 ItemList.Shape_Mold_Rod_Long.get(0L))
             .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(formingPressRecipes);
 
         GTValues.RA.stdBuilder()
@@ -207,6 +208,28 @@ public class FormingPressRecipes implements Runnable {
             .itemOutputs(ItemList.NaniteFramework.get(1))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
+            .addTo(formingPressRecipes);
+
+        // From ProcessingFood - foodDough forming press
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("foodDough", 1), ItemList.Shape_Mold_Bun.get(0L))
+            .itemOutputs(ItemList.Food_Raw_Bun.get(1L))
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(4)
+            .addTo(formingPressRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("foodDough", 2), ItemList.Shape_Mold_Bread.get(0L))
+            .itemOutputs(ItemList.Food_Raw_Bread.get(1L))
+            .duration(12 * SECONDS + 16 * TICKS)
+            .eut(4)
+            .addTo(formingPressRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("foodDough", 3), ItemList.Shape_Mold_Baguette.get(0L))
+            .itemOutputs(ItemList.Food_Raw_Baguette.get(1L))
+            .duration(19 * SECONDS + 4 * TICKS)
+            .eut(4)
             .addTo(formingPressRecipes);
     }
 }

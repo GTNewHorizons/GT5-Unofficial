@@ -20,7 +20,6 @@ import gregtech.loaders.postload.recipes.ChemicalRecipes;
 import gregtech.loaders.postload.recipes.CircuitAssemblerRecipes;
 import gregtech.loaders.postload.recipes.CokeOvenRecipes;
 import gregtech.loaders.postload.recipes.CompressorRecipes;
-import gregtech.loaders.postload.recipes.CropProcessingRecipes;
 import gregtech.loaders.postload.recipes.CuttingRecipes;
 import gregtech.loaders.postload.recipes.DistilleryRecipes;
 import gregtech.loaders.postload.recipes.ElectrolyzerRecipes;
@@ -56,6 +55,8 @@ import gregtech.loaders.postload.recipes.ThermalCentrifugeRecipes;
 import gregtech.loaders.postload.recipes.TranscendentPlasmaMixerRecipes;
 import gregtech.loaders.postload.recipes.VacuumFreezerRecipes;
 import gregtech.loaders.postload.recipes.WiremillRecipes;
+import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterRecipes;
+import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderRecipes;
 
 public class MachineRecipeLoader implements Runnable {
 
@@ -71,6 +72,7 @@ public class MachineRecipeLoader implements Runnable {
         new AssemblerRecipes().run();
         new AssemblyLineRecipes().run();
         new AutoclaveRecipes().run();
+        new BeamCrafterRecipes().run();
         new BenderRecipes().run();
         new BlastFurnaceRecipes().run();
         new BreweryRecipes().run();
@@ -81,7 +83,6 @@ public class MachineRecipeLoader implements Runnable {
         new CircuitAssemblerRecipes().run();
         new CokeOvenRecipes().run();
         new CompressorRecipes().run();
-        new CropProcessingRecipes().run();
         new CuttingRecipes().run();
         new DistilleryRecipes().run();
         new ElectrolyzerRecipes().run();
@@ -98,6 +99,7 @@ public class MachineRecipeLoader implements Runnable {
         new FuelRecipes().run();
         new FusionReactorRecipes().run();
         new ImplosionCompressorRecipes().run();
+        new LargeHadronColliderRecipes().run();
         new LaserEngraverRecipes().run();
         new LatheRecipes().run();
         new MatterAmplifierRecipes().run();

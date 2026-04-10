@@ -144,7 +144,7 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
         tt.addMachineType("Brewery, BBB")
             .addBulkMachineInfo(4, 1.5F, 1F)
             .beginStructureBlock(3, 5, 3, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Reinforced Wooden Casing", 14, false)
             .addCasingInfoExactly("Any Tiered Glass", 6, false)
             .addCasingInfoExactly("Steel Frame Box", 4, false)

@@ -21,6 +21,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -30,7 +31,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gregtech.common.tileentities.machines.MTEHatchOutputME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtnhintergalactic.recipe.SpacePumpingRecipes;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -282,7 +283,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
     }
 
     /** Texture that will be displayed on the side of the module */
-    protected static Textures.BlockIcons.CustomIcon engraving;
+    protected static IIconContainer engraving;
 
     /**
      * Get the texture of this controller
@@ -313,7 +314,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        engraving = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_SIDE_PUMP_MODULE");
+        engraving = Textures.BlockIcons.custom("iconsets/OVERLAY_SIDE_PUMP_MODULE");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -378,6 +379,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          *
          * @return Number of possible parallels
          */
+        @Override
         protected int getParallels() {
             return MAX_PARALLELS;
         }
@@ -387,6 +389,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          *
          * @return Number of possible parallel recipes
          */
+        @Override
         protected int getParallelRecipes() {
             return MAX_PARALLEL_RECIPES;
         }
@@ -422,6 +425,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t1.desc5"))
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
                 .beginStructureBlock(1, 5, 2, false)
+                .addController("Front, 4th layer")
                 .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
                 .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .toolTipFinisher();
@@ -467,6 +471,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          *
          * @return Number of possible parallels
          */
+        @Override
         protected int getParallels() {
             return MAX_PARALLELS;
         }
@@ -476,6 +481,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          *
          * @return Number of possible parallel recipes
          */
+        @Override
         protected int getParallelRecipes() {
             return MAX_PARALLEL_RECIPES;
         }
@@ -557,6 +563,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          *
          * @return Number of possible parallels
          */
+        @Override
         protected int getParallels() {
             return MAX_PARALLELS;
         }
@@ -566,6 +573,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          *
          * @return Number of possible parallel recipes
          */
+        @Override
         protected int getParallelRecipes() {
             return MAX_PARALLEL_RECIPES;
         }

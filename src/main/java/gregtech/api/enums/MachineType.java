@@ -1,7 +1,8 @@
 package gregtech.api.enums;
 
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+
+import gregtech.api.util.GTUtility;
 
 public enum MachineType {
 
@@ -52,7 +53,8 @@ public enum MachineType {
     SIFTER(FunnyTexts.SIFTER, "gt.recipe.sifter"),
     THERMAL_CENTRIFUGE(FunnyTexts.THERMAL_CENTRIFUGE, "gt.recipe.thermalcentrifuge"),
     UNPACKAGER(FunnyTexts.UNPACKAGER, "gt.recipe.unpackager"),
-    WIREMILL(FunnyTexts.WIREMILL, "gt.recipe.wiremill");
+    WIREMILL(FunnyTexts.WIREMILL, "gt.recipe.wiremill"),
+    DRAWER_FRAMER(FunnyTexts.DRAWER_FRAMER, "gt.recipe.drawerframer");
 
     private static class FunnyTexts {
 
@@ -104,6 +106,7 @@ public enum MachineType {
         static final String THERMAL_CENTRIFUGE = "gt.recipe.thermalcentrifuge.description";
         static final String UNPACKAGER = "gt.recipe.unpackager.description";
         static final String WIREMILL = "gt.recipe.wiremill.description";
+        static final String DRAWER_FRAMER = "gt.recipe.drawerframer.description";
     }
 
     private static final String TT_machineType = "GT5U.MBTT.MachineType";
@@ -117,16 +120,16 @@ public enum MachineType {
     }
 
     public String type() {
-        return StatCollector.translateToLocal(this.name);
+        return GTUtility.translate(this.name);
     }
 
     public String description() {
-        return StatCollector.translateToLocal(this.description);
+        return GTUtility.translate(this.description);
     }
 
     public String[] tooltipDescription() {
         return new String[] { description(),
-            StatCollector.translateToLocal(TT_machineType) + ": "
+            GTUtility.translate(TT_machineType) + ": "
                 + EnumChatFormatting.YELLOW
                 + type()
                 + EnumChatFormatting.RESET };

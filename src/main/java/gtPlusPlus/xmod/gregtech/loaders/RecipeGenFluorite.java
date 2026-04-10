@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.core.material.Material;
@@ -115,7 +116,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
             .outputChances(100_00, 50_00, 10_00)
             .fluidInputs(Materials.Hydrogen.getGas(1_000))
             .duration(15 * SECONDS)
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
@@ -153,7 +154,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
             .outputChances(100_00, 10_00, 10_00, 30_00, 20_00)
             .fluidInputs(Materials.SulfuricAcid.getFluid(8_000))
             .fluidOutputs(Materials.HydrofluoricAcid.getFluid(16_000))
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .duration(10 * MINUTES)
             .addTo(chemicalDehydratorRecipes);
     }

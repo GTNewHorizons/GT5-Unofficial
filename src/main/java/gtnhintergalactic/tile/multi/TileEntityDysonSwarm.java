@@ -425,7 +425,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.ig.dyson.type"));
-        if (TooltipUtil.dysonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.dysonLoreText);
+        if (TooltipUtil.dysonLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.dysonLoreText));
 
         tt.addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc1"))
             .addInfo(
@@ -449,6 +449,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc7"))
             .addTecTechHatchInfo()
             .beginStructureBlock(16, 20, 16, false)
+            .addController("Front bottom center of the Dyson Swarm Energy Receiver Base")
             .addDynamoHatch(translateToLocal("ig.dyson.structure.dynamo"), 1)
             .addInputBus("1 - 11", 2)
             .addInputHatch("1 - 11", 2)

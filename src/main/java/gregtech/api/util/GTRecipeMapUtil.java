@@ -73,7 +73,7 @@ public class GTRecipeMapUtil {
         List<ItemStack> itemOutputs = new ArrayList<>(Arrays.asList(b.getItemOutputs()));
         List<FluidStack> fluidInputs = new ArrayList<>(Arrays.asList(b.getFluidInputs()));
         List<FluidStack> fluidOutputs = new ArrayList<>(Arrays.asList(b.getFluidOutputs()));
-        TIntList chances = b.getChances() != null ? new TIntArrayList(b.getChances()) : null;
+        TIntList chances = b.getOutputChances() != null ? new TIntArrayList(b.getOutputChances()) : null;
         if (!hasCells(itemInputs, itemOutputs) && !removeIntegratedCircuit) {
             return b; // Skip conversion if no cells/filled containers exist
         }
@@ -124,6 +124,11 @@ public class GTRecipeMapUtil {
     }
 
     public static List<GTRecipe> buildOrEmpty(GTRecipeBuilder builder) {
+        if (builder.getItemInputsOreDict() != null) {
+            return builder.buildWithAlt()
+                .<List<GTRecipe>>map(Collections::singletonList)
+                .orElse(Collections.emptyList());
+        }
         return builder.build()
             .map(Collections::singletonList)
             .orElse(Collections.emptyList());

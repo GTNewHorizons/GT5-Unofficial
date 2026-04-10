@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -171,16 +170,6 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
     @Override
     public int getDamageToComponent(ItemStack aStack) {
         return (RANDOM.nextInt(4) == 0) ? 0 : 1;
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
     }
 
     @Override

@@ -22,7 +22,8 @@ import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.MTEHatchMufflerAdvancedGui;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.gui.modularui.hatch.MTEHatchMufflerAdvancedGui;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -50,7 +51,7 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
 
     @Override
     public String[] getDescription() {
-        return mDescription;
+        return TooltipHelper.pollutionDisabledTooltip(mDescription);
     }
 
     @Override

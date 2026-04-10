@@ -118,6 +118,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     /** Cached fluid stack using for displaying the pumped fluid */
     private FluidStack fluid = new FluidStack(FluidRegistry.WATER, 0) {
 
+        @Override
         public String getLocalizedName() {
             return "None";
         }
@@ -164,7 +165,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.type"));
-        if (TooltipUtil.siphonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.siphonLoreText);
+        if (TooltipUtil.siphonLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.siphonLoreText));
         tt.addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc1"))
             .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc2"))
             .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc3"))
@@ -436,10 +437,10 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
         float x, float y, float z, ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             mChunkLoadingEnabled = !mChunkLoadingEnabled;
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 player,
-                mChunkLoadingEnabled ? GTUtility.trans("502", "Mining chunk loading enabled")
-                    : GTUtility.trans("503", "Mining chunk loading disabled"));
+                mChunkLoadingEnabled ? "GT5U.chat.driller_base.chunk_loading.enable"
+                    : "GT5U.chat.driller_base.chunk_loading.disabled");
             return true;
         }
         return super.onSolderingToolRightClick(side, wrenchingSide, player, x, y, z, aTool);

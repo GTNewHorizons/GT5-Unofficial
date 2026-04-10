@@ -18,7 +18,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,6 +30,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -40,13 +43,12 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
 import gregtech.api.interfaces.metatileentity.IFluidLockable;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -54,7 +56,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.SpecialChars;
 
 public abstract class MTEDigitalTankBase extends MTEBasicTank
-    implements IFluidLockable, IAddUIWidgets, IAddGregtechLogo {
+    implements IFluidLockable, IFluidContainerItemMetaTile, IAddGregtechLogo {
 
     public boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
     protected String lockedFluidName = null;
@@ -118,16 +120,10 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
                 tooltip.add(
-                    GTLanguageManager.addStringLocalization("TileEntity_TANK_INFO", "Contains Fluid: ")
-                        + EnumChatFormatting.YELLOW
-                        + tContents.getLocalizedName()
-                        + EnumChatFormatting.GRAY);
+                    StatCollector.translateToLocalFormatted("gt.tileentity.tank_info", tContents.getLocalizedName()));
                 tooltip.add(
-                    GTLanguageManager.addStringLocalization("TileEntity_TANK_AMOUNT", "Fluid Amount: ")
-                        + EnumChatFormatting.GREEN
-                        + formatNumber(tContents.amount)
-                        + " L"
-                        + EnumChatFormatting.GRAY);
+                    StatCollector
+                        .translateToLocalFormatted("gt.tileentity.tank_amount", formatNumber(tContents.amount)));
             } else if (stack.stackTagCompound.hasKey("lockedFluidName")) {
                 String fluidName = stack.stackTagCompound.getString("lockedFluidName");
                 Fluid fluid = FluidRegistry.getFluid(fluidName);
@@ -294,10 +290,10 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
         ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 aPlayer,
-                mAllowInputFromOutputSide ? translateToLocal("gt.interact.desc.input_from_output_on")
-                    : translateToLocal("gt.interact.desc.input_from_output_off"));
+                mAllowInputFromOutputSide ? "gt.interact.desc.input_from_output_on"
+                    : "gt.interact.desc.input_from_output_off");
         }
     }
 
@@ -321,61 +317,58 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
 
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if (isFluidChangingAllowed() && getFillableStack() != null && getFillableStack().amount <= 0)
-                setFillableStack(null);
+        if (!aBaseMetaTileEntity.isServerSide()) return;
 
-            if (mVoidFluidFull && getFillableStack() != null) {
-                mVoidFluidPart = false;
-                mLockFluid = false;
-                setFillableStack(null);
-            }
+        if (isFluidChangingAllowed() && getFillableStack() != null && getFillableStack().amount <= 0) {
+            setFillableStack(null);
+        }
 
-            if (doesEmptyContainers()) {
-                FluidStack tFluid = GTUtility.getFluidForFilledItem(mInventory[getInputSlot()], true);
-                if (tFluid != null && isFluidInputAllowed(tFluid)) {
-                    if (getFillableStack() == null) {
-                        if (isFluidInputAllowed(tFluid)) {
-                            if ((tFluid.amount <= getRealCapacity()) || mVoidFluidPart) {
-                                tFluid = tFluid.copy();
-                                if (aBaseMetaTileEntity.addStackToSlot(
-                                    getOutputSlot(),
-                                    GTUtility.getContainerForFilledItem(mInventory[getInputSlot()], true),
-                                    1)) {
-                                    setFillableStack(tFluid);
-                                    this.onEmptyingContainerWhenEmpty();
-                                    aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
-                                }
-                            }
+        if (mVoidFluidFull && getFillableStack() != null) {
+            mVoidFluidPart = false;
+            mLockFluid = false;
+            setFillableStack(null);
+        }
+
+        if (doesEmptyContainers()) {
+            FluidStack tFluid = GTUtility.getFluidForFilledItem(mInventory[getInputSlot()], true);
+            if (tFluid != null && isFluidInputAllowed(tFluid)) {
+                if (getFillableStack() == null) {
+                    if ((tFluid.amount <= getRealCapacity()) || mVoidFluidPart) {
+                        tFluid = tFluid.copy();
+                        if (aBaseMetaTileEntity.addStackToSlot(
+                            getOutputSlot(),
+                            GTUtility.getContainerForFilledItem(mInventory[getInputSlot()], true),
+                            1)) {
+                            setFillableStack(tFluid);
+                            this.onEmptyingContainerWhenEmpty();
+                            aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
                         }
-                    } else {
-                        if (tFluid.isFluidEqual(getFillableStack())) {
-                            if ((((long) tFluid.amount + getFillableStack().amount) <= (long) getRealCapacity())
-                                || mVoidFluidPart
-                                || mVoidFluidFull) {
-                                if (aBaseMetaTileEntity.addStackToSlot(
-                                    getOutputSlot(),
-                                    GTUtility.getContainerForFilledItem(mInventory[getInputSlot()], true),
-                                    1)) {
-                                    getFillableStack().amount += Math
-                                        .min(tFluid.amount, getRealCapacity() - getFillableStack().amount);
-                                    aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
-                                }
-                            }
+                    }
+                } else if (tFluid.isFluidEqual(getFillableStack())) {
+                    if ((((long) tFluid.amount + getFillableStack().amount) <= (long) getRealCapacity())
+                        || mVoidFluidPart
+                        || mVoidFluidFull) {
+                        if (aBaseMetaTileEntity.addStackToSlot(
+                            getOutputSlot(),
+                            GTUtility.getContainerForFilledItem(mInventory[getInputSlot()], true),
+                            1)) {
+                            getFillableStack().amount += Math
+                                .min(tFluid.amount, getRealCapacity() - getFillableStack().amount);
+                            aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
                         }
                     }
                 }
             }
+        }
 
-            if (doesFillContainers()) {
-                ItemStack tOutput = GTUtility
-                    .fillFluidContainer(getDrainableStack(), mInventory[getInputSlot()], false, true);
-                if (tOutput != null && aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), tOutput, 1)) {
-                    FluidStack tFluid = GTUtility.getFluidForFilledItem(tOutput, true);
-                    aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
-                    if (tFluid != null) getDrainableStack().amount -= tFluid.amount;
-                    if (getDrainableStack().amount <= 0 && isFluidChangingAllowed()) setDrainableStack(null);
-                }
+        if (doesFillContainers()) {
+            ItemStack tOutput = GTUtility
+                .fillFluidContainer(getDrainableStack(), mInventory[getInputSlot()], false, true);
+            if (tOutput != null && aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), tOutput, 1)) {
+                FluidStack tFluid = GTUtility.getFluidForFilledItem(tOutput, true);
+                aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
+                if (tFluid != null) getDrainableStack().amount -= tFluid.amount;
+                if (getDrainableStack().amount <= 0 && isFluidChangingAllowed()) setDrainableStack(null);
             }
         }
     }
@@ -411,17 +404,19 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if (mOutputFluid && getDrainableStack() != null && (aTick % 20 == 0)) {
-                IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
-                if (tTank != null) {
-                    FluidStack tDrained = drain(20 * (1 << (3 + 2 * tierPump(mTier))), false);
-                    if (tDrained != null) {
-                        int tFilledAmount = tTank.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
-                        if (tFilledAmount > 0)
-                            tTank.fill(aBaseMetaTileEntity.getBackFacing(), drain(tFilledAmount, true), true);
-                    }
-                }
+
+        if (!aBaseMetaTileEntity.isServerSide()) return;
+
+        if (mOutputFluid && getDrainableStack() != null && (aTick % 20 == 0)) {
+            IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
+            if (tTank == null) return;
+
+            FluidStack tDrained = drain(20 * (1 << (3 + 2 * tierPump(mTier))), false);
+            if (tDrained == null) return;
+
+            int tFilledAmount = tTank.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
+            if (tFilledAmount > 0) {
+                tTank.fill(aBaseMetaTileEntity.getBackFacing(), drain(tFilledAmount, true), true);
             }
         }
     }
@@ -553,6 +548,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 return fluidStack != null ? fluidStack.getLocalizedName()
                     : translateToLocal("GT5U.machines.digitaltank.lockfluid.empty");
             })
+                .setSynced(false)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setTextAlignment(Alignment.CenterLeft)
                 .setMaxWidth(65)
@@ -561,13 +557,11 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 mOutputFluid = val;
                 if (isServer) {
                     if (!mOutputFluid) {
-                        GTUtility.sendChatToPlayer(
-                            buildContext.getPlayer(),
-                            GTUtility.trans("262", "Fluid Auto Output Disabled"));
+                        GTUtility
+                            .sendChatTrans(buildContext.getPlayer(), "GT5U.machines.digitaltank.autooutput.disabled");
                     } else {
-                        GTUtility.sendChatToPlayer(
-                            buildContext.getPlayer(),
-                            GTUtility.trans("263", "Fluid Auto Output Enabled"));
+                        GTUtility
+                            .sendChatTrans(buildContext.getPlayer(), "GT5U.machines.digitaltank.autooutput.enabled");
                     }
                 }
             })
@@ -581,29 +575,28 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 lockFluid(val);
                 fluidTank.setPreventDraining(mLockFluid);
 
-                String inBrackets;
+                IChatComponent inBrackets;
                 if (mLockFluid) {
                     if (mFluid == null) {
                         setLockedFluidName(null);
-                        inBrackets = GTUtility
-                            .trans("264", "currently none, will be locked to the next that is put in");
+                        inBrackets = new ChatComponentTranslation("GT5U.machines.digitaltank.lockfluid.none");
                     } else {
                         setLockedFluidName(
                             getDrainableStack().getFluid()
                                 .getName());
-                        inBrackets = getDrainableStack().getLocalizedName();
+                        inBrackets = new ChatComponentFluidName(getDrainableStack());
                     }
                     if (isServer) {
-                        GTUtility.sendChatToPlayer(
+                        GTUtility.sendChatTrans(
                             buildContext.getPlayer(),
-                            String.format("%s (%s)", GTUtility.trans("265", "1 specific Fluid"), inBrackets));
+                            "GT5U.machines.digitaltank.lockfluid.enabled",
+                            inBrackets);
                     }
                 } else {
                     fluidTank.drain(0, true);
                     if (isServer) {
-                        GTUtility.sendChatToPlayer(
-                            buildContext.getPlayer(),
-                            GTUtility.trans("266", "Lock Fluid Mode Disabled"));
+                        GTUtility
+                            .sendChatTrans(buildContext.getPlayer(), "GT5U.machines.digitaltank.lockfluid.disabled");
                     }
                 }
                 fluidSlotWidget.notifyTooltipChange();
@@ -635,13 +628,11 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 fluidTank.setAllowOverflow(allowOverflow());
                 if (isServer) {
                     if (!mVoidFluidPart) {
-                        GTUtility.sendChatToPlayer(
-                            buildContext.getPlayer(),
-                            GTUtility.trans("267", "Overflow Voiding Mode Disabled"));
+                        GTUtility
+                            .sendChatTrans(buildContext.getPlayer(), "GT5U.machines.digitaltank.voidoverflow.disabled");
                     } else {
-                        GTUtility.sendChatToPlayer(
-                            buildContext.getPlayer(),
-                            GTUtility.trans("268", "Overflow Voiding Mode Enabled"));
+                        GTUtility
+                            .sendChatTrans(buildContext.getPlayer(), "GT5U.machines.digitaltank.voidoverflow.enabled");
                     }
                 }
             })
@@ -656,13 +647,10 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 fluidTank.setAllowOverflow(allowOverflow());
                 if (isServer) {
                     if (!mVoidFluidFull) {
-                        GTUtility.sendChatToPlayer(
-                            buildContext.getPlayer(),
-                            GTUtility.trans("269", "Void Full Mode Disabled"));
+                        GTUtility
+                            .sendChatTrans(buildContext.getPlayer(), "GT5U.machines.digitaltank.voidfull.disabled");
                     } else {
-                        GTUtility.sendChatToPlayer(
-                            buildContext.getPlayer(),
-                            GTUtility.trans("270", "Void Full Mode Enabled"));
+                        GTUtility.sendChatTrans(buildContext.getPlayer(), "GT5U.machines.digitaltank.voidfull.enabled");
                     }
                 }
             })
@@ -672,5 +660,10 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(116, 63)
                 .setSize(18, 18));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

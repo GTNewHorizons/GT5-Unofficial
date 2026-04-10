@@ -204,7 +204,9 @@ public class MTEExoticModule extends MTEBaseModule {
         }
 
         return new GTRecipe(
-            false,
+            null,
+            null,
+            null,
             null,
             null,
             null,
@@ -228,7 +230,9 @@ public class MTEExoticModule extends MTEBaseModule {
             Materials.Space.getMolten(spaceAmount * 1000L) };
 
         return new GTRecipe(
-            false,
+            null,
+            null,
+            null,
             null,
             null,
             null,
@@ -428,7 +432,9 @@ public class MTEExoticModule extends MTEBaseModule {
 
             setPlasmaRecipe(
                 new GTRecipe(
-                    false,
+                    null,
+                    null,
+                    null,
                     null,
                     null,
                     null,
@@ -501,6 +507,7 @@ public class MTEExoticModule extends MTEBaseModule {
             .addInfo("requires a fully upgraded Godforge")
             .addInfo("This module is specialized towards acquisition of unique materials")
             .beginStructureBlock(7, 7, 13, false)
+            .addController("Front center")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"
                     + EnumChatFormatting.GRAY

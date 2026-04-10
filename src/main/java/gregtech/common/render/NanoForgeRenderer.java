@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
 
-import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
+import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
 
 public class NanoForgeRenderer extends TileEntitySpecialRenderer {
 
@@ -48,7 +48,7 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
         // spotless:on
     }
 
-    private void renderNanoForge(TileEntityNanoForgeRenderer tile, double x, double y, double z, float deltaT) {
+    private void renderNanoForge(RenderingTileEntityNanoForge tile, double x, double y, double z, float deltaT) {
         float timer = tile.getTimer();
         if (!tile.getRunning()) {
             timer -= deltaT;
@@ -180,7 +180,7 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
-        if (!(tile instanceof TileEntityNanoForgeRenderer nanoforge)) return;
+        if (!(tile instanceof RenderingTileEntityNanoForge nanoforge)) return;
 
         if (!initialized) {
             init();

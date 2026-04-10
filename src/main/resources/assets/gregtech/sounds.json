@@ -151,6 +151,15 @@
       }
     ]
   },
+  "machines.LHCSpinUp": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "LHCSpinUp",
+        "stream": false
+      }
+    ]
+  },
   "items.spraycan_shake": {
     "category": "player",
     "sounds": [
@@ -198,6 +207,57 @@
           "author_name": "J-La",
           "license_url": "https://creativecommons.org/licenses/by/3.0/",
           "license_name": "Attribution 3.0"
+        }
+      }
+    ]
+  },
+  "items.ToolboxOpen": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "ToolboxOpen",
+        "stream": false,
+        "licensing": {
+          "sound_url": "https://freesound.org/people/J-La/sounds/38025/",
+          "sound_name": "OBJCont-OPENCLOSE_Metall Box 06_IOKA_NONE_Hofefeld.wav",
+          "author_url": "https://freesound.org/people/JakobGille/",
+          "author_name": "JakobGille",
+          "license_url": "http://creativecommons.org/publicdomain/zero/1.0/",
+          "license_name": "Creative Commons 0"
+        }
+      }
+    ]
+  },
+  "items.ToolboxClose": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "ToolboxClose",
+        "stream": false,
+        "licensing": {
+          "sound_url": "https://freesound.org/people/JakobGille/sounds/610901/",
+          "sound_name": "OBJCont-OPENCLOSE_Metall Box 06_IOKA_NONE_Hofefeld.wav",
+          "author_url": "https://freesound.org/people/JakobGille/",
+          "author_name": "JakobGille",
+          "license_url": "http://creativecommons.org/publicdomain/zero/1.0/",
+          "license_name": "Creative Commons 0"
+        }
+      }
+    ]
+  },
+  "items.ToolboxDraw": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "ToolboxDraw",
+        "stream": false,
+        "licensing": {
+          "sound_url": "https://freesound.org/people/DannWillis/sounds/761066/",
+          "sound_name": "Rusty metal tools",
+          "author_url": "https://freesound.org/people/DannWillis/",
+          "author_name": "DannWillis",
+          "license_url": "http://creativecommons.org/publicdomain/zero/1.0/",
+          "license_name": "Creative Commons 0"
         }
       }
     ]
@@ -387,6 +447,15 @@
     "sounds": [
       {
         "name": "MTEExoFoundry",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTENanochipAssemblyComplex": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTENanochipAssemblyComplex",
         "stream": false
       }
     ]

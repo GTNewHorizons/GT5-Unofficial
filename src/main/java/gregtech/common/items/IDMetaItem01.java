@@ -154,6 +154,7 @@ public enum IDMetaItem01 {
     Cover_Wireless_Energy_UMV(394),
     Cover_Wireless_Energy_UXV(395),
     Cover_Wireless_Energy_MAX(396),
+    Cover_Wireless_Energy_Debug(397),
     Shape_Slicer_Flat(398),
     Shape_Slicer_Stripes(399),
     Fuel_Can_Plastic_Empty(400),

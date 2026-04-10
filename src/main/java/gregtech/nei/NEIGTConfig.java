@@ -6,14 +6,20 @@ import java.util.Map;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
 
-import bartworks.system.material.CircuitGeneration.BWMetaItems;
+import bartworks.system.material.CircuitGeneration.CircuitPartsItem;
+import codechicken.lib.config.ConfigTagParent;
+import codechicken.nei.NEIClientConfig;
+import codechicken.nei.SearchField;
+import codechicken.nei.SearchField.SearchParserProvider;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import codechicken.nei.config.OptionCycled;
 import codechicken.nei.event.NEIRegisterHandlerInfosEvent;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
@@ -35,6 +41,8 @@ import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem02;
 import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.ores.GTOreAdapter;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
+import gregtech.loaders.postload.recipes.beamcrafter.LHCNEIHandler;
 import gregtech.nei.dumper.BatchModeSupportDumper;
 import gregtech.nei.dumper.InputSeparationSupportDumper;
 import gregtech.nei.dumper.MaterialDumper;
@@ -42,6 +50,7 @@ import gregtech.nei.dumper.MetaItemDumper;
 import gregtech.nei.dumper.MetaTileEntityDumper;
 import gregtech.nei.dumper.RecipeLockingSupportDumper;
 import gregtech.nei.dumper.VoidProtectionSupportDumper;
+import gregtech.nei.searchprovider.ChemicalFormulaFilter;
 
 public class NEIGTConfig implements IConfigureNEI {
 
@@ -84,7 +93,9 @@ public class NEIGTConfig implements IConfigureNEI {
         registerCatalysts();
         registerItemEntries();
         registerDumpers();
+        registerFilters();
         hideItems();
+        CCNEIRepresentation.init();
         sIsAdded = true;
     }
 
@@ -94,7 +105,12 @@ public class NEIGTConfig implements IConfigureNEI {
             .filter(
                 recipeCategory -> recipeCategory.recipeMap.getFrontend()
                     .getNEIProperties().registerNEI)
-            .map(GTNEIDefaultHandler::new)
+            .map(recipeCategory -> {
+                if (recipeCategory == RecipeMaps.largeHadronColliderRecipes.getDefaultRecipeCategory()) {
+                    return new LHCNEIHandler(recipeCategory);
+                }
+                return new GTNEIDefaultHandler(recipeCategory);
+            })
             .sorted(RECIPE_MAP_HANDLER_COMPARATOR)
             .forEach(NEIGTConfig::addHandler);
 
@@ -135,6 +151,41 @@ public class NEIGTConfig implements IConfigureNEI {
         API.addOption(new RecipeLockingSupportDumper());
     }
 
+    private void registerFilters() {
+        API.addSearchProvider(
+            new SearchParserProvider('=', "chemicalFormula", EnumChatFormatting.GREEN, ChemicalFormulaFilter::new));
+
+        ConfigTagParent tag = NEIClientConfig.global.config;
+        tag.getTag("inventory.search.chemicalFormulaSearchMode")
+            .setComment("Search mode for chemical formulas (prefix: =)")
+            .getIntValue(1);
+        API.addOption(new OptionCycled("inventory.search.chemicalFormulaSearchMode", 3, true) {
+
+            @Override
+            public boolean onClick(int button) {
+                if (!super.onClick(button)) {
+                    return false;
+                }
+                SearchField.searchParser.clearCache();
+                return true;
+            }
+
+            @Override
+            public String getButtonText() {
+                return translateN(
+                    name + "." + value(),
+                    EnumChatFormatting.GREEN + String.valueOf(SearchField.searchParser.getRedefinedPrefix('=')));
+            }
+
+            @Override
+            public boolean isEnabled() {
+                return !tag.getTag("inventory.search.format")
+                    .getBooleanValue();
+            }
+
+        });
+    }
+
     private void hideItems() {
         GTOreAdapter.INSTANCE.hideOres();
     }
@@ -167,7 +218,7 @@ public class NEIGTConfig implements IConfigureNEI {
             new HandlerInfo.Builder(CAL_IMPRINT_HANDLER.getOverlayIdentifier(), "GregTech", Mods.ModIDs.GREG_TECH)
                 .setMaxRecipesPerPage(100)
                 .setDisplayStack(
-                    BWMetaItems.getCircuitParts()
+                    CircuitPartsItem.getCircuitParts()
                         .getStack(0))
                 .build());
     }

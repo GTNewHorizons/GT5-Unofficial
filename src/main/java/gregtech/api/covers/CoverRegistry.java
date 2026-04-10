@@ -9,7 +9,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.interfaces.ITexture;
@@ -44,10 +43,6 @@ public final class CoverRegistry {
     private static GUIColorOverride colorOverride;
     private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
     private static final String NBT_ID = "id";
-
-    static {
-        GregTechAPI.sItemStackMappings.add(covers);
-    }
 
     public static void registerDecorativeCover(@NotNull ItemStack coverItem, ITexture cover) {
         registerCover(coverItem, cover, CoverDecorative::new, PRIMITIVE_COVER_PLACER);

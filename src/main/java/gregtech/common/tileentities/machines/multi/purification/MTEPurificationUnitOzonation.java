@@ -6,7 +6,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
@@ -211,7 +210,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
                     + EnumChatFormatting.ITALIC
                     + "sulfur, iron and manganese, creating insoluble oxide compounds which are then filtered out.")
             .beginStructureBlock(9, 10, 5, false)
-            .addController("Front center")
+            .addController("Front bottom center")
             .addCasingInfoRangeColored(
                 "Inert Filtration Casing",
                 EnumChatFormatting.GRAY,
@@ -245,7 +244,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
                 StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_ozone"),
                 EnumChatFormatting.GOLD + "1",
                 2)
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -281,6 +280,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
         return 2;
     }
 
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingCount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z)) return false;

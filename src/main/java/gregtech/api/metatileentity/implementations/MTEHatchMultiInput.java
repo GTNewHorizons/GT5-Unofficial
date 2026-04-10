@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_INPUT_HATCH_2x2;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_INPUT_HATCH_2x2_COLORS;
 
@@ -16,12 +17,14 @@ import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 
-public class MTEHatchMultiInput extends MTEHatchInput implements IAddUIWidgets {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEHatchMultiInput extends MTEHatchInput {
 
     private final FluidStack[] mStoredFluid;
     private final FluidStackTank[] fluidTanks;
@@ -287,5 +290,14 @@ public class MTEHatchMultiInput extends MTEHatchInput implements IAddUIWidgets {
                 new FluidSlotWidget(fluidTanks[i]).setBackground(ModularUITextures.FLUID_SLOT)
                     .setPos(positions[i]));
         }
+    }
+
+    @Override
+    public String[] getDescription() {
+        final int slots = mInventory.length;
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.input_hatch_multislot.desc",
+            formatNumber(getCapacityPerTank(mTier, slots)),
+            slots);
     }
 }

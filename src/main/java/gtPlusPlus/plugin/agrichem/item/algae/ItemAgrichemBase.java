@@ -6,7 +6,6 @@ import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -14,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
@@ -51,17 +49,6 @@ public class ItemAgrichemBase extends Item {
     @Override
     public boolean shouldRotateAroundWhenRendering() {
         return super.shouldRotateAroundWhenRendering();
-    }
-
-    @Override
-    public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_,
-        boolean p_77663_5_) {
-        super.onUpdate(p_77663_1_, p_77663_2_, p_77663_3_, p_77663_4_, p_77663_5_);
-    }
-
-    @Override
-    public String getItemStackDisplayName(ItemStack aStack) {
-        return super.getItemStackDisplayName(aStack);
     }
 
     @Override

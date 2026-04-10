@@ -115,10 +115,10 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     }
 
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler statsPanel = syncManager.panel(
+        IPanelHandler statsPanel = syncManager.syncedPanel(
             "statsPanel",
-            (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager),
-            true);
+            true,
+            (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager));
         return new ButtonWidget<>().size(18, 18)
             .overlay(GTGuiTextures.FOUNDRY_CALCULATOR)
             .onMousePressed(d -> {
@@ -136,12 +136,12 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     @Override
     protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler contribPanel = syncManager
-            .panel("contributorsPanel", (p_syncManager, syncHandler) -> openContributorsPanel(parent), true);
+            .syncedPanel("contributorsPanel", true, (p_syncManager, syncHandler) -> openContributorsPanel(parent));
         return new ButtonWidget<>().size(18)
             .marginTop(4)
             .overlay(IDrawable.EMPTY)
             .tooltip(
-                t -> t.addLine(EnumChatFormatting.AQUA + translateToLocal("GT5U.gui.button.foundry.contributorpanel")))
+                t -> t.addLine(EnumChatFormatting.AQUA + translateToLocal("GT5U.gui.text.contributors.panel.open")))
             .tooltipShowUpTimer(TOOLTIP_DELAY)
             .background(GTGuiTextures.PICTURE_EXOFOUNDRY_LOGO)
             .disableHoverBackground()
@@ -160,7 +160,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             .size(getBasePanelWidth(), getBasePanelHeight() + 20)
             .background(GTGuiTextures.FOUNDRY_BACKGROUND_CONTRIBUTORS);
         panel.child(
-            IKey.lang("gt.blockmachines.multimachine.FOG.contributors")
+            IKey.lang("GT5U.gui.text.contributors.header")
                 .asWidget()
                 .style(EnumChatFormatting.GOLD)
                 .marginTop(8)
@@ -176,13 +176,14 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
         contributorColumn.child(
             createContributorSection(
-                "GT5U.gui.text.foundry.projectlead",
+                "GT5U.gui.text.contributors.projectlead",
                 createContributorEntry("Chrom", Color.PURPLE.brighterSafe(2))));
-        contributorColumn.child(createContributorSection("GT5U.gui.text.foundry.programming", createSerenibyssEntry()));
+        contributorColumn
+            .child(createContributorSection("GT5U.gui.text.contributors.programming", createSerenibyssEntry()));
 
         contributorColumn.child(
             createContributorSection(
-                "GT5U.gui.text.foundry.textures",
+                "GT5U.gui.text.contributors.textures",
                 createContributorEntry("Auynonymous", 0xFFFD80CF).tooltip(
                     t -> t.scale(0.8f)
                         .addLine(EnumChatFormatting.DARK_GRAY + "Dev my foundry...")),
@@ -192,7 +193,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
         contributorColumn.child(
             createContributorSection(
-                "GT5U.gui.text.foundry.rendering",
+                "GT5U.gui.text.contributors.rendering",
                 createContributorEntry("Sisyphus", 0xFF2BCAD9)));
 
         contributorColumn.child(
@@ -224,7 +225,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
         contributorColumn.child(
             createContributorSection(
-                "GT5U.gui.text.foundry.playtest",
+                "GT5U.gui.text.contributors.playtesting",
                 createContributorEntry("Scam Run", Color.DEEP_ORANGE.main).tooltip(t -> {
                     t.addLine(EnumChatFormatting.WHITE.toString() + EnumChatFormatting.UNDERLINE + "Members");
                     t.addLine(EnumChatFormatting.DARK_GRAY + "Working");
@@ -411,15 +412,15 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             .collapseDisabledChild())
                     .childIf(
                         multiblock.supportsTerminalRightCornerColumn(),
-                        createTerminalRightCornerColumn(panel, syncManager)));
+                        () -> createTerminalRightCornerColumn(panel, syncManager)));
     }
 
     protected IWidget createModuleSelectButton(PanelSyncManager syncManager, ModularPanel parent, int index,
         IIntValue<Integer> moduleSync, IIntValue<Integer> tierSync, boolean isStats) {
-        IPanelHandler selectPanel = syncManager.panel(
+        IPanelHandler selectPanel = syncManager.syncedPanel(
             "moduleSelectPanel" + index + (isStats ? "stats" : ""),
-            (p_syncManager, syncHandler) -> openModuleConfigPanel(parent, index, moduleSync, isStats),
-            true);
+            true,
+            (p_syncManager, syncHandler) -> openModuleConfigPanel(parent, index, moduleSync, isStats));
 
         return new Row().size(30, 16)
             .marginBottom(index != 0 ? 2 : 0)

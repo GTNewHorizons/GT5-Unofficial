@@ -367,7 +367,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
         ItemStack[] recipeOutputs = this.currentRecipe.mOutputs;
         ItemStack[] itemOutputs = new ItemStack[recipeOutputs.length];
-        int[] mChances = this.currentRecipe.mChances;
+        int[] mChances = this.currentRecipe.mOutputChances;
 
         // If this recipe has random item outputs, roll on it and add to outputs
         if (mChances != null) {
@@ -712,9 +712,12 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             return PurificationUnitStatus.INCOMPLETE_STRUCTURE;
         } else if (!this.isAllowedToWork()) {
             return PurificationUnitStatus.DISABLED;
-        } else {
-            return PurificationUnitStatus.ONLINE;
-        }
+        } else if (!this.getBaseMetaTileEntity()
+            .isActive()) {
+                return PurificationUnitStatus.IDLE;
+            } else {
+                return PurificationUnitStatus.ACTIVE;
+            }
     }
 
     /**

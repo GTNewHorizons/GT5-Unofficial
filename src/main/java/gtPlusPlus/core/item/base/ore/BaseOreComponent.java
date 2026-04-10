@@ -13,17 +13,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
+import gregtech.api.util.client.ResourceUtils;
+import gregtech.common.config.Client;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -45,7 +48,7 @@ public class BaseOreComponent extends Item {
     public BaseOreComponent(final Material material, final ComponentTypes componentType) {
         this.componentMaterial = material;
         this.unlocalName = componentType.COMPONENT_NAME + material.getUnlocalizedName();
-        this.materialName = material.getLocalizedName();
+        this.materialName = material.getDefaultLocalName();
         this.componentType = componentType;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(this.unlocalName);
@@ -112,19 +115,13 @@ public class BaseOreComponent extends Item {
         final boolean bool) {
         if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
-                if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                    list.add(StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
-                } else {
-                    list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
-                }
-                if (this.componentMaterial.isRadioactive) {
-                    list.add(
-                        GTPPCore.GT_Tooltip_Radioactive.get() + " | Level: " + this.componentMaterial.vRadiationLevel);
-                }
+                componentMaterial.addTooltips(list);
             } else {
-                String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
-                if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
-                    list.add(StringUtils.sanitizeStringKeepBrackets(aChemicalFormula));
+                if (Client.tooltip.showFormula) {
+                    String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
+                    if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
+                        list.add(StringUtils.sanitizeStringKeepBrackets(aChemicalFormula));
+                    }
                 }
             }
         }
@@ -168,8 +165,16 @@ public class BaseOreComponent extends Item {
             this.base = par1IconRegister
                 .registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME);
             if (this.componentType.hasOverlay()) {
-                this.overlay = par1IconRegister.registerIcon(
-                    GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME + "_OVERLAY");
+                final String overlayPath = GregTech.ID + ":"
+                    + "materialicons/METALLIC/"
+                    + this.componentType.COMPONENT_NAME
+                    + "_OVERLAY";
+                final ResourceLocation overlayResource = ResourceUtils
+                    .getCompleteItemTextureResourceLocation(overlayPath);
+
+                this.overlay = ResourceUtils.resourceExists(overlayResource)
+                    ? par1IconRegister.registerIcon(overlayPath)
+                    : Textures.InvisibleIcon.INVISIBLE_ICON;
             }
         }
     }

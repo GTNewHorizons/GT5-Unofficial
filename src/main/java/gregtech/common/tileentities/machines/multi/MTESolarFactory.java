@@ -29,7 +29,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -37,7 +36,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -63,8 +62,7 @@ import gregtech.api.util.recipe.SolarFactoryRecipeData;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 
-public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
-    implements IConstructable, ISurvivalConstructable {
+public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory> implements ISurvivalConstructable {
 
     private static final int CASING_T1_INDEX = 49;
     private static final int CASING_T2_INDEX = 48;
@@ -403,6 +401,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addInfo("  ZPM-UV Solar Panels can be made without the previous panel, but at a higher cost")
             .addInfo("  Bonus per increased wafer tier is raised to 50%")
             .beginStructureBlock(7, 10, 9, false)
+            .addController("Front bottom center")
             .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "1:")
             .addCasingInfoRange("Clean Stainless Steel Machine Casing", 15, 41, false)
             .addCasingInfoExactly("Any Tiered Glass", 24, false)
@@ -426,7 +425,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addEnergyHatch("Any Machine Casing")
             .addMaintenanceHatch("Any Machine Casing")
             .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
-            .toolTipFinisher(GTValues.AuthorPureBluez);
+            .toolTipFinisher(GTAuthors.AuthorPureBluez);
         return tt;
     }
 

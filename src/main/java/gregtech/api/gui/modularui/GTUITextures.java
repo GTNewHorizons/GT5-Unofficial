@@ -44,6 +44,14 @@ public class GTUITextures {
     public static final UITexture OVERLAY_SLOT_PATTERN_ME = UITexture
         .fullImage(GregTech.ID, "gui/overlay_slot/pattern_me");
 
+    public static final UITexture OVERLAY_SLOT_DRAWER = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/drawer");
+    public static final UITexture OVERLAY_SLOT_DRAWER_SIDE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/drawer_side");
+    public static final UITexture OVERLAY_SLOT_DRAWER_FRONT = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/drawer_front");
+    public static final UITexture OVERLAY_SLOT_DRAWER_TRIM = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/drawer_trim");
+
     public static final UITexture OVERLAY_SLOT_BEAKER_1 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/beaker_1");
     public static final UITexture OVERLAY_SLOT_BEAKER_2 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/beaker_2");
     public static final UITexture OVERLAY_SLOT_BEE_DRONE = UITexture
@@ -224,6 +232,12 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/background/steam_dial_steel");
     public static final UITexture PROGRESSBAR_NAME_REMOVER = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/name_remover");
+    public static final UITexture PROGRESSBAR_BEAMCRAFTER = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/beamcrafter");
+    public static final UITexture PROGRESSBAR_LHC_EM = UITexture.fullImage(GregTech.ID, "gui/progressbar/lhc_em");
+    public static final UITexture PROGRESSBAR_LHC_W = UITexture.fullImage(GregTech.ID, "gui/progressbar/lhc_weak");
+    public static final UITexture PROGRESSBAR_LHC_S = UITexture.fullImage(GregTech.ID, "gui/progressbar/lhc_strong");
+    public static final UITexture PROGRESSBAR_LHC_G = UITexture.fullImage(GregTech.ID, "gui/progressbar/lhc_gravity");
 
     public static FallbackableUITexture fallbackableProgressbar(String name, UITexture fallback) {
         return new FallbackableUITexture(UITexture.fullImage(GregTech.ID, "gui/progressbar/" + name), fallback);

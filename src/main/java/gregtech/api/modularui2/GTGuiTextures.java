@@ -2,10 +2,12 @@ package gregtech.api.modularui2;
 
 import static com.cleanroommc.modularui.drawable.UITexture.fullImage;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
+import static gregtech.api.enums.Mods.GTNHLanthanides;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static tectech.Reference.MODID;
 
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.cleanroommc.modularui.drawable.ColorType;
@@ -47,6 +49,13 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_FOUNDRY)
         .build();
+    public static final UITexture BACKGROUND_NANOCHIP = UITexture.builder()
+        .location(GregTech.ID, "gui/background/nanochip_default")
+        .imageSize(198, 203)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(GTTextureIds.BACKGROUND_NANOCHIP)
+        .build();
     public static final UITexture BACKGROUND_TITLE_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/tab/title_dark")
         .imageSize(28, 28)
@@ -70,6 +79,13 @@ public final class GTGuiTextures {
         .adaptable(4)
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_TITLE_FOUNDRY)
+        .build();
+    public static final UITexture BACKGROUND_TITLE_NANOCHIP = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/title_nanochip")
+        .imageSize(28, 28)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(GTTextureIds.BACKGROUND_TITLE_NANOCHIP)
         .build();
     public static final UITexture BACKGROUND_POPUP_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/background/popup")
@@ -107,6 +123,23 @@ public final class GTGuiTextures {
         .imageSize(195, 136)
         .adaptable(4)
         .name(GTTextureIds.BACKGROUND_POPUP_FOUNDRY)
+        .build();
+    public static final UITexture NANOCHIP_BACKGROUND_TEXT_FIELD = UITexture.builder()
+        .location(GregTech.ID, "gui/background/popup_nanochip")
+        .imageSize(193, 134)
+        .adaptable(4)
+        .name(GTTextureIds.BACKGROUND_POPUP_NANOCHIP)
+        .build();
+    public static final UITexture BACKGROUND_NANOCHIP_RULE_POPUP = UITexture.builder()
+        .location(GregTech.ID, "gui/background/nanochip_rule")
+        .imageSize(188, 70)
+        .adaptable(4)
+        .canApplyTheme()
+        .build();
+    public static final UITexture BACKGROUND_NANOCHIP_NAMEPLATE = UITexture.builder()
+        .location(GregTech.ID, "gui/background/nanochip_nameplate")
+        .imageSize(144, 24)
+        .name(GTTextureIds.BACKGROUND_NAMEPLATE_NANOCHIP)
         .build();
 
     public static final UITexture FOUNDRY_BACKGROUND_CONTRIBUTORS = UITexture.builder()
@@ -230,6 +263,14 @@ public final class GTGuiTextures {
         .name(GTTextureIds.SLOT_ITEM_FOUNDRY)
         .build();
 
+    public static final UITexture SLOT_ITEM_NANOCHIP = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/item_nanochip")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_ITEM_NANOCHIP)
+        .build();
+
     public static final UITexture SLOT_FLUID_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/slot/fluid_standard")
         .imageSize(18, 18)
@@ -317,7 +358,6 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_INGOT_PRIMITIVE)
         .build();
     public static final UITexture OVERLAY_SLOT_INT_CIRCUIT = fullImageColorableGT("overlay_slot/int_circuit");
-    public static final UITexture OVERLAY_SLOT_CIRCUIT = fullImage(GregTech.ID, "gui/overlay_slot/circuit");
     public static final UITexture OVERLAY_SLOT_FURNACE_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/furnace")
         .fullImage()
@@ -390,6 +430,13 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_BLOCK_STEEL,
             GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
         .build();
+    public static final UITexture OVERLAY_SLOT_FILTER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/filter")
+        .fullImage()
+        .imageSize(18, 18)
+        .canApplyTheme()
+        .name("overlay_slot/filter")
+        .build();
 
     public static final UITexture OVERLAY_SLOT_ARROW_4 = UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_slot/arrow_4");
 
@@ -449,8 +496,32 @@ public final class GTGuiTextures {
         GregTech.ID,
         "gui/overlay_button/structure_update");
     public static final UITexture OVERLAY_BUTTON_FORBIDDEN = fullImage(GregTech.ID, "gui/overlay_button/forbidden");
-    public static final UITexture OVERLAY_BUTTON_MUFFLE_ON = fullImage(GregTech.ID, "gui/overlay_button/muffle_on");
-    public static final UITexture OVERLAY_BUTTON_MUFFLE_OFF = fullImage(GregTech.ID, "gui/overlay_button/muffle_off");
+    public static final UITexture OVERLAY_BUTTON_PRINT = fullImage(GregTech.ID, "gui/overlay_button/print");
+    public static final UITexture OVERLAY_BUTTON_TRANSPOSE = fullImage(GregTech.ID, "gui/overlay_button/transpose");
+    public static final UITexture OVERLAY_BUTTON_REDSTONESNIFFERLOCATE = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/redstoneSnifferLocate");
+    public static final UITexture OVERLAY_BUTTON_MUFFLE_ON = UITexture.builder()
+        .fullImage()
+        .canApplyTheme()
+        .location(GregTech.ID, "gui/overlay_button/muffle_on")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_MUFFLE_OFF = UITexture.builder()
+        .fullImage()
+        .canApplyTheme()
+        .location(GregTech.ID, "gui/overlay_button/muffle_off")
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_SMALL_POWER_SWITCH_ON = UITexture.builder()
+        .fullImage()
+        .canApplyTheme()
+        .location(GregTech.ID, "gui/overlay_button/small_power_switch_on")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_SMALL_POWER_SWITCH_OFF = UITexture.builder()
+        .fullImage()
+        .canApplyTheme()
+        .location(GregTech.ID, "gui/overlay_button/small_power_switch_off")
+        .build();
 
     public static final UITexture OVERLAY_EXPORT = fullImage(GregTech.ID, "gui/overlay_button/export");
     public static final UITexture OVERLAY_IMPORT = fullImage(GregTech.ID, "gui/overlay_button/import");
@@ -488,6 +559,323 @@ public final class GTGuiTextures {
         .location(MODID, "gui/overlay_button/safe_void_on")
         .canApplyTheme()
         .build();
+
+    public static final UITexture OVERLAY_SLOT_CHARGER = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/charger")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_CHARGER_FLUID = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/charger_fluid")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_BEAKER_1 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/beaker_1")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_BEAKER_2 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/beaker_2")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_BENDER = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/bender")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_BOX = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/box")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_BOXED = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/boxed")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_CANISTER = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/canister")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_CANNER = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/canner")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_CAULDRON = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/cauldron")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_CENTRIFUGE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/centrifuge")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_CENTRIFUGE_FLUID = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/centrifuge_fluid")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_COMPRESSOR = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/compressor")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_CRUSHED_ORE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/crushed_ore")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_CUTTER_SLICED = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/cutter_sliced")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_DATA_STICK = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/data_stick")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_DUST = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/dust")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_EXPLOSIVE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/explosive")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_FURNACE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/furnace")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_GEM = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/gem")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_HAMMER = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/hammer")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_HEATER_1 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/heater_1")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_HEATER_2 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/heater_2")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_IMPLOSION = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/implosion")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_LENS = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/lens")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_MICROSCOPE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/microscope")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_MOLD = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/mold")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_MOLECULAR_1 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/molecular_1")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_MOLECULAR_2 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/molecular_2")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_MOLECULAR_3 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/molecular_3")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_PAGE_BLANK = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/page_blank")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_PAGE_PRINTED = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/page_printed")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_PRESS_1 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/press_1")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_PRESS_2 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/press_2")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_PRESS_3 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/press_3")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_RECYCLE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/recycle")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_ROD_1 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/rod_1")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_ROD_2 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/rod_2")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_SLICE_SHAPE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/slice_shape")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_SLICER_SLICED = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/slicer_sliced")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_SQUARE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/square")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_UUA = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/uua")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_UUM = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/uum")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_VIAL_1 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/vial_1")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_VIAL_2 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/vial_2")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_WIREMILL = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/wiremill")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_CIRCUIT = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/circuit")
+        .build();
+
+    public static final UITexture[] OVERLAY_SLOTS_NUMBER = IntStream.range(0, 12)
+        .mapToObj(
+            i -> UITexture.builder()
+                .canApplyTheme()
+                .fullImage()
+                .location(GregTech.ID, "gui/overlay_slot/number_" + i)
+                .build())
+        .collect(Collectors.toList())
+        .toArray(new UITexture[0]);
+
+    public static final UITexture OVERLAY_TOOLBOX_WRENCH = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_wrench")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_WIRE_CUTTER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_wire_cutter")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_SCREWDRIVER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_screwdriver")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_SOFT_MALLET = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_soft_mallet")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_HARD_HAMMER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_hard_hammer")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_CROWBAR = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_crowbar")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_SOLDERING_IRON = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_soldering_iron")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_BATTERY = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_battery")
+        .build();
     // endregion slot overlay
 
     // region progressbar
@@ -501,17 +889,14 @@ public final class GTGuiTextures {
         .fullImage()
         .name(GTTextureIds.PROGRESSBAR_BOILER_HEAT)
         .build();
-    public static final UITexture OVERLAY_SLOT_CHARGER = UITexture.builder()
-        .canApplyTheme()
-        .fullImage()
-        .location(GregTech.ID, "gui/overlay_slot/charger")
-        .build();
     public static final UITexture PROGRESSBAR_FUEL_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/progressbar/fuel")
         .fullImage()
         .canApplyTheme()
         .name(GTTextureIds.PROGRESSBAR_FUEL_STANDARD)
         .build();
+    public static final UITexture PROGRESSBAR_NANOCHIP_CALIBRATION = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/nanochip_calibration");
     private static final SteamTextureRegisterer PROGRESSBAR_FUEL_STEAM = SteamTextureRegisterer.builder()
         .location("gui/progressbar/fuel_%s")
         .fullImage()
@@ -522,6 +907,11 @@ public final class GTGuiTextures {
         .location(MainMod.MOD_ID, "GUI/progressbar/sievert")
         .fullImage()
         .name(GTTextureIds.PROGRESSBAR_SIEVERT)
+        .build();
+    public static final UITexture PROGRESSBAR_PURIFICATION_UNIT = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/water_purification_unit")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_WATER_PURIFICATION)
         .build();
     public static final UITexture PROGRESSBAR_GODFORGE_PLASMA = UITexture
         .fullImage(MODID, "gui/progressbar/godforge_plasma");
@@ -543,6 +933,198 @@ public final class GTGuiTextures {
         .fullImage(MODID, "gui/progressbar/godforge_progressbar_purple_inverted");
     public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_RAINBOW_INVERTED = UITexture
         .fullImage(MODID, "gui/progressbar/godforge_progressbar_rainbow_inverted");
+    public static final UITexture PROGRESSBAR_ARROW_MULTIPLE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/arrow_multiple")
+        .build();
+
+    public static final UITexture PROGRESSBAR_ASSEMBLE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/assemble")
+        .build();
+
+    public static final UITexture PROGRESSBAR_ASSEMBLY_LINE_1 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/assemblyline_1")
+        .build();
+
+    public static final UITexture PROGRESSBAR_ASSEMBLY_LINE_2 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/assemblyline_2")
+        .build();
+    public static final UITexture PROGRESSBAR_ASSEMBLY_LINE_3 = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/assemblyline_3")
+        .build();
+    public static final UITexture PROGRESSBAR_BATH = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/bath")
+        .build();
+    public static final UITexture PROGRESSBAR_BENDING = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/bending")
+        .build();
+    public static final UITexture PROGRESSBAR_BOILER_STEAM = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/boiler_steam")
+        .build();
+    public static final UITexture PROGRESSBAR_BOILER_WATER = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/boiler_water")
+        .build();
+    public static final UITexture PROGRESSBAR_CANNER = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/canner")
+        .build();
+    public static final UITexture PROGRESSBAR_CIRCUIT_ASSEMBLER = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/circuit_assembler")
+        .build();
+    public static final UITexture PROGRESSBAR_COMPRESS = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/compress")
+        .build();
+    public static final UITexture PROGRESSBAR_CUT = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/cut")
+        .build();
+    public static final UITexture PROGRESSBAR_EXTRACT = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/extract")
+        .build();
+    public static final UITexture PROGRESSBAR_EXTRUDE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/extrude")
+        .build();
+    public static final UITexture PROGRESSBAR_FISHING = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/fishing")
+        .build();
+    public static final UITexture PROGRESSBAR_HAMMER = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/hammer")
+        .build();
+    public static final UITexture PROGRESSBAR_HAMMER_BASE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/hammer_base")
+        .build();
+    public static final UITexture PROGRESSBAR_LATHE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/lathe")
+        .build();
+    public static final UITexture PROGRESSBAR_LATHE_BASE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/lathe_base")
+        .build();
+    public static final UITexture PROGRESSBAR_MACERATE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/macerate")
+        .build();
+    public static final UITexture PROGRESSBAR_MAGNET = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/magnet")
+        .build();
+    public static final UITexture PROGRESSBAR_MIXER = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/mixer")
+        .build();
+    public static final UITexture PROGRESSBAR_RECYCLE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/recycle")
+        .build();
+    public static final UITexture PROGRESSBAR_SIFT = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/sift")
+        .build();
+    public static final UITexture PROGRESSBAR_SLICE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/slice")
+        .build();
+    public static final UITexture PROGRESSBAR_STORED_EU = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/stored_eu")
+        .build();
+    public static final UITexture PROGRESSBAR_WIREMILL = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/wiremill")
+        .build();
+    public static final UITexture PROGRESSBAR_FLOCCULATION = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/flocculation")
+        .build();
+    public static final UITexture PROGRESSBAR_CLARIFIER = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/clarifier")
+        .build();
+    public static final UITexture PROGRESSBAR_PH_NEUTRALIZATION = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/phneutralization")
+        .build();
+    public static final UITexture PROGRESSBAR_OZONATION = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/ozonation")
+        .build();
+    public static final UITexture PROGRESSBAR_PLASMA_HEATER = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/water_plasma_heater")
+        .build();
+    public static final UITexture PROGRESSBAR_UV_TREATMENT = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/uvtreatment")
+        .build();
+    public static final UITexture PROGRESSBAR_STEAM_FILL = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/steam_fill")
+        .build();
+    public static final UITexture PROGRESSBAR_STEAM_FILL_STEEL = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/steam_fill_steel")
+        .build();
+    public static final UITexture PROGRESSBAR_NAME_REMOVER = UITexture.builder()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/name_remover")
+        .build();
+    public static final UITexture PROGRESSBAR_FLUID_REACTOR = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GTPlusPlus.ID, "gui/progressbar/fluid_reactor")
+        .build();
 
     public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
     public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
@@ -550,6 +1132,23 @@ public final class GTGuiTextures {
 
     public static final UITexture PROGRESSBAR_TESLA_TOWER_CURRENT = UITexture
         .fullImage(MODID, "gui/tesla_tower_current");
+
+    public static final UITexture PROGRESSBAR_METER_MINT = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_mint")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_MINT)
+        .build();
+    public static final UITexture PROGRESSBAR_METER_ORANGE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_orange")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_ORANGE)
+        .build();
+    public static final UITexture PROGRESSBAR_METER_ROSE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_rose")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_ROSE)
+        .build();
+
     // endregion progressbar
 
     // region button
@@ -599,6 +1198,15 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BUTTON_FOUNDRY)
         .build();
+
+    public static final UITexture BUTTON_NANOCHIP = UITexture.builder()
+        .location(GregTech.ID, "gui/button/nanochip")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.BUTTON_NANOCHIP)
+        .build();
+
     public static final UITexture BUTTON_FOUNDRY_PRESSED = UITexture.builder()
         .location(GregTech.ID, "gui/button/foundry_pressed")
         .imageSize(18, 18)
@@ -606,6 +1214,15 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BUTTON_FOUNDRY_PRESSED)
         .build();
+
+    public static final UITexture BUTTON_NANOCHIP_PRESSED = UITexture.builder()
+        .location(GregTech.ID, "gui/button/nanochip_pressed")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.BUTTON_NANOCHIP_PRESSED)
+        .build();
+
     public static final UITexture BUTTON_COVER_TAB_NORMAL_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/tab/cover_normal")
         .fullImage()
@@ -692,6 +1309,10 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_GATE_OR = fullImageGT("overlay_button/gate_or");
     public static final UITexture OVERLAY_BUTTON_GATE_NOR = fullImageGT("overlay_button/gate_nor");
     public static final UITexture OVERLAY_BUTTON_ANALOG = fullImageGT("overlay_button/analog");
+    public static final UITexture OVERLAY_BUTTON_PLUS_SMALL = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/plus_small");
+    public static final UITexture OVERLAY_BUTTON_PLUS_LARGE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/plus_large");
 
     public static final UITexture OVERLAY_BUTTON_WIRELESS_ON = fullImage(
         KekzCore.MODID,
@@ -779,6 +1400,11 @@ public final class GTGuiTextures {
         .fullImage("goodgenerator", "gui/overlay_button/assembler_mode");
     public static final UITexture OVERLAY_BUTTON_PRECISE_MODE = UITexture
         .fullImage("goodgenerator", "gui/overlay_button/precise_mode");
+    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_ITEM = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/autooutput_item");
+    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/autooutput_fluid");
+
     public static final UITexture OVERLAY_BUTTON_SORTING_MODE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/sorting_mode");
     public static final UITexture OVERLAY_BUTTON_ONE_STACK_LIMIT = UITexture
@@ -792,6 +1418,14 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
+
+    public static final UITexture OVERLAY_SLOT_PATTERN_ME = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/pattern_me")
+        .nonOpaque()
+        .build();
+    public static final UITexture OVERLAY_BUTTON_PATTERN_OPTIMIZE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/pattern_optimize");
+    public static final UITexture OVERLAY_BUTTON_X2 = UITexture.fullImage(GregTech.ID, "gui/overlay_button/x2");
 
     // endregion button overlay
 
@@ -830,6 +1464,11 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/picture/exofoundry_logo")
         .fullImage()
         .name(GTTextureIds.PICTURE_LOGO_EXOFOUNDRY)
+        .build();
+    public static final UITexture PICTURE_NANOCHIP_LOGO = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/nanochip_logo")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_LOGO_NANOCHIP)
         .build();
 
     public static final UITexture PICTURE_TRANSPARENT = UITexture.builder()
@@ -897,6 +1536,26 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_EXOFOUNDRY_HR)
         .build();
+
+    public static final UITexture WATER_PURIFICATION_ONLINE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/water_purification_online")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_WATER_PURIFICATION_ONLINE)
+        .build();
+    public static final UITexture WATER_PURIFICATION_IDLE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/water_purification_idle")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_WATER_PURIFICATION_IDLE)
+        .build();
+    public static final UITexture WATER_PURIFICATION_OFFLINE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/water_purification_offline")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_WATER_PURIFICATION_OFFLINE)
+        .build();
+
     public static final UITexture EXOFOUNDRY_HC = UITexture.builder()
         .location(GregTech.ID, "gui/picture/exofoundry_hypercooler")
         .fullImage()
@@ -1107,6 +1766,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
     public static final UITexture PICTURE_PLUS_RED = UITexture.fullImage(GregTech.ID, "gui/picture/plus_red");
+    public static final UITexture PICTURE_SCREEN_BLACK = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/screen_black")
+        .imageSize(16, 16)
+        .canApplyTheme()
+        .adaptable(2)
+        .build();
     // endregion picture
 
     // region machine modes
@@ -1147,6 +1812,12 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_forming");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_ACCELERATOR = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_lhc_accelerator");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COLLIDER = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_lhc_collider");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_MASS_FABRICATING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_mass_fabrication");
@@ -1186,6 +1857,72 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_STEAM = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_dehp_steam");
+
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_FORGE = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_iof_forge");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_MACERATOR = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_iof_macerator");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_WASHER = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_iof_washer");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_SIFTER = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_iof_sifter");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_THERMAL = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_iof_thermal");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_CENTRIFUGE = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_iof_centrifuge");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_BATH = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_iof_bath");
+
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_ALPHA = fullImage(GTNHLanthanides.ID, "items/particle/alpha");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_ELECTRON = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/electron");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_ELECTRONNEUTRINO = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/electron_neutrino");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_ETA = fullImage(GTNHLanthanides.ID, "items/particle/eta");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_GRAVITON = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/graviton");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_HIGGS = fullImage(GTNHLanthanides.ID, "items/particle/higgs");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_JPSI = fullImage(GTNHLanthanides.ID, "items/particle/jpsi");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_LAMBDA = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/lambda");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_MUON = fullImage(GTNHLanthanides.ID, "items/particle/muon");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_MUONNEUTRINO = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/muon_neutrino");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_NEUTRON = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/neutron");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_OMEGA = fullImage(GTNHLanthanides.ID, "items/particle/omega");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_PHOTON = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/photon");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_PROTON = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/proton");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_TAU = fullImage(GTNHLanthanides.ID, "items/particle/tau");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_TAUNEUTRINO = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/tau_neutrino");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_UPSILON = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/upsilon");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_WBOSON = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/wboson");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_ZBOSON = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/zboson");
 
     public static final UITexture OVERLAY_COKE_OVEN_FLUID_SLOT_GAUGE = fullImageColorableGT(
         "overlay_slot/overlay_coke_oven_fluid_slot_gauge");

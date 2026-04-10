@@ -12,12 +12,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidTank;
 
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.util.GTUtility;
 
-public class GTFluidTank implements IFluidTank, IFluidStore {
+public class GTFluidTank implements IFluidStore {
 
     public final GTFluidTank[] AS_ARRAY = new GTFluidTank[] { this };
     private FluidStack mFluid;

@@ -55,7 +55,6 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.api.util.GTBaseCrop;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
@@ -190,8 +189,13 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
             default -> ForgeDirection.UNKNOWN;
         };
         final TileEntity machineEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return machineEntity instanceof BaseMetaTileEntity bmte
-            && (bmte.hasCoverAtSide(forgeSide) || bmte.getMetaTileEntity() instanceof MTERedstoneBase);
+        if (machineEntity instanceof BaseMetaTileEntity bmte) {
+            return bmte.hasCoverAtSide(forgeSide) || bmte.getMetaTileEntity() instanceof MTERedstoneBase;
+        }
+        if (machineEntity instanceof BaseMetaPipeEntity bmpe) {
+            return bmpe.hasCoverAtSide(forgeSide);
+        }
+        return false;
     }
 
     /**
@@ -352,14 +356,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         } catch (Exception e) {
             e.printStackTrace(GTLog.err);
         }
-        GTLog.out.println("GTMod: Registering Crop specific Textures");
-        try {
-            for (GTBaseCrop tCrop : GTBaseCrop.sCropList) {
-                tCrop.registerSprites(aIconRegister);
-            }
-        } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
-        }
         GTLog.out.println("GTMod: Starting Block Icon Load Phase");
         GT_FML_LOGGER.info("GTMod: Starting Block Icon Load Phase");
         try {
@@ -446,12 +442,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     public void onBlockExploded(World aWorld, int aX, int aY, int aZ, Explosion aExplosion) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof BaseMetaTileEntity baseTE) {
-            GTLog.exp.printf(
-                "Explosion at : %d | %d | %d DIMID: %s due to near explosion!%n",
-                aX,
-                aY,
-                aZ,
-                aWorld.provider.dimensionId);
+            GTLog.writeExplosionLog(baseTE, this.getUnlocalizedName(), "exploded due to near explosion");
             baseTE.doEnergyExplosion();
         }
         super.onBlockExploded(aWorld, aX, aY, aZ, aExplosion);
@@ -572,12 +563,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
             final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if (tTileEntity != null && (chance < 1.0F)) {
                 if (tTileEntity instanceof BaseMetaTileEntity bmte && (GregTechAPI.sMachineNonWrenchExplosions)) {
-                    GTLog.exp.printf(
-                        "Explosion at : %d | %d | %d DIMID: %s NonWrench picking/Rain!%n",
-                        aX,
-                        aY,
-                        aZ,
-                        aWorld.provider.dimensionId);
+                    GTLog.writeExplosionLog(bmte, this.getUnlocalizedName(), "exploded due to NonWrench picking/Rain!");
                     bmte.doEnergyExplosion();
                 }
             } else {
@@ -716,8 +702,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                     .getFacadeBlock();
                 if (facadeBlock != null) return facadeBlock;
             } else {
-                // we do not allow more than one type of facade per block, so no need to check every side
-                // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
                 for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
                     final Block facadeBlock = tile.getCoverAtSide(tSide)
                         .getFacadeBlock();
@@ -739,16 +723,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 final Cover cover = tile.getCoverAtSide(dir);
                 final Block facadeBlock = cover.getFacadeBlock();
                 if (facadeBlock != null) return cover.getFacadeMeta();
-            } else {
-                // we do not allow more than one type of facade per block, so no need to check every side
-                // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
-                for (final ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
-                    final Cover cover = tile.getCoverAtSide(d);
-                    final Block facadeBlock = cover.getFacadeBlock();
-                    if (facadeBlock != null) {
-                        return cover.getFacadeMeta();
-                    }
-                }
             }
         }
         return 0;

@@ -6,20 +6,20 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
 public class BehaviourSoftMallet extends BehaviourNone {
 
+    public static final int MODE_ACTIVATE = 1;
+    public static final int MODE_DEACTIVATE = 2;
     private final int mCosts;
-    private final String mTooltip = GTLanguageManager
-        .addStringLocalization("gt.behaviour.softmallet", "Activates and Deactivates Machines");
 
     public BehaviourSoftMallet(int aCosts) {
         this.mCosts = aCosts;
@@ -110,7 +110,8 @@ public class BehaviourSoftMallet extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        aList.add(this.mTooltip);
+        aList.add(StatCollector.translateToLocal("gt.softmallet.tooltip"));
+        aList.add(StatCollector.translateToLocal("gt.softmallet.tooltip.mode"));
         return aList;
     }
 }

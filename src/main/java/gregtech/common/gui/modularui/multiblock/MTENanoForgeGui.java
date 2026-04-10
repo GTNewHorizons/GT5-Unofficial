@@ -34,7 +34,7 @@ public class MTENanoForgeGui extends MTEMultiBlockBaseGui<MTENanoForge> {
 
     protected IWidget createInfoButton(PanelSyncManager syncManager) {
         IPanelHandler infoPanel = syncManager
-            .panel("nanoForgeInfoPanel", (p_syncManager, syncHandler) -> openInfoPanel(), true);
+            .syncedPanel("nanoForgeInfoPanel", true, (p_syncManager, syncHandler) -> openInfoPanel());
         return new ButtonWidget<>().size(16)
             .marginBottom(2)
             .overlay(GTGuiTextures.INFORMATION_BUBBLE)

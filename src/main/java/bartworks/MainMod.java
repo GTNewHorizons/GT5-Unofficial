@@ -26,10 +26,11 @@ import org.apache.logging.log4j.Logger;
 
 import bartworks.API.BioObjectAdder;
 import bartworks.API.BioVatLogicAdder;
+import bartworks.API.enums.CircuitImprint;
 import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
 import bartworks.client.creativetabs.GT2Tab;
-import bartworks.client.renderer.BWItemRenderer;
+import bartworks.client.renderer.CircuitPartItemsRenderer;
 import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.common.configs.Configuration;
 import bartworks.common.items.BWItemBlocks;
@@ -79,7 +80,6 @@ import tectech.loader.recipe.Godforge;
     dependencies = """
         required-after:IC2;\
         required-after:gregtech;\
-        after:berriespp;\
         after:tectech;\
         after:GalacticraftMars;\
         after:GalacticraftCore;\
@@ -104,12 +104,14 @@ public final class MainMod {
     public static MainMod instance;
 
     public MainMod() {
+        GregTechAPI.sBeforeGTPostload.add(() -> {
+            CircuitImprint.registerExternalModCircuitsInItemList();
+            CircuitImprint.registerSlicedCircuitsAndImprints();
+            CircuitImprint.populateImprintLookups();
+        });
+
         GregTechAPI.sAfterGTPostload.add(() -> {
-            CircuitImprintLoader.registerItemstacks();
-            for (CircuitWraps wrap : CircuitWraps.values()) {
-                wrap.registerWrap();
-                wrap.registerWrapRecipe();
-            }
+            CircuitWraps.registerWraps();
             CircuitImprintLoader.makeCuttingRecipes();
             CircuitImprintLoader.makeCraftingRecipes();
         });
@@ -136,7 +138,7 @@ public final class MainMod {
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
             .isClient()) {
-            GregTechAPI.sAfterGTPostload.add(() -> new BWItemRenderer());
+            GregTechAPI.sAfterGTPostload.add(CircuitPartItemsRenderer::new);
         }
         if (event.getSide()
             .isClient()) {

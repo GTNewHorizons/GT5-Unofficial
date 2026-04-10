@@ -69,7 +69,7 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        POLLUTOR = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/POLLUTOR"));
+        POLLUTOR = TextureFactory.of(Textures.BlockIcons.custom("iconsets/POLLUTOR"));
     }
 
     @Override
@@ -203,5 +203,10 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
                 .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
                 .setSize(18, 18)
                 .setPos(xPos, yPos));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

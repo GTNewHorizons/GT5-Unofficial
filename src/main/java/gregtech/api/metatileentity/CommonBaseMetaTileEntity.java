@@ -71,11 +71,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     public final void updateEntity() {
         super.updateEntity();
 
-        long tTime;
+        final long timeStart;
         if (hasTimeStatisticsStarted) {
-            tTime = System.nanoTime();
+            timeStart = System.nanoTime();
         } else {
-            tTime = 0;
+            timeStart = 0;
         }
 
         try {
@@ -103,26 +103,22 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             }
         }
 
-        if (isServerSide() && hasTimeStatisticsStarted && hasValidMetaTileEntity()) {
-            tTime = System.nanoTime() - tTime;
+        if (hasTimeStatisticsStarted && isServerSide() && hasValidMetaTileEntity()) {
+            final long duration = System.nanoTime() - timeStart;
             mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length;
-            mTimeStatistics[mTimeStatisticsIndex] = (int) tTime;
-            if (tTime > 0 && tTime > (GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1_000_000L)
+            mTimeStatistics[mTimeStatisticsIndex] = (int) duration;
+            if (duration > 0 && duration > (GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1_000_000L)
                 && mTickTimer > 1000
                 && getMetaTileEntity().doTickProfilingMessageDuringThisTick()
                 && mLagWarningCount++ < 10)
                 GT_FML_LOGGER.warn(
-                    "WARNING: Possible Lag Source at [" + xCoord
-                        + ", "
-                        + yCoord
-                        + ", "
-                        + zCoord
-                        + "] in Dimension "
-                        + worldObj.provider.dimensionId
-                        + " with "
-                        + tTime
-                        + " ns caused by an instance of "
-                        + getMetaTileEntity().getClass());
+                    "WARNING: Possible Lag Source at [{}, {}, {}] in Dimension {} with {} ns caused by an instance of {}",
+                    xCoord,
+                    yCoord,
+                    zCoord,
+                    worldObj.provider.dimensionId,
+                    duration,
+                    getMetaTileEntity().getClass());
         }
 
     }
@@ -140,6 +136,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
                         final NBTTagCompound tTag = new NBTTagCompound();
                         tTag.setInteger("IntSlot", i);
                         tStack.writeToNBT(tTag);
+                        if (tStack.stackSize > Byte.MAX_VALUE) {
+                            tTag.setInteger("Count", tStack.stackSize);
+                        }
                         tItemList.appendTag(tTag);
                     }
                 }
@@ -321,7 +320,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     }
 
     @Override
-    public boolean canAccessData() {
+    public final boolean canAccessData() {
         return !isDead && hasValidMetaTileEntity();
     }
 
