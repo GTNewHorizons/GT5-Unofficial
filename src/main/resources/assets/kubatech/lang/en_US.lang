@@ -228,9 +228,9 @@ item.arc_furnace_electrode.tip.special_effect.GrapheneElectrode=§6§lBread and 
 item.arc_furnace_electrode.tip.special_effect.YBCOElectrode=§6§lRapid Oxidation§r§6: Every OC increases durability usage by 100%
 item.arc_furnace_electrode.tip.special_effect.NetheriteElectrode=§6§lHot Restart§r§6: There is no shutdown cooldown. If machine is off for less than 4 seconds skip startup entirely
 item.arc_furnace_electrode.tip.special_effect.InfinityElectrode=§6§lTo Infinity!§r§6: Every successful processing the amount of parallels doubles, until powerfail or machine shutdown (power usage is equal to the amount of parallels regardless of provided items)
-item.arc_furnace_electrode.tip.special_effect.NeutroniumNaniteElectrode=§6§lNanite Repair§r§6: Providing electrode material in the input bus gives 70% chance on recipe to repair itself
-item.arc_furnace_electrode.tip.special_effect.TranscendentNaniteElectrode=§6§lNanite Maintenance§r§6: Providing electrode material in the input bus gives 90% chance on recipe to repair itself
-item.arc_furnace_electrode.tip.special_effect.UniversiumNaniteElectrode=§6§lNanite Recovery§r§6: Providing electrode material in the input bus gives 110% chance on recipe to repair itself (100% to prevent durability loss and 10% to increase durability by one)
+item.arc_furnace_electrode.tip.special_effect.NeutroniumNaniteElectrode=§6§lNanite Repair§r§6: Providing electrode material dust in the input bus gives 70% chance on recipe to repair itself
+item.arc_furnace_electrode.tip.special_effect.TranscendentNaniteElectrode=§6§lNanite Maintenance§r§6: Providing electrode material dust in the input bus gives 90% chance on recipe to repair itself
+item.arc_furnace_electrode.tip.special_effect.UniversiumNaniteElectrode=§6§lNanite Recovery§r§6: Providing electrode material dust in the input bus gives 110% chance on recipe to repair itself (100% to prevent durability loss and 10% to increase durability by one)
 
 #Tea
 kubaitem.tea.black_tea.name=Black Tea
