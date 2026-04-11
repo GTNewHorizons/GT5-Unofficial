@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTUtility;
@@ -227,16 +228,13 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
                     .isEmpty()) {
                         // Has Blueprint but invalid name set
                         Logger.WARNING("Has Blueprint but invalid name set");
-                        return false;
                     } else
                 if (!itemStack.stackTagCompound.getBoolean("mBlueprint")
                     && itemStack.stackTagCompound.getString("mName")
                         .isEmpty()) {
                             // Has no Blueprint, but strangely has a name
                             Logger.WARNING("Has no Blueprint, but strangely has a name");
-                            return false;
                         }
-            return false;
         } else {
             final int bpID = MathUtils.randInt(0, 1000);
             final boolean hasRecipe = false;

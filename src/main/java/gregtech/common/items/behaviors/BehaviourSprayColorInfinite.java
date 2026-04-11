@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.GTNHLib;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 
@@ -90,14 +91,9 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         if ((aWorld.isRemote) || (itemStack.stackSize != 1)) {
             return false;
         }
-
-        if (itemStack.hasTagCompound()) {
-            final NBTTagCompound tag = itemStack.getTagCompound();
-            if (tag.hasKey(COLOR_NBT_TAG)) {
-                mCurrentColor = tag.getByte(COLOR_NBT_TAG);
-            }
+        if (ItemStackNBT.hasKey(itemStack, COLOR_NBT_TAG)) {
+            mCurrentColor = ItemStackNBT.getByte(itemStack, COLOR_NBT_TAG);
         }
-
         return super.onItemUseFirst(aItem, itemStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ);
     }
 
@@ -236,13 +232,9 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     }
 
     private byte getColor(ItemStack sprayCan) {
-        if (sprayCan.hasTagCompound()) {
-            final NBTTagCompound tag = sprayCan.getTagCompound();
-            if (tag.hasKey(COLOR_NBT_TAG)) {
-                return tag.getByte(COLOR_NBT_TAG);
-            }
+        if (ItemStackNBT.hasKey(sprayCan, COLOR_NBT_TAG)) {
+            return ItemStackNBT.getByte(sprayCan, COLOR_NBT_TAG);
         }
-
         return REMOVE_COLOR;
     }
 
@@ -272,11 +264,10 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
             return;
         }
 
-        final NBTTagCompound tag = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
         byte color = 0;
 
-        if (tag.hasKey(COLOR_NBT_TAG)) {
-            color = tag.getByte(COLOR_NBT_TAG);
+        if (ItemStackNBT.hasKey(itemStack, COLOR_NBT_TAG)) {
+            color = ItemStackNBT.getByte(itemStack, COLOR_NBT_TAG);
         }
 
         byte newColor = (byte) (color + (wasSneaking ? -1 : 1));
@@ -294,12 +285,8 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         if (isLocked(itemStack)) {
             return;
         }
-
-        final NBTTagCompound tag = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
-
-        tag.setByte(COLOR_NBT_TAG, color);
+        ItemStackNBT.setByte(itemStack, COLOR_NBT_TAG, color);
         mCurrentColor = color;
-        itemStack.setTagCompound(tag);
     }
 
     public boolean toggleLock(final ItemStack itemStack) {
@@ -311,13 +298,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     }
 
     private boolean toggleBooleanTag(final ItemStack itemStack, final String tagName) {
-        final NBTTagCompound tag = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
-        final boolean newValue = !tag.getBoolean(tagName);
-
-        tag.setBoolean(tagName, newValue);
-        itemStack.setTagCompound(tag);
-
-        return newValue;
+        return ItemStackNBT.invertBoolean(itemStack, tagName);
     }
     // endregion
 
@@ -335,13 +316,11 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     }
 
     public static boolean isLocked(final ItemStack itemStack) {
-        return itemStack.hasTagCompound() && itemStack.getTagCompound()
-            .getBoolean(LOCK_NBT_TAG);
+        return ItemStackNBT.getBoolean(itemStack, LOCK_NBT_TAG);
     }
 
     private static boolean isPreventingShake(final ItemStack itemStack) {
-        return itemStack.hasTagCompound() && itemStack.getTagCompound()
-            .getBoolean(PREVENT_SHAKE_TAG);
+        return ItemStackNBT.getBoolean(itemStack, PREVENT_SHAKE_TAG);
     }
     // endregion
 

@@ -19,6 +19,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import cpw.mods.fml.relauncher.Side;
@@ -42,9 +43,7 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (!world.isRemote && stack.hasTagCompound()
-            && stack.getTagCompound()
-                .hasKey("droneCentre")) {
+        if (!world.isRemote && ItemStackNBT.hasKey(stack, "droneCentre")) {
             // check whether drone centre is still exists
             NBTTagCompound centreNbt = stack.getTagCompound()
                 .getCompoundTag("droneCentre");
@@ -70,8 +69,7 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
-        if (aStack.hasTagCompound() && aStack.getTagCompound()
-            .hasKey("droneCentre")) {
+        if (ItemStackNBT.hasKey(aStack, "droneCentre")) {
             NBTTagCompound centreNbt = aStack.getTagCompound()
                 .getCompoundTag("droneCentre");
             int x = centreNbt.getInteger("x");
@@ -111,8 +109,7 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
     public ModularPanel buildUI(ItemStackGuiData guiData, PanelSyncManager guiSyncManager, UISettings uiSettings) {
         MTEDroneCentre centre = null;
         ItemStack stack = guiData.getItemStack();
-        if (stack.hasTagCompound() && stack.getTagCompound()
-            .hasKey("droneCentre")) {
+        if (ItemStackNBT.hasKey(stack, "droneCentre")) {
             NBTTagCompound centreNbt = stack.getTagCompound()
                 .getCompoundTag("droneCentre");
             int x = centreNbt.getInteger("x");

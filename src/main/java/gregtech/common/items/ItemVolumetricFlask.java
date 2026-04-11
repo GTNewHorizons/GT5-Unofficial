@@ -22,6 +22,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -31,6 +32,7 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -129,9 +131,8 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
     @Override
     public int getCapacity(ItemStack stack) {
         int capacity = 1000;
-        if (stack.hasTagCompound()) {
-            NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt.hasKey("Capacity", 3)) capacity = nbt.getInteger("Capacity");
+        if (ItemStackNBT.hasKey(stack, "Capacity", NBT.TAG_INT)) {
+            capacity = ItemStackNBT.getInteger(stack, "Capacity");
         }
         return Math.min(getMaxCapacity(), capacity);
     }
@@ -154,9 +155,8 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
 
     @Override
     public FluidStack getFluid(ItemStack stack) {
-        if (stack.hasTagCompound()) {
-            NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt.hasKey("Fluid", 10)) return FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("Fluid"));
+        if (ItemStackNBT.hasKey(stack, "Fluid", NBT.TAG_COMPOUND)) {
+            return FluidStack.loadFluidStackFromNBT(ItemStackNBT.getCompoundTag(stack, "Fluid"));
         }
         return null;
     }
