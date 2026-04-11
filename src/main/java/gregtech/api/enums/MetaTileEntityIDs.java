@@ -1508,6 +1508,7 @@ public enum MetaTileEntityIDs {
     ExtremeEntityCrusherController(14201),
     ExtremeIndustrialApiaryController(14202),
     ELECTRODE_HATCH(14203),
+    ELECTRODE_DETECTOR_HATCH(14204),
     BETTER_JUKEBOX_LV(14301),
     BETTER_JUKEBOX_MV(14302),
     BETTER_JUKEBOX_HV(14303),

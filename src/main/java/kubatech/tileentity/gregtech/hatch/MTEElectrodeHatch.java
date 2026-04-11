@@ -12,19 +12,19 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.modularui2.GTGuis;
-import gregtech.client.GTTooltipHandler;
 
 public class MTEElectrodeHatch extends MTEHatchInputBus {
 
     private boolean hasBeenUpdated = false;
 
     public MTEElectrodeHatch(int id, String name, String nameRegional) {
-        super(id, name, nameRegional, GTTooltipHandler.Tier.IV.ordinal(), 1, new String[] { "Holds an electrode." });
+        super(id, name, nameRegional, VoltageIndex.IV, 1, new String[] { "Holds an electrode." });
     }
 
     public MTEElectrodeHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -78,5 +78,10 @@ public class MTEElectrodeHatch extends MTEHatchInputBus {
             .child(
                 gridTemplate1by1(
                     index -> new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))));
+    }
+
+    @Override
+    public String[] getDescription() {
+        return mDescriptionArray;
     }
 }

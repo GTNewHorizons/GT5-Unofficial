@@ -20,8 +20,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
+import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeDetectorHatch;
 import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeHatch;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -65,6 +67,7 @@ import kubatech.api.arcfurnace.ArcFurnaceContext;
 import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.ArcFurnaceElectrode;
+import kubatech.tileentity.gregtech.hatch.MTEElectrodeDetectorHatch;
 import kubatech.tileentity.gregtech.hatch.MTEElectrodeHatch;
 
 public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustrialArcFurnace>
@@ -85,6 +88,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
     private int mCasing = 0;
     private MTEElectrodeHatch electrodeHatch;
+    private final List<MTEElectrodeDetectorHatch> electrodeDetectorHatch = new ArrayList<>();
 
     enum ArcFurnacePhase {
         Standby,
@@ -128,6 +132,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             buildHatchAdder(MTEIndustrialArcFurnace.class)
                 .atLeast(
                     ElectrodeHatch,
+                    ElectrodeDetectorHatch,
                     InputBus,
                     OutputBus,
                     InputHatch,
@@ -179,6 +184,11 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         if (mCasing < 10) return false;
         if (electrodeHatch == null) return false;
         if (electrode == null && electrodeHatch.getStackInSlot(0) != null) electrodeChanged();
+        if (electrodeDetectorHatch != null) {
+            if (electrode != null)
+                updateDetectorHatches(ARC_FURNACE_ELECTRODE.remainingDurability(electrodeHatch.getStackInSlot(0)));
+            else updateDetectorHatches(0);
+        }
         return true;
     }
 
@@ -191,6 +201,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     public void clearHatches() {
         super.clearHatches();
         electrodeHatch = null;
+        electrodeDetectorHatch.clear();
     }
 
     private boolean addElectrodeHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -202,6 +213,19 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             electrodeHatch = hatch;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean addElectrodeDetectorHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEElectrodeDetectorHatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            electrodeDetectorHatch.add(hatch);
             return true;
         }
         return false;
@@ -373,6 +397,12 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         mMaxProgresstime = event.duration;
     }
 
+    private void updateDetectorHatches(int durability) {
+        for (var hatch : electrodeDetectorHatch) {
+            hatch.updateRedstoneOutput(durability);
+        }
+    }
+
     private void electrodeChanged() {
         resetElectrodeEffectState();
         if (phase == ArcFurnacePhase.Processing || phase == ArcFurnacePhase.ArcIgnition) {
@@ -384,7 +414,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         if (electrode != null) {
             electrodeDamagePercentage = (double) ARC_FURNACE_ELECTRODE.usedDurability(electrodeStack)
                 / (double) electrode.durability;
+            updateDetectorHatches(ARC_FURNACE_ELECTRODE.remainingDurability(electrodeStack));
+            return;
         }
+        updateDetectorHatches(0);
     }
 
     @Override
@@ -420,6 +453,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                         electrodeHatch.markDirty();
                         electrodeDamagePercentage = (double) ARC_FURNACE_ELECTRODE.usedDurability(electrodeStack)
                             / (double) electrode.durability;
+                        updateDetectorHatches(
+                            ARC_FURNACE_ELECTRODE.remainingDurability(electrodeHatch.getStackInSlot(0)));
                     }
                 }
             }
@@ -568,6 +603,14 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             public long count(MTEIndustrialArcFurnace t) {
                 if (t.electrodeHatch == null) return 0;
                 return 1;
+            }
+        },
+        ElectrodeDetectorHatch(MTEIndustrialArcFurnace::addElectrodeDetectorHatchToMachineList,
+            MTEElectrodeDetectorHatch.class) {
+
+            @Override
+            public long count(MTEIndustrialArcFurnace t) {
+                return t.electrodeDetectorHatch.size();
             }
         },;
 

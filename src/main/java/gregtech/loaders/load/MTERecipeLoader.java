@@ -1654,7 +1654,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.FormingCore.get(1),
             new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
                 OrePrefixes.plate.get(Materials.Steel), 'F', OrePrefixes.frameGt.get(Materials.StainlessSteel) });
-            
+
         // High Current Industrial Arc Furnace
         GTValues.RA.stdBuilder()
             .itemInputs(

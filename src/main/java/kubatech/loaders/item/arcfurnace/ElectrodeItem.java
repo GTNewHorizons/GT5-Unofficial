@@ -12,9 +12,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
+import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
+import gregtech.common.render.items.GeneratedMaterialRenderer;
 import kubatech.loaders.ArcFurnaceElectrode;
 
-public class ElectrodeItem extends Item {
+public class ElectrodeItem extends Item implements IGT_ItemWithMaterialRenderer {
 
     private static final String DURABILITY_TAG = "durability";
     private IIcon electrodeIcon;
@@ -88,8 +91,7 @@ public class ElectrodeItem extends Item {
         int id = p_77624_1_.getItemDamage();
         ArcFurnaceElectrode electrode = ArcFurnaceElectrode.getById(id);
         if (electrode != null) {
-            p_77624_3_.add("Durability: " + remainingDurability(p_77624_1_) + " / " + electrode.durability);
-            electrode.addInformation(p_77624_3_);
+            electrode.addInformation(p_77624_3_, remainingDurability(p_77624_1_));
         }
     }
 
@@ -101,5 +103,40 @@ public class ElectrodeItem extends Item {
             return electrode.getUnlocalizedName();
         }
         return super.getUnlocalizedName(stack);
+    }
+
+    @Override
+    public boolean shouldUseCustomRenderer(int aMetaData) {
+        return true;
+    }
+
+    @Override
+    public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
+        ArcFurnaceElectrode electrode = ArcFurnaceElectrode.getById(aMetaData);
+        if (electrode != null && electrode.associatedMaterial.getGTMaterial() != null)
+            return electrode.associatedMaterial.getGTMaterial().renderer;
+        return null;
+    }
+
+    @Override
+    public boolean allowMaterialRenderer(int aMetaData) {
+        return true;
+    }
+
+    @Override
+    public IIcon getIcon(int aMetaData, int pass) {
+        return electrodeIcon;
+    }
+
+    @Override
+    public IIcon getOverlayIcon(int aMetaData, int pass) {
+        return null;
+    }
+
+    @Override
+    public short[] getRGBa(ItemStack aStack) {
+        ArcFurnaceElectrode electrode = getElectrodeFromStack(aStack);
+        if (electrode != null) return electrode.associatedMaterial.getRGBA();
+        return Materials._NULL.getRGBA();
     }
 }

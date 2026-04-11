@@ -99,6 +99,8 @@ kubatech.gui.tooltip.dynamic_inventory.empty_slot=Empty slot
 kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_types=Remaining seed types: %d
 kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_capacity=Remaining seed capacity: %d
 
+kubatech.gui.text.electrode_detector=Durability threshold
+
 #Chat Messages
 kubatech.chat.forbidden_while_running=Cannot change mode while running!
 
@@ -212,18 +214,18 @@ item.arc_furnace_electrode.NeutroniumNaniteElectrode.name=Neutronium Nanite Elec
 item.arc_furnace_electrode.TranscendentNaniteElectrode.name=Transcendent Nanite Electrode
 item.arc_furnace_electrode.UniversiumNaniteElectrode.name=Universium Nanite Electrode
 
-item.arc_furnace_electrode.tip.speed=Speed Modifier: %sx
+item.arc_furnace_electrode.tip.durability=Durability: %s/%s
+item.arc_furnace_electrode.tip.speed=Speed Modifier: %s
 item.arc_furnace_electrode.tip.parallel_limit=Parallel Limit: %s
 item.arc_furnace_electrode.tip.parallel_limit_none=None
-item.arc_furnace_electrode.tip.oc_speed_factor=OC Speed Factor: %sx
-item.arc_furnace_electrode.tip.oc_power_factor=OC Power Factor: %sx
-item.arc_furnace_electrode.tip.durability=Durability: %s
-item.arc_furnace_electrode.tip.amperage_per_parallel=Amperage per Parallel: %sA
-item.arc_furnace_electrode.tip.startup_surge=Startup Surge: %s%%
+item.arc_furnace_electrode.tip.oc_speed_factor=OC Speed Factor: %s
+item.arc_furnace_electrode.tip.oc_power_factor=OC Power Factor: %s
+item.arc_furnace_electrode.tip.amperage_per_parallel=Amperage per Parallel: %s
+item.arc_furnace_electrode.tip.startup_surge=Startup Surge: %s
 
 item.arc_furnace_electrode.tip.special_effect.GraphiteElectrode=§6§lBread and Butter§r§6: No startup surge penalty
 item.arc_furnace_electrode.tip.special_effect.GrapheneElectrode=§6§lBread and Butter§r§6: No startup surge penalty
-item.arc_furnace_electrode.tip.special_effect.YBCOElectrode=§6§lRapid Oxidation§r§6: Every OC increases durability usage by 100%%
+item.arc_furnace_electrode.tip.special_effect.YBCOElectrode=§6§lRapid Oxidation§r§6: Every OC increases durability usage by 100%
 item.arc_furnace_electrode.tip.special_effect.NetheriteElectrode=§6§lHot Restart§r§6: There is no shutdown cooldown. If machine is off for less than 4 seconds skip startup entirely
 item.arc_furnace_electrode.tip.special_effect.InfinityElectrode=§6§lTo Infinity!§r§6: Every successful processing the amount of parallels doubles, until powerfail or machine shutdown (power usage is equal to the amount of parallels regardless of provided items)
 item.arc_furnace_electrode.tip.special_effect.NeutroniumNaniteElectrode=§6§lNanite Repair§r§6: Providing electrode material in the input bus gives 70% chance on recipe to repair itself
