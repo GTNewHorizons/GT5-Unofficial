@@ -216,6 +216,7 @@ public class MTESmeltingModule extends MTEBaseModule {
             .addInfo("The desired method of processing can be selected in the gui")
             .addInfo("This module is specialized towards speed and high heat levels")
             .beginStructureBlock(7, 7, 13, false)
+            .addController("Front center")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"
                     + EnumChatFormatting.GRAY

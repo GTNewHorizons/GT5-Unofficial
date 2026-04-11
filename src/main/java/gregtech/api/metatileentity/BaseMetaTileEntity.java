@@ -82,7 +82,7 @@ import gregtech.common.items.behaviors.BehaviourSoftMallet;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.render.IMTERenderer;
 import gregtech.mixin.interfaces.accessors.EntityItemAccessor;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import ic2.api.Direction;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -2232,7 +2232,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     protected int getCoverTabHeightOffset() {
-        return isSteampowered() || getMetaTileEntity() instanceof MTESteamMultiBase<?> ? 32 : 0;
+        return isSteampowered() || getMetaTileEntity() instanceof MTESteamMultiBlockBase<?> ? 32 : 0;
     }
 
     @Override

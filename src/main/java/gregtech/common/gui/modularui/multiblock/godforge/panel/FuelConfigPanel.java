@@ -18,6 +18,7 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Fuels;
@@ -116,7 +117,9 @@ public class FuelConfigPanel {
             return formatter.format(data.getFuelConsumption()) + " L/5s";
         })
             .alignment(Alignment.CENTER)
+            .color(0x404040)
             .asWidget()
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
             .width(SIZE_W - 4)
             .alignX(0.5f)
             .marginTop(3));
@@ -142,10 +145,8 @@ public class FuelConfigPanel {
             .child(
                 new SelectButton().value(LinkedBoolValue.of(syncer, option))
                     .background(IDrawable.EMPTY)
-                    .overlay(IDrawable.EMPTY)
                     .selectedBackground(GTGuiTextures.SLOT_OUTLINE_GREEN)
-                    .disableHoverBackground()
-                    .disableHoverOverlay()
+                    .disableHoverThemeBackground(true)
                     .size(18)
                     .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
                     .tooltip(t -> {
