@@ -1,18 +1,60 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 
-public class MTERedstoneLamp extends MTERedstoneBase {
+public class MTERedstoneLamp extends MTETieredMachineBlock {
 
-    public byte mRedstoneStrength = 0, mType = 0;
+    @Override
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
+        return side != getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public final boolean isValidSlot(int aIndex) {
+        return false;
+    }
+
+    @Override
+    public final boolean isFacingValid(ForgeDirection facing) {
+        return true;
+    }
+
+    @Override
+    public final boolean isAccessAllowed(EntityPlayer aPlayer) {
+        return true;
+    }
+
+    @Override
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return ArrayUtils.add(this.mDescriptionArray, GTPPCore.GT_Tooltip.get());
+    }
+
     public static TexturesGtBlock.CustomIcon[] sIconList = new TexturesGtBlock.CustomIcon[2];
 
     static {
