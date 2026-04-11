@@ -37,62 +37,12 @@ public class ItemRadioactiveCell extends GTGenericItem implements IBoxable {
         return tNBT.getInteger("advDmg");
     }
 
-    protected static int sumUp(int a) {
-        int b = 0;
-        for (int c = 1; c <= a; c++) {
-            b += c;
-        }
-        return b;
-    }
-
     protected static int triangularNumber(int x) {
         return (x * x + x) / 2;
     }
 
-    protected boolean outputPulseForStack(ItemStack aStack) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-            aStack.setTagCompound(tNBT);
-        }
-        tNBT.setInteger("output", tNBT.getInteger("output") + 1);
-        return false; // (this.pulserate > 0) || (tNBT.getInteger("output") % -this.pulserate == 0);
-    }
-
-    protected boolean incrementPulseForStack(ItemStack aStack) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-            aStack.setTagCompound(tNBT);
-        }
-        tNBT.setInteger("pulse", tNBT.getInteger("pulse") + 1);
-        return false; // (this.pulserate > 0) || (tNBT.getInteger("pulse") % -this.pulserate == 0);
-    }
-
-    protected void setDurabilityForStack(ItemStack aStack, int aDurability) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-            aStack.setTagCompound(tNBT);
-        }
-        tNBT.setInteger("durability", aDurability);
-    }
-
-    public int getMaxNuclearDurability() {
-        return 0; // return this.maxDelay;
-    }
-
-    public int func_77619_b() {
-        return 0;
-    }
-
     @Override
     public boolean isBookEnchantable(ItemStack ingredient, ItemStack bookEnchant) {
-        return false;
-    }
-
-    // getIsRepairable
-    public boolean func_82789_a(ItemStack toBeRepaired, ItemStack repairWith) {
         return false;
     }
 
@@ -116,16 +66,6 @@ public class ItemRadioactiveCell extends GTGenericItem implements IBoxable {
         return this.dura;
     }
 
-    public int getControlTagOfStack(ItemStack stack) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
-        return nbtData.getInteger("tag");
-    }
-
-    public void setControlTagOfStack(ItemStack stack, int tag) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
-        nbtData.setInteger("tag", tag);
-    }
-
     public int getMaxDamageEx() {
         return this.maxDmg;
     }
@@ -137,7 +77,6 @@ public class ItemRadioactiveCell extends GTGenericItem implements IBoxable {
     @Override
     public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
-        // aList.add("Time left: " + (this.maxDelay - getDurabilityOfStack(aStack)) + " secs");
         int rDmg = getDurabilityOfStack(aStack) * 6 / this.maxDmg;
         EnumChatFormatting color2 = switch (rDmg) {
             case 0, 1 -> EnumChatFormatting.WHITE;

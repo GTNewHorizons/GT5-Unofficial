@@ -970,7 +970,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
                 if (this.tooltip.containsKey(this.getDamage(p_77624_1_)))
                     aList.add(this.tooltip.get(this.getDamage(p_77624_1_)));
-                // aList.add(StatCollector.translateToLocal("tooltip.bw.high_temp_gas_cooled_reactor.material"));
                 aList.add(EnumChatFormatting.DARK_RED + "Deprecated, will be removed in next major update");
                 super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
             }

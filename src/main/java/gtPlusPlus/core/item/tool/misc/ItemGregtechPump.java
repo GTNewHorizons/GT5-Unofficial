@@ -146,7 +146,6 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     @SuppressWarnings({ "unchecked" })
     @Override
     public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, List aList, final boolean aF3_H) {
-        // aList.add("Meta: "+(aStack.getItemDamage()-mOffset));
         int aOffsetMeta = getCorrectMetaForItemstack(aStack);
         aList.add(
             GTLanguageManager
