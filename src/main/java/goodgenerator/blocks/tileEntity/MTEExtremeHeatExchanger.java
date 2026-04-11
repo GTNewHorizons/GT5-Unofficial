@@ -1,6 +1,7 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
@@ -46,6 +47,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
@@ -207,116 +209,36 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger, EHE")
-            .addInfo(
-                "Inputs are" + EnumChatFormatting.RED
-                    + " Lava"
-                    + EnumChatFormatting.GRAY
-                    + ","
-                    + EnumChatFormatting.RED
-                    + " Hot Coolant"
-                    + EnumChatFormatting.GRAY
-                    + ","
-                    + EnumChatFormatting.RED
-                    + " Hot Solar Salt"
-                    + EnumChatFormatting.GRAY
-                    + ", or"
-                    + EnumChatFormatting.RED
-                    + " Plasma")
-            .addInfo(
-                "Outputs are" + EnumChatFormatting.BLUE
-                    + " Pahoehoe Lava"
-                    + EnumChatFormatting.GRAY
-                    + ","
-                    + EnumChatFormatting.BLUE
-                    + " IC2 Coolant"
-                    + EnumChatFormatting.GRAY
-                    + ","
-                    + EnumChatFormatting.BLUE
-                    + " Cold Solar Salt"
-                    + EnumChatFormatting.GRAY
-                    + ", or"
-                    + EnumChatFormatting.BLUE
-                    + " Molten Metal")
-            .addInfo(
-                "Converts distilled water into" + EnumChatFormatting.WHITE
-                    + " SH Steam"
-                    + EnumChatFormatting.GRAY
-                    + " or"
-                    + EnumChatFormatting.WHITE
-                    + " SC Steam"
-                    + EnumChatFormatting.GRAY
-                    + " in the process")
-            .addInfo(
-                "Outputs" + EnumChatFormatting.WHITE
-                    + " SC Steam"
-                    + EnumChatFormatting.GRAY
-                    + " if the input rate of hot fluid is above a certain"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + " threshold")
-            .addInfo("Explodes immediately if it runs out of distilled water")
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc1"))
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc2"))
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc3"))
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc4"))
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc5"))
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.RED + "Lava"
-                    + EnumChatFormatting.GRAY
-                    + " : SC Threshold"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + " 80,000 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " : Max Input"
-                    + EnumChatFormatting.RED
-                    + " 160,000 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " : Max Output"
-                    + EnumChatFormatting.WHITE
-                    + " 640,000 L/t SC Steam")
+                GTUtility.translate(
+                    "gt.multiblock.ExtremeHeatExchanger.lava",
+                    getFluidUnit(),
+                    getFluidUnit(),
+                    getFluidUnit()))
             .addInfo(
-                EnumChatFormatting.RED + "Hot Coolant"
-                    + EnumChatFormatting.GRAY
-                    + " : SC Threshold"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + " 8,000 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " : Max Input"
-                    + EnumChatFormatting.RED
-                    + " 16,000 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " : Max Output"
-                    + EnumChatFormatting.WHITE
-                    + " 160,000 L/t SC Steam")
+                GTUtility.translate(
+                    "gt.multiblock.ExtremeHeatExchanger.hotcoolant",
+                    getFluidUnit(),
+                    getFluidUnit(),
+                    getFluidUnit()))
             .addInfo(
-                EnumChatFormatting.RED + "Hot Solar Salt"
-                    + EnumChatFormatting.GRAY
-                    + " : SC Threshold"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + " 1,600 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " : Max Input"
-                    + EnumChatFormatting.RED
-                    + " 3,200 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " : Max Output"
-                    + EnumChatFormatting.WHITE
-                    + " 160,000 L/t SC Steam")
+                GTUtility.translate(
+                    "gt.multiblock.ExtremeHeatExchanger.hotsolarsalt",
+                    getFluidUnit(),
+                    getFluidUnit(),
+                    getFluidUnit()))
             .addSeparator()
-            .addInfo(
-                EnumChatFormatting.RED + "Plasma"
-                    + EnumChatFormatting.GRAY
-                    + " always outputs"
-                    + EnumChatFormatting.WHITE
-                    + " Dense SC Steam"
-                    + EnumChatFormatting.GRAY
-                    + " regardless of input rate")
-            .addInfo("The max input and output rates depend on the plasma's density (EU/L)")
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.plasma1"))
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.plasma2"))
             .addSeparator()
-            .addInfo("A circuit in the controller lowers the SC threshold at the cost of steam")
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + "-1.5%"
-                    + EnumChatFormatting.GRAY
-                    + " SC threshold and"
-                    + EnumChatFormatting.WHITE
-                    + " -1.5%"
-                    + EnumChatFormatting.GRAY
-                    + " steam output per circuit over 1")
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.throttle1"))
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.throttle2"))
             .addController("Front bottom center")
             .addCasingInfoRange("Robust Tungstensteel Machine Casings", 25, 120, false)
             .addCasingInfoExactly("Tiered Glass (EV+)", 72, false)

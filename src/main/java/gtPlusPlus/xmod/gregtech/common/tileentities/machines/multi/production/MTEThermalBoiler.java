@@ -43,6 +43,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.pollution.PollutionConfig;
@@ -271,10 +272,10 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Uses the heat from hot fluids to evaporate water into steam")
-            .addInfo("Filters raw materials from lava and pahoehoe lava")
-            .addInfo("Requires a Lava Filter in the controller slot for byproducts")
-            .addInfo("Explodes after 10s if it runs out of water")
+            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc1"))
+            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc2"))
+            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc3"))
+            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc4"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
