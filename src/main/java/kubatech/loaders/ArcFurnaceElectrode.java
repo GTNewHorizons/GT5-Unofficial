@@ -31,10 +31,10 @@ public enum ArcFurnaceElectrode {
     GraphiteElectrode(LV, 1, 4, 2d, 4d, 100, 1, 0, e -> {}),
     TantalumElectrode(MV, 1.2d, 2, 4d, 4d, 300, 1.2d, 3),
     MolybdenumElectrode(HV, 0.9d, 16, 3d, 4d, 200, 0.8d, 5),
-    TungstenElectrode(IV, 1, 128, 1d, 4d, 500, 1.1d, 3),
-    TungstenSteelElectrode(IV, 0.8d, 160, 1d, 4d, 700, 1.2d, 4),
+    TungstenElectrode(IV, 1, 128, 1d, 4d, 500, 1.1d, 2),
+    TungstenSteelElectrode(IV, 0.8d, 160, 1d, 4d, 700, 1.2d, 3),
     GrapheneElectrode(IV, 2.5d, 4, 2d, 4d, 350, 1, 0, e -> {}),
-    YBCOElectrode(LuV, 2d, 8, 6d, 4d, 500, 0.7d, 1.2d, event -> {
+    YBCOElectrode(LuV, 1.2d, 8, 6d, 4d, 400, 0.8d, 2d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventPostRecipeCheck postRecipe) {
             if (!postRecipe.result.wasSuccessful()) return;
             int performedOC = postRecipe.calculator.getPerformedOverclocks();
@@ -42,7 +42,7 @@ public enum ArcFurnaceElectrode {
                 postRecipe.arcFurnace.getDurabilityConsumptionThisRun() * (1 + performedOC));
         }
     }),
-    NetheriteElectrode(LuV, 1.6d, 16, 1d, 4d, 600, 1.3d, 2d, event -> {
+    NetheriteElectrode(LuV, 2.2d, 32, 1.5d, 4d, 600, 1.3d, 10d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventStartShutdown startShutdown) {
             startShutdown.duration = 1;
         }
@@ -53,8 +53,8 @@ public enum ArcFurnaceElectrode {
             }
         }
     }),
-    TritaniumElectrode(ZPM, 3d, 48, 2d, 4d, 600, 1.7d, 5d),
-    InfinityElectrode(UHV, 4.2d, 0, 1d, 4d, 800, 2.4d, 3d, event -> {
+    TritaniumElectrode(ZPM, 3d, 48, 2d, 4d, 600, 1.7d, 4d),
+    InfinityElectrode(UHV, 4.2d, 0, 1d, 4d, 800, 1d, 1d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventConfigureProcessing configure) {
             configure.processingLogic.setMaxParallel(getInfinityTargetParallel(configure.arcFurnace.getEffectState()));
             return;
@@ -91,7 +91,7 @@ public enum ArcFurnaceElectrode {
     HypogenElectrode(UEV, 6.5d, 256, 1d, 4d, 1000, 1.5d, 3.5d),
 
     // nanite eletrodes
-    NeutroniumNaniteElectrode(UHV, 5d, 64, 2d, 4d, 1000, 4d, 5d, event -> {
+    NeutroniumNaniteElectrode(UHV, 5d, 64, 2d, 4d, 275, 4d, 5d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.Neutronium.getDust(1))
                 && completed.arcFurnace.getRandomNumber(100) < 70) {
@@ -99,7 +99,7 @@ public enum ArcFurnaceElectrode {
             }
         }
     }),
-    TranscendentNaniteElectrode(UIV, 7.5d, 512, 4d, 4d, 1000, 3.5d, 2d, event -> {
+    TranscendentNaniteElectrode(UIV, 7.5d, 512, 4d, 4d, 500, 3.5d, 2d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.TranscendentMetal.getDust(1))
                 && completed.arcFurnace.getRandomNumber(100) < 90) {
