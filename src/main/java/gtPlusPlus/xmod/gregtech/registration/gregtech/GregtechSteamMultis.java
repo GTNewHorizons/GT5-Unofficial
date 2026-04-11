@@ -14,18 +14,18 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Bus_Steam;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Bus_Steam;
 
 import gregtech.api.enums.GTAuthors;
+import gregtech.common.tileentities.machines.multi.steam.MTESteamAlloySmelter;
+import gregtech.common.tileentities.machines.multi.steam.MTESteamCentrifuge;
+import gregtech.common.tileentities.machines.multi.steam.MTESteamCompressor;
+import gregtech.common.tileentities.machines.multi.steam.MTESteamForgeHammer;
+import gregtech.common.tileentities.machines.multi.steam.MTESteamFurnaceMulti;
+import gregtech.common.tileentities.machines.multi.steam.MTESteamMacerator;
+import gregtech.common.tileentities.machines.multi.steam.MTESteamMixer;
+import gregtech.common.tileentities.machines.multi.steam.MTESteamWasher;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamAlloySmelter;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCentrifuge;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCompressor;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamForgeHammer;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamFurnaceMulti;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMacerator;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMixer;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamWasher;
 
 public class GregtechSteamMultis {
 
