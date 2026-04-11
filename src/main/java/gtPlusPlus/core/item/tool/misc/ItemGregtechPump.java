@@ -51,7 +51,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -648,12 +647,12 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
 
     public void storeFluid(ItemStack aStack, FluidStack aFluid) {
         if (aFluid != null) {
-            String fluidname = aFluid.getFluid()
+            final String fluidname = aFluid.getFluid()
                 .getName();
-            int amount = aFluid.amount;
+            final int amount = aFluid.amount;
             if (fluidname != null && !fluidname.isEmpty() && amount > 0) {
-                NBTUtils.setString(aStack, "mFluid", fluidname);
-                NBTUtils.setInteger(aStack, "mFluidAmount", amount);
+                ItemStackNBT.setString(aStack, "mFluid", fluidname);
+                ItemStackNBT.setInteger(aStack, "mFluidAmount", amount);
             }
         }
     }
@@ -664,8 +663,8 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             initNBT(container);
         }
         if (ItemStackNBT.getBoolean(container, "mInit")) {
-            final String fluidname = NBTUtils.getString(container, "mFluid");
-            final int amount = NBTUtils.getInteger(container, "mFluidAmount");
+            final String fluidname = ItemStackNBT.getString(container, "mFluid");
+            final int amount = ItemStackNBT.getInteger(container, "mFluidAmount");
             if (fluidname != null && amount > 0) {
                 return FluidRegistry.getFluidStack(fluidname, amount);
             } else {
