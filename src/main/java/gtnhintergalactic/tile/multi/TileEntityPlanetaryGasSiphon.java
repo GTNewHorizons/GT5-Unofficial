@@ -186,6 +186,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
             .addMaintenanceHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
             .addInputBus(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
             .addOutputHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addStructureInfo(GTUtility.translate("ig.siphon.structure.HatchRequirement"))
             .toolTipFinisher();
         return tt;
     }
