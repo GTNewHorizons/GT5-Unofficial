@@ -6718,6 +6718,7 @@ GT5U.scanner.chunk_info_3=§f%s: §6%sL
 GT5U.scanner.chunk_info_4=Nothing: §60L
 GT5U.tooltip.drone_remote_disconnected=Shift right click an active drone centre to connect
 GT5U.tooltip.drone_remote_connected=Connected to centre: %s, %s, %s, on dim%s
+GT5U.tooltip.drone_remote_not_found=Drone Centre at x: %s, y: %s, z: %s in dim%s was not found!
 
 # info data
 GT5U.infodata.no_network=No Network
