@@ -814,10 +814,10 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     "kubatech.infodata.htgr.stored_fuel_entry",
                     entry.getKey()
                         .getLocalizedNameForItem("%material"),
-                    formatNumbers(entry.getValue()),
-                    formatNumbers(prop.getLeft()),
-                    formatNumbers(prop.getMiddle()),
-                    formatNumbers(prop.getRight())))
+                    formatNumber(entry.getValue()),
+                    formatNumber(prop.getLeft()),
+                    formatNumber(prop.getMiddle()),
+                    formatNumber(prop.getRight())))
                 .append("\n");
         }
         sb.append(EnumChatFormatting.WHITE)
@@ -831,9 +831,9 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             .append(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.infodata.htgr.fuel_properties",
-                    GTUtility.formatNumbers(this.fuelBase),
-                    GTUtility.formatNumbers(this.fuelMultiplier),
-                    GTUtility.formatNumbers(this.fuelExponent)))
+                    formatNumber(this.fuelBase),
+                    formatNumber(this.fuelMultiplier),
+                    formatNumber(this.fuelExponent)))
             .append("\n");
         sb.append(EnumChatFormatting.WHITE)
             .append(StatCollector.translateToLocal("kubatech.infodata.htgr.burned_fuel"))
