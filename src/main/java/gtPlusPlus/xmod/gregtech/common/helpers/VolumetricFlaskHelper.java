@@ -74,19 +74,11 @@ public class VolumetricFlaskHelper {
     }
 
     public static void setFluid(ItemStack stack, FluidStack fluidStack) {
-        boolean removeFluid = (fluidStack == null) || (fluidStack.amount <= 0);
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt == null) {
-            if (removeFluid) return;
-            stack.setTagCompound(nbt = new NBTTagCompound());
-        }
+        final boolean removeFluid = (fluidStack == null) || (fluidStack.amount <= 0);
         if (removeFluid) {
-            nbt.removeTag("Fluid");
-            if (nbt.hasNoTags()) {
-                stack.setTagCompound(null);
-            }
+            ItemStackNBT.removeTag(stack, "Fluid");
         } else {
-            nbt.setTag("Fluid", fluidStack.writeToNBT(new NBTTagCompound()));
+            ItemStackNBT.setTag(stack, "Fluid", fluidStack.writeToNBT(new NBTTagCompound()));
         }
     }
 

@@ -7,7 +7,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -83,10 +82,9 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     /** The unlocalized name of this item. */
     private String unlocalizedName;
 
-    private final HashMap<Integer, IIcon> mIconMap = new LinkedHashMap<>();
-    private final HashMap<Integer, EnumRarity> rarity = new LinkedHashMap<>();
-
-    public final HashMap<Short, Long[]> mElectricStats = new LinkedHashMap<>();
+    private final HashMap<Integer, IIcon> mIconMap = new HashMap<>();
+    private final HashMap<Integer, EnumRarity> rarity = new HashMap<>();
+    public final HashMap<Short, Long[]> mElectricStats = new HashMap<>();
 
     public void registerPumpType(final int aID, final String aPumpName, final int aEuMax, final int aTier) {
         registerItem(
@@ -360,8 +358,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         if (tStats[3] > 0) {
             return (int) (long) tStats[3];
         }
-        final NBTTagCompound tNBT = aStack.getTagCompound();
-        return tNBT == null ? 0 : tNBT.getLong("GT.ItemCharge");
+        return ItemStackNBT.getLong(aStack, "GT.ItemCharge");
     }
 
     public final boolean setCharge(final ItemStack aStack, long aCharge) {
@@ -369,22 +366,13 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         if ((tStats == null) || (tStats[3] > 0)) {
             return false;
         }
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-        }
-        tNBT.removeTag("GT.ItemCharge");
         aCharge = Math.min(tStats[0] < 0 ? Math.abs(tStats[0] / 2) : aCharge, Math.abs(tStats[0]));
         if (aCharge > 0) {
             aStack.setItemDamage(this.getChargedMetaData(aStack));
-            tNBT.setLong("GT.ItemCharge", aCharge);
+            ItemStackNBT.setLong(aStack, "GT.ItemCharge", aCharge);
         } else {
             aStack.setItemDamage(this.getEmptyMetaData(aStack));
-        }
-        if (tNBT.hasNoTags()) {
-            aStack.setTagCompound(null);
-        } else {
-            aStack.setTagCompound(tNBT);
+            ItemStackNBT.removeTag(aStack, "GT.ItemCharge");
         }
         this.isItemStackUsable(aStack);
         return true;
@@ -642,6 +630,9 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             nbt.removeTag("mInit");
             nbt.removeTag("mFluid");
             nbt.removeTag("mFluidAmount");
+            if (nbt.hasNoTags()) {
+                aStack.setTagCompound(null);
+            }
         }
     }
 

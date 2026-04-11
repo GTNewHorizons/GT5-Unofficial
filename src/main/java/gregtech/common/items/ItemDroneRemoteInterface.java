@@ -87,17 +87,12 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
         if (te instanceof IGregTechTileEntity
             && ((IGregTechTileEntity) te).getMetaTileEntity() instanceof MTEDroneCentre) {
             if (!world.isRemote) {
-                NBTTagCompound nbt = itemStack.getTagCompound();
-                if (nbt == null) {
-                    nbt = new NBTTagCompound();
-                    itemStack.setTagCompound(nbt);
-                }
-                NBTTagCompound centreNbt = new NBTTagCompound();
+                final NBTTagCompound centreNbt = new NBTTagCompound();
                 centreNbt.setInteger("x", x);
                 centreNbt.setInteger("y", y);
                 centreNbt.setInteger("z", z);
                 centreNbt.setInteger("dim", world.provider.dimensionId);
-                nbt.setTag("droneCentre", centreNbt);
+                ItemStackNBT.setTag(itemStack, "droneCentre", centreNbt);
                 player.addChatMessage(new ChatComponentTranslation("GT5U.gui.chat.bindcentre"));
             }
             return true;

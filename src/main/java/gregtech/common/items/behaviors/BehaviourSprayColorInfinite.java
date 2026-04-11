@@ -311,7 +311,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
                 return Dyes.getOrDefault(color, Dyes.MACHINE_METAL);
             }
         }
-
         return Dyes.MACHINE_METAL;
     }
 
