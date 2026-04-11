@@ -79,6 +79,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
@@ -612,10 +613,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        // TODO differentiate between lack of fuel and lack of helium
-
-        if (this.heliumSupply < MIN_HELIUM_NEEDED || this.fuelsupply < MIN_CAPACITY)
-            return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+        if (this.heliumSupply < MIN_HELIUM_NEEDED) return SimpleCheckRecipeResult.ofFailure("no_helium");
+        if (this.fuelsupply < MIN_CAPACITY) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
 
         // 1 - Math.pow(1 - x, 3)
 
