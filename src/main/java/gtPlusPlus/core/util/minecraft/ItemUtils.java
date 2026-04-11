@@ -15,7 +15,6 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -366,14 +365,8 @@ public class ItemUtils {
             aDisplay = (StatCollector.translateToLocal(
                 aStack.getItem()
                     .getUnlocalizedNameInefficiently(aStack) + ".name")).trim();
-            if (aStack.hasTagCompound()) {
-                if (aStack.stackTagCompound != null && aStack.stackTagCompound.hasKey("display", 10)) {
-                    NBTTagCompound nbttagcompound = aStack.stackTagCompound.getCompoundTag("display");
-
-                    if (nbttagcompound.hasKey("Name", 8)) {
-                        aDisplay = nbttagcompound.getString("Name");
-                    }
-                }
+            if (aStack.hasDisplayName()) {
+                aDisplay = aStack.getDisplayName();
             }
         } catch (Exception ignored) {
 
