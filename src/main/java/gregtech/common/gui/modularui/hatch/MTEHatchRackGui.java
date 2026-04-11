@@ -11,7 +11,6 @@ import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -36,15 +35,15 @@ public class MTEHatchRackGui extends MTEHatchBaseGui<MTEHatchRack> {
         BooleanSyncValue isActiveSyncer = syncManager.findSyncHandler("isActive", BooleanSyncValue.class);
         IntSyncValue heatSyncer = syncManager.findSyncHandler("heat", IntSyncValue.class);
 
-        Flow mainRow = Flow.row()
-            .full();
+        ParentWidget<?> mainSection = new ParentWidget<>().full();
 
         Flow statusColumn = Flow.col()
             .coverChildren()
             .childPadding(2)
             .marginTop(4)
             .marginRight(4)
-            .align(Alignment.TopRight);
+            .topRel(0)
+            .rightRel(0);
 
         // active status decoration
         statusColumn.child(
@@ -68,16 +67,16 @@ public class MTEHatchRackGui extends MTEHatchBaseGui<MTEHatchRack> {
                                         "gt.blockmachines.hatch.rack.heat",
                                         heatSyncer.getIntValue())))));
 
-        mainRow.child(statusColumn);
+        mainSection.child(statusColumn);
 
         // central decoration
-        mainRow.child(
+        mainSection.child(
             GTGuiTextures.TT_PICTURE_HEAT_SINK.asWidget()
                 .size(84, 60)
-                .align(Alignment.CENTER));
+                .center());
 
         // input slots
-        mainRow
+        mainSection
             .child(new Grid().mapTo(2, 4, index -> new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, index) {
 
                 @Override
@@ -91,12 +90,12 @@ public class MTEHatchRackGui extends MTEHatchBaseGui<MTEHatchRack> {
                 }
             }.slotGroup("item_inv")
                 .filter(t -> isValidItem(t) && !isActiveSyncer.getBoolValue() && heatSyncer.getIntValue() <= 0))
-                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.TT_OVERLAY_SLOT_RACK)
-                .margin(2))
-                .align(Alignment.CENTER)
+                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.TT_OVERLAY_SLOT_RACK))
+                .minElementMargin(4)
+                .center()
                 .coverChildren());
 
-        return super.createContentSection(panel, syncManager).child(mainRow);
+        return super.createContentSection(panel, syncManager).child(mainSection);
     }
 
     @Override
