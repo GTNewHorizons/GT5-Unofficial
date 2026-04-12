@@ -2,6 +2,7 @@ package gtPlusPlus;
 
 import static gregtech.api.enums.Mods.Thaumcraft;
 
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -115,10 +116,15 @@ public class GTplusplus {
     }
 
     @EventHandler
-    public synchronized void serverStarting(final FMLServerStartingEvent event) {
+    public void serverStarting(final FMLServerStartingEvent event) {
         if (Thaumcraft.isModLoaded()) {
             event.registerServerCommand(new CommandDumpAspects());
         }
+    }
+
+    @EventHandler
+    public void serverStopped(final FMLServerStoppedEvent event) {
+        GTPPCore.onServerStop();
     }
 
     /**

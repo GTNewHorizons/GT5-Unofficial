@@ -148,11 +148,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
         sTesseractTerminalOwnershipMap.clear();
     }
 
-    public void onServerStop() {
-        sTesseractGeneratorOwnershipMap.clear();
-        sTesseractTerminalOwnershipMap.clear();
-    }
-
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer,
         final ForgeDirection side, final float aX, final float aY, final float aZ) {

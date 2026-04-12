@@ -52,4 +52,9 @@ public class GTPPCore {
 
     // BookMap
     public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<>();
+
+    public static void onServerStop() {
+        sTesseractGeneratorOwnershipMap.clear();
+        sTesseractTerminalOwnershipMap.clear();
+    }
 }
