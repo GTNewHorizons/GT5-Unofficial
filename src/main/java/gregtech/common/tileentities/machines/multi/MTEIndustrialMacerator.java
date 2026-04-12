@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -15,6 +16,9 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -26,8 +30,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -100,24 +106,25 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
         tt.addMachineType("Macerator, IMS")
             .addInfo(TooltipHelper.parallelText("Voltage Tier * n") + " Parallels")
             .addInfo("n=" + PARALLEL_T1 + " initially. n=" + PARALLEL_T2 + " after inserting Maceration Upgrade Chip")
-            .addStaticSpeedInfo(1.6f)
+            .addInfo("Tier 1: " + EnumChatFormatting.GREEN + "160% speed")
+            .addInfo("Tier 2: " + EnumChatFormatting.GREEN + "640% speed")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 7, 5, false)
             .addController("Front bottom center")
-            .addInputBus("Any Stable Titanium Casing", 1)
-            .addOutputBus("Any Stable Titanium Casing", 1)
-            .addEnergyHatch("Any Stable Titanium Casing", 1)
-            .addMaintenanceHatch("Any Stable Titanium Casing", 1)
-            .addMufflerHatch("Any Stable Titanium Casing", 1)
+            .addInputBus("Any Stable Titanium/Maceration Stack Casing", 1)
+            .addOutputBus("Any Stable Titanium/Maceration Stack Casing", 1)
+            .addEnergyHatch("Any Stable Titanium/Maceration Stack Casing", 1)
+            .addMaintenanceHatch("Any Stable Titanium/Maceration Stack Casing", 1)
+            .addMufflerHatch("Any Stable Titanium/Maceration Stack Casing", 1)
             .addStructureInfo(
                 EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.BLUE + ":")
-            .addCasingInfoMin("Stable Titanium Casings", 26, false)
+            .addCasingInfoMin("Stable Titanium Casing", 26, false)
             .addStructureInfo(
                 EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2 + EnumChatFormatting.BLUE + ":")
-            .addCasingInfoMin("Stable Titanium Casings", 69, false)
+            .addCasingInfoMin("Maceration Stack Casing", 69, false)
             .addCasingInfoExactly("Grate Machine Casing", 6, false)
             .addCasingInfoExactly("Steel Gear Box", 18, false)
-            .addCasingInfoExactly("Titanium Frame Box", 20, false)
+            .addCasingInfoExactly("HSS-G Frame Box", 20, false)
             .addCasingInfoExactly("Any Tinted Industrial Glass", 8, false)
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
@@ -151,11 +158,24 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
                         .hint(1)
                         .allowOnly(ForgeDirection.NORTH)
                         .buildAndChain(
-                            onElementPass(m -> m.casingAmount++, Casings.StableTitaniumMachineCasing.asElement())))
+                            onElementPass(
+                                m -> m.casingAmount++,
+                                ofBlocksTiered(
+                                    MTEIndustrialMacerator::getStructureCasingTier,
+                                    ImmutableList.of(
+                                        Pair.of(
+                                            Casings.StableTitaniumMachineCasing.getBlock(),
+                                            Casings.StableTitaniumMachineCasing.getBlockMeta()),
+                                        Pair.of(
+                                            Casings.MacerationStackCasing.getBlock(),
+                                            Casings.MacerationStackCasing.getBlockMeta())),
+                                    -1,
+                                    (m, t) -> m.structureTier = t,
+                                    m -> m.structureTier))))
                 .addElement('A', Casings.SteelGearBoxCasing.asElement())
                 .addElement('B', Casings.GrateMachineCasing.asElement())
                 .addElement('E', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass))
-                .addElement('D', ofFrame(Materials.Titanium))
+                .addElement('D', ofFrame(Materials.HSSG))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -199,7 +219,8 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     }
 
     protected void updateHatchTexture() {
-        int textureID = Casings.StableTitaniumMachineCasing.textureId;
+        int textureID = structureTier == 2 ? Casings.MacerationStackCasing.textureId
+            : Casings.StableTitaniumMachineCasing.textureId;
         for (MTEHatch h : mInputBusses) h.updateTexture(textureID);
         for (IDualInputHatch h : mDualInputHatches) h.updateTexture(textureID);
         for (MTEHatch h : mOutputBusses) h.updateTexture(textureID);
@@ -217,7 +238,9 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.StableTitaniumMachineCasing.getCasingTexture(),
+            if (aActive) return new ITexture[] {
+                structureTier == 2 ? Casings.MacerationStackCasing.getCasingTexture()
+                    : Casings.StableTitaniumMachineCasing.getCasingTexture(),
                 TextureFactory.builder()
                     .addIcon(TexturesGtBlock.Overlay_MatterFab_Active)
                     .extFacing()
@@ -227,17 +250,21 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Casings.StableTitaniumMachineCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.Overlay_MatterFab)
-                .extFacing()
-                .build(),
+            return new ITexture[] {
+                structureTier == 2 ? Casings.MacerationStackCasing.getCasingTexture()
+                    : Casings.StableTitaniumMachineCasing.getCasingTexture(),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.Overlay_MatterFab)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(TexturesGtBlock.Overlay_MatterFab_Glow)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Casings.StableTitaniumMachineCasing.getCasingTexture() };
+        return new ITexture[] { structureTier == 2 ? Casings.MacerationStackCasing.getCasingTexture()
+            : Casings.StableTitaniumMachineCasing.getCasingTexture() };
     }
 
     @Override
@@ -358,7 +385,7 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 1.6F)
+            .setSpeedBonus(1F / getSpeedBonus())
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -421,5 +448,18 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
         if (trigger.stackSize >= 2) {
             controllerTier = 2;
         }
+    }
+
+    @Nullable
+    private static Integer getStructureCasingTier(Block b, int m) {
+        if (b == Casings.StableTitaniumMachineCasing.getBlock()
+            && m == Casings.StableTitaniumMachineCasing.getBlockMeta()) return 1;
+        if (b == Casings.MacerationStackCasing.getBlock() && m == Casings.MacerationStackCasing.getBlockMeta())
+            return 2;
+        return null;
+    }
+
+    public float getSpeedBonus() {
+        return (float) structureTier == 2 ? 6.4f : 1.6f;
     }
 }
