@@ -3,7 +3,10 @@ package gtPlusPlus.xmod.gregtech.common.helpers;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.enums.ItemList;
 import gregtech.common.items.ItemVolumetricFlask;
@@ -64,35 +67,25 @@ public class VolumetricFlaskHelper {
     }
 
     public static FluidStack getFlaskFluid(ItemStack aStack) {
-        if (aStack.hasTagCompound()) {
-            NBTTagCompound nbt = aStack.getTagCompound();
-            if (nbt.hasKey("Fluid", 10)) return FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("Fluid"));
+        if (ItemStackNBT.hasKey(aStack, "Fluid", NBT.TAG_COMPOUND)) {
+            return FluidStack.loadFluidStackFromNBT(ItemStackNBT.getCompoundTag(aStack, "Fluid"));
         }
         return null;
     }
 
     public static void setFluid(ItemStack stack, FluidStack fluidStack) {
-        boolean removeFluid = (fluidStack == null) || (fluidStack.amount <= 0);
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt == null) {
-            if (removeFluid) return;
-            stack.setTagCompound(nbt = new NBTTagCompound());
-        }
+        final boolean removeFluid = (fluidStack == null) || (fluidStack.amount <= 0);
         if (removeFluid) {
-            nbt.removeTag("Fluid");
-            if (nbt.hasNoTags()) {
-                stack.setTagCompound(null);
-            }
+            ItemStackNBT.removeTag(stack, "Fluid");
         } else {
-            nbt.setTag("Fluid", fluidStack.writeToNBT(new NBTTagCompound()));
+            ItemStackNBT.setTag(stack, "Fluid", fluidStack.writeToNBT(new NBTTagCompound()));
         }
     }
 
     public static int getFlaskCapacity(ItemStack aStack) {
         int capacity = 1000;
-        if (aStack.hasTagCompound()) {
-            NBTTagCompound nbt = aStack.getTagCompound();
-            if (nbt.hasKey("Capacity", 3)) capacity = nbt.getInteger("Capacity");
+        if (ItemStackNBT.hasKey(aStack, "Capacity", NBT.TAG_INT)) {
+            capacity = ItemStackNBT.getInteger(aStack, "Capacity");
         }
         return Math.min(getMaxFlaskCapacity(aStack), capacity);
     }
@@ -102,11 +95,7 @@ public class VolumetricFlaskHelper {
             return false;
         }
         aCapacity = Math.min(aCapacity, getMaxFlaskCapacity(aStack));
-        NBTTagCompound nbt = aStack.getTagCompound();
-        if (nbt == null) {
-            aStack.setTagCompound(nbt = new NBTTagCompound());
-        }
-        nbt.setInteger("Capacity", aCapacity);
+        ItemStackNBT.setInteger(aStack, "Capacity", aCapacity);
         return true;
     }
 

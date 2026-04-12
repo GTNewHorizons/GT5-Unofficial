@@ -64,7 +64,6 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
                 if (!GTUtility.areStacksEqual(result, output, true)) {
                     continue;
                 }
-                // Logger.INFO("Showing Usage result for "+ItemUtils.getItemName(result));
                 final DecayableRecipeNEI rec = new DecayableRecipeNEI(input, output, recipe.mTime);
                 this.arecipes.add(rec);
                 sort();
@@ -101,7 +100,6 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
                 if (!GTUtility.areStacksEqual(ingredient, input, true)) {
                     continue;
                 }
-                // Logger.INFO("Showing up Usage results for "+ItemUtils.getItemName(ingredient));
                 final DecayableRecipeNEI rec = new DecayableRecipeNEI(input, output, recipe.mTime);
                 // rec.setIngredientPermutation((Collection) rec.input, ingredient);
                 this.arecipes.add(rec);

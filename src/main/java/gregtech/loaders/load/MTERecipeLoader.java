@@ -1645,6 +1645,12 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "PhP", "SFS", "PwP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'S',
                 MaterialsAlloy.MARAGING250.getPlate(1), 'F',
                 OrePrefixes.frameGt.get(Materials.Polytetrafluoroethylene) });
+
+        // Forming Core
+        GTModHandler.addCraftingRecipe(
+            ItemList.FormingCore.get(1),
+            new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
+                OrePrefixes.plate.get(Materials.Steel), 'F', OrePrefixes.frameGt.get(Materials.StainlessSteel) });
     }
 
     // This method is for all the structure rework shapeless crafing migration recipes

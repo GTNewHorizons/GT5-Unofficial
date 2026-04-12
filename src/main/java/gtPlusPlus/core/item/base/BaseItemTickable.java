@@ -19,7 +19,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.common.config.Client;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 
@@ -116,7 +115,6 @@ public class BaseItemTickable extends CoreItem {
 
     @Override
     public void registerIcons(final IIconRegister i) {
-
         if (this.twoRenderPasses) {
             this.mIcon[0] = i.registerIcon(GTPlusPlus.ID + ":" + this.getUnlocalizedName());
             this.mIcon[1] = i.registerIcon(GTPlusPlus.ID + ":" + this.getUnlocalizedName() + "_OVERLAY");
@@ -136,10 +134,8 @@ public class BaseItemTickable extends CoreItem {
         tagNBT.setLong("Tick", 0);
         tagNBT.setLong("maxTick", getMaxTicks(rStack));
         tagNBT.setBoolean("isActive", true);
-
         tagMain.setTag("TickableItem", tagNBT);
         rStack.setTagCompound(tagMain);
-        Logger.INFO("Created Tickable NBT data.");
         return true;
     }
 

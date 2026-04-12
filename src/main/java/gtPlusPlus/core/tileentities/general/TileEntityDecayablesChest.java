@@ -26,7 +26,6 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryDecayablesChest;
 import gtPlusPlus.core.item.materials.DustDecayable;
@@ -112,7 +111,6 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
             a2 = b.tickItemTag(world, iStack);
             u++;
         }
-        Logger.MACHINE_INFO("| " + b.getUnlocalizedName() + " | " + a1 + "/" + a2);
 
         if (!a1 && !a2) {
             ItemStack replacement = b.getDecayResult();

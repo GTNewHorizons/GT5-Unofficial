@@ -19,7 +19,6 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLog;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -37,10 +36,6 @@ public class AchievementHandler {
     private static final String aBaseAchievementName = "gtpp.start";
 
     public AchievementHandler() {
-
-        Logger.INFO("Initializing GT++ achievements");
-        GTLog.out.println("Initializing GT++ achievements");
-
         // register first
         this.registerAchievement(
             aBaseAchievementName,

@@ -18,7 +18,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
@@ -53,7 +52,6 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
         }
 
         if (material.getMaterialComposites().length > 1) {
-            Logger.MATERIALS("[Recipe Generator Debug] [" + material.getDefaultLocalName() + "]");
             final int tVoltageMultiplier = material.vVoltageMultiplier;
             int[] partSizes = new int[99];
             if (material.vSmallestRatio != null) {
@@ -87,67 +85,30 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                 for (Pair<Integer, Material> f : componentMap) {
                     if (f.getValue()
                         .getState() != MaterialState.SOLID) {
-                        Logger.MATERIALS(
-                            "[Centrifuge] Found Fluid Component, adding " + f.getKey()
-                                + " cells of "
-                                + f.getValue()
-                                    .getDefaultLocalName()
-                                + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getCell(f.getKey());
                         mCellCount += f.getKey();
-                        mTotalCount += f.getKey();
-                        Logger.MATERIALS(
-                            "[Centrifuge] In total, adding " + mCellCount
-                                + " cells for "
-                                + material.getDefaultLocalName()
-                                + " processing.");
                     } else {
-                        Logger.MATERIALS(
-                            "[Centrifuge] Found Solid Component, adding " + f.getKey()
-                                + " dusts of "
-                                + f.getValue()
-                                    .getDefaultLocalName()
-                                + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getDust(f.getKey());
-                        mTotalCount += f.getKey();
                     }
+                    mTotalCount += f.getKey();
                 }
 
                 // Build Output Array
                 for (int g = 0; g < mInternalOutputs.length; g++) {
-                    Logger.MATERIALS(
-                        "[Centrifuge] Is output[" + g
-                            + "] valid with a chance? "
-                            + (mInternalOutputs[g] != null ? 10000 : 0));
                     mChances[g] = (mInternalOutputs[g] != null ? 10000 : 0);
                 }
 
                 ItemStack emptyCell = null;
                 if (mCellCount > 0) {
                     emptyCell = ItemList.Cell_Empty.get(mCellCount);
-                    Logger.MATERIALS("[Centrifuge] Recipe now requires " + mCellCount + " empty cells as input.");
                 }
 
                 ItemStack mainDust = material.getDust(material.smallestStackSizeWhenProcessing);
-                if (mainDust != null) {
-                    Logger.MATERIALS(
-                        "[Centrifuge] Recipe now requires " + material.smallestStackSizeWhenProcessing
-                            + "x "
-                            + mainDust.getDisplayName()
-                            + " as input.");
-                } else {
+                if (mainDust == null) {
                     mainDust = material.getDust(mTotalCount);
-                    Logger.MATERIALS("[Centrifuge] Could not find valid input dust, trying alternative.");
-                    if (mainDust != null) {
-                        Logger.MATERIALS(
-                            "[Centrifuge] Recipe now requires " + mTotalCount
-                                + "x "
-                                + mainDust.getDisplayName()
-                                + " as input.");
-                    } else {
-                        Logger.MATERIALS("[Centrifuge] Could not find valid input dust, exiting.");
+                    if (mainDust == null) {
                         return;
                     }
                 }
@@ -155,10 +116,6 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                 for (int j = 0; j < mInternalOutputs.length; j++) {
                     if (mInternalOutputs[j] == null) {
                         mInternalOutputs[j] = GTValues.NI;
-                        Logger.MATERIALS("[Centrifuge] Set slot " + j + "  to null.");
-                    } else {
-                        Logger.MATERIALS(
-                            "[Centrifuge] Set slot " + j + " to " + mInternalOutputs[j].getDisplayName() + ".");
                     }
                 }
 
@@ -184,14 +141,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                     .duration((tVoltageMultiplier / 10) * SECONDS)
                     .addTo(centrifugeRecipes);
 
-                Logger.MATERIALS(
-                    "[Centrifuge] Generated Centrifuge recipe for " + material.getDust(1)
-                        .getDisplayName());
-
             } else if (componentMap.size() > 6 && componentMap.size() <= 9) {
-                Logger.MATERIALS(
-                    "[Issue][Electrolyzer] " + material.getDefaultLocalName()
-                        + " is composed of over 6 materials, so an electrolyzer recipe for processing cannot be generated. Trying to create one for the Dehydrator instead.");
 
                 ItemStack[] mInternalOutputs = new ItemStack[9];
                 int[] mChances = new int[9];
@@ -203,67 +153,30 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                 for (Pair<Integer, Material> f : componentMap) {
                     if (f.getValue()
                         .getState() != MaterialState.SOLID) {
-                        Logger.MATERIALS(
-                            "[Dehydrator] Found Fluid Component, adding " + f.getKey()
-                                + " cells of "
-                                + f.getValue()
-                                    .getDefaultLocalName()
-                                + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getCell(f.getKey());
                         mCellCount += f.getKey();
-                        mTotalCount += f.getKey();
-                        Logger.MATERIALS(
-                            "[Dehydrator] In total, adding " + mCellCount
-                                + " cells for "
-                                + material.getDefaultLocalName()
-                                + " processing.");
                     } else {
-                        Logger.MATERIALS(
-                            "[Dehydrator] Found Solid Component, adding " + f.getKey()
-                                + " dusts of "
-                                + f.getValue()
-                                    .getDefaultLocalName()
-                                + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getDust(f.getKey());
-                        mTotalCount += f.getKey();
                     }
+                    mTotalCount += f.getKey();
                 }
 
                 // Build Output Array
                 for (int g = 0; g < mInternalOutputs.length; g++) {
-                    Logger.MATERIALS(
-                        "[Dehydrator] Is output[" + g
-                            + "] valid with a chance? "
-                            + (mInternalOutputs[g] != null ? 10000 : 0));
                     mChances[g] = (mInternalOutputs[g] != null ? 10000 : 0);
                 }
 
                 ItemStack emptyCell = null;
                 if (mCellCount > 0) {
                     emptyCell = ItemList.Cell_Empty.get(mCellCount);
-                    Logger.MATERIALS("[Dehydrator] Recipe now requires " + mCellCount + " empty cells as input.");
                 }
 
                 ItemStack mainDust = material.getDust(material.smallestStackSizeWhenProcessing);
-                if (mainDust != null) {
-                    Logger.MATERIALS(
-                        "[Dehydrator] Recipe now requires " + material.smallestStackSizeWhenProcessing
-                            + "x "
-                            + mainDust.getDisplayName()
-                            + " as input.");
-                } else {
+                if (mainDust == null) {
                     mainDust = material.getDust(mTotalCount);
-                    Logger.MATERIALS("[Dehydrator] Could not find valid input dust, trying alternative.");
-                    if (mainDust != null) {
-                        Logger.MATERIALS(
-                            "[Dehydrator] Recipe now requires " + mTotalCount
-                                + "x "
-                                + mainDust.getDisplayName()
-                                + " as input.");
-                    } else {
-                        Logger.MATERIALS("[Dehydrator] Could not find valid input dust, exiting.");
+                    if (mainDust == null) {
                         return;
                     }
                 }
@@ -271,10 +184,6 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                 for (int j = 0; j < mInternalOutputs.length; j++) {
                     if (mInternalOutputs[j] == null) {
                         mInternalOutputs[j] = GTValues.NI;
-                        Logger.MATERIALS("[Dehydrator] Set slot " + j + "  to null.");
-                    } else {
-                        Logger.MATERIALS(
-                            "[Dehydrator] Set slot " + j + " to " + mInternalOutputs[j].getDisplayName() + ".");
                     }
                 }
                 // i don't understand the mess above, so let's just strip nulls and assume the chances are in correct
@@ -299,9 +208,6 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                     .duration(20 * (tVoltageMultiplier / 10))
                     .addTo(chemicalDehydratorRecipes);
 
-                Logger.MATERIALS(
-                    "[Dehydrator] Generated Dehydrator recipe for " + material.getDust(1)
-                        .getDisplayName());
             }
         }
     }

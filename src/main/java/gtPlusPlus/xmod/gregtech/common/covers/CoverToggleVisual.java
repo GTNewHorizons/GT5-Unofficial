@@ -14,7 +14,6 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverLegacyData;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 
 // TODO: Figure out what anything in this class is even supposed to do.
@@ -126,16 +125,13 @@ public class CoverToggleVisual extends CoverLegacyData {
         String aKey = generateUniqueKey(coverSide, coveredTile.get());
         boolean state = getCoverConnections(coverItem);
         sPrefixMap.put(aKey, coverItem.getUnlocalizedName());
-        Logger.INFO("Mapping key " + aKey + " to " + state);
         sConnectionStateForEntityMap.put(aKey, state ? VALUE_ON : VALUE_OFF);
-        Logger.INFO("Key Value: " + (state ? VALUE_ON : VALUE_OFF));
     }
 
     @Override
     public void onCoverRemoval() {
         String aKey = generateUniqueKey(coverSide, coveredTile.get());
         sConnectionStateForEntityMap.remove(aKey);
-        // Logger.INFO("Unmapping key "+aKey+".");
     }
 
     public boolean getConnectionState() {
@@ -149,7 +145,6 @@ public class CoverToggleVisual extends CoverLegacyData {
 
     public static boolean getConnectionState(String aKey) {
         Integer b = sConnectionStateForEntityMap.get(aKey);
-        // Logger.INFO("Get State: "+b+" | "+aKey);
         return b != null && b == VALUE_ON;
     }
 

@@ -9,7 +9,6 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TAE;
 import gregtech.api.util.GTLanguageManager;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.handler.AchievementHandler;
 import gtPlusPlus.core.util.minecraft.LangUtils;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
@@ -44,7 +43,6 @@ public class MetaGTProxy {
         // Fix IC2 Hot Water name
         try {
             String aNewHeatedWaterName = "Heated Water";
-            Logger.INFO("Renaming [IC2 Hotspring Water] --> [" + aNewHeatedWaterName + "].");
             LanguageRegistry.instance()
                 .addStringLocalization("fluidHotWater", "Heated Water");
             LanguageRegistry.instance()

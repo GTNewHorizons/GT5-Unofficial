@@ -8,7 +8,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.container.ContainerCircuitProgrammer;
 import gtPlusPlus.core.container.ContainerFishTrap;
 import gtPlusPlus.core.container.ContainerVolumetricFlaskSetter;
@@ -43,7 +42,6 @@ public class GuiHandler implements IGuiHandler {
     public static final int GUI18 = 17; // Volumetric Flask Setter
 
     public static void init() {
-        Logger.INFO("Registering GUIs.");
         NetworkRegistry.INSTANCE.registerGuiHandler(GTplusplus.instance, new GuiHandler());
     }
 
@@ -55,7 +53,6 @@ public class GuiHandler implements IGuiHandler {
 
         return switch (ID) {
             case GUI5 -> {
-                Logger.INFO("sad");
                 yield null;
             }
             case GUI6 -> new ContainerFishTrap(player.inventory, (TileEntityFishTrap) te);
@@ -68,15 +65,6 @@ public class GuiHandler implements IGuiHandler {
     @Override
     public Object getClientGuiElement(final int ID, final EntityPlayer player, final World world, final int x,
         final int y, final int z) {
-        Logger.WARNING(
-            String.format(
-                "getClientGuiElement Called by: %s, in world: %d at x:%d, y:%d, z:%d.",
-                player,
-                player.dimension,
-                x,
-                y,
-                z));
-
         TileEntity te = world.getTileEntity(x, y, z);
         if (te == null) return null;
 
