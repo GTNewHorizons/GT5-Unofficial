@@ -1,18 +1,13 @@
 package gtPlusPlus.xmod.tinkers;
 
-import java.util.ArrayList;
-
 import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.enums.Mods;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
-import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 import gtPlusPlus.xmod.tinkers.util.TinkersDryingRecipe;
 import gtPlusPlus.xmod.tinkers.util.TinkersUtils;
 
 public class HandlerTinkers {
-
-    public static ArrayList<BaseTinkersMaterial> mTinkerMaterials = new ArrayList<>();
 
     public static void postInit() {
         if (Mods.TinkerConstruct.isModLoaded()) {

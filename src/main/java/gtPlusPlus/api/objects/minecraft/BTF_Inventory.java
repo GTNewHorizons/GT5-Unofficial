@@ -7,7 +7,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,11 +25,6 @@ public class BTF_Inventory implements ISidedInventory {
         this.mTile = tile;
     }
 
-    public ItemStack @NotNull [] getRealInventory() {
-        purgeNulls();
-        return this.mInventory;
-    }
-
     @Override
     public int getSizeInventory() {
         return this.mInventory.length;
@@ -46,10 +40,6 @@ public class BTF_Inventory implements ISidedInventory {
         if (aIndex >= 0 && aIndex < this.mInventory.length) {
             this.mInventory[aIndex] = aStack;
         }
-    }
-
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     public boolean isValidSlot(int aIndex) {
@@ -94,7 +84,6 @@ public class BTF_Inventory implements ISidedInventory {
 
     @Override
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
-        final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         ArrayList<Integer> tList = new ArrayList<>();
 
         for (int rArray = 0; rArray < this.getSizeInventory(); ++rArray) {
@@ -117,22 +106,21 @@ public class BTF_Inventory implements ISidedInventory {
         return this.isValidSlot(aIndex) && aStack != null
             && aIndex < this.mInventory.length
             && (this.mInventory[aIndex] == null || GTUtility.areStacksEqual(aStack, this.mInventory[aIndex]))
-            && this.allowPutStack(this.mTile, aIndex, ForgeDirection.getOrientation(ordinalSide), aStack);
+            && this.allowPutStack(aIndex, aStack);
     }
 
     @Override
     public boolean canExtractItem(int aIndex, @Nullable ItemStack aStack, int ordinalSide) {
         return this.isValidSlot(aIndex) && aStack != null
             && aIndex < this.mInventory.length
-            && this.allowPullStack(this.mTile, aIndex, ForgeDirection.getOrientation(ordinalSide), aStack);
+            && this.allowPullStack(aIndex);
     }
 
-    public boolean allowPullStack(TileEntityBase mTile2, int aIndex, ForgeDirection side, ItemStack aStack) {
+    public boolean allowPullStack(int aIndex) {
         return aIndex >= 0 && aIndex < this.getSizeInventory();
     }
 
-    public boolean allowPutStack(TileEntityBase aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+    public boolean allowPutStack(int aIndex, ItemStack aStack) {
         return (aIndex >= 0 && aIndex < this.getSizeInventory())
             && (this.mInventory[aIndex] == null || GTUtility.areStacksEqual(this.mInventory[aIndex], aStack));
     }
@@ -171,41 +159,12 @@ public class BTF_Inventory implements ISidedInventory {
         return this.mTile != null ? mTile.getInventoryName() : "";
     }
 
-    public boolean isFull() {
-        for (int s = 0; s < this.getSizeInventory(); s++) {
-            ItemStack slot = mInventory[s];
-            if (slot == null || slot.stackSize != slot.getMaxStackSize()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public boolean isEmpty() {
         for (int s = 0; s < this.getSizeInventory(); s++) {
             ItemStack slot = mInventory[s];
             if (slot != null) return false;
         }
         return true;
-    }
-
-    public boolean addItemStack(@Nullable ItemStack aInput) {
-        if (aInput != null & (isEmpty() || !isFull())) {
-            for (int s = 0; s < this.getSizeInventory(); s++) {
-                ItemStack slot = mInventory[s];
-                if (slot == null) {
-                    this.setInventorySlotContents(s, aInput);
-                    return true;
-                } else if (slot.getItem() != null && GTUtility.areStacksEqual(aInput, slot)
-                    && slot.stackSize != slot.getItem()
-                        .getItemStackLimit(slot)) {
-                            slot.stackSize += aInput.stackSize;
-                            this.setInventorySlotContents(s, slot);
-                            return true;
-                        }
-            }
-        }
-        return false;
     }
 
     public final void purgeNulls() {

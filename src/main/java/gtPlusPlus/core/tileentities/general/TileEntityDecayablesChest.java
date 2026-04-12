@@ -100,15 +100,15 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 
         boolean a1, a2;
         int u = 0;
-        a1 = b.isTicking(world, iStack);
+        a1 = b.isTicking(iStack);
         a2 = false;
         int SECONDS_TO_PROCESS = 1;
         while (u < (20 * SECONDS_TO_PROCESS)) {
             if (!a1) {
                 break;
             }
-            a1 = b.isTicking(world, iStack);
-            a2 = b.tickItemTag(world, iStack);
+            a1 = b.isTicking(iStack);
+            a2 = b.tickItemTag(iStack);
             u++;
         }
 

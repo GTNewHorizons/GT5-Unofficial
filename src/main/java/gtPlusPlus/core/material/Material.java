@@ -1,7 +1,6 @@
 package gtPlusPlus.core.material;
 
 import static gregtech.api.enums.GTValues.M;
-import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gtPlusPlus.core.util.math.MathUtils.safeCast_LongToInt;
 
 import java.util.ArrayList;
@@ -43,7 +42,6 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 
 public class Material implements IOreMaterial {
 
@@ -90,8 +88,6 @@ public class Material implements IOreMaterial {
     public long vDurability;
     public int vToolQuality;
     public int vHarvestLevel;
-
-    public BaseTinkersMaterial vTiConHandler;
 
     public short werkstoffID;
 
@@ -653,13 +649,6 @@ public class Material implements IOreMaterial {
                         ratio.append(":")
                             .append(l);
                     }
-                }
-            }
-
-            if (TinkerConstruct.isModLoaded() && this.materialState == MaterialState.SOLID) {
-                if (this.getProtons() >= 98 || this.getComposites()
-                    .size() > 1 || this.getMeltingPointC() >= 3600) {
-                    this.vTiConHandler = new BaseTinkersMaterial(this);
                 }
             }
 

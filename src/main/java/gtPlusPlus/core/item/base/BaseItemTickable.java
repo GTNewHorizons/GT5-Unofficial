@@ -62,21 +62,14 @@ public class BaseItemTickable extends CoreItem {
             return;
         }
 
-        boolean active = isTicking(world, iStack);
+        boolean active = isTicking(iStack);
         if (active) {
-            tickItemTag(world, iStack);
+            tickItemTag(iStack);
         }
     }
 
-    /*
-     * private final boolean setGregtechItemList() { ItemList.Component_LavaFilter.set(this); return
-     * ItemList.Component_LavaFilter.get(1) != null ? true : false; }
-     */
-
     /**
-     *
      * Handle Custom Rendering
-     *
      */
     @Override
     @SideOnly(Side.CLIENT)
@@ -114,22 +107,22 @@ public class BaseItemTickable extends CoreItem {
         }
     }
 
-    protected int getMaxTicks(ItemStack aStack) {
+    private int getMaxTicks() {
         return maxTicks;
     }
 
-    protected boolean createNBT(World world, ItemStack rStack) {
+    private boolean createNBT(ItemStack rStack) {
         final NBTTagCompound tagMain = new NBTTagCompound();
         final NBTTagCompound tagNBT = new NBTTagCompound();
         tagNBT.setLong("Tick", 0);
-        tagNBT.setLong("maxTick", getMaxTicks(rStack));
+        tagNBT.setLong("maxTick", getMaxTicks());
         tagNBT.setBoolean("isActive", true);
         tagMain.setTag("TickableItem", tagNBT);
         rStack.setTagCompound(tagMain);
         return true;
     }
 
-    public final long getTicks(World world, final ItemStack aStack) {
+    public final long getTicks(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("TickableItem");
@@ -137,26 +130,12 @@ public class BaseItemTickable extends CoreItem {
                 return aNBT.getLong("Tick");
             }
         } else {
-            createNBT(world, aStack);
+            createNBT(aStack);
         }
         return 0L;
     }
 
-    public final boolean setTicks(World world, final ItemStack aStack, final long aDamage) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT = aNBT.getCompoundTag("TickableItem");
-            if (aNBT != null) {
-                aNBT.setLong("Tick", aDamage);
-                return true;
-            }
-        } else {
-            createNBT(world, aStack);
-        }
-        return false;
-    }
-
-    public final boolean isTicking(World world, final ItemStack aStack) {
+    public final boolean isTicking(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("TickableItem");
@@ -164,92 +143,36 @@ public class BaseItemTickable extends CoreItem {
                 return aNBT.getBoolean("isActive");
             }
         } else {
-            return createNBT(world, aStack);
+            return createNBT(aStack);
         }
         return true;
     }
 
-    public final boolean setTicking(World world, final ItemStack aStack, final boolean active) {
+    public final void setTicking(final ItemStack aStack, final boolean active) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("TickableItem");
             if (aNBT != null) {
                 aNBT.setBoolean("isActive", active);
-                return true;
             }
         } else {
-            createNBT(world, aStack);
+            createNBT(aStack);
         }
-        return false;
     }
 
-    public final boolean getTicksInContainer(World world, final ItemStack aStack) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT = aNBT.getCompoundTag("TickableItem");
-            if (aNBT != null) {
-                return aNBT.getBoolean("ticksInContainer");
-            }
-        } else {
-            createNBT(world, aStack);
-        }
-        return false;
-    }
-
-    public final boolean setTicksInContainer(World world, final ItemStack aStack, final boolean active) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT = aNBT.getCompoundTag("TickableItem");
-            if (aNBT != null) {
-                aNBT.setBoolean("ticksInContainer", active);
-                return true;
-            }
-        } else {
-            createNBT(world, aStack);
-        }
-        return false;
-    }
-
-    public final long getDifferenceInWorldTimeToCreationTime(World world, final ItemStack aStack) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT = aNBT.getCompoundTag("TickableItem");
-            if (aNBT != null) {
-                return (world.getTotalWorldTime() - aNBT.getLong("CreationDate"));
-            }
-        } else {
-            createNBT(world, aStack);
-        }
-        return 0L;
-    }
-
-    public final boolean setItemStackCreationTime(final ItemStack aStack, World world) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT = aNBT.getCompoundTag("TickableItem");
-            if (aNBT != null) {
-                aNBT.setLong("CreationDate", world.getTotalWorldTime());
-                return true;
-            }
-        } else {
-            createNBT(world, aStack);
-        }
-        return false;
-    }
-
-    public final boolean tickItemTag(World world, ItemStack aStack) {
+    public final boolean tickItemTag(ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             if (aNBT.hasKey("TickableItem")) {
                 aNBT = aNBT.getCompoundTag("TickableItem");
                 // Done Ticking
-                if (getMaxTicks(aStack) - getTicks(world, aStack) <= 0) {
-                    setTicking(world, aStack, false);
+                if (getMaxTicks() - getTicks(aStack) <= 0) {
+                    setTicking(aStack, false);
                     return false;
                 }
-                if (isTicking(world, aStack)) {
+                if (isTicking(aStack)) {
                     if (aNBT != null) {
-                        aNBT.setLong("Tick", getTicks(world, aStack) + 1);
+                        aNBT.setLong("Tick", getTicks(aStack) + 1);
                         return true;
                     } else {
                         return false;
@@ -259,7 +182,7 @@ public class BaseItemTickable extends CoreItem {
                 }
             }
         }
-        return createNBT(world, aStack);
+        return createNBT(aStack);
     }
 
     @Override
@@ -268,24 +191,23 @@ public class BaseItemTickable extends CoreItem {
             // createNBT(null, stack);
             return 0;
         }
-        double currentDamage = getTicks(null, stack);
-        return currentDamage / getMaxTicks(stack);
+        double currentDamage = getTicks(stack);
+        return currentDamage / getMaxTicks();
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List list,
         boolean bool) {
-        World world = player.getEntityWorld();
         if (Client.tooltip.showFormula) {
             if (this.descriptionString.length > 0) {
                 list.add(EnumChatFormatting.GRAY + this.descriptionString[0]);
             }
         }
-        long maxTicks = getMaxTicks(stack);
+        long maxTicks = getMaxTicks();
         long ticks = 0;
         if (stack.hasTagCompound()) {
-            ticks = getTicks(world, stack);
+            ticks = getTicks(stack);
         }
         EnumChatFormatting durability = EnumChatFormatting.GRAY;
         if (maxTicks - ticks > (maxTicks * 0.8)) {

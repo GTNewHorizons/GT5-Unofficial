@@ -17,11 +17,6 @@ public class BlockPos implements Serializable {
     public final int zPos;
     public final int dim;
 
-    public static @NotNull BlockPos generateBlockPos(@NotNull String sUUID) {
-        String[] s2 = sUUID.split("@");
-        return new BlockPos(s2);
-    }
-
     public BlockPos(String @NotNull [] s) {
         this(Integer.parseInt(s[1]), Integer.parseInt(s[2]), Integer.parseInt(s[3]), Integer.parseInt(s[0]));
     }

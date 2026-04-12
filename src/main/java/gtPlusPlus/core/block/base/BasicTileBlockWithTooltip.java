@@ -209,9 +209,6 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
                 sidedTexturePathArray.add(aMetaBlob);
             }
         }
-        // Iteration Index
-        int aIndex = 0;
-
         // Iterate each CubicObject, holding the six texture paths for each meta.
         for (CubicObject<String> aMetaBlob : sidedTexturePathArray) {
             // Make a Safe Texture for each side
