@@ -10,7 +10,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GTValues;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -30,8 +29,7 @@ public abstract class BaseItemParticle extends CoreItem {
             0,
             GTValues.emptyStringArray,
             aRarity,
-            EnumChatFormatting.DARK_AQUA,
-            false,
+                false,
             null);
         this.setTextureName(GTPlusPlus.ID + ":" + "science/Atom");
         aMaxCount = aCount;

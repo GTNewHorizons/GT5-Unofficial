@@ -1,13 +1,10 @@
 package gtPlusPlus.api.objects.minecraft;
 
-import java.util.ArrayList;
-
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CubicObject<T> {
+public final class CubicObject<T> {
 
     public final T NORTH;
     public final T SOUTH;
@@ -17,14 +14,6 @@ public class CubicObject<T> {
 
     public final T UP;
     public final T DOWN;
-
-    public CubicObject(@NotNull ArrayList<T> aDataSet) {
-        this(aDataSet.get(0), aDataSet.get(1), aDataSet.get(2), aDataSet.get(3), aDataSet.get(4), aDataSet.get(5));
-    }
-
-    public CubicObject(T @NotNull [] aDataSet) {
-        this(aDataSet[0], aDataSet[1], aDataSet[2], aDataSet[3], aDataSet[4], aDataSet[5]);
-    }
 
     public CubicObject(T aDOWN, T aUP, T aNORTH, T aSOUTH, T aWEST, T aEAST) {
         DOWN = aDOWN;

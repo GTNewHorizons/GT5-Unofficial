@@ -45,8 +45,7 @@ public class ItemMagicFeather extends CoreItem {
             100,
             new String[] { "Lets you fly around Beacons" },
             EnumRarity.uncommon,
-            null,
-            false,
+                false,
             null);
         setMaxStackSize(1);
         setUnlocalizedName(GTPlusPlus.ID + ":" + NAME);

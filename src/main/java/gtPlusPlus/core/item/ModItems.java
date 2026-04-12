@@ -3,13 +3,13 @@ package gtPlusPlus.core.item;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
-import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FINEWIRE;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FOIL;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.GEAR;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLSPRING;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SPRING;
 
+import gregtech.api.enums.GTValues;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -127,7 +127,6 @@ public final class ModItems {
                 0,
                 new String[] { "Keeps Multiblocks Stable" },
                 EnumRarity.epic,
-                EnumChatFormatting.DARK_GREEN,
                 false,
                 null));
 
@@ -712,7 +711,7 @@ public final class ModItems {
         // Zirconium
         // Cinter Pellet.
         GregtechItemList.ZirconiumPellet.set(
-            new CoreItem("itemZirconiumPellet", "Zirconium Pellet [" + StringUtils.subscript("ZrCl4") + "]", tabMisc)
+            new CoreItem("itemZirconiumPellet", AddToCreativeTab.tabMisc, 64, 0, GTValues.emptyStringArray)
                 .setTextureName(GTPlusPlus.ID + ":itemShard"));
         GTOreDictUnificator.registerOre("pelletZirconium", GregtechItemList.ZirconiumPellet.get(1));
 

@@ -43,8 +43,7 @@ public class ItemGenericToken extends CoreItem {
             1000,
             aBaseTooltip,
             EnumRarity.common,
-            EnumChatFormatting.RESET,
-            false,
+                false,
             null);
         mLocalNames = new HashMap<>();
         mMaxStackSizes = new HashMap<>();

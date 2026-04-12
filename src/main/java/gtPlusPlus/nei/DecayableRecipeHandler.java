@@ -23,8 +23,6 @@ import gtPlusPlus.nei.handlers.NeiTextureHandler;
 
 public class DecayableRecipeHandler extends TemplateRecipeHandler {
 
-    public static final String mNEIName = "Decayables";
-
     @Override
     public String getRecipeName() {
         return StatCollector.translateToLocal("GTPP.container.decaychest.name");
@@ -211,7 +209,6 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
         }
 
         public DecayableRecipeNEI(final ItemStack input, final ItemStack result, final int time) {
-            super();
             this.input = new PositionedStack(input, 93, 24);
             this.output = new PositionedStack(result, 142, 42);
             this.time = time;

@@ -306,20 +306,6 @@ public class FluidUtils {
     }
 
     public static Fluid generateFluidNonMolten(final String unlocalizedName, final String localizedName,
-        final int MeltingPoint, final short[] RGBA, final ItemStack dustStack, final ItemStack dustStack2,
-        final boolean aGenerateCell) {
-        return generateFluidNonMolten(
-            unlocalizedName,
-            localizedName,
-            MeltingPoint,
-            RGBA,
-            dustStack,
-            dustStack2,
-            144,
-            aGenerateCell);
-    }
-
-    public static Fluid generateFluidNonMolten(final String unlocalizedName, final String localizedName,
         final int MeltingPoint, final short[] RGBA, ItemStack dustStack, final ItemStack dustStack2,
         final int amountPerItem, final boolean aGenerateCell) {
         if (dustStack == null) {

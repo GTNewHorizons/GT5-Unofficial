@@ -96,8 +96,6 @@ import gtPlusPlus.xmod.pamsharvest.fishtrap.FishTrapHandler;
 
 public class CompatHandler {
 
-    public static Boolean areInitItemsLoaded = false;
-
     public static void registerMyModsOreDictEntries() {
         // In-house
 

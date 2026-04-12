@@ -113,10 +113,6 @@ public class CommonProxy implements IFuelHandler {
 
     public void registerRenderThings() {}
 
-    public int addArmor(final String armor) {
-        return 0;
-    }
-
     public void registerCustomMobDrops() {
 
         // Blazes

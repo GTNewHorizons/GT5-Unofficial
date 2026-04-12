@@ -18,10 +18,6 @@ public class Configuration {
     @Config.Comment("Debug section")
     public static class Debug {
 
-        @Config.Comment("Makes many machines display lots of debug logging.")
-        @Config.DefaultBoolean(false)
-        public boolean MachineInfo;
-
         @Config.Comment("Dumps all GT++ and Toxic Everglade Data to en_US.lang in the config folder. This config option can be used by foreign players to generate blank .lang files, which they can populate with their language of choice.")
         @Config.DefaultBoolean(false)
         public boolean dumpItemAndBlockData;

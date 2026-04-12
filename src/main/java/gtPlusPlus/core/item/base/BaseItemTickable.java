@@ -40,7 +40,6 @@ public class BaseItemTickable extends CoreItem {
             999999999,
             Description,
             EnumRarity.epic,
-            EnumChatFormatting.DARK_RED,
             true,
             null);
         this.itemColour = colour;
