@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -18,33 +19,32 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.ItemIntegratedCircuit;
-import gtPlusPlus.api.objects.minecraft.ItemStackData;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.util.math.MathUtils;
 
 public class RecipeGenBlastSmelterGTNH {
 
-    private static final Map<String, FluidStack> mCachedIngotToFluidRegistry = new HashMap<>();
-    private static final Map<String, String> mCachedHotToColdRegistry = new HashMap<>();
+    private static Map<String, FluidStack> mCachedIngotToFluidRegistry = new HashMap<>();
+    private static Map<String, String> mCachedHotToColdRegistry = new HashMap<>();
 
-    private static synchronized void setIngotToFluid(final ItemStackData stack, final FluidStack fluid) {
+    private static void setIngotToFluid(final ItemStack stack, final FluidStack fluid) {
         if (stack != null && fluid != null) {
-            mCachedIngotToFluidRegistry.put(stack.getUniqueDataIdentifier(), fluid);
+            mCachedIngotToFluidRegistry.put(getUniqueDataIdentifier(stack), fluid);
         }
     }
 
-    private static synchronized void setHotToCold(final ItemStackData hot, final ItemStackData cold) {
+    private static void setHotToCold(final ItemStack hot, final ItemStack cold) {
         if (hot != null && cold != null) {
-            mCachedHotToColdRegistry.put(hot.getUniqueDataIdentifier(), cold.getUniqueDataIdentifier());
+            mCachedHotToColdRegistry.put(getUniqueDataIdentifier(hot), getUniqueDataIdentifier(cold));
         }
     }
 
-    private static synchronized FluidStack getFluidFromIngot(final ItemStackData ingot) {
-        if (mCachedIngotToFluidRegistry.containsKey(ingot.getUniqueDataIdentifier())) {
-            return mCachedIngotToFluidRegistry.get(ingot.getUniqueDataIdentifier());
+    private static FluidStack getFluidFromIngot(final ItemStack ingot) {
+        if (mCachedIngotToFluidRegistry.containsKey(getUniqueDataIdentifier(ingot))) {
+            return mCachedIngotToFluidRegistry.get(getUniqueDataIdentifier(ingot));
         }
-        if (mCachedHotToColdRegistry.containsKey(ingot.getUniqueDataIdentifier())) {
-            return mCachedIngotToFluidRegistry.get(mCachedHotToColdRegistry.get(ingot.getUniqueDataIdentifier()));
+        if (mCachedHotToColdRegistry.containsKey(getUniqueDataIdentifier(ingot))) {
+            return mCachedIngotToFluidRegistry.get(mCachedHotToColdRegistry.get(getUniqueDataIdentifier(ingot)));
         }
         return null;
     }
@@ -58,10 +58,7 @@ public class RecipeGenBlastSmelterGTNH {
             && outputs.length > 0;
     }
 
-    public static synchronized boolean generateGTNHBlastSmelterRecipesFromEBFList() {
-
-        // Make a counting object
-        int mSuccess = 0;
+    public static void generateGTNHBlastSmelterRecipesFromEBFList() {
 
         // Ingots/Dusts -> Fluids
         for (GTRecipe x : RecipeMaps.fluidExtractionRecipes.getAllRecipes()) {
@@ -87,8 +84,7 @@ public class RecipeGenBlastSmelterGTNH {
             validOutput = x.mFluidOutputs[0];
 
             if (validInput != null) {
-                ItemStackData R = new ItemStackData(validInput);
-                setIngotToFluid(R, validOutput);
+                setIngotToFluid(validInput, validOutput);
             }
         }
 
@@ -104,9 +100,7 @@ public class RecipeGenBlastSmelterGTNH {
                 validOutput = x.mOutputs[0];
             }
             if (validInput != null && validOutput != null) {
-                ItemStackData R1 = new ItemStackData(validInput);
-                ItemStackData R2 = new ItemStackData(validOutput);
-                setHotToCold(R1, R2);
+                setHotToCold(validInput, validOutput);
             }
         }
 
@@ -138,8 +132,7 @@ public class RecipeGenBlastSmelterGTNH {
             // If We have a valid Output, let's try use our cached data to get it's molten form.
             if (x.mOutputs != null && x.mOutputs[0] != null) {
                 mMoltenCount = x.mOutputs[0].stackSize;
-                ItemStackData R = new ItemStackData(x.mOutputs[0]);
-                FluidStack tempFluid = getFluidFromIngot(R);
+                FluidStack tempFluid = getFluidFromIngot(x.mOutputs[0]);
                 if (tempFluid != null) {
                     mMoltenStack = new FluidStack(tempFluid, mMoltenCount * 144);
                 }
@@ -196,11 +189,9 @@ public class RecipeGenBlastSmelterGTNH {
             }
 
             builder.addTo(GTPPRecipeMaps.alloyBlastSmelterRecipes);
-            mSuccess++;
-
         }
-
-        return mSuccess > 0;
+        mCachedIngotToFluidRegistry = null;
+        mCachedHotToColdRegistry = null;
     }
 
     private static boolean itemStacksMatch(final ItemStack[] mStack1, final ItemStack[] mStack2) {
@@ -248,5 +239,12 @@ public class RecipeGenBlastSmelterGTNH {
         }
 
         return true;
+    }
+
+    private static String getUniqueDataIdentifier(final ItemStack stack) {
+        final Item mItem = stack.getItem();
+        final int mDamage = stack.getItemDamage();
+        final int mStackSize = stack.stackSize;
+        return String.valueOf(Item.getIdFromItem(mItem)) + mDamage + mStackSize + 10;
     }
 }
