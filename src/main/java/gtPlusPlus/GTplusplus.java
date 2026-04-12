@@ -22,6 +22,7 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.FishPondRecipes;
@@ -115,10 +116,15 @@ public class GTplusplus {
     }
 
     @EventHandler
-    public synchronized void serverStarting(final FMLServerStartingEvent event) {
+    public void serverStarting(final FMLServerStartingEvent event) {
         if (Thaumcraft.isModLoaded()) {
             event.registerServerCommand(new CommandDumpAspects());
         }
+    }
+
+    @EventHandler
+    public void serverStopped(final FMLServerStoppedEvent event) {
+        GTPPCore.onServerStop();
     }
 
     /**

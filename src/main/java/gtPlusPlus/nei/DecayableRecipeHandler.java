@@ -14,16 +14,14 @@ import net.minecraft.util.StatCollector;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import gregtech.api.enums.Dyes;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.item.materials.DustDecayable;
-import gtPlusPlus.core.lib.VanillaColours;
 import gtPlusPlus.nei.handlers.NeiTextureHandler;
 
 public class DecayableRecipeHandler extends TemplateRecipeHandler {
-
-    public static final String mNEIName = "Decayables";
 
     @Override
     public String getRecipeName() {
@@ -172,21 +170,21 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
             }
 
             int x = 5;
-            GuiDraw.drawString(s, x, 25, VanillaColours.DYE_BLACK.getAsInt(), false);
-            GuiDraw.drawString(s0, x, 40, VanillaColours.DYE_BLACK.getAsInt(), false);
+            GuiDraw.drawString(s, x, 25, Dyes.dyeBlack.toInt(), false);
+            GuiDraw.drawString(s0, x, 40, Dyes.dyeBlack.toInt(), false);
 
-            GuiDraw.drawString(suffix, x + 16, y + 30, VanillaColours.DYE_BLACK.getAsInt(), false);
+            GuiDraw.drawString(suffix, x + 16, y + 30, Dyes.dyeBlack.toInt(), false);
 
             // Values
-            GuiDraw.drawString(("" + formattedTime), x, y + 30, VanillaColours.DYE_GREEN.getAsInt(), false);
+            GuiDraw.drawString(("" + formattedTime), x, y + 30, Dyes.dyeGreen.toInt(), false);
 
             if (hours > 1) {
                 int aLeftoverMinutes = (cost - (hours * (20 * 60 * 60)));
                 if (aLeftoverMinutes > 0) {
                     int secs2 = aLeftoverMinutes / 20;
                     int mins2 = secs2 / 60;
-                    GuiDraw.drawString(s3, x + 16, y + 42, VanillaColours.DYE_BLACK.getAsInt(), false);
-                    GuiDraw.drawString(("" + mins2), x, y + 42, VanillaColours.DYE_GREEN.getAsInt(), false);
+                    GuiDraw.drawString(s3, x + 16, y + 42, Dyes.dyeBlack.toInt(), false);
+                    GuiDraw.drawString(("" + mins2), x, y + 42, Dyes.dyeGreen.toInt(), false);
                 }
             }
         }
@@ -211,7 +209,6 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
         }
 
         public DecayableRecipeNEI(final ItemStack input, final ItemStack result, final int time) {
-            super();
             this.input = new PositionedStack(input, 93, 24);
             this.output = new PositionedStack(result, 142, 42);
             this.time = time;

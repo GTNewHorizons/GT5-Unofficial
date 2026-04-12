@@ -15,8 +15,6 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -93,12 +91,6 @@ public class ItemUtils {
         } catch (final Exception t) {
             return null;
         }
-    }
-
-    // NullFormula
-    public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName,
-        final int Colour) {
-        return generateSpecialUseDusts(unlocalizedName, materialName, "NullFormula", Colour);
     }
 
     public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName,
@@ -207,36 +199,6 @@ public class ItemUtils {
         return sRadiation;
     }
 
-    public static String getArrayStackNames(final FluidStack[] aStack) {
-        String itemNames = "Fluid Array: ";
-        for (final FluidStack alph : aStack) {
-            if (alph != null) {
-                final String temp = itemNames;
-                itemNames = temp + ", " + alph.getLocalizedName() + " x" + alph.amount;
-            } else {
-                final String temp = itemNames;
-                itemNames = temp + ", " + "null" + " x" + "0";
-            }
-        }
-        return itemNames;
-    }
-
-    public static String getArrayStackNames(final ItemStack[] aStack) {
-        String itemNames = "";
-        int aPos = 0;
-        for (final ItemStack alph : aStack) {
-            if (alph == null) {
-                continue;
-            }
-
-            final String temp = itemNames;
-            itemNames = temp + (aPos > 0 ? ", " : "") + alph.getDisplayName() + " x" + alph.stackSize;
-            aPos++;
-
-        }
-        return itemNames;
-    }
-
     private static final Map<Item, String> mModidCache = new HashMap<>();
 
     private static String getModId(final Item item) {
@@ -335,29 +297,6 @@ public class ItemUtils {
         GTUtility.compactStandardInventory(aInputInventory);
 
         return aInputInventory;
-    }
-
-    public static String getItemName(ItemStack aStack) {
-        if (aStack == null) {
-            return "ERROR - Empty Stack";
-        }
-        String aDisplay = null;
-        try {
-            aDisplay = (StatCollector.translateToLocal(
-                aStack.getItem()
-                    .getUnlocalizedNameInefficiently(aStack) + ".name")).trim();
-            if (aStack.hasDisplayName()) {
-                aDisplay = aStack.getDisplayName();
-            }
-        } catch (Exception ignored) {
-
-        }
-        if (aDisplay == null || aDisplay.length() == 0) {
-            aDisplay = aStack.getUnlocalizedName() + ":" + aStack.getItemDamage();
-        } else {
-            aDisplay += " | Meta: " + aStack.getItemDamage();
-        }
-        return aDisplay;
     }
 
     public static ItemStack depleteStack(ItemStack aStack, int aAmount) {

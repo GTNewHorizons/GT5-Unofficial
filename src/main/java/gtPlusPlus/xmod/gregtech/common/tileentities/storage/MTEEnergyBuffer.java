@@ -7,7 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -242,11 +241,11 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        this.showEnergy(aPlayer.getEntityWorld(), aPlayer);
+        this.showEnergy(aPlayer);
         return true;
     }
 
-    protected void showEnergy(final World worldIn, final EntityPlayer playerIn) {
+    private void showEnergy(final EntityPlayer playerIn) {
         final long tempStorage = this.getBaseMetaTileEntity()
             .getStoredEU();
         final double c = ((double) tempStorage / this.maxEUStore()) * 100;

@@ -10,7 +10,6 @@ import java.util.Map;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
@@ -31,15 +30,6 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 public class MaterialUtils {
-
-    public static List<?> oreDictValuesForEntry(final String oredictName) {
-        List<?> oredictItemNames;
-        if (OreDictionary.doesOreNameExist(oredictName)) {
-            oredictItemNames = OreDictionary.getOres(oredictName);
-            return oredictItemNames;
-        }
-        return null;
-    }
 
     private static final Map<String, Material> mGeneratedMaterialMap = new HashMap<>();
 
@@ -156,28 +146,6 @@ public class MaterialUtils {
             t.printStackTrace();
         }
         return null;
-    }
-
-    public static Material generateQuickMaterial(final String materialName, final MaterialState defaultState,
-        final short[] colour, final int sRadioactivity) {
-        String aMaterialKey = materialName.toLowerCase();
-        if (mGeneratedMaterialMap.containsKey(aMaterialKey)) {
-            return mGeneratedMaterialMap.get(aMaterialKey);
-        }
-
-        final Material temp = new Material(
-            materialName,
-            defaultState,
-            colour,
-            1000, // melting
-            3000, // boiling
-            50, // Protons
-            50, // Neutrons
-            false,
-            "",
-            sRadioactivity);
-        mGeneratedMaterialMap.put(aMaterialKey, temp);
-        return temp;
     }
 
     public static boolean hasValidRGBA(final short[] rgba) {
@@ -306,11 +274,6 @@ public class MaterialUtils {
     }
 
     public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial) {
-        generateComponentAndAssignToAMaterial(aType, aMaterial, true);
-    }
-
-    public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial,
-        boolean generateRecipes) {
         Item aGC;
         if (aType == ComponentTypes.FINEWIRE) {
             aGC = new BaseItemFineWire(aMaterial);

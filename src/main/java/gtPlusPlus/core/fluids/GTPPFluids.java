@@ -5,7 +5,6 @@ import static gregtech.api.enums.Mods.TinkerConstruct;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -613,7 +612,4 @@ public class GTPPFluids {
         }
     }
 
-    public static List<FluidStack> getBloodFluids() {
-        return Collections.unmodifiableList(bloodFluids);
-    }
 }

@@ -52,7 +52,7 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
                 && ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))) {
                 final TileEntityCircuitProgrammer tile = (TileEntityCircuitProgrammer) world.getTileEntity(x, y, z);
                 if (tile != null) {
-                    if (tile.onScrewdriverRightClick((byte) side, player, x, y, z)) {
+                    if (tile.onScrewdriverRightClick(player)) {
                         return true;
                     }
                 }

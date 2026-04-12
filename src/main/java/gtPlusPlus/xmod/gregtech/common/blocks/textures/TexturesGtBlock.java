@@ -8,15 +8,8 @@ import net.minecraft.util.ResourceLocation;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
-import gtPlusPlus.core.config.Configuration;
 
 public class TexturesGtBlock {
-
-    private static final boolean mAnimated = Configuration.visual.enableAnimatedTextures;
-
-    /*
-     * Handles Custom Textures.
-     */
 
     public static class CustomIcon implements IIconContainer, Runnable {
 

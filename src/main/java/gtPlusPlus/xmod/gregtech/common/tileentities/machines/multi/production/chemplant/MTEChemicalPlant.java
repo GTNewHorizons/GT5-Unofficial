@@ -56,7 +56,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
-import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -466,40 +465,13 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Override
     public int getMaxParallelRecipes() {
-        return 2 * getPipeCasingTier();
-    }
-
-    private int getSolidCasingTier() {
-        return this.mSolidCasingTier;
-    }
-
-    private int getMachineCasingTier() {
-        return mMachineCasingTier;
-    }
-
-    private int getPipeCasingTier() {
-        return mPipeCasingTier;
+        return 2 * mPipeCasingTier;
     }
 
     private int getCasingTextureID() {
         // Check the Tier Client Side
         int aTier = mSolidCasingTier;
         return getCasingTextureIdForTier(aTier);
-    }
-
-    public boolean addToMachineList(IGregTechTileEntity aTileEntity) {
-        int aMaxTier = getMachineCasingTier();
-        final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTETieredMachineBlock aMachineBlock) {
-            int aTileTier = aMachineBlock.mTier;
-            if (aTileTier > aMaxTier) {
-                return false;
-            } else {
-                return addToMachineList(aTileEntity, getCasingTextureID());
-            }
-        } else {
-            return false;
-        }
     }
 
     @Override

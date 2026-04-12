@@ -16,7 +16,7 @@ import gtPlusPlus.xmod.bop.world.features.trees.WorldGenRainForestTree_Ex;
 public class SaplingRainforestTree extends SaplingBase {
 
     public SaplingRainforestTree() {
-        super("Rainforest Oak Sapling", "rainforestoak", new String[] { "rainforest" });
+        super("Rainforest Oak Sapling", new String[] { "rainforest" });
     }
 
     @Override

@@ -61,7 +61,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIco
 
 public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvivalConstructable {
 
-    protected boolean boostEu = false;
     private int mCasing;
     private static IStructureDefinition<MTEIsaMill> STRUCTURE_DEFINITION = null;
 
@@ -372,12 +371,6 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIsaMill;
-    }
-
-    @Override
-    public String[] getExtraInfoData() {
-        return new String[] { "IsaMill Grinding Machine", "Current Efficiency: " + (mEfficiency / 100) + "%",
-            getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" };
     }
 
     @Override

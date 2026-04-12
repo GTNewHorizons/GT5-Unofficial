@@ -20,12 +20,10 @@ public class BaseItemDamageable extends Item {
 
     private final EnumRarity rarity;
     private final String itemDescription;
-    protected String itemName;
     private final boolean hasEffect;
 
-    public BaseItemDamageable(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize,
-        final int maxDmg, final String description, final EnumRarity regRarity, final EnumChatFormatting colour,
-        final boolean Effect, final ItemStack OverrideItem) {
+    public BaseItemDamageable(final String unlocalizedName, final CreativeTabs creativeTab, final String description,
+        final EnumRarity regRarity, final boolean Effect) {
         this.setUnlocalizedName(unlocalizedName);
         this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setCreativeTab(creativeTab);
@@ -36,10 +34,6 @@ public class BaseItemDamageable extends Item {
         this.itemDescription = description;
         this.hasEffect = Effect;
         GameRegistry.registerItem(this, unlocalizedName);
-    }
-
-    public String getItemDescription() {
-        return this.itemDescription;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -81,14 +75,6 @@ public class BaseItemDamageable extends Item {
             return true;
         }
         return this.hasEffect;
-    }
-
-    @Override
-    public String getItemStackDisplayName(final ItemStack tItem) {
-        if ((this.itemName == null) || this.itemName.isEmpty()) {
-            return super.getItemStackDisplayName(tItem);
-        }
-        return this.itemName;
     }
 
     private static boolean createNBT(ItemStack rStack) {

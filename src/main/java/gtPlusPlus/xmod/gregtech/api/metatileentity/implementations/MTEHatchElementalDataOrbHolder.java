@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -77,12 +75,6 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
         }
     }
 
-    public void updateSlots() {
-        for (int i = 0; i < mInventory.length - 1; i++)
-            if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
-        fillStacksIntoFirstSlots();
-    }
-
     protected void fillStacksIntoFirstSlots() {
         for (int i = 0; i < mInventory.length - 1; i++) {
             if (mInventory[i] != null && mInventory[i].stackSize <= 0) {
@@ -105,15 +97,6 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
         return aIndex == mInventory.length - 1 && aStack != null
             && aStack.getItem() instanceof ItemIntegratedCircuit
             && side == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    public ArrayList<ItemStack> getInventory() {
-        ArrayList<ItemStack> aContents = new ArrayList<>();
-        for (int i = getBaseMetaTileEntity().getSizeInventory() - 2; i >= 0; i--) {
-            if (getBaseMetaTileEntity().getStackInSlot(i) != null)
-                aContents.add(getBaseMetaTileEntity().getStackInSlot(i));
-        }
-        return aContents;
     }
 
     public ItemStack getOrbByCircuit() {

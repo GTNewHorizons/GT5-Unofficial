@@ -19,12 +19,6 @@ import gtPlusPlus.core.util.minecraft.NBTUtils;
 
 public class Utils {
 
-    public static boolean isServer() {
-        return FMLCommonHandler.instance()
-            .getEffectiveSide()
-            .isServer();
-    }
-
     public static boolean isClient() {
         return FMLCommonHandler.instance()
             .getEffectiveSide()
@@ -107,11 +101,6 @@ public class Utils {
         return GTUtility.copy(stack);
     }
 
-    public static String[] splitLocalizedWithAuthor(String key, String authorName) {
-        return GTSplit
-            .splitLocalizedWithSuffix(key, StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip", authorName));
-    }
-
     public static String[] splitLocalizedWithAlkalus(String key) {
         return GTSplit.splitLocalizedWithSuffix(key, GTPPCore.GT_Tooltip.get());
     }
@@ -125,10 +114,6 @@ public class Utils {
 
     public static String[] splitLocalizedFormattedWithAlkalus(String key, Object... objects) {
         return GTSplit.splitLocalizedFormattedWithSuffix(key, GTPPCore.GT_Tooltip.get(), objects);
-    }
-
-    public static String[] splitLocalizedWithPrefixAndAlkalus(String prefix, String key) {
-        return GTSplit.splitLocalizedWithWarped(key, prefix, GTPPCore.GT_Tooltip.get());
     }
 
     public static String[] splitLocalizedFormattedWithPrefixAndAlkalus(String prefix, String key, Object... objects) {

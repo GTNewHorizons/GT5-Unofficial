@@ -12,13 +12,11 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
+@SuppressWarnings("unused")
 public class NEIGTPPConfig implements IConfigureNEI {
-
-    public static boolean sIsAdded = true;
 
     @Override
     public synchronized void loadConfig() {
-        sIsAdded = false;
         API.registerRecipeHandler(new DecayableRecipeHandler());
         API.registerUsageHandler(new DecayableRecipeHandler());
         API.addRecipeCatalyst(new ItemStack(ModBlocks.blockDecayablesChest, 1), "GTPP_Decayables");
@@ -50,7 +48,6 @@ public class NEIGTPPConfig implements IConfigureNEI {
             API.addItemListEntry(GregtechItemList.VOLUMETRIC_FLASK_32k.get(1));
             API.addItemListEntry(GregtechItemList.KLEIN_BOTTLE.get(1));
         }
-        sIsAdded = true;
     }
 
     @Override

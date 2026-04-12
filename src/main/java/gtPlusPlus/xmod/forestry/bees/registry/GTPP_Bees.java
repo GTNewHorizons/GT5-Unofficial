@@ -17,12 +17,6 @@ import gtPlusPlus.xmod.forestry.bees.items.output.GTPPPropolis;
 
 public class GTPP_Bees {
 
-    public static final byte FORESTRY = 0;
-    public static final byte EXTRABEES = 1;
-    public static final byte GENDUSTRY = 2;
-    public static final byte MAGICBEES = 3;
-    public static final byte GREGTECH = 4;
-
     public static GTPPPropolis propolis;
     public static GTPPPollen pollen;
     public static GTPPDrop drop;

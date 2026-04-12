@@ -271,9 +271,7 @@ public class BaseItemComponent extends Item {
                 }
             }
 
-        } catch (Exception t) {
-
-        }
+        } catch (Exception ignored) {}
         return this.componentColour;
     }
 

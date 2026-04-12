@@ -25,7 +25,6 @@ public class GregtechPowerSubStation {
         GregtechItemList.PowerSubStation.set(
             new MTEPowerSubStation(PowerSubStation.ID, "substation.01.input.single", "Power Station Control Node")
                 .getStackForm(1L));
-        int tID = 886;
         GregtechItemList.Hatch_Input_Battery_MV.set(
             new MTEHatchInputBattery(Hatch_Input_Battery_MV.ID, "hatch.input_battery.tier.00", "Charging Bus (MV)", 2)
                 .getStackForm(1L));

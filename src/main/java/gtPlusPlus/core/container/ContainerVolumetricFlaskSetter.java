@@ -33,12 +33,6 @@ public class ContainerVolumetricFlaskSetter extends Container {
 
     public static final int SLOT_OUTPUT = 8;
 
-    public static int StorageSlotNumber = 8; // Number of slots in storage area
-    public static int InventorySlotNumber = 36; // Inventory Slots (Inventory
-    // and Hotbar)
-    public static int FullSlotNumber = InventorySlotNumber + StorageSlotNumber; // All
-    // slots
-
     public ContainerVolumetricFlaskSetter(final InventoryPlayer inventory, final TileEntityVolumetricFlaskSetter te) {
         this.mTileEntity = te;
         this.inventoryChest = te.getInventory();

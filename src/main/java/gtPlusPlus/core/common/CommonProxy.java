@@ -43,7 +43,6 @@ import gtPlusPlus.core.item.bauble.BaseBauble;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.xmod.gregtech.common.modularui2.GTPPGuiTextures;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
 
 public class CommonProxy implements IFuelHandler {
@@ -67,8 +66,6 @@ public class CommonProxy implements IFuelHandler {
         registerEntities();
         registerTileEntities();
         registerRenderThings();
-
-        GTPPGuiTextures.init();
     }
 
     public void init(final FMLInitializationEvent e) {
@@ -91,7 +88,6 @@ public class CommonProxy implements IFuelHandler {
         CompatIntermodStaging.postInit(e);
         // Moved last, to prevent recipes being generated post initialisation.
         CompatHandler.startLoadingGregAPIBasedRecipes();
-        CompatHandler.runQueuedRecipes();
         registerCustomMobDrops();
     }
 
@@ -112,10 +108,6 @@ public class CommonProxy implements IFuelHandler {
     }
 
     public void registerRenderThings() {}
-
-    public int addArmor(final String armor) {
-        return 0;
-    }
 
     public void registerCustomMobDrops() {
 

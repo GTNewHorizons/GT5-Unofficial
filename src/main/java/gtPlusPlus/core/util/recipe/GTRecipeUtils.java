@@ -15,11 +15,10 @@ import gregtech.api.util.GTRecipe;
 
 public class GTRecipeUtils {
 
-    public static List<GTRecipe> removeDuplicates(List<GTRecipe> inputRecipes, String recipeMapName) {
+    public static List<GTRecipe> removeDuplicates(List<GTRecipe> inputRecipes) {
         TCustomHashSet<GTRecipe> recipesHashSet = new TCustomHashSet<>(RecipeHashStrat.RecipeHashingStrategy);
         ArrayList<GTRecipe> recipeOutput = new ArrayList<>();
         TCustomHashMap<GTRecipe, ItemStack> circuitMap = new TCustomHashMap<>(RecipeHashStrat.RecipeHashingStrategy);
-        int removedRecipeCount = 0;
 
         for (GTRecipe recipeInput : inputRecipes) {
             ItemStack savedCircuit = null;
@@ -52,8 +51,6 @@ public class GTRecipeUtils {
             if (!recipesHashSet.contains(newRecipe)) {
                 // if the recipes customHashSet does not contain the new recipe then add it
                 recipesHashSet.add(newRecipe);
-            } else {
-                removedRecipeCount++;
             }
             if (savedCircuit != null) {
                 // if the current recipe has a circuit and the recipe (without circuits) is already in the

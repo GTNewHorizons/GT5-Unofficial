@@ -9,34 +9,29 @@ import java.util.Set;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 
 public class RecipeGenFluids extends RecipeGenBase {
 
-    public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
+    public static final Set<Runnable> mRecipeGenMap = new HashSet<>();
 
     static {
         MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
     }
 
     public RecipeGenFluids(final Material M) {
-        this(M, false);
-    }
-
-    public RecipeGenFluids(final Material M, final boolean dO) {
         this.toGenerate = M;
-        this.disableOptional = dO;
+        this.disableOptional = false;
         mRecipeGenMap.add(this);
     }
 
     @Override
     public void run() {
-        generateRecipes(this.toGenerate, this.disableOptional);
+        generateRecipes(this.toGenerate);
     }
 
-    private void generateRecipes(final Material material, final boolean dO) {
+    private void generateRecipes(final Material material) {
 
         if (material == null) {
             return;

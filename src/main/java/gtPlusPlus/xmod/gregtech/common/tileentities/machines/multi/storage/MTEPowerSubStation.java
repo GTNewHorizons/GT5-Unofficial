@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -25,7 +24,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -648,63 +646,6 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     @Override
     public long getMinimumStoredEU() {
         return 0;
-    }
-
-    @Override
-    public String[] getExtraInfoData() {
-        String mode;
-        if (mIsOutputtingPower) {
-            mode = EnumChatFormatting.GOLD + "Output" + EnumChatFormatting.RESET;
-        } else {
-            mode = EnumChatFormatting.BLUE + "Input" + EnumChatFormatting.RESET;
-        }
-
-        String storedEnergyText;
-        if (this.getEUVar() > this.mBatteryCapacity) {
-            storedEnergyText = EnumChatFormatting.RED + formatNumber(this.getEUVar()) + EnumChatFormatting.RESET;
-        } else {
-            storedEnergyText = EnumChatFormatting.GREEN + formatNumber(this.getEUVar()) + EnumChatFormatting.RESET;
-        }
-
-        int errorCode = getErrorDisplayID();
-        boolean mMaint = (errorCode != 0);
-
-        return new String[] { "Ergon Energy - District Sub-Station", "Stored EU: " + storedEnergyText,
-            "Capacity: " + EnumChatFormatting.YELLOW + formatNumber(this.maxEUStore()) + EnumChatFormatting.RESET,
-            "Running Costs: " + EnumChatFormatting.RED
-                + formatNumber(this.computeEnergyTax())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            "Controller Mode: " + mode,
-            "Requires Maintenance: " + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                + mMaint
-                + EnumChatFormatting.RESET
-                + " | Code: ["
-                + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                + errorCode
-                + EnumChatFormatting.RESET
-                + "]",
-            EnumChatFormatting.STRIKETHROUGH + "----------------------", "Stats for Nerds",
-            "Average Input: " + EnumChatFormatting.BLUE
-                + formatNumber(this.getAverageEuAdded())
-                + EnumChatFormatting.RESET
-                + " EU",
-            "Average Output: " + EnumChatFormatting.GOLD
-                + formatNumber(this.getAverageEuConsumed())
-                + EnumChatFormatting.RESET
-                + " EU",
-            "Total Input: " + EnumChatFormatting.BLUE
-                + formatNumber(this.mTotalEnergyAdded)
-                + EnumChatFormatting.RESET
-                + " EU",
-            "Total Output: " + EnumChatFormatting.GOLD
-                + formatNumber(this.mTotalEnergyConsumed)
-                + EnumChatFormatting.RESET
-                + " EU",
-            "Total Costs: " + EnumChatFormatting.RED
-                + formatNumber(this.mTotalEnergyLost)
-                + EnumChatFormatting.RESET
-                + " EU", };
     }
 
     @Override

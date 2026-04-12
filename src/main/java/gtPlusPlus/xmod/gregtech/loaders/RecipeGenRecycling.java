@@ -89,7 +89,6 @@ public class RecipeGenRecycling implements Runnable {
         }
 
         int validCounter = 0;
-        Pair<OrePrefixes, ItemStack>[] temp = mValidPairs;
         for (Pair<OrePrefixes, ItemStack> temp2 : mValidPairs) {
             if (temp2 == null) {
                 continue;
@@ -193,36 +192,6 @@ public class RecipeGenRecycling implements Runnable {
 
     }
 
-    public static Pair<OrePrefixes, ItemStack> getDustData(final Material aMaterial, final OrePrefixes aPrefix) {
-        return getDustData(aMaterial, aPrefix.getMaterialAmount());
-    }
-
-    public static Pair<OrePrefixes, ItemStack> getDustData(final Material aMaterial, final long aMaterialAmount) {
-        ItemStack mDust = null;
-        OrePrefixes mPrefix = null;
-
-        if (aMaterial == null || aMaterialAmount <= 0) {
-            return null;
-        }
-        if ((((aMaterialAmount % M) == 0) || (aMaterialAmount >= (M * 16)))) {
-            mDust = get(OrePrefixes.dust, aMaterial, aMaterialAmount / M);
-            mPrefix = OrePrefixes.dust;
-        }
-        if ((mDust == null) && ((((aMaterialAmount * 4) % M) == 0) || (aMaterialAmount >= (M * 8)))) {
-            mDust = get(OrePrefixes.dustSmall, aMaterial, (aMaterialAmount * 4) / M);
-            mPrefix = OrePrefixes.dustSmall;
-        }
-        if ((mDust == null) && (((aMaterialAmount * 9) >= M))) {
-            mDust = get(OrePrefixes.dustTiny, aMaterial, (aMaterialAmount * 9) / M);
-            mPrefix = OrePrefixes.dustTiny;
-        }
-
-        if (mPrefix != null && mDust != null) {
-            return Pair.of(mPrefix, mDust);
-        }
-        return null;
-    }
-
     public static ItemStack getDust(final Material aMaterial, final OrePrefixes aPrefix) {
         return aMaterial == null ? null : getDust(aMaterial, aPrefix.getMaterialAmount());
     }
@@ -244,31 +213,9 @@ public class RecipeGenRecycling implements Runnable {
         return rStack;
     }
 
-    public static ItemStack get(final Object aName, final long aAmount) {
-        return get(aName, null, aAmount, true, true);
-    }
-
-    public static ItemStack get(final Object aName, final ItemStack aReplacement, final long aAmount) {
-        return get(aName, aReplacement, aAmount, true, true);
-    }
-
     public static ItemStack get(final OrePrefixes aPrefix, final Material aMaterial, final long aAmount) {
-        return get(aPrefix, aMaterial, null, aAmount);
-    }
-
-    public static ItemStack get(final OrePrefixes aPrefix, final Material aMaterial, final ItemStack aReplacement,
-        final long aAmount) {
-        return get(
-            aPrefix.getName() + StringUtils.sanitizeString(aMaterial.getDefaultLocalName()),
-            aReplacement,
-            aAmount,
-            false,
-            true);
-    }
-
-    public static ItemStack get(final Object aName, final ItemStack aReplacement, final long aAmount,
-        final boolean aMentionPossibleTypos, final boolean aNoInvalidAmounts) {
-        if (aNoInvalidAmounts && (aAmount < 1L)) {
+        final Object aName = aPrefix.getName() + StringUtils.sanitizeString(aMaterial.getDefaultLocalName());
+        if (aAmount < 1L) {
             GTplusplus.logger.warn("Returning Null. Method: ", new Exception());
             return null;
         }
@@ -277,7 +224,7 @@ public class RecipeGenRecycling implements Runnable {
             GTOreDictUnificator.getName2StackMap()
                 .get(aName.toString()),
             getFirstOre(aName, aAmount),
-            aReplacement);
+            null);
     }
 
     public static ItemStack getFirstOre(final Object aName, final long aAmount) {

@@ -28,8 +28,6 @@ public class GregtechHiAmpTransformer {
             | GTModHandler.RecipeBits.REVERSIBLE
             | GTModHandler.RecipeBits.BUFFERED;
 
-        String mHammerName = "Mallet";
-
         GregtechItemList.Transformer_HA_LV_ULV.set(
             new MTETransformerHiAmp(Transformer_HA_LV_ULV.ID, "transformer.ha.tier.00", "ULV Hi-Amp Transformer", 0)
                 .getStackForm(1L));

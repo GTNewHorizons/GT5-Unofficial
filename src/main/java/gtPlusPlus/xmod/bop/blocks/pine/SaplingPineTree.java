@@ -16,7 +16,7 @@ import gtPlusPlus.xmod.bop.world.features.trees.WorldGenPineTree;
 public class SaplingPineTree extends SaplingBase {
 
     public SaplingPineTree() {
-        super("Pine Sapling", "pine", new String[] { "pine" });
+        super("Pine Sapling", new String[] { "pine" });
     }
 
     @Override
