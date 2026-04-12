@@ -32,7 +32,7 @@ public class LeavesBase extends BlockLeaves {
     protected String[] treeType = GTValues.emptyStringArray;
     protected ItemStack[] bonusDrops;
 
-    public LeavesBase(String blockNameLocalized, String blockNameUnlocalized, ItemStack[] bonusDrops) {
+    public LeavesBase(String blockNameLocalized, ItemStack[] bonusDrops) {
         this.bonusDrops = bonusDrops;
         String blockName = "block" + StringUtils.sanitizeString(blockNameLocalized) + "Leaves";
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);

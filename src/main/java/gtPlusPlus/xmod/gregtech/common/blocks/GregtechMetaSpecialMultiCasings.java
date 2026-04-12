@@ -17,7 +17,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine.LargeTurbineTextureHandler;
 
 public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbstract {
 
@@ -56,10 +55,9 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-        final int ordinalSide) {
-        return LargeTurbineTextureHandler
-            .handleCasingsGT(aWorld, xCoord, yCoord, zCoord, ForgeDirection.getOrientation(ordinalSide), this);
+    public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord, final int ordinalSide) {
+        final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
+        return getStaticIcon(ForgeDirection.getOrientation(ordinalSide).ordinal(), tMeta);
     }
 
     @Override
