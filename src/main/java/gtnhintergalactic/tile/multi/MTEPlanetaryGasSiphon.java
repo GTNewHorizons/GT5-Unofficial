@@ -12,7 +12,6 @@ import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static net.minecraft.util.EnumChatFormatting.*;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -505,7 +504,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
     }
 
     public float speedBoost(int coilTier) {
-        return (float) 1 / (1 + (float) SPEED_PER_COIL * coilTier);
+        return (float) 1 / (2 + (float) SPEED_PER_COIL * coilTier);
     }
 
     @Override
