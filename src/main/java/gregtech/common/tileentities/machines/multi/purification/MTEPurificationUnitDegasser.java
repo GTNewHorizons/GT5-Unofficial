@@ -456,7 +456,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + EnumChatFormatting.ITALIC
                     + "detects in the water, it will request various materials to complete the processes listed above.")
             .beginStructureBlock(17, 25, 17, false)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasingInfoRangeColored(
                 "Heat-Resistant Trinium Plated Casing",
                 EnumChatFormatting.GRAY,

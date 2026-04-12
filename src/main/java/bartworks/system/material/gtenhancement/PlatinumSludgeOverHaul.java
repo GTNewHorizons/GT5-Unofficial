@@ -566,7 +566,6 @@ public class PlatinumSludgeOverHaul {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .circuit(1)
             .fluidInputs(RutheniumTetroxideSollution.getFluidOrGas(1_000))
             .fluidOutputs(HotRutheniumTetroxideSollution.getFluidOrGas(2_000))
             .duration(15 * SECONDS)

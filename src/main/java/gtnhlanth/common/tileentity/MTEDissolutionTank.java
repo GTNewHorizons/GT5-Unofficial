@@ -213,7 +213,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
             .addInfo("Input Water and Fluid, output Fluid")
             .addInfo("Fluids must be input in the exact ratio as listed in NEI")
             .beginStructureBlock(5, 5, 5, true)
-            .addController("Front bottom")
+            .addController("Front center, 2nd layer")
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 42, false)
             .addCasingInfoExactly("Any Borosilicate Glass", 24, false)
             .addCasingInfoExactly("Heat Proof Machine Casing", 9, false)

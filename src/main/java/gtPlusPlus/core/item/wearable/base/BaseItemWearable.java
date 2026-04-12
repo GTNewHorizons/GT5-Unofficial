@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ISpecialArmor;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 public abstract class BaseItemWearable extends ItemArmor implements ISpecialArmor {
 
     public BaseItemWearable(ArmorMaterial material, int renderIndex, int armourType) {
@@ -18,27 +20,20 @@ public abstract class BaseItemWearable extends ItemArmor implements ISpecialArmo
     }
 
     @Override
-    public void func_82813_b(ItemStack p_82813_1_, int p_82813_2_) {
-        NBTTagCompound nbttagcompound = p_82813_1_.getTagCompound();
-        if (nbttagcompound == null) {
-            nbttagcompound = new NBTTagCompound();
-            p_82813_1_.setTagCompound(nbttagcompound);
+    public void func_82813_b(ItemStack stack, int color) {
+        final NBTTagCompound nbt = ItemStackNBT.get(stack);
+        final NBTTagCompound display = nbt.getCompoundTag("display");
+        if (!nbt.hasKey("display", 10)) {
+            nbt.setTag("display", display);
         }
-        NBTTagCompound nbttagcompound1 = nbttagcompound.getCompoundTag("display");
-        if (!nbttagcompound.hasKey("display", 10)) {
-            nbttagcompound.setTag("display", nbttagcompound1);
-        }
-        nbttagcompound1.setInteger("color", p_82813_2_);
+        display.setInteger("color", color);
     }
 
     @Override
-    public void removeColor(ItemStack p_82815_1_) {
-        NBTTagCompound nbttagcompound = p_82815_1_.getTagCompound();
-        if (nbttagcompound != null) {
-            NBTTagCompound nbttagcompound1 = nbttagcompound.getCompoundTag("display");
-            if (nbttagcompound1.hasKey("color")) {
-                nbttagcompound1.removeTag("color");
-            }
+    public void removeColor(ItemStack stack) {
+        final NBTTagCompound display = ItemStackNBT.getCompoundTag(stack, "display");
+        if (display != null) {
+            display.removeTag("color");
         }
     }
 }

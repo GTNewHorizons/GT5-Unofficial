@@ -15,6 +15,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -40,8 +42,7 @@ public class ItemGenericChemBase extends Item {
      * thorium/uranium/plutonium skip) 22 - Rare-Earth Group Catalyst (for monaline skip) 23 - Simple Naquadah Catalyst
      * (for early naqline skip) 24 - Advanced Naquadah Catalyst (for late naqline skip) 25 - Raw Intelligence Catalyst
      * (for stem cells skip) 26 - Ultimate Plasticizer Catalyst (for late plastics skip) 27 - Biological Intelligence
-     * Catalyst (for bio cells skip) 28 - Temporal Harmonizer Catalyst (for Eternity processing) 29 - Limpid Water
-     * Catalyst (for early waterline skip) 30 - Flawless Water Catalyst (for advanced waterline skip) 33 - Algagenic
+     * Catalyst (for bio cells skip) 28 - Temporal Harmonizer Catalyst (for Eternity processing) 33 - Algagenic
      * Growth Promoter Catalyst (for seaweed skip) 34 - Hellish Force Catalyst (for Netherite skip) 35 - Crystal
      * Colorization Catalyst (for Prismatic Acid)
      */
@@ -87,6 +88,7 @@ public class ItemGenericChemBase extends Item {
     @Override
     public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
         for (int i = 0; i < aMetaSize; i++) {
+            if (i >= 29 && i <= 32) continue; // prevent unused catalysts from generating
             aList.add(new ItemStack(aItem, 1, i));
         }
     }
@@ -142,15 +144,13 @@ public class ItemGenericChemBase extends Item {
     @Override
     public double getDurabilityForDisplay(ItemStack aStack) {
         if (MTEIsaMill.isMillingBall(aStack)) {
-            if (aStack.getTagCompound() == null || aStack.getTagCompound()
-                .hasNoTags()) {
+            if (ItemStackNBT.hasNoTags(aStack)) {
                 createMillingBallNBT(aStack);
             }
             double currentDamage = getMillingBallDamage(aStack);
             return currentDamage / getMaxBallDurability(aStack);
         } else if (MTEChemicalPlant.isCatalyst(aStack)) {
-            if (aStack.getTagCompound() == null || aStack.getTagCompound()
-                .hasNoTags()) {
+            if (ItemStackNBT.hasNoTags(aStack)) {
                 createCatalystNBT(aStack);
             }
             double currentDamage = getCatalystDamage(aStack);
@@ -222,8 +222,7 @@ public class ItemGenericChemBase extends Item {
     }
 
     public static int getMillingBallDamage(ItemStack aStack) {
-        if (aStack.getTagCompound() == null || aStack.getTagCompound()
-            .hasNoTags()) {
+        if (ItemStackNBT.hasNoTags(aStack)) {
             createMillingBallNBT(aStack);
         }
         NBTTagCompound aNBT = aStack.getTagCompound();
@@ -232,8 +231,7 @@ public class ItemGenericChemBase extends Item {
     }
 
     public static int getMillingBallMaxDamage(ItemStack aStack) {
-        if (aStack.getTagCompound() == null || aStack.getTagCompound()
-            .hasNoTags()) {
+        if (ItemStackNBT.hasNoTags(aStack)) {
             createMillingBallNBT(aStack);
         }
         NBTTagCompound aNBT = aStack.getTagCompound();
@@ -242,9 +240,9 @@ public class ItemGenericChemBase extends Item {
     }
 
     public static void setMillingBallDamage(ItemStack aStack, int aAmount) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        aNBT = aNBT.getCompoundTag("MillingBall");
-        aNBT.setInteger("Damage", aAmount);
+        aStack.getTagCompound()
+            .getCompoundTag("MillingBall")
+            .setInteger("Damage", aAmount);
     }
 
     public static int getMaxBallDurability(ItemStack aStack) {
@@ -268,8 +266,7 @@ public class ItemGenericChemBase extends Item {
     }
 
     public static int getCatalystDamage(ItemStack aStack) {
-        if (aStack.getTagCompound() == null || aStack.getTagCompound()
-            .hasNoTags()) {
+        if (ItemStackNBT.hasNoTags(aStack)) {
             createCatalystNBT(aStack);
         }
         NBTTagCompound aNBT = aStack.getTagCompound();
@@ -278,8 +275,7 @@ public class ItemGenericChemBase extends Item {
     }
 
     public static int getCatalystMaxDamage(ItemStack aStack) {
-        if (aStack.getTagCompound() == null || aStack.getTagCompound()
-            .hasNoTags()) {
+        if (ItemStackNBT.hasNoTags(aStack)) {
             createCatalystNBT(aStack);
         }
         NBTTagCompound aNBT = aStack.getTagCompound();
@@ -288,9 +284,9 @@ public class ItemGenericChemBase extends Item {
     }
 
     public static void setCatalystDamage(ItemStack aStack, int aAmount) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        aNBT = aNBT.getCompoundTag("catalyst");
-        aNBT.setInteger("Damage", aAmount);
+        aStack.getTagCompound()
+            .getCompoundTag("catalyst")
+            .setInteger("Damage", aAmount);
     }
 
     public static int getMaxCatalystDurability(ItemStack aStack) {

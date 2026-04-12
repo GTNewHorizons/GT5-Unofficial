@@ -134,9 +134,7 @@ public class BaseItemDamageable extends Item {
             createNBT(stack);
         }
         double currentDamage = getItemDamage(stack);
-        double durabilitypercent = currentDamage / 100;
-        double inverse = (100 - durabilitypercent);
-        return durabilitypercent;
+        return currentDamage / 100;
     }
 
     @Override
