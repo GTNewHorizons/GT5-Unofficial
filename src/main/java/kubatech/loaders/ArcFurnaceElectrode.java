@@ -83,7 +83,7 @@ public enum ArcFurnaceElectrode {
     HypogenElectrode(MaterialsElements.STANDALONE.HYPOGEN, 6.5d, 256, 1d, 4d, 1000, 1.5d, 3.5d),
 
     // nanite eletrodes
-    NeutroniumNaniteElectrode(Materials.Neutronium, 5d, 64, 2d, 4d, 275, 4d, 5d, event -> {
+    NeutroniumNaniteElectrode(Materials.Neutronium, 5d, 64, 2d, 4d, 350, 2d, 5d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.Neutronium.getDust(1))
                 && completed.arcFurnace.getRandomNumber(100) < 70) {
@@ -91,7 +91,7 @@ public enum ArcFurnaceElectrode {
             }
         }
     }),
-    TranscendentNaniteElectrode(Materials.TranscendentMetal, 7.5d, 512, 4d, 4d, 500, 3.5d, 2d, event -> {
+    TranscendentNaniteElectrode(Materials.TranscendentMetal, 7.5d, 512, 4d, 4d, 500, 2d, .5d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.TranscendentMetal.getDust(1))
                 && completed.arcFurnace.getRandomNumber(100) < 90) {
@@ -99,7 +99,7 @@ public enum ArcFurnaceElectrode {
             }
         }
     }),
-    UniversiumNaniteElectrode(Materials.Universium, 10d, 1024, 8d, 4d, 1000, 2d, 1d, event -> {
+    UniversiumNaniteElectrode(Materials.Universium, 10d, 1024, 8d, 4d, 1000, 2d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.Universium.getDust(1))) {
                 if (completed.arcFurnace.getRandomNumber(100) < 10) completed.arcFurnace
