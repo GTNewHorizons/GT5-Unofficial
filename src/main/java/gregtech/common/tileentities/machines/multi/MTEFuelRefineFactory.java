@@ -106,15 +106,15 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
                             "   AFE               EFA   ", "    AFEE     A     EEFA    ", "     ACCEE   A   EECCA     ",
                             "      AACCEAAAAAECCAA      ", "        AACCCCCCCAA        ",
                             "          AAAAAAA          " },
-                        { "          CCCCCCC          ", "        CCBBBBBBBCC        ", "      CCDDAAABAAADDCC      ",
-                            "     CDDEE FAFAF EEDDC     ", "    CDEE   FAFAF   EEDC    ", "   CDE     F A F     EDC   ",
-                            "  CDE        A        EDC  ", "  CDE        A        EDC  ", " CDE         A         EDC ",
-                            " CDE        AFA        EDC ", "CBA        AF FA        ABC", "CBAFFF    AF   FA    FFFABC",
+                        { "          CCCCCCC          ", "        CCBBBBBBBCC        ", "      CCBBAAABAAABBCC      ",
+                            "     CBBEE FAFAF EEBBC     ", "    CBEE   FAFAF   EEBC    ", "   CBE     F A F     EBC   ",
+                            "  CBE        A        EBC  ", "  CBE        A        EBC  ", " CBE         A         EBC ",
+                            " CBE        AFA        EBC ", "CBA        AF FA        ABC", "CBAFFF    AF   FA    FFFABC",
                             "CBAAA    AF     FA    AAABC", "CBBFFAAAAF       FAAAAFFBBC", "CBAAA    AF     FA    AAABC",
-                            "CBAFFF    AF   FA    FFFABC", "CBA        AF FA        ABC", " CDE        AFA        EDC ",
-                            " CDE         A         EDC ", "  CDE        A        EDC  ", "  CDE        A        EDC  ",
-                            "   CDE     F A F     EDC   ", "    CDEE   FAFAF   EEDC    ", "     CDDEE FAFAF EEDDC     ",
-                            "      CCDDAAABAAADDCC      ", "        CCBBBBBBBCC        ",
+                            "CBAFFF    AF   FA    FFFABC", "CBA        AF FA        ABC", " CBE        AFA        EBC ",
+                            " CBE         A         EBC ", "  CBE        A        EBC  ", "  CBE        A        EBC  ",
+                            "   CBE     F A F     EBC   ", "    CBEE   FAFAF   EEBC    ", "     CBBEE FAFAF EEBBC     ",
+                            "      CCBBAAABAAABBCC      ", "        CCBBBBBBBCC        ",
                             "          CCCCCCC          " },
                         { "          AAAAAAA          ", "        AACCCCCCCAA        ", "      AACCEAAAAAECCAA      ",
                             "     ACCEE   A   EECCA     ", "    AFEE     A     EEFA    ", "   AFE               EFA   ",
@@ -205,10 +205,9 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
             .beginStructureBlock(5, 27, 27, false)
             .addController("Front center")
             .addCasingInfoExactly("Naquadah Fuel Refinery Casing", 483, false)
-            .addCasingInfoExactly("Field Restriction Coil", 32, true)
+            .addCasingInfoExactly("Field Restriction Coil", 72, true)
             .addCasingInfoExactly("Field Restriction Glass", 192, false)
             .addCasingInfoExactly("Radiation Proof Steel Frame Box", 64, false)
-            .addCasingInfoExactly("Superconducting Coil", 40, false)
             .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 124, false)
             .addMaintenanceHatch("Any Naquadah Fuel Refinery Casing", 1)
             .addInputHatch("Any Naquadah Fuel Refinery Casing", 1)
@@ -267,7 +266,13 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setMaxOverclocks(tier - recipe.mSpecialValue);
             }
-        }.enablePerfectOverclock();
+        }.enablePerfectOverclock()
+            .setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return tier * 4;
     }
 
     @Override
