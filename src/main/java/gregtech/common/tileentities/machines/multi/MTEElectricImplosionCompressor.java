@@ -40,7 +40,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -233,8 +232,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(Casings.NaquadahReinforcedBlock.textureId),
+            if (aActive) return new ITexture[] { Casings.NaquadahReinforcedBlock.getCasingTexture(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE)
                     .extFacing()
@@ -244,19 +242,17 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(Casings.NaquadahReinforcedBlock.textureId),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR)
-                    .extFacing()
-                    .build(),
+            return new ITexture[] { Casings.NaquadahReinforcedBlock.getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(Casings.NaquadahReinforcedBlock.textureId) };
+        return new ITexture[] { Casings.NaquadahReinforcedBlock.getCasingTexture() };
     }
 
     @Override
