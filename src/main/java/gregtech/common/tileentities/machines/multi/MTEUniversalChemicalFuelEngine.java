@@ -376,16 +376,17 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][50], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE)
-                .extFacing()
-                .build(),
+            if (aActive) return new ITexture[] { Casings.StableTitaniumMachineCasing.getCasingTexture(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[0][50], TextureFactory.builder()
+            return new ITexture[] { Casings.StableTitaniumMachineCasing.getCasingTexture(), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_DIESEL_ENGINE)
                 .extFacing()
                 .build(),
@@ -395,12 +396,12 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[0][50] };
+        return new ITexture[] { Casings.StableTitaniumMachineCasing.getCasingTexture() };
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEUniversalChemicalFuelEngine(this.STRUCTURE_PIECE_MAIN);
+        return new MTEUniversalChemicalFuelEngine(STRUCTURE_PIECE_MAIN);
     }
 
     @Override
