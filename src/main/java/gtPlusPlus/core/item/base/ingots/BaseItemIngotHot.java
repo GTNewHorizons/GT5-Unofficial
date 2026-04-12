@@ -22,9 +22,6 @@ import gtPlusPlus.core.util.Utils;
 public class BaseItemIngotHot extends BaseItemIngot {
 
     private final ItemStack outputIngot;
-    private final int tickCounter = 0;
-    private final int tickCounterMax = 200;
-    private final int mTier;
 
     private IIcon base;
     private IIcon overlay;
@@ -33,7 +30,6 @@ public class BaseItemIngotHot extends BaseItemIngot {
         super(material, ComponentTypes.HOTINGOT);
         this.setTextureName(GTPlusPlus.ID + ":" + "itemIngotHot");
         this.outputIngot = material.getIngot(1);
-        this.mTier = material.vTier;
         this.generateRecipe();
     }
 

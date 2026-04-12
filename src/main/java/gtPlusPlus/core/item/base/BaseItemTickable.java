@@ -17,7 +17,6 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GTValues;
 import gregtech.common.config.Client;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
@@ -31,15 +30,6 @@ public class BaseItemTickable extends CoreItem {
     public final boolean ticksInContainers;
 
     public IIcon[] mIcon = new IIcon[2];
-
-    public BaseItemTickable(boolean twoPass, final String unlocalName, final int colour, final int maxTicks) {
-        this(false, twoPass, unlocalName, colour, maxTicks, GTValues.emptyStringArray);
-    }
-
-    public BaseItemTickable(boolean containerTick, boolean twoPass, final String unlocalName, final int colour,
-        final int maxTicks) {
-        this(containerTick, twoPass, unlocalName, colour, maxTicks, GTValues.emptyStringArray);
-    }
 
     public BaseItemTickable(boolean containerTick, boolean twoPass, final String unlocalName, final int colour,
         final int maxTicks, final String[] Description) {

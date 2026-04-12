@@ -97,16 +97,7 @@ public final class ModItems {
         GregtechItemList.MagicFeather.set(new ItemMagicFeather());
 
         GregtechItemList.AlkalusDisk.set(
-            new BaseItemDamageable(
-                "itemAlkalusDisk",
-                AddToCreativeTab.tabMisc,
-                1,
-                0,
-                "Unknown Use",
-                EnumRarity.rare,
-                EnumChatFormatting.AQUA,
-                false,
-                null));
+            new BaseItemDamageable("itemAlkalusDisk", AddToCreativeTab.tabMisc, "Unknown Use", EnumRarity.rare, false));
 
         GregtechItemList.BlueprintBase.set(new ItemBlueprint("itemBlueprint"));
 
