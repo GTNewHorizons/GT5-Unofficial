@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,7 +41,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
 
 public class BaseItemComponent extends Item {
 
@@ -181,7 +181,7 @@ public class BaseItemComponent extends Item {
 
                 if (Client.tooltip.showCtrlText) {
                     // Hidden Tooltip
-                    if (KeyboardUtils.isCtrlKeyDown()) {
+                    if (GuiScreen.isCtrlKeyDown()) {
                         String type = this.componentMaterial.getTextureSet().mSetName;
                         String output = type.substring(0, 1)
                             .toUpperCase() + type.substring(1);

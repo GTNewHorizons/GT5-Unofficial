@@ -7,6 +7,8 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import tconstruct.library.crafting.DryingRackRecipes;
@@ -53,17 +55,12 @@ public class TinkersDryingRecipe {
         return new ArrayList<>(DryingRackRecipes.recipes);
     }
 
-    public boolean matches(ItemStack input) {
-        if (input.hasTagCompound()) {
-            input = input.copy();
-            input.getTagCompound()
-                .removeTag("frypanKill");
-            if (input.getTagCompound()
-                .hasNoTags()) {
-                input.setTagCompound(null);
-            }
+    public boolean matches(ItemStack stack) {
+        if (stack.hasTagCompound()) {
+            stack = stack.copy();
+            ItemStackNBT.removeTag(stack, "frypanKill");
         }
-        return ItemStack.areItemStacksEqual(this.input, input);
+        return ItemStack.areItemStacksEqual(this.input, stack);
     }
 
     public ItemStack getResult() {
