@@ -158,7 +158,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
         // Keyboard.enableRepeatEvents(false);
     }
 
-    public int parse(String aValue) {
+    public int parse() {
         try {
             return Integer.parseInt(getText());
         } catch (NumberFormatException e) {

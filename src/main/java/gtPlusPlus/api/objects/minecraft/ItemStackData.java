@@ -26,10 +26,4 @@ public class ItemStackData {
     public String getUniqueDataIdentifier() {
         return this.mUniqueDataTag;
     }
-
-    public @NotNull ItemStack getStack() {
-        ItemStack aTemp = new ItemStack(mItem, mStackSize, mDamage);
-        if (mNBT != null) aTemp.setTagCompound(mNBT);
-        return aTemp;
-    }
 }
