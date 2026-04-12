@@ -847,8 +847,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             @Override
             protected @NotNull ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
                 if (phase == ArcFurnacePhase.Standby
-                    || (phase == ArcFurnacePhase.Processing
-                        && electrodeDamagePercentage > ARC_SURGE_DAMAGE_THRESHOLD
+                    || (phase == ArcFurnacePhase.Processing && electrodeDamagePercentage > ARC_SURGE_DAMAGE_THRESHOLD
                         && getRandomNumber(100) < ARC_SURGE_CHANCE_PERCENT)) {
                     phase = ArcFurnacePhase.ArcIgnition;
                     this.setBatchSize(1);

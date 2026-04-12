@@ -198,8 +198,7 @@ public enum ArcFurnaceElectrode {
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.oc",
-                getModifierFormatted(this.OCSpeedFactor, false, 1d, 2d, 4d, "", "")
-                    + EnumChatFormatting.GRAY
+                getModifierFormatted(this.OCSpeedFactor, false, 1d, 2d, 4d, "", "") + EnumChatFormatting.GRAY
                     + "/"
                     + getModifierFormatted(this.OCPowerFactor, true, 0.25d, 0.5d, 1d, "", ""),
                 ""));
@@ -210,7 +209,7 @@ public enum ArcFurnaceElectrode {
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.startup_surge",
-                getModifierFormatted(this.startupSurge * 100, true, .0025d, .01d, .02d, "", "%")));
+                getModifierFormatted(this.startupSurge * 100, true, 0.0025d, 0.01d, 0.1d, "", "%")));
         if (specialEffect != null) {
             tooltip.addAll(
                 Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
@@ -250,7 +249,8 @@ public enum ArcFurnaceElectrode {
         EnumChatFormatting color;
         double discriminant = value;
         if (undesireable) {
-            discriminant = 1.0d / value;
+            if (value == 0) discriminant = Double.POSITIVE_INFINITY;
+            else discriminant = 1.0d / value;
         }
         if (discriminant <= lo_threshold) {
             color = EnumChatFormatting.DARK_RED; // "bad" stat
