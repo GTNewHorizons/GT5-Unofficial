@@ -111,10 +111,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public abstract String getMachineType();
 
-    public String[] getExtraInfoData() {
-        return GTValues.emptyStringArray;
-    }
-
     public long getStoredEnergyInAllEnergyHatches() {
         long storedEnergy = 0;
         for (MTEHatch tHatch : validMTEList(mAllEnergyHatches)) {

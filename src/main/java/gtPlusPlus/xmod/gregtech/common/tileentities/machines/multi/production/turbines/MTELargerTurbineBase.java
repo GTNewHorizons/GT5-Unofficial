@@ -19,7 +19,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -39,7 +38,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -531,93 +529,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     public boolean isLooseMode() {
         return looseFit;
-    }
-
-    @Override
-    public String[] getExtraInfoData() {
-        String tRunning = mMaxProgresstime > 0
-            ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.running.true")
-                + EnumChatFormatting.RESET
-            : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.running.false")
-                + EnumChatFormatting.RESET;
-
-        String tMaintenance = getIdealStatus() == getRepairStatus()
-            ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
-                + EnumChatFormatting.RESET
-            : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
-                + EnumChatFormatting.RESET;
-        int tDura;
-
-        StringBuilder aTurbineDamage = new StringBuilder();
-        for (MTEHatchTurbine aHatch : this.getFullTurbineAssemblies()) {
-            ItemStack aTurbine = aHatch.getTurbine();
-            tDura = MathUtils.safeInt(
-                (long) (100.0f / MetaGeneratedTool.getToolMaxDamage(aTurbine)
-                    * (MetaGeneratedTool.getToolDamage(aTurbine)) + 1));
-            aTurbineDamage.append(EnumChatFormatting.RED)
-                .append(formatNumber(tDura))
-                .append(EnumChatFormatting.RESET)
-                .append("% | ");
-        }
-
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-        for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
-
-        boolean aIsSteam = this.getClass()
-            .getName()
-            .toLowerCase()
-            .contains("steam");
-
-        return new String[] {
-            // 8 Lines available for information panels
-            tRunning + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(((lEUt * mEfficiency) / 10000))
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            tMaintenance,
-            StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber((mEfficiency / 100F))
-                + EnumChatFormatting.RESET
-                + "%",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.turbine.flow") + ": " + EnumChatFormatting.YELLOW
-            // Divides optimal flow by 1000 if it's a dense steam
-                + formatNumber(MathUtils.safeInt((long) realOptFlow) / (isDenseSteam() ? 1000 : 1))
-                + EnumChatFormatting.RESET
-                + " L/"
-                + (getTurbineType().equals("Plasma") ? 's' : 't') // based on turbine type changes flow timing
-                + EnumChatFormatting.YELLOW
-                + " ("
-                + (isLooseMode() ? StatCollector.translateToLocal("GT5U.turbine.loose")
-                    : StatCollector.translateToLocal("GT5U.turbine.tight"))
-                + ")",
-            StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
-                + EnumChatFormatting.GOLD
-                + formatNumber(storedFluid)
-                + EnumChatFormatting.RESET
-                + "L",
-            StatCollector.translateToLocal("GT5U.turbine.dmg") + ": " + aTurbineDamage,
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %" };
     }
 
     @Override
