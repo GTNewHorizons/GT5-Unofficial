@@ -1718,6 +1718,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.UniversalChemicalFuelEngine.get(1),
             new Object[] { ItemRefer.Universal_Chemical_Fuel_Engine.get(1) });
+
         // Industrial Mixer Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialMixer.get(1),
