@@ -145,7 +145,7 @@ import gregtech.common.tileentities.machines.multi.MTECokeOven;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller1;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller2;
 import gregtech.common.tileentities.machines.multi.MTEDecayWarehouse;
-import gregtech.common.tileentities.machines.multi.MTEDieselEngine;
+import gregtech.common.tileentities.machines.multi.MTELargeCombustionEngine;
 import gregtech.common.tileentities.machines.multi.MTEDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
@@ -860,7 +860,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1L));
 
         ItemList.LargeCombustionEngine.set(
-            new MTEDieselEngine(LargeCombustionEngine.ID, "multimachine.dieselengine", "Large Combustion Engine")
+            new MTELargeCombustionEngine(LargeCombustionEngine.ID, "multimachine.dieselengine", "Large Combustion Engine")
                 .getStackForm(1L));
     }
 

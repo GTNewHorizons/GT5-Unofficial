@@ -50,7 +50,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 
-public class MTEDieselEngine extends MTEExtendedPowerMultiBlockBase<MTEDieselEngine> implements ISurvivalConstructable {
+public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTELargeCombustionEngine> implements ISurvivalConstructable {
 
     private int casingAmount;
     private static final int OFFSET_X = 1;
@@ -63,8 +63,8 @@ public class MTEDieselEngine extends MTEExtendedPowerMultiBlockBase<MTEDieselEng
     protected boolean boostEu = false;
 
     @Override
-    public IStructureDefinition<MTEDieselEngine> getStructureDefinition() {
-        return StructureDefinition.<MTEDieselEngine>builder()
+    public IStructureDefinition<MTELargeCombustionEngine> getStructureDefinition() {
+        return StructureDefinition.<MTELargeCombustionEngine>builder()
             .addShape(
                 STRUCTURE_PIECE_MAIN,
                 new String[][] { { "   ---- ", "   ---- ", "        " }, { "EBECCCCE", "E~ECCCCE", "EDEDDDDE" },
@@ -72,7 +72,7 @@ public class MTEDieselEngine extends MTEExtendedPowerMultiBlockBase<MTEDieselEng
             .addElement('A', Casings.TitaniumGearBoxCasing.asElement())
             .addElement(
                 'B',
-                buildHatchAdder(MTEDieselEngine.class).atLeast(Maintenance, Muffler)
+                buildHatchAdder(MTELargeCombustionEngine.class).atLeast(Maintenance, Muffler)
                     .casingIndex(Casings.StableTitaniumMachineCasing.textureId)
                     .hint(1)
                     .buildAndChain(
@@ -82,31 +82,31 @@ public class MTEDieselEngine extends MTEExtendedPowerMultiBlockBase<MTEDieselEng
             .addElement('E', ofFrame(Materials.Polytetrafluoroethylene))
             .addElement(
                 'F',
-                buildHatchAdder(MTEDieselEngine.class).atLeast(InputHatch, InputHatch, InputHatch)
+                buildHatchAdder(MTELargeCombustionEngine.class).atLeast(InputHatch, InputHatch, InputHatch)
                     .casingIndex(Casings.StableTitaniumMachineCasing.textureId)
                     .hint(2)
                     .buildAndChain(
                         onElementPass(x -> ++x.casingAmount, Casings.StableTitaniumMachineCasing.asElement())))
             .addElement(
                 'G',
-                buildHatchAdder(MTEDieselEngine.class).atLeast(Dynamo)
+                buildHatchAdder(MTELargeCombustionEngine.class).atLeast(Dynamo)
                     .casingIndex(Casings.ChemicallyInertMachineCasing.textureId)
                     .hint(3)
                     .buildAndChain(Casings.ChemicallyInertMachineCasing.asElement()))
             .build();
     }
 
-    public MTEDieselEngine(int aID, String aName, String aNameRegional) {
+    public MTELargeCombustionEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEDieselEngine(String aName) {
+    public MTELargeCombustionEngine(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEDieselEngine(this.mName);
+        return new MTELargeCombustionEngine(this.mName);
     }
 
     @Override
