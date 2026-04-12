@@ -41,7 +41,7 @@ public class CoverAdvancedRedstoneTransmitterBaseGui<T extends CoverAdvancedReds
                                 : translateToLocal("gt.interact.desc.normal"))).height(16)));
     }
 
-    // method for sublclasses that have in-world functionality
+    // method for subclasses that have in-world functionality
     protected Flow physicalRow(BooleanSyncValue physicalSyncer) {
         return Flow.row()
             .size(140, 16)

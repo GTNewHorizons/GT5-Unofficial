@@ -203,7 +203,7 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
             .build(), getTextureOverlay() };
         if (!aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(52) };
         return new ITexture[] { TextureFactory.builder()
-            .addIcon(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_HYPER)
+            .addIcon(TexturesGtBlock.TEXTURE_CASING_FUSION_OVERLAY)
             .extFacing()
             .build() };
     }
