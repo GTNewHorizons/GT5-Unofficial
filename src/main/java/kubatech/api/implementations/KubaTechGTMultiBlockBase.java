@@ -58,6 +58,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -274,6 +275,10 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new KubaTechGTMultiBlockBaseGUI<>(this);
+    }
+
+    protected String[] getCreditsText() {
+        return new String[] { "Added by " + GTAuthors.AuthorKuba, };
     }
 
     @Override

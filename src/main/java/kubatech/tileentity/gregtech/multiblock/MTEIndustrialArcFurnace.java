@@ -18,7 +18,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.furnaceRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
 import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeDetectorHatch;
 import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeHatch;
@@ -26,13 +29,18 @@ import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.Ar
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -45,15 +53,22 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -62,7 +77,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
-import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.pollution.PollutionConfig;
 import kubatech.api.arcfurnace.ArcFurnaceContext;
 import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
@@ -90,6 +105,19 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     private MTEElectrodeHatch electrodeHatch;
     private final List<MTEElectrodeDetectorHatch> electrodeDetectorHatch = new ArrayList<>();
 
+    enum ArcFurnaceMode {
+
+        Normal,
+        Blast,
+        Ore;
+
+        static final ArcFurnaceMode[] modes = values();
+
+        ArcFurnaceMode next() {
+            return modes[(this.ordinal() + 1) % modes.length];
+        }
+    }
+
     enum ArcFurnacePhase {
         Standby,
         ArcIgnition,
@@ -97,13 +125,14 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         ArcShutdown
     }
 
+    private ArcFurnaceMode mode = ArcFurnaceMode.Normal;
     private ArcFurnacePhase phase = ArcFurnacePhase.Standby;
     private ArcFurnaceElectrode electrode = null;
     private int durabilityCostThisRun = 1;
     private NBTTagCompound effectState = new NBTTagCompound();
     private double electrodeDamagePercentage = 0d;
 
-    private static final int OFFSET_H = 10;
+    private static final int OFFSET_H = 6;
     private static final int OFFSET_V = 7;
     private static final int OFFSET_D = 1;
 
@@ -114,17 +143,17 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             STRUCTURE_PIECE_MAIN,
             transpose(
                 new String[][] { // spotless:off
-                    {"                 ","                 ","                 ","                 ","         DDD     ","        D   D    ","        D   D    ","        D   D    ","         DDD     ","         D D     ","         D D     ","         D D     ","         D D     ","         D D     ","         D D     ","         D D     ","         D D     ","         DDD     ","                 "},
-                    {"                 ","                 ","                 ","                 ","                 ","         HDH     ","         D D     ","         DHD     ","          D      ","          D      ","          D      ","          D      ","          D      ","          D      ","          D      ","        A D A    ","        AD DA    ","                 ","         DGD     "},
-                    {"                 ","                 ","                 ","                 ","                 ","         H H     ","                 ","          H      ","                 ","                 ","                 ","                 ","  E              "," EDE             ","  E              ","        A   A    ","        DD DD    ","        A   A    ","         DGD     "},
-                    {"                 ","                 ","                 ","                 ","                 ","         H H     ","                 ","          H      ","                 ","                 ","                 ","          F      ","  E      FF      "," E EFFFFFF       ","  E              ","        A   A    ","        DD DD    ","        A   A    ","         GGG     "},
-                    {"                 ","                 ","                 ","          B      ","        BBBBB    ","        BH HB    ","       BB   BB   ","        BBHBB    ","        BBBBB    ","                 ","          F      ","          F      "," DED             "," E E             "," DED             ","        A   A    ","        DD DD    ","        A   A    ","         GGG     "},
-                    {"                 ","        EEEEE    ","       EEBBBEE   ","      EBBB BBBE  ","     EEB     BEE ","     EBB H H BBE ","     EB       BE ","     EBB  H  BBE ","     EEB     BEE ","      EBBBBBBBE  ","       EEBBBEE   ","        EEEEE    "," DED             "," E E             "," DED             ","        A   A    ","        DD DD    ","        A   A    ","         GGG     "},
-                    {"        D   D    ","       AABABAA   ","      A       A  ","     A         A ","    DA         AD","     B         B ","     C         C ","     B         B ","    DA         AD","     A         A ","      A       A  ","       AABCBAA   "," DED    D   D    "," E E             "," DED             ","        A   A    ","        DD DD    ","        A   A    ","         GGG     "},
-                    {"        D   D    ","       GAB~BAG   ","      G       G  ","     G         G ","    DA         AD","     B         B ","     C         C ","     B         B ","    DA         AD","     G         G ","      G       G  ","       GABCBAG   "," DED    D   D    "," E E             "," DED             ","        A   A    ","        DD DD    ","        A   A    ","         GGG     "},
-                    {"        D   D    ","       AABABAA   ","      A       A  ","     A         A ","    DA         AD","     B         B ","     C         C ","     B         B ","    DA         AD","     A         A ","      A       A  ","       AABCBAA   "," DED    D   D    "," E E             "," DED    A   A    ","        A   A    ","        DD DD    ","        A   A    ","         DGD     "},
-                    {"        D   D    ","        A   A    ","       AAAAAAA   ","      AAAACAAAA  ","    DAAAACCCAAAAD","      AACC CCAA  ","      CCC   CCC  ","      AACC CCAA  ","    DAAAACCCAAAAD","      AAAACAAAA  ","       AAACAAA   "," BBB             ","BEEEB   D   D    ","BE EB            ","BEEEB   A   A    "," BBB    A   A    ","        DD DD    ","        A   A    ","        ADDDA    "},
-                    {"        D   D    ","      DDA   ADD  ","     D   AAA   D ","     D    A    D ","    DA    A    AD","    D     A     D","    D    AAA    D","    D     A     D","    DA         AD","     D         D ","     D         D "," BBB  DD     DD  ","B   B   D   D    ","B   B            ","B   B   A   A    "," BBB    A   A    ","        AD DA    ","        A   A    ","        ADDDA    "}
+                    {"                 ","                 ","                 ","                 ","     DDD         ","    D   D        ","    D   D        ","    D   D        ","     DDD         ","     D D         ","     D D         ","     D D         ","     D D         ","     D D         ","     D D         ","     D D         ","     D D         ","     DDD         ","                 "},
+                    {"                 ","                 ","                 ","                 ","                 ","     IDI         ","     D D         ","     DID         ","      D          ","      D          ","      D          ","      D          ","      D          ","      D          ","      D          ","    A D A        ","    AD DA        ","                 ","     D D         "},
+                    {"                 ","                 ","                 ","                 ","                 ","     I I         ","                 ","      I          ","                 ","                 ","                 ","                 ","              E  ","             EDE ","              E  ","    A   A        ","    DD DD        ","    A   A        ","     DHD         "},
+                    {"                 ","                 ","                 ","                 ","                 ","     I I         ","                 ","      I          ","                 ","                 ","                 ","      F          ","      FF      E  ","       FFFFFFE E ","              E  ","    A   A        ","    DD DD        ","    A   A        ","     HHH         "},
+                    {"                 ","                 ","                 ","      B          ","    BBBBB        ","    BI IB        ","   BB   BB       ","    BBIBB        ","    BBBBB        ","                 ","      F          ","      F          ","             DED ","             E E ","             DED ","    A   A        ","    DD DD        ","    A   A        ","     HHH         "},
+                    {"                 ","    EEEEE        ","   EEBBBEE       ","  EBBB BBBE      "," EEB     BEE     "," EBB I I BBE     "," EB       BE     "," EBB  I  BBE     "," EEB     BEE     ","  EBBBBBBBE      ","   EEBFBEE       ","    EEEEE        ","             DED ","             E E ","             DED ","    A   A        ","    DD DD        ","    A   A        ","     HHH         "},
+                    {"    D   D        ","   AABABAA       ","  A       A      "," A         A     ","DA         AD    "," B         B     "," C         C     "," B         B     ","DA         AD    "," A         A     ","  A       A      ","   AABCBAA       ","    D   D    DED ","             E E ","             DED ","    A   A        ","    DD DD        ","    A   A        ","     HHH         "},
+                    {"    D   D        ","   GAB~BAG       ","  G       G      "," G         G     ","DA         AD    "," B         B     "," C         C     "," B         B     ","DA         AD    "," G         G     ","  G       G      ","   GABCBAG       ","    D   D    DED ","             E E ","             DED ","    A   A        ","    DD DD        ","    A   A        ","     HHH         "},
+                    {"    D   D        ","   AABABAA       ","  A       A      "," A         A     ","DA         AD    "," B         B     "," C         C     "," B         B     ","DA         AD    "," A         A     ","  A       A      ","   AABCBAA       ","    D   D    DED ","             E E ","    A   A    DED ","    A   A        ","    DD DD        ","    A   A        ","     DHD         "},
+                    {"    D   D        ","    A   A        ","   AAAAAAA       ","  AAAA AAAA      ","DAAAAC CAAAAD    ","  AACC CCAA      ","  CCC   CCC      ","  AACC CCAA      ","DAAAACCCAAAAD    ","  AAAACAAAA      ","   AAACAAA       ","    A   A    BBB ","    D   D   BEEEB","            BE EB","    A   A   BEEEB","    A   A    BBB ","    DD DD        ","    A   A        ","    ADDDA        "},
+                    {"    D   D        ","  DDA   ADD      "," D   AAA   D     "," D    A    D     ","DA    A    AD    ","D     A     D    ","D    AAA    D    ","D     A     D    ","DA         AD    "," D         D     "," D         D     ","  DDA   ADD  BBB ","    D   D   B   B","            B   B","    A   A   B   B","    A   A    BBB ","    AD DA        ","    A   A        ","    ADDDA        "}
                 } // spotless:on
             ))
         .addElement(
@@ -146,12 +175,12 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 .buildAndChain(onElementPass(e -> e.mCasing++, Casings.SolidSteelMachineCasing.asElement())))
         .addElement('B', Casings.SteelPipeCasing.asElement())
         .addElement('C', Casings.CupronickelCoilBlock.asElement())
-        .addElement('D', ofBlock(GregTechAPI.sBlockFrames, 305))
-        .addElement('E', Casings.CleanStainlessSteelMachineCasing.asElement())
+        .addElement('D', ofFrame(Materials.Steel))
+        .addElement('E', Casings.BoltedNaquadahCasing.asElement())
         .addElement('F', Casings.InsulatedFluidPipeCasing.asElement())
         .addElement('G', Casings.HeatProofCokeOvenCasing.asElement())
-        .addElement('H', ofBlock(GregTechAPI.sBlockCasings13, 4)) // Block.getBlockFromName(Mods.NewHorizonsCoreMod.ID +
-                                                                  // ":tile.CompressedGraphite")
+        .addElement('H', Casings.BlastSmelterHeatContainmentCoil.asElement())
+        .addElement('I', ofBlock(GregTechAPI.sBlockCasings13, 4))
         .build();
 
     @Override
@@ -234,6 +263,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        mode = ArcFurnaceMode.modes[aNBT.getInteger("mode")];
         phase = ArcFurnacePhase.values()[aNBT.getInteger("phase")];
         int electrodeOrdinal = aNBT.getInteger("electrode");
         if (electrodeOrdinal >= 0) {
@@ -248,6 +278,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setInteger("mode", mode.ordinal());
         aNBT.setInteger("phase", phase.ordinal());
         aNBT.setInteger("electrode", electrode == null ? -1 : electrode.ordinal());
         aNBT.setInteger("durabilityCostThisRun", durabilityCostThisRun);
@@ -257,13 +288,27 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Arc Furnace, Plasma Arc Furnace, IAF")
-            .addInfo(TooltipHelper.parallelText("Width * Voltage Tier") + " Parallels")
-            .addInfo(TooltipHelper.parallelText("8x") + " Parallels in Plasma Mode")
-            .addStaticSpeedInfo(3.5f)
-            .addStaticEuEffInfo(1f)
+        tt.addMachineType("Arc Furnace, IAF")
+            .addInfo("Insert electrode in the electrode hatch")
+            .addInfo("Speed, parallels, OC, energy consumption depend on the electrode used")
+            .addInfo("Some electrodes have special effects, always check the tooltip for details")
+            .addInfo("Use Electrode Detectors to emit redstone signal based on remaining durability of the electrode")
+            .addInfo("When electrode durability goes below 30%, there is 5% the arc will randomly surge.")
+            .addInfo(
+                "When electrode durability goes below 10%, there is 2% the arc will randomly break the items inside.")
+            .addInfo("Before processing recipes, machine will have to ignite the arc")
+            .addInfo(
+                "in that time machine will consume energy based on startup surge of the electrode and will not process any recipes")
+            .addInfo("After processing all recipes, machine will shut down the arc, which also takes time")
+            .addInfo("------------------------------------------------------------------------------------")
+            .addInfo("Blast mode: This machine can also process any EBF recipe, but at the extra cost of 64x the power")
+            .addInfo("Ore mode: In this mode, machine will always run 10 seconds initiation process,")
+            .addInfo("in that time, machine will consume all ores and raw ores from input hatches")
+            .addInfo(
+                "After that time, all metals will start mixing together in the arc, this process will take time based on the ores inserted")
+            .addInfo(
+                "at the end of the process, machine will output molten alloys and slag from things that didn't mix")
             .addInfo("Right-click controller with a Screwdriver to change modes")
-            .addInfo("Max Size required to process Plasma recipes")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(17, 11, 19, false)
             .addController("Front center")
@@ -275,6 +320,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
+            .addOtherStructurePart("Electrode Hatch", "Any Casing", 1)
+            .addOtherStructurePart("Electrode Sensor Hatch", "Any Casing", 1)
             .addAuthors(AuthorKuba, AuthorPxx500)
             .addStructureAuthors(EnumChatFormatting.LIGHT_PURPLE + "Sol_IX")
             .toolTipFinisher();
@@ -309,6 +356,18 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     }
 
     @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        mode = mode.next();
+        GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mode.generic", mode.name());
+    }
+
+    @Override
+    public int getPollutionPerSecond(final ItemStack aStack) {
+        return PollutionConfig.pollutionPerSecondMultiIndustrialArcFurnace;
+    }
+
+    @Override
     public int getDurabilityConsumptionThisRun() {
         return durabilityCostThisRun;
     }
@@ -330,7 +389,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return arcFurnaceRecipes;
+        return mode == ArcFurnaceMode.Normal ? arcFurnaceRecipes
+            : (mode == ArcFurnaceMode.Blast ? blastFurnaceRecipes : furnaceRecipes);
     }
 
     @Override
@@ -357,6 +417,17 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     @Override
     public int getRandomNumber(int range) {
         return getBaseMetaTileEntity().getRandomNumber(range);
+    }
+
+    private int calculateMaximumParallel(long eut) {
+        if (electrode == null) return 0;
+        eut = (long) ((double) eut * electrode.amperagePerParallel);
+        long volts = getAverageInputVoltage();
+        long amps = getMaxInputAmps();
+        int paraLimit = electrode.parallelLimit;
+        long para = (volts * amps) / eut;
+        if (para > paraLimit) para = paraLimit;
+        return (int) para;
     }
 
     @Override
@@ -420,8 +491,82 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         updateDetectorHatches(0);
     }
 
+    private int didOres = 0;
+    private final Map<Fluid, Long> oreOutputs = new HashMap<>();
+
     @Override
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (phase == ArcFurnacePhase.Processing && mode == ArcFurnaceMode.Ore
+            && mMaxProgresstime > 0
+            && didOres != -1
+            && (aTick % 5 == 0 || mProgresstime == 0)) {
+            boolean didSomething = false;
+            int paraToDoLeft = calculateMaximumParallel(30) - didOres;
+            startRecipeProcessing();
+            // processing ores
+            for (ItemStack inputItem : getAllStoredInputs()) {
+                ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(inputItem, false, null);
+                if (smeltedOutput != null) {
+                    ItemData data = GTOreDictUnificator.getItemData(inputItem);
+                    if (data != null && data.mPrefix != null
+                        && data.mPrefix.getMaterialPostfix()
+                            .equals(" Ore")) {
+                        ItemData outputData = GTOreDictUnificator.getItemData(smeltedOutput);
+                        if (outputData != null) {
+                            FluidStack output = outputData.mMaterial.mMaterial.getMolten(1);
+                            long amount = outputData.mPrefix.getMaterialAmount() / (GTValues.M / 144L)
+                                * smeltedOutput.stackSize;
+                            if (output != null) {
+                                int toDo = Math.min(paraToDoLeft, inputItem.stackSize);
+                                amount *= toDo;
+                                oreOutputs.merge(output.getFluid(), amount, Long::sum);
+                                inputItem.stackSize -= toDo;
+                                paraToDoLeft -= toDo;
+                                didOres += toDo;
+                                didSomething = true;
+                            }
+                        }
+                    }
+                }
+            }
+            endRecipeProcessing();
+            if (!didSomething || paraToDoLeft <= 0) {
+                mProgresstime = mMaxProgresstime - 1;
+            }
+        }
+        if (phase == ArcFurnacePhase.Processing && mode == ArcFurnaceMode.Ore
+            && mProgresstime > 0
+            && mProgresstime >= mMaxProgresstime - 1
+            && !oreOutputs.isEmpty()) {
+            mProgresstime = 0;
+            mMaxProgresstime = 20 * 1;
+            List<FluidStack> outputs = new ArrayList<>(oreOutputs.size());
+            for (Map.Entry<Fluid, Long> entry : oreOutputs.entrySet()) {
+                long value = entry.getValue();
+                while (value > 0) {
+                    long amount = Math.min(value, Integer.MAX_VALUE);
+                    outputs.add(new FluidStack(entry.getKey(), (int) amount));
+                    value -= amount;
+                }
+            }
+            mOutputFluids = outputs.toArray(new FluidStack[0]);
+            oreOutputs.clear();
+            lEUt = -(30L) * didOres;
+            didOres = -1;
+            OverclockCalculator calculator = new OverclockCalculator();
+            calculator.setMaxTierSkips(0);
+            calculator.setEUt(getAverageInputVoltage());
+            calculator.setAmperage(getMaxInputAmps());
+            calculator.setRecipeEUt(-lEUt);
+            calculator.setDuration(mMaxProgresstime);
+            calculator.setDurationDecreasePerOC(electrode.OCSpeedFactor);
+            calculator.setEUtIncreasePerOC(electrode.OCPowerFactor);
+            calculator.setMaxOverclocks((int) GTUtility.log4(getAverageInputVoltage() / 32));
+            calculator.setDurationModifier(1d / electrode.speedModifier);
+            calculator.calculate();
+            mMaxProgresstime = calculator.getDuration();
+            lEUt = -calculator.getConsumption();
+        }
         super.runMachine(aBaseMetaTileEntity, aTick);
         if (mMaxProgresstime <= 0 && phase != ArcFurnacePhase.Standby) {
             startShutDown();
@@ -483,6 +628,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     private GTRecipe fakeRecipe() {
         if (fakeRecipeCache == null) {
             fakeRecipeCache = new GTRecipe(false, null, null, null, null, null, null, null, null, null, 1, 1, 0);
+            fakeRecipeCache.mCanBeBuffered = false;
         }
         return fakeRecipeCache;
     }
@@ -493,7 +639,35 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
             @Override
             protected @NotNull Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                return super.findRecipeMatches(map).limit(1);
+                Stream<GTRecipe> str = super.findRecipeMatches(map).limit(1);
+                if (mode == ArcFurnaceMode.Normal) return str;
+                GTRecipe found = str.findAny()
+                    .orElse(null);
+                if (found == null) return Stream.of();
+                if (mode == ArcFurnaceMode.Blast) {
+                    GTRecipe copy = found.copy()
+                        .setEUt((int) Math.min(found.mEUt * 64L, Integer.MAX_VALUE));
+                    copy.mCanBeBuffered = false;
+                    return Stream.of(copy);
+                }
+                // ores
+                for (ItemStack inputItem : inputItems) {
+                    ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(inputItem, false, null);
+                    if (smeltedOutput != null) {
+                        ItemData data = GTOreDictUnificator.getItemData(inputItem);
+                        if (data != null && data.mPrefix != null
+                            && data.mPrefix.getMaterialPostfix()
+                                .equals(" Ore")) {
+                            GTRecipe fake = fakeRecipe();
+                            fake.mEUt = 16;
+                            fake.mDuration = 20 * 10;
+                            didOres = 0;
+                            oreOutputs.clear();
+                            return Stream.of(fake);
+                        }
+                    }
+                }
+                return Stream.of();
             }
 
             @Override
@@ -512,7 +686,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                         }
                         durabilityCostThisRun += bint;
                     }
-                    if (electrodeDamagePercentage > 0.9d && getRandomNumber(100) < 10) {
+                    if (electrodeDamagePercentage > 0.9d && getRandomNumber(100) < 2) {
                         this.overwriteOutputItems();
                         this.overwriteOutputFluids();
                     }
@@ -528,6 +702,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     this.calculatedEut);
                 applySpecialEffect(afterRecipe);
                 this.calculatedEut = afterRecipe.eut;
+                if (phase == ArcFurnacePhase.ArcIgnition) return SimpleCheckRecipeResult.ofSuccess("arc_ignition");
                 return ret;
             }
 
@@ -541,13 +716,15 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 if (electrode == null) return SimpleCheckRecipeResult.ofFailure("no_electrode");
                 CheckRecipeResult result = super.validateRecipe(recipe);
                 if (!result.wasSuccessful()) return result;
-                if (phase == ArcFurnacePhase.ArcIgnition) return SimpleCheckRecipeResult.ofSuccess("arc_ignition");
+                // check if we can even process anything
+                if (this.availableVoltage < recipe.mEUt * this.euModifier)
+                    return CheckRecipeResultRegistry.insufficientPower((long) (recipe.mEUt * this.euModifier));
                 return result;
             }
 
             @Override
             protected @NotNull OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                if (phase == ArcFurnacePhase.ArcIgnition) {
+                if (phase == ArcFurnacePhase.ArcIgnition || (mode == ArcFurnaceMode.Ore && recipe == fakeRecipe())) {
                     return super.createOverclockCalculator(fakeRecipe()).setNoOverclock(true)
                         .setAmperage(1)
                         .setEUt(this.availableVoltage * this.availableAmperage)
@@ -566,7 +743,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             protected @NotNull ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
                 if (phase == ArcFurnacePhase.Standby
                     || (phase == ArcFurnacePhase.Processing && electrodeDamagePercentage > 0.7d
-                        && getRandomNumber(100) < 10)) {
+                        && getRandomNumber(100) < 5)) {
                     phase = ArcFurnacePhase.ArcIgnition;
                     this.setBatchSize(1);
                     GTRecipe ignitionRecipe = fakeRecipe();
@@ -583,6 +760,11 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     ignitionRecipe.mEUt = event.eut;
                     ignitionRecipe.mDuration = event.duration;
                     return super.createParallelHelper(ignitionRecipe).setConsumption(false)
+                        .setMaxParallel(1);
+                }
+                if (phase == ArcFurnacePhase.Processing && mode == ArcFurnaceMode.Ore && recipe == fakeRecipe()) {
+                    this.setBatchSize(1);
+                    return super.createParallelHelper(recipe).setConsumption(false)
                         .setMaxParallel(1);
                 }
 
@@ -639,4 +821,11 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     protected boolean useMui2() {
         return true;
     }
+
+    @Override
+    protected String[] getCreditsText() {
+        return new String[] { "Implemented by " + GTAuthors.AuthorKuba, "Designed by " + GTAuthors.AuthorPxx500,
+            "Structure designed by " + EnumChatFormatting.LIGHT_PURPLE + "Sol_IX" };
+    }
+
 }

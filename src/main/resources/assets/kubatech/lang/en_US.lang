@@ -103,6 +103,7 @@ kubatech.gui.text.electrode_detector=Durability threshold
 
 #Chat Messages
 kubatech.chat.forbidden_while_running=Cannot change mode while running!
+kubatech.chat.mode.generic=Now running in mode: %s
 
 kubatech.chat.eec.ritual_mode_enabled=Ritual mode enabled
 kubatech.chat.eec.ritual_mode_disabled=Ritual mode disabled
