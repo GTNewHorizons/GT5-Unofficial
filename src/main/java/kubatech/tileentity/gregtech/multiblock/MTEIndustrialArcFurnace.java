@@ -827,8 +827,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 CheckRecipeResult result = super.validateRecipe(recipe);
                 if (!result.wasSuccessful()) return result;
                 // check if we can even process anything
-                if (this.availableVoltage < recipe.mEUt * this.euModifier)
-                    return CheckRecipeResultRegistry.insufficientPower((long) (recipe.mEUt * this.euModifier));
+                if (this.availableVoltage < recipe.mEUt)
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 return result;
             }
 
