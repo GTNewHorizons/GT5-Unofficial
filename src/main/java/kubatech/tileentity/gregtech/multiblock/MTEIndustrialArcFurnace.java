@@ -808,7 +808,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     this.calculatedEut = (long) (getAverageInputVoltage() * 30d
                         / 32d
                         * this.maxParallel
-                        * (electrode.startupSurge + 1d));
+                        * (electrode.startupSurge + 1d)
+                        * electrode.amperagePerParallel);
                     sendSound(START_ARC_SOUND_INDEX);
                     return SimpleCheckRecipeResult.ofSuccess("arc_ignition");
                 }
