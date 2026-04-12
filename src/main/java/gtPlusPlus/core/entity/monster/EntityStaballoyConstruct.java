@@ -5,11 +5,12 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.village.Village;
 import net.minecraft.world.World;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.util.math.MathUtils;
 
 public class EntityStaballoyConstruct extends EntityIronGolem {
 
@@ -58,13 +59,24 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
      * par2 - Level of Looting used to kill this mob.
      */
     @Override
-    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_) {
-        int lootingChance = p_70628_2_ + 1;
+    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_)
+    {
+        int j = this.rand.nextInt(3);
         int k;
-        k = 3 + this.rand.nextInt(3);
-        for (int l = 0; l < k; ++l) {
+        int lootingChance = p_70628_2_ + 1;
+
+        for (k = 0; k < j; ++k)
+        {
+            this.func_145778_a(Item.getItemFromBlock(Blocks.yellow_flower), 1, 0.0F);
+        }
+
+
+        for (k = 0; k < j; ++k)
+            k = 3 + this.rand.nextInt(3);
+
+        for (int l = 0; l < k; ++l)
+        {
             this.entityDropItem(MaterialsAlloy.STABALLOY.getIngot(lootingChance), 0f);
-            }
         }
     }
 
