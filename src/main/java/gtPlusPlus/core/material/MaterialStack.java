@@ -13,11 +13,9 @@ public class MaterialStack {
 
     private final transient int[] vAmount;
     private final Material stackMaterial;
-    private final double vPercentageToUse;
 
     public MaterialStack(final Material inputs, final double partOutOf100) {
         this.stackMaterial = inputs;
-        this.vPercentageToUse = partOutOf100;
         this.vAmount = this.math(partOutOf100);
     }
 
