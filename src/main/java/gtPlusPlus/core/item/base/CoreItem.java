@@ -24,10 +24,6 @@ public class CoreItem extends Item {
     // Replace Item - What does this item turn into when held.
     private final ItemStack turnsInto;
 
-    // 3
-    /*
-     * Name, Tab, Stack, Dmg - Description
-     */
     public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, String string) {
         this(unlocalizedName, creativeTab, stackSize, 0, new String[] { string });
     }
@@ -37,31 +33,8 @@ public class CoreItem extends Item {
         this(unlocalizedName, creativeTab, stackSize, maxDmg, description, EnumRarity.common, false, null); // Calls 4.5
     }
 
-    // 5
-    /*
-     * Name, Tab, Stack, Dmg, Description, Rarity, Text Colour, Effect
-     */
     public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg,
         final String[] description, final EnumRarity regRarity, final boolean Effect, final ItemStack OverrideItem) {
-        this.setUnlocalizedName(unlocalizedName);
-        this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
-        this.setCreativeTab(creativeTab);
-        this.setMaxStackSize(stackSize);
-        this.setMaxDamage(maxDmg);
-        this.rarity = regRarity;
-        this.setItemDescription(description);
-        this.hasEffect = Effect;
-        this.turnsInto = OverrideItem;
-        GameRegistry.registerItem(this, unlocalizedName);
-    }
-
-    // 6
-    /*
-     * Name, Tab, Stack, Dmg, Description, Rarity, Text Colour, Effect
-     */
-    public CoreItem(final String unlocalizedName, final String displayName, final CreativeTabs creativeTab,
-        final int stackSize, final int maxDmg, final String[] description, final EnumRarity regRarity,
-        final boolean Effect, final ItemStack OverrideItem) {
         this.setUnlocalizedName(unlocalizedName);
         this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setCreativeTab(creativeTab);
@@ -128,10 +101,6 @@ public class CoreItem extends Item {
     @Override
     public boolean isRepairable() {
         return false;
-    }
-
-    public ItemStack getStack() {
-        return new ItemStack(this);
     }
 
     public void setItemDescription(String[] description) {

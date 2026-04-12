@@ -280,8 +280,4 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
         return "Reinforced Plasma Turbine Casing";
     }
 
-    @Override
-    protected boolean isDenseSteam() {
-        return false;
-    }
 }

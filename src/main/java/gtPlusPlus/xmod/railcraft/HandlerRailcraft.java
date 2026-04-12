@@ -32,8 +32,7 @@ public class HandlerRailcraft {
         GregtechItemList.CustomCoalCoke.set(
             new BaseItemBurnable(
                 "itemCoalCoke",
-                "Coking Coal",
-                tabMisc,
+                    tabMisc,
                 64,
                 0,
                 "Used for metallurgy.",
@@ -44,8 +43,7 @@ public class HandlerRailcraft {
         GregtechItemList.CactusCharcoal.set(
             new BaseItemBurnable(
                 "itemCactusCharcoal",
-                "Cactus Charcoal",
-                tabMisc,
+                    tabMisc,
                 64,
                 0,
                 "Used for smelting.",
@@ -56,8 +54,7 @@ public class HandlerRailcraft {
         GregtechItemList.SugarCharcoal.set(
             new BaseItemBurnable(
                 "itemSugarCharcoal",
-                "Sugar Charcoal",
-                tabMisc,
+                    tabMisc,
                 64,
                 0,
                 "Used for smelting.",
@@ -68,8 +65,7 @@ public class HandlerRailcraft {
         GregtechItemList.CactusCoke.set(
             new BaseItemBurnable(
                 "itemCactusCoke",
-                "Cactus Coke",
-                tabMisc,
+                    tabMisc,
                 64,
                 0,
                 "Used for smelting.",
@@ -80,8 +76,7 @@ public class HandlerRailcraft {
         GregtechItemList.SugarCoke.set(
             new BaseItemBurnable(
                 "itemSugarCoke",
-                "Sugar Coke",
-                tabMisc,
+                    tabMisc,
                 64,
                 0,
                 "Used for smelting.",

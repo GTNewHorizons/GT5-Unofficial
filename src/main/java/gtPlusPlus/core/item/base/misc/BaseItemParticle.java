@@ -23,7 +23,6 @@ public abstract class BaseItemParticle extends CoreItem {
     public BaseItemParticle(String aType, int aCount, EnumRarity aRarity) {
         super(
             "particle" + aType,
-            aType,
             AddToCreativeTab.tabOther,
             64,
             0,

@@ -52,9 +52,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngine> implements ISurvivalConstructable {
 
-    protected int fuelConsumption;
-    protected int fuelValue;
-    protected int fuelRemaining;
     protected int freeFuelTicks = 0;
     protected int euProduction = 0;
     protected boolean boostEu;
@@ -75,18 +72,12 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     public MTELargeRocketEngine(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
-        this.fuelConsumption = 0;
-        this.fuelValue = 0;
-        this.fuelRemaining = 0;
         this.boostEu = false;
         setAir();
     }
 
     public MTELargeRocketEngine(final String aName) {
         super(aName);
-        this.fuelConsumption = 0;
-        this.fuelValue = 0;
-        this.fuelRemaining = 0;
         this.boostEu = false;
         setAir();
     }
@@ -308,8 +299,6 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                             if (!consumeFuel(aFuel, hatchFluid1.amount)) {
                                 continue;
                             }
-                            this.fuelValue = aFuel.mSpecialValue * 3;
-                            this.fuelRemaining = hatchFluid1.amount;
                             this.lEUt = ((this.mEfficiency < 2000) ? 0 : GTValues.V[5] << 1);
                             this.mProgresstime = 1;
                             this.mMaxProgresstime = 1;
@@ -349,7 +338,6 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         if (!this.depleteInput(tLiquid)) {
             return false;
         } else {
-            this.fuelConsumption = this.boostEu ? amount * 3 : amount;
             this.freeFuelTicks = 20;
             setEUProduction(energy);
             return true;

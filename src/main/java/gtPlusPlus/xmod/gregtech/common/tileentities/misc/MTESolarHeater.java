@@ -140,10 +140,6 @@ public class MTESolarHeater extends MTETieredMachineBlock {
         return true;
     }
 
-    public boolean allowCoverOnSide(final byte aSide, final int aCoverID) {
-        return false;
-    }
-
     @Override
     public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
         return GTValues.emptyIntArray;

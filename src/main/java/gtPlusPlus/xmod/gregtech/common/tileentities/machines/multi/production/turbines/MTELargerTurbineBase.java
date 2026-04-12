@@ -129,8 +129,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     protected abstract String getCasingName();
 
-    protected abstract boolean isDenseSteam();
-
     protected abstract boolean requiresOutputHatch();
 
     @Override

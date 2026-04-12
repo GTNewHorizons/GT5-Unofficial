@@ -10,12 +10,11 @@ import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 
 public enum GTPPCombType {
 
-    DRAGONBLOOD(0, "Dragonblood", true, 30, Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20)),
-    FORCE(1, "Force", true, 30, Utils.rgbtoHexValue(250, 250, 20), Utils.rgbtoHexValue(200, 200, 5));
+    DRAGONBLOOD(0, "Dragonblood", true, Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20)),
+    FORCE(1, "Force", true, Utils.rgbtoHexValue(250, 250, 20), Utils.rgbtoHexValue(200, 200, 5));
 
     public boolean mShowInList;
     public final Material mMaterial;
-    public final int mChance;
     public final int mID;
 
     private final String mNameUnlocal;
@@ -29,11 +28,10 @@ public enum GTPPCombType {
         return GTPP_Bees.sCombMappings.get(aID);
     }
 
-    GTPPCombType(int aID, String aName, boolean aShow, int aChance, int... aColour) {
+    GTPPCombType(int aID, String aName, boolean aShow, int... aColour) {
         this.mID = aID;
         this.mNameUnlocal = aName.toLowerCase()
             .replaceAll(" ", "");
-        this.mChance = aChance;
         this.mShowInList = aShow;
         this.mColour = aColour;
         map(aID, this);

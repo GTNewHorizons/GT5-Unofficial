@@ -27,7 +27,6 @@ public class BaseItemTickable extends CoreItem {
     public final int itemColour;
     public final int maxTicks;
     public final boolean twoRenderPasses;
-    public final boolean ticksInContainers;
 
     public IIcon[] mIcon = new IIcon[2];
 
@@ -38,7 +37,6 @@ public class BaseItemTickable extends CoreItem {
         this.descriptionString = Description;
         this.maxTicks = maxTicks;
         this.twoRenderPasses = twoPass;
-        this.ticksInContainers = containerTick;
         this.maxStackSize = 1;
         // setGregtechItemList();
     }

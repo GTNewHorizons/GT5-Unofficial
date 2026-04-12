@@ -20,7 +20,6 @@ public class BaseItemDamageable extends Item {
 
     private final EnumRarity rarity;
     private final String itemDescription;
-    protected String itemName;
     private final boolean hasEffect;
 
     public BaseItemDamageable(final String unlocalizedName, final CreativeTabs creativeTab, final String description,
@@ -76,14 +75,6 @@ public class BaseItemDamageable extends Item {
             return true;
         }
         return this.hasEffect;
-    }
-
-    @Override
-    public String getItemStackDisplayName(final ItemStack tItem) {
-        if ((this.itemName == null) || this.itemName.isEmpty()) {
-            return super.getItemStackDisplayName(tItem);
-        }
-        return this.itemName;
     }
 
     private static boolean createNBT(ItemStack rStack) {

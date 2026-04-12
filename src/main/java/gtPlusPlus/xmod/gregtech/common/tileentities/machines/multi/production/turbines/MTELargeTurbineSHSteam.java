@@ -162,8 +162,4 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
         return "Reinforced HP Steam Turbine Casing";
     }
 
-    @Override
-    protected boolean isDenseSteam() {
-        return isUsingDenseSteam;
-    }
 }

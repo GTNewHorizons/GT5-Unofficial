@@ -19,18 +19,14 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeType;
-import forestry.api.apiculture.IAlleleBeeEffect;
 import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IBee;
 import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeMutationCustom;
 import forestry.api.core.EnumHumidity;
 import forestry.api.core.EnumTemperature;
-import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
-import forestry.api.genetics.IAlleleFlowers;
 import forestry.apiculture.genetics.Bee;
-import forestry.apiculture.genetics.BeeVariation;
 import forestry.apiculture.genetics.IBeeDefinition;
 import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.AlleleHelper;
@@ -137,39 +133,6 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
         }
     }
 
-    private static IAlleleBeeEffect getEffect(byte modid, String name) {
-        String s = switch (modid) {
-            case GTPP_Bees.EXTRABEES -> "extrabees.effect." + name;
-            case GTPP_Bees.GENDUSTRY -> "gendustry.effect." + name;
-            case GTPP_Bees.MAGICBEES -> "magicbees.effect" + name;
-            case GTPP_Bees.GREGTECH -> "gregtech.effect" + name;
-            default -> "forestry.effect" + name;
-        };
-        return (IAlleleBeeEffect) AlleleManager.alleleRegistry.getAllele(s);
-    }
-
-    private static IAlleleFlowers getFlowers(byte modid, String name) {
-        String s = switch (modid) {
-            case GTPP_Bees.EXTRABEES -> "extrabees.flower." + name;
-            case GTPP_Bees.GENDUSTRY -> "gendustry.flower." + name;
-            case GTPP_Bees.MAGICBEES -> "magicbees.flower" + name;
-            case GTPP_Bees.GREGTECH -> "gregtech.flower" + name;
-            default -> "forestry.flowers" + name;
-        };
-        return (IAlleleFlowers) AlleleManager.alleleRegistry.getAllele(s);
-    }
-
-    private static IAlleleBeeSpecies getSpecies(byte modid, String name) {
-        String s = switch (modid) {
-            case GTPP_Bees.EXTRABEES -> "extrabees.species." + name;
-            case GTPP_Bees.GENDUSTRY -> "gendustry.bee." + name;
-            case GTPP_Bees.MAGICBEES -> "magicbees.species" + name;
-            case GTPP_Bees.GREGTECH -> "gregtech.species" + name;
-            default -> "forestry.species" + name;
-        };
-        return (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele(s);
-    }
-
     private void setSpeciesProperties(GTPPAlleleBeeSpecies species2) {
         this.mSpeciesProperties.accept(species2);
     }
@@ -221,7 +184,4 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
         return BeeManager.beeRoot.getMemberStack(getIndividual(), beeType.ordinal());
     }
 
-    public final IBeeDefinition getRainResist() {
-        return new BeeVariation.RainResist(this);
-    }
 }

@@ -174,8 +174,4 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
         return "Reinforced Steam Turbine Casing";
     }
 
-    @Override
-    protected boolean isDenseSteam() {
-        return isUsingDenseSteam;
-    }
 }

@@ -84,7 +84,6 @@ public class Material implements IOreMaterial {
     public String vChemicalSymbol;
 
     public long vDurability;
-    public int vHarvestLevel;
 
     public short werkstoffID;
 
@@ -466,20 +465,6 @@ public class Material implements IOreMaterial {
                         .isEmpty() ? 51200
                             : 32_000L * this.getComposites()
                                 .size());
-            }
-
-            if ((this.vDurability >= 0) && (this.vDurability < 64000)) {
-                this.vHarvestLevel = 2;
-            } else if ((this.vDurability >= 64000) && (this.vDurability < 128000)) {
-                this.vHarvestLevel = 2;
-            } else if ((this.vDurability >= 128000) && (this.vDurability < 256000)) {
-                this.vHarvestLevel = 2;
-            } else if ((this.vDurability >= 256000) && (this.vDurability < 512000)) {
-                this.vHarvestLevel = 3;
-            } else if ((this.vDurability >= 512000) && (this.vDurability <= Integer.MAX_VALUE)) {
-                this.vHarvestLevel = 4;
-            } else {
-                this.vHarvestLevel = 1;
             }
 
             // Sets the Rad level

@@ -15,7 +15,7 @@ import gregtech.api.util.GTRecipe;
 
 public class GTRecipeUtils {
 
-    public static List<GTRecipe> removeDuplicates(List<GTRecipe> inputRecipes, String recipeMapName) {
+    public static List<GTRecipe> removeDuplicates(List<GTRecipe> inputRecipes) {
         TCustomHashSet<GTRecipe> recipesHashSet = new TCustomHashSet<>(RecipeHashStrat.RecipeHashingStrategy);
         ArrayList<GTRecipe> recipeOutput = new ArrayList<>();
         TCustomHashMap<GTRecipe, ItemStack> circuitMap = new TCustomHashMap<>(RecipeHashStrat.RecipeHashingStrategy);

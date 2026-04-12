@@ -93,12 +93,6 @@ public class ItemUtils {
         }
     }
 
-    // NullFormula
-    public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName,
-        final int Colour) {
-        return generateSpecialUseDusts(unlocalizedName, materialName, "NullFormula", Colour);
-    }
-
     public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName,
         String mChemForm, final int Colour) {
         MaterialUtils.generateMaterialLocalizedName(materialName);

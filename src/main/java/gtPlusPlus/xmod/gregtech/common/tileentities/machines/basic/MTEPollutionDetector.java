@@ -318,11 +318,6 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
         this.mRedstoneLevel = aNBT.getLong("mRedstoneLevel");
     }
 
-    public boolean allowCoverOnSide(final ForgeDirection side, final int aCoverID) {
-        return side != this.getBaseMetaTileEntity()
-            .getFrontFacing();
-    }
-
     @Override
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);

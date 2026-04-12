@@ -186,8 +186,4 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
         return "Reinforced Gas Turbine Casing";
     }
 
-    @Override
-    protected boolean isDenseSteam() {
-        return false;
-    }
 }

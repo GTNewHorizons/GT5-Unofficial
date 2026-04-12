@@ -17,10 +17,6 @@ public class BlockPos implements Serializable {
     public final int zPos;
     public final int dim;
 
-    public BlockPos(String @NotNull [] s) {
-        this(Integer.parseInt(s[1]), Integer.parseInt(s[2]), Integer.parseInt(s[3]), Integer.parseInt(s[0]));
-    }
-
     public BlockPos(int x, int y, int z, int dim) {
         this.xPos = x;
         this.yPos = y;

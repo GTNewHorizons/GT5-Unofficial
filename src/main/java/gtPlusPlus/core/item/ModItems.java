@@ -121,7 +121,6 @@ public final class ModItems {
         GregtechItemList.LFTRControlCircuit.set(
             new CoreItem(
                 "itemCircuitLFTR",
-                EnumChatFormatting.GREEN + "Control Circuit",
                 AddToCreativeTab.tabMisc,
                 1,
                 0,

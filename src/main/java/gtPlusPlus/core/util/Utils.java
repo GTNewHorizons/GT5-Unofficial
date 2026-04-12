@@ -19,12 +19,6 @@ import gtPlusPlus.core.util.minecraft.NBTUtils;
 
 public class Utils {
 
-    public static boolean isServer() {
-        return FMLCommonHandler.instance()
-            .getEffectiveSide()
-            .isServer();
-    }
-
     public static boolean isClient() {
         return FMLCommonHandler.instance()
             .getEffectiveSide()

@@ -12,12 +12,6 @@ import gtPlusPlus.core.config.Configuration;
 
 public class TexturesGtBlock {
 
-    private static final boolean mAnimated = Configuration.visual.enableAnimatedTextures;
-
-    /*
-     * Handles Custom Textures.
-     */
-
     public static class CustomIcon implements IIconContainer, Runnable {
 
         protected IIcon mIcon;

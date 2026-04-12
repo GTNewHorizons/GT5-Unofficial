@@ -37,7 +37,6 @@ public class ItemGenericToken extends CoreItem {
     public ItemGenericToken(String aUnlocalName, String aInternalName, String[] aBaseTooltip, String aTextureDir) {
         super(
             aUnlocalName,
-            aInternalName,
             AddToCreativeTab.tabMisc,
             64,
             1000,
