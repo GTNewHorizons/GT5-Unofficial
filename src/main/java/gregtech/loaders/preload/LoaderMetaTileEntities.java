@@ -146,6 +146,7 @@ import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller1;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller2;
 import gregtech.common.tileentities.machines.multi.MTEDecayWarehouse;
 import gregtech.common.tileentities.machines.multi.MTEDieselEngine;
+import gregtech.common.tileentities.machines.multi.MTEDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
@@ -527,8 +528,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEAssemblyLine(ASSEMBLING_LINE_CONTROLLER.ID, "multimachine.assemblyline", "Assembly Line")
                 .getStackForm(1L));
         ItemList.Machine_Multi_DieselEngine.set(
-            new MTEDieselEngine(COMBUSTION_ENGINE_CONTROLLER.ID, "multimachine.dieselengine", "Large Combustion Engine")
-                .getStackForm(1L));
+            new MTEDieselEngineLegacy(
+                COMBUSTION_ENGINE_CONTROLLER.ID,
+                "multimachine.dieselengine",
+                "Large Combustion Engine").getStackForm(1L));
         ItemList.Machine_Multi_ExtremeDieselEngine.set(
             new MTEExtremeDieselEngine(
                 EXTREME_COMBUSTION_ENGINE_CONTROLLER.ID,
@@ -854,6 +857,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.IntegratedOreFactory.set(
             new MTEIntegratedOreFactory(IntegratedOreFactory.ID, "multimachine.oreprocessor", "Integrated Ore Factory")
+                .getStackForm(1L));
+
+        ItemList.LargeCombustionEngine.set(
+            new MTEDieselEngine(LargeCombustionEngine.ID, "multimachine.dieselengine", "Large Combustion Engine")
                 .getStackForm(1L));
     }
 

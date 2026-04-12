@@ -1,7 +1,9 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -10,12 +12,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -31,13 +34,12 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.GTMod;
-import gregtech.api.casing.Casings;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -51,63 +53,46 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 
-public class MTEDieselEngine extends MTEExtendedPowerMultiBlockBase<MTEDieselEngine> implements ISurvivalConstructable {
+public class MTEDieselEngineLegacy extends MTEEnhancedMultiBlockBase<MTEDieselEngineLegacy>
+    implements ISurvivalConstructable {
 
-    private int casingAmount;
-    private static final int OFFSET_X = 1;
-    private static final int OFFSET_Y = 1;
-    private static final int OFFSET_Z = 1;
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final ClassValue<IStructureDefinition<MTEDieselEngineLegacy>> STRUCTURE_DEFINITION = new ClassValue<>() {
+
+        @Override
+        protected IStructureDefinition<MTEDieselEngineLegacy> computeValue(Class<?> type) {
+            return StructureDefinition.<MTEDieselEngineLegacy>builder()
+                .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                        new String[][] { { "---", "iii", "chc", "chc", "ccc", }, { "---", "i~i", "hgh", "hgh", "cdc", },
+                            { "---", "iii", "chc", "chc", "ccc", }, }))
+                .addElement('i', lazy(t -> ofBlock(t.getIntakeBlock(), t.getIntakeMeta())))
+                .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
+                .addElement('g', lazy(t -> ofBlock(t.getGearboxBlock(), t.getGearboxMeta())))
+                .addElement('d', lazy(t -> Dynamo.newAny(t.getCasingTextureIndex(), 2)))
+                .addElement(
+                    'h',
+                    lazy(
+                        t -> buildHatchAdder(MTEDieselEngineLegacy.class)
+                            .atLeast(InputHatch, InputHatch, InputHatch, Muffler, Maintenance)
+                            .casingIndex(t.getCasingTextureIndex())
+                            .hint(1)
+                            .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
+                .build();
+        }
+    };
     protected int fuelConsumption = 0;
     protected int fuelValue = 0;
     protected int fuelRemaining = 0;
     protected boolean boostEu = false;
 
-    @Override
-    public IStructureDefinition<MTEDieselEngine> getStructureDefinition() {
-        return StructureDefinition.<MTEDieselEngine>builder()
-            .addShape(
-                STRUCTURE_PIECE_MAIN,
-                new String[][] { { "   ---- ", "   ---- ", "        " }, { "EBECCCCE", "E~ECCCCE", "EDEDDDDE" },
-                    { "EBEFFFFE", "DBBAAAAG", "DDDDDDDD" }, { "EBEBBBBE", "EBEFFFFE", "EDEDDDDE" } })
-            .addElement('A', Casings.TitaniumGearBoxCasing.asElement())
-            .addElement(
-                'B',
-                buildHatchAdder(MTEDieselEngine.class).atLeast(Maintenance, Muffler)
-                    .casingIndex(Casings.StableTitaniumMachineCasing.textureId)
-                    .hint(1)
-                    .buildAndChain(
-                        onElementPass(x -> ++x.casingAmount, Casings.StableTitaniumMachineCasing.asElement())))
-            .addElement('C', Casings.EngineIntakeCasing.asElement())
-            .addElement('D', Casings.ChemicallyInertMachineCasing.asElement())
-            .addElement('E', ofFrame(Materials.Polytetrafluoroethylene))
-            .addElement(
-                'F',
-                buildHatchAdder(MTEDieselEngine.class).atLeast(InputHatch, InputHatch, InputHatch)
-                    .casingIndex(Casings.StableTitaniumMachineCasing.textureId)
-                    .hint(2)
-                    .buildAndChain(
-                        onElementPass(x -> ++x.casingAmount, Casings.StableTitaniumMachineCasing.asElement())))
-            .addElement(
-                'G',
-                buildHatchAdder(MTEDieselEngine.class).atLeast(Dynamo)
-                    .casingIndex(Casings.ChemicallyInertMachineCasing.textureId)
-                    .hint(3)
-                    .buildAndChain(Casings.ChemicallyInertMachineCasing.asElement()))
-            .build();
-    }
-
-    public MTEDieselEngine(int aID, String aName, String aNameRegional) {
+    public MTEDieselEngineLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEDieselEngine(String aName) {
+    public MTEDieselEngineLegacy(String aName) {
         super(aName);
-    }
-
-    @Override
-    public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEDieselEngine(this.mName);
     }
 
     @Override
@@ -123,6 +108,7 @@ public class MTEDieselEngine extends MTEExtendedPowerMultiBlockBase<MTEDieselEng
         String waitPower = TooltipHelper.effText(3.0f);
 
         tt.addMachineType(GTUtility.translate("gt.multiblock.DieselEngine.machine_type"))
+            .addStructureDeprecatedLine()
             .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc1", lubricantRate))
             .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc2", oxygenRate))
             .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.default_output", defaultOutput, defaultEfficiency))
@@ -130,19 +116,21 @@ public class MTEDieselEngine extends MTEExtendedPowerMultiBlockBase<MTEDieselEng
             .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.wait_power", waitPower))
             .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.intake_warning"))
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(8, 3, 3, false)
-            .addController("Front left, 2nd layer")
-            .addCasingInfoMin(GTUtility.translate("gt.blockcasings4.2.name"), 10, false)
-            .addCasingInfoExactly(GTUtility.translate("gt.blockcasings2.4.name"), 4, false)
-            .addCasingInfoExactly(GTUtility.translate("gt.blockcasings4.13.name"), 8, false)
-            .addCasingInfoExactly("PTFE Frame Box", 21, false)
-            .addDynamoHatch(GTUtility.translate("gt.mbtt.structure.back_center"), 3)
-            .addMaintenanceHatch("Any Stable Titanium Machine Casing", 1)
-            .addMufflerHatch("Any Stable Titanium Machine Casing", 1)
-            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.diesel_fuel"), 2)
-            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.lubricant"), 2)
-            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.oxygen_optional"), 2)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")
+            .beginStructureBlock(3, 3, 4, false)
+            .addController(GTUtility.translate("gt.mbtt.structure.front_center"))
+            .addCasingInfoRange(GTUtility.translate("gt.blockcasings4.Casing_StableTitanium"), 16, 22, false)
+            .addOtherStructurePart(
+                GTUtility.translate("gt.blockcasings2.Casing_Gearbox_Titanium"),
+                GTUtility.translate("gt.multiblock.DieselEngine.gear_box_inner"))
+            .addOtherStructurePart(
+                GTUtility.translate("gt.blockcasings4.Casing_EngineIntake"),
+                GTUtility.translate("gt.multiblock.DieselEngine.engine_intake_ring"))
+            .addDynamoHatch(GTUtility.translate("gt.mbtt.structure.back_center"), 2)
+            .addMaintenanceHatch(GTUtility.translate("gt.multiblock.DieselEngine.maintenance_hatch"), 1)
+            .addMufflerHatch(GTUtility.translate("gt.multiblock.DieselEngine.muffler_hatch"), 1)
+            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.diesel_fuel"), 1)
+            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.lubricant"), 1)
+            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.oxygen_optional"), 1)
             .toolTipFinisher();
         return tt;
     }
@@ -151,31 +139,26 @@ public class MTEDieselEngine extends MTEExtendedPowerMultiBlockBase<MTEDieselEng
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(Casings.StableTitaniumMachineCasing.textureId),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE)
-                    .extFacing()
-                    .build(),
+            if (aActive) return new ITexture[] { casingTexturePages[0][50], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(Casings.StableTitaniumMachineCasing.textureId),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DIESEL_ENGINE)
-                    .extFacing()
-                    .build(),
+            return new ITexture[] { casingTexturePages[0][50], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_DIESEL_ENGINE)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] {
-            Textures.BlockIcons.getCasingTextureForId(Casings.StableTitaniumMachineCasing.textureId) };
+        return new ITexture[] { casingTexturePages[0][50] };
     }
 
     @Override
@@ -297,10 +280,47 @@ public class MTEDieselEngine extends MTEExtendedPowerMultiBlockBase<MTEDieselEng
     }
 
     @Override
+    public IStructureDefinition<MTEDieselEngineLegacy> getStructureDefinition() {
+        return STRUCTURE_DEFINITION.get(getClass());
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && !mMufflerHatches.isEmpty()
-            && casingAmount >= 10;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 1) && !mMufflerHatches.isEmpty()
+            && mMaintenanceHatches.size() == 1;
+    }
+
+    public Block getCasingBlock() {
+        return GregTechAPI.sBlockCasings4;
+    }
+
+    public byte getCasingMeta() {
+        return 2;
+    }
+
+    public Block getIntakeBlock() {
+        return GregTechAPI.sBlockCasings4;
+    }
+
+    public byte getIntakeMeta() {
+        return 13;
+    }
+
+    public Block getGearboxBlock() {
+        return GregTechAPI.sBlockCasings2;
+    }
+
+    public byte getGearboxMeta() {
+        return 4;
+    }
+
+    public byte getCasingTextureIndex() {
+        return 50;
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTEDieselEngineLegacy(this.mName);
     }
 
     @Override
@@ -414,21 +434,12 @@ public class MTEDieselEngine extends MTEExtendedPowerMultiBlockBase<MTEDieselEng
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 1, 1);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            stackSize,
-            OFFSET_X,
-            OFFSET_Y,
-            OFFSET_Z,
-            elementBudget,
-            env,
-            false,
-            true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 1, elementBudget, env, false, true);
     }
 }
