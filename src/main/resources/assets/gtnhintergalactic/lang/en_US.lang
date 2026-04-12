@@ -346,10 +346,11 @@ ig.nei.siphon.depth=Depth
 
 # Structure and Tooltip
 ig.siphon.structure.ControllerPos=Front bottom
+ig.siphon.structure.HatchRequirement=Must have exactly §61§7 of each hatch!
 ig.siphon.structure.AnySiphonCasing=Any Planetary Siphon Casing
 ig.siphon.structure.PillarMiddle=1x4x1 pillar in the middle
 ig.siphon.structure.Sides=Each pillar's side and 1x3x1 on top
-ig.siphon.structure.Base=3x1x3 base (hollow)
+ig.siphon.structure.Base=3x1x3 base (hollow), needs §63§7
 ig.siphon.structure.SiphonCasing=Planetary Siphon Casing
 ig.siphon.structure.FrameTungstensteel=Tungstensteel Frame Box
 ig.siphon.structure.ReboltedRhodiumPalladiumCasing=Rebolted Rhodium-Plated Palladium Casing
@@ -417,6 +418,7 @@ ig.asteroid.quartzAsteroid=Quartz
 ig.asteroid.lutetiumAsteroid=Lutetium
 ig.asteroid.siliconAsteroid=Silicon
 ig.asteroid.phosphateAsteroid=Phosphate
+ig.asteroid.spaceOreAsteroid=Space Ore
 ig.asteroid.leadAsteroid=Lead
 ig.asteroid.adamantiumAsteroid=Adamantium
 ig.asteroid.tungstenTitaniumAsteroid=Tungsten-Titanium

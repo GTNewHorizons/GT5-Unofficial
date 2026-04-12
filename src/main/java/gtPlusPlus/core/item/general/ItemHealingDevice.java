@@ -10,11 +10,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 
@@ -335,36 +336,15 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
     }
 
-    private static boolean createNBT(ItemStack rStack) {
-        final NBTTagCompound tagMain = new NBTTagCompound();
-        tagMain.setBoolean("ShowMSG", false);
-        rStack.setTagCompound(tagMain);
-        return true;
-    }
-
     public static boolean getShowMessages(final ItemStack aStack) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT == null) {
-            if (!createNBT(aStack)) {
-                return false;
-            } else {
-                aNBT = aStack.getTagCompound();
-            }
+        if (!aStack.hasTagCompound()) {
+            ItemStackNBT.setBoolean(aStack, "ShowMSG", false);
         }
-        return aNBT.getBoolean("ShowMSG");
+        return ItemStackNBT.getBoolean(aStack, "ShowMSG");
     }
 
-    public static boolean setShowMessages(final ItemStack aStack, final boolean aShow) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT == null) {
-            if (!createNBT(aStack)) {
-                return false;
-            } else {
-                aNBT = aStack.getTagCompound();
-            }
-        }
-        aNBT.setBoolean("ShowMSG", aShow);
-        return true;
+    public static void setShowMessages(final ItemStack aStack, final boolean aShow) {
+        ItemStackNBT.setBoolean(aStack, "ShowMSG", aShow);
     }
 
     @Override

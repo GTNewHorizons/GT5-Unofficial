@@ -11,10 +11,11 @@ import java.util.Map.Entry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -132,13 +133,14 @@ public class GTLanguageManager {
 
     private static synchronized String writeToLangFile(String trimmedKey, String aEnglish) {
         addToMCLangListFallBack(trimmedKey, aEnglish);
+        // If the key is already provided by the standard lang system, don't touch GregTech.lang.
+        if (StatCollector.canTranslate(trimmedKey)) {
+            return StatCollector.translateToLocal(trimmedKey);
+        }
         Property tProperty = sEnglishFile.get("LanguageFile", trimmedKey, aEnglish);
         if (hasUnsavedEntry && GregTechAPI.sPostloadFinished) {
             sEnglishFile.save();
             hasUnsavedEntry = false;
-        }
-        if (StatCollector.canTranslate(trimmedKey)) {
-            return StatCollector.translateToLocal(trimmedKey);
         }
         String translation = tProperty.getString();
         if (tProperty.wasRead()) {
@@ -195,13 +197,9 @@ public class GTLanguageManager {
     @SuppressWarnings("unused")
     public static String getTranslateableItemStackName(ItemStack aStack) {
         if (GTUtility.isStackInvalid(aStack)) return "null";
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT != null && tNBT.hasKey("display")) {
-            String tName = tNBT.getCompoundTag("display")
-                .getString("Name");
-            if (GTUtility.isStringValid(tName)) {
-                return tName;
-            }
+        final String tName = ItemStackNBT.getDisplayName(aStack);
+        if (GTUtility.isStringValid(tName)) {
+            return tName;
         }
         return aStack.getUnlocalizedName() + ".name";
     }

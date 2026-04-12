@@ -31,6 +31,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -114,8 +115,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound()
-            && (stack.stackTagCompound.hasKey("mFluid") || stack.stackTagCompound.hasKey("lockedFluidName"))) {
+        if (ItemStackNBT.hasKey(stack, "mFluid") || ItemStackNBT.hasKey(stack, "lockedFluidName")) {
             final FluidStack tContents = FluidStack
                 .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
@@ -124,7 +124,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 tooltip.add(
                     StatCollector
                         .translateToLocalFormatted("gt.tileentity.tank_amount", formatNumber(tContents.amount)));
-            } else if (stack.stackTagCompound.hasKey("lockedFluidName")) {
+            } else if (ItemStackNBT.hasKey(stack, "lockedFluidName")) {
                 String fluidName = stack.stackTagCompound.getString("lockedFluidName");
                 Fluid fluid = FluidRegistry.getFluid(fluidName);
                 if (fluid == null) return;
@@ -317,61 +317,58 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
 
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if (isFluidChangingAllowed() && getFillableStack() != null && getFillableStack().amount <= 0)
-                setFillableStack(null);
+        if (!aBaseMetaTileEntity.isServerSide()) return;
 
-            if (mVoidFluidFull && getFillableStack() != null) {
-                mVoidFluidPart = false;
-                mLockFluid = false;
-                setFillableStack(null);
-            }
+        if (isFluidChangingAllowed() && getFillableStack() != null && getFillableStack().amount <= 0) {
+            setFillableStack(null);
+        }
 
-            if (doesEmptyContainers()) {
-                FluidStack tFluid = GTUtility.getFluidForFilledItem(mInventory[getInputSlot()], true);
-                if (tFluid != null && isFluidInputAllowed(tFluid)) {
-                    if (getFillableStack() == null) {
-                        if (isFluidInputAllowed(tFluid)) {
-                            if ((tFluid.amount <= getRealCapacity()) || mVoidFluidPart) {
-                                tFluid = tFluid.copy();
-                                if (aBaseMetaTileEntity.addStackToSlot(
-                                    getOutputSlot(),
-                                    GTUtility.getContainerForFilledItem(mInventory[getInputSlot()], true),
-                                    1)) {
-                                    setFillableStack(tFluid);
-                                    this.onEmptyingContainerWhenEmpty();
-                                    aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
-                                }
-                            }
+        if (mVoidFluidFull && getFillableStack() != null) {
+            mVoidFluidPart = false;
+            mLockFluid = false;
+            setFillableStack(null);
+        }
+
+        if (doesEmptyContainers()) {
+            FluidStack tFluid = GTUtility.getFluidForFilledItem(mInventory[getInputSlot()], true);
+            if (tFluid != null && isFluidInputAllowed(tFluid)) {
+                if (getFillableStack() == null) {
+                    if ((tFluid.amount <= getRealCapacity()) || mVoidFluidPart) {
+                        tFluid = tFluid.copy();
+                        if (aBaseMetaTileEntity.addStackToSlot(
+                            getOutputSlot(),
+                            GTUtility.getContainerForFilledItem(mInventory[getInputSlot()], true),
+                            1)) {
+                            setFillableStack(tFluid);
+                            this.onEmptyingContainerWhenEmpty();
+                            aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
                         }
-                    } else {
-                        if (tFluid.isFluidEqual(getFillableStack())) {
-                            if ((((long) tFluid.amount + getFillableStack().amount) <= (long) getRealCapacity())
-                                || mVoidFluidPart
-                                || mVoidFluidFull) {
-                                if (aBaseMetaTileEntity.addStackToSlot(
-                                    getOutputSlot(),
-                                    GTUtility.getContainerForFilledItem(mInventory[getInputSlot()], true),
-                                    1)) {
-                                    getFillableStack().amount += Math
-                                        .min(tFluid.amount, getRealCapacity() - getFillableStack().amount);
-                                    aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
-                                }
-                            }
+                    }
+                } else if (tFluid.isFluidEqual(getFillableStack())) {
+                    if ((((long) tFluid.amount + getFillableStack().amount) <= (long) getRealCapacity())
+                        || mVoidFluidPart
+                        || mVoidFluidFull) {
+                        if (aBaseMetaTileEntity.addStackToSlot(
+                            getOutputSlot(),
+                            GTUtility.getContainerForFilledItem(mInventory[getInputSlot()], true),
+                            1)) {
+                            getFillableStack().amount += Math
+                                .min(tFluid.amount, getRealCapacity() - getFillableStack().amount);
+                            aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
                         }
                     }
                 }
             }
+        }
 
-            if (doesFillContainers()) {
-                ItemStack tOutput = GTUtility
-                    .fillFluidContainer(getDrainableStack(), mInventory[getInputSlot()], false, true);
-                if (tOutput != null && aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), tOutput, 1)) {
-                    FluidStack tFluid = GTUtility.getFluidForFilledItem(tOutput, true);
-                    aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
-                    if (tFluid != null) getDrainableStack().amount -= tFluid.amount;
-                    if (getDrainableStack().amount <= 0 && isFluidChangingAllowed()) setDrainableStack(null);
-                }
+        if (doesFillContainers()) {
+            ItemStack tOutput = GTUtility
+                .fillFluidContainer(getDrainableStack(), mInventory[getInputSlot()], false, true);
+            if (tOutput != null && aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), tOutput, 1)) {
+                FluidStack tFluid = GTUtility.getFluidForFilledItem(tOutput, true);
+                aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
+                if (tFluid != null) getDrainableStack().amount -= tFluid.amount;
+                if (getDrainableStack().amount <= 0 && isFluidChangingAllowed()) setDrainableStack(null);
             }
         }
     }
@@ -407,17 +404,19 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if (mOutputFluid && getDrainableStack() != null && (aTick % 20 == 0)) {
-                IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
-                if (tTank != null) {
-                    FluidStack tDrained = drain(20 * (1 << (3 + 2 * tierPump(mTier))), false);
-                    if (tDrained != null) {
-                        int tFilledAmount = tTank.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
-                        if (tFilledAmount > 0)
-                            tTank.fill(aBaseMetaTileEntity.getBackFacing(), drain(tFilledAmount, true), true);
-                    }
-                }
+
+        if (!aBaseMetaTileEntity.isServerSide()) return;
+
+        if (mOutputFluid && getDrainableStack() != null && (aTick % 20 == 0)) {
+            IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
+            if (tTank == null) return;
+
+            FluidStack tDrained = drain(20 * (1 << (3 + 2 * tierPump(mTier))), false);
+            if (tDrained == null) return;
+
+            int tFilledAmount = tTank.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
+            if (tFilledAmount > 0) {
+                tTank.fill(aBaseMetaTileEntity.getBackFacing(), drain(tFilledAmount, true), true);
             }
         }
     }

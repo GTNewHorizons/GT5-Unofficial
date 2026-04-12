@@ -22,6 +22,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -60,10 +62,7 @@ public final class ItemParametrizerMemoryCard extends Item {
         aStack.stackSize = 1;
         IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
         if (metaTE instanceof TTMultiblockBase controller) {
-            if (aStack.getTagCompound() == null) {
-                aStack.setTagCompound(new NBTTagCompound());
-            }
-            NBTTagCompound tNBT = aStack.getTagCompound();
+            NBTTagCompound tNBT = ItemStackNBT.get(aStack);
             if (aStack.getItemDamage() == 1) {
                 // Prevent pasting configuration from a different multiblock
                 if (!hasIdenticalParameterList(getControllerParameters(controller), tNBT)) {
@@ -248,8 +247,8 @@ public final class ItemParametrizerMemoryCard extends Item {
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
-        ItemStack that = new ItemStack(this, 1);
-        that.setTagCompound(new NBTTagCompound());
-        list.add(that);
+        ItemStack stack = new ItemStack(this, 1);
+        stack.setTagCompound(new NBTTagCompound());
+        list.add(stack);
     }
 }

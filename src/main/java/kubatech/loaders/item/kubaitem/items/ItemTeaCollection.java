@@ -30,7 +30,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.ChatComponentTranslation;
@@ -39,6 +38,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.AchievementPage;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import kubatech.api.utils.ModUtils;
 import kubatech.loaders.ItemLoader;
@@ -60,22 +61,23 @@ public class ItemTeaCollection extends ItemProxy {
         { 3, 5 }, { 2, 6 }, { 0, 6 }, { -1, 5 }, { -2, 4 }, { -2, 2 }, { -1, 1 }, { 1, 3 } };
 
     boolean checkTeaOwner(ItemStack stack, UUID player) {
-        NBTTagCompound tag = stack.stackTagCompound;
-        if (tag == null || !stack.stackTagCompound.hasKey("TeaOwnerUUID")) return true;
-        return stack.stackTagCompound.getString("TeaOwnerUUID")
-            .equals(player.toString());
+        if (ItemStackNBT.hasKey(stack, "TeaOwnerUUID")) {
+            return ItemStackNBT.getString(stack, "TeaOwnerUUID")
+                .equals(player.toString());
+        }
+        return true;
     }
 
     boolean checkTeaOwner(ItemStack stack, String player) {
-        NBTTagCompound tag = stack.stackTagCompound;
-        if (tag == null || !stack.stackTagCompound.hasKey("TeaOwner")) return true;
-        return stack.stackTagCompound.getString("TeaOwner")
-            .equals(player);
+        if (ItemStackNBT.hasKey(stack, "TeaOwner")) {
+            return ItemStackNBT.getString(stack, "TeaOwner")
+                .equals(player);
+        }
+        return true;
     }
 
     private boolean checkOrSetTeaOwner(ItemStack stack, EntityPlayer player) {
-        NBTTagCompound tag = stack.stackTagCompound;
-        if (tag == null || !stack.stackTagCompound.hasKey("TeaOwnerUUID")) {
+        if (!ItemStackNBT.hasKey(stack, "TeaOwnerUUID")) {
             stack.setTagInfo(
                 "TeaOwnerUUID",
                 new NBTTagString(
@@ -173,8 +175,7 @@ public class ItemTeaCollection extends ItemProxy {
         if (world.isRemote) return;
         if (!(entity instanceof EntityPlayerMP)) return;
         checkOrSetTeaOwner(stack, (EntityPlayer) entity);
-        NBTTagCompound tag = stack.stackTagCompound;
-        if (tag.hasKey("display")) tag.removeTag("display");
+        ItemStackNBT.removeTag(stack, "display");
     }
 
     private static class TeaPage extends AchievementPage {

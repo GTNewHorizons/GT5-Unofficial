@@ -20,6 +20,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -46,12 +47,13 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Right click to check pollution levels.",
-            "Configure with screwdriver to set redstone output amount.",
-            "Does not use power.",
-            GTPPCore.GT_Tooltip.get());
+        return TooltipHelper.pollutionDisabledTooltip(
+            ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "Right click to check pollution levels.",
+                "Configure with screwdriver to set redstone output amount.",
+                "Does not use power.",
+                GTPPCore.GT_Tooltip.get()));
     }
 
     @Override
