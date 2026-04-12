@@ -805,6 +805,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 applySpecialEffect(afterRecipe);
                 this.calculatedEut = afterRecipe.eut;
                 if (phase == ArcFurnacePhase.ArcIgnition) {
+                    this.calculatedEut = (long) (getAverageInputVoltage() * 30d
+                        / 32d
+                        * this.maxParallel
+                        * (electrode.startupSurge + 1d));
                     sendSound(START_ARC_SOUND_INDEX);
                     return SimpleCheckRecipeResult.ofSuccess("arc_ignition");
                 }
@@ -852,10 +856,12 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     phase = ArcFurnacePhase.ArcIgnition;
                     this.setBatchSize(1);
                     GTRecipe ignitionRecipe = fakeRecipe();
-                    ignitionRecipe.mEUt = (int) (getAverageInputVoltage() * 30d
+                    final long use = (long) (getAverageInputVoltage() * 30d
                         / 32d
                         * this.maxParallel
                         * (electrode.startupSurge + 1d));
+                    // we set here to generate insufficient power error
+                    ignitionRecipe.mEUt = (int) Math.min(use, Integer.MAX_VALUE);
                     ignitionRecipe.mDuration = STARTUP_DURATION_TICKS;
                     ArcFurnaceProcessingEvent.EventStartIgnition event = new ArcFurnaceProcessingEvent.EventStartIgnition(
                         MTEIndustrialArcFurnace.this,
