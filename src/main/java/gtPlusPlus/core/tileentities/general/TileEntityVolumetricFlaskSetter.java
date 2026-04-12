@@ -34,7 +34,6 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
     }
 
     public int getCustomValue() {
-        // Logger.INFO("Value: "+this.aCustomValue);
         return this.aCustomValue;
     }
 

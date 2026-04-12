@@ -9,8 +9,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
-import gtPlusPlus.api.objects.Logger;
 
 public class RecipeGenFluidCanning implements Runnable {
 
@@ -109,16 +109,12 @@ public class RecipeGenFluidCanning implements Runnable {
 
         // Check Valid
         boolean aTempValidityCheck = false;
-        // Logger.INFO("Validity Check.");
         if (aExtracting) {
             if (aInput != null && aFluidOutput != null) {
-                // Logger.INFO("Pass.");
                 aTempValidityCheck = true;
             }
         } else {
-            // Logger.INFO("Canning.");
             if (aInput != null && aOutput != null && (aFluidInput != null || aFluidOutput != null)) {
-                // Logger.INFO("Pass.");
                 aTempValidityCheck = true;
             }
         }
@@ -130,7 +126,6 @@ public class RecipeGenFluidCanning implements Runnable {
             isValid = true;
             addRunnableToRecipeCache(this);
         } else {
-            // Logger.INFO("Failed Validity Check.");
             isValid = false;
             disableOptional = aExtracting;
             aRecipe.mEnabled = false;
@@ -165,7 +160,7 @@ public class RecipeGenFluidCanning implements Runnable {
     }
 
     private void dumpStack() {
-        Logger.modLogger.info((disableOptional ? "EXTRACTING" : "CANNING") + " DEBUG ", new Exception());
+        GTplusplus.logger.info((disableOptional ? "EXTRACTING" : "CANNING") + " DEBUG ", new Exception());
     }
 
     private int getMapSize(RecipeMap<?> aMap) {

@@ -488,7 +488,6 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof MTESolarHeater mTile) {
                 if (!mTile.hasSolarTower() && mTile.canSeeSky()) {
-                    // Logger.INFO("Found Solar Reflector, Injecting Data.");
                     mTile.setSolarTower(this);
                     return this.mSolarHeaters.add(mTile);
                 }

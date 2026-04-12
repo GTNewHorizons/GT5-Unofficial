@@ -353,11 +353,9 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     public boolean hasRotor(ItemStack rotorStack) {
         if (rotorStack != null) {
             if (rotorStack.getItem() instanceof ItemBasicScrubberTurbine) {
-                // Logger.INFO("Found Basic Turbine Rotor.");
                 return true;
             } else if (rotorStack.getItem() instanceof MetaGeneratedTool && rotorStack.getItemDamage() >= 170
                 && rotorStack.getItemDamage() <= 179) {
-                    // Logger.INFO("Found Turbine Rotor.");
                     return true;
                 }
         }
@@ -409,11 +407,9 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                     .floor(Math.abs(MathUtils.randFloat(1f, 2f) - MathUtils.randFloat(1f, 2f)) * (1f + 2f - 1f) + 1f);
                 damageValue -= fDam;
 
-                // Logger.INFO("Trying to do "+damageValue+" damage to the rotor. ["+fDam+"]");
                 /*
                  * Materials M1 = GT_MetaGenerated_Tool.getPrimaryMaterial(this.mInventory[this.SLOT_ROTOR]); Materials
                  * M2 = GT_MetaGenerated_Tool.getSecondaryMaterial(this.mInventory[this.SLOT_ROTOR]);
-                 * Logger.INFO("Trying to do "+damageValue+" damage to the rotor. [2]");
                  */
 
                 // Damage Rotor

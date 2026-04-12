@@ -8,6 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
@@ -69,6 +72,8 @@ public class GTplusplus {
             throw new RuntimeException(e);
         }
     }
+
+    public static final Logger logger = LogManager.getLogger("GT++");
 
     @Mod.Instance("miscutils")
     public static GTplusplus instance;

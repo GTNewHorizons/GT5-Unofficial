@@ -719,18 +719,14 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         // Do Things
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
-            // Logger.INFO("Right Clicked Controller.");
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
-                // Logger.INFO("Holding Item.");
                 if (tCurrentItem.getItem() instanceof MetaGeneratedTool) {
-                    // Logger.INFO("Is MetaGeneratedTool.");
                     int[] aOreID = OreDictionary.getOreIDs(tCurrentItem);
                     for (int id : aOreID) {
                         // Plunger
                         if (OreDictionary.getOreName(id)
                             .equals("craftingToolPlunger")) {
-                            // Logger.INFO("Is Plunger.");
                             return onPlungerRightClick(aPlayer, side, aX, aY, aZ);
                         }
                     }

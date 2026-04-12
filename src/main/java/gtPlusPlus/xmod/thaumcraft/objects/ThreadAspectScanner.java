@@ -110,7 +110,6 @@ public class ThreadAspectScanner extends Thread {
             Set<String> y = mAllGameContent.keySet();
 
             for (String key : y) {
-                // Logger.INFO("Looking for key: "+key);
                 if (mAllGameContent.containsKey(key)) {
                     ArrayList<ItemStack> group = mAllGameContent.get(key);
                     if (group == null || group.size() == 0) {

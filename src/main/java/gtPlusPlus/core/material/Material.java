@@ -1109,8 +1109,6 @@ public class Material implements IOreMaterial {
     }
 
     public final Block getOreBlock(final int stacksize) {
-        // Logger.DEBUG_MATERIALS("Trying to get ore block for "+this.getLocalizedName()+". Looking for
-        // '"+"ore"+StringUtils.sanitizeString(this.getUnlocalizedName())+"'.");
         try {
             ItemStack a1 = getOre(1);
             Item a2 = a1.getItem();
@@ -1131,7 +1129,6 @@ public class Material implements IOreMaterial {
         } catch (Exception t) {
             t.printStackTrace();
         }
-        // Logger.MATERIALS("Failed getting the Ore Block for "+this.getLocalizedName()+".");
         return Blocks.stone;
     }
 

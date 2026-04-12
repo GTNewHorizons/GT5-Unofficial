@@ -27,7 +27,7 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -269,7 +269,7 @@ public class RecipeGenRecycling implements Runnable {
     public static ItemStack get(final Object aName, final ItemStack aReplacement, final long aAmount,
         final boolean aMentionPossibleTypos, final boolean aNoInvalidAmounts) {
         if (aNoInvalidAmounts && (aAmount < 1L)) {
-            Logger.modLogger.warn("Returning Null. Method: ", new Exception());
+            GTplusplus.logger.warn("Returning Null. Method: ", new Exception());
             return null;
         }
         if (!GTOreDictUnificator.getName2StackMap()
@@ -284,7 +284,7 @@ public class RecipeGenRecycling implements Runnable {
 
     public static ItemStack getFirstOre(final Object aName, final long aAmount) {
         if (GTUtility.isStringInvalid(aName)) {
-            Logger.modLogger.warn("Returning Null. Method: ", new Exception());
+            GTplusplus.logger.warn("Returning Null. Method: ", new Exception());
             return null;
         }
         final ItemStack tStack = GTOreDictUnificator.getName2StackMap()

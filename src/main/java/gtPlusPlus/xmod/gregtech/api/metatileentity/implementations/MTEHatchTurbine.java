@@ -218,23 +218,19 @@ public class MTEHatchTurbine extends MTEHatch {
     public boolean isControllerActive() {
         MTELargerTurbineBase x = getController();
         if (x != null) {
-            // Logger.INFO("Checking Status of Controller. Running? "+(x.mEUt > 0));
             return x.lEUt > 0;
         }
-        // Logger.INFO("Status of Controller failed, controller is null.");
         return false;
     }
 
     public MTELargerTurbineBase getController() {
         if (this.mHasController && this.mControllerLocation != null) {
             BlockPos p = mControllerLocation;
-            // Logger.INFO(p.getLocationString());
             IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntity(p.xPos, p.yPos, p.zPos);
             if (tTileEntity != null && tTileEntity.getMetaTileEntity() instanceof MTELargerTurbineBase) {
                 return (MTELargerTurbineBase) tTileEntity.getMetaTileEntity();
             }
         }
-        // Logger.INFO("Failed to Get Controller.");
         return null;
     }
 

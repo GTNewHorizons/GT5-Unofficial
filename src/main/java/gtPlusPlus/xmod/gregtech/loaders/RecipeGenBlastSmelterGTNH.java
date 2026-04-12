@@ -141,7 +141,6 @@ public class RecipeGenBlastSmelterGTNH {
                 ItemStackData R = new ItemStackData(x.mOutputs[0]);
                 FluidStack tempFluid = getFluidFromIngot(R);
                 if (tempFluid != null) {
-                    // Logger.MACHINE_INFO("[ABS] Got Fluid from Cache.");
                     mMoltenStack = new FluidStack(tempFluid, mMoltenCount * 144);
                 }
             }

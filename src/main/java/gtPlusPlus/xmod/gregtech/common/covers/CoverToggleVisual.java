@@ -132,7 +132,6 @@ public class CoverToggleVisual extends CoverLegacyData {
     public void onCoverRemoval() {
         String aKey = generateUniqueKey(coverSide, coveredTile.get());
         sConnectionStateForEntityMap.remove(aKey);
-        // Logger.INFO("Unmapping key "+aKey+".");
     }
 
     public boolean getConnectionState() {
@@ -146,7 +145,6 @@ public class CoverToggleVisual extends CoverLegacyData {
 
     public static boolean getConnectionState(String aKey) {
         Integer b = sConnectionStateForEntityMap.get(aKey);
-        // Logger.INFO("Get State: "+b+" | "+aKey);
         return b != null && b == VALUE_ON;
     }
 

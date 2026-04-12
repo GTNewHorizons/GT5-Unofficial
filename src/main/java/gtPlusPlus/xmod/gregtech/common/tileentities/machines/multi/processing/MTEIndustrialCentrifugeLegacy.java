@@ -260,7 +260,6 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
     }
 
     public boolean usingAnimations() {
-        // Logger.INFO("Is animated? "+this.mIsAnimated);
         return this.mIsAnimated;
     }
 
