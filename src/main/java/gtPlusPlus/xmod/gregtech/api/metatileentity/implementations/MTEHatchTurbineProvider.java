@@ -181,7 +181,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
                         mRefreshTime = 0;
                     }
                 }
-                GTUtility.sendChatToPlayer(aPlayer, "Set check time to be every " + mRefreshTime + " ticks.");
+                GTUtility.sendChatTrans(aPlayer, "gtpp.chat.hatch_turbine_provider.set", mRefreshTime);
             }
         }
     }

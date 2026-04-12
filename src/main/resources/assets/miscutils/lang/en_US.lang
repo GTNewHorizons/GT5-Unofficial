@@ -4098,8 +4098,6 @@ gtpp.chat.fluid_tank_infinite.contains.all=This tank contains %s and can supply 
 gtpp.chat.fluid_tank_infinite.empty.single=This tank is empty.
 gtpp.chat.fluid_tank_infinite.empty.all=This tank can supply any fluid that is requested from it.
 
-gtpp.chat.blue_print.holding=This Blueprint holds NBT data. |%s|%s|%s|%s
-gtpp.chat.blue_print.holding.placeholder=This is a placeholder. %s
 gtpp.chat.healing_device.nano_booster.whirs=Your NanoBooster Whirs! Leaving you feeling stronger.
 gtpp.chat.healing_device.healed.hp=Healed %s hp.
 gtpp.chat.healing_device.healed.hunger=Healed %s hunger.
@@ -4127,6 +4125,7 @@ gtpp.chat.hatch_turbine.no_turbine_to_remove=No turbine to remove.
 gtpp.chat.hatch_turbine.reset_linked_controller=Trying to Reset linked Controller
 gtpp.chat.hatch_turbine_provider.down=Direction: DOWN
 gtpp.chat.hatch_turbine_provider.up=Direction: UP
+gtpp.chat.hatch_turbine_provider.set=Set check time to be every %s ticks.
 gtpp.chat.hatch_turbine_provider.reset_time=Reset check time to %s ticks.
 gtpp.chat.multi_base.clear_output_hatch.count=Trying to clear %s output hatches.
 gtpp.chat.multi_base.clear_output_hatch=Clearing %sL of %s from hatch %s.

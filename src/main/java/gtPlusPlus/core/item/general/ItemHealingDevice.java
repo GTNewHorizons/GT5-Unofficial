@@ -15,9 +15,8 @@ import net.minecraft.util.FoodStats;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
-
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
