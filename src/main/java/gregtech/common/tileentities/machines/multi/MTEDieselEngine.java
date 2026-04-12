@@ -33,7 +33,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -152,8 +151,7 @@ public class MTEDieselEngine extends MTEExtendedPowerMultiBlockBase<MTEDieselEng
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(Casings.StableTitaniumMachineCasing.textureId),
+            if (aActive) return new ITexture[] { Casings.StableTitaniumMachineCasing.getCasingTexture(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE)
                     .extFacing()
@@ -163,20 +161,17 @@ public class MTEDieselEngine extends MTEExtendedPowerMultiBlockBase<MTEDieselEng
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(Casings.StableTitaniumMachineCasing.textureId),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DIESEL_ENGINE)
-                    .extFacing()
-                    .build(),
+            return new ITexture[] { Casings.StableTitaniumMachineCasing.getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_DIESEL_ENGINE)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] {
-            Textures.BlockIcons.getCasingTextureForId(Casings.StableTitaniumMachineCasing.textureId) };
+        return new ITexture[] { Casings.StableTitaniumMachineCasing.getCasingTexture() };
     }
 
     @Override
