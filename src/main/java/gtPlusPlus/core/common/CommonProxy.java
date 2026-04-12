@@ -43,7 +43,6 @@ import gtPlusPlus.core.item.bauble.BaseBauble;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.xmod.gregtech.common.modularui2.GTPPGuiTextures;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
 
 public class CommonProxy implements IFuelHandler {
@@ -67,8 +66,6 @@ public class CommonProxy implements IFuelHandler {
         registerEntities();
         registerTileEntities();
         registerRenderThings();
-
-        GTPPGuiTextures.init();
     }
 
     public void init(final FMLInitializationEvent e) {

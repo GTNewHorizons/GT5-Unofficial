@@ -18,7 +18,6 @@ public enum GTPPCombType {
     public final int mChance;
     public final int mID;
 
-    private final String mName;
     private final String mNameUnlocal;
     private final int[] mColour;
 
@@ -32,7 +31,6 @@ public enum GTPPCombType {
 
     GTPPCombType(int aID, String aName, boolean aShow, int aChance, int... aColour) {
         this.mID = aID;
-        this.mName = aName;
         this.mNameUnlocal = aName.toLowerCase()
             .replaceAll(" ", "");
         this.mChance = aChance;
@@ -42,11 +40,7 @@ public enum GTPPCombType {
         this.mMaterial = GTPP_Bees.sMaterialMappings.get(
             aName.toLowerCase()
                 .replaceAll(" ", ""));
-        GTLanguageManager.addStringLocalization("gtplusplus.comb." + this.mNameUnlocal, this.mName + " Comb");
-    }
-
-    public void setHidden() {
-        this.mShowInList = false;
+        GTLanguageManager.addStringLocalization("gtplusplus.comb." + this.mNameUnlocal, aName + " Comb");
     }
 
     public String getLocalizedName() {
