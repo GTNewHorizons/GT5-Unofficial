@@ -172,8 +172,7 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
             }
         }
         // cast arraylist of input to a regular array and pass it to a duplicate recipe remover.
-        List<GTRecipe> deDuplicationOutputArray = GTRecipeUtils
-            .removeDuplicates(deDuplicationInputArray);
+        List<GTRecipe> deDuplicationOutputArray = GTRecipeUtils.removeDuplicates(deDuplicationInputArray);
         // add each recipe from the above output to the intended recipe map
         for (GTRecipe recipe : deDuplicationOutputArray) {
             aOutputs.add(recipe);

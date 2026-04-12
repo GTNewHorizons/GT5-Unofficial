@@ -21,15 +21,7 @@ public abstract class BaseItemParticle extends CoreItem {
     private final int aMaxCount;
 
     public BaseItemParticle(String aType, int aCount, EnumRarity aRarity) {
-        super(
-            "particle" + aType,
-            AddToCreativeTab.tabOther,
-            64,
-            0,
-            GTValues.emptyStringArray,
-            aRarity,
-            false,
-            null);
+        super("particle" + aType, AddToCreativeTab.tabOther, 64, 0, GTValues.emptyStringArray, aRarity, false, null);
         this.setTextureName(GTPlusPlus.ID + ":" + "science/Atom");
         aMaxCount = aCount;
         this.setHasSubtypes(true);

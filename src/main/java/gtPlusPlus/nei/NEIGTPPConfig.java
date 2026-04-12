@@ -15,7 +15,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 @SuppressWarnings("unused")
 public class NEIGTPPConfig implements IConfigureNEI {
 
-
     @Override
     public synchronized void loadConfig() {
         API.registerRecipeHandler(new DecayableRecipeHandler());

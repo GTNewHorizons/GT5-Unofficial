@@ -35,15 +35,7 @@ public class ItemGenericToken extends CoreItem {
     }
 
     public ItemGenericToken(String aUnlocalName, String aInternalName, String[] aBaseTooltip, String aTextureDir) {
-        super(
-            aUnlocalName,
-            AddToCreativeTab.tabMisc,
-            64,
-            1000,
-            aBaseTooltip,
-            EnumRarity.common,
-            false,
-            null);
+        super(aUnlocalName, AddToCreativeTab.tabMisc, 64, 1000, aBaseTooltip, EnumRarity.common, false, null);
         mLocalNames = new HashMap<>();
         mMaxStackSizes = new HashMap<>();
         mDescriptionArrays = new HashMap<>();
