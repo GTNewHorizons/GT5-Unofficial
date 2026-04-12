@@ -34,7 +34,7 @@ public class GregtechRocketFuelGenerator {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Controller_RocketEngine.get(1L),
             BITSD,
-            new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Machine_Multi_DieselEngine.get(1), 'P',
+            new Object[] { "PCP", "EME", "GWG", 'M', ItemList.LargeCombustionEngine.get(1), 'P',
                 ItemList.Electric_Piston_IV, 'E', ItemList.Field_Generator_EV, 'C',
                 OrePrefixes.circuit.get(Materials.LuV), 'W', OrePrefixes.cableGt08.get(Materials.Platinum), 'G',
                 MaterialsAlloy.MARAGING350.getGear(1) });
