@@ -36,7 +36,6 @@ import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.AlleleHelper;
 import forestry.core.genetics.alleles.EnumAllele.Lifespan;
 import forestry.core.genetics.alleles.EnumAllele.Tolerance;
-import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.items.CombType;
@@ -45,7 +44,6 @@ import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements.STANDALONE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 
 public enum GTPP_BeeDefinition implements IBeeDefinition {
@@ -99,21 +97,6 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
     private final Consumer<GTPP_BeeDefinition> mMutations;
     private IAllele[] template;
     private IBeeGenome genome;
-
-    GTPP_BeeDefinition(GTPP_BranchDefinition branch, String binomial, Materials aMat, boolean dominant, int primary,
-        int secondary, Consumer<GTPPAlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles,
-        Consumer<GTPP_BeeDefinition> aMutations) {
-        this(
-            branch,
-            binomial,
-            MaterialUtils.generateMaterialFromGtENUM(aMat),
-            dominant,
-            primary,
-            secondary,
-            aSpeciesProperties,
-            aAlleles,
-            aMutations);
-    }
 
     GTPP_BeeDefinition(GTPP_BranchDefinition branch, String binomial, Material aMat, boolean dominant, int primary,
         int secondary, Consumer<GTPPAlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles,
@@ -201,30 +184,11 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
 
     private void init() {
         setSpeciesProperties(species);
-
         template = branch.getTemplate();
         AlleleHelper.instance.set(template, SPECIES, species);
         setAlleles(template);
-
         genome = BeeManager.beeRoot.templateAsGenome(template);
-
         BeeManager.beeRoot.registerTemplate(template);
-    }
-
-    private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance) {
-        return registerMutation(parent1, parent2, chance, 1f);
-    }
-
-    private IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance) {
-        return registerMutation(parent1, parent2, chance, 1f);
-    }
-
-    private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, GTPP_BeeDefinition parent2, int chance) {
-        return registerMutation(parent1, parent2, chance, 1f);
-    }
-
-    private IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, GTPP_BeeDefinition parent2, int chance) {
-        return registerMutation(parent1, parent2, chance, 1f);
     }
 
     /**
@@ -235,21 +199,6 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
     private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance,
         float chancedivider) {
         return new GTPPBeeMutation(parent1, parent2, this.getTemplate(), chance, chancedivider);
-    }
-
-    private IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance,
-        float chancedivider) {
-        return registerMutation(parent1.species, parent2, chance, chancedivider);
-    }
-
-    private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, GTPP_BeeDefinition parent2, int chance,
-        float chancedivider) {
-        return registerMutation(parent1, parent2.species, chance, chancedivider);
-    }
-
-    private IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, GTPP_BeeDefinition parent2, int chance,
-        float chancedivider) {
-        return registerMutation(parent1.species, parent2, chance, chancedivider);
     }
 
     @Override
