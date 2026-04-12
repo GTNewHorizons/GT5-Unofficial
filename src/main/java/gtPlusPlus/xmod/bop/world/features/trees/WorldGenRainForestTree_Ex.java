@@ -48,7 +48,6 @@ public class WorldGenRainForestTree_Ex extends WorldGenAbstractTree {
                 for (int j1 = x - b0; (j1 <= x + b0) && (flag); j1++) {
                     for (int k1 = z - b0; (k1 <= z + b0) && (flag); k1++) {
                         if ((i1 >= 0) && (i1 < 256)) {
-                            Block block = world.getBlock(j1, i1, k1);
                             if (!isReplaceable(world, j1, i1, k1)) {
                                 flag = false;
                             }
