@@ -74,9 +74,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.util.MovingAverageLong;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -167,21 +165,6 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         // if (mBatteryCapacity <= 0) return false;
         openGui(aPlayer);
         return true;
-    }
-
-    private void checkMachineProblem(String msg, int xOff, int yOff, int zOff) {
-        final IGregTechTileEntity te = this.getBaseMetaTileEntity();
-        final Block tBlock = te.getBlockOffset(xOff, yOff, zOff);
-        final int tMeta = te.getMetaIDOffset(xOff, yOff, zOff);
-        String name = tBlock.getLocalizedName();
-        String problem = msg + ": (" + xOff + ", " + yOff + ", " + zOff + ") " + name + ":" + tMeta;
-        checkMachineProblem(problem);
-    }
-
-    private void checkMachineProblem(String msg) {
-        if (!ASMConfiguration.debug.disableAllLogging) {
-            Logger.INFO("Power Sub-Station problem: " + msg);
-        }
     }
 
     public static int getCellTier(Block aBlock, int aMeta) {
@@ -390,18 +373,11 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         int layer = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 4, 18);
-        log("Layer: " + layer);
-        log("Building 0");
         buildPiece(mName + "bottom", stackSize, hintsOnly, 2, 0, 0);
-        log("Built 0");
         for (int i = 1; i < layer - 1; i++) {
-            log("Building " + i);
             buildPiece(mName + "mid", stackSize, hintsOnly, 2, i, 0);
-            log("Built " + i);
         }
-        log("Building " + (layer - 1));
         buildPiece(mName + "top", stackSize, hintsOnly, 2, layer - 1, 0);
-        log("Built " + (layer - 1));
     }
 
     @Override
@@ -430,12 +406,9 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         for (int i = 0; i < 6; i++) {
             cellCount[i] = 0;
         }
-        log("Checking 0");
         if (!checkPiece(mName + "bottom", 2, 0, 0)) {
-            log("Failed on Layer 0");
             return false;
         }
-        log("Pass 0");
         int layer = 1;
         topState = TopState.MayBeTop;
         while (true) {

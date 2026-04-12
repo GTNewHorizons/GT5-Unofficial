@@ -20,10 +20,10 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import gregtech.api.enums.Mods;
 import gregtech.common.powergoggles.gui.PowerGogglesGuiOverlay;
 import gregtech.common.powergoggles.handlers.PowerGogglesHudHandler;
 import gregtech.common.powergoggles.handlers.PowerGogglesKeybindHandler;
-import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.client.renderer.CustomItemBlockRenderer;
 import gtPlusPlus.core.client.renderer.RenderDecayChest;
 import gtPlusPlus.core.client.renderer.RenderMiningExplosivesPrimed;
@@ -37,6 +37,7 @@ import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
+import gtPlusPlus.core.handler.events.MolecularTransformerTooltipNotice;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.xmod.gregtech.common.render.FlaskRenderer;
 import gtPlusPlus.xmod.gregtech.common.render.MachineBlockRenderer;
@@ -48,7 +49,6 @@ public class ClientProxy extends CommonProxy {
     public void preInit(final FMLPreInitializationEvent e) {
         super.preInit(e);
         // Do this weird things for textures.
-        GTplusplus.loadTextures();
         PowerGogglesGuiOverlay.init();
     }
 
@@ -59,6 +59,9 @@ public class ClientProxy extends CommonProxy {
         new FlaskRenderer();
         MinecraftForge.EVENT_BUS.register(PowerGogglesHudHandler.getInstance());
         PowerGogglesKeybindHandler.init();
+        if (Mods.AdvancedSolarPanel.isModLoaded()) {
+            MinecraftForge.EVENT_BUS.register(new MolecularTransformerTooltipNotice());
+        }
         super.init(e);
     }
 
@@ -69,15 +72,14 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void registerRenderThings() {
-        // Entities
-        RenderingRegistry
-            .registerEntityRenderingHandler(EntityPrimedMiningExplosive.class, new RenderMiningExplosivesPrimed());
+        // spotless:off
+        RenderingRegistry.registerEntityRenderingHandler(EntityPrimedMiningExplosive.class, new RenderMiningExplosivesPrimed());
         RenderingRegistry.registerEntityRenderingHandler(EntitySickBlaze.class, new RenderSickBlaze());
-        RenderingRegistry
-            .registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderStaballoyConstruct());
+        RenderingRegistry.registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderStaballoyConstruct());
         RenderingRegistry.registerEntityRenderingHandler(EntityToxinballSmall.class, new RenderToxinball(1F));
         RenderingRegistry.registerEntityRenderingHandler(EntityLightningAttack.class, new RenderFireball(1F));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDecayablesChest.class, new RenderDecayChest());
+        // spotless:on
     }
 
     @Override

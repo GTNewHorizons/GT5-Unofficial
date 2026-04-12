@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import static gregtech.api.util.GTUtility.validMTEList;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -76,9 +75,7 @@ import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
@@ -176,21 +173,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     public static final String TAG_HIDE_MAINT = "TAG_HIDE_MAINT";
     public static final String TAG_HIDE_POLLUTION = "TAG_HIDE_POLLUTION";
     public static final String TAG_HIDE_MACHINE_TYPE = "TAG_HIDE_MACHINE_TYPE";
-
-    /**
-     * A Static {@link Method} object which holds the current status of logging.
-     */
-    public static Method aLogger = null;
-
-    public void log(String s) {
-        if (!ASMConfiguration.debug.disableAllLogging) {
-            if (ASMConfiguration.debug.debugMode) {
-                Logger.INFO(s);
-            } else {
-                Logger.MACHINE_INFO(s);
-            }
-        }
-    }
 
     public long getMaxInputEnergy() {
         long rEnergy = 0;
@@ -361,18 +343,9 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             t.printStackTrace();
         }
 
-        if (aList.isEmpty()) {
-            if (aTileEntity instanceof MTEHatch) {
-                updateTexture(aTileEntity, aBaseCasingIndex);
-                return aList.add((E) aTileEntity);
-            }
-        } else {
+        if (!aList.isEmpty()) {
             IGregTechTileEntity aCur = aTileEntity.getBaseMetaTileEntity();
             if (aList.contains(aTileEntity)) {
-                log(
-                    "Found Duplicate " + aTileEntity.getInventoryName()
-                        + " @ "
-                        + new BlockPos(aCur).getLocationString());
                 return false;
             }
             BlockPos aCurPos = new BlockPos(aCur);
@@ -385,10 +358,10 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                     }
                 }
             }
-            if (aTileEntity instanceof MTEHatch) {
-                updateTexture(aTileEntity, aBaseCasingIndex);
-                return aList.add((E) aTileEntity);
-            }
+        }
+        if (aTileEntity instanceof MTEHatch) {
+            updateTexture(aTileEntity, aBaseCasingIndex);
+            return aList.add((E) aTileEntity);
         }
         return false;
     }
@@ -413,11 +386,9 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         }
 
         if (aMetaTileEntity instanceof MTEHatchInputBattery) {
-            log("Found MTEHatchInputBattery");
             return addToMachineListInternal(mChargeHatches, aMetaTileEntity, aBaseCasingIndex);
         }
         if (aMetaTileEntity instanceof MTEHatchOutputBattery) {
-            log("Found MTEHatchOutputBattery");
             return addToMachineListInternal(mDischargeHatches, aMetaTileEntity, aBaseCasingIndex);
         }
         if (aMetaTileEntity instanceof MTEHatchAirIntake) {
@@ -426,13 +397,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             return addedAir && addedInput;
         }
         if (isThisHatchMultiEnergy(aMetaTileEntity)) {
-            log("Found isThisHatchMultiEnergy");
             boolean added = addToMachineListInternal(mTecTechEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
             updateMasterEnergyHatchList(aMetaTileEntity);
             return added;
         }
         if (isThisHatchMultiDynamo(aMetaTileEntity)) {
-            log("Found isThisHatchMultiDynamo");
             boolean added = addToMachineListInternal(mTecTechDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
             updateMasterDynamoHatchList(aMetaTileEntity);
             return added;
@@ -577,21 +546,9 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         }
         if (aTileEntity instanceof MTEHatchInput || aTileEntity instanceof MTEHatchInputBus) {
             if (aTileEntity instanceof MTEHatchInput) {
-                ((MTEHatchInput) aTileEntity).mRecipeMap = null;
                 ((MTEHatchInput) aTileEntity).mRecipeMap = aMap;
-                if (aMap != null) {
-                    log("Remapped Input Hatch to " + aMap.unlocalizedName + ".");
-                } else {
-                    log("Cleared Input Hatch.");
-                }
             } else {
-                ((MTEHatchInputBus) aTileEntity).mRecipeMap = null;
                 ((MTEHatchInputBus) aTileEntity).mRecipeMap = aMap;
-                if (aMap != null) {
-                    log("Remapped Input Bus to " + aMap.unlocalizedName + ".");
-                } else {
-                    log("Cleared Input Bus.");
-                }
             }
             return true;
         } else {
@@ -762,18 +719,14 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         // Do Things
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
-            // Logger.INFO("Right Clicked Controller.");
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
-                // Logger.INFO("Holding Item.");
                 if (tCurrentItem.getItem() instanceof MetaGeneratedTool) {
-                    // Logger.INFO("Is MetaGeneratedTool.");
                     int[] aOreID = OreDictionary.getOreIDs(tCurrentItem);
                     for (int id : aOreID) {
                         // Plunger
                         if (OreDictionary.getOreName(id)
                             .equals("craftingToolPlunger")) {
-                            // Logger.INFO("Is Plunger.");
                             return onPlungerRightClick(aPlayer, side, aX, aY, aZ);
                         }
                     }

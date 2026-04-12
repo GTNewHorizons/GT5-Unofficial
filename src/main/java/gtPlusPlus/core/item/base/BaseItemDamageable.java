@@ -15,7 +15,6 @@ import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
 
 public class BaseItemDamageable extends Item {
 
@@ -152,12 +151,6 @@ public class BaseItemDamageable extends Item {
             return item;
         }
         return null;
-    }
-
-    @Override
-    public boolean doesContainerItemLeaveCraftingGrid(ItemStack stack) {
-        Logger.INFO("Does Leave Table? " + stack.getDisplayName());
-        return true;
     }
 
     @Override

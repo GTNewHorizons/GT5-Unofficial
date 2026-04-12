@@ -12,7 +12,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.recipe.GTRecipeUtils;
 
@@ -185,10 +184,6 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
         for (GTRecipe recipe : deDuplicationOutputArray) {
             aOutputs.add(recipe);
         }
-        Logger.INFO("Generated Recipes for " + aOutputs.unlocalizedName);
-        Logger.INFO("Original Map contains " + aOriginalCount + " recipes.");
-        Logger.INFO("Output Map contains " + aRecipesHandled + " recipes.");
-        Logger.INFO("There were " + aInvalidRecipesToConvert + " invalid recipes.");
         return aRecipesHandled;
     }
 }

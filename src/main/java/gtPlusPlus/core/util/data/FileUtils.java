@@ -11,7 +11,6 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 
 public class FileUtils {
@@ -29,13 +28,9 @@ public class FileUtils {
 
     public static File createFile(File aFile) {
         boolean blnCreated = false;
-        Logger.INFO("Trying to use path " + aFile.getPath());
         try {
-            Logger.INFO("Trying to use path " + aFile.getCanonicalPath());
-            Logger.INFO("Trying to use absolute path " + aFile.getAbsolutePath());
             blnCreated = aFile.createNewFile();
         } catch (IOException ioe) {
-            Logger.INFO("Error while creating a new empty file :" + ioe);
             return null;
         }
         return blnCreated ? aFile : null;
@@ -63,10 +58,8 @@ public class FileUtils {
         boolean doesExist = doesFileExist(file);
 
         if (doesExist) {
-            Logger.INFO("Found File: " + file.getAbsolutePath());
             return file;
         } else {
-            Logger.INFO("Creating file, as it was not found.");
             return createFile(path, filename, extension);
         }
     }

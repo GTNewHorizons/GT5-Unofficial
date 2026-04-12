@@ -8,6 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
@@ -19,25 +22,19 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.FishPondRecipes;
 import gregtech.api.util.SemiFluidFuelHandler;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.PacketHandler;
-import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenBlastSmelterGTNH;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
@@ -76,20 +73,13 @@ public class GTplusplus {
         }
     }
 
+    public static final Logger logger = LogManager.getLogger("GT++");
+
     @Mod.Instance("miscutils")
     public static GTplusplus instance;
 
     @SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.common.CommonProxy")
     public static CommonProxy proxy;
-
-    @SideOnly(value = Side.CLIENT)
-    public static void loadTextures() {
-        Logger.INFO("Loading some textures on the client.");
-        // Blocks
-        Logger.WARNING(
-            "Processing texture: " + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile()
-                .getResourcePath());
-    }
 
     @EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
@@ -102,7 +92,6 @@ public class GTplusplus {
         GTPPCore.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
         proxy.preInit(event);
-        Logger.INFO("Setting up our own GTProxy.");
         MetaGTProxy.preInit();
         fixVanillaOreDict();
     }
@@ -123,31 +112,6 @@ public class GTplusplus {
         proxy.postInit(event);
         BookHandler.runLater();
         MetaGTProxy.postInit();
-
-        Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        Logger.INFO(
-            "| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess
-                + " | Failed: "
-                + RegistrationHandler.recipesFailed
-                + " |");
-        Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        Logger.INFO("Finally, we are finished. Have some cripsy bacon as a reward.");
-
-        // Log free GT++ Meta IDs
-        if (GTPPCore.DEVENV) {
-            // 750 - 999 are reserved for Alkalus.
-            for (int i = 750; i < 1000; i++) {
-                if (GregTechAPI.METATILEENTITIES[i] == null) {
-                    Logger.INFO("MetaID " + i + " is free.");
-                }
-            }
-            // 30000 - 31999 are reserved for Alkalus.
-            for (int i = 30000; i < 32000; i++) {
-                if (GregTechAPI.METATILEENTITIES[i] == null) {
-                    Logger.INFO("MetaID " + i + " is free.");
-                }
-            }
-        }
     }
 
     @EventHandler

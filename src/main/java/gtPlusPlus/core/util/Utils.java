@@ -13,7 +13,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
@@ -82,11 +81,9 @@ public class Utils {
                 if (pages[i].length() < 256) {
                     NBTList.appendTag(new NBTTagString(pages[i]));
                 } else {
-                    Logger.INFO("WARNING: String for written Book too long! -> " + pages[i]);
                     GTLog.err.println("WARNING: String for written Book too long! -> " + pages[i]);
                 }
             } else {
-                Logger.INFO("WARNING: Too much Pages for written Book! -> " + titleKey);
                 GTLog.err.println("WARNING: Too much Pages for written Book! -> " + titleKey);
                 break;
             }
@@ -107,9 +104,6 @@ public class Utils {
 
         NBTUtils.createIntegerTagCompound(stack, "stats", "mMeta", ID);
         GTPPCore.sBookList.put(mapping, stack);
-
-        Logger.INFO(String.format("Creating book: %s by %s. Using Meta %d.", titleKey, author, ID));
-
         return GTUtility.copy(stack);
     }
 

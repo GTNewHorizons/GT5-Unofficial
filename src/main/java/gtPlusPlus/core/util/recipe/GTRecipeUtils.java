@@ -12,7 +12,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.set.hash.TCustomHashSet;
 import gregtech.api.util.GTRecipe;
-import gtPlusPlus.api.objects.Logger;
 
 public class GTRecipeUtils {
 
@@ -98,13 +97,6 @@ public class GTRecipeUtils {
 
             recipeOutput.add(finalRecipe);
         }
-
-        // print results to log
-        Logger.INFO(
-            "Recipe Array duplication removal process completed for '" + recipeMapName
-                + "': '"
-                + removedRecipeCount
-                + "' removed.");
         return recipeOutput;
     }
 }

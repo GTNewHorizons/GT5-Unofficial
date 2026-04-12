@@ -5,7 +5,6 @@ import static gregtech.api.enums.Mods.Forestry;
 import java.util.HashMap;
 
 import gregtech.GTMod;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPDropType;
@@ -37,13 +36,11 @@ public class GTPP_Bees {
 
     public GTPP_Bees() {
         if (Forestry.isModLoaded() && GTMod.proxy.mGTBees) {
-            Logger.BEES("Creating required items.");
             propolis = new GTPPPropolis();
             pollen = new GTPPPollen();
             drop = new GTPPDrop();
             combs = new GTPPComb();
 
-            Logger.BEES("Loading types.");
             // call values() to force initialization of enum entries
             GTPP_BeeDefinition.values();
             GTPPCombType.values();
@@ -51,15 +48,11 @@ public class GTPP_Bees {
             GTPPPollenType.values();
             GTPPPropolisType.values();
 
-            Logger.BEES("Adding recipes.");
             GTPPDrop.initDropsRecipes();
             GTPPPropolis.initPropolisRecipes();
             GTPPComb.initCombsRecipes();
 
-            Logger.BEES("Initialising bees.");
             GTPP_BeeDefinition.initBees();
-
-            Logger.BEES("Done!");
         }
     }
 }
