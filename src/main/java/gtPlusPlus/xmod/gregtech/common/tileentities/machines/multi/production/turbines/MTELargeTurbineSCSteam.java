@@ -48,11 +48,6 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
     }
 
     @Override
-    public int getFuelValue(FluidStack aLiquid) {
-        return 0;
-    }
-
-    @Override
     long fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
 
         int tEU = 0;
@@ -150,8 +145,4 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
         return "Reinforced SC Turbine Casing";
     }
 
-    @Override
-    protected boolean isDenseSteam() {
-        return isUsingDenseSteam;
-    }
 }

@@ -10,8 +10,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 
-import gtPlusPlus.api.objects.Logger;
-
 public class WorldGenMinableCustom extends WorldGenMinable {
 
     /** The block to generate. */
@@ -74,9 +72,6 @@ public class WorldGenMinableCustom extends WorldGenMinable {
                                 if ((((d12 * d12) + (d13 * d13) + (d14 * d14)) < 1.0D) && world.getBlock(k2, l2, i3)
                                     .isReplaceableOreGen(world, k2, l2, i3, this.blockToReplace)) {
                                     world.setBlock(k2, l2, i3, this.oreToGenerate, this.mineableBlockMeta, 3);
-                                    Logger.INFO(
-                                        "Generated a " + this.oreToGenerate
-                                            .getLocalizedName() + " at x: " + k2 + " | y: " + l2 + " | z: " + i3);
                                 }
                             }
                         }

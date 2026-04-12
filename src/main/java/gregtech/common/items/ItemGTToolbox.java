@@ -37,6 +37,7 @@ import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.GTNHLib;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import appeng.api.implementations.items.IAEWrench;
@@ -183,13 +184,9 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                 ToolboxUtil.saveToolbox(toolbox, handler);
             }
 
-            if (!toolbox.hasTagCompound()) {
-                toolbox.setTagCompound(new NBTTagCompound());
-            }
-            final NBTTagCompound tag = toolbox.getTagCompound();
-
             // Handle broken tool animation
-            if (tag.hasKey(RECENTLY_BROKEN_SLOT_KEY)) {
+            if (ItemStackNBT.hasKey(toolbox, RECENTLY_BROKEN_SLOT_KEY)) {
+                final NBTTagCompound tag = toolbox.getTagCompound();
                 if (tag.getBoolean(TOOLBOX_OPEN_KEY) || (tag.hasKey(CURRENT_TOOL_KEY) && tag.getInteger(CURRENT_TOOL_KEY) != NO_TOOL_SELECTED)) {
                     tag.removeTag(BROKEN_TOOL_ANIMATION_END_KEY);
                     tag.removeTag(RECENTLY_BROKEN_SLOT_KEY);
@@ -198,6 +195,9 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                 } else if (tag.getLong(BROKEN_TOOL_ANIMATION_END_KEY) < world.getTotalWorldTime()) {
                     tag.removeTag(BROKEN_TOOL_ANIMATION_END_KEY);
                     tag.removeTag(RECENTLY_BROKEN_SLOT_KEY);
+                }
+                if (tag.hasNoTags()) {
+                    toolbox.setTagCompound(null);
                 }
             }
         }
@@ -470,8 +470,8 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
      * @return true if it isn't a few ticks immediately after breaking a tool
      */
     private static boolean canOpenInventoryGui(final ItemStack toolbox, final World world) {
-        final NBTTagCompound tag = toolbox.hasTagCompound() ? toolbox.getTagCompound() : new NBTTagCompound();
-        final boolean recentlyBrokenTool = tag.hasKey(RECENTLY_BROKEN_SLOT_KEY);
+        final NBTTagCompound tag = toolbox.getTagCompound();
+        final boolean recentlyBrokenTool = tag != null && tag.hasKey(RECENTLY_BROKEN_SLOT_KEY);
 
         if (recentlyBrokenTool && (tag.hasKey(BROKEN_TOOL_ANIMATION_END_KEY)
             ? tag.getLong(BROKEN_TOOL_ANIMATION_END_KEY) - world.getTotalWorldTime()
@@ -509,9 +509,8 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     }
 
     private static ItemStack checkForOpenToolbox(final ItemStack candidate) {
-        if (candidate != null && candidate.getItem() instanceof ItemGTToolbox && candidate.hasTagCompound()) {
-            final NBTTagCompound candidateTag = candidate.getTagCompound();
-            if (candidateTag.getBoolean(TOOLBOX_OPEN_KEY)) {
+        if (candidate != null && candidate.getItem() instanceof ItemGTToolbox) {
+            if (ItemStackNBT.getBoolean(candidate, TOOLBOX_OPEN_KEY)) {
                 return candidate;
             }
         }
