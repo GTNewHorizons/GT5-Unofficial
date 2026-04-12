@@ -102,9 +102,7 @@ public enum ArcFurnaceElectrode {
     UniversiumNaniteElectrode(Materials.Universium, 10d, 1024, 8d, 4d, 1000, 2d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.Universium.getDust(1))) {
-                if (completed.arcFurnace.getRandomNumber(100) < 10) completed.arcFurnace
-                    .setDurabilityConsumptionThisRun(completed.arcFurnace.getDurabilityConsumptionThisRun() * -1);
-                else completed.arcFurnace.setDurabilityConsumptionThisRun(0);
+                completed.arcFurnace.setDurabilityConsumptionThisRun(-1000);
             }
         }
     }),
