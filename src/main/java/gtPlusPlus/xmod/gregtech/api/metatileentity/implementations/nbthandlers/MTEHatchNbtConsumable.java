@@ -43,7 +43,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
     }
 
     public MTEHatchNbtConsumable(String aName, int aTier, int aInputSlots, String[] aDescription,
-                                 ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInputSlots * 2, aDescription, aTextures);
         inputSlotCount = getInputSlotCount();
         totalSlotCount = getInputSlotCount() * 2;

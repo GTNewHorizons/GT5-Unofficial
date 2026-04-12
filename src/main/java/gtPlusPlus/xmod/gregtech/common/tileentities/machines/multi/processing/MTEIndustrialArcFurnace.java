@@ -16,7 +16,6 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;

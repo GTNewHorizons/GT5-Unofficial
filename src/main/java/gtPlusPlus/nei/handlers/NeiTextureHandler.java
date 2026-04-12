@@ -47,10 +47,10 @@ public final class NeiTextureHandler {
         GTPlusPlus.ID + ":textures/gui/nei/widgets.png");
 
     private NeiTextureHandler(int x, int y, int width, int height) {
-         this.minU =   (float) (0.00390625D * (double) x);
-         this.maxU =   (float) (0.00390625D * (double) (x + width));
-         this.minV =   (float) (0.00390625D * (double) y);
-         this.maxV =   (float) (0.00390625D * (double) (y + height));
+        this.minU = (float) (0.00390625D * (double) x);
+        this.maxU = (float) (0.00390625D * (double) (x + width));
+        this.minV = (float) (0.00390625D * (double) y);
+        this.maxV = (float) (0.00390625D * (double) (y + height));
     }
 
     public void renderIcon(double x, double y, double width, double height, double zLevel, boolean doDraw) {

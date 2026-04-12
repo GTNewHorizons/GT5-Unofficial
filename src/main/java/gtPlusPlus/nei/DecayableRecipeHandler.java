@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import gregtech.api.enums.Dyes;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -15,6 +14,7 @@ import net.minecraft.util.StatCollector;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import gregtech.api.enums.Dyes;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;

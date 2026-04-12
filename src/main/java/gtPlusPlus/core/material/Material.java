@@ -285,7 +285,7 @@ public class Material implements IOreMaterial {
     public Material(final String materialName, final MaterialState defaultState, final TextureSet set,
         final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons,
         final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel,
-                    final MaterialStack... inputs) {
+        final MaterialStack... inputs) {
         this(
             materialName,
             defaultState,

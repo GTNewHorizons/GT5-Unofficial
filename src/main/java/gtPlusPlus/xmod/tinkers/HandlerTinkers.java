@@ -1,15 +1,15 @@
 package gtPlusPlus.xmod.tinkers;
 
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.TierEU;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+
 import net.minecraftforge.fluids.Fluid;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.TierEU;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tconstruct.library.crafting.DryingRackRecipes;
 import tconstruct.library.crafting.Smeltery;
-
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 public class HandlerTinkers {
 

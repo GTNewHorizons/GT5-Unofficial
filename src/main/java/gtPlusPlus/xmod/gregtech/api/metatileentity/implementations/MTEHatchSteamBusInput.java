@@ -13,7 +13,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.recipe.RecipeMap;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputBusGui;
 import gtPlusPlus.core.util.Utils;
 
