@@ -51,11 +51,14 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -135,6 +138,9 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     private static final int OFFSET_H = 6;
     private static final int OFFSET_V = 7;
     private static final int OFFSET_D = 1;
+    private static final byte START_ARC_SOUND_INDEX = 10;
+    private static final byte STOP_ARC_SOUND_INDEX = 11;
+    private static final byte LOOP_ARC_SOUND_INDEX = 12;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEIndustrialArcFurnace> STRUCTURE_DEFINITION = StructureDefinition
@@ -373,6 +379,34 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         return PollutionConfig.pollutionPerSecondMultiIndustrialArcFurnace;
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_ARC_FURNACE_LOOP;
+    }
+
+    @Override
+    protected void doActivitySound(SoundResource activitySound) {
+        if (phase != ArcFurnacePhase.Processing) return;
+        super.doActivitySound(activitySound);
+    }
+
+    @Override
+    public void doSound(byte aIndex, double aX, double aY, double aZ) {
+        switch (aIndex) {
+            case START_ARC_SOUND_INDEX -> {
+                phase = ArcFurnacePhase.Standby;
+                GTUtility.doSoundAtClient(SoundResource.GT_MACHINES_ARC_FURNACE_STARTUP, 20 * 6, 1.0F, aX, aY, aZ);
+            }
+            case STOP_ARC_SOUND_INDEX -> {
+                phase = ArcFurnacePhase.Standby;
+                GTUtility.doSoundAtClient(SoundResource.GT_MACHINES_ARC_FURNACE_SHUTDOWN, 20 * 6, 1.0F, aX, aY, aZ);
+            }
+            case LOOP_ARC_SOUND_INDEX -> phase = ArcFurnacePhase.Processing;
+            default -> super.doSound(aIndex, aX, aY, aZ);
+        }
+    }
+
     @Override
     public int getDurabilityConsumptionThisRun() {
         return durabilityCostThisRun;
@@ -472,6 +506,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             mMaxProgresstime);
         applySpecialEffect(event);
         mMaxProgresstime = event.duration;
+        sendSound(STOP_ARC_SOUND_INDEX);
     }
 
     private void updateDetectorHatches(int durability) {
@@ -585,6 +620,9 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             lEUt = -calculator.getConsumption();
         }
         super.runMachine(aBaseMetaTileEntity, aTick);
+        if (mMaxProgresstime > 0 && phase == ArcFurnacePhase.Processing && (aTick % 20 == 0 || mProgresstime == 0)) {
+            sendSound(LOOP_ARC_SOUND_INDEX);
+        }
         if (mMaxProgresstime <= 0 && phase != ArcFurnacePhase.Standby) {
             startShutDown();
         }
@@ -720,7 +758,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     this.calculatedEut);
                 applySpecialEffect(afterRecipe);
                 this.calculatedEut = afterRecipe.eut;
-                if (phase == ArcFurnacePhase.ArcIgnition) return SimpleCheckRecipeResult.ofSuccess("arc_ignition");
+                if (phase == ArcFurnacePhase.ArcIgnition) {
+                    sendSound(START_ARC_SOUND_INDEX);
+                    return SimpleCheckRecipeResult.ofSuccess("arc_ignition");
+                }
                 return ret;
             }
 
