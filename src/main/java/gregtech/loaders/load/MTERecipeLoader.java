@@ -1717,7 +1717,7 @@ public class MTERecipeLoader implements Runnable {
         // Pyrolyse Oven Conversion Recipe
         GTModHandler
             .addShapelessCraftingRecipe(ItemList.PyrolyzeOven.get(1), new Object[] { ItemList.PyrolyseOven.get(1) });
-      
+
         // Universal Chemical Fuel Engine Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.UniversalChemicalFuelEngine.get(1),
