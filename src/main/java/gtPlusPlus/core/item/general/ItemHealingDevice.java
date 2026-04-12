@@ -24,7 +24,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
 import ic2.api.item.ElectricItem;
@@ -36,16 +35,15 @@ import ic2.api.item.IElectricItemManager;
         @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.ModIDs.BAUBLES) })
 public class ItemHealingDevice extends Item implements IElectricItem, IElectricItemManager, IBauble {
 
-    private final String unlocalizedName = "personalHealingDevice";
     private static final int maxValueEU = 1000000000;
-    protected double chargeEU = 0;
 
     public ItemHealingDevice() {
         this.setCreativeTab(AddToCreativeTab.tabMachines);
-        this.setUnlocalizedName(this.unlocalizedName);
+        final String unlocalizedName = "personalHealingDevice";
+        this.setUnlocalizedName(unlocalizedName);
         this.setMaxStackSize(1);
         this.setTextureName(GTPlusPlus.ID + ":" + "personalCloakingDevice");
-        GameRegistry.registerItem(this, this.unlocalizedName);
+        GameRegistry.registerItem(this, unlocalizedName);
     }
 
     @Override
@@ -292,7 +290,6 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         float hp = 0;
         if (arg1.getHealth() < arg1.getMaxHealth()) {
             final float rx = arg1.getMaxHealth() - arg1.getHealth();
-            Logger.INFO("rx:" + rx);
             arg1.heal(rx * 2);
             hp = rx;
             this.discharge(baubleStack, (1638400) * rx, 6, true, true, false);
