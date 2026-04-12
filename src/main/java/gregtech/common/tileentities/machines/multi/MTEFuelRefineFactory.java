@@ -18,6 +18,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -46,6 +47,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
 public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalConstructable {
@@ -198,6 +200,8 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Naquadah Fuel Refinery, NFR")
             .addInfo("Produces naquadah fuels")
+            .addInfo(
+                "Gains " + TooltipHelper.parallelText(4) + " Parallels per " + EnumChatFormatting.WHITE + "Coil Tier")
             .addInfo("Needs field restriction coils to control the fatal radiation")
             .addInfo("Use higher tier coils to unlock more fuel types and perform more perfect overclocks")
             .addTecTechHatchInfo()
