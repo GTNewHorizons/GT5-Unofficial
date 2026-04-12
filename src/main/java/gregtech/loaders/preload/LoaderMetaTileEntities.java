@@ -148,6 +148,7 @@ import gregtech.common.tileentities.machines.multi.MTEDecayWarehouse;
 import gregtech.common.tileentities.machines.multi.MTEDieselEngine;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
+import gregtech.common.tileentities.machines.multi.MTEElectricImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
 import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngine;
 import gregtech.common.tileentities.machines.multi.MTEFluidShaper;
@@ -855,6 +856,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.IntegratedOreFactory.set(
             new MTEIntegratedOreFactory(IntegratedOreFactory.ID, "multimachine.oreprocessor", "Integrated Ore Factory")
                 .getStackForm(1L));
+
+        ItemList.ElectricImplosionCompressor.set(
+            new MTEElectricImplosionCompressor(
+                ElectricImplosionCompressor.ID,
+                "ElectricImplosionCompressor",
+                "Electric Implosion Compressor").getStackForm(1L));
     }
 
     private static void registerSteamMachines() {

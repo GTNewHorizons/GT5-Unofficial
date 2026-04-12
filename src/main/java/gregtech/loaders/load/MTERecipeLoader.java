@@ -1721,6 +1721,10 @@ public class MTERecipeLoader implements Runnable {
         // Integrated Ore Factory Conversion Recipe
         GTModHandler
             .addShapelessCraftingRecipe(ItemList.IntegratedOreFactory.get(1), new Object[] { ItemList.Ore_Processor });
+
+        // Electric Implosion Compressor Conversion Recipe
+        GTModHandler
+            .addShapelessCraftingRecipe(ItemList.ElectricImplosionCompressor.get(1), new Object[] { ItemRegistry.eic });
     }
 
     private static void registerSifter() {
