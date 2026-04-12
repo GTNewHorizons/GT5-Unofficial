@@ -949,7 +949,7 @@ public class RecipeLoader {
             .addTo(multiblockChemicalReactorRecipes);
 
         GTModHandler.addCraftingRecipe(
-            ItemRefer.Universal_Chemical_Fuel_Engine.get(1),
+            ItemList.UniversalChemicalFuelEngine.get(1),
             GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "TZT", "ALB", "WGW", 'T',
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 1), 'Z', "circuitUltimate", 'A',
