@@ -35,7 +35,6 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -129,28 +128,26 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { BlockIcons.getCasingTextureForId(Casings.PyrolyseOvenCasing.textureId),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE)
-                    .extFacing()
-                    .build(),
+            if (active) return new ITexture[] { Casings.PyrolyseOvenCasing.getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { BlockIcons.getCasingTextureForId(Casings.PyrolyseOvenCasing.textureId),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN)
-                    .extFacing()
-                    .build(),
+            return new ITexture[] { Casings.PyrolyseOvenCasing.getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { BlockIcons.getCasingTextureForId(Casings.PyrolyseOvenCasing.textureId) };
+        return new ITexture[] { Casings.PyrolyseOvenCasing.getCasingTexture() };
     }
 
     @Override
