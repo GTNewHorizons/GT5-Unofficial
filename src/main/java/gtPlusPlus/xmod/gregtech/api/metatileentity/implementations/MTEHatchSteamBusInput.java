@@ -20,8 +20,6 @@ import gtPlusPlus.core.util.Utils;
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchSteamBusInput extends MTEHatchInputBus {
 
-    public RecipeMap<?> mRecipeMap = null;
-
     public MTEHatchSteamBusInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, getSlots() + 1);
     }

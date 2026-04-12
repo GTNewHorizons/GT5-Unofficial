@@ -264,11 +264,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
         }
     }
 
-    public boolean allowCoverOnSide(final ForgeDirection side, final int aCoverID) {
-        return side != this.getBaseMetaTileEntity()
-            .getFrontFacing();
-    }
-
     @Override
     public String[] getInfoData() {
         final TileEntity tTileEntity = this.getBaseMetaTileEntity()

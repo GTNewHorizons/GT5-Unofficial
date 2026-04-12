@@ -67,8 +67,7 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
         return 4000;
     }
 
-    @Override
-    public int getFuelValue(FluidStack aLiquid) {
+    private int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null) {
             return 0;
         }

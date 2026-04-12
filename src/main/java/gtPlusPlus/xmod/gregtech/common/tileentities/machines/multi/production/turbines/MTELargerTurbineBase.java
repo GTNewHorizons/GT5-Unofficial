@@ -269,8 +269,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     public abstract int getCasingTextureIndex();
 
-    public abstract int getFuelValue(FluidStack aLiquid);
-
     public static boolean isValidTurbine(ItemStack aTurbine) {
         return (aTurbine != null && aTurbine.getItem() instanceof MetaGeneratedTool
             && aTurbine.getItemDamage() >= 170

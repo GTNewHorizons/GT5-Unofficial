@@ -280,14 +280,6 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
         return PollutionConfig.pollutionPerSecondMultiIndustrialArcFurnace;
     }
 
-    public Block getCasingBlock() {
-        return ModBlocks.blockCasings4Misc;
-    }
-
-    public byte getCasingMeta() {
-        return 3;
-    }
-
     public byte getCasingTextureIndex() {
         return (byte) mCasingTextureID;
     }

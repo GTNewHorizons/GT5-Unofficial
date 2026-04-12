@@ -17,10 +17,6 @@ import ic2.core.init.InternalName;
 
 public class MetaGTProxy {
 
-    public static AchievementHandler mAssemblyAchievements;
-
-    public MetaGTProxy() {}
-
     public static void preInit() {
         fixIC2FluidNames();
         CoverManager.generateCustomCovers();
@@ -31,9 +27,8 @@ public class MetaGTProxy {
     }
 
     public static void postInit() {
-        mAssemblyAchievements = new AchievementHandler();
+        new AchievementHandler();
         fixIC2FluidNames();
-
         // Finalise TAE
         TAE.finalizeTAE();
     }
