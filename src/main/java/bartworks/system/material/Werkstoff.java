@@ -51,7 +51,6 @@ import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
@@ -828,10 +827,6 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             prefixLogic.put(OrePrefixes.rawOre, ORES);
 
             prefixLogic.put(OrePrefixes.cell, LIQUID_CELLS);
-            if (Mods.Forestry.isModLoaded()) {
-                prefixLogic.put(OrePrefixes.capsule, LIQUID_CELLS);
-                prefixLogic.put(OrePrefixes.capsuleMolten, MOLTEN_CELLS);
-            }
             // prefixLogic.put(OrePrefixes.bottle, BOTTLES);
 
             prefixLogic.put(OrePrefixes.cellMolten, MOLTEN_CELLS);
