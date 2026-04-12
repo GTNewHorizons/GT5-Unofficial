@@ -14,7 +14,6 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import gregtech.api.util.scanner.ScannerConfig;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.mixin.Mixin;
-import gtPlusPlus.core.config.ASMConfiguration;
 
 @IFMLLoadingPlugin.MCVersion("1.7.10")
 @IFMLLoadingPlugin.TransformerExclusions({ "gregtech.asm" })
@@ -23,7 +22,6 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     static {
         try {
-            ConfigurationManager.registerConfig(ASMConfiguration.class);
             ConfigurationManager.registerConfig(Configuration.class);
             ConfigurationManager.registerConfig(PollutionConfig.class);
             ConfigurationManager.registerConfig(ScannerConfig.class);
