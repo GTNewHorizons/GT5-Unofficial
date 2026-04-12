@@ -318,11 +318,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         mCasing4 = 0;
 
         boolean aStructureTop = checkPiece(STRUCTURE_PIECE_TOP, 2, 2, 0);
-        log("Top Check: " + aStructureTop);
         boolean aStructureTower = checkPiece(STRUCTURE_PIECE_TOWER, 1, 1, -7);
-        log("Tower Check: " + aStructureTower);
         boolean aStructureBase = checkPiece(STRUCTURE_PIECE_BASE, 5, 5, -22);
-        log("Base Check: " + aStructureBase);
         boolean aCasingCount1 = mCasing1 >= 229;
         boolean aCasingCount2 = mCasing2 == 60;
         boolean aCasingCount3 = mCasing3 == 66;
@@ -333,49 +330,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             || mMaintenanceHatches.size() != 1
             || mInputHatches.isEmpty()
             || mOutputHatches.isEmpty()) {
-            log(
-                "Bad Hatches - Solar Heaters: " + mSolarHeaters.size()
-                    + ", Maint: "
-                    + mMaintenanceHatches.size()
-                    + ", Input Hatches: "
-                    + mInputHatches.size()
-                    + ", Output Hatches: "
-                    + mOutputHatches.size()
-                    + ", Top: "
-                    + aStructureTop
-                    + ", Tower: "
-                    + aStructureTower
-                    + ", Base: "
-                    + aStructureBase
-                    + ", Casing Count: "
-                    + aCasingCount1
-                    + " | Found: "
-                    + mCasing1
-                    + ", Casing Count: "
-                    + aCasingCount2
-                    + " | Found: "
-                    + mCasing2
-                    + ", Casing Count: "
-                    + aCasingCount3
-                    + " | Found: "
-                    + mCasing3
-                    + ", Casing Count: "
-                    + aCasingCount4
-                    + " | Found: "
-                    + mCasing4);
             return false;
         }
-        log(
-            "Built " + this.getLocalName()
-                + " with "
-                + mCasing1
-                + " Structural Solar casings, "
-                + mCasing2
-                + " Thermally Insulated casings, "
-                + mCasing3
-                + " Salt Containment casings, "
-                + mCasing4
-                + " Thermal Containment casings.");
         return aAllCasings && aAllStructure;
     }
 

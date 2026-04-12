@@ -11,7 +11,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenFluidCanning implements Runnable {
 
@@ -112,7 +111,6 @@ public class RecipeGenFluidCanning implements Runnable {
         boolean aTempValidityCheck = false;
         // Logger.INFO("Validity Check.");
         if (aExtracting) {
-            Logger.INFO("Extracting.");
             if (aInput != null && aFluidOutput != null) {
                 // Logger.INFO("Pass.");
                 aTempValidityCheck = true;
@@ -143,7 +141,6 @@ public class RecipeGenFluidCanning implements Runnable {
 
     @Override
     public void run() {
-        Logger.INFO("Processing Recipe with Hash: " + recipe.hashCode());
         generateRecipes();
     }
 
@@ -158,20 +155,11 @@ public class RecipeGenFluidCanning implements Runnable {
     }
 
     private void addFluidCannerRecipe(GTRecipe aRecipe) {
-        boolean result;
         int aCount1 = getMapSize(RecipeMaps.cannerRecipes);
         int aCount2 = aCount1;
         RecipeMaps.cannerRecipes.addRecipe(aRecipe);
         aCount1 = getMapSize(RecipeMaps.cannerRecipes);
         if (aCount1 <= aCount2) {
-            Logger.INFO(
-                "[ERROR] Failed adding Canning recipe for " + ItemUtils.getArrayStackNames(aRecipe.mInputs)
-                    + ", "
-                    + ItemUtils.getArrayStackNames(aRecipe.mOutputs)
-                    + ", "
-                    + ItemUtils.getArrayStackNames(aRecipe.mFluidInputs)
-                    + ", "
-                    + ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
             dumpStack();
         }
     }

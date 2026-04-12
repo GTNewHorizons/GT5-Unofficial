@@ -18,7 +18,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTLanguageManager;
-import gtPlusPlus.api.objects.Logger;
 
 public class CoreItem extends Item {
 
@@ -240,7 +239,6 @@ public class CoreItem extends Item {
         if (this.turnsInto != null) {
             if (entityHolding instanceof EntityPlayer) {
 
-                Logger.INFO("Replacing " + iStack.getDisplayName() + " with " + this.turnsInto.getDisplayName() + ".");
                 final ItemStack tempTransform = this.turnsInto;
                 if (iStack.stackSize == 64) {
                     tempTransform.stackSize = 64;

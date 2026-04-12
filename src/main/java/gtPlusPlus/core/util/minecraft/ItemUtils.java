@@ -30,8 +30,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -65,45 +63,33 @@ public class ItemUtils {
             returnValue.stackSize = amount;
             return returnValue;
         }
-        Logger.INFO("Failed to find `" + oredictName + "` in OD.");
         return null;
     }
 
     public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, final int amount) {
-        if (ASMConfiguration.debug.debugMode) {
-            Logger.modLogger.warn("Looking up: " + oredictName + " - from : ", new Exception());
-        }
-
         try {
-
             if (oredictName.contains("-") || oredictName.contains("_")) {
                 oredictName = StringUtils.sanitizeStringKeepDashes(oredictName);
             } else {
                 oredictName = StringUtils.sanitizeString(oredictName);
             }
-
             // Adds a check to grab dusts using GT methodology if possible.
-            ItemStack returnValue = null;
             if (oredictName.toLowerCase()
                 .contains("dust")) {
                 final String MaterialName = oredictName.toLowerCase()
                     .replace("dust", "");
                 final Materials m = Materials.get(MaterialName);
                 if (m != Materials._NULL) {
-                    returnValue = GTOreDictUnificator.get(OrePrefixes.dust, m, 1);
+                    ItemStack returnValue = GTOreDictUnificator.get(OrePrefixes.dust, m, 1);
                     if (returnValue != null) {
                         return returnValue;
                     }
                 }
             }
-            if (returnValue == null) {
-                returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
-                if (returnValue != null) {
-                    return returnValue.copy();
-                }
+            ItemStack returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
+            if (returnValue != null) {
+                return returnValue.copy();
             }
-
-            Logger.RECIPE(oredictName + " was not valid.");
             return null;
         } catch (final Exception t) {
             return null;
@@ -326,12 +312,7 @@ public class ItemUtils {
         if (mPrefix == OrePrefixes.rod) {
             mPrefix = OrePrefixes.stick;
         }
-        ItemStack aGtStack = GTOreDictUnificator.get(mPrefix, mMat, mAmount);
-        if (aGtStack == null) {
-            Logger
-                .INFO("Failed to find `" + mPrefix + MaterialUtils.getMaterialName(mMat) + "` in OD. [Prefix Search]");
-        }
-        return aGtStack;
+        return GTOreDictUnificator.get(mPrefix, mMat, mAmount);
     }
 
     /**

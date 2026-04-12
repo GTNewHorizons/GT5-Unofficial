@@ -32,8 +32,6 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
         }
     }
 
-    private static boolean DEV_ENVIRONMENT;
-
     @Override
     public String[] getASMTransformerClass() {
         return null;
@@ -50,9 +48,7 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
     }
 
     @Override
-    public void injectData(Map<String, Object> data) {
-        DEV_ENVIRONMENT = !(boolean) data.get("runtimeDeobfuscationEnabled");
-    }
+    public void injectData(Map<String, Object> data) {}
 
     @Override
     public String getAccessTransformerClass() {
@@ -68,9 +64,4 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
     public List<String> getMixins(Set<String> loadedCoreMods) {
         return IMixins.getEarlyMixins(Mixin.class, loadedCoreMods);
     }
-
-    public static boolean isDevEnv() {
-        return DEV_ENVIRONMENT;
-    }
-
 }

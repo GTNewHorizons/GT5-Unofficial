@@ -27,7 +27,6 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -171,7 +170,6 @@ public class ItemMagicFeather extends CoreItem {
                         this.onRemove();
                     }
                     this.hasItem = hasItem;
-                    Logger.INFO("Ticking feather " + hasItem);
                     return;
                 }
             } catch (Exception t) {

@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryVolumetricFlaskSetter;
 import gtPlusPlus.core.slots.SlotNoInput;
@@ -161,9 +160,5 @@ public class ContainerVolumetricFlaskSetter extends Container {
         if (par1 == 0) {
             mCustomValue = par2;
         }
-    }
-
-    public void log(String aString) {
-        Logger.INFO("[Flask-Container] " + aString);
     }
 }

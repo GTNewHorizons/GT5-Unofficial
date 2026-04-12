@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gtPlusPlus.api.objects.Logger;
 import tconstruct.library.crafting.DryingRackRecipes;
 
 public class TinkersDryingRecipe {
@@ -24,24 +23,16 @@ public class TinkersDryingRecipe {
         this.time = time;
         this.input = input;
         this.result = result;
-        Logger.INFO(
-            "Generating Drying Recipe. Input: " + input.getDisplayName() + ", Output: " + result.getDisplayName());
     }
 
     public static void generateAllDryingRecipes() {
         List<DryingRackRecipes.DryingRecipe> aRecipes = TinkersDryingRecipe.getDryingRecipes();
         if (!aRecipes.isEmpty()) {
             for (DryingRackRecipes.DryingRecipe recipe : aRecipes) {
-                Logger.INFO(
-                    "Trying to generate recipe using object of type " + recipe.getClass()
-                        .getSimpleName());
                 generateFromTinkersRecipe(recipe);
             }
-        } else {
-            Logger.INFO("Error generating Drying recipes, map was empty. Size: " + aRecipes.size());
         }
         if (!recipes.isEmpty()) {
-            Logger.INFO("Adding " + recipes.size() + " drying rack recipes to the dehydrator.");
             for (TinkersDryingRecipe r : recipes) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(r.input)
@@ -59,14 +50,7 @@ public class TinkersDryingRecipe {
     }
 
     private static List<DryingRackRecipes.DryingRecipe> getDryingRecipes() {
-        ArrayList<DryingRackRecipes.DryingRecipe> aData = new ArrayList<>();
-        int aCount = 0;
-        for (DryingRackRecipes.DryingRecipe recipe : DryingRackRecipes.recipes) {
-            aData.add(recipe);
-            aCount++;
-        }
-        Logger.INFO("Found " + aCount + " Tinkers drying rack recipes.");
-        return aData;
+        return new ArrayList<>(DryingRackRecipes.recipes);
     }
 
     public boolean matches(ItemStack input) {

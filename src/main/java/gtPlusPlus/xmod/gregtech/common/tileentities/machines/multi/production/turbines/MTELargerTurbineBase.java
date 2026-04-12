@@ -49,7 +49,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -210,27 +209,12 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         // we do not check for casing count here. the bare minimal is 372 but we only require 360
         boolean aStructure = checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0);
-        log("Structure Check: " + aStructure);
         if (mTurbineRotorHatches.size() != 12 || mMaintenanceHatches.size() != 1
             || (mDynamoHatches.isEmpty() && mTecTechDynamoHatches.isEmpty())
             || (requiresMufflers() && mMufflerHatches.size() != 4)
             || mInputBusses.isEmpty()
             || mInputHatches.isEmpty()
             || (requiresOutputHatch() && mOutputHatches.isEmpty())) {
-            log(
-                "Bad Hatches - Turbine Housings: " + mTurbineRotorHatches.size()
-                    + ", Maint: "
-                    + mMaintenanceHatches.size()
-                    + ", Dynamo: "
-                    + mDynamoHatches.size()
-                    + ", Muffler: "
-                    + mMufflerHatches.size()
-                    + ", Input Buses: "
-                    + mInputBusses.size()
-                    + ", Input Hatches: "
-                    + mInputHatches.size()
-                    + ", Output Hatches: "
-                    + mOutputHatches.size());
             return false;
         }
         return aStructure;
@@ -257,18 +241,13 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchTurbine aTurbineHatch) {
-            log("Found MTEHatchTurbine");
             updateTexture(aTileEntity, aBaseCasingIndex);
             IGregTechTileEntity g = this.getBaseMetaTileEntity();
             if (aTurbineHatch.setController(new BlockPos(g.getXCoord(), g.getYCoord(), g.getZCoord(), g.getWorld()))) {
                 boolean aDidAdd = this.mTurbineRotorHatches.add(aTurbineHatch);
-                Logger.INFO("Injected Controller into Turbine Assembly. Found: " + this.mTurbineRotorHatches.size());
                 return aDidAdd;
-            } else {
-                Logger.INFO("Failed to inject controller into Turbine Assembly Hatch.");
             }
         }
-        log("Bad Turbine Housing");
         return false;
     }
 
@@ -323,7 +302,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     public boolean areAllTurbinesTheSame() {
         ArrayList<MTEHatchTurbine> aTurbineAssemblies = getFullTurbineAssemblies();
         if (aTurbineAssemblies.size() < 12) {
-            log("Found " + aTurbineAssemblies.size() + ", expected 12.");
             return false;
         }
         ArrayList<Materials> aTurbineMats = new ArrayList<>();

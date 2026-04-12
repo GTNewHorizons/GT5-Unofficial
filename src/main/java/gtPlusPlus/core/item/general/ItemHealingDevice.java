@@ -23,7 +23,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
 import ic2.api.item.ElectricItem;
@@ -291,7 +290,6 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         float hp = 0;
         if (arg1.getHealth() < arg1.getMaxHealth()) {
             final float rx = arg1.getMaxHealth() - arg1.getHealth();
-            Logger.INFO("rx:" + rx);
             arg1.heal(rx * 2);
             hp = rx;
             this.discharge(baubleStack, (1638400) * rx, 6, true, true, false);

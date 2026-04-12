@@ -15,7 +15,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.chemistry.RecipeLoaderAgriculturalChem;
@@ -100,8 +99,6 @@ public class CompatHandler {
     public static Boolean areInitItemsLoaded = false;
 
     public static void registerMyModsOreDictEntries() {
-
-        Logger.INFO("Registering Materials with OreDict.");
         // In-house
 
         ItemStack[] bufferCores = new ItemStack[] { GregtechItemList.Energy_Core_ULV.get(1),
@@ -228,9 +225,6 @@ public class CompatHandler {
         for (Set<RunnableWithInfo<Material>> m : MaterialGenerator.mRecipeMapsToGenerate) {
             for (RunnableWithInfo<Material> r : m) {
                 r.run();
-                Logger.INFO(
-                    "[FIND] " + r.getInfoData()
-                        .getDefaultLocalName() + " recipes generated.");
             }
         }
         RecipeGenRecycling.executeGenerators();

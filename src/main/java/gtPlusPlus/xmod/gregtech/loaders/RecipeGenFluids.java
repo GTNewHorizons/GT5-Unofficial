@@ -10,7 +10,6 @@ import java.util.Set;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 
@@ -60,9 +59,6 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .duration(1 * SECONDS + 12 * TICKS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
-
-                Logger
-                    .WARNING("144l fluid molder for 1 ingot Recipe: " + material.getDefaultLocalName() + " - Success");
             }
 
             // Plate
@@ -74,9 +70,6 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .duration(1 * SECONDS + 12 * TICKS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
-
-                Logger
-                    .WARNING("144l fluid molder for 1 plate Recipe: " + material.getDefaultLocalName() + " - Success");
             }
 
             // Nugget
@@ -88,9 +81,6 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .duration(16 * TICKS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
-
-                Logger
-                    .WARNING("16l fluid molder for 1 nugget Recipe: " + material.getDefaultLocalName() + " - Success");
             }
 
             // Gears
@@ -102,9 +92,6 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
-
-                Logger.WARNING("576l fluid molder for 1 gear Recipe: " + material.getDefaultLocalName() + " - Success");
-
             }
 
             // Blocks
@@ -116,9 +103,6 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .duration(14 * SECONDS + 8 * TICKS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
-
-                Logger.WARNING(
-                    (144 * 9) + "l fluid molder from 1 block Recipe: " + material.getDefaultLocalName() + " - Success");
             }
 
             // Rod
@@ -130,9 +114,6 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .duration(7 * SECONDS + 10 * TICKS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
-
-                Logger.WARNING(
-                    (144 * 9) + "l fluid molder from 1 rod Recipe: " + material.getDefaultLocalName() + " - Success");
             }
 
             // Rod Long
@@ -144,11 +125,6 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .duration(15 * SECONDS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
-
-                Logger.WARNING(
-                    (144 * 9) + "l fluid molder from 1 rod long Recipe: "
-                        + material.getDefaultLocalName()
-                        + " - Success");
             }
 
             // Bolt
@@ -160,9 +136,6 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .duration(2 * SECONDS + 10 * TICKS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
-
-                Logger.WARNING(
-                    (144 * 9) + "l fluid molder from 1 bolt Recipe: " + material.getDefaultLocalName() + " - Success");
             }
 
             // Screw
@@ -174,10 +147,6 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .duration(2 * SECONDS + 10 * TICKS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
-
-                Logger.WARNING(
-                    (144 * 9) + "l fluid molder from 1 screw Recipe: " + material.getDefaultLocalName() + " - Success");
-
             }
 
             // Ring
@@ -189,10 +158,6 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .duration(5 * SECONDS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
-
-                Logger.WARNING(
-                    (144 * 9) + "l fluid molder from 1 ring Recipe: " + material.getDefaultLocalName() + " - Success");
-
             }
 
             // Rotor
@@ -204,9 +169,6 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .duration(5 * SECONDS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
-
-                Logger.WARNING(
-                    (144 * 9) + "l fluid molder from 1 rotor Recipe: " + material.getDefaultLocalName() + " - Success");
             }
         }
     }

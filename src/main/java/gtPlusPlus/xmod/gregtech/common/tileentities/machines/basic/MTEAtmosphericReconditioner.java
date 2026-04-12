@@ -38,7 +38,6 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -199,36 +198,23 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
             // Only try once/sec.
             if (!isIdle && aTick % 20L == 0L) {
-
-                for (int i = 0; i < this.mInventory.length; i++) {
-                    ItemStack aSlotContent = this.mInventory[i];
-                    if (aSlotContent != null) {
-                        Logger.INFO("Found " + aSlotContent.getDisplayName() + " in slot " + i);
-                    }
-                }
-
                 for (int i = 0; i < this.mInventory.length; i++) {
                     if (hasRotor(this.mInventory[i])) {
-                        Logger.INFO("Found Rotor in slot " + i);
                         break;
                     }
                 }
                 for (int i = 0; i < this.mInventory.length; i++) {
                     if (hasAirFilter(this.mInventory[i])) {
-                        Logger.INFO("Found Filter in slot " + i);
                         break;
                     }
                 }
 
                 // Check if machine can work.
                 if ((aBaseMetaTileEntity.isAllowedToWork())) {
-                    Logger.INFO("Can work.");
-
                     // Enable machine animation/graphic
                     if (hasRotor(stackRotor) && hasAirFilter(stackFilter) && this.mHasPollution) {
                         if (!this.getBaseMetaTileEntity()
                             .isActive()) {
-                            Logger.INFO("Set Active.");
                             aBaseMetaTileEntity.setActive(true);
                         }
                     } else if (!this.mHasPollution || mCurrentPollution <= 0
@@ -238,7 +224,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                         || !hasAirFilter(stackFilter)) {
                             if (!this.getBaseMetaTileEntity()
                                 .isActive()) {
-                                Logger.INFO("Set Inactive.");
                                 aBaseMetaTileEntity.setActive(false);
                                 this.sendSound((byte) -122);
                             }
@@ -246,28 +231,15 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
                     // If Active.
                     if (aBaseMetaTileEntity.isActive()) {
-                        Logger.INFO("Doing something.");
-
                         // Do nothing if there is no pollution.
                         if (this.mHasPollution && mCurrentPollution > 0) {
-                            Logger
-                                .INFO("Has Pollution? " + mHasPollution + ", Current Pollution: " + mCurrentPollution);
-
                             // Use a Turbine
                             if (hasRotor(stackRotor) && hasAirFilter(stackFilter)) {
-                                Logger.INFO("Found Turbine.");
-
                                 mBaseEff = getBaseEfficiency(stackRotor);
                                 mOptimalAirFlow = getOptimalAirFlow(stackRotor);
 
                                 // Make sure we have a valid Turbine and Eff/Airflow
                                 if (this.mBaseEff > 0 && this.mOptimalAirFlow > 0) {
-                                    // Utils.LOG_WARNING("Pollution Cleaner [5]");
-
-                                    // Log Debug information.
-                                    Logger.INFO("mBaseEff[1]:" + mBaseEff);
-                                    Logger.INFO("mOptimalAirFlow[1]:" + mOptimalAirFlow);
-
                                     // Calculate The Voltage we are running
                                     byte tTier = (byte) Math.max(1, GTUtility.getTier(drainEU));
 
@@ -279,38 +251,23 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
                                     // If no sides are free, how will you process the atmosphere?
                                     if (mAirSides > 0) {
-                                        reduction += (((Math.max((tTier - 2), 1) * 2) * 50) * mAirSides); // Was
-                                                                                                          // originally
-                                                                                                          // *100
-                                        Logger.INFO("mPollutionReduction[1]:" + reduction);
-
+                                        // Was originally *100
+                                        reduction += (((Math.max((tTier - 2), 1) * 2) * 50) * mAirSides);
                                         // I stole this code
                                         reduction = (MathUtils.safeInt((long) reduction * this.mBaseEff) / 100000)
                                             * mAirSides
                                             * Math.max((tTier - 2), 1);
-                                        Logger.INFO("reduction[2]:" + reduction);
                                         reduction = MathUtils.safeInt(((long) reduction / 100) * this.mOptimalAirFlow);
-                                        Logger.INFO("reduction[3]:" + reduction);
 
                                         mPollutionReduction = reduction;
 
                                         // Set a temp to remove variable to aleviate duplicate code.
-                                        int toRemove = 0;
-
-                                        Logger.INFO("mCurrentPollution[4]:" + mCurrentPollution);
-                                        Logger.INFO("mCurrentPollution[5]:" + reduction);
-
-                                        toRemove = Math.min(reduction, mCurrentPollution) / 2;
-                                        Logger.INFO("mCurrentPollution[6]:" + toRemove);
-
+                                        int toRemove = Math.min(reduction, mCurrentPollution) / 2;
                                         // We are good to clean
                                         if (toRemove > 0) {
                                             if (damageTurbineRotor() && damageAirFilter()) {
-                                                Logger.INFO("Removing " + toRemove + " pollution");
                                                 removePollution(mSaveRotor ? (toRemove / 2) : toRemove);
-                                                Logger.INFO("mNewPollution[4]:" + getCurrentChunkPollution());
                                             } else {
-                                                Logger.INFO("Could not damage turbine rotor or Air Filter.");
                                                 aBaseMetaTileEntity.setActive(false);
                                             }
                                         } // End of pollution removal block.
@@ -418,33 +375,26 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 long currentUse = ItemBasicScrubberTurbine.getFilterDamage(rotorStack);
                 // Remove broken Filter
                 if (rotorStack.getItemDamage() == 0 && currentUse >= 2000 - 10) {
-                    Logger.INFO("Depleting ItemBasicScrubberTurbine T1");
                     this.mInventory[this.SLOT_FILTER] = null;
                     return false;
                 } else if (rotorStack.getItemDamage() == 1 && currentUse >= 4000 - 10) {
-                    Logger.INFO("Depleting ItemBasicScrubberTurbine T2");
                     this.mInventory[this.SLOT_FILTER] = null;
                     return false;
                 } else if (rotorStack.getItemDamage() == 2 && currentUse >= 6000 - 10) {
-                    Logger.INFO("Depleting ItemBasicScrubberTurbine T3");
                     this.mInventory[this.SLOT_FILTER] = null;
                     return false;
                 } else {
                     // Do Damage
-                    Logger.INFO("Damaging ItemBasicScrubberTurbine");
                     ItemBasicScrubberTurbine.setFilterDamage(rotorStack, currentUse + 10);
-                    Logger.INFO("Rotor Damage: " + currentUse);
                     return true;
                 }
             } else if (rotorStack.getItem() instanceof MetaGeneratedTool01) {
                 Materials t1 = MetaGeneratedTool.getPrimaryMaterial(rotorStack);
                 Materials t2 = MetaGeneratedTool.getSecondaryMaterial(rotorStack);
                 if (t1 == Materials._NULL && t2 == Materials._NULL) {
-                    Logger.INFO("Found creative rotor.");
                     creativeRotor = true;
                 }
             } else {
-                Logger.INFO("Bad item in rotor slot.");
                 return false;
             }
 
@@ -473,20 +423,14 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 long rotorDurabilityMax = creativeRotor ? Integer.MAX_VALUE
                     : MetaGeneratedTool.getToolMaxDamage(this.mInventory[this.SLOT_ROTOR]);
                 long rotorDurability = (rotorDurabilityMax - rotorDamage);
-                Logger.INFO(
-                    "Rotor Damage: " + rotorDamage
-                        + " | Max Durability: "
-                        + rotorDurabilityMax
-                        + " | "
-                        + " Remaining Durability: "
-                        + rotorDurability);
                 if (rotorDurability >= damageValue) {
 
                     if (!mSaveRotor) {
-                        Logger.INFO("Damaging Rotor.");
 
-                        if (!creativeRotor) GTModHandler
-                            .damageOrDechargeItem(this.mInventory[this.SLOT_ROTOR], (int) damageValue, 0, null);
+                        if (!creativeRotor) {
+                            GTModHandler
+                                .damageOrDechargeItem(this.mInventory[this.SLOT_ROTOR], (int) damageValue, 0, null);
+                        }
 
                         long tempDur = MetaGeneratedTool.getToolDamage(this.mInventory[this.SLOT_ROTOR]);
                         if (tempDur < rotorDurabilityMax) {
@@ -495,7 +439,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                             rotorDurability = 0;
                         }
                     } else {
-                        Logger.INFO("Damaging Rotor.");
                         if (rotorDurability > 1000) {
                             if (!creativeRotor) GTModHandler
                                 .damageOrDechargeItem(this.mInventory[this.SLOT_ROTOR], (int) damageValue / 2, 0, null);
@@ -510,16 +453,13 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 }
 
                 if (rotorDurability <= 0 && !mSaveRotor && !creativeRotor) {
-                    Logger.INFO("Destroying Rotor.");
                     this.mInventory[this.SLOT_ROTOR] = null;
                     return false;
                 } else if (rotorDurability <= 0 && mSaveRotor) {
-                    Logger.INFO("Saving Rotor.");
                     return false;
                 }
 
             } else {
-                Logger.INFO("Bad Rotor.");
                 return false;
             }
         } catch (Exception t) {
@@ -561,10 +501,8 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
         if (this.mTier < 7) {
             int startPollution = getCurrentChunkPollution();
-            Logger.INFO("Current Chunk Pollution: " + startPollution);
             Pollution.addPollution(this.getBaseMetaTileEntity(), -toRemove);
             int after = getCurrentChunkPollution();
-            Logger.INFO("Current Chunk Pollution: " + after);
             return (after < startPollution);
         } else {
             int chunksWithRemoval = 0;
@@ -616,13 +554,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 if (startPollution == 0) {
                     continue;
                 }
-
-                Logger.INFO(
-                    "Trying to remove pollution from chunk " + r.xPosition
-                        + ", "
-                        + r.zPosition
-                        + " | "
-                        + startPollution);
                 int after = 0;
                 boolean isMainChunk = r.isAtLocation(mainChunkX, mainChunkZ);
 
@@ -636,14 +567,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 if (startPollution - after > 0) {
                     totalRemoved += (startPollution - after);
                 }
-                Logger.INFO(
-                    "Removed " + (startPollution - after)
-                        + " pollution from chunk "
-                        + r.xPosition
-                        + ", "
-                        + r.zPosition
-                        + " | "
-                        + after);
             }
             return totalRemoved > 0 && chunksWithRemoval > 0;
         }
@@ -699,7 +622,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             } else {
                 // Do Damage
                 ItemAirFilter.setFilterDamage(filter, currentUse + 1);
-                Logger.INFO("Filter Damage: " + currentUse);
                 return true;
             }
         }
@@ -710,13 +632,11 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
         if (aIndex == SLOT_FILTER) {
             if (aStack.getItem() instanceof ItemAirFilter) {
-                Logger.INFO("Inserting Air Filter into " + aIndex);
                 return true;
             }
         }
         if (aIndex == SLOT_ROTOR) {
             if (this.mInventory[7] != null) {
-                Logger.INFO("Found conveyor, can automate turbines. Inserting into " + aIndex);
                 if (aStack.getItem() instanceof ItemBasicScrubberTurbine) {
                     return true;
                 }
