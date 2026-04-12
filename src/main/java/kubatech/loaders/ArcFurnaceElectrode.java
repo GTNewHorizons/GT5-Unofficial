@@ -197,12 +197,12 @@ public enum ArcFurnaceElectrode {
                     : getModifierFormatted(this.parallelLimit, 4, 64, 128)));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
-                "item.arc_furnace_electrode.tip.oc_speed_factor",
-                getModifierFormatted(this.OCSpeedFactor, false, 1d, 2d, 4d, "x", "")));
-        tooltip.add(
-            StatCollector.translateToLocalFormatted(
-                "item.arc_furnace_electrode.tip.oc_power_factor",
-                getModifierFormatted(this.OCPowerFactor, true, 0.25d, 0.5d, 1d, "x", "")));
+                "item.arc_furnace_electrode.tip.oc",
+                getModifierFormatted(this.OCSpeedFactor, false, 1d, 2d, 4d, "", "")
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + getModifierFormatted(this.OCPowerFactor, true, 0.25d, 0.5d, 1d, "", ""),
+                ""));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.amperage_per_parallel",
@@ -210,7 +210,7 @@ public enum ArcFurnaceElectrode {
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.startup_surge",
-                getModifierFormatted(this.startupSurge * 100, false, 0, 100, 400, "", "%")));
+                getModifierFormatted(this.startupSurge * 100, true, .0025d, .01d, .02d, "", "%")));
         if (specialEffect != null) {
             tooltip.addAll(
                 Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(

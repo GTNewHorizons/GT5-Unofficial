@@ -216,12 +216,11 @@ item.arc_furnace_electrode.TranscendentNaniteElectrode.name=Transcendent Nanite 
 item.arc_furnace_electrode.UniversiumNaniteElectrode.name=Universium Nanite Electrode
 
 item.arc_furnace_electrode.tip.durability=Durability: %s/%s
-item.arc_furnace_electrode.tip.speed=Speed Modifier: %s
-item.arc_furnace_electrode.tip.parallel_limit=Parallel Limit: %s
+item.arc_furnace_electrode.tip.speed=Speed: %s
+item.arc_furnace_electrode.tip.parallel_limit=Parallel: %s
 item.arc_furnace_electrode.tip.parallel_limit_none=None
-item.arc_furnace_electrode.tip.oc_speed_factor=OC Speed Factor: %s
-item.arc_furnace_electrode.tip.oc_power_factor=OC Power Factor: %s
-item.arc_furnace_electrode.tip.amperage_per_parallel=Amperage per Parallel: %s
+item.arc_furnace_electrode.tip.oc=OC: %s%s
+item.arc_furnace_electrode.tip.amperage_per_parallel=Amp/Parallel: %s
 item.arc_furnace_electrode.tip.startup_surge=Startup Surge: %s
 
 item.arc_furnace_electrode.tip.special_effect.GraphiteElectrode=§6§lBread and Butter§r§6: No startup surge penalty

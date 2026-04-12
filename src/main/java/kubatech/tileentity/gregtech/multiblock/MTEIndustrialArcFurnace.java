@@ -91,6 +91,18 @@ import kubatech.tileentity.gregtech.hatch.MTEElectrodeHatch;
 public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustrialArcFurnace>
     implements ISurvivalConstructable, ArcFurnaceContext {
 
+    private static final int STARTUP_DURATION_TICKS = 20 * 6;
+    private static final int SHUTDOWN_DURATION_TICKS = 20 * 6;
+    private static final int ORE_MODE_STARTUP_TICKS = 20 * 10;
+    private static final int ORE_MODE_IDLE_FINISH_TICKS = 5;
+    private static final int ARC_SURGE_DURABILITY_THRESHOLD_PERCENT = 30;
+    private static final int ARC_SURGE_CHANCE_PERCENT = 5;
+    private static final int ARC_BREAK_DURABILITY_THRESHOLD_PERCENT = 10;
+    private static final int ARC_BREAK_CHANCE_PERCENT = 2;
+    private static final int BLAST_MODE_POWER_MULTIPLIER = 64;
+    private static final double ARC_SURGE_DAMAGE_THRESHOLD = 1d - (ARC_SURGE_DURABILITY_THRESHOLD_PERCENT / 100d);
+    private static final double ARC_BREAK_DAMAGE_THRESHOLD = 1d - (ARC_BREAK_DURABILITY_THRESHOLD_PERCENT / 100d);
+
     public MTEIndustrialArcFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -296,31 +308,52 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Arc Furnace, IAF")
             .addInfo("Insert electrode in the electrode hatch")
-            .addInfo("Speed, parallels, OC, energy consumption depend on the electrode used")
-            .addInfo("Some electrodes have special effects, always check the tooltip for details")
-            .addInfo("Use Electrode Detectors to emit redstone signal based on remaining durability of the electrode")
-            .addInfo("When electrode durability goes below 30%, there is 5% the arc will randomly surge.")
+            .addInfo("Speed, Parallel, OC and power use depend on the electrode")
+            .addInfo("Some electrodes have special effects, check their tooltip")
             .addInfo(
-                "When electrode durability goes below 10%, there is 2% the arc will randomly break the items inside.")
-            .addInfo("Before processing recipes, machine will have to ignite the arc")
+                "Below " + EnumChatFormatting.RED
+                    + ARC_SURGE_DURABILITY_THRESHOLD_PERCENT
+                    + EnumChatFormatting.GRAY
+                    + "% durability: "
+                    + EnumChatFormatting.RED
+                    + ARC_SURGE_CHANCE_PERCENT
+                    + EnumChatFormatting.GRAY
+                    + "% chance for random arc surge")
             .addInfo(
-                "in that time machine will consume energy based on startup surge of the electrode and will not process any recipes")
-            .addInfo("After processing all recipes, machine will shut down the arc, which also takes time")
+                "Below " + EnumChatFormatting.RED
+                    + ARC_BREAK_DURABILITY_THRESHOLD_PERCENT
+                    + EnumChatFormatting.GRAY
+                    + "% durability: "
+                    + EnumChatFormatting.RED
+                    + ARC_BREAK_CHANCE_PERCENT
+                    + EnumChatFormatting.GRAY
+                    + "% chance to destroy items in the arc")
+            .addInfo("Startup: machine ignites the arc before processing")
+            .addInfo("Startup power: based on electrode startup surge and parallels")
+            .addInfo("Shutdown: machine powers down the arc after work ends")
             .addInfo("-------------------------------Blast mode----------------------------------")
-            .addInfo("This machine can also process any EBF recipe, but at the extra cost of 64x the power")
+            .addInfo(
+                "Processes EBF recipes at " + EnumChatFormatting.RED
+                    + BLAST_MODE_POWER_MULTIPLIER
+                    + EnumChatFormatting.GRAY
+                    + "x power cost")
             .addInfo("-------------------------------Ore Mode----------------------------------")
-            .addInfo("In this mode, machine will always run 10 seconds initiation process,")
-            .addInfo("in that time, machine will consume all ores and raw ores from input hatches")
-            .addInfo("can smelt only ores that can be processed in furnace, no blasting allowed")
-            .addInfo("if there are more ores than the machine can process, initiation will finish immediately")
-            .addInfo("if there are no ores supplied for 5 ticks, initiation will finish immediately as well")
-            // .addInfo(
-            // "After that time, all metals will start mixing together in the arc, this process will take time based on
-            // the ores inserted")
-            // .addInfo(
-            // "at the end of the process, machine will output molten alloys and slag from things that didn't mix")
-            .addInfo("machine will start processing all ores to molten metals after that")
-            .addInfo("Right-click controller with a Screwdriver to change modes")
+            .addInfo("Quickly process metallic ores!")
+            .addInfo(
+                "Startup time: " + EnumChatFormatting.RED
+                    + (ORE_MODE_STARTUP_TICKS / 20)
+                    + EnumChatFormatting.GRAY
+                    + " seconds")
+            .addInfo("Consumes all ores and raw ores from input hatches")
+            .addInfo("Only furnace-smeltable ores, no blasting")
+            .addInfo("If queued ore exceeds capacity, startup ends immediately")
+            .addInfo(
+                "If no ores enter for " + EnumChatFormatting.RED
+                    + ORE_MODE_IDLE_FINISH_TICKS
+                    + EnumChatFormatting.GRAY
+                    + " ticks, startup ends immediately")
+            .addInfo("Outputs molten metals")
+            .addInfo("Right-click with Screwdriver to change mode")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(17, 11, 19, false)
             .addController("Front center")
@@ -396,11 +429,23 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         switch (aIndex) {
             case START_ARC_SOUND_INDEX -> {
                 phase = ArcFurnacePhase.Standby;
-                GTUtility.doSoundAtClient(SoundResource.GT_MACHINES_ARC_FURNACE_STARTUP, 20 * 6, 1.0F, aX, aY, aZ);
+                GTUtility.doSoundAtClient(
+                    SoundResource.GT_MACHINES_ARC_FURNACE_STARTUP,
+                    STARTUP_DURATION_TICKS,
+                    1.0F,
+                    aX,
+                    aY,
+                    aZ);
             }
             case STOP_ARC_SOUND_INDEX -> {
                 phase = ArcFurnacePhase.Standby;
-                GTUtility.doSoundAtClient(SoundResource.GT_MACHINES_ARC_FURNACE_SHUTDOWN, 20 * 6, 1.0F, aX, aY, aZ);
+                GTUtility.doSoundAtClient(
+                    SoundResource.GT_MACHINES_ARC_FURNACE_SHUTDOWN,
+                    SHUTDOWN_DURATION_TICKS,
+                    1.0F,
+                    aX,
+                    aY,
+                    aZ);
             }
             case LOOP_ARC_SOUND_INDEX -> phase = ArcFurnacePhase.Processing;
             default -> super.doSound(aIndex, aX, aY, aZ);
@@ -498,7 +543,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     private void startShutDown() {
         phase = ArcFurnacePhase.ArcShutdown;
         resetElectrodeEffectState();
-        mMaxProgresstime = 20 * 6;
+        mMaxProgresstime = SHUTDOWN_DURATION_TICKS;
         lEUt = 0;
         checkRecipeResult = SimpleCheckRecipeResult.ofSuccess("arc_shutdown");
         ArcFurnaceProcessingEvent.EventStartShutdown event = new ArcFurnaceProcessingEvent.EventStartShutdown(
@@ -701,7 +746,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 if (found == null) return Stream.of();
                 if (mode == ArcFurnaceMode.Blast) {
                     GTRecipe copy = found.copy()
-                        .setEUt((int) Math.min(found.mEUt * 64L, Integer.MAX_VALUE));
+                        .setEUt((int) Math.min(found.mEUt * BLAST_MODE_POWER_MULTIPLIER, Integer.MAX_VALUE));
                     copy.mCanBeBuffered = false;
                     return Stream.of(copy);
                 }
@@ -715,7 +760,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                                 .equals(" Ore")) {
                             GTRecipe fake = fakeRecipe();
                             fake.mEUt = 16;
-                            fake.mDuration = 20 * 10;
+                            fake.mDuration = ORE_MODE_STARTUP_TICKS;
                             didOres = 0;
                             didOCs = 0;
                             oreOutputs.clear();
@@ -742,7 +787,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                         }
                         durabilityCostThisRun += bint;
                     }
-                    if (electrodeDamagePercentage > 0.9d && getRandomNumber(100) < 2) {
+                    if (electrodeDamagePercentage > ARC_BREAK_DAMAGE_THRESHOLD
+                        && getRandomNumber(100) < ARC_BREAK_CHANCE_PERCENT) {
                         this.overwriteOutputItems();
                         this.overwriteOutputFluids();
                     }
@@ -801,8 +847,9 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             @Override
             protected @NotNull ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
                 if (phase == ArcFurnacePhase.Standby
-                    || (phase == ArcFurnacePhase.Processing && electrodeDamagePercentage > 0.7d
-                        && getRandomNumber(100) < 5)) {
+                    || (phase == ArcFurnacePhase.Processing
+                        && electrodeDamagePercentage > ARC_SURGE_DAMAGE_THRESHOLD
+                        && getRandomNumber(100) < ARC_SURGE_CHANCE_PERCENT)) {
                     phase = ArcFurnacePhase.ArcIgnition;
                     this.setBatchSize(1);
                     GTRecipe ignitionRecipe = fakeRecipe();
@@ -810,7 +857,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                         / 32d
                         * this.maxParallel
                         * (electrode.startupSurge + 1d));
-                    ignitionRecipe.mDuration = 20 * 6;
+                    ignitionRecipe.mDuration = STARTUP_DURATION_TICKS;
                     ArcFurnaceProcessingEvent.EventStartIgnition event = new ArcFurnaceProcessingEvent.EventStartIgnition(
                         MTEIndustrialArcFurnace.this,
                         ignitionRecipe.mDuration,
