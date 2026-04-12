@@ -110,33 +110,6 @@ public class TesseractHelper {
         return false;
     }
 
-    /**
-     *
-     * Tesseract Terminal Helpers
-     *
-     * @param player
-     * @return
-     */
-
-    // Checks if a Terminal is owned by a player.
-    public static boolean isTerminalOwnedByPlayer(EntityPlayer player, MTETesseractTerminal generator) {
-        if (player == null) {
-            return false;
-        }
-        UUID playerIdentifier = player.getUniqueID();
-        if (!sTesseractTerminalOwnershipMap.isEmpty() && playerIdentifier != null) {
-            Map<Integer, MTETesseractTerminal> generators = getTerminalOwnershipByPlayer(player);
-            Set<Entry<Integer, MTETesseractTerminal>> players = generators.entrySet();
-            for (Entry<Integer, MTETesseractTerminal> current : players) {
-                if (current.getValue()
-                    .equals(generator)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     // Saves A Terminal to the Players UUID map along with the Freq.
     public static boolean setTerminalOwnershipByPlayer(EntityPlayer player, int freq, MTETesseractTerminal generator) {
         if (player == null) {
@@ -162,43 +135,8 @@ public class TesseractHelper {
         return false;
     }
 
-    // Gets Terminal based on Frequency.
-    public static MTETesseractTerminal getTerminalByFrequency(EntityPlayer player, int freq) {
-        if (player == null) {
-            return null;
-        }
-        UUID playerIdentifier = player.getUniqueID();
-        if (!sTesseractTerminalOwnershipMap.isEmpty() && playerIdentifier != null) {
-            Map<Integer, MTETesseractTerminal> generators = getTerminalOwnershipByPlayer(player);
-            Set<Entry<Integer, MTETesseractTerminal>> players = generators.entrySet();
-            for (Entry<Integer, MTETesseractTerminal> current : players) {
-                if (current.getKey()
-                    .equals(freq)) {
-                    return current.getValue();
-                }
-            }
-        }
-        return null;
-    }
-
-    // Remove Tesseract Terminal
-    public static boolean removeTerminal(EntityPlayer player, int frequency) {
-        if (player == null) {
-            return false;
-        }
-        UUID playerIdentifier = player.getUniqueID();
-        if (!sTesseractTerminalOwnershipMap.isEmpty() && playerIdentifier != null) {
-            sTesseractTerminalOwnershipMap.get(playerIdentifier)
-                .remove(frequency);
-            return true;
-        }
-        return false;
-    }
-
     /**
-     *
      * Internal Methods
-     *
      */
     private static Map<Integer, MTETesseractGenerator> getGeneratorOwnershipByPlayer(EntityPlayer player) {
         UUID playerIdentifier = player.getUniqueID();
@@ -214,17 +152,4 @@ public class TesseractHelper {
         return null;
     }
 
-    private static Map<Integer, MTETesseractTerminal> getTerminalOwnershipByPlayer(EntityPlayer player) {
-        UUID playerIdentifier = player.getUniqueID();
-        if (!sTesseractTerminalOwnershipMap.isEmpty() && playerIdentifier != null) {
-            Set<Entry<UUID, Map<Integer, MTETesseractTerminal>>> players = sTesseractTerminalOwnershipMap.entrySet();
-            for (Entry<UUID, Map<Integer, MTETesseractTerminal>> current : players) {
-                if (current.getKey()
-                    .compareTo(playerIdentifier) == 0) {
-                    return current.getValue();
-                }
-            }
-        }
-        return null;
-    }
 }

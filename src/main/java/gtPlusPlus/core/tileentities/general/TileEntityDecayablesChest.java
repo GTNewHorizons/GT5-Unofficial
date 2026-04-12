@@ -127,17 +127,6 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         }
     }
 
-    public boolean anyPlayerInRange() {
-        return this.worldObj.getClosestPlayer(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 32) != null;
-    }
-
-    public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag) {
-        if (!nbt.hasKey(tag)) {
-            nbt.setTag(tag, new NBTTagCompound());
-        }
-        return nbt.getCompoundTag(tag);
-    }
-
     @Override
     public void writeToNBT(final NBTTagCompound nbt) {
         super.writeToNBT(nbt);

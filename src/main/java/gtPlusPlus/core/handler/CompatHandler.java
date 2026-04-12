@@ -28,7 +28,6 @@ import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.recipe.RecipesGregTech;
 import gtPlusPlus.core.recipe.RecipesLaserEngraver;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenFluidCanning;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenRecycling;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderAlgaePond;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderChemicalSkips;
@@ -226,9 +225,6 @@ public class CompatHandler {
             }
         }
         RecipeGenRecycling.executeGenerators();
-
-        // Do Fluid Canning Last, because they're not executed on demand, but rather queued.
-        RecipeGenFluidCanning.init();
     }
 
     public static final ArrayList<RunnableWithInfo<String>> mRecipesToGenerate = new ArrayList<>();
