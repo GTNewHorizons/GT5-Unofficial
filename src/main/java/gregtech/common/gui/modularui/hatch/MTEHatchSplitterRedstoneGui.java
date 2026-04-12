@@ -16,6 +16,7 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
 
@@ -66,6 +67,7 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
                     IKey.dynamic(() -> EnumChatFormatting.RED + redstone.getStringValue())
                         .alignment(Alignment.CENTER)
                         .asWidget()
+                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                         .paddingTop(3)));
     }
 

@@ -13,6 +13,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import codechicken.nei.api.API;
 import gregtech.api.enums.Materials;
 
@@ -67,11 +69,8 @@ public class HTGRItem extends Item {
     }
 
     public Materials getItemMaterial(ItemStack stack) {
-        if (stack.hasTagCompound()) {
-            NBTTagCompound tag = stack.getTagCompound();
-            if (tag.hasKey("material")) {
-                return Materials.get(tag.getString("material"));
-            }
+        if (ItemStackNBT.hasKey(stack, "material")) {
+            return Materials.get(ItemStackNBT.getString(stack, "material"));
         }
         return null;
     }

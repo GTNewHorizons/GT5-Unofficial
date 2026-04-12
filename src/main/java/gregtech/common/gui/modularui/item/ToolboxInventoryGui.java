@@ -7,7 +7,6 @@ import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.api.ITheme;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.ISynced;
@@ -167,7 +166,7 @@ public class ToolboxInventoryGui {
          * Allows the background to dynamically remove the tool outline if there's a tool in the slot.
          */
         @Override
-        public @Nullable IDrawable getCurrentBackground(final ITheme theme, final WidgetThemeEntry<?> widgetTheme) {
+        public @Nullable IDrawable getCurrentBackground(final WidgetThemeEntry<?> widgetTheme) {
             final IItemHandler itemHandler = this.itemHandlerSupplier.get();
 
             if (itemHandler != null && slot.isTool()) {
