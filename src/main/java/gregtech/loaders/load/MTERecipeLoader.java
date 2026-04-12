@@ -25,6 +25,7 @@ import com.jaquadro.minecraft.storagedrawers.StorageDrawers;
 
 import bartworks.common.loaders.ItemRegistry;
 import codechicken.nei.api.API;
+import goodgenerator.util.ItemRefer;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
@@ -1713,6 +1714,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.MegaChemicalReactor.get(1),
             new Object[] { ItemRegistry.megaMachines[3] });
 
+        // Universal Chemical Fuel Engine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.UniversalChemicalFuelEngine.get(1),
+            new Object[] { ItemRefer.Universal_Chemical_Fuel_Engine.get(1) });
+
         // Industrial Mixer Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialMixer.get(1),
@@ -1725,6 +1731,10 @@ public class MTERecipeLoader implements Runnable {
         // Electric Implosion Compressor Conversion Recipe
         GTModHandler
             .addShapelessCraftingRecipe(ItemList.ElectricImplosionCompressor.get(1), new Object[] { ItemRegistry.eic });
+        // Large Combustion Engine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.LargeCombustionEngine.get(1),
+            new Object[] { ItemList.Machine_Multi_DieselEngine });
     }
 
     private static void registerSifter() {
@@ -3525,7 +3535,7 @@ public class MTERecipeLoader implements Runnable {
                 'E', OrePrefixes.circuit.get(Materials.IV), 'C', ItemList.Robot_Arm_IV });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.Machine_Multi_DieselEngine.get(1L),
+            ItemList.LargeCombustionEngine.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Motor_EV, 'C', OrePrefixes.circuit.get(Materials.IV), 'W',

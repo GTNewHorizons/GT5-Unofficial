@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 
 import gregtech.api.util.GTLog;
 import gregtech.common.config.Client;
-import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.material.Material;
@@ -23,11 +22,9 @@ import gtPlusPlus.core.util.minecraft.EntityUtils;
 
 public class ItemBlockGtBlock extends ItemBlock {
 
-    protected final int blockColour;
     private int sRadiation;
 
     private Material mMaterial;
-    protected BlockTypes thisBlockType;
 
     private final Block thisBlock;
     private boolean isOre = false;
@@ -41,20 +38,10 @@ public class ItemBlockGtBlock extends ItemBlock {
         } else if (block instanceof BlockBaseModular) {
             this.isModular = true;
         }
-        final BlockBaseModular baseBlock = (BlockBaseModular) block;
-        if (isModular) {
-            this.blockColour = baseBlock.getRenderColor(0);
-        } else if (isOre) {
-            this.blockColour = block.getBlockColor();
-        } else {
-            this.blockColour = block.getBlockColor();
-        }
         if (block instanceof BlockBaseModular g) {
             this.mMaterial = g.getMaterialEx();
-            this.thisBlockType = g.blockType;
         } else {
             this.mMaterial = null;
-            this.thisBlockType = BlockTypes.STANDARD;
         }
     }
 

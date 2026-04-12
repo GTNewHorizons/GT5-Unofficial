@@ -51,7 +51,7 @@ import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements ISurvivalConstructable {
+public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase implements ISurvivalConstructable {
 
     protected final double DIESEL_EFFICIENCY_COEFFICIENT = 0.04D;
     protected final double GAS_EFFICIENCY_COEFFICIENT = 0.04D;
@@ -63,14 +63,14 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
     private int heatingTicks;
     private boolean isStoppingSafe;
 
-    private IStructureDefinition<MTEUniversalChemicalFuelEngine> multiDefinition = null;
+    private IStructureDefinition<MTEUniversalChemicalFuelEngineLegacy> multiDefinition = null;
 
-    public MTEUniversalChemicalFuelEngine(String name) {
+    public MTEUniversalChemicalFuelEngineLegacy(String name) {
         super(name);
         super.useLongPower = true;
     }
 
-    public MTEUniversalChemicalFuelEngine(int id, String name, String nameRegional) {
+    public MTEUniversalChemicalFuelEngineLegacy(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
         super.useLongPower = true;
     }
@@ -105,9 +105,9 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
     }
 
     @Override
-    public IStructureDefinition<MTEUniversalChemicalFuelEngine> getStructure_EM() {
+    public IStructureDefinition<MTEUniversalChemicalFuelEngineLegacy> getStructure_EM() {
         if (multiDefinition == null) {
-            multiDefinition = StructureDefinition.<MTEUniversalChemicalFuelEngine>builder()
+            multiDefinition = StructureDefinition.<MTEUniversalChemicalFuelEngineLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
@@ -154,6 +154,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Engine, UCFE")
+            .addStructureDeprecatedLine()
             .addInfo("BURNING BURNING BURNING")
             .addInfo("Use combustible liquid to generate power")
             .addInfo("You need to supply Combustion Promoter to keep it running")
@@ -368,7 +369,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEUniversalChemicalFuelEngine(this.mName);
+        return new MTEUniversalChemicalFuelEngineLegacy(this.mName);
     }
 
     @Override
