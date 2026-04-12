@@ -31,6 +31,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -114,8 +115,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound()
-            && (stack.stackTagCompound.hasKey("mFluid") || stack.stackTagCompound.hasKey("lockedFluidName"))) {
+        if (ItemStackNBT.hasKey(stack, "mFluid") || ItemStackNBT.hasKey(stack, "lockedFluidName")) {
             final FluidStack tContents = FluidStack
                 .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
@@ -124,7 +124,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 tooltip.add(
                     StatCollector
                         .translateToLocalFormatted("gt.tileentity.tank_amount", formatNumber(tContents.amount)));
-            } else if (stack.stackTagCompound.hasKey("lockedFluidName")) {
+            } else if (ItemStackNBT.hasKey(stack, "lockedFluidName")) {
                 String fluidName = stack.stackTagCompound.getString("lockedFluidName");
                 Fluid fluid = FluidRegistry.getFluid(fluidName);
                 if (fluid == null) return;

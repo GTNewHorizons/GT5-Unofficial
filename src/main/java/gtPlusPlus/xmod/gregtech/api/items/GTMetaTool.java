@@ -24,6 +24,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Materials;
@@ -375,24 +377,24 @@ public abstract class GTMetaTool extends MetaGeneratedTool {
                         + Math
                             .max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)
                         + EnumChatFormatting.GRAY);
-                NBTTagCompound aNBT = aStack.getTagCompound();
-                if (aNBT != null) {
-                    aNBT = aNBT.getCompoundTag("GT.ToolStats");
-                    if ((aNBT != null) && aNBT.hasKey("Heat")) {
-                        int tHeat = aNBT.getInteger("Heat");
+                final NBTTagCompound nbt = aStack.getTagCompound();
+                if (nbt != null) {
+                    final NBTTagCompound toolStats = nbt.getCompoundTag("GT.ToolStats");
+                    if (toolStats != null && toolStats.hasKey("Heat")) {
+                        int tHeat = toolStats.getInteger("Heat");
                         final long tWorldTime = aPlayer.getEntityWorld()
                             .getWorldTime();
-                        if (aNBT.hasKey("HeatTime")) {
-                            final long tHeatTime = aNBT.getLong("HeatTime");
+                        if (toolStats.hasKey("HeatTime")) {
+                            final long tHeatTime = toolStats.getLong("HeatTime");
                             if (tWorldTime > (tHeatTime + 10)) {
                                 tHeat = (int) (tHeat - ((tWorldTime - tHeatTime) / 10));
                                 if ((tHeat < 300) && (tHeat > -10000)) {
                                     tHeat = 300;
                                 }
                             }
-                            aNBT.setLong("HeatTime", tWorldTime);
+                            toolStats.setLong("HeatTime", tWorldTime);
                             if (tHeat > -10000) {
-                                aNBT.setInteger("Heat", tHeat);
+                                toolStats.setInteger("Heat", tHeat);
                             }
                         }
 
@@ -400,7 +402,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool {
                             tOffset + 3,
                             EnumChatFormatting.RED
                                 + StatCollector
-                                    .translateToLocalFormatted("GT5U.tooltip.tool.heat", aNBT.getInteger("Heat"))
+                                    .translateToLocalFormatted("GT5U.tooltip.tool.heat", toolStats.getInteger("Heat"))
                                 + EnumChatFormatting.GRAY);
                     }
                 }
@@ -410,12 +412,12 @@ public abstract class GTMetaTool extends MetaGeneratedTool {
 
     @Override
     public Long[] getElectricStats(final ItemStack aStack) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT = aNBT.getCompoundTag("GT.ToolStats");
-            if ((aNBT != null) && aNBT.getBoolean("Electric")) {
-                return new Long[] { aNBT.getLong("MaxCharge"), aNBT.getLong("Voltage"), aNBT.getLong("Tier"),
-                    aNBT.getLong("SpecialData") };
+        final NBTTagCompound nbt = aStack.getTagCompound();
+        if (nbt != null) {
+            final NBTTagCompound toolStats = nbt.getCompoundTag("GT.ToolStats");
+            if ((toolStats != null) && toolStats.getBoolean("Electric")) {
+                return new Long[] { toolStats.getLong("MaxCharge"), toolStats.getLong("Voltage"),
+                    toolStats.getLong("Tier"), toolStats.getLong("SpecialData") };
             }
         }
         return new Long[] {};
@@ -580,10 +582,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool {
     public boolean isItemStackUsable(final ItemStack aStack) {
         final IToolStats tStats = this.getToolStatsInternal(aStack);
         if (((aStack.getItemDamage() % 2) == 1) || (tStats == null)) {
-            final NBTTagCompound aNBT = aStack.getTagCompound();
-            if (aNBT != null) {
-                aNBT.removeTag("ench");
-            }
+            ItemStackNBT.removeTag(aStack, "ench");
             return false;
         }
         final Materials aMaterial = getPrimaryMaterial(aStack);
