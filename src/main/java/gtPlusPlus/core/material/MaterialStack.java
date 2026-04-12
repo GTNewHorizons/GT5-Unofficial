@@ -6,7 +6,7 @@ import java.math.RoundingMode;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.OrePrefixes;
-import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.xmod.bartworks.BWUtils;
 
 public class MaterialStack {
@@ -63,7 +63,7 @@ public class MaterialStack {
 
     public Material getStackMaterial() {
         if (this.stackMaterial == null) {
-            Logger.modLogger.error("Tried getStackMaterial, got an invalid material.", new Exception());
+            GTplusplus.logger.error("Tried getStackMaterial, got an invalid material.", new Exception());
             return null;
         }
         return this.stackMaterial;

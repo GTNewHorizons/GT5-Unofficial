@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import gregtech.api.recipe.RecipeMaps;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.Utils;
@@ -20,8 +19,6 @@ public class NEIGTPPConfig implements IConfigureNEI {
     @Override
     public synchronized void loadConfig() {
         sIsAdded = false;
-
-        Logger.INFO("NEI Registration: Registering NEI handler for " + DecayableRecipeHandler.mNEIName);
         API.registerRecipeHandler(new DecayableRecipeHandler());
         API.registerUsageHandler(new DecayableRecipeHandler());
         API.addRecipeCatalyst(new ItemStack(ModBlocks.blockDecayablesChest, 1), "GTPP_Decayables");

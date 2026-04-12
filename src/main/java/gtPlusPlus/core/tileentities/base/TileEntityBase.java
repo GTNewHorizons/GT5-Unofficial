@@ -28,7 +28,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.data.GTBlockEventTracker;
 import gregtech.common.pollution.Pollution;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BTF_Inventory;
 import ic2.api.Direction;
 
@@ -90,7 +89,6 @@ public class TileEntityBase extends TileEntity
                 onPreTick(aTick);
             }
         } catch (Exception t) {
-            Logger.ERROR("Tile Entity Encountered an error in it's pre-tick stage.");
             t.printStackTrace();
         }
         try {
@@ -98,7 +96,6 @@ public class TileEntityBase extends TileEntity
                 onTick(aTick);
             }
         } catch (Exception t) {
-            Logger.ERROR("Tile Entity Encountered an error in it's tick stage.");
             t.printStackTrace();
         }
         try {
@@ -106,7 +103,6 @@ public class TileEntityBase extends TileEntity
                 onPostTick(aTick);
             }
         } catch (Exception t) {
-            Logger.ERROR("Tile Entity Encountered an error in it's post-tick stage.");
             t.printStackTrace();
         }
     }
@@ -121,7 +117,6 @@ public class TileEntityBase extends TileEntity
                 processRecipe();
             }
         } catch (Exception t) {
-            Logger.ERROR("Tile Entity Encountered an error in it's processing of a recipe stage.");
             t.printStackTrace();
         }
         return true;

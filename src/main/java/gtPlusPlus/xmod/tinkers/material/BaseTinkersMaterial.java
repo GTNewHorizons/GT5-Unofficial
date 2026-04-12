@@ -13,7 +13,6 @@ import net.minecraftforge.fluids.Fluid;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.xmod.tinkers.HandlerTinkers;
 import gtPlusPlus.xmod.tinkers.util.TinkersUtils;
@@ -38,7 +37,6 @@ public class BaseTinkersMaterial {
         mUnlocalName = "material.gtpp." + StringUtils.sanitizeString(mLocalName);
         mMaterial = aMaterial;
         mID = aNextFreeID++;
-        Logger.INFO("[TiCon] Assigning ID " + mID + " to " + mLocalName + ".");
         aInternalMaterialIdMap.put(mUnlocalName, mID);
         HandlerTinkers.mTinkerMaterials.add(this);
     }
@@ -111,8 +109,6 @@ public class BaseTinkersMaterial {
     }
 
     public void generate() {
-
-        Logger.INFO("[TiCon] Trying to generate Material: " + mLocalName);
         int id = mID;
         if (id > 0) {
 
@@ -136,7 +132,6 @@ public class BaseTinkersMaterial {
             boolean generate = generateRecipes(mMaterial, id);
 
             if (generate) {
-                Logger.INFO("[TiCon] Sending IMC: addMaterial - " + mLocalName + ".");
                 FMLInterModComms.sendMessage(TinkerConstruct.ID, "addMaterial", tag);
 
                 ItemStack itemstack = mMaterial.getIngot(1);
@@ -147,7 +142,6 @@ public class BaseTinkersMaterial {
                 tag.setTag("Item", item);
                 tag.setInteger("Value", 2); // What is value for?
 
-                Logger.INFO("[TiCon] Sending IMC: addPartBuilderMaterial - " + mLocalName + ".");
                 FMLInterModComms.sendMessage(TinkerConstruct.ID, "addPartBuilderMaterial", tag);
 
                 tag = new NBTTagCompound();
@@ -157,7 +151,6 @@ public class BaseTinkersMaterial {
                 itemstack.writeToNBT(item);
                 tag.setTag("Item", item);
 
-                Logger.INFO("[TiCon] Sending IMC: addMaterialItem - " + mLocalName + ".");
                 FMLInterModComms.sendMessage(TinkerConstruct.ID, "addMaterialItem", tag);
             }
         }

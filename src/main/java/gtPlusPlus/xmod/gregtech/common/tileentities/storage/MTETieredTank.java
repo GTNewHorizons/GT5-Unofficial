@@ -17,6 +17,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
@@ -29,7 +30,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.singleblock.MTETieredTankGui;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 
 public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMetaTile {
@@ -84,7 +84,7 @@ public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMe
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("mFluid")) {
+        if (ItemStackNBT.hasKey(stack, "mFluid")) {
             final FluidStack tContents = FluidStack
                 .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
@@ -166,11 +166,7 @@ public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMe
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         if (mFluid != null) {
-            Logger.WARNING("Setting item fluid nbt");
             aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
-            if (aNBT.hasKey("mFluid")) {
-                Logger.WARNING("Set mFluid to NBT.");
-            }
         }
     }
 

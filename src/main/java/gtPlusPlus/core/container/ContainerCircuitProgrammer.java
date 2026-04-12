@@ -7,7 +7,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryCircuitProgrammer;
 import gtPlusPlus.core.slots.SlotIntegratedCircuit;
@@ -42,8 +41,6 @@ public class ContainerCircuitProgrammer extends Container {
         this.posX = te.xCoord;
         this.posY = te.yCoord;
         this.posZ = te.zCoord;
-        Logger.INFO("1");
-
         int o = 0;
 
         // Storage Side
@@ -85,12 +82,8 @@ public class ContainerCircuitProgrammer extends Container {
             this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart + 72, yStart + 54));
             this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart + 90, yStart + 54));
             this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart + 108, yStart + 54));
-            Logger.INFO("2");
-
             // Add Output
             this.addSlotToContainer(new SlotNoInput(this.inventoryChest, SLOT_OUTPUT, xStart + (8 * 18), yStart + 54));
-            o++;
-            Logger.INFO("3");
 
             // Player Inventory
             for (var6 = 0; var6 < 3; ++var6) {
@@ -103,9 +96,7 @@ public class ContainerCircuitProgrammer extends Container {
             for (var6 = 0; var6 < 9; ++var6) {
                 this.addSlotToContainer(new Slot(inventory, var6, 8 + (var6 * 18), 142));
             }
-
-            Logger.INFO("4");
-        } catch (Exception t) {}
+        } catch (Exception ignored) {}
     }
 
     @Override

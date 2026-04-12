@@ -19,7 +19,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchElementalDataOrbHolderGui;
 import gregtech.common.items.ItemIntegratedCircuit;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -95,7 +94,6 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        Logger.INFO("Checking if we can pull " + aStack.getDisplayName() + " from slot " + aIndex);
         return aIndex == mInventory.length - 1 && aStack != null
             && aStack.getItem() instanceof ItemIntegratedCircuit
             && side == getBaseMetaTileEntity().getFrontFacing();
@@ -104,7 +102,6 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        Logger.INFO("Checking if we can put " + aStack.getDisplayName() + " into slot " + aIndex);
         return aIndex == mInventory.length - 1 && aStack != null
             && aStack.getItem() instanceof ItemIntegratedCircuit
             && side == getBaseMetaTileEntity().getFrontFacing();
@@ -139,7 +136,6 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
             && aStack.getItem() instanceof ItemIntegratedCircuit
             && ordinalSide == getBaseMetaTileEntity().getFrontFacing()
                 .ordinal()) {
-            Logger.INFO("Putting " + aStack.getDisplayName() + " into slot " + aIndex);
             return true;
         }
         return false;
@@ -148,7 +144,6 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     @Override
     public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
         if (aIndex == mInventory.length - 1 && aStack != null && aStack.getItem() instanceof ItemIntegratedCircuit) {
-            Logger.INFO("Pulling " + aStack.getDisplayName() + " from slot " + aIndex);
             return true;
         }
         return false;

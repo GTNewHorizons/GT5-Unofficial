@@ -1,6 +1,5 @@
 package gtPlusPlus;
 
-import static gregtech.api.enums.Mods.ModIDs;
 import static gregtech.api.enums.Mods.Thaumcraft;
 
 import net.minecraft.init.Blocks;
@@ -8,6 +7,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.oredict.OreDictionary;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
@@ -20,32 +22,25 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.FishPondRecipes;
 import gregtech.api.util.SemiFluidFuelHandler;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.PacketHandler;
-import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenBlastSmelterGTNH;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
 @Mod(
-    modid = ModIDs.G_T_PLUS_PLUS,
+    modid = "miscutils",
     name = GTPPCore.name,
     version = GTPPCore.VERSION,
     guiFactory = "gtPlusPlus.core.gui.config.GTPPGuiFactory",
@@ -70,37 +65,6 @@ import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
         + " required-after:gtnhlib@[0.0.10,);")
 public class GTplusplus {
 
-    public enum INIT_PHASE {
-
-        SUPER(null),
-        PRE_INIT(SUPER),
-        INIT(PRE_INIT),
-        POST_INIT(INIT),
-        SERVER_START(POST_INIT),
-        STARTED(SERVER_START);
-
-        private boolean mIsPhaseActive = false;
-        private final INIT_PHASE mPrev;
-
-        INIT_PHASE(INIT_PHASE aPreviousPhase) {
-            mPrev = aPreviousPhase;
-        }
-
-        public final synchronized boolean isPhaseActive() {
-            return mIsPhaseActive;
-        }
-
-        public final synchronized void setPhaseActive(boolean aIsPhaseActive) {
-            if (mPrev != null && mPrev.isPhaseActive()) {
-                mPrev.setPhaseActive(false);
-            }
-            mIsPhaseActive = aIsPhaseActive;
-            if (CURRENT_LOAD_PHASE != this) {
-                CURRENT_LOAD_PHASE = this;
-            }
-        }
-    }
-
     static {
         try {
             ConfigurationManager.registerConfig(Configuration.class);
@@ -108,31 +72,17 @@ public class GTplusplus {
             throw new RuntimeException(e);
         }
     }
-    public static INIT_PHASE CURRENT_LOAD_PHASE = INIT_PHASE.SUPER;
 
-    @Mod.Instance(Mods.ModIDs.G_T_PLUS_PLUS)
+    public static final Logger logger = LogManager.getLogger("GT++");
+
+    @Mod.Instance("miscutils")
     public static GTplusplus instance;
 
     @SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.common.CommonProxy")
     public static CommonProxy proxy;
 
-    @SideOnly(value = Side.CLIENT)
-    public static void loadTextures() {
-        Logger.INFO("Loading some textures on the client.");
-        // Blocks
-        Logger.WARNING(
-            "Processing texture: " + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile()
-                .getResourcePath());
-    }
-
-    public GTplusplus() {
-        super();
-        INIT_PHASE.SUPER.setPhaseActive(true);
-    }
-
     @EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
-        INIT_PHASE.PRE_INIT.setPhaseActive(true);
         PacketHandler.init();
 
         // Give this a go mate.
@@ -142,14 +92,12 @@ public class GTplusplus {
         GTPPCore.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
         proxy.preInit(event);
-        Logger.INFO("Setting up our own GTProxy.");
         MetaGTProxy.preInit();
         fixVanillaOreDict();
     }
 
     @EventHandler
     public void init(final FMLInitializationEvent event) {
-        INIT_PHASE.INIT.setPhaseActive(true);
         proxy.init(event);
         proxy.registerNetworkStuff();
         MetaGTProxy.init();
@@ -161,44 +109,16 @@ public class GTplusplus {
 
     @EventHandler
     public void postInit(final FMLPostInitializationEvent event) {
-        INIT_PHASE.POST_INIT.setPhaseActive(true);
         proxy.postInit(event);
         BookHandler.runLater();
         MetaGTProxy.postInit();
-
-        Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        Logger.INFO(
-            "| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess
-                + " | Failed: "
-                + RegistrationHandler.recipesFailed
-                + " |");
-        Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        Logger.INFO("Finally, we are finished. Have some cripsy bacon as a reward.");
-
-        // Log free GT++ Meta IDs
-        if (GTPPCore.DEVENV) {
-            // 750 - 999 are reserved for Alkalus.
-            for (int i = 750; i < 1000; i++) {
-                if (GregTechAPI.METATILEENTITIES[i] == null) {
-                    Logger.INFO("MetaID " + i + " is free.");
-                }
-            }
-            // 30000 - 31999 are reserved for Alkalus.
-            for (int i = 30000; i < 32000; i++) {
-                if (GregTechAPI.METATILEENTITIES[i] == null) {
-                    Logger.INFO("MetaID " + i + " is free.");
-                }
-            }
-        }
     }
 
     @EventHandler
     public synchronized void serverStarting(final FMLServerStartingEvent event) {
-        INIT_PHASE.SERVER_START.setPhaseActive(true);
         if (Thaumcraft.isModLoaded()) {
             event.registerServerCommand(new CommandDumpAspects());
         }
-        INIT_PHASE.STARTED.setPhaseActive(true);
     }
 
     /**

@@ -20,7 +20,6 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverToggleVisual;
@@ -49,13 +48,6 @@ public class MetaCustomCoverItem extends Item {
         this.setMaxStackSize(1);
         GameRegistry.registerItem(this, unlocalizedName);
         registerCover();
-        Logger.INFO(
-            "[Covers] Generated Custom covers for " + mModID
-                + " using "
-                + aTextureCount
-                + " textures from "
-                + mTextureSetName
-                + ".");
     }
 
     public boolean hide() {

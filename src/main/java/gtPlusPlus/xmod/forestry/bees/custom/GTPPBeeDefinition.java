@@ -27,7 +27,6 @@ import forestry.core.genetics.alleles.AlleleHelper;
 import gregtech.api.util.GTUtility;
 import gregtech.loaders.misc.GTBeeDefinition;
 import gregtech.loaders.misc.GTBranchDefinition;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 
 public enum GTPPBeeDefinition implements IBeeDefinition {
@@ -350,10 +349,6 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
     protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2,
         int chance) {
         IAllele[] template = getTemplate();
-        Logger.DEBUG_BEES("parent1: " + (parent1 != null));
-        Logger.DEBUG_BEES("parent2: " + (parent2 != null));
-        Logger.DEBUG_BEES("chance: " + (chance));
-        Logger.DEBUG_BEES("template: " + (template != null));
         return BeeManager.beeMutationFactory.createMutation(parent1, parent2, template, chance);
     }
 

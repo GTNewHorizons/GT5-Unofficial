@@ -19,7 +19,6 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
@@ -81,7 +80,6 @@ public class MaterialUtils {
                     radioactivity = (int) Math.min(Math.max((aProtons / 30), 1), 9);
                 }
             }
-            Logger.MATERIALS("[Debug] Calculated Radiation level to be " + radioactivity + ".");
             TextureSet iconSet = null;
             if (aCustomTextures == null) {
                 if (material.isRadioactive()) {
@@ -96,7 +94,6 @@ public class MaterialUtils {
                 .contains("fluid")) {
                 iconSet = TextureSet.SET_METALLIC;
             }
-            Logger.MATERIALS("[Debug] Calculated Texture Set to be " + iconSet.mSetName + ".");
 
             final int durability = material.mDurability;
             boolean mGenerateCell = false;
@@ -111,27 +108,18 @@ public class MaterialUtils {
             }
 
             // Determine default state
-            Logger.MATERIALS("[Debug] Setting State of GT generated material. " + material.mDefaultLocalName);
             if (material.getMolten(1) != null || material.getSolid(1) != null) {
                 materialState = MaterialState.SOLID;
-                Logger.MATERIALS("[Debug] Molten or Solid was not null.");
                 if (material.getMolten(1) == null && material.getSolid(1) != null) {
-                    Logger.MATERIALS("[Debug] Molten is Null, Solid is not. Enabling cell generation.");
                     mGenerateCell = true;
                 } else if (material.getMolten(1) != null && material.getSolid(1) == null) {
-                    Logger.MATERIALS("[Debug] Molten is not Null, Solid is null. Not enabling cell generation.");
                     // mGenerateCell = true;
                 }
-                Logger.MATERIALS("[Debug] State set as solid.");
             } else if (material.getFluid(1) != null) {
-                Logger.MATERIALS("[Debug] State set as liquid.");
                 materialState = MaterialState.LIQUID;
             } else if (material.getGas(1) != null) {
-                Logger.MATERIALS("[Debug] State set as gas.");
                 materialState = MaterialState.GAS;
             } else {
-                Logger.MATERIALS(
-                    "[Debug] State set as solid. This material has no alternative states, so for safety we wont generate anything.");
                 materialState = MaterialState.SOLID;
                 mGenerateFluid = false;
             }
@@ -163,14 +151,8 @@ public class MaterialUtils {
                     mGenerateFluid);
                 mGeneratedMaterialMap.put(aMaterialKey, M);
                 return M;
-            } else {
-                Logger.DEBUG_MATERIALS(
-                    "Failed to generate GT++ material instance for " + material.mName
-                        + " | Valid RGB? "
-                        + (hasValidRGBA(rgba)));
             }
         } catch (Exception t) {
-            Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for " + material.mName);
             t.printStackTrace();
         }
         return null;
@@ -273,11 +255,6 @@ public class MaterialUtils {
             g = getMaterial(aFallbackMaterialName);
         }
         if (g == null) {
-            Logger.INFO(
-                "Failed finding material '" + aMaterialName
-                    + "' & fallback '"
-                    + aFallbackMaterialName
-                    + "', returning _NULL.");
             throw new IllegalStateException();
         }
         return g;
@@ -289,7 +266,6 @@ public class MaterialUtils {
             m = getMaterialByName(aMaterialName);
         }
         if (m == null) {
-            Logger.INFO("Failed finding material '" + aMaterialName + "', returning _NULL.");
             m = Materials._NULL;
         }
         return m;
@@ -343,20 +319,6 @@ public class MaterialUtils {
         } else {
             aGC = new BaseItemComponent(aMaterial, aType);
         }
-        String aFormattedLangName = aType.getName();
-
-        if (!aFormattedLangName.startsWith(" ")) {
-            if (aFormattedLangName.contains("@")) {
-                String[] aSplit = aFormattedLangName.split("@");
-                aFormattedLangName = aSplit[0] + " " + aMaterial.getDefaultLocalName() + " " + aSplit[1];
-            }
-        }
-
-        if (aFormattedLangName.equals(aType.getName())) {
-            aFormattedLangName = aMaterial.getDefaultLocalName() + aFormattedLangName;
-        }
-
-        Logger.MATERIALS("[Lang] " + aGC.getUnlocalizedName() + ".name=" + aFormattedLangName);
         aMaterial.registerComponentForMaterial(aType, new ItemStack(aGC));
     }
 

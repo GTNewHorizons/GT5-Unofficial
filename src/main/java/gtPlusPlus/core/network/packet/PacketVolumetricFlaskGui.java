@@ -8,7 +8,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.network.handler.AbstractServerMessageHandler;
 import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
 import io.netty.buffer.ByteBuf;
@@ -28,7 +27,6 @@ public class PacketVolumetricFlaskGui extends AbstractServerMessageHandler<Packe
         y = tile.yCoord;
         z = tile.zCoord;
         flaskValue = aCustomValue;
-        Logger.INFO("Created Packet with values (" + x + ", " + y + ", " + z + " | " + flaskValue + ")");
     }
 
     @Override
@@ -37,7 +35,6 @@ public class PacketVolumetricFlaskGui extends AbstractServerMessageHandler<Packe
         buf.writeInt(y);
         buf.writeInt(z);
         buf.writeInt(flaskValue);
-        Logger.INFO("Writing to byte buffer.");
     }
 
     @Override
@@ -46,7 +43,6 @@ public class PacketVolumetricFlaskGui extends AbstractServerMessageHandler<Packe
         y = buf.readInt();
         z = buf.readInt();
         flaskValue = buf.readInt();
-        Logger.INFO("Reading from byte buffer.");
     }
 
     public int getX() {
@@ -82,22 +78,17 @@ public class PacketVolumetricFlaskGui extends AbstractServerMessageHandler<Packe
     }
 
     protected TileEntityVolumetricFlaskSetter getTileEntity(PacketVolumetricFlaskGui message, MessageContext ctx) {
-        Logger.INFO("Trying to get tile.");
         World worldObj = getWorld(ctx);
         if (worldObj == null) {
-            Logger.INFO("Bad world object.");
             return null;
         }
         TileEntity te = worldObj.getTileEntity(message.getX(), message.getY(), message.getZ());
         if (te == null) {
-            Logger.INFO("Bad Tile.");
             return null;
         }
         if (te instanceof TileEntityVolumetricFlaskSetter) {
-            Logger.INFO("Found Tile.");
             return (TileEntityVolumetricFlaskSetter) te;
         }
-        Logger.INFO("Error.");
         return null;
     }
 
@@ -113,7 +104,6 @@ public class PacketVolumetricFlaskGui extends AbstractServerMessageHandler<Packe
     public IMessage handleServerMessage(EntityPlayer player, PacketVolumetricFlaskGui message, MessageContext ctx) {
         TileEntityVolumetricFlaskSetter te = getTileEntity(message, ctx);
         if (te != null) {
-            Logger.INFO("Setting value on tile. " + message.getCustomValue());
             te.setCustomValue(message.getCustomValue());
             // return new Packet_VolumetricFlaskGui2(te, message.getCustomValue());
         }

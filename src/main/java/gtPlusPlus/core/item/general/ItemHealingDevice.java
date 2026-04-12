@@ -10,11 +10,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
@@ -23,7 +24,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
 import ic2.api.item.ElectricItem;
@@ -291,7 +291,6 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         float hp = 0;
         if (arg1.getHealth() < arg1.getMaxHealth()) {
             final float rx = arg1.getMaxHealth() - arg1.getHealth();
-            Logger.INFO("rx:" + rx);
             arg1.heal(rx * 2);
             hp = rx;
             this.discharge(baubleStack, (1638400) * rx, 6, true, true, false);
@@ -331,36 +330,15 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
     }
 
-    private static boolean createNBT(ItemStack rStack) {
-        final NBTTagCompound tagMain = new NBTTagCompound();
-        tagMain.setBoolean("ShowMSG", false);
-        rStack.setTagCompound(tagMain);
-        return true;
-    }
-
     public static boolean getShowMessages(final ItemStack aStack) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT == null) {
-            if (!createNBT(aStack)) {
-                return false;
-            } else {
-                aNBT = aStack.getTagCompound();
-            }
+        if (!aStack.hasTagCompound()) {
+            ItemStackNBT.setBoolean(aStack, "ShowMSG", false);
         }
-        return aNBT.getBoolean("ShowMSG");
+        return ItemStackNBT.getBoolean(aStack, "ShowMSG");
     }
 
-    public static boolean setShowMessages(final ItemStack aStack, final boolean aShow) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT == null) {
-            if (!createNBT(aStack)) {
-                return false;
-            } else {
-                aNBT = aStack.getTagCompound();
-            }
-        }
-        aNBT.setBoolean("ShowMSG", aShow);
-        return true;
+    public static void setShowMessages(final ItemStack aStack, final boolean aShow) {
+        ItemStackNBT.setBoolean(aStack, "ShowMSG", aShow);
     }
 
     @Override

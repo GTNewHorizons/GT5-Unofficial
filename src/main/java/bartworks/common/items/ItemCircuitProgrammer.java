@@ -20,10 +20,10 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -165,9 +165,8 @@ public class ItemCircuitProgrammer extends GTGenericItem implements IElectricIte
         });
 
         ItemStack initialStack = null;
-        NBTTagCompound tag = heldStack.getTagCompound();
-        if (tag != null && tag.getBoolean(NBT_KEY_HAS_CHIP)) {
-            initialStack = this.createRealCircuit(tag.getByte(NBT_KEY_CHIP_CONFIG));
+        if (ItemStackNBT.getBoolean(heldStack, NBT_KEY_HAS_CHIP)) {
+            initialStack = this.createRealCircuit(ItemStackNBT.getByte(heldStack, NBT_KEY_CHIP_CONFIG));
         }
         circuitSlotWidget.getMcSlot()
             .putStack(initialStack);
@@ -178,18 +177,12 @@ public class ItemCircuitProgrammer extends GTGenericItem implements IElectricIte
             ItemStack heldItem = widget.getContext()
                 .getPlayer()
                 .getHeldItem();
-            NBTTagCompound tag2 = heldItem.getTagCompound();
-            if (tag2 == null) {
-                tag2 = new NBTTagCompound();
-            }
-
             if (stack != null) {
-                tag2.setBoolean(NBT_KEY_HAS_CHIP, true);
-                tag2.setByte(NBT_KEY_CHIP_CONFIG, (byte) stack.getItemDamage());
+                ItemStackNBT.setBoolean(heldItem, NBT_KEY_HAS_CHIP, true);
+                ItemStackNBT.setByte(heldItem, NBT_KEY_CHIP_CONFIG, (byte) stack.getItemDamage());
             } else {
-                tag2.setBoolean(NBT_KEY_HAS_CHIP, false);
+                ItemStackNBT.setBoolean(heldItem, NBT_KEY_HAS_CHIP, false);
             }
-            heldItem.setTagCompound(tag2);
         })
             .setFilter(stack -> this.isProgrammedCircuit(stack) || this.isLVCircuit(stack))
             .setBackground(ModularUITextures.ITEM_SLOT, GTUITextures.OVERLAY_SLOT_INT_CIRCUIT)

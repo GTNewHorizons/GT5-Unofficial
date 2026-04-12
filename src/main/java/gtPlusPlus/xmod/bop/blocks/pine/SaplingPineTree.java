@@ -9,7 +9,6 @@ import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.bop.blocks.base.SaplingBase;
 import gtPlusPlus.xmod.bop.world.features.trees.WorldGenPineTree;
@@ -22,7 +21,6 @@ public class SaplingPineTree extends SaplingBase {
 
     @Override
     public void func_149878_d(World world, int x, int y, int z, Random rand) {
-        Logger.WARNING("func_149878_d - 1");
         if (!net.minecraftforge.event.terraingen.TerrainGen.saplingGrowTree(world, rand, x, y, z)) return;
         rand.nextInt(10);
         new WorldGenBigTree(true);

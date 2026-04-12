@@ -15,7 +15,6 @@ import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
 
 public class BaseItemDamageable extends Item {
 
@@ -134,9 +133,7 @@ public class BaseItemDamageable extends Item {
             createNBT(stack);
         }
         double currentDamage = getItemDamage(stack);
-        double durabilitypercent = currentDamage / 100;
-        double inverse = (100 - durabilitypercent);
-        return durabilitypercent;
+        return currentDamage / 100;
     }
 
     @Override
@@ -154,12 +151,6 @@ public class BaseItemDamageable extends Item {
             return item;
         }
         return null;
-    }
-
-    @Override
-    public boolean doesContainerItemLeaveCraftingGrid(ItemStack stack) {
-        Logger.INFO("Does Leave Table? " + stack.getDisplayName());
-        return true;
     }
 
     @Override

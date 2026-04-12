@@ -33,7 +33,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.tesseract.TesseractHelper;
@@ -181,7 +180,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
                 final float[] tCoords = GTUtility.getClickedFacingCoords(side, aX, aY, aZ);
                 switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
                     case 0:
-                        Logger.WARNING("Freq. -1 | " + this.mFrequency);
                         try {
                             GTPPCore.sTesseractGeneratorOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
@@ -190,7 +188,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
 
                         break;
                     case 1:
-                        Logger.WARNING("Freq. +1 | " + this.mFrequency);
                         try {
                             GTPPCore.sTesseractGeneratorOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
@@ -626,7 +623,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
                     .getOwnerName())
                 != null) {
                 if (this.mOwner == null) {
-                    Logger.WARNING("Setting Generators Owner. 1");
                     this.mOwner = GTMod.proxy.getPlayersUUID(
                         this.getBaseMetaTileEntity()
                             .getOwnerName());
@@ -634,16 +630,11 @@ public class MTETesseractGenerator extends MTEBasicTank {
             }
 
             if (this.mFrequency != this.oFrequency) {
-
-                Logger.WARNING("mFreq != oFreq");
-
                 if (getGeneratorEntity() == this) {
                     getGeneratorEntity(this.oFrequency);
                     this.getBaseMetaTileEntity()
                         .issueBlockUpdate();
-                    Logger.WARNING("this Gen == oFreq on map - do block update");
                 }
-                Logger.WARNING("mFreq will be set to oFreq");
                 this.oFrequency = this.mFrequency;
             }
             if ((this.getBaseMetaTileEntity()
@@ -659,7 +650,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
                 }
             } else {
                 if (getGeneratorEntity(this.mFrequency) == this) {
-                    Logger.WARNING("this gen == mFreq on map - do block update");
                     TesseractHelper.removeGenerator(GTMod.proxy.getPlayerMP(mOwner), this.mFrequency);
                     this.getBaseMetaTileEntity()
                         .issueBlockUpdate();
@@ -761,7 +751,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
             this.mOwner = GTMod.proxy.getPlayersUUID(
                 this.getBaseMetaTileEntity()
                     .getOwnerName());
-            Logger.WARNING("Setting Generators Owner. 2");
         }
         super.onCreated(aStack, aWorld, aPlayer);
     }

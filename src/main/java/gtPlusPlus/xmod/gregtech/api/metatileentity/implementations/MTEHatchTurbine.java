@@ -37,7 +37,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.common.gui.modularui.hatch.MTEHatchTurbineGui;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -219,29 +218,19 @@ public class MTEHatchTurbine extends MTEHatch {
     public boolean isControllerActive() {
         MTELargerTurbineBase x = getController();
         if (x != null) {
-            // Logger.INFO("Checking Status of Controller. Running? "+(x.mEUt > 0));
             return x.lEUt > 0;
         }
-        // Logger.INFO("Status of Controller failed, controller is null.");
         return false;
     }
 
     public MTELargerTurbineBase getController() {
         if (this.mHasController && this.mControllerLocation != null) {
             BlockPos p = mControllerLocation;
-            // Logger.INFO(p.getLocationString());
             IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntity(p.xPos, p.yPos, p.zPos);
             if (tTileEntity != null && tTileEntity.getMetaTileEntity() instanceof MTELargerTurbineBase) {
                 return (MTELargerTurbineBase) tTileEntity.getMetaTileEntity();
-            } else {
-                if (tTileEntity == null) {
-                    Logger.INFO("Controller MTE is null, somehow?");
-                } else {
-                    Logger.INFO("Controller is a different MTE to expected");
-                }
             }
         }
-        // Logger.INFO("Failed to Get Controller.");
         return null;
     }
 
@@ -254,7 +243,6 @@ public class MTEHatchTurbine extends MTEHatch {
         if (canSetNewController()) {
             mControllerLocation = aPos;
             mHasController = true;
-            Logger.INFO("Successfully injected controller into this Turbine Assembly Hatch.");
         }
         return mHasController;
     }

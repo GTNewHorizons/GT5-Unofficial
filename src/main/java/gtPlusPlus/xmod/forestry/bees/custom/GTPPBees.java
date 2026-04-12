@@ -13,7 +13,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotOld;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
@@ -51,7 +50,6 @@ public class GTPPBees {
                 combs.initCombsRecipes();
                 GTPPBeeDefinition.initBees();
             } catch (Exception t) {
-                Logger.BEES("Failed to load bees, probably due to an ancient forestry version");
                 t.printStackTrace();
             }
         }

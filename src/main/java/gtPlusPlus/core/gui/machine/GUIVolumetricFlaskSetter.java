@@ -11,7 +11,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.container.ContainerVolumetricFlaskSetter;
 import gtPlusPlus.core.gui.widget.GuiValueField;
 import gtPlusPlus.core.handler.PacketHandler;
@@ -92,12 +91,9 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
 
     public boolean isNumber(char c) {
         boolean isNum = ((c >= 48 && c <= 57) || c == 45);
-        if (isNum) {
-            log("Found Digit: " + c + " | char value");
-        } else {
+        if (!isNum) {
             switch (c) {
                 case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
-                    log("Found Digit: " + c + " | char switch");
                     return true;
                 }
             }
@@ -108,7 +104,6 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
     public boolean isNumber(int c) {
         switch (c) {
             case Keyboard.KEY_0, Keyboard.KEY_1, Keyboard.KEY_2, Keyboard.KEY_3, Keyboard.KEY_4, Keyboard.KEY_5, Keyboard.KEY_6, Keyboard.KEY_7, Keyboard.KEY_8, Keyboard.KEY_9, Keyboard.KEY_NUMPAD0, Keyboard.KEY_NUMPAD1, Keyboard.KEY_NUMPAD2, Keyboard.KEY_NUMPAD3, Keyboard.KEY_NUMPAD4, Keyboard.KEY_NUMPAD5, Keyboard.KEY_NUMPAD6, Keyboard.KEY_NUMPAD7, Keyboard.KEY_NUMPAD8, Keyboard.KEY_NUMPAD9 -> {
-                log("Found Digit: " + Keyboard.getKeyName(c) + " | LWJGL Keybinding");
                 return true;
             }
         }
@@ -118,14 +113,10 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
     @Override
     protected void keyTyped(char par1, int par2) {
         if (mIsOpen) {
-            log("Pressed " + par1 + " | " + par2);
             if (mText.isFocused()) {
-                log("Text box has focus.");
                 if (par2 == Keyboard.KEY_RETURN) {
-                    log("Pressed Enter, unfocusing.");
                     mText.setFocused(false);
                 } else if (par2 == Keyboard.KEY_BACK) {
-                    log("Pressed Backspace.");
                     String aCurrentText = getText();
                     if (!aCurrentText.isEmpty()) {
                         this.mText.setText(aCurrentText.substring(0, aCurrentText.length() - 1));
@@ -136,34 +127,25 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
                     }
                 } else {
                     if (isNumber(par2) || isNumber(par1)) {
-                        log("Pressed number.");
                         this.mText.textboxKeyTyped(par1, par2);
                         sendUpdateToServer();
                     } else {
-                        log("Pressed unused key.");
                         super.keyTyped(par1, par2);
                     }
                 }
             } else {
-                log("Text box not focused.");
                 super.keyTyped(par1, par2);
             }
-        } else {
-            log("Gui is not open?");
         }
     }
 
     @Override
     protected void mouseClicked(int x, int y, int btn) {
         if (mIsOpen) {
-            log("Clicked.");
             this.mText.mouseClicked(x, y, btn);
             if (!mText.clickInTextField(x, y)) {
-                log("Did not click in text box, passing to super.");
                 super.mouseClicked(x, y, btn);
             }
-        } else {
-            log("Gui is not open?");
         }
     }
 
@@ -198,7 +180,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
     public void updateScreen() {
         super.updateScreen();
         // Update Textbox to 0 if Empty
-        if (getText().length() == 0) {
+        if (getText().isEmpty()) {
             this.mText.setText("0");
             sendUpdateToServer();
         }
@@ -212,9 +194,5 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
                 setText(aTileValue);
             }
         }
-    }
-
-    public void log(String aString) {
-        Logger.INFO("[Flask-GUI] " + aString);
     }
 }

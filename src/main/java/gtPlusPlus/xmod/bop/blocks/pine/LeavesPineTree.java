@@ -6,7 +6,6 @@ import net.minecraft.item.Item;
 import net.minecraft.world.World;
 
 import gregtech.api.enums.GTValues;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.bop.blocks.base.LeavesBase;
@@ -27,7 +26,6 @@ public class LeavesPineTree extends LeavesBase {
 
     @Override // Drops when Leaf is broken
     protected void func_150124_c(World world, int x, int y, int z, int meta, int randomChance) {
-        Logger.INFO("Dropping Bonus Drops");
         if (MathUtils.randInt(0, 10) >= 9) {
             this.dropBlockAsItem(world, x, y, z, GregtechItemList.Pinecone.get(MathUtils.randInt(1, 4)));
         }

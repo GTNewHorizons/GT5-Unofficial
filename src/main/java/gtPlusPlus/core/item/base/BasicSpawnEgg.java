@@ -22,7 +22,6 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
 public class BasicSpawnEgg extends ItemMonsterPlacer {
@@ -50,9 +49,6 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
         this.colorBase = parPrimaryColor;
         this.colorSpots = parSecondaryColor;
         this.entityMODID = MODID;
-
-        // DEBUG
-        Logger.WARNING("Spawn egg constructor for " + this.entityToSpawnName);
     }
 
     /**
@@ -163,9 +159,6 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
                 parWorld.spawnEntityInWorld(this.entityToSpawn);
                 this.entityToSpawn.onSpawnWithEgg(null);
                 this.entityToSpawn.playLivingSound();
-            } else {
-                // DEBUG
-                Logger.WARNING("Entity not found " + this.entityToSpawnName);
             }
         }
 
