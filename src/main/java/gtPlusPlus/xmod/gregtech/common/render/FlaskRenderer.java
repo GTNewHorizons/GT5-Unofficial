@@ -40,7 +40,6 @@ public final class FlaskRenderer implements net.minecraftforge.client.IItemRende
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         ItemVolumetricFlask cell = (ItemVolumetricFlask) item.getItem();
 
-        int aType = cell.getMaxCapacity() == 8000 ? 0 : 1;
         IIcon icon = item.getIconIndex();
         GL11.glEnable(3042);
         GL11.glEnable(3008);

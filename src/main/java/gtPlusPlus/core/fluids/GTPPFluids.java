@@ -5,7 +5,6 @@ import static gregtech.api.enums.Mods.TinkerConstruct;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -19,7 +18,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.core.init.InternalName;
@@ -595,7 +593,6 @@ public class GTPPFluids {
         if (BiomesOPlenty.isModLoaded()) {
             FluidStack blood = FluidRegistry.getFluidStack("hell_blood", 100);
             if (blood != null) {
-                Logger.INFO("Found Biome's o Plenty, enabled Blood support.");
                 bloodFluids.add(blood);
             }
         }
@@ -603,21 +600,16 @@ public class GTPPFluids {
         if (TinkerConstruct.isModLoaded()) {
             FluidStack blood = FluidRegistry.getFluidStack("blood", 100);
             if (blood != null) {
-                Logger.INFO("Found Tinker's Construct, enabled Blood support.");
                 bloodFluids.add(blood);
             }
         }
 
         // Handle Blood Internally, Create if required.
         if (bloodFluids.isEmpty()) {
-            Logger.INFO("Did not find any existing Blood fluids, Generating our own");
             Fluid blood = FluidUtils
                 .generateFluidNoPrefix("blood", "Blood", 32 + 175, new short[] { 175, 25, 25, 100 }, true);
             bloodFluids.add(new FluidStack(blood, 100));
         }
     }
 
-    public static List<FluidStack> getBloodFluids() {
-        return Collections.unmodifiableList(bloodFluids);
-    }
 }

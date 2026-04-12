@@ -6,7 +6,6 @@ import static gregtech.api.enums.Mods.ModIDs;
 
 import java.util.List;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -14,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
@@ -35,10 +33,8 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
     private final String unlocalizedName = "personalCloakingDevice";
     private final ItemStack thisStack;
     private static final int maxValueEU = 10000 * 20 * 500;
-    protected double chargeEU = 0;
 
     public ItemCloakingDevice(final double charge) {
-        this.chargeEU = charge;
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         this.setUnlocalizedName(this.unlocalizedName);
         this.setMaxStackSize(1);
@@ -49,29 +45,6 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
             this.setDamage(this.thisStack, 13);
         }
         GameRegistry.registerItem(this, this.unlocalizedName + "-" + charge);
-    }
-
-    @Override
-    public void onUpdate(final ItemStack itemStack, final World worldObj, final Entity player, final int p_77663_4_,
-            final boolean p_77663_5_) {
-        if (worldObj.isRemote) {
-            return;
-        }
-
-        if (player instanceof EntityPlayer) {
-            for (final ItemStack is : ((EntityPlayer) player).inventory.mainInventory) {
-                if (is == itemStack) {
-                    continue;
-                }
-                if (is != null) {
-                    if (is.getItem() instanceof final IElectricItem electricItem) {
-                        this.chargeEU = ElectricItem.manager.getCharge(is);
-                    }
-                }
-            }
-        }
-
-        super.onUpdate(itemStack, worldObj, player, p_77663_4_, p_77663_5_);
     }
 
     @Override

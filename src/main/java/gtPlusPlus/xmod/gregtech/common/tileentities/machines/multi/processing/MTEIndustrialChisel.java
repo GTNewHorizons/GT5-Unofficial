@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -225,9 +226,8 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                 int outputAmount = 1;
                 int inputAmount = 1;
                 if (ArchitectureCraft.isModLoaded() && tOutput.getItem() instanceof ArchitectureItemBlock) {
-                    NBTTagCompound tag = tOutput.getTagCompound();
-                    inputAmount = Shape.forId(tag.getInteger("Shape")).materialUsed;
-                    outputAmount = Shape.forId(tag.getInteger("Shape")).itemsProduced;
+                    inputAmount = Shape.forId(ItemStackNBT.getInteger(tOutput, "Shape")).materialUsed;
+                    outputAmount = Shape.forId(ItemStackNBT.getInteger(tOutput, "Shape")).itemsProduced;
                 }
                 // We can chisel this
                 Optional<GTRecipe> aRecipe = GTRecipeBuilder.builder()
