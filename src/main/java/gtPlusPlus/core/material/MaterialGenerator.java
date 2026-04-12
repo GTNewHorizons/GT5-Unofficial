@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import gregtech.api.enums.GTValues;
-import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -55,7 +54,7 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenShapedCrafting;
 
 public class MaterialGenerator {
 
-    public static final ArrayList<Set<RunnableWithInfo<Material>>> mRecipeMapsToGenerate = new ArrayList<>();
+    public static final ArrayList<Set<Runnable>> mRecipeMapsToGenerate = new ArrayList<>();
 
     public static void generate(final Material matInfo) {
         generate(matInfo, true);

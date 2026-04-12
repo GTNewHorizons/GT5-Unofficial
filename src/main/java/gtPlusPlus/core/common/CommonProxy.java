@@ -88,7 +88,6 @@ public class CommonProxy implements IFuelHandler {
         CompatIntermodStaging.postInit(e);
         // Moved last, to prevent recipes being generated post initialisation.
         CompatHandler.startLoadingGregAPIBasedRecipes();
-        CompatHandler.runQueuedRecipes();
         registerCustomMobDrops();
     }
 
