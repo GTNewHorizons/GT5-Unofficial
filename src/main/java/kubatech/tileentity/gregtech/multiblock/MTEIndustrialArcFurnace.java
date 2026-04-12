@@ -300,14 +300,20 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             .addInfo(
                 "in that time machine will consume energy based on startup surge of the electrode and will not process any recipes")
             .addInfo("After processing all recipes, machine will shut down the arc, which also takes time")
-            .addInfo("------------------------------------------------------------------------------------")
-            .addInfo("Blast mode: This machine can also process any EBF recipe, but at the extra cost of 64x the power")
-            .addInfo("Ore mode: In this mode, machine will always run 10 seconds initiation process,")
+            .addInfo("-------------------------------Blast mode----------------------------------")
+            .addInfo("This machine can also process any EBF recipe, but at the extra cost of 64x the power")
+            .addInfo("-------------------------------Ore Mode----------------------------------")
+            .addInfo("In this mode, machine will always run 10 seconds initiation process,")
             .addInfo("in that time, machine will consume all ores and raw ores from input hatches")
-            .addInfo(
-                "After that time, all metals will start mixing together in the arc, this process will take time based on the ores inserted")
-            .addInfo(
-                "at the end of the process, machine will output molten alloys and slag from things that didn't mix")
+            .addInfo("can smelt only ores that can be processed in furnace, no blasting allowed")
+            .addInfo("if there are more ores than the machine can process, initiation will finish immediately")
+            .addInfo("if there are no ores supplied for 5 ticks, initiation will finish immediately as well")
+            // .addInfo(
+            // "After that time, all metals will start mixing together in the arc, this process will take time based on
+            // the ores inserted")
+            // .addInfo(
+            // "at the end of the process, machine will output molten alloys and slag from things that didn't mix")
+            .addInfo("machine will start processing all ores to molten metals after that")
             .addInfo("Right-click controller with a Screwdriver to change modes")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(17, 11, 19, false)
@@ -492,6 +498,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     }
 
     private int didOres = 0;
+    private int didOCs = 0;
     private final Map<Fluid, Long> oreOutputs = new HashMap<>();
 
     @Override
@@ -500,8 +507,12 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             && mMaxProgresstime > 0
             && didOres != -1
             && (aTick % 5 == 0 || mProgresstime == 0)) {
+            int maxOCs = (int) GTUtility.log4(getAverageInputVoltage() / 32);
+            int OCsLeft = maxOCs - didOCs;
+            if (electrode.OCSpeedFactor == 1) OCsLeft = 0;
+            int maxPara = (int) ((double) calculateMaximumParallel(30) * Math.pow(electrode.OCSpeedFactor, didOCs));
             boolean didSomething = false;
-            int paraToDoLeft = calculateMaximumParallel(30) - didOres;
+            int paraToDoLeft = maxPara - didOres;
             startRecipeProcessing();
             // processing ores
             for (ItemStack inputItem : getAllStoredInputs()) {
@@ -524,13 +535,18 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                                 paraToDoLeft -= toDo;
                                 didOres += toDo;
                                 didSomething = true;
+                                if (paraToDoLeft == 0 && OCsLeft > 0) {
+                                    didOCs++;
+                                    maxPara = (int) ((double) maxPara * electrode.OCSpeedFactor);
+                                    paraToDoLeft = maxPara - didOres;
+                                }
                             }
                         }
                     }
                 }
             }
             endRecipeProcessing();
-            if (!didSomething || paraToDoLeft <= 0) {
+            if (!didSomething || paraToDoLeft <= 0 && OCsLeft <= 0) {
                 mProgresstime = mMaxProgresstime - 1;
             }
         }
@@ -551,7 +567,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             }
             mOutputFluids = outputs.toArray(new FluidStack[0]);
             oreOutputs.clear();
-            lEUt = -(30L) * didOres;
+            lEUt = -(30L) * (didOCs == 0 ? didOres : calculateMaximumParallel(30))
+                * (long) Math.pow(electrode.OCPowerFactor, didOCs);
             didOres = -1;
             OverclockCalculator calculator = new OverclockCalculator();
             calculator.setMaxTierSkips(0);
@@ -561,7 +578,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             calculator.setDuration(mMaxProgresstime);
             calculator.setDurationDecreasePerOC(electrode.OCSpeedFactor);
             calculator.setEUtIncreasePerOC(electrode.OCPowerFactor);
-            calculator.setMaxOverclocks((int) GTUtility.log4(getAverageInputVoltage() / 32));
+            calculator.setMaxOverclocks((int) GTUtility.log4(getAverageInputVoltage() / 32) - didOCs);
             calculator.setDurationModifier(1d / electrode.speedModifier);
             calculator.calculate();
             mMaxProgresstime = calculator.getDuration();
@@ -662,6 +679,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                             fake.mEUt = 16;
                             fake.mDuration = 20 * 10;
                             didOres = 0;
+                            didOCs = 0;
                             oreOutputs.clear();
                             return Stream.of(fake);
                         }
