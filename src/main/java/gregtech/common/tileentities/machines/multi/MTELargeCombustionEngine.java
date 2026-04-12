@@ -50,7 +50,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 
-public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTELargeCombustionEngine> implements ISurvivalConstructable {
+public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTELargeCombustionEngine>
+    implements ISurvivalConstructable {
 
     private int casingAmount;
     private static final int OFFSET_X = 1;
