@@ -136,6 +136,7 @@ public class MTEDieselEngine extends MTEExtendedPowerMultiBlockBase<MTEDieselEng
             .addCasingInfoExactly(GTUtility.translate("gt.blockcasings2.4.name"), 4, false)
             .addCasingInfoExactly(GTUtility.translate("gt.blockcasings4.13.name"), 8, false)
             .addCasingInfoExactly("PTFE Frame Box", 21, false)
+            .addCasingInfoExactly("Chemically Inert Machine Casing", 19, false)
             .addDynamoHatch(GTUtility.translate("gt.mbtt.structure.back_center"), 3)
             .addMaintenanceHatch("Any Stable Titanium Machine Casing", 1)
             .addMufflerHatch("Any Stable Titanium Machine Casing", 1)
