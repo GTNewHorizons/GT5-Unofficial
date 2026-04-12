@@ -219,7 +219,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
             SafeTexture aWest = SafeTexture.register(aMetaBlob.WEST);
             SafeTexture aEast = SafeTexture.register(aMetaBlob.EAST);
             // Convenience Blob
-            CubicObject<SafeTexture> aMetaBlob2 = new CubicObject<>( aBottom, aTop, aBack, aFont, aWest, aEast );
+            CubicObject<SafeTexture> aMetaBlob2 = new CubicObject<>(aBottom, aTop, aBack, aFont, aWest, aEast);
             // Store this Blob into
             mSidedTextureArray.add(aMetaBlob2);
         }

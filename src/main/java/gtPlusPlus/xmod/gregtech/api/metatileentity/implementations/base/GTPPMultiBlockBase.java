@@ -87,7 +87,8 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 // so any method in MTEIndustrialDehydrator would see generic field declared in
 // GTPPMultiBlockBase without generic parameter
 
-public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBase<T>> extends MTEExtendedPowerMultiBlockBase<T> {
+public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBase<T>>
+    extends MTEExtendedPowerMultiBlockBase<T> {
 
     public GTRecipe mLastRecipe;
 

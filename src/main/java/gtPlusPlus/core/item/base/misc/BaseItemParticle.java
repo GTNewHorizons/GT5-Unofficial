@@ -29,7 +29,7 @@ public abstract class BaseItemParticle extends CoreItem {
             0,
             GTValues.emptyStringArray,
             aRarity,
-                false,
+            false,
             null);
         this.setTextureName(GTPlusPlus.ID + ":" + "science/Atom");
         aMaxCount = aCount;

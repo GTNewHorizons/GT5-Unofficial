@@ -14,7 +14,7 @@ public class BaseItemBurnable extends CoreItem {
 
     public BaseItemBurnable(String unlocalizedName, String displayName, CreativeTabs creativeTab, int stackSize,
         int maxDmg, String description, String oredictName, int burnTime, int meta) {
-        super(unlocalizedName, creativeTab, stackSize, maxDmg, new String[] {description});
+        super(unlocalizedName, creativeTab, stackSize, maxDmg, new String[] { description });
         this.meta = meta;
         if (oredictName != null && !oredictName.isEmpty()) {
             OreDictionary.registerOre(oredictName, new ItemStack(this));

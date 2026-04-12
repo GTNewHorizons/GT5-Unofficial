@@ -33,15 +33,7 @@ public class BaseItemTickable extends CoreItem {
 
     public BaseItemTickable(boolean containerTick, boolean twoPass, final String unlocalName, final int colour,
         final int maxTicks, final String[] Description) {
-        super(
-            unlocalName,
-            AddToCreativeTab.tabMisc,
-            1,
-            999999999,
-            Description,
-            EnumRarity.epic,
-            true,
-            null);
+        super(unlocalName, AddToCreativeTab.tabMisc, 1, 999999999, Description, EnumRarity.epic, true, null);
         this.itemColour = colour;
         this.descriptionString = Description;
         this.maxTicks = maxTicks;

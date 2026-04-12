@@ -34,15 +34,7 @@ public class CoreItem extends Item {
 
     public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg,
         final String[] description) {
-        this(
-            unlocalizedName,
-            creativeTab,
-            stackSize,
-            maxDmg,
-            description,
-            EnumRarity.common,
-            false,
-            null); // Calls 4.5
+        this(unlocalizedName, creativeTab, stackSize, maxDmg, description, EnumRarity.common, false, null); // Calls 4.5
     }
 
     // 5
@@ -50,8 +42,7 @@ public class CoreItem extends Item {
      * Name, Tab, Stack, Dmg, Description, Rarity, Text Colour, Effect
      */
     public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg,
-                    final String[] description, final EnumRarity regRarity, final boolean Effect,
-                    final ItemStack OverrideItem) {
+        final String[] description, final EnumRarity regRarity, final boolean Effect, final ItemStack OverrideItem) {
         this.setUnlocalizedName(unlocalizedName);
         this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setCreativeTab(creativeTab);
@@ -70,7 +61,7 @@ public class CoreItem extends Item {
      */
     public CoreItem(final String unlocalizedName, final String displayName, final CreativeTabs creativeTab,
         final int stackSize, final int maxDmg, final String[] description, final EnumRarity regRarity,
-                    final boolean Effect, final ItemStack OverrideItem) {
+        final boolean Effect, final ItemStack OverrideItem) {
         this.setUnlocalizedName(unlocalizedName);
         this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setCreativeTab(creativeTab);
