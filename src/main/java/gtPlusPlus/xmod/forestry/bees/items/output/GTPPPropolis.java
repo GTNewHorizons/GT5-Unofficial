@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.forestry.bees.items.output;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.List;
 
@@ -79,27 +79,19 @@ public class GTPPPropolis extends Item {
         ItemStack tDrop;
         for (GTPPPropolisType aProp : GTPP_Bees.sPropolisMappings.values()) {
             tDrop = aProp.getStackForType(1);
-            addProcess(
-                tDrop,
-                aProp.mMaterial.getDust(1),
-                Math.min(Math.max(10000 - (aProp.mMaterial.vTier * 625), 100), 10000),
-                aProp.mMaterial.vTier * 20 * 15,
-                aProp.mMaterial.vVoltageMultiplier);
+            ItemStack aOutput = aProp.mMaterial.getDust(1);
+            if (aOutput == null) {
+                continue;
+            }
+            GTValues.RA.stdBuilder()
+                .itemInputs(tDrop)
+                .itemOutputs(aOutput)
+                .outputChances(Math.min(Math.max(10000 - (aProp.mMaterial.vTier * 625), 100), 10000))
+                .duration(aProp.mMaterial.vTier * 15 * SECONDS)
+                .eut(aProp.mMaterial.vVoltageMultiplier)
+                .addTo(extractorRecipes);
 
         }
     }
 
-    public static boolean addProcess(ItemStack tDrop, ItemStack aOutput, int aChance, int aDuration, int aEUt) {
-        if (aOutput == null) {
-            return false;
-        }
-        GTValues.RA.stdBuilder()
-            .itemInputs(tDrop)
-            .itemOutputs(aOutput)
-            .outputChances(aChance)
-            .duration(aDuration * TICKS)
-            .eut(aEUt)
-            .addTo(extractorRecipes);
-        return true;
-    }
 }

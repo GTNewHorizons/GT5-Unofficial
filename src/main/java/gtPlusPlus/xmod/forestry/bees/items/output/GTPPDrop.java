@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.forestry.bees.items.output;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.List;
 
@@ -106,7 +106,7 @@ public class GTPPDrop extends Item {
             GTValues.RA.stdBuilder()
                 .itemInputs(tDrop)
                 .fluidOutputs(aOutput)
-                .duration(aDrop.mMaterial.vTier * 20 * 30 * TICKS)
+                .duration(aDrop.mMaterial.vTier * 30 * SECONDS)
                 .eut(aDrop.mMaterial.vVoltageMultiplier)
                 .addTo(fluidExtractionRecipes);
 

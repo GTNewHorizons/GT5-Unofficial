@@ -272,8 +272,6 @@ public class RecipeGenRecycling implements Runnable {
             GTplusplus.logger.warn("Returning Null. Method: ", new Exception());
             return null;
         }
-        if (!GTOreDictUnificator.getName2StackMap()
-            .containsKey(aName.toString()) && aMentionPossibleTypos) {}
         return GTUtility.copyAmount(
             aAmount,
             GTOreDictUnificator.getName2StackMap()
