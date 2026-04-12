@@ -53,7 +53,7 @@ public class ItemDummyResearch extends ItemGenericToken {
     private int aID = 0;
 
     public ItemDummyResearch() {
-        super("dummyResearch", "Research", new String[] { "This object requires some further study" }, "research");
+        super("dummyResearch", new String[] { "This object requires some further study" }, "research");
     }
 
     /**

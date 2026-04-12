@@ -30,8 +30,8 @@ public class BaseItemTickable extends CoreItem {
 
     public IIcon[] mIcon = new IIcon[2];
 
-    public BaseItemTickable(boolean containerTick, boolean twoPass, final String unlocalName, final int colour,
-        final int maxTicks, final String[] Description) {
+    public BaseItemTickable(boolean twoPass, final String unlocalName, final int colour, final int maxTicks,
+        final String[] Description) {
         super(unlocalName, AddToCreativeTab.tabMisc, 1, 999999999, Description, EnumRarity.epic, true, null);
         this.itemColour = colour;
         this.descriptionString = Description;

@@ -12,7 +12,6 @@ public class Configuration {
 
     public static final Debug debug = new Debug();
     public static final Features features = new Features();
-    public static final Visual visual = new Visual();
     public static final Worldgen worldgen = new Worldgen();
 
     @Config.Comment("Debug section")
@@ -29,14 +28,6 @@ public class Configuration {
         @Config.Comment("Hides every filled IC2 Universal Cell from NEI.")
         @Config.DefaultBoolean(true)
         public boolean hideUniversalCells;
-    }
-
-    @Config.Comment("Visual section")
-    public static class Visual {
-
-        @Config.Comment("Enables Animated GT++ Textures")
-        @Config.DefaultBoolean(true)
-        public boolean enableAnimatedTextures;
     }
 
     @Config.Comment("Worldgen section")
