@@ -10,11 +10,11 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.widget.CircularGaugeDrawable;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 
-public class MTESteamMultiBaseGui extends MTEMultiBlockBaseGui<MTESteamMultiBase<?>> {
+public class MTESteamMultiBlockBaseGui extends MTEMultiBlockBaseGui<MTESteamMultiBlockBase<?>> {
 
-    public MTESteamMultiBaseGui(MTESteamMultiBase<?> multiblock) {
+    public MTESteamMultiBlockBaseGui(MTESteamMultiBlockBase<?> multiblock) {
         super(multiblock);
     }
 
