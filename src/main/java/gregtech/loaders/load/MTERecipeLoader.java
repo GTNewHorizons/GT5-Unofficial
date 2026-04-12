@@ -25,6 +25,7 @@ import com.jaquadro.minecraft.storagedrawers.StorageDrawers;
 
 import bartworks.common.loaders.ItemRegistry;
 import codechicken.nei.api.API;
+import goodgenerator.util.ItemRefer;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
@@ -1712,6 +1713,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.MegaChemicalReactor.get(1),
             new Object[] { ItemRegistry.megaMachines[3] });
+
+        // Universal Chemical Fuel Engine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.UniversalChemicalFuelEngine.get(1),
+            new Object[] { ItemRefer.Universal_Chemical_Fuel_Engine.get(1) });
 
         // Industrial Mixer Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
