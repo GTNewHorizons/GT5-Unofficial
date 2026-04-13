@@ -104,11 +104,7 @@ public abstract class HTGRItem extends Item {
     }
 
     private static ItemStack getItemWithMaterial(Materials material, HTGRItem item) {
-        ItemStack stack = new ItemStack(item, 1, knownMaterials.get(material));
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("material", material.mName);
-        stack.setTagCompound(tag);
-        return stack;
+        return new ItemStack(item, 1, knownMaterials.get(material));
     }
 
     public static Materials getItemMaterial(ItemStack stack) {
