@@ -114,12 +114,11 @@ public class ManualInsertionPanel {
             .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
 
         panel.child(
-            new ButtonWidget<>().background(GTGuiTextures.BUTTON_STANDARD)
-                .overlay(
-                    IKey.lang("gt.blockmachines.multimachine.FOG.consumeUpgradeMats")
-                        .style(EnumChatFormatting.DARK_GRAY)
-                        .alignment(Alignment.CENTER)
-                        .scale(0.75f))
+            new ButtonWidget<>().overlay(
+                IKey.lang("gt.blockmachines.multimachine.FOG.consumeUpgradeMats")
+                    .style(EnumChatFormatting.DARK_GRAY)
+                    .alignment(Alignment.CENTER)
+                    .scale(0.75f))
                 .disableHoverBackground()
                 .disableHoverOverlay()
                 .onMousePressed(d -> {
