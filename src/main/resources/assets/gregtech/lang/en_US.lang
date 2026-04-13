@@ -1709,11 +1709,14 @@ GT5U.MBTT.SuperChest=Super/Quantum Chest
 
 gt.multiblock.DieselEngine.machine_type=Combustion Generator, LCE
 gt.multiblock.DieselEngine.desc1=Supply Diesel Fuels and %s of Lubricant per hour to run
+gt.multiblock.DieselEngine.desc1_1=Supply High Rating Fuels and %s of Lubricant per hour to run
 gt.multiblock.DieselEngine.desc2=Supply %s of Oxygen to boost output (optional)
+gt.multiblock.DieselEngine.desc2_1=Supply %s of Liquid Oxygen to boost output (optional)
 gt.multiblock.DieselEngine.default_output=Default: Produces %s at %s fuel efficiency
 gt.multiblock.DieselEngine.boosted_output=Boosted: Produces %s at %s fuel efficiency
 gt.multiblock.DieselEngine.wait_power=You need to wait for it to reach %s to output full power
 gt.multiblock.DieselEngine.intake_warning=Engine Intake Casings must not be obstructed in front (only air blocks)
+gt.multiblock.DieselEngine.intake_warning2=Engine Intake Casings must not be obstructed on top (only air blocks)
 gt.multiblock.DieselEngine.gear_box_inner=Inner 2 blocks
 gt.multiblock.DieselEngine.engine_intake_ring=8x, ring around controller
 gt.multiblock.DieselEngine.maintenance_hatch=One of the casings next to a Gear Box

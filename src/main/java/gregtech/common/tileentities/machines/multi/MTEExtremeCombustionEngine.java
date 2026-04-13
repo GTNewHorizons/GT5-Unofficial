@@ -76,33 +76,39 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
 
-        // String lubricantRate = TooltipHelper.fluidText(1000);
-        // String oxygenRate = TooltipHelper.fluidRateText(40);
-        // String defaultOutput = TooltipHelper.euText(2048);
-        // String defaultEfficiency = TooltipHelper.effText(1.0f);
-        // String boostedOutput = TooltipHelper.euText(6144);
-        // String boostedEfficiency = TooltipHelper.effText(1.5f);
-        // String waitPower = TooltipHelper.effText(3.0f);
+        String lubricantRate = TooltipHelper.fluidText(8000);
+        String oxygenRate = TooltipHelper.fluidRateText(40);
+        String defaultOutput = TooltipHelper.euText(10900);
+        String defaultEfficiency = TooltipHelper.effText(1.0f);
+        String boostedOutput = TooltipHelper.euText(32700);
+        String boostedEfficiency = TooltipHelper.effText(1.5f);
+        String waitPower = TooltipHelper.effText(3.0f);
 
         tt.addMachineType("Combustion Generator, ECE")
-            .addInfo("Supply high rating fuel and 8000L of Lubricant per hour to run")
-            .addInfo("Supply 40L/s of Liquid Oxygen to boost output (optional)")
-            .addInfo("Default: Produces 10900EU/t at 100% fuel efficiency")
-            .addInfo("Boosted: Produces 32700EU/t at 150% fuel efficiency")
-            .addInfo("You need to wait for it to reach 300% to output full power")
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc1_1", lubricantRate))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc2_1", oxygenRate))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.default_output", defaultOutput, defaultEfficiency))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.boosted_output", boostedOutput, boostedEfficiency))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.wait_power", waitPower))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.intake_warning2"))
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 4, false)
-            .addController("Front center")
-            .addCasingInfoRange("Robust Tungstensteel Machine Casing", 16, 22, false)
-            .addOtherStructurePart("Titanium Gear Box Machine Casing", "Inner 2 blocks")
-            .addOtherStructurePart("Extreme Engine Intake Machine Casing", "8x, ring around controller")
-            .addStructureInfo("Extreme Engine Intake Casings must not be obstructed in front (only air blocks)")
-            .addDynamoHatch("Back center", 2)
-            .addMaintenanceHatch("One of the casings next to a Gear Box", 1)
-            .addMufflerHatch("Top middle back, above the rear Gear Box", 1)
-            .addInputHatch("HOG, next to a Gear Box", 1)
-            .addInputHatch("Lubricant, next to a Gear Box", 1)
-            .addInputHatch("Liquid Oxygen, optional, next to a Gear Box", 1)
+            .beginStructureBlock(10, 5, 5, false)
+            .addController("Front left, 2nd layer")
+            .addCasingInfoMin("Robust Tungstensteel Machine Casing", 30, false)
+            .addCasingInfoExactly("Steel Gear Box Casing", 6, false)
+            .addCasingInfoExactly("Extreme Engine Intake Casing", 12, false)
+            .addCasingInfoExactly("PTFE Frame Box", 32, false)
+            .addCasingInfoExactly("PTFE Pipe Casing", 10, false)
+            .addCasingInfoMin("Tungstensteel Turbine Casing", 4, false)
+            .addCasingInfoExactly("Tungstensteel Firebox Casing", 12, false)
+            .addCasingInfoExactly("Chemically Inert Machine Casing", 30, false)
+            .addDynamoHatch("Back center", 3)
+            .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
+            .addMufflerHatch("Any Robust Tungstensteel Machine Casing", 1)
+            .addInputHatch("High Rating Fuel, next to a Gear Box", 2)
+            .addInputHatch("Lubricant, next to a Gear Box", 2)
+            .addInputHatch("Liquid Oxygen, optional, next to a Gear Box", 2)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")
             .toolTipFinisher();
         return tt;
     }
@@ -278,7 +284,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
         casingAmount = 0;
         turbineCasingAmount = 0;
         return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && !mMufflerHatches.isEmpty()
-            && casingAmount >= 10
+            && casingAmount >= 30
             && turbineCasingAmount >= 4;
     }
 

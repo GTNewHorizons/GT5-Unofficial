@@ -171,6 +171,7 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialWireMill;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactoryLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerBronze;
+import gregtech.common.tileentities.machines.multi.MTEExtremeCombustionEngine;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerBronzeLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteel;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteelLegacy;
@@ -876,6 +877,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 LargeCombustionEngine.ID,
                 "multimachine.dieselengine",
                 "Large Combustion Engine").getStackForm(1L));
+
+        ItemList.ExtremeCombustionEngine.set(
+            new MTEExtremeCombustionEngine(
+                ExtremeCombustionEngine.ID,
+                "multimachine.extremedieselengine",
+                "Extreme Combustion Engine").getStackForm(1L));
     }
 
     private static void registerSteamMachines() {
