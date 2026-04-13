@@ -489,7 +489,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
     }
 
     public int getCoilTier() {
-        return coilLevel == null ? 0 : (int) this.coilLevel.getTier() + 1;
+        return this.coilLevel == null ? 0 : (int) this.coilLevel.getTier() + 1;
     }
 
     public HeatingCoilLevel getCoilLevel() {
