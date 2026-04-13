@@ -48,7 +48,32 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
     private static final int OFFSET_Z = 0;
 
     private int casingAmount;
-    private static IStructureDefinition<MTEAdvImplosionCompressor> STRUCTURE_DEFINITION = null;
+    private static final IStructureDefinition<MTEAdvImplosionCompressor> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEAdvImplosionCompressor>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            new String[][] {
+                { "       ", "       ", "   A   ", "  A A  ", "   A   ", "   D   ", "  D D  ", "  B~B  ", "  BDB  " },
+                { "       ", "  AAA  ", " AA AA ", " A   A ", " AA AA ", " DAAAD ", "       ", " BBBBB ", " DBBBD " },
+                { "  CEC  ", " AA AA ", " A   A ", "A     A", " A   A ", " AA AA ", "D  A  D", "BBBBBBB", "BBBBBBB" },
+                { "  E E  ", " A   A ", "A     A", "       ", "A     A", "DA   AD", "  A A  ", "BBBBBBB", "DBBBBBD" },
+                { "  CEC  ", " AA AA ", " A   A ", "A     A", " A   A ", " AA AA ", "D  A  D", "BBBBBBB", "BBBBBBB" },
+                { "       ", "  AAA  ", " AA AA ", " A   A ", " AA AA ", " DAAAD ", "       ", " BBBBB ", " DBBBD " },
+                { "       ", "       ", "   A   ", "  A A  ", "   A   ", "   D   ", "  D D  ", "  BBB  ", "  BDB  " } })
+        .addElement('A', ofBlock(Loaders.FRF_Casings, 0))
+        .addElement(
+            'B',
+            ofChain(
+                buildHatchAdder(MTEAdvImplosionCompressor.class)
+                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                    .casingIndex(Casings.RobustTungstenSteelMachineCasing.textureId)
+                    .hint(1)
+                    .build(),
+                onElementPass(x -> ++x.casingAmount, Casings.RobustTungstenSteelMachineCasing.asElement())))
+        .addElement('C', ofFrame(Materials.Gold))
+        .addElement('D', ofFrame(Materials.TungstenSteel))
+        .addElement('E', ofSheetMetal(Materials.Gold))
+        .build();
 
     public MTEAdvImplosionCompressor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -91,40 +116,6 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     public IStructureDefinition<MTEAdvImplosionCompressor> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEAdvImplosionCompressor>builder()
-                .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    new String[][] {
-                        { "       ", "       ", "   A   ", "  A A  ", "   A   ", "   D   ", "  D D  ", "  B~B  ",
-                            "  BDB  " },
-                        { "       ", "  AAA  ", " AA AA ", " A   A ", " AA AA ", " DAAAD ", "       ", " BBBBB ",
-                            " DBBBD " },
-                        { "  CEC  ", " AA AA ", " A   A ", "A     A", " A   A ", " AA AA ", "D  A  D", "BBBBBBB",
-                            "BBBBBBB" },
-                        { "  E E  ", " A   A ", "A     A", "       ", "A     A", "DA   AD", "  A A  ", "BBBBBBB",
-                            "DBBBBBD" },
-                        { "  CEC  ", " AA AA ", " A   A ", "A     A", " A   A ", " AA AA ", "D  A  D", "BBBBBBB",
-                            "BBBBBBB" },
-                        { "       ", "  AAA  ", " AA AA ", " A   A ", " AA AA ", " DAAAD ", "       ", " BBBBB ",
-                            " DBBBD " },
-                        { "       ", "       ", "   A   ", "  A A  ", "   A   ", "   D   ", "  D D  ", "  BBB  ",
-                            "  BDB  " } })
-                .addElement('A', ofBlock(Loaders.FRF_Casings, 0))
-                .addElement(
-                    'B',
-                    ofChain(
-                        buildHatchAdder(MTEAdvImplosionCompressor.class)
-                            .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                            .casingIndex(Casings.RobustTungstenSteelMachineCasing.textureId)
-                            .hint(1)
-                            .build(),
-                        onElementPass(x -> ++x.casingAmount, Casings.RobustTungstenSteelMachineCasing.asElement())))
-                .addElement('C', ofFrame(Materials.Gold))
-                .addElement('D', ofFrame(Materials.TungstenSteel))
-                .addElement('E', ofSheetMetal(Materials.Gold))
-                .build();
-        }
         return STRUCTURE_DEFINITION;
     }
 

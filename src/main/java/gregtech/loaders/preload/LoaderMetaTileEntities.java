@@ -871,7 +871,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 AdvancedImplosionCompressor.ID,
                 "multimachine.adv.implosioncompressor",
                 "Density^2").getStackForm(1L));
-      
+
         ItemList.UniversalChemicalFuelEngine.set(
             new MTEUniversalChemicalFuelEngine(
                 UniversalChemicalFuelEngine.ID,
