@@ -149,7 +149,7 @@ import gregtech.common.tileentities.machines.multi.MTEDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
-import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngine;
+import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEFluidShaper;
 import gregtech.common.tileentities.machines.multi.MTEFrothFlotationCell;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer1;
@@ -536,7 +536,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "multimachine.dieselengine",
                 "Large Combustion Engine").getStackForm(1L));
         ItemList.Machine_Multi_ExtremeDieselEngine.set(
-            new MTEExtremeDieselEngine(
+            new MTEExtremeDieselEngineLegacy(
                 EXTREME_COMBUSTION_ENGINE_CONTROLLER.ID,
                 "multimachine.extremedieselengine",
                 "Extreme Combustion Engine").getStackForm(1L));
