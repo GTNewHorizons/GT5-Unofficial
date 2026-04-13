@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -210,11 +209,11 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        this.showPollution(aPlayer.getEntityWorld(), aPlayer);
+        this.showPollution(aPlayer);
         return true;
     }
 
-    private void showPollution(final World worldIn, final EntityPlayer playerIn) {
+    private void showPollution(final EntityPlayer playerIn) {
         if (!GTMod.proxy.mPollution) {
             GTUtility.sendChatTrans(playerIn, "gtpp.chat.pollution_base.useless");
         } else {
@@ -322,11 +321,6 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
         this.mCurrentPollution = aNBT.getInteger("mCurrentPollution");
         this.mAveragePollution = aNBT.getInteger("mAveragePollution");
         this.mRedstoneLevel = aNBT.getLong("mRedstoneLevel");
-    }
-
-    public boolean allowCoverOnSide(final ForgeDirection side, final int aCoverID) {
-        return side != this.getBaseMetaTileEntity()
-            .getFrontFacing();
     }
 
     @Override

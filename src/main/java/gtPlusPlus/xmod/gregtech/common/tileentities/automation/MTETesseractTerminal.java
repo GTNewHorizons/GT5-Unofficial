@@ -229,11 +229,6 @@ public class MTETesseractTerminal extends MTEBasicTank {
             }
     }
 
-    public boolean allowCoverOnSide(final ForgeDirection side, final int aCoverID) {
-        return side != this.getBaseMetaTileEntity()
-            .getFrontFacing();
-    }
-
     public MTETesseractGenerator getTesseract(final int aFrequency, final boolean aWorkIrrelevant) {
         final MTETesseractGenerator rTesseract = TesseractHelper
             .getGeneratorByFrequency(GTMod.proxy.getPlayerMP(mOwner), aFrequency);

@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -209,13 +208,13 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        this.showPollution(aPlayer.getEntityWorld(), aPlayer);
+        this.showPollution(aPlayer);
         return true;
     }
 
     public int pollutionMultiplier = 1;
 
-    private void showPollution(final World worldIn, final EntityPlayer playerIn) {
+    private void showPollution(final EntityPlayer playerIn) {
         if (!GTMod.proxy.mPollution) {
             GTUtility.sendChatTrans(playerIn, "gtpp.chat.pollution_base.useless");
         } else {
@@ -224,8 +223,6 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
                 playerIn,
                 "gtpp.chat.pollution_base.contains",
                 new ChatComponentNumber(getCurrentChunkPollution()));
-            // GTUtility.sendChatToPlayer(playerIn, "Average over last ten minutes: "+getAveragePollutionOverLastTen()+"
-            // pollution.");
         }
     }
 
@@ -373,8 +370,6 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
         } else {
             returnValue = getCurrentChunkPollution();
         }
-        // Logger.INFO("| DEBUG: "+returnValue +" | ArrayPos:"+this.mArrayPos+" | Counter:"+counter+" | Total:"+total+"
-        // |");
         return returnValue;
     }
 }

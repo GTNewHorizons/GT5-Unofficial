@@ -36,7 +36,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gregtech.api.util.client.ResourceUtils;
 import gregtech.common.config.Client;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
@@ -87,7 +86,6 @@ public class BaseItemComponent extends Item {
             aFormattedNameForFluids = unlocalName;
         }
         Material aTempMaterial = Material.mMaterialCache.get(localName.toLowerCase());
-        Logger.INFO("Attempted to get " + localName + " cell material from cache. Valid? " + (aTempMaterial != null));
         this.componentMaterial = aTempMaterial;
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
@@ -121,11 +119,6 @@ public class BaseItemComponent extends Item {
         ItemStack x = aMap.get(aKey);
         if (x == null) {
             aMap.put(aKey, new ItemStack(this));
-            Logger.MATERIALS(
-                "Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
-                    + "] Map: ["
-                    + aKey
-                    + "]");
             Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
             if (componentType == ComponentTypes.PLATE) {
                 CoverRegistry.registerDecorativeCover(
@@ -138,8 +131,6 @@ public class BaseItemComponent extends Item {
             }
             return true;
         } else {
-            // Bad
-            Logger.MATERIALS("Tried to double register a material component. ");
             return false;
         }
     }
@@ -280,9 +271,7 @@ public class BaseItemComponent extends Item {
                 }
             }
 
-        } catch (Exception t) {
-
-        }
+        } catch (Exception ignored) {}
         return this.componentColour;
     }
 

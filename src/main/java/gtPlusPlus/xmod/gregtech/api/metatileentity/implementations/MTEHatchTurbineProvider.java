@@ -22,7 +22,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTETurbineHousingGui;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -63,7 +62,6 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     private void tryFindParentTurbine() {
-        Logger.INFO("This turbine housing has no parent, searching world.");
         IGregTechTileEntity T = this.getBaseMetaTileEntity();
         World W = T.getWorld();
         Chunk C = W.getChunkFromBlockCoords(T.getXCoord(), T.getZCoord());
@@ -77,7 +75,6 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
                     for (MTEHatchInputBus ee : aTurb.mInputBusses) {
                         if (ee.equals(this)) {
                             mParent = aTurb;
-                            Logger.INFO("Found a Parent to attach to this housing.");
                             return;
                         }
                     }

@@ -176,8 +176,8 @@ public class ItemAgrichemBase extends Item {
         return false;
     }
 
-    public static boolean createCatalystNBT(ItemStack rStack) {
-        return ItemGenericChemBase.createCatalystNBT(rStack);
+    public static void createCatalystNBT(ItemStack rStack) {
+        ItemGenericChemBase.createCatalystNBT(rStack);
     }
 
     public static int getCatalystDamage(ItemStack aStack) {
@@ -186,13 +186,5 @@ public class ItemAgrichemBase extends Item {
 
     public static int getCatalystMaxDamage(ItemStack aStack) {
         return ItemGenericChemBase.getCatalystMaxDamage(aStack);
-    }
-
-    public static void setCatalystDamage(ItemStack aStack, int aAmount) {
-        ItemGenericChemBase.setCatalystDamage(aStack, aAmount);
-    }
-
-    public static int getMaxCatalystDurability(ItemStack aStack) {
-        return ItemGenericChemBase.getMaxCatalystDurability(aStack);
     }
 }
