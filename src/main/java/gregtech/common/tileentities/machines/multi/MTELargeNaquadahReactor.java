@@ -350,9 +350,8 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase implements ISurviv
             && casingAmount >= 130;
     }
 
-    public boolean checkHatch(){
-        return mMaintenanceHatches.size() == 1
-            && (mDynamoHatches.size() + eDynamoMulti.size()) == 1;
+    public boolean checkHatch() {
+        return mMaintenanceHatches.size() == 1 && (mDynamoHatches.size() + eDynamoMulti.size()) == 1;
     }
 
     @Override
