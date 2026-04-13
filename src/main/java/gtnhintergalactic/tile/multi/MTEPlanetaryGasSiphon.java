@@ -13,7 +13,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -81,10 +80,8 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
     private static final int OFFSET_Z = 5;
     private static final double SPEED_PER_COIL = 0.10;
     private static final double LOG4 = Math.log10(4);
-    private static final DecimalFormat dfTwo = new DecimalFormat("0.00");
-    private static final DecimalFormat dfNone = new DecimalFormat("#");
 
-    private HeatingCoilLevel heatLevel;
+    private HeatingCoilLevel coilLevel;
     private int casingAmount;
 
     private static final IStructureDefinition<MTEPlanetaryGasSiphon> STRUCTURE_DEFINITION = StructureDefinition
@@ -221,11 +218,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.type"));
         if (TooltipUtil.siphonLoreText != null) {
-            tt.addInfo(
-                String.format(
-                    "%s" + TooltipUtil.siphonLoreText + "%s",
-                    EnumChatFormatting.ITALIC,
-                    EnumChatFormatting.RESET));
+            tt.addInfo(EnumChatFormatting.ITALIC + TooltipUtil.siphonLoreText + EnumChatFormatting.RESET);
         }
         tt.addInfo(
             "Every coil tier gives a " + EnumChatFormatting.GREEN
@@ -492,19 +485,19 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
     }
 
     public void setCoilLevel(HeatingCoilLevel coilLevel) {
-        this.heatLevel = coilLevel;
+        this.coilLevel = coilLevel;
     }
 
     public int getCoilTier() {
-        return heatLevel == null ? 0 : (int) this.heatLevel.getTier() + 1;
+        return coilLevel == null ? 0 : (int) this.coilLevel.getTier() + 1;
     }
 
     public HeatingCoilLevel getCoilLevel() {
-        return this.heatLevel;
+        return this.coilLevel;
     }
 
     public float speedBoost(int coilTier) {
-        return (float) 1 / (2 + (float) SPEED_PER_COIL * coilTier);
+        return (float) 1 / (2 + (float) SPEED_PER_COIL * Math.max(1, coilTier));
     }
 
     @Override
@@ -519,7 +512,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
-                + dfNone.format(Math.max(0, 100 / speedBoost(tag.getInteger("coilTier"))))
+                + formatNumber(Math.max(0, 100 / speedBoost(tag.getInteger("coilTier"))))
                 + "%");
     }
 
