@@ -16,7 +16,7 @@ public class GregtechIndustrialPlatePress {
         GregtechItemList.Industrial_PlatePress.set(
             new MTEIndustrialPlatePressLegacy(
                 Industrial_PlatePress.ID,
-                "industrialbender.controller.tier.single",
+                "industrialplatepress.controller.tier.single",
                 "Industrial Material Press").getStackForm(1L));
     }
 }

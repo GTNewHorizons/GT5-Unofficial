@@ -43,7 +43,24 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
     private static final int OFFSET_Z = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private static IStructureDefinition<MTEIndustrialFormingPress> STRUCTURE_DEFINITION = null;
+    private static final IStructureDefinition<MTEIndustrialFormingPress> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEIndustrialFormingPress>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            new String[][] { { "     ", "FEEEF", "F   F", "F   F", "FF~FF" },
+                { "FFCFF", "  A  ", "BBBBB", "     ", "AAAAA" }, { "     ", "FEEEF", "F   F", "F   F", "FFFFF" } })
+        .addElement('A', Casings.SteelPipeCasing.asElement())
+        .addElement('B', Casings.FormingCore.asElement())
+        .addElement(
+            'F',
+            buildHatchAdder(MTEIndustrialFormingPress.class)
+                .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
+                .casingIndex(Casings.MaterialPressCasing.textureId)
+                .hint(1)
+                .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.MaterialPressCasing.asElement())))
+        .addElement('E', ofFrame(Materials.Titanium))
+        .addElement('C', Casings.TitaniumGearBoxCasing.asElement())
+        .build();
 
     public MTEIndustrialFormingPress(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -62,43 +79,27 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Forming Press")
-            .addBulkMachineInfo(4, 6f, 1f)
+            .addBulkMachineInfo(6, 6f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 3, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Material Press Machine Casings", 5, false)
-            .addInputHatch("Any Casing", 1)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .addCasingInfoMin("Metalworking Machine Casing", 5, false)
+            .addCasingInfoExactly("Titanium Frame Box", 6, false)
+            .addCasingInfoExactly("Steel Pipe Casing", 6, false)
+            .addCasingInfoExactly("Forming Core", 5, false)
+            .addCasingInfoExactly("Titanium Gear Box Casing", 1, false)
+            .addInputHatch("Metalworking Machine Casing", 1)
+            .addInputBus("Metalworking Machine Casing", 1)
+            .addOutputBus("Metalworking Machine Casing", 1)
+            .addEnergyHatch("Metalworking Machine Casing", 1)
+            .addMaintenanceHatch("Metalworking Machine Casing", 1)
+            .addMufflerHatch("Metalworking Machine Casing", 1)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public IStructureDefinition<MTEIndustrialFormingPress> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialFormingPress>builder()
-                .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    new String[][] { { "     ", "FEEEF", "F   F", "F   F", "FF~FF" },
-                        { "FFCFF", "  A  ", "BBBBB", "     ", "AAAAA" },
-                        { "     ", "FEEEF", "F   F", "F   F", "FFFFF" } })
-                .addElement('A', Casings.TinItemPipeCasing.asElement())
-                .addElement('B', Casings.FormingCore.asElement())
-                .addElement(
-                    'F',
-                    buildHatchAdder(MTEIndustrialFormingPress.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
-                        .casingIndex(Casings.MaterialPressCasing.textureId)
-                        .hint(1)
-                        .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.MaterialPressCasing.asElement())))
-                .addElement('E', ofFrame(Materials.Titanium))
-                .addElement('C', Casings.TitaniumGearBoxCasing.asElement())
-                .build();
-        }
         return STRUCTURE_DEFINITION;
     }
 
@@ -182,7 +183,7 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     public int getMaxParallelRecipes() {
-        return (4 * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (6 * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override

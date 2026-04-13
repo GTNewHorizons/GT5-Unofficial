@@ -11,6 +11,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -43,7 +44,23 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
     private static final int OFFSET_Z = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private static IStructureDefinition<MTEIndustrialBendingMachine> STRUCTURE_DEFINITION = null;
+    private static final IStructureDefinition<MTEIndustrialBendingMachine> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEIndustrialBendingMachine>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            new String[][] { { "CC   C", "D~   D", "DBAAAD" }, { "DBAAAD", "DD   D", "DDDDDD" },
+                { "CC   C", "DD   D", "DBAAAD" } })
+        .addElement('A', Casings.FormingCore.asElement())
+        .addElement('B', Casings.TitaniumGearBoxCasing.asElement())
+        .addElement('C', ofFrame(Materials.Titanium))
+        .addElement(
+            'D',
+            buildHatchAdder(MTEIndustrialBendingMachine.class)
+                .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
+                .casingIndex(Casings.MaterialPressCasing.textureId)
+                .hint(1)
+                .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.MaterialPressCasing.asElement())))
+        .build();
 
     public MTEIndustrialBendingMachine(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -62,41 +79,27 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Bending Machine")
-            .addBulkMachineInfo(4, 6f, 1f)
+            .addBulkMachineInfo(6, 6f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(6, 3, 3, true)
-            .addController("Front center")
-            .addCasingInfoMin("Material Press Machine Casings", 4, false)
-            .addInputHatch("Any Casing", 1)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .beginStructureBlock(6, 3, 3, false)
+            .addController("Front left, 2nd layer")
+            .addCasingInfoMin("Metalworking Machine Casing", 4, false)
+            .addCasingInfoExactly("Titanium Gear Box Casing", 3, false)
+            .addCasingInfoExactly("Forming Core", 9, false)
+            .addCasingInfoExactly("Titanium Frame Box", 6, false)
+            .addInputHatch("Any Metalworking Machine Casing", 1)
+            .addInputBus("Any Metalworking Machine Casing", 1)
+            .addOutputBus("Any Metalworking Machine Casing", 1)
+            .addEnergyHatch("Any Metalworking Machine Casing", 1)
+            .addMaintenanceHatch("Any Metalworking Machine Casing", 1)
+            .addMufflerHatch("Any Metalworking Machine Casing", 1)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "cauchemard")
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public IStructureDefinition<MTEIndustrialBendingMachine> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialBendingMachine>builder()
-                .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    new String[][] { { "CC   C", "D~   D", "DBAAAD" }, { "DBAAAD", "DD   D", "DDDDDD" },
-                        { "CC   C", "DD   D", "DBAAAD" } })
-                .addElement('A', Casings.FormingCore.asElement())
-                .addElement('B', Casings.TitaniumGearBoxCasing.asElement())
-                .addElement('C', ofFrame(Materials.Titanium))
-                .addElement(
-                    'D',
-                    buildHatchAdder(MTEIndustrialBendingMachine.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
-                        .casingIndex(Casings.MaterialPressCasing.textureId)
-                        .hint(1)
-                        .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.MaterialPressCasing.asElement())))
-                .build();
-        }
         return STRUCTURE_DEFINITION;
     }
 
@@ -180,7 +183,7 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public int getMaxParallelRecipes() {
-        return (4 * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (6 * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override

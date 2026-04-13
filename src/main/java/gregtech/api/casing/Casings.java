@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import gregtech.api.enums.Textures;
 import net.minecraft.block.Block;
 
 import org.apache.commons.lang3.tuple.Pair;

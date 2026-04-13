@@ -861,7 +861,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.IndustrialFormingPress.set(
             new MTEIndustrialFormingPress(
                 IndustrialFormingPress.ID,
-                "industrialbender.controller.tier.single",
+                "industrialformingpress.controller.tier.single",
                 "Industrial Forming Press").getStackForm(1L));
 
         ItemList.IndustrialBendingMachine.set(
