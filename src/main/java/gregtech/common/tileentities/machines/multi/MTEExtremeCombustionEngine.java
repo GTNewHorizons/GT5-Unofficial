@@ -72,6 +72,43 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
         super(aName);
     }
 
+    private static final IStructureDefinition<MTEExtremeCombustionEngine> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEExtremeCombustionEngine>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            new String[][] { { "          ", "    H    H", "H H H    H", "H H H    H", "FEFEFEEEEF" },
+                { "    H----H", "H H CGGGGC", "CCC CDDDDC", "C~C CBBBBC", "FEFEFEEEEF" },
+                { "    H----H", "H H CGGGGC", "CCCAAAAAAI", "CCC CBBBBC", "FEFEFEEEEF" },
+                { "    H----H", "H H CGGGGC", "CCC CDDDDC", "CCC CBBBBC", "FEFEFEEEEF" },
+                { "          ", "    H    H", "H H H    H", "H H H    H", "FEFEFEEEEF" } })
+        .addElement('A', Casings.SteelGearBoxCasing.asElement())
+        .addElement('B', Casings.TungstensteelFireboxCasing.asElement())
+        .addElement(
+            'C',
+            buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(Muffler, Maintenance)
+                .casingIndex(Casings.RobustTungstenSteelMachineCasing.textureId)
+                .hint(1)
+                .buildAndChain(
+                    onElementPass(x -> ++x.casingAmount, Casings.RobustTungstenSteelMachineCasing.asElement())))
+        .addElement(
+            'D',
+            buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(InputHatch, InputHatch, InputHatch)
+                .casingIndex(Casings.TungstensteelTurbineCasing.textureId)
+                .hint(2)
+                .buildAndChain(
+                    onElementPass(x -> ++x.turbineCasingAmount, Casings.TungstensteelTurbineCasing.asElement())))
+        .addElement('E', Casings.ChemicallyInertMachineCasing.asElement())
+        .addElement('F', Casings.PTFEPipeCasing.asElement())
+        .addElement('G', Casings.ExtremeEngineIntakeCasing.asElement())
+        .addElement('H', ofFrame(Materials.Polytetrafluoroethylene))
+        .addElement(
+            'I',
+            buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(Dynamo.or(ExoticDynamo))
+                .casingIndex(Casings.RobustTungstenSteelMachineCasing.textureId)
+                .hint(3)
+                .buildAndChain(Casings.RobustTungstenSteelMachineCasing.asElement()))
+        .build();
+
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
@@ -115,41 +152,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public IStructureDefinition<MTEExtremeCombustionEngine> getStructureDefinition() {
-        return StructureDefinition.<MTEExtremeCombustionEngine>builder()
-            .addShape(
-                STRUCTURE_PIECE_MAIN,
-                new String[][] { { "          ", "    H    H", "H H H    H", "H H H    H", "FEFEFEEEEF" },
-                    { "    H----H", "H H CGGGGC", "CCC CDDDDC", "C~C CBBBBC", "FEFEFEEEEF" },
-                    { "    H----H", "H H CGGGGC", "CCCAAAAAAI", "CCC CBBBBC", "FEFEFEEEEF" },
-                    { "    H----H", "H H CGGGGC", "CCC CDDDDC", "CCC CBBBBC", "FEFEFEEEEF" },
-                    { "          ", "    H    H", "H H H    H", "H H H    H", "FEFEFEEEEF" } })
-            .addElement('A', Casings.SteelGearBoxCasing.asElement())
-            .addElement('B', Casings.TungstensteelFireboxCasing.asElement())
-            .addElement(
-                'C',
-                buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(Muffler, Maintenance)
-                    .casingIndex(Casings.RobustTungstenSteelMachineCasing.textureId)
-                    .hint(1)
-                    .buildAndChain(
-                        onElementPass(x -> ++x.casingAmount, Casings.RobustTungstenSteelMachineCasing.asElement())))
-            .addElement(
-                'D',
-                buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(InputHatch, InputHatch, InputHatch)
-                    .casingIndex(Casings.TungstensteelTurbineCasing.textureId)
-                    .hint(2)
-                    .buildAndChain(
-                        onElementPass(x -> ++x.turbineCasingAmount, Casings.TungstensteelTurbineCasing.asElement())))
-            .addElement('E', Casings.ChemicallyInertMachineCasing.asElement())
-            .addElement('F', Casings.PTFEPipeCasing.asElement())
-            .addElement('G', Casings.ExtremeEngineIntakeCasing.asElement())
-            .addElement('H', ofFrame(Materials.Polytetrafluoroethylene))
-            .addElement(
-                'I',
-                buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(Dynamo.or(ExoticDynamo))
-                    .casingIndex(Casings.RobustTungstenSteelMachineCasing.textureId)
-                    .hint(3)
-                    .buildAndChain(Casings.RobustTungstenSteelMachineCasing.asElement()))
-            .build();
+        return STRUCTURE_DEFINITION;
     }
 
     @Override
