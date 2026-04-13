@@ -375,7 +375,6 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
             }
         }
         for (MTEHatchSteamBusInput tHatch : validMTEList(mSteamInputs)) {
-            tHatch.mRecipeMap = getRecipeMap();
             for (int i = tHatch.getBaseMetaTileEntity()
                 .getSizeInventory() - 1; i >= 0; i--) {
                 if (GTUtility.areStacksEqual(
@@ -423,7 +422,6 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
             byte hatchColor = tHatch.getBaseMetaTileEntity()
                 .getColorization();
             if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
-            tHatch.mRecipeMap = getRecipeMap();
             for (int i = tHatch.getBaseMetaTileEntity()
                 .getSizeInventory() - 1; i >= 0; i--) {
                 if (tHatch.getBaseMetaTileEntity()

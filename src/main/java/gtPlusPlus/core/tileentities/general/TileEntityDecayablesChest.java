@@ -26,7 +26,6 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryDecayablesChest;
 import gtPlusPlus.core.item.materials.DustDecayable;
@@ -101,18 +100,17 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 
         boolean a1, a2;
         int u = 0;
-        a1 = b.isTicking(world, iStack);
+        a1 = b.isTicking(iStack);
         a2 = false;
         int SECONDS_TO_PROCESS = 1;
         while (u < (20 * SECONDS_TO_PROCESS)) {
             if (!a1) {
                 break;
             }
-            a1 = b.isTicking(world, iStack);
-            a2 = b.tickItemTag(world, iStack);
+            a1 = b.isTicking(iStack);
+            a2 = b.tickItemTag(iStack);
             u++;
         }
-        Logger.MACHINE_INFO("| " + b.getUnlocalizedName() + " | " + a1 + "/" + a2);
 
         if (!a1 && !a2) {
             ItemStack replacement = b.getDecayResult();
@@ -127,17 +125,6 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
             updateSlots();
             this.inventoryContents.markDirty();
         }
-    }
-
-    public boolean anyPlayerInRange() {
-        return this.worldObj.getClosestPlayer(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 32) != null;
-    }
-
-    public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag) {
-        if (!nbt.hasKey(tag)) {
-            nbt.setTag(tag, new NBTTagCompound());
-        }
-        return nbt.getCompoundTag(tag);
     }
 
     @Override
