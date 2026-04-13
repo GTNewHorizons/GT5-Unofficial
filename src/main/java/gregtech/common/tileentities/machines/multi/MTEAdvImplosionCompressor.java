@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -21,7 +20,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import goodgenerator.loader.Loaders;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -60,7 +58,7 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
                 { "  CEC  ", " AA AA ", " A   A ", "A     A", " A   A ", " AA AA ", "D  A  D", "BBBBBBB", "BBBBBBB" },
                 { "       ", "  AAA  ", " AA AA ", " A   A ", " AA AA ", " DAAAD ", "       ", " BBBBB ", " DBBBD " },
                 { "       ", "       ", "   A   ", "  A A  ", "   A   ", "   D   ", "  D D  ", "  BBB  ", "  BDB  " } })
-        .addElement('A', ofBlock(Loaders.FRF_Casings, 0))
+        .addElement('A', Casings.NaquadahFuelRefineryCasing.asElement())
         .addElement(
             'B',
             ofChain(
