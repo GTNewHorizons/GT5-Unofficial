@@ -161,7 +161,7 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
 
     @Override
     public String getMachineType() {
-        return "Large Steam Turbine, XLST";
+        return "Steam Turbine, XLST";
     }
 
     @Override
