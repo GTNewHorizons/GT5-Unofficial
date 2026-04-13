@@ -10,7 +10,6 @@ import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
@@ -80,7 +79,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
-import gregtech.common.pollution.PollutionConfig;
 import kubatech.api.arcfurnace.ArcFurnaceContext;
 import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
@@ -185,7 +183,6 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     InputHatch,
                     OutputHatch,
                     Maintenance,
-                    Muffler,
                     Energy,
                     ExoticEnergy)
                 .casingIndex(Casings.SolidSteelMachineCasing.textureId)
@@ -354,7 +351,6 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     + " ticks, startup ends immediately")
             .addInfo("Outputs molten metals")
             .addInfo("Right-click with Screwdriver to change mode")
-            .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(17, 11, 19, false)
             .addController("Front center")
             .addCasingInfoMin("Solid Steel Machine Casing", 10, false)
@@ -364,7 +360,6 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             .addOutputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
             .addOtherStructurePart("Electrode Hatch", "Any Casing", 1)
             .addOtherStructurePart("Electrode Sensor Hatch", "Any Casing", 1)
             .addAuthors(AuthorKuba, AuthorPxx500)
@@ -405,11 +400,6 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         ItemStack aTool) {
         mode = mode.next();
         GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mode.generic", mode.name());
-    }
-
-    @Override
-    public int getPollutionPerSecond(final ItemStack aStack) {
-        return PollutionConfig.pollutionPerSecondMultiIndustrialArcFurnace;
     }
 
     @SideOnly(Side.CLIENT)
