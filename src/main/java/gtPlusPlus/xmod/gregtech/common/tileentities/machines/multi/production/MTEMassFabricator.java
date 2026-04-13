@@ -51,7 +51,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -61,18 +60,12 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> implements ISurvivalConstructable {
 
-    public static int sUUAperUUM = 1;
-    public static int sUUASpeedBonus = 4;
-    public static int sDurationMultiplier = 3200;
-
     public static String mCasingName1 = "Matter Fabricator Casing";
     public static String mCasingName2 = "Containment Casing";
     public static String mCasingName3 = "Matter Generation Coil";
 
     private static final int MODE_SCRAP = 1;
     private static final int MODE_UU = 0;
-
-    public static boolean sRequiresUUA = false;
 
     private int mCasing;
     private static IStructureDefinition<MTEMassFabricator> STRUCTURE_DEFINITION = null;
@@ -140,15 +133,6 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     @Override
     protected int getCasingTextureId() {
         return TAE.GTPP_INDEX(9);
-    }
-
-    @Override
-    public void onConfigLoad() {
-        super.onConfigLoad();
-        sDurationMultiplier = MachineStats.massFabricator.durationMultiplier;
-        sUUAperUUM = MachineStats.massFabricator.UUAPerUUM;
-        sUUASpeedBonus = MachineStats.massFabricator.UUASpeedBonus;
-        sRequiresUUA = MachineStats.massFabricator.requiresUUA;
     }
 
     @Override

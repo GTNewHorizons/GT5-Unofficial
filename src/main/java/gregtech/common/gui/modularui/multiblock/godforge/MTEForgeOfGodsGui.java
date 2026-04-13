@@ -28,6 +28,7 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
@@ -146,6 +147,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 .color(Color.WHITE.main)
                 .alignment(Alignment.CENTER)
                 .asWidget()
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                 .marginTop(2)
                 .alignX(0.5f)
                 .widthRel(1));

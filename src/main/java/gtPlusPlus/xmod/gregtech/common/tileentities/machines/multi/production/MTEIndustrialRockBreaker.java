@@ -138,7 +138,6 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
         boolean aCheckPiece = checkPiece(mName, 1, 3, 0);
         boolean aCasingCount = mCasing >= 9;
         boolean aCheckHatch = checkHatch();
-        log(aCheckPiece + ", " + aCasingCount + ", " + aCheckHatch);
         return aCheckPiece && aCasingCount && aCheckHatch;
     }
 

@@ -51,6 +51,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -556,7 +557,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey(IMPRINT_ID_KEY)) {
+        if (ItemStackNBT.hasKey(stack, IMPRINT_ID_KEY)) {
             CircuitImprint imprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS
                 .get(stack.stackTagCompound.getInteger(IMPRINT_ID_KEY));
             if (imprint != null) {

@@ -15,7 +15,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.apiculture.IBee;
-import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeHousing;
 import forestry.api.apiculture.IBeeModifier;
 import forestry.api.apiculture.IHiveFrame;
@@ -24,7 +23,7 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 public class MBItemFrame extends Item implements IHiveFrame {
 
     private final MBFrameType type;
-    private EnumRarity rarity_value = EnumRarity.uncommon;
+    private final EnumRarity rarity_value;
     private final String toolTip;
 
     public MBItemFrame(final MBFrameType frameType, final String description) {
@@ -32,7 +31,6 @@ public class MBItemFrame extends Item implements IHiveFrame {
     }
 
     public MBItemFrame(final MBFrameType frameType, final EnumRarity rarity, final String description) {
-        super();
         this.type = frameType;
         this.setMaxDamage(this.type.maxDamage);
         this.setMaxStackSize(1);
@@ -62,12 +60,9 @@ public class MBItemFrame extends Item implements IHiveFrame {
     @Override
     public ItemStack frameUsed(final IBeeHousing housing, ItemStack frame, final IBee queen, final int wear) {
         frame.setItemDamage(frame.getItemDamage() + wear);
-
         if (frame.getItemDamage() >= frame.getMaxDamage()) {
-            // Break the frame.
             frame = null;
         }
-
         return frame;
     }
 
@@ -90,45 +85,5 @@ public class MBItemFrame extends Item implements IHiveFrame {
     @Override
     public boolean isBookEnchantable(final ItemStack itemstack1, final ItemStack itemstack2) {
         return false;
-    }
-
-    public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {
-        return this.type.getTerritoryModifier(genome, currentModifier);
-    }
-
-    public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-        return this.type.getMutationModifier(genome, mate, currentModifier);
-    }
-
-    public float getLifespanModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-        return this.type.getLifespanModifier(genome, mate, currentModifier);
-    }
-
-    public float getProductionModifier(final IBeeGenome genome, final float currentModifier) {
-        return this.type.getProductionModifier(genome, currentModifier);
-    }
-
-    public float getFloweringModifier(final IBeeGenome genome, final float currentModifier) {
-        return this.type.getFloweringModifier(genome, currentModifier);
-    }
-
-    public float getGeneticDecay(final IBeeGenome genome, final float currentModifier) {
-        return this.type.getGeneticDecay(genome, currentModifier);
-    }
-
-    public boolean isSealed() {
-        return this.type.isSealed();
-    }
-
-    public boolean isSelfLighted() {
-        return this.type.isSelfLighted();
-    }
-
-    public boolean isSunlightSimulated() {
-        return this.type.isSunlightSimulated();
-    }
-
-    public boolean isHellish() {
-        return this.type.isHellish();
     }
 }
