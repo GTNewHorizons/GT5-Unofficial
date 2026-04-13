@@ -152,7 +152,6 @@ import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
 import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngine;
 import gregtech.common.tileentities.machines.multi.MTEFluidShaper;
 import gregtech.common.tileentities.machines.multi.MTEFrothFlotationCell;
-import gregtech.common.tileentities.machines.multi.MTEFuelRefineFactory;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer1;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer2;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer3;
@@ -195,6 +194,7 @@ import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
 import gregtech.common.tileentities.machines.multi.MTEMultiLathe;
 import gregtech.common.tileentities.machines.multi.MTENanoForge;
+import gregtech.common.tileentities.machines.multi.MTENaquadahFuelRefinery;
 import gregtech.common.tileentities.machines.multi.MTEOilCracker;
 import gregtech.common.tileentities.machines.multi.MTEOilDrill1;
 import gregtech.common.tileentities.machines.multi.MTEOilDrill2;
@@ -802,7 +802,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Large Thermal Refinery").getStackForm(1));
 
         ItemList.NaquadahFuelRefinery
-            .set(new MTEFuelRefineFactory(NaquadahFuelRefinery.ID, "FRF", "Naquadah Fuel Refinery").getStackForm(1));
+            .set(new MTENaquadahFuelRefinery(NaquadahFuelRefinery.ID, "FRF", "Naquadah Fuel Refinery").getStackForm(1));
 
         ItemList.IndustrialPackager.set(
             new MTEIndustrialPackager(

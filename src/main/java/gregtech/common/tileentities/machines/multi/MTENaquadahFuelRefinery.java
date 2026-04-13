@@ -50,9 +50,9 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.tooltip.TooltipHelper;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalConstructable {
+public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurvivalConstructable {
 
-    private IStructureDefinition<MTEFuelRefineFactory> multiDefinition = null;
+    private IStructureDefinition<MTENaquadahFuelRefinery> multiDefinition = null;
     private int tier = -1;
     private static final Block[] coils = new Block[] { Loaders.FRF_Coil_1, Loaders.FRF_Coil_2, Loaders.FRF_Coil_3,
         Loaders.FRF_Coil_4 };
@@ -61,12 +61,12 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
     private static final int OFFSET_Y = 13;
     private static final int OFFSET_Z = 0;
 
-    public MTEFuelRefineFactory(String name) {
+    public MTENaquadahFuelRefinery(String name) {
         super(name);
         useLongPower = true;
     }
 
-    public MTEFuelRefineFactory(int id, String name, String nameRegional) {
+    public MTENaquadahFuelRefinery(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
         useLongPower = true;
     }
@@ -82,9 +82,9 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    public IStructureDefinition<MTEFuelRefineFactory> getStructure_EM() {
+    public IStructureDefinition<MTENaquadahFuelRefinery> getStructure_EM() {
         if (multiDefinition == null) {
-            multiDefinition = StructureDefinition.<MTEFuelRefineFactory>builder()
+            multiDefinition = StructureDefinition.<MTENaquadahFuelRefinery>builder()
                 .addShape(
                     mName,
                     new String[][] {
@@ -140,7 +140,7 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
                             "                           " } })
                 .addElement(
                     'A',
-                    buildHatchAdder(MTEFuelRefineFactory.class)
+                    buildHatchAdder(MTENaquadahFuelRefinery.class)
                         .atLeast(
                             Maintenance,
                             InputHatch,
@@ -158,8 +158,8 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
                         fieldCoilTierConverter(),
                         getAllFieldCoilTiers(),
                         -1,
-                        MTEFuelRefineFactory::setCoilTier,
-                        MTEFuelRefineFactory::getCoilTier))
+                        MTENaquadahFuelRefinery::setCoilTier,
+                        MTENaquadahFuelRefinery::getCoilTier))
                 .addElement('D', Casings.SuperconductingCoilBlock.asElement())
                 .addElement('E', Casings.EuropiumReinforcedRadiationProofMachineCasing.asElement())
                 .addElement('F', ofBlock(Loaders.radiationProtectionSteelFrame, 0))
@@ -276,7 +276,7 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public int getMaxParallelRecipes() {
-        return tier * 4;
+        return 4 * Math.max(1, tier);
     }
 
     @Override
@@ -287,7 +287,7 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEFuelRefineFactory(this.mName);
+        return new MTENaquadahFuelRefinery(this.mName);
     }
 
     @Override
