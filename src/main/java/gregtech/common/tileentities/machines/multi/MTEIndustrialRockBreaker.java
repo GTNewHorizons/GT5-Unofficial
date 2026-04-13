@@ -159,7 +159,7 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     public boolean checkHatch() {
-        return mEnergyHatches.size() >= 1 && mMufflerHatches.size() == 1 && mOutputBusses.size() >= 1;
+        return !mEnergyHatches.isEmpty() && !mMufflerHatches.isEmpty() && !mOutputBusses.isEmpty();
     }
 
     @Override
