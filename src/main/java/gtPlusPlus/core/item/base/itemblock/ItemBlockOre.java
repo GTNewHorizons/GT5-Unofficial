@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -22,7 +23,6 @@ import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtneioreplugin.util.DimensionHelper;
 
 public class ItemBlockOre extends ItemBlock {
@@ -92,7 +92,7 @@ public class ItemBlockOre extends ItemBlock {
         }
 
         if (Client.tooltip.showCtrlText) {
-            if (KeyboardUtils.isCtrlKeyDown()) {
+            if (GuiScreen.isCtrlKeyDown()) {
 
                 Block b = Block.getBlockFromItem(stack.getItem());
                 if (b != null) {
