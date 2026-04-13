@@ -12,7 +12,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTERocketFuelGenerator;
@@ -21,7 +20,6 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MT
 public class GregtechRocketFuelGenerator {
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Industrial Rocket Engines.");
         run1();
 
     }
@@ -36,7 +34,7 @@ public class GregtechRocketFuelGenerator {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Controller_RocketEngine.get(1L),
             BITSD,
-            new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Machine_Multi_DieselEngine.get(1), 'P',
+            new Object[] { "PCP", "EME", "GWG", 'M', ItemList.LargeCombustionEngine.get(1), 'P',
                 ItemList.Electric_Piston_IV, 'E', ItemList.Field_Generator_EV, 'C',
                 OrePrefixes.circuit.get(Materials.LuV), 'W', OrePrefixes.cableGt08.get(Materials.Platinum), 'G',
                 MaterialsAlloy.MARAGING350.getGear(1) });

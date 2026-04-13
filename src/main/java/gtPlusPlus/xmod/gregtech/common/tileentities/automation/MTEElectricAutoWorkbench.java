@@ -36,7 +36,6 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
 
     public int mMode = 0, mCurrentSlot = 0, mThroughPut = 0, mTicksUntilNextUpdate = 20;
     public boolean mLastCraftSuccessful = false;
-    protected String mLocalName;
 
     public static final int MAX_MODES = 10;
     public static final int MAX_THROUGHPUT = 4;
@@ -49,7 +48,6 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
             aTier,
             30,
             aDescription);
-        mLocalName = "Auto Workbench (" + GTValues.VN[aTier] + ")";
     }
 
     public MTEElectricAutoWorkbench(final String aName, final int aTier, final String[] aDescription,

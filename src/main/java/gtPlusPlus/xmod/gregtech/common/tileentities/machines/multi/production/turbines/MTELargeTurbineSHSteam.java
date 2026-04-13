@@ -47,11 +47,6 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
     }
 
     @Override
-    public int getFuelValue(FluidStack aLiquid) {
-        return 0;
-    }
-
-    @Override
     long fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
 
         long tEU = 0;
@@ -154,7 +149,7 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
 
     @Override
     public String getMachineType() {
-        return "Large Super-heated Steam Turbine, XLHPT";
+        return "Steam Turbine, XLST-HP";
     }
 
     @Override
@@ -167,8 +162,4 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
         return "Reinforced HP Steam Turbine Casing";
     }
 
-    @Override
-    protected boolean isDenseSteam() {
-        return isUsingDenseSteam;
-    }
 }
