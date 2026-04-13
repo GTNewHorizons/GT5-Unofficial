@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Dynamo;
-import static gregtech.api.enums.HatchElement.ExoticDynamo;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
@@ -103,7 +102,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
         .addElement('H', ofFrame(Materials.Polytetrafluoroethylene))
         .addElement(
             'I',
-            buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(Dynamo.or(ExoticDynamo))
+            buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(Dynamo)
                 .casingIndex(Casings.RobustTungstenSteelMachineCasing.textureId)
                 .hint(3)
                 .buildAndChain(Casings.RobustTungstenSteelMachineCasing.asElement()))
