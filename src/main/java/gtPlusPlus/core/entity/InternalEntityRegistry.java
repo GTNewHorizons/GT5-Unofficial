@@ -2,7 +2,6 @@ package gtPlusPlus.core.entity;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
 import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
@@ -15,8 +14,6 @@ public class InternalEntityRegistry {
     static int mEntityID = 0;
 
     public static void registerEntities() {
-        Logger.INFO("Registering GT++ Entities.");
-
         EntityRegistry.registerModEntity(
             EntityPrimedMiningExplosive.class,
             "MiningCharge",

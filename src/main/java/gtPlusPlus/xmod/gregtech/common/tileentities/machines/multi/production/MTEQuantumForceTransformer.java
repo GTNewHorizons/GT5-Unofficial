@@ -787,7 +787,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public boolean renderInWorld(ISBRWorldContext ctx) {
         Tessellator tes = Tessellator.instance;
-        IIcon forceField = TexturesGtBlock.ForceField.getIcon();
+        IIcon forceField = Textures.BlockIcons.ForceField.getIcon();
         if (getBaseMetaTileEntity().isActive()) {
             double minU = forceField.getMinU();
             double maxU = forceField.getMaxU();

@@ -7,7 +7,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.Machine_Adv_BlastFurnace;
 import static gregtech.api.enums.MetaTileEntityIDs.Machine_Adv_DistillationTower;
 import static gregtech.api.enums.MetaTileEntityIDs.Machine_Adv_ImplosionCompressor;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialVacuumFreezer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.MTEAdvDistillationTower;
@@ -23,7 +22,6 @@ public class GregtechFactoryGradeReplacementMultis {
     }
 
     private static void run1() {
-        Logger.INFO("Gregtech 5 Content | Registering Advanced GT Multiblock replacements.");
         GregtechItemList.Machine_Adv_BlastFurnace.set(
             new MTEAdvEBF(Machine_Adv_BlastFurnace.ID, "multimachine.adv.blastfurnace", "Volcanus").getStackForm(1L));
         GregtechItemList.Machine_Adv_ImplosionCompressor.set(

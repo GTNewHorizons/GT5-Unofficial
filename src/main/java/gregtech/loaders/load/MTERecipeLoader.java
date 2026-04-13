@@ -25,6 +25,7 @@ import com.jaquadro.minecraft.storagedrawers.StorageDrawers;
 
 import bartworks.common.loaders.ItemRegistry;
 import codechicken.nei.api.API;
+import goodgenerator.util.ItemRefer;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
@@ -1632,6 +1633,25 @@ public class MTERecipeLoader implements Runnable {
             .duration(1 * HOURS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
+
+        // Industrial Mixer
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialMixer.get(1),
+            new Object[] { "PCP", "ZMZ", "PCP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'C', "circuitElite", 'Z',
+                MaterialsAlloy.MARAGING250.getPlate(1), 'M', ItemList.Machine_IV_Mixer });
+
+        // Mixer casing, move if there is a better place for it
+        GTModHandler.addCraftingRecipe(
+            ItemList.CasingMixer.get(1),
+            new Object[] { "PhP", "SFS", "PwP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'S',
+                MaterialsAlloy.MARAGING250.getPlate(1), 'F',
+                OrePrefixes.frameGt.get(Materials.Polytetrafluoroethylene) });
+
+        // Forming Core
+        GTModHandler.addCraftingRecipe(
+            ItemList.FormingCore.get(1),
+            new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
+                OrePrefixes.plate.get(Materials.Steel), 'F', OrePrefixes.frameGt.get(Materials.StainlessSteel) });
     }
 
     // This method is for all the structure rework shapeless crafing migration recipes
@@ -1654,6 +1674,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.LargeThermalRefinery.get(1),
             new Object[] { GregtechItemList.Industrial_ThermalCentrifuge });
+
+        // Naquadah Fuel Refinery Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.NaquadahFuelRefinery.get(1),
+            new Object[] { ItemRefer.Naquadah_Fuel_Refinery.get(1) });
 
         // Amazon Packager Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
@@ -1699,9 +1724,28 @@ public class MTERecipeLoader implements Runnable {
             ItemList.MegaChemicalReactor.get(1),
             new Object[] { ItemRegistry.megaMachines[3] });
 
+        // Pyrolyse Oven Conversion Recipe
+        GTModHandler
+            .addShapelessCraftingRecipe(ItemList.PyrolyzeOven.get(1), new Object[] { ItemList.PyrolyseOven.get(1) });
+
+        // Universal Chemical Fuel Engine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.UniversalChemicalFuelEngine.get(1),
+            new Object[] { ItemRefer.Universal_Chemical_Fuel_Engine.get(1) });
+
+        // Industrial Mixer Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialMixer.get(1),
+            new Object[] { GregtechItemList.Industrial_Mixer });
+
         // Integrated Ore Factory Conversion Recipe
         GTModHandler
             .addShapelessCraftingRecipe(ItemList.IntegratedOreFactory.get(1), new Object[] { ItemList.Ore_Processor });
+
+        // Large Combustion Engine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.LargeCombustionEngine.get(1),
+            new Object[] { ItemList.Machine_Multi_DieselEngine });
     }
 
     private static void registerSifter() {
@@ -3448,7 +3492,7 @@ public class MTERecipeLoader implements Runnable {
                 ItemList.Electric_Pump_EV });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.PyrolyseOven.get(1L),
+            ItemList.PyrolyzeOven.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "WEP", "EME", "WCP", 'M', ItemList.Hull_MV, 'W', ItemList.Electric_Piston_MV, 'P',
                 OrePrefixes.wireGt04.get(Materials.Cupronickel), 'E', OrePrefixes.circuit.get(Materials.MV), 'C',
@@ -3502,7 +3546,7 @@ public class MTERecipeLoader implements Runnable {
                 'E', OrePrefixes.circuit.get(Materials.IV), 'C', ItemList.Robot_Arm_IV });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.Machine_Multi_DieselEngine.get(1L),
+            ItemList.LargeCombustionEngine.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Motor_EV, 'C', OrePrefixes.circuit.get(Materials.IV), 'W',

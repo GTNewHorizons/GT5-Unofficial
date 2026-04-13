@@ -23,9 +23,6 @@ import gregtech.common.items.ItemIntegratedCircuit;
 
 public class MTEHatchExtrusion extends MTEHatchInputBus {
 
-    public boolean disableFilter = false;
-    public boolean disableLimited = false;
-
     public int shapeSlot = getSlots(mTier);
     public int circuitSlot = getSlots(mTier) + 1;
 
