@@ -68,8 +68,7 @@ public class IGRecipeMaps {
         .useCustomFilterForNEI()
         .neiHandlerInfo(
             builder -> builder.setShiftY(8)
-                .setHeight(156)
-                .setMultipleWidgetsAllowed(true))
+                .setHeight(156))
         .frontend(SpaceMiningFrontend::new)
         .build();
 }

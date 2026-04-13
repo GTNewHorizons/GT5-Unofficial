@@ -97,6 +97,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTRecipeMapUtil.GTRecipeTemplate;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterFrontend;
@@ -343,9 +344,7 @@ public final class RecipeMaps {
         .minInputs(1, 0)
         .dontUseProgressBar()
         .frontend(QuantumComputerFrontend::new)
-        .neiHandlerInfo(
-            builder -> builder.setMultipleWidgetsAllowed(true)
-                .setHeight(110))
+        .neiHandlerInfo(builder -> builder.setHeight(110))
         .build();
     public static final RecipeMap<ReplicatorBackend> replicatorRecipes = RecipeMapBuilder
         .of("gt.recipe.replicator", ReplicatorBackend::new)
@@ -837,6 +836,7 @@ public final class RecipeMaps {
         .neiTransferRect(70, 28, 18, 72)
         .neiTransferRect(106, 28, 18, 72)
         .frontend(SpaceProjectFrontend::new)
+        .neiHandlerInfo(builder -> builder.setHeight(140))
         .disableRenderRealStackSizes()
         .build();
     public static final RecipeMap<RecipeMapBackend> cokeOvenRecipes = RecipeMapBuilder.of("gt.recipe.cokeoven")
