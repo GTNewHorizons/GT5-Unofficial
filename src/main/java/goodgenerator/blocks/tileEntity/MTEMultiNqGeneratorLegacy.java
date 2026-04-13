@@ -50,9 +50,9 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalConstructable {
+public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurvivalConstructable {
 
-    protected IStructureDefinition<MTEMultiNqGenerator> multiDefinition = null;
+    protected IStructureDefinition<MTEMultiNqGeneratorLegacy> multiDefinition = null;
     protected long trueOutput = 0;
     protected int trueEff = 0;
     protected FluidStack lockedFluid = null;
@@ -88,9 +88,9 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
     }
 
     @Override
-    public IStructureDefinition<MTEMultiNqGenerator> getStructure_EM() {
+    public IStructureDefinition<MTEMultiNqGeneratorLegacy> getStructure_EM() {
         if (multiDefinition == null) {
-            multiDefinition = StructureDefinition.<MTEMultiNqGenerator>builder()
+            multiDefinition = StructureDefinition.<MTEMultiNqGeneratorLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
@@ -106,7 +106,7 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
                 .addElement(
                     'X',
                     ofChain(
-                        buildHatchAdder(MTEMultiNqGenerator.class)
+                        buildHatchAdder(MTEMultiNqGeneratorLegacy.class)
                             .atLeast(
                                 tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
                                     .or(gregtech.api.enums.HatchElement.Dynamo),
@@ -128,11 +128,11 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
         return multiDefinition;
     }
 
-    public MTEMultiNqGenerator(String name) {
+    public MTEMultiNqGeneratorLegacy(String name) {
         super(name);
     }
 
-    public MTEMultiNqGenerator(int id, String name, String nameRegional) {
+    public MTEMultiNqGeneratorLegacy(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
     }
 
@@ -342,13 +342,14 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEMultiNqGenerator(this.mName);
+        return new MTEMultiNqGeneratorLegacy(this.mName);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Naquadah Reactor, LNR")
+            .addStructureDeprecatedLine()
             .addInfo("Environmentally Friendly!")
             .addInfo("Generate power from high-energy liquids")
             .addInfo(

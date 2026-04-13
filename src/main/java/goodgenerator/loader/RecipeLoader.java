@@ -107,7 +107,7 @@ public class RecipeLoader {
                 Materials.Trinium.getMolten(4 * INGOTS),
                 MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
                 Materials.Lubricant.getFluid(8_000))
-            .itemOutputs(ItemRefer.Large_Naquadah_Reactor.get(1))
+            .itemOutputs(ItemList.LargeNaquadahReactor.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(60 * SECONDS)
             .addTo(AssemblyLine);
