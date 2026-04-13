@@ -4,7 +4,6 @@ import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.api.ITheme;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
@@ -21,8 +20,8 @@ public class PatternSlot extends ItemSlot {
     PatternSlot() {}
 
     @Override
-    public @Nullable IDrawable getCurrentBackground(ITheme theme, WidgetThemeEntry<?> widgetTheme) {
-        IDrawable background = super.getCurrentBackground(theme, widgetTheme);
+    public @Nullable IDrawable getCurrentBackground(WidgetThemeEntry<?> widgetTheme) {
+        IDrawable background = super.getCurrentBackground(widgetTheme);
         return IDrawable.of(background, GTGuiTextures.OVERLAY_SLOT_PATTERN_ME);
     }
 

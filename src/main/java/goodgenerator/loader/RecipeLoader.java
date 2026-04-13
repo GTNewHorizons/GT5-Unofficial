@@ -949,11 +949,11 @@ public class RecipeLoader {
             .addTo(multiblockChemicalReactorRecipes);
 
         GTModHandler.addCraftingRecipe(
-            ItemRefer.Universal_Chemical_Fuel_Engine.get(1),
+            ItemList.UniversalChemicalFuelEngine.get(1),
             GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "TZT", "ALB", "WGW", 'T',
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 1), 'Z', "circuitUltimate", 'A',
-                ItemList.Machine_Multi_DieselEngine.get(1), 'B', ItemList.Machine_Multi_ExtremeDieselEngine.get(1), 'L',
+                ItemList.LargeCombustionEngine.get(1), 'B', ItemList.Machine_Multi_ExtremeDieselEngine.get(1), 'L',
                 ItemList.Hull_LuV, 'W', GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 1), 'G',
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Osmium, 1), });
 
