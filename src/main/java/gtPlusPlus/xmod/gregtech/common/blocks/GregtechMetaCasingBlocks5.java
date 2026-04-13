@@ -94,7 +94,6 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
         final int ordinalSide) {
-        final GregtechMetaCasingBlocks5 i = this;
-        return mGrinderOverlayHandler.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, ordinalSide, i);
+        return mGrinderOverlayHandler.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, ordinalSide);
     }
 }

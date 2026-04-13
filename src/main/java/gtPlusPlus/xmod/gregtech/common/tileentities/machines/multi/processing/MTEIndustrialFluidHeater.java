@@ -127,7 +127,6 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing1 = 0;
         boolean didBuild = checkPiece(mName, 2, 4, 0);
-        log("Built? " + didBuild + ", " + mCasing1);
         return didBuild && mCasing1 >= 34 && checkHatch();
     }
 
