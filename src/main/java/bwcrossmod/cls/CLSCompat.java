@@ -35,7 +35,7 @@ public class CLSCompat {
         if (time - lastUpdate >= MINIMAL_UPDATE_INTERVAL) {
             try {
                 ProgressDisplayer
-                    .displayProgress(werkstoff.getDefaultName(), (float) pos / Werkstoff.werkstoffHashSet.size());
+                    .displayProgress(werkstoff.getLocalizedName(), (float) pos / Werkstoff.werkstoffHashSet.size());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
