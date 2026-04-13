@@ -1700,6 +1700,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.FlotationCell.get(1),
             new Object[] { GregtechItemList.Controller_Flotation_Cell });
 
+        // Planetary Gas Siphon Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.PlanetarySiphon.get(1),
+            new Object[] { ItemList.PlanetaryGasSiphonController });
+
         // Large Boilers Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.BronzeBoilerLarge.get(1),
