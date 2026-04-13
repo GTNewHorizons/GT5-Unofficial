@@ -677,7 +677,7 @@ public class RecipeLoader {
                 Materials.DraconiumAwakened.getMolten(32 * INGOTS),
                 GGMaterial.extremelyUnstableNaquadah.getMolten(10 * INGOTS),
                 MaterialsAlloy.INDALLOY_140.getFluidStack(1 * STACKS + 36 * INGOTS))
-            .itemOutputs(ItemRefer.Naquadah_Fuel_Refinery.get(1))
+            .itemOutputs(ItemList.NaquadahFuelRefinery.get(1))
             .eut(TierEU.RECIPE_UHV)
             .duration(60 * SECONDS)
             .addTo(AssemblyLine);

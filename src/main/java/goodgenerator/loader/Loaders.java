@@ -26,7 +26,7 @@ import goodgenerator.blocks.tileEntity.MTECoolantTower;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatch;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatchME;
 import goodgenerator.blocks.tileEntity.MTEExtremeHeatExchanger;
-import goodgenerator.blocks.tileEntity.MTEFuelRefineFactory;
+import goodgenerator.blocks.tileEntity.MTEFuelRefineFactoryLegacy;
 import goodgenerator.blocks.tileEntity.MTELargeEssentiaSmeltery;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer1;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer2;
@@ -278,8 +278,10 @@ public class Loaders {
     public static void GTMetaTileRegister() {
         Loaders.MAR = new MTEMultiNqGenerator(MetaTileEntityIDs.MultiNqGenerator.ID, "NaG", "Large Naquadah Reactor")
             .getStackForm(1L);
-        Loaders.FRF = new MTEFuelRefineFactory(MetaTileEntityIDs.FuelRefineFactory.ID, "FRF", "Naquadah Fuel Refinery")
-            .getStackForm(1L);
+        Loaders.FRF = new MTEFuelRefineFactoryLegacy(
+            MetaTileEntityIDs.FuelRefineFactory.ID,
+            "FRF",
+            "Naquadah Fuel Refinery").getStackForm(1L);
         Loaders.UCFE = new MTEUniversalChemicalFuelEngineLegacy(
             MetaTileEntityIDs.LegacyUniversalChemicalFuelEngine.ID,
             "UniversalChemicalFuelEngine",
