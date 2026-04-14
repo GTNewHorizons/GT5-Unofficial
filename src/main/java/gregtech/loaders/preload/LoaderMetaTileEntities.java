@@ -873,7 +873,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 IndustrialExtruder.ID,
                 "industrialextruder.controller.tier.single",
                 "Industrial Extrusion Machine").getStackForm(1L));
-        
+
         ItemList.AdvancedImplosionCompressor.set(
             new MTEAdvImplosionCompressor(
                 AdvancedImplosionCompressor.ID,
