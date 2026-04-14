@@ -40,19 +40,19 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalConstructable {
+public class MTEFuelRefineFactoryLegacy extends TTMultiblockBase implements ISurvivalConstructable {
 
-    private IStructureDefinition<MTEFuelRefineFactory> multiDefinition = null;
+    private IStructureDefinition<MTEFuelRefineFactoryLegacy> multiDefinition = null;
     private int tier = -1;
     private static final Block[] coils = new Block[] { Loaders.FRF_Coil_1, Loaders.FRF_Coil_2, Loaders.FRF_Coil_3,
         Loaders.FRF_Coil_4 };
 
-    public MTEFuelRefineFactory(String name) {
+    public MTEFuelRefineFactoryLegacy(String name) {
         super(name);
         useLongPower = true;
     }
 
-    public MTEFuelRefineFactory(int id, String name, String nameRegional) {
+    public MTEFuelRefineFactoryLegacy(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
         useLongPower = true;
     }
@@ -68,9 +68,9 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    public IStructureDefinition<MTEFuelRefineFactory> getStructure_EM() {
+    public IStructureDefinition<MTEFuelRefineFactoryLegacy> getStructure_EM() {
         if (multiDefinition == null) {
-            multiDefinition = StructureDefinition.<MTEFuelRefineFactory>builder()
+            multiDefinition = StructureDefinition.<MTEFuelRefineFactoryLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
@@ -91,7 +91,7 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
                             { "               ", "      CCC      ", "               " } }))
                 .addElement(
                     'X',
-                    buildHatchAdder(MTEFuelRefineFactory.class)
+                    buildHatchAdder(MTEFuelRefineFactoryLegacy.class)
                         .atLeast(
                             gregtech.api.enums.HatchElement.Maintenance,
                             gregtech.api.enums.HatchElement.InputHatch,
@@ -112,8 +112,8 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
                         fieldCoilTierConverter(),
                         getAllFieldCoilTiers(),
                         -1,
-                        MTEFuelRefineFactory::setCoilTier,
-                        MTEFuelRefineFactory::getCoilTier))
+                        MTEFuelRefineFactoryLegacy::setCoilTier,
+                        MTEFuelRefineFactoryLegacy::getCoilTier))
                 .build();
         }
         return multiDefinition;
@@ -150,6 +150,7 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Naquadah Fuel Refinery, NFR")
+            .addStructureDeprecatedLine()
             .addInfo("Produces naquadah fuels")
             .addInfo("Needs field restriction coils to control the fatal radiation")
             .addInfo("Use higher tier coils to unlock more fuel types and perform more perfect overclocks")
@@ -226,7 +227,7 @@ public class MTEFuelRefineFactory extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEFuelRefineFactory(this.mName);
+        return new MTEFuelRefineFactoryLegacy(this.mName);
     }
 
     @Override

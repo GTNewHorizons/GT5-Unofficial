@@ -27,7 +27,6 @@ import gtPlusPlus.xmod.gregtech.common.covers.CoverToggleVisual;
 public class MetaCustomCoverItem extends Item {
 
     protected final IIcon[] icons;
-    private final String mModID;
     private final String mTextureSetName;
     protected final IIconContainer[] mTextures;
     private final short[][] mRGB;
@@ -36,13 +35,12 @@ public class MetaCustomCoverItem extends Item {
         short[][] aRGB) {
         super();
         icons = new IIcon[aTextureCount];
-        mModID = aModId;
         mTextureSetName = StringUtils.sanitizeString(aTextureSetName);
         mTextures = aTextures;
         mRGB = aRGB;
         this.setTextureName(GTPlusPlus.ID + ":" + "itemPlate");
         this.setHasSubtypes(true);
-        String unlocalizedName = "itemCustomMetaCover." + mModID + "." + mTextureSetName;
+        String unlocalizedName = "itemCustomMetaCover." + aModId + "." + mTextureSetName;
         this.setUnlocalizedName(unlocalizedName);
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setMaxStackSize(1);
@@ -104,18 +102,6 @@ public class MetaCustomCoverItem extends Item {
         return 0L;
     }
 
-    public static boolean setCoverDamage(final ItemStack aStack, final long aDamage) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT = aNBT.getCompoundTag("CustomCoverMeta");
-            if (aNBT != null) {
-                aNBT.setLong("Damage", aDamage);
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static boolean getCoverConnections(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
@@ -173,18 +159,6 @@ public class MetaCustomCoverItem extends Item {
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
         return false;
-    }
-
-    @Override
-    public Item setFull3D() {
-        // TODO Auto-generated method stub
-        return super.setFull3D();
-    }
-
-    @Override
-    public boolean isFull3D() {
-        // TODO Auto-generated method stub
-        return super.isFull3D();
     }
 
     @Override

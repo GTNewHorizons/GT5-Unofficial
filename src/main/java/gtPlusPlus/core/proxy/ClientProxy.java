@@ -24,7 +24,6 @@ import gregtech.api.enums.Mods;
 import gregtech.common.powergoggles.gui.PowerGogglesGuiOverlay;
 import gregtech.common.powergoggles.handlers.PowerGogglesHudHandler;
 import gregtech.common.powergoggles.handlers.PowerGogglesKeybindHandler;
-import gtPlusPlus.core.client.renderer.CustomItemBlockRenderer;
 import gtPlusPlus.core.client.renderer.RenderDecayChest;
 import gtPlusPlus.core.client.renderer.RenderMiningExplosivesPrimed;
 import gtPlusPlus.core.client.renderer.RenderSickBlaze;
@@ -54,7 +53,6 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void init(final FMLInitializationEvent e) {
-        new CustomItemBlockRenderer();
         RenderingRegistry.registerBlockHandler(new MachineBlockRenderer());
         new FlaskRenderer();
         MinecraftForge.EVENT_BUS.register(PowerGogglesHudHandler.getInstance());
@@ -80,11 +78,6 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityLightningAttack.class, new RenderFireball(1F));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDecayablesChest.class, new RenderDecayChest());
         // spotless:on
-    }
-
-    @Override
-    public int addArmor(final String armor) {
-        return RenderingRegistry.addNewArmourRendererPrefix(armor);
     }
 
     @Override

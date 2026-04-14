@@ -15,7 +15,6 @@ import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 
 public class ContainerCircuitProgrammer extends Container {
 
-    protected TileEntityCircuitProgrammer tile_entity;
     public final InventoryCircuitProgrammer inventoryChest;
 
     private final World worldObj;
@@ -25,14 +24,7 @@ public class ContainerCircuitProgrammer extends Container {
 
     public static final int SLOT_OUTPUT = 25;
 
-    public static int StorageSlotNumber = 26; // Number of slots in storage area
-    public static int InventorySlotNumber = 36; // Inventory Slots (Inventory
-    // and Hotbar)
-    public static int FullSlotNumber = InventorySlotNumber + StorageSlotNumber; // All
-    // slots
-
     public ContainerCircuitProgrammer(final InventoryPlayer inventory, final TileEntityCircuitProgrammer te) {
-        this.tile_entity = te;
         this.inventoryChest = te.getInventory();
 
         int var6;

@@ -22,15 +22,11 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
     private int tickCount = 0;
     private final InventoryVolumetricFlaskSetter inventoryContents;
     private String customName;
-    public int locationX;
-    public int locationY;
-    public int locationZ;
     private int aCurrentMode = 0;
     private int aCustomValue = 1000;
 
     public TileEntityVolumetricFlaskSetter() {
         this.inventoryContents = new InventoryVolumetricFlaskSetter();
-        this.setTileLocation();
     }
 
     public int getCustomValue() {
@@ -40,18 +36,6 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
     public void setCustomValue(int aVal) {
         this.aCustomValue = aVal;
         markDirty();
-    }
-
-    public boolean setTileLocation() {
-        if (this.hasWorldObj()) {
-            if (!this.getWorldObj().isRemote) {
-                this.locationX = this.xCoord;
-                this.locationY = this.yCoord;
-                this.locationZ = this.zCoord;
-                return true;
-            }
-        }
-        return false;
     }
 
     // Rename to hasCircuitToConfigure
@@ -230,17 +214,6 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
         } catch (final Exception t) {}
     }
 
-    public boolean anyPlayerInRange() {
-        return this.worldObj.getClosestPlayer(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 32) != null;
-    }
-
-    public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag) {
-        if (!nbt.hasKey(tag)) {
-            nbt.setTag(tag, new NBTTagCompound());
-        }
-        return nbt.getCompoundTag(tag);
-    }
-
     @Override
     public void writeToNBT(final NBTTagCompound nbt) {
         super.writeToNBT(nbt);
@@ -384,7 +357,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
         this.readFromNBT(tag);
     }
 
-    public boolean onScrewdriverRightClick(byte side, EntityPlayer player, int x, int y, int z) {
+    public boolean onScrewdriverRightClick(EntityPlayer player) {
         if (player.isSneaking()) {
             GTUtility.sendChatToPlayer(player, "Value: " + this.getCustomValue());
         }

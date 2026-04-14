@@ -41,12 +41,13 @@ public class AchievementHandler {
             aBaseAchievementName,
             0,
             0,
-            MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(
-                MetaGeneratedGregtechTools.ANGLE_GRINDER,
-                1,
-                Materials.Osmium,
-                Materials.Osmium,
-                null),
+            MetaGeneratedGregtechTools.getInstance()
+                .getToolWithStats(
+                    MetaGeneratedGregtechTools.ANGLE_GRINDER,
+                    1,
+                    Materials.Osmium,
+                    Materials.Osmium,
+                    null),
             "",
             true);
 

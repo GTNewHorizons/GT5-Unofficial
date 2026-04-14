@@ -14,7 +14,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 public class LeavesPineTree extends LeavesBase {
 
     public LeavesPineTree() {
-        super("Pine", "pine", GTValues.emptyItemStackArray);
+        super("Pine", GTValues.emptyItemStackArray);
         this.treeType = new String[] { "pine" };
         this.leafType = new String[][] { { "pine" }, { "pine_opaque" } };
     }

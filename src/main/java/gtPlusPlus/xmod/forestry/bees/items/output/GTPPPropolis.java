@@ -22,9 +22,6 @@ import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 
 public class GTPPPropolis extends Item {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon secondIcon;
-
     public GTPPPropolis() {
         super();
         this.setCreativeTab(Tabs.tabApiculture);

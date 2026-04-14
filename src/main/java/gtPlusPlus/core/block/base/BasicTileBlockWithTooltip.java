@@ -209,9 +209,6 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
                 sidedTexturePathArray.add(aMetaBlob);
             }
         }
-        // Iteration Index
-        int aIndex = 0;
-
         // Iterate each CubicObject, holding the six texture paths for each meta.
         for (CubicObject<String> aMetaBlob : sidedTexturePathArray) {
             // Make a Safe Texture for each side
@@ -221,10 +218,8 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
             SafeTexture aFont = SafeTexture.register(aMetaBlob.SOUTH);
             SafeTexture aWest = SafeTexture.register(aMetaBlob.WEST);
             SafeTexture aEast = SafeTexture.register(aMetaBlob.EAST);
-            // Store them in an Array
-            SafeTexture[] aInjectBlob = new SafeTexture[] { aBottom, aTop, aBack, aFont, aWest, aEast };
             // Convenience Blob
-            CubicObject<SafeTexture> aMetaBlob2 = new CubicObject<>(aInjectBlob);
+            CubicObject<SafeTexture> aMetaBlob2 = new CubicObject<>(aBottom, aTop, aBack, aFont, aWest, aEast);
             // Store this Blob into
             mSidedTextureArray.add(aMetaBlob2);
         }

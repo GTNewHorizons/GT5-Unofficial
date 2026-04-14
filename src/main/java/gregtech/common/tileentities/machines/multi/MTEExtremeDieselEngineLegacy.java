@@ -27,13 +27,13 @@ import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class MTEExtremeDieselEngine extends MTEDieselEngine {
+public class MTEExtremeDieselEngineLegacy extends MTEDieselEngineLegacy {
 
-    public MTEExtremeDieselEngine(int aID, String aName, String aNameRegional) {
+    public MTEExtremeDieselEngineLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEExtremeDieselEngine(String aName) {
+    public MTEExtremeDieselEngineLegacy(String aName) {
         super(aName);
     }
 
@@ -41,6 +41,7 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Combustion Generator, ECE")
+            .addStructureDeprecatedLine()
             .addInfo("Supply high rating fuel and 8000L of Lubricant per hour to run")
             .addInfo("Supply 40L/s of Liquid Oxygen to boost output (optional)")
             .addInfo("Default: Produces 10900EU/t at 100% fuel efficiency")
@@ -116,7 +117,7 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEExtremeDieselEngine(this.mName);
+        return new MTEExtremeDieselEngineLegacy(this.mName);
     }
 
     @Override

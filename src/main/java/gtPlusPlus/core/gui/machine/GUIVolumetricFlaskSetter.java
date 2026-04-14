@@ -158,7 +158,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
         // Keyboard.enableRepeatEvents(false);
     }
 
-    public int parse(String aValue) {
+    public int parse() {
         try {
             return Integer.parseInt(getText());
         } catch (NumberFormatException e) {
@@ -168,7 +168,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
 
     public void sendUpdateToServer() {
         if (!getText().isEmpty()) {
-            PacketHandler.sendToServer(new PacketVolumetricFlaskGui(mTile, parse(getText())));
+            PacketHandler.sendToServer(new PacketVolumetricFlaskGui(mTile, parse()));
         }
     }
 
@@ -188,7 +188,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
 
         // Check TextBox Value is correct
         if (!getText().isEmpty()) {
-            int aCustomValue = parse(getText());
+            int aCustomValue = parse();
             int aTileValue = mContainer.mCustomValue;
             if (aTileValue != aCustomValue) {
                 setText(aTileValue);

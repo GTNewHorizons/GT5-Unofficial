@@ -126,8 +126,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             id,
             localizedName,
             EnumChatFormatting.GRAY + "Can be used to remove fluids from GT machine input & output slots");
-        if (euStorage > 0 && tier > 0)
-            this.setElectricStats(this.mOffset + id, euStorage, GTValues.V[tier], tier, -3L, true);
+        if (euStorage > 0 && tier > 0) this.setElectricStats(this.mOffset + id, euStorage, GTValues.V[tier], tier, -3L);
         this.rarity.put(id, regRarity);
     }
 
@@ -421,7 +420,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
      * @return the Item itself for convenience in constructing.
      */
     public final ItemGregtechPump setElectricStats(final int aMetaValue, final long aMaxCharge,
-        final long aTransferLimit, final long aTier, final long aSpecialData, final boolean aUseAnimations) {
+        final long aTransferLimit, final long aTier, final long aSpecialData) {
         if (aMetaValue < 0) {
             return this;
         }

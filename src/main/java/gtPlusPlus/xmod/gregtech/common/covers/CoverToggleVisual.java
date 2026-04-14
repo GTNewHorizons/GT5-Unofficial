@@ -20,7 +20,6 @@ import gtPlusPlus.api.objects.minecraft.BlockPos;
 public class CoverToggleVisual extends CoverLegacyData {
 
     private static final Map<String, Integer> sConnectionStateForEntityMap = new ConcurrentHashMap<>();
-    private static final Map<String, String> sPrefixMap = new ConcurrentHashMap<>();
     private static final int VALUE_OFF = 0;
     private static final int VALUE_ON = 1;
 
@@ -124,7 +123,6 @@ public class CoverToggleVisual extends CoverLegacyData {
     public void onPlayerAttach(EntityPlayer player, ItemStack coverItem) {
         String aKey = generateUniqueKey(coverSide, coveredTile.get());
         boolean state = getCoverConnections(coverItem);
-        sPrefixMap.put(aKey, coverItem.getUnlocalizedName());
         sConnectionStateForEntityMap.put(aKey, state ? VALUE_ON : VALUE_OFF);
     }
 
@@ -136,16 +134,6 @@ public class CoverToggleVisual extends CoverLegacyData {
 
     public boolean getConnectionState() {
         return coverData == VALUE_ON;
-    }
-
-    public static boolean getConnectionState(ForgeDirection side, ICoverable aTile) {
-        String aKey = generateUniqueKey(side, aTile);
-        return getConnectionState(aKey);
-    }
-
-    public static boolean getConnectionState(String aKey) {
-        Integer b = sConnectionStateForEntityMap.get(aKey);
-        return b != null && b == VALUE_ON;
     }
 
     public static boolean getCoverConnections(final ItemStack aStack) {

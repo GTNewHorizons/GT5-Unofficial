@@ -449,8 +449,7 @@ public final class MaterialsElements {
         144,
         false,
         StringUtils.superscript("238Pu"),
-        2,
-        false); // Not a GT Inherited Material
+        2); // Not a GT Inherited Material
 
     public final Material MAGIC = MaterialUtils
         .generateMaterialFromGtENUM(Materials.Magic, new short[] { 10, 185, 140 });

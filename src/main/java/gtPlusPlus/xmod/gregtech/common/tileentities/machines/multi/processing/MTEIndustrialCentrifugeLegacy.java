@@ -19,13 +19,10 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -60,7 +57,6 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
     // mMachine got overwritten by StructureLib extended facing query response
     // so we use a separate field for this
     protected final List<RenderOverlay.OverlayTicket> overlayTickets = new ArrayList<>();
-    protected boolean mFormed;
 
     public MTEIndustrialCentrifugeLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -216,14 +212,6 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
         return (6 * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
-    public Block getCasingBlock() {
-        return ModBlocks.blockCasingsMisc;
-    }
-
-    public byte getCasingMeta() {
-        return 0;
-    }
-
     public byte getCasingTextureIndex() {
         return (byte) TAE.GTPP_INDEX(0);
     }
@@ -265,7 +253,6 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
 
     @Override
     public void onValueUpdate(byte aValue) {
-        mFormed = (aValue & 0x1) != 0;
         setTurbineOverlay();
     }
 
@@ -280,8 +267,4 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
         if (getBaseMetaTileEntity().isClientSide()) GTUtilityClient.clearTurbineOverlay(overlayTickets);
     }
 
-    @Override
-    public void onPreviewStructureComplete(@NotNull ItemStack trigger) {
-        mFormed = true;
-    }
 }

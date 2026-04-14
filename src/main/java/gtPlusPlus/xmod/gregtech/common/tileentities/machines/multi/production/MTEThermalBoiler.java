@@ -43,6 +43,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.pollution.PollutionConfig;
@@ -90,7 +91,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
 
     @Override
     public String getMachineType() {
-        return "Boiler";
+        return "Heat Exchanger";
     }
 
     @Override
@@ -271,11 +272,10 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Converts Water & Heat into Steam")
-            .addInfo("Filters raw materials from lava")
-            .addInfo("Requires a Lava Filter in the controller slot for some byproducts")
-            .addInfo("Explodes if water is not supplied")
-            .addInfo("Consult user manual for more information")
+            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc1"))
+            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc2"))
+            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc3"))
+            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc4"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")

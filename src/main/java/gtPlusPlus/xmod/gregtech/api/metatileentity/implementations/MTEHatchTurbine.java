@@ -52,7 +52,6 @@ public class MTEHatchTurbine extends MTEHatch {
     public int mEUt = 0;
 
     protected final List<RenderOverlay.OverlayTicket> overlayTickets = new ArrayList<>();
-    private boolean mFormed;
     private boolean mHasTurbine;
 
     public MTEHatchTurbine(int aID, String aName, String aNameRegional, int aTier) {
@@ -119,10 +118,6 @@ public class MTEHatchTurbine extends MTEHatch {
         return null;
     }
 
-    public boolean canWork() {
-        return hasTurbine();
-    }
-
     public boolean insertTurbine(ItemStack aTurbine) {
         if (MTELargerTurbineBase.isValidTurbine(aTurbine)) {
             this.mInventory[0] = aTurbine;
@@ -158,10 +153,6 @@ public class MTEHatchTurbine extends MTEHatch {
     @Override
     public int getInventoryStackLimit() {
         return 1;
-    }
-
-    public void damageTurbine(int aEUt, int damageFactorLow, float damageFactorHigh) {
-        damageTurbine((long) aEUt, damageFactorLow, damageFactorHigh);
     }
 
     public void damageTurbine(long aEUt, int damageFactorLow, float damageFactorHigh) {
@@ -455,7 +446,6 @@ public class MTEHatchTurbine extends MTEHatch {
 
     public void receiveUpdate(PacketTurbineHatchUpdate message) {
         mHasTurbine = message.isHasTurbine();
-        mFormed = message.isFormed();
         if (message.getController() != null) clearController();
         else setController(message.getController());
         getBaseMetaTileEntity().issueTextureUpdate();

@@ -72,9 +72,6 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
     public static synchronized int generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs) {
         init();
         int aRecipesHandled = 0;
-        int aInvalidRecipesToConvert = 0;
-        int aOriginalCount = aInputs.getAllRecipes()
-            .size();
         ArrayList<GTRecipe> deDuplicationInputArray = new ArrayList<>();
 
         recipe: for (GTRecipe x : aInputs.getAllRecipes()) {
@@ -151,7 +148,6 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
 
                 if (!(ItemUtils.checkForInvalidItems(aNewItemInputs)
                     && ItemUtils.checkForInvalidItems(aNewItemOutputs))) {
-                    aInvalidRecipesToConvert++;
                     continue; // Skip this recipe entirely if we find an item we don't like
                 }
                 GTRecipe aNewRecipe = new GTRecipe(
@@ -173,13 +169,10 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
                 deDuplicationInputArray.add(aNewRecipe);
 
                 aRecipesHandled++;
-            } else {
-                aInvalidRecipesToConvert++;
             }
         }
         // cast arraylist of input to a regular array and pass it to a duplicate recipe remover.
-        List<GTRecipe> deDuplicationOutputArray = GTRecipeUtils
-            .removeDuplicates(deDuplicationInputArray, aOutputs.unlocalizedName);
+        List<GTRecipe> deDuplicationOutputArray = GTRecipeUtils.removeDuplicates(deDuplicationInputArray);
         // add each recipe from the above output to the intended recipe map
         for (GTRecipe recipe : deDuplicationOutputArray) {
             aOutputs.add(recipe);
