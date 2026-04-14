@@ -11,11 +11,6 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import java.util.Arrays;
-import java.util.Collection;
-
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -250,12 +245,6 @@ public class MTEIndustrialArcFurnaceLegacy extends GTPPMultiBlockBase<MTEIndustr
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.arcFurnaceRecipes;
-    }
-
-    @Nonnull
-    @Override
-    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.arcFurnaceRecipes, RecipeMaps.plasmaArcFurnaceRecipes);
     }
 
     @Override

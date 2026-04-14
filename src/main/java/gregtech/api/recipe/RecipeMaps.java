@@ -389,19 +389,9 @@ public final class RecipeMaps {
     /**
      * Usually, but not always, you should use {@link GTRecipeConstants#UniversalArcFurnace} instead.
      */
-    @Deprecated
-    public static final RecipeMap<RecipeMapBackend> plasmaArcFurnaceRecipes = RecipeMapBuilder
-        .of("gt.recipe.plasmaarcfurnace")
-        .maxIO(2, 9, 1, 1)
-        .minInputs(1, 1)
-        .build();
-    /**
-     * Usually, but not always, you should use {@link GTRecipeConstants#UniversalArcFurnace} instead.
-     */
     public static final RecipeMap<RecipeMapBackend> arcFurnaceRecipes = RecipeMapBuilder.of("gt.recipe.arcfurnace")
         .maxIO(2, 9, 2, 1)
         .minInputs(1, 0)
-        // .amperage(3)
         .build();
     public static final RecipeMap<PrinterBackend> printerRecipes = RecipeMapBuilder
         .of("gt.recipe.printer", PrinterBackend::new)
