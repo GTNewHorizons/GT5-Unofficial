@@ -1638,29 +1638,34 @@ public class GTModHandler {
      * Gives you a list of the Outputs from a Crafting Recipe If you have multiple Mods, which add Bronze Armor for
      * example
      */
-    public static List<ItemStack> getRecipeOutputs(List<IRecipe> aList, boolean aDeleteFromList, ItemStack... aRecipe) {
-        List<ItemStack> rList = new ArrayList<>();
-        if (aRecipe == null || isAllNulls(aRecipe)) return rList;
+    public static List<ItemStack> getRecipeOutputs(List<IRecipe> recipeList, boolean deleteFromList,
+        ItemStack... ingredients) {
 
-        InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
+        final ArrayList<ItemStack> outputList = new ArrayList<>();
+        if (ingredients == null || isAllNulls(ingredients)) return outputList;
+
+        InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
 
             @Override
             public boolean canInteractWith(EntityPlayer player) {
                 return false;
             }
         }, 3, 3);
-        for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
 
-        for (Iterator<IRecipe> iterator = aList.iterator(); iterator.hasNext();) {
-            IRecipe tRecipe = iterator.next();
+        for (int i = 0; i < 9 && i < ingredients.length; i++) {
+            craftMatrix.setInventorySlotContents(i, ingredients[i]);
+        }
 
-            if (tRecipe instanceof ShapelessRecipes) continue;
-            if (tRecipe instanceof ShapelessOreRecipe) continue;
-            if (tRecipe instanceof IGTCraftingRecipe) continue;
+        for (Iterator<IRecipe> iterator = recipeList.iterator(); iterator.hasNext();) {
+            final IRecipe recipe = iterator.next();
 
-            ItemStack tOutput = tRecipe.getCraftingResult(aCrafting);
+            if (recipe instanceof ShapelessRecipes) continue;
+            if (recipe instanceof ShapelessOreRecipe) continue;
+            if (recipe instanceof IGTCraftingRecipe) continue;
 
-            if (tOutput == null || tOutput.stackSize <= 0) {
+            final ItemStack output = recipe.getCraftingResult(craftMatrix);
+
+            if (output == null || output.stackSize <= 0) {
                 // Seriously, who would ever do that shit?
                 if (!GregTechAPI.sPostloadFinished) {
                     throw new GTItsNotMyFaultException(
@@ -1669,17 +1674,17 @@ public class GTModHandler {
                 continue;
             }
 
-            if (tOutput.stackSize != 1) continue;
-            if (tOutput.getMaxDamage() <= 0) continue;
-            if (tOutput.getMaxStackSize() != 1) continue;
+            if (output.stackSize != 1) continue;
+            if (output.getMaxDamage() <= 0) continue;
+            if (output.getMaxStackSize() != 1) continue;
 
-            if (tRecipe.matches(aCrafting, DW)) {
-                rList.add(tOutput);
-                if (aDeleteFromList) iterator.remove();
+            if (recipe.matches(craftMatrix, DW)) {
+                outputList.add(output);
+                if (deleteFromList) iterator.remove();
             }
         }
 
-        return rList;
+        return outputList;
     }
 
     private static boolean isAllNulls(ItemStack[] aRecipe) {
