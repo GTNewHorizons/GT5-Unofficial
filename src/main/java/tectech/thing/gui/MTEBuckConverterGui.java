@@ -237,7 +237,7 @@ public class MTEBuckConverterGui extends MTETieredMachineBlockBaseGui<MTEBuckCon
                 .setDefaultNumber(2));
 
         // text widget for amperage, is static
-        amperageRow.child(new TextWidget<>(IKey.lang("GT5U.gui.text.amperage")).height(18));
+        amperageRow.child(new TextWidget<>(IKey.lang("GT5U.gui.text.amperage")).height(14));
 
         // button to double / halve amperage, up to MAX_AMPERAGE
         amperageRow.child(
