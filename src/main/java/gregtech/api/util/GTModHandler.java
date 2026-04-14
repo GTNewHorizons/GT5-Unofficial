@@ -1321,7 +1321,7 @@ public class GTModHandler {
 
             if (recipe.matches(aCrafting, DW)) {
                 rReturn = recipe.getCraftingResult(aCrafting);
-                if (rReturn != null) allRecipes.remove(i--);
+                allRecipes.remove(i--);
             }
         }
         return rReturn;
