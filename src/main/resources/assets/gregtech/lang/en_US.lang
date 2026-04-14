@@ -1709,11 +1709,14 @@ GT5U.MBTT.SuperChest=Super/Quantum Chest
 
 gt.multiblock.DieselEngine.machine_type=Combustion Generator, LCE
 gt.multiblock.DieselEngine.desc1=Supply Diesel Fuels and %s of Lubricant per hour to run
+gt.multiblock.DieselEngine.desc1_1=Supply High Rating Fuels and %s of Lubricant per hour to run
 gt.multiblock.DieselEngine.desc2=Supply %s of Oxygen to boost output (optional)
+gt.multiblock.DieselEngine.desc2_1=Supply %s of Liquid Oxygen to boost output (optional)
 gt.multiblock.DieselEngine.default_output=Default: Produces %s at %s fuel efficiency
 gt.multiblock.DieselEngine.boosted_output=Boosted: Produces %s at %s fuel efficiency
 gt.multiblock.DieselEngine.wait_power=You need to wait for it to reach %s to output full power
 gt.multiblock.DieselEngine.intake_warning=Engine Intake Casings must not be obstructed in front (only air blocks)
+gt.multiblock.DieselEngine.intake_warning2=Engine Intake Casings must not be obstructed on top (only air blocks)
 gt.multiblock.DieselEngine.gear_box_inner=Inner 2 blocks
 gt.multiblock.DieselEngine.engine_intake_ring=8x, ring around controller
 gt.multiblock.DieselEngine.maintenance_hatch=One of the casings next to a Gear Box
@@ -3441,6 +3444,7 @@ GT5U.nei.purified_water.grade_3.2=Returned in amount equivalent to consumed floc
 GT5U.nei.purified_water.grade_4.0=+%s pH/stack
 GT5U.nei.purified_water.grade_4.1=%s pH/1000L
 GT5U.nei.cauldron.consumed=Consumed per operation
+GT5U.nei.foundry_module.chassis_tier=Chassis must match Foundry Tier!
 
 
 GT5U.config.colormodulation=Color Modulator
@@ -5862,6 +5866,8 @@ GT5U.gui.button.vm.whitelist=Whitelist - Unselected ores will be §4voided
 GT5U.gui.button.vm.blacklist=Blacklist - Selected ores will be §4voided
 GT5U.gui.button.vm.select=Select all ores
 GT5U.gui.button.vm.deselect=Deselect all ores
+GT5U.gui.button.vm.tt.void=§cWill be voided
+GT5U.gui.button.vm.tt.novoid=§aWill not be voided
 
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pickup this item to see the recipe in NEI

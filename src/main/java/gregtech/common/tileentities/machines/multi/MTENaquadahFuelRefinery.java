@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -148,10 +147,10 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
                             OutputHatch,
                             EnergyMulti.or(Energy),
                             DynamoMulti.or(Dynamo))
-                        .casingIndex(179)
+                        .casingIndex(Casings.NaquadahFuelRefineryCasing.textureId)
                         .hint(1)
-                        .buildAndChain(ofBlock(Loaders.FRF_Casings, 0)))
-                .addElement('C', ofBlock(Loaders.fieldRestrictingGlass, 0))
+                        .buildAndChain(Casings.NaquadahFuelRefineryCasing.asElement()))
+                .addElement('C', Casings.FieldRestrictionGlass.asElement())
                 .addElement(
                     'B',
                     ofBlocksTiered(
@@ -162,7 +161,7 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
                         MTENaquadahFuelRefinery::getCoilTier))
                 .addElement('D', Casings.SuperconductingCoilBlock.asElement())
                 .addElement('E', Casings.EuropiumReinforcedRadiationProofMachineCasing.asElement())
-                .addElement('F', ofBlock(Loaders.radiationProtectionSteelFrame, 0))
+                .addElement('F', Casings.RadiantProofSteelFrameBox.asElement())
                 .build();
         }
         return multiDefinition;
