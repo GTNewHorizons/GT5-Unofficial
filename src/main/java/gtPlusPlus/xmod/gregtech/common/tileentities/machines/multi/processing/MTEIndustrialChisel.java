@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -88,7 +89,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
             .addInfo("Factory Grade Auto Chisel")
             .addInfo("Target block goes in Controller slot for common Input Buses")
             .addInfo("You can also set a target block in each Chisel Input Bus and use them as an Input Bus")
-            .addInfo("If no target is provided for common buses, the result of the first chisel is used")
+            .addInfo("If no target is provided for common buses, the result is the next chisel")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
@@ -225,9 +226,8 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                 int outputAmount = 1;
                 int inputAmount = 1;
                 if (ArchitectureCraft.isModLoaded() && tOutput.getItem() instanceof ArchitectureItemBlock) {
-                    NBTTagCompound tag = tOutput.getTagCompound();
-                    inputAmount = Shape.forId(tag.getInteger("Shape")).materialUsed;
-                    outputAmount = Shape.forId(tag.getInteger("Shape")).itemsProduced;
+                    inputAmount = Shape.forId(ItemStackNBT.getInteger(tOutput, "Shape")).materialUsed;
+                    outputAmount = Shape.forId(ItemStackNBT.getInteger(tOutput, "Shape")).itemsProduced;
                 }
                 // We can chisel this
                 Optional<GTRecipe> aRecipe = GTRecipeBuilder.builder()
@@ -282,7 +282,8 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
         } else if (aTarget != null && !canBeMadeFrom(aInput, aTarget)) {
             tOutput = null;
         } else {
-            tOutput = getItemsForChiseling(aInput).get(0);
+            int nextDamage = (aInput.getItemDamage() + 1) % getItemsForChiseling(aInput).size();
+            tOutput = getItemsForChiseling(aInput).get(nextDamage);
         }
         return tOutput;
     }

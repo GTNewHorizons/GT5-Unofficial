@@ -82,7 +82,6 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     protected final List<List<MTEHatchOutput>> mOutputHatchesByLayer = new ArrayList<>();
     protected int mHeight;
-    protected int mCasing;
     protected boolean mTopLayerFound;
 
     private static IStructureDefinition<MTEAdvDistillationTower> STRUCTURE_DEFINITION = null;
@@ -197,7 +196,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addCasingInfoMin("Clean Stainless Steel Machine Casing", 7, false)
             .addInputBus("Bottom Casing", 1)
             .addOutputBus("Bottom Casing", 1)
@@ -413,7 +412,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         return this.mOutputHatchesByLayer.stream()
             .allMatch(
                 tLayerOutputHatches -> tLayerOutputHatches.stream()
-                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canFillFluid())));
+                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canAcceptFluid())));
     }
 
     @Override

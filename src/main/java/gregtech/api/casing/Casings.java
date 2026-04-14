@@ -377,6 +377,10 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings12, 11, gt(16, 5, 11)),
     AlchemicallyImmuneIchoriumCasing
         (() -> GregTechAPI.sBlockCasings12, 12, gt(16, 5, 12)),
+    MixerCasing
+        (() -> GregTechAPI.sBlockCasings12, 13, gt(16, 5, 13)),
+    FormingCore
+        (() -> GregTechAPI.sBlockCasings12, 14, gt(16, 5, 14)),
     AlchemicalCasing(() -> GregTechAPI.sBlockCasings12, 10, gt(16, 5, 10)) {
         @Override
         public String getLocalizedName() {
@@ -1030,6 +1034,14 @@ public enum Casings implements ICasing {
     // ------------------ Miscellaneous Elements -----------------
     MagicCasing
         (() -> Loaders.magicCasing, 0, -1),
+    NaquadahFuelRefineryCasing
+        (() -> Loaders.FRF_Casings, 0, 179),
+    RadiantProofSteelFrameBox
+        (() -> Loaders.radiationProtectionSteelFrame, 0, -1),
+    FieldRestrictionCasing
+        (() -> Loaders.MAR_Casing, 0, -1),
+    FieldRestrictionGlass
+        (() -> Loaders.fieldRestrictingGlass, 0, -1),
 
     BorosilicateGlassAny(BorosilicateGlass::getGlassBlock, 0, -1) {
         @Override

@@ -16,7 +16,6 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -103,7 +102,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
             .addInfo("Right-click controller with a Screwdriver to change modes")
             .addInfo("Max Size required to process Plasma recipes")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addController("Top center")
+            .addController("Front center")
             .addStructureInfo("Size: nxnx3 [WxHxL] (Hollow)")
             .addStructureInfo("n can be 3, 5 or 7")
             .addCasingInfoMin(mCasingName, 10, false)
@@ -278,14 +277,6 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialArcFurnace;
-    }
-
-    public Block getCasingBlock() {
-        return ModBlocks.blockCasings4Misc;
-    }
-
-    public byte getCasingMeta() {
-        return 3;
     }
 
     public byte getCasingTextureIndex() {

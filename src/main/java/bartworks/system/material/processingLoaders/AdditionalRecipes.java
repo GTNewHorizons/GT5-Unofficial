@@ -250,16 +250,16 @@ public class AdditionalRecipes {
         }
 
         List<Pair<Materials, Integer>> liquidFuels = Arrays.asList(
-            ImmutablePair.of(Materials.PhosphoricAcid, 36),
-            ImmutablePair.of(Materials.DilutedHydrochloricAcid, 14),
-            ImmutablePair.of(Materials.HypochlorousAcid, 30),
-            ImmutablePair.of(Materials.HydrofluoricAcid, 40),
-            ImmutablePair.of(Materials.HydrochloricAcid, 28),
-            ImmutablePair.of(Materials.NitricAcid, 24),
+            ImmutablePair.of(Materials.PhosphoricAcid, 66),
+            ImmutablePair.of(Materials.DilutedHydrochloricAcid, 26),
+            ImmutablePair.of(Materials.HypochlorousAcid, 56),
+            ImmutablePair.of(Materials.HydrofluoricAcid, 60),
+            ImmutablePair.of(Materials.HydrochloricAcid, 52),
+            ImmutablePair.of(Materials.NitricAcid, 72),
             ImmutablePair.of(Materials.Mercury, 32),
-            ImmutablePair.of(Materials.DilutedSulfuricAcid, 9),
-            ImmutablePair.of(Materials.SulfuricAcid, 18),
-            ImmutablePair.of(Materials.AceticAcid, 11),
+            ImmutablePair.of(Materials.DilutedSulfuricAcid, 14),
+            ImmutablePair.of(Materials.SulfuricAcid, 28),
+            ImmutablePair.of(Materials.AceticAcid, 21),
             ImmutablePair.of(WerkstoffLoader.FormicAcid.getBridgeMaterial(), 40),
             ImmutablePair.of(WerkstoffLoader.HexafluorosilicicAcid.getBridgeMaterial(), 350),
             ImmutablePair.of(Materials.PhthalicAcid, 270),
@@ -279,7 +279,7 @@ public class AdditionalRecipes {
             ImmutablePair.of(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 320),
             ImmutablePair.of(GTPPFluids.IndustrialStrengthHydrogenChloride, 224),
             ImmutablePair.of(GTPPFluids.PropionicAcid, 150),
-            ImmutablePair.of(Materials.Redstone.mStandardMoltenFluid, 10));
+            ImmutablePair.of(Materials.Redstone.mStandardMoltenFluid, 40));
         for (Pair<Fluid, Integer> otherFuel : liquidOtherFuels) {
             GTValues.RA.stdBuilder()
                 .itemInputs(

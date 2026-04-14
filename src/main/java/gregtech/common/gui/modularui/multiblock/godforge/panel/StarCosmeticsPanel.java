@@ -27,6 +27,7 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncActions;
@@ -256,6 +257,7 @@ public class StarCosmeticsPanel {
                 .style(EnumChatFormatting.GOLD)
                 .alignment(Alignment.CenterLeft)
                 .asWidget()
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                 .size(75, 16)
                 .marginLeft(4));
 

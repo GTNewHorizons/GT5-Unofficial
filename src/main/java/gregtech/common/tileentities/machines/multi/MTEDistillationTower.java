@@ -137,7 +137,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
             .addInfo("Fluids are only put out at the correct height")
             .addInfo("The correct height equals the slot number in the NEI recipe")
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addOtherStructurePart("Clean Stainless Steel Machine Casing", "7 x h - 5 (minimum)")
             .addEnergyHatch("Any casing except top centre", 1, 2)
             .addMaintenanceHatch("Any casing", 1, 2, 3)
@@ -280,7 +280,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
         return this.mOutputHatchesByLayer.stream()
             .allMatch(
                 tLayerOutputHatches -> tLayerOutputHatches.stream()
-                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canFillFluid())));
+                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canAcceptFluid())));
     }
 
     @Override

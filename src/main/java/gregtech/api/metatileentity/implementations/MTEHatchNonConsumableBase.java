@@ -15,6 +15,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -144,7 +145,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         tooltip.add("Capacity: " + EnumChatFormatting.GOLD + getItemCapacity() + EnumChatFormatting.GRAY + " Items");
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("itemStack")) {
+        if (ItemStackNBT.hasKey(stack, "itemStack")) {
             final ItemStack tContents = ItemStack
                 .loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("itemStack"));
             final int tSize = stack.stackTagCompound.getInteger("itemCount");

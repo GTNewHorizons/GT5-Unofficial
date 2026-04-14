@@ -86,7 +86,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
             .addInfo("Needs Soul Sand and Magma in input bus for deepslate")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
-            .addController("Bottom Front")
+            .addController("Front bottom center")
             .addCasingInfoMin(casingBaseName, 9, false)
             .addCasingInfoExactly(casingMiddleName, 16, false)
             .addInputBus(anyBaseCasing, 1)
@@ -138,7 +138,6 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
         boolean aCheckPiece = checkPiece(mName, 1, 3, 0);
         boolean aCasingCount = mCasing >= 9;
         boolean aCheckHatch = checkHatch();
-        log(aCheckPiece + ", " + aCasingCount + ", " + aCheckHatch);
         return aCheckPiece && aCasingCount && aCheckHatch;
     }
 

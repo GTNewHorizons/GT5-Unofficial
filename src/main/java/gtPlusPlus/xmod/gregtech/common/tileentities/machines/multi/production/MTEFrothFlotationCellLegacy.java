@@ -21,6 +21,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -83,7 +84,7 @@ public class MTEFrothFlotationCellLegacy extends GTPPMultiBlockBase<MTEFrothFlot
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, true)
-            .addController("Front Center")
+            .addController("Top center")
             .addCasingInfoMin("Inconel Reinforced Casing", 68, false)
             .addCasingInfoMin("Flotation Casing", 52, false)
             .addInputBus("Bottom Casing", 1)
@@ -262,19 +263,13 @@ public class MTEFrothFlotationCellLegacy extends GTPPMultiBlockBase<MTEFrothFlot
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.getTagCompound()
-            .hasKey("lockedMaterialName")) {
+        if (ItemStackNBT.hasKey(stack, "lockedMaterialName")) {
             tooltip.add(
                 StatCollector.translateToLocal("tooltip.flotationCell.lockedTo") + " "
                     + StatCollector.translateToLocal(
                         stack.getTagCompound()
                             .getString("lockedMaterialName")));
         }
-    }
-
-    @Override
-    public String[] getExtraInfoData() {
-        return new String[] { "Locked material: " + lockedMaterialName };
     }
 
     @Override

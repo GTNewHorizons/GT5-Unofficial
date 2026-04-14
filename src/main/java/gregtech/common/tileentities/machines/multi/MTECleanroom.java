@@ -397,7 +397,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase implements IConstruct
 
             default:
                 throw new IllegalArgumentException(
-                    "Cleanroom error: unknown block type at at offset (" + dx + ", " + dy + ", " + dz + ").");
+                    "Cleanroom error: unknown block type at offset (" + dx + ", " + dy + ", " + dz + ").");
         }
     }
 
@@ -544,7 +544,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase implements IConstruct
 
                     default:
                         throw new IllegalArgumentException(
-                            "Cleanroom error: unknown block type at at offset (" + dx + ", " + dy + ", " + dz + ").");
+                            "Cleanroom error: unknown block type at offset (" + dx + ", " + dy + ", " + dz + ").");
                 }
             }
         }

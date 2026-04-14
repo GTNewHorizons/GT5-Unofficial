@@ -11,7 +11,6 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -69,7 +68,7 @@ public class MTEIndustrialThermalCentrifugeLegacy extends GTPPMultiBlockBase<MTE
             .addBulkMachineInfo(8, 2.5f, 0.8f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 2, 3, false)
-            .addController("Front Center")
+            .addController("Front center, 2nd layer")
             .addCasingInfoMin("Thermal Processing Casings/Noise Hazard Sign Blocks", 8, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -158,14 +157,6 @@ public class MTEIndustrialThermalCentrifugeLegacy extends GTPPMultiBlockBase<MTE
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialThermalCentrifuge;
-    }
-
-    public Block getCasingBlock() {
-        return ModBlocks.blockCasings2Misc;
-    }
-
-    public byte getCasingMeta() {
-        return 0;
     }
 
     @Override

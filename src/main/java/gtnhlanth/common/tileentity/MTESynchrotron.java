@@ -525,7 +525,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addInfo(createRateText("Output Beam Rate") + EnumChatFormatting.WHITE + " = floor(2.5^(" + EnumChatFormatting.DARK_AQUA + "Antenna Tier" + EnumChatFormatting.WHITE + ") * sqrt(" + EnumChatFormatting.BLUE + "Total EU/t Provided)" + EnumChatFormatting.WHITE + " * " + EnumChatFormatting.YELLOW + "Input Beam Rate" + EnumChatFormatting.WHITE + "/15,000)")
 
             .beginStructureBlock(36, 7, 34, true)
-            .addController("Front middle")
+            .addController("Front center")
             .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 676, false)
             .addCasingInfoExactly(Casings.SuperdenseCastingBasinCasing.getLocalizedName(), 90, false)
             .addCasingInfoExactly(LanthItemList.NIOBIUM_CAVITY_CASING.getLocalizedName(), 64, false)
