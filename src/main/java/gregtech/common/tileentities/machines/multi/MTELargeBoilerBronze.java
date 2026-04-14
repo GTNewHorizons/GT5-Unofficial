@@ -56,4 +56,14 @@ public class MTELargeBoilerBronze extends MTELargeBoilerBase {
     int runtimeBoost(int mTime) {
         return mTime * 2;
     }
+
+    @Override
+    protected long getMaxInternalWater() {
+        return 32000L;
+    }
+
+    @Override
+    protected int getMaxCooldownTicks() {
+        return 1600;
+    }
 }

@@ -56,4 +56,14 @@ public class MTELargeBoilerSteel extends MTELargeBoilerBase {
     int runtimeBoost(int mTime) {
         return mTime;
     }
+
+    @Override
+    protected long getMaxInternalWater() {
+        return 64000L;
+    }
+
+    @Override
+    protected int getMaxCooldownTicks() {
+        return 2000;
+    }
 }
