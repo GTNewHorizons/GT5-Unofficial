@@ -38,7 +38,6 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.microwaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
-import static gregtech.api.recipe.RecipeMaps.plasmaArcFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.polarizerRecipes;
 import static gregtech.api.recipe.RecipeMaps.recyclerRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
@@ -285,6 +284,7 @@ import gregtech.common.tileentities.storage.MTEQuantumTank;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTETransformerHiAmp;
+import kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace;
 
 // TODO Some GT MetaTileEntity registrations are done in load/GT_Loader_MetaTileEntities_Recipes.java due to joint
 // registration+recipe methods, they should be split and brought here to register all in preload.
@@ -894,6 +894,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 ExtremeCombustionEngine.ID,
                 "multimachine.extremedieselengine",
                 "Extreme Combustion Engine").getStackForm(1L));
+
+        ItemList.IndustrialArcFurnace.set(
+            new MTEIndustrialArcFurnace(
+                IndustrialArcFurnace.ID,
+                "industrialarcfurnace.controller.tier.single",
+                "Industrial Arc Furnace").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
@@ -8239,7 +8245,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Basic Arc Furnace",
                 1,
                 MachineType.ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.arcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 4,
                 true,
@@ -8254,7 +8260,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Advanced Arc Furnace",
                 2,
                 MachineType.ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.arcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 4,
                 true,
@@ -8269,7 +8275,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Advanced Arc Furnace II",
                 3,
                 MachineType.ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.arcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 4,
                 true,
@@ -8284,7 +8290,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Advanced Arc Furnace III",
                 4,
                 MachineType.ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.arcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 9,
                 true,
@@ -8299,7 +8305,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Advanced Arc Furnace IV",
                 5,
                 MachineType.ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.arcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 9,
                 true,
@@ -8597,6 +8603,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     }
 
+    @Deprecated
     private void registerPlasmaArcFurnace() {
         ItemList.Machine_LV_PlasmaArcFurnace.set(
             new MTEBasicMachineWithRecipe(
@@ -8605,7 +8612,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Basic Plasma Arc Furnace",
                 1,
                 MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.plasmaArcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 4,
                 true,
@@ -8620,7 +8627,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Advanced Plasma Arc Furnace",
                 2,
                 MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.plasmaArcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 4,
                 true,
@@ -8635,7 +8642,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Advanced Plasma Arc Furnace II",
                 3,
                 MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.plasmaArcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 4,
                 true,
@@ -8650,7 +8657,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Advanced Plasma Arc Furnace III",
                 4,
                 MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.plasmaArcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 9,
                 true,
@@ -8665,7 +8672,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Advanced Plasma Arc Furnace IV",
                 5,
                 MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                RecipeMaps.plasmaArcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 9,
                 true,
@@ -8680,7 +8687,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Elite Plasma Arc Furnace",
                 6,
                 MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                plasmaArcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 9,
                 true,
@@ -8695,7 +8702,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Elite Plasma Arc Furnace II",
                 7,
                 MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                plasmaArcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 9,
                 true,
@@ -8710,7 +8717,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Ultimate Plasma Discharge Heater",
                 8,
                 MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                plasmaArcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 9,
                 true,
@@ -8725,7 +8732,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Epic Plasma Discharge Heater",
                 9,
                 MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                plasmaArcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 9,
                 true,
@@ -8740,7 +8747,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Epic Plasma Discharge Heater II",
                 10,
                 MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                plasmaArcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 9,
                 true,
@@ -8755,7 +8762,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Epic Plasma Discharge Heater III",
                 11,
                 MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                plasmaArcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 9,
                 true,
@@ -8770,7 +8777,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Epic Plasma Discharge Heater IV",
                 12,
                 MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
-                plasmaArcFurnaceRecipes,
+                arcFurnaceRecipes,
                 1,
                 9,
                 true,

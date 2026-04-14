@@ -611,6 +611,10 @@ public enum Casings implements ICasing {
         (() -> WerkstoffLoader.BWBlockCasings, 32083,32083),
     ReboltedOsmiridiumCasing
         (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32083, 32083),
+    BoltedNaquadahCasing
+        (() -> WerkstoffLoader.BWBlockCasings, 32090,32090),
+    ReboltedNaquadahCasing
+        (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32090,32090),
     BoltedNaquadahAlloyCasing
         (() -> WerkstoffLoader.BWBlockCasings, 32091,32091),
     ReboltedNaquadahAlloyCasing

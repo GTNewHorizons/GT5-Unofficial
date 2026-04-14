@@ -24,7 +24,7 @@ public interface IOreMaterial extends ISubTagContainer {
 
     /**
      * Add tooltips(mainly chemical formula) for material items。
-     * 
+     *
      * @param list the list parameter in the {@link Item#addInformation} method (for tooltips).
      */
     void addTooltips(List<String> list);
@@ -58,7 +58,7 @@ public interface IOreMaterial extends ISubTagContainer {
         if (gt != null) {
             return GTOreDictUnificator.get(prefix, gt, amount);
         } else {
-            return GTOreDictUnificator.get(prefix.get(this.getInternalName()), 1);
+            return GTOreDictUnificator.get(prefix.get(this.getInternalName()), amount);
         }
     }
 
