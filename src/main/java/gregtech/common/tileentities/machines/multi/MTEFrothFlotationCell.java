@@ -28,6 +28,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -293,8 +294,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.getTagCompound()
-            .hasKey("lockedMaterialName")) {
+        if (ItemStackNBT.hasKey(stack, "lockedMaterialName")) {
             tooltip.add(
                 StatCollector.translateToLocal("tooltip.flotationCell.lockedTo") + " "
                     + StatCollector.translateToLocal(
