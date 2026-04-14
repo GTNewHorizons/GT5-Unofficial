@@ -5060,16 +5060,16 @@ gt.item.coil.uv.name=Ultimate Voltage Coil
 gt.item.coil.uv.tooltip=Super Coil
 gt.item.coil.uhv.name=Highly Ultimate Voltage Coil
 gt.item.coil.uhv.tooltip=Infinite Coil
-gt.item.coil.uev.name=Insane Voltage Coil
-gt.item.coil.uev.tooltip=Elite Coil
-gt.item.coil.uiv.name=Ludicrous Voltage Coil
-gt.item.coil.uiv.tooltip=Master Coil
-gt.item.coil.umv.name=ZPM Voltage Coil
-gt.item.coil.umv.tooltip=Ultimate Coil
-gt.item.coil.uxv.name=Ultimate Voltage Coil
-gt.item.coil.uxv.tooltip=Super Coil
-gt.item.coil.max.name=Highly Ultimate Voltage Coil
-gt.item.coil.max.tooltip=Infinite Coil
+gt.item.coil.uev.name=Extremely Ultimate Voltage Coil
+gt.item.coil.uev.tooltip=Transcendent Coil
+gt.item.coil.uiv.name=Insanely Ultimate Voltage Coil
+gt.item.coil.uiv.tooltip=Eternal Coil
+gt.item.coil.umv.name=Mega Ultimate Voltage Coil
+gt.item.coil.umv.tooltip=Harmonious Coil
+gt.item.coil.uxv.name=Extended Mega Ultimate Voltage Coil
+gt.item.coil.uxv.tooltip=Limit Breaking Coil
+gt.item.coil.max.name=Maximum Voltage Coil
+gt.item.coil.max.tooltip=Horizon Reaching Coil
 
 ## Materials
 gt.item.gallium_arsenide_crystal.name=Gallium Arsenide Crystal

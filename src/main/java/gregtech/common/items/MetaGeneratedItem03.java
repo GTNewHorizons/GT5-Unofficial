@@ -206,6 +206,7 @@ import static gregtech.common.items.IDMetaItem03.Intensely_Bonded_Netherite_Nano
 import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
+import static gregtech.common.items.IDMetaItem03.MAX_Coil;
 import static gregtech.common.items.IDMetaItem03.MV_Coil;
 import static gregtech.common.items.IDMetaItem03.Manafly;
 import static gregtech.common.items.IDMetaItem03.NandChip;
@@ -239,9 +240,13 @@ import static gregtech.common.items.IDMetaItem03.Thermal_Superconductor;
 import static gregtech.common.items.IDMetaItem03.Timepiece;
 import static gregtech.common.items.IDMetaItem03.Transdimensional_Alignment_Matrix;
 import static gregtech.common.items.IDMetaItem03.Tube_Wires;
+import static gregtech.common.items.IDMetaItem03.UEV_Coil;
 import static gregtech.common.items.IDMetaItem03.UHV_Coil;
+import static gregtech.common.items.IDMetaItem03.UIV_Coil;
 import static gregtech.common.items.IDMetaItem03.ULV_Coil;
+import static gregtech.common.items.IDMetaItem03.UMV_Coil;
 import static gregtech.common.items.IDMetaItem03.UV_Coil;
+import static gregtech.common.items.IDMetaItem03.UXV_Coil;
 import static gregtech.common.items.IDMetaItem03.WovenKevlar;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
@@ -1311,15 +1316,15 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.UHV_Coil
             .set(addItemWithLocalizationKeys(UHV_Coil.ID, "gt.item.coil.uhv.name", "gt.item.coil.uhv.tooltip", o));
         ItemList.UEV_Coil
-            .set(addItemWithLocalizationKeys(IV_Coil.ID, "gt.item.coil.uev.name", "gt.item.coil.uev.tooltip", o));
+            .set(addItemWithLocalizationKeys(UEV_Coil.ID, "gt.item.coil.uev.name", "gt.item.coil.uev.tooltip", o));
         ItemList.UIV_Coil
-            .set(addItemWithLocalizationKeys(LuV_Coil.ID, "gt.item.coil.uiv.name", "gt.item.coil.uiv.tooltip", o));
+            .set(addItemWithLocalizationKeys(UIV_Coil.ID, "gt.item.coil.uiv.name", "gt.item.coil.uiv.tooltip", o));
         ItemList.UMV_Coil
-            .set(addItemWithLocalizationKeys(ZPM_Coil.ID, "gt.item.coil.umv.name", "gt.item.coil.umv.tooltip", o));
+            .set(addItemWithLocalizationKeys(UMV_Coil.ID, "gt.item.coil.umv.name", "gt.item.coil.umv.tooltip", o));
         ItemList.UXV_Coil
-            .set(addItemWithLocalizationKeys(UV_Coil.ID, "gt.item.coil.uxv.name", "gt.item.coil.uxv.tooltip", o));
+            .set(addItemWithLocalizationKeys(UXV_Coil.ID, "gt.item.coil.uxv.name", "gt.item.coil.uxv.tooltip", o));
         ItemList.MAX_Coil
-            .set(addItemWithLocalizationKeys(UHV_Coil.ID, "gt.item.coil.max.name", "gt.item.coil.max.tooltip", o));
+            .set(addItemWithLocalizationKeys(MAX_Coil.ID, "gt.item.coil.max.name", "gt.item.coil.max.tooltip", o));
 
         ItemList.GalliumArsenideCrystal.set(
             addItemWithLocalizationKeys(
