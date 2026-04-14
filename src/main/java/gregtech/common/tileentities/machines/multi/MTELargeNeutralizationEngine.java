@@ -862,7 +862,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     @Override
-    public boolean showRecipeTextInGUI(){
+    public boolean showRecipeTextInGUI() {
         return false;
     }
 
