@@ -677,7 +677,7 @@ public class RecipeLoader {
                 Materials.DraconiumAwakened.getMolten(32 * INGOTS),
                 GGMaterial.extremelyUnstableNaquadah.getMolten(10 * INGOTS),
                 MaterialsAlloy.INDALLOY_140.getFluidStack(1 * STACKS + 36 * INGOTS))
-            .itemOutputs(ItemRefer.Naquadah_Fuel_Refinery.get(1))
+            .itemOutputs(ItemList.NaquadahFuelRefinery.get(1))
             .eut(TierEU.RECIPE_UHV)
             .duration(60 * SECONDS)
             .addTo(AssemblyLine);
@@ -949,11 +949,11 @@ public class RecipeLoader {
             .addTo(multiblockChemicalReactorRecipes);
 
         GTModHandler.addCraftingRecipe(
-            ItemRefer.Universal_Chemical_Fuel_Engine.get(1),
+            ItemList.UniversalChemicalFuelEngine.get(1),
             GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "TZT", "ALB", "WGW", 'T',
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 1), 'Z', "circuitUltimate", 'A',
-                ItemList.Machine_Multi_DieselEngine.get(1), 'B', ItemList.Machine_Multi_ExtremeDieselEngine.get(1), 'L',
+                ItemList.LargeCombustionEngine.get(1), 'B', ItemList.ExtremeCombustionEngine.get(1), 'L',
                 ItemList.Hull_LuV, 'W', GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 1), 'G',
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Osmium, 1), });
 

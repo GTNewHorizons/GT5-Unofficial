@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.Mods.BuildCraftTransport;
+import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -24,6 +25,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -32,6 +34,16 @@ public class ChemicalBathRecipes implements Runnable {
 
     @Override
     public void run() {
+        if (Railcraft.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(new OreDictItemStack("logWood", 1))
+                .itemOutputs(GTModHandler.getModItem(Railcraft.ID, "cube", 1L, 8))
+                .fluidInputs(Materials.Creosote.getFluid(750L))
+                .duration(16 * TICKS)
+                .eut(TierEU.ULV)
+                .addTo(chemicalBathRecipes);
+        }
+
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Food_Raw_Fries.get(1))
             .itemOutputs(ItemList.Food_Fries.get(1))

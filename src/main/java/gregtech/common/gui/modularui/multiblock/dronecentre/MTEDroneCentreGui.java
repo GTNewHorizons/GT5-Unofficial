@@ -54,10 +54,10 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
 
     @Override
     protected IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler keyPanel = syncManager.panel(
+        IPanelHandler keyPanel = syncManager.syncedPanel(
             "keyPanel",
-            (p_syncManager, syncHandler) -> DroneCentreGuiUtil.createConnectionKeyPanel(syncManager, parent),
-            true);
+            true,
+            (p_syncManager, syncHandler) -> DroneCentreGuiUtil.createConnectionKeyPanel(syncManager, parent));
         return new ButtonWidget<>().size(18, 18)
             .marginTop(4)
             .marginLeft(4)
@@ -75,11 +75,11 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
 
     private IWidget creatMachineListButton(PanelSyncManager syncManager) {
         IPanelHandler productionPanel = syncManager
-            .panel("productionPanel", (k, v) -> new ProductionPanel(syncManager, multiblock), true);
-        IPanelHandler machineListPanel = syncManager.panel(
+            .syncedPanel("productionPanel", true, (k, v) -> new ProductionPanel(syncManager, multiblock));
+        IPanelHandler machineListPanel = syncManager.syncedPanel(
             "machineListPanel",
-            (k, v) -> new DroneConnectionListPanel(syncManager, multiblock, productionPanel),
-            true);
+            true,
+            (k, v) -> new DroneConnectionListPanel(syncManager, multiblock, productionPanel));
 
         return new ButtonWidget<>().size(18, 18)
             .overlay(new DrawableStack(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_WHITELIST))

@@ -57,7 +57,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -111,7 +110,6 @@ import gregtech.loaders.misc.GTBees;
 import gregtech.loaders.postload.BlockResistanceLoader;
 import gregtech.loaders.postload.BookAndLootLoader;
 import gregtech.loaders.postload.CraftingRecipeLoader;
-import gregtech.loaders.postload.CropLoader;
 import gregtech.loaders.postload.GTPostLoad;
 import gregtech.loaders.postload.GTWorldgenloader;
 import gregtech.loaders.postload.ItemMaxStacksizeLoader;
@@ -238,11 +236,6 @@ public class GTMod {
         for (int i = 4; i < 12; i++) {
             GregTechAPI.registerTileEntityConstructor(i, i2 -> new BaseMetaPipeEntity());
         }
-
-        // noinspection ResultOfMethodCallIgnored// Suspicious likely pointless
-        Textures.BlockIcons.VOID.name();
-        // noinspection ResultOfMethodCallIgnored// Suspicious likely pointless
-        Textures.ItemIcons.VOID.name();
 
         UnificationOreAdapter.load();
     }
@@ -431,7 +424,6 @@ public class GTMod {
         new RecyclerBlacklistLoader().run();
         new MachineRecipeLoader().run();
         new ScrapboxDropLoader().run();
-        new CropLoader().run();
         new GTWorldgenloader().run();
         new CoverLoader().run();
         StoneType.init();
@@ -565,6 +557,7 @@ public class GTMod {
         GTPostLoad.addSolidFakeLargeBoilerFuels();
         GTPostLoad.addCauldronRecipe();
         GTPostLoad.identifyAnySteam();
+        GTPostLoad.processToolboxBans();
 
         VoidMinerLoader.init();
 
@@ -767,7 +760,6 @@ public class GTMod {
     public void onIDChangingEvent(FMLModIdMappingEvent event) {
         if (event.remappedIds.isEmpty()) return;
 
-        GTUtility.reInit();
         GTRecipe.reInit();
         RemovedMetaRegistry.init();
     }

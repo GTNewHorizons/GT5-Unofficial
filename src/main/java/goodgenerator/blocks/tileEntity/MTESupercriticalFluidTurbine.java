@@ -28,9 +28,9 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
 
     private boolean looseFit = false;
 
-    private static final IIconContainer turbineOn = new Textures.BlockIcons.CustomIcon("icons/turbines/TURBINE_05");
-    private static final IIconContainer turbineOff = new Textures.BlockIcons.CustomIcon("icons/turbines/TURBINE_15");
-    private static final IIconContainer turbineEmpty = new Textures.BlockIcons.CustomIcon("icons/turbines/TURBINE_25");
+    private static final IIconContainer turbineOn = Textures.BlockIcons.custom("icons/turbines/TURBINE_05");
+    private static final IIconContainer turbineOff = Textures.BlockIcons.custom("icons/turbines/TURBINE_15");
+    private static final IIconContainer turbineEmpty = Textures.BlockIcons.custom("icons/turbines/TURBINE_25");
 
     public MTESupercriticalFluidTurbine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -139,7 +139,7 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Supercritical Steam Turbine")
+        tt.addMachineType("Steam Turbine, LST-SC")
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Use Supercritical Steam to generate power")
             .addInfo("Outputs 1L of SH Steam per 1L of SC Steam as well as producing power")

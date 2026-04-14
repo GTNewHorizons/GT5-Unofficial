@@ -1,6 +1,5 @@
 package gtPlusPlus.plugin.agrichem;
 
-import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
@@ -34,7 +33,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -77,7 +75,6 @@ public class BioRecipes {
         recipeUrea();
         recipeRawBioResin();
         recipeLiquidResin();
-        recipeCompost();
         recipeMethane();
         recipeBenzene();
         recipeStyrene();
@@ -675,31 +672,6 @@ public class BioRecipes {
             .eut(TierEU.RECIPE_LV)
             .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
-    }
-
-    private static void recipeCompost() {
-        if (Forestry.isModLoaded()) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(GregtechItemList.GreenAlgaeBiomass.get(16), GregtechItemList.Compost.get(8))
-                .circuit(11)
-                .itemOutputs(ItemList.FR_Fertilizer.get(32))
-                .fluidInputs(new FluidStack(GTPPFluids.Urea, 200))
-                .duration(30 * SECONDS)
-                .eut(TierEU.RECIPE_MV / 2)
-                .metadata(CHEMPLANT_CASING_TIER, 1)
-                .addTo(chemicalPlantRecipes);
-        }
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.GreenAlgaeBiomass.get(16), GregtechItemList.Compost.get(8))
-            .circuit(12)
-            .itemOutputs(ItemList.IC2_Fertilizer.get(32))
-            .fluidInputs(new FluidStack(GTPPFluids.Urea, 200))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_MV / 2)
-            .metadata(CHEMPLANT_CASING_TIER, 1)
-            .addTo(chemicalPlantRecipes);
-
     }
 
     private static void recipeMethane() {

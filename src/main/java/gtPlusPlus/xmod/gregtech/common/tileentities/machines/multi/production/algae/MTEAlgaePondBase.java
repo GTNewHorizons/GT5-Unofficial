@@ -10,7 +10,6 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllCasings;
 
-import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -19,7 +18,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -57,6 +55,8 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 
 public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> implements ISurvivalConstructable {
 
@@ -101,7 +101,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 3, 9, true)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Machine Casings", MINIMUM_CASINGS, true)
             .addCasingInfoExactly("Sterile Farm Casings", 64, false)
             .addInputBus("Any Casing", 1)
@@ -240,7 +240,8 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                 Block block = aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j);
 
                 boolean isCOFHCoreWater = Mods.COFHCore.isModLoaded() && (block instanceof BlockWater);
-                boolean isWater = (block == Blocks.water) || isCOFHCoreWater;
+                boolean isWater = (block == Blocks.water) || isCOFHCoreWater
+                    || (block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater));
                 boolean isAir = block == Blocks.air || block == Blocks.flowing_water;
                 if (isWater) continue;
 
@@ -401,10 +402,4 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         return aTier > 1 ? (int) Math.min(64, GTUtility.powInt(2, aTier - 1)) : 1;
     }
 
-    @Override
-    public String[] getExtraInfoData() {
-        ArrayList<String> mInfo = new ArrayList<>();
-        mInfo.add(StatCollector.translateToLocalFormatted("GTPP.multiblock.ap.tier", this.tier));
-        return mInfo.toArray(new String[0]);
-    }
 }

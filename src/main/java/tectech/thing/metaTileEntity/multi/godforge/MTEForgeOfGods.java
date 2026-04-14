@@ -48,7 +48,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -60,6 +59,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -86,9 +86,9 @@ import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsRingsStr
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsStructureString;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
-public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
+public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstructable {
 
-    private static Textures.BlockIcons.CustomIcon ScreenON;
+    private static IIconContainer ScreenON;
 
     public ArrayList<MTEBaseModule> moduleHatches = new ArrayList<>();
 
@@ -109,6 +109,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final ItemStack STELLAR_FUEL = Avaritia.isModLoaded() ? getModItem(Avaritia.ID, "Resource", 1, 8)
         : GTOreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 1);
 
+    @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         // 1000 blocks max per placement.
         int realBudget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
@@ -219,7 +220,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/GODFORGE_CONTROLLER");
+        ScreenON = Textures.BlockIcons.custom("iconsets/GODFORGE_CONTROLLER");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -559,6 +560,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEForgeOfGods> adder() {
             return adder;
         }
@@ -836,6 +838,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     + ",")
             .addInfo("explaining everything there is to know about this multiblock")
             .beginStructureBlock(127, 29, 186, false)
+            .addController("Front center")
             .addStructureInfo("Total blocks needed for the structure with " + getRingText("1", "2", "3") + "rings:")
             .addStructureInfo(
                 getRingText("3943", "7279", "11005") + "Transcendentally Amplified Magnetic Confinement Casing")

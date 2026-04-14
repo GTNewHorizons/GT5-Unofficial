@@ -43,6 +43,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.pollution.PollutionConfig;
@@ -90,7 +91,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
 
     @Override
     public String getMachineType() {
-        return "Boiler";
+        return "Heat Exchanger";
     }
 
     @Override
@@ -251,7 +252,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
             if (dryHeatCounter < dryHeatMaximum) {
                 ++dryHeatCounter;
             } else {
-                GTLog.exp.println(this.mName + " was too hot and had no more Water!");
+                GTLog.writeExplosionLog(this, "was too hot and had no more Water!");
                 explodeMultiblock(); // Generate crater
             }
             return false;
@@ -271,13 +272,13 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Converts Water & Heat into Steam")
-            .addInfo("Filters raw materials from lava")
-            .addInfo("Explodes if water is not supplied")
-            .addInfo("Consult user manual for more information")
+            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc1"))
+            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc2"))
+            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc3"))
+            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc4"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Thermal Containment Casings", 10, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)

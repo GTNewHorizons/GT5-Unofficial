@@ -1,18 +1,31 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import appeng.api.crafting.ICraftingIconProvider;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GTSplit;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 
 /**
  * Handles texture changes internally. No special calls are necessary other than updateTexture in add***ToMachineList.
  */
-public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProvider {
+public abstract class MTEHatch extends MTEBasicTank {
 
     public enum ConnectionType {
         CABLE,
@@ -207,5 +220,53 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
 
     public int getCircuitSlot() {
         return -1;
+    }
+
+    public static String[] formatEnergyInfoDesc(boolean isDynamo, int tier, int amp, String key, Object... formatted) {
+        return MTEHatch.formatEnergyInfoDesc(null, null, isDynamo, tier, amp, key, formatted);
+    }
+
+    public static String[] formatEnergyInfoDesc(String suffixTooltip, boolean isDynamo, int tier, int amp, String key,
+        Object... formatted) {
+        return MTEHatch.formatEnergyInfoDesc(null, suffixTooltip, isDynamo, tier, amp, key, formatted);
+    }
+
+    public static String[] formatEnergyInfoDesc(String[] author, String suffixTooltip, boolean isDynamo, int tier,
+        int amp, String key, Object... formatted) {
+        final List<String> additionalTooltips = new LinkedList<>();
+        if (suffixTooltip != null) {
+            Collections.addAll(additionalTooltips, suffixTooltip);
+        }
+        additionalTooltips.add(
+            GTUtility.translate(
+                "gt.tileentity.throughput",
+                EnumChatFormatting.YELLOW + formatNumber(amp * GTValues.V[tier]) + EnumChatFormatting.RESET + " EU/t"));
+        additionalTooltips.add(
+            GTUtility.translate(
+                isDynamo ? "gt.tileentity.eup_out" : "gt.tileentity.eup_in",
+                TooltipHelper.voltageText(GTValues.V[tier])));
+        additionalTooltips.add(GTUtility.translate("gt.tileentity.amperage", TooltipHelper.ampText(amp)));
+        if (author != null) {
+            additionalTooltips.add(GTAuthors.buildAuthorsWithFormat(author));
+        }
+        final String[] suffixs = additionalTooltips.toArray(new String[0]);
+        if (formatted.length == 0) {
+            return GTSplit.splitLocalizedWithSuffix(key, suffixs);
+        }
+        return GTSplit.splitLocalizedFormattedWithSuffix(key, suffixs, formatted);
+    }
+
+    public static void addColorChannelInfo(List<String> tooltip, byte color) {
+        if (color >= 0 && color < 16) {
+            tooltip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.hatch.color_channel",
+                    Dyes.VALUES[color].formatting + Dyes.VALUES[color].getLocalizedDyeName()));
+        }
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

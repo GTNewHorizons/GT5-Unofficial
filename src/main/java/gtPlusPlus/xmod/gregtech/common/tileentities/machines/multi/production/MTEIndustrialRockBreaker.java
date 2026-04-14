@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -36,7 +37,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -70,9 +70,8 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
         return "Rock Breaker";
     }
 
-    private static final String casingBaseName = GTLanguageManager.getTranslation("gtplusplus.blockcasings.2.0.name");
-    private static final String casingMiddleName = GTLanguageManager
-        .getTranslation("gtplusplus.blockcasings.2.11.name");
+    private static final String casingBaseName = StatCollector.translateToLocal("gtplusplus.blockcasings.2.0.name");
+    private static final String casingMiddleName = StatCollector.translateToLocal("gtplusplus.blockcasings.2.11.name");
     private static final String anyBaseCasing = "Any " + casingBaseName;
 
     @Override
@@ -87,7 +86,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
             .addInfo("Needs Soul Sand and Magma in input bus for deepslate")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
-            .addController("Bottom Front")
+            .addController("Front bottom center")
             .addCasingInfoMin(casingBaseName, 9, false)
             .addCasingInfoExactly(casingMiddleName, 16, false)
             .addInputBus(anyBaseCasing, 1)
@@ -139,7 +138,6 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
         boolean aCheckPiece = checkPiece(mName, 1, 3, 0);
         boolean aCasingCount = mCasing >= 9;
         boolean aCheckHatch = checkHatch();
-        log(aCheckPiece + ", " + aCasingCount + ", " + aCheckHatch);
         return aCheckPiece && aCasingCount && aCheckHatch;
     }
 

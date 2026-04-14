@@ -11,8 +11,6 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,6 +24,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -55,7 +54,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -65,10 +63,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> implements ISurvivalConstructable {
 
-    public static int sUUAperUUM = 1;
-    public static int sUUASpeedBonus = 4;
-    public static int sDurationMultiplier = 3200;
-
     public static String mCasingName1 = "Matter Fabricator Casing";
     public static String mCasingName2 = "Containment Casing";
     public static String mCasingName3 = "Matter Generation Coil";
@@ -76,7 +70,6 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     private static final int MODE_SCRAP = 1;
     private static final int MODE_UU = 0;
 
-    public static boolean sRequiresUUA = false;
     private static final FluidStack[] mUU = new FluidStack[2];
     private static final ItemStack[] mScrap = new ItemStack[2];
 
@@ -108,7 +101,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin(mCasingName3, 9, false)
             .addCasingInfoMin(mCasingName2, 24, false)
             .addCasingInfoMin(mCasingName1, 36, false)
@@ -146,15 +139,6 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     @Override
     protected int getCasingTextureId() {
         return TAE.GTPP_INDEX(9);
-    }
-
-    @Override
-    public void onConfigLoad() {
-        super.onConfigLoad();
-        sDurationMultiplier = MachineStats.massFabricator.durationMultiplier;
-        sUUAperUUM = MachineStats.massFabricator.UUAPerUUM;
-        sUUASpeedBonus = MachineStats.massFabricator.UUASpeedBonus;
-        sRequiresUUA = MachineStats.massFabricator.requiresUUA;
     }
 
     public static boolean sInit = false;
@@ -313,7 +297,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setMachineMode(nextMachineMode());
         GTUtility
-            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+            .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
     }
 
     @Override
@@ -333,8 +317,8 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     }
 
     @Override
-    public String getMachineModeName() {
-        return translateToLocal("GT5U.GTPP_MULTI_MASS_FABRICATOR.mode." + machineMode);
+    public String getMachineModeKey() {
+        return "GT5U.GTPP_MULTI_MASS_FABRICATOR.mode." + machineMode;
     }
 
     @Override

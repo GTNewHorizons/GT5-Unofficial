@@ -23,7 +23,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -203,9 +202,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         int built = structure.survivalConstruct(this, trigger, elementBudget, env);
 
         if (built == -1) {
-            GTUtility.sendChatToPlayer(
-                env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done! Now go place the water yourself!");
+            GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done.water");
         }
 
         return built;
@@ -240,8 +237,9 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
         tt.addSubChannelUsage(GTStructureChannels.SUPER_CHEST);
 
-        tt.beginStructureBlock(true)
-            .addAllCasingInfo();
+        tt.beginStructureBlock(true);
+        tt.addController("Front center");
+        tt.addAllCasingInfo();
 
         tt.toolTipFinisher();
 
@@ -307,8 +305,8 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     }
 
     @Override
-    public String getMachineModeName() {
-        return machineMode == MODE_NORMAL ? "Normal" : "Exporting";
+    public String getMachineModeKey() {
+        return machineMode == MODE_NORMAL ? "GT5U.DECAY_WAREHOUSE.mode.normal" : "GT5U.DECAY_WAREHOUSE.mode.exporting";
     }
 
     @Override

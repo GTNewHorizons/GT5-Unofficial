@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.hatch;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -82,7 +83,8 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
                 + "Halve"
                 + EnumChatFormatting.RESET
                 + " Amperage");
-        t.addLine(EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC + "Max Amperage of 536,870,912");
+        t.addLine(
+            EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC + "Max Amperage of " + formatNumber(MAX_AMPERAGE));
     }
 
     final int MAX_AMPERAGE = 536870912;
@@ -118,7 +120,8 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
 
         // add a number input field to determine voltage tier
         voltageRow.child(
-            createNumberTextField().width(40)
+            createNumberTextField().width(25)
+                .setMaxLength(2)
                 .setNumbers(0, 15)
                 .value(voltageTierSyncer)
                 .setDefaultNumber(0));
@@ -131,7 +134,7 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
                 "GT5U.gui.text.voltagetier") + " (" + color + GTValues.VN[clampedTier] + EnumChatFormatting.RESET + ")";
         })
             .asWidget()
-            .width(80)
+            .width(105)
             .height(14)
             .marginRight(2));
 
@@ -149,7 +152,8 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
 
         // number field for amperage
         amperageRow.child(
-            createNumberTextField().width(60)
+            createNumberTextField().width(70)
+                .setMaxLength((int) Math.ceil(Math.log10(MAX_AMPERAGE)))
                 .setNumbers(1, MAX_AMPERAGE)
                 .value(amperageSyncer)
                 .setDefaultNumber(2));
@@ -160,7 +164,7 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
                 .height(18)
                 .marginRight(2));
 
-        // button to double / halve amperage, up to 536,870,912
+        // button to double / halve amperage, up to MAX_AMPERAGE
         amperageRow.child(
             new ButtonWidget<>().overlay(GuiTextures.MAZE)
                 .size(18)

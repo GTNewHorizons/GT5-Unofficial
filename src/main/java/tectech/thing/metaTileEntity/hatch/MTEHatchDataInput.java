@@ -31,6 +31,10 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
 
     private long history;
 
+    protected void updateComputationHistory(long value) {
+        this.history = value;
+    }
+
     public MTEHatchDataInput(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,

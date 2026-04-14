@@ -3,10 +3,8 @@ package gregtech.common.tileentities.machines.outputme;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH_ACTIVE;
-import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,8 +14,6 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -116,6 +112,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         provider.updateState();
     }
 
+    @Override
     public ItemStack getVisual() {
         return ItemList.Hatch_Output_Bus_ME.get(1);
     }
@@ -350,6 +347,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         provider.setItemNBT(aNBT);
     }
 
+    @Override
     public NBTTagCompound saveStackToNBT(IAEItemStack s) {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setTag("itemStack", GTUtility.saveItem(s.getItemStack()));
@@ -357,8 +355,12 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         return tag;
     }
 
+    @Override
     public IAEItemStack loadStackFromNBT(NBTTagCompound t) {
-        return AEItemStack.create(GTUtility.loadItem(t));
+        final ItemStack is = GTUtility.loadItem(t.getCompoundTag("itemStack"));
+        if (is == null) return null;
+        return AEItemStack.create(is)
+            .setStackSize(t.getLong("size"));
     }
 
     @Override
@@ -478,74 +480,16 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
     public void getWailaAdvancedBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaAdvancedBody(itemStack, ss, accessor, config);
-
-        NBTTagCompound tag = accessor.getNBTData();
-
-        NBTTagList stacks = tag.getTagList("stacks", 10);
-        int stackCount = tag.getInteger("stackCount");
-
-        if (stackCount == 0) {
-            ss.add(translateToLocal("GT5U.waila.hatch.outputme.item_cache_empty"));
-        } else {
-            ss.add(
-                translateToLocalFormatted(
-                    "GT5U.waila.hatch.outputme.item_cache_detail",
-                    stackCount,
-                    stackCount > 1 ? "s" : ""));
-
-            for (int i = 0; i < stacks.tagCount(); i++) {
-                IAEItemStack stack = AEItemStack.loadItemStackFromNBT(stacks.getCompoundTagAt(i));
-
-                ss.add(
-                    String.format(
-                        "%s: %s%s%s",
-                        stack.getItemStack()
-                            .getDisplayName(),
-                        EnumChatFormatting.GOLD,
-                        formatNumber(stack.getStackSize()),
-                        EnumChatFormatting.RESET));
-            }
-
-            if (stackCount > stacks.tagCount()) {
-                ss.add(
-                    translateToLocalFormatted(
-                        "GT5U.waila.hatch.outputme.item_cache_detail.more",
-                        stackCount - stacks.tagCount()));
-            }
-        }
+        MTEHatchOutputMEBase.WailaHelper.getWailaAdvancedBody("item", ss, accessor);
     }
 
     @Override
     public String[] getInfoData() {
-        List<String> ss = new ArrayList<>();
-        ss.add(
-            (getProxy() != null && getProxy().isActive())
-                ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
-                : StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
-                    getAEDiagnostics()));
-        ss.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.hatch.output_bus_me.cache_capacity",
-                EnumChatFormatting.GOLD + formatNumber(provider.getCacheCapacity()) + EnumChatFormatting.RESET));
-        List<IAEItemStack> itemList = provider.getCacheList();
-        if (itemList.isEmpty()) {
-            ss.add(StatCollector.translateToLocal("GT5U.infodata.hatch.output_bus_me.empty"));
-        } else {
-            ss.add(
-                StatCollector.translateToLocalFormatted("GT5U.infodata.hatch.output_bus_me.contains", itemList.size()));
-            itemList.stream()
-                .limit(100)
-                .forEach(s -> {
-                    ss.add(
-                        s.getItem()
-                            .getItemStackDisplayName(s.getItemStack()) + ": "
-                            + EnumChatFormatting.GOLD
-                            + formatNumber(s.getStackSize())
-                            + EnumChatFormatting.RESET);
-                });
-        }
-        return ss.toArray(new String[Math.min(itemList.size(), 100) + 2]);
+        return provider.getInfoData(
+            getAEDiagnostics(),
+            "GT5U.infodata.hatch.output_bus_me",
+            (IAEItemStack s) -> s.getItem()
+                .getItemStackDisplayName(s.getItemStack()));
     }
 
     @Override
@@ -607,11 +551,18 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         return getProxy().getNode();
     }
 
+    @Override
     public void dispatchMarkDirty() {
         this.markDirty();
     }
 
+    @Override
     public MTEHatchOutputMEBase<IAEItemStack, MEFilterItem, ItemStack> getProvider() {
         return provider;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

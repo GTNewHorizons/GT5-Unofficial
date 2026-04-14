@@ -53,6 +53,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -547,6 +548,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         return false;
     }
 
+    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         this.buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, 0, 0, 0);
         int tLength = Math.min(stackSize.stackSize + 1, 7);
@@ -582,7 +584,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey(IMPRINT_ID_KEY)) {
+        if (ItemStackNBT.hasKey(stack, IMPRINT_ID_KEY)) {
             CircuitImprint imprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS
                 .get(stack.stackTagCompound.getInteger(IMPRINT_ID_KEY));
             if (imprint != null) {
@@ -646,15 +648,10 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             GTUtility.sendChatTrans(
                 aPlayer,
                 inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
+            return true;
         } else {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
+            return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
         }
-        return true;
     }
 
     @Override

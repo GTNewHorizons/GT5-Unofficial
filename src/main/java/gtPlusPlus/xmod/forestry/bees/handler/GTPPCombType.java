@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.forestry.bees.handler;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.material.Material;
@@ -9,15 +10,13 @@ import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 
 public enum GTPPCombType {
 
-    DRAGONBLOOD(0, "Dragonblood", true, 30, Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20)),
-    FORCE(1, "Force", true, 30, Utils.rgbtoHexValue(250, 250, 20), Utils.rgbtoHexValue(200, 200, 5));
+    DRAGONBLOOD(0, "Dragonblood", true, Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20)),
+    FORCE(1, "Force", true, Utils.rgbtoHexValue(250, 250, 20), Utils.rgbtoHexValue(200, 200, 5));
 
     public boolean mShowInList;
     public final Material mMaterial;
-    public final int mChance;
     public final int mID;
 
-    private final String mName;
     private final String mNameUnlocal;
     private final int[] mColour;
 
@@ -29,27 +28,21 @@ public enum GTPPCombType {
         return GTPP_Bees.sCombMappings.get(aID);
     }
 
-    GTPPCombType(int aID, String aName, boolean aShow, int aChance, int... aColour) {
+    GTPPCombType(int aID, String aName, boolean aShow, int... aColour) {
         this.mID = aID;
-        this.mName = aName;
         this.mNameUnlocal = aName.toLowerCase()
             .replaceAll(" ", "");
-        this.mChance = aChance;
         this.mShowInList = aShow;
         this.mColour = aColour;
         map(aID, this);
         this.mMaterial = GTPP_Bees.sMaterialMappings.get(
             aName.toLowerCase()
                 .replaceAll(" ", ""));
-        GTLanguageManager.addStringLocalization("gtplusplus.comb." + this.mNameUnlocal, this.mName + " Comb");
+        GTLanguageManager.addStringLocalization("gtplusplus.comb." + this.mNameUnlocal, aName + " Comb");
     }
 
-    public void setHidden() {
-        this.mShowInList = false;
-    }
-
-    public String getName() {
-        return GTLanguageManager.getTranslation("gtplusplus.comb." + this.mNameUnlocal);
+    public String getLocalizedName() {
+        return StatCollector.translateToLocal("gtplusplus.comb." + this.mNameUnlocal);
     }
 
     public int[] getColours() {

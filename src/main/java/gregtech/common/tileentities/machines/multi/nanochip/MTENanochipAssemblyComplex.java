@@ -171,13 +171,15 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
+        int realBudget = elementBudget >= 500 ? elementBudget : Math.min(500, elementBudget * 5);
+
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
             MAIN_OFFSET_X,
             MAIN_OFFSET_Y,
             MAIN_OFFSET_Z,
-            elementBudget,
+            realBudget,
             env,
             false,
             true);
@@ -255,12 +257,30 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.2")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.3")))
-            .addStructureInfo(TOOLTIP_VCI_LONG + ": " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
-            .addStructureInfo(TOOLTIP_VCO_LONG + ": " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
+            .beginStructureBlock(63, 49, 63, false)
+            .addOtherStructurePart(
+                translateToLocal("GT5U.tooltip.nac.interface.nac_module"),
+                translateToLocal("GT5U.tooltip.nac.interface.structure_outer_ring_base_casing"))
+            // Nanochip Reinforcement Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 3956, false)
+            // Nanochip Complex Glass
+            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 2226, false)
+            // Nanochip Mesh Interface Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 1720, false)
+            // Nanochip Computational Matrix Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.3.name"), 721, false)
+            // Naquadah Frame Box
+            .addCasingInfoExactly(
+                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Naquadah.getLocalizedName()),
+                53,
+                false)
+            // Nanochip Firewall Projection Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.4.name"), 32, false)
+            .addStructureInfo(TOOLTIP_VCI_LONG + " " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
+            .addStructureInfo(TOOLTIP_VCO_LONG + " " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
             .addInputBus(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
             .addOutputBus(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
             .addEnergyHatch(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
-
             .toolTipFinisher();
     }
 
@@ -750,6 +770,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTENanochipAssemblyComplex> adder() {
             return adder;
         }

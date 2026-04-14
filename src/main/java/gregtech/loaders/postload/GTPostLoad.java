@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -28,8 +29,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.ImmutableSet;
 
 import cpw.mods.fml.common.ProgressManager;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -49,6 +52,7 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Other;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTERockBreaker;
 import ic2.api.recipe.IRecipeInput;
@@ -135,16 +139,6 @@ public class GTPostLoad {
             GTForestryCompat.populateFakeNeiRecipes();
         }
 
-        if (ItemList.IC2_Crop_Seeds.get(1L) != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.IC2_Crop_Seeds.getWildcard(1L))
-                .itemOutputs(ItemList.IC2_Crop_Seeds.getWithName(1L, "Scanned Seeds"))
-                .duration(8 * SECONDS)
-                .eut(8)
-                .ignoreCollision()
-                .fake()
-                .addTo(scannerFakeRecipes);
-        }
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.written_book, 1, 32767))
             .itemOutputs(ItemList.Tool_DataStick.getWithName(1L, "Scanned Book Data"))
@@ -168,6 +162,7 @@ public class GTPostLoad {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tool_DataOrb.getWithName(1L, "Orb to overwrite"))
             .itemOutputs(ItemList.Tool_DataOrb.getWithName(1L, "Copy of the Orb"))
+            .special(ItemList.Tool_DataOrb.getWithName(0L, "Orb to copy"))
             .duration(25 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .ignoreCollision()
@@ -478,5 +473,22 @@ public class GTPostLoad {
             .filter(Objects::nonNull)
             .map(FluidRegistry::getFluidID)
             .collect(Collectors.toList());
+    }
+
+    public static void processToolboxBans() {
+        final ImmutableSet.Builder<Item> builder = ImmutableSet.builder();
+
+        for (final String name : Other.toolboxBans) {
+            final String[] nameParts = name.split(":");
+
+            if (nameParts.length == 2) {
+                final Item item = GameRegistry.findItem(nameParts[0], nameParts[1]);
+                if (item != null) {
+                    builder.add(item);
+                }
+            }
+        }
+
+        GTMod.proxy.toolboxBans = builder.build();
     }
 }

@@ -8,18 +8,8 @@ import net.minecraft.util.ResourceLocation;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.render.TextureFactory;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.Configuration;
 
 public class TexturesGtBlock {
-
-    private static final boolean mAnimated = Configuration.visual.enableAnimatedTextures;
-
-    /*
-     * Handles Custom Textures.
-     */
 
     public static class CustomIcon implements IIconContainer, Runnable {
 
@@ -34,7 +24,6 @@ public class TexturesGtBlock {
         public CustomIcon(final String aModID, final String aIconName) {
             this.mIconName = aIconName;
             this.mModID = aModID;
-            Logger.WARNING("Constructing a Custom Texture. " + this.mIconName);
             GregTechAPI.sGTBlockIconload.add(this);
         }
 
@@ -51,9 +40,6 @@ public class TexturesGtBlock {
         @Override
         public void run() {
             this.mIcon = GregTechAPI.sBlockIcons.registerIcon(this.mModID + ":" + this.mIconName);
-            Logger.WARNING(
-                "FIND ME _ Processing texture: " + this.getTextureFile()
-                    .getResourcePath());
         }
 
         @Override
@@ -66,11 +52,6 @@ public class TexturesGtBlock {
      * Add Some Custom Textures below. I am not sure whether I need to declare them as such, but better to be safe than
      * sorry. Right?
      */
-
-    // PlaceHolder Texture
-    public static final CustomIcon _PlaceHolder = new CustomIcon("TileEntities/_PlaceHolder");
-    public static final CustomIcon OVERLAY_ENERGY_OUT_MULTI_BUFFER = new CustomIcon(
-        "iconsets/OVERLAY_ENERGY_OUT_MULTI_BUFFER");
 
     // Machine Casings
     // Simple
@@ -113,9 +94,7 @@ public class TexturesGtBlock {
     public static final CustomIcon Casing_Material_Laurenium = new CustomIcon("TileEntities/MACHINE_CASING_LAURENIUM");
     public static final CustomIcon Casing_Material_Botmium = new CustomIcon("TileEntities/MACHINE_CASING_BOTMIUM");
 
-    // Trinium Alloys
-    public static final CustomIcon Casing_Trinium_Titanium = new CustomIcon(
-        "TileEntities/MACHINE_CASING_STABLE_TRINIUM_TITANIUM");
+    // Trinium Alloy
     public static final CustomIcon Casing_Trinium_Naquadah_Vent = new CustomIcon(
         "TileEntities/MACHINE_CASING_STABLE_TRINIUM_NAQUADAH_VENT");
 
@@ -128,69 +107,12 @@ public class TexturesGtBlock {
         "TileEntities/cover_redstone_conductor");
     public static final CustomIcon Casing_Machine_Redstone_On = new CustomIcon("TileEntities/cover_redstone_emitter");
 
-    // Redox Cells
-    public static final CustomIcon Casing_Redox_1 = new CustomIcon("redox/redox1");
-    public static final CustomIcon Casing_Redox_2 = new CustomIcon("redox/redox2");
-    public static final CustomIcon Casing_Redox_3 = new CustomIcon("redox/redox3");
-    public static final CustomIcon Casing_Redox_4 = new CustomIcon("redox/redox4");
-    public static final CustomIcon Casing_Redox_5 = new CustomIcon("redox/redox5");
-    public static final CustomIcon Casing_Redox_6 = new CustomIcon("redox/redox6");
-
-    // Special Block 2
-    public static final CustomIcon Casing_Resonance_1 = new CustomIcon("special/block_1");
-    public static final CustomIcon Casing_Resonance_2 = new CustomIcon("special/block_2");
-    public static final CustomIcon Casing_Resonance_3 = new CustomIcon("special/block_3");
-    public static final CustomIcon Casing_Resonance_4 = new CustomIcon("special/block_4");
-    public static final CustomIcon Casing_Modulator_1 = new CustomIcon("special/block_5");
-    public static final CustomIcon Casing_Modulator_2 = new CustomIcon("special/block_6");
-    public static final CustomIcon Casing_Modulator_3 = new CustomIcon("special/block_7");
-    public static final CustomIcon Casing_Modulator_4 = new CustomIcon("special/block_8");
-
     // Centrifuge Casing
     public static final CustomIcon Casing_Material_Centrifuge = new CustomIcon(
         "TileEntities/MACHINE_CASING_CENTRIFUGE");
 
-    // Quantum Force Transformer Casing
-    // spotless:off
-    public static final CustomIcon Casing_Coil_QFT = new CustomIcon("TileEntities/MACHINE_CASING_QFT_COIL");
-    public static final CustomIcon NeutronPulseManipulator = mAnimated ? new CustomIcon(
-        "qft/NeutronPulseManipulator") : new CustomIcon("qft/NeutronPulseManipulatorStatic");
-    public static final CustomIcon CosmicFabricManipulator = mAnimated ? new CustomIcon(
-        "qft/CosmicFabricManipulator") : new CustomIcon("qft/CosmicFabricManipulatorStatic");
-    public static final CustomIcon InfinityInfusedManipulator = mAnimated ? new CustomIcon(
-        "qft/InfinityInfusedManipulator") : new CustomIcon("qft/InfinityInfusedManipulatorStatic");
-    public static final CustomIcon SpaceTimeContinuumRipper = mAnimated ? new CustomIcon(
-        "qft/SpaceTimeContinuumRipper") : new CustomIcon("qft/SpaceTimeContinuumRipperStatic");
-    public static final CustomIcon Manipulator_Top = new CustomIcon("qft/Manipulator_Top");
-    public static final CustomIcon NeutronShieldingCore = mAnimated ? new CustomIcon(
-        "qft/NeutronShieldingCore") : new CustomIcon("qft/NeutronShieldingCoreStatic");
-    public static final CustomIcon CosmicFabricShieldingCore = mAnimated ? new CustomIcon(
-        "qft/CosmicFabricShieldingCore") : new CustomIcon("qft/CosmicFabricShieldingCoreStatic");
-    public static final CustomIcon InfinityInfusedShieldingCore = mAnimated ? new CustomIcon(
-        "qft/InfinityInfusedShieldingCore") : new CustomIcon("qft/InfinityInfusedShieldingCoreStatic");
-    public static final CustomIcon SpaceTimeBendingCore = mAnimated ? new CustomIcon(
-        "qft/SpaceTimeBendingCore") : new CustomIcon("qft/SpaceTimeBendingCoreStatic");
-    public static final CustomIcon ForceFieldGlass = new CustomIcon("qft/ForceFieldGlass");
-    public static final CustomIcon ForceField = new CustomIcon("qft/ForceField");
-    public static final CustomIcon Blank = new CustomIcon("qft/blank");
-    //spotless:on
-
-    // MACHINE_CASING_FARM_MANAGER_STRUCTURAL
-    // Farm Manager Casings
-    public static final CustomIcon Casing_Machine_Farm_Manager = new CustomIcon(
-        "TileEntities/MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
     // Sterile Casing
     public static final CustomIcon Sterile_Casing = new CustomIcon("TileEntities/sterileCasing");
-    // Podzol Top
-    public static final CustomIcon Casing_Machine_Podzol = new CustomIcon("TileEntities/dirt_podzol_top");
-
-    // Structural Blocks
-    public static final CustomIcon Casing_Machine_Metal_Grate_A = new CustomIcon("chrono/MetalGrate");
-    public static final CustomIcon Casing_Machine_Metal_Panel_A = new CustomIcon("chrono/MetalPanel");
-    public static final CustomIcon Casing_Machine_Metal_Sheet_A = new CustomIcon("chrono/MetalSheet");
-    public static final CustomIcon Casing_Machine_Metal_Sheet_H = new CustomIcon("chrono/MetalSheet8");
-    public static final CustomIcon Casing_Machine_Metal_Sheet_I = new CustomIcon("chrono/MetalSheet9");
-    public static final CustomIcon Overlay_Machine_Cyber_A = new CustomIcon("chrono/CyberPanel");
 
     public static final CustomIcon TEXTURE_CASING_AMAZON = new CustomIcon("TileEntities/CASING_AMAZON");
     public static final CustomIcon TEXTURE_CASING_ADVANCED_CRYOGENIC = new CustomIcon(
@@ -201,38 +123,6 @@ public class TexturesGtBlock {
     public static final CustomIcon TEXTURE_CASING_GRINDING_MILL = new CustomIcon(
         "TileEntities/MACHINE_CASING_GRINDING_FACTORY");
     public static final CustomIcon TEXTURE_CASING_FLOTATION = new CustomIcon("TileEntities/MACHINE_CASING_FLOTATION");
-
-    // Redstone blocks
-    public static final CustomIcon Casing_Redstone_Top_Off = new CustomIcon(
-        "TileEntities/gt4/redstone/machine_top_redstone_off");
-    public static final CustomIcon Casing_Redstone_Top_Main_Off = new CustomIcon(
-        "TileEntities/gt4/redstone/machine_top_redstone_main_off");
-    public static final CustomIcon Casing_Redstone_Top_On = new CustomIcon(
-        "TileEntities/gt4/redstone/machine_top_redstone_on");
-    public static final CustomIcon Casing_Redstone_Top_Main_On = new CustomIcon(
-        "TileEntities/gt4/redstone/machine_top_redstone_main_on");
-
-    public static final CustomIcon Casing_Redstone_Side_Off = new CustomIcon(
-        "TileEntities/gt4/redstone/machine_side_redstone_off");
-    public static final CustomIcon Casing_Redstone_Side_Main_Off = new CustomIcon(
-        "TileEntities/gt4/redstone/machine_side_redstone_main_off");
-    public static final CustomIcon Casing_Redstone_Side_On = new CustomIcon(
-        "TileEntities/gt4/redstone/machine_side_redstone_on");
-    public static final CustomIcon Casing_Redstone_Side_Main_On = new CustomIcon(
-        "TileEntities/gt4/redstone/machine_side_redstone_main_on");
-
-    public static final CustomIcon Casing_Redstone_Bottom_Off = new CustomIcon(
-        "TileEntities/gt4/redstone/machine_bottom_redstone_off");
-    public static final CustomIcon Casing_Redstone_Bottom_Main_Off = new CustomIcon(
-        "TileEntities/gt4/redstone/machine_bottom_redstone_main_off");
-    public static final CustomIcon Casing_Redstone_Bottom_On = new CustomIcon(
-        "TileEntities/gt4/redstone/machine_bottom_redstone_on");
-    public static final CustomIcon Casing_Redstone_Bottom_Main_On = new CustomIcon(
-        "TileEntities/gt4/redstone/machine_bottom_redstone_main_on");
-
-    public static final CustomIcon Casing_InventoryManagaer_Red = new CustomIcon("TileEntities/gt4/OVERLAY_RED");
-    public static final CustomIcon Casing_InventoryManagaer_Red_Redstone = new CustomIcon(
-        "TileEntities/gt4/OVERLAY_RED_REDSTONE");
 
     // Custom Pipes
     public static final CustomIcon TEXTURE_PIPE_GRINDING_MILL = new CustomIcon("TileEntities/MACHINE_CASING_PIPE_T1");
@@ -249,38 +139,11 @@ public class TexturesGtBlock {
     public static final CustomIcon TEXTURE_CASING_FUSION_CASING_ULTRA = new CustomIcon(
         "iconsets/MACHINE_CASING_FUSION_GLASS_ULTRA");
 
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III = new CustomIcon("iconsets/MACHINE_CASING_FUSION_4");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_INNER = new CustomIcon(
+    public static final CustomIcon TEXTURE_CASING_FUSION_4 = new CustomIcon("iconsets/MACHINE_CASING_FUSION_4");
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_4 = new CustomIcon(
         "iconsets/MACHINE_CASING_FUSION_COIL_III");
-    public static final CustomIcon TEXTURE_CASING_FUSION_CASING_HYPER = new CustomIcon(
+    public static final CustomIcon TEXTURE_CASING_FUSION_OVERLAY = new CustomIcon(
         "iconsets/MACHINE_CASING_FUSION_GLASS_HYPER");
-    //
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_1 = new CustomIcon("iconsets/FUSIONIII_1");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_2 = new CustomIcon("iconsets/FUSIONIII_2");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_3 = new CustomIcon("iconsets/FUSIONIII_3");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_4 = new CustomIcon("iconsets/FUSIONIII_4");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_5 = new CustomIcon("iconsets/FUSIONIII_5");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_6 = new CustomIcon("iconsets/FUSIONIII_6");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_7 = new CustomIcon("iconsets/FUSIONIII_7");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_8 = new CustomIcon("iconsets/FUSIONIII_8");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_9 = new CustomIcon("iconsets/FUSIONIII_9");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_10 = new CustomIcon("iconsets/FUSIONIII_10");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_11 = new CustomIcon("iconsets/FUSIONIII_11");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_12 = new CustomIcon("iconsets/FUSIONIII_12");
-
-    // MK5 Fusion casings
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_1 = new CustomIcon("iconsets/FUSIONIV_1");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_2 = new CustomIcon("iconsets/FUSIONIV_2");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_3 = new CustomIcon("iconsets/FUSIONIV_3");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_4 = new CustomIcon("iconsets/FUSIONIV_4");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_5 = new CustomIcon("iconsets/FUSIONIV_5");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_6 = new CustomIcon("iconsets/FUSIONIV_6");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_7 = new CustomIcon("iconsets/FUSIONIV_7");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_8 = new CustomIcon("iconsets/FUSIONIV_8");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_9 = new CustomIcon("iconsets/FUSIONIV_9");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_10 = new CustomIcon("iconsets/FUSIONIV_10");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_11 = new CustomIcon("iconsets/FUSIONIV_11");
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_12 = new CustomIcon("iconsets/FUSIONIV_12");
 
     // Overlays
     // Fan Textures
@@ -596,8 +459,6 @@ public class TexturesGtBlock {
     // Crafting Overlays
     public static final CustomIcon Casing_Adv_Workbench_Crafting_Overlay = new CustomIcon(
         "TileEntities/gt4/machine_top_crafting");
-    public static final CustomIcon Casing_CropHarvester_Cutter = new CustomIcon("TileEntities/gt4/OVERLAY_CROP");
-    public static final CustomIcon Casing_CropHarvester_Boxes = new CustomIcon("TileEntities/gt4/OVERLAY_BOXES");
 
     // Covers
     public static final CustomIcon Overlay_Overflow_Valve = new CustomIcon("iconsets/OVERLAY_OVERFLOW_VALVE");
@@ -639,69 +500,5 @@ public class TexturesGtBlock {
 
     public static final CustomIcon Overlay_Water = new CustomIcon("TileEntities/adv_machine_water");
     public static final CustomIcon Overlay_UU_Matter = new CustomIcon("TileEntities/adv_machine_uum");
-
-    // GT++ Tiered Hulls
-    public static final CustomIcon TEXTURE_CASING_TIERED_ULV = new CustomIcon("iconsets/TieredHulls/CASING_ULV");
-    public static final CustomIcon TEXTURE_CASING_TIERED_LV = new CustomIcon("iconsets/TieredHulls/CASING_LV");
-    public static final CustomIcon TEXTURE_CASING_TIERED_MV = new CustomIcon("iconsets/TieredHulls/CASING_MV");
-    public static final CustomIcon TEXTURE_CASING_TIERED_HV = new CustomIcon("iconsets/TieredHulls/CASING_HV");
-    public static final CustomIcon TEXTURE_CASING_TIERED_EV = new CustomIcon("iconsets/TieredHulls/CASING_EV");
-    public static final CustomIcon TEXTURE_CASING_TIERED_IV = new CustomIcon("iconsets/TieredHulls/CASING_IV");
-    public static final CustomIcon TEXTURE_CASING_TIERED_LuV = new CustomIcon("iconsets/TieredHulls/CASING_LuV");
-    public static final CustomIcon TEXTURE_CASING_TIERED_ZPM = new CustomIcon("iconsets/TieredHulls/CASING_ZPM");
-    public static final CustomIcon TEXTURE_CASING_TIERED_UV = new CustomIcon("iconsets/TieredHulls/CASING_UV");
-    public static final CustomIcon TEXTURE_CASING_TIERED_MAX = new CustomIcon("iconsets/TieredHulls/CASING_MAX");
-
-    // Metroid related
-    public static final CustomIcon TEXTURE_METAL_PANEL_A = new CustomIcon("metro/TEXTURE_METAL_PANEL_A");
-    public static final CustomIcon TEXTURE_METAL_PANEL_B = new CustomIcon("metro/TEXTURE_METAL_PANEL_B");
-    public static final CustomIcon TEXTURE_METAL_PANEL_C = new CustomIcon("metro/TEXTURE_METAL_PANEL_C");
-    public static final CustomIcon TEXTURE_METAL_PANEL_D = new CustomIcon("metro/TEXTURE_METAL_PANEL_D");
-    public static final CustomIcon TEXTURE_METAL_PANEL_F = new CustomIcon("metro/TEXTURE_METAL_PANEL_F");
-
-    public static final CustomIcon TEXTURE_MAGIC_PANEL_A = new CustomIcon("metro/TEXTURE_MAGIC_A");
-    public static final CustomIcon TEXTURE_MAGIC_PANEL_B = new CustomIcon("metro/TEXTURE_MAGIC_B");
-
-    public static final CustomIcon TEXTURE_ORGANIC_PANEL_A_GLOWING = new CustomIcon(
-        "metro/TEXTURE_ORGANIC_PANEL_A_GLOWING");
-
-    public static final CustomIcon TEXTURE_STONE_RED_A = new CustomIcon("metro/TEXTURE_STONE_RED_A");
-    public static final CustomIcon TEXTURE_STONE_RED_B = new CustomIcon("metro/TEXTURE_STONE_RED_B");
-
-    public static final CustomIcon TEXTURE_TECH_A = new CustomIcon("metro/TEXTURE_TECH_A");
-    public static final CustomIcon TEXTURE_TECH_B = new CustomIcon("metro/TEXTURE_TECH_B");
-    public static final CustomIcon TEXTURE_TECH_C = new CustomIcon("metro/TEXTURE_TECH_C");
-
-    public static final CustomIcon TEXTURE_TECH_PANEL_D = new CustomIcon("metro/TEXTURE_TECH_PANEL_D");
-    public static final CustomIcon TEXTURE_TECH_PANEL_H = new CustomIcon("metro/TEXTURE_TECH_PANEL_H");
-
-    public static ITexture[] OVERLAYS_ENERGY_OUT_MULTI_BUFFER = new ITexture[] {
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 100, 0, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 255, 30, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 128, 128, 128, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }) };
-
-    public static IIconContainer[] CONNECTED_FUSION_HULLS = new IIconContainer[] { TEXTURE_CASING_FUSION_COIL_II_1,
-        TEXTURE_CASING_FUSION_COIL_II_2, TEXTURE_CASING_FUSION_COIL_II_3, TEXTURE_CASING_FUSION_COIL_II_4,
-        TEXTURE_CASING_FUSION_COIL_II_5, TEXTURE_CASING_FUSION_COIL_II_6, TEXTURE_CASING_FUSION_COIL_II_7,
-        TEXTURE_CASING_FUSION_COIL_II_8, TEXTURE_CASING_FUSION_COIL_II_9, TEXTURE_CASING_FUSION_COIL_II_10,
-        TEXTURE_CASING_FUSION_COIL_II_11, TEXTURE_CASING_FUSION_COIL_II_12 };
-
-    public static IIconContainer[] CONNECTED_FUSION_HULLS_MK4 = new IIconContainer[] { TEXTURE_CASING_FUSION_COIL_III_1,
-        TEXTURE_CASING_FUSION_COIL_III_2, TEXTURE_CASING_FUSION_COIL_III_3, TEXTURE_CASING_FUSION_COIL_III_4,
-        TEXTURE_CASING_FUSION_COIL_III_5, TEXTURE_CASING_FUSION_COIL_III_6, TEXTURE_CASING_FUSION_COIL_III_7,
-        TEXTURE_CASING_FUSION_COIL_III_8, TEXTURE_CASING_FUSION_COIL_III_9, TEXTURE_CASING_FUSION_COIL_III_10,
-        TEXTURE_CASING_FUSION_COIL_III_11, TEXTURE_CASING_FUSION_COIL_III_12 };
-
-    public static IIconContainer[] TIERED_MACHINE_HULLS = new IIconContainer[] { TEXTURE_CASING_TIERED_ULV,
-        TEXTURE_CASING_TIERED_LV, TEXTURE_CASING_TIERED_MV, TEXTURE_CASING_TIERED_HV, TEXTURE_CASING_TIERED_EV,
-        TEXTURE_CASING_TIERED_IV, TEXTURE_CASING_TIERED_LuV, TEXTURE_CASING_TIERED_ZPM, TEXTURE_CASING_TIERED_UV,
-        TEXTURE_CASING_TIERED_MAX };
 
 }

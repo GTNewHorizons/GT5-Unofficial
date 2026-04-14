@@ -32,7 +32,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -86,14 +85,14 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
 public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreciseAssembler>
-    implements IConstructable, ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
-    private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK");
-    private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon(
-        "iconsets/OVERLAY_QTANK_GLOW");
-    private static final IIconContainer textureFontOff = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QCHEST");
-    private static final IIconContainer textureFontOff_Glow = new Textures.BlockIcons.CustomIcon(
-        "iconsets/OVERLAY_QCHEST_GLOW");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK");
+    private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
+        .customOptional("iconsets/OVERLAY_QTANK_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("iconsets/OVERLAY_QCHEST");
+    private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
+        .customOptional("iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<MTEPreciseAssembler> multiDefinition = null;
     protected int casingAmount;
@@ -319,7 +318,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 5, 5, true)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addCasingInfoExactly("Machine Casing", 21, true)
             .addCasingInfoExactly("Any Tiered Glass (EV+)", 42, false)
             .addCasingInfoRange("Precise Electronic Unit Casing", 42, 86, true)
@@ -420,14 +419,17 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     @Override
     public byte getUpdateData() {
-        return (byte) casingTier;
+        // Offset casingTier by +4 so all valid values (-3..3) map to (1..7),
+        // which fits within the 7-bit range preserved by the initial client sync.
+        return (byte) (casingTier + 4);
     }
 
     @Override
     public void receiveClientEvent(byte aEventID, byte aValue) {
         super.receiveClientEvent(aEventID, aValue);
-        if (aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA && ((aValue & 0x80) == 0 || aValue == -1)) {
-            casingTier = aValue;
+        // Valid encoded range is 1–7 (casingTier -3..3 shifted by +4).
+        if (aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA && aValue >= 1 && aValue <= 7) {
+            casingTier = aValue - 4;
         }
     }
 
@@ -495,6 +497,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         return true;
     }
 
+    @Override
     public boolean supportsMachineModeSwitch() {
         return true;
     }
@@ -517,29 +520,14 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     }
 
     @Override
-    public String getMachineModeName() {
-        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + machineMode);
+    public String getMachineModeKey() {
+        return "GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + machineMode;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_MULTI_PRECISE_LOOP;
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
     }
 
     @Override

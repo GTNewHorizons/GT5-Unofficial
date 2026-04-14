@@ -66,7 +66,7 @@ public class RecipesMachinesMulti {
         multiExtruder();
         multiImplo();
         multiPackager();
-        multiMixer();
+        multiUseCasing();
         multiAssembler();
     }
 
@@ -627,7 +627,7 @@ public class RecipesMachinesMulti {
 
         // Large Thermal Refinery
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_ThermalCentrifuge.get(1),
+            ItemList.LargeThermalRefinery.get(1),
             new Object[] { "PCP", "RMR", "PGP", 'P', OrePrefixes.plate.get(Materials.RedSteel), 'C', "circuitData", 'R',
                 MaterialsAlloy.TALONITE.getRod(1), 'M', ItemList.Machine_EV_ThermalCentrifuge, 'G',
                 MaterialsAlloy.TALONITE.getGear(1) });
@@ -788,7 +788,7 @@ public class RecipesMachinesMulti {
     private static void multiImplo() {
         // Density^2
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Machine_Adv_ImplosionCompressor.get(1),
+            ItemList.AdvancedImplosionCompressor.get(1),
             new Object[] { "GCG", "FHR", "IXI", 'G', MaterialsAlloy.LEAGRISIUM.getGear(1), 'C', "circuitMaster", 'F',
                 ItemList.Field_Generator_IV, 'H', ItemList.Hull_ZPM, 'R', ItemList.Robot_Arm_IV, 'I',
                 "plateAlloyIridium", 'X', GregtechItemList.Gregtech_Computer_Cube });
@@ -815,13 +815,7 @@ public class RecipesMachinesMulti {
 
     }
 
-    private static void multiMixer() {
-        // Industrial Mixing Machine
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_Mixer.get(1),
-            new Object[] { "PCP", "ZMZ", "PCP", 'P', MaterialsAlloy.STABALLOY.getPlate(1), 'C', "circuitElite", 'Z',
-                MaterialsAlloy.ZIRCONIUM_CARBIDE.getPlate(1), 'M', ItemList.Machine_IV_Mixer });
-
+    private static void multiUseCasing() {
         // Multi-Use Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Multi_Use.get(1),

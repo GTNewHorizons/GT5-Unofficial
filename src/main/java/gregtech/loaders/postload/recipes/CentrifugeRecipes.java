@@ -26,8 +26,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -36,6 +36,27 @@ public class CentrifugeRecipes implements Runnable {
 
     @Override
     public void run() {
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("logWood", 1))
+            .circuit(1)
+            .fluidOutputs(Materials.Methane.getGas(60L))
+            .duration(10 * SECONDS)
+            .eut(20)
+            .addTo(centrifugeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("logRubber", 1))
+            .circuit(2)
+            .itemOutputs(
+                ItemList.IC2_Resin.get(1L),
+                ItemList.IC2_Plantball.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+            .outputChances(5000, 3750, 2500, 2500)
+            .fluidOutputs(Materials.Methane.getGas(60L))
+            .duration(10 * SECONDS)
+            .eut(20)
+            .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfusedGold, 1))
@@ -331,14 +352,6 @@ public class CentrifugeRecipes implements Runnable {
             .circuit(1)
             .fluidOutputs(Materials.Methane.getGas(18))
             .duration(7 * SECONDS + 4 * TICKS)
-            .eut(5)
-            .addTo(centrifugeRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("terraWart", 1))
-            .circuit(1)
-            .fluidOutputs(Materials.Methane.getGas(36))
-            .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
@@ -912,6 +925,14 @@ public class CentrifugeRecipes implements Runnable {
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(centrifugeNonCellRecipes);
+
+        // From ProcessingSand
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ore, Materials.Oilsands, 2), ItemList.Cell_Empty.get(1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 1L), new ItemStack(Blocks.sand, 1, 0))
+            .duration(50 * SECONDS)
+            .eut(5)
+            .addTo(centrifugeRecipes);
 
     }
 }

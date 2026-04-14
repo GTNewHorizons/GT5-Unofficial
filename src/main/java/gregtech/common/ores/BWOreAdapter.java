@@ -84,7 +84,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         ores.put(StoneType.Stone, stoneOres = new Ores(StoneType.Stone, "01", "02"));
         ores.put(StoneType.Moon, new Ores(StoneType.Moon, "03", "04"));
 
-        TileEntityReplacementManager.tileEntityTransformer("bw.blockoresTE", (tag, world) -> {
+        TileEntityReplacementManager.tileEntityTransformer("bw.blockoresTE", (tag, world, chunk) -> {
             int id = tag.getInteger("m");
             boolean natural = tag.getBoolean("n");
 
@@ -93,7 +93,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
             return new BlockInfo(bm.getBlock(), bm.getBlockMeta());
         });
 
-        TileEntityReplacementManager.tileEntityTransformer("bw.blockoresSmallTE", (tag, world) -> {
+        TileEntityReplacementManager.tileEntityTransformer("bw.blockoresSmallTE", (tag, world, chunk) -> {
             int id = tag.getInteger("m");
             boolean natural = tag.getBoolean("n");
 

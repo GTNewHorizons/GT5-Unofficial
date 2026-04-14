@@ -36,6 +36,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.MapMaker;
@@ -52,7 +53,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import appeng.api.AEApi;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
@@ -582,7 +583,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         Long freq = link != null && link.getTagCompound() != null
             && link.getTagCompound()
-                .hasKey("freq", 4 /* Long */) ? link.getTagCompound()
+                .hasKey("freq", NBT.TAG_LONG) ? link.getTagCompound()
                     .getLong("freq") : null;
 
         if (!Objects.equals(freq, mLink == null ? null : mLink.mFrequency)) {
@@ -989,7 +990,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addDynamoHatch("§60§r - §64§r (Laser Only, Hint Block Number 2)")
             .addEnergyHatch("§60§r - §64§r (Laser Only, Hint Block Number 2)")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTValues.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
+            .toolTipFinisher(GTAuthors.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
         // spotless:on
 
         return tt;

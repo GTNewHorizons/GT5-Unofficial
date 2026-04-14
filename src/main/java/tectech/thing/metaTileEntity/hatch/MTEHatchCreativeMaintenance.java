@@ -12,6 +12,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -22,14 +23,16 @@ import tectech.util.CommonValues;
 
 public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
 
-    private static Textures.BlockIcons.CustomIcon face;
+    private static IIconContainer face;
 
     public MTEHatchCreativeMaintenance(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
+        this.mWrench = this.mScrewdriver = this.mSoftMallet = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
     }
 
     public MTEHatchCreativeMaintenance(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures, false);
+        this.mWrench = this.mScrewdriver = this.mSoftMallet = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
     }
 
     @Override
@@ -47,7 +50,7 @@ public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        face = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_FULLAUTOMAINTENANCE");
+        face = Textures.BlockIcons.custom("iconsets/OVERLAY_FULLAUTOMAINTENANCE");
     }
 
     @Override
@@ -66,11 +69,6 @@ public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        this.mWrench = this.mScrewdriver = this.mSoftMallet = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
-    }
-
-    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
         return false;
@@ -79,6 +77,7 @@ public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
     @Override
     public void onMaintenancePerformed(MTEMultiBlockBase aMaintenanceTarget) {
         setMaintenanceSound(SoundResource.GT_MAINTENANCE_CREATIVE_HATCH, 1.0F, 1.0F);
+        this.mWrench = this.mScrewdriver = this.mSoftMallet = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
         super.onMaintenancePerformed(aMaintenanceTarget);
     }
 

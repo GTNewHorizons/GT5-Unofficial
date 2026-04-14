@@ -165,7 +165,7 @@ public final class GTBaseGuiBuilder {
     private IWidget createCoverTabs() {
         Flow column = Flow.column()
             .coverChildren()
-            .leftRel(0f, 2, 1f)
+            .leftRel(0f, 3, 1f)
             .top(1)
             .childPadding(2);
         for (int i = 0; i < 6; i++) {

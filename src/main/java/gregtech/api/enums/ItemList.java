@@ -3,21 +3,25 @@ package gregtech.api.enums;
 import static gregtech.api.enums.GTValues.NI;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
+import java.util.List;
 import java.util.Locale;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.fluids.Fluid;
 
+import com.google.common.collect.ImmutableList;
+
+import gregtech.GTMod;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.render.items.MetaGeneratedItemRenderer;
 
 /**
  * Class containing all non-OreDict Items of GregTech.
@@ -72,19 +76,12 @@ public enum ItemList implements IItemContainer {
     IC2_Item_Casing_Lead,
     IC2_Item_Casing_Bronze,
     IC2_Item_Casing_Gold,
-    IC2_Spray_WeedEx,
     IC2_Scrap,
     IC2_Scrapbox,
-    IC2_Fertilizer,
     IC2_Mixed_Metal_Ingot,
-    IC2_Hops,
     IC2_Resin,
     IC2_Plantball,
     IC2_PlantballCompressed,
-    IC2_CoffeeBeans,
-    IC2_CoffeePowder,
-    IC2_Crop_Seeds,
-    IC2_Grin_Powder,
     IC2_Energium_Dust,
     IC2_Compressed_Coal_Ball,
     IC2_Compressed_Coal_Chunk,
@@ -315,25 +312,6 @@ public enum ItemList implements IItemContainer {
     Food_Baked_Pizza_Veggie,
     Food_Baked_Pizza_Cheese,
     Food_Baked_Pizza_Meat,
-    Crop_Drop_Argentia,
-    Crop_Drop_Plumbilia,
-    Crop_Drop_Indigo,
-    Crop_Drop_Ferru,
-    Crop_Drop_Aurelia,
-    Crop_Drop_OilBerry,
-    Crop_Drop_MilkWart,
-    Crop_Drop_BobsYerUncleRanks,
-    Crop_Drop_Coppon,
-    Crop_Drop_Tine,
-    Crop_Drop_Chilly,
-    Crop_Drop_Lemon,
-    Crop_Drop_Onion,
-    Crop_Drop_Tomato,
-    Crop_Drop_MTomato,
-    Crop_Drop_Grapes,
-    Crop_Drop_TeaLeaf,
-    Crop_Drop_Cucumber,
-    Crop_Drop_Rape,
     Schematic,
     Schematic_Crafting,
     Schematic_1by1,
@@ -1812,8 +1790,6 @@ public enum ItemList implements IItemContainer {
     OilCracker,
     SolarFactory,
     NanoForge,
-    Crop_Drop_UUMBerry,
-    Crop_Drop_UUABerry,
     Empty_Board_Basic,
     Empty_Board_Elite,
 
@@ -1834,21 +1810,6 @@ public enum ItemList implements IItemContainer {
     MicroTransmitter_LUV,
     MicroTransmitter_ZPM,
     MicroTransmitter_UV,
-
-    Crop_Drop_Bauxite,
-    Crop_Drop_Ilmenite,
-    Crop_Drop_Pitchblende,
-    Crop_Drop_Uraninite,
-    Crop_Drop_Thorium,
-    Crop_Drop_Nickel,
-    Crop_Drop_Zinc,
-    Crop_Drop_Manganese,
-    Crop_Drop_Scheelite,
-    Crop_Drop_Platinum,
-    Crop_Drop_Iridium,
-    Crop_Drop_Osmium,
-    Crop_Drop_Naquadah,
-    Crop_Drop_Mica,
 
     Block_Powderbarrel,
     GelledToluene,
@@ -2110,6 +2071,7 @@ public enum ItemList implements IItemContainer {
     Machine_HV_LightningRod,
     Machine_EV_LightningRod,
 
+    Machine_ULV_SolarPanel,
     Machine_LV_SolarPanel,
     Machine_MV_SolarPanel,
     Machine_HV_SolarPanel,
@@ -2129,6 +2091,11 @@ public enum ItemList implements IItemContainer {
     ZPM_Coil,
     UV_Coil,
     UHV_Coil,
+    UEV_Coil,
+    UIV_Coil,
+    UMV_Coil,
+    UXV_Coil,
+    MAX_Coil,
 
     Circuit_Parts_ResistorXSMD,
     Circuit_Parts_DiodeXSMD,
@@ -2149,7 +2116,7 @@ public enum ItemList implements IItemContainer {
     Hatch_CraftingInput_Bus_ME_ItemOnly,
     Hatch_CraftingInput_Bus_Slave,
     Hatch_PatternProvider_Crafting,
-    AdvDebugStructureWriter,
+    DebugStructureWriter,
 
     Superconducting_Magnet_Solenoid_MV,
     Superconducting_Magnet_Solenoid_HV,
@@ -2220,9 +2187,12 @@ public enum ItemList implements IItemContainer {
     CasingThaumium,
     CasingVoid,
     CasingIchorium,
+    CasingMixer,
+    FormingCore,
     EntropicProcessor,
     DecayWarehouse,
     LATEX,
+    MagicalMaintenanceHatch,
     AcceleratorLV,
     AcceleratorMV,
     AcceleratorHV,
@@ -2764,6 +2734,25 @@ public enum ItemList implements IItemContainer {
 
     MagLevHarness,
 
+    LargeHadronCollider,
+    ColliderCasing,
+    CMSCasing,
+    ATLASCasing,
+    ALICECasing,
+    LHCbCasing,
+    AdvancedBeamlineOutputHatch,
+
+    BeamCrafter,
+    BeamMirror,
+    BeamSplitter,
+    BeamStabilizer,
+
+    StableBaryonContainmentUnit,
+    StableLeptonContainmentUnit,
+    StableMesonContainmentUnit,
+    StableBosonContainmentUnit,
+    StableEmptyContainmentUnit,
+
     ManaFly,
     DebugEnergyHatch,
 
@@ -2845,7 +2834,7 @@ public enum ItemList implements IItemContainer {
     ElectricImplosionCompressor,
     IntegratedOreFactory,
     CryogenicFreezer,
-
+    IndustrialMixer,
     MegaChemicalReactor,
 
     BasicCircuitBoard,
@@ -3003,6 +2992,7 @@ public enum ItemList implements IItemContainer {
     Wrap_OpticallyCompatibleMemories,
     Wrap_LivingCrystalChips,
     Wrap_LivingBioChips,
+    ToolBox,
     MeshInterfaceNanochipCasing,
     ReinforcementNanochipCasing,
     ComputationalMatrixNanochipCasing,
@@ -3055,6 +3045,13 @@ public enum ItemList implements IItemContainer {
     public static Fluid sOilExtraHeavy, sEpichlorhydrin, sDrillingFluid, sBlueVitriol, sNickelSulfate, sGreenVitriol,
         sToluene, sNitrationMixture, sRocketFuel, sHydricSulfur, sIndiumConcentrate, sLeadZincSolution,
         sHydrochloricAcid;
+    public static final List<ItemList> FORESTRY_DECORATIVE_PLANKS = ImmutableList.copyOf(
+        new ItemList[] { ItemList.Plank_Larch, ItemList.Plank_Teak, ItemList.Plank_Acacia_Green, ItemList.Plank_Lime,
+            ItemList.Plank_Chestnut, ItemList.Plank_Wenge, ItemList.Plank_Baobab, ItemList.Plank_Sequoia,
+            ItemList.Plank_Kapok, ItemList.Plank_Ebony, ItemList.Plank_Mahagony, ItemList.Plank_Balsa,
+            ItemList.Plank_Willow, ItemList.Plank_Walnut, ItemList.Plank_Greenheart, ItemList.Plank_Cherry,
+            ItemList.Plank_Mahoe, ItemList.Plank_Poplar, ItemList.Plank_Palm, ItemList.Plank_Papaya,
+            ItemList.Plank_Pine, ItemList.Plank_Plum, ItemList.Plank_Maple, ItemList.Plank_Citrus });
     private ItemStack mStack;
     private boolean mHasNotBeenSet;
     private boolean mDeprecated;
@@ -3182,8 +3179,8 @@ public enum ItemList implements IItemContainer {
 
         // Construct a translation key from UnlocalizedName and CamelCased DisplayName
         final String tKey = rStack.getUnlocalizedName() + ".with." + tCamelCasedDisplayNameBuilder + ".name";
-
-        rStack.setStackDisplayName(GTLanguageManager.addStringLocalization(tKey, aDisplayName));
+        GTLanguageManager.addStringLocalization(tKey, aDisplayName);
+        rStack.setStackDisplayName(StatCollector.translateToLocal(tKey));
         return GTUtility.copyAmount(aAmount, rStack);
     }
 
@@ -3226,7 +3223,9 @@ public enum ItemList implements IItemContainer {
 
     @Override
     public IItemContainer setRender(IItemRenderer aRenderer) {
-        MetaGeneratedItemRenderer.registerSpecialRenderer(this, aRenderer);
+        if (GTMod.proxy.isClientSide()) {
+            GTMod.clientProxy().metaItemRenderer.registerSpecialRenderer(this, aRenderer);
+        }
         return this;
     }
 

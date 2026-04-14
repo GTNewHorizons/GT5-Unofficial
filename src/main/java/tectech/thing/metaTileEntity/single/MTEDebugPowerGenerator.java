@@ -88,7 +88,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        GENNY = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/GENNY"));
+        GENNY = TextureFactory.of(Textures.BlockIcons.custom("iconsets/GENNY"));
     }
 
     @Override
@@ -395,5 +395,10 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
             .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
             .setSize(18, 18)
             .setPos(xPos, yPos));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

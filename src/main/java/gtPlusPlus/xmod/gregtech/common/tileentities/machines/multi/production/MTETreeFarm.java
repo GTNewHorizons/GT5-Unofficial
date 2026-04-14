@@ -76,10 +76,8 @@ import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
@@ -323,11 +321,10 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                 EnumMap<Mode, ItemStack> outputPerMode = getOutputsForSapling(sapling);
                 if (outputPerMode == null) {
                     // This should usually not be possible, outputs for all valid saplings should be defined.
-                    Logger.INFO("No output found for sapling: " + sapling.getDisplayName());
                     return SimpleCheckRecipeResult.ofFailure("no_output_for_sapling");
                 }
 
-                int tier = Math.max(1, GTUtility.getTier(availableVoltage * availableAmperage));
+                int tier = Math.max(1, GTUtility.getTierExtended(availableVoltage * availableAmperage));
                 int tierMultiplier = getTierMultiplier(tier);
 
                 List<ItemStack> outputs = new ArrayList<>();
@@ -674,7 +671,6 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
     public static void registerTreeProducts(ItemStack saplingIn, ItemStack log, ItemStack saplingOut, ItemStack leaves,
         ItemStack fruit) {
         if (saplingIn == null) {
-            Logger.ERROR("Null sapling passed for registerTreeProducts()");
             return;
         }
         String key = Item.itemRegistry.getNameForObject(saplingIn.getItem()) + ":" + saplingIn.getItemDamage();
@@ -684,10 +680,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
         if (leaves != null) map.put(Mode.LEAVES, leaves);
         if (fruit != null) map.put(Mode.FRUIT, fruit);
         treeProductsMap.put(key, map);
-
-        if (!addFakeRecipeToNEI(saplingIn, log, saplingOut, leaves, fruit)) {
-            Logger.INFO("Registering NEI fake recipe for " + key + " failed!");
-        }
+        addFakeRecipeToNEI(saplingIn, log, saplingOut, leaves, fruit);
     }
 
     /**
@@ -709,7 +702,6 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
         // To do this we use the same method as when calculating real outputs.
         map = getOutputsForForestrySapling(sapling);
         if (map == null) {
-            Logger.INFO("Could not create Forestry tree output map for " + speciesUID);
             return;
         }
         addFakeRecipeToNEI(
@@ -789,11 +781,6 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                 outputStacks[ordinal].stackSize *= modeMultiplier.get(mode);
             }
         }
-
-        Logger.INFO(
-            "Adding Tree Growth Simulation NEI recipe for " + specialStack.getDisplayName()
-                + " -> "
-                + ItemUtils.getArrayStackNames(outputStacks));
 
         GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.addFakeRecipe(
             false,

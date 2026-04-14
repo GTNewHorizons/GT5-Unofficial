@@ -126,7 +126,6 @@ public class CraftingRecipeLoader implements Runnable {
             }
         }
         GTModHandler.removeRecipeByOutputDelayed(ItemList.Bottle_Empty.get(1L));
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Spray_WeedEx.get(1L));
         GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("reBattery", 1L));
         GTModHandler.removeRecipeByOutputDelayed(new ItemStack(Blocks.tnt));
         GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("dynamite", 1L));
@@ -1571,12 +1570,6 @@ public class CraftingRecipeLoader implements Runnable {
             new Object[] { "CCC", "XWX", aTextIron2, 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'X',
                 OrePrefixes.plate.get(Materials.Iron), 'W', GTModHandler.getIC2Item("waterMill", 1L) });
         GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("cropnalyzer", 1L),
-            bits_no_remove_buffered,
-            new Object[] { "CC ", "RGR", "RIR", 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'R',
-                OrePrefixes.dust.get(Materials.Redstone), 'G', OrePrefixes.block.get(Materials.Glass), 'I',
-                OrePrefixes.circuit.get(Materials.LV) });
-        GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("coil", 1L),
             bits_no_remove_buffered,
             new Object[] { "CCC", "CXC", "CCC", 'C', OrePrefixes.wireGt01.get(Materials.Copper), 'X',
@@ -1947,26 +1940,19 @@ public class CraftingRecipeLoader implements Runnable {
                 OrePrefixes.frameGt.get(Materials.Chrome) });
 
         if (Forestry.isModLoaded()) {
-            ItemStack[] coverIDs = { ItemList.Plank_Larch.get(2L), ItemList.Plank_Teak.get(2L),
-                ItemList.Plank_Acacia_Green.get(2L), ItemList.Plank_Lime.get(2L), ItemList.Plank_Chestnut.get(2L),
-                ItemList.Plank_Wenge.get(2L), ItemList.Plank_Baobab.get(2L), ItemList.Plank_Sequoia.get(2L),
-                ItemList.Plank_Kapok.get(2L), ItemList.Plank_Ebony.get(2L), ItemList.Plank_Mahagony.get(2L),
-                ItemList.Plank_Balsa.get(2L), ItemList.Plank_Willow.get(2L), ItemList.Plank_Walnut.get(2L),
-                ItemList.Plank_Greenheart.get(2L), ItemList.Plank_Cherry.get(2L), ItemList.Plank_Mahoe.get(2L),
-                ItemList.Plank_Poplar.get(2L), ItemList.Plank_Palm.get(2L), ItemList.Plank_Papaya.get(2L),
-                ItemList.Plank_Pine.get(2L), ItemList.Plank_Plum.get(2L), ItemList.Plank_Maple.get(2L),
-                ItemList.Plank_Citrus.get(2L) };
-            for (int i = 0; i < coverIDs.length; i++) {
+
+            for (int i = 0; i < ItemList.FORESTRY_DECORATIVE_PLANKS.size(); i++) {
                 ItemStack slabWood = getModItem(Forestry.ID, "slabs", 1, i);
                 ItemStack slabWoodFireproof = getModItem(Forestry.ID, "slabsFireproof", 1, i);
+                final ItemList plank = ItemList.FORESTRY_DECORATIVE_PLANKS.get(i);
 
                 GTModHandler.addCraftingRecipe(
-                    coverIDs[i],
+                    plank.get(2),
                     GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
                     new Object[] { "s ", " P", 'P', slabWood });
 
                 GTModHandler.addCraftingRecipe(
-                    coverIDs[i],
+                    plank.get(2),
                     GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
                     new Object[] { "s ", " P", 'P', slabWoodFireproof });
             }
