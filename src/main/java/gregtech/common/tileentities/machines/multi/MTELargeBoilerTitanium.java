@@ -56,4 +56,14 @@ public class MTELargeBoilerTitanium extends MTELargeBoilerBase {
     int runtimeBoost(int mTime) {
         return mTime * 130 / 400;
     }
+
+    @Override
+    public long getMaxInternalWater() {
+        return 128000L;
+    }
+
+    @Override
+    public int getMaxCooldownTicks() {
+        return 2400;
+    }
 }
