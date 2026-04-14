@@ -1278,7 +1278,7 @@ public class GTModHandler {
             for (ItemStack tInput : FurnaceRecipes.smelting()
                 .getSmeltingList()
                 .keySet()) {
-                if (GTUtility.isStackValid(tInput) && GTUtility.areStacksEqual(aInput, tInput, true)) {
+                if (GTUtility.areStacksEqual(aInput, tInput, true)) {
                     FurnaceRecipes.smelting()
                         .getSmeltingList()
                         .remove(tInput);
