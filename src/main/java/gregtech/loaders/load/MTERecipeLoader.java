@@ -1690,6 +1690,16 @@ public class MTERecipeLoader implements Runnable {
             ItemList.MolecularTransformer.get(1),
             new Object[] { GregtechItemList.Controller_MolecularTransformer });
 
+        // Industrial Washer Conversion Recipe
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialWasher.get(1),
+            new Object[] { "B  ", "   ", "   ", 'B', GregtechItemList.Industrial_WashPlant });
+
+        // Industrial Chemical Bath Conversion Recipe
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialChemicalBath.get(1),
+            new Object[] { " B ", "   ", "   ", 'B', GregtechItemList.Industrial_WashPlant });
+
         // Industrial Centrifuge Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialCentrifuge.get(1),

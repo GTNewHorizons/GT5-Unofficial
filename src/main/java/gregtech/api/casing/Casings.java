@@ -669,7 +669,7 @@ public enum Casings implements ICasing {
     IncoloyDSFluidContainmentBlock
         (() -> ModBlocks.blockCasings2Misc, 3, gtpp(1, 3)),
     WashPlantCasing
-        (() -> ModBlocks.blockCasings2Misc, 4, -1),
+        (() -> ModBlocks.blockCasings2Misc, 4, 75),
     IndustrialSieveCasing
         (() -> ModBlocks.blockCasings2Misc, 5, gtpp(1, 5)),
     LargeSieveGrate
