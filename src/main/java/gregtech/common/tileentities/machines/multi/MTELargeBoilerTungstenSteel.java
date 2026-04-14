@@ -56,14 +56,4 @@ public class MTELargeBoilerTungstenSteel extends MTELargeBoilerBase {
     int runtimeBoost(int mTime) {
         return mTime * 120 / 750;
     }
-
-    @Override
-    public boolean isSuperheated() {
-        return true;
-    }
-
-    @Override
-    public float getOverdriveMult() {
-        return 2.25F;
-    }
 }
