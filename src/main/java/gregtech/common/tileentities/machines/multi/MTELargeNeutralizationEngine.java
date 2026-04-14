@@ -861,6 +861,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return new MTELargeNeutralizationEngineGui(this);
     }
 
+    @Override
+    public boolean showRecipeTextInGUI(){
+        return false;
+    }
+
     public int getMaxFluidUse() {
         return maxFluidUse;
     }
