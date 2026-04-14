@@ -9,6 +9,7 @@ import static java.lang.Long.min;
 import java.math.BigInteger;
 import java.util.UUID;
 
+import gregtech.GTMod;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -54,6 +55,11 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
 
     @Override
     public boolean isEnetInput() {
+        return false;
+    }
+
+    @Override
+    public boolean willExplodeInRain() {
         return false;
     }
 
@@ -104,11 +110,15 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
             // Every ticks_between_energy_addition add eu_transferred_per_operation to internal EU storage from network.
             if (aTick % ticks_between_energy_addition == 0L) {
                 tryFetchingEnergy();
+                if (aTick > 100) {
+                    aBaseMetaTileEntity.tryDisableTicking();
+                    GTMod.proxy.wirelessEnergyHatchManager.addHatch(this);
+                }
             }
         }
     }
 
-    private void tryFetchingEnergy() {
+    public void tryFetchingEnergy() {
         long currentEU = getBaseMetaTileEntity().getStoredEU();
         long maxEU = maxEUStore();
         long euToTransfer = min(maxEU - currentEU, eu_transferred_per_operation_long);
