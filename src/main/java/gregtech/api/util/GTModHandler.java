@@ -1641,6 +1641,7 @@ public class GTModHandler {
     public static List<ItemStack> getRecipeOutputs(List<IRecipe> aList, boolean aDeleteFromList, ItemStack... aRecipe) {
         List<ItemStack> rList = new ArrayList<>();
         if (aRecipe == null || isAllNulls(aRecipe)) return rList;
+
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
 
             @Override
@@ -1649,41 +1650,35 @@ public class GTModHandler {
             }
         }, 3, 3);
         for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
-        if (!aDeleteFromList) {
-            HashSet<ItemStack> stacks = new HashSet<>();
-            aList.stream()
-                .filter(tRecipe -> {
-                    if (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe
-                        || tRecipe instanceof IGTCraftingRecipe) return false;
-                    return tRecipe.matches(aCrafting, DW);
-                })
-                .forEach(tRecipe -> stacks.add(tRecipe.getCraftingResult(aCrafting)));
-            rList = stacks.stream()
-                .filter(
-                    tOutput -> tOutput.stackSize == 1 && tOutput.getMaxDamage() > 0 && tOutput.getMaxStackSize() == 1)
-                .collect(Collectors.toList());
-        } else for (Iterator<IRecipe> iterator = aList.iterator(); iterator.hasNext();) {
+
+        for (Iterator<IRecipe> iterator = aList.iterator(); iterator.hasNext();) {
             IRecipe tRecipe = iterator.next();
 
-            if (tRecipe.matches(aCrafting, DW)) {
-                ItemStack tOutput = tRecipe.getCraftingResult(aCrafting);
+            if (tRecipe instanceof ShapelessRecipes) continue;
+            if (tRecipe instanceof ShapelessOreRecipe) continue;
+            if (tRecipe instanceof IGTCraftingRecipe) continue;
 
-                if (tOutput == null || tOutput.stackSize <= 0) {
-                    // Seriously, who would ever do that shit?
-                    if (!GregTechAPI.sPostloadFinished) throw new GTItsNotMyFaultException(
+            ItemStack tOutput = tRecipe.getCraftingResult(aCrafting);
+
+            if (tOutput == null || tOutput.stackSize <= 0) {
+                // Seriously, who would ever do that shit?
+                if (!GregTechAPI.sPostloadFinished) {
+                    throw new GTItsNotMyFaultException(
                         "Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
-                    continue;
                 }
-                if (tOutput.stackSize != 1) continue;
-                if (tOutput.getMaxDamage() <= 0) continue;
-                if (tOutput.getMaxStackSize() != 1) continue;
-                if (tRecipe instanceof ShapelessRecipes) continue;
-                if (tRecipe instanceof ShapelessOreRecipe) continue;
-                if (tRecipe instanceof IGTCraftingRecipe) continue;
-                rList.add(GTUtility.copyOrNull(tOutput));
-                iterator.remove();
+                continue;
+            }
+
+            if (tOutput.stackSize != 1) continue;
+            if (tOutput.getMaxDamage() <= 0) continue;
+            if (tOutput.getMaxStackSize() != 1) continue;
+
+            if (tRecipe.matches(aCrafting, DW)) {
+                rList.add(tOutput);
+                if (aDeleteFromList) iterator.remove();
             }
         }
+
         return rList;
     }
 
