@@ -137,7 +137,7 @@ public class MTEIndustrialWasher extends MTEExtendedPowerMultiBlockBase<MTEIndus
             .addEnergyHatch("Any Wash Plant Casing", 1)
             .addMaintenanceHatch("Any Wash Plant Casing", 1)
             .addMufflerHatch("Any Wash Plant Casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "")
+            .addStructureAuthors(EnumChatFormatting.GOLD + "ya9yu")
             .toolTipFinisher();
         return tt;
     }
