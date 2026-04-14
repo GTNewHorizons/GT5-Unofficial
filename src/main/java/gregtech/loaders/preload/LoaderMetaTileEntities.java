@@ -134,6 +134,7 @@ import gregtech.common.tileentities.machines.basic.MTETurboCharger;
 import gregtech.common.tileentities.machines.basic.MTEWorldAccelerator;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineItem;
+import gregtech.common.tileentities.machines.multi.MTEAdvImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter1;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
@@ -865,6 +866,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MolecularTransformer.ID,
                 "moleculartransformer.controller.tier.single",
                 "Molecular Transformer").getStackForm(1L));
+
+        ItemList.AdvancedImplosionCompressor.set(
+            new MTEAdvImplosionCompressor(
+                AdvancedImplosionCompressor.ID,
+                "multimachine.adv.implosioncompressor",
+                "Density^2").getStackForm(1L));
 
         ItemList.UniversalChemicalFuelEngine.set(
             new MTEUniversalChemicalFuelEngine(
