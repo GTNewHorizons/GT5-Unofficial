@@ -42,7 +42,32 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     private int casingAmount;
     private int casingAmountStainless;
-    private static IStructureDefinition<MTEIndustrialExtruder> STRUCTURE_DEFINITION = null;
+    private static final IStructureDefinition<MTEIndustrialExtruder> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEIndustrialExtruder>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            new String[][] { { "         ", "         ", "     CCC~", "     CCCC" },
+                { "A ABBBBBA", "AAA     A", "A ABBBBBA", "DDDDDDDDA" },
+                { "AAA     A", "AAA     A", "AAA     A", "DDDDDDDDA" },
+                { "A ABBBBBA", "AAA     A", "A ABBBBBA", "DDDDDDDDA" } })
+        .addElement(
+            'A',
+            buildHatchAdder(MTEIndustrialExtruder.class).atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                .casingIndex(Casings.PressureContainmentCasing.textureId)
+                .hint(1)
+                .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.PressureContainmentCasing.asElement())))
+        .addElement('B', Casings.FormingCore.asElement())
+        .addElement(
+            'C',
+            buildHatchAdder(MTEIndustrialExtruder.class).atLeast(Maintenance, Energy, Muffler)
+                .casingIndex(Casings.CleanStainlessSteelMachineCasing.textureId)
+                .hint(2)
+                .buildAndChain(
+                    onElementPass(
+                        x -> ++x.casingAmountStainless,
+                        Casings.CleanStainlessSteelMachineCasing.asElement())))
+        .addElement('D', Casings.ChemicallyInertMachineCasing.asElement())
+        .build();
 
     public MTEIndustrialExtruder(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -80,35 +105,6 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     public IStructureDefinition<MTEIndustrialExtruder> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialExtruder>builder()
-                .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    new String[][] { { "         ", "         ", "     CCC~", "     CCCC" },
-                        { "A ABBBBBA", "AAA     A", "A ABBBBBA", "DDDDDDDDA" },
-                        { "AAA     A", "AAA     A", "AAA     A", "DDDDDDDDA" },
-                        { "A ABBBBBA", "AAA     A", "A ABBBBBA", "DDDDDDDDA" } })
-                .addElement(
-                    'A',
-                    buildHatchAdder(MTEIndustrialExtruder.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                        .casingIndex(Casings.PressureContainmentCasing.textureId)
-                        .hint(1)
-                        .buildAndChain(
-                            onElementPass(x -> ++x.casingAmount, Casings.PressureContainmentCasing.asElement())))
-                .addElement('B', Casings.FormingCore.asElement())
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEIndustrialExtruder.class).atLeast(Maintenance, Energy, Muffler)
-                        .casingIndex(Casings.CleanStainlessSteelMachineCasing.textureId)
-                        .hint(2)
-                        .buildAndChain(
-                            onElementPass(
-                                x -> ++x.casingAmountStainless,
-                                Casings.CleanStainlessSteelMachineCasing.asElement())))
-                .addElement('D', Casings.ChemicallyInertMachineCasing.asElement())
-                .build();
-        }
         return STRUCTURE_DEFINITION;
     }
 
