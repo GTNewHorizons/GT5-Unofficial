@@ -4844,6 +4844,11 @@ gt.item.circuit.wafer.npic.name=NPIC Wafer
 gt.item.circuit.wafer.ppic.name=PPIC Wafer
 gt.item.circuit.wafer.qpic.name=QPIC Wafer
 gt.item.circuit.wafer.bioware.name=Living Bio Wafer
+gt.item.circuit.wafer.fpic.name=FPIC Wafer
+gt.item.circuit.wafer.apic.name=APIC Wafer
+gt.item.circuit.wafer.zpic.name=ZPIC Wafer
+gt.item.circuit.wafer.ypic.name=YPIC Wafer
+gt.item.circuit.wafer.plpic.name=PlPIC Wafer
 
 ## Chips
 gt.item.circuit.chip.ilc.name=Integrated Logic Circuit
@@ -4884,6 +4889,16 @@ gt.item.circuit.chip.qpic.name=Quantum Power IC
 gt.item.circuit.chip.qpic.tooltip=Quantum Power Circuit
 gt.item.circuit.chip.bioware.name=Living Bio Chip
 gt.item.circuit.chip.bioware.tooltip=Needed for Circuits
+gt.item.circuit.chip.fpic.name=Femto Power IC
+gt.item.circuit.chip.fpic.tooltip=Femto Power Circuit
+gt.item.circuit.chip.apic.name=Atto Power IC
+gt.item.circuit.chip.apic.tooltip=Atto Power Circuit
+gt.item.circuit.chip.zpic.name=Zepto Power IC
+gt.item.circuit.chip.zpic.tooltip=Zepto Power Circuit
+gt.item.circuit.chip.ypic.name=Yocto Power IC
+gt.item.circuit.chip.ypic.tooltip=Yocto Power Circuit
+gt.item.circuit.chip.plpic.name=Planck Power IC
+gt.item.circuit.chip.plpic.tooltip=Planck Power Circuit
 
 ## Crystal and Bio chips
 gt.item.circuit.chip.crystal_soc2.name=Raw Advanced Crystal Chip

@@ -69,6 +69,16 @@ import static gregtech.common.items.IDMetaItem03.Circuit_Chip_SoC2;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_Stemcell;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_UHPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_ULPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_FPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_APIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_ZPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_YPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_PlPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_FPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_APIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_ZPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_YPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_PlPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_CosmicAssembly;
 import static gregtech.common.items.IDMetaItem03.Circuit_CosmicComputer;
 import static gregtech.common.items.IDMetaItem03.Circuit_CosmicMainframe;
@@ -1778,6 +1788,78 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 StableEmptyContainmentUnit.ID,
                 "gt.item.stable_empty_containment_unit.name",
                 "gt.item.stable_empty_containment_unit.tooltip"));
+
+        ItemList.Circuit_Wafer_FPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_FPIC.ID,
+                "gt.item.circuit.wafer.fpic.name",
+                RAW,
+                "waferFPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_FPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_FPIC.ID,
+                "gt.item.circuit.chip.fpic.name",
+                "gt.item.circuit.chip.fpic.tooltip",
+                "chipFPIC",
+                "chip"));
+        ItemList.Circuit_Wafer_APIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_APIC.ID,
+                "gt.item.circuit.wafer.apic.name",
+                RAW,
+                "waferAPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_APIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_APIC.ID,
+                "gt.item.circuit.chip.apic.name",
+                "gt.item.circuit.chip.apic.tooltip",
+                "chipAPIC",
+                "chip"));
+        ItemList.Circuit_Wafer_ZPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_ZPIC.ID,
+                "gt.item.circuit.wafer.zpic.name",
+                RAW,
+                "waferZPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_ZPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_ZPIC.ID,
+                "gt.item.circuit.chip.zpic.name",
+                "gt.item.circuit.chip.zpic.tooltip",
+                "chipZPIC",
+                "chip"));
+        ItemList.Circuit_Wafer_YPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_YPIC.ID,
+                "gt.item.circuit.wafer.ypic.name",
+                RAW,
+                "waferYPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_YPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_YPIC.ID,
+                "gt.item.circuit.chip.ypic.name",
+                "gt.item.circuit.chip.ypic.tooltip",
+                "chipYPIC",
+                "chip"));
+        ItemList.Circuit_Wafer_PlPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_PlPIC.ID,
+                "gt.item.circuit.wafer.plpic.name",
+                RAW,
+                "waferPlPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_PlPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_PlPIC.ID,
+                "gt.item.circuit.chip.plpic.name",
+                "gt.item.circuit.chip.plpic.tooltip",
+                "chipPlPIC",
+                "chip"));
+
 
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();
