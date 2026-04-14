@@ -2,7 +2,6 @@ package gregtech.common.gui.modularui.singleblock.base;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -72,7 +71,8 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
     protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager) {
         return new FluidSlot().syncHandler(new FluidSlotSyncHandler(machine.getFluidTank()))
             .align(Alignment.BottomRight)
-            .background(IDrawable.EMPTY);
+            .disableThemeBackground(true)
+            .disableHoverThemeBackground(true);
     }
 
     protected Flow createIO(ModularPanel panel, PanelSyncManager syncManager) {

@@ -132,7 +132,7 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
 
     @Override
     public String getMachineType() {
-        return "Large Supercritical Steam Turbine, XLSCT";
+        return "Steam Turbine, XLST-SC";
     }
 
     @Override

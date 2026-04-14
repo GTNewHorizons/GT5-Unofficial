@@ -162,7 +162,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     protected ToggleButton createMuffleButton() {
         return CommonWidgets.createMuffleButton("mufflerSyncer")
             .size(7)
-            .background(IDrawable.EMPTY)
+            .disableThemeBackground(true)
+            .disableHoverThemeBackground(true)
             .overlay(true, GTGuiTextures.GODFORGE_SOUND_OFF)
             .overlay(false, GTGuiTextures.GODFORGE_SOUND_ON)
             .top(8)
