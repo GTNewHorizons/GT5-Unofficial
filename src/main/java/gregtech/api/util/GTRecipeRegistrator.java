@@ -594,49 +594,46 @@ public class GTRecipeRegistrator {
         ItemStack tStack;
         for (Materials tMaterial : sRodMaterialList) {
             ItemStack tMt2 = GTOreDictUnificator.get(OrePrefixes.stick, tMaterial, 1);
-            if (tMt2 != null) {
-                sMt2.func_150996_a(tMt2.getItem());
-                sMt2.stackSize = 1;
-                Items.feather.setDamage(sMt2, Items.feather.getDamage(tMt2));
+            if (tMt2 == null) {
+                continue;
+            }
 
-                for (int i = 0; i < sShapes.length; i++) {
-                    RecipeShape tRecipe = sShapes[i];
+            sMt2.func_150996_a(tMt2.getItem());
+            sMt2.stackSize = 1;
+            Items.feather.setDamage(sMt2, Items.feather.getDamage(tMt2));
 
-                    for (ItemStack tCrafted : GTModHandler
-                        .getRecipeOutputs(getRecipeList(tRecipe), true, tRecipe.shape)) {
-                        if (aItemData != null && aItemData.hasValidPrefixMaterialData())
-                            GTOreDictUnificator.addItemData(
-                                tCrafted,
-                                new ItemData(
-                                    aItemData.mMaterial.mMaterial,
-                                    aItemData.mMaterial.mAmount * tRecipe.amount1,
-                                    new MaterialStack(
-                                        tMaterial,
-                                        OrePrefixes.stick.getMaterialAmount() * tRecipe.amount2)));
+            for (int i = 0; i < sShapes.length; i++) {
+                RecipeShape tRecipe = sShapes[i];
 
-                        if (aRecipeReplacing && aPlate != null && sShapesA[i] != null && sShapesA[i].length > 1) {
-                            assert aItemData != null;
+                for (ItemStack tCrafted : GTModHandler.getRecipeOutputs(getRecipeList(tRecipe), true, tRecipe.shape)) {
+                    if (aItemData != null && aItemData.hasValidPrefixMaterialData()) GTOreDictUnificator.addItemData(
+                        tCrafted,
+                        new ItemData(
+                            aItemData.mMaterial.mMaterial,
+                            aItemData.mMaterial.mAmount * tRecipe.amount1,
+                            new MaterialStack(tMaterial, OrePrefixes.stick.getMaterialAmount() * tRecipe.amount2)));
 
-                            if (null != (tStack = GTModHandler.removeRecipe(tRecipe.shape))) {
-                                switch (sShapesA[i].length) {
-                                    case 2 -> GTModHandler.addCraftingRecipe(
-                                        tStack,
-                                        GTModHandler.RecipeBits.BUFFERED,
-                                        new Object[] { sShapesA[i][1], s_P.charAt(0), aPlate, s_R.charAt(0),
-                                            OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
-                                    case 3 -> GTModHandler.addCraftingRecipe(
-                                        tStack,
-                                        GTModHandler.RecipeBits.BUFFERED,
-                                        new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0), aPlate,
-                                            s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
-                                            aItemData });
-                                    default -> GTModHandler.addCraftingRecipe(
-                                        tStack,
-                                        GTModHandler.RecipeBits.BUFFERED,
-                                        new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3], s_P.charAt(0),
-                                            aPlate, s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
-                                            aItemData });
-                                }
+                    if (aRecipeReplacing && aPlate != null && sShapesA[i] != null && sShapesA[i].length > 1) {
+                        assert aItemData != null;
+
+                        if (null != (tStack = GTModHandler.removeRecipe(tRecipe.shape))) {
+                            switch (sShapesA[i].length) {
+                                case 2 -> GTModHandler.addCraftingRecipe(
+                                    tStack,
+                                    GTModHandler.RecipeBits.BUFFERED,
+                                    new Object[] { sShapesA[i][1], s_P.charAt(0), aPlate, s_R.charAt(0),
+                                        OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
+                                case 3 -> GTModHandler.addCraftingRecipe(
+                                    tStack,
+                                    GTModHandler.RecipeBits.BUFFERED,
+                                    new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0), aPlate, s_R.charAt(0),
+                                        OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
+                                default -> GTModHandler.addCraftingRecipe(
+                                    tStack,
+                                    GTModHandler.RecipeBits.BUFFERED,
+                                    new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3], s_P.charAt(0),
+                                        aPlate, s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
+                                        aItemData });
                             }
                         }
                     }
