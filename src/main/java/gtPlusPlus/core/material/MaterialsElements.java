@@ -3,7 +3,6 @@ package gtPlusPlus.core.material;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
@@ -450,16 +449,11 @@ public final class MaterialsElements {
         144,
         false,
         StringUtils.superscript("238Pu"),
-        2,
-        false); // Not a GT Inherited Material
+        2); // Not a GT Inherited Material
 
     public final Material MAGIC = MaterialUtils
         .generateMaterialFromGtENUM(Materials.Magic, new short[] { 10, 185, 140 });
     public final Material THAUMIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Thaumium);
-
-    static {
-        Logger.MATERIALS("Initialising Base Elements.");
-    }
 
     private static final MaterialsElements INSTANCE = new MaterialsElements();
 

@@ -33,12 +33,10 @@ public class ItemDummyResearch extends ItemGenericToken {
         RESEARCH_11_MOLECULAR_TRANSFORMER("Molecular Transformation", "Turning things into something better");
 
         private final String mName;
-        private final String mDesc;
 
         ASSEMBLY_LINE_RESEARCH(String aName, String aDesc) {
             mName = aName;
-            mDesc = aDesc;
-            ModItems.itemDummyResearch.register(mName, mDesc);
+            ModItems.itemDummyResearch.register(mName, aDesc);
         }
     }
 
@@ -55,7 +53,7 @@ public class ItemDummyResearch extends ItemGenericToken {
     private int aID = 0;
 
     public ItemDummyResearch() {
-        super("dummyResearch", "Research", new String[] { "This object requires some further study" }, "research");
+        super("dummyResearch", new String[] { "This object requires some further study" }, "research");
     }
 
     /**

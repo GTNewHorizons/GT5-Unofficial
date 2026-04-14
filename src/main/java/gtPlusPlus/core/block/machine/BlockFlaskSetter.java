@@ -60,7 +60,7 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
                 final TileEntityVolumetricFlaskSetter tile = (TileEntityVolumetricFlaskSetter) world
                     .getTileEntity(x, y, z);
                 if (tile != null) {
-                    if (tile.onScrewdriverRightClick((byte) side, player, x, y, z)) {
+                    if (tile.onScrewdriverRightClick(player)) {
                         return true;
                     }
                 }
