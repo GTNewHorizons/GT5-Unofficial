@@ -134,6 +134,7 @@ import gregtech.common.tileentities.machines.basic.MTETurboCharger;
 import gregtech.common.tileentities.machines.basic.MTEWorldAccelerator;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineItem;
+import gregtech.common.tileentities.machines.multi.MTEAdvImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter1;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
@@ -149,7 +150,8 @@ import gregtech.common.tileentities.machines.multi.MTEDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
-import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngine;
+import gregtech.common.tileentities.machines.multi.MTEExtremeCombustionEngine;
+import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEFluidShaper;
 import gregtech.common.tileentities.machines.multi.MTEFrothFlotationCell;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer1;
@@ -537,7 +539,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "multimachine.dieselengine",
                 "Large Combustion Engine").getStackForm(1L));
         ItemList.Machine_Multi_ExtremeDieselEngine.set(
-            new MTEExtremeDieselEngine(
+            new MTEExtremeDieselEngineLegacy(
                 EXTREME_COMBUSTION_ENGINE_CONTROLLER.ID,
                 "multimachine.extremedieselengine",
                 "Extreme Combustion Engine").getStackForm(1L));
@@ -865,6 +867,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "moleculartransformer.controller.tier.single",
                 "Molecular Transformer").getStackForm(1L));
 
+        ItemList.AdvancedImplosionCompressor.set(
+            new MTEAdvImplosionCompressor(
+                AdvancedImplosionCompressor.ID,
+                "multimachine.adv.implosioncompressor",
+                "Density^2").getStackForm(1L));
+
         ItemList.UniversalChemicalFuelEngine.set(
             new MTEUniversalChemicalFuelEngine(
                 UniversalChemicalFuelEngine.ID,
@@ -880,6 +888,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 LargeCombustionEngine.ID,
                 "multimachine.dieselengine",
                 "Large Combustion Engine").getStackForm(1L));
+
+        ItemList.ExtremeCombustionEngine.set(
+            new MTEExtremeCombustionEngine(
+                ExtremeCombustionEngine.ID,
+                "multimachine.extremedieselengine",
+                "Extreme Combustion Engine").getStackForm(1L));
     }
 
     private static void registerSteamMachines() {
