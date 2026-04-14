@@ -1719,7 +1719,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialFormingPress.get(1),
             new Object[] { " B ", "   ", "   ", 'B', GregtechItemList.Industrial_PlatePress });
-        
+
         // Planetary Gas Siphon Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.PlanetarySiphon.get(1),
