@@ -1310,6 +1310,16 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             .set(addItemWithLocalizationKeys(UV_Coil.ID, "gt.item.coil.uv.name", "gt.item.coil.uv.tooltip", o));
         ItemList.UHV_Coil
             .set(addItemWithLocalizationKeys(UHV_Coil.ID, "gt.item.coil.uhv.name", "gt.item.coil.uhv.tooltip", o));
+        ItemList.UEV_Coil
+            .set(addItemWithLocalizationKeys(IV_Coil.ID, "gt.item.coil.uev.name", "gt.item.coil.uev.tooltip", o));
+        ItemList.UIV_Coil
+            .set(addItemWithLocalizationKeys(LuV_Coil.ID, "gt.item.coil.uiv.name", "gt.item.coil.uiv.tooltip", o));
+        ItemList.UMV_Coil
+            .set(addItemWithLocalizationKeys(ZPM_Coil.ID, "gt.item.coil.umv.name", "gt.item.coil.umv.tooltip", o));
+        ItemList.UXV_Coil
+            .set(addItemWithLocalizationKeys(UV_Coil.ID, "gt.item.coil.uxv.name", "gt.item.coil.uxv.tooltip", o));
+        ItemList.MAX_Coil
+            .set(addItemWithLocalizationKeys(UHV_Coil.ID, "gt.item.coil.max.name", "gt.item.coil.max.tooltip", o));
 
         ItemList.GalliumArsenideCrystal.set(
             addItemWithLocalizationKeys(
