@@ -25,6 +25,7 @@ import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import kubatech.loaders.HTGRLoader;
 import kubatech.loaders.item.htgritem.HTGRItem;
