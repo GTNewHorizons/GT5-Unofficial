@@ -1312,15 +1312,16 @@ public class GTModHandler {
         }
         ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        int size = allRecipes.size();
-        for (int i = 0; i < size; i++) {
-            if ((!(allRecipes.get(i) instanceof IGTCraftingRecipe)
-                || ((IGTCraftingRecipe) allRecipes.get(i)).isRemovable()) && allRecipes.get(i)
-                    .matches(aCrafting, DW)) {
-                rReturn = allRecipes.get(i)
-                    .getCraftingResult(aCrafting);
+        for (int i = 0; i < allRecipes.size(); i++) {
+            final IRecipe recipe = allRecipes.get(i);
+
+            if (recipe instanceof IGTCraftingRecipe && !((IGTCraftingRecipe) recipe).isRemovable()) {
+                continue;
+            }
+
+            if (recipe.matches(aCrafting, DW)) {
+                rReturn = recipe.getCraftingResult(aCrafting);
                 if (rReturn != null) allRecipes.remove(i--);
-                size = allRecipes.size();
             }
         }
         return rReturn;
