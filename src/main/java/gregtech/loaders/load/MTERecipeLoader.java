@@ -13,7 +13,6 @@ import static gregtech.api.util.GTModHandler.RecipeBits.DISMANTLEABLE;
 import static gregtech.api.util.GTModHandler.RecipeBits.NOT_REMOVABLE;
 import static gregtech.api.util.GTModHandler.RecipeBits.REVERSIBLE;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
-import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;

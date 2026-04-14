@@ -38,8 +38,8 @@ public class BlockLoader implements IWerkstoffRunnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(block))
                 .itemOutputs(werkstoff.get(ingot, 9))
-                .duration(16 * TICKS)
-                .eut(TierEU.RECIPE_MV)
+                .duration(32 * TICKS)
+                .eut(TierEU.RECIPE_LV)
                 .metadata(GTRecipeConstants.RECYCLE, true)
                 .addTo(UniversalArcFurnace);
         }
