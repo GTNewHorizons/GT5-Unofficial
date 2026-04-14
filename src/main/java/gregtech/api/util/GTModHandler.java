@@ -1314,15 +1314,13 @@ public class GTModHandler {
             .getRecipeList();
         int size = allRecipes.size();
         for (int i = 0; i < size; i++) {
-            for (; i < size; i++) {
-                if ((!(allRecipes.get(i) instanceof IGTCraftingRecipe)
-                    || ((IGTCraftingRecipe) allRecipes.get(i)).isRemovable()) && allRecipes.get(i)
-                        .matches(aCrafting, DW)) {
-                    rReturn = allRecipes.get(i)
-                        .getCraftingResult(aCrafting);
-                    if (rReturn != null) allRecipes.remove(i--);
-                    size = allRecipes.size();
-                }
+            if ((!(allRecipes.get(i) instanceof IGTCraftingRecipe)
+                || ((IGTCraftingRecipe) allRecipes.get(i)).isRemovable()) && allRecipes.get(i)
+                    .matches(aCrafting, DW)) {
+                rReturn = allRecipes.get(i)
+                    .getCraftingResult(aCrafting);
+                if (rReturn != null) allRecipes.remove(i--);
+                size = allRecipes.size();
             }
         }
         return rReturn;
