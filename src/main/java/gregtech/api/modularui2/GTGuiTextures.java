@@ -1872,6 +1872,7 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .adaptable(2)
         .build();
+    public static final UITexture PICTURE_ARROW_DOUBLE = UITexture.fullImage(GregTech.ID, "gui/picture/arrow_double");
     // endregion picture
 
     // region machine modes
