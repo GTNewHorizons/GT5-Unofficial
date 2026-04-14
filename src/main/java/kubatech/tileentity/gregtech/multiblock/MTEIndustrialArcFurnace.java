@@ -98,7 +98,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     private static final int ARC_SURGE_CHANCE_PERCENT = 5;
     private static final int ARC_BREAK_DURABILITY_THRESHOLD_PERCENT = 10;
     private static final int ARC_BREAK_CHANCE_PERCENT = 2;
-    private static final int BLAST_MODE_POWER_MULTIPLIER = 64;
+    private static final int BLAST_MODE_POWER_MULTIPLIER = 16;
     private static final double ARC_SURGE_DAMAGE_THRESHOLD = 1d - (ARC_SURGE_DURABILITY_THRESHOLD_PERCENT / 100d);
     private static final double ARC_BREAK_DAMAGE_THRESHOLD = 1d - (ARC_BREAK_DURABILITY_THRESHOLD_PERCENT / 100d);
 
