@@ -56,4 +56,14 @@ public class MTELargeBoilerBronze extends MTELargeBoilerBase {
     int runtimeBoost(int mTime) {
         return mTime * 2;
     }
+
+    @Override
+    public boolean isSuperheated() {
+        return false;
+    }
+
+    @Override
+    public float getOverdriveMult() {
+        return 1.5F;
+    }
 }
