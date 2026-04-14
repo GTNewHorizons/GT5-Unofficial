@@ -1665,6 +1665,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialWireFactory.get(1),
             new Object[] { GregtechItemList.Industrial_WireFactory });
 
+        // Advanced Implosion Compressor (Density^2) Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.AdvancedImplosionCompressor.get(1),
+            new Object[] { GregtechItemList.Machine_Adv_ImplosionCompressor });
+
         // Large Thermal Refinery Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.LargeThermalRefinery.get(1),
@@ -1690,6 +1695,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialCentrifuge.get(1),
             new Object[] { GregtechItemList.Industrial_Centrifuge });
 
+        // Extreme Combustion Engine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.ExtremeCombustionEngine.get(1),
+            new Object[] { ItemList.Machine_Multi_ExtremeDieselEngine });
+
         // Industrial Electrolyzer Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialElectrolyzer.get(1),
@@ -1709,6 +1719,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialFormingPress.get(1),
             new Object[] { " B ", "   ", "   ", 'B', GregtechItemList.Industrial_PlatePress });
+        
+        // Planetary Gas Siphon Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.PlanetarySiphon.get(1),
+            new Object[] { ItemList.PlanetaryGasSiphonController });
 
         // Large Boilers Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
@@ -3563,7 +3578,7 @@ public class MTERecipeLoader implements Runnable {
                 ItemList.Casing_StableTitanium, 'P', OrePrefixes.rotor.get(Materials.Titanium) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.Machine_Multi_ExtremeDieselEngine.get(1L),
+            ItemList.ExtremeCombustionEngine.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
                 ItemList.Electric_Motor_IV, 'C', OrePrefixes.circuit.get(Materials.LuV), 'W',

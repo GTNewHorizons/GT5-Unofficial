@@ -794,7 +794,7 @@ public class RecipesMachinesMulti {
     private static void multiImplo() {
         // Density^2
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Machine_Adv_ImplosionCompressor.get(1),
+            ItemList.AdvancedImplosionCompressor.get(1),
             new Object[] { "GCG", "FHR", "IXI", 'G', MaterialsAlloy.LEAGRISIUM.getGear(1), 'C', "circuitMaster", 'F',
                 ItemList.Field_Generator_IV, 'H', ItemList.Hull_ZPM, 'R', ItemList.Robot_Arm_IV, 'I',
                 "plateAlloyIridium", 'X', GregtechItemList.Gregtech_Computer_Cube });
