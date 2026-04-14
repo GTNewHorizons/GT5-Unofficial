@@ -17,6 +17,7 @@ import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
+import appeng.api.interfaces.IInterfaceNameProvider;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -32,8 +33,10 @@ import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.item.GhostCircuitItemStackHandler;
 
-public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity implements IGregTechTileEntity {
+public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
+    implements IGregTechTileEntity, IInterfaceNameProvider {
 
     protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mNeedsTileUpdate = false, mSendClientData = false,
         mInventoryChanged = false;
@@ -385,6 +388,14 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             return (IConfigurationCircuitSupport) getMetaTileEntity();
         }
         return null;
+    }
+
+    @Override
+    public String getInterfaceNameSuffix() {
+        final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
+        if (ccs == null || !ccs.allowSelectCircuit()) return null;
+        final int config = new GhostCircuitItemStackHandler(getMetaTileEntity()).getCircuitConfig();
+        return config > 0 ? " [" + config + "]" : null;
     }
 
     @Override
