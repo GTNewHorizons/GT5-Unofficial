@@ -300,11 +300,6 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchOutputBusCompressedGui(this).build(data, syncManager, uiSettings);
     }
