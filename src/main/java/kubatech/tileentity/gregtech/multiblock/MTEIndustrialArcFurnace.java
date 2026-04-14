@@ -39,6 +39,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -144,6 +145,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     private int durabilityCostThisRun = 1;
     private NBTTagCompound effectState = new NBTTagCompound();
     private double electrodeDamagePercentage = 0d;
+
+    private int didOres = 0;
+    private int didOCs = 0;
+    private final Map<Fluid, Long> oreOutputs = new HashMap<>();
 
     private static final int OFFSET_H = 6;
     private static final int OFFSET_V = 7;
@@ -288,6 +293,18 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         }
         durabilityCostThisRun = aNBT.getInteger("durabilityCostThisRun");
         effectState = aNBT.hasKey("effectState") ? aNBT.getCompoundTag("effectState") : new NBTTagCompound();
+        didOres = aNBT.getInteger("didOres");
+        didOCs = aNBT.getInteger("didOCs");
+        oreOutputs.clear();
+        int oreOutputsSize = aNBT.getInteger("oreOutputsSize");
+        for (int i = 0; i < oreOutputsSize; i++) {
+            String fluidName = aNBT.getString("oreOutputFluid" + i);
+            long amount = aNBT.getLong("oreOutputAmount" + i);
+            Fluid fluid = FluidRegistry.getFluid(fluidName);
+            if (fluid != null) {
+                oreOutputs.put(fluid, amount);
+            }
+        }
     }
 
     @Override
@@ -298,6 +315,15 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         aNBT.setInteger("electrode", electrode == null ? -1 : electrode.ordinal());
         aNBT.setInteger("durabilityCostThisRun", durabilityCostThisRun);
         aNBT.setTag("effectState", effectState);
+        aNBT.setInteger("didOres", didOres);
+        aNBT.setInteger("didOCs", didOCs);
+        aNBT.setInteger("oreOutputsSize", oreOutputs.size());
+        int i = 0;
+        for (Map.Entry<Fluid, Long> entry : oreOutputs.entrySet()) {
+            aNBT.setString("oreOutputFluid" + i, FluidRegistry.getFluidName(entry.getKey()));
+            aNBT.setLong("oreOutputAmount" + i, entry.getValue());
+            i++;
+        }
     }
 
     @Override
@@ -528,6 +554,9 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     private void resetElectrodeEffectState() {
         resetEffectState();
         applySpecialEffect(new ArcFurnaceProcessingEvent.EventReset(this));
+        didOres = 0;
+        didOCs = 0;
+        oreOutputs.clear();
     }
 
     private void startShutDown() {
@@ -551,10 +580,11 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     }
 
     private void electrodeChanged() {
-        resetElectrodeEffectState();
         if (phase == ArcFurnacePhase.Processing || phase == ArcFurnacePhase.ArcIgnition) {
             stopMachine(SimpleShutDownReason.ofCritical("electrode_changed"));
             phase = ArcFurnacePhase.Standby;
+        } else {
+            resetElectrodeEffectState();
         }
         ItemStack electrodeStack = electrodeHatch.getStackInSlot(0);
         electrode = ArcFurnaceElectrode.getByStack(electrodeStack);
@@ -566,10 +596,6 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         }
         updateDetectorHatches(0);
     }
-
-    private int didOres = 0;
-    private int didOCs = 0;
-    private final Map<Fluid, Long> oreOutputs = new HashMap<>();
 
     @Override
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
