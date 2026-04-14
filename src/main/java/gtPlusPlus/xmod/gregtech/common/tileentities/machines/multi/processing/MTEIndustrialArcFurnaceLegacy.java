@@ -249,7 +249,7 @@ public class MTEIndustrialArcFurnaceLegacy extends GTPPMultiBlockBase<MTEIndustr
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return machineMode == MACHINE_MODE_PLASMA ? RecipeMaps.plasmaArcFurnaceRecipes : RecipeMaps.arcFurnaceRecipes;
+        return RecipeMaps.arcFurnaceRecipes;
     }
 
     @Nonnull

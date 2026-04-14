@@ -1658,16 +1658,15 @@ public class MTERecipeLoader implements Runnable {
         // High Current Industrial Arc Furnace
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GregtechItemList.Casing_Industrial_Arc_Furnace.get(1),
+                Materials.Naquadah.getPart(OrePrefixes.blockCasing, 1),
                 ItemList.Field_Generator_EV.get(2),
                 ItemList.Robot_Arm_IV.get(4),
                 GregtechItemList.Energy_Core_EV.get(2),
-                MaterialsAlloy.ZERON_100.getPlate(8),
+                Materials.Tungsten.getPlates(8),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 8))
             .itemOutputs(ItemList.IndustrialArcFurnace.get(1))
-            .fluidInputs(MaterialsAlloy.LAFIUM.getFluidStack(20 * INGOTS))
             .duration(8 * MINUTES)
-            .eut(TierEU.RECIPE_LuV)
+            .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
     }

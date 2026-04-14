@@ -26,6 +26,7 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -489,6 +490,11 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     public RecipeMap<?> getRecipeMap() {
         return mode == ArcFurnaceMode.Normal ? arcFurnaceRecipes
             : (mode == ArcFurnaceMode.Blast ? blastFurnaceRecipes : furnaceRecipes);
+    }
+
+    @Override
+    public @NotNull Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(arcFurnaceRecipes, blastFurnaceRecipes, furnaceRecipes);
     }
 
     @Override
