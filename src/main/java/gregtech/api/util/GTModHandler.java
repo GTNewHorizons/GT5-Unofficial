@@ -1354,10 +1354,15 @@ public class GTModHandler {
 
         Set<IRecipe> tListToRemove = allRecipes.parallelStream()
             .filter(tRecipe -> {
-                if ((tRecipe instanceof IGTCraftingRecipe) && !((IGTCraftingRecipe) tRecipe).isRemovable())
+                if ((tRecipe instanceof IGTCraftingRecipe) && !((IGTCraftingRecipe) tRecipe).isRemovable()) {
                     return false;
-                return toRemove.stream()
-                    .anyMatch(aCrafting -> tRecipe.matches(aCrafting, DW));
+                }
+                for (InventoryCrafting crafting : toRemove) {
+                    if (tRecipe.matches(crafting, DW)) {
+                        return true;
+                    }
+                }
+                return false;
             })
             .collect(Collectors.toSet());
 
