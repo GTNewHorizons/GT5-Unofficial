@@ -92,13 +92,12 @@ public class GTPPMTECable extends MTECable {
         if (material == null) {
             return super.getTexture(aBaseMetaTileEntity, side, aConnections, aColorIndex, aConnected, aRedstone);
         }
-        return getTextureGTPP(aBaseMetaTileEntity, side, aConnections, aColorIndex, aConnected, aRedstone);
+        return getTextureGTPP(aColorIndex, aConnected);
     }
 
-    private ITexture[] getTextureGTPP(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, int aConnections,
-        int aColorIndex, boolean aConnected, boolean aRedstone) {
+    private ITexture[] getTextureGTPP(int aColorIndex, boolean aConnected) {
 
-        Material wireMaterial = material;
+        final Material wireMaterial = material;
 
         if (!mInsulated) return new ITexture[] { TextureFactory
             .of(wireMaterial.getTextureSet().mTextures[TextureSet.INDEX_wire], Dyes.getModulation(aColorIndex, vRGB)) };
