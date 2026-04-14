@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 
@@ -26,6 +25,7 @@ import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import kubatech.loaders.HTGRLoader;
 import kubatech.loaders.item.htgritem.HTGRItem;
@@ -73,7 +73,7 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
                     for (Pair<ItemStack, Integer> fuel : recipe.getMetadata(HTGRLoader.FUEL)) {
                         ItemStack stack = fuel.getLeft()
                             .copy();
-                        stack.stackSize = fuel.getRight();
+                        stack.stackSize = Math.max(fuel.getRight(), 1);
                         if (stack.stackSize > 0) outputs.add(stack);
                     }
                     outputs.addAll(Arrays.asList(recipe.getMetadata(HTGRLoader.SHELL)));
@@ -82,15 +82,15 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
     }
 
     @Override
-    public void addProgressBar(ModularWindow.Builder builder, @NotNull Supplier<Float> progressSupplier,
-        @NotNull Pos2d windowOffset) {
+    public void addProgressBar(ModularWindow.Builder builder, GTNEIDefaultHandler.NEITemplateContext ctx) {
         assert uiProperties.progressBarTexture != null;
         builder.widget(
             new ProgressBar().setTexture(uiProperties.progressBarTexture.get(), 170)
                 .setDirection(uiProperties.progressBarDirection)
-                .setProgress(() -> (0.31f + progressSupplier.get() * 0.26f)) // start 76 = 0.31 end 138 = 0.57 d = 0.26
+                .setProgress(() -> (0.31f + ctx.progressSupplier.get() * 0.26f)) // start 76 = 0.31 end 138 = 0.57 d =
+                                                                                 // 0.26
                 .setSynced(false, false)
-                .setPos(uiProperties.progressBarPos.add(windowOffset))
+                .setPos(uiProperties.progressBarPos.add(ctx.windowOffset))
                 .setSize(new Size(170, 245)));
     }
 
