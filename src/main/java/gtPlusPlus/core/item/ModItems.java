@@ -389,6 +389,9 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsAlloy.QUANTUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.HYPOGEN);
         MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
+        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.DRAGON_METAL);
+        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
+        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.RHUGNOR);
 
         // Foil
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.BLACK_TITANIUM);

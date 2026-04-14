@@ -2091,6 +2091,11 @@ public enum ItemList implements IItemContainer {
     ZPM_Coil,
     UV_Coil,
     UHV_Coil,
+    UEV_Coil,
+    UIV_Coil,
+    UMV_Coil,
+    UXV_Coil,
+    MAX_Coil,
 
     Circuit_Parts_ResistorXSMD,
     Circuit_Parts_DiodeXSMD,
