@@ -128,7 +128,7 @@ public class MTEIndustrialWasher extends MTEExtendedPowerMultiBlockBase<MTEIndus
             .beginStructureBlock(5, 4, 9, false)
             .addController("Front center")
             .addCasingInfoMin("Wash Plant Casing", 70, false)
-            .addCasingInfoExactly("Steel Gear Box Casing", 70, false)
+            .addCasingInfoExactly("Steel Gear Box Casing", 7, false)
             .addCasingInfoExactly("Steel Frame Box", 15, false)
             .addInputBus("Any Wash Plant Casing", 1)
             .addOutputBus("Any Wash Plant Casing", 1)
