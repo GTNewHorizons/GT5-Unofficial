@@ -94,6 +94,10 @@ kubatech.gui.text.mia.normal=Normal
 kubatech.gui.text.mia.swarmer=Swarmer
 kubatech.gui.text.mia.secondary_mode=Secondary mode
 
+kubatech.gui.tooltip.contributors.added=Added by %s
+kubatech.gui.tooltip.contributors.design=Designed by %s
+kubatech.gui.tooltip.contributors.structure=Structure designed by %s
+
 kubatech.gui.tooltip.dynamic_inventory.identical_slots=There are %d identical slots
 kubatech.gui.tooltip.dynamic_inventory.empty_slot=Empty slot
 kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_types=Remaining seed types: %d

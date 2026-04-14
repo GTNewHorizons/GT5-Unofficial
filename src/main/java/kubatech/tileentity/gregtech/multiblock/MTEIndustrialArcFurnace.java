@@ -3,8 +3,6 @@ package kubatech.tileentity.gregtech.multiblock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorKuba;
-import static gregtech.api.enums.GTAuthors.AuthorPxx500;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -24,6 +22,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
 import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeDetectorHatch;
 import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeHatch;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -360,7 +359,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     + BLAST_MODE_POWER_MULTIPLIER
                     + EnumChatFormatting.GRAY
                     + "x power cost")
-            .addInfo("-------------------------------Ore Mode----------------------------------")
+            .addInfo("--------------------------------Ore Mode----------------------------------")
             .addInfo("Quickly process metallic ores!")
             .addInfo(
                 "Startup time: " + EnumChatFormatting.RED
@@ -388,8 +387,6 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             .addMaintenanceHatch("Any Casing", 1)
             .addOtherStructurePart("Electrode Hatch", "Any Casing", 1)
             .addOtherStructurePart("Electrode Sensor Hatch", "Any Casing", 1)
-            .addAuthors(AuthorKuba, AuthorPxx500)
-            .addStructureAuthors(EnumChatFormatting.LIGHT_PURPLE + "Sol_IX")
             .toolTipFinisher();
         return tt;
     }
@@ -951,9 +948,13 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     }
 
     @Override
-    protected String[] getCreditsText() {
-        return new String[] { "Implemented by " + GTAuthors.AuthorKuba, "Designed by " + GTAuthors.AuthorPxx500,
-            "Structure designed by " + EnumChatFormatting.LIGHT_PURPLE + "Sol_IX" };
+    protected @NotNull String[] getCreditsText() {
+        return new String[] {
+            translateToLocalFormatted("kubatech.gui.tooltip.contributors.added", GTAuthors.AuthorKuba),
+            translateToLocalFormatted("kubatech.gui.tooltip.contributors.design", GTAuthors.AuthorPxx500),
+            translateToLocalFormatted(
+                "kubatech.gui.tooltip.contributors.structure",
+                EnumChatFormatting.LIGHT_PURPLE + "Sol_IX") };
     }
 
 }

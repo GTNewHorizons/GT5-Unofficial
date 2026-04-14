@@ -23,6 +23,7 @@ package kubatech.api.implementations;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static kubatech.api.Variables.ln4;
 import static kubatech.api.gui.KubaTechUITextures.PICTURE_KUBATECH_LOGO;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -277,8 +278,9 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
         return new KubaTechGTMultiBlockBaseGUI<>(this);
     }
 
-    protected String[] getCreditsText() {
-        return new String[] { "Added by " + GTAuthors.AuthorKuba, };
+    protected @NotNull String[] getCreditsText() {
+        return new String[] {
+            translateToLocalFormatted("kubatech.gui.tooltip.contributors.added", GTAuthors.AuthorKuba), };
     }
 
     @Override
