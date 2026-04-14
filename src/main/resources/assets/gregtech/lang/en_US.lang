@@ -1709,11 +1709,14 @@ GT5U.MBTT.SuperChest=Super/Quantum Chest
 
 gt.multiblock.DieselEngine.machine_type=Combustion Generator, LCE
 gt.multiblock.DieselEngine.desc1=Supply Diesel Fuels and %s of Lubricant per hour to run
+gt.multiblock.DieselEngine.desc1_1=Supply High Rating Fuels and %s of Lubricant per hour to run
 gt.multiblock.DieselEngine.desc2=Supply %s of Oxygen to boost output (optional)
+gt.multiblock.DieselEngine.desc2_1=Supply %s of Liquid Oxygen to boost output (optional)
 gt.multiblock.DieselEngine.default_output=Default: Produces %s at %s fuel efficiency
 gt.multiblock.DieselEngine.boosted_output=Boosted: Produces %s at %s fuel efficiency
 gt.multiblock.DieselEngine.wait_power=You need to wait for it to reach %s to output full power
 gt.multiblock.DieselEngine.intake_warning=Engine Intake Casings must not be obstructed in front (only air blocks)
+gt.multiblock.DieselEngine.intake_warning2=Engine Intake Casings must not be obstructed on top (only air blocks)
 gt.multiblock.DieselEngine.gear_box_inner=Inner 2 blocks
 gt.multiblock.DieselEngine.engine_intake_ring=8x, ring around controller
 gt.multiblock.DieselEngine.maintenance_hatch=One of the casings next to a Gear Box
@@ -1721,6 +1724,47 @@ gt.multiblock.DieselEngine.muffler_hatch=Top middle back, above the rear Gear Bo
 gt.multiblock.DieselEngine.diesel_fuel=Diesel Fuel, next to a Gear Box
 gt.multiblock.DieselEngine.lubricant=Lubricant, next to a Gear Box
 gt.multiblock.DieselEngine.oxygen_optional=Oxygen, optional, next to a Gear Box
+
+gt.multiblock.ThermalBoiler.desc1=Uses the heat from §chot fluids§7 to evaporate water into §rsteam
+gt.multiblock.ThermalBoiler.desc2=Filters raw materials from §clava§7 and §cpahoehoe lava
+gt.multiblock.ThermalBoiler.desc3=Requires a Lava Filter in the controller slot for byproducts
+gt.multiblock.ThermalBoiler.desc4=Explodes after 10s if it runs out of water
+
+gt.multiblock.HeatExchanger.desc1=Inputs are §cLava§7, §cHot Coolant§7, or §cHot Solar Salt
+gt.multiblock.HeatExchanger.desc2=Outputs are §9Pahoehoe Lava§7, §9IC2 Coolant§7, or §9Cold Solar Salt
+gt.multiblock.HeatExchanger.desc3=Converts distilled water into §rSteam§7 or §rSH Steam§7 in the process
+gt.multiblock.HeatExchanger.desc4=Outputs §rSH Steam§7 if the input rate of hot fluid is above a certain §dthreshold
+gt.multiblock.HeatExchanger.desc5=Explodes after 100s if it runs out of distilled water
+gt.multiblock.HeatExchanger.lava=§cLava§7 | SH Threshold §d1,000 %s/s§7 | Max Input §c2,000 %s/s§7 | Max Output §r8,000 %s/t SH Steam
+gt.multiblock.HeatExchanger.hotcoolant=§cHot Coolant§7 | SH Threshold §d800 %s/s§7 | Max Input §c1,600 %s/s§7 | Max Output §r16,000 %s/t SH Steam
+gt.multiblock.HeatExchanger.hotsolarsalt=§cHot Solar Salt§7 | SH Threshold §d160 %s/s§7 | Max Input §c320 %s/s§7 | Max Output §r16,000 %s/t SH Steam
+gt.multiblock.HeatExchanger.throttle1=A circuit in the controller lowers the SH threshold at the cost of steam
+gt.multiblock.HeatExchanger.throttle2=§d-3.75%§7 SH Threshold and §r-1.5%§7 steam output per circuit over 1
+
+gt.multiblock.AdvHeatExchanger.desc1=Equivalent to 32 Large Heat Exchangers
+gt.multiblock.AdvHeatExchanger.desc2=Inputs are §cLava§7, §cHot Coolant§7, or §cHot Solar Salt
+gt.multiblock.AdvHeatExchanger.desc3=Outputs are §9Pahoehoe Lava§7, §9IC2 Coolant§7, or §9Cold Solar Salt
+gt.multiblock.AdvHeatExchanger.desc4=Converts distilled water into §rSteam§7 or §rSH Steam§7 in the process
+gt.multiblock.AdvHeatExchanger.desc5=Outputs §rSH Steam§7 if the input rate of hot fluid is above a certain §dthreshold
+gt.multiblock.AdvHeatExchanger.desc6=Explodes immediately if it runs out of distilled water
+gt.multiblock.AdvHeatExchanger.lava=§cLava§7 | SH Threshold §d32,000 %s/s§7 | Max Input §c64,000 %s/s§7 | Max Output §r256,000 %s/t SH Steam
+gt.multiblock.AdvHeatExchanger.hotcoolant=§cHot Coolant§7 | SH Threshold §d25,600 %s/s§7 | Max Input §c51,200 %s/s§7 | Max Output §r512,000 %s/t SH Steam
+gt.multiblock.AdvHeatExchanger.hotsolarsalt=§cHot Solar Salt§7 | SH Threshold §d5,120 %s/s§7 | Max Input §c10,240 %s/s§7 | Max Output §r512,000 %s/t SH Steam
+gt.multiblock.AdvHeatExchanger.throttle1=A circuit in the controller lowers the SH threshold at the cost of steam
+gt.multiblock.AdvHeatExchanger.throttle2=§d-3.75%§7 SH Threshold and §r-1.5%§7 steam output per circuit over 1
+
+gt.multiblock.ExtremeHeatExchanger.desc1=Inputs are §cLava§7, §cHot Coolant§7, §cHot Solar Salt§7, or §cPlasma
+gt.multiblock.ExtremeHeatExchanger.desc2=Outputs are §9Pahoehoe Lava§7, §9IC2 Coolant§7, §9Cold Solar Salt§7, or §9Molten Metal
+gt.multiblock.ExtremeHeatExchanger.desc3=Converts distilled water into §rSH Steam§7 or §rSC Steam§7 in the process
+gt.multiblock.ExtremeHeatExchanger.desc4=Outputs §rSC Steam§7 if the input rate of hot fluid is above a certain §dthreshold
+gt.multiblock.ExtremeHeatExchanger.desc5=Explodes immediately if it runs out of distilled water
+gt.multiblock.ExtremeHeatExchanger.lava=§cLava§7 | SC Threshold §d80,000 %s/s§7 | Max Input §c160,000 %s/s§7 | Max Output §r640,000 %s/t SC Steam
+gt.multiblock.ExtremeHeatExchanger.hotcoolant=§cHot Coolant§7 | SC Threshold §d8,000 %s/s§7 | Max Input §c16,000 %s/s§7 | Max Output §r160,000 %s/t SC Steam
+gt.multiblock.ExtremeHeatExchanger.hotsolarsalt=§cHot Solar Salt§7 | SC Threshold §d1,600 %s/s§7 | Max Input §c3,200 %s/s§7 | Max Output §r160,000 %s/t SC Steam
+gt.multiblock.ExtremeHeatExchanger.plasma1=§cPlasma§7 always outputs §rDense SC Steam§7 regardless of input rate
+gt.multiblock.ExtremeHeatExchanger.plasma2=The max input and output rates depend on the plasma's density (EU/L)
+gt.multiblock.ExtremeHeatExchanger.throttle1=A circuit in the controller lowers the SC threshold at the cost of steam
+gt.multiblock.ExtremeHeatExchanger.throttle2=§d-1.5%§7 SC Threshold and §r-1.5%§7 steam output per circuit over 1
 
 GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
 
@@ -3399,6 +3443,7 @@ GT5U.nei.purified_water.grade_3.2=Returned in amount equivalent to consumed floc
 GT5U.nei.purified_water.grade_4.0=+%s pH/stack
 GT5U.nei.purified_water.grade_4.1=%s pH/1000L
 GT5U.nei.cauldron.consumed=Consumed per operation
+GT5U.nei.foundry_module.chassis_tier=Chassis must match Foundry Tier!
 
 
 GT5U.config.colormodulation=Color Modulator
@@ -5820,6 +5865,8 @@ GT5U.gui.button.vm.whitelist=Whitelist - Unselected ores will be §4voided
 GT5U.gui.button.vm.blacklist=Blacklist - Selected ores will be §4voided
 GT5U.gui.button.vm.select=Select all ores
 GT5U.gui.button.vm.deselect=Deselect all ores
+GT5U.gui.button.vm.tt.void=§cWill be voided
+GT5U.gui.button.vm.tt.novoid=§aWill not be voided
 
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pickup this item to see the recipe in NEI
@@ -6718,6 +6765,7 @@ GT5U.scanner.chunk_info_3=§f%s: §6%sL
 GT5U.scanner.chunk_info_4=Nothing: §60L
 GT5U.tooltip.drone_remote_disconnected=Shift right click an active drone centre to connect
 GT5U.tooltip.drone_remote_connected=Connected to centre: %s, %s, %s, on dim%s
+GT5U.tooltip.drone_remote_not_found=Drone Centre at x: %s, y: %s, z: %s in dim%s was not found!
 
 # info data
 GT5U.infodata.no_network=No Network
@@ -7623,8 +7671,10 @@ gt.blockcasings12.9.name=Vibration-Safe Casing
 gt.blockcasings12.10.name=Alchemically Resistant Thaumium Casing
 gt.blockcasings12.11.name=Alchemically Inert Void Casing
 gt.blockcasings12.12.name=Alchemically Immune Ichorium Casing
-
 gt.blockcasings12.13.name=Mixer Casing
+gt.blockcasings12.14.name=Forming Core
+
+
 gt.blockcasings13.0.name=Cable Casing
 gt.blockcasings13.1.name=Graphite Moderator Casing
 gt.blockcasings13.2.name=Insulated Fluid Pipe Casing

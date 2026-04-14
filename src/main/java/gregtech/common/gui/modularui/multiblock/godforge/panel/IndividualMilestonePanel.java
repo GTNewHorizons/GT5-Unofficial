@@ -24,6 +24,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.google.common.math.LongMath;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Milestones;
@@ -85,6 +86,7 @@ public class IndividualMilestonePanel {
             .style(EnumChatFormatting.GOLD)
             .alignment(Alignment.CENTER)
             .asWidget()
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
             .alignX(0.5f)
             .marginBottom(16));
 
@@ -155,6 +157,7 @@ public class IndividualMilestonePanel {
             .alignment(Alignment.CENTER)
             .scale(0.7f)
             .asWidget()
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
             .width(140)
             .alignX(0.5f);
     }
