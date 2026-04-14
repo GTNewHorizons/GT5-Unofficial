@@ -132,6 +132,7 @@ public class LanthanidesRecipeMaps {
             ret.addAll(Arrays.asList(recipe.mInputs));
             return ret.toArray(new ItemStack[0]);
         })
+        .neiHandlerInfo(builder -> builder.setHeight(140))
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
         .progressBarPos(108, 22)
         .neiTransferRect(100, 22, 28, 18)
