@@ -3493,6 +3493,8 @@ GT5U.hatch.outputme.cacheMode.true=Cache Mode §cOn§r
 GT5U.hatch.outputme.cacheMode.false=Cache Mode §aOff§r
 GT5U.hatch.outputme.cacheMode.desc=Stores to the internal cell instead of to the ME Network.
 GT5U.hatch.outputme.cache_capacity_label=Current cache capacity: §e%s§r
+GT5U.hatch.outputme.toggle_checking=Toggle Checking Mode
+GT5U.hatch.outputme.toggle_caching=Toggle Caching Mode
 
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
