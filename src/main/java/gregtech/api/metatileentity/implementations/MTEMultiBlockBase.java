@@ -2976,7 +2976,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public void setMachineMode(int index) {
+        // Hacky solution. Opening the GUI runs this method
+        // The machineMode and index are likely to be the same
+        // Should be solved when MTEs migrate to MUI2
+        if (machineMode == index) return;
+
         machineMode = index;
+        // The machine is likely using a different recipemap now
+        // Clear the cached recipe
+        setSingleRecipeCheck(null);
     }
 
     @Override
@@ -3029,7 +3037,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public boolean supportsSingleRecipeLocking() {
-        return false;
+        return true;
     }
 
     @Override
