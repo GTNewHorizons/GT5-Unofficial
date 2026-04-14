@@ -613,6 +613,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture TT_OVERLAY_SLOT_RACK = UITexture.builder()
+        .location(MODID, "gui/overlay_slot/rack")
+        .canApplyTheme()
+        .fullImage()
+        .build();
+
     public static final UITexture OVERLAY_BUTTON_TESLA_TOWER_CHART = UITexture.builder()
         .location(MODID, "gui/overlay_button/tesla_tower_chart")
         .build();
@@ -1235,7 +1241,6 @@ public final class GTGuiTextures {
         .adaptable(1)
         .canApplyTheme()
         .build();
-
     private static final SteamTextureRegisterer BUTTON_STEAM = SteamTextureRegisterer.builder()
         .location("gui/button/%s")
         .imageSize(18, 18)
@@ -1402,10 +1407,16 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_WIRELESS_REBALANCE = fullImage(
         KekzCore.MODID,
         "gui/overlay_button/wireless_rebalance");
-    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_ON = UITexture
-        .fullImage(MODID, "gui/overlay_button/power_switch_on");
-    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_OFF = UITexture
-        .fullImage(MODID, "gui/overlay_button/power_switch_off");
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_ON = UITexture.builder()
+        .location(MODID, "gui/overlay_button/power_switch_on")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_OFF = UITexture.builder()
+        .location(MODID, "gui/overlay_button/power_switch_off")
+        .fullImage()
+        .canApplyTheme()
+        .build();
     public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_DISABLED = UITexture
         .fullImage(MODID, "gui/overlay_button/power_switch_disabled");
     public static final UITexture TT_OVERLAY_BUTTON_ARROW_BLUE_UP = UITexture
@@ -1420,7 +1431,16 @@ public final class GTGuiTextures {
         .fullImage(MODID, "gui/overlay_button/rainbow_spiral");
     public static final UITexture TT_OVERLAY_BUTTON_STATISTICS = UITexture
         .fullImage(MODID, "gui/overlay_button/statistics");
-    public static final UITexture TT_OVERLAY_BUTTON_HEAT_ON = UITexture.fullImage(MODID, "gui/overlay_button/heat_on");
+    public static final UITexture TT_OVERLAY_BUTTON_HEAT_ON = UITexture.builder()
+        .location(MODID, "gui/overlay_button/heat_on")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture TT_OVERLAY_BUTTON_HEAT_OFF = UITexture.builder()
+        .location(MODID, "gui/overlay_button/heat_off")
+        .fullImage()
+        .canApplyTheme()
+        .build();
     public static final UITexture TT_OVERLAY_BUTTON_INPUT_SEPARATION = UITexture
         .fullImage(MODID, "gui/overlay_button/input_separation_on");
     public static final UITexture TT_OVERLAY_BUTTON_INPUT_SEPARATION_OFF = UITexture
@@ -1566,6 +1586,11 @@ public final class GTGuiTextures {
         .name(GTTextureIds.PICTURE_INTERGALACTIC_LOGO)
         .build();
     public static final UITexture PICTURE_TECTECH_LOGO = UITexture.fullImage(MODID, "gui/picture/tectech_logo");
+    public static final UITexture TT_PICTURE_TECTECH_LOGO = UITexture.builder()
+        .location(MODID, "gui/picture/tectech_logo")
+        .fullImage()
+        .canApplyTheme()
+        .build();
     public static final UITexture PICTURE_GODFORGE_LOGO = UITexture.fullImage(MODID, "gui/picture/gorge_logo");
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
@@ -1851,6 +1876,11 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
     public static final UITexture PICTURE_HEAT_SINK = UITexture.builder()
+        .location(MODID, "gui/picture/heat_sink")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture TT_PICTURE_HEAT_SINK = UITexture.builder()
         .location(MODID, "gui/picture/heat_sink")
         .fullImage()
         .canApplyTheme()
