@@ -227,8 +227,7 @@ public class BlockThaumiumReinforcedJar extends BlockJar {
                 aspect.writeToNBT(droppedLabel.getTagCompound());
                 drops.add(droppedLabel);
             }
-        } else if (te instanceof TileEntityThaumiumReinforcedVoidJar) {
-            final TileEntityThaumiumReinforcedVoidJar ite = (TileEntityThaumiumReinforcedVoidJar) te;
+        } else if (te instanceof TileEntityThaumiumReinforcedVoidJar ite) {
             if (ite.aspectFilter != null) {
                 final ItemStack droppedLabel = new ItemStack(ConfigItems.itemResource, 1, 13);
                 droppedLabel.setTagCompound(new NBTTagCompound());

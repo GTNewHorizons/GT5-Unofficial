@@ -508,7 +508,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         ItemStack itemStack = new ItemStack(key.item(), 1, key.damage());
         itemStack.setTagCompound(key.nbt());
 
-        return new ItemDisplayWidget().background(IDrawable.EMPTY)
+        return new ItemDisplayWidget().disableThemeBackground(true)
+            .disableHoverThemeBackground(true)
             .displayAmount(false)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .item(itemStack)
@@ -562,7 +563,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private FluidDisplayWidget createFluidDrawable(FluidStack fluidStack) {
-        return new FluidDisplayWidget().background(IDrawable.EMPTY)
+        return new FluidDisplayWidget().disableThemeBackground(true)
+            .disableHoverThemeBackground(true)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .displayAmount(false)
             .value(fluidStack)

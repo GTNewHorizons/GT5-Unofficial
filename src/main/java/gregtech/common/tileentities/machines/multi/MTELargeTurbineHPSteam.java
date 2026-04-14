@@ -57,7 +57,7 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbine {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Steam Turbine")
+        tt.addMachineType("Steam Turbine, LST-HP")
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Outputs Steam as well as producing power")
             .addInfo("Power output depends on turbine and fitting")
