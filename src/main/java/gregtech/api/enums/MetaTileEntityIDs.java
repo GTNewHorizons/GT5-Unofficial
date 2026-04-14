@@ -1805,6 +1805,7 @@ public enum MetaTileEntityIDs {
     ElectricImplosionCompressor(15563),
     IntegratedOreFactory(15564),
     CryogenicFreezer(15565),
+    IndustrialMixer(15566),
     ENTROPIC_PROCESSOR(15750),
     DECAY_WAREHOUSE(15751),
     LATEX(15752),
