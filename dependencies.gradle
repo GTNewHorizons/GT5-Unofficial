@@ -36,14 +36,14 @@
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.4.34:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.8.89-GTNH:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.8.91-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.9.50:dev")
     api("com.falsepattern:chunkapi-mc1.7.10:0.8.1:dev")
     api("com.falsepattern:endlessids-mc1.7.10:1.7.1:dev")
     api("com.github.GTNewHorizons:ModularUI:1.3.2:dev")
-    api("com.github.GTNewHorizons:ModularUI2:2.3.55-1.7.10:dev")
+    api("com.github.GTNewHorizons:ModularUI2:2.3.56-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.19.22:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-893-GTNH:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-894-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.72-gtnh:dev")
     api("com.github.GTNewHorizons:Postea:1.2.5:dev")
 
@@ -63,7 +63,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.10.23:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.11.13:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.4.21-GTNH:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.12.29-GTNH:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.12.31-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.17.26:dev") { transitive = false }
 
     // Required to use Blast Furnace and Smoker Recipe maps from EFR.
@@ -78,20 +78,20 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Hardcore-Ender-Expansion:1.12.21-GTNH:dev") { transitive = false }
 
     implementation("com.github.GTNewHorizons:TinkersConstruct:1.14.52-GTNH:dev")
-    compileOnly("com.github.GTNewHorizons:StorageDrawers:2.2.18-GTNH:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:StorageDrawers:2.2.19-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:ArchitectureCraft:1.12.10:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Chisel:2.17.20-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.4.3:dev") { transitive = false }
     compileOnly rfg.deobf("curse.maven:cofh-core-69162:2388751")
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.7.7:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
-    implementation("com.github.GTNewHorizons:Hodgepodge:2.7.117:dev")
+    implementation("com.github.GTNewHorizons:Hodgepodge:2.7.118:dev")
     compileOnly('com.github.GTNewHorizons:Botania:1.13.16-GTNH:dev') { transitive = false }
     compileOnly("com.github.GTNewHorizons:Natura:2.8.18:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.5.8-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
     compileOnly rfg.deobf('curse.maven:minefactory-reloaded-66672:2366150')
-    compileOnly("com.github.GTNewHorizons:OpenComputers:1.12.31-GTNH:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:OpenComputers:1.12.33-GTNH:dev") {transitive = false}
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     compileOnlyApi rfg.deobf('curse.maven:advsolar-362768:2885953')
     compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.41-GTNH:dev') {transitive =  false}
@@ -111,7 +111,7 @@ dependencies {
     // For testing forestry integration (iApiary, combs, tree growth simulator)
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.11.13:dev")
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.18.0:dev')
-    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.10.7-GTNH:dev')
+    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.10.8-GTNH:dev')
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.6.24:dev')
 
     // For testing Galacticraft integration (GTNH intergalactic, Ross, etc)
@@ -141,10 +141,10 @@ dependencies {
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Electro-Magic-Tools:1.7.20:dev") { transitive = false }
 
     // For testing ctm
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.1.16:dev') { transitive = false }
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.1.17:dev') { transitive = false }
 
     // Speeds up mod identification and loading in dev
-    runtimeOnlyNonPublishable(rfg.deobf("com.github.GTNewHorizons:CoreTweaks:0.3.4.0-GTNH"))
+    runtimeOnlyNonPublishable(rfg.deobf("com.github.GTNewHorizons:CoreTweaks:0.3.4.1-GTNH"))
 
     // For testing involving the quantum computer
     // runtimeOnlyNonPublishable(deobf('https://forum.industrial-craft.net/core/attachment/4519-gravisuite-1-7-10-2-0-3-jar'))
