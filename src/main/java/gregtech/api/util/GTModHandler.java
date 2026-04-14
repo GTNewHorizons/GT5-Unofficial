@@ -1663,6 +1663,8 @@ public class GTModHandler {
             if (recipe instanceof ShapelessOreRecipe) continue;
             if (recipe instanceof IGTCraftingRecipe) continue;
 
+            if (!recipe.matches(craftMatrix, DW)) continue;
+
             final ItemStack output = recipe.getCraftingResult(craftMatrix);
 
             if (output == null || output.stackSize <= 0) {
@@ -1678,10 +1680,8 @@ public class GTModHandler {
             if (output.getMaxDamage() <= 0) continue;
             if (output.getMaxStackSize() != 1) continue;
 
-            if (recipe.matches(craftMatrix, DW)) {
-                outputList.add(output);
-                if (deleteFromList) iterator.remove();
-            }
+            outputList.add(output);
+            if (deleteFromList) iterator.remove();
         }
 
         return outputList;
