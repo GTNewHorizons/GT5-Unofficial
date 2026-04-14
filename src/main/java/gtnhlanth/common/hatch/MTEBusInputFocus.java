@@ -28,11 +28,11 @@ public class MTEBusInputFocus extends MTEHatchNbtConsumable {
     private static final int INPUT_SLOTS = 64;
 
     public MTEBusInputFocus(int id, String name, String nameRegional) {
-        super(id, name, nameRegional, 0, INPUT_SLOTS, "Input Bus for Foci", true);
+        super(id, name, nameRegional, 0, INPUT_SLOTS, "Input Bus for Foci");
     }
 
     public MTEBusInputFocus(String name, String[] descriptionArray, ITexture[][][] textures) {
-        super(name, 0, INPUT_SLOTS, descriptionArray, true, textures);
+        super(name, 0, INPUT_SLOTS, descriptionArray, textures);
     }
 
     @Override
