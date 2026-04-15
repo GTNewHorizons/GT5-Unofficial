@@ -58,12 +58,12 @@ public class MTELargeBoilerSteel extends MTELargeBoilerBase {
     }
 
     @Override
-    protected long getMaxInternalWater() {
+    public long getMaxInternalWater() {
         return 64000L;
     }
 
     @Override
-    protected int getMaxCooldownTicks() {
+    public int getMaxCooldownTicks() {
         return 2000;
     }
 }

@@ -18,6 +18,8 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 
+import gregtech.common.gui.modularui.multiblock.MTELargeBoilerGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -85,9 +87,9 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     private final IStructureDefinition<MTELargeBoilerBase> structureDefinition;
     private final int superToNormalSteam = 3;
 
-    private int cooldownTicksLeft = 0;
-    private boolean comboFuelThisCycle = false;
-    private long internalWater = 0L;
+    public int cooldownTicksLeft = 0;
+    public boolean comboFuelThisCycle = false;
+    public long internalWater = 0L;
 
     protected MTELargeBoilerBase(int aID, String aName, String aNameRegional, Casings casing, Casings pipeCasing,
         Casings fireboxCasing, int eut, int efficiencyIncrease, boolean isSuperheated, int pollutionPerSecond) {
@@ -197,7 +199,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         return efficiencyIncrease;
     }
 
-    boolean isSuperheated() {
+    public boolean isSuperheated() {
         return isSuperheated;
     }
 
@@ -600,7 +602,12 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             (int) (pollutionPerSecond * (1 - GTMod.proxy.mPollutionReleasedByThrottle * integratedCircuitConfig)));
     }
 
-    protected abstract long getMaxInternalWater();
+    public abstract long getMaxInternalWater();
 
-    protected abstract int getMaxCooldownTicks();
+    public abstract int getMaxCooldownTicks();
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTELargeBoilerGui(this);
+    }
 }

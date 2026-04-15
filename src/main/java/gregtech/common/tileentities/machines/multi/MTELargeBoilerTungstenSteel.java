@@ -58,12 +58,12 @@ public class MTELargeBoilerTungstenSteel extends MTELargeBoilerBase {
     }
 
     @Override
-    protected long getMaxInternalWater() {
+    public long getMaxInternalWater() {
         return 256000L;
     }
 
     @Override
-    protected int getMaxCooldownTicks() {
+    public int getMaxCooldownTicks() {
         return 3000;
     }
 }

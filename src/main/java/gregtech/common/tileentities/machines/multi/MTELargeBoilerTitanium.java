@@ -58,12 +58,12 @@ public class MTELargeBoilerTitanium extends MTELargeBoilerBase {
     }
 
     @Override
-    protected long getMaxInternalWater() {
+    public long getMaxInternalWater() {
         return 128000L;
     }
 
     @Override
-    protected int getMaxCooldownTicks() {
+    public int getMaxCooldownTicks() {
         return 2400;
     }
 }
