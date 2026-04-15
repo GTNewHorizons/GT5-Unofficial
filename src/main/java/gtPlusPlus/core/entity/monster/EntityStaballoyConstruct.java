@@ -66,7 +66,6 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
         int max = 3;
         int range = max - min + 1;
 
-
         for (k = 0; k < j; ++k) {
             this.func_145778_a(Item.getItemFromBlock(Blocks.yellow_flower), 1, 0.0F);
         }
@@ -74,7 +73,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
         for (k = 0; k < j; ++k) k = 1 + this.rand.nextInt(1);
 
         for (int l = 0; l < k; ++l) {
-            int rand = (int)(Math.random() * range) + min;
+            int rand = (int) (Math.random() * range) + min;
             this.entityDropItem(MaterialsAlloy.STABALLOY.getIngot(rand), 0.0f);
         }
     }
