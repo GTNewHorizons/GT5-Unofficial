@@ -20,7 +20,9 @@ public abstract class EIGMode {
 
     public abstract int getUIIndex();
 
-    public abstract String getName();
+    public abstract String getId();
+
+    public abstract String getNameKey();
 
     public abstract int getMinVoltageTier();
 

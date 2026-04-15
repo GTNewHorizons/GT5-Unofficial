@@ -1493,13 +1493,6 @@ tt.keyphrase.Hysteresis_low_set_to=Hysteresis low set to %s%%
 tt.keyphrase.Tesla_radius_set_to=Tesla radius set to %sm
 tt.keyphrase.Sending_power=Sending power!
 tt.keyphrase.Receiving_power=Receiving power!
-tt.keyphrase.Stored_energy=Stored energy
-tt.keyphrase.Stored_EU=Stored EU
-tt.keyphrase.Average_IO=Average I/O
-tt.keyphrase.Average_IO_(max)=Voltage I/O (max)
-tt.keyphrase.Average_IO_max=Voltage I/O max
-tt.keyphrase.Amperage_IO_(max)=Amperage I/O (max)
-tt.keyphrase.Side_capabilities=Side capabilities
 tt.keyphrase.Ass_line_recipe=Assembly Line Recipe
 
 tt.cover.ender_fluid_link.fill=Ender Filling Engaged!
@@ -1901,7 +1894,22 @@ tt.tooltip.theta_movement=: Theta Movement
 tt.tooltip.cosmic_mark=: Cosmic
 tt.tooltip.godforge_mark=: Project Godforge
 
-tt.chat.debug.generator=Laser mode: %s
+tt.chat.debug.generator.on=Laser mode: ON
+tt.chat.debug.generator.off=Laser mode: OFF
+tt.chat.eu_meter.position=§b§m-----§r§b X:%s Y:%s Z:%s D:%s S:%s §m-----
+tt.chat.eu_meter.stored_energy=Stored energy: §e%s§r/§a%s
+tt.chat.eu_meter.stored_eu=Stored EU: §e%s§r/§a%s
+tt.chat.eu_meter.average_io=Average I/O: §e%s§r/§e%s
+tt.chat.eu_meter.average_io_(max)=Voltage I/O (max): §6%s§r/§6%s
+tt.chat.eu_meter.average_io_max=Voltage I/O max: §c%s§r/§c%s
+tt.chat.eu_meter.amperage_io_(max)=Amperage I/O (max): §6%s§r/§6%s
+tt.chat.eu_meter.side_capabilities.input=Side capabilities: input
+tt.chat.eu_meter.side_capabilities.output=Side capabilities: output
+tt.chat.eu_meter.side_capabilities.io=Side capabilities: input output
+tt.chat.tesla_staff.zapperoni=Zapperoni!
+tt.chat.hatch.data_output.cannot_config=Cannot configure computation on this hatch
+tt.chat.data_bank.wireless.enabled=Wireless mode enabled
+tt.chat.data_bank.wireless.disabled=Wireless mode disabled
 
 GT5U.gui.config.general.debug=Debug
 GT5U.gui.config.general.features=Features

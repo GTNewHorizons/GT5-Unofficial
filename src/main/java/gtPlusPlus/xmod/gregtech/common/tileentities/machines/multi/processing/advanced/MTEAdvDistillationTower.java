@@ -315,7 +315,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (mHeight < 11) {
-            GTUtility.sendChatToPlayer(aPlayer, "Cannot switch mode if not in full height.");
+            GTUtility.sendChatTrans(aPlayer, "gtpp.chat.adv_distillation_tower.too_short");
             return;
         }
         setMachineMode(nextMachineMode());

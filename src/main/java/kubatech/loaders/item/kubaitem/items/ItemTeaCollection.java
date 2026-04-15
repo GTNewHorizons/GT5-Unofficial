@@ -32,7 +32,8 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.stats.Achievement;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -146,8 +147,8 @@ public class ItemTeaCollection extends ItemProxy {
         if (world.isRemote) return stack;
         if (!(entity instanceof EntityPlayerMP)) return stack;
         entity.addChatComponentMessage(
-            new ChatComponentText(
-                EnumChatFormatting.GREEN + StatCollector.translateToLocal("kubaitem.teacollection.mmm")));
+            new ChatComponentTranslation("kubaitem.teacollection.mmm")
+                .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
         entity.triggerAchievement(achievement);
         return stack;
     }

@@ -18,8 +18,13 @@ public class EIGNormalMode extends EIGMode {
     }
 
     @Override
-    public String getName() {
+    public String getId() {
         return "normal";
+    }
+
+    @Override
+    public String getNameKey() {
+        return "kubatech.chat.eig.mode.normal";
     }
 
     @Override

@@ -799,7 +799,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         staticAnimations = !staticAnimations;
         GTUtility.sendChatTrans(
             aPlayer,
-            staticAnimations ? "GT5U.chat.spinmatron.texture.static" : "GT5U.chat.spinmatron.texture.animated");
+            staticAnimations ? "GT5U.chat.turbine.texture.static" : "GT5U.chat.turbine.texture.animated");
         for (MTEHatchTurbine h : validMTEList(this.turbineRotorHatchList)) {
             h.mUsingAnimation = staticAnimations;
         }

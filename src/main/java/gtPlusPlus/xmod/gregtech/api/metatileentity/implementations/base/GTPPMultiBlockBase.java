@@ -21,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -28,6 +29,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluid;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -641,17 +644,15 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public boolean onPlungerRightClick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         int aHatchIndex = 0;
-        GTUtility.sendChatToPlayer(aPlayer, "Trying to clear " + mOutputHatches.size() + " output hatches.");
+        GTUtility.sendChatTrans(aPlayer, "gtpp.chat.multi_base.clear_output_hatch.count", mOutputHatches.size());
         for (MTEHatchOutput hatch : this.mOutputHatches) {
             if (hatch.mFluid != null) {
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    "Clearing " + hatch.mFluid.amount
-                        + "L of "
-                        + hatch.mFluid.getLocalizedName()
-                        + " from hatch "
-                        + aHatchIndex
-                        + ".");
+                    "gtpp.chat.multi_base.clear_output_hatch",
+                    new ChatComponentFluid(hatch.mFluid.amount),
+                    new ChatComponentFluidName(hatch.mFluid),
+                    aHatchIndex);
                 hatch.mFluid = null;
             }
             aHatchIndex++;
@@ -665,10 +666,10 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (supportsVoidProtection() && wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             Set<VoidingMode> allowed = getAllowedVoidingModes();
             setVoidingMode(getVoidingMode().nextInCollection(allowed));
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatComp(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.gui.button.voiding_mode") + " "
-                    + StatCollector.translateToLocal(getVoidingMode().getTransKey()));
+                new ChatComponentTranslation("GT5U.gui.button.voiding_mode").appendText(" ")
+                    .appendSibling(new ChatComponentTranslation(getVoidingMode().getTransKey())));
             return true;
         } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
