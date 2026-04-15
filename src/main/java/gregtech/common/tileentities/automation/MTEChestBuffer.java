@@ -76,13 +76,13 @@ public class MTEChestBuffer extends MTEBuffer {
     }
 
     protected static String getTickRateDesc(int tier) {
-        int tickRate = getTickRate(tier);
+        final int tickRate = getTickRate(tier);
         String timeStr = "";
-        String numStr = "";
+        final String numStr;
         if (maxStacks[tier] > 1) {
-            numStr = maxStacks[tier] + " items";
+            numStr = maxStacks[tier] + " stacks";
         } else {
-            numStr = "1 item";
+            numStr = "1 stack";
         }
         if (tickRate < 20) timeStr = "1/" + 20 / tickRate + " ";
         else if (tickRate > 20) {
