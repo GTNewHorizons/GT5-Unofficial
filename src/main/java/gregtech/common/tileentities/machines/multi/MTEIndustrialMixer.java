@@ -59,7 +59,6 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
     private static final int PARALLEL_PER_TIER = 8;
     private static final float SPEED_INCREASE_TIER = 1f;
     private static final float SPEED_BASIC = 1f;
-    private static final float EU_EFFICIENCY = 1f;
 
     private int glassTier = -1;
 
@@ -212,21 +211,17 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(EU_EFFICIENCY);
-                setSpeedBonus(1F / SPEED_BASIC / (SPEED_INCREASE_TIER + (itemPipeTier + 1)));
-                return super.process();
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return (PARALLEL_PER_TIER * GTUtility.getTier(this.getMaxInputVoltage()));
+    }
+
+    public double getSpeedBonus() {
+        return 1F / (SPEED_INCREASE_TIER + (itemPipeTier + 1));
     }
 
     private int casingAmount;

@@ -224,20 +224,17 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @Override
-            @Nonnull
-            public CheckRecipeResult process() {
-                this.setEuModifier(1.0F - Math.min(0.1F * (MTEMegaOilCracker.this.heatLevel.getTier() + 1), 0.5F));
-                return super.process();
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifierSupplier(this::getEuModifier);
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return Configuration.Multiblocks.megaMachinesMax;
+    }
+
+    public double getEuModifier() {
+        return 1.0F - Math.min(0.1F * (MTEMegaOilCracker.this.heatLevel.getTier() + 1), 0.5F);
     }
 
     public HeatingCoilLevel getCoilLevel() {

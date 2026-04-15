@@ -300,14 +300,8 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                 }
                 return false;
             }
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                setSpeedBonus(1F / speedup);
-                return super.validateRecipe(recipe);
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
     }
 
     @Nonnull
@@ -340,6 +334,10 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     @Override
     public int getMaxParallelRecipes() {
         return 10 * GTUtility.getTier(this.getMaxInputVoltage());
+    }
+
+    public double getSpeedBonus() {
+        return 1F / speedup;
     }
 
     @Override

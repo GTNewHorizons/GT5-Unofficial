@@ -162,15 +162,7 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setSpeedBonus(2f / (1 + coilHeat.getTier()));
-                return super.process();
-            }
-        };
+        return new ProcessingLogic().setSpeedBonusSupplier(this::getSpeedBonus);
     }
 
     @Override
@@ -188,6 +180,10 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
 
     private void setCoilLevel(HeatingCoilLevel aCoilLevel) {
         coilHeat = aCoilLevel;
+    }
+
+    public double getSpeedBonus() {
+        return 2f / (1 + coilHeat.getTier());
     }
 
     @Override

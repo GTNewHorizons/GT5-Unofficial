@@ -153,21 +153,18 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(EU_EFFICIENCY);
-                setSpeedBonus(1F / (SPEED_INCREASE_TIER * itemPipeTier));
-                return super.process();
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifier(EU_EFFICIENCY)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return (PARALLEL_PER_TIER * GTUtility.getTier(this.getMaxInputVoltage()));
+    }
+
+    public double getSpeedBonus() {
+        return 1F / (SPEED_INCREASE_TIER * itemPipeTier);
     }
 
     private int mCasingAmount;
