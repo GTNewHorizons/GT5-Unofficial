@@ -6260,6 +6260,7 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
+        // RC Tank Gauges, Valves and Walls
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.AnyIron, 2))
             .circuit(20)
@@ -6271,17 +6272,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.AnyIron, 2),
-                new ItemStack(Blocks.glass_pane, 2, 0))
-            .circuit(21)
-            .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 2L, 1))
-            .duration(40 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.AnyIron, 2),
-                getModItem(TinkerConstruct.ID, "GlassPane", 2L, 0))
+                new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 2L, 1))
             .duration(40 * SECONDS)
@@ -6309,17 +6300,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2),
-                new ItemStack(Blocks.glass_pane, 2, 0))
-            .circuit(21)
-            .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 2L, 14))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_MV / 2)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2),
-                getModItem(TinkerConstruct.ID, "GlassPane", 2L, 0))
+                new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 2L, 14))
             .duration(20 * SECONDS)
@@ -6347,17 +6328,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2),
-                new ItemStack(Blocks.glass_pane, 2, 0))
-            .circuit(21)
-            .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 2L, 1))
-            .duration(40 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2),
-                getModItem(TinkerConstruct.ID, "GlassPane", 2L, 0))
+                new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 2L, 1))
             .duration(40 * SECONDS)
@@ -6385,17 +6356,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2),
-                new ItemStack(Blocks.glass_pane, 2, 0))
-            .circuit(21)
-            .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 2L, 4))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_HV / 2)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2),
-                getModItem(TinkerConstruct.ID, "GlassPane", 2L, 0))
+                new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 2L, 4))
             .duration(20 * SECONDS)
@@ -6423,17 +6384,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 2),
-                new ItemStack(Blocks.glass_pane, 2, 0))
-            .circuit(21)
-            .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 2L, 7))
-            .duration(40 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 2),
-                getModItem(TinkerConstruct.ID, "GlassPane", 2L, 0))
+                new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 2L, 7))
             .duration(40 * SECONDS)
@@ -6461,17 +6412,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2),
-                new ItemStack(Blocks.glass_pane, 2, 0))
-            .circuit(21)
-            .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 2L, 10))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2),
-                getModItem(TinkerConstruct.ID, "GlassPane", 2L, 0))
+                new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 2L, 10))
             .duration(20 * SECONDS)
@@ -6499,17 +6440,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Palladium, 2),
-                new ItemStack(Blocks.glass_pane, 2, 0))
-            .circuit(21)
-            .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 2L, 13))
-            .duration(40 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Palladium, 2),
-                getModItem(TinkerConstruct.ID, "GlassPane", 2L, 0))
+                new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 2L, 13))
             .duration(40 * SECONDS)
@@ -6537,17 +6468,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 2),
-                new ItemStack(Blocks.glass_pane, 2, 0))
-            .circuit(21)
-            .itemOutputs(getModItem(Railcraft.ID, "machine.eta", 2L, 1))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_IV / 2)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 2),
-                getModItem(TinkerConstruct.ID, "GlassPane", 2L, 0))
+                new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.eta", 2L, 1))
             .duration(20 * SECONDS)
@@ -6575,17 +6496,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2),
-                new ItemStack(Blocks.glass_pane, 2, 0))
-            .circuit(21)
-            .itemOutputs(getModItem(Railcraft.ID, "machine.eta", 2L, 4))
-            .duration(40 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2),
-                getModItem(TinkerConstruct.ID, "GlassPane", 2L, 0))
+                new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.eta", 2L, 4))
             .duration(40 * SECONDS)
@@ -6613,17 +6524,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2),
-                new ItemStack(Blocks.glass_pane, 2, 0))
-            .circuit(21)
-            .itemOutputs(getModItem(Railcraft.ID, "machine.eta", 2L, 7))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2),
-                getModItem(TinkerConstruct.ID, "GlassPane", 2L, 0))
+                new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.eta", 2L, 7))
             .duration(20 * SECONDS)
