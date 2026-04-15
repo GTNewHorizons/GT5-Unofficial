@@ -145,6 +145,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     private int durabilityCostThisRun = 1;
     private NBTTagCompound effectState = new NBTTagCompound();
     private double electrodeDamagePercentage = 0d;
+    private GTRecipe fakeRecipeCache = null;
 
     private int didOres = 0;
     private int didOCs = 0;
@@ -741,8 +742,6 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         }
         return result;
     }
-
-    GTRecipe fakeRecipeCache = null;
 
     private GTRecipe fakeRecipe() {
         if (fakeRecipeCache == null) {
