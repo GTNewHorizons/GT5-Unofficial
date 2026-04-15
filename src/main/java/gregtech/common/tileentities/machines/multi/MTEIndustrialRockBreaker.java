@@ -58,7 +58,6 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
     private static final int OFFSET_Z = 1;
 
     private int casingAmount;
-    private static IStructureDefinition<MTEIndustrialRockBreaker> STRUCTURE_DEFINITION = null;
     private boolean needsFluidRefill = false;
 
     private static final String[][] structure = new String[][] {
@@ -67,6 +66,22 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
         { "CCCCCCC", "CEC CDC", "CEC CDC", "CEC CDC", "CCCCCCC" },
         { "CACCCAC", "ABACABA", "ABACABA", "ABACABA", "CCCCCCC" },
         { "  ACA  ", "       ", "       ", "       ", "  ACA  " } };
+
+    private static final IStructureDefinition<MTEIndustrialRockBreaker> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEIndustrialRockBreaker>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addElement('A', ofFrame(Materials.Tungsten))
+        .addElement('B', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass))
+        .addElement(
+            'C',
+            buildHatchAdder(MTEIndustrialRockBreaker.class)
+                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
+                .casingIndex(Casings.ThermalProcessingCasing.textureId)
+                .hint(1)
+                .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.ThermalProcessingCasing.asElement())))
+        .addElement('D', ofChain(isAir(), ofBlockAnyMeta(Blocks.lava, 1)))
+        .addElement('E', ofChain(isAir(), ofAnyWater(false)))
+        .build();
 
     public MTEIndustrialRockBreaker(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -109,23 +124,6 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public IStructureDefinition<MTEIndustrialRockBreaker> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialRockBreaker>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, structure)
-                .addElement('A', ofFrame(Materials.Tungsten))
-                .addElement('B', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass))
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEIndustrialRockBreaker.class)
-                        .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
-                        .casingIndex(Casings.ThermalProcessingCasing.textureId)
-                        .hint(1)
-                        .buildAndChain(
-                            onElementPass(x -> ++x.casingAmount, Casings.ThermalProcessingCasing.asElement())))
-                .addElement('D', ofChain(isAir(), ofBlockAnyMeta(Blocks.lava, 1)))
-                .addElement('E', ofChain(isAir(), ofAnyWater(false)))
-                .build();
-        }
         return STRUCTURE_DEFINITION;
     }
 
