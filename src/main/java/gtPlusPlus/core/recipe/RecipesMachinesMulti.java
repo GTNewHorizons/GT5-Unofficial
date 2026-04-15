@@ -657,9 +657,9 @@ public class RecipesMachinesMulti {
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
-        // Industrial Washer
+        // Ore Washing Plant
         GTModHandler.addCraftingRecipe(
-            ItemList.IndustrialWasher.get(1),
+            ItemList.OreWashingPlant.get(1),
             new Object[] { "PPP", "TCT", "PAP", 'P', MaterialsAlloy.LEAGRISIUM.getPlate(1), 'A',
                 ItemList.Machine_EV_OreWasher, 'T', MaterialsAlloy.TALONITE.getPlate(1), 'C', "circuitData" });
 

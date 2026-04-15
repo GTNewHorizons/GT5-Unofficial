@@ -75,6 +75,9 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
         { "  B  ", "EFDFE", "EFDFE", "EEEEE" }, { "     ", "EFFFE", "EFFFE", "EEEEE" },
         { "  B  ", "EFCFE", "EFCFE", "EEEEE" }, { "AABAA", "AEEEA", "AEEEA", "AEEEA" } };
 
+    // Lazy allocation since ofFrame requires late-registering GTPP MaterialsAlloy
+    private static IStructureDefinition<MTEIndustrialChemicalBath> STRUCTURE_DEFINITION = null;
+
     public MTEIndustrialChemicalBath(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -118,7 +121,8 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     public IStructureDefinition<MTEIndustrialChemicalBath> getStructureDefinition() {
-        IStructureDefinition<MTEIndustrialChemicalBath> STRUCTURE_DEFINITION = StructureDefinition
+        if(STRUCTURE_DEFINITION == null){
+        STRUCTURE_DEFINITION = StructureDefinition
             .<MTEIndustrialChemicalBath>builder()
             .addShape(STRUCTURE_PIECE_MAIN, structure)
             .addElement('A', ofFrame(MaterialsAlloy.AQUATIC_STEEL))
@@ -134,6 +138,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
                     .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.WashPlantCasing.asElement())))
             .addElement('F', ofChain(isAir(), ofAnyWater(true)))
             .build();
+        }
         return STRUCTURE_DEFINITION;
     }
 

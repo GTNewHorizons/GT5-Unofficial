@@ -172,7 +172,7 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialMixer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialMolecularTransformer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialPackager;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialThermalCentrifuge;
-import gregtech.common.tileentities.machines.multi.MTEIndustrialWasher;
+import gregtech.common.tileentities.machines.multi.MTEOreWashingPlant;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialWireMill;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactoryLegacy;
@@ -822,8 +822,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "industrialcentrifuge.controller.tier.single",
                 "Industrial Centrifuge").getStackForm(1));
 
-        ItemList.IndustrialWasher.set(
-            new MTEIndustrialWasher(IndustrialWasher.ID, "industrialwasher.controller.tier.single", "Industrial Washer")
+        ItemList.OreWashingPlant.set(
+            new MTEOreWashingPlant(OreWashingPlant.ID, "orewashingplant.controller.tier.single", "Ore Washing Plant")
                 .getStackForm(1L));
 
         ItemList.IndustrialChemicalBath.set(
