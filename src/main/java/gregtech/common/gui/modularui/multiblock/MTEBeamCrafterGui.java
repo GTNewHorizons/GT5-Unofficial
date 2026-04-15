@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
 
@@ -61,8 +62,12 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
         return new ListWidget<>().widthRel(1)
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .child(new TextWidget<>(guiHeaderKey).marginBottom(18))
-            .child(new TextWidget<>(particleAProgressKey).marginBottom(9))
-            .child(new TextWidget<>(particleBProgressKey).marginBottom(9));
+            .child(
+                new TextWidget<>(particleAProgressKey).marginBottom(9)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+            .child(
+                new TextWidget<>(particleBProgressKey).marginBottom(9)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
     }
 
     private String formatGuiHeader() {

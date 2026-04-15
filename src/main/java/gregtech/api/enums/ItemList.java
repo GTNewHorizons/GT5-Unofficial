@@ -2091,6 +2091,11 @@ public enum ItemList implements IItemContainer {
     ZPM_Coil,
     UV_Coil,
     UHV_Coil,
+    UEV_Coil,
+    UIV_Coil,
+    UMV_Coil,
+    UXV_Coil,
+    MAX_Coil,
 
     Circuit_Parts_ResistorXSMD,
     Circuit_Parts_DiodeXSMD,
@@ -2182,6 +2187,8 @@ public enum ItemList implements IItemContainer {
     CasingThaumium,
     CasingVoid,
     CasingIchorium,
+    CasingMixer,
+    FormingCore,
     EntropicProcessor,
     DecayWarehouse,
     LATEX,
@@ -2813,7 +2820,7 @@ public enum ItemList implements IItemContainer {
     IndustrialExtruder,
     IndustrialWasher,
     IndustrialChemicalBath,
-    IndustrialMaterialPress,
+    IndustrialFormingPress,
     IndustrialBendingMachine,
     IndustrialPrinter,
     IndustrialForgeHammer,
@@ -2827,7 +2834,7 @@ public enum ItemList implements IItemContainer {
     ElectricImplosionCompressor,
     IntegratedOreFactory,
     CryogenicFreezer,
-
+    IndustrialMixer,
     MegaChemicalReactor,
 
     BasicCircuitBoard,
