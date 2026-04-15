@@ -2820,7 +2820,7 @@ public enum ItemList implements IItemContainer {
     IndustrialExtruder,
     IndustrialWasher,
     IndustrialChemicalBath,
-    IndustrialMaterialPress,
+    IndustrialFormingPress,
     IndustrialBendingMachine,
     IndustrialPrinter,
     IndustrialForgeHammer,
