@@ -1437,17 +1437,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.leather, 1, 32767), new ItemStack(Items.lead, 1, 32767))
-            .itemOutputs(new ItemStack(Items.name_tag, 1, 0))
-            .fluidInputs(Materials.Glue.getFluid(1 * HALF_INGOTS))
-            .duration(5 * SECONDS)
-            .eut(8)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                getModItem(NewHorizonsCoreMod.ID, "ArtificialLeather", 1L, 0),
-                new ItemStack(Items.lead, 1, 32767))
+            .itemInputs(new OreDictItemStack("leather", 1), new ItemStack(Items.lead, 1, 32767))
             .itemOutputs(new ItemStack(Items.name_tag, 1, 0))
             .fluidInputs(Materials.Glue.getFluid(1 * HALF_INGOTS))
             .duration(5 * SECONDS)
@@ -1712,17 +1702,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 3),
-                new ItemStack(Items.leather, 1, 32767))
-            .itemOutputs(new ItemStack(Items.book, 1, 0))
-            .fluidInputs(Materials.Glue.getFluid(20))
-            .duration(1 * SECONDS + 12 * TICKS)
-            .eut(8)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 3),
-                getModItem(NewHorizonsCoreMod.ID, "ArtificialLeather", 1L, 0))
+                new OreDictItemStack("leather", 1))
             .itemOutputs(new ItemStack(Items.book, 1, 0))
             .fluidInputs(Materials.Glue.getFluid(20))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -1740,17 +1720,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Paper_Printed_Pages.get(1), new ItemStack(Items.leather, 1, 32767))
-            .itemOutputs(new ItemStack(Items.written_book, 1, 0))
-            .fluidInputs(Materials.Glue.getFluid(20))
-            .duration(1 * SECONDS + 12 * TICKS)
-            .eut(8)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Paper_Printed_Pages.get(1),
-                getModItem(NewHorizonsCoreMod.ID, "ArtificialLeather", 1L, 0))
+            .itemInputs(ItemList.Paper_Printed_Pages.get(1), new OreDictItemStack("leather", 1))
             .itemOutputs(new ItemStack(Items.written_book, 1, 0))
             .fluidInputs(Materials.Glue.getFluid(20))
             .duration(1 * SECONDS + 12 * TICKS)
