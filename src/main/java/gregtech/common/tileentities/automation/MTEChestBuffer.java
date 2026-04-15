@@ -88,7 +88,7 @@ public class MTEChestBuffer extends MTEBuffer {
         else if (tickRate > 20) {
             timeStr = (tickRate / 20) + "th ";
         }
-        return "Moves " + numStr + " every " + timeStr + "second";
+        return numStr + " of 64 items every " + timeStr + "second";
     }
 
     protected static int getTickRate(int tier) {
