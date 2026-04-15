@@ -6161,6 +6161,10 @@ fluid.creosote=Creosote Oil
 fluid.cryotheum=Gelid Cryotheum
 fluid.cyclohexane=Cyclohexane
 fluid.cyclohexanone=Cyclohexanone
+fluid.SodiumPotassium=Sodium Potassium
+fluid.EnrichedBacterialSludge=Enriched Bacterial Sludge
+fluid.FermentedBacterialSludge=Fermented Bacterial Sludge
+fluid.Pollution=Pollution
 
 # Dyes
 fluid.dye.chemical.dyeblack=Chemical Black Dye
