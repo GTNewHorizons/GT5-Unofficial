@@ -14,7 +14,6 @@ import static gregtech.api.enums.Mods.IronTanks;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.OpenComputers;
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -2478,9 +2477,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                new OreDictItemStack("plateAnyIron", 3),
-                ItemList.Component_Minecart_Wheels_Iron.get(2))
+            .itemInputs(new OreDictItemStack("plateAnyIron", 3), ItemList.Component_Minecart_Wheels_Iron.get(2))
             .itemOutputs(new ItemStack(Items.minecart, 1))
             .duration(5 * SECONDS)
             .eut(20)
@@ -2878,9 +2875,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                new OreDictItemStack("cableGt01AnyCopper", 2),
-                ItemList.Casing_MV.get(1))
+            .itemInputs(new OreDictItemStack("cableGt01AnyCopper", 2), ItemList.Casing_MV.get(1))
             .itemOutputs(ItemList.Hull_MV.get(1))
             .fluidInputs(Materials.Polyethylene.getMolten(2 * INGOTS))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -3025,9 +3020,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                new OreDictItemStack("plateAnyIron", 5),
-                new OreDictItemStack("craftingChest", 1))
+            .itemInputs(new OreDictItemStack("plateAnyIron", 5), new OreDictItemStack("craftingChest", 1))
             .itemOutputs(new ItemStack(Blocks.hopper))
             .duration(8 * SECONDS)
             .eut(20)
