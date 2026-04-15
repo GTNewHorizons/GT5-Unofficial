@@ -363,7 +363,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             StatCollector.translateToLocalFormatted(
                 "Total Speed Multiplier: %s%.0f%s %%",
                 YELLOW,
-                getSpeedBonus() * 100,
+                (BASE_SPEED_BONUS + getCoilSpeedBonus()) * 100,
                 RESET));
         data.add(
             StatCollector.translateToLocalFormatted(
@@ -385,7 +385,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     public double getSpeedBonus() {
-        return (BASE_SPEED_BONUS + getCoilSpeedBonus());
+        return 1F / (BASE_SPEED_BONUS + getCoilSpeedBonus());
     }
 
     public double getEUMultiplier() {
