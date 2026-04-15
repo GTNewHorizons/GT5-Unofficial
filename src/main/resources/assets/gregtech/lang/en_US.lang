@@ -6161,6 +6161,10 @@ fluid.creosote=Creosote Oil
 fluid.cryotheum=Gelid Cryotheum
 fluid.cyclohexane=Cyclohexane
 fluid.cyclohexanone=Cyclohexanone
+fluid.SodiumPotassium=Sodium Potassium
+fluid.EnrichedBacterialSludge=Enriched Bacterial Sludge
+fluid.FermentedBacterialSludge=Fermented Bacterial Sludge
+fluid.Pollution=Pollution
 
 # Dyes
 fluid.dye.chemical.dyeblack=Chemical Black Dye
@@ -7683,7 +7687,6 @@ gt.blockcasings12.11.name=Alchemically Inert Void Casing
 gt.blockcasings12.12.name=Alchemically Immune Ichorium Casing
 gt.blockcasings12.13.name=Mixer Casing
 gt.blockcasings12.14.name=Forming Core
-
 
 gt.blockcasings13.0.name=Cable Casing
 gt.blockcasings13.1.name=Graphite Moderator Casing
