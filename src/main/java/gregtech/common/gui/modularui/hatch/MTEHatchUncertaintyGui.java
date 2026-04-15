@@ -3,8 +3,6 @@ package gregtech.common.gui.modularui.hatch;
 import static it.unimi.dsi.fastutil.shorts.ShortArrays.swap;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.awt.*;
-
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
