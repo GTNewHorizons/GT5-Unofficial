@@ -121,23 +121,22 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     public IStructureDefinition<MTEIndustrialChemicalBath> getStructureDefinition() {
-        if(STRUCTURE_DEFINITION == null){
-        STRUCTURE_DEFINITION = StructureDefinition
-            .<MTEIndustrialChemicalBath>builder()
-            .addShape(STRUCTURE_PIECE_MAIN, structure)
-            .addElement('A', ofFrame(MaterialsAlloy.AQUATIC_STEEL))
-            .addElement('B', Casings.ChemicallyInertMachineCasing.asElement())
-            .addElement('C', ofBlock(GregTechAPI.sBlockMetal2, 7))
-            .addElement('D', ofBlock(GregTechAPI.sBlockMetal8, 6))
-            .addElement(
-                'E',
-                buildHatchAdder(MTEIndustrialChemicalBath.class)
-                    .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
-                    .casingIndex(Casings.WashPlantCasing.textureId)
-                    .hint(1)
-                    .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.WashPlantCasing.asElement())))
-            .addElement('F', ofChain(isAir(), ofAnyWater(true)))
-            .build();
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialChemicalBath>builder()
+                .addShape(STRUCTURE_PIECE_MAIN, structure)
+                .addElement('A', ofFrame(MaterialsAlloy.AQUATIC_STEEL))
+                .addElement('B', Casings.ChemicallyInertMachineCasing.asElement())
+                .addElement('C', ofBlock(GregTechAPI.sBlockMetal2, 7))
+                .addElement('D', ofBlock(GregTechAPI.sBlockMetal8, 6))
+                .addElement(
+                    'E',
+                    buildHatchAdder(MTEIndustrialChemicalBath.class)
+                        .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
+                        .casingIndex(Casings.WashPlantCasing.textureId)
+                        .hint(1)
+                        .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.WashPlantCasing.asElement())))
+                .addElement('F', ofChain(isAir(), ofAnyWater(true)))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
