@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
-import java.util.stream.IntStream;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -26,7 +25,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ToolboxSlot;
@@ -149,31 +147,33 @@ public class ToolboxSelectGuiFactory extends AbstractUIFactory<GuiData> {
         }
 
         private static Optional<Integer> getToolboxSlot(EntityPlayer player) {
-            final ImmutableList.Builder<Integer> builder = ImmutableList.builder();
-            builder.add(player.inventory.currentItem);
-
-            final int offhandSlot = Backhand.getOffhandSlot(player);
-            if (offhandSlot != -1) {
-                builder.add(offhandSlot);
-            }
-
-            // Included for players with slippery scroll wheels. Check the entire hotbar if the current item or offhand
-            // both lack a toolbox and use the first one we find.
-            IntStream.rangeClosed(0, InventoryPlayer.getHotbarSize())
-                .forEach(slot -> {
-                    if (slot != player.inventory.currentItem) {
-                        builder.add(slot);
+            if (checkIfSlotIsToolbox(player, player.inventory.currentItem)) {
+                return Optional.of(player.inventory.currentItem);
+            } else if (checkIfSlotIsToolbox(player, Backhand.getOffhandSlot(player))) {
+                return Optional.of(Backhand.getOffhandSlot(player));
+            } else {
+                // Included for players with slippery scroll wheels. Check the entire hotbar if the current item or
+                // offhand both lack a toolbox and use the first one we find.
+                for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
+                    if (i == player.inventory.currentItem) {
+                        continue;
                     }
-                });
 
-            for (int slot : builder.build()) {
-                final ItemStack stack = player.inventory.getStackInSlot(slot);
-                if (stack != null && stack.getItem() instanceof ItemGTToolbox) {
-                    return Optional.of(slot);
+                    if (checkIfSlotIsToolbox(player, i)) {
+                        return Optional.of(i);
+                    }
                 }
             }
 
             return Optional.empty();
+        }
+
+        private static boolean checkIfSlotIsToolbox(final EntityPlayer player, final int slot) {
+            if (slot == -1) {
+                return false;
+            }
+            return player.inventory.getStackInSlot(slot) != null && player.inventory.getStackInSlot(slot)
+                .getItem() instanceof ItemGTToolbox;
         }
 
         static BooleanSupplier onClick(final int inventorySlot, final int selection) {
