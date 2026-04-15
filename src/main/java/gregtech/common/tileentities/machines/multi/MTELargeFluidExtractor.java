@@ -46,7 +46,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -210,17 +209,10 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(getEUMultiplier());
-                setSpeedBonus(1.0f / getSpeedBonus());
-                return super.process();
-            }
-        }.noRecipeCaching()
-            .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifierSupplier(this::getEUMultiplier)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
     }
 
     @Override
@@ -371,7 +363,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             StatCollector.translateToLocalFormatted(
                 "Total Speed Multiplier: %s%.0f%s %%",
                 YELLOW,
-                getSpeedBonus() * 100,
+                (BASE_SPEED_BONUS + getCoilSpeedBonus()) * 100,
                 RESET));
         data.add(
             StatCollector.translateToLocalFormatted(
@@ -392,14 +384,14 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         return (float) ((coilLevel == null ? 0 : SPEED_PER_COIL * coilLevel.getTier()));
     }
 
-    public float getSpeedBonus() {
-        return (float) (BASE_SPEED_BONUS + getCoilSpeedBonus());
+    public double getSpeedBonus() {
+        return 1F / (BASE_SPEED_BONUS + getCoilSpeedBonus());
     }
 
-    public float getEUMultiplier() {
+    public double getEUMultiplier() {
         double heatingBonus = (coilLevel == null ? 0
             : GTUtility.powInt(HEATING_COIL_EU_MULTIPLIER, coilLevel.getTier()));
 
-        return (float) (BASE_EU_MULTIPLIER * heatingBonus);
+        return (BASE_EU_MULTIPLIER * heatingBonus);
     }
 }

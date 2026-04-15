@@ -2439,8 +2439,6 @@ fluid.Formaldehyde=Формальдегид
 fluid.tcetieisfucusserratusfluid=Колония tcetieisfucusserratus
 fluid.MeatExtract=Мясной экстракт
 # No recipe
-fluid.CompressedOxygen=Сжатый Кислород
-fluid.CompressedNitrogen=Сжатый азот
 fluid.redplasma=красная плазма
 fluid.tile.fluidBlockSludge=жидкостной блок шлама
 # No Texture

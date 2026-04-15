@@ -153,7 +153,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
                     "             ", "             ", "             ", "             ", "             ",
                     "             ", "             " } })
         .addElement('B', ofFrame(Materials.TungstenSteel))
-        .addElement('D', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, 32072))
+        .addElement('D', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, 88))
         .addElement(
             'C',
             ofChain(
@@ -235,7 +235,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
             .beginStructureBlock(13, 23, 13, false)
             .addController(GTUtility.translate("ig.siphon.structure.ControllerPos"))
             .addCasingInfoMin(GTUtility.translate("ig.siphon.structure.SiphonCasing"), 175, false)
-            .addCasingInfoExactly(GTUtility.translate("ig.siphon.structure.ReboltedStainlessSteelCasing"), 6, false)
+            .addCasingInfoExactly(GTUtility.translate("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"), 6, false)
             .addCasingInfoExactly(GTUtility.translate("ig.siphon.structure.FrameTungstensteel"), 93, false)
             .addCasingInfoExactly("Heating Coils", 12, true)
             .addEnergyHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
