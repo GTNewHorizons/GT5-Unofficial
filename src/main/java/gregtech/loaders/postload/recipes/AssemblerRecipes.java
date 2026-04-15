@@ -2420,7 +2420,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 7))
+            .itemInputs(new OreDictItemStack("plateAnyIron", 7))
             .circuit(7)
             .itemOutputs(new ItemStack(Items.cauldron, 1))
             .duration(35 * SECONDS)
@@ -2436,18 +2436,10 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 3))
+            .itemInputs(new OreDictItemStack("rodAnyIron", 3))
             .circuit(3)
             .itemOutputs(new ItemStack(Blocks.iron_bars, 4))
             .duration(15 * SECONDS)
-            .eut(4)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 7))
-            .circuit(7)
-            .itemOutputs(new ItemStack(Items.cauldron, 1))
-            .duration(35 * SECONDS)
             .eut(4)
             .addTo(assemblerRecipes);
 
@@ -2456,14 +2448,6 @@ public class AssemblerRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(GTModHandler.getIC2Item("ironFence", 1))
             .duration(5 * SECONDS)
-            .eut(4)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.WroughtIron, 3))
-            .circuit(3)
-            .itemOutputs(new ItemStack(Blocks.iron_bars, 4))
-            .duration(15 * SECONDS)
             .eut(4)
             .addTo(assemblerRecipes);
 
@@ -2478,16 +2462,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTOreDictUnificator.get(OrePrefixes.ring, Materials.Iron, 2))
-            .itemOutputs(new ItemStack(Blocks.tripwire_hook, 1))
-            .duration(20 * SECONDS)
-            .eut(4)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTOreDictUnificator.get(OrePrefixes.ring, Materials.WroughtIron, 2))
+                new OreDictItemStack("ringAnyIron", 2))
             .itemOutputs(new ItemStack(Blocks.tripwire_hook, 1))
             .duration(20 * SECONDS)
             .eut(4)
@@ -2504,19 +2479,10 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 3),
+                new OreDictItemStack("plateAnyIron", 3),
                 ItemList.Component_Minecart_Wheels_Iron.get(2))
             .itemOutputs(new ItemStack(Items.minecart, 1))
             .duration(5 * SECONDS)
-            .eut(20)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 3),
-                ItemList.Component_Minecart_Wheels_Iron.get(2))
-            .itemOutputs(new ItemStack(Items.minecart, 1))
-            .duration(4 * SECONDS)
             .eut(20)
             .addTo(assemblerRecipes);
 
@@ -2571,14 +2537,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.minecart, 1), new ItemStack(Blocks.chest, 1, 32767))
-            .itemOutputs(new ItemStack(Items.chest_minecart, 1))
-            .duration(20 * SECONDS)
-            .eut(4)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.minecart, 1), new ItemStack(Blocks.trapped_chest, 1, 32767))
+            .itemInputs(new OreDictItemStack("craftingChest", 1))
             .itemOutputs(new ItemStack(Items.chest_minecart, 1))
             .duration(20 * SECONDS)
             .eut(4)
@@ -3085,35 +3044,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 5),
-                new ItemStack(Blocks.chest, 1, 32767))
-            .itemOutputs(new ItemStack(Blocks.hopper))
-            .duration(8 * SECONDS)
-            .eut(20)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 5),
-                new ItemStack(Blocks.trapped_chest, 1, 32767))
-            .itemOutputs(new ItemStack(Blocks.hopper))
-            .duration(8 * SECONDS)
-            .eut(20)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 5),
-                new ItemStack(Blocks.chest, 1, 32767))
-            .itemOutputs(new ItemStack(Blocks.hopper))
-            .duration(8 * SECONDS)
-            .eut(20)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 5),
-                new ItemStack(Blocks.trapped_chest, 1, 32767))
+                new OreDictItemStack("plateAnyIron", 5),
+                new OreDictItemStack("craftingChest", 1))
             .itemOutputs(new ItemStack(Blocks.hopper))
             .duration(8 * SECONDS)
             .eut(20)
