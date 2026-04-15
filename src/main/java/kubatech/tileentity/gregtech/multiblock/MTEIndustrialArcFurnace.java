@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -80,6 +79,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import kubatech.api.arcfurnace.ArcFurnaceContext;
 import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
@@ -152,7 +152,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
     private int didOres = 0;
     private int didOCs = 0;
-    private final Map<Fluid, Long> oreOutputs = new HashMap<>();
+    private final Map<Fluid, Long> oreOutputs = new Object2LongOpenHashMap<>();
 
     private static final int OFFSET_H = 6;
     private static final int OFFSET_V = 7;
@@ -608,6 +608,19 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
     @Override
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        /*
+         * Ore mode has two sequences:
+         * When recipe is found, a simple no input no output recipe is started that almost takes no power and has
+         * ORE_MODE_STARTUP_TICKS duration
+         * To avoid creating additional variables this phase is represented by didOres not being set to -1
+         * In this phase we check every 5 ticks if there are ores to process in input busses,
+         * if there is anything to process we consume the ores and increase didOres and didOCs accordingly,
+         * if there is nothing to process for 5 ticks or the possible overclocks/parallel is used up we end the phase by
+         * forcing mProgresstime to be one tick before mMaxProgresstime
+         * which starts the second phase, where the actual processing happens
+         * we set all the outputs and calculate additional overclock if it wasn't used up in the first phase and then
+         * start processing with the normal logic of the machine
+         */
         if (phase == ArcFurnacePhase.Processing && mode == ArcFurnaceMode.Ore
             && mMaxProgresstime > 0
             && didOres != -1
@@ -615,6 +628,12 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             int maxOCs = (int) GTUtility.log4(getAverageInputVoltage() / 32);
             int OCsLeft = maxOCs - didOCs;
             if (electrode.OCSpeedFactor == 1) OCsLeft = 0;
+            /*
+             * We simulate batchmode/underonetick overclock here, instead of decreasing time, we increase the amount of
+             * parallels
+             * We cannot use the normal Processing logic for this, because it would require us to have correct recipe
+             * map
+             */
             int maxPara = (int) ((double) calculateMaximumParallel(30) * Math.pow(electrode.OCSpeedFactor, didOCs));
             boolean didSomething = false;
             int paraToDoLeft = maxPara - didOres;
@@ -651,6 +670,13 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 }
             }
             endRecipeProcessing();
+            /*
+             * Didn't do anything or used up all the parallels and overclocks, we end the startup phase and start
+             * processing whatever we got
+             * Note: First tick is gauranteed to do anything, because the actual recipe check that starts the startup
+             * phase is done only after
+             * checking if there is any ore to process
+             */
             if (!didSomething || paraToDoLeft <= 0 && OCsLeft <= 0) {
                 mProgresstime = mMaxProgresstime - 1;
             }
@@ -672,9 +698,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             }
             mOutputFluids = outputs.toArray(new FluidStack[0]);
             oreOutputs.clear();
-            lEUt = -(30L) * (didOCs == 0 ? didOres : calculateMaximumParallel(30))
-                * (long) Math.pow(electrode.OCPowerFactor, didOCs);
+            lEUt = -(30L) * (didOCs == 0 ? didOres
+                : (calculateMaximumParallel(30) * (long) Math.pow(electrode.OCPowerFactor, didOCs)));
             didOres = -1;
+            // calculate additional overclocks if we didn't use them all in the startup phase
             OverclockCalculator calculator = new OverclockCalculator();
             calculator.setMaxTierSkips(0);
             calculator.setEUt(getAverageInputVoltage());
