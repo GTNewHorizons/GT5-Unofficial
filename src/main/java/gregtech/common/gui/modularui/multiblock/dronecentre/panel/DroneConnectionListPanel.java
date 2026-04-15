@@ -11,10 +11,8 @@ import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IPacketWriter;
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
@@ -151,7 +149,6 @@ public class DroneConnectionListPanel extends ModularPanel {
             .child(
                 new CycleButtonWidget().size(16)
                     .value(syncManager.findSyncHandler("sortMode", EnumSyncValue.class))
-                    .background(GTGuiTextures.BUTTON_STANDARD)
                     .stateOverlay(DroneCentreGuiUtil.SortMode.NAME, GTGuiTextures.OVERLAY_BUTTON_TRANSPOSE)
                     .stateOverlay(DroneCentreGuiUtil.SortMode.DISTANCE, GTGuiTextures.OVERLAY_BUTTON_SORTING_MODE)
                     .stateOverlay(DroneCentreGuiUtil.SortMode.STATUS, GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_OFF)
@@ -165,17 +162,14 @@ public class DroneConnectionListPanel extends ModularPanel {
             .child(
                 new UpdatableToggleButton(droneListHandler).size(16)
                     .value(syncManager.findSyncHandler("searchOri", BooleanSyncValue.class))
-                    .background(GTGuiTextures.BUTTON_STANDARD)
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_WHITELIST)
                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_BLACKLIST)
                     .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_searchoriname"))))
             .child(
                 new ButtonWidget<>().size(16)
                     .overlay(
-                        new DrawableStack(
-                            GTGuiTextures.BUTTON_STANDARD,
-                            GTGuiTextures.OVERLAY_BUTTON_REDSTONESNIFFERLOCATE.asIcon()
-                                .size(15, 15)))
+                        GTGuiTextures.OVERLAY_BUTTON_REDSTONESNIFFERLOCATE.asIcon()
+                            .size(12))
                     .onMousePressed(mouseButton -> {
                         productionPanel.openPanel();
                         return true;
@@ -279,7 +273,8 @@ public class DroneConnectionListPanel extends ModularPanel {
                     if (centre.getEditMode())
                         row.child(createGroupButton(connection, droneConnectionListSyncHandler, dynamicSyncManager));
                     row.child(
-                        new ItemDisplayWidget().background(IDrawable.EMPTY)
+                        new ItemDisplayWidget().disableThemeBackground(true)
+                            .disableHoverThemeBackground(true)
                             .displayAmount(false)
                             .item(connection.getMachineItem())
                             .size(16)
@@ -322,7 +317,8 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .ifPresent(con -> con.setGroup(bool ? centre.getActiveGroup() : 0))));
         return new ToggleButton().value(groupSyncHandler)
             .size(16)
-            .background(IDrawable.EMPTY)
+            .disableThemeBackground(true)
+            .disableHoverThemeBackground(true)
             .tooltipBuilder(var -> var.add(IKey.lang("GT5U.gui.button.drone_select_group")))
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS);
@@ -350,7 +346,6 @@ public class DroneConnectionListPanel extends ModularPanel {
                     })));
         return new UpdatableToggleButton(droneListHandler).size(16)
             .value(selectSyncValue)
-            .background(GTGuiTextures.BUTTON_STANDARD)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_PRINT)
             .tooltipBuilder(t -> t.add(IKey.lang("GT5U.gui.button.drone_setname")));
     }

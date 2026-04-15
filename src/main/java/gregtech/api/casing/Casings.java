@@ -632,7 +632,7 @@ public enum Casings implements ICasing {
     HeatProofCokeOvenCasing
         (() -> ModBlocks.blockCasingsMisc, 3, gtpp(0, 3)),
     MaterialPressCasing
-        (() -> ModBlocks.blockCasingsMisc, 4, gtpp(0, 4)),
+        (() -> ModBlocks.blockCasingsMisc, 4, 50),
     ElectrolyzerCasing
         (() -> ModBlocks.blockCasingsMisc, 5, gtpp(0, 5)),
     WireFactoryCasing
@@ -1028,6 +1028,14 @@ public enum Casings implements ICasing {
     // ------------------ Miscellaneous Elements -----------------
     MagicCasing
         (() -> Loaders.magicCasing, 0, -1),
+    NaquadahFuelRefineryCasing
+        (() -> Loaders.FRF_Casings, 0, 179),
+    RadiantProofSteelFrameBox
+        (() -> Loaders.radiationProtectionSteelFrame, 0, -1),
+    FieldRestrictionCasing
+        (() -> Loaders.MAR_Casing, 0, -1),
+    FieldRestrictionGlass
+        (() -> Loaders.fieldRestrictingGlass, 0, -1),
 
     BorosilicateGlassAny(BorosilicateGlass::getGlassBlock, 0, -1) {
         @Override

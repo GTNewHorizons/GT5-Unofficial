@@ -419,14 +419,17 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     @Override
     public byte getUpdateData() {
-        return (byte) casingTier;
+        // Offset casingTier by +4 so all valid values (-3..3) map to (1..7),
+        // which fits within the 7-bit range preserved by the initial client sync.
+        return (byte) (casingTier + 4);
     }
 
     @Override
     public void receiveClientEvent(byte aEventID, byte aValue) {
         super.receiveClientEvent(aEventID, aValue);
-        if (aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA && ((aValue & 0x80) == 0 || aValue == -1)) {
-            casingTier = aValue;
+        // Valid encoded range is 1–7 (casingTier -3..3 shifted by +4).
+        if (aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA && aValue >= 1 && aValue <= 7) {
+            casingTier = aValue - 4;
         }
     }
 

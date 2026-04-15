@@ -1,10 +1,8 @@
-package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
+package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.GregTechAPI.sBlockCasings4;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -12,6 +10,7 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -20,6 +19,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -28,74 +28,70 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosionCompressor>
+public class MTEIndustrialExtruderLegacy extends GTPPMultiBlockBase<MTEIndustrialExtruderLegacy>
     implements ISurvivalConstructable {
 
     private int mCasing;
-    private static IStructureDefinition<MTEAdvImplosionCompressor> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialExtruderLegacy> STRUCTURE_DEFINITION = null;
 
-    public MTEAdvImplosionCompressor(int aID, String aName, String aNameRegional) {
+    public MTEIndustrialExtruderLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEAdvImplosionCompressor(String aName) {
+    public MTEIndustrialExtruderLegacy(final String aName) {
         super(aName);
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEAdvImplosionCompressor(this.mName);
+    public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+        return new MTEIndustrialExtruderLegacy(this.mName);
     }
 
     @Override
     public String getMachineType() {
-        return "Implosion Compressor";
+        return "Extruder, IEM";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Factory Grade Advanced Implosion Compressor")
-            .addInfo(TooltipHelper.parallelText("1 + (Tier/2)") + " Parallels")
-            .addStaticSpeedInfo(2f)
-            .addStaticEuEffInfo(1f)
-            .addInfo("Constructed exactly the same as a normal Implosion Compressor")
+            .addStructureDeprecatedLine()
+            .addBulkMachineInfo(4, 3.5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
+            .beginStructureBlock(3, 3, 5, true)
             .addController("Front center")
-            .addCasingInfoMin("Robust TungstenSteel Casing", 10, false)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addMufflerHatch("Any casing", 1)
+            .addCasingInfoMin("Inconel Reinforced Casings", 14, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
-    public IStructureDefinition<MTEAdvImplosionCompressor> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialExtruderLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEAdvImplosionCompressor>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialExtruderLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
-                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
+                        new String[][] { { "CCC", "CCC", "CCC", "CCC", "CCC" }, { "C~C", "C-C", "C-C", "C-C", "CCC" },
+                            { "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
-                    ofChain(
-                        buildHatchAdder(MTEAdvImplosionCompressor.class)
-                            .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                            .casingIndex(getCasingTextureId())
-                            .hint(1)
-                            .build(),
-                        onElementPass(x -> ++x.mCasing, ofBlock(sBlockCasings4, 0))))
+                    buildHatchAdder(MTEIndustrialExtruderLegacy.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        .casingIndex(getCasingTextureIndex())
+                        .hint(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -115,37 +111,42 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch();
+        return checkPiece(mName, 1, 1, 0) && mCasing >= 14 && checkHatch();
+    }
+
+    @Override
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.IC2_MACHINES_INDUCTION_LOOP;
     }
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.oMCAAdvancedImplosionActive;
+        return TexturesGtBlock.oMCDIndustrialExtruderActive;
     }
 
     @Override
     protected IIconContainer getActiveGlowOverlay() {
-        return TexturesGtBlock.oMCAAdvancedImplosionActiveGlow;
+        return TexturesGtBlock.oMCDIndustrialExtruderActiveGlow;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.oMCAAdvancedImplosion;
+        return TexturesGtBlock.oMCDIndustrialExtruder;
     }
 
     @Override
     protected IIconContainer getInactiveGlowOverlay() {
-        return TexturesGtBlock.oMCAAdvancedImplosionGlow;
+        return TexturesGtBlock.oMCDIndustrialExtruderGlow;
     }
 
     @Override
     protected int getCasingTextureId() {
-        return 48;
+        return TAE.GTPP_INDEX(33);
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.implosionRecipes;
+        return RecipeMaps.extruderRecipes;
     }
 
     @Override
@@ -155,23 +156,34 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 2F)
+        return new ProcessingLogic().setSpeedBonus(1F / 3.5F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
-    protected SoundResource getProcessStartSound() {
-        return SoundResource.RANDOM_EXPLODE;
-    }
-
-    @Override
-    public int getPollutionPerSecond(ItemStack aStack) {
-        return PollutionConfig.pollutionPerSecondMultiAdvImplosion;
-    }
-
-    @Override
     public int getMaxParallelRecipes() {
-        return (GTUtility.getTier(this.getMaxInputVoltage()) / 2 + 1);
+        return (4 * GTUtility.getTier(this.getMaxInputVoltage()));
+    }
+
+    @Override
+    public int getPollutionPerSecond(final ItemStack aStack) {
+        return PollutionConfig.pollutionPerSecondMultiIndustrialExtruder;
+    }
+
+    public Block getCasingBlock() {
+        return ModBlocks.blockCasings3Misc;
+    }
+
+    public byte getCasingMeta() {
+        return 1;
+    }
+
+    public byte getCasingTextureIndex() {
+        return (byte) TAE.GTPP_INDEX(33);
+    }
+
+    @Override
+    public boolean isInputSeparationEnabled() {
+        return true;
     }
 }
