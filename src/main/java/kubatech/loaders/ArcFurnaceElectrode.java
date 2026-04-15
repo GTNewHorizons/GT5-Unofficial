@@ -2,8 +2,8 @@ package kubatech.loaders;
 
 import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import net.minecraft.client.Minecraft;
@@ -16,17 +16,18 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsElements;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 
 public enum ArcFurnaceElectrode {
 
-    GraphiteElectrode(Materials.Graphite, 1, 4, 2d, 4d, 100, 1, 0, e -> {}),
-    TantalumElectrode(Materials.Tantalum, 1.2d, 2, 4d, 4d, 300, 1.2d, 3),
-    MolybdenumElectrode(Materials.Molybdenum, 0.9d, 16, 3d, 4d, 200, 0.8d, 5),
-    TungstenElectrode(Materials.Tungsten, 1, 128, 1d, 4d, 500, 1.1d, 2),
-    TungstenSteelElectrode(Materials.TungstenSteel, 0.8d, 160, 1d, 4d, 700, 1.2d, 3),
-    GrapheneElectrode(Materials.Graphene, 2.5d, 4, 2d, 4d, 350, 1, 0, e -> {}),
-    YBCOElectrode(Materials.YttriumBariumCuprate, 1.2d, 8, 6d, 4d, 400, 0.8d, 2d, event -> {
+    GraphiteElectrode(0, Materials.Graphite, 1, 4, 2d, 4d, 100, 1, 0, e -> {}),
+    TantalumElectrode(1, Materials.Tantalum, 1.2d, 2, 4d, 4d, 300, 1.2d, 3),
+    MolybdenumElectrode(2, Materials.Molybdenum, 0.9d, 16, 3d, 4d, 200, 0.8d, 5),
+    TungstenElectrode(3, Materials.Tungsten, 1, 128, 1d, 4d, 500, 1.1d, 2),
+    TungstenSteelElectrode(4, Materials.TungstenSteel, 0.8d, 160, 1d, 4d, 700, 1.2d, 3),
+    GrapheneElectrode(5, Materials.Graphene, 2.5d, 4, 2d, 4d, 350, 1, 0, e -> {}),
+    YBCOElectrode(6, Materials.YttriumBariumCuprate, 1.2d, 8, 6d, 4d, 400, 0.8d, 2d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventPostRecipeCheck postRecipe) {
             if (!postRecipe.result.wasSuccessful()) return;
             int performedOC = postRecipe.calculator.getPerformedOverclocks();
@@ -34,7 +35,7 @@ public enum ArcFurnaceElectrode {
                 postRecipe.arcFurnace.getDurabilityConsumptionThisRun() * (1 + performedOC));
         }
     }),
-    NetheriteElectrode(Materials.Netherite, 2.2d, 32, 1.5d, 4d, 600, 1.3d, 10d, event -> {
+    NetheriteElectrode(7, Materials.Netherite, 2.2d, 32, 1.5d, 4d, 600, 1.3d, 10d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventStartShutdown startShutdown) {
             startShutdown.duration = 1;
         }
@@ -45,8 +46,8 @@ public enum ArcFurnaceElectrode {
             }
         }
     }),
-    TritaniumElectrode(Materials.Tritanium, 3d, 48, 2d, 4d, 600, 1.7d, 4d),
-    InfinityElectrode(Materials.Infinity, 4.2d, 0, 1d, 4d, 800, 1d, 1d, event -> {
+    TritaniumElectrode(8, Materials.Tritanium, 3d, 48, 2d, 4d, 600, 1.7d, 4d),
+    InfinityElectrode(9, Materials.Infinity, 4.2d, 0, 1d, 4d, 800, 1d, 1d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventConfigureProcessing configure) {
             configure.processingLogic.setMaxParallel(getInfinityTargetParallel(configure.arcFurnace.getEffectState()));
             return;
@@ -79,10 +80,10 @@ public enum ArcFurnaceElectrode {
                 .setInteger("infinityTargetParallel", 1);
         }
     }),
-    HypogenElectrode(MaterialsElements.STANDALONE.HYPOGEN, 6.5d, 256, 1d, 4d, 1000, 1.5d, 3.5d),
+    HypogenElectrode(10, MaterialsElements.STANDALONE.HYPOGEN, 6.5d, 256, 1d, 4d, 1000, 1.5d, 3.5d),
 
     // nanite eletrodes
-    NeutroniumNaniteElectrode(Materials.Neutronium, 5d, 64, 2d, 4d, 350, 2d, 5d, event -> {
+    NeutroniumNaniteElectrode(11, Materials.Neutronium, 5d, 64, 2d, 4d, 350, 2d, 5d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.Neutronium.getDust(1))
                 && completed.arcFurnace.getRandomNumber(100) < 70) {
@@ -90,7 +91,7 @@ public enum ArcFurnaceElectrode {
             }
         }
     }),
-    TranscendentNaniteElectrode(Materials.TranscendentMetal, 7.5d, 512, 4d, 4d, 500, 2d, .5d, event -> {
+    TranscendentNaniteElectrode(12, Materials.TranscendentMetal, 7.5d, 512, 4d, 4d, 500, 2d, .5d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.TranscendentMetal.getDust(1))
                 && completed.arcFurnace.getRandomNumber(100) < 90) {
@@ -98,7 +99,7 @@ public enum ArcFurnaceElectrode {
             }
         }
     }),
-    UniversiumNaniteElectrode(Materials.Universium, 10d, 1024, 8d, 4d, 1000, 2d, 0d, event -> {
+    UniversiumNaniteElectrode(13, Materials.Universium, 10d, 1024, 8d, 4d, 1000, 2d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.Universium.getDust(1))) {
                 completed.arcFurnace.setDurabilityConsumptionThisRun(-1000);
@@ -108,7 +109,7 @@ public enum ArcFurnaceElectrode {
 
     ;
 
-    private static final HashMap<Integer, ArcFurnaceElectrode> ID_MAP = new HashMap<>();
+    private static final Map<Integer, ArcFurnaceElectrode> ID_MAP = new Int2ObjectOpenHashMap<>();
     private static final String INFINITY_TARGET_PARALLEL_KEY = "infinityTargetParallel";
 
     public final int id;
@@ -124,9 +125,10 @@ public enum ArcFurnaceElectrode {
 
     private ItemStack electrodeItem;
 
-    ArcFurnaceElectrode(IOreMaterial associatedMaterial, double speedModifier, int parallelLimit, double OCSpeedFactor,
-        double OCPowerFactor, int durability, double amperagePerParallel, double startupSurge) {
+    ArcFurnaceElectrode(int id, IOreMaterial associatedMaterial, double speedModifier, int parallelLimit,
+        double OCSpeedFactor, double OCPowerFactor, int durability, double amperagePerParallel, double startupSurge) {
         this(
+            id,
             associatedMaterial,
             speedModifier,
             parallelLimit,
@@ -138,10 +140,10 @@ public enum ArcFurnaceElectrode {
             null);
     }
 
-    ArcFurnaceElectrode(IOreMaterial associatedMaterial, double speedModifier, int parallelLimit, double OCSpeedFactor,
-        double OCPowerFactor, int durability, double amperagePerParallel, double startupSurge,
+    ArcFurnaceElectrode(int id, IOreMaterial associatedMaterial, double speedModifier, int parallelLimit,
+        double OCSpeedFactor, double OCPowerFactor, int durability, double amperagePerParallel, double startupSurge,
         Consumer<ArcFurnaceProcessingEvent> specialEffect) {
-        this.id = this.ordinal();
+        this.id = id;
         this.associatedMaterial = associatedMaterial;
         this.speedModifier = speedModifier;
         this.parallelLimit = parallelLimit;
@@ -155,7 +157,8 @@ public enum ArcFurnaceElectrode {
 
     public static void registerElectrodes() {
         for (ArcFurnaceElectrode electrode : values()) {
-            ID_MAP.put(electrode.id, electrode);
+            if (ID_MAP.put(electrode.id, electrode) != null)
+                throw new IllegalStateException("Duplicate electrode id: " + electrode.id);
             electrode.electrodeItem = ARC_FURNACE_ELECTRODE.getElectrodeStack(electrode);
         }
     }
