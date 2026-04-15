@@ -9,6 +9,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -39,6 +40,9 @@ public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
         GregtechItemList.Casing_Reactor_II.set(new ItemStack(this, 1, 13));
         GregtechItemList.Casing_Coil_BlastSmelter.set(new ItemStack(this, 1, 14));
         GregtechItemList.Casing_BlastSmelter.set(new ItemStack(this, 1, 15));
+        for (int i = 2; i <= 3; i++) {
+            GTStructureChannels.COKE_OVEN_CASING.registerAsIndicator(new ItemStack(this, 1, i), i-1);
+        }
     }
 
     @Override

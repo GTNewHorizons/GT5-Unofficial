@@ -349,7 +349,7 @@ public class RecipesMachinesMulti {
     private static void multiCokeOven() {
         // Industrial Coke Oven
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_CokeOven.get(1),
+            ItemList.IndustrialCokeOven.get(1),
             new Object[] { "PCP", "HOH", "PCP", 'P', MaterialsAlloy.TANTALLOY_61.getPlate(1), 'C', "circuitData", 'H',
                 ItemList.Casing_EV, 'O', ItemList.CokeOvenController });
 

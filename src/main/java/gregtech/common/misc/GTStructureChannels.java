@@ -49,7 +49,8 @@ public enum GTStructureChannels implements IStructureChannels {
     SUPER_CHEST("super_chest", "Super Chest Tier"),
     MAGNETIC_CHASSIS("chassis", "Magnetic Chassis Tier"),
     COMPONENT_ASSEMBLYLINE_CASING("component_casing", "Component Assembly Line Casing Tier"),
-    LES_ESSENTIA_CELL("essentia_cell", "Large Essentia Smeltery Essentia Diffusion Cell Tier");
+    LES_ESSENTIA_CELL("essentia_cell", "Large Essentia Smeltery Essentia Diffusion Cell Tier"),
+    COKE_OVEN_CASING("coke_oven_casing", "Coke Oven Casing Tier");
     //
     ;
 
