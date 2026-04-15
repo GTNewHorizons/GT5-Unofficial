@@ -710,7 +710,7 @@ public class RecipesMachinesMulti {
 
         // Industrial Extrusion Machine
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_Extruder.get(1),
+            ItemList.IndustrialExtruder.get(1),
             new Object[] { "PCP", "IMI", "PCP", 'P', MaterialsAlloy.INCONEL_690.getPlate(1), 'C', "circuitElite", 'I',
                 ItemList.Electric_Piston_IV, 'M', ItemList.Machine_IV_Extruder });
     }
