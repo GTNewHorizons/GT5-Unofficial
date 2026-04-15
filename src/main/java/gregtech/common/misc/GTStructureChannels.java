@@ -38,6 +38,7 @@ public enum GTStructureChannels implements IStructureChannels {
     ITEM_PIPE_CASING("item_pipe", "Item Pipe Casing Tier"),
     PSS_CELL("cell", "Vanadium Redox Power Cell Tier"),
     SYNCHROTRON_ANTENNA("antenna", "Antenna Casing Tier"),
+    SE_MOTOR("motor", "Space Elevator Motor Tier"),
     EOH_COMPRESSION("spacetime_compression", "Spacetime Compression Field Generator Tier"),
     EOH_STABILISATION("stabilisation", "Stabilisation Field Generator Tier"),
     EOH_DILATION("time_dilation", "Time Dilation Field Generator Tier"),
