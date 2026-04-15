@@ -2975,17 +2975,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Copper, 2),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 3))
-            .itemOutputs(ItemList.Battery_Hull_MV.get(1))
-            .fluidInputs(Materials.Polyethylene.getMolten(3 * INGOTS))
-            .duration(16 * SECONDS)
-            .eut(20)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.AnnealedCopper, 2),
+                new OreDictItemStack("cableGt01AnyCopper", 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.BatteryAlloy, 3))
             .itemOutputs(ItemList.Battery_Hull_MV.get(1))
             .fluidInputs(Materials.Polyethylene.getMolten(3 * INGOTS))
