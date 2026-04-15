@@ -291,6 +291,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         phase = ArcFurnacePhase.values[aNBT.getInteger("phase")];
         int electrodeOrdinal = aNBT.getInteger("electrode");
         electrode = ArcFurnaceElectrode.getById(electrodeOrdinal);
+        electrodeDamagePercentage = aNBT.getDouble("electrodeDamagePercentage");
         durabilityCostThisRun = aNBT.getInteger("durabilityCostThisRun");
         effectState = aNBT.hasKey("effectState") ? aNBT.getCompoundTag("effectState") : new NBTTagCompound();
         didOres = aNBT.getInteger("didOres");
@@ -313,6 +314,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         aNBT.setInteger("mode", mode.ordinal());
         aNBT.setInteger("phase", phase.ordinal());
         aNBT.setInteger("electrode", electrode == null ? -1 : electrode.ordinal());
+        aNBT.setDouble("electrodeDamagePercentage", electrodeDamagePercentage);
         aNBT.setInteger("durabilityCostThisRun", durabilityCostThisRun);
         aNBT.setTag("effectState", effectState);
         aNBT.setInteger("didOres", didOres);
