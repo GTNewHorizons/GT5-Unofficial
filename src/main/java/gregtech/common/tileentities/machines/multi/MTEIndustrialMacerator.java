@@ -85,8 +85,6 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     private static final int PARALLEL_T1 = 2;
     private static final int PARALLEL_T2 = 8;
 
-    private static IStructureDefinition<MTEIndustrialMacerator> STRUCTURE_DEFINITION = null;
-
     public MTEIndustrialMacerator(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -133,51 +131,49 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
 
     @Override
     public IStructureDefinition<MTEIndustrialMacerator> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialMacerator>builder()
-                .addShape(
-                    STRUCTURE_PIECE_MAIN_T1,
-                    transpose(
-                        new String[][] { { "CCC", "CCC", "CCC" }, { "CCC", "C C", "CCC" }, { "CCC", "C C", "CCC" },
-                            { "CCC", "C C", "CCC" }, { "CCC", "C C", "CCC" }, { "C~C", "CCC", "CCC" } }))
-                .addShape(
-                    STRUCTURE_PIECE_MAIN_T2,
-                    transpose(
-                        new String[][] { { "CCCCC", "C   C", "C   C", "C   C", "CCCCC" },
-                            { "DCCCD", "CA AC", "CA AC", "CA AC", "DCECD" },
-                            { "DCECD", "C B C", "C B C", "C B C", "DCECD" },
-                            { "DCECD", "CA AC", "CA AC", "CA AC", "DCECD" },
-                            { "DCECD", "C B C", "C B C", "C B C", "DCECD" },
-                            { "DCCCD", "CA AC", "CA AC", "CA AC", "DCECD" },
-                            { "CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" } }))
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEIndustrialMacerator.class)
-                        .atLeast(Energy, Maintenance, InputBus, Muffler, OutputBus)
-                        .casingIndex(Casings.StableTitaniumMachineCasing.textureId)
-                        .hint(1)
-                        .allowOnly(ForgeDirection.NORTH)
-                        .buildAndChain(
-                            onElementPass(
-                                m -> m.casingAmount++,
-                                ofBlocksTiered(
-                                    MTEIndustrialMacerator::getStructureCasingTier,
-                                    ImmutableList.of(
-                                        Pair.of(
-                                            Casings.StableTitaniumMachineCasing.getBlock(),
-                                            Casings.StableTitaniumMachineCasing.getBlockMeta()),
-                                        Pair.of(
-                                            Casings.MacerationStackCasing.getBlock(),
-                                            Casings.MacerationStackCasing.getBlockMeta())),
-                                    -1,
-                                    (m, t) -> m.structureTier = t,
-                                    m -> m.structureTier))))
-                .addElement('A', Casings.SteelGearBoxCasing.asElement())
-                .addElement('B', Casings.GrateMachineCasing.asElement())
-                .addElement('E', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass))
-                .addElement('D', ofFrame(Materials.HSSG))
-                .build();
-        }
+        IStructureDefinition<MTEIndustrialMacerator> STRUCTURE_DEFINITION = StructureDefinition
+            .<MTEIndustrialMacerator>builder()
+            .addShape(
+                STRUCTURE_PIECE_MAIN_T1,
+                transpose(
+                    new String[][] { { "CCC", "CCC", "CCC" }, { "CCC", "C C", "CCC" }, { "CCC", "C C", "CCC" },
+                        { "CCC", "C C", "CCC" }, { "CCC", "C C", "CCC" }, { "C~C", "CCC", "CCC" } }))
+            .addShape(
+                STRUCTURE_PIECE_MAIN_T2,
+                transpose(
+                    new String[][] { { "CCCCC", "C   C", "C   C", "C   C", "CCCCC" },
+                        { "DCCCD", "CA AC", "CA AC", "CA AC", "DCECD" },
+                        { "DCECD", "C B C", "C B C", "C B C", "DCECD" },
+                        { "DCECD", "CA AC", "CA AC", "CA AC", "DCECD" },
+                        { "DCECD", "C B C", "C B C", "C B C", "DCECD" },
+                        { "DCCCD", "CA AC", "CA AC", "CA AC", "DCECD" },
+                        { "CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" } }))
+            .addElement(
+                'C',
+                buildHatchAdder(MTEIndustrialMacerator.class).atLeast(Energy, Maintenance, InputBus, Muffler, OutputBus)
+                    .casingIndex(Casings.StableTitaniumMachineCasing.textureId)
+                    .hint(1)
+                    .allowOnly(ForgeDirection.NORTH)
+                    .buildAndChain(
+                        onElementPass(
+                            m -> m.casingAmount++,
+                            ofBlocksTiered(
+                                MTEIndustrialMacerator::getStructureCasingTier,
+                                ImmutableList.of(
+                                    Pair.of(
+                                        Casings.StableTitaniumMachineCasing.getBlock(),
+                                        Casings.StableTitaniumMachineCasing.getBlockMeta()),
+                                    Pair.of(
+                                        Casings.MacerationStackCasing.getBlock(),
+                                        Casings.MacerationStackCasing.getBlockMeta())),
+                                -1,
+                                (m, t) -> m.structureTier = t,
+                                m -> m.structureTier))))
+            .addElement('A', Casings.SteelGearBoxCasing.asElement())
+            .addElement('B', Casings.GrateMachineCasing.asElement())
+            .addElement('E', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass))
+            .addElement('D', ofFrame(Materials.HSSG))
+            .build();
         return STRUCTURE_DEFINITION;
     }
 
