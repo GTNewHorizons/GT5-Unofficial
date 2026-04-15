@@ -424,6 +424,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
+        if (getBaseMetaTileEntity().isActive() && phase == ArcFurnacePhase.Processing) {
+            GTUtility.sendChatTrans(aPlayer, "kubatech.chat.forbidden_while_running");
+            return;
+        }
         mode = mode.next();
         GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mode.generic", mode.name());
     }
