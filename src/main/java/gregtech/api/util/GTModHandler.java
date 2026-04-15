@@ -81,6 +81,7 @@ import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.recipe.Recipes;
 import ic2.core.item.ItemToolbox;
+import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -95,11 +96,16 @@ public class GTModHandler {
     private static final Map<String, ItemStack> sIC2ItemMap = new HashMap<>();
 
     // public for bartworks
-    public static final List<IRecipe> sAllRecipeList = new ArrayList<>(5000), sBufferRecipeList = new ArrayList<>(1000);
-    private static final List<ItemStack> delayedRemovalByOutput = new ArrayList<>();
+    public static final List<IRecipe> sAllRecipeList = new ArrayList<>(5000);
+    public static final List<IRecipe> sBufferRecipeList = new ArrayList<>(1000);
+
+    private static final ObjectOpenCustomHashSet<ItemStack> delayedRemovalByOutput = new ObjectOpenCustomHashSet<>(
+        1024,
+        GTItemStack.ITEMSTACK_HASH_STRATEGY2);
     private static final List<InventoryCrafting> delayedRemovalByRecipe = new ArrayList<>();
 
-    public static Collection<String> sNativeRecipeClasses = new HashSet<>(), sSpecialRecipeClasses = new HashSet<>();
+    public static Collection<String> sNativeRecipeClasses = new HashSet<>();
+    public static Collection<String> sSpecialRecipeClasses = new HashSet<>();
     public static GTHashSet sNonReplaceableItems = new GTHashSet();
     public static Object sBoxableWrapper = new GTIBoxableWrapper();
     public static Collection<GTItemStack> sBoxableItems = new ArrayList<>();
@@ -1376,16 +1382,21 @@ public class GTModHandler {
     }
 
     public static boolean removeRecipeByOutputDelayed(ItemStack aOutput) {
-        if (sBufferCraftingRecipes) return delayedRemovalByOutput.add(aOutput);
-        else return removeRecipeByOutput(aOutput);
+        if (sBufferCraftingRecipes) {
+            return delayedRemovalByOutput.add(GTOreDictUnificator.get_nocopy(aOutput));
+        }
+
+        return removeRecipeByOutput(aOutput);
     }
 
     public static boolean removeRecipeByOutputDelayed(ItemStack aOutput, boolean aIgnoreNBT,
         boolean aNotRemoveShapelessRecipes, boolean aOnlyRemoveNativeHandlers) {
-        if (sBufferCraftingRecipes && (aIgnoreNBT && !aNotRemoveShapelessRecipes && !aOnlyRemoveNativeHandlers))
+        if (sBufferCraftingRecipes && (aIgnoreNBT && !aNotRemoveShapelessRecipes && !aOnlyRemoveNativeHandlers)) {
             // Too lazy to handle deferred versions of the parameters that aren't used very often
-            return delayedRemovalByOutput.add(aOutput);
-        else return removeRecipeByOutput(aOutput, aIgnoreNBT, aNotRemoveShapelessRecipes, aOnlyRemoveNativeHandlers);
+            return delayedRemovalByOutput.add(GTOreDictUnificator.get_nocopy(aOutput));
+        }
+
+        return removeRecipeByOutput(aOutput, aIgnoreNBT, aNotRemoveShapelessRecipes, aOnlyRemoveNativeHandlers);
     }
 
     public static boolean removeRecipeByOutput(ItemStack aOutput) {
@@ -1435,42 +1446,30 @@ public class GTModHandler {
         return rReturn;
     }
 
-    public static boolean bulkRemoveRecipeByOutput(List<ItemStack> toRemove) {
+    public static boolean bulkRemoveRecipeByOutput(Set<ItemStack> toRemove) {
         ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
+        ItemStack wildcardItem = new ItemStack((Item) null, 0, WILDCARD);
 
-        List<ItemStack> listToRemove = toRemove.stream()
-            .map(GTOreDictUnificator::get_nocopy)
-            .collect(Collectors.toList());
+        GT_FML_LOGGER.info("BulkRemoveRecipeByOutput: allRecipes: {} toRemove: {}", allRecipes.size(), toRemove.size());
 
-        GT_FML_LOGGER
-            .info("BulkRemoveRecipeByOutput: allRecipes: {} listToRemove: {}", allRecipes.size(), listToRemove.size());
-
-        Set<IRecipe> tListToRemove = allRecipes.parallelStream()
-            .filter(recipe -> {
-                if (recipe instanceof IGTCraftingRecipe && !((IGTCraftingRecipe) recipe).isRemovable()) {
-                    return false;
-                }
-
-                if (sSpecialRecipeClasses.contains(
-                    recipe.getClass()
-                        .getName())) {
-                    return false;
-                }
-
-                final ItemStack output = GTOreDictUnificator.get_nocopy(recipe.getRecipeOutput());
-
-                for (ItemStack itemToRemove : listToRemove) {
-                    if (GTUtility.areStacksEqual(output, itemToRemove, true)) {
-                        return true;
-                    }
-                }
-
+        allRecipes.removeIf(recipe -> {
+            if (recipe instanceof IGTCraftingRecipe && !((IGTCraftingRecipe) recipe).isRemovable()) {
                 return false;
-            })
-            .collect(Collectors.toSet());
+            }
 
-        allRecipes.removeIf(tListToRemove::contains);
+            if (sSpecialRecipeClasses.contains(
+                recipe.getClass()
+                    .getName())) {
+                return false;
+            }
+
+            final ItemStack output = GTOreDictUnificator.get_nocopy(recipe.getRecipeOutput());
+            if (output == null) return false;
+
+            wildcardItem.func_150996_a(output.getItem());
+            return toRemove.contains(output) || toRemove.contains(wildcardItem);
+        });
         return true;
     }
 
