@@ -133,10 +133,13 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     }
 
     enum ArcFurnacePhase {
+
         Standby,
         ArcIgnition,
         Processing,
-        ArcShutdown
+        ArcShutdown;
+
+        static final ArcFurnacePhase[] values = values();
     }
 
     private ArcFurnaceMode mode = ArcFurnaceMode.Normal;
@@ -285,13 +288,9 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mode = ArcFurnaceMode.modes[aNBT.getInteger("mode")];
-        phase = ArcFurnacePhase.values()[aNBT.getInteger("phase")];
+        phase = ArcFurnacePhase.values[aNBT.getInteger("phase")];
         int electrodeOrdinal = aNBT.getInteger("electrode");
-        if (electrodeOrdinal >= 0) {
-            electrode = ArcFurnaceElectrode.getById(electrodeOrdinal);
-        } else {
-            electrode = null;
-        }
+        electrode = ArcFurnaceElectrode.getById(electrodeOrdinal);
         durabilityCostThisRun = aNBT.getInteger("durabilityCostThisRun");
         effectState = aNBT.hasKey("effectState") ? aNBT.getCompoundTag("effectState") : new NBTTagCompound();
         didOres = aNBT.getInteger("didOres");
