@@ -636,7 +636,7 @@ public enum Casings implements ICasing {
     HeatProofCokeOvenCasing
         (() -> ModBlocks.blockCasingsMisc, 3, gtpp(0, 3)),
     MaterialPressCasing
-        (() -> ModBlocks.blockCasingsMisc, 4, gtpp(0, 4)),
+        (() -> ModBlocks.blockCasingsMisc, 4, 50),
     ElectrolyzerCasing
         (() -> ModBlocks.blockCasingsMisc, 5, gtpp(0, 5)),
     WireFactoryCasing
