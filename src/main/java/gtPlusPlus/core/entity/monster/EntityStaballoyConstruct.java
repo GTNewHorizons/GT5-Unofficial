@@ -62,16 +62,20 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
     protected void dropFewItems(boolean p_70628_1_, int p_70628_2_) {
         int j = this.rand.nextInt(3);
         int k;
-        int lootingChance = p_70628_2_ + 1;
+        int min = 1;
+        int max = 3;
+        int range = max - min + 1;
+
 
         for (k = 0; k < j; ++k) {
             this.func_145778_a(Item.getItemFromBlock(Blocks.yellow_flower), 1, 0.0F);
         }
 
-        for (k = 0; k < j; ++k) k = 3 + this.rand.nextInt(3);
+        for (k = 0; k < j; ++k) k = 1 + this.rand.nextInt(1);
 
         for (int l = 0; l < k; ++l) {
-            this.entityDropItem(MaterialsAlloy.STABALLOY.getIngot(lootingChance), 0f);
+            int rand = (int)(Math.random() * range) + min;
+            this.entityDropItem(MaterialsAlloy.STABALLOY.getIngot(rand), 0.0f);
         }
     }
 
