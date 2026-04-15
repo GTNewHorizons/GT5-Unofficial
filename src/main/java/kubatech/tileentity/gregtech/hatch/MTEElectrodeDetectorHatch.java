@@ -54,6 +54,7 @@ public class MTEElectrodeDetectorHatch extends MTEHatch {
     public void loadNBTData(NBTTagCompound aNBT) {
         threshold = aNBT.getInteger("mThreshold");
         inverted = aNBT.getBoolean("mInverted");
+        isOn = aNBT.getBoolean("mIsOn");
         super.loadNBTData(aNBT);
     }
 
@@ -61,6 +62,7 @@ public class MTEElectrodeDetectorHatch extends MTEHatch {
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mThreshold", threshold);
         aNBT.setBoolean("mInverted", inverted);
+        aNBT.setBoolean("mIsOn", isOn);
         super.saveNBTData(aNBT);
     }
 
