@@ -2534,7 +2534,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new OreDictItemStack("craftingChest", 1))
+            .itemInputs(new ItemStack(Items.minecart, 1), new OreDictItemStack("craftingChest", 1))
             .itemOutputs(new ItemStack(Items.chest_minecart, 1))
             .duration(20 * SECONDS)
             .eut(4)
