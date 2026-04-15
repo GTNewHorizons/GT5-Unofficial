@@ -159,11 +159,14 @@ import gregtech.common.tileentities.machines.multi.MTEFusionComputer2;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer3;
 import gregtech.common.tileentities.machines.multi.MTEHeatExchanger;
 import gregtech.common.tileentities.machines.multi.MTEImplosionCompressor;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialBendingMachine;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialBrewery;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectrolyzer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialExtruder;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialFormingPress;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialMacerator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialMixer;
@@ -865,6 +868,18 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "multimachine.mega-chemical-reactor",
                 "Mega Chemical Reactor").getStackForm(1));
 
+        ItemList.IndustrialFormingPress.set(
+            new MTEIndustrialFormingPress(
+                IndustrialFormingPress.ID,
+                "industrialformingpress.controller.tier.single",
+                "Industrial Forming Press").getStackForm(1L));
+
+        ItemList.IndustrialBendingMachine.set(
+            new MTEIndustrialBendingMachine(
+                IndustrialBendingMachine.ID,
+                "industrialbender.controller.tier.single",
+                "Industrial Bending Machine").getStackForm(1L));
+
         ItemList.PyrolyzeOven
             .set(new MTEPyrolyseOven(PyrolyzeOven.ID, "multimachine.pyro", "Pyrolyse Oven").getStackForm(1));
 
@@ -873,6 +888,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MolecularTransformer.ID,
                 "moleculartransformer.controller.tier.single",
                 "Molecular Transformer").getStackForm(1L));
+
+        ItemList.IndustrialExtruder.set(
+            new MTEIndustrialExtruder(
+                IndustrialExtruder.ID,
+                "industrialextruder.controller.tier.single",
+                "Industrial Extrusion Machine").getStackForm(1L));
 
         ItemList.AdvancedImplosionCompressor.set(
             new MTEAdvImplosionCompressor(
