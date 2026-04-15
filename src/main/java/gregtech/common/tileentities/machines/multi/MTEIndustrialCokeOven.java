@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -9,66 +10,30 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_CASING;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
-import static gregtech.api.enums.HatchElement.Dynamo;
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
-import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
+import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.ITierConverter;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
-import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
-import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
-import gregtech.api.casing.Casings;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
-import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
-
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
@@ -84,7 +49,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
@@ -92,6 +56,8 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCokeOven>
     implements ISurvivalConstructable {
@@ -129,9 +95,10 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coke Oven, ICO")
             .addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
-            .addInfo(TooltipHelper.parallelText(18) + " Parallels with Heat Resistant Casings")
-            .addInfo(TooltipHelper.parallelText(30) + " Parallels with Heat Proof Casings")
-            .addDynamicEuEffInfo(0.04f, TooltipTier.VOLTAGE)
+            .addInfo(TooltipHelper.parallelText(16) + " Parallels with Heat Resistant Casings")
+            .addInfo(TooltipHelper.parallelText(32) + " Parallels with Heat Proof Casings")
+            .addInfo("+" + TooltipHelper.parallelText(8) + " Parallels per extra slice")
+            .addDynamicEuEffInfo(0.05f, TooltipTier.COIL)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 11, 7, false)
             .addController("Front bottom center")
@@ -150,143 +117,74 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
         return tt;
     }
 
-
     @Override
     public IStructureDefinition<MTEIndustrialCokeOven> getStructureDefinition() {
         IStructureDefinition<MTEIndustrialCokeOven> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEIndustrialCokeOven>builder()
-        .addShape(
-            STRUCTURE_PIECE_FIRST,
-            new String[][] {
-                { "         ", "         ", "      D  ", "      D  ", "      D  ", "      D  ", "      D  ",
-                    "      D  ", "      D  ", "      AAA", "AAAAAAAAA" },
-                { "         ", "         ", "      E  ", "     ACA ", "     ACA ", "   AAACA ", "  AAAACA ",
-                    "  A~AACA ", "  AAAACA ", "  AAAAAAA", "AAAAAAAAA" },
-                { "         ", "         ", "      E  ", "     A A ", "   AAA A ", "  A  A A ", " A   A A ",
-                    " A   A A ", " A   A A ", " A   AAAA", "AAAAAAAAA" },
-                { "    BBB  ", "    B B  ", "    B B  ", "    BA A ", "   ABE E ", "  A  E E ", " A   E E ",
-                    " A   E E ", " A   A A ", " A   AAAA", "AAAAAAAAA" },
-                { "         ", "         ", "      E  ", "     A A ", "   AAA A ", "  A  A A ", " A   A A ",
-                    " A   A A ", " A   A A ", " A   AAAA", "AAAAAAAAA" },
-                { "         ", "         ", "      E  ", "     ACA ", "     ACA ", "   AAACA ", "  AAAACA ",
-                    "  AAAACA ", "  AAAACA ", "  AAAAAAA", "AAAAAAAAA" },
-                { "         ", "         ", "      D  ", "      D  ", "      D  ", "      D  ", "      D  ",
-                    "      D  ", "      D  ", "      AAA", "AAAAAAAAA" } })
-        .addShape(
-            STRUCTURE_PIECE_NEXT,
-            new String[][]{{
-    "    ",
-    "    ",
-    " D  ",
-    " D  ",
-    " D  ",
-    " D  ",
-    " D  ",
-    " D  ",
-    " D  ",
-    " AAA",
-    "AAAA"
-},{
-    "    ",
-    "    ",
-    " E  ",
-    " CA ",
-    " CA ",
-    " CA ",
-    " CA ",
-    " CA ",
-    " CA ",
-    " AAA",
-    " AAA"
-},{
-    "    ",
-    "    ",
-    " E  ",
-    "  A ",
-    "  A ",
-    "  A ",
-    "  A ",
-    "  A ",
-    "  A ",
-    " AAA",
-    " AAA"
-},{
-    "BB  ",
-    " B  ",
-    " B  ",
-    "  A ",
-    "  E ",
-    "  E ",
-    "  E ",
-    "  E ",
-    "  A ",
-    " AAA",
-    " AAA"
-},{
-    "    ",
-    "    ",
-    " E  ",
-    "  A ",
-    "  A ",
-    "  A ",
-    "  A ",
-    "  A ",
-    "  A ",
-    " AAA",
-    " AAA"
-},{
-    "    ",
-    "    ",
-    " E  ",
-    " CA ",
-    " CA ",
-    " CA ",
-    " CA ",
-    " CA ",
-    " CA ",
-    " AAA",
-    " AAA"
-},{
-    "    ",
-    "    ",
-    " D  ",
-    " D  ",
-    " D  ",
-    " D  ",
-    " D  ",
-    " D  ",
-    " D  ",
-    " AAA",
-    " AAA"
-}})
-        .addElement(
-            'A',
-            buildHatchAdder(MTEIndustrialCokeOven.class)
-                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
-                .casingIndex(Casings.SolidSteelMachineCasing.textureId)
-                .hint(1)
-                .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.SolidSteelMachineCasing.asElement())))
-        .addElement('B', Casings.SteelPipeCasing.asElement())
-        .addElement(
-            'C',
-            GTStructureChannels.HEATING_COIL
-                .use(activeCoils(ofCoil(MTEIndustrialCokeOven::setCoilLevel, MTEIndustrialCokeOven::getCoilLevel))))
-        .addElement('D', ofFrame(Materials.Steel))
-.addElement('E', GTStructureChannels.COKE_OVEN_CASING.use(
-    ofBlocksTiered(
-        (ITierConverter<Integer>) (block, meta) -> {
-            if (block.equals(Casings.HeatResistantCokeOvenCasing.getBlock())) return 1;
-            if (block.equals(Casings.HeatProofCokeOvenCasing.getBlock()))     return 2;
-            return null;
-        },
-        new ArrayList<Pair<Block, Integer>>() {{
-            add(Pair.of(Casings.HeatResistantCokeOvenCasing.getBlock(), Casings.HeatResistantCokeOvenCasing.getBlockMeta()));
-            add(Pair.of(Casings.HeatProofCokeOvenCasing.getBlock(),     Casings.HeatProofCokeOvenCasing.getBlockMeta()));
-        }},
-        -1,
-        (t, v) -> t.tier = v,
-        t -> t.tier)))
-        .build();
+            .<MTEIndustrialCokeOven>builder()
+            .addShape(
+                STRUCTURE_PIECE_FIRST,
+                new String[][] {
+                    { "         ", "         ", "      D  ", "      D  ", "      D  ", "      D  ", "      D  ",
+                        "      D  ", "      D  ", "      AAA", "AAAAAAAAA" },
+                    { "         ", "         ", "      E  ", "     ACA ", "     ACA ", "   AAACA ", "  AAAACA ",
+                        "  A~AACA ", "  AAAACA ", "  AAAAAAA", "AAAAAAAAA" },
+                    { "         ", "         ", "      E  ", "     A A ", "   AAA A ", "  A  A A ", " A   A A ",
+                        " A   A A ", " A   A A ", " A   AAAA", "AAAAAAAAA" },
+                    { "    BBB  ", "    B B  ", "    B B  ", "    BA A ", "   ABE E ", "  A  E E ", " A   E E ",
+                        " A   E E ", " A   A A ", " A   AAAA", "AAAAAAAAA" },
+                    { "         ", "         ", "      E  ", "     A A ", "   AAA A ", "  A  A A ", " A   A A ",
+                        " A   A A ", " A   A A ", " A   AAAA", "AAAAAAAAA" },
+                    { "         ", "         ", "      E  ", "     ACA ", "     ACA ", "   AAACA ", "  AAAACA ",
+                        "  AAAACA ", "  AAAACA ", "  AAAAAAA", "AAAAAAAAA" },
+                    { "         ", "         ", "      D  ", "      D  ", "      D  ", "      D  ", "      D  ",
+                        "      D  ", "      D  ", "      AAA", "AAAAAAAAA" } })
+            .addShape(
+                STRUCTURE_PIECE_NEXT,
+                new String[][] {
+                    { "    ", "    ", " D  ", " D  ", " D  ", " D  ", " D  ", " D  ", " D  ", " AAA", "AAAA" },
+                    { "    ", "    ", " E  ", " CA ", " CA ", " CA ", " CA ", " CA ", " CA ", " AAA", " AAA" },
+                    { "    ", "    ", " E  ", "  A ", "  A ", "  A ", "  A ", "  A ", "  A ", " AAA", " AAA" },
+                    { "BB  ", " B  ", " B  ", "  A ", "  E ", "  E ", "  E ", "  E ", "  A ", " AAA", " AAA" },
+                    { "    ", "    ", " E  ", "  A ", "  A ", "  A ", "  A ", "  A ", "  A ", " AAA", " AAA" },
+                    { "    ", "    ", " E  ", " CA ", " CA ", " CA ", " CA ", " CA ", " CA ", " AAA", " AAA" },
+                    { "    ", "    ", " D  ", " D  ", " D  ", " D  ", " D  ", " D  ", " D  ", " AAA", " AAA" } })
+            .addElement(
+                'A',
+                buildHatchAdder(MTEIndustrialCokeOven.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
+                    .casingIndex(Casings.SolidSteelMachineCasing.textureId)
+                    .hint(1)
+                    .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.SolidSteelMachineCasing.asElement())))
+            .addElement('B', Casings.SteelPipeCasing.asElement())
+            .addElement(
+                'C',
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(MTEIndustrialCokeOven::setCoilLevel, MTEIndustrialCokeOven::getCoilLevel))))
+            .addElement('D', ofFrame(Materials.Steel))
+            .addElement(
+                'E',
+                GTStructureChannels.COKE_OVEN_CASING.use(ofBlocksTiered((ITierConverter<Integer>) (block, meta) -> {
+                    if (block.equals(Casings.HeatResistantCokeOvenCasing.getBlock())) return 1;
+                    if (block.equals(Casings.HeatProofCokeOvenCasing.getBlock())) return 2;
+                    return null;
+                }, new ArrayList<Pair<Block, Integer>>() {
+
+                    {
+                        add(
+                            Pair.of(
+                                Casings.HeatResistantCokeOvenCasing.getBlock(),
+                                Casings.HeatResistantCokeOvenCasing.getBlockMeta()));
+                        add(
+                            Pair.of(
+                                Casings.HeatProofCokeOvenCasing.getBlock(),
+                                Casings.HeatProofCokeOvenCasing.getBlockMeta()));
+                    }
+                }, -1, (t, v) -> {
+                    t.tier = v;
+                    if (v == 1) t.casingAmount2++;
+                    if (v == 2) t.casingAmount3++;
+                }, t -> t.tier)))
+            .build();
         return STRUCTURE_DEFINITION;
     }
 
@@ -345,15 +243,33 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
         width = 0;
         setCoilLevel(HeatingCoilLevel.None);
 
-        if (!checkPiece(STRUCTURE_PIECE_FIRST, OFFSET_X_MAIN, OFFSET_Y_MAIN, OFFSET_Z_MAIN)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_FIRST, OFFSET_X_MAIN, OFFSET_Y_MAIN, OFFSET_Z_MAIN)) {
+            System.out.println("[ICO] FIRST piece failed to validate");
+            return false;
+        }
 
-        // Try to find extra slices
         while (checkPiece(STRUCTURE_PIECE_NEXT, OFFSET_X_SLICE - (width + 1) * 2, OFFSET_Y_SLICE, OFFSET_Z_SLICE)) {
             width++;
         }
 
-        if (casingAmount2 == 8 + width * 8) tier = 1;
-        if (casingAmount3 == 8 + width * 8) tier = 2;
+        int expectedCasings = 8 + width * 8;
+        System.out.println(
+            "[ICO] width=" + width
+                + " casingAmount="
+                + casingAmount
+                + " casingAmount2="
+                + casingAmount2
+                + " casingAmount3="
+                + casingAmount3
+                + " expectedE="
+                + expectedCasings
+                + " coilLevel="
+                + coilLevel);
+
+        if (casingAmount2 == expectedCasings) tier = 1;
+        if (casingAmount3 == expectedCasings) tier = 2;
+
+        System.out.println("[ICO] tier=" + tier + " mufflers=" + mMufflerHatches.size());
 
         return tier > 0 && casingAmount >= 8 && checkHatch();
     }
@@ -413,12 +329,12 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
-        logic.setEuModifier((100F - (GTUtility.getTier(getMaxInputVoltage()) * 4)) / 100F);
+        logic.setEuModifier(euModifier(getCoilTier()));
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return (6 + tier * 12) * (1 + width);
+        return (tier == 1 ? 16 : 32) + (width * 8);
     }
 
     @Override
@@ -436,5 +352,37 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     public HeatingCoilLevel getCoilLevel() {
         return this.coilLevel;
+    }
+
+    public float euModifier(int coilTier) {
+        return (float) Math.pow(0.95, coilTier);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("coilTier", getCoilTier());
+        tag.setInteger("parallels", getMaxParallelRecipes());
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.coilLevel") + ": "
+                + EnumChatFormatting.WHITE
+                + Math.max(0, tag.getInteger("coilTier")));
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.euModifier") + ": "
+                + EnumChatFormatting.WHITE
+                + formatNumber(euModifier(tag.getInteger("coilTier")) * 100)
+                + "%");
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.parallels") + ": "
+                + EnumChatFormatting.WHITE
+                + Math.max(0, tag.getInteger("parallels")));
     }
 }
