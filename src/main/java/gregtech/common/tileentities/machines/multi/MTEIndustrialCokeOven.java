@@ -116,6 +116,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                     + "Heating Coil"
                     + EnumChatFormatting.GRAY
                     + " Tier (multiplicatively)")
+            .addInfo("Max 15 additional slices, eternal coils unlock unlimited slices")
             .addInfo("Infinity Coils and higher allow for single multi-amp energy hatch")
             .addMultiAmpHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
