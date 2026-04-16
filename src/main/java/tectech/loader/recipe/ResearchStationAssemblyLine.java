@@ -2931,34 +2931,6 @@ public class ResearchStationAssemblyLine implements Runnable {
                 CustomItemList.Machine_Multi_ForgeOfGods.get(1),
                 300 * SECONDS,
                 (int) TierEU.RECIPE_UMV);
-
-            // TODO: remove recipe for 2.10
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                CustomItemList.Godforge_StellarEnergySiphonCasing.get(1),
-                48_000_000,
-                8_192,
-                (int) TierEU.RECIPE_UMV,
-                64,
-                new Object[] { CustomItemList.Godforge_StellarEnergySiphonCasing.get(4), ItemList.ZPM4.get(2),
-                    ItemList.Casing_Dim_Bridge.get(64), getModItem(EternalSingularity.ID, "eternal_singularity", 32L),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Mellion, 16),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.SixPhasedCopper, 16),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Creon, 16),
-                    GGMaterial.metastableOganesson.get(OrePrefixes.plateDense, 16),
-                    new ItemStack(
-                        Particle.getBaseParticle(Particle.GRAVITON)
-                            .getItem(),
-                        64),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 16),
-                    ItemList.Sensor_UIV.get(32), new Object[] { OrePrefixes.circuit.get(Materials.UIV), 64L },
-                    CustomItemList.eM_energyTunnel7_UIV.get(1), ItemRegistry.energyDistributor[11] },
-                new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(32 * STACKS),
-                    Materials.ExcitedDTEC.getFluid(8_192_000), Materials.Thorium.getPlasma(4 * STACKS),
-                    Materials.TranscendentMetal.getMolten(32 * STACKS) },
-                CustomItemList.Machine_Multi_ForgeOfGods.get(1),
-                300 * SECONDS,
-                (int) TierEU.RECIPE_UMV);
-
         }
 
         // Magnetic Confinement Casing
@@ -2996,30 +2968,6 @@ public class ResearchStationAssemblyLine implements Runnable {
                     MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFrameBox(8),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Creon, 6),
                     ItemList.StableBosonContainmentUnit.get(1), ItemList.Field_Generator_UEV.get(2),
-                    // Artificial Gravity Generator
-                    getModItem(GalacticraftAmunRa.ID, "tile.machines3", 4L, 1) },
-                new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(16 * INGOTS),
-                    Materials.Lead.getPlasma(2 * INGOTS) },
-                CustomItemList.Godforge_BoundlessStructureCasing.get(1),
-                10 * SECONDS,
-                (int) TierEU.RECIPE_UIV);
-            // TODO: Remove for 2.10
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                CustomItemList.Godforge_MagneticConfinementCasing.get(1),
-                48_000_000,
-                8_192,
-                (int) TierEU.RECIPE_UMV,
-                64,
-                new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Mellion, 16),
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SixPhasedCopper, 16),
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 8),
-                    MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFrameBox(8),
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Creon, 6),
-                    new ItemStack(
-                        Particle.getBaseParticle(Particle.GRAVITON)
-                            .getItem(),
-                        8),
-                    ItemList.Field_Generator_UEV.get(2),
                     // Artificial Gravity Generator
                     getModItem(GalacticraftAmunRa.ID, "tile.machines3", 4L, 1) },
                 new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(16 * INGOTS),
@@ -3079,33 +3027,6 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new ItemStack(ItemRegistry.bw_glasses[1], 8, 0), GregtechItemList.ForceFieldGlass.get(8),
                 ItemList.StableBosonContainmentUnit.get(4), getNHCoreModItem("RadoxPolymerLens", 6),
                 getNHCoreModItem("ChromaticLens", 6), getNHCoreModItem("MysteriousCrystalLens", 6),
-                WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.lens, 6),
-                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlateDense(36),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Creon, 6),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Mellion, 6),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SixPhasedCopper, 6) },
-            new FluidStack[] { MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(16 * INGOTS),
-                Materials.Creon.getMolten(16 * INGOTS),
-                MaterialsElements.STANDALONE.ADVANCED_NITINOL.getFluidStack(16 * STACKS) },
-            new ItemStack(BlockGodforgeGlass.INSTANCE, 1),
-            10 * SECONDS,
-            (int) TierEU.RECIPE_UIV);
-
-        // TODO: remove for 2.10
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(BlockQuantumGlass.INSTANCE, 1),
-            48_000_000,
-            8_192,
-            (int) TierEU.RECIPE_UMV,
-            64,
-            new Object[] { new ItemStack(BlockQuantumGlass.INSTANCE, 8),
-                new ItemStack(ItemRegistry.bw_glasses[1], 8, 0), GregtechItemList.ForceFieldGlass.get(8),
-                new ItemStack(
-                    Particle.getBaseParticle(Particle.GRAVITON)
-                        .getItem(),
-                    32),
-                getNHCoreModItem("RadoxPolymerLens", 6), getNHCoreModItem("ChromaticLens", 6),
-                getNHCoreModItem("MysteriousCrystalLens", 6),
                 WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.lens, 6),
                 MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlateDense(36),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Creon, 6),
