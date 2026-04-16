@@ -176,6 +176,7 @@ import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UIV;
 import static gregtech.common.items.IDMetaItem03.EV_Coil;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
+import static gregtech.common.items.IDMetaItem03.Gravitational_Lens;
 import static gregtech.common.items.IDMetaItem03.HV_Coil;
 import static gregtech.common.items.IDMetaItem03.Harmonic_Compound;
 import static gregtech.common.items.IDMetaItem03.Heavy_Hellish_Mud;
@@ -1867,6 +1868,11 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.circuit.chip.plpic.tooltip",
                 "chipPlPIC",
                 "chip"));
+        ItemList.Gravitational_Lens.set(
+            addItemWithLocalizationKeys(
+                Gravitational_Lens.ID,
+                "gt.item.gravitational_lens.name",
+                "gt.item.gravitational_lens.tooltip"));
 
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();

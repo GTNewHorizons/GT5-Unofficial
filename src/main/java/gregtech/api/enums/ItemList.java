@@ -3009,6 +3009,7 @@ public enum ItemList implements IItemContainer {
     ComputationalMatrixNanochipCasing,
     FirewallProjectionNanochipCasing,
     ComplexNanochipGlass,
+    Gravitational_Lens,
 
     // semicolon after the comment to reduce merge conflicts
     ;

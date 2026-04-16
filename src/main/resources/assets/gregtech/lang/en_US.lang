@@ -8042,3 +8042,6 @@ gt.item.stable_boson_containment_unit.name=Stable Boson Containment Unit
 gt.item.stable_boson_containment_unit.tooltip=Maybe contains a bound boson?
 gt.item.stable_empty_containment_unit.name=Stable Empty Containment Unit
 gt.item.stable_empty_containment_unit.tooltip=Maybe contains nothing?
+
+gt.item.gravitational_lens.name=Gravitational Lens
+gt.item.gravitational_lens.tooltip=replace me pls

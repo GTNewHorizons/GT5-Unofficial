@@ -222,6 +222,7 @@ public enum IDMetaItem03 {
     Circuit_Wafer_PlPIC(274),
     Circuit_Chip_PlPIC(275),
     Circuit_Silicon_Wafer8(276),
+    Gravitational_Lens(277),
     StableBaryonContainmentUnit(300),
     StableLeptonContainmentUnit(301),
     StableMesonContainmentUnit(302),

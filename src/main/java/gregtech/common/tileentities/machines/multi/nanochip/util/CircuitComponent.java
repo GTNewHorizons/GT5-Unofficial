@@ -204,10 +204,6 @@ public enum CircuitComponent {
         610,
         "gt.circuitcomponent.chipplanckpic",
         () -> ItemList.Circuit_Chip_PlPIC.get(1)),
-    //WaferPico(
-    //    607,
-    //    "gt.circuitcomponent.waferpico",
-    //    () -> getModItem(NewHorizonsCoreMod.ID, "PicoWafer", 1, 0, new ItemStack(Blocks.fire))),
 
     ProcessedChipNanoCPU(700, "gt.circuitcomponent.processed.chipnanocpu", () -> ChipNanoCPU, true),
     ProcessedChipRAM(701, "gt.circuitcomponent.processed.chipram", () -> ChipRAM, true),
