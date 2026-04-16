@@ -27,7 +27,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,8 +35,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IIconContainer;
@@ -69,9 +66,6 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
 
     private static final int MODE_SCRAP = 1;
     private static final int MODE_UU = 0;
-
-    private static final FluidStack[] mUU = new FluidStack[2];
-    private static final ItemStack[] mScrap = new ItemStack[2];
 
     private int mCasing;
     private static IStructureDefinition<MTEMassFabricator> STRUCTURE_DEFINITION = null;
@@ -139,26 +133,6 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     @Override
     protected int getCasingTextureId() {
         return TAE.GTPP_INDEX(9);
-    }
-
-    public static boolean sInit = false;
-
-    public static void init() {
-        if (!sInit) {
-            if (mScrap[0] == null) {
-                mScrap[0] = ItemList.IC2_Scrap.get(1L);
-            }
-            if (mScrap[1] == null) {
-                mScrap[1] = ItemList.IC2_Scrapbox.get(1L);
-            }
-            if (mUU[0] == null) {
-                mUU[0] = Materials.UUAmplifier.getFluid(100);
-            }
-            if (mUU[1] == null) {
-                mUU[1] = Materials.UUMatter.getFluid(100);
-            }
-            sInit = true;
-        }
     }
 
     @Override
@@ -230,13 +204,6 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                init();
-                return super.process();
-            }
 
             @NotNull
             @Override
