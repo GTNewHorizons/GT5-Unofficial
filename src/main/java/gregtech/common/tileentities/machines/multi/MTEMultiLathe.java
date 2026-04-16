@@ -311,9 +311,4 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     public boolean supportsInputSeparation() {
         return true;
     }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
 }
