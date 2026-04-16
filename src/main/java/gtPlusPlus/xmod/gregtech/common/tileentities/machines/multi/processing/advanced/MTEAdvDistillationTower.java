@@ -205,6 +205,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addEnergyHatch("Any Casing", 1)
             .addOutputHatch("One per layer except bottom", 2)
             .addMufflerHatch("Top Casing", 3)
+            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
         return tt;
     }
