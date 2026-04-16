@@ -212,10 +212,10 @@ public enum CircuitComponent {
     ProcessedChipASOC(704, "gt.circuitcomponent.processed.chipasoc", () -> ChipASOC, true),
     ProcessedChipPikoPIC(705, "gt.circuitcomponent.processed.chippikopic", () -> ChipPikoPIC, true),
     ProcessedChipQuantumPIC(706, "gt.circuitcomponent.processed.chipquantumpic", () -> ChipQuantumPIC, true),
-    ProcessedChipAtto(707, "gt.circuitcomponent.processed.chipattopic", () -> ChipAttoPIC, true),
-    ProcessedChipZepto(708, "gt.circuitcomponent.processed.chipzeptopic", () -> ChipZeptoPIC, true),
-    ProcessedChipYocto(709, "gt.circuitcomponent.processed.chipyoctopic", () -> ChipYoctoPIC, true),
-    ProcessedChipPlanck(7010, "gt.circuitcomponent.processed.chipplanckpic", () -> ChipPlanckPIC, true),
+    ProcessedChipAttoPIC(707, "gt.circuitcomponent.processed.chipattopic", () -> ChipAttoPIC, true),
+    ProcessedChipZeptoPIC(708, "gt.circuitcomponent.processed.chipzeptopic", () -> ChipZeptoPIC, true),
+    ProcessedChipYoctoPIC(709, "gt.circuitcomponent.processed.chipyoctopic", () -> ChipYoctoPIC, true),
+    ProcessedChipPlanckPIC(710, "gt.circuitcomponent.processed.chipplanckpic", () -> ChipPlanckPIC, true),
 
     // Crystal components
     // IDs: 800-899 CC, 900-999 PC
