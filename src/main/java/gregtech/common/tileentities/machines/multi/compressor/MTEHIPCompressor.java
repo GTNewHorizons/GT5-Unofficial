@@ -286,6 +286,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             .addEnergyHatch("Any Electric Compressor Casing", 1)
             .addMaintenanceHatch("Any Electric Compressor Casing", 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(Ollie);
         return tt;
     }
@@ -455,11 +456,6 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

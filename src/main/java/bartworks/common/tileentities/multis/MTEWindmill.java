@@ -665,4 +665,9 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }
