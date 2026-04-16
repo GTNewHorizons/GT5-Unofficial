@@ -949,7 +949,7 @@ public class RecipesMachinesMulti {
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 8),
                 MaterialsAlloy.EGLIN_STEEL.getScrew(8))
             .circuit(12)
-            .itemOutputs(GregtechItemList.Controller_IndustrialRockBreaker.get(1))
+            .itemOutputs(ItemList.Boldarnator.get(1))
             .fluidInputs(Materials.Aluminium.getMolten(8 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)

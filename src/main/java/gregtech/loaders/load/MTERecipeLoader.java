@@ -1685,6 +1685,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.NaquadahFuelRefinery.get(1),
             new Object[] { ItemRefer.Naquadah_Fuel_Refinery.get(1) });
 
+        // Boldarnator Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.Boldarnator.get(1),
+            new Object[] { GregtechItemList.Controller_IndustrialRockBreaker });
+
         // Amazon Packager Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialPackager.get(1),
