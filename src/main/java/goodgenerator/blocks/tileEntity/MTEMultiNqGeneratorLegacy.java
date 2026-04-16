@@ -443,6 +443,11 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
         return false;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     public String getCoolantTextFormatted(String fluidType, String litersConsumed, int effBoost) {
         return String.format(
             "%s%s L/s%s : %s%d%% %s: %s%s",

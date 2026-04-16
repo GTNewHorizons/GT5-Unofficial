@@ -85,7 +85,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 
-public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEElectricImplosionCompressor>
+public class MTEElectricImplosionCompressorLegacy
+    extends MTEExtendedPowerMultiBlockBase<MTEElectricImplosionCompressorLegacy>
     implements ISurvivalConstructable, INEIPreviewModifier {
 
     private static final boolean pistonEnabled = !Configuration.multiblocks.disablePistonInEIC;
@@ -96,17 +97,17 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     private int mCasing;
     private boolean isSuccessful = false;
 
-    public MTEElectricImplosionCompressor(int aID, String aName, String aNameRegional) {
+    public MTEElectricImplosionCompressorLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEElectricImplosionCompressor(String aName) {
+    public MTEElectricImplosionCompressorLegacy(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new MTEElectricImplosionCompressor(this.mName);
+        return new MTEElectricImplosionCompressorLegacy(this.mName);
     }
 
     private static final int CASING_INDEX = 16;
@@ -151,8 +152,8 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     }
 
     @Override
-    public IStructureDefinition<MTEElectricImplosionCompressor> getStructureDefinition() {
-        return StructureDefinition.<MTEElectricImplosionCompressor>builder()
+    public IStructureDefinition<MTEElectricImplosionCompressorLegacy> getStructureDefinition() {
+        return StructureDefinition.<MTEElectricImplosionCompressorLegacy>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addShape(
                 STRUCTURE_PIECE_MAIN_SUCCESSFUL,
@@ -164,7 +165,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                     .toArray(String[][]::new))
             .addElement(
                 'B',
-                buildHatchAdder(MTEElectricImplosionCompressor.class).atLeast(Energy.or(ExoticEnergy))
+                buildHatchAdder(MTEElectricImplosionCompressorLegacy.class).atLeast(Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
                     .hint(2)
                     .buildAndChain(
@@ -172,7 +173,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                         onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings3, 4))))
             .addElement(
                 'C',
-                buildHatchAdder(MTEElectricImplosionCompressor.class)
+                buildHatchAdder(MTEElectricImplosionCompressorLegacy.class)
                     .atLeast(InputBus, OutputBus, Maintenance, InputHatch, OutputHatch)
                     .casingIndex(CASING_INDEX)
                     .hint(1)
@@ -184,7 +185,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                 'E',
                 GTStructureChannels.EIC_PISTON.use(
                     StructureUtility.ofBlocksTiered(
-                        MTEElectricImplosionCompressor::getTierBlock,
+                        MTEElectricImplosionCompressorLegacy::getTierBlock,
                         getTierBlockList(),
                         -1,
                         (t, m) -> t.mBlockTier = m,
@@ -193,7 +194,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                 'F',
                 GTStructureChannels.EIC_PISTON.use(
                     StructureUtility.ofBlocksTiered(
-                        MTEElectricImplosionCompressor::getTierBlock,
+                        MTEElectricImplosionCompressorLegacy::getTierBlock,
                         getTierBlockList(),
                         -1,
                         (t, m) -> t.mBlockTier = m,
@@ -212,6 +213,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Implosion Compressor, EIC")
+            .addStructureDeprecatedLine()
             .addInfo("Explosions are fun!")
             .addInfo("Uses electricity instead of Explosives")
             .addInfo(
@@ -475,6 +477,11 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     public boolean supportsVoidProtection() {
         return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     @Override
