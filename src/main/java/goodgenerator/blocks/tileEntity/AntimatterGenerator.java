@@ -613,4 +613,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
         return false;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
 }

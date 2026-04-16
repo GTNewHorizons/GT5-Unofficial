@@ -481,6 +481,11 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         return true;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     private String tieredTextLine(String mk1, String mk2, String mk3, String mk4) {
         return GREEN + mk1
             + EnumChatFormatting.GRAY
