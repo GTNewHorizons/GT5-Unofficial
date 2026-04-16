@@ -33,22 +33,23 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEIndustrialExtruder extends GTPPMultiBlockBase<MTEIndustrialExtruder> implements ISurvivalConstructable {
+public class MTEIndustrialExtruderLegacy extends GTPPMultiBlockBase<MTEIndustrialExtruderLegacy>
+    implements ISurvivalConstructable {
 
     private int mCasing;
-    private static IStructureDefinition<MTEIndustrialExtruder> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialExtruderLegacy> STRUCTURE_DEFINITION = null;
 
-    public MTEIndustrialExtruder(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialExtruderLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEIndustrialExtruder(final String aName) {
+    public MTEIndustrialExtruderLegacy(final String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialExtruder(this.mName);
+        return new MTEIndustrialExtruderLegacy(this.mName);
     }
 
     @Override
@@ -60,6 +61,7 @@ public class MTEIndustrialExtruder extends GTPPMultiBlockBase<MTEIndustrialExtru
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addBulkMachineInfo(4, 3.5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 5, true)
@@ -75,9 +77,9 @@ public class MTEIndustrialExtruder extends GTPPMultiBlockBase<MTEIndustrialExtru
     }
 
     @Override
-    public IStructureDefinition<MTEIndustrialExtruder> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialExtruderLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialExtruder>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialExtruderLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
@@ -85,7 +87,7 @@ public class MTEIndustrialExtruder extends GTPPMultiBlockBase<MTEIndustrialExtru
                             { "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
-                    buildHatchAdder(MTEIndustrialExtruder.class)
+                    buildHatchAdder(MTEIndustrialExtruderLegacy.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(getCasingTextureIndex())
                         .hint(1)
