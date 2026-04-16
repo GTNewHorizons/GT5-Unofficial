@@ -188,13 +188,13 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     }
 
     @Override
-    public void construct(ItemStack trigger, boolean hintsOnly) {
-        int extraSlices = trigger.stackSize;
-        buildPiece(STRUCTURE_PIECE_FIRST, trigger, hintsOnly, OFFSET_X_MAIN, OFFSET_Y_MAIN, OFFSET_Z_MAIN);
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        int extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 1, MAX_LENGTH);
+        buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, OFFSET_X_MAIN, OFFSET_Y_MAIN, OFFSET_Z_MAIN);
         for (int i = 1; i < extraSlices; i++) {
             buildPiece(
                 STRUCTURE_PIECE_NEXT,
-                trigger,
+                stackSize,
                 hintsOnly,
                 OFFSET_X_SLICE - (i * 2),
                 OFFSET_Y_SLICE,
@@ -203,14 +203,14 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     }
 
     @Override
-    public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int extraSlices = trigger.stackSize;
+        int extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 1, MAX_LENGTH);
         int built = 0, temp;
 
         temp = survivalBuildPiece(
             STRUCTURE_PIECE_FIRST,
-            trigger,
+            stackSize,
             OFFSET_X_MAIN,
             OFFSET_Y_MAIN,
             OFFSET_Z_MAIN,
@@ -224,7 +224,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
         for (int i = 1; i < extraSlices; i++) {
             temp = survivalBuildPiece(
                 STRUCTURE_PIECE_NEXT,
-                trigger,
+                stackSize,
                 OFFSET_X_SLICE - (i * 2),
                 OFFSET_Y_SLICE,
                 OFFSET_Z_SLICE,
@@ -250,7 +250,8 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             return false;
         }
 
-        while (checkPiece(STRUCTURE_PIECE_NEXT, OFFSET_X_SLICE - (width + 1) * 2, OFFSET_Y_SLICE, OFFSET_Z_SLICE)) {
+        while (width < MAX_LENGTH - 1
+            && checkPiece(STRUCTURE_PIECE_NEXT, OFFSET_X_SLICE - (width + 1) * 2, OFFSET_Y_SLICE, OFFSET_Z_SLICE)) {
             width++;
         }
 
