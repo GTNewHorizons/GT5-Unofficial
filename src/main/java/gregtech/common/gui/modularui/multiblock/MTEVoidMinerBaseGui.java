@@ -113,6 +113,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                             new ItemDrawable(stack).asIcon()
                                 .size(16))
                         .background(true, GTGuiTextures.BUTTON_STANDARD_PRESSED.withColorOverride(Color.GREY.main))
+                        .background(false, GTGuiTextures.BUTTON_STANDARD)
                         .tooltipBuilder(false, t -> getOreButtonTooltip(t, stack, false))
                         .tooltipBuilder(true, t -> getOreButtonTooltip(t, stack, true))
                         .setEnabledIf($ -> matchesSearch(stack))

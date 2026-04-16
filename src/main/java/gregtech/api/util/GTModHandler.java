@@ -1278,7 +1278,7 @@ public class GTModHandler {
             for (ItemStack tInput : FurnaceRecipes.smelting()
                 .getSmeltingList()
                 .keySet()) {
-                if (GTUtility.isStackValid(tInput) && GTUtility.areStacksEqual(aInput, tInput, true)) {
+                if (GTUtility.areStacksEqual(aInput, tInput, true)) {
                     FurnaceRecipes.smelting()
                         .getSmeltingList()
                         .remove(tInput);
@@ -1312,17 +1312,16 @@ public class GTModHandler {
         }
         ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        int size = allRecipes.size();
-        for (int i = 0; i < size; i++) {
-            for (; i < size; i++) {
-                if ((!(allRecipes.get(i) instanceof IGTCraftingRecipe)
-                    || ((IGTCraftingRecipe) allRecipes.get(i)).isRemovable()) && allRecipes.get(i)
-                        .matches(aCrafting, DW)) {
-                    rReturn = allRecipes.get(i)
-                        .getCraftingResult(aCrafting);
-                    if (rReturn != null) allRecipes.remove(i--);
-                    size = allRecipes.size();
-                }
+        for (int i = 0; i < allRecipes.size(); i++) {
+            final IRecipe recipe = allRecipes.get(i);
+
+            if (recipe instanceof IGTCraftingRecipe && !((IGTCraftingRecipe) recipe).isRemovable()) {
+                continue;
+            }
+
+            if (recipe.matches(aCrafting, DW)) {
+                rReturn = recipe.getCraftingResult(aCrafting);
+                allRecipes.remove(i--);
             }
         }
         return rReturn;
@@ -1355,10 +1354,15 @@ public class GTModHandler {
 
         Set<IRecipe> tListToRemove = allRecipes.parallelStream()
             .filter(tRecipe -> {
-                if ((tRecipe instanceof IGTCraftingRecipe) && !((IGTCraftingRecipe) tRecipe).isRemovable())
+                if ((tRecipe instanceof IGTCraftingRecipe) && !((IGTCraftingRecipe) tRecipe).isRemovable()) {
                     return false;
-                return toRemove.stream()
-                    .anyMatch(aCrafting -> tRecipe.matches(aCrafting, DW));
+                }
+                for (InventoryCrafting crafting : toRemove) {
+                    if (tRecipe.matches(crafting, DW)) {
+                        return true;
+                    }
+                }
+                return false;
             })
             .collect(Collectors.toSet());
 
