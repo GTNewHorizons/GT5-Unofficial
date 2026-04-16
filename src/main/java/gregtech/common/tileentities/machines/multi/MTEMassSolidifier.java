@@ -192,6 +192,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
             .addInputHatch("Any Solidifier Casing", 1)
             .addEnergyHatch("Any Solidifier Casing", 1)
             .addMaintenanceHatch("Any Solidifier Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorOmdaCZ);
         return tt;
     }
