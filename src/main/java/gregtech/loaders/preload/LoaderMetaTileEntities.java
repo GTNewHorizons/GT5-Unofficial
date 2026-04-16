@@ -166,6 +166,7 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialChemicalBath;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectrolyzer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialExtruder;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialFormingPress;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialMixer;
@@ -892,6 +893,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MolecularTransformer.ID,
                 "moleculartransformer.controller.tier.single",
                 "Molecular Transformer").getStackForm(1L));
+
+        ItemList.IndustrialExtruder.set(
+            new MTEIndustrialExtruder(
+                IndustrialExtruder.ID,
+                "industrialextruder.controller.tier.single",
+                "Industrial Extrusion Machine").getStackForm(1L));
 
         ItemList.AdvancedImplosionCompressor.set(
             new MTEAdvImplosionCompressor(
@@ -2564,7 +2571,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.CHEMICAL_BATH.tooltipDescription(),
                 RecipeMaps.chemicalBathRecipes,
                 1,
-                3,
+                6,
                 true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -2579,7 +2586,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.CHEMICAL_BATH.tooltipDescription(),
                 RecipeMaps.chemicalBathRecipes,
                 1,
-                3,
+                6,
                 true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -2594,7 +2601,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.CHEMICAL_BATH.tooltipDescription(),
                 RecipeMaps.chemicalBathRecipes,
                 1,
-                3,
+                6,
                 true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -2609,7 +2616,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.CHEMICAL_BATH.tooltipDescription(),
                 chemicalBathRecipes,
                 1,
-                3,
+                6,
                 true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -2624,7 +2631,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.CHEMICAL_BATH.tooltipDescription(),
                 chemicalBathRecipes,
                 1,
-                3,
+                6,
                 true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -2639,7 +2646,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.CHEMICAL_BATH.tooltipDescription(),
                 chemicalBathRecipes,
                 1,
-                3,
+                6,
                 true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -2654,7 +2661,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.CHEMICAL_BATH.tooltipDescription(),
                 chemicalBathRecipes,
                 1,
-                3,
+                6,
                 true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -2669,7 +2676,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.CHEMICAL_BATH.tooltipDescription(),
                 chemicalBathRecipes,
                 1,
-                3,
+                6,
                 true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -2684,7 +2691,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.CHEMICAL_BATH.tooltipDescription(),
                 chemicalBathRecipes,
                 1,
-                3,
+                6,
                 true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -2699,7 +2706,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.CHEMICAL_BATH.tooltipDescription(),
                 chemicalBathRecipes,
                 1,
-                3,
+                6,
                 true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,

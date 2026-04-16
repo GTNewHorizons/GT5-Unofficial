@@ -1665,6 +1665,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialWireFactory.get(1),
             new Object[] { GregtechItemList.Industrial_WireFactory });
 
+        // Industrial Extruder Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialExtruder.get(1),
+            new Object[] { GregtechItemList.Industrial_Extruder });
+
         // Advanced Implosion Compressor (Density^2) Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.AdvancedImplosionCompressor.get(1),
