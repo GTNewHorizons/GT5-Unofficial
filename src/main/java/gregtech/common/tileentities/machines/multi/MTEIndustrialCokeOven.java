@@ -68,6 +68,10 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     private HeatingCoilLevel coilLevel;
     private static final int MAX_LENGTH = 16;
     private static final float EU_MODIFIER = 0.98f;
+    private static final int PARALLELS_T1 = 16;
+    private static final int PARALLELS_T2 = 32;
+    private static final int SLICE_PARALLELS_T1 = 8;
+    private static final int SLICE_PARALLELS_T2 = 16;
 
     private static final int OFFSET_X_MAIN = 1;
     private static final int OFFSET_Y_MAIN = 5;
@@ -98,12 +102,12 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
         tt.addMachineType("Coke Oven, ICO")
             .addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
             .addInfo(
-                TooltipHelper.parallelText(16) + " base and +"
-                    + TooltipHelper.parallelText(8)
+                TooltipHelper.parallelText(PARALLELS_T1) + " base and +"
+                    + TooltipHelper.parallelText(SLICE_PARALLELS_T1)
                     + " Parallels per extra slice with Heat Resistant Casings")
             .addInfo(
-                TooltipHelper.parallelText(32) + " base and +"
-                    + TooltipHelper.parallelText(16)
+                TooltipHelper.parallelText(PARALLELS_T2) + " base and +"
+                    + TooltipHelper.parallelText(SLICE_PARALLELS_T2)
                     + " Parallels per extra slice with Heat Proof Casings")
             .addDynamicEuEffInfo(1 - EU_MODIFIER, TooltipTier.COIL)
             .addInfo("Infinity Coils and higher allow for single multi-amp energy hatch")
@@ -322,8 +326,8 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     public int getMaxParallelRecipes() {
-        int base = (tier == 0) ? 16 : 32;
-        int perSlice = (tier == 0) ? 8 : 16;
+        int base = (tier == 0) ? PARALLELS_T1 : PARALLELS_T2;
+        int perSlice = (tier == 0) ? SLICE_PARALLELS_T1 : SLICE_PARALLELS_T2;
         return base + (width * perSlice);
     }
 
