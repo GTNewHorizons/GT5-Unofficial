@@ -188,10 +188,26 @@ public enum CircuitComponent {
         606,
         "gt.circuitcomponent.chipquantumpic",
         () -> ItemList.Circuit_Chip_QPIC.get(1)),
-    WaferPico(
+    ChipAttoPIC(
         607,
-        "gt.circuitcomponent.waferpico",
-        () -> getModItem(NewHorizonsCoreMod.ID, "PicoWafer", 1, 0, new ItemStack(Blocks.fire))),
+        "gt.circuitcomponent.chipattopic",
+        () -> ItemList.Circuit_Chip_APIC.get(1)),
+    ChipZeptoPIC(
+        608,
+        "gt.circuitcomponent.chipzeptopic",
+        () -> ItemList.Circuit_Chip_ZPIC.get(1)),
+    ChipYoctoPIC(
+        609,
+        "gt.circuitcomponent.chipyoctopic",
+        () -> ItemList.Circuit_Chip_YPIC.get(1)),
+    ChipPlanckPIC(
+        610,
+        "gt.circuitcomponent.chipplanckpic",
+        () -> ItemList.Circuit_Chip_PlPIC.get(1)),
+    //WaferPico(
+    //    607,
+    //    "gt.circuitcomponent.waferpico",
+    //    () -> getModItem(NewHorizonsCoreMod.ID, "PicoWafer", 1, 0, new ItemStack(Blocks.fire))),
 
     ProcessedChipNanoCPU(700, "gt.circuitcomponent.processed.chipnanocpu", () -> ChipNanoCPU, true),
     ProcessedChipRAM(701, "gt.circuitcomponent.processed.chipram", () -> ChipRAM, true),
@@ -200,7 +216,10 @@ public enum CircuitComponent {
     ProcessedChipASOC(704, "gt.circuitcomponent.processed.chipasoc", () -> ChipASOC, true),
     ProcessedChipPikoPIC(705, "gt.circuitcomponent.processed.chippikopic", () -> ChipPikoPIC, true),
     ProcessedChipQuantumPIC(706, "gt.circuitcomponent.processed.chipquantumpic", () -> ChipQuantumPIC, true),
-    ProcessedChipPico(707, "gt.circuitcomponent.processed.chippico", () -> WaferPico, true),
+    ProcessedChipAtto(707, "gt.circuitcomponent.processed.chipattopic", () -> ChipAttoPIC, true),
+    ProcessedChipZepto(708, "gt.circuitcomponent.processed.chipzeptopic", () -> ChipZeptoPIC, true),
+    ProcessedChipYocto(709, "gt.circuitcomponent.processed.chipyoctopic", () -> ChipYoctoPIC, true),
+    ProcessedChipPlanck(7010, "gt.circuitcomponent.processed.chipplanckpic", () -> ChipPlanckPIC, true),
 
     // Crystal components
     // IDs: 800-899 CC, 900-999 PC

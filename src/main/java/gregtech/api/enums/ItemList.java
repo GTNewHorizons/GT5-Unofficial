@@ -1953,6 +1953,7 @@ public enum ItemList implements IItemContainer {
     Circuit_Silicon_Wafer5,
     Circuit_Silicon_Wafer6,
     Circuit_Silicon_Wafer7,
+    Circuit_Silicon_Wafer8,
     Circuit_Wafer_ILC,
     Circuit_Chip_ILC,
     Circuit_Wafer_Ram,

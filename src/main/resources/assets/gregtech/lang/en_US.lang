@@ -2788,7 +2788,9 @@ gt.circuitcomponent.processed.chipnand=Cut NAND Memory Chips
 gt.circuitcomponent.processed.chipasoc=Cut ASoC Chips
 gt.circuitcomponent.processed.chippikopic=Cut Piko Power IC Chips
 gt.circuitcomponent.processed.chipquantumpic=Cut Quantum Power IC Chips
-gt.circuitcomponent.processed.chippico=Cut Pico Chips
+gt.circuitcomponent.processed.chipattopic=Cut Atto Power IC Chips
+gt.circuitcomponent.processed.chipzeptopic=Cut Zepto Power IC Chips
+gt.circuitcomponent.processed.chipplanckpic=Cut Planck Power IC Chips
 
 gt.circuitcomponent.processed.chipcrystalcpu=Etched Crystal Processing Unit
 gt.circuitcomponent.processed.chipcrystalsoc=Etched Crystal SoC
@@ -4823,6 +4825,7 @@ gt.item.circuit.wafer.europium.name=Europium doped Wafer
 gt.item.circuit.wafer.americium.name=Americium doped Wafer
 gt.item.circuit.wafer.optical_prepared.name=Photonically Prepared Wafer
 gt.item.circuit.wafer.optical_enhanced.name=Photonically Enhanced Wafer
+gt.item.circuit.wafer.infinite.name=Infinite Wafer
 
 ## Wafer variants (for circuits)
 gt.item.circuit.wafer.ilc.name=Integrated Logic Circuit (Wafer)
