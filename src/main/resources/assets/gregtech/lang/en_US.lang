@@ -2134,6 +2134,7 @@ GT5U.machines.perfectoc.tooltip=Performs perfect overclocks
 GT5U.machines.solarindicator1=Is Daytime
 GT5U.machines.solarindicator2=Not Raining
 GT5U.machines.solarindicator3=Can See Sky
+GT5U.GTPP_MULTI_ARC_FURNACE_INSUFFICIENT=Structure has insufficient size
 GT5U.GTPP_MULTI_ARC_FURNACE.mode.0=Electric
 GT5U.GTPP_MULTI_ARC_FURNACE.mode.1=Plasma
 GT5U.GTPP_MULTI_WASH_PLANT.mode.0=Ore Washer
@@ -5066,6 +5067,16 @@ gt.item.coil.uv.name=Ultimate Voltage Coil
 gt.item.coil.uv.tooltip=Super Coil
 gt.item.coil.uhv.name=Highly Ultimate Voltage Coil
 gt.item.coil.uhv.tooltip=Infinite Coil
+gt.item.coil.uev.name=Extremely Ultimate Voltage Coil
+gt.item.coil.uev.tooltip=Epic Coil
+gt.item.coil.uiv.name=Insanely Ultimate Voltage Coil
+gt.item.coil.uiv.tooltip=Transcendent Coil
+gt.item.coil.umv.name=Mega Ultimate Voltage Coil
+gt.item.coil.umv.tooltip=Harmonious Coil
+gt.item.coil.uxv.name=Extended Mega Ultimate Voltage Coil
+gt.item.coil.uxv.tooltip=Limit Breaking Coil
+gt.item.coil.max.name=Maximum Voltage Coil
+gt.item.coil.max.tooltip=Horizon Reaching Coil
 
 ## Materials
 gt.item.gallium_arsenide_crystal.name=Gallium Arsenide Crystal
@@ -6153,6 +6164,10 @@ fluid.creosote=Creosote Oil
 fluid.cryotheum=Gelid Cryotheum
 fluid.cyclohexane=Cyclohexane
 fluid.cyclohexanone=Cyclohexanone
+fluid.SodiumPotassium=Sodium Potassium
+fluid.EnrichedBacterialSludge=Enriched Bacterial Sludge
+fluid.FermentedBacterialSludge=Fermented Bacterial Sludge
+fluid.Pollution=Pollution
 
 # Dyes
 fluid.dye.chemical.dyeblack=Chemical Black Dye
@@ -7675,7 +7690,6 @@ gt.blockcasings12.11.name=Alchemically Inert Void Casing
 gt.blockcasings12.12.name=Alchemically Immune Ichorium Casing
 gt.blockcasings12.13.name=Mixer Casing
 gt.blockcasings12.14.name=Forming Core
-
 
 gt.blockcasings13.0.name=Cable Casing
 gt.blockcasings13.1.name=Graphite Moderator Casing

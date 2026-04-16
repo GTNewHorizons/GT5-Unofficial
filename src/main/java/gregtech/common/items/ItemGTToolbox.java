@@ -364,7 +364,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         final int slot = data.getSlotIndex();
         final ItemStack candidate = data.getUsedItemStack();
 
-        if (candidate == null || !(candidate.getItem() instanceof ItemGTToolbox) || !candidate.hasTagCompound()) {
+        if (candidate == null || !(candidate.getItem() instanceof ItemGTToolbox)) {
             throw new RuntimeException(
                 String.format("Toolbox was expected in slot %d but was either not found or not a toolbox", slot));
         }
