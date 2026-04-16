@@ -8,6 +8,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
@@ -66,6 +67,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     private int casingAmount;
     private HeatingCoilLevel coilLevel;
     private static final int MAX_LENGTH = 16;
+    private static final float EU_MODIFIER = 0.98f;
 
     private static final int OFFSET_X_MAIN = 1;
     private static final int OFFSET_Y_MAIN = 5;
@@ -103,7 +105,9 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                 TooltipHelper.parallelText(32) + " base and +"
                     + TooltipHelper.parallelText(16)
                     + " Parallels per extra slice with Heat Proof Casings")
-            .addDynamicEuEffInfo(0.05f, TooltipTier.COIL)
+            .addDynamicEuEffInfo(1 - EU_MODIFIER, TooltipTier.COIL)
+            .addInfo("Infinity Coils and higher allow for single multi-amp energy hatch")
+            .addMultiAmpHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 5, false)
             .addController("Front left center")
@@ -128,6 +132,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addMufflerHatch("Any Structural Coke Oven Casing of the base structure", 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .addSubChannelUsage(GTStructureChannels.COKE_OVEN_CASING)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "Nicouuuuu")
             .toolTipFinisher();
         return tt;
     }
@@ -153,7 +158,14 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addElement(
                 'D',
                 buildHatchAdder(MTEIndustrialCokeOven.class)
-                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
+                    .atLeast(
+                        InputBus,
+                        OutputBus,
+                        InputHatch,
+                        OutputHatch,
+                        Maintenance,
+                        Energy.or(MultiAmpEnergy),
+                        Muffler)
                     .casingIndex(Casings.StructuralCokeOvenCasing.textureId)
                     .hint(1)
                     .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.StructuralCokeOvenCasing.asElement())))
@@ -247,6 +259,11 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             width++;
         }
 
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) return false;
+            return mExoticEnergyHatches.size() == 1 && getCoilTier() >= HeatingCoilLevel.UMV.getTier() + 1;
+        }
+
         return casingAmount >= 35 && checkHatch();
     }
 
@@ -299,13 +316,8 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
-    }
-
-    @Override
-    protected void setupProcessingLogic(ProcessingLogic logic) {
-        super.setupProcessingLogic(logic);
-        logic.setEuModifier(euModifier(getCoilTier()));
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifierSupplier(this::getEuModifier);
     }
 
     @Override
@@ -313,6 +325,10 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
         int base = (tier == 0) ? 16 : 32;
         int perSlice = (tier == 0) ? 8 : 16;
         return base + (width * perSlice);
+    }
+
+    public double getEuModifier() {
+        return Math.pow(EU_MODIFIER, getCoilTier());
     }
 
     @Override
@@ -333,7 +349,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     }
 
     public float euModifier(int coilTier) {
-        return (float) Math.pow(0.95, coilTier);
+        return (float) Math.pow(EU_MODIFIER, coilTier);
     }
 
     @Override
@@ -358,5 +374,25 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                 + EnumChatFormatting.WHITE
                 + formatNumber(euModifier(tag.getInteger("coilTier")) * 100)
                 + "%");
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
     }
 }
