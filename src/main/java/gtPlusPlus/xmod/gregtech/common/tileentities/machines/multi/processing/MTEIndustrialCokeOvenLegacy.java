@@ -70,6 +70,7 @@ public class MTEIndustrialCokeOvenLegacy extends GTPPMultiBlockBase<MTEIndustria
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
             .addInfo(TooltipHelper.parallelText(18) + " Parallels with Heat Resistant Casings")
             .addInfo(TooltipHelper.parallelText(30) + " Parallels with Heat Proof Casings")

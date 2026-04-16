@@ -108,24 +108,24 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             .beginStructureBlock(7, 7, 5, false)
             .addController("Front left center")
             .addStructureInfo(EnumChatFormatting.BLUE + "Base Structure:")
-            .addCasingInfoMin("Structural Coke Oven Casing", 40, false)
+            .addCasingInfoMin("Structural Coke Oven Casing", 35, false)
             .addCasingInfoExactly("Heat Resistant/Proof Coke Oven Casing", 8, true)
             .addCasingInfoExactly("Heating Coils", 8, true)
             .addCasingInfoExactly("Steel Pipe Casing", 7, false)
             .addCasingInfoExactly("Steel Frame Box", 10, false)
             .addStructureInfo(EnumChatFormatting.BLUE + "Each additional slice:")
-            .addCasingInfoExactly("Structural Coke Oven Casing", 20, false) // TODO: count without hatch spam
+            .addCasingInfoExactly("Structural Coke Oven Casing", 19, false)
             .addCasingInfoExactly("Heat Resistant/Proof Coke Oven Casing", 5, true)
             .addCasingInfoExactly("Heating Coils", 8, true)
             .addCasingInfoExactly("Steel Pipe Casing", 3, false)
             .addCasingInfoExactly("Steel Frame Box", 10, false)
-            .addInputBus("Any Structural Coke Oven Casing", 1)
-            .addOutputBus("Any Structural Coke Oven Casing", 1)
-            .addInputHatch("Any Structural Coke Oven Casing", 1)
-            .addOutputHatch("Any Structural Coke Oven Casing", 1)
-            .addEnergyHatch("Any Structural Coke Oven Casing", 1)
-            .addMaintenanceHatch("Any Structural Coke Oven Casing", 1)
-            .addMufflerHatch("Any Structural Coke Oven Casing", 1)
+            .addInputBus("Any Structural Coke Oven Casing of the base structure", 1)
+            .addOutputBus("Any Structural Coke Oven Casing of the base structure", 1)
+            .addInputHatch("Any Structural Coke Oven Casing of the base structure", 1)
+            .addOutputHatch("Any Structural Coke Oven Casing of the base structure", 1)
+            .addEnergyHatch("Any Structural Coke Oven Casing of the base structure", 1)
+            .addMaintenanceHatch("Any Structural Coke Oven Casing of the base structure", 1)
+            .addMufflerHatch("Any Structural Coke Oven Casing of the base structure", 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .addSubChannelUsage(GTStructureChannels.COKE_OVEN_CASING)
             .toolTipFinisher();
@@ -145,12 +145,12 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                     { "      ", "   C  ", "   C  ", "   C  ", "   C  ", "   C  ", "   DDD" } })
             .addShape(
                 STRUCTURE_PIECE_NEXT,
-                new String[][] { { "    ", " C  ", " C  ", " C  ", " C  ", " C  ", " DDD" },
-                    { "    ", " E  ", " BD ", " BD ", " BD ", " BD ", " DDD" },
-                    { "AA  ", " A  ", "  D ", "  E ", "  E ", "  E ", " DDD" },
-                    { "    ", " E  ", " BD ", " BD ", " BD ", " BD ", " DDD" },
-                    { "    ", " C  ", " C  ", " C  ", " C  ", " C  ", " DDD" } })
-            .addElement( // TODO: Spams Hatches on each slices
+                new String[][] { { "    ", " C  ", " C  ", " C  ", " C  ", " C  ", " FFF" },
+                    { "    ", " E  ", " BF ", " BF ", " BF ", " BF ", " FFF" },
+                    { "AA  ", " A  ", "  F ", "  E ", "  E ", "  E ", " FFF" },
+                    { "    ", " E  ", " BF ", " BF ", " BF ", " BF ", " FFF" },
+                    { "    ", " C  ", " C  ", " C  ", " C  ", " C  ", " FFF" } })
+            .addElement(
                 'D',
                 buildHatchAdder(MTEIndustrialCokeOven.class)
                     .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
@@ -174,6 +174,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                         -1,
                         (t, tier) -> t.tier = tier,
                         t -> t.tier)))
+            .addElement('F', onElementPass(x -> ++x.casingAmount, Casings.StructuralCokeOvenCasing.asElement()))
             .build();
         return STRUCTURE_DEFINITION;
     }
@@ -246,7 +247,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             width++;
         }
 
-        return casingAmount >= 40 && checkHatch();
+        return casingAmount >= 35 && checkHatch();
     }
 
     public boolean checkHatch() {
