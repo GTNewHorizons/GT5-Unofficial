@@ -313,6 +313,9 @@ public class RecipesGeneral {
         generateWireRecipes(MaterialsAlloy.TRINIUM_TITANIUM);
         generateWireRecipes(MaterialsElements.STANDALONE.HYPOGEN);
         generateWireRecipes(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
+        generateWireRecipes(MaterialsElements.STANDALONE.DRAGON_METAL);
+        generateWireRecipes(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
+        generateWireRecipes(MaterialsElements.STANDALONE.RHUGNOR);
 
         generatePipeRecipes(MaterialsAlloy.STABALLOY);
         generatePipeRecipes(MaterialsAlloy.TANTALLOY_60);

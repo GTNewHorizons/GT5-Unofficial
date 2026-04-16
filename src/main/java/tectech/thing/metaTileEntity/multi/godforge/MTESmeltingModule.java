@@ -146,7 +146,11 @@ public class MTESmeltingModule extends MTEBaseModule {
     }
 
     public void setFurnaceMode(boolean enabled) {
+        // TODO: Replace with machineMode
         furnaceMode = enabled;
+        // The machine is using a different recipemap now
+        // Clear the cached recipe
+        setSingleRecipeCheck(null);
     }
 
     @Override
