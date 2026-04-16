@@ -2790,6 +2790,7 @@ gt.circuitcomponent.processed.chippikopic=Cut Piko Power IC Chips
 gt.circuitcomponent.processed.chipquantumpic=Cut Quantum Power IC Chips
 gt.circuitcomponent.processed.chipattopic=Cut Atto Power IC Chips
 gt.circuitcomponent.processed.chipzeptopic=Cut Zepto Power IC Chips
+gt.circuitcomponent.processed.chipyoctopic=Cut Yocto Power IC Chips
 gt.circuitcomponent.processed.chipplanckpic=Cut Planck Power IC Chips
 
 gt.circuitcomponent.processed.chipcrystalcpu=Etched Crystal Processing Unit
