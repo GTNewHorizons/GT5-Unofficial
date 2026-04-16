@@ -205,6 +205,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addEnergyHatch("Any Casing", 1)
             .addOutputHatch("One per layer except bottom", 2)
             .addMufflerHatch("Top Casing", 3)
+            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
         return tt;
     }
@@ -274,6 +275,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         if (check && mHeight < 11) {
             // force the mode to DT if not in full height
             machineMode = MACHINEMODE_TOWER;
+            setSingleRecipeCheck(null);
             mLastRecipe = null;
         }
         return check;
@@ -310,6 +312,12 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             aNBT.removeTag("mMode");
         }
         super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public int nextMachineMode() {
+        if (mHeight < 11) return MACHINEMODE_TOWER;
+        else return super.nextMachineMode();
     }
 
     @Override

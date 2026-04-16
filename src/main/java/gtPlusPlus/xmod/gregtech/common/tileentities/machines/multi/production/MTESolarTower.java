@@ -627,4 +627,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         this.mSolarHeaters.clear();
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }
