@@ -1,6 +1,5 @@
 package gtnhintergalactic.tile.multi.elevator;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.ITALIC;
@@ -263,14 +262,12 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .addElement('F', StructureUtility.ofBlock(GregTechAPI.sBlockCasingsSE, 2)) // Internal Structure
             .addElement(
                 'C',
-                withChannel(
-                    "motor",
-                    StructureUtility.ofBlocksTiered(
-                        ElevatorUtil.motorTierConverter(),
-                        ElevatorUtil.getMotorTiers(),
-                        0,
-                        TileEntitySpaceElevator::setMotorTier,
-                        TileEntitySpaceElevator::getMotorTier))) // Motors
+                GTStructureChannels.SE_MOTOR.use(StructureUtility.ofBlocksTiered(
+                    ElevatorUtil.motorTierConverter(),
+                    ElevatorUtil.getMotorTiers(),
+                    0,
+                    TileEntitySpaceElevator::setMotorTier,
+                    TileEntitySpaceElevator::getMotorTier))) // Motors
             .addElement('A', StructureUtility.ofBlock(GregTechAPI.sBlockCasingsDyson, 9)) // Concrete
             .addElement('D', StructureUtility.ofBlock(GregTechAPI.sBlockCasingsSE, 0)) // Base Casing
             .addElement(
