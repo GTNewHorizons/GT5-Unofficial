@@ -659,10 +659,15 @@ public class RecipesMachinesMulti {
 
         // Ore Washing Plant
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_WashPlant.get(1),
-            new Object[] { "PAP", "TCT", "PBP", 'P', MaterialsAlloy.LEAGRISIUM.getPlate(1), 'A',
-                ItemList.Machine_EV_OreWasher, 'T', MaterialsAlloy.TALONITE.getPlate(1), 'C', "circuitData", 'B',
-                ItemList.Machine_EV_ChemicalBath });
+            ItemList.OreWashingPlant.get(1),
+            new Object[] { "PPP", "TCT", "PAP", 'P', MaterialsAlloy.LEAGRISIUM.getPlate(1), 'A',
+                ItemList.Machine_EV_OreWasher, 'T', MaterialsAlloy.TALONITE.getPlate(1), 'C', "circuitData" });
+
+        // Industrial Chemical Plant
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialChemicalBath.get(1),
+            new Object[] { "PPP", "TCT", "PBP", 'P', MaterialsAlloy.LEAGRISIUM.getPlate(1), 'T',
+                MaterialsAlloy.TALONITE.getPlate(1), 'C', "circuitData", 'B', ItemList.Machine_EV_ChemicalBath });
     }
 
     private static void multiCutter() {

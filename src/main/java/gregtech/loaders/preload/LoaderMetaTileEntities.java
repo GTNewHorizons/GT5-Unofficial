@@ -162,6 +162,7 @@ import gregtech.common.tileentities.machines.multi.MTEImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialBendingMachine;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialBrewery;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialCentrifuge;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialChemicalBath;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectrolyzer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
@@ -210,6 +211,7 @@ import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant1;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant2;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant3;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant4;
+import gregtech.common.tileentities.machines.multi.MTEOreWashingPlant;
 import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOvenLegacy;
@@ -820,6 +822,16 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 IndustrialCentrifuge.ID,
                 "industrialcentrifuge.controller.tier.single",
                 "Industrial Centrifuge").getStackForm(1));
+
+        ItemList.OreWashingPlant.set(
+            new MTEOreWashingPlant(OreWashingPlant.ID, "orewashingplant.controller.tier.single", "Ore Washing Plant")
+                .getStackForm(1L));
+
+        ItemList.IndustrialChemicalBath.set(
+            new MTEIndustrialChemicalBath(
+                IndustrialChemicalBath.ID,
+                "industrialchembath.controller.tier.single",
+                "Industrial Chemical Bath").getStackForm(1L));
 
         ItemList.IndustrialMixer.set(
             new MTEIndustrialMixer(
