@@ -67,12 +67,12 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     private HeatingCoilLevel coilLevel;
     private static final int MAX_LENGTH = 16;
 
-    private static final int OFFSET_X_MAIN = 3;
-    private static final int OFFSET_Y_MAIN = 7;
+    private static final int OFFSET_X_MAIN = 1;
+    private static final int OFFSET_Y_MAIN = 5;
     private static final int OFFSET_Z_MAIN = 1;
 
-    private static final int OFFSET_X_SLICE = -2;
-    private static final int OFFSET_Y_SLICE = 7;
+    private static final int OFFSET_X_SLICE = -1;
+    private static final int OFFSET_Y_SLICE = 5;
     private static final int OFFSET_Z_SLICE = 1;
     private static final String STRUCTURE_PIECE_FIRST = "main";
     private static final String STRUCTURE_PIECE_NEXT = "slice";
@@ -95,33 +95,37 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coke Oven, ICO")
             .addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
-            .addInfo(TooltipHelper.parallelText(16) + " Parallels with Heat Resistant Casings")
-            .addInfo(TooltipHelper.parallelText(32) + " Parallels with Heat Proof Casings")
-            .addInfo("+" + TooltipHelper.parallelText(8) + " Parallels per extra slice")
+            .addInfo(
+                TooltipHelper.parallelText(16) + " base and +"
+                    + TooltipHelper.parallelText(8)
+                    + " Parallels per extra slice with Heat Resistant Casings")
+            .addInfo(
+                TooltipHelper.parallelText(32) + " base and +"
+                    + TooltipHelper.parallelText(16)
+                    + " Parallels per extra slice with Heat Proof Casings")
             .addDynamicEuEffInfo(0.05f, TooltipTier.COIL)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 11, 7, false)
-            .addController("Front center")
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.BLUE + ":")
-            .addCasingInfoMin("Solid Steel Machine Casing", 150, false)
-            .addCasingInfoExactly("Heat Resistant/Proof Coke Oven Casing", 12, true)
-            .addCasingInfoExactly("Heating Coils", 12, true)
-            .addCasingInfoExactly("Steel Pipe Casing", 9, false)
-            .addCasingInfoExactly("Steel Frame Box", 14, false)
-            .addStructureInfo(EnumChatFormatting.BLUE + "Each additional Expansion:")
-            .addCasingInfoExactly("Solid Steel Machine Casing", 54, false)
+            .beginStructureBlock(7, 7, 5, false)
+            .addController("Front left center")
+            .addStructureInfo(EnumChatFormatting.BLUE + "Base Structure:")
+            .addCasingInfoMin("Structural Coke Oven Casing", 40, false)
             .addCasingInfoExactly("Heat Resistant/Proof Coke Oven Casing", 8, true)
-            .addCasingInfoExactly("Heating Coils", 12, true)
-            .addCasingInfoExactly("Steel Pipe Casing", 4, false)
-            .addCasingInfoExactly("Steel Frame Box", 14, false)
-            .addInputBus("Any Solid Steel Machine Casing", 1)
-            .addOutputBus("Any Solid Steel Machine Casing", 1)
-            .addInputHatch("Any Solid Steel Machine Casing", 1)
-            .addOutputHatch("Any Solid Steel Machine Casing", 1)
-            .addEnergyHatch("Any Solid Steel Machine Casing", 1)
-            .addMaintenanceHatch("Any Solid Steel Machine Casing", 1)
-            .addMufflerHatch("Any Solid Steel Machine Casing", 1)
+            .addCasingInfoExactly("Heating Coils", 8, true)
+            .addCasingInfoExactly("Steel Pipe Casing", 7, false)
+            .addCasingInfoExactly("Steel Frame Box", 10, false)
+            .addStructureInfo(EnumChatFormatting.BLUE + "Each additional slice:")
+            .addCasingInfoExactly("Structural Coke Oven Casing", 20, false) // TODO: count without hatch spam
+            .addCasingInfoExactly("Heat Resistant/Proof Coke Oven Casing", 5, true)
+            .addCasingInfoExactly("Heating Coils", 8, true)
+            .addCasingInfoExactly("Steel Pipe Casing", 3, false)
+            .addCasingInfoExactly("Steel Frame Box", 10, false)
+            .addInputBus("Any Structural Coke Oven Casing", 1)
+            .addOutputBus("Any Structural Coke Oven Casing", 1)
+            .addInputHatch("Any Structural Coke Oven Casing", 1)
+            .addOutputHatch("Any Structural Coke Oven Casing", 1)
+            .addEnergyHatch("Any Structural Coke Oven Casing", 1)
+            .addMaintenanceHatch("Any Structural Coke Oven Casing", 1)
+            .addMufflerHatch("Any Structural Coke Oven Casing", 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .addSubChannelUsage(GTStructureChannels.COKE_OVEN_CASING)
             .toolTipFinisher();
@@ -134,44 +138,31 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             .<MTEIndustrialCokeOven>builder()
             .addShape(
                 STRUCTURE_PIECE_FIRST,
-                new String[][] {
-                    { "         ", "         ", "      D  ", "      D  ", "      D  ", "      D  ", "      D  ",
-                        "      D  ", "      D  ", "      AAA", "AAAAAAAAA" },
-                    { "         ", "         ", "      E  ", "     ACA ", "     ACA ", "   AAACA ", "  AAAACA ",
-                        "  A~AACA ", "  AAAACA ", "  AAAAAAA", "AAAAAAAAA" },
-                    { "         ", "         ", "      E  ", "     A A ", "   AAA A ", "  A  A A ", " A   A A ",
-                        " A   A A ", " A   A A ", " A   AAAA", "AAAAAAAAA" },
-                    { "    BBB  ", "    B B  ", "    B B  ", "    BA A ", "   ABE E ", "  A  E E ", " A   E E ",
-                        " A   E E ", " A   A A ", " A   AAAA", "AAAAAAAAA" },
-                    { "         ", "         ", "      E  ", "     A A ", "   AAA A ", "  A  A A ", " A   A A ",
-                        " A   A A ", " A   A A ", " A   AAAA", "AAAAAAAAA" },
-                    { "         ", "         ", "      E  ", "     ACA ", "     ACA ", "   AAACA ", "  AAAACA ",
-                        "  AAAACA ", "  AAAACA ", "  AAAAAAA", "AAAAAAAAA" },
-                    { "         ", "         ", "      D  ", "      D  ", "      D  ", "      D  ", "      D  ",
-                        "      D  ", "      D  ", "      AAA", "AAAAAAAAA" } })
+                new String[][] { { "      ", "   C  ", "   C  ", "   C  ", "   C  ", "   C  ", "   DDD" },
+                    { "      ", "   E  ", "  DBD ", " DDBD ", "DDDBD ", "D~DBD ", "DDDDDD" },
+                    { " AAA  ", " A A  ", " AD D ", " AE E ", "D E E ", "D E E ", "DDDDDD" },
+                    { "      ", "   E  ", "  DBD ", " DDBD ", "DDDBD ", "DDDBD ", "DDDDDD" },
+                    { "      ", "   C  ", "   C  ", "   C  ", "   C  ", "   C  ", "   DDD" } })
             .addShape(
                 STRUCTURE_PIECE_NEXT,
-                new String[][] {
-                    { "    ", "    ", " D  ", " D  ", " D  ", " D  ", " D  ", " D  ", " D  ", " AAA", "AAAA" },
-                    { "    ", "    ", " E  ", " CA ", " CA ", " CA ", " CA ", " CA ", " CA ", " AAA", " AAA" },
-                    { "    ", "    ", " E  ", "  A ", "  A ", "  A ", "  A ", "  A ", "  A ", " AAA", " AAA" },
-                    { "BB  ", " B  ", " B  ", "  A ", "  E ", "  E ", "  E ", "  E ", "  A ", " AAA", " AAA" },
-                    { "    ", "    ", " E  ", "  A ", "  A ", "  A ", "  A ", "  A ", "  A ", " AAA", " AAA" },
-                    { "    ", "    ", " E  ", " CA ", " CA ", " CA ", " CA ", " CA ", " CA ", " AAA", " AAA" },
-                    { "    ", "    ", " D  ", " D  ", " D  ", " D  ", " D  ", " D  ", " D  ", " AAA", " AAA" } })
-            .addElement(
-                'A',
+                new String[][] { { "    ", " C  ", " C  ", " C  ", " C  ", " C  ", " DDD" },
+                    { "    ", " E  ", " BD ", " BD ", " BD ", " BD ", " DDD" },
+                    { "AA  ", " A  ", "  D ", "  E ", "  E ", "  E ", " DDD" },
+                    { "    ", " E  ", " BD ", " BD ", " BD ", " BD ", " DDD" },
+                    { "    ", " C  ", " C  ", " C  ", " C  ", " C  ", " DDD" } })
+            .addElement( // TODO: Spams Hatches on each slices
+                'D',
                 buildHatchAdder(MTEIndustrialCokeOven.class)
                     .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
-                    .casingIndex(Casings.SolidSteelMachineCasing.textureId)
+                    .casingIndex(Casings.StructuralCokeOvenCasing.textureId)
                     .hint(1)
-                    .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.SolidSteelMachineCasing.asElement())))
-            .addElement('B', Casings.SteelPipeCasing.asElement())
+                    .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.StructuralCokeOvenCasing.asElement())))
+            .addElement('A', Casings.SteelPipeCasing.asElement())
             .addElement(
-                'C',
+                'B',
                 GTStructureChannels.HEATING_COIL
                     .use(activeCoils(ofCoil(MTEIndustrialCokeOven::setCoilLevel, MTEIndustrialCokeOven::getCoilLevel))))
-            .addElement('D', ofFrame(Materials.Steel))
+            .addElement('C', ofFrame(Materials.Steel))
             .addElement(
                 'E',
                 GTStructureChannels.COKE_OVEN_CASING.use(
@@ -255,7 +246,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             width++;
         }
 
-        return casingAmount >= 150 && checkHatch();
+        return casingAmount >= 40 && checkHatch();
     }
 
     public boolean checkHatch() {
@@ -277,7 +268,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstone) {
         if (side == facing) {
-            if (active) return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture(),
+            if (active) return new ITexture[] { Casings.StructuralCokeOvenCasing.getCasingTexture(),
                 TextureFactory.builder()
                     .addIcon(TexturesGtBlock.oMCACokeOvenActive)
                     .extFacing()
@@ -287,7 +278,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
+            return new ITexture[] { Casings.StructuralCokeOvenCasing.getCasingTexture(), TextureFactory.builder()
                 .addIcon(TexturesGtBlock.oMCACokeOven)
                 .extFacing()
                 .build(),
@@ -297,7 +288,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture() };
+        return new ITexture[] { Casings.StructuralCokeOvenCasing.getCasingTexture() };
     }
 
     @Override
@@ -318,7 +309,9 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     public int getMaxParallelRecipes() {
-        return (tier == 0 ? 16 : 32) + (width * 8);
+        int base = (tier == 0) ? 16 : 32;
+        int perSlice = (tier == 0) ? 8 : 16;
+        return base + (width * perSlice);
     }
 
     @Override
