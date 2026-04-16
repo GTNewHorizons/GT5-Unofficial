@@ -265,7 +265,10 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z)) return false;
         if (!(casingAmount >= 5)) return false;
         if (mMufflerHatches.isEmpty()) return false;
-        if (mExoticEnergyHatches.size() == 1) return glassTier >= VoltageIndex.UIV;
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) return false;
+            return (mExoticEnergyHatches.size() == 1) && glassTier >= VoltageIndex.UIV;
+        }
         return true;
     }
 
