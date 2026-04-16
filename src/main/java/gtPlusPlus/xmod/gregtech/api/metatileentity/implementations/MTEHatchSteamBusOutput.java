@@ -172,5 +172,7 @@ public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
                 return 2;
             }
         }.build(guiData, syncManager, uiSettings);
+    protected boolean useMui2() {
+        return false;
     }
 }
