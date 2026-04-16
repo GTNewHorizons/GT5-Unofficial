@@ -1,13 +1,12 @@
 package gregtech.common.gui.modularui.multiblock;
 
-import com.cleanroommc.modularui.api.GuiAxis;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.DoubleValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -18,6 +17,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerBase;
 
+// TODO redo entirely
 public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> {
 
     public MTELargeBoilerGui(MTELargeBoilerBase multiblock) {
@@ -36,9 +36,9 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
     }
 
     private Flow mainInfoColumn() {
-        Flow column = new Flow(GuiAxis.Y).widthRel(1f).height(120);
+        Flow column = Flow.column().widthRel(1f).height(120);
 
-        Flow fuelRow = new Flow(GuiAxis.X).coverChildrenWidth().align(Alignment.Center);
+        Flow fuelRow = Flow.row().coverChildrenWidth();
         fuelRow.child(createFuelDisplay(true));
         fuelRow.child(new TextWidget(IKey.str(" + ")));
         fuelRow.child(createFuelDisplay(false));
@@ -49,9 +49,9 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
         }
 
         ProgressWidget burnProgress = new ProgressWidget()
-            .progress(() -> multiblock.getMaxProgresstime() > 0
-                ? (float) multiblock.getProgresstime() / multiblock.getMaxProgresstime()
-                : 0f)
+            .value(new DoubleValue.Dynamic(() -> multiblock.getMaxProgresstime() > 0
+                ? (double) multiblock.getProgresstime() / multiblock.getMaxProgresstime()
+                : 0.0, null))
             .direction(ProgressWidget.Direction.RIGHT)
             .size(182, 11)
             .texture(GTGuiTextures.PROGRESSBAR_PURIFICATION_UNIT, 182);
@@ -80,10 +80,10 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
     }
 
     private Flow createWaterTankWidget() {
-        Flow waterColumn = new Flow(GuiAxis.Y).width(24).height(60);
+        Flow waterColumn = Flow.column().width(24).height(60);
 
         ProgressWidget waterBar = new ProgressWidget()
-            .progress(() -> (float) multiblock.internalWater / multiblock.getMaxInternalWater())
+            .value(new DoubleValue.Dynamic(() -> (double) multiblock.internalWater / multiblock.getMaxInternalWater(), null))
             .direction(ProgressWidget.Direction.UP)
             .size(18, 52)
             .texture(GTGuiTextures.PROGRESSBAR_PURIFICATION_UNIT, 52);
@@ -91,7 +91,6 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
 
         TextWidget waterText = new TextWidget(IKey.dynamic(() ->
             multiblock.internalWater / 1000 + "/" + multiblock.getMaxInternalWater() / 1000 + " B"));
-        waterText.align(Alignment.Center);
         waterColumn.child(waterText);
 
         return waterColumn;
@@ -99,28 +98,27 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
 
     private Flow createCooldownWidget() {
         ProgressWidget cooldownBar = new ProgressWidget()
-            .progress(() -> (float) multiblock.cooldownTicksLeft / multiblock.getMaxCooldownTicks())
+            .value(new DoubleValue.Dynamic(() -> (double) multiblock.cooldownTicksLeft / multiblock.getMaxCooldownTicks(), null))
             .direction(ProgressWidget.Direction.RIGHT)
             .size(120, 8)
             .texture(GTGuiTextures.PROGRESSBAR_PURIFICATION_UNIT, 120);
 
         TextWidget text = new TextWidget(IKey.str("§eCooling down"));
-        text.align(Alignment.Center);
 
-        return new Flow(GuiAxis.Y)
+        return Flow.column()
             .child(cooldownBar)
             .child(text);
     }
 
     private Flow createSteamOutputRow() {
-        Flow row = new Flow(GuiAxis.X).coverChildrenWidth().align(Alignment.Center).paddingTop(4);
+        Flow row = Flow.row().coverChildrenWidth().paddingTop(4);
 
         TextWidget steamText = new TextWidget(IKey.dynamic(() -> {
             long steam = multiblock.getEUt() * 2L * multiblock.mEfficiency / 10000L;
             String type = multiblock.isSuperheated() ? "SH Steam" : "Steam";
             return "§a" + steam + " L/t " + type;
         }));
-        steamText.size(180, 14).align(Alignment.Center);
+        steamText.size(180, 14);
 
         row.child(steamText);
         return row;

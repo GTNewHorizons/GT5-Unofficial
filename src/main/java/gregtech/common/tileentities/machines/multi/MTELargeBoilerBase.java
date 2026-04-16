@@ -606,8 +606,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
 
     public abstract int getMaxCooldownTicks();
 
-    @Override
-    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTELargeBoilerGui(this);
-    }
+    //@Override
+    //protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+    //    return new MTELargeBoilerGui(this);
+    //}
 }
