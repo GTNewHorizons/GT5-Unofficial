@@ -51,20 +51,20 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatch
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
-public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrialVacuumFreezer>
+public class MTEIndustrialVacuumFreezerLegacy extends GTPPMultiBlockBase<MTEIndustrialVacuumFreezerLegacy>
     implements ISurvivalConstructable {
 
     public static int CASING_TEXTURE_ID;
     public static String CASING_NAME;
     public static String HATCH_NAME;
     public static FluidStack CRYO_STACK;
-    private static IStructureDefinition<MTEIndustrialVacuumFreezer> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialVacuumFreezerLegacy> STRUCTURE_DEFINITION = null;
 
     private int mCasing;
 
     private final ArrayList<MTEHatchCustomFluidBase> mCryotheumHatches = new ArrayList<>();
 
-    public MTEIndustrialVacuumFreezer(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialVacuumFreezerLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
         CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
 
@@ -77,13 +77,13 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
         });
     }
 
-    protected MTEIndustrialVacuumFreezer(MTEIndustrialVacuumFreezer prototype) {
+    protected MTEIndustrialVacuumFreezerLegacy(MTEIndustrialVacuumFreezerLegacy prototype) {
         super(prototype.mName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialVacuumFreezer(this);
+        return new MTEIndustrialVacuumFreezerLegacy(this);
     }
 
     @Override
@@ -95,6 +95,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addInfo("Factory Grade Advanced Vacuum Freezer")
             .addStaticParallelInfo(8)
             .addStaticSpeedInfo(2.2f)
@@ -118,9 +119,9 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     }
 
     @Override
-    public IStructureDefinition<MTEIndustrialVacuumFreezer> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialVacuumFreezerLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialVacuumFreezer>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialVacuumFreezerLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
@@ -128,14 +129,14 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
                 .addElement(
                     'C',
                     ofChain(
-                        buildHatchAdder(MTEIndustrialVacuumFreezer.class)
-                            .adder(MTEIndustrialVacuumFreezer::addCryotheumHatch)
+                        buildHatchAdder(MTEIndustrialVacuumFreezerLegacy.class)
+                            .adder(MTEIndustrialVacuumFreezerLegacy::addCryotheumHatch)
                             .shouldReject(x -> !x.mCryotheumHatches.isEmpty())
                             .hatchId(MetaTileEntityIDs.Hatch_Input_Cryotheum.ID)
                             .casingIndex(CASING_TEXTURE_ID)
                             .hint(1)
                             .build(),
-                        buildHatchAdder(MTEIndustrialVacuumFreezer.class)
+                        buildHatchAdder(MTEIndustrialVacuumFreezerLegacy.class)
                             .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
                             .casingIndex(CASING_TEXTURE_ID)
                             .hint(1)

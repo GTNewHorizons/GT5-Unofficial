@@ -730,7 +730,7 @@ public class RecipesMachinesMulti {
 
         // Cryogenic Freezer
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_Cryogenic_Freezer.get(1),
+            ItemList.CryogenicFreezer.get(1),
             new Object[] { "GCG", "PXP", "DOD", 'G', MaterialsAlloy.INCOLOY_MA956.getGear(1), 'C', "circuitMaster", 'P',
                 ItemList.Electric_Piston_IV, 'X', GregtechItemList.Casing_AdvancedVacuum, 'D',
                 MaterialsAlloy.LEAGRISIUM.getPlateDouble(1), 'O', GregtechItemList.Gregtech_Computer_Cube });

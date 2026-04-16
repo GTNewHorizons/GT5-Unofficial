@@ -1715,6 +1715,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialCentrifuge.get(1),
             new Object[] { GregtechItemList.Industrial_Centrifuge });
 
+        // Cryogenic Freezer Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.CryogenicFreezer.get(1),
+            new Object[] { GregtechItemList.Industrial_Cryogenic_Freezer });
+
         // Extreme Combustion Engine Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.ExtremeCombustionEngine.get(1),
