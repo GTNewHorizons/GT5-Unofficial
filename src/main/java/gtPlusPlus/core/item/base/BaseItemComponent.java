@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,13 +36,11 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gregtech.api.util.client.ResourceUtils;
 import gregtech.common.config.Client;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
 
 public class BaseItemComponent extends Item {
 
@@ -87,7 +86,6 @@ public class BaseItemComponent extends Item {
             aFormattedNameForFluids = unlocalName;
         }
         Material aTempMaterial = Material.mMaterialCache.get(localName.toLowerCase());
-        Logger.INFO("Attempted to get " + localName + " cell material from cache. Valid? " + (aTempMaterial != null));
         this.componentMaterial = aTempMaterial;
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
@@ -121,11 +119,6 @@ public class BaseItemComponent extends Item {
         ItemStack x = aMap.get(aKey);
         if (x == null) {
             aMap.put(aKey, new ItemStack(this));
-            Logger.MATERIALS(
-                "Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
-                    + "] Map: ["
-                    + aKey
-                    + "]");
             Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
             if (componentType == ComponentTypes.PLATE) {
                 CoverRegistry.registerDecorativeCover(
@@ -138,8 +131,6 @@ public class BaseItemComponent extends Item {
             }
             return true;
         } else {
-            // Bad
-            Logger.MATERIALS("Tried to double register a material component. ");
             return false;
         }
     }
@@ -190,7 +181,7 @@ public class BaseItemComponent extends Item {
 
                 if (Client.tooltip.showCtrlText) {
                     // Hidden Tooltip
-                    if (KeyboardUtils.isCtrlKeyDown()) {
+                    if (GuiScreen.isCtrlKeyDown()) {
                         String type = this.componentMaterial.getTextureSet().mSetName;
                         String output = type.substring(0, 1)
                             .toUpperCase() + type.substring(1);
@@ -280,9 +271,7 @@ public class BaseItemComponent extends Item {
                 }
             }
 
-        } catch (Exception t) {
-
-        }
+        } catch (Exception ignored) {}
         return this.componentColour;
     }
 

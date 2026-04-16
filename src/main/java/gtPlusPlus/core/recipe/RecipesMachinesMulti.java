@@ -66,7 +66,7 @@ public class RecipesMachinesMulti {
         multiExtruder();
         multiImplo();
         multiPackager();
-        multiMixer();
+        multiUseCasing();
         multiAssembler();
     }
 
@@ -424,13 +424,19 @@ public class RecipesMachinesMulti {
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
-        // Industrial Material Press
+        // Industrial Bending Machine
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_PlatePress.get(1),
-            new Object[] { "PGP", "MFN", "PRP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
-                OrePrefixes.gearGt.get(Materials.Titanium), 'R', MaterialsAlloy.TANTALLOY_60.getGear(1), 'F',
-                OrePrefixes.frameGt.get(Materials.Titanium), 'M', ItemList.Machine_EV_Press, 'N',
-                ItemList.Machine_EV_Bender });
+            ItemList.IndustrialBendingMachine.get(1),
+            new Object[] { "PGP", "MFM", "PRP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
+                OrePrefixes.gearGt.get(Materials.Titanium), 'R', MaterialsAlloy.TANTALLOY_60.getGear(1), 'M',
+                OrePrefixes.stick.get(Materials.Titanium), 'F', ItemList.Machine_EV_Bender });
+
+        // Industrial Forming Press
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialFormingPress.get(1),
+            new Object[] { "PGP", "MFM", "PRP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
+                OrePrefixes.gearGt.get(Materials.Titanium), 'R', MaterialsAlloy.TANTALLOY_60.getGear(1), 'M',
+                OrePrefixes.stick.get(Materials.Titanium), 'F', ItemList.Machine_EV_Press });
     }
 
     private static void multiMacerator() {
@@ -653,10 +659,15 @@ public class RecipesMachinesMulti {
 
         // Ore Washing Plant
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_WashPlant.get(1),
-            new Object[] { "PAP", "TCT", "PBP", 'P', MaterialsAlloy.LEAGRISIUM.getPlate(1), 'A',
-                ItemList.Machine_EV_OreWasher, 'T', MaterialsAlloy.TALONITE.getPlate(1), 'C', "circuitData", 'B',
-                ItemList.Machine_EV_ChemicalBath });
+            ItemList.OreWashingPlant.get(1),
+            new Object[] { "PPP", "TCT", "PAP", 'P', MaterialsAlloy.LEAGRISIUM.getPlate(1), 'A',
+                ItemList.Machine_EV_OreWasher, 'T', MaterialsAlloy.TALONITE.getPlate(1), 'C', "circuitData" });
+
+        // Industrial Chemical Plant
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialChemicalBath.get(1),
+            new Object[] { "PPP", "TCT", "PBP", 'P', MaterialsAlloy.LEAGRISIUM.getPlate(1), 'T',
+                MaterialsAlloy.TALONITE.getPlate(1), 'C', "circuitData", 'B', ItemList.Machine_EV_ChemicalBath });
     }
 
     private static void multiCutter() {
@@ -704,7 +715,7 @@ public class RecipesMachinesMulti {
 
         // Industrial Extrusion Machine
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_Extruder.get(1),
+            ItemList.IndustrialExtruder.get(1),
             new Object[] { "PCP", "IMI", "PCP", 'P', MaterialsAlloy.INCONEL_690.getPlate(1), 'C', "circuitElite", 'I',
                 ItemList.Electric_Piston_IV, 'M', ItemList.Machine_IV_Extruder });
     }
@@ -788,7 +799,7 @@ public class RecipesMachinesMulti {
     private static void multiImplo() {
         // Density^2
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Machine_Adv_ImplosionCompressor.get(1),
+            ItemList.AdvancedImplosionCompressor.get(1),
             new Object[] { "GCG", "FHR", "IXI", 'G', MaterialsAlloy.LEAGRISIUM.getGear(1), 'C', "circuitMaster", 'F',
                 ItemList.Field_Generator_IV, 'H', ItemList.Hull_ZPM, 'R', ItemList.Robot_Arm_IV, 'I',
                 "plateAlloyIridium", 'X', GregtechItemList.Gregtech_Computer_Cube });
@@ -815,13 +826,7 @@ public class RecipesMachinesMulti {
 
     }
 
-    private static void multiMixer() {
-        // Industrial Mixing Machine
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_Mixer.get(1),
-            new Object[] { "PCP", "ZMZ", "PCP", 'P', MaterialsAlloy.STABALLOY.getPlate(1), 'C', "circuitElite", 'Z',
-                MaterialsAlloy.ZIRCONIUM_CARBIDE.getPlate(1), 'M', ItemList.Machine_IV_Mixer });
-
+    private static void multiUseCasing() {
         // Multi-Use Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Multi_Use.get(1),

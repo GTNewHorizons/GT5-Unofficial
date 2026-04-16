@@ -306,4 +306,9 @@ public class MTENetworkSwitch extends TTMultiblockBase
             }
         }
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

@@ -10,7 +10,6 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllCasings;
 
-import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -19,7 +18,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -344,6 +342,10 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     }
 
     @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     public RecipeMap<?> getRecipeMap() {
         return GTPPRecipeMaps.algaePondRecipes;
     }
@@ -404,10 +406,4 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         return aTier > 1 ? (int) Math.min(64, GTUtility.powInt(2, aTier - 1)) : 1;
     }
 
-    @Override
-    public String[] getExtraInfoData() {
-        ArrayList<String> mInfo = new ArrayList<>();
-        mInfo.add(StatCollector.translateToLocalFormatted("GTPP.multiblock.ap.tier", this.tier));
-        return mInfo.toArray(new String[0]);
-    }
 }
