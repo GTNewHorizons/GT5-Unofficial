@@ -50,7 +50,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -109,7 +108,14 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                 TooltipHelper.parallelText(PARALLELS_T2) + " base and +"
                     + TooltipHelper.parallelText(SLICE_PARALLELS_T2)
                     + " Parallels per extra slice with Heat Proof Casings")
-            .addDynamicEuEffInfo(1 - EU_MODIFIER, TooltipTier.COIL)
+            .addInfo(
+                EnumChatFormatting.AQUA + "-2% "
+                    + EnumChatFormatting.GRAY
+                    + "EU Usage per "
+                    + EnumChatFormatting.WHITE
+                    + "Heating Coil"
+                    + EnumChatFormatting.GRAY
+                    + " Tier (multiplicatively)")
             .addInfo("Infinity Coils and higher allow for single multi-amp energy hatch")
             .addMultiAmpHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -197,7 +203,12 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        int extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 1, MAX_LENGTH);
+        int extraSlices;
+        if (getCoilTier() >= HeatingCoilLevel.MAX.getTier() + 1) {
+            extraSlices = stackSize.stackSize;
+        } else {
+            extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 1, MAX_LENGTH);
+        }
         buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, OFFSET_X_MAIN, OFFSET_Y_MAIN, OFFSET_Z_MAIN);
         for (int i = 1; i < extraSlices; i++) {
             buildPiece(
@@ -213,7 +224,13 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 1, MAX_LENGTH);
+        int extraSlices;
+
+        if (getCoilTier() >= HeatingCoilLevel.MAX.getTier() + 1) {
+            extraSlices = stackSize.stackSize;
+        } else {
+            extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 1, MAX_LENGTH);
+        }
         int built = 0, temp;
 
         temp = survivalBuildPiece(
@@ -258,9 +275,15 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             return false;
         }
 
-        while (width < MAX_LENGTH - 1
-            && checkPiece(STRUCTURE_PIECE_NEXT, OFFSET_X_SLICE - (width + 1) * 2, OFFSET_Y_SLICE, OFFSET_Z_SLICE)) {
-            width++;
+        if (getCoilTier() >= HeatingCoilLevel.MAX.getTier() + 1) {
+            while (checkPiece(STRUCTURE_PIECE_NEXT, OFFSET_X_SLICE - (width + 1) * 2, OFFSET_Y_SLICE, OFFSET_Z_SLICE)) {
+                width++;
+            }
+        } else {
+            while (width < MAX_LENGTH - 1
+                && checkPiece(STRUCTURE_PIECE_NEXT, OFFSET_X_SLICE - (width + 1) * 2, OFFSET_Y_SLICE, OFFSET_Z_SLICE)) {
+                width++;
+            }
         }
 
         if (!mExoticEnergyHatches.isEmpty()) {
