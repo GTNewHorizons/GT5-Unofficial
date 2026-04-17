@@ -73,6 +73,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
         return mTickDisabled;
     }
 
+    // Re-enable ticking after disable.
     @Override
     public void enableTicking() {
         if (!mTickDisabled) return;
@@ -80,6 +81,10 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
         mTickDisabled = false;
     }
 
+    // Effectively triggers unloading of the current tile entity, this does not invalidate the tile entity.
+    // After unloading, the tile entity will be in the same state as a non-tickable tile entity.
+    // This method may fail silently due to various reason, and calling enableTicking in the same tick will
+    // cause the disable tick call to be effectively ignored, as adding tile entity take precedence over unloading.
     @Override
     public void tryDisableTicking() {
         if (mTickDisabled) return;
@@ -92,6 +97,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
         mTickDisabled = true;
     }
 
+    // This method is called both when the ticking is disabled for this block and the block is unloaded.
     @Override
     public final void onChunkUnload() {
         if (mIgnoreNextUnload) {
