@@ -434,7 +434,7 @@ public class Godforge implements Runnable {
                     GTValues.RA.stdBuilder()
                         .fluidInputs(fluids_t1_1step[i])
                         .fluidOutputs(fluid_plasmas_t1_1step[i])
-                        .duration(1 * SECONDS)
+                        .duration(5 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
                         .metadata(FOG_PLASMA_MULTISTEP, false)
                         .metadata(FOG_PLASMA_TIER, 1)
