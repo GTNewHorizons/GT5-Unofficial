@@ -57,6 +57,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -213,6 +214,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             .addMaintenanceHatch("Hint Block Number 2")
             .addOtherStructurePart("Neutron Accelerator", "Hint Block Number 2")
             .addOtherStructurePart("Neutron Sensor", "Hint Block Number 2")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
