@@ -1664,7 +1664,7 @@ public class MTERecipeLoader implements Runnable {
                 Materials.Tungsten.getPlates(8),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 8))
             .itemOutputs(ItemList.IndustrialArcFurnace.get(1))
-            .duration(8 * MINUTES)
+            .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
