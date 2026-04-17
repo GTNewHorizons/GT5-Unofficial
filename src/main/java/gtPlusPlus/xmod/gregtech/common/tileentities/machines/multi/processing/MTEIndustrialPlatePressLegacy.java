@@ -49,7 +49,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPlatePress>
+public class MTEIndustrialPlatePressLegacy extends GTPPMultiBlockBase<MTEIndustrialPlatePressLegacy>
     implements ISurvivalConstructable {
 
     private int mCasing;
@@ -57,19 +57,19 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
     private static final int MACHINEMODE_BENDER = 0;
     private static final int MACHINEMODE_FORMER = 1;
 
-    private static IStructureDefinition<MTEIndustrialPlatePress> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialPlatePressLegacy> STRUCTURE_DEFINITION = null;
 
-    public MTEIndustrialPlatePress(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialPlatePressLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEIndustrialPlatePress(final String aName) {
+    public MTEIndustrialPlatePressLegacy(final String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialPlatePress(this.mName);
+        return new MTEIndustrialPlatePressLegacy(this.mName);
     }
 
     @Override
@@ -81,6 +81,7 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addBulkMachineInfo(4, 6f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
@@ -97,16 +98,16 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
     }
 
     @Override
-    public IStructureDefinition<MTEIndustrialPlatePress> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialPlatePressLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialPlatePress>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialPlatePressLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
                         new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
-                    buildHatchAdder(MTEIndustrialPlatePress.class)
+                    buildHatchAdder(MTEIndustrialPlatePressLegacy.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
                         .casingIndex(50)
                         .hint(1)
