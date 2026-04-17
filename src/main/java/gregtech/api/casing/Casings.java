@@ -570,12 +570,13 @@ public enum Casings implements ICasing {
     UMVSolenoidSuperconductorCoil
         (() -> GregTechAPI.sSolenoidCoilCasings, 10, gt(2, 0, 10)),
 
+    // BEC
     SuperconductivePlasmaEnergyConduit
-        (() -> GregTechAPI.sBlockCasings11, 8, gt(16, 64 + 8)),
+        (() -> GregTechAPI.sBlockCasingsBEC, 0, gt(16, 112 + 0)),
     ElectromagneticallyIsolatedCasing
-        (() -> GregTechAPI.sBlockCasings11, 9, gt(16, 64 + 9)),
+        (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(16, 112 + 1)),
     FineStructureConstantManipulator
-        (() -> GregTechAPI.sBlockCasings11, 10, gt(16, 64 + 10)),
+        (() -> GregTechAPI.sBlockCasingsBEC, 2, gt(16, 112 + 2)),
 
     // Block Glass 1
     ChemicalGradeGlass

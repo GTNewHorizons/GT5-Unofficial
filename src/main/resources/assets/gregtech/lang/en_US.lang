@@ -926,9 +926,9 @@ gt.casing.chemical-resistant=Able to resist the most extreme chemical conditions
 gt.casing.hawking-focus=Controls the outward flow of Hawking Radiation to stabilize a black hole.
 gt.casings.advanced-filter=Less than five 0.1μm particles per m^3
 
-gt.casing11.8.tooltip=§b§lPrevents observation. Just don't look at it too hard.
-gt.casing11.9.tooltip=§b§lPulsar-proof!
-gt.casing11.10.tooltip=§b§lVacuum decay not included.
+gt.blockcasings.bec.0.tooltip=§b§lPrevents observation. Just don't look at it too hard.
+gt.blockcasings.bec.1.tooltip=§b§lPulsar-proof!
+gt.blockcasings.bec.2.tooltip=§b§lVacuum decay not included.
 
 # Machine types
 gt.recipe.alloysmelter=Alloy Smelter
@@ -4958,9 +4958,6 @@ gt.blockcasings11.4.name=Osmium Item Pipe Casing
 gt.blockcasings11.5.name=Quantium Item Pipe Casing
 gt.blockcasings11.6.name=Fluxed Electrum Item Pipe Casing
 gt.blockcasings11.7.name=Black Plutonium Item Pipe Casing
-gt.blockcasings11.8.name=Coherence-preserving Plasma Conduit
-gt.blockcasings11.9.name=Electromagnetically-isolated Casing
-gt.blockcasings11.10.name=Fine-structure Constant Manipulator
 gt.blockcasings12.0.name=Coke Oven Bricks
 gt.blockcasings12.1.name=Nanochip Mesh Interface Casing
 gt.blockcasings12.2.name=Nanochip Reinforcement Casing
@@ -5036,3 +5033,6 @@ gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
 gt.blocktintedglass.3.name=Tinted Industrial Glass (Black)
+gt.blockcasings.bec.0.name=Coherence-preserving Plasma Conduit
+gt.blockcasings.bec.1.name=Electromagnetically-isolated Casing
+gt.blockcasings.bec.2.name=Fine-structure Constant Manipulator
