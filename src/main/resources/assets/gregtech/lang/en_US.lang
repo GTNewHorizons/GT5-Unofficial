@@ -1503,6 +1503,7 @@ GTPP.algae.yellow-green_algae.name=Yellow-Green Algae
 # Power Goggles
 GT5U.power_goggles.open_config_gui=Open Power Goggles Config
 GT5U.power_goggles.toggle_power_chart=Toggle Power Goggles Chart
+GT5U.power_goggles.toggle_measurements_section=Toggle Power Goggles measurements section
 GT5U.power_goggles.link_lsc=Goggles linked to LSC at %d,%d,%d.
 GT5U.power_goggles.link_fail=That's not an LSC...
 GT5U.power_goggles.unlink=Goggles Unlinked.
@@ -2318,7 +2319,8 @@ channels.gregtech.length=Decides the length of repeatable slices. Valid range va
 channels.gregtech.pipe=Decides the tier of Pipe Casing. Starts at §6Bronze Pipe Casing§r at value 1 and ends at §6Tungsten Steel Pipe Casing§r at value 4.
 channels.gregtech.item_pipe=Decides the tier of Item Pipe Casing. Starts at §6Tin Item Pipe Casing§r at value 1 and ends at §6Black Plutonium Item Pipe Casing§r at value 8.
 channels.gregtech.cell=Decides the tier of Vanadium Redox Power Cell. Starts at §6EV§r at value 1 and ends at §6UHV§r at value 6.
-channels.gregtech.antenna=Decides the of Antenna Casing. Starts at §6T1§r at value 1 and ends at §6T2§r at value 2.
+channels.gregtech.antenna=Decides the tier of Antenna Casing. Starts at §6T1§r at value 1 and ends at §6T2§r at value 2.
+channels.gregtech.motor=Decides the tier of Motors. Starts at §6Mk-I§r at value 1 and ends at §6Mk-V§r at value 5.
 channels.gregtech.spacetime_compression=Decides the tier of Spacetime Compression Field Generator. Starts at §6Crude Spacetime Compression Field Generator§r at value 1 and ends at §6Gallifreyan Spacetime Compression Field Generator§r at value 9.
 channels.gregtech.stabilisation=Decides the tier of Stabilisation Field Generator. Starts at §6Crude Stabilisation Field Generator§r at value 1 and ends at §6Gallifreyan Stabilisation Field Generator§r at value 9.
 channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generator. Starts at §6Crude Time Dilation Field Generator§r at value 1 and ends at §6Gallifreyan Time Dilation Field Generator§r at value 9.

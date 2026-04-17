@@ -1685,6 +1685,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.NaquadahFuelRefinery.get(1),
             new Object[] { ItemRefer.Naquadah_Fuel_Refinery.get(1) });
 
+        // Boldarnator Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.Boldarnator.get(1),
+            new Object[] { GregtechItemList.Controller_IndustrialRockBreaker });
+
         // Amazon Packager Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialPackager.get(1),
@@ -1695,10 +1700,25 @@ public class MTERecipeLoader implements Runnable {
             ItemList.MolecularTransformer.get(1),
             new Object[] { GregtechItemList.Controller_MolecularTransformer });
 
+        // Ore Washing Plant Conversion Recipe
+        GTModHandler.addCraftingRecipe(
+            ItemList.OreWashingPlant.get(1),
+            new Object[] { "B  ", "   ", "   ", 'B', GregtechItemList.Industrial_WashPlant });
+
+        // Industrial Chemical Bath Conversion Recipe
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialChemicalBath.get(1),
+            new Object[] { " B ", "   ", "   ", 'B', GregtechItemList.Industrial_WashPlant });
+
         // Industrial Centrifuge Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialCentrifuge.get(1),
             new Object[] { GregtechItemList.Industrial_Centrifuge });
+
+        // Industrial Coke Oven Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialCokeOven.get(1),
+            new Object[] { GregtechItemList.Industrial_CokeOven });
 
         // Extreme Combustion Engine Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
@@ -1744,6 +1764,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.TungstensteelBoilerLarge.get(1),
             new Object[] { ItemList.Machine_Multi_LargeBoiler_TungstenSteel });
 
+        // Maceration Stack conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.MacerationStack.get(1),
+            new Object[] { GregtechItemList.Industrial_MacerationStack });
+
         // Mega Chemical Reactor Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.MegaChemicalReactor.get(1),
@@ -1763,10 +1788,18 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialMixer.get(1),
             new Object[] { GregtechItemList.Industrial_Mixer });
 
+        // Fishing Port Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.FishingPort.get(1),
+            new Object[] { GregtechItemList.Industrial_FishingPond });
+
         // Integrated Ore Factory Conversion Recipe
         GTModHandler
             .addShapelessCraftingRecipe(ItemList.IntegratedOreFactory.get(1), new Object[] { ItemList.Ore_Processor });
 
+        // Electric Implosion Compressor Conversion Recipe
+        GTModHandler
+            .addShapelessCraftingRecipe(ItemList.ElectricImplosionCompressor.get(1), new Object[] { ItemRegistry.eic });
         // Large Combustion Engine Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.LargeCombustionEngine.get(1),
