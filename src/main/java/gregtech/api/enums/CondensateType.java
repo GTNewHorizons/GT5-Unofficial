@@ -78,14 +78,13 @@ public enum CondensateType {
     }
 
     public String getAbbrevName() {
-        return GTUtility.translate("abbrev.entangled_" + id + ".name");
+        return GTUtility.translate("abbrev.entangled_" + id);
     }
 
     public static void registerFluids() {
         for (CondensateType type : values()) {
             type.preparedFluid = GTFluidFactory.builder("prepared_" + type.id)
                 .withTextures(new ResourceLocation("gregtech:fluids/condensate/fluid." + type.id + "_prepared"), null)
-                .withLocalizedName(GTUtility.translate("fluid.prepared_" + type.id + ".name"))
                 .withColorRGBA(
                     type.getMaterial()
                         .getRGBA())
@@ -95,7 +94,6 @@ public enum CondensateType {
 
             type.entangledFluid = GTFluidFactory.builder("entangled_" + type.id)
                 .withTextures(new ResourceLocation("gregtech:fluids/condensate/fluid." + type.id + "_entangled"), null)
-                .withLocalizedName(GTUtility.translate("fluid.entangled_" + type.id + ".name"))
                 .withColorRGBA(
                     type.getMaterial()
                         .getRGBA())

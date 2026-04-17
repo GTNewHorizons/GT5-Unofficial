@@ -11,6 +11,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.gtnewhorizon.gtnhlib.util.data.Lazy;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
@@ -29,14 +31,15 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     private BECFactoryNetwork network;
     private int oldColour;
 
-    private final List<String> tooltip;
+    private final Lazy<List<String>> tooltip;
 
     public MTEPipeBEC(int aID, String aName) {
         super(aID, aName);
         mThickness = 3f / 4f;
 
-        tooltip = MarkdownTooltipLoader.STANDARD
-            .loadStandardPath(new ResourceLocation("gregtech", "bec-pipe"), new HashMap<>());
+        tooltip = new Lazy<>(
+            () -> MarkdownTooltipLoader.STANDARD
+                .loadStandardPath(new ResourceLocation("gregtech", "bec-pipe"), new HashMap<>()));
     }
 
     public MTEPipeBEC(MTEPipeBEC prototype) {
@@ -52,7 +55,10 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(super.getDescription(), tooltip.toArray(GTValues.emptyStringArray));
+        return ArrayUtils.addAll(
+            super.getDescription(),
+            tooltip.get()
+                .toArray(GTValues.emptyStringArray));
     }
 
     @Override

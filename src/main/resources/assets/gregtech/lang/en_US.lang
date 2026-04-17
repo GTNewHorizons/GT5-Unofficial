@@ -7244,12 +7244,12 @@ item.gt.depletedRodNaquadria2.name=Dual Fuel Rod (Depleted Naquadria)
 item.gt.depletedRodNaquadria4.name=Quad Fuel Rod (Depleted Naquadria)
 
 # Condensate Fluid and Cells
-fluid.prepared_quantium.name=Prepared Quantium Bose-Einstein Condensate
-fluid.entangled_quantium.name=Entangled Quantium Bose-Einstein Condensate
-abbrev.entangled_quantium.name=Quantium
-fluid.prepared_infinity.name=Prepared Infinity Bose-Einstein Condensate
-fluid.entangled_infinity.name=Entangled Infinity Bose-Einstein Condensate
-abbrev.entangled_infinity.name=Infinity
+fluid.prepared_quantium=Prepared Quantium Bose-Einstein Condensate
+fluid.entangled_quantium=Entangled Quantium Bose-Einstein Condensate
+abbrev.entangled_quantium=Quantium
+fluid.prepared_infinity=Prepared Infinity Bose-Einstein Condensate
+fluid.entangled_infinity=Entangled Infinity Bose-Einstein Condensate
+abbrev.entangled_infinity=Infinity
 
 item.gt.cell.prepared_quantium.name=Prepared Quantium Bose-Einstein Condensate Cell
 item.gt.cell.entangled_quantium.name=Entangled Quantium Bose-Einstein Condensate Cell
