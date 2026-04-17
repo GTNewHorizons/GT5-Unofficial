@@ -37,14 +37,14 @@ dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.4.34:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
     api("com.github.GTNewHorizons:NotEnoughItems:2.8.91-GTNH:dev")
-    api("com.github.GTNewHorizons:GTNHLib:0.9.50:dev")
+    api("com.github.GTNewHorizons:GTNHLib:0.9.51:dev")
     api("com.falsepattern:chunkapi-mc1.7.10:0.8.1:dev")
     api("com.falsepattern:endlessids-mc1.7.10:1.7.1:dev")
     api("com.github.GTNewHorizons:ModularUI:1.3.2:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.3.56-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.19.22:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-894-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.72-gtnh:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-896-GTNH:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.73-gtnh:dev")
     api("com.github.GTNewHorizons:Postea:1.2.5:dev")
 
     compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.12.19:dev')
@@ -85,7 +85,7 @@ dependencies {
     compileOnly rfg.deobf("curse.maven:cofh-core-69162:2388751")
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.7.7:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
-    implementation("com.github.GTNewHorizons:Hodgepodge:2.7.118:dev")
+    implementation("com.github.GTNewHorizons:Hodgepodge:2.7.119:dev")
     compileOnly('com.github.GTNewHorizons:Botania:1.13.16-GTNH:dev') { transitive = false }
     compileOnly("com.github.GTNewHorizons:Natura:2.8.18:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.5.8-GTNH:dev') { transitive = false }
@@ -94,7 +94,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:OpenComputers:1.12.34-GTNH:dev") {transitive = false}
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     compileOnlyApi rfg.deobf('curse.maven:advsolar-362768:2885953')
-    compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.41-GTNH:dev') {transitive =  false}
+    compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.42-GTNH:dev') {transitive =  false}
     compileOnly("com.github.GTNewHorizons:BloodMagic:1.8.14:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.6:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.7.6-GTNH:dev") { transitive = false }
