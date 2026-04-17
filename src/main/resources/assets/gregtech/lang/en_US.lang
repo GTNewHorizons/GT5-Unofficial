@@ -2866,6 +2866,9 @@ gt.circuitcomponent.bolt.processed.chromaticglass=Filed Chromatic Glass Bolt
 gt.circuitcomponent.bolt.processed.umvsuperconductor=Filed UMV Superconductor Base Bolt
 gt.circuitcomponent.plate.processed.metastableoganesson=Stripped Metastable Oganesson Plate
 
+# NAC Machines
+gt.blockmachines.vacuum.pipe.name=Vacuum Conveyor Pipe
+
 GT5U.gui.hoverable.runningfine=Running Fine.
 GT5U.gui.hoverable.incomplete=Structure incomplete.
 GT5U.gui.hoverable.powerloss=Lost Power.
@@ -8095,3 +8098,22 @@ gt.item.stable_boson_containment_unit.name=Stable Boson Containment Unit
 gt.item.stable_boson_containment_unit.tooltip=Maybe contains a bound boson?
 gt.item.stable_empty_containment_unit.name=Stable Empty Containment Unit
 gt.item.stable_empty_containment_unit.tooltip=Maybe contains nothing?
+
+# BEC Machines
+gt.blockmachines.hatch.bec.name=Bose-Einstein Condensate Hatch
+gt.blockmachines.hatch.nanite-detector.name=Nanite Detector Hatch
+gt.blockmachines.hatch.io-node-controller.name=Teleportation Node Controller Hatch
+gt.blockmachines.hatch.condensate-detector.name=Bose-Einstein Condensate Detector Hatch
+
+gt.blockmachines.multi.bec.generator.name=Bose-Einstein Condensate Entanglement Apparatus
+gt.blockmachines.multi.bec.storage.name=Bose-Einstein Condensate Containment Field
+gt.blockmachines.multi.bec.assembler.name=Bose-Einstein Condensate Observation Array
+gt.blockmachines.multi.bec.io-node.name=Observation Array Teleportation Node
+gt.blockmachines.multi.bec.diode.name=Bose-Einstein Condensate Maxwell Gate
+
+gt.blockmachines.pipe.bec.name=Bose-Einstein Condensate Conduit
+gt.blockmachines.pipe.bec.block.name=Bose-Einstein Condensate Conduit Casing
+
+# Test Factory Machines
+gt.blockmachines.pipe.test.name=Test Factory Pipe
+gt.blockmachines.hatch.test.name=Test Factory Hatch

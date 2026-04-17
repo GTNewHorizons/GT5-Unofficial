@@ -64,8 +64,8 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
     private boolean wasWorking;
     private Fluid condensateFilter;
 
-    public MTEBECDiode(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+    public MTEBECDiode(int aID, String aName) {
+        super(aID, aName);
     }
 
     protected MTEBECDiode(MTEBECDiode prototype) {
@@ -167,7 +167,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
             .addMarkdown(new ResourceLocation("gregtech", "bec-diode"));
 
         tt.beginStructureBlock();
-        tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.becConnectorHatch.get(1));
+        tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.Hatch_BEC_Connector.get(1));
         tt.addAllCasingInfo();
 
         tt.toolTipFinisher(GTAuthors.AuthorPineapple);

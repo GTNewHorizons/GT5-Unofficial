@@ -31,8 +31,8 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
 
     private final List<String> tooltip;
 
-    public MTEPipeBEC(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+    public MTEPipeBEC(int aID, String aName) {
+        super(aID, aName);
         mThickness = 3f / 4f;
 
         tooltip = MarkdownTooltipLoader.STANDARD

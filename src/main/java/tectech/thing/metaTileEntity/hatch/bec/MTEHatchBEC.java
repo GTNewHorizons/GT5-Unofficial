@@ -27,8 +27,8 @@ public class MTEHatchBEC extends MTEBaseFactoryHatch implements BECFactoryElemen
         super(prototype);
     }
 
-    public MTEHatchBEC(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, null);
+    public MTEHatchBEC(int aID, String aName, int aTier) {
+        super(aID, aName, aTier, null);
     }
 
     @Override

@@ -18,8 +18,8 @@ import gregtech.api.util.GTUtility;
 /// A hatch that emits or receives a redstone signal. This does not perform any redstone logic.
 public abstract class MTEHatchConfigurableBase extends MTEBaseFactoryHatch implements IDataCopyable {
 
-    public MTEHatchConfigurableBase(int id, String name, String nameRegional, int tier, String[] description) {
-        super(id, name, nameRegional, tier, description);
+    public MTEHatchConfigurableBase(int id, String name, int tier, String[] description) {
+        super(id, name, tier, description);
     }
 
     public MTEHatchConfigurableBase(MTEHatchConfigurableBase prototype) {

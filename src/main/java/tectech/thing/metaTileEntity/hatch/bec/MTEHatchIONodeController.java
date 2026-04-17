@@ -56,8 +56,8 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
         }
     }
 
-    public MTEHatchIONodeController(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, VoltageIndex.UEV, null);
+    public MTEHatchIONodeController(int aID, String aName) {
+        super(aID, aName, VoltageIndex.UEV, null);
     }
 
     protected MTEHatchIONodeController(MTEHatchIONodeController prototype) {

@@ -136,8 +136,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     }
 
-    public MTEBECIONode(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+    public MTEBECIONode(int aID, String aName) {
+        super(aID, aName);
     }
 
     protected MTEBECIONode(MTEBECIONode prototype) {

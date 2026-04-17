@@ -47,8 +47,8 @@ import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
 public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
 
-    public MTEBECGenerator(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+    public MTEBECGenerator(int aID, String aName) {
+        super(aID, aName);
     }
 
     protected MTEBECGenerator(MTEBECGenerator prototype) {
@@ -89,7 +89,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
 
         tt.beginStructureBlock();
         tt.addController("Front Center");
-        tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.becConnectorHatch.get(1));
+        tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.Hatch_BEC_Connector.get(1));
         tt.addHatchLocationOverride(
             Arrays.asList(InputBus, InputHatch, Energy, ExoticEnergy),
             "Any " + ElectromagneticallyIsolatedCasing.getLocalizedName() + " in the first slice");

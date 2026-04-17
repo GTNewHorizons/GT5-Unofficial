@@ -80,8 +80,8 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     private NaniteTier currentNaniteTier;
     private int availableNanites;
 
-    public MTEBECAssembler(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+    public MTEBECAssembler(int aID, String aName) {
+        super(aID, aName);
     }
 
     protected MTEBECAssembler(MTEBECAssembler prototype) {
@@ -128,7 +128,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
             .addMarkdown(new ResourceLocation("gregtech", "bec-assembler"));
 
         tt.beginStructureBlock();
-        tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.becConnectorHatch.get(1));
+        tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.Hatch_BEC_Connector.get(1));
         tt.addAllCasingInfo();
 
         tt.toolTipFinisher(GTAuthors.AuthorPineapple);

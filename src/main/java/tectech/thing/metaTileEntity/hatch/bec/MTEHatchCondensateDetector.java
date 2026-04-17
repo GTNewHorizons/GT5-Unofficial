@@ -36,8 +36,8 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
     private long requestedAmount, actualAmount;
     private Comparison comparison = Comparison.EQ;
 
-    public MTEHatchCondensateDetector(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, VoltageIndex.UEV, null);
+    public MTEHatchCondensateDetector(int aID, String aName) {
+        super(aID, aName, VoltageIndex.UEV, null);
     }
 
     protected MTEHatchCondensateDetector(MTEHatchCondensateDetector prototype) {

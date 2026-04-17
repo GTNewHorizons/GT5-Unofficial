@@ -278,6 +278,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.ZPMVoltageBuckConverter;
 import static tectech.thing.CustomItemList.DATApipe;
 import static tectech.thing.CustomItemList.DATApipeBlock;
 import static tectech.thing.CustomItemList.Hatch_BEC_CondensateDetector;
+import static tectech.thing.CustomItemList.Hatch_BEC_Connector;
 import static tectech.thing.CustomItemList.Hatch_BEC_IOController;
 import static tectech.thing.CustomItemList.Hatch_BEC_Nanites;
 import static tectech.thing.CustomItemList.LASERpipe;
@@ -342,7 +343,6 @@ import static tectech.thing.CustomItemList.TestPipe;
 import static tectech.thing.CustomItemList.UncertaintyX_Hatch;
 import static tectech.thing.CustomItemList.Uncertainty_Hatch;
 import static tectech.thing.CustomItemList.UnusedStuff;
-import static tectech.thing.CustomItemList.becConnectorHatch;
 import static tectech.thing.CustomItemList.capacitor_Hatch;
 import static tectech.thing.CustomItemList.dataInAss_Hatch;
 import static tectech.thing.CustomItemList.dataInAss_Wireless_Hatch;
@@ -613,7 +613,7 @@ import tectech.thing.metaTileEntity.multi.godforge.MTEMoltenModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEPlasmaModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTESmeltingModule;
 import tectech.thing.metaTileEntity.pipe.MTEPipeBEC;
-import tectech.thing.metaTileEntity.pipe.MTEPipeBlockBEC;
+import tectech.thing.metaTileEntity.pipe.MTEPipeBECBlock;
 import tectech.thing.metaTileEntity.pipe.MTEPipeBlockData;
 import tectech.thing.metaTileEntity.pipe.MTEPipeBlockLaser;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
@@ -1897,44 +1897,8 @@ public class MachineLoader implements Runnable {
         addItemTooltip(
             Machine_Multi_QuarkGluonPlasmaModule.get(1),
             GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
-        Machine_Multi_BECGenerator.set(
-            new MTEBECGenerator(
-                BoseEinsteinCondensateGenerator.ID,
-                "multimachine.em.bec-generator",
-                "Bose-Einstein Condensate Entanglement Apparatus").getStackForm(1L));
-        Machine_Multi_BECStorage.set(
-            new MTEBECStorage(
-                BoseEinsteinCondensateStorage.ID,
-                "multimachine.em.bec-storage",
-                "Bose-Einstein Condensate Containment Field").getStackForm(1L));
-        Machine_Multi_BECAssembler.set(
-            new MTEBECAssembler(
-                BoseEinsteinCondensateAssembler.ID,
-                "multimachine.em.bec-assembler",
-                "Bose-Einstein Condensate Observation Array").getStackForm(1L));
-        Machine_Multi_BECIONode.set(
-            new MTEBECIONode(
-                BoseEinsteinCondensateIONode.ID,
-                "multimachine.em.bec-io-node",
-                "Observation Array Teleportation Node").getStackForm(1L));
-        Machine_Multi_BECDiode.set(
-            new MTEBECDiode(
-                BoseEinsteinCondensateDiode.ID,
-                "multimachine.em.bec-diode",
-                "Bose-Einstein Condensate Maxwell Gate").getStackForm(1L));
-        Hatch_BEC_Nanites.set(
-            new MTEHatchNaniteDetector(HatchNaniteDetector.ID, "hatch.nanite-detector", "Nanite Detector Hatch")
-                .getStackForm(1L));
-        Hatch_BEC_IOController.set(
-            new MTEHatchIONodeController(
-                HatchIOController.ID,
-                "hatch.io-node-controller",
-                "Teleportation Node Controller Hatch").getStackForm(1L));
-        Hatch_BEC_CondensateDetector.set(
-            new MTEHatchCondensateDetector(
-                HatchCondensateDetector.ID,
-                "hatch.condensate-detector",
-                "Bose-Einstein Condensate Detector Hatch").getStackForm(1L));
+
+        registerBECMachines();
 
         // ===================================================================================================
         // Hatches
@@ -1996,10 +1960,6 @@ public class MachineLoader implements Runnable {
         capacitor_Hatch.set(
             new MTEHatchCapacitor(CapacitorHatch.ID, "hatch.capacitor.tier.03", "Capacitor Hatch", 3).getStackForm(1L));
 
-        becConnectorHatch.set(
-            new MTEHatchBEC(BoseEinsteinCondensateHatch.ID, "hatch.bec", "Bose-Einstein Condensate Hatch", 10)
-                .getStackForm(1L));
-
         // ===================================================================================================
         // Pipes
         // ===================================================================================================
@@ -2010,14 +1970,9 @@ public class MachineLoader implements Runnable {
         DATApipe.set(new MTEPipeData(OpticalFiberCable.ID, "pipe.datastream", "Optical Fiber Cable").getStackForm(1L));
 
         if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
-            TestPipe.set(new TestFactoryPipe(TestFactoryPipe.ID, "pipe.test", "Test Factory Pipe").getStackForm(1));
-            TestHatch
-                .set(new TestFactoryHatch(TestFactoryHatch.ID, "hatch.test", "Test Factory Hatch", 7).getStackForm(1));
+            TestPipe.set(new TestFactoryPipe(TestFactoryPipe.ID, "pipe.test").getStackForm(1));
+            TestHatch.set(new TestFactoryHatch(TestFactoryHatch.ID, "hatch.test", 7).getStackForm(1));
         }
-
-        Pipe_BEC.set(
-            new MTEPipeBEC(BoseEinsteinCondensatePipe.ID, "pipe.bec", "Bose-Einstein Condensate Conduit")
-                .getStackForm(1L));
 
         LASERpipeBlock.set(
             new MTEPipeBlockLaser(LaserVacuumPipeCasing.ID, "pipe.energystream.block", "Laser Vacuum Pipe Casing")
@@ -2025,11 +1980,6 @@ public class MachineLoader implements Runnable {
         DATApipeBlock.set(
             new MTEPipeBlockData(OpticalFiberCableCasing.ID, "pipe.datastream.block", "Optical Fiber Cable Casing")
                 .getStackForm(1L));
-        Pipe_BEC_Block.set(
-            new MTEPipeBlockBEC(
-                BoseEinsteinCondensatePipeBlock.ID,
-                "pipe.bec.block",
-                "Bose-Einstein Condensate Conduit Casing").getStackForm(1L));
 
         // ===================================================================================================
         // Single Blocks
@@ -2202,5 +2152,29 @@ public class MachineLoader implements Runnable {
         MTEHatchRack.run();
 
         MTEHatchCapacitor.run();
+    }
+
+    private static void registerBECMachines() {
+        Pipe_BEC.set(new MTEPipeBEC(BoseEinsteinCondensatePipe.ID, "pipe.bec").getStackForm(1L));
+
+        Pipe_BEC_Block.set(new MTEPipeBECBlock(BoseEinsteinCondensatePipeBlock.ID, "pipe.bec.block").getStackForm(1L));
+
+        Hatch_BEC_Connector.set(new MTEHatchBEC(BoseEinsteinCondensateHatch.ID, "hatch.bec", 10).getStackForm(1L));
+        Hatch_BEC_Nanites
+            .set(new MTEHatchNaniteDetector(HatchNaniteDetector.ID, "hatch.nanite-detector").getStackForm(1L));
+        Hatch_BEC_IOController
+            .set(new MTEHatchIONodeController(HatchIOController.ID, "hatch.io-node-controller").getStackForm(1L));
+        Hatch_BEC_CondensateDetector.set(
+            new MTEHatchCondensateDetector(HatchCondensateDetector.ID, "hatch.condensate-detector").getStackForm(1L));
+
+        Machine_Multi_BECGenerator
+            .set(new MTEBECGenerator(BoseEinsteinCondensateGenerator.ID, "multi.bec.generator").getStackForm(1L));
+        Machine_Multi_BECStorage
+            .set(new MTEBECStorage(BoseEinsteinCondensateStorage.ID, "multi.bec.storage").getStackForm(1L));
+        Machine_Multi_BECAssembler
+            .set(new MTEBECAssembler(BoseEinsteinCondensateAssembler.ID, "multi.bec.assembler").getStackForm(1L));
+        Machine_Multi_BECIONode
+            .set(new MTEBECIONode(BoseEinsteinCondensateIONode.ID, "multi.bec.io-node").getStackForm(1L));
+        Machine_Multi_BECDiode.set(new MTEBECDiode(BoseEinsteinCondensateDiode.ID, "multi.bec.diode").getStackForm(1L));
     }
 }

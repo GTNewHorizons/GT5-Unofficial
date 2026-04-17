@@ -47,7 +47,6 @@ import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryNetwork;
 import tectech.mechanics.boseEinsteinCondensate.BECRouteInfo;
 import tectech.mechanics.boseEinsteinCondensate.NotableBECFactoryElement;
-import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchBEC;
 
 public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TSelf>> extends TTMultiblockBase
@@ -62,8 +61,8 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     protected final StructureWrapper<TSelf> structure;
     protected final StructureWrapperInstanceInfo<TSelf> structureInstanceInfo;
 
-    public MTEBECMultiblockBase(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+    public MTEBECMultiblockBase(int id, String name) {
+        super(id, name, GTUtility.translate("gt.blockmachines." + name + ".name"));
 
         structure = new StructureWrapper<>(this);
         structureInstanceInfo = null;
@@ -302,7 +301,7 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         @Override
         public String getDisplayName() {
             return switch (this) {
-                case Hatch -> CustomItemList.becConnectorHatch.getDisplayName();
+                case Hatch -> GTUtility.translate("gt.machine.bec.hatch.bec");
             };
         }
 

@@ -81,8 +81,8 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     private long fieldStrength;
     private GTSoundLoop pillar, torus, torusFar;
 
-    public MTEBECStorage(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+    public MTEBECStorage(int aID, String aName) {
+        super(aID, aName);
     }
 
     protected MTEBECStorage(MTEBECStorage prototype) {
@@ -148,7 +148,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
         tt.beginStructureBlock();
         tt.addController("Outer wall of center pillar, second layer from the bottom");
-        tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.becConnectorHatch.get(1));
+        tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.Hatch_BEC_Connector.get(1));
         tt.addAllCasingInfo(
             Arrays.asList(
                 SuperconductivePlasmaEnergyConduit,

@@ -12,19 +12,19 @@ import org.apache.commons.lang3.ArrayUtils;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
-public class MTEPipeBlockBEC extends MTEPipeBEC {
+public class MTEPipeBECBlock extends MTEPipeBEC {
 
-    public MTEPipeBlockBEC(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+    public MTEPipeBECBlock(int aID, String aName) {
+        super(aID, aName);
     }
 
-    protected MTEPipeBlockBEC(MTEPipeBlockBEC prototype) {
+    protected MTEPipeBECBlock(MTEPipeBECBlock prototype) {
         super(prototype);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new MTEPipeBlockBEC(this);
+        return new MTEPipeBECBlock(this);
     }
 
     @Override
