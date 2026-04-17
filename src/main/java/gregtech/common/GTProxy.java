@@ -168,7 +168,6 @@ import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.WirelessChargerManager;
-import gregtech.common.misc.WirelessEnergyHatchManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.powergoggles.PowerGogglesWorldSavedData;
@@ -710,7 +709,6 @@ public class GTProxy implements IFuelHandler {
     private Map<UUID, EntityPlayerMP> PLAYERS_BY_UUID;
     private Map<String, UUID> UUID_BY_NAME;
     public WirelessChargerManager wirelessChargerManager;
-    public WirelessEnergyHatchManager wirelessEnergyHatchManager;
     public GTSpawnEventHandler spawnEventHandler;
     public GTPowerfailTracker powerfailTracker;
     public TetherManager tetherManager;
@@ -1192,12 +1190,10 @@ public class GTProxy implements IFuelHandler {
         isFirstWorldTick = true;
         GTMusicSystem.ServerSystem.reset();
         wirelessChargerManager = new WirelessChargerManager();
-        wirelessEnergyHatchManager = new WirelessEnergyHatchManager();
         spawnEventHandler = new GTSpawnEventHandler();
         powerfailTracker = new GTPowerfailTracker();
         tetherManager = new TetherManager();
         FMLCommonHandler.instance().bus().register(wirelessChargerManager);
-        FMLCommonHandler.instance().bus().register(wirelessEnergyHatchManager);
         MinecraftForge.EVENT_BUS.register(spawnEventHandler);
         FMLCommonHandler.instance().bus().register(powerfailTracker);
         MinecraftForge.EVENT_BUS.register(powerfailTracker);
@@ -1262,9 +1258,6 @@ public class GTProxy implements IFuelHandler {
         if (wirelessChargerManager != null) {
             FMLCommonHandler.instance().bus().unregister(wirelessChargerManager);
         }
-        if (wirelessEnergyHatchManager != null) {
-            FMLCommonHandler.instance().bus().unregister(wirelessEnergyHatchManager);
-        }
         if (spawnEventHandler != null) {
             MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
         }
@@ -1277,7 +1270,6 @@ public class GTProxy implements IFuelHandler {
             MinecraftForge.EVENT_BUS.unregister(tetherManager);
         }
         wirelessChargerManager = null;
-        wirelessEnergyHatchManager = null;
         spawnEventHandler = null;
         powerfailTracker = null;
         tetherManager = null;
