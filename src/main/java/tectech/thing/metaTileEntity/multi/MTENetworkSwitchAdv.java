@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -295,6 +296,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             .addSeparator();
 
         tt.beginStructureBlock();
+        tt.addController("Front center");
         tt.addAllCasingInfo();
 
         tt.addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH, "middle slice count");
@@ -392,22 +394,23 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             .widget(new FakeSyncWidget.LongSyncer(() -> wastedComputation, value -> wastedComputation = value));
 
         screenElements.widget(
-            TextWidget
-                .dynamicString(
-                    () -> GTUtility.translate(
-                        "GT5U.machines.computation_hatch.pending_computation",
-                        GTUtility.formatNumbers(pendingComputation)))
+            TextWidget.dynamicString(
+                () -> GTUtility
+                    .translate("GT5U.machines.computation_hatch.pending_computation", formatNumber(pendingComputation)))
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mMaxProgresstime > 0));
         screenElements.widget(
-            TextWidget
-                .dynamicString(
-                    () -> GTUtility.translate(
-                        "GT5U.machines.computation_hatch.wasted_computation",
-                        GTUtility.formatNumbers(wastedComputation)))
+            TextWidget.dynamicString(
+                () -> GTUtility
+                    .translate("GT5U.machines.computation_hatch.wasted_computation", formatNumber(wastedComputation)))
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mMaxProgresstime > 0));
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

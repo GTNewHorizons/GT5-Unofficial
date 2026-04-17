@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,24 +10,29 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.GregTechAPI;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.gui.modularui.singleblock.MTETieredTankGui;
 import gtPlusPlus.core.lib.GTPPCore;
 
-public class MTETieredTank extends MTEBasicTank {
+public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMetaTile {
 
     public MTETieredTank(final int aID, final String aName, final String aNameRegional, final int aTier) {
         super(
@@ -34,7 +41,9 @@ public class MTETieredTank extends MTEBasicTank {
             aNameRegional,
             aTier,
             3,
-            "Stores " + GTUtility.formatNumbers(((int) (GTUtility.powInt(2, aTier) * 32000))) + "L of fluid");
+            GTUtility.translate(
+                "gtpp.tiered_tank.desc.capacity",
+                TooltipHelper.fluidText((int) (GTUtility.powInt(2, aTier) * 32000))));
     }
 
     public MTETieredTank(final String aName, final int aTier, final String[] aDescription,
@@ -45,10 +54,15 @@ public class MTETieredTank extends MTEBasicTank {
     @Override
     public String[] getDescription() {
         List<String> description = new ArrayList<>(Arrays.asList(this.mDescriptionArray));
-        description.add("A portable tank.");
+
+        description.add(GTUtility.translate("gtpp.tiered_tank.desc.portable"));
+
         if (this.mFluid != null) {
-            description.add("Fluid: " + mFluid.getLocalizedName() + " " + mFluid.amount + "L");
+            description.add(
+                GTUtility
+                    .translate("gtpp.tiered_tank.desc.fluid", mFluid.getLocalizedName(), formatNumber(mFluid.amount)));
         }
+
         description.add(GTPPCore.GT_Tooltip.get());
         return description.toArray(new String[0]);
     }
@@ -70,25 +84,19 @@ public class MTETieredTank extends MTEBasicTank {
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("mFluid")) {
+        if (ItemStackNBT.hasKey(stack, "mFluid")) {
             final FluidStack tContents = FluidStack
                 .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
                 tooltip.add(
-                    GTLanguageManager.addStringLocalization(
-                        "TileEntity_TANK_INFO",
-                        "Contains Fluid: ",
-                        !GregTechAPI.sPostloadFinished) + EnumChatFormatting.YELLOW
-                        + tContents.getLocalizedName()
-                        + EnumChatFormatting.GRAY);
+                    GTUtility.translate(
+                        "gtpp.tiered_tank.tooltip.contains",
+                        EnumChatFormatting.YELLOW + tContents.getLocalizedName() + EnumChatFormatting.GRAY));
+
                 tooltip.add(
-                    GTLanguageManager.addStringLocalization(
-                        "TileEntity_TANK_AMOUNT",
-                        "Fluid Amount: ",
-                        !GregTechAPI.sPostloadFinished) + EnumChatFormatting.GREEN
-                        + GTUtility.formatNumbers(tContents.amount)
-                        + " L"
-                        + EnumChatFormatting.GRAY);
+                    GTUtility.translate(
+                        "gtpp.tiered_tank.tooltip.amount",
+                        EnumChatFormatting.GREEN + formatNumber(tContents.amount) + EnumChatFormatting.GRAY));
             }
         }
     }
@@ -128,18 +136,14 @@ public class MTETieredTank extends MTEBasicTank {
 
         if (this.mFluid == null) {
             return new String[] {
-                StatCollector.translateToLocalFormatted(
-                    "gtpp.infodata.tiered_tank.name",
-                    GTValues.getLocalizedLongVoltageName(this.mTier)),
-                StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
-                StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid.empty"), 0 + "L",
+                GTUtility.translate("gtpp.infodata.tiered_tank.name", GTValues.getLocalizedLongVoltageName(this.mTier)),
+                GTUtility.translate("GT5U.infodata.digital_tank.stored_fluid"),
+                GTUtility.translate("GT5U.infodata.digital_tank.stored_fluid.empty"), 0 + "L",
                 this.getCapacity() + "L" };
         }
         return new String[] {
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.tiered_tank.name",
-                GTValues.getLocalizedLongVoltageName(this.mTier)),
-            StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"), this.mFluid.getLocalizedName(),
+            GTUtility.translate("gtpp.infodata.tiered_tank.name", GTValues.getLocalizedLongVoltageName(this.mTier)),
+            GTUtility.translate("GT5U.infodata.digital_tank.stored_fluid"), this.mFluid.getLocalizedName(),
             this.mFluid.amount + "L", this.getCapacity() + "L" };
     }
 
@@ -162,11 +166,12 @@ public class MTETieredTank extends MTEBasicTank {
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         if (mFluid != null) {
-            Logger.WARNING("Setting item fluid nbt");
             aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
-            if (aNBT.hasKey("mFluid")) {
-                Logger.WARNING("Set mFluid to NBT.");
-            }
         }
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTETieredTankGui(this).build(guiData, syncManager, uiSettings);
     }
 }

@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 
 import net.minecraft.block.Block;
@@ -44,11 +45,11 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
         tt.addMachineType("Fusion Reactor")
             .addInfo("Galaxy Collapse")
             .addInfo(
-                EnumChatFormatting.AQUA + GTUtility.formatNumbers(getSingleHatchPower())
+                EnumChatFormatting.AQUA + formatNumber(getSingleHatchPower())
                     + EnumChatFormatting.GRAY
                     + " EU/t and "
                     + EnumChatFormatting.AQUA
-                    + GTUtility.formatNumbers(capableStartupCanonical() / 32 / M)
+                    + formatNumber(capableStartupCanonical() / 32 / M)
                     + "M"
                     + EnumChatFormatting.GRAY
                     + " EU capacity per Energy Hatch")
@@ -61,6 +62,7 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
             .addInfo("Performs 4/4 overclock")
             .addInfo(createParallelText())
             .addTecTechHatchInfo()
+            .beginStructureBlock(47, 7, 47, false)
             .addCasingInfoMin("Fusion Machine Casing MK IV", 1664, false)
             .addCasingInfoMin("Compact Fusion Coil MK-II Finaltype", 560, false)
             .addCasingInfoMin("Infinity Frame Box", 128, false)
@@ -201,7 +203,7 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
             .build(), getTextureOverlay() };
         if (!aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(52) };
         return new ITexture[] { TextureFactory.builder()
-            .addIcon(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_HYPER)
+            .addIcon(TexturesGtBlock.TEXTURE_CASING_FUSION_OVERLAY)
             .extFacing()
             .build() };
     }

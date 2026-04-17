@@ -10,6 +10,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -29,6 +33,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicTankBaseGui;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -44,6 +49,10 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
         () -> mFluid,
         fluidStack -> mFluid = fluidStack,
         this::getRealCapacity);
+
+    public FluidStackTank getFluidTank() {
+        return fluidTank;
+    }
 
     /**
      * @param aInvSlotCount should be 3
@@ -338,5 +347,10 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
 
     protected FluidSlotWidget createFluidSlot() {
         return new FluidSlotWidget(fluidTank);
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicTankBaseGui<>(this).build(guiData, syncManager, uiSettings);
     }
 }

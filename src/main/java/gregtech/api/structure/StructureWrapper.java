@@ -74,7 +74,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             analyzeMaxDefinition();
 
             structureDefinition = provider.compile(definitionText);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             GTMod.GT_FML_LOGGER.error("Could not compile structure", t);
         }
     }

@@ -14,6 +14,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -38,10 +40,11 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
  * Machine
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETransformer extends MTETieredMachineBlock {
 
-    public MTETransformer(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, 0, aDescription);
+    public MTETransformer(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, 0, (String) null);
     }
 
     public MTETransformer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -155,7 +158,7 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public long maxAmperesIn() {
-        return getBaseMetaTileEntity().isAllowedToWork() ? 1 : 4;
+        return getBaseMetaTileEntity().isAllowedToWork() ? 2 : 5;
     }
 
     @Override
@@ -270,7 +273,8 @@ public class MTETransformer extends MTETieredMachineBlock {
         currenttip.add(
             String.format(
                 "%s %s(%dA) -> %s(%dA)",
-                (allowedToWork ? (GREEN + "Step Down") : (RED + "Step Up")) + RESET,
+                (allowedToWork ? (GREEN + StatCollector.translateToLocal("GT5U.waila.transformer.step_down"))
+                    : (RED + StatCollector.translateToLocal("GT5U.waila.transformer.step_up"))) + RESET,
                 GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                     : tag.getLong("maxEUInput"),
                 tag.getLong("maxAmperesIn"),
@@ -280,15 +284,15 @@ public class MTETransformer extends MTETieredMachineBlock {
 
         if ((side == facing && allowedToWork) || (side != facing && !allowedToWork)) {
             currenttip.add(
-                String.format(
-                    GOLD + "Input:" + RESET + " %s(%dA)",
+                GOLD + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.transformer.input",
                     GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                         : tag.getLong("maxEUInput"),
                     tag.getLong("maxAmperesIn")));
         } else {
             currenttip.add(
-                String.format(
-                    BLUE + "Output:" + RESET + " %s(%dA)",
+                BLUE + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.transformer.output",
                     GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
                         : tag.getLong("maxEUOutput"),
                     tag.getLong("maxAmperesOut")));
@@ -306,5 +310,13 @@ public class MTETransformer extends MTETieredMachineBlock {
         tag.setLong("maxAmperesIn", maxAmperesIn());
         tag.setLong("maxEUOutput", maxEUOutput());
         tag.setLong("maxAmperesOut", maxAmperesOut());
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] { StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.transformer.desc",
+            GTUtility.getColoredTierNameFromVoltage(maxEUInput()) + EnumChatFormatting.GRAY,
+            GTUtility.getColoredTierNameFromVoltage(maxEUOutput()) + EnumChatFormatting.GRAY) };
     }
 }

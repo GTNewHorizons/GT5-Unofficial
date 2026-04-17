@@ -11,7 +11,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -38,11 +37,13 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import appeng.api.util.DimensionalCoord;
 import appeng.client.render.BlockPosHighlighter;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.net.PacketTeleportPlayer;
 import gregtech.common.covers.CoverPosition;
@@ -72,25 +73,10 @@ public class RedstoneSnifferGui {
         }
         int textColor = Color.rgb(255, 255, 255);
 
-        AtomicInteger lastPage = new AtomicInteger(0);
-        if (guiData.getMainHandItem()
-            .getTagCompound() != null && guiData.getMainHandItem()
-                .getTagCompound()
-                .hasKey("last_page")) {
-            lastPage.set(
-                guiData.getMainHandItem()
-                    .getTagCompound()
-                    .getInteger("last_page"));
-        }
+        AtomicInteger lastPage = new AtomicInteger(ItemStackNBT.getInteger(guiData.getMainHandItem(), "last_page"));
         IntSyncValue pageSyncer = new IntSyncValue(lastPage::get, (page) -> {
             lastPage.set(page);
-            if (guiData.getMainHandItem()
-                .getTagCompound() == null)
-                guiData.getMainHandItem()
-                    .setTagCompound(new NBTTagCompound());
-            NBTTagCompound tag = guiData.getMainHandItem()
-                .getTagCompound();
-            tag.setInteger("last_page", page);
+            ItemStackNBT.setInteger(guiData.getMainHandItem(), "last_page", page);
         });
         guiSyncManager.syncValue("last_page", pageSyncer);
 
@@ -114,7 +100,7 @@ public class RedstoneSnifferGui {
         });
         guiSyncManager.syncValue("player_is_op", playerIsOpSyncer);
         ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
-        panel.flex()
+        panel.resizer()
             .sizeRel(0.5f, 0.75f)
             .align(Alignment.Center);
 
@@ -155,8 +141,7 @@ public class RedstoneSnifferGui {
                         .sizeRel(1f, 0.1f * scale)
                         .expanded()
                         .background(
-                            bgStripe.get() % 2 == 0 ? new Rectangle().setColor(stripe1)
-                                : new Rectangle().setColor(stripe2))
+                            bgStripe.get() % 2 == 0 ? new Rectangle().color(stripe1) : new Rectangle().color(stripe2))
                         .child(
                             new TextWidget<>(entry.freq).widthRel(0.5f)
                                 .color(textColor)
@@ -315,8 +300,7 @@ public class RedstoneSnifferGui {
                             && entry.freq.contains((freqFilter))))
                     .sizeRel(1f, 0.1f * scale)
                     .background(
-                        (bgStripe.get() % 2 == 0) ? new Rectangle().setColor(stripe1)
-                            : new Rectangle().setColor(stripe2))
+                        (bgStripe.get() % 2 == 0) ? new Rectangle().color(stripe1) : new Rectangle().color(stripe2))
                     .expanded()
                     .child(
                         new TextWidget<>(entry.owner).widthRel(0.15f)
@@ -338,9 +322,7 @@ public class RedstoneSnifferGui {
                                         new ButtonWidget<>().size(25, 25)
                                             .align(Alignment.Center)
                                             .overlay(
-                                                UITexture
-                                                    .fullImage(GregTech.ID, "gui/overlay_button/redstoneSnifferLocate")
-                                                    .asIcon()
+                                                GTGuiTextures.OVERLAY_BUTTON_REDSTONESNIFFERLOCATE.asIcon()
                                                     .size(19, 19)
                                                     .margin(3))
                                             .tooltip(

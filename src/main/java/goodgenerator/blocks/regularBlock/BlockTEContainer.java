@@ -15,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -167,8 +166,7 @@ public class BlockTEContainer extends BlockContainer {
                     ItemStack tItemStack = player.getHeldItem();
                     if (tItemStack == null) {
                         ((MTEEssentiaOutputHatch) tile).clear();
-                        GTUtility
-                            .sendChatToPlayer(player, StatCollector.translateToLocal("essentiaoutputhatch.chat.0"));
+                        GTUtility.sendChatTrans(player, "essentiaoutputhatch.chat.0");
                     }
                     return true;
                 } else return false;

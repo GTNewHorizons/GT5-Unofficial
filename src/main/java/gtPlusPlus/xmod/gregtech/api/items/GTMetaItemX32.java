@@ -18,8 +18,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.math.MathUtils;
 
 /**
  * @author Gregorius Techneticies
@@ -84,21 +82,6 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
     /* ---------- OVERRIDEABLE FUNCTIONS ---------- */
 
     /**
-     * @return the Color Modulation the Material is going to be rendered with.
-     */
-    @Override
-    public short[] getRGBa(final ItemStack aStack) {
-        if (this.getDamage(aStack) < 0 || this.getDamage(aStack) >= 32000) {
-            return Materials._NULL.mRGBa;
-        }
-        final Materials tMaterial = GregTechAPI.sGeneratedMaterials[this.getDamage(aStack) % 1000];
-        if (tMaterial == null) {
-            return Materials._NULL.mRGBa;
-        }
-        return tMaterial.mRGBa;
-    }
-
-    /**
      * @param aPrefix   this can be null, you have to return false in that case
      * @param aMaterial this can be null, you have to return false in that case
      * @return if this Item should be generated and visible.
@@ -134,24 +117,12 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
                 : null;
     }
 
-    /**
-     * @param aPrefix         always != null
-     * @param aMaterial       always != null
-     * @param aDoShowAllItems this is the Configuration Setting of the User, if he wants to see all the Stuff like Tiny
-     *                        Dusts or Crushed Ores as well.
-     * @return if this Item should be visible in NEI or Creative
-     */
-    public boolean doesShowInCreative(final OrePrefixes aPrefix, final Materials aMaterial,
-        final boolean aDoShowAllItems) {
-        return true;
-    }
-
     /* ---------- INTERNAL OVERRIDES ---------- */
 
     @Override
     public ItemStack getContainerItem(final ItemStack aStack) {
         final int aDamage = aStack.getItemDamage();
-        if ((aDamage < 32000) && (aDamage >= 0)) {
+        if (Materials.isMaterialItem(aDamage)) {
             final Materials aMaterial = GregTechAPI.sGeneratedMaterials[aDamage % 1000];
             if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
                 final OrePrefixes aPrefix = this.mGeneratedPrefixList[aDamage / 1000];
@@ -164,23 +135,12 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
     }
 
     @Override
-    public final IIconContainer getIconContainer(final int aMetaData) {
-        if (aMetaData < 0 || aMetaData >= 32000) return null;
-        return GregTechAPI.sGeneratedMaterials[aMetaData % 1000] == null ? null
-            : this.getIconContainer(aMetaData, GregTechAPI.sGeneratedMaterials[aMetaData % 1000]);
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public final void getSubItems(final Item var1, final CreativeTabs aCreativeTab, final List aList) {
         for (int i = 0; i < 32000; i++) {
             if (this.doesMaterialAllowGeneration(
                 this.mGeneratedPrefixList[i / 1000],
-                GregTechAPI.sGeneratedMaterials[i % 1000])
-                && this.doesShowInCreative(
-                    this.mGeneratedPrefixList[i / 1000],
-                    GregTechAPI.sGeneratedMaterials[i % 1000],
-                    GregTechAPI.sDoShowAllItemsInCreative)) {
+                GregTechAPI.sGeneratedMaterials[i % 1000])) {
                 final ItemStack tStack = new ItemStack(this, 1, i);
                 this.isItemStackUsable(tStack);
                 aList.add(tStack);
@@ -211,7 +171,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
     @Override
     public int getItemStackLimit(final ItemStack aStack) {
         final int tDamage = this.getDamage(aStack);
-        if ((tDamage < 32000) && (this.mGeneratedPrefixList[tDamage / 1000] != null)) {
+        if (Materials.isMaterialItem(tDamage) && (this.mGeneratedPrefixList[tDamage / 1000] != null)) {
             return Math
                 .min(super.getItemStackLimit(aStack), this.mGeneratedPrefixList[tDamage / 1000].getDefaultStackSize());
         }
@@ -220,54 +180,6 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
-
-        int aMeta = stack.getItemDamage();
-        if (stack.getDisplayName()
-            .contains("Sodium")) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(90, 90, 255);
-        } else if (stack.getDisplayName()
-            .contains("Cadmium")) {
-                HEX_OxFFFFFF = Utils.rgbtoHexValue(150, 150, 80);
-            } else if (stack.getDisplayName()
-                .contains("Lithium")) {
-                    HEX_OxFFFFFF = Utils.rgbtoHexValue(225, 220, 255);
-                } else if (stack.getDisplayName()
-                    .contains("Wrought")) {
-                        HEX_OxFFFFFF = Utils.rgbtoHexValue(200, 180, 180);
-                    } else if (stack.getDisplayName()
-                        .contains("Bronze")) {
-                            HEX_OxFFFFFF = Utils.rgbtoHexValue(255, 128, 0);
-                        } else if (stack.getDisplayName()
-                            .contains("Brass")) {
-                                HEX_OxFFFFFF = Utils.rgbtoHexValue(255, 180, 0);
-                            } else if (stack.getDisplayName()
-                                .contains("Invar")) {
-                                    HEX_OxFFFFFF = Utils.rgbtoHexValue(180, 180, 120);
-                                } else {
-                                    if (aMeta > 50 && aMeta != 150) {
-                                        HEX_OxFFFFFF = 0xffffff;
-                                    } else if (stack.getDisplayName()
-                                        .contains("ULV")) {
-                                            HEX_OxFFFFFF = Utils.rgbtoHexValue(200, 180, 180);
-                                        } else if (stack.getDisplayName()
-                                            .contains("LuV")) {
-                                                HEX_OxFFFFFF = 0xffffcc;
-                                            } else if (stack.getDisplayName()
-                                                .contains("ZPM")) {
-                                                    HEX_OxFFFFFF = 0xffe600;
-                                                } else if (stack.getDisplayName()
-                                                    .contains("UV")) {
-                                                        HEX_OxFFFFFF = 0xffb300;
-                                                    } else if (stack.getDisplayName()
-                                                        .contains("MAX")) {
-                                                            HEX_OxFFFFFF = Utils.rgbtoHexValue(
-                                                                MathUtils.randInt(220, 250),
-                                                                MathUtils.randInt(221, 251),
-                                                                MathUtils.randInt(220, 250));
-                                                        } else {
-                                                            HEX_OxFFFFFF = 0xffffff;
-                                                        }
-                                }
-        return HEX_OxFFFFFF;
+        return 0xFFFFFF;
     }
 }

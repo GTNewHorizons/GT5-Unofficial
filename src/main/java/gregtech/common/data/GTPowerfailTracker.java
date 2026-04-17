@@ -517,7 +517,7 @@ public class GTPowerfailTracker {
                         }
                     }
                 }
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 GTMod.GT_FML_LOGGER.warn("Could not load powerfail data", t);
             }
         }
@@ -527,6 +527,10 @@ public class GTPowerfailTracker {
             State state = new State();
 
             powerfailInfo.forEach((machineOwner, teamInfo) -> {
+                if (machineOwner == null) return;
+                if (machineOwner instanceof PlayerOwner player && player.player == null) return;
+                if (machineOwner instanceof TeamOwner team && team.leader == null) return;
+
                 TeamState teamState = new TeamState();
 
                 state.powerfailInfo.add(new TeamPair(machineOwner, teamState));

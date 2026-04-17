@@ -1,7 +1,7 @@
 package gregtech.common.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static ic2.core.util.LiquidUtil.drainContainerStack;
 import static ic2.core.util.LiquidUtil.fillContainerStack;
 import static ic2.core.util.LiquidUtil.placeFluid;
@@ -22,6 +22,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -31,23 +32,27 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import com.cleanroommc.modularui.api.IGuiHolder;
-import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
-import com.cleanroommc.modularui.factory.PlayerInventoryGuiFactory;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.screen.IItemWithModularUI;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.VanillaButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
+import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.item.ItemVolumetricFlaskGui;
 import ic2.core.util.LiquidUtil;
 
-public class ItemVolumetricFlask extends GTGenericItem
-    implements IFluidContainerItem, IGuiHolder<PlayerInventoryGuiData> {
+public class ItemVolumetricFlask extends GTGenericItem implements IFluidContainerItem, IItemWithModularUI {
 
     private final int maxCapacity;
     private final String unlocalFlaskName;
@@ -66,7 +71,7 @@ public class ItemVolumetricFlask extends GTGenericItem
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (!world.isRemote && isEmpty(stack) && getMovingObjectPositionFromPlayer(world, player, true) == null)
-            PlayerInventoryGuiFactory.INSTANCE.openFromMainHand(player);
+            GTUIInfos.openPlayerHeldItemUI(player);
         return super.onItemRightClick(stack, world, player);
     }
 
@@ -126,9 +131,8 @@ public class ItemVolumetricFlask extends GTGenericItem
     @Override
     public int getCapacity(ItemStack stack) {
         int capacity = 1000;
-        if (stack.hasTagCompound()) {
-            NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt.hasKey("Capacity", 3)) capacity = nbt.getInteger("Capacity");
+        if (ItemStackNBT.hasKey(stack, "Capacity", NBT.TAG_INT)) {
+            capacity = ItemStackNBT.getInteger(stack, "Capacity");
         }
         return Math.min(getMaxCapacity(), capacity);
     }
@@ -142,36 +146,23 @@ public class ItemVolumetricFlask extends GTGenericItem
 
     public void setCapacity(ItemStack stack, int capacity) {
         capacity = Math.min(capacity, getMaxCapacity());
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt == null) {
-            stack.setTagCompound(nbt = new NBTTagCompound());
-        }
-        nbt.setInteger("Capacity", capacity);
+        ItemStackNBT.setInteger(stack, "Capacity", capacity);
     }
 
     @Override
     public FluidStack getFluid(ItemStack stack) {
-        if (stack.hasTagCompound()) {
-            NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt.hasKey("Fluid", 10)) return FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("Fluid"));
+        if (ItemStackNBT.hasKey(stack, "Fluid", NBT.TAG_COMPOUND)) {
+            return FluidStack.loadFluidStackFromNBT(ItemStackNBT.getCompoundTag(stack, "Fluid"));
         }
         return null;
     }
 
     public void setFluid(ItemStack stack, FluidStack fluidStack) {
-        boolean removeFluid = (fluidStack == null) || (fluidStack.amount <= 0);
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt == null) {
-            if (removeFluid) return;
-            stack.setTagCompound(nbt = new NBTTagCompound());
-        }
+        final boolean removeFluid = (fluidStack == null) || (fluidStack.amount <= 0);
         if (removeFluid) {
-            nbt.removeTag("Fluid");
-            if (nbt.hasNoTags()) {
-                stack.setTagCompound(null);
-            }
+            ItemStackNBT.removeTag(stack, "Fluid");
         } else {
-            nbt.setTag("Fluid", fluidStack.writeToNBT(new NBTTagCompound()));
+            ItemStackNBT.setTag(stack, "Fluid", fluidStack.writeToNBT(new NBTTagCompound()));
         }
     }
 
@@ -212,13 +203,13 @@ public class ItemVolumetricFlask extends GTGenericItem
     protected void addAdditionalToolTips(List<String> info, ItemStack stack, EntityPlayer aPlayer) {
         FluidStack fs = getFluid(stack);
         if (fs != null) {
-            info.add(String.format("< %s, %s mB >", GTUtility.getFluidName(fs, true), formatNumbers(fs.amount)));
+            info.add(String.format("< %s, %s mB >", GTUtility.getFluidName(fs, true), formatNumber(fs.amount)));
         } else {
             info.add(
                 String.format(
                     "< %s, %s mB >",
                     StatCollector.translateToLocal("GT5U.tooltip.volumetric_flask.empty"),
-                    formatNumbers(getCapacity(stack))));
+                    formatNumber(getCapacity(stack))));
         }
         info.add(StatCollector.translateToLocal("GT5U.tooltip.volumetric_flask.set_volume"));
     }
@@ -306,8 +297,62 @@ public class ItemVolumetricFlask extends GTGenericItem
     }
 
     @Override
-    public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings) {
-        return new ItemVolumetricFlaskGui(data).build();
+    public ModularWindow createWindow(UIBuildContext buildContext, ItemStack stack) {
+        if (!(stack.getItem() instanceof ItemVolumetricFlask)) return null;
+        return new VolumetricFlaskUIFactory(buildContext, stack).createWindow();
+    }
+
+    private class VolumetricFlaskUIFactory {
+
+        private final UIBuildContext buildContext;
+        private int capacity;
+        private final int maxCapacity;
+
+        public VolumetricFlaskUIFactory(UIBuildContext buildContext, ItemStack flask) {
+            this.buildContext = buildContext;
+            ItemVolumetricFlask flaskItem = (ItemVolumetricFlask) flask.getItem();
+            this.capacity = flaskItem.getCapacity(flask);
+            this.maxCapacity = flaskItem.getMaxCapacity();
+        }
+
+        public ModularWindow createWindow() {
+            ModularWindow.Builder builder = ModularWindow.builder(150, 54);
+            builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
+
+            NumericWidget capacityWidget = new NumericWidget();
+            builder.widget(
+                capacityWidget.setGetter(() -> capacity)
+                    .setSetter(value -> setCapacity(getCurrentItem(), capacity = (int) value))
+                    .setBounds(1, maxCapacity)
+                    .setScrollValues(1, 144, 1000)
+                    .setDefaultValue(capacity)
+                    .setTextColor(Color.WHITE.dark(1))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setFocusOnGuiOpen(true)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                    .setPos(8, 8)
+                    .setSize(77, 12))
+                .widget(
+                    new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.volumetric_flask.capacity"))
+                        .setPos(88, 10))
+                .widget(
+                    new VanillaButtonWidget()
+                        .setDisplayString(StatCollector.translateToLocal("GT5U.gui.text.volumetric_flask.confirm"))
+                        .setOnClick((clickData, widget) -> {
+                            capacityWidget.onRemoveFocus();
+                            widget.getWindow()
+                                .tryClose();
+                        })
+                        .setSynced(false, false)
+                        .setPos(8, 26)
+                        .setSize(48, 20));
+
+            return builder.build();
+        }
+
+        private ItemStack getCurrentItem() {
+            return buildContext.getPlayer().inventory.getCurrentItem();
+        }
     }
 
 }

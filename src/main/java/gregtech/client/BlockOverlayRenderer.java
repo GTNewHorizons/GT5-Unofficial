@@ -43,10 +43,12 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.metatileentity.implementations.MTEBuffer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
+import gregtech.common.items.ItemGTToolbox;
 import ic2.api.tile.IWrenchable;
 
 public class BlockOverlayRenderer {
@@ -139,6 +141,13 @@ public class BlockOverlayRenderer {
             return;
         }
 
+        if (GTUtility.isStackInList(event.currentItem, GregTechAPI.sScrewdriverList)
+            && aTileEntity instanceof IGregTechTileEntity gtEntity
+            && gtEntity.getMetaTileEntity() instanceof MTEBuffer) {
+            drawGrid(event, false, false, event.player.isSneaking());
+            return;
+        }
+
         if ((event.currentItem == null && event.player.isSneaking())
             || GTUtility.isStackInList(event.currentItem, GregTechAPI.sCrowbarList)
             || GTUtility.isStackInList(event.currentItem, GregTechAPI.sScrewdriverList)) {
@@ -160,6 +169,10 @@ public class BlockOverlayRenderer {
         if (GTUtility.areStacksEqual(ItemList.Tool_Cover_Copy_Paste.get(1), event.currentItem, true)) {
             if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(event.target.sideHit)))
                 drawGrid(event, true, false, event.player.isSneaking());
+        }
+
+        if (event.currentItem != null && event.currentItem.getItem() instanceof final ItemGTToolbox toolboxItem && toolboxItem.shouldDrawHighlightGrid(event)) {
+            drawGrid(event, true, false, event.player.isSneaking());
         }
     }
 

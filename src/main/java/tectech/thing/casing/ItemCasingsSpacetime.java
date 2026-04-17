@@ -1,8 +1,8 @@
 package tectech.thing.casing;
 
 import static com.google.common.math.LongMath.pow;
-import static gregtech.api.enums.GTValues.AuthorColen;
-import static gregtech.api.util.GTUtility.formatNumbers;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.enums.GTAuthors.AuthorColen;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.enums.GTAuthors;
 import gregtech.common.blocks.ItemCasings;
 
 public class ItemCasingsSpacetime extends ItemCasings {
@@ -34,7 +35,7 @@ public class ItemCasingsSpacetime extends ItemCasings {
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
                         "tt.eoh.spacetime.standard.tooltip.0",
-                        formatNumbers(pow(10, 5 + aStack.getItemDamage()))));
+                        formatNumber(pow(10, 5 + aStack.getItemDamage()))));
                 tooltip.add(
                     StatCollector
                         .translateToLocalFormatted("tt.eoh.spacetime.standard.tooltip.1", aStack.getItemDamage() + 1));
@@ -42,6 +43,6 @@ public class ItemCasingsSpacetime extends ItemCasings {
             default:
                 tooltip.add(StatCollector.translateToLocal("tt.eoh.time_dilation.error.tooltip"));
         }
-        tooltip.add(AuthorColen);
+        tooltip.add(GTAuthors.buildAuthorsWithFormat(AuthorColen));
     }
 }

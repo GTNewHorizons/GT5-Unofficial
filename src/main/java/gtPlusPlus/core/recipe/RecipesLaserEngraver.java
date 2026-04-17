@@ -15,7 +15,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import toxiceverglades.dimension.DimensionEverglades;
 
@@ -33,7 +33,7 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Lithium, 2L),
                     GTUtility.copyAmount(0L, aStack))
-                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("plateDoubleLithium7", 1))
+                .itemOutputs(MaterialsElements.getInstance().LITHIUM7.getPlateDouble(1))
                 .duration(4 * MINUTES)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(laserEngraverRecipes);
@@ -41,7 +41,7 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 3L),
                     GTUtility.copyAmount(0L, aStack))
-                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 1))
+                .itemOutputs(MaterialsElements.getInstance().LITHIUM7.getDust(1))
                 .duration(2 * MINUTES)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(laserEngraverRecipes);

@@ -479,6 +479,21 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 16))
                 .addTo(cutterRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 2L))
+                .fluidInputs(
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(
+                        Math.max(
+                            1,
+                            Math.min(
+                                10,
+                                ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16))
+                                    / 4000))))
+                .duration(((int) Math.max(aMaterial.getMass() / 2.5, 1L)) * TICKS)
+                .eut(calculateRecipeEU(aMaterial, 16))
+                .addTo(cutterRecipes);
         }
     }
 

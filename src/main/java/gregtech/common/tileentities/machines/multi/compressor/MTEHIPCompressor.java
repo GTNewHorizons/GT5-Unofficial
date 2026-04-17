@@ -1,7 +1,7 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GTValues.Ollie;
+import static gregtech.api.enums.GTAuthors.Ollie;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE;
@@ -269,7 +269,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                     + EnumChatFormatting.GRAY
                     + " parallels per voltage tier")
             .beginStructureBlock(15, 10, 7, false)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Electric Compressor Casing", 95, false)
             .addCasingInfoMin("Compressor Pipe Casing", 60, false)
             .addCasingInfoExactly("Coolant Duct", 12, false)
@@ -286,6 +286,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             .addEnergyHatch("Any Electric Compressor Casing", 1)
             .addMaintenanceHatch("Any Electric Compressor Casing", 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(Ollie);
         return tt;
     }
@@ -345,18 +346,14 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-        if (tag.getBoolean("cooling")) currentTip.add(
-            "HIP Heat: " + EnumChatFormatting.RED
-                + EnumChatFormatting.BOLD
-                + tag.getInteger("heat")
-                + "%"
-                + EnumChatFormatting.RESET);
-        else currentTip.add(
-            "HIP Heat: " + EnumChatFormatting.AQUA
-                + EnumChatFormatting.BOLD
-                + tag.getInteger("heat")
-                + "%"
-                + EnumChatFormatting.RESET);
+        currentTip.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.hip_compressor.heat",
+                "" + (tag.getBoolean("cooling") ? EnumChatFormatting.RED : EnumChatFormatting.AQUA)
+                    + EnumChatFormatting.BOLD
+                    + tag.getInteger("heat")
+                    + "%"
+                    + EnumChatFormatting.RESET));
     }
 
     @Override
@@ -462,11 +459,6 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         return true;
     }
 
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
     public HeatingCoilLevel getCoilLevel() {
         return heatLevel;
     }
@@ -510,6 +502,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEHIPCompressor> adder() {
             return adder;
         }

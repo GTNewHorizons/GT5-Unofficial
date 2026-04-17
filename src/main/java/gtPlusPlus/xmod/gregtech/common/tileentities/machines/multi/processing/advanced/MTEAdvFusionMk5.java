@@ -1,6 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import net.minecraft.block.Block;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -125,7 +128,7 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
                 TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1)) };
         } else {
             return new ITexture[] {
-                TextureFactory.of(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_HYPER, Dyes.getModulation(-1)) };
+                TextureFactory.of(TexturesGtBlock.TEXTURE_CASING_FUSION_OVERLAY, Dyes.getModulation(-1)) };
         }
     }
 
@@ -176,6 +179,11 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
         return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.name", tier),
             StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.eu_required", powerRequired),
             StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.stored_eu", mEUStore, maxEUStore()),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.plasma_output", plasmaOut) };
+            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.plasma_output", plasmaOut),
+            StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(recipesDone)
+                + EnumChatFormatting.RESET };
     }
+
 }

@@ -11,11 +11,6 @@ on:
       - unlabeled
       - synchronize
 
-# if a second commit is pushed quickly after the first, cancel the first one's build
-concurrency:
-  group: pr-labels-${{ github.head_ref }}
-  cancel-in-progress: true
-
 jobs:
   Labels:
     runs-on: ubuntu-latest
@@ -30,6 +25,14 @@ jobs:
           mode: exactly
           count: 0
           labels: 'ongoing freeze - do not merge'
+          exit_type: failure
+
+      - name: Check for Merge-Blocking Labels # blocks merge if present
+        uses: mheap/github-action-required-labels@v5
+        with:
+          mode: exactly
+          count: 0
+          labels: 'Frozen PR'
           exit_type: failure
 
       - name: Check for Required Labels # require at least one of these labels

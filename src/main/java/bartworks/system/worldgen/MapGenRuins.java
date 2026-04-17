@@ -107,7 +107,7 @@ public abstract class MapGenRuins extends WorldGenerator {
         boolean isEnabled = true;
         try {
             isEnabled = RunnableMachineUpdate.isEnabled();
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
             isEnabled = false;
         }
         if (isEnabled)
@@ -146,7 +146,7 @@ public abstract class MapGenRuins extends WorldGenerator {
         ForgeDirection facing) {
         try {
             RunnableMachineUpdate.setDisabled();
-        } catch (Throwable ignored) {}
+        } catch (Exception ignored) {}
         this.setGTMachineBlock(worldObj, x, y, z, meta);
         BaseMetaTileEntity BTE = (BaseMetaTileEntity) worldObj.getTileEntity(x, y, z);
         BTE.setOwnerName(ownerName);
@@ -155,7 +155,7 @@ public abstract class MapGenRuins extends WorldGenerator {
         this.checkTile(BTE, worldObj, x, y, z, meta, ownerName, facing, 0);
         try {
             RunnableMachineUpdate.setEnabled();
-        } catch (Throwable ignored) {}
+        } catch (Exception ignored) {}
     }
 
     private void checkTile(BaseMetaTileEntity BTE, World worldObj, int x, int y, int z, int meta, String ownerName,
@@ -182,7 +182,7 @@ public abstract class MapGenRuins extends WorldGenerator {
     protected void setGTCable(World worldObj, int x, int y, int z, int meta) {
         try {
             RunnableMachineUpdate.setDisabled();
-        } catch (Throwable ignored) {}
+        } catch (Exception ignored) {}
         BaseMetaPipeEntity BTE = (BaseMetaPipeEntity) this.setGTMachineBlock(worldObj, x, y, z, meta);
         MetaPipeEntity MPE = (MetaPipeEntity) BTE.getMetaTileEntity();
         BTE.mConnections |= (byte) (1 << (byte) 4);
@@ -196,7 +196,7 @@ public abstract class MapGenRuins extends WorldGenerator {
         MPE.mConnections = BTE.mConnections;
         try {
             RunnableMachineUpdate.setEnabled();
-        } catch (Throwable ignored) {}
+        } catch (Exception ignored) {}
     }
 
     public static class RuinsBase extends MapGenRuins {

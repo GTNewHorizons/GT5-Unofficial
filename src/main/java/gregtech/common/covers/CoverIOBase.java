@@ -1,7 +1,5 @@
 package gregtech.common.covers;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import net.minecraft.entity.player.EntityPlayer;
 
 import gregtech.api.covers.CoverContext;
@@ -107,20 +105,18 @@ public abstract class CoverIOBase extends CoverLegacyData {
             coverData = 11;
         }
         switch (coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.export"));
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.export_cond"));
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import_cond"));
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.export_invert_cond"));
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import_invert_cond"));
-            case 6 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.export_allow"));
-            case 7 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import_allow"));
-            case 8 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.export_allow_cond"));
-            case 9 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import_allow_cond"));
-            case 10 -> GTUtility
-                .sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.export_allow_invert_cond"));
-            case 11 -> GTUtility
-                .sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import_allow_invert_cond"));
+            case 0 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.export");
+            case 1 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.import");
+            case 2 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.export_cond");
+            case 3 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.import_cond");
+            case 4 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.export_invert_cond");
+            case 5 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.import_invert_cond");
+            case 6 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.export_allow");
+            case 7 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.import_allow");
+            case 8 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.export_allow_cond");
+            case 9 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.import_allow_cond");
+            case 10 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.export_allow_invert_cond");
+            case 11 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.import_allow_invert_cond");
         }
     }
 }

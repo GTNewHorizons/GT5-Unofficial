@@ -14,6 +14,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
@@ -23,6 +24,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPotionBrewer extends MTEBasicMachine {
 
     public MTEPotionBrewer(int aID, String aName, String aNameRegional, int aTier) {
@@ -37,73 +39,73 @@ public class MTEPotionBrewer extends MTEBasicMachine {
             0,
             TextureFactory.of(
                 TextureFactory.of(
-                    new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER_ACTIVE")),
+                    Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
-                        new Textures.BlockIcons.CustomIcon(
-                            "basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER_ACTIVE_GLOW"))
+                        Textures.BlockIcons
+                            .customOptional("basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER")),
+                    .of(Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER")),
                 TextureFactory.builder()
                     .addIcon(
-                        new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER_GLOW"))
+                        Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory.of(
-                    new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER_ACTIVE")),
+                    Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
-                        new Textures.BlockIcons.CustomIcon(
-                            "basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER_ACTIVE_GLOW"))
+                        Textures.BlockIcons
+                            .customOptional("basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER")),
+                    .of(Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER")),
                 TextureFactory.builder()
                     .addIcon(
-                        new Textures.BlockIcons.CustomIcon(
-                            "basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER_GLOW"))
+                        Textures.BlockIcons
+                            .customOptional("basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory.of(
-                    new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER_ACTIVE")),
+                    Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
-                        new Textures.BlockIcons.CustomIcon(
-                            "basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER_ACTIVE_GLOW"))
+                        Textures.BlockIcons
+                            .customOptional("basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER")),
+                    .of(Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER")),
                 TextureFactory.builder()
                     .addIcon(
-                        new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER_GLOW"))
+                        Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory.of(
-                    new Textures.BlockIcons.CustomIcon(
-                        "basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER_ACTIVE")),
+                    Textures.BlockIcons
+                        .customOptional("basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
-                        new Textures.BlockIcons.CustomIcon(
-                            "basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER_ACTIVE_GLOW"))
+                        Textures.BlockIcons
+                            .customOptional("basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER")),
+                    .of(Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER")),
                 TextureFactory.builder()
                     .addIcon(
-                        new Textures.BlockIcons.CustomIcon(
-                            "basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER_GLOW"))
+                        Textures.BlockIcons
+                            .customOptional("basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER_GLOW"))
                     .glow()
                     .build()));
     }

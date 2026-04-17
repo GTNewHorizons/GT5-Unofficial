@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.GTValues.debugDriller;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -67,6 +68,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     private int chunkRangeConfig = getRangeInChunks();
 
+    protected int batchMultiplier = 1;
+
     public MTEOilDrillBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -113,7 +116,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         if (aNBT.hasKey("chunkRangeConfig")) chunkRangeConfig = aNBT.getInteger("chunkRangeConfig");
     }
 
-    protected MultiblockTooltipBuilder createTooltip(String tierSuffix) {
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
         String casings = getCasingBlockItem().get(0)
             .getDisplayName();
 
@@ -127,12 +131,12 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             // work
             .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
             .addInfo(
-                "Base cycle time: " + (baseCycleTime < 20 ? GTUtility.formatNumbers(baseCycleTime) + " ticks"
-                    : GTUtility.formatNumbers(baseCycleTime / 20.0) + " seconds"))
+                "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
+                    : formatNumber(baseCycleTime / 20.0) + " seconds"))
             .beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
-            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
+            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base")
             .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
             .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any base casing", 1)
             .addMaintenanceHatch("Any base casing", 1)
@@ -161,13 +165,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             if (chunkRangeConfig > getRangeInChunks()) chunkRangeConfig = 1;
         }
         if (oldChunkRange != chunkRangeConfig) mOilFieldChunks.clear();
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
-                + chunkRangeConfig
-                + "x"
-                + chunkRangeConfig
-                + StatCollector.translateToLocal("GT5U.machines.chunks")); // TODO Add translation support
+        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.workareaset.chunks", chunkRangeConfig, chunkRangeConfig);
     }
 
     @Override
@@ -180,26 +178,25 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         return ImmutableList.of(InputBus, OutputHatch, Maintenance, Energy);
     }
 
-    int batchMultiplier = 1;
-
     @Override
     protected void setElectricityStats() {
         // for a 6.4 second beautiful batch
-        batchMultiplier = batchMode ? 128 : 1;
+        batchMultiplier = (batchMode && reachingVoidOrBedrock()) ? 128 : 1;
         this.mEfficiency = getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         int tier = Math.max(0, GTUtility.getTier(getMaxInputVoltage()));
         this.mEUt = -7 << (tier << 1); // (1/4) A of current tier when at bottom (7/8) A of current tier while mining
-        this.mMaxProgresstime = calculateMaxProgressTime(tier) * batchMultiplier;
+        this.mMaxProgresstime = calculateMaxProgressTime(tier);
     }
 
     @Override
     public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
         return (int) Math.max(
             1,
-            (workState == STATE_AT_BOTTOM || simulateWorking
+            (workState == WorkState.AT_BOTTOM || simulateWorking
                 ? (64 * (chunkRangeConfig * chunkRangeConfig)) >> (getMinTier() - 1)
-                : 120) / GTUtility.powInt(2, tier));
+                : 120) / GTUtility.powInt(2, tier))
+            * batchMultiplier;
     }
 
     protected float computeSpeed() {
@@ -210,13 +207,13 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
         switch (tryLowerPipeState(true)) {
-            case 0 -> {
-                workState = STATE_DOWNWARD;
+            case SUCCESS -> {
+                workState = WorkState.DOWNWARD;
                 setElectricityStats();
                 return true;
             }
-            case 3 -> {
-                workState = STATE_UPWARD;
+            case CANCELED -> {
+                workState = WorkState.UPWARD;
                 return true;
             }
         }
@@ -242,7 +239,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             }
         }
         GTChunkManager.releaseTicket((TileEntity) getBaseMetaTileEntity());
-        workState = STATE_UPWARD;
+        workState = WorkState.UPWARD;
         setShutdownReason(StatCollector.translateToLocal("GT5U.gui.text.drill_exhausted"));
         return true;
     }
@@ -328,11 +325,15 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         }
 
         FluidStack pumpedOil = pumpOil(speed, false);
-        mOilFlow = pumpedOil.amount * batchMultiplier;
+        mOilFlow = pumpedOil.amount;
+        // Multiblock base already includes 1 parallel
+        recipesDone += batchMultiplier - 1;
         return ValidationResult.of(ValidationType.VALID, pumpedOil.amount == 0 ? null : pumpedOil);
     }
 
     /**
+     * Pump the oil. Takes batch mode into account.
+     *
      * @param speed    Speed to pump oil
      * @param simulate If true, it actually does not consume vein
      * @return Fluid pumped
@@ -344,7 +345,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
         FluidStack returnOil = new FluidStack(mOil, 0);
         World world = getBaseMetaTileEntity().getWorld();
-        float coefficient = simulate ? -speed : speed;
+        final float coefficient = (simulate ? -speed : speed) * batchMultiplier;
 
         for (Iterator<ChunkCoordIntPair> iterator = mOilFieldChunks.iterator(); iterator.hasNext();) {
             ChunkCoordIntPair tChunk = iterator.next();
@@ -381,9 +382,9 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                     + EnumChatFormatting.RESET,
                 StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
                     + EnumChatFormatting.GREEN
-                    + GTUtility.formatNumbers(chunkRangeConfig)
+                    + formatNumber(chunkRangeConfig)
                     + " x "
-                    + GTUtility.formatNumbers(chunkRangeConfig)
+                    + formatNumber(chunkRangeConfig)
                     + EnumChatFormatting.RESET
                     + " "
                     + StatCollector.translateToLocal("GT5U.machines.chunks"),
@@ -392,8 +393,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                     EnumChatFormatting.GREEN + getFluidName() + EnumChatFormatting.RESET),
                 StatCollector.translateToLocalFormatted(
                     "GT5U.infodata.oil_drill.drilling_flow",
-                    EnumChatFormatting.GREEN + GTUtility.formatNumbers(getFlowRatePerTick())
-                        + EnumChatFormatting.RESET)));
+                    EnumChatFormatting.GREEN + formatNumber(getFlowRatePerTick()) + EnumChatFormatting.RESET)));
         l.addAll(Arrays.asList(super.getInfoData()));
         return l.toArray(new String[0]);
     }
@@ -405,7 +405,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             .map(reason -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_reason", reason))
             .orElseGet(() -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_generic"));
 
-        if (workState == STATE_AT_BOTTOM) {
+        if (workState == WorkState.AT_BOTTOM) {
             final ImmutableList.Builder<String> builder = ImmutableList.builder();
             builder.add(StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", getFluidName()));
 
@@ -425,9 +425,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
         if (machineIsActive) {
             return switch (workState) {
-                case STATE_DOWNWARD -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.deploying_pipe"));
-                case STATE_UPWARD, STATE_ABORT -> ImmutableList
-                    .of(StatCollector.translateToLocal("GT5U.gui.text.retracting_pipe"));
+                case DOWNWARD -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.deploying_pipe"));
+                case UPWARD, ABORT -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.retracting_pipe"));
                 default -> ImmutableList.of();
             };
         }
@@ -463,7 +462,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                         () -> EnumChatFormatting.GRAY
                             + StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", clientFluidType))
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_AT_BOTTOM))
+                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == WorkState.AT_BOTTOM))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
@@ -474,7 +473,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                             + EnumChatFormatting.GRAY
                             + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"))
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_AT_BOTTOM))
+                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == WorkState.AT_BOTTOM))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
@@ -485,8 +484,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                             + EnumChatFormatting.GRAY
                             + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"))
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_AT_BOTTOM))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> workState, newInt -> workState = newInt))
+                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == WorkState.AT_BOTTOM))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> workState.ordinal(), this::setWorkState))
             .widget(new FakeSyncWidget.StringSyncer(this::getFluidName, newString -> clientFluidType = newString))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getFlowRatePerTick, newInt -> clientFlowPerTick = newInt))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> mOilFlow, newInt -> clientFlowPerOperation = newInt));

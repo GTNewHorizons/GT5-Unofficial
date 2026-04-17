@@ -22,11 +22,14 @@ import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchVoidBus extends MTEHatchOutputBus {
 
     private static final String DATA_STICK_DATA_TYPE = "voidBusFilter";
@@ -36,13 +39,7 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
     private final IItemHandlerModifiable lockedInventoryHandler = new ItemStackHandler(lockedItems);
 
     public MTEHatchVoidBus(int aID, String aName, String aNameRegional) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            1,
-            new String[] { "Voids items from Multiblocks", "Must be configured to work" },
-            0);
+        super(aID, aName, aNameRegional, 1, null, 0);
     }
 
     @Override
@@ -125,11 +122,6 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
@@ -250,5 +242,15 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
         public void commit() {
             // do nothing
         }
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.output_bus_void.desc");
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

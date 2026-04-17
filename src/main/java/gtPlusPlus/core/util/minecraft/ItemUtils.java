@@ -15,9 +15,6 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -26,12 +23,10 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -65,60 +60,42 @@ public class ItemUtils {
             returnValue.stackSize = amount;
             return returnValue;
         }
-        Logger.INFO("Failed to find `" + oredictName + "` in OD.");
         return null;
     }
 
     public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, final int amount) {
-        if (ASMConfiguration.debug.debugMode) {
-            Logger.modLogger.warn("Looking up: " + oredictName + " - from : ", new Exception());
-        }
-
         try {
-
             if (oredictName.contains("-") || oredictName.contains("_")) {
                 oredictName = StringUtils.sanitizeStringKeepDashes(oredictName);
             } else {
                 oredictName = StringUtils.sanitizeString(oredictName);
             }
-
             // Adds a check to grab dusts using GT methodology if possible.
-            ItemStack returnValue = null;
             if (oredictName.toLowerCase()
                 .contains("dust")) {
                 final String MaterialName = oredictName.toLowerCase()
                     .replace("dust", "");
                 final Materials m = Materials.get(MaterialName);
                 if (m != Materials._NULL) {
-                    returnValue = GTOreDictUnificator.get(OrePrefixes.dust, m, 1);
+                    ItemStack returnValue = GTOreDictUnificator.get(OrePrefixes.dust, m, 1);
                     if (returnValue != null) {
                         return returnValue;
                     }
                 }
             }
-            if (returnValue == null) {
-                returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
-                if (returnValue != null) {
-                    return returnValue.copy();
-                }
+            ItemStack returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
+            if (returnValue != null) {
+                return returnValue.copy();
             }
-
-            Logger.RECIPE(oredictName + " was not valid.");
             return null;
-        } catch (final Throwable t) {
+        } catch (final Exception t) {
             return null;
         }
     }
 
-    // NullFormula
-    public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName,
-        final int Colour) {
-        return generateSpecialUseDusts(unlocalizedName, materialName, "NullFormula", Colour);
-    }
-
     public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName,
         String mChemForm, final int Colour) {
-        GTLanguageManager.addStringLocalization("gtplusplus.material." + materialName, materialName);
+        MaterialUtils.generateMaterialLocalizedName(materialName);
         final Item[] output = {
             new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, mChemForm, Colour, "Dust"),
             new BaseItemDustUnique("itemDustSmall" + unlocalizedName, materialName, mChemForm, Colour, "Small"),
@@ -151,72 +128,17 @@ public class ItemUtils {
             .eut(4)
             .addTo(packagerRecipes);
 
-        if (tinyDust != null && normalDust != null) {
-            if (RecipeUtils.addShapedRecipe(
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                normalDust)) {
-                Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + materialName + " - Success");
-            } else {
-                Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + materialName + " - Failed");
-            }
+        // Tiny Dusts
+        GTModHandler.addCraftingRecipe(normalDust, new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
+        GTModHandler.addCraftingRecipe(
+            GTUtility.copyAmount(9, tinyDust),
+            new Object[] { "D  ", "   ", "   ", 'D', normalDust });
 
-            if (RecipeUtils.addShapedRecipe(
-                normalDust,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                GTUtility.copyAmount(9, tinyDust))) {
-                Logger.WARNING("9 Tiny dust from 1 Recipe: " + materialName + " - Success");
-            } else {
-                Logger.WARNING("9 Tiny dust from 1 Recipe: " + materialName + " - Failed");
-            }
-        }
-
-        if (smallDust != null && normalDust != null) {
-            if (RecipeUtils.addShapedRecipe(
-                smallDust,
-                smallDust,
-                null,
-                smallDust,
-                smallDust,
-                null,
-                null,
-                null,
-                null,
-                normalDust)) {
-                Logger.WARNING("4 Small dust to 1 Dust Recipe: " + materialName + " - Success");
-            } else {
-                Logger.WARNING("4 Small dust to 1 Dust Recipe: " + materialName + " - Failed");
-            }
-            if (RecipeUtils.addShapedRecipe(
-                null,
-                normalDust,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                GTUtility.copyAmount(4, smallDust))) {
-                Logger.WARNING("4 Small dust from 1 Dust Recipe: " + materialName + " - Success");
-            } else {
-                Logger.WARNING("4 Small dust from 1 Dust Recipe: " + materialName + " - Failed");
-            }
-        }
+        // Small Dusts
+        GTModHandler.addCraftingRecipe(normalDust, new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
+        GTModHandler.addCraftingRecipe(
+            GTUtility.copyAmount(4, smallDust),
+            new Object[] { " D ", "   ", "   ", 'D', normalDust });
 
         return output;
     }
@@ -277,36 +199,6 @@ public class ItemUtils {
         return sRadiation;
     }
 
-    public static String getArrayStackNames(final FluidStack[] aStack) {
-        String itemNames = "Fluid Array: ";
-        for (final FluidStack alph : aStack) {
-            if (alph != null) {
-                final String temp = itemNames;
-                itemNames = temp + ", " + alph.getLocalizedName() + " x" + alph.amount;
-            } else {
-                final String temp = itemNames;
-                itemNames = temp + ", " + "null" + " x" + "0";
-            }
-        }
-        return itemNames;
-    }
-
-    public static String getArrayStackNames(final ItemStack[] aStack) {
-        String itemNames = "";
-        int aPos = 0;
-        for (final ItemStack alph : aStack) {
-            if (alph == null) {
-                continue;
-            }
-
-            final String temp = itemNames;
-            itemNames = temp + (aPos > 0 ? ", " : "") + alph.getDisplayName() + " x" + alph.stackSize;
-            aPos++;
-
-        }
-        return itemNames;
-    }
-
     private static final Map<Item, String> mModidCache = new HashMap<>();
 
     private static String getModId(final Item item) {
@@ -320,14 +212,14 @@ public class ItemUtils {
                 final String modname = (id.modId == null ? id.name : id.modId);
                 value = (id.modId.isEmpty()) ? Minecraft.ID : modname;
             }
-        } catch (final Throwable t) {
+        } catch (final Exception t) {
             try {
                 final UniqueIdentifier t2 = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(item));
                 if (t2 != null) {
                     final String modname = (t2.modId == null ? t2.name : t2.modId);
                     value = (t2.modId.isEmpty()) ? Minecraft.ID : modname;
                 }
-            } catch (final Throwable t3) {
+            } catch (final Exception t3) {
                 t3.printStackTrace();
                 value = "bad modid";
             }
@@ -377,24 +269,11 @@ public class ItemUtils {
         return getItemStackOfAmountFromOreDictNoBroken(oredictName, amount);
     }
 
-    public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Material mMat, int mAmount) {
-
-        String mName = StringUtils.sanitizeString(mMat.getLocalizedName());
-
-        String mItemName = mPrefix.getName() + mName;
-        return ItemUtils.getItemStackOfAmountFromOreDictNoBroken(mItemName, mAmount);
-    }
-
     public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Materials mMat, int mAmount) {
         if (mPrefix == OrePrefixes.rod) {
             mPrefix = OrePrefixes.stick;
         }
-        ItemStack aGtStack = GTOreDictUnificator.get(mPrefix, mMat, mAmount);
-        if (aGtStack == null) {
-            Logger
-                .INFO("Failed to find `" + mPrefix + MaterialUtils.getMaterialName(mMat) + "` in OD. [Prefix Search]");
-        }
-        return aGtStack;
+        return GTOreDictUnificator.get(mPrefix, mMat, mAmount);
     }
 
     /**
@@ -418,40 +297,6 @@ public class ItemUtils {
         GTUtility.compactStandardInventory(aInputInventory);
 
         return aInputInventory;
-    }
-
-    public static String getFluidName(FluidStack aFluid) {
-        return aFluid != null ? aFluid.getFluid()
-            .getLocalizedName(aFluid) : "NULL";
-    }
-
-    public static String getItemName(ItemStack aStack) {
-        if (aStack == null) {
-            return "ERROR - Empty Stack";
-        }
-        String aDisplay = null;
-        try {
-            aDisplay = (StatCollector.translateToLocal(
-                aStack.getItem()
-                    .getUnlocalizedNameInefficiently(aStack) + ".name")).trim();
-            if (aStack.hasTagCompound()) {
-                if (aStack.stackTagCompound != null && aStack.stackTagCompound.hasKey("display", 10)) {
-                    NBTTagCompound nbttagcompound = aStack.stackTagCompound.getCompoundTag("display");
-
-                    if (nbttagcompound.hasKey("Name", 8)) {
-                        aDisplay = nbttagcompound.getString("Name");
-                    }
-                }
-            }
-        } catch (Throwable ignored) {
-
-        }
-        if (aDisplay == null || aDisplay.length() == 0) {
-            aDisplay = aStack.getUnlocalizedName() + ":" + aStack.getItemDamage();
-        } else {
-            aDisplay += " | Meta: " + aStack.getItemDamage();
-        }
-        return aDisplay;
     }
 
     public static ItemStack depleteStack(ItemStack aStack, int aAmount) {

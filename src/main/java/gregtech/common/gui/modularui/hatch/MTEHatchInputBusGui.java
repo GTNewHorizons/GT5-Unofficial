@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -56,26 +55,20 @@ public class MTEHatchInputBusGui extends MTEHatchBaseGui<MTEHatchInputBus> {
                     "GT5U.machines.one_stack_limit.tooltip"));
     }
 
-    @Override
-    protected Flow createRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createRightCornerFlow(panel, syncManager);
-    }
-
     private final int BUTTON_SIZE = 18;
 
     @Override
     protected int getBasePanelHeight() {
         // we subtract 4 from the dimension before adding this value as a 4x4 slot grid is the maximum that fits on the
         // default panel
-        return super.getBasePanelHeight() + Math.max(0, BUTTON_SIZE * (this.getDimension() - 4));
+        return super.getBasePanelHeight() + Math.max(0, BUTTON_SIZE * (this.getDimension() - 4) + 18);
     }
 
     @Override
     protected int getBasePanelWidth() {
-        // we subtract 4 from the dimension before adding this value as a 4x4 slot grid is the maximum that fits on the
-        // default panel
-        // 18 is the
-        return super.getBasePanelWidth() + Math.max(0, BUTTON_SIZE * (this.getDimension() - 4));
+        // we subtract 9 from the dimension before adding this value as a 9x9 slot grid is the maximum that fits on the
+        // default width panel
+        return super.getBasePanelWidth() + Math.max(0, BUTTON_SIZE * (this.getDimension() - 9));
     }
 
     @Override
@@ -96,12 +89,11 @@ public class MTEHatchInputBusGui extends MTEHatchBaseGui<MTEHatchInputBus> {
             .matrix(matrix)
             .key(
                 's',
-                index -> {
-                    return new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, index).slotGroup("item_inv"));
-                })
+                index -> new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, index).slotGroup("item_inv")))
             .build()
             .coverChildren()
-            .align(Alignment.CENTER);
+            .marginTop((BUTTON_SIZE / 2) * (4 - this.getDimension()))
+            .horizontalCenter();
     }
 
     private ToggleButton createToggleButton(BooleanSyncValue syncValue, UITexture texture, String key) {

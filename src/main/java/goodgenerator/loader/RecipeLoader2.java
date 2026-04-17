@@ -925,11 +925,11 @@ public class RecipeLoader2 {
             80000);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
-            FluidRegistry.getFluidStack("ic2hotcoolant", 16_000),
-            GTModHandler.getIC2Coolant(16_000),
-            GTModHandler.getDistilledWater(20_000),
-            FluidRegistry.getFluidStack("ic2superheatedsteam", 3_200_000),
-            FluidRegistry.getFluidStack("supercriticalsteam", 3_200_000),
+            FluidRegistry.getFluidStack("ic2hotcoolant", 128_000),
+            GTModHandler.getIC2Coolant(128_000),
+            GTModHandler.getDistilledWater(160_000),
+            FluidRegistry.getFluidStack("ic2superheatedsteam", 25_600_000),
+            FluidRegistry.getFluidStack("supercriticalsteam", 25_600_000),
             8000);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
@@ -951,6 +951,14 @@ public class RecipeLoader2 {
             .duration(7 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(chemicalBathRecipes);
+
+        // dust to fluid extraction, which isn't autogenned in Bartworks
+        GTValues.RA.stdBuilder()
+            .itemInputs(GGMaterial.lithiumChloride.get(OrePrefixes.dust, 1))
+            .fluidOutputs(GGMaterial.lithiumChloride.getMolten(1 * INGOTS))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.marM200.get(OrePrefixes.ingot, 18), Materials.Cerium.getIngots(1))
@@ -1015,15 +1023,6 @@ public class RecipeLoader2 {
                 ItemList.Hull_IV.get(1), 'S', GGMaterial.marCeM200.get(OrePrefixes.plate, 1), 'E',
                 GTModHandler.getIC2Item("reactorHeatSwitchDiamond", 1L, 1) });
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemRefer.Salty_Root.get(1))
-            .fluidInputs(Materials.Water.getFluid(100))
-            .itemOutputs(Materials.Salt.getDust(1), Materials.RockSalt.getDust(1), Materials.Saltpeter.getDust(1))
-            .outputChances(9500, 8000, 5000)
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(chemicalBathRecipes);
-
         if (NewHorizonsCoreMod.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -1044,7 +1043,7 @@ public class RecipeLoader2 {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T1.get(2),
-                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedDiamondCrystalChip", 8),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedDiamondCrystalChip", 8),
                     ItemList.Circuit_Chip_NAND.get(16),
                     GTModHandler.getIC2Item("reactorVentCore", 1L, 1))
                 .itemOutputs(ItemRefer.HiC_T2.get(1))
@@ -1060,7 +1059,7 @@ public class RecipeLoader2 {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T1.get(2),
-                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedDiamondCrystalChip", 8),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedDiamondCrystalChip", 8),
                     ItemList.Circuit_Chip_NAND.get(16),
                     GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Aluminium, 2))
                 .itemOutputs(ItemRefer.HiC_T2.get(1))
@@ -1108,7 +1107,7 @@ public class RecipeLoader2 {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T3.get(2),
-                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedEnergyChip", 8),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedEnergyChip", 8),
                     ItemList.Circuit_Chip_QuantumCPU.get(16),
                     GTModHandler.getIC2Item("reactorVentGold", 1L, 1))
                 .itemOutputs(ItemRefer.HiC_T4.get(1))
@@ -1124,7 +1123,7 @@ public class RecipeLoader2 {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T3.get(2),
-                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedEnergyChip", 8),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedEnergyChip", 8),
                     ItemList.Circuit_Chip_QuantumCPU.get(16),
                     GTOreDictUnificator.get(OrePrefixes.rotor, Materials.EnergeticAlloy, 2))
                 .itemOutputs(ItemRefer.HiC_T4.get(1))
@@ -1140,7 +1139,7 @@ public class RecipeLoader2 {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T4.get(2),
-                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedManyullynCrystalChip", 8),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedManyullynCrystalChip", 8),
                     ItemList.Circuit_Chip_BioCPU.get(1),
                     Ic2Items.reactorVentSpread)
                 .itemOutputs(ItemRefer.HiC_T5.get(1))
@@ -1156,7 +1155,7 @@ public class RecipeLoader2 {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T4.get(2),
-                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedManyullynCrystalChip", 8),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedManyullynCrystalChip", 8),
                     ItemList.Circuit_Chip_BioCPU.get(1),
                     GTOreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenCarbide, 2))
                 .itemOutputs(ItemRefer.HiC_T5.get(1))
@@ -1410,7 +1409,7 @@ public class RecipeLoader2 {
             256,
             new Object[] { GregtechItemList.FusionComputer_UV3.get(48),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 }, ItemList.Circuit_Wafer_QPIC.get(64),
-                ItemList.UHV_Coil.get(64), MaterialsElements.STANDALONE.HYPOGEN.getPlateDense(8),
+                ItemList.UEV_Coil.get(16), MaterialsElements.STANDALONE.HYPOGEN.getPlateDense(8),
                 ItemRefer.HiC_T5.get(8), ItemList.Field_Generator_UEV.get(8),
                 GGMaterial.metastableOganesson.get(OrePrefixes.gearGtSmall, 64) },
             new FluidStack[] { GGMaterial.tairitsu.getMolten(16 * INGOTS),

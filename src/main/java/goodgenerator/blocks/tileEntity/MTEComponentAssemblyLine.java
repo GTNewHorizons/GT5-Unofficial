@@ -135,14 +135,15 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         .addElement('F', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'B',
-            ofBlocksTiered(
-                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : null,
-                IntStream.range(0, 14)
-                    .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
-                    .collect(Collectors.toList()),
-                -1,
-                MTEComponentAssemblyLine::setCasingTier,
-                MTEComponentAssemblyLine::getCasingTier))
+            GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING.use(
+                ofBlocksTiered(
+                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : null,
+                    IntStream.range(0, 14)
+                        .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                        .collect(Collectors.toList()),
+                    -1,
+                    MTEComponentAssemblyLine::setCasingTier,
+                    MTEComponentAssemblyLine::getCasingTier)))
         .addElement(
             'J',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
@@ -224,7 +225,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(9, 10, 33, false)
-            .addController("Mid of the eighth layer")
+            .addController("Front center, 8th layer")
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 644, false)
             .addCasingInfoExactly("Advanced Filter Casing", 124, false)
             .addCasingInfoExactly("Any Tiered Glass (UV+)", 280, false)
@@ -239,6 +240,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addMaintenanceHatch("Around the controller", 4)
             .addInputHatch("Bottom left and right corners", 5)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING)
             .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
     }
@@ -256,8 +258,9 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         String[] origin = super.getInfoData();
         String[] ret = new String[origin.length + 1];
         System.arraycopy(origin, 0, ret, 0, origin.length);
-        ret[origin.length] = StatCollector.translateToLocal("scanner.info.CASS.tier")
-            + (casingTier >= 0 ? GTValues.VN[casingTier + 1]
+        ret[origin.length] = StatCollector.translateToLocalFormatted(
+            "scanner.info.CASS.tier",
+            casingTier >= 0 ? GTValues.VN[casingTier + 1]
                 : StatCollector.translateToLocal("scanner.info.CASS.tier.none"));
         return ret;
     }
@@ -348,24 +351,9 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         inputSeparation = !inputSeparation;
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
-            }
-            return true;
-        }
-        return false;
+            inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
     }
 
     @Override

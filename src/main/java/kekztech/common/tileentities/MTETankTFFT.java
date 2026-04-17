@@ -192,11 +192,10 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         }
     }
 
-    private static final IIconContainer TEXTURE_TFFT = new Textures.BlockIcons.CustomIcon("iconsets/TFFT");
-    private static final IIconContainer TEXTURE_TFFT_ACTIVE = new Textures.BlockIcons.CustomIcon(
-        "iconsets/TFFT_ACTIVE");
-    private static final IIconContainer TEXTURE_TFFT_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
-        "iconsets/TFFT_ACTIVE_GLOW");
+    private static final IIconContainer TEXTURE_TFFT = Textures.BlockIcons.custom("iconsets/TFFT");
+    private static final IIconContainer TEXTURE_TFFT_ACTIVE = Textures.BlockIcons.custom("iconsets/TFFT_ACTIVE");
+    private static final IIconContainer TEXTURE_TFFT_ACTIVE_GLOW = Textures.BlockIcons
+        .customOptional("iconsets/TFFT_ACTIVE_GLOW");
     private static final int CASING_TEXTURE_ID_1 = (12 << 7) | 127;
     private static final int CASING_TEXTURE_ID_2 = 176;
 
@@ -350,7 +349,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output")
             .addInfo("The index of a stored fluid can be obtained through the Tricorder")
             .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false)
-            .addController("Top Center")
+            .addController("Front center")
             .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
             .addCasingInfoRange("Storage Field Blocks", 7, 117, true)
             .addStructureInfo("Energy hatch is not required when running cost is 0")
@@ -365,6 +364,8 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                 "Instead of any casing or glass, has to touch storage field block")
             .addStructureInfo("Use MIOH with conduits or fluid storage buses to see all fluids at once.")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.TFFT_FIELD)
+            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
         return tt;
     }
@@ -634,6 +635,11 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         this.setDoVoidExcess(!doVoidExcess);
         GTUtility.sendChatToPlayer(aPlayer, "Auto-voiding " + (this.doVoidExcess ? "enabled" : "disabled"));
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     private boolean addMultiHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

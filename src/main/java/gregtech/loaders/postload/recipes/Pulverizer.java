@@ -15,13 +15,13 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -32,6 +32,16 @@ public class Pulverizer implements Runnable {
 
     @Override
     public void run() {
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("logWood", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+            .outputChances(10000, 8000)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
         // recycling Long Distance Pipes
         {
             GTValues.RA.stdBuilder()
@@ -105,14 +115,12 @@ public class Pulverizer implements Runnable {
 
         // marble dust, stone dust
 
-        for (ItemStack marble : OreDictionary.getOres("blockMarble")) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(marble)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Marble, 1))
-                .duration(8 * SECONDS)
-                .eut(4)
-                .addTo(maceratorRecipes);
-        }
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("blockMarble", 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Marble, 1))
+            .duration(8 * SECONDS)
+            .eut(4)
+            .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Thaumcraft.ID, "ItemResource", 1, 18))
@@ -386,7 +394,7 @@ public class Pulverizer implements Runnable {
                 .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 3))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 2))
                 .duration(30 * SECONDS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .recipeCategory(RecipeCategories.maceratorRecycling)
                 .addTo(maceratorRecipes);
 
@@ -396,7 +404,7 @@ public class Pulverizer implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 1),
                     GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
                 .duration(30 * SECONDS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .recipeCategory(RecipeCategories.maceratorRecycling)
                 .addTo(maceratorRecipes);
 
@@ -406,7 +414,7 @@ public class Pulverizer implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 12),
                     GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.StainlessSteel, 3))
                 .duration(30 * SECONDS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .recipeCategory(RecipeCategories.maceratorRecycling)
                 .addTo(maceratorRecipes);
 
@@ -416,7 +424,7 @@ public class Pulverizer implements Runnable {
                 .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 6))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 2))
                 .duration(30 * SECONDS)
-                .eut(30)
+                .eut(TierEU.RECIPE_LV)
                 .recipeCategory(RecipeCategories.maceratorRecycling)
                 .addTo(maceratorRecipes);
 
@@ -426,7 +434,7 @@ public class Pulverizer implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 1),
                     GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
                 .duration(30 * SECONDS)
-                .eut(30)
+                .eut(TierEU.RECIPE_LV)
                 .recipeCategory(RecipeCategories.maceratorRecycling)
                 .addTo(maceratorRecipes);
 
@@ -436,7 +444,7 @@ public class Pulverizer implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 12),
                     GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Titanium, 3))
                 .duration(30 * SECONDS)
-                .eut(30)
+                .eut(TierEU.RECIPE_LV)
                 .recipeCategory(RecipeCategories.maceratorRecycling)
                 .addTo(maceratorRecipes);
 
@@ -446,7 +454,7 @@ public class Pulverizer implements Runnable {
                 .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 9))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 2))
                 .duration(30 * SECONDS)
-                .eut(30)
+                .eut(TierEU.RECIPE_LV)
                 .recipeCategory(RecipeCategories.maceratorRecycling)
                 .addTo(maceratorRecipes);
 
@@ -456,7 +464,7 @@ public class Pulverizer implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 1),
                     GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
                 .duration(30 * SECONDS)
-                .eut(30)
+                .eut(TierEU.RECIPE_LV)
                 .recipeCategory(RecipeCategories.maceratorRecycling)
                 .addTo(maceratorRecipes);
 
@@ -466,7 +474,7 @@ public class Pulverizer implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 12),
                     GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.TungstenSteel, 3))
                 .duration(30 * SECONDS)
-                .eut(30)
+                .eut(TierEU.RECIPE_LV)
                 .recipeCategory(RecipeCategories.maceratorRecycling)
                 .addTo(maceratorRecipes);
 
@@ -476,7 +484,7 @@ public class Pulverizer implements Runnable {
                 .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 12))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 2))
                 .duration(37 * SECONDS + 10 * TICKS)
-                .eut(64)
+                .eut(TierEU.RECIPE_MV / 2)
                 .recipeCategory(RecipeCategories.maceratorRecycling)
                 .addTo(maceratorRecipes);
 
@@ -486,7 +494,7 @@ public class Pulverizer implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1),
                     GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
                 .duration(37 * SECONDS + 10 * TICKS)
-                .eut(64)
+                .eut(TierEU.RECIPE_MV / 2)
                 .recipeCategory(RecipeCategories.maceratorRecycling)
                 .addTo(maceratorRecipes);
 
@@ -496,7 +504,7 @@ public class Pulverizer implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.NiobiumTitanium, 12),
                     GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Chrome, 3))
                 .duration(37 * SECONDS + 10 * TICKS)
-                .eut(64)
+                .eut(TierEU.RECIPE_MV / 2)
                 .recipeCategory(RecipeCategories.maceratorRecycling)
                 .addTo(maceratorRecipes);
 
@@ -536,7 +544,7 @@ public class Pulverizer implements Runnable {
                 .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 3))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 2))
                 .duration(52 * SECONDS + 10 * TICKS)
-                .eut(256)
+                .eut(TierEU.RECIPE_HV / 2)
                 .recipeCategory(RecipeCategories.maceratorRecycling)
                 .addTo(maceratorRecipes);
 
@@ -546,7 +554,7 @@ public class Pulverizer implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1),
                     GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
                 .duration(52 * SECONDS + 10 * TICKS)
-                .eut(256)
+                .eut(TierEU.RECIPE_HV / 2)
                 .recipeCategory(RecipeCategories.maceratorRecycling)
                 .addTo(maceratorRecipes);
 
@@ -556,7 +564,7 @@ public class Pulverizer implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 12),
                     GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Osmium, 3))
                 .duration(52 * SECONDS + 10 * TICKS)
-                .eut(256)
+                .eut(TierEU.RECIPE_HV / 2)
                 .recipeCategory(RecipeCategories.maceratorRecycling)
                 .addTo(maceratorRecipes);
 
@@ -632,27 +640,6 @@ public class Pulverizer implements Runnable {
             .outputChances(10000, 5000)
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(maceratorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.red_mushroom, 1, 32767))
-            .itemOutputs(ItemList.IC2_Grin_Powder.get(1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.poisonous_potato, 1))
-            .itemOutputs(ItemList.IC2_Grin_Powder.get(1L))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(maceratorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.spider_eye, 1))
-            .itemOutputs(ItemList.IC2_Grin_Powder.get(1L))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -746,6 +733,90 @@ public class Pulverizer implements Runnable {
                 .eut(4)
                 .addTo(maceratorRecipes);
         }
+
+        // From ProcessingSaplings
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("treeSapling", 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        // From ProcessingStone (macerator recipes)
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneSand", 1))
+            .itemOutputs(new ItemStack(Blocks.sand, 1, 0))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneEndstone", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Endstone, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tungstate, 1L))
+            .outputChances(10000, 500)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneNetherrack", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Netherrack, 1L),
+                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Gold, 1L))
+            .outputChances(10000, 500)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneConcrete", 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Concrete, 1L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneAndesite", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 1L))
+            .outputChances(10000, 2000)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        // Basalt falls through to the Quartzite macerator case in the original ProcessingStone
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneBasalt", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Basalt, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Basalt, 1L))
+            .outputChances(10000, 1000)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneGraniteBlack", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.GraniteBlack, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L))
+            .outputChances(10000, 100)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("stoneGraniteRed", 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.GraniteRed, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium, 1L))
+            .outputChances(10000, 100)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
 
         // LUAG gems
         GTValues.RA.stdBuilder()

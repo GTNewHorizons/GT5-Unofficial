@@ -101,7 +101,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     @Override
     protected Flow createTerminalLeftCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createTerminalLeftCornerColumn(panel, syncManager)
-            .childIf(usesTerminalLeftButton(), createTerminalLeftButton());
+            .childIf(usesTerminalLeftButton(), this::createTerminalLeftButton);
     }
 
     @Override
@@ -114,7 +114,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         return super.createRightPanelGapRow(parent, syncManager).marginRight(2)
-            .childIf(usesExtraButton(), createExtraButton());
+            .childIf(usesExtraButton(), this::createExtraButton);
     }
 
     @Override
@@ -126,7 +126,8 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     protected ToggleButton createMuffleButton() {
         return CommonWidgets.createMuffleButton("mufflerSyncer")
             .size(7)
-            .background(IDrawable.EMPTY)
+            .disableThemeBackground(true)
+            .disableHoverThemeBackground(true)
             .overlay(true, GTGuiTextures.GODFORGE_SOUND_OFF)
             .overlay(false, GTGuiTextures.GODFORGE_SOUND_ON)
             .top(8)

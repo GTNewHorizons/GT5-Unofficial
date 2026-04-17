@@ -2,24 +2,30 @@ package gregtech.loaders.load;
 
 import static gregtech.api.enums.Mods.BuildCraftFactory;
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NotEnoughItems;
+import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GTModHandler.RecipeBits.DISMANTLEABLE;
 import static gregtech.api.util.GTModHandler.RecipeBits.NOT_REMOVABLE;
 import static gregtech.api.util.GTModHandler.RecipeBits.REVERSIBLE;
+import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import com.jaquadro.minecraft.storagedrawers.StorageDrawers;
+
+import bartworks.common.loaders.ItemRegistry;
 import codechicken.nei.api.API;
+import goodgenerator.util.ItemRefer;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
@@ -35,6 +41,8 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.loaders.postload.PCBFactoryMaterialLoader;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
 
 public class MTERecipeLoader implements Runnable {
@@ -69,7 +77,6 @@ public class MTERecipeLoader implements Runnable {
         registerExtractor();
         registerExtruder();
         registerFermenter();
-        registerFluidCanner();
         registerFluidExtractor();
         registerFluidHeater();
         registerFluidSolidifier();
@@ -88,10 +95,10 @@ public class MTERecipeLoader implements Runnable {
         registerPrinter();
         registerRecycler();
         registerSifter();
-        registerSlicer();
         registerThermalCentrifuge();
         registerUnpackager();
         registerWiremill();
+        registerDrawerFramer();
     }
 
     private static void registerAlloySmelter() {
@@ -880,44 +887,6 @@ public class MTERecipeLoader implements Runnable {
 
     }
 
-    private static void registerFluidCanner() {
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_LV_FluidCanner.get(1),
-            new Object[] { "GCG", "GMG", "WPW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
-            1);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_MV_FluidCanner.get(1),
-            new Object[] { "GCG", "GMG", "WPW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
-            2);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_HV_FluidCanner.get(1),
-            new Object[] { "GCG", "GMG", "WPW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
-            3);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_EV_FluidCanner.get(1),
-            new Object[] { "GCG", "GMG", "WPW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
-            4);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_IV_FluidCanner.get(1),
-            new Object[] { "GCG", "GMG", "WPW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
-            5);
-
-    }
-
     private static void registerFluidExtractor() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_FluidExtractor.get(1),
@@ -1627,6 +1596,216 @@ public class MTERecipeLoader implements Runnable {
 
     }
 
+    // This method is for all the structure rework multi recipes
+    // Maybe after some point in time, it can be moved to coremod as well.
+    private static void registerReworkMTERecipes() {
+
+        // Industrial Centrifuge
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialCentrifuge.get(1),
+            new Object[] { "ABA", "CDC", "EFE", 'A', "circuitData", 'B',
+                OrePrefixes.pipeHuge.get(Materials.StainlessSteel), 'C', MaterialsAlloy.MARAGING250.getPlate(1), 'D',
+                ItemList.Machine_EV_Centrifuge, 'E', MaterialsAlloy.INCONEL_792.getPlate(1), 'F', ItemList.Casing_EV });
+
+        // Amazon Warehousing Depot
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialPackager.get(1),
+            new Object[] { "DCD", "PMP", "ODO", 'D', GregtechItemList.Casing_AmazonWarehouse, 'C', "circuitElite", 'P',
+                ItemList.Electric_Piston_IV, 'M', ItemList.Machine_IV_Boxinator, 'O', ItemList.Conveyor_Module_IV });
+
+        // Industrial Wire Factory
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialWireFactory.get(1),
+            new Object[] { "PHP", "CMC", "PHP", 'P', OrePrefixes.plate.get(Materials.BlueSteel), 'H',
+                ItemList.Casing_IV, 'C', "circuitElite", 'M', ItemList.Machine_IV_Wiremill });
+
+        // Industrial Electrolyzer
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialElectrolyzer.get(1),
+            new Object[] { "PCP", "HMH", "PRP", 'P', MaterialsAlloy.STELLITE.getPlate(1), 'C', "circuitElite", 'H',
+                ItemList.Casing_IV, 'M', ItemList.Machine_IV_Electrolyzer, 'R', MaterialsAlloy.STELLITE.getRotor(1) });
+        // Mega Chemical Reactor
+        // todo: tweak this recipe
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Machine_Multi_LargeChemicalReactor.get(64))
+            .itemOutputs(ItemList.MegaChemicalReactor.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
+            .duration(1 * HOURS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
+
+        // Industrial Mixer
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialMixer.get(1),
+            new Object[] { "PCP", "ZMZ", "PCP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'C', "circuitElite", 'Z',
+                MaterialsAlloy.MARAGING250.getPlate(1), 'M', ItemList.Machine_IV_Mixer });
+
+        // Mixer casing, move if there is a better place for it
+        GTModHandler.addCraftingRecipe(
+            ItemList.CasingMixer.get(1),
+            new Object[] { "PhP", "SFS", "PwP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'S',
+                MaterialsAlloy.MARAGING250.getPlate(1), 'F',
+                OrePrefixes.frameGt.get(Materials.Polytetrafluoroethylene) });
+
+        // Forming Core
+        GTModHandler.addCraftingRecipe(
+            ItemList.FormingCore.get(1),
+            new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
+                OrePrefixes.plate.get(Materials.Steel), 'F', OrePrefixes.frameGt.get(Materials.StainlessSteel) });
+    }
+
+    // This method is for all the structure rework shapeless crafing migration recipes
+    // for the 2.9 -> next major version cycle
+    // Maybe after some point in time, it can be moved to coremod as well.
+    // TODO delete after the next major version after 2.9
+    private static void registerReworkMigrationRecipes() {
+
+        // Industrial Wire Factory Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialWireFactory.get(1),
+            new Object[] { GregtechItemList.Industrial_WireFactory });
+
+        // Industrial Extruder Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialExtruder.get(1),
+            new Object[] { GregtechItemList.Industrial_Extruder });
+
+        // Advanced Implosion Compressor (Density^2) Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.AdvancedImplosionCompressor.get(1),
+            new Object[] { GregtechItemList.Machine_Adv_ImplosionCompressor });
+
+        // Large Thermal Refinery Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.LargeThermalRefinery.get(1),
+            new Object[] { GregtechItemList.Industrial_ThermalCentrifuge });
+
+        // Naquadah Fuel Refinery Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.NaquadahFuelRefinery.get(1),
+            new Object[] { ItemRefer.Naquadah_Fuel_Refinery.get(1) });
+
+        // Boldarnator Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.Boldarnator.get(1),
+            new Object[] { GregtechItemList.Controller_IndustrialRockBreaker });
+
+        // Amazon Packager Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialPackager.get(1),
+            new Object[] { GregtechItemList.Amazon_Warehouse_Controller });
+
+        // Molecular Transformer Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.MolecularTransformer.get(1),
+            new Object[] { GregtechItemList.Controller_MolecularTransformer });
+
+        // Ore Washing Plant Conversion Recipe
+        GTModHandler.addCraftingRecipe(
+            ItemList.OreWashingPlant.get(1),
+            new Object[] { "B  ", "   ", "   ", 'B', GregtechItemList.Industrial_WashPlant });
+
+        // Industrial Chemical Bath Conversion Recipe
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialChemicalBath.get(1),
+            new Object[] { " B ", "   ", "   ", 'B', GregtechItemList.Industrial_WashPlant });
+
+        // Industrial Centrifuge Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialCentrifuge.get(1),
+            new Object[] { GregtechItemList.Industrial_Centrifuge });
+
+        // Industrial Coke Oven Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialCokeOven.get(1),
+            new Object[] { GregtechItemList.Industrial_CokeOven });
+
+        // Extreme Combustion Engine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.ExtremeCombustionEngine.get(1),
+            new Object[] { ItemList.Machine_Multi_ExtremeDieselEngine });
+
+        // Industrial Electrolyzer Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialElectrolyzer.get(1),
+            new Object[] { GregtechItemList.Industrial_Electrolyzer });
+
+        // Flotation Cell Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.FlotationCell.get(1),
+            new Object[] { GregtechItemList.Controller_Flotation_Cell });
+
+        // Bending Machine Conversion Recipe
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialBendingMachine.get(1),
+            new Object[] { "B  ", "   ", "   ", 'B', GregtechItemList.Industrial_PlatePress });
+
+        // Forming Press Conversion Recipe
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialFormingPress.get(1),
+            new Object[] { " B ", "   ", "   ", 'B', GregtechItemList.Industrial_PlatePress });
+
+        // Planetary Gas Siphon Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.PlanetarySiphon.get(1),
+            new Object[] { ItemList.PlanetaryGasSiphonController });
+
+        // Large Boilers Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.BronzeBoilerLarge.get(1),
+            new Object[] { ItemList.Machine_Multi_LargeBoiler_Bronze });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.SteelBoilerLarge.get(1),
+            new Object[] { ItemList.Machine_Multi_LargeBoiler_Steel });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.TitaniumBoilerLarge.get(1),
+            new Object[] { ItemList.Machine_Multi_LargeBoiler_Titanium });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.TungstensteelBoilerLarge.get(1),
+            new Object[] { ItemList.Machine_Multi_LargeBoiler_TungstenSteel });
+
+        // Maceration Stack conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.MacerationStack.get(1),
+            new Object[] { GregtechItemList.Industrial_MacerationStack });
+
+        // Mega Chemical Reactor Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.MegaChemicalReactor.get(1),
+            new Object[] { ItemRegistry.megaMachines[3] });
+
+        // Pyrolyse Oven Conversion Recipe
+        GTModHandler
+            .addShapelessCraftingRecipe(ItemList.PyrolyzeOven.get(1), new Object[] { ItemList.PyrolyseOven.get(1) });
+
+        // Universal Chemical Fuel Engine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.UniversalChemicalFuelEngine.get(1),
+            new Object[] { ItemRefer.Universal_Chemical_Fuel_Engine.get(1) });
+
+        // Industrial Mixer Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialMixer.get(1),
+            new Object[] { GregtechItemList.Industrial_Mixer });
+
+        // Fishing Port Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.FishingPort.get(1),
+            new Object[] { GregtechItemList.Industrial_FishingPond });
+
+        // Integrated Ore Factory Conversion Recipe
+        GTModHandler
+            .addShapelessCraftingRecipe(ItemList.IntegratedOreFactory.get(1), new Object[] { ItemList.Ore_Processor });
+
+        // Electric Implosion Compressor Conversion Recipe
+        GTModHandler
+            .addShapelessCraftingRecipe(ItemList.ElectricImplosionCompressor.get(1), new Object[] { ItemRegistry.eic });
+        // Large Combustion Engine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.LargeCombustionEngine.get(1),
+            new Object[] { ItemList.Machine_Multi_DieselEngine });
+    }
+
     private static void registerSifter() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Sifter.get(1),
@@ -1660,44 +1839,6 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_IV_Sifter.get(1),
             new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C',
-                MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
-            5);
-
-    }
-
-    private static void registerSlicer() {
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_LV_Slicer.get(1),
-            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PISTON, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
-                MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
-            1);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_MV_Slicer.get(1),
-            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PISTON, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
-                MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
-            2);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_HV_Slicer.get(1),
-            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PISTON, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
-                MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
-            3);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_EV_Slicer.get(1),
-            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PISTON, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
-                MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
-            4);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_IV_Slicer.get(1),
-            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PISTON, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
             5);
 
@@ -1842,6 +1983,33 @@ public class MTERecipeLoader implements Runnable {
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
             5);
+    }
+
+    private static void registerDrawerFramer() {
+
+        // only register if storage drawers is loaded
+        if (!StorageDrawers.isModLoaded()) return;
+
+        GTModHandler.addMachineCraftingRecipe(
+            ItemList.Machine_LV_DrawerFramer.get(1L),
+            new Object[] { "PDP", "RHR", "PCP", 'H', MTEBasicMachineWithRecipe.X.HULL, 'R',
+                MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'P', OrePrefixes.plate.get(Materials.Steel), 'C',
+                MTEBasicMachineWithRecipe.X.CIRCUIT, 'D', OreDictNames.craftingChest },
+            1);
+
+        GTModHandler.addMachineCraftingRecipe(
+            ItemList.Machine_MV_DrawerFramer.get(1L),
+            new Object[] { "PDP", "RHR", "PCP", 'H', MTEBasicMachineWithRecipe.X.HULL, 'R',
+                MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'P', OrePrefixes.plate.get(Materials.Aluminium), 'C',
+                MTEBasicMachineWithRecipe.X.CIRCUIT, 'D', OreDictNames.craftingChest },
+            2);
+
+        GTModHandler.addMachineCraftingRecipe(
+            ItemList.Machine_HV_DrawerFramer.get(1L),
+            new Object[] { "PDP", "RHR", "PCP", 'H', MTEBasicMachineWithRecipe.X.HULL, 'R',
+                MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'C',
+                MTEBasicMachineWithRecipe.X.CIRCUIT, 'D', OreDictNames.craftingChest },
+            3);
     }
 
     private static void registerShapedCraftingRecipes() {
@@ -2124,7 +2292,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_Bricked_BlastFurnace.get(1L),
             NOT_REMOVABLE | BUFFERED,
             new Object[] { "BFB", "FwF", "BFB", 'B', ItemList.Casing_Firebricks, 'F',
-                OreDictNames.craftingIronFurnace });
+                OreDictNames.craftingBlastFurnace });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Hull_Bronze.get(1L),
@@ -2436,12 +2604,12 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Bronze_Boiler.get(1L),
             GTModHandler.RecipeBits.BITSD,
-            new Object[] { aTextPlate, "PwP", "BFB", 'F', OreDictNames.craftingIronFurnace, 'P',
+            new Object[] { aTextPlate, "PwP", "BFB", 'F', OreDictNames.craftingBlastFurnace, 'P',
                 OrePrefixes.plate.get(Materials.Bronze), 'B', new ItemStack(Blocks.brick_block, 1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Steel_Boiler.get(1L),
             GTModHandler.RecipeBits.BITSD,
-            new Object[] { aTextPlate, "PwP", "BFB", 'F', OreDictNames.craftingIronFurnace, 'P',
+            new Object[] { aTextPlate, "PwP", "BFB", 'F', OreDictNames.craftingBlastFurnace, 'P',
                 OrePrefixes.plate.get(Materials.Steel), 'B', new ItemStack(Blocks.brick_block, 1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Steel_Boiler_Lava.get(1L),
@@ -3067,7 +3235,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_Multi_BlastFurnace.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "FFF", aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_HeatProof, 'F',
-                OreDictNames.craftingIronFurnace, 'C', OrePrefixes.circuit.get(Materials.LV), 'W',
+                OreDictNames.craftingBlastFurnace, 'C', OrePrefixes.circuit.get(Materials.LV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Multi_VacuumFreezer.get(1L),
@@ -3085,26 +3253,26 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_Multi_Furnace.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "FFF", aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_HeatProof, 'F',
-                OreDictNames.craftingIronFurnace, 'C', OrePrefixes.circuit.get(Materials.HV), 'W',
+                OreDictNames.craftingBlastFurnace, 'C', OrePrefixes.circuit.get(Materials.HV), 'W',
                 OrePrefixes.cableGt01.get(Materials.AnnealedCopper) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.Machine_Multi_LargeBoiler_Bronze.get(1L),
+            ItemList.BronzeBoilerLarge.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { aTextWireCoil, aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_Firebox_Bronze, 'C',
                 OrePrefixes.circuit.get(Materials.MV), 'W', OrePrefixes.cableGt01.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Machine_Multi_LargeBoiler_Steel.get(1L),
+            ItemList.SteelBoilerLarge.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { aTextWireCoil, aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_Firebox_Steel, 'C',
                 OrePrefixes.circuit.get(Materials.HV), 'W', OrePrefixes.cableGt01.get(Materials.AnyCopper) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Machine_Multi_LargeBoiler_Titanium.get(1L),
+            ItemList.TitaniumBoilerLarge.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { aTextWireCoil, aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_Firebox_Titanium, 'C',
                 OrePrefixes.circuit.get(Materials.EV), 'W', OrePrefixes.cableGt01.get(Materials.Gold) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Machine_Multi_LargeBoiler_TungstenSteel.get(1L),
+            ItemList.TungstensteelBoilerLarge.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { aTextWireCoil, aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_Firebox_TungstenSteel,
                 'C', OrePrefixes.circuit.get(Materials.IV), 'W', OrePrefixes.cableGt01.get(Materials.Aluminium) });
@@ -3382,7 +3550,7 @@ public class MTERecipeLoader implements Runnable {
                 ItemList.Electric_Pump_EV });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.PyrolyseOven.get(1L),
+            ItemList.PyrolyzeOven.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "WEP", "EME", "WCP", 'M', ItemList.Hull_MV, 'W', ItemList.Electric_Piston_MV, 'P',
                 OrePrefixes.wireGt04.get(Materials.Cupronickel), 'E', OrePrefixes.circuit.get(Materials.MV), 'C',
@@ -3436,7 +3604,7 @@ public class MTERecipeLoader implements Runnable {
                 'E', OrePrefixes.circuit.get(Materials.IV), 'C', ItemList.Robot_Arm_IV });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.Machine_Multi_DieselEngine.get(1L),
+            ItemList.LargeCombustionEngine.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Motor_EV, 'C', OrePrefixes.circuit.get(Materials.IV), 'W',
@@ -3448,7 +3616,7 @@ public class MTERecipeLoader implements Runnable {
                 ItemList.Casing_StableTitanium, 'P', OrePrefixes.rotor.get(Materials.Titanium) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.Machine_Multi_ExtremeDieselEngine.get(1L),
+            ItemList.ExtremeCombustionEngine.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
                 ItemList.Electric_Motor_IV, 'C', OrePrefixes.circuit.get(Materials.LuV), 'W',
@@ -3503,24 +3671,6 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BITS,
             new Object[] { " S ", "CMC", "RRR", 'M', ItemList.Hatch_Maintenance, 'S', ItemList.Sensor_IV, 'R',
                 new ItemStack(GregTechAPI.sBlockReinforced, 1, 9), 'C', ItemList.Conveyor_Module_EV });
-
-        // And Drone Centre
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Casing_Assembler.get(1),
-                ItemList.Cover_SolarPanel_HV.get(4),
-                ItemList.Conveyor_Module_IV.get(2),
-                ItemList.Robot_Arm_IV.get(2),
-                ItemList.Sensor_IV.get(2),
-                ItemList.Energy_LapotronicOrb.get(4),
-                ItemList.Cover_WirelessNeedsMaintainance.get(1),
-                GalacticraftCore.isModLoaded() ? GTModHandler.getModItem(GalacticraftCore.ID, "item.basicItem", 1, 19)
-                    : ItemList.Sensor_EV.get(4))
-            .itemOutputs(ItemList.Machine_Multi_DroneCentre.get(1L))
-            .fluidInputs(Materials.GlueAdvanced.getFluid(8_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
 
         GTModHandler.addCraftingRecipe(
             ItemList.MagLevPython_MV.get(1L),
@@ -3680,7 +3830,7 @@ public class MTERecipeLoader implements Runnable {
             .circuit(5)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.ZPM, 1L))
             .duration(20 * SECONDS)
-            .eut(4096)
+            .eut(TierEU.RECIPE_IV / 2)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -4149,5 +4299,7 @@ public class MTERecipeLoader implements Runnable {
         registerMachineTypes();
         PCBFactoryMaterialLoader.load();
         run4();
+        registerReworkMigrationRecipes();
+        registerReworkMTERecipes();
     }
 }

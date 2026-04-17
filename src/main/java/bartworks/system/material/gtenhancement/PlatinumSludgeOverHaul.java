@@ -100,7 +100,6 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
 import static gtPlusPlus.core.material.MaterialsAlloy.HELICOPTER;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.WHITE_METAL;
 import static kubatech.loaders.HTGRLoader.HTGRRecipes;
-import static kubatech.loaders.HTGRLoader.HTGR_ITEM;
 import static tectech.recipe.TecTechRecipeMaps.eyeOfHarmonyRecipes;
 
 import java.util.ArrayList;
@@ -144,6 +143,7 @@ import gregtech.common.blocks.GTBlockOre;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.item.base.BaseItemComponent;
+import kubatech.loaders.item.htgritem.HTGRItem;
 
 public class PlatinumSludgeOverHaul {
 
@@ -398,7 +398,7 @@ public class PlatinumSludgeOverHaul {
                 Materials.NitrogenDioxide.getGas(2_000),
                 Materials.HydrochloricAcid.getFluid(6_000))
             .duration(1200)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -410,7 +410,7 @@ public class PlatinumSludgeOverHaul {
                 Materials.NitrogenDioxide.getGas(9_000),
                 Materials.HydrochloricAcid.getFluid(27_000))
             .duration(700)
-            .eut(480)
+            .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -566,7 +566,6 @@ public class PlatinumSludgeOverHaul {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .circuit(1)
             .fluidInputs(RutheniumTetroxideSollution.getFluidOrGas(1_000))
             .fluidOutputs(HotRutheniumTetroxideSollution.getFluidOrGas(2_000))
             .duration(15 * SECONDS)
@@ -711,7 +710,7 @@ public class PlatinumSludgeOverHaul {
             .fluidInputs(Materials.NitricAcid.getFluid(1_000))
             .fluidOutputs(Materials.Hydrogen.getGas(1_000))
             .duration(8 * TICKS)
-            .eut(60)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
@@ -1194,7 +1193,7 @@ public class PlatinumSludgeOverHaul {
             .getItem()) {
             return true;
         }
-        if (stack.getItem() == HTGR_ITEM) {
+        if (stack.getItem() == HTGRItem.BURNED_TRISO) {
             return true;
         }
         if (stack.getItem() == WHITE_METAL.getDust(1)
@@ -1218,7 +1217,7 @@ public class PlatinumSludgeOverHaul {
             }
         }
         if (NewHorizonsCoreMod.isModLoaded()) {
-            if (stack.getItem() == GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.IndustryFrame", 1L)
+            if (stack.getItem() == GTModHandler.getModItem(NewHorizonsCoreMod.ID, "IndustryFrame", 1L)
                 .getItem()) {
                 return true;
             }

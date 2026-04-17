@@ -27,6 +27,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.api.math.Color;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Statistics;
@@ -118,14 +119,14 @@ public class StatisticsPanel {
         // i love pos i love pos i love pos i love pos i love pos
         for (int i = 0; i < 4; i++) {
             panel.child(
-                new IDrawable.DrawableWidget(new Rectangle().setColor(Color.rgb(190, 200, 0))).size(1, 227)
+                new IDrawable.DrawableWidget(new Rectangle().color(Color.rgb(190, 200, 0))).size(1, 227)
                     .pos(81 + WIDTH_MAJOR * i, 38));
         }
 
         // Horizontal grid lines
         for (int i = 0; i < 8; i++) {
             panel.child(
-                new IDrawable.DrawableWidget(new Rectangle().setColor(Color.rgb(0, 170, 170))).size(276, 1)
+                new IDrawable.DrawableWidget(new Rectangle().color(Color.rgb(0, 170, 170))).size(276, 1)
                     .pos(12, 55 + HEIGHT_MAJOR * i));
         }
 
@@ -220,6 +221,7 @@ public class StatisticsPanel {
                 .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                 .size(WIDTH_MAJOR, HEIGHT_MAJOR));
 
         // Molten module
@@ -228,6 +230,7 @@ public class StatisticsPanel {
                 .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                 .size(WIDTH_MAJOR, HEIGHT_MAJOR));
 
         // Plasma module
@@ -236,6 +239,7 @@ public class StatisticsPanel {
                 .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                 .size(WIDTH_MAJOR, HEIGHT_MAJOR));
 
         // Exotic module
@@ -244,6 +248,7 @@ public class StatisticsPanel {
                 .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                 .size(WIDTH_MAJOR, HEIGHT_MAJOR));
 
         return returnList;

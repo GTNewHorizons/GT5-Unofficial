@@ -52,10 +52,12 @@ public class CoverEUMeter extends Cover implements Invertable {
         return this;
     }
 
+    @Override
     public boolean isInverted() {
         return this.inverted;
     }
 
+    @Override
     public CoverEUMeter setInverted(boolean inverted) {
         this.inverted = inverted;
         return this;
@@ -156,18 +158,18 @@ public class CoverEUMeter extends Cover implements Invertable {
         int num = (getNum() + (aPlayer.isSneaking() ? -1 : 1) + EnergyType.values().length * 2)
             % (EnergyType.values().length * 2);
         switch (num) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.univ_normal"));
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.univ_invert"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.eu_normal"));
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.eu_invert"));
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.steam_normal"));
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.steam_invert"));
-            case 6 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.eu_avg_i_normal"));
-            case 7 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.eu_avg_i_invert"));
-            case 8 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.eu_avg_o_normal"));
-            case 9 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.eu_avg_o_invert"));
-            case 10 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.eu_batt_normal"));
-            case 11 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.eu_batt_invert"));
+            case 0 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.univ_normal");
+            case 1 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.univ_invert");
+            case 2 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.eu_normal");
+            case 3 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.eu_invert");
+            case 4 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.steam_normal");
+            case 5 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.steam_invert");
+            case 6 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.eu_avg_i_normal");
+            case 7 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.eu_avg_i_invert");
+            case 8 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.eu_avg_o_normal");
+            case 9 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.eu_avg_o_invert");
+            case 10 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.eu_batt_normal");
+            case 11 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.eu_batt_invert");
         }
         setNum(num);
     }

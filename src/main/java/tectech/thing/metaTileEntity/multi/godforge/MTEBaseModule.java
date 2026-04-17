@@ -16,7 +16,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -27,6 +26,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -36,7 +36,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public abstract class MTEBaseModule extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
+public abstract class MTEBaseModule extends TTMultiblockBase implements ISurvivalConstructable {
 
     protected final int tier = getTier();
     protected boolean isConnected = false;
@@ -57,8 +57,8 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
     protected BigInteger powerTally = BigInteger.ZERO;
     protected long recipeTally = 0;
     private long currentRecipeHeat = 0;
-    private static Textures.BlockIcons.CustomIcon ScreenON;
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
+    private static IIconContainer ScreenON;
+    private static IIconContainer ScreenOFF;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int TEXTURE_INDEX = 960;
@@ -283,6 +283,7 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
         structureBuild_EM(STRUCTURE_PIECE_MAIN, 3, 3, 0, stackSize, hintsOnly);
     }
 
+    @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(1000, elementBudget * 5);
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, realBudget, env, false, true);
@@ -348,11 +349,6 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public boolean willExplodeInRain() {
         return false;
     }
@@ -412,8 +408,8 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/GODFORGE_MODULE_ACTIVE");
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/SCREEN_OFF");
+        ScreenON = Textures.BlockIcons.custom("iconsets/GODFORGE_MODULE_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom("iconsets/SCREEN_OFF");
         super.registerIcons(aBlockIconRegister);
     }
 

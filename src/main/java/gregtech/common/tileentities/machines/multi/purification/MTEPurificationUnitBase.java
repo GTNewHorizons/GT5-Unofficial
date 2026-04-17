@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -22,6 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
@@ -38,7 +41,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.gui.modularui.multiblock.MTEPurificationUnitBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -366,7 +368,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
         ItemStack[] recipeOutputs = this.currentRecipe.mOutputs;
         ItemStack[] itemOutputs = new ItemStack[recipeOutputs.length];
-        int[] mChances = this.currentRecipe.mChances;
+        int[] mChances = this.currentRecipe.mOutputChances;
 
         // If this recipe has random item outputs, roll on it and add to outputs
         if (mChances != null) {
@@ -577,7 +579,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         }
 
         // Make sure this data stick is a proper purification plant link data stick.
-        if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type")
+        if (!ItemStackNBT.getString(dataStick, "type")
             .equals("PurificationPlant")) {
             return false;
         }
@@ -659,7 +661,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
                 ret.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.infodata.purification_unit_base.success_chance",
-                        EnumChatFormatting.YELLOW + GTUtility.formatNumbers(this.calculateFinalSuccessChance())
+                        EnumChatFormatting.YELLOW + formatNumber(this.calculateFinalSuccessChance())
                             + "%"
                             + EnumChatFormatting.RESET));
             }
@@ -680,16 +682,13 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // Display linked controller in Waila.
         if (tag.getBoolean("linked")) {
             currenttip.add(
-                EnumChatFormatting.AQUA + "Linked to Purification Plant at "
-                    + EnumChatFormatting.WHITE
-                    + tag.getInteger("controllerX")
-                    + ", "
-                    + tag.getInteger("controllerY")
-                    + ", "
-                    + tag.getInteger("controllerZ")
-                    + EnumChatFormatting.RESET);
+                EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.purification_unit_base.linked_to",
+                    tag.getInteger("controllerX"),
+                    tag.getInteger("controllerY"),
+                    tag.getInteger("controllerZ")));
         } else {
-            currenttip.add(EnumChatFormatting.AQUA + "Unlinked");
+            currenttip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.base.unlinked"));
         }
 
         super.getWailaBody(itemStack, currenttip, accessor, config);
@@ -714,9 +713,12 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             return PurificationUnitStatus.INCOMPLETE_STRUCTURE;
         } else if (!this.isAllowedToWork()) {
             return PurificationUnitStatus.DISABLED;
-        } else {
-            return PurificationUnitStatus.ONLINE;
-        }
+        } else if (!this.getBaseMetaTileEntity()
+            .isActive()) {
+                return PurificationUnitStatus.IDLE;
+            } else {
+                return PurificationUnitStatus.ACTIVE;
+            }
     }
 
     /**
@@ -758,6 +760,11 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     @Override
     protected boolean supportsCraftingMEBuffer() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 }

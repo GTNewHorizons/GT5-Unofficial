@@ -32,7 +32,6 @@ import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
 import gregtech.api.objects.XSTR;
-import gtPlusPlus.api.objects.Logger;
 import toxiceverglades.dimension.DimensionEverglades;
 
 public class ChunkProviderModded implements IChunkProvider {
@@ -179,7 +178,7 @@ public class ChunkProviderModded implements IChunkProvider {
                                     try {
                                         p_147424_3_[j3 += short1] = DimensionEverglades.blockFluidLakes; // River Fluid
                                                                                                          // .
-                                    } catch (Throwable t) {
+                                    } catch (Exception t) {
                                         p_147424_3_[j3 += short1] = Blocks.water; // River Fluid Fallback
                                     }
                                 } else {
@@ -443,7 +442,6 @@ public class ChunkProviderModded implements IChunkProvider {
             } catch (NullPointerException n) {
                 n.getStackTrace();
                 (new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, k1, l1, i2);
-                Logger.INFO("Error while generating DarkWorld Lake.");
             }
         }
 
@@ -463,9 +461,7 @@ public class ChunkProviderModded implements IChunkProvider {
             if (l1 < 63 || this.rand.nextInt(10) == 0) { // Changes 63 -> 128
                 try {
                     (new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, k1, l1, i2);
-                } catch (NullPointerException n) {
-                    Logger.INFO("Error while generating DarkWorld Lake. [2]");
-                }
+                } catch (NullPointerException ignored) {}
             }
         }
         biomegenbase.decorate(this.worldObj, this.rand, k, l);

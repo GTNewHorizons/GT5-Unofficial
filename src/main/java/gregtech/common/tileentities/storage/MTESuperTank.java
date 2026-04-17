@@ -1,12 +1,13 @@
 package gregtech.common.tileentities.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTUtility;
 
 public class MTESuperTank extends MTEDigitalTankBase {
 
@@ -38,7 +39,7 @@ public class MTESuperTank extends MTEDigitalTankBase {
                     + EnumChatFormatting.RESET
                     + " "
                     + EnumChatFormatting.YELLOW
-                    + GTUtility.formatNumbers(getCapacity())
+                    + formatNumber(getCapacity())
                     + " L"
                     + EnumChatFormatting.RESET };
         }
@@ -47,12 +48,12 @@ public class MTESuperTank extends MTEDigitalTankBase {
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
             EnumChatFormatting.GOLD + mFluid.getLocalizedName() + EnumChatFormatting.RESET,
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(mFluid.amount)
+            EnumChatFormatting.GREEN + formatNumber(mFluid.amount)
                 + " L"
                 + EnumChatFormatting.RESET
                 + " "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getCapacity())
+                + formatNumber(getCapacity())
                 + " L"
                 + EnumChatFormatting.RESET };
     }

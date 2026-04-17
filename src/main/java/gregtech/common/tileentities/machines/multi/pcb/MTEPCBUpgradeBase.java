@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.enums.ItemList;
@@ -193,7 +194,7 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
         }
 
         // Make sure this data stick is a proper purification plant link data stick.
-        if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type")
+        if (!ItemStackNBT.getString(dataStick, "type")
             .equals("PCBFactory")) {
             return false;
         }
@@ -284,17 +285,14 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
             if (coordinates.length % 3 != 0) return;
             for (int i = 0; i < coordinates.length; i += 3) {
                 currentTip.add(
-                    EnumChatFormatting.AQUA + "Linked to PCB Factory at: "
-                        + EnumChatFormatting.WHITE
-                        + coordinates[i]
-                        + ", "
-                        + coordinates[i + 1]
-                        + ", "
-                        + coordinates[i + 2]
-                        + EnumChatFormatting.RESET);
+                    EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.pcb.upgrade_base.linked_to",
+                        coordinates[i],
+                        coordinates[i + 1],
+                        coordinates[i + 2]));
             }
         } else {
-            currentTip.add(EnumChatFormatting.AQUA + "Unlinked");
+            currentTip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.base.unlinked"));
         }
 
         boolean isActive = tag.getBoolean("isActive");

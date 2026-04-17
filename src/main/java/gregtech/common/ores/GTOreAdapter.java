@@ -12,6 +12,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
@@ -114,7 +116,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         ores = new GTBlockOre[] { ores1, ores2, ores3, ores4, ores5, ores6 };
         // spotless:on
 
-        TileEntityReplacementManager.tileEntityTransformer("GT_TileEntity_Ores", (tag, world) -> {
+        TileEntityReplacementManager.tileEntityTransformer("GT_TileEntity_Ores", (tag, world, chunk) -> {
             int meta = tag.getInteger("m");
             boolean natural = tag.getBoolean("n");
 
@@ -123,11 +125,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
             return new BlockInfo(bm.getBlock(), bm.getBlockMeta());
         });
 
-        ItemStackReplacementManager.addItemReplacement("gregtech:gt.blockores", (tag) -> {
-            int itemId = Item.getIdFromItem(Item.getItemFromBlock(ores1));
-            tag.setInteger("id", itemId);
-            return tag;
-        });
+        ItemStackReplacementManager.addSimpleReplacement("gregtech:gt.blockores", Item.getItemFromBlock(ores1), true);
     }
 
     public ImmutableBlockMeta transform(int meta, boolean natural) {
@@ -236,7 +234,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
     }
 
     @Override
-    public ArrayList<ItemStack> getOreDrops(Random random, OreInfo<?> info2, boolean silktouch, int fortune) {
+    public @NotNull ArrayList<ItemStack> getOreDrops(Random random, OreInfo<?> info2, boolean silktouch, int fortune) {
         if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")

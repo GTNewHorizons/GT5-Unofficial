@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -11,13 +13,12 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.TAE;
+import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.MaterialCasings;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler2;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.MTEPowerSubStation;
 
 public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract {
@@ -56,9 +57,8 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
             if (meta == 7 && tier > 0) {
                 long capacity = MTEPowerSubStation.getCapacityFromCellTier(tier);
                 aList.add(
-                    StatCollector.translateToLocalFormatted(
-                        "gtpp.tooltip.meta_casing.energy_storage",
-                        GTUtility.formatNumbers(capacity)));
+                    StatCollector
+                        .translateToLocalFormatted("gtpp.tooltip.meta_casing.energy_storage", formatNumber(capacity)));
             }
             super.addInformation(aStack, aPlayer, aList, aF3_H);
         }
@@ -72,24 +72,6 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
             }
             TAE.registerTexture(1, i, TextureFactory.of(this, i));
         }
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Thermal Processing Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Hastelloy-N Sealant Block");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Hastelloy-X Structural Block");
-        GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + ".3.name", "Incoloy-DS Fluid Containment Block");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Wash Plant Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Industrial Sieve Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Large Sieve Grate");
-        GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + ".7.name", "Vanadium Redox Power Cell (EV)");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Sub-Station External Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Cyclotron Coil");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Cyclotron Outer Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Thermal Containment Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Bulk Production Frame");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Cutting Factory Frame");
-
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Sterile Farm Casing");
 
         GregtechItemList.Casing_ThermalCentrifuge.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Refinery_External.set(new ItemStack(this, 1, 1));
@@ -113,6 +95,28 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
 
     @Override
     public IIcon getIcon(final int ordinalSide, final int aMeta) {
-        return CasingTextureHandler2.getIcon(ordinalSide, aMeta);
+        if ((aMeta >= 0) && (aMeta < 16)) {
+            return switch (aMeta) {
+                case 0 -> TexturesGtBlock.Casing_Material_RedSteel.getIcon();
+                case 1 -> TexturesGtBlock.Casing_Material_HastelloyX.getIcon();
+                case 2 -> TexturesGtBlock.Casing_Material_HastelloyN.getIcon();
+                case 3 -> TexturesGtBlock.Casing_Material_Fluid_IncoloyDS.getIcon();
+                case 4 -> TexturesGtBlock.Casing_Material_Grisium.getIcon();
+                case 5 -> Textures.BlockIcons.INDUSTRIAL_SIEVE_CASING.getIcon();
+                case 6 -> Textures.BlockIcons.LARGE_SIEVE_GRATE.getIcon();
+                case 7 -> Textures.BlockIcons.CASING_REDOX_EV.getIcon();
+                case 8 -> Textures.BlockIcons.SUB_STATION_EXTERNAL_CASING.getIcon();
+                case 9 -> Textures.BlockIcons.CYCLOTRON_COIL.getIcon();
+                case 10 -> Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
+                case 11 -> TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();
+                case 12 -> TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
+                case 13 -> ordinalSide < 2 ? Textures.BlockIcons.CUTTING_FACTORY_FRAME_TOP.getIcon()
+                    : Textures.BlockIcons.CUTTING_FACTORY_FRAME_SIDE.getIcon();
+                case 14 -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
+                case 15 -> TexturesGtBlock.Sterile_Casing.getIcon();
+                default -> TexturesGtBlock.Overlay_UU_Matter.getIcon();
+            };
+        }
+        return Textures.GlobalIcons.RENDERING_ERROR.getIcon();
     }
 }

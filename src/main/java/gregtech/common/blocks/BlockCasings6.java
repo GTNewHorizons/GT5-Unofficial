@@ -10,27 +10,29 @@ import gregtech.api.enums.Textures;
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
 public class BlockCasings6 extends BlockCasingsAbstract {
 
     public BlockCasings6() {
         super(ItemCasings.class, "gt.blockcasings6", MaterialCasings.INSTANCE, 16);
 
-        register(0, ItemList.Casing_Tank_0, "Hermetic Casing");
-        register(1, ItemList.Casing_Tank_1, "Hermetic Casing I");
-        register(2, ItemList.Casing_Tank_2, "Hermetic Casing II");
-        register(3, ItemList.Casing_Tank_3, "Hermetic Casing III");
-        register(4, ItemList.Casing_Tank_4, "Hermetic Casing IV");
-        register(5, ItemList.Casing_Tank_5, "Hermetic Casing V");
-        register(6, ItemList.Casing_Tank_6, "Hermetic Casing VI");
-        register(7, ItemList.Casing_Tank_7, "Hermetic Casing VII");
-        register(8, ItemList.Casing_Tank_8, "Hermetic Casing VIII");
-        register(9, ItemList.Casing_Tank_9, "Hermetic Casing IX");
-        register(10, ItemList.Casing_Tank_10, "Hermetic Casing X");
-        register(11, ItemList.Casing_Tank_11, "Hermetic Casing XI");
-        register(12, ItemList.Casing_Tank_12, "Hermetic Casing XII");
-        register(13, ItemList.Casing_Tank_13, "Hermetic Casing XIII");
-        register(14, ItemList.Casing_Tank_14, "Hermetic Casing XIV");
+        register(0, ItemList.Casing_Tank_0);
+        register(1, ItemList.Casing_Tank_1);
+        register(2, ItemList.Casing_Tank_2);
+        register(3, ItemList.Casing_Tank_3);
+        register(4, ItemList.Casing_Tank_4);
+        register(5, ItemList.Casing_Tank_5);
+        register(6, ItemList.Casing_Tank_6);
+        register(7, ItemList.Casing_Tank_7);
+        register(8, ItemList.Casing_Tank_8);
+        register(9, ItemList.Casing_Tank_9);
+        register(10, ItemList.Casing_Tank_10);
+        register(11, ItemList.Casing_Tank_11);
+        register(12, ItemList.Casing_Tank_12);
+        register(13, ItemList.Casing_Tank_13);
+        register(14, ItemList.Casing_Tank_14);
     }
 
     @Override

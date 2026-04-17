@@ -33,7 +33,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 
 public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures, IFacadeControl {
 
-    private final Int2ObjectFunction<IOreMaterial> materials;
+    final Int2ObjectFunction<IOreMaterial> materials;
     private final int maxMeta;
 
     public BlockSheetMetal(String aName, Int2ObjectFunction<IOreMaterial> materials, int maxMeta) {
@@ -66,14 +66,7 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
 
         if (material == null) material = Materials._NULL;
 
-        Materials gt = material.getGTMaterial();
-
-        if (gt != null) {
-            return OrePrefixes.sheetmetal.getDefaultLocalNameForItem(gt);
-        }
-
-        return OrePrefixes.block.getDefaultLocalNameForItem(Materials._NULL)
-            .replace("%material", material.getLocalizedName());
+        return OrePrefixes.sheetmetal.getLocalizedNameForItem(material);
     }
 
     @Override
@@ -94,9 +87,19 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
         return GTRendererBlock.RENDER_ID;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @implNote Can render in both opaque (pass 0) and alpha-blended (pass 1) rendering passes.
+     */
     @Override
-    public boolean renderAsNormalBlock() {
-        return false;
+    public boolean canRenderInPass(int pass) {
+        return pass == 0 || pass == 1;
+    }
+
+    @Override
+    public int getRenderBlockPass() {
+        return 1;
     }
 
     private final Int2ObjectLinkedOpenHashMap<ITexture[][]> textureCache = new Int2ObjectLinkedOpenHashMap<>();

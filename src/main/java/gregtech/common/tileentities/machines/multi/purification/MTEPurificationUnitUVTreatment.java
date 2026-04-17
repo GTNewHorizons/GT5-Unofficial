@@ -1,9 +1,9 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
@@ -47,7 +47,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -117,7 +116,6 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                     .atLeast(SpecialHatchElement.LensHousing)
                     .hint(2)
-                    .cacheHint(() -> "Lens Housing")
                     .casingIndex(CASING_INDEX_MAIN)
                     .build()))
         // Lens indicator hatch
@@ -128,7 +126,6 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                     t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                         .atLeast(SpecialHatchElement.LensIndicator)
                         .hint(3)
-                        .cacheHint(() -> "Lens Indicator")
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
                 ofBlock(GregTechAPI.sBlockCasings9, 12)))
@@ -140,7 +137,6 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                     t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                         .atLeastList(Arrays.asList(InputHatch, OutputHatch))
                         .hint(1)
-                        .cacheHint(() -> "Input Hatch, Output Hatch")
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
                 // Naquadria-reinforced Water Plant Casing
@@ -226,7 +222,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 + EnumChatFormatting.BOLD
                 + "Water Tier: "
                 + EnumChatFormatting.WHITE
-                + GTUtility.formatNumbers(getWaterTier())
+                + formatNumber(getWaterTier())
                 + EnumChatFormatting.RESET)
             .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
@@ -269,7 +265,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                     + EnumChatFormatting.ITALIC
                     + "atoms themselves and pass through the walls of the tank, ensuring the water is perfectly electrically polar.")
             .beginStructureBlock(13, 9, 9, true)
-            .addController("Front center")
+            .addController("Front bottom center")
             .addCasingInfoRangeColored(
                 "Naquadria-Reinforced Water Plant Casing",
                 EnumChatFormatting.GRAY,
@@ -307,7 +303,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 StatCollector.translateToLocal("GT5U.tooltip.structure.lens_indicator"),
                 EnumChatFormatting.GOLD + "1",
                 3)
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -447,6 +443,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         timeUntilNextSwap = aNBT.getInteger("timeUntilNextSwap");
     }
 
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
         // Do not form without lens bus
@@ -486,6 +483,11 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 if (gtMetaTileEntityPurificationUnitUVTreatment.lensInputBus == null) return 0;
                 else return 1;
             }
+
+            @Override
+            public String getDisplayName() {
+                return StatCollector.translateToLocal("GT5U.MBTT.LensHousing");
+            }
         },
 
         LensIndicator(MTEPurificationUnitUVTreatment::addLensIndicatorToMachineList, MTEHatchLensIndicator.class) {
@@ -494,6 +496,11 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             public long count(MTEPurificationUnitUVTreatment gtMetaTileEntityPurificationUnitUVTreatment) {
                 if (gtMetaTileEntityPurificationUnitUVTreatment.lensIndicator == null) return 0;
                 else return 1;
+            }
+
+            @Override
+            public String getDisplayName() {
+                return StatCollector.translateToLocal("GT5U.MBTT.LensIndicator");
             }
         };
 
@@ -512,6 +519,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEPurificationUnitUVTreatment> adder() {
             return adder;
         }

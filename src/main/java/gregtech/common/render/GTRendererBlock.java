@@ -215,7 +215,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         if (imte != null && !imte.renderInInventory(ctx)) {
             renderNormalInventoryMetaTileEntity(ctx, imte);
         } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
-            ITexture[][] texture = texturedBlock.getTextures(aMeta);
+            ITexture[][] texture = texturedBlock.getInventoryTextures(aMeta);
             if (texture != null) {
                 aBlock.setBlockBoundsForItemRender();
                 aRenderer.setRenderBoundsFromBlock(aBlock);

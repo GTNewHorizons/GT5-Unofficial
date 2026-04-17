@@ -18,7 +18,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -28,9 +27,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.entity.InternalEntityRegistry;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -40,14 +37,12 @@ import gtPlusPlus.core.handler.CompatIntermodStaging;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.handler.events.EnderDragonDeathHandler;
 import gtPlusPlus.core.handler.events.EntityDeathHandler;
-import gtPlusPlus.core.handler.events.MolecularTransformerTooltipNotice;
 import gtPlusPlus.core.handler.events.PlayerSleepEventHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.bauble.BaseBauble;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.xmod.gregtech.common.modularui2.GTPPGuiTextures;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
 
 public class CommonProxy implements IFuelHandler {
@@ -58,13 +53,6 @@ public class CommonProxy implements IFuelHandler {
     }
 
     public void preInit(final FMLPreInitializationEvent e) {
-        Logger.INFO("Doing some house cleaning.");
-        if (ASMConfiguration.debug.debugMode) {
-            Logger.INFO("Development mode enabled.");
-        } else {
-            Logger.WARNING("Development mode not enabled.");
-        }
-
         AddToCreativeTab.initialiseTabs();
         CustomInternalName.init();
 
@@ -75,22 +63,12 @@ public class CommonProxy implements IFuelHandler {
         CompatIntermodStaging.preInit(e);
         BookHandler.run();
         // Registration of entities and renderers
-        Logger.INFO("[Proxy] Calling Entity registration.");
         registerEntities();
-        Logger.INFO("[Proxy] Calling Tile Entity registration.");
         registerTileEntities();
-
-        Logger.INFO("[Proxy] Calling Render registration.");
         registerRenderThings();
-
-        GTPPGuiTextures.init();
     }
 
     public void init(final FMLInitializationEvent e) {
-        if (e.getSide()
-            .isClient() && Mods.AdvancedSolarPanel.isModLoaded()) {
-            MinecraftForge.EVENT_BUS.register(new MolecularTransformerTooltipNotice());
-        }
         // Handles Sleep Benefits
         PlayerSleepEventHandler.init();
 
@@ -106,21 +84,11 @@ public class CommonProxy implements IFuelHandler {
     public void postInit(final FMLPostInitializationEvent e) {
         GameRegistry.registerFuelHandler(this);
         // Compat Handling
-        Logger.INFO("Initialising Handler, Then Adding Recipes");
         CompatHandler.InitialiseHandlerThenAddRecipes();
-        Logger.INFO("Loading Intermod staging.");
         CompatIntermodStaging.postInit(e);
         // Moved last, to prevent recipes being generated post initialisation.
-        Logger.INFO("Loading Gregtech API recipes.");
         CompatHandler.startLoadingGregAPIBasedRecipes();
-        Logger.INFO("Loading queued recipes.");
-        CompatHandler.runQueuedRecipes();
-        Logger.INFO("Registering custom mob drops.");
         registerCustomMobDrops();
-    }
-
-    public void serverStarting(final FMLServerStartingEvent e) {
-        CompatHandler.InitialiseLateHandlerThenAddRecipes();
     }
 
     public void onLoadComplete(FMLLoadCompleteEvent event) {
@@ -140,10 +108,6 @@ public class CommonProxy implements IFuelHandler {
     }
 
     public void registerRenderThings() {}
-
-    public int addArmor(final String armor) {
-        return 0;
-    }
 
     public void registerCustomMobDrops() {
 

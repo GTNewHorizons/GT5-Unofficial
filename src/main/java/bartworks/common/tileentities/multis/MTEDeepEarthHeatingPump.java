@@ -13,16 +13,14 @@
 
 package bartworks.common.tileentities.multis;
 
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static gregtech.api.enums.GTValues.VN;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -116,7 +114,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInfo("Base cycle time: 1 tick");
 
         tt.beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
             .addOtherStructurePart(
@@ -127,7 +125,12 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInputBus("Mining Pipes, optional, any base casing")
             .addInputHatch("Any base casing")
             .addOutputHatch("Any base casing")
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
+            .toolTipFinisher(
+                EnumChatFormatting.GREEN + "bartimaeusnek"
+                    + EnumChatFormatting.GRAY
+                    + " via "
+                    + EnumChatFormatting.DARK_GREEN
+                    + "BartWorks");
         return tt;
     }
 
@@ -163,8 +166,8 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
-    public String getMachineModeName() {
-        return translateToLocal("GT5U.DEHP.mode." + machineMode);
+    public String getMachineModeKey() {
+        return "GT5U.DEHP.mode." + machineMode;
     }
 
     @Override
@@ -208,14 +211,14 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     @Override
     protected void addOperatingMessages() {
         // Inheritors can overwrite these to add custom operating messages.
-        addResultMessage(STATE_DOWNWARD, true, "deploying_pipe");
-        addResultMessage(STATE_DOWNWARD, false, "extracting_pipe");
-        addResultMessage(STATE_AT_BOTTOM, true, "circulating_fluid");
-        addResultMessage(STATE_AT_BOTTOM, false, "no_mining_pipe");
-        addResultMessage(STATE_UPWARD, true, "retracting_pipe");
-        addResultMessage(STATE_UPWARD, false, "drill_generic_finished");
-        addResultMessage(STATE_ABORT, true, "retracting_pipe");
-        addResultMessage(STATE_ABORT, false, "drill_retract_pipes_finished");
+        addResultMessage(WorkState.DOWNWARD, true, "deploying_pipe");
+        addResultMessage(WorkState.DOWNWARD, false, "extracting_pipe");
+        addResultMessage(WorkState.AT_BOTTOM, true, "circulating_fluid");
+        addResultMessage(WorkState.AT_BOTTOM, false, "no_mining_pipe");
+        addResultMessage(WorkState.UPWARD, true, "retracting_pipe");
+        addResultMessage(WorkState.UPWARD, false, "drill_generic_finished");
+        addResultMessage(WorkState.ABORT, true, "retracting_pipe");
+        addResultMessage(WorkState.ABORT, false, "drill_retract_pipes_finished");
     }
 
     @Override
@@ -223,14 +226,14 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
         GTUtility
-            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+            .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
     }
 
     @Override
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
-        if (tryLowerPipeState(true) == 0) {
-            workState = STATE_DOWNWARD;
+        if (tryLowerPipeState(true) == PipeActionResult.SUCCESS) {
+            workState = WorkState.DOWNWARD;
             return true;
         }
         if (this.machineMode == 0) {

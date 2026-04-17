@@ -1,17 +1,19 @@
 package bartworks.API.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTRecipeConstants.GLASS;
 import static gregtech.api.util.GTUtility.getTierNameWithParentheses;
 
-import java.util.List;
-
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import bartworks.common.loaders.BioItemList;
+import codechicken.nei.NEIClientUtils.Alignment;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.Badge;
 import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
@@ -33,47 +35,29 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
-        GTNEIDefaultHandler.FixedPositionedStack pStack) {
-        if (pStack.isFluid()) {
-            currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("nei.biovat.input.tooltip"));
-            return currentTip;
+    public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe recipe) {
+        for (PositionedStack stack : recipe.mInputs) {
+            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed
+                && GTUtility.areStacksEqual(fixed.item, BioItemList.getPetriDish(null), true)) {
+                fixed.setMaxSize(0);
+            }
         }
-        return super.handleNEIItemInputTooltip(currentTip, pStack);
-    }
 
-    @Override
-    protected List<String> handleNEIItemOutputTooltip(List<String> currentTip,
-        GTNEIDefaultHandler.FixedPositionedStack pStack) {
-        if (pStack.isFluid()) {
-            currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("nei.biovat.output.tooltip"));
-            return currentTip;
+        for (PositionedStack stack : recipe.mInputs) {
+            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed && fixed.isFluid()) {
+                fixed.setCustomBadge(
+                    new Badge("+", StatCollector.translateToLocal("nei.biovat.input.tooltip")).setShadow(true)
+                        .setAlignment(Alignment.TopRight));
+            }
         }
-        return super.handleNEIItemOutputTooltip(currentTip, pStack);
-    }
 
-    @Override
-    protected void drawNEIOverlayForInput(GTNEIDefaultHandler.FixedPositionedStack stack) {
-        drawFluidOverlay(stack);
-    }
-
-    @Override
-    protected void drawNEIOverlayForOutput(GTNEIDefaultHandler.FixedPositionedStack stack) {
-        drawFluidOverlay(stack);
-    }
-
-    private void drawFluidOverlay(GTNEIDefaultHandler.FixedPositionedStack stack) {
-        if (stack.isFluid()) {
-            drawNEIOverlayText(
-                "+",
-                stack,
-                colorOverride.getTextColorOrDefault("nei_overlay_yellow", 0xFDD835),
-                0.5f,
-                true,
-                Alignment.TopRight);
-            return;
+        for (PositionedStack stack : recipe.mOutputs) {
+            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed && fixed.isFluid()) {
+                fixed.setCustomBadge(
+                    new Badge("+", StatCollector.translateToLocal("nei.biovat.output.tooltip")).setShadow(true)
+                        .setAlignment(Alignment.TopRight));
+            }
         }
-        super.drawNEIOverlayForOutput(stack);
     }
 
     @Override
@@ -84,12 +68,12 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
         Sievert data = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERT, new Sievert(0, false));
         int sievert = data.sievert;
         boolean isExact = data.isExact;
-        recipeInfo.drawText(
-            StatCollector.translateToLocalFormatted("GT5U.nei.display.total", GTUtility.formatNumbers(eut * duration)));
+        recipeInfo
+            .drawText(StatCollector.translateToLocalFormatted("GT5U.nei.display.total", formatNumber(eut * duration)));
         recipeInfo.drawText(
             StatCollector.translateToLocalFormatted(
                 "GT5U.nei.display.usage",
-                GTUtility.formatNumbers(eut),
+                formatNumber(eut),
                 getTierNameWithParentheses(eut)));
 
         recipeInfo.drawText(StatCollector.translateToLocalFormatted("nei.biovat.0.name", GTValues.VN[glassTier]));
@@ -100,5 +84,10 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
                 recipeInfo.drawText(StatCollector.translateToLocalFormatted("nei.biovat.2.name", sievert));
             }
         }
+    }
+
+    @Override
+    public final Pos2d getSpecialItemPosition() {
+        return new Pos2d(16, 62);
     }
 }

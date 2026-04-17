@@ -26,7 +26,7 @@ import goodgenerator.blocks.tileEntity.MTECoolantTower;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatch;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatchME;
 import goodgenerator.blocks.tileEntity.MTEExtremeHeatExchanger;
-import goodgenerator.blocks.tileEntity.MTEFuelRefineFactory;
+import goodgenerator.blocks.tileEntity.MTEFuelRefineFactoryLegacy;
 import goodgenerator.blocks.tileEntity.MTELargeEssentiaSmeltery;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer1;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer2;
@@ -37,10 +37,9 @@ import goodgenerator.blocks.tileEntity.MTEMultiNqGenerator;
 import goodgenerator.blocks.tileEntity.MTENeutronActivator;
 import goodgenerator.blocks.tileEntity.MTEPreciseAssembler;
 import goodgenerator.blocks.tileEntity.MTESupercriticalFluidTurbine;
-import goodgenerator.blocks.tileEntity.MTEUniversalChemicalFuelEngine;
+import goodgenerator.blocks.tileEntity.MTEUniversalChemicalFuelEngineLegacy;
 import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
-import goodgenerator.crossmod.ic2.CropsLoader;
 import goodgenerator.crossmod.nei.NEIConfig;
 import goodgenerator.items.GGItem;
 import goodgenerator.items.GGItemBlocks;
@@ -127,10 +126,6 @@ public class Loaders {
         "highEnergyMixture",
         GoodGenerator.GG,
         new String[] { GoodGenerator.MOD_ID + ":highEnergyMixture" });
-    public static final Item saltyRoot = new GGItem(
-        "saltyRoot",
-        GoodGenerator.GG,
-        new String[] { GoodGenerator.MOD_ID + ":saltyRoot" });
     public static final Item huiCircuit = new GGItem(
         "huiCircuit",
         addText("huiCircuit.tooltip", 5),
@@ -283,10 +278,12 @@ public class Loaders {
     public static void GTMetaTileRegister() {
         Loaders.MAR = new MTEMultiNqGenerator(MetaTileEntityIDs.MultiNqGenerator.ID, "NaG", "Large Naquadah Reactor")
             .getStackForm(1L);
-        Loaders.FRF = new MTEFuelRefineFactory(MetaTileEntityIDs.FuelRefineFactory.ID, "FRF", "Naquadah Fuel Refinery")
-            .getStackForm(1L);
-        Loaders.UCFE = new MTEUniversalChemicalFuelEngine(
-            MetaTileEntityIDs.UniversalChemicalFuelEngine.ID,
+        Loaders.FRF = new MTEFuelRefineFactoryLegacy(
+            MetaTileEntityIDs.FuelRefineFactory.ID,
+            "FRF",
+            "Naquadah Fuel Refinery").getStackForm(1L);
+        Loaders.UCFE = new MTEUniversalChemicalFuelEngineLegacy(
+            MetaTileEntityIDs.LegacyUniversalChemicalFuelEngine.ID,
             "UniversalChemicalFuelEngine",
             "Universal Chemical Fuel Engine").getStackForm(1L);
         int[] neutronAcceleratorIDs = new int[] { MetaTileEntityIDs.NeutronAcceleratorULV.ID,
@@ -440,7 +437,6 @@ public class Loaders {
         GameRegistry.registerItem(advancedFuelRod, "advancedFuelRod", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(fluidCore, "fluidCore", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highEnergyMixture, "highEnergyMixture", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(saltyRoot, "saltyRoot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(huiCircuit, "huiCircuit", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(circuitWrap, "circuitWrap", GoodGenerator.MOD_ID);
         GameRegistry.registerTileEntity(TileAntimatter.class, "AntimatterRender");
@@ -449,6 +445,10 @@ public class Loaders {
         for (int i = 1; i < 6; i++) {
             GTStructureChannels.PRASS_UNIT_CASING
                 .registerAsIndicator(new ItemStack(preciseUnitCasing, 1, i - 1), i + 1);
+        }
+        for (int i = 0; i < 14; i++) {
+            GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING
+                .registerAsIndicator(new ItemStack(componentAssemblylineCasing, 1, i), i + 1);
         }
     }
 
@@ -537,7 +537,6 @@ public class Loaders {
     public static void initLoad() {
         GTMetaTileRegister();
         initLoadRecipes();
-        CropsLoader.registerCrops();
     }
 
     public static void postInitLoad() {

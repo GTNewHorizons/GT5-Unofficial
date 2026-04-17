@@ -28,6 +28,9 @@ import static gregtech.common.items.IDMetaTool01.POCKET_SAW;
 import static gregtech.common.items.IDMetaTool01.POCKET_WIRECUTTER;
 import static gregtech.common.items.IDMetaTool01.SAW;
 import static gregtech.common.items.IDMetaTool01.WIRECUTTER;
+import static gregtech.common.items.IDMetaTool01.WIRECUTTER_HV;
+import static gregtech.common.items.IDMetaTool01.WIRECUTTER_LV;
+import static gregtech.common.items.IDMetaTool01.WIRECUTTER_MV;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTEnergy;
 
 import java.util.ArrayList;
@@ -73,13 +76,10 @@ import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
 
 public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISurvivalConstructable {
@@ -124,7 +124,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             .addInfo("Advanced tools multiply output amount")
             .addInfo("  Logs: Saw (1x), Buzzsaw (2x), Chainsaw (4x)")
             .addInfo("  Saplings: Branch Cutter (1x), Grafter (4x)")
-            .addInfo("  Leaves: Shears (1x), Wire Cutter (2x), Automatic Snips (4x)")
+            .addInfo("  Leaves: Shears (1x), Wire Cutter (2x), Electric Wire Cutter (4x)")
             .addInfo("  Fruit: Knife (1x)")
             .addInfo("Multiple tools can be used at the same time")
             .addSeparator()
@@ -186,6 +186,11 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
     @Override
     public boolean supportsBatchMode() {
         // Batch mode would not do anything, processing time is fixed at 100 ticks.
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 
@@ -321,11 +326,10 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                 EnumMap<Mode, ItemStack> outputPerMode = getOutputsForSapling(sapling);
                 if (outputPerMode == null) {
                     // This should usually not be possible, outputs for all valid saplings should be defined.
-                    Logger.INFO("No output found for sapling: " + sapling.getDisplayName());
                     return SimpleCheckRecipeResult.ofFailure("no_output_for_sapling");
                 }
 
-                int tier = Math.max(1, GTUtility.getTier(availableVoltage * availableAmperage));
+                int tier = Math.max(1, GTUtility.getTierExtended(availableVoltage * availableAmperage));
                 int tierMultiplier = getTierMultiplier(tier);
 
                 List<ItemStack> outputs = new ArrayList<>();
@@ -459,9 +463,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                     if (damage == WIRECUTTER.ID || damage == POCKET_WIRECUTTER.ID) {
                         return 2;
                     }
-                }
-                if (tool instanceof MetaGeneratedGregtechTools) {
-                    if (toolStack.getItemDamage() == MetaGeneratedGregtechTools.ELECTRIC_SNIPS) {
+                    if (damage == WIRECUTTER_LV.ID || damage == WIRECUTTER_MV.ID || damage == WIRECUTTER_HV.ID) {
                         return 4;
                     }
                 }
@@ -674,7 +676,6 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
     public static void registerTreeProducts(ItemStack saplingIn, ItemStack log, ItemStack saplingOut, ItemStack leaves,
         ItemStack fruit) {
         if (saplingIn == null) {
-            Logger.ERROR("Null sapling passed for registerTreeProducts()");
             return;
         }
         String key = Item.itemRegistry.getNameForObject(saplingIn.getItem()) + ":" + saplingIn.getItemDamage();
@@ -684,10 +685,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
         if (leaves != null) map.put(Mode.LEAVES, leaves);
         if (fruit != null) map.put(Mode.FRUIT, fruit);
         treeProductsMap.put(key, map);
-
-        if (!addFakeRecipeToNEI(saplingIn, log, saplingOut, leaves, fruit)) {
-            Logger.INFO("Registering NEI fake recipe for " + key + " failed!");
-        }
+        addFakeRecipeToNEI(saplingIn, log, saplingOut, leaves, fruit);
     }
 
     /**
@@ -709,7 +707,6 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
         // To do this we use the same method as when calculating real outputs.
         map = getOutputsForForestrySapling(sapling);
         if (map == null) {
-            Logger.INFO("Could not create Forestry tree output map for " + speciesUID);
             return;
         }
         addFakeRecipeToNEI(
@@ -743,9 +740,10 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             // Mode.LEAVES
             { new ItemStack(Items.shears),
                 toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.POCKET_WIRECUTTER.ID, 1, null, null, null),
-                MetaGeneratedGregtechTools.getInstance()
-                    .getToolWithStats(MetaGeneratedGregtechTools.ELECTRIC_SNIPS, 1, null, null, null), },
+                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_LV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_MV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_HV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.POCKET_WIRECUTTER.ID, 1, null, null, null), },
             // Mode.FRUIT
             { toolInstance.getToolWithStats(IDMetaTool01.KNIFE.ID, 1, null, null, null),
                 toolInstance.getToolWithStats(IDMetaTool01.POCKET_KNIFE.ID, 1, null, null, null), } };
@@ -789,11 +787,6 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             }
         }
 
-        Logger.INFO(
-            "Adding Tree Growth Simulation NEI recipe for " + specialStack.getDisplayName()
-                + " -> "
-                + ItemUtils.getArrayStackNames(outputStacks));
-
         GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.addFakeRecipe(
             false,
             new GTRecipe.GTRecipe_WithAlt(
@@ -801,6 +794,9 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                 null, // All inputs are taken from aAtl argument.
                 outputStacks,
                 specialStack,
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,

@@ -63,7 +63,7 @@ public class MTEHatchNbtConsumableGui extends MTEHatchBaseGui<MTEHatchNbtConsuma
         boolean logoOverride = !this.doesAddGregTechLogo();
 
         slotRow.child(createInputColumn(amountPerSlotGroup).marginRight(logoOverride ? 0 : 54));
-        slotRow.childIf(logoOverride, createLogo());
+        slotRow.childIf(logoOverride, this::createLogo);
         slotRow.child(createOutputColumn(amountPerSlotGroup));
 
         return super.createContentSection(panel, syncManager).child(slotRow);

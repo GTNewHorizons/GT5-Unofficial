@@ -1,28 +1,30 @@
 package goodgenerator.blocks.tileEntity;
 
+import static thaumicenergistics.common.storage.AEEssentiaStackType.ESSENTIA_STACK_TYPE;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.config.Actionable;
 import appeng.api.networking.GridFlags;
-import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
+import appeng.api.storage.IMEMonitor;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
+import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import goodgenerator.util.ItemRefer;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumicenergistics.api.grid.IEssentiaGrid;
-import thaumicenergistics.api.grid.IMEEssentiaMonitor;
+import thaumicenergistics.common.storage.AEEssentiaStack;
 
 public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements IActionHost, IGridProxyable {
 
     private AENetworkProxy gridProxy = null;
-    private IMEEssentiaMonitor monitor = null;
+    private IMEMonitor<AEEssentiaStack> monitor = null;
     private final MachineSource asMachineSource = new MachineSource(this);
     public long mTickTimer = 0;
 
@@ -120,7 +122,10 @@ public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements 
     public int addEssentia(Aspect aspect, int amount, ForgeDirection side, Actionable mode) {
         long rejectedAmount = amount;
         if (this.getEssentiaMonitor()) {
-            rejectedAmount = this.monitor.injectEssentia(aspect, amount, mode, this.getMachineSource(), true);
+            AEEssentiaStack rejected = this.monitor
+                .injectItems(new AEEssentiaStack(aspect, amount), mode, this.getMachineSource());
+
+            rejectedAmount = rejected != null ? rejected.getStackSize() : 0;
         }
 
         long acceptedAmount = (long) amount - rejectedAmount;
@@ -128,16 +133,17 @@ public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements 
     }
 
     protected boolean getEssentiaMonitor() {
-        IMEEssentiaMonitor essentiaMonitor = null;
-        IGrid grid = null;
+        this.monitor = null;
         IGridNode node = this.getProxy()
             .getNode();
 
         if (node != null) {
-            grid = node.getGrid();
-            if (grid != null) essentiaMonitor = grid.getCache(IEssentiaGrid.class);
+            try {
+                this.monitor = (IMEMonitor<AEEssentiaStack>) this.getProxy()
+                    .getStorage()
+                    .getMEMonitor(ESSENTIA_STACK_TYPE);
+            } catch (GridAccessException ignored) {}
         }
-        this.monitor = essentiaMonitor;
         return (this.monitor != null);
     }
 

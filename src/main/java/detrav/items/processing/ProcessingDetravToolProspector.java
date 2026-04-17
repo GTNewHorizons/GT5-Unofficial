@@ -29,6 +29,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
         OrePrefixes.toolHeadDrill.add(this);
     }
 
+    @Override
     public void registerOre(OrePrefixes aPrefix, Materials material, String aOreDictName, String aModName,
         ItemStack aStack) {
         if (!aPrefix.doGenerateItem(material)) return;
@@ -41,7 +42,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellSulfuricAcid")
                 .get(0), 'S',
-                OreDictionary.getOres("cellHydroxide")
+                OreDictionary.getOres("cellSaltWater")
                     .get(0),
                 'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
                 OrePrefixes.circuit.get(Materials.LV), 'X', ItemList.Sensor_LV });
@@ -52,7 +53,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellSulfuricAcid")
                 .get(0), 'S',
-                OreDictionary.getOres("cellHydroxide")
+                OreDictionary.getOres("cellSaltWater")
                     .get(0),
                 'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
                 OrePrefixes.circuit.get(Materials.MV), 'X', ItemList.Sensor_MV });

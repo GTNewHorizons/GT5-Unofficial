@@ -11,7 +11,6 @@ import net.minecraft.util.IIcon;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -34,13 +33,8 @@ public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksA
 
     public GregtechMetaSpecialMachineCasings() {
         super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.2", MaterialCasings.INSTANCE);
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Strong Bronze Machine Casing");
-        GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + ".1.name", "Sturdy Aluminium Machine Casing");
-        GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + ".2.name", "Vigorous Laurenium Machine Casing");
         TAE.registerTexture(84, TextureFactory.of(this, 2));
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Rugged Botmium Machine Casing");
+        TAE.registerTexture(100, TextureFactory.of(this, 3));
 
         GregtechItemList.Casing_Machine_Custom_1.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Machine_Custom_2.set(new ItemStack(this, 1, 1));
@@ -54,8 +48,8 @@ public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksA
             case 0 -> Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
             case 1 -> Textures.BlockIcons.MACHINE_CASING_FROST_PROOF.getIcon();
             case 2 -> TexturesGtBlock.Casing_Material_Laurenium.getIcon();
-            case 3 -> Textures.BlockIcons.MACHINE_HEATPROOFCASING.getIcon();
-            default -> Textures.BlockIcons.RENDERING_ERROR.getIcon();
+            case 3 -> TexturesGtBlock.Casing_Material_Botmium.getIcon();
+            default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
         };
     }
 }

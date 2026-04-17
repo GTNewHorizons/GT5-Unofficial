@@ -76,7 +76,7 @@ public class DEFCRecipes {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "tile.BloodyIchorium", 1, 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "BloodyIchorium", 1, 0),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 6L))
             .fluidInputs(Materials.Void.getMolten(8 * INGOTS))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingT1.get(1))
@@ -216,7 +216,7 @@ public class DEFCRecipes {
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 12),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Draconium, 4),
                     GTModHandler.getModItem(DraconicEvolution.ID, "wyvernCore", 4, 0),
-                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ManyullynCrystal", 1, 0),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "ManyullynCrystal", 1, 0),
                     kubatech.api.enums.ItemList.DEFCAwakenedSchematic.get(0L))
                 .fluidInputs(Materials.Infinity.getMolten(10 * INGOTS))
                 .itemOutputs(GTModHandler.getModItem(DraconicEvolution.ID, "awakenedCore", 1, 0))

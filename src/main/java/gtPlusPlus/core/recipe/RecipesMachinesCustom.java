@@ -29,7 +29,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -61,11 +60,16 @@ public class RecipesMachinesCustom {
 
     private static void xlTurbines() {
         // Turbine Shaft
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Casing_Turbine_Shaft.get(1),
-            new Object[] { "PMP", "LCL", "PMP", 'P', MaterialsAlloy.INCOLOY_DS.getPlateDouble(1), 'M',
-                ItemList.Electric_Motor_HV.get(1), 'L', OrePrefixes.cell.get(Materials.Lubricant), 'C',
-                ItemList.Casing_Gearbox_Titanium.get(1) });
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                MaterialsAlloy.INCOLOY_DS.getPlateDouble(4),
+                ItemList.Electric_Motor_HV.get(2),
+                ItemList.Casing_Gearbox_Titanium.get(1))
+            .itemOutputs(GregtechItemList.Casing_Turbine_Shaft.get(1))
+            .fluidInputs(Materials.Lubricant.getFluid(2_000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
 
         // Rotor Assembly
         GTValues.RA.stdBuilder()
@@ -317,7 +321,7 @@ public class RecipesMachinesCustom {
             .circuit(2)
             .itemOutputs(GregtechItemList.Casing_Machine_Custom_2.get(2))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // ExxonMobil Chemical Plant
@@ -386,7 +390,7 @@ public class RecipesMachinesCustom {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_BlastSmelter.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Blast Smelter Heat Containment Coil
@@ -403,7 +407,7 @@ public class RecipesMachinesCustom {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Coil_BlastSmelter.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
     }
 
@@ -428,7 +432,7 @@ public class RecipesMachinesCustom {
             2048,
             (int) TierEU.RECIPE_UIV,
             16,
-            new Object[] { GregtechItemList.Controller_MolecularTransformer.get(1),
+            new Object[] { ItemList.MolecularTransformer.get(1),
                 GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 8 }, ItemList.Electric_Pump_UEV.get(4),
                 ItemList.Field_Generator_UEV.get(4), GregtechItemList.Laser_Lens_Special.get(1) },
@@ -460,7 +464,7 @@ public class RecipesMachinesCustom {
             .itemOutputs(GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.get(1))
             .fluidInputs(GTModHandler.getDistilledWater(2_000))
             .duration(10 * SECONDS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(assemblerRecipes);
     }
 
@@ -468,7 +472,7 @@ public class RecipesMachinesCustom {
         // Thorium Reactor [LFTR]
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ThoriumReactor.get(1),
-            new Object[] { "ABA", "CDC", "EFE", 'A', new ItemStack(ModItems.itemCircuitLFTR), 'B',
+            new Object[] { "ABA", "CDC", "EFE", 'A', GregtechItemList.LFTRControlCircuit, 'B',
                 OrePrefixes.cableGt12.get(Materials.Naquadah), 'C', MaterialsAlloy.HASTELLOY_N.getPlateDouble(1), 'D',
                 GregtechItemList.Gregtech_Computer_Cube, 'E', MaterialsElements.getInstance().THORIUM232.getPlate(1),
                 'F', ItemList.Hull_IV });
@@ -501,7 +505,7 @@ public class RecipesMachinesCustom {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1),
                 ItemList.Field_Generator_HV.get(1))
-            .itemOutputs(new ItemStack(ModItems.itemCircuitLFTR))
+            .itemOutputs(GregtechItemList.LFTRControlCircuit.get(1))
             .duration(4 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -610,20 +614,6 @@ public class RecipesMachinesCustom {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
-        // COMET - Compact Cyclotron
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Hull_IV.get(1),
-                GregtechItemList.Casing_Cyclotron_Coil.get(2),
-                MaterialsAlloy.INCOLOY_020.getPlate(8),
-                MaterialsAlloy.TANTALLOY_61.getGear(2),
-                MaterialsAlloy.INCOLOY_MA956.getScrew(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 16))
-            .itemOutputs(GregtechItemList.COMET_Cyclotron.get(1))
-            .fluidInputs(MaterialsAlloy.INCOLOY_020.getFluidStack(9 * INGOTS))
-            .duration(5 * MINUTES)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
     }
 
     private static void powerSubstation() {
@@ -637,13 +627,13 @@ public class RecipesMachinesCustom {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.PowerSubStation.get(1),
             new Object[] { "ABA", "CDC", "EAE", 'A', MaterialsAlloy.INCOLOY_MA956.getPlate(1), 'B',
-                new ItemStack(ModItems.itemCircuitLFTR), 'C', GregtechItemList.Casing_Power_SubStation, 'D',
+                GregtechItemList.LFTRControlCircuit, 'C', GregtechItemList.Casing_Power_SubStation, 'D',
                 GregtechItemList.Casing_Vanadium_Redox, 'E', MaterialsAlloy.INCOLOY_020.getPlate(1) });
 
         // Vanadium Redox Power Cell (EV)
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(ModItems.itemHalfCompleteCasings, 1, 1),
+                GregtechItemList.HalfCompleteCasing_II.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 2))
@@ -734,12 +724,12 @@ public class RecipesMachinesCustom {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_FishPond.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Zhuhai - Fishing Port
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_FishingPond.get(1),
+            ItemList.FishingPort.get(1),
             new Object[] { "PCP", "WFW", "PCP", 'P', MaterialsAlloy.AQUATIC_STEEL.getPlate(1), 'C', "circuitElite", 'W',
                 OrePrefixes.wireFine.get(Materials.Electrum), 'F', GregtechItemList.FishTrap });
     }
@@ -826,7 +816,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.INCONEL_625.getFluidStack(16 * INGOTS),
                 MaterialsAlloy.INCONEL_792.getFluidStack(32 * INGOTS),
                 MaterialsAlloy.HASTELLOY_N.getFluidStack(32 * INGOTS))
-            .itemOutputs(GregtechItemList.Controller_Flotation_Cell.get(1))
+            .itemOutputs(ItemList.FlotationCell.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(60 * SECONDS)
             .addTo(AssemblyLine);
@@ -964,7 +954,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.NITINOL_60.getFluidStack(18 * INGOTS),
                 MaterialsAlloy.INCOLOY_MA956.getFluidStack(72 * INGOTS),
                 MaterialsAlloy.KANTHAL.getFluidStack(4 * INGOTS))
-            .itemOutputs(GregtechItemList.Controller_MolecularTransformer.get(1))
+            .itemOutputs(ItemList.MolecularTransformer.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * MINUTES)
             .addTo(AssemblyLine);
@@ -1038,10 +1028,10 @@ public class RecipesMachinesCustom {
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Copper, 4),
                 getModItem(Mods.IndustrialCraft2.ID, "itemPartCarbonMesh", 64, 0))
             .circuit(18)
-            .itemOutputs(new ItemStack(ModItems.itemLavaFilter, 16))
+            .itemOutputs(GregtechItemList.LavaFilter.get(16))
             .fluidInputs(MaterialsAlloy.TANTALUM_CARBIDE.getFluidStack(1 * INGOTS))
             .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(assemblerRecipes);
     }
 }

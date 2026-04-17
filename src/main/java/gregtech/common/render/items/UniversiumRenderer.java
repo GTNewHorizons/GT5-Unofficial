@@ -1,11 +1,7 @@
 package gregtech.common.render.items;
 
-import static gregtech.api.enums.Mods.Avaritia;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
@@ -18,17 +14,15 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL20;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.UniversiumShader;
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import codechicken.lib.render.TextureUtils;
-import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class UniversiumRenderer extends GeneratedMaterialRenderer {
-
-    private static final float cosmicOpacity = 2.5f;
 
     @Override
     public boolean renderFluidDisplayItem(ItemRenderType type, ItemStack aStack, Object... data) {
@@ -63,7 +57,6 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
             GL11.glEnable(GL11.GL_ALPHA_TEST);
 
             if (tIcon != null) {
-                markNeedsAnimationUpdate(tIcon);
                 magicRenderMethod(type, aStack, tIcon, false, data);
             }
 
@@ -72,7 +65,6 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
             if (tOverlay != null) {
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 TextureUtils.bindAtlas(aItem.getSpriteNumber());
-                markNeedsAnimationUpdate(tOverlay);
                 renderItemOverlay(type, tOverlay);
             }
 
@@ -82,21 +74,13 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
 
     private void magicRenderMethod(ItemRenderType type, ItemStack aStack, IIcon tIcon, boolean fluidDisplay,
         Object... data) {
-        if (!Avaritia.isModLoaded()) {
-            return;
-        }
 
-        RenderItem r = RenderItem.getInstance();
         Minecraft mc = Minecraft.getMinecraft();
-        Tessellator t = Tessellator.instance;
-        float minU = tIcon.getMinU();
-        float maxU = tIcon.getMaxU();
-        float minV = tIcon.getMinV();
-        float maxV = tIcon.getMaxV();
 
-        processLightLevel(type, data);
+        final UniversiumShader shader = UniversiumShader.getInstance();
 
-        GL11.glPushMatrix();
+        processLightLevel(type, shader, data);
+
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -127,17 +111,15 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
                 GL11.glDisable(GL11.GL_BLEND);
             }
 
-            CosmicRenderShenanigans.cosmicOpacity = cosmicOpacity;
-            CosmicRenderShenanigans.inventoryRender = true;
-            CosmicRenderShenanigans.useShader();
+            shader.setRenderInInventory()
+                .use();
 
-            GL11.glColor4d(1, 1, 1, 1);
+            GL11.glColor4f(1, 1, 1, 1);
 
             // Draw cosmic overlay
             ItemRenderUtil.renderItem(type, tIcon);
 
-            CosmicRenderShenanigans.releaseShader();
-            CosmicRenderShenanigans.inventoryRender = false;
+            UniversiumShader.clear();
 
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         } else {
@@ -148,12 +130,11 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
 
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glDepthFunc(GL11.GL_EQUAL);
-            CosmicRenderShenanigans.cosmicOpacity = cosmicOpacity;
-            CosmicRenderShenanigans.useShader();
+            shader.use();
 
             // RENDER COSMIC OVERLAY
             ItemRenderUtil.renderItem(type, tIcon);
-            CosmicRenderShenanigans.releaseShader();
+            UniversiumShader.unbind();
             GL11.glDepthFunc(GL11.GL_LEQUAL);
 
             GL20.glUseProgram(program);
@@ -162,15 +143,14 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
     }
 
-    private void processLightLevel(ItemRenderType type, Object... data) {
+    private void processLightLevel(ItemRenderType type, UniversiumShader shader, Object... data) {
         switch (type) {
             case ENTITY -> {
                 EntityItem ent = (EntityItem) (data[1]);
                 if (ent != null) {
-                    CosmicRenderShenanigans.setLightFromLocation(
+                    shader.setLightFromLocation(
                         ent.worldObj,
                         MathHelper.floor_double(ent.posX),
                         MathHelper.floor_double(ent.posY),
@@ -180,18 +160,15 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
             case EQUIPPED, EQUIPPED_FIRST_PERSON -> {
                 EntityLivingBase ent = (EntityLivingBase) (data[1]);
                 if (ent != null) {
-                    CosmicRenderShenanigans.setLightFromLocation(
+                    shader.setLightFromLocation(
                         ent.worldObj,
                         MathHelper.floor_double(ent.posX),
                         MathHelper.floor_double(ent.posY),
                         MathHelper.floor_double(ent.posZ));
                 }
             }
-            case INVENTORY -> {
-                CosmicRenderShenanigans.setLightLevel(10.2f);
-            }
             default -> {
-                CosmicRenderShenanigans.setLightLevel(1.0f);
+                shader.setLightLevel(1.0f);
             }
         }
     }

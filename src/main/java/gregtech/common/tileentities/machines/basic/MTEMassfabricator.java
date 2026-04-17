@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE;
@@ -34,6 +35,7 @@ import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
@@ -48,11 +50,12 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.config.MachineStats;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMassfabricator extends MTEBasicMachine {
 
     public static int sUUAperUUM = 1;
     public static int sUUASpeedBonus = 4;
-    public static int sDurationMultiplier = 3215;
+    public static int sDurationMultiplier = 3200;
     public static boolean sRequiresUUA = false;
     public static int BASE_EUT = 256;
     public static GTRecipe nonUUARecipe;
@@ -144,7 +147,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
         sUUAperUUM = MachineStats.massFabricator.UUAPerUUM;
         sUUASpeedBonus = MachineStats.massFabricator.UUASpeedBonus;
         sRequiresUUA = MachineStats.massFabricator.requiresUUA;
-        Materials.UUAmplifier.mChemicalFormula = ("Mass Fabricator Eff/Speed Bonus: x" + sUUASpeedBonus);
+        Materials.UUAmplifier.setChemicalFormula("Mass Fabricator Eff/Speed Bonus: x" + sUUASpeedBonus, true);
     }
 
     @Override
@@ -223,7 +226,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
             long voltage = V[mTier];
             String voltageString = StatCollector.translateToLocalFormatted(
                 "GT5U.nei.display.voltage",
-                GTUtility.formatNumbers(voltage),
+                formatNumber(voltage),
                 GTUtility.getTierNameWithParentheses(voltage));
 
             if (wasOverclocked(calculator)) {
@@ -244,7 +247,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
                 }
             }
             if (amperage > 0) {
-                amperageValue = GTUtility.formatNumbers(amperage);
+                amperageValue = formatNumber(amperage);
             } else {
                 amperageValue = "1/" + denominator;
             }

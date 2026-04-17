@@ -6,9 +6,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+import org.joml.Vector3f;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.client.volumetric.ISoundPosition;
 
 @SideOnly(Side.CLIENT)
 public class GTSoundLoop extends MovingSound {
@@ -17,10 +20,14 @@ public class GTSoundLoop extends MovingSound {
     private final boolean whileActive;
     private final boolean whileInactive;
     private final int worldID;
+
     private boolean fadeMe = false;
     private final int tileX;
     private final int tileY;
     private final int tileZ;
+
+    private float targetVolume = 1;
+    private ISoundPosition position = null;
 
     /**
      * Constructs a GTSoundLoop.
@@ -74,36 +81,98 @@ public class GTSoundLoop extends MovingSound {
 
     @Override
     public void update() {
-        if (donePlaying) {
-            return;
+        if (donePlaying) return;
+
+        if (position != null) {
+            Vector3f pos = position.getPosition();
+
+            if (pos != null) {
+                setPosition(new Vector3f(pos).add(0.5f, 0.5f, 0.5f));
+            }
         }
+
         if (fadeMe) {
-            volume -= VOLUME_RAMP;
+            volume -= VOLUME_RAMP * targetVolume;
             if (volume <= 0) {
                 volume = 0;
-                donePlaying = true;
+                stop();
+                return;
             }
-        } else if (volume < 1) {
-            volume += VOLUME_RAMP;
+        } else if (volume < targetVolume) {
+            volume += VOLUME_RAMP * targetVolume;
         }
+
         World world = Minecraft.getMinecraft().thePlayer.worldObj;
-        donePlaying = world.provider.dimensionId != worldID
-            || !world.checkChunksExist(tileX, tileY, tileZ, tileX, tileY, tileZ);
-        if (donePlaying) return;
-        TileEntity tile = world.getTileEntity(tileX, tileY, tileZ);
-        if ((tile instanceof IGregTechTileEntity iGregTechTileEntity)) {
-            fadeMe |= iGregTechTileEntity.isActive() ? whileActive : whileInactive;
+
+        if (world.provider.dimensionId != worldID) {
+            stop();
             return;
         }
 
+        if (!world.checkChunksExist(tileX, tileY, tileZ, tileX, tileY, tileZ)) {
+            stop();
+            return;
+        }
+
+        TileEntity tile = world.getTileEntity(tileX, tileY, tileZ);
+
+        if (!(tile instanceof IGregTechTileEntity igte)) {
+            stop();
+            return;
+        }
+
+        fadeMe |= igte.isActive() ? whileActive : whileInactive;
+    }
+
+    public void stop() {
         donePlaying = true;
     }
 
-    public void setDonePlaying(boolean value) {
-        donePlaying = value;
+    public GTSoundLoop setFadeMe(boolean value) {
+        fadeMe = value;
+
+        return this;
     }
 
-    public void setFadeMe(boolean value) {
-        fadeMe = value;
+    public GTSoundLoop setPosition(float x, float y, float z) {
+        xPosF = x;
+        yPosF = y;
+        zPosF = z;
+
+        return this;
+    }
+
+    public GTSoundLoop setPosition(Vector3f v) {
+        xPosF = v.x;
+        yPosF = v.y;
+        zPosF = v.z;
+
+        return this;
+    }
+
+    public boolean fades() {
+        return fadeMe;
+    }
+
+    public GTSoundLoop setVolume(float volume) {
+        targetVolume = volume;
+
+        return this;
+    }
+
+    public GTSoundLoop setPosition(ISoundPosition position) {
+        this.position = position;
+
+        if (position != null) {
+            Vector3f pos = position.getPosition();
+
+            if (pos != null) {
+                setPosition(new Vector3f(pos).add(0.5f, 0.5f, 0.5f));
+            }
+        } else {
+            setPosition(tileX + 0.5f, tileY + 0.5f, tileZ + 0.5f);
+        }
+
+        return this;
     }
 }

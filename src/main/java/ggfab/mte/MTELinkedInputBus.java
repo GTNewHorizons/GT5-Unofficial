@@ -1,9 +1,7 @@
 package ggfab.mte;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -33,11 +31,11 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
-import ggfab.GGConstants;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -45,9 +43,11 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProcessingAwareHatch, IDataCopyable {
 
     public static final int SIZE_INVENTORY = 18;
@@ -60,15 +60,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     private WorldSave save;
 
     public MTELinkedInputBus(int id, String name, String nameRegional, int tier) {
-        super(
-            id,
-            name,
-            nameRegional,
-            tier,
-            1,
-            new String[] { SIZE_INVENTORY + " slot input bus linked together wirelessly",
-                "Link does not cross world boundary", "Left/right click with data stick to copy/paste configuration",
-                GGConstants.GGMARK_TOOLTIP, });
+        super(id, name, nameRegional, tier, 1, null);
     }
 
     public MTELinkedInputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -173,16 +165,6 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     }
 
     @Override
-    public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return super.getTexturesActive(aBaseTexture);
-    }
-
-    @Override
-    public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return super.getTexturesInactive(aBaseTexture);
-    }
-
-    @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
         return isValidSlot(aIndex) && aStack != null
             && mChannel != null
@@ -257,35 +239,8 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
 
     @Override
     protected void fillStacksIntoFirstSlots() {
-        // sanity check
         if (mRealInventory == null) return;
-        final int L = SIZE_INVENTORY;
-        HashMap<GTUtility.ItemId, Integer> slots = new HashMap<>(L);
-        HashMap<GTUtility.ItemId, ItemStack> stacks = new HashMap<>(L);
-        List<GTUtility.ItemId> order = new ArrayList<>(L);
-        List<Integer> validSlots = new ArrayList<>(L);
-        for (int i = 0; i < L; i++) {
-            validSlots.add(i);
-            ItemStack s = mRealInventory.stacks[i];
-            if (s == null) continue;
-            GTUtility.ItemId sID = GTUtility.ItemId.createNoCopy(s);
-            slots.merge(sID, s.stackSize, Integer::sum);
-            if (!stacks.containsKey(sID)) stacks.put(sID, s);
-            order.add(sID);
-            mRealInventory.stacks[i] = null;
-        }
-        int slotindex = 0;
-        for (GTUtility.ItemId sID : order) {
-            int toSet = slots.get(sID);
-            if (toSet == 0) continue;
-            int slot = validSlots.get(slotindex);
-            slotindex++;
-            mRealInventory.stacks[slot] = stacks.get(sID)
-                .copy();
-            toSet = Math.min(toSet, mRealInventory.stacks[slot].getMaxStackSize());
-            mRealInventory.stacks[slot].stackSize = toSet;
-            slots.merge(sID, toSet, (a, b) -> a - b);
-        }
+        GTUtility.compactInventory(Arrays.asList(mRealInventory.stacks), 0, SIZE_INVENTORY);
     }
 
     private void dropItems(ItemStack[] aStacks) {
@@ -367,15 +322,14 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
                     mRealInventory.disableLimited = true;
                 }
             }
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatComp(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.hatch.disableSort." + mRealInventory.disableSort) + "   "
-                    + StatCollector.translateToLocal("GT5U.hatch.disableLimited." + mRealInventory.disableLimited));
+                new ChatComponentTranslation("GT5U.hatch.disableSort." + mRealInventory.disableSort).appendText("   ")
+                    .appendSibling(
+                        new ChatComponentTranslation("GT5U.hatch.disableLimited." + mRealInventory.disableLimited)));
         } else {
             this.disableFilter = !this.disableFilter;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("GT5U.hatch.disableFilter." + this.disableFilter));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + this.disableFilter);
         }
     }
 
@@ -700,5 +654,10 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
             super.deserializeNBT(nbt);
             fake = nbt.getBoolean("fake");
         }
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_bus_linked.desc", SIZE_INVENTORY);
     }
 }

@@ -1,5 +1,6 @@
 package kekztech.common.tileentities;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -102,10 +103,10 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Gas Turbine")
+        tt.addMachineType("Gas Turbine, SOFC")
             .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
             .addInfo(
-                "Consumes up to " + GTUtility.formatNumbers(EU_PER_TICK * 20)
+                "Consumes up to " + formatNumber(EU_PER_TICK * 20)
                     + "EU worth of fuel with up to 100% efficiency each second")
             .addInfo("Nitrobenzene and other gas fuels above 1M EU/bucket are more efficient")
             .addInfo("Steam production requires the SOFC to heat up completely first")
@@ -210,6 +211,11 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     @Override

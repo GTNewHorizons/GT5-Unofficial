@@ -18,6 +18,7 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Fuels;
@@ -32,7 +33,7 @@ import tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath;
 public class FuelConfigPanel {
 
     private static final int SIZE_W = 78;
-    private static final int SIZE_H = 130;
+    private static final int SIZE_H = 138;
 
     public static ModularPanel openPanel(SyncHypervisor hypervisor) {
         ModularPanel panel = hypervisor.getModularPanel(Panels.FUEL_CONFIG);
@@ -116,7 +117,9 @@ public class FuelConfigPanel {
             return formatter.format(data.getFuelConsumption()) + " L/5s";
         })
             .alignment(Alignment.CENTER)
+            .color(0x404040)
             .asWidget()
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
             .width(SIZE_W - 4)
             .alignX(0.5f)
             .marginTop(3));
@@ -135,17 +138,15 @@ public class FuelConfigPanel {
             .size(18)
             .child(
                 new FluidDisplayWidget().background(IDrawable.EMPTY)
-                    .fluid(option.getFluid())
+                    .value(option.getFluid())
                     .displayAmount(false)
-                    .align(Alignment.CENTER)
-                    .size(16))
+                    .align(Alignment.TopLeft)
+                    .size(18))
             .child(
                 new SelectButton().value(LinkedBoolValue.of(syncer, option))
-                    .background(IDrawable.EMPTY)
-                    .overlay(IDrawable.EMPTY)
+                    .disableThemeBackground(true)
+                    .disableHoverThemeBackground(true)
                     .selectedBackground(GTGuiTextures.SLOT_OUTLINE_GREEN)
-                    .disableHoverBackground()
-                    .disableHoverOverlay()
                     .size(18)
                     .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
                     .tooltip(t -> {

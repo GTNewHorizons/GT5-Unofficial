@@ -7,6 +7,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -39,31 +42,8 @@ public abstract class CoverFacadeBase extends Cover {
     private static final int FLUID_PASS_FLAG = 0x4;
     private static final int ITEM_PASS_FLAG = 0x8;
 
-    public static CoverPlacementPredicate isCoverPlaceable(Function<ItemStack, Block> getTargetBlock,
-        Function<ItemStack, Integer> getTargetmeta) {
-        return (ForgeDirection side, ItemStack coverItem, ICoverable coverable) -> {
-            // blocks that are not rendered in pass 0 are now accepted but rendered awkwardly
-            // to render it correctly require changing GT_Block_Machine to render in both pass, which is not really a
-            // good
-            // idea...
-            final Block targetBlock = getTargetBlock.apply(coverItem);
-            if (targetBlock == null) return false;
-            // we allow one single type of facade on the same block for now
-            // otherwise it's not clear which block this block should impersonate
-            // this restriction can be lifted later by specifying a certain facade as dominate one as an extension to
-            // this
-            // class
-            for (final ForgeDirection iSide : ForgeDirection.VALID_DIRECTIONS) {
-                if (iSide == side) continue;
-                final Cover cover = coverable.getCoverAtSide(iSide);
-                if (!cover.isValid()) continue;
-                final Block facadeBlock = cover.getFacadeBlock();
-                if (facadeBlock == null) continue;
-                if (facadeBlock != targetBlock) return false;
-                if (cover.getFacadeMeta() != getTargetmeta.apply(coverItem)) return false;
-            }
-            return true;
-        };
+    public static CoverPlacementPredicate isCoverPlaceable(Function<ItemStack, Block> getTargetBlock) {
+        return (side, coverItem, coverable) -> getTargetBlock.apply(coverItem) != null;
     }
 
     ItemStack mStack;
@@ -197,12 +177,24 @@ public abstract class CoverFacadeBase extends Cover {
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mFlags = ((mFlags + 1) & 15);
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            ((mFlags & REDSTONE_PASS_FLAG) != 0 ? GTUtility.trans("128.1", "Redstone ") : "")
-                + ((mFlags & ENERGY_PASS_FLAG) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
-                + ((mFlags & FLUID_PASS_FLAG) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
-                + ((mFlags & ITEM_PASS_FLAG) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
+        IChatComponent message = new ChatComponentText("");
+        if ((mFlags & REDSTONE_PASS_FLAG) != 0) {
+            message.appendSibling(new ChatComponentTranslation("GT5U.chat.cover.decorative.redstone"))
+                .appendText(" ");
+        }
+        if ((mFlags & ENERGY_PASS_FLAG) != 0) {
+            message.appendSibling(new ChatComponentTranslation("GT5U.chat.cover.decorative.energy"))
+                .appendText(" ");
+        }
+        if ((mFlags & FLUID_PASS_FLAG) != 0) {
+            message.appendSibling(new ChatComponentTranslation("GT5U.chat.cover.decorative.fluids"))
+                .appendText(" ");
+        }
+        if ((mFlags & ITEM_PASS_FLAG) != 0) {
+            message.appendSibling(new ChatComponentTranslation("GT5U.chat.cover.decorative.items"))
+                .appendText(" ");
+        }
+        GTUtility.sendChatComp(aPlayer, message);
     }
 
     @Override
@@ -271,9 +263,7 @@ public abstract class CoverFacadeBase extends Cover {
         if (GTUtility.isStackInvalid(mStack)) return Textures.BlockIcons.ERROR_RENDERING[0];
         Block block = getTargetBlock(mStack);
         if (block == null) return Textures.BlockIcons.ERROR_RENDERING[0];
-        // TODO: change this when *someone* made the block render in both pass
-        if (block.getRenderBlockPass() != 0) return Textures.BlockIcons.ERROR_RENDERING[0];
-        return TextureFactory.builder()
+        return TextureFactory.blockBuilder()
             .setFromBlock(block, getTargetMeta(mStack))
             .useWorldCoord()
             .setFromSide(coverSide)

@@ -9,19 +9,13 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TAE;
 import gregtech.api.util.GTLanguageManager;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.handler.AchievementHandler;
 import gtPlusPlus.core.util.minecraft.LangUtils;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 
 public class MetaGTProxy {
-
-    public static AchievementHandler mAssemblyAchievements;
-
-    public MetaGTProxy() {}
 
     public static void preInit() {
         fixIC2FluidNames();
@@ -29,14 +23,12 @@ public class MetaGTProxy {
     }
 
     public static void init() {
-        PollutionUtils.setPollutionFluids();
         fixIC2FluidNames();
     }
 
     public static void postInit() {
-        mAssemblyAchievements = new AchievementHandler();
+        new AchievementHandler();
         fixIC2FluidNames();
-
         // Finalise TAE
         TAE.finalizeTAE();
     }
@@ -46,7 +38,6 @@ public class MetaGTProxy {
         // Fix IC2 Hot Water name
         try {
             String aNewHeatedWaterName = "Heated Water";
-            Logger.INFO("Renaming [IC2 Hotspring Water] --> [" + aNewHeatedWaterName + "].");
             LanguageRegistry.instance()
                 .addStringLocalization("fluidHotWater", "Heated Water");
             LanguageRegistry.instance()
@@ -86,7 +77,7 @@ public class MetaGTProxy {
                 LangUtils.rewriteEntryForLanguageRegistry(aLangs[i], "fluidHotWater", aLangValues[i]);
                 LangUtils.rewriteEntryForLanguageRegistry(aLangs[i], "ic2.fluidHotWater", aLangValues[i]);
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
         }
     }

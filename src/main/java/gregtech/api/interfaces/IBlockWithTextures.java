@@ -15,6 +15,16 @@ public interface IBlockWithTextures {
     }
 
     /**
+     * Allows overriding of texture displayed in the inventory.
+     * 
+     * @return Texture[forge direction ordinal][layer]
+     */
+    @Nullable
+    default ITexture[][] getInventoryTextures(int meta) {
+        return getTextures(meta);
+    }
+
+    /**
      * @return Texture[forge direction ordinal][layer]
      */
     @Nullable

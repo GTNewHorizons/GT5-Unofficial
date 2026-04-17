@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static goodgenerator.loader.Loaders.advancedRadiationProtectionPlate;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
-import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -10,7 +9,6 @@ import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -20,6 +18,7 @@ import static gregtech.api.util.GTRecipeConstants.QFT_FOCUS_TIER;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
@@ -30,7 +29,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
@@ -38,8 +36,6 @@ import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.material.Particle;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
 import tectech.recipe.TTRecipeAdder;
@@ -308,7 +304,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Oxygen.getGas(2_000),
                 Materials.Nitrogen.getGas(24_000))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 16))
-            .fluidOutputs(Materials.PrismaticAcid.getFluid(32_000))
+            .fluidOutputs(Materials.PrismaticAcid.getFluid(32_000), Materials.Strontium.getMolten(144L * 16))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .metadata(QFT_CATALYST, GregtechItemList.CrystalColorizationCatalyst.get(0))
@@ -329,26 +325,12 @@ public class RecipeLoaderChemicalSkips {
             .metadata(QFT_CATALYST, GregtechItemList.RawIntelligenceCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 3)
             .addTo(quantumForceTransformerRecipes);
-        // Unknown Particles
-        GTValues.RA.stdBuilder()
-            .itemOutputs(
-                Particle.getBaseParticle(Particle.UNKNOWN),
-                Particle.getBaseParticle(Particle.GRAVITON),
-                Particle.getBaseParticle(Particle.PROTON),
-                Particle.getBaseParticle(Particle.ELECTRON))
-            .fluidInputs(Materials.Hydrogen.getGas(10_000), Materials.Deuterium.getGas(1_000))
-            .fluidOutputs(FluidUtils.getFluidStack("plasma.hydrogen", 1_000))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_UEV)
-            .metadata(QFT_CATALYST, GregtechItemList.ParticleAccelerationCatalyst.get(0))
-            .metadata(QFT_FOCUS_TIER, 3)
-            .addTo(quantumForceTransformerRecipes);
         // Lategame Plastics (Missing Radox Polymer and Heavy Radox)
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Carbon.getDust(64), Materials.Osmium.getDust(24))
             .fluidInputs(Materials.Hydrogen.getGas(16_000), Materials.Nitrogen.getGas(16_000))
             .fluidOutputs(
-                FluidUtils.getFluidStack("xenoxene", 16_000),
+                Materials.Xenoxene.getFluid(16_000),
                 Materials.RadoxPolymer.getMolten(1 * STACKS),
                 Materials.RadoxHeavy.getFluid(16_000),
                 Materials.Kevlar.getMolten(1 * STACKS))
@@ -402,26 +384,6 @@ public class RecipeLoaderChemicalSkips {
             .metadata(QFT_CATALYST, GregtechItemList.BiologicalIntelligenceCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 4)
             .addTo(quantumForceTransformerRecipes);
-        // Rare Particles
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.Laser_Lens_Special.get(1))
-            .itemOutputs(
-                Particle.getBaseParticle(Particle.Z_BOSON),
-                Particle.getBaseParticle(Particle.W_BOSON),
-                Particle.getBaseParticle(Particle.LAMBDA),
-                Particle.getBaseParticle(Particle.OMEGA),
-                Particle.getBaseParticle(Particle.HIGGS_BOSON),
-                Particle.getBaseParticle(Particle.ETA_MESON))
-            .fluidInputs(
-                FluidUtils.getFluidStack("plasma.hydrogen", 30_000),
-                Materials.Helium.getPlasma(30_000),
-                Materials.Americium.getPlasma(30_000),
-                new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 30_000))
-            .duration(3 * MINUTES + 20 * SECONDS)
-            .eut(TierEU.RECIPE_UIV)
-            .metadata(QFT_CATALYST, GregtechItemList.SynchrotronCapableCatalyst.get(0))
-            .metadata(QFT_FOCUS_TIER, 4)
-            .addTo(quantumForceTransformerRecipes);
 
         if (GalaxySpace.isModLoaded()) {
             // Seaweed
@@ -429,11 +391,11 @@ public class RecipeLoaderChemicalSkips {
                 .copyAmountUnsafe(64 * 32, getModItem(GalaxySpace.ID, "tcetiedandelions", 1, 4));
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get("cropSeaweed", 64), Materials.Mytryl.getDust(16))
-                .itemOutputs(seaweed, getModItem(NewHorizonsCoreMod.ID, "item.TCetiESeaweedExtract", 16))
-                .fluidInputs(FluidUtils.getFluidStack("unknowwater", 25_000))
+                .itemOutputs(seaweed, getModItem(NewHorizonsCoreMod.ID, "TCetiESeaweedExtract", 16))
+                .fluidInputs(FluidRegistry.getFluidStack("unknowwater", 25_000))
                 .fluidOutputs(
-                    FluidUtils.getFluidStack("seaweedbroth", 50_000),
-                    FluidUtils.getFluidStack("iodine", 64_000))
+                    FluidRegistry.getFluidStack("seaweedbroth", 50_000),
+                    WerkstoffMaterialPool.Iodine.getFluidOrGas(64_000))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
                 .metadata(QFT_CATALYST, GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(0))
@@ -632,17 +594,6 @@ public class RecipeLoaderChemicalSkips {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
-                GregtechItemList.Laser_Lens_Special.get(64),
-                GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 10))
-            .circuit(10)
-            .itemOutputs(GregtechItemList.ParticleAccelerationCatalyst.get(1))
-            .fluidInputs(Materials.SpaceTime.getMolten(1 * STACKS))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_UIV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.EmptyCatalystCarrier.get(1),
                 Materials.Kevlar.getDust(64),
                 Materials.TranscendentMetal.getNanite(1))
             .circuit(10)
@@ -665,19 +616,6 @@ public class RecipeLoaderChemicalSkips {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
-                Particle.getBaseParticle(Particle.HIGGS_BOSON),
-                Particle.getIon("Helium", 0),
-                Particle.getIon("Hydrogen", 0),
-                Materials.Eternity.getNanite(16))
-            .circuit(10)
-            .itemOutputs(GregtechItemList.SynchrotronCapableCatalyst.get(1))
-            .fluidInputs(GGMaterial.shirabon.getMolten(10 * STACKS))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_UMV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.EmptyCatalystCarrier.get(1),
                 GTOreDictUnificator.get("blockShirabon", 16),
                 Materials.Universium.getNanite(1),
                 ItemList.Timepiece.get(1))
@@ -691,7 +629,7 @@ public class RecipeLoaderChemicalSkips {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
-                getModItem(NewHorizonsCoreMod.ID, "item.TCetiESeaweedExtract", 64),
+                getModItem(NewHorizonsCoreMod.ID, "TCetiESeaweedExtract", 64),
                 GTOreDictUnificator.get("dustIodine", 64),
                 Materials.TranscendentMetal.getNanite(1))
             .circuit(10)

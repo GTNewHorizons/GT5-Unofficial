@@ -1,5 +1,7 @@
 package gtnhlanth.api.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,7 +17,6 @@ import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
-import gregtech.api.util.GTUtility;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 import gtnhlanth.common.beamline.Particle;
@@ -33,7 +34,7 @@ public class LanthanidesRecipeMaps {
         .create(SourceChamberMetadata.class, "source_chamber_metadata");
 
     public static final RecipeMap<RecipeMapBackend> digesterRecipes = RecipeMapBuilder.of("gtnhlanth.recipe.digester")
-        .maxIO(1, 1, 1, 1)
+        .maxIO(3, 1, 1, 1)
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
@@ -48,7 +49,7 @@ public class LanthanidesRecipeMaps {
 
     public static final RecipeMap<RecipeMapBackend> sourceChamberRecipes = RecipeMapBuilder.of("gtnhlanth.recipe.sc")
         .minInputs(0, 0)
-        .maxIO(1, 2, 0, 0)
+        .maxIO(1, 2, 1, 0)
         .amperage(1)
         .frontend(SourceChamberFrontend::new)
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
@@ -69,12 +70,12 @@ public class LanthanidesRecipeMaps {
                 // StatCollector.translateToLocal("beamline.particle") + ": " + particle.getLocalisedName(),
 
                 StatCollector.translateToLocal("beamline.energy") + ": <="
-                    + GTUtility.formatNumbers(Math.min(maxEnergy, particle.maxSourceEnergy()))
+                    + formatNumber(Math.min(maxEnergy, particle.maxSourceEnergy()))
                     + " keV",
 
-                StatCollector.translateToLocal("beamline.focus") + ": " + GTUtility.formatNumbers(focus),
+                StatCollector.translateToLocal("beamline.focus") + ": " + formatNumber(focus),
 
-                StatCollector.translateToLocal("beamline.rate") + ": " + GTUtility.formatNumbers(amount)
+                StatCollector.translateToLocal("beamline.rate") + ": " + formatNumber(amount)
 
         );
         })
@@ -111,14 +112,14 @@ public class LanthanidesRecipeMaps {
                 // StatCollector.translateToLocal("beamline.particle") + ": " + particle.getLocalisedName(),
 
                 StatCollector.translateToLocal("beamline.energy") + ": "
-                    + GTUtility.formatNumbers(minEnergy * 1000)
+                    + formatNumber(minEnergy * 1000)
                     + "-"
-                    + GTUtility.formatNumbers(maxEnergy * 1000)
+                    + formatNumber(maxEnergy * 1000)
                     + " eV", // Note the eV unit
 
-                StatCollector.translateToLocal("beamline.focus") + ": >=" + GTUtility.formatNumbers(minFocus),
+                StatCollector.translateToLocal("beamline.focus") + ": >=" + formatNumber(minFocus),
 
-                StatCollector.translateToLocal("beamline.amount") + ": " + GTUtility.formatNumbers(amount)
+                StatCollector.translateToLocal("beamline.amount") + ": " + formatNumber(amount)
 
         );
         }))
@@ -131,6 +132,7 @@ public class LanthanidesRecipeMaps {
             ret.addAll(Arrays.asList(recipe.mInputs));
             return ret.toArray(new ItemStack[0]);
         })
+        .neiHandlerInfo(builder -> builder.setHeight(140))
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
         .progressBarPos(108, 22)
         .neiTransferRect(100, 22, 28, 18)

@@ -37,7 +37,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidInputs(Materials.Deuterium.getGas(125), Materials.Tritium.getGas(125))
             .fluidOutputs(Materials.Helium.getPlasma(125))
             .duration(16 * TICKS)
-            .eut(4096)
+            .eut(TierEU.RECIPE_IV / 2)
             .metadata(FUSION_THRESHOLD, 40_000_000L)
             .addTo(fusionRecipes); // FT1 Cheap - farmable
 
@@ -61,7 +61,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidInputs(Materials.Beryllium.getMolten(1 * NUGGETS), Materials.Deuterium.getGas(375))
             .fluidOutputs(Materials.Nitrogen.getPlasma(125))
             .duration(16 * TICKS)
-            .eut(16384)
+            .eut(TierEU.RECIPE_LuV / 2)
             .metadata(FUSION_THRESHOLD, 180_000_000L)
             .addTo(fusionRecipes); // FT1+ Expensive //
 
@@ -206,7 +206,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidInputs(Materials.Gallium.getMolten(1 * NUGGETS), Materials.Radon.getGas(125))
             .fluidOutputs(Materials.Duranium.getMolten(1 * NUGGETS))
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16384)
+            .eut(TierEU.RECIPE_LuV / 2)
             .metadata(FUSION_THRESHOLD, 140_000_000L)
             .addTo(fusionRecipes);
 

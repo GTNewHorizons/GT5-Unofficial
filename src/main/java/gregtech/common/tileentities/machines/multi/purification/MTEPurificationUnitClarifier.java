@@ -1,9 +1,10 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
@@ -15,12 +16,14 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -54,7 +57,6 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
 
     private static final int STRUCTURE_X_OFFSET = 5;
     private static final int STRUCTURE_Y_OFFSET = 2;
@@ -62,6 +64,8 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
 
     // Chance that the filter is damaged every cycle.
     public static final float FILTER_DAMAGE_RATE = 20.0f;
+
+    private boolean needsWaterFill = false;
 
     private static final int CASING_TEXTURE_INDEX = getTextureIndex(GregTechAPI.sBlockCasings9, 5);
 
@@ -85,14 +89,6 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     private static final IStructureDefinition<MTEPurificationUnitClarifier> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPurificationUnitClarifier>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addShape(
-            STRUCTURE_PIECE_MAIN_SURVIVAL,
-            Arrays.stream(structure)
-                .map(
-                    sa -> Arrays.stream(sa)
-                        .map(s -> s.replaceAll("W", " "))
-                        .toArray(String[]::new))
-                .toArray(String[][]::new))
         // Hatches
         .addElement(
             'H',
@@ -111,7 +107,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 1))
         .addElement('C', ofFrame(Materials.Iridium))
         .addElement('D', ofFrame(Materials.DamascusSteel))
-        .addElement('W', ofAnyWater(false))
+        .addElement('W', ofChain(isAir(), ofAnyWater(false)))
         // Filter machine casing
         .addElement('F', ofBlock(GregTechAPI.sBlockCasings3, 11))
         .build();
@@ -181,14 +177,14 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                     + EnumChatFormatting.BOLD
                     + "Water Tier: "
                     + EnumChatFormatting.WHITE
-                    + GTUtility.formatNumbers(getWaterTier())
+                    + formatNumber(getWaterTier())
                     + EnumChatFormatting.RESET)
             .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
             .addInfo("Requires a filter made of Activated Carbon to work")
             .addInfo(
                 "Every cycle, has a " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(FILTER_DAMAGE_RATE)
+                    + formatNumber(FILTER_DAMAGE_RATE)
                     + "%"
                     + EnumChatFormatting.GRAY
                     + " chance to destroy the filter")
@@ -237,8 +233,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addStructureInfo("Requires water to be placed in the structure.")
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -256,7 +251,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN_SURVIVAL,
+            STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
             STRUCTURE_Y_OFFSET,
@@ -265,9 +260,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             env,
             true);
         if (built == -1) {
-            GTUtility.sendChatToPlayer(
-                env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
+            GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done.water");
             return 0;
         }
         return built;
@@ -310,9 +303,56 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX) };
     }
 
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
-        return super.checkMachine(aBaseMetaTileEntity, aStack);
+        boolean valid = super.checkMachine(aBaseMetaTileEntity, aStack);
+        if (valid) needsWaterFill = true;
+        return valid;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && mMachine && aTick % 20 == 0) {
+            World world = aBaseMetaTileEntity.getWorld();
+            boolean allFilled = true;
+            int controllerX = aBaseMetaTileEntity.getXCoord();
+            int controllerY = aBaseMetaTileEntity.getYCoord();
+            int controllerZ = aBaseMetaTileEntity.getZCoord();
+
+            for (int sliceZ = 0; sliceZ < structure.length; sliceZ++) {
+                String[] layers = structure[sliceZ];
+                for (int layerY = 0; layerY < layers.length; layerY++) {
+                    String row = layers[layerY];
+                    for (int charX = 0; charX < row.length(); charX++) {
+                        if (row.charAt(charX) != 'W') continue;
+
+                        int[] abc = new int[] { charX - STRUCTURE_X_OFFSET, layerY - STRUCTURE_Y_OFFSET,
+                            sliceZ - STRUCTURE_Z_OFFSET };
+                        int[] xyz = new int[] { 0, 0, 0 };
+                        this.getExtendedFacing()
+                            .getWorldOffset(abc, xyz);
+                        int wx = controllerX + xyz[0];
+                        int wy = controllerY + xyz[1];
+                        int wz = controllerZ + xyz[2];
+
+                        Block block = world.getBlock(wx, wy, wz);
+                        if (block != Blocks.water) {
+                            boolean isReplaceable = block == Blocks.air || block == Blocks.flowing_water
+                                || block.isReplaceable(world, wx, wy, wz);
+                            if (isReplaceable) {
+                                world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
+                            } else {
+                                allFilled = false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (allFilled) needsWaterFill = false;
+        }
     }
 
     @Override

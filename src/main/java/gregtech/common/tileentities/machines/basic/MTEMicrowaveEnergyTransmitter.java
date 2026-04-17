@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER;
@@ -35,6 +36,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.singleblock.MTEMicrowaveEnergyTransmitterGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
@@ -60,8 +62,12 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
             aNameRegional,
             aTier,
             3,
-            new String[] { "Transmits Energy Wirelessly", "Use Nitrogen Plasma", "for Inter-dimensional transmission",
-                "0.004EU Loss per 100 Blocks" });
+            new String[] { "gt.blockmachines.basicmachine.microtransmitter.tooltip" });
+    }
+
+    public String[] getDescription() {
+        return GTUtility.translateMultiline("gt.blockmachines.basicmachine.microtransmitter.tooltip");
+
     }
 
     public MTEMicrowaveEnergyTransmitter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -86,13 +92,13 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
         return new String[] { StatCollector.translateToLocal("GT5U.infodata.coordinates"),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.coordinates.x",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(this.mTargetX) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.coordinates.y",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(this.mTargetY) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.coordinates.z",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(this.mTargetZ) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.dimension",
                 "" + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET),
@@ -344,11 +350,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return null;
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 
     @Override

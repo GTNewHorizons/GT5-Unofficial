@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -17,11 +15,11 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MT
 public class MTEHatchMillingBalls extends MTEHatchNbtConsumable {
 
     public MTEHatchMillingBalls(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 6, 4, "Dedicated Milling Ball Storage", false);
+        super(aID, aName, aNameRegional, 6, 4, "Dedicated Milling Ball Storage");
     }
 
     public MTEHatchMillingBalls(String aName, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, 6, 4, aDescription, false, aTextures);
+        super(aName, 6, 4, aDescription, aTextures);
     }
 
     @Override
@@ -45,17 +43,7 @@ public class MTEHatchMillingBalls extends MTEHatchNbtConsumable {
     }
 
     @Override
-    public String getNameGUI() {
-        return "Ball Housing";
-    }
-
-    @Override
-    public ArrayList<ItemStack> getItemsValidForUsageSlots() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public boolean isItemValidForUsageSlot(ItemStack aStack) {
+    public boolean isItemValidForInputSlot(ItemStack aStack) {
         return MTEIsaMill.isMillingBall(aStack);
     }
 

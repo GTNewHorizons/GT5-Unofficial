@@ -14,6 +14,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -203,6 +204,47 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      */
     public RecipeMapBuilder<B> slotOverlaysSteam(BasicUIProperties.SlotOverlayGetter<SteamTexture> slotOverlaysSteam) {
         uiPropertiesBuilder.slotOverlaysSteam(slotOverlaysSteam);
+        return this;
+    }
+
+    // ensures the value input is never null
+    public RecipeMapBuilder<B> slotOverlaysMUI2(
+        BasicUIProperties.SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2) {
+        uiPropertiesBuilder.slotOverlaysMUI2((index, isFluid, isOutput, isSpecial) -> {
+            com.cleanroommc.modularui.api.drawable.IDrawable drawable = slotOverlaysMUI2
+                .apply(index, isFluid, isOutput, isSpecial);
+            return drawable == null ? com.cleanroommc.modularui.api.drawable.IDrawable.NONE : drawable;
+        });
+        return this;
+    }
+
+    /**
+     * Sets texture and animation direction of the progressbar.
+     * <p>
+     * Unless specified, size should be (20, 36), consisting of two parts; First is (20, 18) size of "empty" image at
+     * the top, Second is (20, 18) size of "filled" image at the bottom.
+     * <p>
+     * By default, it's set to {@code GTGuiTextures.PROGRESSBAR_ARROW, ProgressWidget.Direction.RIGHT}.
+     */
+    public RecipeMapBuilder<B> progressBarMUI2(com.cleanroommc.modularui.drawable.UITexture progressBarTextureMUI2,
+        ProgressWidget.Direction progressBarDirectionMUI2) {
+        uiPropertiesBuilder.progressBarTextureMUI2(progressBarTextureMUI2)
+            .progressBarDirectionMUI2(progressBarDirectionMUI2);
+        return this;
+    }
+
+    /**
+     * Sets progressbar texture with right direction.
+     * <p>
+     * Unless specified, size should be (20, 36), consisting of two parts; First is (20, 18) size of "empty" image at
+     * the top, Second is (20, 18) size of "filled" image at the bottom.
+     */
+    public RecipeMapBuilder<B> progressBarMUI2(com.cleanroommc.modularui.drawable.UITexture progressBarTextureMUI2) {
+        return progressBarMUI2(progressBarTextureMUI2, ProgressWidget.Direction.RIGHT);
+    }
+
+    public RecipeMapBuilder<B> progressBarSizeMUI2(int progressBarWidthMUI2, int progressBarHeightMUI2) {
+        uiPropertiesBuilder.progressBarSizeMUI2(progressBarWidthMUI2, progressBarHeightMUI2);
         return this;
     }
 

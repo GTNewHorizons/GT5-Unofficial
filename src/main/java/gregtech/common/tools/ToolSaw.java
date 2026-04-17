@@ -17,7 +17,7 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
@@ -27,11 +27,6 @@ public class ToolSaw extends GTTool {
     @Override
     public int getToolDamagePerBlockBreak() {
         return 50;
-    }
-
-    @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
     }
 
     @Override
@@ -95,7 +90,7 @@ public class ToolSaw extends GTTool {
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
             ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadSaw.getTextureIndex()]
-            : Textures.ItemIcons.HANDLE_SAW;
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_handleSaw];
     }
 
     @Override

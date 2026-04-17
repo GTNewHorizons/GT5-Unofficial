@@ -53,6 +53,7 @@ import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_PRES
 import static kubatech.api.gui.KubaTechUITextures.SLOT_EEC_SPAWNER;
 import static kubatech.api.gui.KubaTechUITextures.SLOT_EEC_SWORD;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -92,8 +93,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -126,7 +127,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -189,6 +190,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (getBaseMetaTileEntity().isClientSide() && entityRenderer != null) {
             entityRenderer.setDead();
         }
+    }
+
+    @Override
+    public boolean isRotationChangeAllowed() {
+        return true;
     }
 
     @Override
@@ -296,11 +302,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated();
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Powered Spawner, EEC")
@@ -349,7 +350,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     + " 16x Time, Output, Weapon Damage")
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
-            .addController("Front Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Solid Steel Machine Casing", 35, false)
             .addCasingInfoExactly("Any Tiered Glass", 60, false)
             .addCasingInfoExactly("Steel Frame Box", 20, false)
@@ -359,7 +360,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addEnergyHatch("Any bottom casing", 1)
             .addMaintenanceHatch("Any bottom casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTValues.AuthorKuba);
+            .toolTipFinisher(GTAuthors.AuthorKuba);
         return tt;
     }
 
@@ -410,14 +411,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (entityRenderer == null) {
             ChunkCoordinates coords = this.getBaseMetaTileEntity()
                 .getCoords();
+            ExtendedFacing facing = this.getExtendedFacing();
             int[] abc = new int[] { 0, -2, 2 };
             int[] xyz = new int[] { 0, 0, 0 };
-            this.getExtendedFacing()
-                .getWorldOffset(abc, xyz);
+            facing.getWorldOffset(abc, xyz);
             xyz[0] += coords.posX;
             xyz[1] += coords.posY;
             xyz[2] += coords.posZ;
-            entityRenderer = new EntityRenderer(aBaseMetaTileEntity.getWorld(), xyz[0], xyz[1], xyz[2], time);
+            entityRenderer = new EntityRenderer(facing, aBaseMetaTileEntity.getWorld(), xyz[0], xyz[1], xyz[2], time);
         } else {
             entityRenderer.setDead();
             entityRenderer = new EntityRenderer(entityRenderer, time);
@@ -444,7 +445,12 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             MobHandlerLoader.MobEECRecipe r = MobHandlerLoader.recipeMap.get(mobType);
             if (r != null) {
                 if (entityRenderer == null) setupEntityRenderer(getBaseMetaTileEntity(), 40);
-                entityRenderer.setEntity(r.entityCopy);
+                try {
+                    entityRenderer.setEntity(r.recipe.createEntityCopy());
+                } catch (NoSuchMethodException | InvocationTargetException | InstantiationException
+                    | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
             } else entityRenderer.setEntity(null);
         } else {
             renderEntity = false;
@@ -459,33 +465,27 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (this.mMaxProgresstime > 0) {
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("kubatech.chat.forbidden_while_running"));
+            GTUtility.sendChatTrans(aPlayer, "kubatech.chat.forbidden_while_running");
             return;
         }
         if (aPlayer.isSneaking()) {
             if (!InfernalMobs.isModLoaded()) return;
             mIsProducingInfernalDrops = !mIsProducingInfernalDrops;
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 aPlayer,
-                StatCollector.translateToLocal(
-                    "kubatech.chat.eec.infernal_drops_" + (mIsProducingInfernalDrops ? "enabled" : "disabled")));
+                "kubatech.chat.eec.infernal_drops_" + (mIsProducingInfernalDrops ? "enabled" : "disabled"));
         } else {
             if (!BloodMagic.isModLoaded()) return;
             isInRitualMode = !isInRitualMode;
             checkRitualConnection();
 
             if (!isInRitualMode) {
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    StatCollector.translateToLocal("kubatech.chat.eec.ritual_mode_disabled"));
+                GTUtility.sendChatTrans(aPlayer, "kubatech.chat.eec.ritual_mode_disabled");
             } else {
-                GTUtility
-                    .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("kubatech.chat.eec.ritual_mode_enabled"));
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatTrans(aPlayer, "kubatech.chat.eec.ritual_mode_enabled");
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    StatCollector
-                        .translateToLocal("kubatech.chat.eec.ritual_mode_" + (mIsRitualValid ? "connected" : "error")));
+                    "kubatech.chat.eec.ritual_mode_" + (mIsRitualValid ? "connected" : "error"));
             }
         }
     }
@@ -498,14 +498,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             GTUtility.sendChatToPlayer(aPlayer, "Animations are " + (mAnimationEnabled ? "enabled" : "disabled"));
             return true;
         } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        this.batchMode = !this.batchMode;
-        GTUtility.sendChatToPlayer(aPlayer, "Batch Mode: " + (this.batchMode ? "Enabled" : "Disabled"));
-        return true;
     }
 
     // We place the event handler in an inner
@@ -911,6 +903,29 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 .equals(WellOfSufferingRitualName);
     }
 
+    private void rotateSpikes() {
+        ChunkCoordinates coords = this.getBaseMetaTileEntity()
+            .getCoords();
+        World world = this.getBaseMetaTileEntity()
+            .getWorld();
+        ExtendedFacing facing = this.getExtendedFacing();
+        int meta = facing.getRelativeUpInWorld()
+            .ordinal();
+        int[] abc = new int[] { 0, -1, 0 };
+        int[] xyz = new int[] { 0, 0, 0 };
+        for (int x = -1; x < 2; x++) {
+            abc[0] = x;
+            for (int z = 1; z < 4; z++) {
+                abc[2] = z;
+                facing.getWorldOffset(abc, xyz);
+                xyz[0] += coords.posX;
+                xyz[1] += coords.posY;
+                xyz[2] += coords.posZ;
+                world.setBlockMetadataWithNotify(xyz[0], xyz[1], xyz[2], meta, 3);
+            }
+        }
+    }
+
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         glassTier = -1;
@@ -920,6 +935,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (glassTier < VoltageIndex.UV)
             for (MTEHatchEnergy hatch : mEnergyHatches) if (hatch.mTier > glassTier) return false;
         checkRitualConnection();
+        this.rotateSpikes();
         return true;
     }
 
@@ -1207,6 +1223,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     public final boolean supportsBatchMode() {
         return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     private static final class EECMachineStatusWidget extends CycleButtonWidget {

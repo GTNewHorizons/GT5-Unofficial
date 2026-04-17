@@ -75,7 +75,7 @@ public class GTPreLoad {
             }
             Objects.requireNonNull(GTUtility.getField(tLoadController, "activeModList", true, true))
                 .set(tLoadController, tNewModsList);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTMod.logStackTrace(e);
         }
     }
@@ -90,6 +90,7 @@ public class GTPreLoad {
                 .getLanguageManager()
                 .getCurrentLanguage()
                 .getLanguageCode();
+            GTLanguageManager.LanguageCode = userLang;
             GT_FML_LOGGER.info("User lang is " + userLang);
             if (userLang.equals("en_US")) {
                 GT_FML_LOGGER.info("Loading GregTech.lang");
@@ -118,8 +119,10 @@ public class GTPreLoad {
             .parallelStream()
             .filter(Objects::nonNull)
             .forEach(
-                aMaterial -> aMaterial.mLocalizedName = GTLanguageManager
-                    .addStringLocalization("Material." + aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName));
+                aMaterial -> {
+                    GTLanguageManager
+                        .addStringLocalization(aMaterial.getLocalizedNameKey(), aMaterial.mDefaultLocalName);
+                });
     }
 
     public static void getConfiguration(File configDir) {
@@ -144,7 +147,7 @@ public class GTPreLoad {
         if (!GTLog.mLogFile.exists()) {
             try {
                 GTLog.mLogFile.createNewFile();
-            } catch (Throwable ignored) {}
+            } catch (Exception ignored) {}
         }
         try {
             GTLog.out = GTLog.err = new PrintStream(GTLog.mLogFile);
@@ -155,12 +158,12 @@ public class GTPreLoad {
             if (!GTLog.mOreDictLogFile.exists()) {
                 try {
                     GTLog.mOreDictLogFile.createNewFile();
-                } catch (Throwable ignored) {}
+                } catch (Exception ignored) {}
             }
-            List<String> tList = ((GTLog.LogBuffer) GTLog.ore).mBufferedOreDictLog;
+            List<String> tList = ((GTLog.LogBuffer) GTLog.ore).lineBuffer;
             try {
                 GTLog.ore = new PrintStream(GTLog.mOreDictLogFile);
-            } catch (Throwable ignored) {}
+            } catch (Exception ignored) {}
             GTLog.ore.println("******************************************************************************");
             GTLog.ore.println("* This is the complete log of the GT5-Unofficial OreDictionary Handler. It   *");
             GTLog.ore.println("* processes all OreDictionary entries and can sometimes cause errors. All    *");
@@ -174,11 +177,28 @@ public class GTPreLoad {
             if (!GTLog.mExplosionLog.exists()) {
                 try {
                     GTLog.mExplosionLog.createNewFile();
-                } catch (Throwable ignored) {}
+                } catch (Exception ignored) {}
             }
             try {
                 GTLog.exp = new PrintStream(GTLog.mExplosionLog);
-            } catch (Throwable ignored) {}
+            } catch (Exception ignored) {}
+        }
+        if (Gregtech.debug.logRegisterIcons) {
+            GTLog.mRegisterIconsLog = new File(parentFile, "logs/RegisterIcon.log");
+
+            try {
+                List<String> tList = ((GTLog.LogBuffer) GTLog.ico).lineBuffer;
+
+                GTLog.ico = new PrintStream(GTLog.mRegisterIconsLog);
+
+                GTLog.ico.println("*****************************************************************");
+                GTLog.ico.println("* This is the log of texture icons registered in GT5-Unofficial *");
+                GTLog.ico.println("* First column R|O tells if resource is (Required or Optional)  *");
+                GTLog.ico.println("* Second column is the resource path                            *");
+                GTLog.ico.println("*****************************************************************");
+
+                tList.forEach(GTLog.ico::println);
+            } catch (Exception ignored) {}
         }
     }
 
@@ -335,7 +355,7 @@ public class GTPreLoad {
             ((List<?>) Objects
                 .requireNonNull(GTUtility.getFieldContent(ic2.api.recipe.Recipes.scrapboxDrops, "drops", true, true)))
                     .clear();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (GTValues.D1) {
                 e.printStackTrace(GTLog.err);
             }
@@ -388,7 +408,6 @@ public class GTPreLoad {
         GTMod.proxy.mExplosionItemDrop = Gregtech.general.explosionItemDrop;
         GTMod.proxy.mEnableCleanroom = Gregtech.general.enableCleanroom;
         GTMod.proxy.mLowGravProcessing = GalacticraftCore.isModLoaded() && Gregtech.general.lowGravProcessing;
-        GTMod.proxy.mCropNeedBlock = Gregtech.general.cropNeedBlock;
         GTMod.proxy.mAMHInteraction = Gregtech.general.autoMaintenaceHatchesInteraction;
         GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre = Gregtech.general.mixedOreOnlyYieldsTwoThirdsOfPureOre;
         GTMod.proxy.mRichOreYieldMultiplier = Gregtech.general.richOreYieldMultiplier;
@@ -428,8 +447,6 @@ public class GTPreLoad {
         GregTechAPI.sMachineThunderExplosions = Gregtech.machines.machineThunderExplosions;
         GregTechAPI.sColoredGUI = Gregtech.machines.coloredGUI;
         GregTechAPI.sMachineMetalGUI = Gregtech.machines.machineMetalGUI;
-        // Implementation for this is actually handled in NewHorizonsCoreMod in MainRegistry.java!
-        GregTechAPI.sUseMachineMetal = Gregtech.machines.useMachineMetal;
 
         // client
         loadClientConfig();

@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 
 import java.util.List;
@@ -15,6 +16,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -29,11 +32,10 @@ public abstract class GTMetaItemBase extends GTGenericItem
     /**
      * Creates the Item using these Parameters.
      *
-     * @param aUnlocalized         The Unlocalized Name of this Item.
-     * @param aGeneratedPrefixList The OreDict Prefixes you want to have generated.
+     * @param aUnlocalized The Unlocalized Name of this Item.
      */
     public GTMetaItemBase(final String aUnlocalized) {
-        super(aUnlocalized, "Generated Item", null, false);
+        super(aUnlocalized, null, null);
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
     }
@@ -57,7 +59,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
                 aList.add(
                     EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                         "item.itemBaseEuItem.tooltip.1",
-                        GTUtility.formatNumbers(tStats[3]),
+                        formatNumber(tStats[3]),
                         (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
             } else {
                 final long tCharge = this.getRealCharge(aStack);
@@ -70,9 +72,9 @@ public abstract class GTMetaItemBase extends GTGenericItem
                         EnumChatFormatting.AQUA
                             + StatCollector.translateToLocalFormatted(
                                 "item.itemBaseEuItem.tooltip.3",
-                                GTUtility.formatNumbers(tCharge),
-                                GTUtility.formatNumbers(Math.abs(tStats[0])),
-                                GTUtility.formatNumbers(
+                                formatNumber(tCharge),
+                                formatNumber(Math.abs(tStats[0])),
+                                formatNumber(
                                     V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)]))
                             + EnumChatFormatting.GRAY);
                 }
@@ -88,13 +90,9 @@ public abstract class GTMetaItemBase extends GTGenericItem
                     + EnumChatFormatting.GRAY);
             aList.add(
                 EnumChatFormatting.BLUE
-                    + (GTUtility.formatNumbers(tFluid == null ? 0 : tFluid.amount) + "L / "
-                        + GTUtility.formatNumbers(tStats[0])
-                        + "L")
+                    + (formatNumber(tFluid == null ? 0 : tFluid.amount) + "L / " + formatNumber(tStats[0]) + "L")
                     + EnumChatFormatting.GRAY);
         }
-
-        this.addAdditionalToolTips(aList, aStack);
     }
 
     @Override
@@ -237,8 +235,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
         if (tStats[3] > 0) {
             return (int) (long) tStats[3];
         }
-        final NBTTagCompound tNBT = aStack.getTagCompound();
-        return tNBT == null ? 0 : tNBT.getLong("GT.ItemCharge");
+        return ItemStackNBT.getLong(aStack, "GT.ItemCharge");
     }
 
     public final boolean setCharge(final ItemStack aStack, long aCharge) {
@@ -246,22 +243,13 @@ public abstract class GTMetaItemBase extends GTGenericItem
         if ((tStats == null) || (tStats[3] > 0)) {
             return false;
         }
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-        }
-        tNBT.removeTag("GT.ItemCharge");
         aCharge = Math.min(tStats[0] < 0 ? Math.abs(tStats[0] / 2) : aCharge, Math.abs(tStats[0]));
         if (aCharge > 0) {
             aStack.setItemDamage(this.getChargedMetaData(aStack));
-            tNBT.setLong("GT.ItemCharge", aCharge);
+            ItemStackNBT.setLong(aStack, "GT.ItemCharge", aCharge);
         } else {
             aStack.setItemDamage(this.getEmptyMetaData(aStack));
-        }
-        if (tNBT.hasNoTags()) {
-            aStack.setTagCompound(null);
-        } else {
-            aStack.setTagCompound(tNBT);
+            ItemStackNBT.removeTag(aStack, "GT.ItemCharge");
         }
         this.isItemStackUsable(aStack);
         return true;
@@ -392,24 +380,15 @@ public abstract class GTMetaItemBase extends GTGenericItem
         if ((tStats == null) || (tStats[0] <= 0)) {
             return GTUtility.getFluidForFilledItem(aStack, false);
         }
-        final NBTTagCompound tNBT = aStack.getTagCompound();
-        return tNBT == null ? null : FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("GT.FluidContent"));
+        final NBTTagCompound fluidContent = ItemStackNBT.getCompoundTag(aStack, "GT.FluidContent");
+        return fluidContent == null ? null : FluidStack.loadFluidStackFromNBT(fluidContent);
     }
 
     public void setFluidContent(final ItemStack aStack, final FluidStack aFluid) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-        } else {
-            tNBT.removeTag("GT.FluidContent");
-        }
         if ((aFluid != null) && (aFluid.amount > 0)) {
-            tNBT.setTag("GT.FluidContent", aFluid.writeToNBT(new NBTTagCompound()));
-        }
-        if (tNBT.hasNoTags()) {
-            aStack.setTagCompound(null);
+            ItemStackNBT.setTag(aStack, "GT.FluidContent", aFluid.writeToNBT(new NBTTagCompound()));
         } else {
-            aStack.setTagCompound(tNBT);
+            ItemStackNBT.removeTag(aStack, "GT.FluidContent");
         }
         this.isItemStackUsable(aStack);
     }

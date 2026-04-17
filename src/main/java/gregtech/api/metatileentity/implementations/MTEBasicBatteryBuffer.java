@@ -1,6 +1,8 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.common.modularui2.util.CommonGuiComponents.*;
 
 import java.util.List;
 
@@ -14,6 +16,12 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
@@ -25,6 +33,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import ic2.api.item.IElectricItem;
@@ -183,11 +192,15 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
         return true;
     }
 
+    protected boolean forceCharge() {
+        return false;
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3;
-            mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3;
+            mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3 || forceCharge();;
+            mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3 && !forceCharge();
             mBatteryCount = 0;
             mChargeableCount = 0;
             for (ItemStack tStack : mInventory) if (GTModHandler.isElectricItem(tStack, mTier)) {
@@ -275,14 +288,14 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
         return new String[] { EnumChatFormatting.BLUE + getLocalName() + EnumChatFormatting.RESET,
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.battery_buffer.stored_items",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(mStored) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mMax) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(mStored) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(mMax) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.battery_buffer.average_input",
-                GTUtility.formatNumbers(getBaseMetaTileEntity().getAverageElectricInput())),
+                formatNumber(getBaseMetaTileEntity().getAverageElectricInput())),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.battery_buffer.average_output",
-                GTUtility.formatNumbers(getBaseMetaTileEntity().getAverageElectricOutput())) };
+                formatNumber(getBaseMetaTileEntity().getAverageElectricOutput())) };
     }
 
     private void updateStorageInfo() {
@@ -301,20 +314,20 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
         currenttip.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.waila.energy.stored",
-                GTUtility.formatNumbers(tag.getLong("mStored")),
-                GTUtility.formatNumbers(tag.getLong("mMax"))));
+                formatNumber(tag.getLong("mStored")),
+                formatNumber(tag.getLong("mMax"))));
         long avgIn = tag.getLong("AvgIn");
         long avgOut = tag.getLong("AvgOut");
         currenttip.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.waila.energy.avg_in_with_amperage",
-                GTUtility.formatNumbers(avgIn),
+                formatNumber(avgIn),
                 GTUtility.getAmperageForTier(avgIn, (byte) getInputTier()),
                 GTUtility.getColoredTierNameFromTier((byte) getInputTier())));
         currenttip.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.waila.energy.avg_out_with_amperage",
-                GTUtility.formatNumbers(avgOut),
+                formatNumber(avgOut),
                 GTUtility.getAmperageForTier(avgOut, (byte) getOutputTier()),
                 GTUtility.getColoredTierNameFromTier((byte) getOutputTier())));
         super.getWailaBody(itemStack, currenttip, accessor, config);
@@ -396,5 +409,49 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
                     .build()
                     .setPos(79, 34));
         }
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        int rowSize = (int) Math.floor(Math.sqrt(mInventory.length));
+
+        syncManager.registerSlotGroup("battery_inv", rowSize);
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
+            .build()
+            .child(switch (rowSize) {
+            case 2 -> gridTemplate2by2(i -> new ItemSlot().slot(new ModularSlot(inventoryHandler, i) {
+
+                @Override
+                public int getSlotStackLimit() {
+                    return 1;
+                }
+            }.slotGroup("battery_inv")));
+            case 3 -> gridTemplate3by3(i -> new ItemSlot().slot(new ModularSlot(inventoryHandler, i) {
+
+                @Override
+                public int getSlotStackLimit() {
+                    return 1;
+                }
+            }.slotGroup("battery_inv")));
+            case 4 -> gridTemplate4by4(i -> new ItemSlot().slot(new ModularSlot(inventoryHandler, i) {
+
+                @Override
+                public int getSlotStackLimit() {
+                    return 1;
+                }
+            }.slotGroup("battery_inv")));
+            default -> gridTemplate1by1(i -> new ItemSlot().slot(new ModularSlot(inventoryHandler, i) {
+
+                @Override
+                public int getSlotStackLimit() {
+                    return 1;
+                }
+            }.slotGroup("battery_inv")));
+            });
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
     }
 }

@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -53,6 +54,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -64,7 +66,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -110,8 +111,8 @@ public class MTETeslaTower extends TTMultiblockBase
     private Map<ITeslaConnectableSimple, Integer> ampsLastTickMap = new HashMap<>();
     private int sparkCount = 20;
     // Face icons
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
-    private static Textures.BlockIcons.CustomIcon ScreenON;
+    private static IIconContainer ScreenOFF;
+    private static IIconContainer ScreenON;
 
     private int mTier = 0; // Determines max voltage (LV to ZPM)
     private int plasmaTier = 0; // 0 is None, 1 is Helium or Nitrogen, 2 is Radon (Does not match actual plasma tiers)
@@ -617,6 +618,7 @@ public class MTETeslaTower extends TTMultiblockBase
             // the Tesla Capacitor
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 17, 7, false)
+            .addController("Front bottom center")
             .addOtherStructurePart(
                 translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"),
                 translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"),
@@ -636,8 +638,8 @@ public class MTETeslaTower extends TTMultiblockBase
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_TOWER");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_TOWER_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom("iconsets/TM_TESLA_TOWER");
+        ScreenON = Textures.BlockIcons.custom("iconsets/TM_TESLA_TOWER_ACTIVE");
     }
 
     @Override
@@ -738,11 +740,6 @@ public class MTETeslaTower extends TTMultiblockBase
         popogaDisplay = hatch_8.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
         popogaDisplay = hatch_9.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
         popogaDisplay = hatch_9.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
     }
 
     @Override
@@ -1110,18 +1107,22 @@ public class MTETeslaTower extends TTMultiblockBase
         data.add(
             translateToLocalFormatted(
                 "tt.infodata.multi.energy_hatches",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(getTeslaStoredEnergy()) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(energyCapacity) + EnumChatFormatting.RESET));
+                EnumChatFormatting.GREEN + formatNumber(getTeslaStoredEnergy()) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(energyCapacity) + EnumChatFormatting.RESET));
         data.add(
             translateToLocalFormatted(
                 "tt.infodata.multi.current_output",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(getTeslaOutputCurrent()) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(outputCurrentMax) + EnumChatFormatting.RESET));
+                EnumChatFormatting.GREEN + formatNumber(getTeslaOutputCurrent()) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(outputCurrentMax) + EnumChatFormatting.RESET));
 
         return data.toArray(new String[0]);
     }
 
     @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     protected boolean useMui2() {
         return true;
     }

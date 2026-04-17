@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -16,7 +17,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.ArrayList;
 
@@ -58,6 +58,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+// TODO remove after structure rework cycle, only used for backwards-compatibility
 public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeBoiler>
     implements ISurvivalConstructable {
 
@@ -124,22 +125,23 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
 
         tt.addMachineType("Boiler");
+        tt.addStructureDeprecatedLine();
         // Tooltip differs between the boilers that output Superheated Steam (Titanium and Tungstensteel) and the ones
         // that do not (Bronze and Steel)
         if (isSuperheated()) {
             tt.addInfo(
-                "Produces " + formatNumbers((getEUt() * 40) * ((runtimeBoost(20) / (20f)) / superToNormalSteam))
+                "Produces " + formatNumber((getEUt() * 40) * ((runtimeBoost(20) / (20f)) / superToNormalSteam))
                     + "L of Superheated Steam with 1 Coal at "
-                    + formatNumbers((getEUt() * 40L) / superToNormalSteam)
+                    + formatNumber((getEUt() * 40L) / superToNormalSteam)
                     + "L/s") // ?
                 .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
                 .addInfo("Only some solid fuels are allowed (check the NEI Large Boiler tab for details)")
                 .addInfo("If there are any disallowed fuels in the input bus, the boiler won't run!");
         } else {
             tt.addInfo(
-                "Produces " + formatNumbers((getEUt() * 40) * (runtimeBoost(20) / 20f))
+                "Produces " + formatNumber((getEUt() * 40) * (runtimeBoost(20) / 20f))
                     + "L of Steam with 1 Coal at "
-                    + formatNumbers(getEUt() * 40L)
+                    + formatNumber(getEUt() * 40L)
                     + "L/s") // ?
                 .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
                 .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
@@ -147,10 +149,10 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         tt.addInfo(
             String.format(
                 "Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up",
-                formatNumbers(500.0 / getEfficiencyIncrease()))) // ? check semifluid again
+                formatNumber(500.0 / getEfficiencyIncrease()))) // ? check semifluid again
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, false)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addCasingInfoRange(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24, 31, false) // ?
             .addOtherStructurePart(getCasingMaterial() + " Fire Boxes", "Bottom layer, 3 minimum")
             .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Blocks", "Inner 3 blocks")
@@ -400,7 +402,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                         addOutput(
                             FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU / superToNormalSteam));
                     } else {
-                        GTLog.exp.println("Boiler " + this.mName + " had no Water!");
+                        GTLog.writeExplosionLog(this, "Boiler had no water");
                         explodeMultiblock();
                     }
                 } else {
@@ -408,7 +410,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                         || depleteInput(GTModHandler.getDistilledWater(amount))) {
                         addOutput(Materials.Steam.getGas(tGeneratedEU));
                     } else {
-                        GTLog.exp.println("Boiler " + this.mName + " had no Water!");
+                        GTLog.writeExplosionLog(this, "Boiler had no water");
                         explodeMultiblock();
                     }
                 }
@@ -503,6 +505,11 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     @SideOnly(Side.CLIENT)
