@@ -180,7 +180,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         stack.getTagCompound()
             .setBoolean("harvested", true); // prevent onItemRightClick from going through
         ElectricItem.manager.use(stack, baseCost, player);
-        return true;
+        return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
     }
 
     private boolean isHarvestableOwned(TileEntity tileEntity, EntityPlayer player) {
