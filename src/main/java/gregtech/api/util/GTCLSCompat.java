@@ -7,11 +7,14 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import net.minecraft.util.StatCollector;
+
 import alexiil.mods.load.MinecraftDisplayer;
 import alexiil.mods.load.ProgressDisplayer;
 import cpw.mods.fml.common.ProgressManager;
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.common.OreDictEventContainer;
 import gregtech.loaders.postload.GTPostLoad;
 
@@ -88,7 +91,7 @@ public class GTCLSCompat {
             "GregTech materials",
             mEvents,
             progressBar,
-            m -> m.mMaterial,
+            m -> m.mMaterial.getLocalizedName(),
             OreDictEventContainer::registerRecipes);
         ProgressManager.pop(progressBar);
         MinecraftDisplayer.isRegisteringGTmaterials = false;
@@ -101,15 +104,16 @@ public class GTCLSCompat {
             "Vanilla materials",
             replacedVanillaItemsSet,
             progressBar,
-            m -> m.mDefaultLocalName,
+            IOreMaterial::getLocalizedName,
             GTPostLoad::doActualRegistration);
     }
 
     public static void pushToDisplayProgress() {
         MinecraftDisplayer.isReplacingVanillaMaterials = false;
         try {
-            ProgressDisplayer
-                .displayProgress("Post Initialization: loading GregTech", MinecraftDisplayer.getLastPercent());
+            ProgressDisplayer.displayProgress(
+                StatCollector.translateToLocal("gt.loading.progress.post-init.loading-gt"),
+                MinecraftDisplayer.getLastPercent());
         } catch (IOException e) {
             GTMod.GT_FML_LOGGER.error("Exception caught when updating loading screen", e);
         }

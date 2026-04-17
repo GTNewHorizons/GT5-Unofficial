@@ -8031,3 +8031,5 @@ gt.item.stable_boson_containment_unit.name=Stable Boson Containment Unit
 gt.item.stable_boson_containment_unit.tooltip=Maybe contains a bound boson?
 gt.item.stable_empty_containment_unit.name=Stable Empty Containment Unit
 gt.item.stable_empty_containment_unit.tooltip=Maybe contains nothing?
+
+gt.loading.progress.post_init.loading_gt=Post Initialization: loading GregTech
