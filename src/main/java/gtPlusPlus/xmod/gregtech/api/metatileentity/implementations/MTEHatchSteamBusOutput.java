@@ -163,11 +163,6 @@ public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchOutputBusGui(this) {
 
@@ -177,5 +172,7 @@ public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
                 return 2;
             }
         }.build(guiData, syncManager, uiSettings);
+    protected boolean useMui2() {
+        return false;
     }
 }
