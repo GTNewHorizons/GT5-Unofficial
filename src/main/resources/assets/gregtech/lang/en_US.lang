@@ -1503,6 +1503,7 @@ GTPP.algae.yellow-green_algae.name=Yellow-Green Algae
 # Power Goggles
 GT5U.power_goggles.open_config_gui=Open Power Goggles Config
 GT5U.power_goggles.toggle_power_chart=Toggle Power Goggles Chart
+GT5U.power_goggles.toggle_measurements_section=Toggle Power Goggles measurements section
 GT5U.power_goggles.link_lsc=Goggles linked to LSC at %d,%d,%d.
 GT5U.power_goggles.link_fail=That's not an LSC...
 GT5U.power_goggles.unlink=Goggles Unlinked.
