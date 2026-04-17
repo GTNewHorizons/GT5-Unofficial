@@ -901,6 +901,7 @@ gt.tileentity.eup_in=Voltage IN: %s
 gt.tileentity.eup_out=Voltage OUT: %s
 gt.tileentity.amperage=Amperage: %s
 gt.tileentity.throughput=Throughput: %s
+gt.tileentity.eup_store=Capacity: %s
 gt.tileentity.tank_info=Contains Fluid: §e%s§7
 gt.tileentity.tank_amount=Fluid Amount: §a%s L§7
 gt.tileentity.chest_info=Contains Item: §e%s§7
