@@ -1764,6 +1764,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.TungstensteelBoilerLarge.get(1),
             new Object[] { ItemList.Machine_Multi_LargeBoiler_TungstenSteel });
 
+        // Maceration Stack conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.MacerationStack.get(1),
+            new Object[] { GregtechItemList.Industrial_MacerationStack });
+
         // Mega Chemical Reactor Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.MegaChemicalReactor.get(1),
