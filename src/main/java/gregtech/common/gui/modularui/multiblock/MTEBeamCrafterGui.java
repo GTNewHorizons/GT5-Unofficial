@@ -5,9 +5,6 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gtnhlanth.common.beamline.Particle.getParticleFromId;
 
-import java.util.Map;
-
-import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -30,6 +27,7 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
 import gtnhlanth.common.beamline.Particle;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
 
@@ -46,7 +44,11 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
 
             syncManager.syncValue(
                 "valueID" + key,
-                new IntSyncValue(() -> multiblock.getBufferMap().get(key), i -> multiblock.getBufferMap().put(key, i)));
+                new IntSyncValue(
+                    () -> multiblock.getBufferMap()
+                        .get(key),
+                    i -> multiblock.getBufferMap()
+                        .put(key, i)));
         }
 
         syncManager.syncValue("currentRecipeParticleIDA", new IntSyncValue(multiblock::getCurrentRecipeParticleIDA));
