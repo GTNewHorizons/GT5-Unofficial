@@ -18,8 +18,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 
-import gregtech.common.gui.modularui.multiblock.MTELargeBoilerGui;
-import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -606,8 +604,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
 
     public abstract int getMaxCooldownTicks();
 
-    //@Override
-    //protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-    //    return new MTELargeBoilerGui(this);
-    //}
+    // @Override
+    // protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+    // return new MTELargeBoilerGui(this);
+    // }
 }
