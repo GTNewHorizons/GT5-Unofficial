@@ -119,7 +119,7 @@ public enum Particle {
 
     public static Particle getParticleFromId(int id) {
         if (id >= VALUES.length || id < 0) {
-            throw new IllegalArgumentException("Invalid particleId:" + id);
+            throw new IllegalArgumentException("Invalid particleId: " + id);
         }
         return VALUES[id];
     }
