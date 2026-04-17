@@ -20,7 +20,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLog;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -38,21 +37,18 @@ public class AchievementHandler {
     private static final String aBaseAchievementName = "gtpp.start";
 
     public AchievementHandler() {
-
-        Logger.INFO("Initializing GT++ achievements");
-        GTLog.out.println("Initializing GT++ achievements");
-
         // register first
         this.registerAchievement(
             aBaseAchievementName,
             0,
             0,
-            MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(
-                MetaGeneratedGregtechTools.ANGLE_GRINDER,
-                1,
-                Materials.Osmium,
-                Materials.Osmium,
-                null),
+            MetaGeneratedGregtechTools.getInstance()
+                .getToolWithStats(
+                    MetaGeneratedGregtechTools.ANGLE_GRINDER,
+                    1,
+                    Materials.Osmium,
+                    Materials.Osmium,
+                    null),
             "",
             true);
 
@@ -139,13 +135,7 @@ public class AchievementHandler {
             GregtechItemList.Industrial_Sifter.get(1),
             "dust.eglin",
             false);
-        this.registerAchievement(
-            "multi.cokeoven",
-            -13,
-            -7,
-            GregtechItemList.Industrial_CokeOven.get(1),
-            "multi.abs",
-            false);
+        this.registerAchievement("multi.cokeoven", -13, -7, ItemList.IndustrialCokeOven.get(1), "multi.abs", false);
         this.registerAchievement(
             "multi.boiler.thermal",
             -12,

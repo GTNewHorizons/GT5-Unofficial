@@ -110,6 +110,8 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         .customOptional("iconsets/TFFT_ACTIVE_GLOW");
     public ArrayList<MTEHatchTurbine> turbineRotorHatchList = new ArrayList<>();
 
+    private int ticker = 1; // just increments and drains (amountToDrain) of the given
+
     private boolean staticAnimations = false;
     // spotless:off
 
@@ -731,8 +733,6 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         }
         return parallels > 0 ? parallels : 1; // if its 1, something messed up lol, just a failsafe in case i mess up
     }
-
-    private int ticker = 1; // just increments and drains (amountToDrain) of the given
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
