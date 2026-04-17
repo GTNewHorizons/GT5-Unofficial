@@ -7,6 +7,7 @@ import static gtnhlanth.common.beamline.Particle.getParticleFromId;
 
 import java.util.Map;
 
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -39,14 +40,13 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        Map<Integer, Integer> bufferMap = multiblock.getBufferMap();
-        for (Integer key : bufferMap.keySet()) {
-            syncManager.syncValue("particleID" + key, new IntSyncValue(() -> key));
-        }
-        for (Integer key : bufferMap.keySet()) {
+
+        for (Particle particle : Particle.VALUES) {
+            int key = particle.getId();
+
             syncManager.syncValue(
                 "valueID" + key,
-                new IntSyncValue(() -> multiblock.bufferMap.get(key), i -> multiblock.bufferMap.put(key, i)));
+                new IntSyncValue(() -> multiblock.getBufferMap().get(key), i -> multiblock.getBufferMap().put(key, i)));
         }
 
         syncManager.syncValue("currentRecipeParticleIDA", new IntSyncValue(multiblock::getCurrentRecipeParticleIDA));
@@ -56,7 +56,7 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
 
-        Map<Integer, Integer> bufferMap = multiblock.getBufferMap();
+        Int2IntOpenHashMap bufferMap = multiblock.getBufferMap();
         ListWidget<IWidget, ?> outputWidget = new ListWidget<>().widthRel(1)
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
@@ -76,7 +76,9 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
             new TextWidget<>(guiHeaderKeyBuffer).marginTop(4)
                 .marginBottom(4));
 
-        for (Integer key : bufferMap.keySet()) {
+        for (Particle particle : Particle.VALUES) {
+
+            int key = particle.getId();
 
             IntSyncValue valueSync = syncManager.findSyncHandler("valueID" + key, IntSyncValue.class);
 

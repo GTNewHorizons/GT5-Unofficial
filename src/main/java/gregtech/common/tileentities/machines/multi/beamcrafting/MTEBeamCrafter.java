@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -73,7 +74,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     private int activeParallel = 1;
 
-    public Map<Integer, Integer> bufferMap = new HashMap<>();
+    public Int2IntOpenHashMap bufferMap = new Int2IntOpenHashMap();
     private boolean bufferMapInitialized = false;
 
     private GTRecipe lastRecipe;
@@ -107,8 +108,8 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     private void initBufferMapIfNeeded() {
         if (bufferMapInitialized) return;
-        for (int i = 0; i < Particle.VALUES.length; i++) {
-            bufferMap.put(i, 0);
+        for (Particle particle : Particle.VALUES) {
+            bufferMap.put(particle.getId(), 0);
         }
         bufferMapInitialized = true;
     }
@@ -512,7 +513,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         return new MTEBeamCrafterGui(this);
     }
 
-    public Map<Integer, Integer> getBufferMap() {
+    public Int2IntOpenHashMap getBufferMap() {
         return bufferMap;
     }
 
