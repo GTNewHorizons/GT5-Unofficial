@@ -24,6 +24,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import org.jetbrains.annotations.NotNull;
 
+import appeng.api.storage.data.IAEFluidStack;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -35,12 +36,10 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-
-import appeng.api.storage.data.IAEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.CondensateType;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -158,7 +157,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                 AdvancedFusionCoilII),
             null);
 
-        tt.toolTipFinisher(GTValues.AuthorPineapple);
+        tt.toolTipFinisher(GTAuthors.AuthorPineapple);
 
         return tt;
     }

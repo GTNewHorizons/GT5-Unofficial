@@ -29,9 +29,8 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-
 import gregtech.api.enums.CondensateType;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
@@ -170,7 +169,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
         tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.becConnectorHatch.get(1));
         tt.addAllCasingInfo();
 
-        tt.toolTipFinisher(GTValues.AuthorPineapple);
+        tt.toolTipFinisher(GTAuthors.AuthorPineapple);
 
         return tt;
     }

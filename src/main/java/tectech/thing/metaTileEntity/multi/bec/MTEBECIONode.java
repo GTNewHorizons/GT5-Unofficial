@@ -54,6 +54,7 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.util.item.AEFluidStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.CondensateType;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.NaniteTier;
@@ -184,7 +185,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         tt.beginStructureBlock();
         tt.addAllCasingInfo();
 
-        tt.toolTipFinisher(GTValues.AuthorPineapple);
+        tt.toolTipFinisher(GTAuthors.AuthorPineapple);
 
         return tt;
     }

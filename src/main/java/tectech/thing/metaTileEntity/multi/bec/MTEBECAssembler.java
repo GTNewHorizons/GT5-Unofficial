@@ -42,6 +42,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import appeng.api.storage.data.IAEFluidStack;
 import gregtech.api.enums.CondensateType;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.NaniteTier;
@@ -131,7 +132,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.becConnectorHatch.get(1));
         tt.addAllCasingInfo();
 
-        tt.toolTipFinisher(GTValues.AuthorPineapple);
+        tt.toolTipFinisher(GTAuthors.AuthorPineapple);
 
         return tt;
     }

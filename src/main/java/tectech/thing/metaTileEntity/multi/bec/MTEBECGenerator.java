@@ -23,6 +23,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import appeng.util.item.AEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -101,7 +102,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
                 ElectromagneticWaveguide),
             null);
 
-        tt.toolTipFinisher(GTValues.AuthorPineapple);
+        tt.toolTipFinisher(GTAuthors.AuthorPineapple);
 
         return tt;
     }
