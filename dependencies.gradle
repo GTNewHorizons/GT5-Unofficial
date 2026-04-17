@@ -56,7 +56,7 @@ dependencies {
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Infernal-Mobs:1.10.3-GTNH:dev")
 
-    devOnlyNonPublishable("com.github.GTNewHorizons:Avaritia:1.93:dev")
+    devOnlyNonPublishable("com.github.GTNewHorizons:Avaritia:1.94:dev")
 
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.9:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.57:dev") { transitive = false }
@@ -73,7 +73,7 @@ dependencies {
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.27:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.9.12:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:EnderCore:0.5.12:dev") { transitive = false }
-    compileOnly('com.github.GTNewHorizons:VisualProspecting:1.5.18:dev') { transitive = false }
+    compileOnly('com.github.GTNewHorizons:VisualProspecting:1.5.19:dev') { transitive = false }
     compileOnly("com.github.GTNewHorizons:Galaxy-Space-GTNH:1.1.133-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Hardcore-Ender-Expansion:1.12.21-GTNH:dev") { transitive = false }
 
@@ -91,7 +91,7 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.5.8-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
     compileOnly rfg.deobf('curse.maven:minefactory-reloaded-66672:2366150')
-    compileOnly("com.github.GTNewHorizons:OpenComputers:1.12.33-GTNH:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:OpenComputers:1.12.34-GTNH:dev") {transitive = false}
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     compileOnlyApi rfg.deobf('curse.maven:advsolar-362768:2885953')
     compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.41-GTNH:dev') {transitive =  false}
@@ -103,7 +103,7 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:SC2:2.3.13:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.6.24:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
-    devOnlyNonPublishable('com.github.GTNewHorizons:BlockRenderer6343:1.4.8:dev'){transitive=false}
+    devOnlyNonPublishable('com.github.GTNewHorizons:BlockRenderer6343:1.4.9:dev'){transitive=false}
 
     compileOnly("com.google.auto.value:auto-value-annotations:1.10.1") { transitive = false }
     annotationProcessor("com.google.auto.value:auto-value:1.10.1")
@@ -141,7 +141,10 @@ dependencies {
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Electro-Magic-Tools:1.7.20:dev") { transitive = false }
 
     // For testing ctm
+    devOnlyNonPublishable('com.github.GTNewHorizons:worldedit-gtnh:v0.0.9')
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.1.17:dev') { transitive = false }
+    devOnlyNonPublishable("com.github.GTNewHorizons:ModernMarkings:0.3.12-1.7.10:dev")
+
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("com.github.GTNewHorizons:CoreTweaks:0.3.4.1-GTNH"))
