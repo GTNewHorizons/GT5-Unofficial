@@ -60,7 +60,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     private static final int MAX_BUFFER = 2_000_000_000;
     private static final int MAX_PARALLEL = 1024;
-    private static final int BEAM_AMOUNT_TO_BUFFER_FACTOR = 1;
 
     private static final String NBT_KEY_DESCRIPTOR = "KEY";
     private static final String NBT_VALUE_DESCRIPTOR = "VALUE";
@@ -304,8 +303,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5"))
             .addInfo(
                 StatCollector.translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6",
-                    BEAM_AMOUNT_TO_BUFFER_FACTOR))
+                    "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6"))
             .addInfo(
                 StatCollector.translateToLocalFormatted(
                     "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7",
@@ -383,7 +381,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             int id = inputParticle.getParticleId();
             int rate = inputParticle.getRate();
 
-            int newAmount = bufferMap.getOrDefault(id, 0) + BEAM_AMOUNT_TO_BUFFER_FACTOR * rate;
+            int newAmount = bufferMap.getOrDefault(id, 0) + rate;
             bufferMap.put(id, Math.min(newAmount, MAX_BUFFER));
             this.mInputBeamline.get(n)
                 .setContents(null);
