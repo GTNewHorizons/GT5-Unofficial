@@ -124,18 +124,18 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             int particleID = entry.getKey();
             int particleBuffer = entry.getValue();
 
-            aNBT.setInteger(NBT_KEY_DESCRIPTOR + particleID, particleID);
             aNBT.setInteger(NBT_VALUE_DESCRIPTOR + particleID, particleBuffer);
         }
     }
 
     public void loadInputMapFromNBT(NBTTagCompound aNBT, Map<Integer, Integer> map) {
         for (Particle p : Particle.VALUES) {
-            final int particleID = p.getId();
-            if (!aNBT.hasKey(NBT_KEY_DESCRIPTOR + particleID)) continue;
-            // assume that if key exists, value exists as well
-            // can skip the key nbt mapping, as the particle is in NBT
-            map.put(particleID, aNBT.getInteger(NBT_VALUE_DESCRIPTOR + particleID));
+            int particleID = p.getId();
+
+            String valueKey = NBT_VALUE_DESCRIPTOR + particleID;
+
+            if (!aNBT.hasKey(valueKey)) continue;
+            map.put(particleID, aNBT.getInteger(valueKey));
 
         }
     }
