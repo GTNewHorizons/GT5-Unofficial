@@ -309,6 +309,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
 
     private void cumulateStoredBeamPacket() {
         BeamInformation inputParticle = getNthInputParticle(0);
+        if (inputParticle.getEnergy() == 0) return;
 
         if (this.storedBeamEnergy == inputParticle.getEnergy()
             && this.storedParticleID == inputParticle.getParticleId()) {
