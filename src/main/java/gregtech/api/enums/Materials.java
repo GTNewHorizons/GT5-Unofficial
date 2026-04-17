@@ -673,7 +673,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     // region Degree 2 Compounds
     public static Materials Aluminiumhydroxide;
     public static Materials Aluminiumoxide;
-    public static Materials Alumite;
     public static Materials Alunite;
     public static Materials Amethyst;
     public static Materials Apatite;
@@ -730,6 +729,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Niter;
     public static Materials NitroCoalFuel;
     public static Materials NitroFuel;
+    public static Materials Obzinite;
     public static Materials Olivine;
     public static Materials Opal;
     public static Materials Pentlandite;

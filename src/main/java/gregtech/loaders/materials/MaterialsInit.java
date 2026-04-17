@@ -9470,7 +9470,6 @@ public class MaterialsInit {
     private static void loadDegree2Compounds() {
         Materials.Aluminiumhydroxide = loadAluminiumHydroxide();
         Materials.Aluminiumoxide = loadAluminiumoxide();
-        Materials.Alumite = loadAlumite();
         Materials.Alunite = loadAlunite();
         Materials.Amethyst = loadAmethyst();
         Materials.Apatite = loadApatite();
@@ -9526,6 +9525,7 @@ public class MaterialsInit {
         Materials.Niter = loadNiter();
         Materials.NitroCoalFuel = loadNitroCoalFuel();
         Materials.NitroFuel = loadNitroFuel();
+        Materials.Obzinite = loadObzinite();
         Materials.Olivine = loadOlivine();
         Materials.Opal = loadOpal();
         Materials.Pentlandite = loadPentlandite();
@@ -9607,8 +9607,8 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadAlumite() {
-        return new MaterialBuilder().setName("Alumite")
+    private static Materials loadObzinite() {
+        return new MaterialBuilder().setName("Obzinite")
             .setDefaultLocalName("Obzinite")
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyePink)
