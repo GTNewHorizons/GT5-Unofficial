@@ -76,13 +76,13 @@ public class BeamCrafterMetadata {
         }
 
         public Builder amount_A(int amount_A) {
-            if (amount_A < 0) throw new IllegalArgumentException("'amount_A' must be greater than or equal to zero!");
+            if (amount_A <= 0) throw new IllegalArgumentException("'amount_A' must be greater than zero!");
             this.amount_A = amount_A;
             return this;
         }
 
         public Builder amount_B(int amount_B) {
-            if (amount_B < 0) throw new IllegalArgumentException("'amount_B' must be greater than or equal to zero!");
+            if (amount_B <= 0) throw new IllegalArgumentException("'amount_B' must be greater than zero!");
             this.amount_B = amount_B;
             return this;
         }

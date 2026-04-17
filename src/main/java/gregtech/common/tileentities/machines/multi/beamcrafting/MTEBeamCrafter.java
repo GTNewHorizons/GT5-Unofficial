@@ -369,11 +369,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     }
 
     @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected void incrementProgressTime() {
 
         for (int n = 0; n < this.mInputBeamline.size(); n++) {
@@ -398,11 +393,14 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         int availableA = bufferMap.getOrDefault(recipeParticleIDA, 0);
         int availableB = bufferMap.getOrDefault(recipeParticleIDB, 0);
 
-        int neededA = this.activeParallel * (currentRecipeMaxAmountA - currentRecipeCurrentAmountA);
-        int neededB = this.activeParallel * (currentRecipeMaxAmountB - currentRecipeCurrentAmountB);
+        int neededA = currentRecipeMaxAmountA - currentRecipeCurrentAmountA;
+        int neededB = currentRecipeMaxAmountB - currentRecipeCurrentAmountB;
 
-        int consumedA = Math.min(availableA, neededA);
-        int consumedB = Math.min(availableB, neededB);
+        long maxConsumeA = (long) neededA * activeParallel;
+        long maxConsumeB = (long) neededB * activeParallel;
+
+        int consumedA = (int) Math.min(availableA, maxConsumeA);
+        int consumedB = (int) Math.min(availableB, maxConsumeB);
 
         bufferMap.put(recipeParticleIDA, availableA - consumedA);
         bufferMap.put(recipeParticleIDB, availableB - consumedB);
@@ -454,12 +452,11 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 
         // --- parallels ---
+        // limit number of parallels based on availability of items, fluids, and beams.
         int parallel = MAX_PARALLEL;
 
-        // limit by available items and fluids
         parallel = (int) (tRecipe.maxParallelCalculatedByInputs(parallel, inputFluids, inputItems));
 
-        // limit by beam buffer
         int availableA = bufferMap.getOrDefault(this.currentRecipeParticleIDA, 0);
         int availableB = bufferMap.getOrDefault(this.currentRecipeParticleIDB, 0);
 
@@ -483,7 +480,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 this.mOutputItems = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
             }
 
-            // multiply everything by parallel count
             for (ItemStack mOutputItem : this.mOutputItems) {
                 if (mOutputItem != null) {
                     mOutputItem.stackSize *= this.activeParallel;
