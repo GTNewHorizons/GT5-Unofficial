@@ -246,11 +246,6 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     }
 
     @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && f.isNotFlipped();
-    }
-
-    @Override
     public void clearHatches() {
         super.clearHatches();
         electrodeHatch = null;
