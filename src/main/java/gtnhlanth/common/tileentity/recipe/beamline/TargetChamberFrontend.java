@@ -4,11 +4,11 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 
 import java.util.List;
 
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import codechicken.nei.PositionedStack;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
@@ -26,6 +26,7 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
+    @Override
     public void drawDescription(RecipeDisplayInfo recipeInfo) {
         drawEnergyInfo(recipeInfo);
         // drawDurationInfo(recipeInfo);
@@ -35,24 +36,16 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    protected void drawNEIOverlayForInput(GTNEIDefaultHandler.FixedPositionedStack stack) {
-        if (stack.isNotConsumed()) { // The stack actually takes damage, but is technically still not considered to be
-                                     // consumed by the code
-            drawNEIOverlayText("PC", stack);
-        }
-    }
+    public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe recipe) {
 
-    @Override
-    protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
-        GTNEIDefaultHandler.FixedPositionedStack pStack) {
-        if (pStack.isNotConsumed()) { // See above
-            currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("gtnhlanth.tt.pc")); // Partially
-                                                                                                         // consumed:
-                                                                                                         // Takes damage
-                                                                                                         // in the
-                                                                                                         // process
+        for (PositionedStack pStack : recipe.mInputs) {
+            if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed && fixed.item.stackSize == 0) {
+                // The stack actually takes damage, but is technically still not considered to be consumed by the code
+                // Partially consumed: Takes damage in the process
+                fixed.setCustomBadge("PC", StatCollector.translateToLocal("gtnhlanth.tt.pc"));
+            }
         }
-        return currentTip;
+
     }
 
     @Override

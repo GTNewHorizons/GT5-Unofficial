@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.forestry.bees.handler;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.material.Material;
@@ -12,9 +13,8 @@ public enum GTPPPropolisType {
     DRAGONBLOOD(0, "Dragonblood", true, Utils.rgbtoHexValue(220, 20, 20)),
     FORCE(1, "Force", true, Utils.rgbtoHexValue(250, 250, 20));
 
-    public boolean mShowInList;
+    public final boolean mShowInList;
     public final Material mMaterial;
-    public int mChance;
     public final int mID;
 
     private final String mName;
@@ -43,12 +43,12 @@ public enum GTPPPropolisType {
         GTLanguageManager.addStringLocalization("gtplusplus.propolis." + this.mNameUnlocal, this.mName + " Propolis");
     }
 
-    public void setHidden() {
-        this.mShowInList = false;
+    public String getLocalizedName() {
+        return StatCollector.translateToLocal("gtplusplus.propolis." + this.mNameUnlocal);
     }
 
     public String getName() {
-        return GTLanguageManager.getTranslation("gtplusplus.propolis." + this.mNameUnlocal);
+        return this.mName + " Propolis";
     }
 
     public int getColours() {

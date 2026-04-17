@@ -217,9 +217,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             env,
             true);
         if (built == -1) {
-            GTUtility.sendChatToPlayer(
-                env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
+            GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done.water");
             return 0;
         }
         return built;
@@ -236,6 +234,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
     }
 
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingCount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
@@ -270,18 +269,18 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             .addSeparator()
             .addInfo(
                 "Supply with " + EnumChatFormatting.WHITE
-                    + INPUT_CHEMICAL.mLocalizedName
+                    + addFormattedString(INPUT_CHEMICAL.getLocalizedName())
                     + EnumChatFormatting.GRAY
                     + " to operate")
             .addInfo(
                 "Outputs " + EnumChatFormatting.WHITE
-                    + OUTPUT_WASTE.mLocalizedName
+                    + addFormattedString(OUTPUT_WASTE.getLocalizedName())
                     + EnumChatFormatting.GRAY
                     + " that can be recycled")
             .addSeparator()
             .addInfo(
                 "During operation, will consume ALL " + EnumChatFormatting.WHITE
-                    + INPUT_CHEMICAL.mLocalizedName
+                    + addFormattedString(INPUT_CHEMICAL.getLocalizedName())
                     + EnumChatFormatting.GRAY
                     + " in the input hatch")
             .addInfo(
@@ -291,13 +290,13 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + "of "
                     + EnumChatFormatting.WHITE
-                    + INPUT_CHEMICAL.mLocalizedName
+                    + addFormattedString(INPUT_CHEMICAL.getLocalizedName())
                     + EnumChatFormatting.GRAY
                     + " consumed")
             .addInfo(
                 "gain an additive " + EnumChatFormatting.RED
                     + SUCCESS_PER_LEVEL
-                    + "%"
+                    + "%%"
                     + EnumChatFormatting.GRAY
                     + " increase to success. If total fluid supplied is not")
             .addInfo(
@@ -457,7 +456,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         infoData.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.purification_unit_flocculation.consumed",
-                INPUT_CHEMICAL.mLocalizedName,
+                INPUT_CHEMICAL.getLocalizedName(),
                 "" + EnumChatFormatting.RED + inputFluidConsumed));
         return infoData.toArray(new String[] {});
     }

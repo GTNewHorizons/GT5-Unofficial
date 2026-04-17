@@ -50,7 +50,9 @@ public abstract class MTETooltipMultiBlockBase extends MTEMultiBlockBase impleme
         });
     }
 
-    protected MultiblockTooltipBuilder getTooltip() {
+    protected abstract MultiblockTooltipBuilder createTooltip();
+
+    protected final MultiblockTooltipBuilder getTooltip() {
         int tId = getBaseMetaTileEntity().getMetaTileID();
         MultiblockTooltipBuilder tooltip = tooltips.get(tId);
         if (tooltip == null) {
@@ -60,23 +62,23 @@ public abstract class MTETooltipMultiBlockBase extends MTEMultiBlockBase impleme
         return tooltip;
     }
 
-    protected abstract MultiblockTooltipBuilder createTooltip();
-
     @Override
-    public String[] getDescription() {
+    public final String[] getDescription() {
         return getCurrentDescription();
     }
 
     @Override
-    public boolean isDisplaySecondaryDescription() {
-        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-    }
-
-    public String[] getPrimaryDescription() {
+    public final String[] getPrimaryDescription() {
         return getTooltip().getInformation();
     }
 
-    public String[] getSecondaryDescription() {
+    @Override
+    public final String[] getSecondaryDescription() {
         return getTooltip().getStructureInformation();
+    }
+
+    @Override
+    public final boolean isDisplaySecondaryDescription() {
+        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
     }
 }

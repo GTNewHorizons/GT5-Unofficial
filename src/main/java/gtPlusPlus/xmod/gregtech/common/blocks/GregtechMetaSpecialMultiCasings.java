@@ -14,11 +14,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine.LargeTurbineTextureHandler;
 
 public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbstract {
 
@@ -36,27 +34,6 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 
     public GregtechMetaSpecialMultiCasings() {
         super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.1", MaterialCasings.INSTANCE);
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Turbine Shaft");
-        GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + ".1.name", "Reinforced Steam Turbine Casing");
-        GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + ".2.name", "Reinforced HP Steam Turbine Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Reinforced Gas Turbine Casing");
-        GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + ".4.name", "Reinforced Plasma Turbine Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Tesla Containment Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Structural Solar Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Salt Containment Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Thermally Insulated Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Flotation Cell Casings");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Reinforced Engine Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Molecular Containment Casing");
-        GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + ".12.name", "High Voltage Current Capacitor");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Particle Containment Casing");
-        GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + ".14.name", "Reinforced Heat Exchanger Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Reinforced SC Turbine Casing");
         TAE.registerTexture(1, 12, TextureFactory.of(this, 14));
 
         GregtechItemList.Casing_Turbine_Shaft.set(new ItemStack(this, 1, 0));
@@ -80,8 +57,11 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
         final int ordinalSide) {
-        return LargeTurbineTextureHandler
-            .handleCasingsGT(aWorld, xCoord, yCoord, zCoord, ForgeDirection.getOrientation(ordinalSide), this);
+        final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
+        return getStaticIcon(
+            ForgeDirection.getOrientation(ordinalSide)
+                .ordinal(),
+            tMeta);
     }
 
     @Override
@@ -91,7 +71,7 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 
     public static IIcon getStaticIcon(final int ordinalSide, final int aMeta) {
         return switch (aMeta) {
-            case 0 -> TexturesGtBlock.Casing_Redox_1.getIcon();
+            case 0 -> Textures.BlockIcons.CASING_REDOX_EV.getIcon();
             case 1 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STEEL.getIcon();
             case 2 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TITANIUM.getIcon();
             case 3 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STAINLESSSTEEL.getIcon();
@@ -103,8 +83,8 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
             case 9 -> TexturesGtBlock.TEXTURE_CASING_FLOTATION.getIcon();
             case 10, 14 -> TexturesGtBlock.Casing_Material_Talonite.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
-            case 12 -> TexturesGtBlock.Casing_Redox_5.getIcon();
-            case 13 -> TexturesGtBlock.TEXTURE_MAGIC_PANEL_B.getIcon();
+            case 12 -> Textures.BlockIcons.CASING_REDOX_UV.getIcon();
+            case 13 -> Textures.BlockIcons.PARTICLE_CONTAINMENT_CASING.getIcon();
             case 15 -> TexturesGtBlock.Turbine_SC_Material_Casing.getIcon();
             default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
         };

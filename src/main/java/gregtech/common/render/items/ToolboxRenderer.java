@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.IItemRenderer;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import gregtech.api.enums.ToolboxSlot;
@@ -26,9 +27,7 @@ public class ToolboxRenderer implements IItemRenderer {
         return type == ItemRenderType.EQUIPPED_FIRST_PERSON && itemStack != null
             && itemStack.getItem() instanceof ItemGTToolbox
             && (ToolboxUtil.getSelectedToolType(itemStack)
-                .isPresent()
-                || itemStack.getTagCompound()
-                    .hasKey(ItemGTToolbox.BROKEN_TOOL_ANIMATION_END_KEY));
+                .isPresent() || (ItemStackNBT.hasKey(itemStack, ItemGTToolbox.BROKEN_TOOL_ANIMATION_END_KEY)));
     }
 
     @Override
@@ -44,17 +43,15 @@ public class ToolboxRenderer implements IItemRenderer {
             META_TOOL_RENDERER.renderItem(type, selectedTool.get(), data);
         } else {
             // Renders a slowly blinking outline of the tool the user most recently broke.
-            final NBTTagCompound tag = toolbox.hasTagCompound() ? toolbox.getTagCompound() : new NBTTagCompound();
-            if (tag.hasKey(ItemGTToolbox.BROKEN_TOOL_ANIMATION_END_KEY) && data[1] instanceof final EntityPlayer player) {
+            final NBTTagCompound tag = toolbox.getTagCompound();
+            if (tag != null && tag.hasKey(ItemGTToolbox.BROKEN_TOOL_ANIMATION_END_KEY) && data[1] instanceof final EntityPlayer player) {
                 ToolboxSlot.getBySlot(tag.getInteger(ItemGTToolbox.RECENTLY_BROKEN_SLOT_KEY)).ifPresent(slot -> {
                     final long ticksRemaining = tag.getLong(ItemGTToolbox.BROKEN_TOOL_ANIMATION_END_KEY) - player.getEntityWorld().getTotalWorldTime();
-
                     if ((ticksRemaining % 20) / 10 == 0 && slot.getIcon().isPresent()) {
                         ItemRenderUtil.renderItem(type, slot.getIcon().get());
                     }
                 });
             }
         }
-
     }
 }

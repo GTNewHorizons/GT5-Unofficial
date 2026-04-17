@@ -3,13 +3,17 @@ package gregtech.api.enums;
 import static gregtech.api.enums.GTValues.NI;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
+import java.util.List;
 import java.util.Locale;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.fluids.Fluid;
+
+import com.google.common.collect.ImmutableList;
 
 import gregtech.GTMod;
 import gregtech.api.interfaces.IItemContainer;
@@ -2072,6 +2076,7 @@ public enum ItemList implements IItemContainer {
     Machine_HV_LightningRod,
     Machine_EV_LightningRod,
 
+    Machine_ULV_SolarPanel,
     Machine_LV_SolarPanel,
     Machine_MV_SolarPanel,
     Machine_HV_SolarPanel,
@@ -2091,6 +2096,11 @@ public enum ItemList implements IItemContainer {
     ZPM_Coil,
     UV_Coil,
     UHV_Coil,
+    UEV_Coil,
+    UIV_Coil,
+    UMV_Coil,
+    UXV_Coil,
+    MAX_Coil,
 
     Circuit_Parts_ResistorXSMD,
     Circuit_Parts_DiodeXSMD,
@@ -2182,6 +2192,8 @@ public enum ItemList implements IItemContainer {
     CasingThaumium,
     CasingVoid,
     CasingIchorium,
+    CasingMixer,
+    FormingCore,
     EntropicProcessor,
     DecayWarehouse,
     LATEX,
@@ -2811,9 +2823,9 @@ public enum ItemList implements IItemContainer {
     AdvancedImplosionCompressor,
     IndustrialArcFurnace,
     IndustrialExtruder,
-    IndustrialWasher,
+    OreWashingPlant,
     IndustrialChemicalBath,
-    IndustrialMaterialPress,
+    IndustrialFormingPress,
     IndustrialBendingMachine,
     IndustrialPrinter,
     IndustrialForgeHammer,
@@ -2827,7 +2839,7 @@ public enum ItemList implements IItemContainer {
     ElectricImplosionCompressor,
     IntegratedOreFactory,
     CryogenicFreezer,
-
+    IndustrialMixer,
     MegaChemicalReactor,
 
     BasicCircuitBoard,
@@ -3038,6 +3050,13 @@ public enum ItemList implements IItemContainer {
     public static Fluid sOilExtraHeavy, sEpichlorhydrin, sDrillingFluid, sBlueVitriol, sNickelSulfate, sGreenVitriol,
         sToluene, sNitrationMixture, sRocketFuel, sHydricSulfur, sIndiumConcentrate, sLeadZincSolution,
         sHydrochloricAcid;
+    public static final List<ItemList> FORESTRY_DECORATIVE_PLANKS = ImmutableList.copyOf(
+        new ItemList[] { ItemList.Plank_Larch, ItemList.Plank_Teak, ItemList.Plank_Acacia_Green, ItemList.Plank_Lime,
+            ItemList.Plank_Chestnut, ItemList.Plank_Wenge, ItemList.Plank_Baobab, ItemList.Plank_Sequoia,
+            ItemList.Plank_Kapok, ItemList.Plank_Ebony, ItemList.Plank_Mahagony, ItemList.Plank_Balsa,
+            ItemList.Plank_Willow, ItemList.Plank_Walnut, ItemList.Plank_Greenheart, ItemList.Plank_Cherry,
+            ItemList.Plank_Mahoe, ItemList.Plank_Poplar, ItemList.Plank_Palm, ItemList.Plank_Papaya,
+            ItemList.Plank_Pine, ItemList.Plank_Plum, ItemList.Plank_Maple, ItemList.Plank_Citrus });
     private ItemStack mStack;
     private boolean mHasNotBeenSet;
     private boolean mDeprecated;
@@ -3165,8 +3184,8 @@ public enum ItemList implements IItemContainer {
 
         // Construct a translation key from UnlocalizedName and CamelCased DisplayName
         final String tKey = rStack.getUnlocalizedName() + ".with." + tCamelCasedDisplayNameBuilder + ".name";
-
-        rStack.setStackDisplayName(GTLanguageManager.addStringLocalization(tKey, aDisplayName));
+        GTLanguageManager.addStringLocalization(tKey, aDisplayName);
+        rStack.setStackDisplayName(StatCollector.translateToLocal(tKey));
         return GTUtility.copyAmount(aAmount, rStack);
     }
 

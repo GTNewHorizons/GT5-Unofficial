@@ -421,24 +421,19 @@ public class GTRecipeConstants {
         if (wafer == null) return builder.addTo(RecipeMaps.laserEngraverRecipes);
         switch (wafer) {
             case Naquadah -> {
-                ArrayList<ItemStack> items = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
-                ItemStack[] itemInputs = items.toArray(new ItemStack[] {});
                 // Naquadah wafers can use grade 1-2 purified water for a bonus, otherwise use distilled so we don't
                 // have to
                 // deal with circuits
                 return GTUtility.concat(
                     builder.copy()
-                        .itemInputs(itemInputs)
                         .fluidInputs(ArrayUtils.addAll(builder.fluidInputs, GTModHandler.getDistilledWater(100L)))
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .itemInputs(itemInputs)
                         .fluidInputs(
                             ArrayUtils.addAll(builder.fluidInputs, Materials.Grade1PurifiedWater.getFluid(100L)))
                         .duration(halfBoostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .itemInputs(itemInputs)
                         .fluidInputs(
                             ArrayUtils.addAll(builder.fluidInputs, Materials.Grade2PurifiedWater.getFluid(100L)))
                         .duration(boostedRecipeTime)

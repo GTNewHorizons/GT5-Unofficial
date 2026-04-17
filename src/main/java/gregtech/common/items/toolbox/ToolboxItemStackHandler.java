@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -20,9 +19,11 @@ import gregtech.common.items.ItemGTToolbox;
 public class ToolboxItemStackHandler extends ItemStackHandler {
 
     private final int currentTool;
+    private final ItemStack toolboxStack;
 
     public ToolboxItemStackHandler(final ItemStack toolbox) {
         super(ToolboxSlot.values().length);
+        this.toolboxStack = toolbox;
         int currentTool = ItemGTToolbox.NO_TOOL_SELECTED;
 
         Objects.requireNonNull(toolbox);
@@ -35,17 +36,11 @@ public class ToolboxItemStackHandler extends ItemStackHandler {
             if (itemData.hasKey(ItemGTToolbox.CONTENTS_KEY)) {
                 deserializeNBT(itemData.getCompoundTag(ItemGTToolbox.CONTENTS_KEY));
             }
-
             if (itemData.hasKey(ItemGTToolbox.CURRENT_TOOL_KEY)) {
                 currentTool = itemData.getInteger(ItemGTToolbox.CURRENT_TOOL_KEY);
             }
         }
-
         this.currentTool = currentTool;
-    }
-
-    public ToolboxItemStackHandler(EntityPlayer player, int slot) {
-        this(player.inventory.getStackInSlot(slot));
     }
 
     @Override
@@ -93,4 +88,8 @@ public class ToolboxItemStackHandler extends ItemStackHandler {
         setStackInSlot(currentTool, newStack);
     }
 
+    @Override
+    protected void onContentsChanged(final int slot) {
+        ToolboxUtil.saveToolbox(toolboxStack, this);
+    }
 }

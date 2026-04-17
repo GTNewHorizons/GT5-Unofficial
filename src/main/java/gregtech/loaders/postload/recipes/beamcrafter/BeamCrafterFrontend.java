@@ -40,7 +40,6 @@ public class BeamCrafterFrontend extends RecipeMapFrontend {
     public void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         if (recipeInfo.calculator.getConsumption() <= 0) return;
         recipeInfo.drawText(getEUtDisplay(recipeInfo.calculator));
-        recipeInfo.drawText(getAmperageString(recipeInfo.calculator));
 
     }
 
@@ -65,25 +64,17 @@ public class BeamCrafterFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        List<Pos2d> positions = ImmutableList.of(new Pos2d(70, -6), new Pos2d(90, -6));
-
+    public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe recipe) {
+        final List<Pos2d> positions = ImmutableList.of(new Pos2d(70, -6), new Pos2d(90, -6));
         int i = 0;
-        for (PositionedStack stack : neiCachedRecipe.mInputs) {
+
+        for (PositionedStack stack : recipe.mInputs) {
             if (isParticle(stack.item)) {
                 stack.relx = (int) positions.get(i)
                     .getX();
                 stack.rely = (int) positions.get(i)
                     .getY();
-                drawNEIOverlayForInput((GTNEIDefaultHandler.FixedPositionedStack) stack);
                 i++;
-            } else if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
-                drawNEIOverlayForInput((GTNEIDefaultHandler.FixedPositionedStack) stack);
-            }
-        }
-        for (PositionedStack stack : neiCachedRecipe.mOutputs) {
-            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
-                drawNEIOverlayForOutput((GTNEIDefaultHandler.FixedPositionedStack) stack);
             }
         }
 
@@ -95,10 +86,6 @@ public class BeamCrafterFrontend extends RecipeMapFrontend {
             "GT5U.nei.display.usage",
             formatNumber(eut),
             GTUtility.getTierNameWithParentheses(eut));
-    }
-
-    private String getAmperageString(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", formatNumber(1));
     }
 
 }

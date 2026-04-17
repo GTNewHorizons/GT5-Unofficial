@@ -296,6 +296,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             .addSeparator();
 
         tt.beginStructureBlock();
+        tt.addController("Front center");
         tt.addAllCasingInfo();
 
         tt.addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH, "middle slice count");
@@ -406,5 +407,10 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mMaxProgresstime > 0));
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

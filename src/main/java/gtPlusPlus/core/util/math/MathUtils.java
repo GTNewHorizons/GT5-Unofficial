@@ -111,21 +111,6 @@ public class MathUtils {
         return Math.round(((current / max) * 100) * 100.00) / 100.00;
     }
 
-    /**
-     * Returns a percentage. The returned number is the % of X in Y. Supports Floats.
-     *
-     * @param current Current value.
-     * @param max     Maximim value. Must be greater than min.
-     * @return double between min and max, inclusive.
-     */
-    public static float findPercentage(final float current, final float max) {
-        return (float) (Math.round(((current / max) * 100) * 100.00) / 100.00);
-    }
-
-    public static int findPercentageOfInt(long input, float percentage) {
-        return (int) (input * (percentage / 100.0f));
-    }
-
     // Smooth Rounding Function
 
     /**

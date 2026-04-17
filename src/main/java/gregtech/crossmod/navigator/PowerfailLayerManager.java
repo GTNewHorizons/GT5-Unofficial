@@ -3,6 +3,9 @@ package gregtech.crossmod.navigator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.WorldClient;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,6 +21,7 @@ import com.gtnewhorizons.navigator.api.xaero.waypoints.XaeroWaypointManager;
 import gregtech.GTMod;
 import gregtech.common.data.GTPowerfailTracker;
 import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectCollection;
 
 public class PowerfailLayerManager extends InteractableLayerManager {
@@ -51,7 +55,11 @@ public class PowerfailLayerManager extends InteractableLayerManager {
     public void onUpdatePost(int chunkMinX, int chunkMaxX, int chunkMinZ, int chunkMaxZ) {
         super.onUpdatePost(chunkMinX, chunkMaxX, chunkMinZ, chunkMaxZ);
 
-        ObjectCollection<GTPowerfailTracker.Powerfail> pfs = GTMod.clientProxy().powerfailRenderer.powerfails.values();
+        WorldClient world = Minecraft.getMinecraft().theWorld;
+
+        ObjectCollection<GTPowerfailTracker.Powerfail> pfs = GTMod.clientProxy().powerfailRenderer.powerfails
+            .getOrDefault(world.provider.dimensionId, new Long2ObjectOpenHashMap<>())
+            .values();
 
         for (GTPowerfailTracker.Powerfail p : pfs) {
             long coord = p.getCoord();

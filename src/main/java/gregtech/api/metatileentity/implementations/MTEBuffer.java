@@ -303,10 +303,9 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         super.addAdditionalTooltipInformation(stack, tooltip);
-        if (!stack.hasTagCompound()) {
-            return;
+        if (stack.hasTagCompound()) {
+            addAdditionalTooltipInformation(stack.getTagCompound(), tooltip);
         }
-        addAdditionalTooltipInformation(stack.getTagCompound(), tooltip);
     }
 
     @Override
@@ -549,5 +548,10 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
                 .endAtSlot(26)
                 .build()
                 .setPos(7, 4));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

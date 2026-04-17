@@ -34,29 +34,20 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
 
     protected final int inputSlotCount;
     protected final int totalSlotCount;
-    protected final boolean allowDuplicateUsageTypes;
 
     public MTEHatchNbtConsumable(int aID, String aName, String aNameRegional, int aTier, int aInputSlots,
-        String aDescription, boolean aAllowDuplicateTypes) {
+        String aDescription) {
         super(aID, aName, aNameRegional, aTier, aInputSlots * 2, aDescription);
         inputSlotCount = getInputSlotCount();
         totalSlotCount = getInputSlotCount() * 2;
-        allowDuplicateUsageTypes = aAllowDuplicateTypes;
     }
 
     public MTEHatchNbtConsumable(String aName, int aTier, int aInputSlots, String[] aDescription,
-        boolean aAllowDuplicateTypes, ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInputSlots * 2, aDescription, aTextures);
         inputSlotCount = getInputSlotCount();
         totalSlotCount = getInputSlotCount() * 2;
-        allowDuplicateUsageTypes = aAllowDuplicateTypes;
     }
-
-    @Override
-    public abstract ITexture[] getTexturesActive(ITexture aBaseTexture);
-
-    @Override
-    public abstract ITexture[] getTexturesInactive(ITexture aBaseTexture);
 
     public abstract int getInputSlotCount();
 

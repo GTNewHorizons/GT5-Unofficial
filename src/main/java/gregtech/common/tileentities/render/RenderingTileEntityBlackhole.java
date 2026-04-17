@@ -86,6 +86,7 @@ public class RenderingTileEntityBlackhole extends AbstractRenderingTileEntity {
         return stability;
     }
 
+    @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setFloat(STABILITY_NBT_TAG, stability);

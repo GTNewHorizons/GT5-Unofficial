@@ -259,4 +259,9 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
             .setSize(18, 18)
             .setPos(xPos, yPos));
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

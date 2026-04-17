@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -251,7 +252,7 @@ public class MTEHatchCokeOven extends MTEHatch {
         return switch (mode) {
             case Input -> new int[] { MTECokeOven.INPUT_SLOT };
             case OutputItem -> new int[] { MTECokeOven.OUTPUT_SLOT };
-            default -> null;
+            default -> GTValues.emptyIntArray;
         };
     }
 
@@ -313,10 +314,12 @@ public class MTEHatchCokeOven extends MTEHatch {
         };
     }
 
+    @Override
     public ITexture[] getTexturesActive(ITexture baseTexture) {
         return null;
     }
 
+    @Override
     public ITexture[] getTexturesInactive(ITexture baseTexture) {
         return null;
     }
