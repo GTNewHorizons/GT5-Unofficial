@@ -1,6 +1,5 @@
 package toxiceverglades;
 
-import static gregtech.api.enums.Mods.GTPlusPlusEverglades;
 import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_HIGH;
 import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_LOW;
 import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_MID;
@@ -10,11 +9,9 @@ import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.GT_Version;
 import gregtech.api.enums.Mods;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialsOres;
 import toxiceverglades.biome.BiomeEverglades;
@@ -42,7 +39,6 @@ public class GTPPEverglades {
     // Pre-Init
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
-        Logger.INFO("Loading " + GTPlusPlusEverglades.ID + " V" + VERSION);
 
         // Setup
         setVars(event);
@@ -57,7 +53,6 @@ public class GTPPEverglades {
 
     @EventHandler
     public void load(final FMLInitializationEvent e) {
-        Logger.INFO("Begin resource allocation for " + GTPlusPlusEverglades.ID + " V" + VERSION);
 
         // Load World and Biome
         getEvergladesBiome().load();
@@ -148,13 +143,7 @@ public class GTPPEverglades {
         if (DimensionManager.isDimensionRegistered(DimensionEverglades.DIMID)) {
             DimensionEverglades.DIMID = DimensionManager.getNextFreeDimId();
         }
-
         DarkWorldContentLoader.run();
-    }
-
-    @EventHandler
-    public static void postInit(final FMLPostInitializationEvent e) {
-        Logger.INFO("Finished loading Everglades plugin for GT++.");
     }
 
     public static synchronized BiomeEverglades getEvergladesBiome() {

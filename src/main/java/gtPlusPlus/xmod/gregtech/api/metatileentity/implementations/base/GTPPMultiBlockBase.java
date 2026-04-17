@@ -2,13 +2,11 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import static gregtech.api.util.GTUtility.validMTEList;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -76,11 +74,7 @@ import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
-import gtPlusPlus.GTplusplus;
-import gtPlusPlus.GTplusplus.INIT_PHASE;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
@@ -95,8 +89,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {
-
-    public static final boolean DEBUG_DISABLE_CORES_TEMPORARILY = true;
 
     public GTRecipe mLastRecipe;
 
@@ -118,18 +110,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         super(aName);
     }
 
-    private static int toStackCount(Entry<ItemStack, Integer> e) {
-        int tMaxStackSize = e.getKey()
-            .getMaxStackSize();
-        int tStackSize = e.getValue();
-        return (tStackSize + tMaxStackSize - 1) / tMaxStackSize;
-    }
-
     public abstract String getMachineType();
-
-    public String[] getExtraInfoData() {
-        return GTValues.emptyStringArray;
-    }
 
     public long getStoredEnergyInAllEnergyHatches() {
         long storedEnergy = 0;
@@ -147,66 +128,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 .getEUCapacity();
         }
         return maxEnergy;
-    }
-
-    public long getStoredEnergyInAllDynamoHatches() {
-        long storedEnergy = 0;
-        for (MTEHatch tHatch : validMTEList(mAllDynamoHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-        }
-        return storedEnergy;
-    }
-
-    public long getMaxEnergyStorageOfAllDynamoHatches() {
-        long maxEnergy = 0;
-        for (MTEHatch tHatch : validMTEList(mAllDynamoHatches)) {
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
-        return maxEnergy;
-    }
-
-    private String[] aCachedToolTip;
-
-    /*
-     * private final String aRequiresMuffler = "1x Muffler Hatch"; private final String aRequiresCoreModule =
-     * "1x Core Module"; private final String aRequiresMaint = "1x Maintanence Hatch";
-     */
-
-    public static final String TAG_HIDE_HATCHES = "TAG_HIDE_HATCHES";
-    public static final String TAG_HIDE_MAINT = "TAG_HIDE_MAINT";
-    public static final String TAG_HIDE_POLLUTION = "TAG_HIDE_POLLUTION";
-    public static final String TAG_HIDE_MACHINE_TYPE = "TAG_HIDE_MACHINE_TYPE";
-
-    /**
-     * A Static {@link Method} object which holds the current status of logging.
-     */
-    public static Method aLogger = null;
-
-    public void log(String s) {
-        if (!ASMConfiguration.debug.disableAllLogging) {
-            if (ASMConfiguration.debug.debugMode) {
-                Logger.INFO(s);
-            } else {
-                Logger.MACHINE_INFO(s);
-            }
-        }
-    }
-
-    public long getMaxInputEnergy() {
-        long rEnergy = 0;
-        if (!debugEnergyPresent && mEnergyHatches.size() == 1) // so it only takes 1 amp is only 1 hatch is present so
-                                                               // it works like most gt
-            // multies
-            return mEnergyHatches.get(0)
-                .getBaseMetaTileEntity()
-                .getInputVoltage();
-        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) rEnergy += tHatch.getBaseMetaTileEntity()
-            .getInputVoltage()
-            * tHatch.getBaseMetaTileEntity()
-                .getInputAmperage();
-        return rEnergy;
     }
 
     public boolean isMachineRunning() {
@@ -363,47 +284,25 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             t.printStackTrace();
         }
 
-        if (aList.isEmpty()) {
-            if (aTileEntity instanceof MTEHatch) {
-                if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
-                    log(
-                        "Adding " + aTileEntity.getInventoryName()
-                            + " at "
-                            + new BlockPos(aTileEntity.getBaseMetaTileEntity()).getLocationString());
-                }
-                updateTexture(aTileEntity, aBaseCasingIndex);
-                return aList.add((E) aTileEntity);
-            }
-        } else {
+        if (!aList.isEmpty()) {
             IGregTechTileEntity aCur = aTileEntity.getBaseMetaTileEntity();
             if (aList.contains(aTileEntity)) {
-                log(
-                    "Found Duplicate " + aTileEntity.getInventoryName()
-                        + " @ "
-                        + new BlockPos(aCur).getLocationString());
                 return false;
             }
             BlockPos aCurPos = new BlockPos(aCur);
-            boolean aExists = false;
             for (E m : aList) {
                 IGregTechTileEntity b = ((IMetaTileEntity) m).getBaseMetaTileEntity();
                 if (b != null) {
                     BlockPos aPos = new BlockPos(b);
                     if (aCurPos.equals(aPos)) {
-                        if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
-                            log("Found Duplicate " + b.getInventoryName() + " at " + aPos.getLocationString());
-                        }
                         return false;
                     }
                 }
             }
-            if (aTileEntity instanceof MTEHatch) {
-                if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
-                    log("Adding " + aCur.getInventoryName() + " at " + aCurPos.getLocationString());
-                }
-                updateTexture(aTileEntity, aBaseCasingIndex);
-                return aList.add((E) aTileEntity);
-            }
+        }
+        if (aTileEntity instanceof MTEHatch) {
+            updateTexture(aTileEntity, aBaseCasingIndex);
+            return aList.add((E) aTileEntity);
         }
         return false;
     }
@@ -428,11 +327,9 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         }
 
         if (aMetaTileEntity instanceof MTEHatchInputBattery) {
-            log("Found MTEHatchInputBattery");
             return addToMachineListInternal(mChargeHatches, aMetaTileEntity, aBaseCasingIndex);
         }
         if (aMetaTileEntity instanceof MTEHatchOutputBattery) {
-            log("Found MTEHatchOutputBattery");
             return addToMachineListInternal(mDischargeHatches, aMetaTileEntity, aBaseCasingIndex);
         }
         if (aMetaTileEntity instanceof MTEHatchAirIntake) {
@@ -441,13 +338,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             return addedAir && addedInput;
         }
         if (isThisHatchMultiEnergy(aMetaTileEntity)) {
-            log("Found isThisHatchMultiEnergy");
             boolean added = addToMachineListInternal(mTecTechEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
             updateMasterEnergyHatchList(aMetaTileEntity);
             return added;
         }
         if (isThisHatchMultiDynamo(aMetaTileEntity)) {
-            log("Found isThisHatchMultiDynamo");
             boolean added = addToMachineListInternal(mTecTechDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
             updateMasterDynamoHatchList(aMetaTileEntity);
             return added;
@@ -535,17 +430,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         return false;
     }
 
-    public boolean addFluidInputToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
-        return addFluidInputToMachineList(getMetaTileEntity(aTileEntity), aBaseCasingIndex);
-    }
-
-    public boolean addFluidInputToMachineList(final IMetaTileEntity aMetaTileEntity, final int aBaseCasingIndex) {
-        if (aMetaTileEntity instanceof MTEHatchInput) {
-            return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
-        }
-        return false;
-    }
-
     public boolean clearRecipeMapForAllInputHatches() {
         return resetRecipeMapForAllInputHatches(null);
     }
@@ -569,44 +453,15 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         return cleared > 0;
     }
 
-    public boolean resetRecipeMapForHatch(IGregTechTileEntity aTileEntity, RecipeMap<?> aMap) {
-        try {
-            final IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
-            if (aMetaTileEntity == null) {
-                return false;
-            }
-            if (aMetaTileEntity instanceof MTEHatchInput || aMetaTileEntity instanceof MTEHatchInputBus) {
-                return resetRecipeMapForHatch((MTEHatch) aMetaTileEntity, aMap);
-            } else {
-                return false;
-            }
-        } catch (Exception t) {
-            t.printStackTrace();
-            return false;
-        }
-    }
-
     public boolean resetRecipeMapForHatch(MTEHatch aTileEntity, RecipeMap<?> aMap) {
         if (aTileEntity == null) {
             return false;
         }
         if (aTileEntity instanceof MTEHatchInput || aTileEntity instanceof MTEHatchInputBus) {
             if (aTileEntity instanceof MTEHatchInput) {
-                ((MTEHatchInput) aTileEntity).mRecipeMap = null;
                 ((MTEHatchInput) aTileEntity).mRecipeMap = aMap;
-                if (aMap != null) {
-                    log("Remapped Input Hatch to " + aMap.unlocalizedName + ".");
-                } else {
-                    log("Cleared Input Hatch.");
-                }
             } else {
-                ((MTEHatchInputBus) aTileEntity).mRecipeMap = null;
                 ((MTEHatchInputBus) aTileEntity).mRecipeMap = aMap;
-                if (aMap != null) {
-                    log("Remapped Input Bus to " + aMap.unlocalizedName + ".");
-                } else {
-                    log("Cleared Input Bus.");
-                }
             }
             return true;
         } else {
@@ -617,7 +472,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
+        if (!supportsMachineModeSwitch()) super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         clearRecipeMapForAllInputHatches();
         onModeChangeByScrewdriver(side, aPlayer, aX, aY, aZ);
         mLastRecipe = null;
@@ -721,10 +576,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         return false;
     }
 
-    public boolean isThisHatchMultiEnergy(IGregTechTileEntity aTileEntity) {
-        return isThisHatchMultiEnergy(getMetaTileEntity(aTileEntity));
-    }
-
     public boolean isThisHatchMultiEnergy(IMetaTileEntity aMetaTileEntity) {
         return aMetaTileEntity instanceof MTEHatchEnergyMulti;
     }
@@ -746,13 +597,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             return mAllEnergyHatches.add(aHatch);
         }
         return false;
-    }
-
-    /**
-     * Pollution Management
-     */
-    public int calculatePollutionReductionForHatch(MTEHatchMuffler hatch, int poll) {
-        return hatch.calculatePollutionReduction(poll);
     }
 
     @Override
@@ -777,18 +621,14 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         // Do Things
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
-            // Logger.INFO("Right Clicked Controller.");
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
-                // Logger.INFO("Holding Item.");
                 if (tCurrentItem.getItem() instanceof MetaGeneratedTool) {
-                    // Logger.INFO("Is MetaGeneratedTool.");
                     int[] aOreID = OreDictionary.getOreIDs(tCurrentItem);
                     for (int id : aOreID) {
                         // Plunger
                         if (OreDictionary.getOreName(id)
                             .equals("craftingToolPlunger")) {
-                            // Logger.INFO("Is Plunger.");
                             return onPlungerRightClick(aPlayer, side, aX, aY, aZ);
                         }
                     }
@@ -1013,7 +853,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (doesBindPlayerInventory()) {
             super.addUIWidgets(builder, buildContext);
         } else {
-            addNoPlayerInventoryUI(builder, buildContext);
+            addNoPlayerInventoryUI(builder);
         }
     }
 
@@ -1031,7 +871,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         return true;
     }
 
-    protected void addNoPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    protected void addNoPlayerInventoryUI(ModularWindow.Builder builder) {
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
                 .setPos(3, 4)
