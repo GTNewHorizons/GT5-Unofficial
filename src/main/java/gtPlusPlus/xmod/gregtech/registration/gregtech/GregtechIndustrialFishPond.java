@@ -3,7 +3,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import static gregtech.api.enums.MetaTileEntityIDs.Industrial_FishingPond;
 
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEIndustrialFishingPond;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEIndustrialFishingPondLegacy;
 
 public class GregtechIndustrialFishPond {
 
@@ -13,7 +13,7 @@ public class GregtechIndustrialFishPond {
 
     private static void run1() {
         GregtechItemList.Industrial_FishingPond.set(
-            new MTEIndustrialFishingPond(
+            new MTEIndustrialFishingPondLegacy(
                 Industrial_FishingPond.ID,
                 "industrial.fishpond.controller.tier.single",
                 "Zhuhai - Fishing Port").getStackForm(1L));

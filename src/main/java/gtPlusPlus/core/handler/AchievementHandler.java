@@ -143,13 +143,7 @@ public class AchievementHandler {
             GregtechItemList.GT4_Thermal_Boiler.get(1),
             "multi.abs",
             false);
-        this.registerAchievement(
-            "multi.zhuhai",
-            -11,
-            -7,
-            GregtechItemList.Industrial_FishingPond.get(1),
-            aBaseAchievementName,
-            false);
+        this.registerAchievement("multi.zhuhai", -11, -7, ItemList.FishingPort.get(1), aBaseAchievementName, false);
 
         // Casings
         this.registerAchievement(

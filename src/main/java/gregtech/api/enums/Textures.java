@@ -1500,6 +1500,7 @@ public class Textures {
 
             // GTPP Casings
             AQUATIC_CASING = create("AQUATIC_CASING"),
+            AQUATIC_CASING_TOP = create("AQUATIC_CASING_TOP"),
             CIRCUIT_PROGRAMMER_SIDE = create("CIRCUIT_PROGRAMMER_SIDE"),
             CIRCUIT_PROGRAMMER_TOP = create("CIRCUIT_PROGRAMMER_TOP"),
             VOLUMETRIC_FLASK_CONFIGURATOR_SIDE = create("VOLUMETRIC_FLASK_CONFIGURATOR_SIDE"),
