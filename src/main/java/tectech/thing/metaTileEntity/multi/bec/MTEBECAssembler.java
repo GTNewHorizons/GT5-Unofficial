@@ -43,7 +43,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import appeng.api.storage.data.IAEFluidStack;
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTAuthors;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures;
