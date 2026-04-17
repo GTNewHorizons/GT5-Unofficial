@@ -175,10 +175,7 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
             .overlay(particle.getTexture())
             .onMousePressed(d -> {
                 IntSyncValue valueSync = syncManager.findSyncHandler("valueID" + particle.getId(), IntSyncValue.class);
-                // int id = particle.getId();
                 valueSync.setIntValue(0);
-                // multiblock.setBufferToZeroForParticle(particle.getId());
-                // System.out.println("particle" + particle.getId() + "set to 0:" + valueSync.getIntValue());
                 return true;
             });
     }
