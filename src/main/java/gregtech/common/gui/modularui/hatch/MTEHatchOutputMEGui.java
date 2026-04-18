@@ -47,7 +47,7 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
         // cell slot
         mainRow.child(
             new ItemSlot().slot(
-                new ModularSlot(hatch.inventoryHandler, 0).slotGroup("item_inv")
+                new ModularSlot(hatch.inventoryHandler, 0).singletonSlotGroup()
                     .filter(this::isFluidCell))
                 .marginLeft(3));
 
@@ -74,13 +74,6 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
                 .setEnabledIf(t -> isCaching.getBoolValue()));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
-    }
-
-    @Override
-    public void registerSyncValues(PanelSyncManager syncManager) {
-        super.registerSyncValues(syncManager);
-
-        syncManager.registerSlotGroup("item_inv", 1);
     }
 
     private boolean isFluidCell(ItemStack itemStack) {
