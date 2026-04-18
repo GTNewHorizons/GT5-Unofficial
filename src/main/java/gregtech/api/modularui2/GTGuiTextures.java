@@ -433,13 +433,16 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_SLOT_FILTER = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/filter")
         .fullImage()
-        .imageSize(18, 18)
         .canApplyTheme()
         .name("overlay_slot/filter")
         .build();
 
     public static final UITexture OVERLAY_SLOT_ARROW_4 = UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_slot/arrow_4");
-    public static final UITexture OVERLAY_SLOT_ARROW_ME = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/arrow_me");
+    public static final UITexture OVERLAY_SLOT_ARROW_ME = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/arrow_me")
+        .fullImage()
+        .canApplyTheme()
+        .build();
 
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
         .canApplyTheme()
