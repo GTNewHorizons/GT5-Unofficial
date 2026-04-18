@@ -456,6 +456,31 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_all")
         .build();
+    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/autooutput_fluid")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_LOCK = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/lock")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/input_from_output_side")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_TANK_VOID_EXCESS = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/tank_void_excess")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_TANK_VOID_ALL = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/tank_void_all")
+        .build();
     public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = fullImage(
         GregTech.ID,
         "gui/overlay_button/input_separation_on");
@@ -1402,9 +1427,6 @@ public final class GTGuiTextures {
         .fullImage("goodgenerator", "gui/overlay_button/precise_mode");
     public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_ITEM = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/autooutput_item");
-    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/autooutput_fluid");
-
     public static final UITexture OVERLAY_BUTTON_SORTING_MODE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/sorting_mode");
     public static final UITexture OVERLAY_BUTTON_ONE_STACK_LIMIT = UITexture
@@ -1769,6 +1791,7 @@ public final class GTGuiTextures {
     public static final UITexture PICTURE_SCREEN_BLACK = UITexture.builder()
         .location(GregTech.ID, "gui/picture/screen_black")
         .imageSize(16, 16)
+        .name(GTTextureIds.BACKGROUND_TERMINAL_BLACK)
         .canApplyTheme()
         .adaptable(2)
         .build();
