@@ -19,7 +19,6 @@ import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
-import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.widget.Widget;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 
@@ -124,14 +123,8 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         return this;
     }
 
-    @Override
-    public boolean isValidSyncHandler(SyncHandler syncHandler) {
-        return syncHandler instanceof GenericListSyncHandler<?>;
-    }
-
     public LineChartWidget syncHandler(GenericListSyncHandler<Double> dataSyncHandler) {
         this.dataSyncHandler = dataSyncHandler;
-        setSyncHandler(dataSyncHandler);
         return this;
     }
 

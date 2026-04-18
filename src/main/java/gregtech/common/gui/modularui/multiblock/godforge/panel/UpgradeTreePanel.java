@@ -22,9 +22,7 @@ import com.cleanroommc.modularui.widget.ScrollWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -225,7 +223,8 @@ public class UpgradeTreePanel {
     }
 
     private static Flow createSecretUpgrade(SyncHypervisor hypervisor) {
-        Flow row = new Row().size(60, 15)
+        Flow row = Flow.row()
+            .size(60, 15)
             .pos(START.getTreeX() - 60, START.getTreeY());
 
         // Upgrade button
@@ -261,7 +260,6 @@ public class UpgradeTreePanel {
         row.child(
             GTGuiTextures.PICTURE_UPGRADE_CONNECTOR_BLUE_OPAQUE.asWidget()
                 .size(20, 6)
-                .alignY(0.5f)
                 .setEnabledIf($ -> {
                     ForgeOfGodsData data = hypervisor.getData();
                     return data.isSecretUpgrade();
@@ -271,12 +269,14 @@ public class UpgradeTreePanel {
     }
 
     private static Flow getDebugWidgets(SyncHypervisor hypervisor) {
-        Flow row = new Column().coverChildren()
-            .align(Alignment.TopLeft)
+        Flow col = Flow.column()
+            .coverChildren()
+            .topRel(0)
+            .leftRel(0)
             .setEnabledIf($ -> ConfigHandler.debug.DEBUG_MODE);
 
         // Reset upgrades
-        row.child(new ButtonWidget<>().onMousePressed(d -> {
+        col.child(new ButtonWidget<>().onMousePressed(d -> {
             hypervisor.getData()
                 .resetAllUpgrades();
             SyncValues.UPGRADES_LIST.notifyUpdateFrom(Panels.MAIN, hypervisor);
@@ -291,7 +291,7 @@ public class UpgradeTreePanel {
             .tooltipShowUpTimer(TOOLTIP_DELAY));
 
         // Graviton shard amount
-        row.child(
+        col.child(
             new TextFieldWidget().setFormatAsInteger(true)
                 .setNumbers(0, 112)
                 .setTextAlignment(Alignment.CENTER)
@@ -302,7 +302,7 @@ public class UpgradeTreePanel {
                 .tooltipShowUpTimer(TOOLTIP_DELAY));
 
         // Unlock all upgrades
-        row.child(new ButtonWidget<>().onMousePressed(d -> {
+        col.child(new ButtonWidget<>().onMousePressed(d -> {
             hypervisor.getData()
                 .unlockAllUpgrades();
             SyncValues.UPGRADES_LIST.notifyUpdateFrom(Panels.MAIN, hypervisor);
@@ -316,6 +316,6 @@ public class UpgradeTreePanel {
             .tooltip(t -> t.addLine(translateToLocal("fog.debug.unlockall.text")))
             .tooltipShowUpTimer(TOOLTIP_DELAY));
 
-        return row;
+        return col;
     }
 }

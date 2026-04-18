@@ -46,7 +46,6 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
     public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         IPanelHandler popupPanel = syncManager
             .syncedPanel("popup", true, (manager, handler) -> createShutterUI(syncManager));
-        syncManager.registerSlotGroup("item_inv", 1);
 
         IntSyncValue massSyncer = new IntSyncValue(hatch::getMass, value -> hatch.setMass((byte) value));
         IntSyncValue sievertSyncer = new IntSyncValue(hatch::getSievert, hatch::setSievert);
@@ -80,13 +79,13 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
             .build()
             .child(
                 gridTemplate1by1(
-                    index -> new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, index).slotGroup("item_inv"))))
+                    index -> new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, index).singletonSlotGroup())))
             .child(
                 GTGuiTextures.PICTURE_SIEVERT_CONTAINER.asWidget()
                     .pos(61, 9)
                     .size(56, 24))
             .child(
-                new ProgressWidget().progress(() -> sievertSyncer.getIntValue() / 148f)
+                new ProgressWidget().value(new DoubleSyncValue(() -> sievertSyncer.getIntValue() / 148f))
                     .direction(ProgressWidget.Direction.RIGHT)
                     .texture(GTGuiTextures.PROGRESSBAR_SIEVERT, 24)
                     .pos(65, 13)
@@ -126,6 +125,15 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
                     .asWidget()
                     .pos(60, 72)
                     .size(80, 8))
+            .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
+                popupPanel.openPanel();
+                return popupPanel.isPanelOpen();
+            })
+                .backgroundOverlay(GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
+                .disableHoverBackground()
+                .tooltip(tooltip -> tooltip.add("Radiation Shutter"))
+                .pos(153, 5)
+                .size(18, 18))
             .child(
                 Flow.column()
                     .align(Alignment.TopRight)
@@ -168,7 +176,7 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
                     .pos(14, 27)
                     .size(55, 54))
             .child(
-                new ProgressWidget().progress(() -> 1 - ((double) coverageSyncer.getValue() / 100D))
+                new ProgressWidget().value(new DoubleSyncValue(() -> 1 - (coverageSyncer.getDoubleValue() / 100D)))
                     .texture(GTGuiTextures.PICTURE_TRANSPARENT, GTGuiTextures.PICTURE_RADIATION_SHUTTER_INSIDE, 50)
                     .direction(ProgressWidget.Direction.UP)
                     .pos(16, 29)

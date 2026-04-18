@@ -29,9 +29,7 @@ import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
@@ -100,7 +98,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                 }
                 return true;
             })
-                .background(GTGuiTextures.BUTTON_NANOCHIP, GuiTextures.GEAR)
+                .backgroundOverlay(GuiTextures.GEAR)
                 .disableHoverBackground()
                 .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rules_manager")))
                 .size(18));
@@ -118,7 +116,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
         // spotless:off
         return ui
             .size(200, 170)
-            .child(new Column()
+            .child(Flow.column()
                 .child(new ButtonWidget<>()
                     .onMousePressed(mouseButton -> {
                         multiblock.rules.add(new SplitterRule());
@@ -155,8 +153,8 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
 
         // spotless:off
         return new ParentWidget<>()
-            .child(new Column()
-                .child(new Row()
+            .child(Flow.column()
+                .child(Flow.row()
                     .child(createSelectorButton(rulesSyncer, index, COLOR)
                         .tooltip(t -> t.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rule.Color")))
                         .overlay(new ItemDrawable(Items.dye, 10)))
@@ -197,7 +195,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                 .center()
                 .coverChildrenWidth()
                 .heightRel(1F))
-            .child(new Column()
+            .child(Flow.column()
                 .child(outputColorGrid)
                 .posRel(0.8F, 0.5F)
                 .marginTop(23)
@@ -244,7 +242,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
         SplitterRule rule = multiblock.rules.get(index);
 
         // spotless:off
-        return new Column()
+        return Flow.column()
             .child(IKey.lang("GT5U.gui.text.nac.splitter.channel").asWidget())
             .child(new TextFieldWidget()
                 .value(new IntValue.Dynamic(

@@ -10,7 +10,6 @@ import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -21,7 +20,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -69,7 +67,8 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
 
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Column().width(18)
+        return Flow.column()
+            .width(18)
             .leftRel(1, -3, 1)
             .childPadding(2)
             .mainAxisAlignment(MainAxis.END)
@@ -79,7 +78,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
                     .slot(
                         new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex())
                             .slotGroup("item_inv"))
-                    .background(GuiTextures.SLOT_ITEM, GTGuiTextures.TT_OVERLAY_SLOT_MESH)
+                    .backgroundOverlay(GTGuiTextures.TT_OVERLAY_SLOT_MESH)
                     .overlay(
                         GTGuiTextures.TT_CONTROLLER_SLOT_HEAT_SINK.asIcon()
                             .size(18, 6)
@@ -92,7 +91,8 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
 
     @Override
     protected Flow createTerminalRightCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Column().coverChildren()
+        return Flow.column()
+            .coverChildren()
             .rightRel(0, 6, 0)
             .bottomRel(0, 6, 0)
             .child(createGeneralInfoPanelButton());
