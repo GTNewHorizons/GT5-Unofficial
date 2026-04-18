@@ -1461,7 +1461,11 @@ public final class GTGuiTextures {
         .fullImage()
         .name(GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
         .build();
-    public static final UITexture PICTURE_TECTECH_LOGO = UITexture.fullImage(MODID, "gui/picture/tectech_logo");
+    public static final UITexture PICTURE_TECTECH_LOGO = UITexture.builder()
+        .location(MODID, "gui/picture/tectech_logo")
+        .fullImage()
+        .canApplyTheme()
+        .build();
     public static final UITexture PICTURE_GODFORGE_LOGO = UITexture.fullImage(MODID, "gui/picture/gorge_logo");
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
@@ -1741,12 +1745,12 @@ public final class GTGuiTextures {
     public static final UITexture PICTURE_UPGRADE_CONNECTOR_RED_OPAQUE = UITexture
         .fullImage(MODID, "gui/picture/connector_red_opaque");
     public static final UITexture PICTURE_HEAT_SINK_16x8 = UITexture.fullImage(MODID, "gui/picture/heat_sink_16x8");
-    public static final UITexture PICTURE_RACK_LARGE = UITexture.builder()
+    public static final UITexture TT_PICTURE_RACK_LARGE = UITexture.builder()
         .location(MODID, "gui/picture/rack_large")
         .fullImage()
         .canApplyTheme()
         .build();
-    public static final UITexture PICTURE_HEAT_SINK = UITexture.builder()
+    public static final UITexture TT_PICTURE_HEAT_SINK = UITexture.builder()
         .location(MODID, "gui/picture/heat_sink")
         .fullImage()
         .canApplyTheme()
