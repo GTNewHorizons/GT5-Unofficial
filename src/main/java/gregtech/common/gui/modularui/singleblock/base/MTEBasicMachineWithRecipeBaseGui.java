@@ -8,7 +8,6 @@ import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
@@ -63,10 +62,12 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createContentSection(panel, syncManager).child(createChargerSlot().align(Alignment.BottomCenter))
+        return super.createContentSection(panel, syncManager).child(
+            createChargerSlot().bottomRel(0)
+                .horizontalCenter())
             .child(
-                createItemRecipeArea().alignX(Alignment.CENTER)
-                    .alignY(0.2f));
+                createItemRecipeArea().horizontalCenter()
+                    .topRel(0.2f));
     }
 
     protected Flow createItemRecipeArea() {
@@ -78,13 +79,17 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
             .child(
                 new ParentWidget<>().size(18 * 3)
                     .marginRight(9)
-                    .child(createItemInputSlots().align(Alignment.CenterRight)))
+                    .child(
+                        createItemInputSlots().verticalCenter()
+                            .rightRel(0)))
             .child(
                 createProgressBar().tooltipShowUpTimer(TOOLTIP_DELAY)
                     .marginRight(7))
             .child(
                 new ParentWidget<>().size(18 * 3)
-                    .child(createItemOutputSlots().align(Alignment.CenterLeft)));
+                    .child(
+                        createItemOutputSlots().verticalCenter()
+                            .leftRel(0)));
     }
 
     @Override

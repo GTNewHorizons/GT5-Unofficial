@@ -86,14 +86,21 @@ public class CoverBaseGui<T extends Cover> {
             }
         });
         final ModularPanel panel = ModularPanel.defaultPanel(getGuiId(), getGUIWidth(), getGUIHeight());
-        final Flow widgetsColumn = Flow.column()
+        final Flow mainColumn = Flow.column()
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .marginLeft(WIDGET_MARGIN)
             .marginTop(WIDGET_MARGIN);
-        panel.child(widgetsColumn);
-        addTitleToUI(widgetsColumn);
+
+        addTitleToUI(mainColumn);
+
+        final Flow widgetsColumn = Flow.column()
+            .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START);
+
         addUIWidgets(syncManager, widgetsColumn, data);
+        mainColumn.child(widgetsColumn);
+        panel.child(mainColumn);
 
         if (cover.getMinimumTickRate() > 0 && cover.allowsTickRateAddition()) {
             panel.child(

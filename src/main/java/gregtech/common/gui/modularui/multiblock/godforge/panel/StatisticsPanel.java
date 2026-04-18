@@ -47,8 +47,8 @@ public class StatisticsPanel {
 
     private static final int HEIGHT_MINOR = 18;
     private static final int HEIGHT_MAJOR = 30;
-    private static final int WIDTH_MINOR = 40;
-    private static final int WIDTH_MAJOR = 53;
+    private static final int WIDTH_MINOR = 53;
+    private static final int WIDTH_MAJOR = 69;
 
     private static final int SMELTING_INDEX = 0;
     private static final int MOLTEN_INDEX = 1;
@@ -82,10 +82,10 @@ public class StatisticsPanel {
         panel.child(
             IKey.lang("gt.blockmachines.multimachine.FOG.modulestats")
                 .style(EnumChatFormatting.GOLD)
-                .alignment(Alignment.TopCenter)
+                .alignment(Alignment.Center)
                 .asWidget()
                 .height(15)
-                .alignX(Alignment.CENTER));
+                .horizontalCenter());
 
         // Format mode button
         EnumSyncValue<Formatters> formatSyncer = SyncValues.FORMATTER.lookupFrom(Panels.MAIN, hypervisor);
@@ -99,7 +99,7 @@ public class StatisticsPanel {
                     return true;
                 })
                 .size(16)
-                .alignY(Alignment.BottomLeft)
+                .bottomRel(0)
                 .left(8)
                 .tooltip(t -> t.addLine(translateToLocal("fog.button.formatting.tooltip")))
                 .tooltipShowUpTimer(TOOLTIP_DELAY));
@@ -120,7 +120,7 @@ public class StatisticsPanel {
         for (int i = 0; i < 4; i++) {
             panel.child(
                 new IDrawable.DrawableWidget(new Rectangle().color(Color.rgb(190, 200, 0))).size(1, 227)
-                    .pos(81 + WIDTH_MAJOR * i, 38));
+                    .pos(81 + WIDTH_MINOR * i, 38));
         }
 
         // Horizontal grid lines
@@ -141,14 +141,11 @@ public class StatisticsPanel {
         List<IWidget> returnList = new ArrayList<>();
         returnList.add(
             IDrawable.EMPTY.asWidget()
-                .width(68)
-                .height(HEIGHT_MINOR));
+                .size(WIDTH_MAJOR, HEIGHT_MINOR));
 
-        returnList.add(createHeaderModuleEntry("gt.blockmachines.multimachine.FOG.powerforge").marginRight(13));
-        returnList.add(createHeaderModuleEntry("gt.blockmachines.multimachine.FOG.meltingcore").marginRight(13));
-        returnList.add(
-            createHeaderModuleEntry("gt.blockmachines.multimachine.FOG.plasmafab").width(WIDTH_MINOR + 4)
-                .marginRight(10));
+        returnList.add(createHeaderModuleEntry("gt.blockmachines.multimachine.FOG.powerforge"));
+        returnList.add(createHeaderModuleEntry("gt.blockmachines.multimachine.FOG.meltingcore"));
+        returnList.add(createHeaderModuleEntry("gt.blockmachines.multimachine.FOG.plasmafab"));
         returnList.add(createHeaderModuleEntry("gt.blockmachines.multimachine.FOG.exoticizer"));
 
         return returnList;
@@ -159,6 +156,7 @@ public class StatisticsPanel {
             .style(EnumChatFormatting.GOLD)
             .alignment(Alignment.Center)
             .asWidget()
+            .padding(2, 0)
             .size(WIDTH_MINOR, HEIGHT_MINOR)
             .scale(0.8f);
     }
@@ -166,8 +164,8 @@ public class StatisticsPanel {
     private static Flow createPreviewRow(MutableBoolean usingPreview, MutableInt previewFuelFactor) {
         Flow previewRow = Flow.row()
             .coverChildren()
-            .alignX(0.8f)
-            .alignY(1f);
+            .bottomRel(0)
+            .rightRel(0.1f);
 
         // Header
         previewRow.child(
@@ -194,6 +192,7 @@ public class StatisticsPanel {
         previewRow.child(
             new ButtonWidget<>().size(35, 18)
                 .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
+                .disableHoverThemeBackground(true)
                 .overlay(IKey.lang("fog.cosmetics.applycolor"))
                 .onMousePressed(d -> {
                     usingPreview.setValue(true);
@@ -213,7 +212,7 @@ public class StatisticsPanel {
             IKey.str(stat.toString())
                 .alignment(Alignment.Center)
                 .asWidget()
-                .size(69, HEIGHT_MAJOR));
+                .size(WIDTH_MAJOR, HEIGHT_MAJOR));
 
         // Smelting module
         returnList.add(
@@ -222,7 +221,7 @@ public class StatisticsPanel {
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
-                .size(WIDTH_MAJOR, HEIGHT_MAJOR));
+                .size(WIDTH_MINOR, HEIGHT_MAJOR));
 
         // Molten module
         returnList.add(
@@ -231,7 +230,7 @@ public class StatisticsPanel {
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
-                .size(WIDTH_MAJOR, HEIGHT_MAJOR));
+                .size(WIDTH_MINOR, HEIGHT_MAJOR));
 
         // Plasma module
         returnList.add(
@@ -240,7 +239,7 @@ public class StatisticsPanel {
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
-                .size(WIDTH_MAJOR, HEIGHT_MAJOR));
+                .size(WIDTH_MINOR, HEIGHT_MAJOR));
 
         // Exotic module
         returnList.add(
@@ -249,7 +248,7 @@ public class StatisticsPanel {
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
-                .size(WIDTH_MAJOR, HEIGHT_MAJOR));
+                .size(WIDTH_MINOR, HEIGHT_MAJOR));
 
         return returnList;
     }

@@ -66,10 +66,10 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
 
     protected SlotGroupWidget createItemSlots(PanelSyncManager syncManager) {
 
-        syncManager.registerSlotGroup("item_inv", 1);
-
         int itemSlots = hatch.getSizeInventory() - 2;
         int rows = (itemSlots + COLS - 1) / COLS;
+
+        syncManager.registerSlotGroup("item_inv", rows);
 
         String[] matrix = new String[rows];
         Arrays.fill(matrix, "sssssssss");
@@ -97,10 +97,8 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
     @Override
     protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
 
-        syncManager.registerSlotGroup("shape_slot", 1);
-
         GhostShapeSlotWidget shapeSlot = new GhostShapeSlotWidget(hatch, syncManager);
-        shapeSlot.slot(new ModularSlot(hatch.inventoryHandler, hatch.shapeSlot).slotGroup("shape_slot"));
+        shapeSlot.slot(new ModularSlot(hatch.inventoryHandler, hatch.shapeSlot).singletonSlotGroup());
 
         BooleanSyncValue stackSync = new BooleanSyncValue(() -> !hatch.disableSort, v -> hatch.disableSort = !v);
 

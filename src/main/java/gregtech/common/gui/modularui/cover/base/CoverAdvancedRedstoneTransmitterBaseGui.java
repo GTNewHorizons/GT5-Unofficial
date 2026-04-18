@@ -9,7 +9,6 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneTransmitterBase;
@@ -25,12 +24,13 @@ public class CoverAdvancedRedstoneTransmitterBaseGui<T extends CoverAdvancedReds
     protected Flow makeButtonRow(UUID uuid) {
         BooleanSyncValue invertedSyncer = new BooleanSyncValue(cover::isInverted, cover::setInverted);
         return super.makeButtonRow(uuid).child(
-            new Row().width(60)
-                .heightRel(1)
+            Flow.row()
+                .width(60)
+                .fullHeight()
                 .child(
 
                     new ToggleButton().value(invertedSyncer)
-                        .size(16, 16)
+                        .size(16)
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF)
                         .marginRight(4))

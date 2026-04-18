@@ -29,6 +29,7 @@ import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
@@ -95,7 +96,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
         syncManager.syncValue("current", currentSyncer);
         syncManager.syncValue("maxCurrent", maxCurrentSyncer);
         return new ProgressWidget()
-            .progress(() -> (double) currentSyncer.getValue() / Math.max(1, maxCurrentSyncer.getValue()))
+            .value(
+                new DoubleSyncValue(() -> (double) currentSyncer.getValue() / Math.max(1, maxCurrentSyncer.getValue())))
             .texture(GTGuiTextures.PICTURE_TRANSPARENT, GTGuiTextures.PROGRESSBAR_TESLA_TOWER_CURRENT, 100)
             .widthRel(0.75f)
             .height(9)
@@ -161,7 +163,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             .padding(4)
             .child(
                 Flow.column()
-                    .sizeRel(1)
+                    .full()
                     .child(createChartWidget())
                     .child(createChartEditColumn()));
     }
@@ -187,12 +189,12 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                     .chartUnit("A")
                     .formatter(new DecimalFormat("0.0#"))
                     .marginBottom(2)
-                    .sizeRel(1));
+                    .full());
     }
 
     private IWidget createChartEditColumn() {
         return Flow.column()
-            .widthRel(1)
+            .fullWidth()
             .coverChildrenHeight()
             .child(createTickRateRow())
             .child(createDataLimitRow());
@@ -200,7 +202,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     private IWidget createTickRateRow() {
         return Flow.row()
-            .widthRel(1)
+            .fullWidth()
             .coverChildrenHeight()
             .child(
                 IKey.str("Update chart every")
@@ -219,7 +221,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     private IWidget createDataLimitRow() {
         return Flow.row()
-            .widthRel(1)
+            .fullWidth()
             .coverChildrenHeight()
             .child(
                 IKey.str("Show last")
@@ -277,7 +279,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             }
         }
 
-        return new Grid().matrix(matrix)
+        return new Grid().grid(matrix)
             .size(gridSquareSize * gridChunkSize)
             .marginTop(borderRadius)
             .marginLeft(borderRadius);

@@ -59,7 +59,7 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
         IKey particleBProgressKey = IKey.dynamic(
             () -> formatParticle(currentRecipeParticleIDB, currentRecipeCurrentAmountB, currentRecipeMaxAmountB));
 
-        return new ListWidget<>().widthRel(1)
+        return new ListWidget<>().fullWidth()
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .child(new TextWidget<>(guiHeaderKey).marginBottom(18))
             .child(

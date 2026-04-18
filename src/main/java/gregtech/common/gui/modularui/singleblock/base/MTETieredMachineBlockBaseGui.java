@@ -16,7 +16,6 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
@@ -47,7 +46,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return panel.child(
             Flow.column()
                 .child(createTopRightCornerColumn())
-                .sizeRel(1)
+                .full()
                 .padding(borderRadius)
                 .child(createContentHolderRow(panel, syncManager))
                 .childIf(machine.supportsInventoryRow(), () -> createInventoryRow(panel, syncManager)));
@@ -96,7 +95,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     }
 
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        return new ParentWidget<>().sizeRel(1)
+        return new ParentWidget<>().full()
             .childIf(this.supportsLeftCornerFlow(), () -> createLeftCornerFlow(panel, syncManager))
             .childIf(this.supportsRightCornerFlow(), () -> createRightCornerFlow(panel, syncManager));
     }
@@ -115,11 +114,11 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
 
     // Row by default, going left to right
     protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow cornerFlow = Flow.row()
+        return Flow.row()
             .coverChildren()
-            .align(Alignment.BottomLeft)
+            .bottomRel(0)
+            .leftRel(0)
             .paddingLeft(4);
-        return cornerFlow;
     }
 
     protected boolean supportsRightCornerFlow() {
@@ -132,7 +131,8 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
             .mainAxisAlignment(Alignment.MainAxis.END)
             .reverseLayout(true)
             .coverChildren()
-            .align(Alignment.BottomRight)
+            .bottomRel(0)
+            .rightRel(0)
             .paddingBottom(2)
             .paddingRight(4);
 
@@ -151,9 +151,9 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     }
 
     protected IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Row().widthRel(1)
+        return Flow.row()
+            .fullWidth()
             .height(76)
-            .alignX(0)
             .childIf(
                 machine.doesBindPlayerInventory(),
                 () -> SlotGroupWidget.playerInventory(false)
@@ -198,7 +198,8 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     protected Flow createTopRightCornerColumn() {
         return Flow.column()
             .coverChildren()
-            .align(Alignment.TopRight)
+            .topRel(0)
+            .rightRel(0)
             .childIf(supportsMuffler(), this::createMufflerButton)
             .childIf(supportsPowerSwitch(), this::createPowerSwitchButton);
     }

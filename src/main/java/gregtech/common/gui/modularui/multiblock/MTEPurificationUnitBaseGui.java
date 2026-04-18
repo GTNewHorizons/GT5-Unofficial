@@ -66,7 +66,7 @@ public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurifica
 
         IntSyncValue parallelSyncer = syncManager.findSyncHandler("maximumParallels", IntSyncValue.class);
         Flow holdingColumn = Flow.column()
-            .sizeRel(1)
+            .full()
             .paddingTop(4);
         holdingColumn.child(
             IKey.lang("GTPP.CC.parallel")
@@ -78,8 +78,7 @@ public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurifica
                 .setTextAlignment(Alignment.CENTER)
                 .setDefaultNumber(1)
                 .value(parallelSyncer)
-                .size(WIDTH - PADDING_SIDES * 2, 18)
-                .align(Alignment.Center));
+                .size(WIDTH - PADDING_SIDES * 2, 18));
 
         returnPanel.child(holdingColumn);
 

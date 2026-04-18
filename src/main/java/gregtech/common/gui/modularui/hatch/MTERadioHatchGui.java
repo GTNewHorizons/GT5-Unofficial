@@ -14,11 +14,14 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.sizer.Area;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -40,7 +43,6 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
     public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         IPanelHandler popupPanel = syncManager
             .syncedPanel("popup", true, (manager, handler) -> createShutterUI(syncManager));
-        syncManager.registerSlotGroup("item_inv", 1);
 
         IntSyncValue massSyncer = new IntSyncValue(hatch::getMass, value -> hatch.setMass((byte) value));
         IntSyncValue sievertSyncer = new IntSyncValue(hatch::getSievert, hatch::setSievert);
@@ -70,13 +72,13 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
             .build()
             .child(
                 gridTemplate1by1(
-                    index -> new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, index).slotGroup("item_inv"))))
+                    index -> new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, index).singletonSlotGroup())))
             .child(
                 GTGuiTextures.PICTURE_SIEVERT_CONTAINER.asWidget()
                     .pos(61, 9)
                     .size(56, 24))
             .child(
-                new ProgressWidget().progress(() -> sievertSyncer.getIntValue() / 148f)
+                new ProgressWidget().value(new DoubleSyncValue(() -> sievertSyncer.getIntValue() / 148f))
                     .direction(ProgressWidget.Direction.RIGHT)
                     .texture(GTGuiTextures.PROGRESSBAR_SIEVERT, 24)
                     .pos(65, 13)
@@ -105,22 +107,22 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
                 IKey.dynamic(
                     () -> StatCollector
                         .translateToLocalFormatted("BW.NEI.display.radhatch.1", massSyncer.getIntValue()))
-                    .alignment(com.cleanroommc.modularui.utils.Alignment.Center)
+                    .alignment(Alignment.Center)
                     .asWidget()
                     .pos(65, 62))
             .child(
                 IKey.dynamic(
                     () -> StatCollector
                         .translateToLocalFormatted("BW.NEI.display.radhatch.0", sievertSyncer.getIntValue()))
-                    .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
+                    .alignment(Alignment.CenterLeft)
                     .asWidget()
                     .pos(60, 72)
                     .size(80, 8))
-            .child(new com.cleanroommc.modularui.widgets.ButtonWidget<>().onMousePressed(mouseButton -> {
+            .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
                 popupPanel.openPanel();
                 return popupPanel.isPanelOpen();
             })
-                .background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
+                .backgroundOverlay(GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
                 .disableHoverBackground()
                 .tooltip(tooltip -> tooltip.add("Radiation Shutter"))
                 .pos(153, 5)
@@ -149,7 +151,7 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
                     .pos(14, 27)
                     .size(55, 54))
             .child(
-                new ProgressWidget().progress(() -> 1 - ((double) coverageSyncer.getValue() / 100D))
+                new ProgressWidget().value(new DoubleSyncValue(() -> 1 - (coverageSyncer.getDoubleValue() / 100D)))
                     .texture(GTGuiTextures.PICTURE_TRANSPARENT, GTGuiTextures.PICTURE_RADIATION_SHUTTER_INSIDE, 50)
                     .direction(ProgressWidget.Direction.UP)
                     .pos(16, 29)
@@ -158,7 +160,7 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
                 new TextFieldWidget().setNumbers(0, 100)
                     .value(new StringSyncValue(coverageSyncer::getStringValue, coverageSyncer::setStringValue))
                     .setTextColor(com.cleanroommc.modularui.utils.Color.WHITE.darker(1))
-                    .setTextAlignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
+                    .setTextAlignment(Alignment.CenterLeft)
                     .pos(86, 27)
                     .size(30, 12))
             .child(

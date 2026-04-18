@@ -75,27 +75,29 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
         Flow column = Flow.column()
             .width(40)
             .coverChildrenHeight()
+            .verticalCenter()
+            .rightRel(0)
+            .marginRight(3)
             .crossAxisAlignment(Alignment.CrossAxis.END);
         column.child(createCellDrainRow(syncManager));
         column.child(createVoidButton(syncManager));
-        return column.align(Alignment.CenterRight)
-            .marginRight(3);
+        return column;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        GenericSyncValue<CircuitComponentPacket> contentsSyncHandler = new GenericSyncValue<>(
-            () -> hatch.contents != null ? hatch.contents : new CircuitComponentPacket(),
-            val -> hatch.contents = val,
-            buf -> { return new CircuitComponentPacket((NBTTagCompound) NetworkUtils.readNBTBase(buf)); },
-            (buf, item) -> { NetworkUtils.writeNBTBase(buf, item.writeToNBT()); },
-            (a, b) -> {
-                return a.getComponents()
-                    .equals(b.getComponents());
-            },
-            null);
+        GenericSyncValue<CircuitComponentPacket> contentsSyncHandler = GenericSyncValue
+            .<CircuitComponentPacket>notNullBuilder()
+            .getter(() -> hatch.contents != null ? hatch.contents : new CircuitComponentPacket())
+            .setter(val -> hatch.contents = val)
+            .deserializer(buf -> new CircuitComponentPacket((NBTTagCompound) NetworkUtils.readNBTBase(buf)))
+            .serializer((buf, item) -> NetworkUtils.writeNBTBase(buf, item.writeToNBT()))
+            .equals(
+                (a, b) -> a.getComponents()
+                    .equals(b.getComponents()))
+            .build();
         syncManager.syncValue("contents", contentsSyncHandler);
         syncManager.registerSyncedAction("dumpCCs", Side.SERVER, p -> {
             GenericSyncValue<CircuitComponentPacket> syncContents = syncManager
@@ -175,7 +177,8 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
                         .writeToNBT()))));
 
         return new DynamicSyncedWidget<>().coverChildren()
-            .align(Alignment.CenterLeft)
+            .verticalCenter()
+            .leftRel(0)
             .marginLeft(3)
             .syncHandler(componentHandler);
     }

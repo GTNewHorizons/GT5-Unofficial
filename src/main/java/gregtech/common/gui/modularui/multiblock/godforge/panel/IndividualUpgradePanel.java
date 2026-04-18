@@ -15,9 +15,7 @@ import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
@@ -84,27 +82,26 @@ public class IndividualUpgradePanel {
             upgrade.getSymbol()
                 .asWidget()
                 .size((int) (size / 2.0f * upgrade.getSymbolWidthRatio()), size / 2)
-                .align(Alignment.CENTER));
+                .center());
 
         // Background overlay
         parent.child(
             upgrade.getOverlay()
                 .asWidget()
                 .size(size / 2)
-                .align(Alignment.CENTER));
+                .center());
 
-        Flow column = new Column().size(size - 16, size - 26) // 16 top, 10 bottom
+        Flow column = Flow.column()
+            .size(size - 16, size - 26) // 16 top, 10 bottom
             .marginTop(15)
-            .alignX(0.5f);
+            .horizontalCenter();
 
         // Title
         column.child(
             IKey.lang(upgrade.getNameKey())
                 .style(EnumChatFormatting.GOLD)
                 .alignment(Alignment.CENTER)
-                .asWidget()
-                .alignX(0.5f)
-                .widthRel(1));
+                .asWidget());
 
         // Body text
         column.child(
@@ -112,8 +109,6 @@ public class IndividualUpgradePanel {
                 .style(EnumChatFormatting.WHITE)
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .alignX(0.5f)
-                .widthRel(1)
                 .height(upgrade.getBodySize())
                 .marginTop(7));
 
@@ -124,15 +119,14 @@ public class IndividualUpgradePanel {
                 .color(0xFFBBBDBD)
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .alignX(0.5f)
-                .widthRel(1)
                 .height(upgrade.getLoreSize())
                 .marginTop(5));
 
         // Bottom row widgets
-        ParentWidget<?> bottomRow = new ParentWidget<>().widthRel(1)
+        ParentWidget<?> bottomRow = new ParentWidget<>().fullWidth()
             .height(15)
-            .align(Alignment.BottomCenter);
+            .bottomRel(0)
+            .horizontalCenter();
 
         // Shard cost
         bottomRow.child(IKey.dynamic(() -> {
@@ -144,7 +138,7 @@ public class IndividualUpgradePanel {
             .color(0xFF9C9C9C)
             .asWidget()
             .size(70, 15)
-            .alignX(0));
+            .leftRel(0));
 
         // Available shards
         bottomRow.child(IKey.dynamic(() -> {
@@ -166,10 +160,51 @@ public class IndividualUpgradePanel {
             .color(0xFF9C9C9C)
             .asWidget()
             .size(70, 15)
-            .alignX(1));
+            .rightRel(0));
 
-        Flow buttonRow = new Row().size(78, 15)
-            .alignX(0.5f);
+        Flow buttonRow = Flow.row()
+            .size(78, 15)
+            .horizontalCenter()
+            .childPadding(4);
+
+        // Extra cost button
+        buttonRow.child(
+            new ButtonWidget<>().size(15)
+                .disableHoverThemeBackground(true)
+                .background(
+                    new DynamicDrawable(
+                        () -> hypervisor.getData()
+                            .getUpgrades()
+                            .isCostPaid(upgrade) ? GTGuiTextures.BUTTON_BOXED_CHECKMARK_18x18
+                                : GTGuiTextures.BUTTON_BOXED_EXCLAMATION_POINT_18x18))
+                .onMousePressed(d -> {
+                    ModularPanel upgradeTreePanel = hypervisor.getModularPanel(Panels.UPGRADE_TREE);
+                    if (upgradeTreePanel != null) {
+                        upgradeTreePanel.closeIfOpen();
+                    }
+                    parent.getPanel()
+                        .closeIfOpen();
+                    if (!manualInsertionPanel.isPanelOpen()) {
+                        manualInsertionPanel.openPanel();
+                    }
+                    return true;
+                })
+                .tooltipDynamic(t -> {
+                    UpgradeStorage storage = hypervisor.getData()
+                        .getUpgrades();
+                    if (storage.isCostPaid(upgrade)) {
+                        t.addLine(translateToLocal("fog.button.materialrequirementsmet.tooltip"));
+                    } else {
+                        t.addLine(translateToLocal("fog.button.materialrequirements.tooltip"));
+                    }
+                    t.addLine(
+                        EnumChatFormatting.GRAY
+                            + translateToLocal("fog.button.materialrequirements.tooltip.clickhere"));
+                })
+                .tooltipAutoUpdate(true)
+                .tooltipShowUpTimer(TOOLTIP_DELAY)
+                .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
+                .setEnabledIf($ -> upgrade.hasExtraCost()));
 
         // Complete/Respec button
         buttonRow.child(
@@ -211,50 +246,7 @@ public class IndividualUpgradePanel {
                 })
                 .tooltipAutoUpdate(true)
                 .tooltipShowUpTimer(TOOLTIP_DELAY)
-                .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
-                .alignX(0.5f));
-
-        // Extra cost button
-        buttonRow.child(
-            new ButtonWidget<>().size(15)
-                .background(new DynamicDrawable(() -> {
-                    UpgradeStorage storage = hypervisor.getData()
-                        .getUpgrades();
-                    if (storage.isCostPaid(upgrade)) {
-                        return GTGuiTextures.BUTTON_BOXED_CHECKMARK_18x18;
-                    }
-                    return GTGuiTextures.BUTTON_BOXED_EXCLAMATION_POINT_18x18;
-                }).asIcon()
-                    .size(15)) // for some reason this is needed
-                .onMousePressed(d -> {
-                    ModularPanel upgradeTreePanel = hypervisor.getModularPanel(Panels.UPGRADE_TREE);
-                    if (upgradeTreePanel != null) {
-                        upgradeTreePanel.closeIfOpen();
-                    }
-                    parent.getPanel()
-                        .closeIfOpen();
-                    if (!manualInsertionPanel.isPanelOpen()) {
-                        manualInsertionPanel.openPanel();
-                    }
-                    return true;
-                })
-                .tooltipDynamic(t -> {
-                    UpgradeStorage storage = hypervisor.getData()
-                        .getUpgrades();
-                    if (storage.isCostPaid(upgrade)) {
-                        t.addLine(translateToLocal("fog.button.materialrequirementsmet.tooltip"));
-                    } else {
-                        t.addLine(translateToLocal("fog.button.materialrequirements.tooltip"));
-                    }
-                    t.addLine(
-                        EnumChatFormatting.GRAY
-                            + translateToLocal("fog.button.materialrequirements.tooltip.clickhere"));
-                })
-                .tooltipAutoUpdate(true)
-                .tooltipShowUpTimer(TOOLTIP_DELAY)
-                .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
-                .setEnabledIf($ -> upgrade.hasExtraCost())
-                .alignX(0));
+                .clickSound(ForgeOfGodsGuiUtil.getButtonSound()));
 
         bottomRow.child(buttonRow);
         column.child(bottomRow);
