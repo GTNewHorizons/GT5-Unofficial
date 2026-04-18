@@ -2391,6 +2391,8 @@ GT5U.gui.text.per_second=§fPer second:
 GT5U.gui.text.per_minute=§fPer minute:
 GT5U.gui.text.per_hour=§fPer hour:
 GT5U.gui.text.per_day=§fPer day:
+GT5U.gui.text.second_each=%ss/each
+GT5U.gui.text.each_per_second=%s/s
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
 GT5U.gui.text.item_output_full=§7Not enough item output space
@@ -2841,6 +2843,7 @@ GT5U.gui.hoverable.incomplete=Structure incomplete.
 GT5U.gui.hoverable.powerloss=Lost Power.
 GT5U.gui.hoverable.norepair=Machine too damaged.
 GT5U.gui.hoverable.manualshutdown=Manual shutdown (get it?).
+GT5U.gui.hoverable.noissue=No maintenance issues!
 GT5U.gui.hoverable.error=ERROR! REPORT ME!
 
 GT5U.gui.config.client=Client
