@@ -270,7 +270,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 
     @Override
     public String getInventoryName() {
-        return this.hasCustomInventoryName() ? this.customName : "container.DecayablesChest";
+        return this.hasCustomInventoryName() ? this.customName : "tile.blockDecayablesChest.name";
     }
 
     @Override
