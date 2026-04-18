@@ -1449,6 +1449,11 @@ public final class GTGuiTextures {
             GTTextureIds.PICTURE_GT_LOGO_STEEL,
             GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
         .build();
+    public static final UITexture PICTURE_TECTECH_LOGO = UITexture.builder()
+        .location(MODID, "gui/picture/tectech_logo")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_TECTECH_LOGO)
+        .build();
     public static final UITexture PICTURE_TECTECH_LOGO_DARK = UITexture.builder()
         .location(MODID, "gui/picture/tectech_logo_dark")
         .fullImage()

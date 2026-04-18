@@ -250,6 +250,9 @@ import static gregtech.common.items.IDMetaItem03.UXV_Coil;
 import static gregtech.common.items.IDMetaItem03.WovenKevlar;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.Optional;
@@ -260,6 +263,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
@@ -267,6 +271,7 @@ import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverSolarPanel;
 import gregtech.common.powergoggles.ItemPowerGoggles;
@@ -1948,5 +1953,20 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             return false;
         }
         return data.mMaterial.mMaterial == Materials.Firestone && data.mPrefix == OrePrefixes.rawOre;
+    }
+
+    @Override
+    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        super.addAdditionalToolTips(aList, aStack, aPlayer);
+
+        ItemData data = GTOreDictUnificator.getItemData(aStack);
+
+        if (data != null && data.mPrefix == OrePrefixes.nanite) {
+            NaniteTier tier = NaniteTier.fromStack(aStack);
+
+            if (tier != null) {
+                aList.add(GTUtility.translate("gt.tooltip.nanite-tier", tier.tier));
+            }
+        }
     }
 }
