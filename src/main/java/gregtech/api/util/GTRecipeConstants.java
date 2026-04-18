@@ -306,36 +306,54 @@ public class GTRecipeConstants {
         .create(DecayType.class, "decay-type");
 
     /**
-     * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace. Will override the fluid input
-     * with oxygen/plasma for the respective recipe maps, so there is no point setting it.
+     * Add a arc furnace recipe.
      */
     public static final IRecipeMap UniversalArcFurnace = IRecipeMap.newRecipeMap(builder -> {
-        if (!GTUtility.isArrayOfLength(builder.getItemInputsBasic(), 1)
-            || GTUtility.isArrayEmptyOrNull(builder.getItemOutputs())) return Collections.emptyList();
-        int aDuration = builder.getDuration();
-        if (aDuration <= 0) {
-            return Collections.emptyList();
-        }
-        boolean recycle = builder.getMetadataOrDefault(RECYCLE, false);
         Collection<GTRecipe> ret = new ArrayList<>();
-        for (Materials mat : new Materials[] { Materials.Argon, Materials.Nitrogen }) {
-            builder.duration(Math.max(1, mat == Materials.Nitrogen ? aDuration / 4 : aDuration / 24));
-            int tPlasmaAmount = (int) Math.max(1L, aDuration / (mat.getMass() * 16L));
-            GTRecipeBuilder plasmaBuilder = builder.copy()
-                .fluidInputs(mat.getPlasma(tPlasmaAmount))
-                .fluidOutputs(mat.getGas(tPlasmaAmount));
-            if (recycle) {
-                continue;
-            }
-            ret.addAll(RecipeMaps.plasmaArcFurnaceRecipes.doAdd(plasmaBuilder));
+        boolean foundAnyItem = false;
+        for (ItemStack itemStack : builder.inputsBasic) {
+            if (itemStack == null) continue;
+            if (!GTUtility.isAnyIntegratedCircuit(itemStack)) foundAnyItem = true;
         }
-        builder.duration(aDuration);
-        GTRecipeBuilder arcBuilder = builder.copy()
-            .fluidInputs(Materials.Oxygen.getGas(aDuration));
+        if (!foundAnyItem) return ret;
+
+        boolean recycle = builder.getMetadataOrDefault(RECYCLE, false);
+        int baseGasAmount = builder.getMetadataOrDefault(ADDITIVE_AMOUNT, 10);
+        int baseDuration = builder.getDuration();
+
         if (recycle) {
-            arcBuilder.recipeCategory(RecipeCategories.arcFurnaceRecycling);
+            builder.recipeCategory(RecipeCategories.arcFurnaceRecycling);
         }
-        ret.addAll(RecipeMaps.arcFurnaceRecipes.doAdd(arcBuilder));
+
+        // Generate recipe with gas
+        for (BlastFurnaceGasStat gasStat : BlastFurnaceGasStat.BlastFurnaceGasStats) {
+            int gasAmount = (int) (gasStat.recipeConsumedAmountMultiplier * baseGasAmount);
+            ret.addAll(
+                builder.copy()
+                    .duration((int) Math.max(1, baseDuration * gasStat.recipeTimeMultiplier))
+                    .fluidInputs(GTUtility.copyAmount(gasAmount, gasStat.gas))
+                    .circuit(11)
+                    .addTo(RecipeMaps.arcFurnaceRecipes));
+        }
+
+        if (!recycle) {
+            for (Materials mat : new Materials[] { Materials.Argon, Materials.Nitrogen }) {
+                int tPlasmaAmount = (int) Math.max(1L, baseDuration / (mat.getMass() * 16L));
+                GTRecipeBuilder plasmaBuilder = builder.copy()
+                    .duration(Math.max(1, mat == Materials.Nitrogen ? baseDuration / 4 : baseDuration / 24))
+                    .fluidInputs(mat.getPlasma(tPlasmaAmount))
+                    .circuit(11)
+                    .fluidOutputs(mat.getGas(tPlasmaAmount));
+                ret.addAll(RecipeMaps.arcFurnaceRecipes.doAdd(plasmaBuilder));
+            }
+        }
+
+        ret.addAll(
+            builder.copy()
+                .duration((int) Math.max(1, baseDuration * 1.25d))
+                .circuit(1)
+                .addTo(RecipeMaps.arcFurnaceRecipes));
+
         return ret;
     });
     /**

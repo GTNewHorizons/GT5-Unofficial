@@ -325,6 +325,24 @@
       }
     ]
   },
+  "machines.MTEIndustrialArcFurnaceStartup": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEIndustrialArcFurnaceStartup",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEIndustrialArcFurnaceShutdown": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEIndustrialArcFurnaceShutdown",
+        "stream": false
+      }
+    ]
+  },
   "machines.MTEMegaIndustrialApiary": {
     "category": "block",
     "sounds": [
@@ -487,7 +505,7 @@
         "name": "MaintenanceCreativeHatch",
         "stream": false,
         "licensing": {
-          "author_names": ["nicksitnikov", "Kynake"],
+          "author_names": [ "nicksitnikov", "Kynake" ],
           "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
           "license_name": "Attribution-ShareAlike 4.0",
           "original_sound_url": "https://freesound.org/people/IENBA/sounds/697379/",
@@ -514,12 +532,12 @@
             "https://freesound.org/people/bruno.auzet/sounds/578270/",
             "https://freesound.org/people/NinjaSharkStudios/sounds/566206/"
           ],
-          "original_sound_names": ["drone DJI.wav", "DeWalt Drill_1.wav"],
+          "original_sound_names": [ "drone DJI.wav", "DeWalt Drill_1.wav" ],
           "original_author_urls": [
             "https://freesound.org/people/bruno.auzet/",
             "https://freesound.org/people/NinjaSharkStudios/"
           ],
-          "original_author_names": ["bruno.auzet", "NinjaSharkStudios"],
+          "original_author_names": [ "bruno.auzet", "NinjaSharkStudios" ],
           "original_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
           "original_license_name": "CC0 1.0 Universal"
         }
@@ -533,7 +551,7 @@
         "name": "MaintenanceDuctTape",
         "stream": false,
         "licensing": {
-          "author_names": ["nicksitnikov", "Kynake"],
+          "author_names": [ "nicksitnikov", "Kynake" ],
           "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
           "license_name": "Attribution-ShareAlike 4.0"
         }
