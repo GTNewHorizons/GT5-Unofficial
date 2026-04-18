@@ -196,10 +196,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected boolean canBeMuffled = true;
     protected boolean debugEnergyPresent = false;
 
+    protected boolean disableCoilGlow = false;
+
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
     protected static final String VOIDING_MODE_NBT_KEY = "voidingMode";
     protected static final String BATCH_MODE_NBT_KEY = "batchMode";
+    protected static final String DISABLE_COIL_GLOW_NBT_KEY = "disableCoilGlow";
     protected SingleRecipeCheck mSingleRecipeCheck = null;
 
     public ArrayList<MTEHatchInput> mInputHatches = new ArrayList<>();
@@ -365,6 +368,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         aNBT.setString(VOIDING_MODE_NBT_KEY, voidingMode.name);
         aNBT.setBoolean("usesTurbine", usesTurbine);
         aNBT.setBoolean("canBeMuffled", canBeMuffled);
+        aNBT.setBoolean(DISABLE_COIL_GLOW_NBT_KEY, disableCoilGlow);
     }
 
     @Override
@@ -416,6 +420,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             voidingMode = aNBT.getBoolean(VOID_EXCESS_NBT_KEY) ? VoidingMode.VOID_ALL : VoidingMode.VOID_NONE;
         }
         if (!getAllowedVoidingModes().contains(voidingMode)) voidingMode = getDefaultVoidingMode();
+        disableCoilGlow = aNBT.getBoolean(DISABLE_COIL_GLOW_NBT_KEY);
 
         int aOutputItemsLength = aNBT.getInteger("mOutputItemsLength");
         if (aOutputItemsLength > 0) {
@@ -640,11 +645,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
             boolean isActive = mMaxProgresstime > 0;
 
-            if (!mMachine || !isActive) {
+            if (!mMachine || !isActive || disableCoilGlow) {
                 deactivateCoilLease();
             }
 
-            if (mMachine && !mCoils.isEmpty() && isActive && coilLease == null) {
+            if (mMachine && !mCoils.isEmpty() && isActive && !disableCoilGlow && coilLease == null) {
                 coilLease = GTCoilTracker.activate(this, mCoils);
             }
         } else {
@@ -2994,6 +2999,22 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @Override
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (aPlayer.isSneaking() && supportsCoilGlowToggle()) {
+            disableCoilGlow = !disableCoilGlow;
+            if (disableCoilGlow) {
+                deactivateCoilLease();
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.machine.coil_glow.disable");
+            } else {
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.machine.coil_glow.enable");
+            }
+            return true;
+        }
+        return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
+    }
+
+    @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         if (this.supportsBatchMode()) {
@@ -3028,6 +3049,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public Pos2d getBatchModeButtonPos() {
         return new Pos2d(44, 91);
+    }
+
+    public boolean supportsCoilGlowToggle() {
+        return !mCoils.isEmpty();
+    }
+
+    public boolean isCoilGlowDisabled() {
+        return disableCoilGlow;
+    }
+
+    public void setCoilGlowDisabled(boolean disabled) {
+        this.disableCoilGlow = disabled;
     }
 
     @Override

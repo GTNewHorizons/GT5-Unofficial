@@ -1345,6 +1345,8 @@ public final class GTGuiTextures {
     public static final UITexture TT_OVERLAY_BUTTON_STATISTICS = UITexture
         .fullImage(MODID, "gui/overlay_button/statistics");
     public static final UITexture TT_OVERLAY_BUTTON_HEAT_ON = UITexture.fullImage(MODID, "gui/overlay_button/heat_on");
+    public static final UITexture TT_OVERLAY_BUTTON_HEAT_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/heat_off");
     public static final UITexture TT_OVERLAY_BUTTON_INPUT_SEPARATION = UITexture
         .fullImage(MODID, "gui/overlay_button/input_separation_on");
     public static final UITexture TT_OVERLAY_BUTTON_INPUT_SEPARATION_OFF = UITexture
