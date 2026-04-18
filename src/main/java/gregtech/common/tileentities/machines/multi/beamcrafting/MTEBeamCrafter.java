@@ -389,11 +389,19 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         int neededA = currentRecipeMaxAmountA - currentRecipeCurrentAmountA;
         int neededB = currentRecipeMaxAmountB - currentRecipeCurrentAmountB;
 
-        long maxConsumeA = (long) neededA * activeParallel;
-        long maxConsumeB = (long) neededB * activeParallel;
+        int availAfterCurrentA = availableA - neededA;
+        int availAfterCurrentB = availableB - neededB;
 
-        int consumedA = (int) Math.min(availableA, maxConsumeA);
-        int consumedB = (int) Math.min(availableB, maxConsumeB);
+        int consumedA = 0;
+        int consumedB = 0;
+
+        if (this.activeParallel == 1) {
+            consumedA = Math.min(availableA, neededA);
+            consumedB = Math.min(availableB, neededB);
+        } else {
+            consumedA = Math.min(availableA, neededA + ((this.activeParallel - 1) * currentRecipeMaxAmountA));
+            consumedB = Math.min(availableB, neededB + ((this.activeParallel - 1) * currentRecipeMaxAmountB));
+        }
 
         bufferMap.put(recipeParticleIDA, availableA - consumedA);
         bufferMap.put(recipeParticleIDB, availableB - consumedB);
@@ -453,8 +461,14 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         int availableA = bufferMap.getOrDefault(this.currentRecipeParticleIDA, 0);
         int availableB = bufferMap.getOrDefault(this.currentRecipeParticleIDB, 0);
 
-        parallel = Math.min(parallel, availableA / this.currentRecipeMaxAmountA);
-        parallel = Math.min(parallel, availableB / this.currentRecipeMaxAmountB);
+        int availAfterCurrentA = availableA - (this.currentRecipeMaxAmountA - this.currentRecipeCurrentAmountA);
+        int availAfterCurrentB = availableB - (this.currentRecipeMaxAmountB - this.currentRecipeCurrentAmountB);
+
+        if (availAfterCurrentA <= 0 || availAfterCurrentB <= 0) parallel = 1;
+        else {
+            parallel = Math.min(parallel, (availAfterCurrentA / this.currentRecipeMaxAmountA) + 1);
+            parallel = Math.min(parallel, (availAfterCurrentB / this.currentRecipeMaxAmountB) + 1);
+        }
 
         parallel = Math.max(1, parallel); // so it can't be 0
         this.activeParallel = parallel;
