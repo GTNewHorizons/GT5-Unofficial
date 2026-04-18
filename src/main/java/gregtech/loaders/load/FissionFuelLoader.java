@@ -433,7 +433,7 @@ public class FissionFuelLoader implements Runnable {
                 Materials.Uranium235.getDust(1),
                 Materials.Plutonium241.getDust(1))
             .outputChances(100_00, 50_00, 100_00, 90_00, 12_50, 7_50)
-            .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(32), Materials.TungstenCarbide.getMolten(1 * INGOTS))
+            .fluidOutputs(Materials.TungstenCarbide.getMolten(1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -447,7 +447,7 @@ public class FissionFuelLoader implements Runnable {
                 Materials.Uranium235.getDust(1),
                 Materials.Plutonium241.getDust(1))
             .outputChances(100_00, 100_00, 100_00, 90_00, 25_00, 15_00)
-            .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(64), Materials.TungstenCarbide.getMolten(2 * INGOTS))
+            .fluidOutputs(Materials.TungstenCarbide.getMolten(2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -461,7 +461,7 @@ public class FissionFuelLoader implements Runnable {
                 Materials.Uranium235.getDust(1),
                 Materials.Plutonium241.getDust(1))
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
-            .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(128), Materials.TungstenCarbide.getMolten(4 * INGOTS))
+            .fluidOutputs(Materials.TungstenCarbide.getMolten(4 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -506,7 +506,7 @@ public class FissionFuelLoader implements Runnable {
                 Materials.Uranium.getDust(1),
                 Materials.Uranium235.getDust(1))
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
-            .fluidOutputs(Materials.Argon.getGas(32), Materials.HSSS.getMolten(1 * INGOTS))
+            .fluidOutputs(Materials.HSSS.getMolten(1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -520,7 +520,7 @@ public class FissionFuelLoader implements Runnable {
                 Materials.Uranium.getDust(2),
                 Materials.Uranium235.getDust(2))
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
-            .fluidOutputs(Materials.Argon.getGas(64), Materials.HSSS.getMolten(2 * INGOTS))
+            .fluidOutputs(Materials.HSSS.getMolten(2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -534,7 +534,7 @@ public class FissionFuelLoader implements Runnable {
                 Materials.Uranium.getDust(4),
                 Materials.Uranium235.getDust(4))
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
-            .fluidOutputs(Materials.Argon.getGas(128), Materials.HSSS.getMolten(4 * INGOTS))
+            .fluidOutputs(Materials.HSSS.getMolten(4 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
