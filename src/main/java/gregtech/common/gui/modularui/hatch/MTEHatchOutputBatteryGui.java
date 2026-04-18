@@ -3,10 +3,9 @@ package gregtech.common.gui.modularui.hatch;
 import java.util.Arrays;
 
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
@@ -22,8 +21,8 @@ public class MTEHatchOutputBatteryGui extends MTEHatchBaseGui<MTEHatchOutputBatt
     }
 
     @Override
-    protected Flow createContentHolderRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createContentHolderRow(panel, syncManager).child(createSlots(syncManager));
+    protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createContentSection(panel, syncManager).child(createSlots(syncManager));
     }
 
     protected SlotGroupWidget createSlots(PanelSyncManager syncManager) {
@@ -41,7 +40,7 @@ public class MTEHatchOutputBatteryGui extends MTEHatchBaseGui<MTEHatchOutputBatt
                     .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER))
             .build()
             .coverChildren()
-            .align(Alignment.Center);
+            .center();
     }
 
     // just in case any subclasses want to override this
