@@ -110,6 +110,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         return null;
     }
 
+    // Lazy allocation needed to fix piston tiers not appearing in NEI viewer
     private static IStructureDefinition<MTEElectricImplosionCompressor> STRUCTURE_DEFINITION = null;
 
     @Override
