@@ -11,7 +11,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 
@@ -27,9 +26,6 @@ public class MTEHatchMultiInputGui extends MTEHatchBaseGui<MTEHatchMultiInput> {
 
         return GTGuis.mteTemplatePanelBuilder(hatch, guiData, syncManager, uiSettings)
             .build()
-            .child(
-                gridTemplate2by2(
-                    index -> new FluidSlot().syncHandler(new FluidSlotSyncHandler(fluidTanks[index]))
-                        .background(GTGuiTextures.SLOT_FLUID_STANDARD)));
+            .child(gridTemplate2by2(index -> new FluidSlot().syncHandler(new FluidSlotSyncHandler(fluidTanks[index]))));
     }
 }
