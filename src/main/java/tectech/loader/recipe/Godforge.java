@@ -426,7 +426,14 @@ public class Godforge implements Runnable {
             // Fusion tier 4-5
             {
                 // Single step
-                // None yet
+                GTValues.RA.stdBuilder()
+                    .fluidInputs(MaterialsElements.getInstance().BROMINE.getFluidStack(500))
+                    .fluidOutputs(new FluidStack(MaterialsElements.getInstance().BROMINE.getPlasma(), 500))
+                    .duration(5 * SECONDS)
+                    .eut(TierEU.RECIPE_MAX)
+                    .metadata(FOG_PLASMA_MULTISTEP, false)
+                    .metadata(FOG_PLASMA_TIER, 1)
+                    .addTo(godforgePlasmaRecipes);
 
                 // Multi-step
                 // None yet

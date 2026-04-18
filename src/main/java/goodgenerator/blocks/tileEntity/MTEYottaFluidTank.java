@@ -777,4 +777,9 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

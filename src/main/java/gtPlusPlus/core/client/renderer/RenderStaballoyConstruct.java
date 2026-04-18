@@ -43,13 +43,6 @@ public class RenderStaballoyConstruct extends RenderLiving {
         super.doRender(p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
     }
 
-    /**
-     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
-     */
-    protected ResourceLocation getEntityTexture(EntityStaballoyConstruct p_110775_1_) {
-        return staballoyGolemTextures;
-    }
-
     protected void rotateCorpse(EntityStaballoyConstruct p_77043_1_, float p_77043_2_, float p_77043_3_,
         float p_77043_4_) {
         super.rotateCorpse(p_77043_1_, p_77043_2_, p_77043_3_, p_77043_4_);
@@ -140,7 +133,7 @@ public class RenderStaballoyConstruct extends RenderLiving {
      */
     @Override
     protected ResourceLocation getEntityTexture(Entity p_110775_1_) {
-        return this.getEntityTexture((EntityStaballoyConstruct) p_110775_1_);
+        return staballoyGolemTextures;
     }
 
     /**

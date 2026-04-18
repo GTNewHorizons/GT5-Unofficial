@@ -244,7 +244,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
             cache.iterateAll(
                 (id, amount) -> {
                     provider.addToCache(
-                        provider.getFilter()
+                        provider.getFilter()MTEHatchOutputBusME
                             .fromNative(id.getItemStack())
                             .setStackSize(amount));
                 });
