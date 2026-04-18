@@ -1392,7 +1392,6 @@ GT5U.gui.text.invalid_parameters=Неверные параметры.
 GT5U.gui.text.enabled=§aВключён§f
 GT5U.gui.text.disabled=§cОтключён§f
 GT5U.gui.text.lma_craftingfx=Показать эффекты крафта
-GT5U.gui.text.repair_tip=Click with Tool to repair.
 GT5U.gui.text.conditions.out.of.range=§4Out of recipe conditions
 GT5U.gui.text.item.amount=Количество предметов
 GT5U.gui.text.contents=§7Contents:§r
