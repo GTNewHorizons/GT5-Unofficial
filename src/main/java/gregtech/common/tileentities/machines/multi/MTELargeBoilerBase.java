@@ -85,6 +85,10 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     private final IStructureDefinition<MTELargeBoilerBase> structureDefinition;
     private final int superToNormalSteam = 3;
 
+    public int cooldownTicksLeft = 0;
+    public boolean comboFuelThisCycle = false;
+    public long internalWater = 0L;
+
     protected MTELargeBoilerBase(int aID, String aName, String aNameRegional, Casings casing, Casings pipeCasing,
         Casings fireboxCasing, int eut, int efficiencyIncrease, boolean isSuperheated, int pollutionPerSecond) {
         super(aID, aName, aNameRegional);
@@ -150,7 +154,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                             ofBlock(pipeCasing.getBlock(), pipeCasing.getBlockMeta()))))
             .addElement(
                 'C',
-                buildHatchAdder(MTELargeBoilerBase.class).atLeast(Maintenance, InputBus, Muffler)
+                buildHatchAdder(MTELargeBoilerBase.class).atLeast(Maintenance, OutputHatch, Muffler)
                     .casingIndex(casing.getTextureId())
                     .hint(2)
                     .buildAndChain(
@@ -159,7 +163,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                             ofBlock(casing.getBlock(), casing.getBlockMeta()))))
             .addElement(
                 'F',
-                buildHatchAdder(MTELargeBoilerBase.class).atLeast(Maintenance, InputBus, Muffler)
+                buildHatchAdder(MTELargeBoilerBase.class).atLeast(Maintenance, OutputHatch, Muffler)
                     .casingIndex(fireboxCasing.getTextureId())
                     .hint(2)
                     .buildAndChain(
@@ -193,7 +197,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         return efficiencyIncrease;
     }
 
-    boolean isSuperheated() {
+    public boolean isSuperheated() {
         return isSuperheated;
     }
 
@@ -220,10 +224,9 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
                 .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
         }
-        tt.addInfo(
-            String.format(
-                "Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up",
-                formatNumber(500.0 / getEfficiencyIncrease())))
+        tt.addInfo(String.format("Takes %s seconds to heat up", formatNumber(500.0 / getEfficiencyIncrease())))
+            .addInfo("Liquid fuels have full efficiency")
+            .addInfo("Solid + liquid fuel combo gives +25% efficiency bonus")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 6, 3, false)
             .addController("Front bottom")
@@ -313,23 +316,26 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         }
 
         this.superEfficencyIncrease = 0;
-        if (!isSuperheated()) {
-            for (GTRecipe tRecipe : RecipeMaps.dieselFuels.getAllRecipes()) {
-                FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
-                if (tFluid != null && tRecipe.mSpecialValue > 1) {
-                    tFluid.amount = 1000;
-                    if (depleteInput(tFluid)) {
-                        this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(tRecipe.mSpecialValue / 2));
-                        this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease() * 4;
-                        this.mEUt = adjustEUtForConfig(getEUt());
-                        if (this.mEfficiencyIncrease > 5000) {
-                            this.mEfficiencyIncrease = 0;
-                            this.superEfficencyIncrease = 20;
-                        }
-                        return CheckRecipeResultRegistry.SUCCESSFUL;
-                    }
+        this.comboFuelThisCycle = false;
+        boolean liquidConsumed = false;
+        boolean solidConsumed = false;
+        boolean fuelFound = false;
+
+        for (GTRecipe tRecipe : RecipeMaps.dieselFuels.getAllRecipes()) {
+            FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
+            if (tFluid != null && tRecipe.mSpecialValue > 1) {
+                tFluid.amount = 1000;
+                if (depleteInput(tFluid)) {
+                    this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(tRecipe.mSpecialValue / 2));
+                    this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
+                    this.mEUt = adjustEUtForConfig(getEUt());
+                    liquidConsumed = true;
+                    fuelFound = true;
+                    break;
                 }
             }
+        }
+        if (!fuelFound) {
             for (GTRecipe tRecipe : RecipeMaps.denseLiquidFuels.getAllRecipes()) {
                 FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
                 if (tFluid != null) {
@@ -339,11 +345,9 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                             Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2)));
                         this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
                         this.mEUt = adjustEUtForConfig(getEUt());
-                        if (this.mEfficiencyIncrease > 5000) {
-                            this.mEfficiencyIncrease = 0;
-                            this.superEfficencyIncrease = 20;
-                        }
-                        return CheckRecipeResultRegistry.SUCCESSFUL;
+                        liquidConsumed = true;
+                        fuelFound = true;
+                        break;
                     }
                 }
             }
@@ -365,11 +369,9 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                             this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
                             tInput.stackSize -= 1;
                             updateSlots();
-                            if (this.mEfficiencyIncrease > 5000) {
-                                this.mEfficiencyIncrease = 0;
-                                this.superEfficencyIncrease = 20;
-                            }
-                            return CheckRecipeResultRegistry.SUCCESSFUL;
+                            solidConsumed = true;
+                            fuelFound = true;
+                            break;
                         }
                     }
                 }
@@ -391,15 +393,24 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                             this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
                             tInput.stackSize -= 1;
                             updateSlots();
-                            if (this.mEfficiencyIncrease > 5000) {
-                                this.mEfficiencyIncrease = 0;
-                                this.superEfficencyIncrease = 20;
-                            }
-                            return CheckRecipeResultRegistry.SUCCESSFUL;
+                            solidConsumed = true;
+                            fuelFound = true;
+                            break;
                         }
                     }
                 }
             }
+        }
+        if (fuelFound) {
+            if (liquidConsumed && solidConsumed) {
+                this.comboFuelThisCycle = true;
+                this.mEfficiencyIncrease = (int) (this.mEfficiencyIncrease * 1.25f);
+            }
+            if (this.mEfficiencyIncrease > 5000) {
+                this.mEfficiencyIncrease = 0;
+                this.superEfficencyIncrease = 20;
+            }
+            return CheckRecipeResultRegistry.SUCCESSFUL;
         }
         this.mMaxProgresstime = 0;
         this.mEUt = 0;
@@ -415,43 +426,60 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (this.mEUt > 0) {
+        int effectiveEUt = this.mEUt;
+        if (this.mEUt == 0 && this.cooldownTicksLeft > 0) {
+            this.cooldownTicksLeft--;
+            effectiveEUt = (int) (getEUt() * 0.75f * (this.cooldownTicksLeft / (float) getMaxCooldownTicks()));
+        }
+        if (effectiveEUt > 0) {
             int maxEff = getCorrectedMaxEfficiency(mInventory[1]);
             if (this.superEfficencyIncrease > 0 && mEfficiency < maxEff) {
                 mEfficiency = Math.max(0, Math.min(mEfficiency + superEfficencyIncrease, maxEff));
             }
-            int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
+            int tGeneratedEU = (int) (effectiveEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
                 long amount = (tGeneratedEU + STEAM_PER_WATER) / STEAM_PER_WATER;
                 excessWater += amount * STEAM_PER_WATER - tGeneratedEU;
                 amount -= excessWater / STEAM_PER_WATER;
                 excessWater %= STEAM_PER_WATER;
-                startRecipeProcessing();
-                if (isSuperheated()) {
-                    // Consumes only one third of the water if producing Superheated Steam, to maintain water in the
-                    // chain.
-                    if (depleteInput(Materials.Water.getFluid(amount / superToNormalSteam))
-                        || depleteInput(GTModHandler.getDistilledWater(amount / superToNormalSteam))) {
-                        // Outputs Superheated Steam instead of Steam, at one third of the amount (equivalent in power
-                        // output to the normal Steam amount).
-                        addOutput(
-                            FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU / superToNormalSteam));
+                if (internalWater < getMaxInternalWater()) {
+                    FluidStack water = Materials.Water.getFluid(1000);
+                    if (depleteInput(water)) {
+                        internalWater += 1000;
                     } else {
-                        GTLog.writeExplosionLog(this, "Boiler had no water");
-                        explodeMultiblock();
+                        FluidStack distilled = GTModHandler.getDistilledWater(1000);
+                        if (depleteInput(distilled)) {
+                            internalWater += 1000;
+                        }
                     }
+                }
+                long waterToConsume = isSuperheated() ? amount / superToNormalSteam : amount;
+                if (internalWater >= waterToConsume) {
+                    internalWater -= waterToConsume;
                 } else {
-                    if (depleteInput(Materials.Water.getFluid(amount))
-                        || depleteInput(GTModHandler.getDistilledWater(amount))) {
-                        addOutput(Materials.Steam.getGas(tGeneratedEU));
-                    } else {
+                    long stillNeeded = waterToConsume - internalWater;
+                    internalWater = 0;
+                    if (!(depleteInput(Materials.Water.getFluid(stillNeeded))
+                        || depleteInput(GTModHandler.getDistilledWater(stillNeeded)))) {
                         GTLog.writeExplosionLog(this, "Boiler had no water");
                         explodeMultiblock();
                     }
                 }
+                startRecipeProcessing();
+                if (isSuperheated()) {
+                    // Consumes only one third of the water if producing Superheated Steam, to maintain water in the
+                    // chain.
+                    // Outputs Superheated Steam instead of Steam, at one third of the amount (equivalent in power
+                    // output to the normal Steam amount).
+                    addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU / superToNormalSteam));
+                } else {
+                    addOutput(Materials.Steam.getGas(tGeneratedEU));
+                }
                 endRecipeProcessing();
             }
-            return true;
+        }
+        if (this.mProgresstime == 0 && this.cooldownTicksLeft == 0) {
+            this.cooldownTicksLeft = getMaxCooldownTicks();
         }
         return true;
     }
@@ -462,6 +490,9 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         aNBT.setInteger("excessFuel", excessFuel);
         aNBT.setInteger("excessWater", excessWater);
         aNBT.setInteger("excessProjectedEU", excessProjectedEU);
+        aNBT.setInteger("cooldownTicksLeft", cooldownTicksLeft);
+        aNBT.setBoolean("comboFuelThisCycle", comboFuelThisCycle);
+        aNBT.setLong("internalWater", internalWater);
     }
 
     @Override
@@ -470,6 +501,9 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         excessFuel = aNBT.getInteger("excessFuel");
         excessWater = aNBT.getInteger("excessWater");
         excessProjectedEU = aNBT.getInteger("excessProjectedEU");
+        cooldownTicksLeft = aNBT.getInteger("cooldownTicksLeft");
+        comboFuelThisCycle = aNBT.getBoolean("comboFuelThisCycle");
+        internalWater = aNBT.getLong("internalWater");
     }
 
     @Override
@@ -565,4 +599,13 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             0,
             (int) (pollutionPerSecond * (1 - GTMod.proxy.mPollutionReleasedByThrottle * integratedCircuitConfig)));
     }
+
+    public abstract long getMaxInternalWater();
+
+    public abstract int getMaxCooldownTicks();
+
+    // @Override
+    // protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+    // return new MTELargeBoilerGui(this);
+    // }
 }
