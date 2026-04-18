@@ -11,15 +11,12 @@ import net.minecraft.network.PacketBuffer;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DrawableStack;
-import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
-import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
@@ -101,24 +98,32 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
             .findSyncHandler("selected");
         int buttonsPerRow = 10;
         int rowCount = (int) Math.ceil((double) ores.length / buttonsPerRow);
-        return new ListWidget<>().children(rowCount, row -> {
-            return new Row().children(Math.min(buttonsPerRow, ores.length - (row * buttonsPerRow)), rowIndex -> {
-                int index = (row * buttonsPerRow) + rowIndex;
-                ItemStack stack = ores[index].getItemStack();
-                return new ToggleButton()
-                    .value(new BoolValue.Dynamic(() -> multiblock.selected.getStackInSlot(index) != null, bool -> {
-                        if (bool) {
-                            multiblock.selected.insertItem(index, stack, false);
-                        } else multiblock.selected.extractItem(index, 1, false);
-                        syncer.setValue(multiblock.selected);
-                    }))
-                    .overlay(getOreButtonOverlay(stack))
-                    .tooltip(t -> t.add(stack.getDisplayName()))
-                    .size(18);
-            })
-                .coverChildren();
-        })
-            .crossAxisAlignment(Alignment.CrossAxis.START)
+        return new ListWidget<>().child(
+            Flow.row()
+                .children(ores.length, index -> {
+                    ItemStack stack = ores[index].getItemStack();
+                    return new ToggleButton()
+                        .value(new BoolValue.Dynamic(() -> multiblock.selected.getStackInSlot(index) != null, bool -> {
+                            if (bool) {
+                                multiblock.selected.insertItem(index, stack, false);
+                            } else multiblock.selected.extractItem(index, 1, false);
+                            syncer.setValue(multiblock.selected);
+                        }))
+                        .overlay(
+                            new ItemDrawable(stack).asIcon()
+                                .size(16))
+                        .background(true, GTGuiTextures.BUTTON_STANDARD_PRESSED.withColorOverride(Color.GREY.main))
+                        .background(false, GTGuiTextures.BUTTON_STANDARD)
+                        .tooltipBuilder(false, t -> getOreButtonTooltip(t, stack, false))
+                        .tooltipBuilder(true, t -> getOreButtonTooltip(t, stack, true))
+                        .setEnabledIf($ -> matchesSearch(stack))
+                        .size(18);
+                })
+                .wrap()
+                .crossAxisAlignment(Alignment.CrossAxis.START)
+                .width(18 * buttonsPerRow)
+                .coverChildrenHeight()
+                .collapseDisabledChild())
             .coverChildrenWidth()
             .height(18 * Math.min(rowCount, 8));
     }
@@ -165,20 +170,6 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
             .heightRel(1F);
     }
 
-    private IDrawable getOreButtonOverlay(ItemStack stack) {
-        return new DynamicDrawable(() -> {
-            IDrawable oreDrawable = new ItemDrawable(stack).asIcon()
-                .size(16);
-            if (matchesSearch(stack)) {
-                return new DrawableStack(
-                    new Rectangle().color(Color.rgb(0, 255, 0))
-                        .asIcon()
-                        .size(16),
-                    oreDrawable);
-            } else return oreDrawable;
-        });
-    }
-
     // On game launch the order in the multis drop map randomizes, so we sort it by meta so everything can stay the same
     private GTUtility.ItemId[] sortOres(VoidMinerUtility.DropMap dropMap) {
         return Arrays.stream(dropMap.getOres())
@@ -189,8 +180,16 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
             .toArray(GTUtility.ItemId[]::new);
     }
 
+    private void getOreButtonTooltip(RichTooltip tt, ItemStack stack, boolean selected) {
+        tt.addFromItem(stack);
+        if (multiblock.blacklist) {
+            tt.addLine(translateToLocal("GT5U.gui.button.vm.tt." + (selected ? "void" : "novoid")));
+        } else tt.addLine(translateToLocal("GT5U.gui.button.vm.tt." + (selected ? "novoid" : "void")));
+        tt.setAutoUpdate(true);
+    }
+
     private boolean matchesSearch(ItemStack ore) {
-        return !search.isEmpty() && ore.getDisplayName()
+        return search.isEmpty() || ore.getDisplayName()
             .toLowerCase()
             .contains(search.toLowerCase());
     }

@@ -48,6 +48,7 @@ import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineWithRecipeB
  * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
  * Machine
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
 
     private final RecipeMap<?> mRecipes;

@@ -9,7 +9,6 @@ import static gregtech.api.util.GTModHandler.RecipeBits.BITSD;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTModHandler;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
@@ -18,7 +17,6 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.MTEPo
 public class GregtechPowerSubStation {
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Power Substation Node.");
         run1();
     }
 
@@ -27,7 +25,6 @@ public class GregtechPowerSubStation {
         GregtechItemList.PowerSubStation.set(
             new MTEPowerSubStation(PowerSubStation.ID, "substation.01.input.single", "Power Station Control Node")
                 .getStackForm(1L));
-        int tID = 886;
         GregtechItemList.Hatch_Input_Battery_MV.set(
             new MTEHatchInputBattery(Hatch_Input_Battery_MV.ID, "hatch.input_battery.tier.00", "Charging Bus (MV)", 2)
                 .getStackForm(1L));

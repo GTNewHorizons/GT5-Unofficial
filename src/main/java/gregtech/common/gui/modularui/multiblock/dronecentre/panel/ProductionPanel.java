@@ -91,7 +91,6 @@ public class ProductionPanel extends ModularPanel {
                             .childPadding(4)
                             .child(
                                 new UpdatableToggleButton(productionHandler).size(18)
-                                    .background(GTGuiTextures.BUTTON_STANDARD)
                                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                                     .value(
