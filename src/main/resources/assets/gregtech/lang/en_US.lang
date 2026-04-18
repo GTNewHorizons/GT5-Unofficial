@@ -3042,12 +3042,10 @@ gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip1=Collides two bea
 gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip2=their subatomic structure
 gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip3=Input Beams can be supplied to either Beamline Input Hatch
 gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip4=Inputs are consumed immediately and will wait for particles
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5=Incoming particle packets are buffered as individual particles,
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6=with a conversion rate of 1 particle per §cBeam Amount§7
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7=Up to §b%s§7 particles of each type can be buffered
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8=Recipe progress is determined purely by particles consumed
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip9=from the buffer
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip10=Has §6%s§7 parallels
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5=Up to §b%s§7 particles of each type can be buffered
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6=Recipe progress is determined purely by particles consumed
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7=from the buffer
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8=Has §6%s§7 parallels
 gt.blockmachines.multimachine.beamcrafting.beamcrafter.dumpbuffer=Click to dump
 
 gt.blockmachines.multimachine.beamcrafting.beammirror.machinetype=Beam Mirror

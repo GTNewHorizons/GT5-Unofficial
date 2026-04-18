@@ -298,25 +298,19 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip4"))
             .addSeparator()
             .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5"))
+                StatCollector.translateToLocalFormatted(
+                    "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5",
+                    MAX_BUFFER))
             .addInfo(
                 StatCollector
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6"))
             .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7",
-                    MAX_BUFFER))
-            .addInfo(
                 StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip9"))
+                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7"))
             .addSeparator()
             .addInfo(
                 StatCollector.translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip10",
+                    "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8",
                     MAX_PARALLEL))
             .addSeparator()
             .beginStructureBlock(17, 5, 11, false)
