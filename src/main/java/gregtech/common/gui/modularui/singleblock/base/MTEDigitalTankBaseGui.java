@@ -2,7 +2,6 @@ package gregtech.common.gui.modularui.singleblock.base;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -53,7 +52,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
     }
 
     protected Flow createLeftSide(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow leftSide = Flow.col()
+        Flow leftSide = Flow.column()
             .childPadding(2)
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START);
@@ -98,12 +97,14 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
         fluidSlotSH.setChangeListener(machine::setLockIfEmpty);
 
         return new FluidSlot().syncHandler(fluidSlotSH)
-            .align(Alignment.BottomRight)
-            .background(IDrawable.EMPTY);
+            .bottomRel(0)
+            .rightRel(0)
+            .disableThemeBackground(true)
+            .disableHoverThemeBackground(true);
     }
 
     protected Flow createRightSide(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow rightSide = Flow.col()
+        Flow rightSide = Flow.column()
             .childPadding(2)
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START);
@@ -137,24 +138,25 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
         return rightSide;
     }
 
-    protected Flow createFilterScreen(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow screen = Flow.col()
-            .size(71, 45)
+    protected ParentWidget<?> createFilterScreen(ModularPanel panel, PanelSyncManager syncManager) {
+        ParentWidget<?> screen = new ParentWidget<>().size(71, 45)
             .padding(3, 2, 3, 2)
-            .childPadding(1)
-            .crossAxisAlignment(Alignment.CrossAxis.START)
             .background(GTGuiTextures.PICTURE_SCREEN_BLACK);
+
+        Flow textColumn = Flow.column()
+            .childPadding(1)
+            .crossAxisAlignment(Alignment.CrossAxis.START);
 
         FluidLockSlotWidget fluidLockSlotWidget = new FluidLockSlotWidget(machine);
 
         // fluid amount label
-        screen.child(
+        textColumn.child(
             IKey.lang("GT5U.machines.digitaltank.lockfluid.label")
                 .asWidget()
                 .color(Color.WHITE.main));
 
         // fluid name
-        screen.child(IKey.dynamic(() -> {
+        textColumn.child(IKey.dynamic(() -> {
             if (fluidLockSlotWidget.getFluid() != null) {
                 return fluidLockSlotWidget.getFluid()
                     .getLocalizedName();
@@ -164,11 +166,15 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
             .asWidget()
             .color(Color.WHITE.main));
 
+        screen.child(textColumn);
+
         // fluid lock slot
         screen.child(
             fluidLockSlotWidget.syncHandler(new FluidSlotSyncHandler(fluidLockSlotWidget).phantom(true))
-                .align(Alignment.BottomRight)
-                .background(IDrawable.EMPTY));
+                .bottomRel(0)
+                .rightRel(0)
+                .disableThemeBackground(true)
+                .disableHoverThemeBackground(true));
 
         return screen;
     }
