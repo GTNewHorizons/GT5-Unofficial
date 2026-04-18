@@ -371,6 +371,10 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings12, 11, gt(16, 5, 11)),
     AlchemicallyImmuneIchoriumCasing
         (() -> GregTechAPI.sBlockCasings12, 12, gt(16, 5, 12)),
+    MixerCasing
+        (() -> GregTechAPI.sBlockCasings12, 13, gt(16, 5, 13)),
+    FormingCore
+        (() -> GregTechAPI.sBlockCasings12, 14, gt(16, 5, 14)),
     AlchemicalCasing(() -> GregTechAPI.sBlockCasings12, 10, gt(16, 5, 10)) {
         @Override
         public String getLocalizedName() {
@@ -503,6 +507,10 @@ public enum Casings implements ICasing {
     LHCbCasing
         (() -> GregTechAPI.sBlockCasings13,14,gt(16,6,14)),
 
+    // Block Reinforced
+    NaquadahReinforcedBlock
+        (() -> GregTechAPI.sBlockReinforced,10,218),
+
     // Block Casings Foundry
     PrimaryExoFoundryCasing
         (() -> GregTechAPI.sBlockCasingsFoundry, 0, gt(8, 5, 0)),
@@ -628,7 +636,7 @@ public enum Casings implements ICasing {
     HeatProofCokeOvenCasing
         (() -> ModBlocks.blockCasingsMisc, 3, gtpp(0, 3)),
     MaterialPressCasing
-        (() -> ModBlocks.blockCasingsMisc, 4, gtpp(0, 4)),
+        (() -> ModBlocks.blockCasingsMisc, 4, 50),
     ElectrolyzerCasing
         (() -> ModBlocks.blockCasingsMisc, 5, gtpp(0, 5)),
     WireFactoryCasing
@@ -665,7 +673,7 @@ public enum Casings implements ICasing {
     IncoloyDSFluidContainmentBlock
         (() -> ModBlocks.blockCasings2Misc, 3, gtpp(1, 3)),
     WashPlantCasing
-        (() -> ModBlocks.blockCasings2Misc, 4, -1),
+        (() -> ModBlocks.blockCasings2Misc, 4, 75),
     IndustrialSieveCasing
         (() -> ModBlocks.blockCasings2Misc, 5, gtpp(1, 5)),
     LargeSieveGrate
@@ -1024,6 +1032,14 @@ public enum Casings implements ICasing {
     // ------------------ Miscellaneous Elements -----------------
     MagicCasing
         (() -> Loaders.magicCasing, 0, -1),
+    NaquadahFuelRefineryCasing
+        (() -> Loaders.FRF_Casings, 0, 179),
+    RadiantProofSteelFrameBox
+        (() -> Loaders.radiationProtectionSteelFrame, 0, -1),
+    FieldRestrictionCasing
+        (() -> Loaders.MAR_Casing, 0, -1),
+    FieldRestrictionGlass
+        (() -> Loaders.fieldRestrictingGlass, 0, -1),
 
     BorosilicateGlassAny(BorosilicateGlass::getGlassBlock, 0, -1) {
         @Override

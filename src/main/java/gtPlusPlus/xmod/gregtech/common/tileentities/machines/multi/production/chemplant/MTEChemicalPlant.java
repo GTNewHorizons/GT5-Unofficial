@@ -56,7 +56,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
-import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -68,7 +67,6 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -108,10 +106,9 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     public static boolean registerMachineCasingForTier(int aTier, Block aBlock, int aMeta, int aCasingTextureID) {
         Triple<Block, Integer, Integer> aCasingData = Triple.of(aBlock, aMeta, aCasingTextureID);
         if (mTieredBlockRegistry.containsKey(aTier)) {
-            Logger.ERROR(
+            throw new IllegalStateException(
                 "Tried to register a Machine casing for tier " + aTier
                     + " to the Chemical Plant, however this tier already contains one.");
-            throw new IllegalStateException();
         }
         mTieredBlockRegistry.put(aTier, aCasingData);
         GTStructureChannels.METAL_MACHINE_CASING.registerAsIndicator(new ItemStack(aBlock, 1, aMeta), aTier + 1);
@@ -468,42 +465,13 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Override
     public int getMaxParallelRecipes() {
-        return 2 * getPipeCasingTier();
-    }
-
-    private int getSolidCasingTier() {
-        return this.mSolidCasingTier;
-    }
-
-    private int getMachineCasingTier() {
-        return mMachineCasingTier;
-    }
-
-    private int getPipeCasingTier() {
-        return mPipeCasingTier;
+        return 2 * mPipeCasingTier;
     }
 
     private int getCasingTextureID() {
         // Check the Tier Client Side
         int aTier = mSolidCasingTier;
         return getCasingTextureIdForTier(aTier);
-    }
-
-    public boolean addToMachineList(IGregTechTileEntity aTileEntity) {
-        int aMaxTier = getMachineCasingTier();
-        final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTETieredMachineBlock aMachineBlock) {
-            int aTileTier = aMachineBlock.mTier;
-            if (aTileTier > aMaxTier) {
-                log("Hatch tier too high.");
-                return false;
-            } else {
-                return addToMachineList(aTileEntity, getCasingTextureID());
-            }
-        } else {
-            log("Bad Tile Entity being added to hatch map."); // Shouldn't ever happen, but.. ya know..
-            return false;
-        }
     }
 
     @Override
@@ -531,7 +499,6 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchCatalysts) {
-            log("Found MTEHatchCatalysts");
             return addToMachineListInternal(mCatalystBuses, aMetaTileEntity, aBaseCasingIndex);
         }
         return super.addToMachineList(aTileEntity, aBaseCasingIndex);
