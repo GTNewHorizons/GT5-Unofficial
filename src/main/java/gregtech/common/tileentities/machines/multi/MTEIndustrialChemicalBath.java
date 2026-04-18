@@ -56,6 +56,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import ic2.core.init.BlocksItems;
@@ -132,7 +133,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
                     'E',
                     buildHatchAdder(MTEIndustrialChemicalBath.class)
                         .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
-                        .casingIndex(Casings.WashPlantCasing.textureId)
+                        .casingIndex(114) // WashPlantCasing
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.WashPlantCasing.asElement())))
                 .addElement('F', ofChain(isAir(), ofAnyWater(true)))
@@ -181,16 +182,17 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { Casings.WashPlantCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCDIndustrialWashPlantActive)
-                .extFacing()
-                .build(),
+            if (active) return new ITexture[] { TextureFactory.of(ModBlocks.blockCasings2Misc, 4),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.oMCDIndustrialWashPlantActive)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(TexturesGtBlock.oMCDIndustrialWashPlantActiveGlow)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Casings.WashPlantCasing.getCasingTexture(), TextureFactory.builder()
+            return new ITexture[] { TextureFactory.of(ModBlocks.blockCasings2Misc, 4), TextureFactory.builder()
                 .addIcon(TexturesGtBlock.oMCDIndustrialWashPlant)
                 .extFacing()
                 .build(),
@@ -200,7 +202,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Casings.WashPlantCasing.getCasingTexture() };
+        return new ITexture[] { TextureFactory.of(ModBlocks.blockCasings2Misc, 4) };
     }
 
     @Override
