@@ -5,7 +5,7 @@ import gtPlusPlus.xmod.bop.blocks.base.LogBase;
 public class LogPineTree extends LogBase {
 
     public LogPineTree() {
-        super("Pine Log", "pine", new String[] { "pine" });
+        super("Pine Log", new String[] { "pine" });
         this.treeType = new String[] { "pine" };
     }
 

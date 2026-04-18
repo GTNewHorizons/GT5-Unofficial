@@ -201,4 +201,9 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }
