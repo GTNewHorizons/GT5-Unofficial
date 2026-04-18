@@ -87,7 +87,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
         mAuto = aAuto;
     }
 
-    private static ItemStack[] getAutoMaintenanceInputs() {
+    public static ItemStack[] getAutoMaintenanceInputs() {
         if (sAutoMaintenanceInputs == null) sAutoMaintenanceInputs = new ItemStack[] { ItemList.Duct_Tape.get(4),
             GTOreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 2),
             GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 4),

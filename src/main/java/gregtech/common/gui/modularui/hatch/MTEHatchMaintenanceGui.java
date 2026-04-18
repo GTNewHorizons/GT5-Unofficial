@@ -9,16 +9,13 @@ import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.MouseData;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
@@ -39,14 +36,14 @@ public class MTEHatchMaintenanceGui extends MTEHatchBaseGui<MTEHatchMaintenance>
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow mainRow = Flow.row()
-            .full();
+        ParentWidget<?> parent = super.createContentSection(panel, syncManager);
 
         // tip box
-        mainRow.child(
+        parent.child(
             GuiTextures.BUBBLE.asWidget()
                 .background(GTGuiTextures.BUTTON_STANDARD)
-                .align(Alignment.TopRight)
+                .topRel(0)
+                .rightRel(0)
                 .marginTop(3)
                 .marginRight(3)
                 .tooltip(
@@ -55,27 +52,27 @@ public class MTEHatchMaintenanceGui extends MTEHatchBaseGui<MTEHatchMaintenance>
                             GTUtility.breakLines(
                                 translateToLocal(
                                     mAuto ? "GT5U.gui.text.autorepair_info" : "GT5U.gui.text.repair_info"))))));
-
         if (mAuto) {
             // maintenance item input slots
-            mainRow.child(
+            parent.child(
                 SlotGroupWidget.builder()
                     .matrix(new String[] { "ss", "ss" })
                     .key(
                         's',
-                        index -> new ItemSlot()
-                            .slot(new ModularSlot(hatch.inventoryHandler, index).slotGroup("item_inv")))
+                        index -> new ItemSlot().slot(
+                            new ModularSlot(hatch.inventoryHandler, index).slotGroup("item_inv")
+                                .filter(this::isRepairItem)))
                     .build()
-                    .align(Alignment.CENTER));
+                    .center());
         } else {
             // maintenance slot background
-            mainRow.child(
+            parent.child(
                 GTGuiTextures.SLOT_MAINTENANCE.asWidget()
                     .size(20)
-                    .align(Alignment.CENTER));
+                    .center());
 
             // maintenance slot
-            mainRow.child(new PhantomItemSlot() {
+            parent.child(new PhantomItemSlot() {
 
                 @Override
                 public boolean handleDragAndDrop(@NotNull ItemStack draggedStack, int button) {
@@ -102,11 +99,17 @@ public class MTEHatchMaintenanceGui extends MTEHatchBaseGui<MTEHatchMaintenance>
                 }
             }.slot(new ModularSlot(hatch.inventoryHandler, 0))
                 .size(25)
-                .background(IDrawable.EMPTY)
-                .align(Alignment.CENTER));
+                .disableThemeBackground(true)
+                .disableHoverThemeBackground(true)
+                .center());
         }
 
-        return super.createContentSection(panel, syncManager).child(mainRow);
+        return parent;
+    }
+
+    private boolean isRepairItem(ItemStack itemStack) {
+        return Arrays.stream(MTEHatchMaintenance.getAutoMaintenanceInputs())
+            .anyMatch(repairItem -> repairItem.isItemEqual(itemStack));
     }
 
     @Override
