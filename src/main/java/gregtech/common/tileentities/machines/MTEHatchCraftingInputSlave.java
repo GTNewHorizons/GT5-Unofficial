@@ -22,6 +22,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
@@ -210,7 +212,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
             return false;
         }
-        if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type")
+        if (!ItemStackNBT.getString(dataStick, "type")
             .equals("CraftingInputBuffer")) {
             return false;
         }

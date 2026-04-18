@@ -3,7 +3,8 @@ package gregtech.common.items.behaviors;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTUtility;
@@ -11,19 +12,11 @@ import gregtech.api.util.GTUtility;
 public class BehaviourPrintedPages extends BehaviourNone {
 
     public static String getTitle(ItemStack aStack) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            return "";
-        }
-        return tNBT.getString("title");
+        return ItemStackNBT.getString(aStack, "title");
     }
 
     public static String getAuthor(ItemStack aStack) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            return "";
-        }
-        return tNBT.getString("author");
+        return ItemStackNBT.getString(aStack, "author");
     }
 
     @Override
