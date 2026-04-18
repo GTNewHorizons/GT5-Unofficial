@@ -837,7 +837,7 @@ public enum Casings implements ICasing {
     ReinforcedEngineCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 10, gtpp(1, 10)),
     MolecularContainmentCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 11, gtpp(1, 11)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 11, 113),
     HighVoltageCurrentCapacitor
         (() -> ModBlocks.blockSpecialMultiCasings, 12, gtpp(1, 12)),
     ParticleContainmentCasing
