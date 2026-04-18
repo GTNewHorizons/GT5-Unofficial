@@ -1953,6 +1953,7 @@ public enum ItemList implements IItemContainer {
     Circuit_Silicon_Wafer5,
     Circuit_Silicon_Wafer6,
     Circuit_Silicon_Wafer7,
+    Circuit_Silicon_Wafer8,
     Circuit_Wafer_ILC,
     Circuit_Chip_ILC,
     Circuit_Wafer_Ram,
@@ -1992,6 +1993,16 @@ public enum ItemList implements IItemContainer {
     Circuit_Wafer_QuantumCPU,
     Circuit_Chip_QuantumCPU,
     Circuit_Wafer_Bioware,
+    Circuit_Wafer_FPIC,
+    Circuit_Chip_FPIC,
+    Circuit_Wafer_APIC,
+    Circuit_Chip_APIC,
+    Circuit_Wafer_ZPIC,
+    Circuit_Chip_ZPIC,
+    Circuit_Wafer_YPIC,
+    Circuit_Chip_YPIC,
+    Circuit_Wafer_PlPIC,
+    Circuit_Chip_PlPIC,
 
     Circuit_Chip_CrystalCPU,
     Circuit_Chip_CrystalSoC,
@@ -2818,7 +2829,7 @@ public enum ItemList implements IItemContainer {
     AdvancedImplosionCompressor,
     IndustrialArcFurnace,
     IndustrialExtruder,
-    IndustrialWasher,
+    OreWashingPlant,
     IndustrialChemicalBath,
     IndustrialFormingPress,
     IndustrialBendingMachine,
@@ -2998,6 +3009,7 @@ public enum ItemList implements IItemContainer {
     ComputationalMatrixNanochipCasing,
     FirewallProjectionNanochipCasing,
     ComplexNanochipGlass,
+    Gravitational_Lens,
 
     // semicolon after the comment to reduce merge conflicts
     ;

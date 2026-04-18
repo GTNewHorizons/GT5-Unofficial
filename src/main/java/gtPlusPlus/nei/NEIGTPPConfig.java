@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMaps;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -41,6 +42,8 @@ public class NEIGTPPConfig implements IConfigureNEI {
         API.removeRecipeCatalyst(
             GregtechItemList.Controller_IndustrialRockBreaker.get(1),
             RecipeMaps.rockBreakerFakeRecipes.unlocalizedName);
+
+        API.removeRecipeCatalyst(ItemList.Boldarnator.get(1), RecipeMaps.rockBreakerFakeRecipes.unlocalizedName);
 
         // Hide Flasks
         if (Utils.isClient()) {
