@@ -2435,7 +2435,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new OreDictItemStack("rodAnyIron", 3))
+            .itemInputs(new OreDictItemStack("stickAnyIron", 3))
             .circuit(3)
             .itemOutputs(new ItemStack(Blocks.iron_bars, 4))
             .duration(15 * SECONDS)

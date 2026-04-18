@@ -349,7 +349,7 @@ public class RecipesMachinesMulti {
     private static void multiCokeOven() {
         // Industrial Coke Oven
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_CokeOven.get(1),
+            ItemList.IndustrialCokeOven.get(1),
             new Object[] { "PCP", "HOH", "PCP", 'P', MaterialsAlloy.TANTALLOY_61.getPlate(1), 'C', "circuitData", 'H',
                 ItemList.Casing_EV, 'O', ItemList.CokeOvenController });
 
@@ -461,7 +461,7 @@ public class RecipesMachinesMulti {
 
         // Industrial Maceration Stack
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_MacerationStack.get(1),
+            ItemList.MacerationStack.get(1),
             new Object[] { "PMP", "MCM", "PMP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'M',
                 ItemList.Machine_EV_Macerator, 'C', "circuitData" });
 
@@ -949,7 +949,7 @@ public class RecipesMachinesMulti {
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 8),
                 MaterialsAlloy.EGLIN_STEEL.getScrew(8))
             .circuit(12)
-            .itemOutputs(GregtechItemList.Controller_IndustrialRockBreaker.get(1))
+            .itemOutputs(ItemList.Boldarnator.get(1))
             .fluidInputs(Materials.Aluminium.getMolten(8 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
