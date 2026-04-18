@@ -302,7 +302,8 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
         return Flow.row()
             .coverChildren()
             .reverseLayout(true)
-            .align(Alignment.BottomRight)
+            .bottomRel(0)
+            .rightRel(0)
             .paddingBottom(2)
             .paddingRight(3)
             .childIf(this.doesAddGregTechLogo(), this::createLogo);
