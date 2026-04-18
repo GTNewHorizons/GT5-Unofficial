@@ -62,6 +62,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -78,6 +79,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import kubatech.api.arcfurnace.ArcFurnaceContext;
 import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
@@ -495,6 +497,50 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     @Override
     public @NotNull Collection<RecipeMap<?>> getAvailableRecipeMaps() {
         return Arrays.asList(arcFurnaceRecipes, blastFurnaceRecipes, furnaceRecipes);
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public int getMachineMode() {
+        return mode.ordinal();
+    }
+
+    @Override
+    public void setMachineMode(int index) {
+        mode = ArcFurnaceMode.modes[index];
+    }
+
+    @Override
+    public int nextMachineMode() {
+        return mode.next()
+            .ordinal();
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return mode.name();
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return super.getGui().withMachineModeIcons(
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_ARC,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_PLASMA_ARC,
+            GTGuiTextures.TT_OVERLAY_BUTTON_FURNACE_MODE);
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
     }
 
     @Override
