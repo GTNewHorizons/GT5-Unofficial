@@ -82,7 +82,7 @@ import gregtech.common.items.behaviors.BehaviourSoftMallet;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.render.IMTERenderer;
 import gregtech.mixin.interfaces.accessors.EntityItemAccessor;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import ic2.api.Direction;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -1374,6 +1374,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 .equalsIgnoreCase(getOwnerName())) {
                 final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
                 if (tCurrentItem != null) {
+                    final boolean isHardHammer = GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList);
+                    final boolean isJackhammer = GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList);
                     if (getColorization() >= 0
                         && GTUtility.areStacksEqual(new ItemStack(Items.water_bucket, 1), tCurrentItem)) {
                         tCurrentItem.func_150996_a(Items.bucket);
@@ -1408,7 +1410,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                         return true;
                     }
 
-                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)) {
+                    if (!hasCoverAtSide(effectiveSide) && (isHardHammer || isJackhammer)) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             if (aPlayer.isSneaking()) {
                                 mInputDisabled = !mInputDisabled;
@@ -1530,7 +1532,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                                     ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                             }
                             return true;
-                        } else if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList)) {
+                        } else if (isHardHammer || isJackhammer) {
                             // Configuration of delicate electronics calls for a tool with precision and subtlety.
                             if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                                 if (effectiveSideCover.isValid()) {
@@ -2232,7 +2234,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     protected int getCoverTabHeightOffset() {
-        return isSteampowered() || getMetaTileEntity() instanceof MTESteamMultiBase<?> ? 32 : 0;
+        return isSteampowered() || getMetaTileEntity() instanceof MTESteamMultiBlockBase<?> ? 32 : 0;
     }
 
     @Override

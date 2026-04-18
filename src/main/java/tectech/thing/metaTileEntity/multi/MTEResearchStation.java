@@ -818,6 +818,11 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         return false;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     // endregion gui
 
     // region MUI2
