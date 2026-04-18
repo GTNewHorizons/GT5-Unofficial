@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
+import java.util.Arrays;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -149,6 +151,12 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     }
 
     @Override
+    protected void fillStacksIntoFirstSlots() {
+        // don't sort the ghost shape slot
+        GTUtility.compactInventory(Arrays.asList(mInventory), 0, mInventory.length - 2);
+    }
+
+    @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return aIndex != shapeSlot && aIndex != circuitSlot
@@ -175,11 +183,6 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     @Override
     public int getCircuitSlot() {
         return circuitSlot;
-    }
-
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
     }
 
     @Override
