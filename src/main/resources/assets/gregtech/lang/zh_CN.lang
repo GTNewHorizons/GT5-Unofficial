@@ -69,7 +69,7 @@ GT5U.LHE.threshold=阈值
 GT5U.fusion.req=需要EU
 GT5U.fusion.plasma=等离子体输出
 
-GT5U.EBF.heat=热容
+GT5U.EBF.heat.s=热容: §a%s §rK
 GT5U.coil.None=无
 GT5U.coil.ULV=无
 GT5U.coil.LV=白铜

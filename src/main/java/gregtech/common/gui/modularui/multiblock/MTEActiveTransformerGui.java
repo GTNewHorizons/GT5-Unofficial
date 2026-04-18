@@ -1,10 +1,10 @@
 package gregtech.common.gui.modularui.multiblock;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
 import static tectech.thing.metaTileEntity.multi.MTEActiveTransformer.formatUIAmperage;
+import static tectech.thing.metaTileEntity.multi.MTEActiveTransformer.formatUIEUt;
 
 import net.minecraft.util.EnumChatFormatting;
 
@@ -92,18 +92,5 @@ public class MTEActiveTransformerGui extends TTMultiblockBaseGui<MTEActiveTransf
                     .asWidget()
                     .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                     .anchorLeft(0));
-    }
-
-    private static String formatUIEUt(double eut) {
-        if (eut < 1_000_000_000) return formatNumber(eut);
-
-        int exp = 0;
-
-        while (eut > 1_000) {
-            eut /= 1000d;
-            exp += 3;
-        }
-
-        return formatNumber(eut) + "e" + exp;
     }
 }
