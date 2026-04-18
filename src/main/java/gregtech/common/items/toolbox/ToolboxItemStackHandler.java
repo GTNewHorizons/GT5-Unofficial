@@ -36,12 +36,10 @@ public class ToolboxItemStackHandler extends ItemStackHandler {
             if (itemData.hasKey(ItemGTToolbox.CONTENTS_KEY)) {
                 deserializeNBT(itemData.getCompoundTag(ItemGTToolbox.CONTENTS_KEY));
             }
-
             if (itemData.hasKey(ItemGTToolbox.CURRENT_TOOL_KEY)) {
                 currentTool = itemData.getInteger(ItemGTToolbox.CURRENT_TOOL_KEY);
             }
         }
-
         this.currentTool = currentTool;
     }
 

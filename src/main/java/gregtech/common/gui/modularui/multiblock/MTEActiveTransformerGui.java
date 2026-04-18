@@ -18,6 +18,7 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTTextBuilder;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import tectech.thing.metaTileEntity.multi.MTEActiveTransformer;
@@ -89,6 +90,7 @@ public class MTEActiveTransformerGui extends TTMultiblockBaseGui<MTEActiveTransf
                         .add(TIER_COLORS[hatchTierSyncer.getValue()], VN[hatchTierSyncer.getValue()])
                         .toString())
                     .asWidget()
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                     .anchorLeft(0));
     }
 

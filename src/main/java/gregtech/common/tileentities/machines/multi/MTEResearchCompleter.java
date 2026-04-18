@@ -403,4 +403,9 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
             false,
             true);
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

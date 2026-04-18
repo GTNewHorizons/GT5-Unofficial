@@ -17,24 +17,24 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMonsterRepellent extends MTETieredMachineBlock {
 
     private int mRange = -1;
 
     public MTEMonsterRepellent(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            "Repels nasty Creatures. Radius: " + (4 + (12 * aTier))
-                + " unpowered / "
-                + (16 + (48 * aTier))
-                + " powered. Costs "
-                + (1L << (aTier * 2))
-                + " EU/t");
+        super(aID, aName, aNameRegional, aTier, 0, new String[] { "gt.blockmachines.basicmachine.mobrep.tooltip" });
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] { GTUtility.translate(
+            "gt.blockmachines.basicmachine.mobrep.tooltip",
+            (4 + (12 * mTier)),
+            (16 + (48 * mTier)),
+            (1L << (mTier * 2))) };
     }
 
     public MTEMonsterRepellent(String aName, int aTier, int aInvSlotCount, String[] aDescription,

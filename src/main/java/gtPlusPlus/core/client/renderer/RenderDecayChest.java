@@ -12,7 +12,6 @@ import org.lwjgl.opengl.GL12;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.client.model.ModelDecayChest;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
@@ -31,7 +30,6 @@ public class RenderDecayChest extends TileEntitySpecialRenderer {
     public RenderDecayChest() {
         INSTANCE = this;
         this.mRenderID = RenderingRegistry.getNextAvailableRenderId();
-        Logger.INFO("Registered Lead Lined Chest Renderer.");
     }
 
     public void renderTileEntityAt(TileEntityDecayablesChest tile, double xPos, double yPos, double zPos,
