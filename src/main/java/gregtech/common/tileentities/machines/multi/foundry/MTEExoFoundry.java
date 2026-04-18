@@ -557,6 +557,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addOutputBus("Any Foundry Casing", 1)
             .addInputHatch("Any Foundry Casing", 1)
             .addEnergyHatch("Any Foundry Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.MAGNETIC_CHASSIS)
             .addStructureInfoSeparator()
             .addStructureInfo("Check NEI for Module structure costs");
 
