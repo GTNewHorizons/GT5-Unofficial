@@ -27,15 +27,13 @@ import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
-import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CategoryList;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
-import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
@@ -89,9 +87,9 @@ public class RedstoneSnifferGui {
             }
         };
         ListWidget<IWidget, CategoryList.Root> regularListWidget = new ListWidget<>();
-        regularListWidget.sizeRel(1);
+        regularListWidget.full();
         ListWidget<IWidget, CategoryList.Root> advancedListWidget = new ListWidget<>();
-        advancedListWidget.sizeRel(1);
+        advancedListWidget.full();
 
         BooleanSyncValue playerIsOpSyncer = new BooleanSyncValue(() -> false, () -> {
             EntityPlayerMP player = (EntityPlayerMP) guiData.getPlayer();
@@ -102,7 +100,7 @@ public class RedstoneSnifferGui {
         ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
         panel.resizer()
             .sizeRel(0.5f, 0.75f)
-            .align(Alignment.Center);
+            .center();
 
         @SuppressWarnings({ "rawtypes" })
         PagedWidget<?> data = new PagedWidget() {
@@ -137,7 +135,8 @@ public class RedstoneSnifferGui {
             entries.forEach(entry -> {
                 bgStripe.getAndIncrement();
                 regularList.add(
-                    new Row().setEnabledIf(w -> (freqFilter.isEmpty() || entry.freq.equals(freqFilter)))
+                    Flow.row()
+                        .setEnabledIf(w -> (freqFilter.isEmpty() || entry.freq.equals(freqFilter)))
                         .sizeRel(1f, 0.1f * scale)
                         .expanded()
                         .background(
@@ -145,7 +144,7 @@ public class RedstoneSnifferGui {
                         .child(
                             new TextWidget<>(entry.freq).widthRel(0.5f)
                                 .color(textColor)
-                                .alignment(Alignment.Center))
+                                .textAlign(Alignment.Center))
                         .child(
                             new TextWidget<>(
                                 entry.isPrivate ? IKey.lang("gui.yes")
@@ -153,26 +152,26 @@ public class RedstoneSnifferGui {
                                     : IKey.lang("gui.no")
                                         .toString()).widthRel(0.5f)
                                             .color(textColor)
-                                            .alignment(Alignment.Center)));
+                                            .textAlign(Alignment.Center)));
             });
             regularList.forEach(regularListWidget::child);
         });
         guiSyncManager.syncValue("regular_map", regularMapSyncer);
 
         data.addPage(
-            new Column().child(
-                new Row().heightRel(0.1f)
-                    .child(
-                        new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.5f)
-                            .color(textColor)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.private")).widthRel(0.5f)
-                            .color(textColor)
-                            .alignment(Alignment.Center)))
+            Flow.column()
                 .child(
-                    new SingleChildWidget<>().sizeRel(1, 0.9f)
-                        .child(regularListWidget)));
+                    Flow.row()
+                        .heightRel(0.1f)
+                        .child(
+                            new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.5f)
+                                .color(textColor)
+                                .textAlign(Alignment.Center))
+                        .child(
+                            new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.private")).widthRel(0.5f)
+                                .color(textColor)
+                                .textAlign(Alignment.Center)))
+                .child(regularListWidget.sizeRel(1, 0.9f)));
 
         // Process advanced wireless redstone frequencies
         GenericListSyncHandler<ItemRedstoneSniffer.SnifferEntry> advancedMapSyncer = new SnifferEntryListSyncHandler(
@@ -204,58 +203,59 @@ public class RedstoneSnifferGui {
                 if (b.owner.equals("Public")) return 1;
                 return a.owner.compareTo(b.owner);
             });
-            List<IWidget> advancedList = (processAdvancedFrequencies(
+            List<IWidget> advancedList = processAdvancedFrequencies(
                 entries,
                 advancedListWidget,
                 guiSyncManager,
                 scale,
-                textColor));
+                textColor);
 
             advancedList.forEach(advancedListWidget::child);
         });
         guiSyncManager.syncValue("adv_map", advancedMapSyncer);
         data.addPage(
-            new Column().child(
-                new Row().heightRel(0.1f)
-                    .child(
-                        new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.owner")).widthRel(0.15f)
-                            .color(textColor)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.35f)
-                            .color(textColor)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.dimension")).widthRel(0.25f)
-                            .color(textColor)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.action")).widthRel(0.25f)
-                            .color(textColor)
-                            .alignment(Alignment.Center)))
+            Flow.column()
                 .child(
-                    new SingleChildWidget<>().sizeRel(1, 0.9f)
-                        .child(advancedListWidget)));
+                    Flow.row()
+                        .heightRel(0.1f)
+                        .child(
+                            new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.owner")).widthRel(0.15f)
+                                .color(textColor)
+                                .textAlign(Alignment.Center))
+                        .child(
+                            new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.35f)
+                                .color(textColor)
+                                .textAlign(Alignment.Center))
+                        .child(
+                            new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.dimension")).widthRel(0.25f)
+                                .color(textColor)
+                                .textAlign(Alignment.Center))
+                        .child(
+                            new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.action")).widthRel(0.25f)
+                                .color(textColor)
+                                .textAlign(Alignment.Center)))
+                .child(advancedListWidget.sizeRel(1, 0.9f)));
         panel.child(
-            new Column().margin(10)
+            Flow.column()
+                .margin(10)
                 .child(
-                    new Row().heightRel(0.1f)
+                    Flow.row()
+                        .heightRel(0.1f)
                         .marginBottom(10)
                         .child(
                             new PageButton(0, controller).widthRel(0.5f)
-                                .align(Alignment.CenterLeft)
                                 .overlay(IKey.lang("gt.item.redstone_sniffer.regular_wireless")))
                         .child(
                             new PageButton(1, controller).widthRel(0.5f)
-                                .align(Alignment.CenterRight)
                                 .overlay(IKey.lang("gt.item.redstone_sniffer.advanced_wireless"))))
                 .child(
-                    new Row().heightRel(0.1f)
+                    Flow.row()
+                        .heightRel(0.1f)
                         .marginBottom(10)
                         .child(
                             new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.frequency_filter")).widthRel(0.25f)
                                 .color(textColor)
-                                .alignment(Alignment.Center))
+                                .textAlign(Alignment.Center))
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
                                 .setTextColor(textColor)
@@ -263,11 +263,11 @@ public class RedstoneSnifferGui {
                         .child(
                             new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.owner_filter")).widthRel(0.25f)
                                 .color(textColor)
-                                .alignment(Alignment.Center))
+                                .textAlign(Alignment.Center))
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
                                 .setTextColor(textColor)
-                                .value(SyncHandlers.string(() -> ownerFilter, filter -> { ownerFilter = filter; }))))
+                                .value(SyncHandlers.string(() -> ownerFilter, filter -> ownerFilter = filter))))
                 .child(data));
 
         return panel.widgetTheme(GTWidgetThemes.BACKGROUND_REDSTONE_SNIFFER);
@@ -294,7 +294,7 @@ public class RedstoneSnifferGui {
             CoverPosition cover = entry.coverPosition;
             if (cover == null) continue;
             result.add(
-                new Row()
+                Flow.row()
                     .setEnabledIf(
                         w -> ((ownerFilter.isEmpty() || entry.owner.contains(ownerFilter))
                             && entry.freq.contains((freqFilter))))
@@ -305,88 +305,63 @@ public class RedstoneSnifferGui {
                     .child(
                         new TextWidget<>(entry.owner).widthRel(0.15f)
                             .color(textColor)
-                            .alignment(Alignment.Center))
+                            .textAlign(Alignment.Center))
                     .child(
                         new TextWidget<>(entry.freq).widthRel(0.35f)
                             .color(textColor)
-                            .alignment(Alignment.Center))
+                            .textAlign(Alignment.Center))
                     .child(
                         new TextWidget<>(cover.getDimName()).widthRel(0.25f)
                             .color(textColor)
-                            .alignment(Alignment.Center))
+                            .textAlign(Alignment.Center))
                     .child(
-                        new Row().widthRel(0.25f)
+                        Flow.row()
+                            .widthRel(0.25f)
+                            .childPadding(17)
+                            .mainAxisAlignment(Alignment.MainAxis.CENTER)
                             .child(
-                                new SingleChildWidget<>().widthRel(0.5f)
-                                    .child(
-                                        new ButtonWidget<>().size(25, 25)
-                                            .align(Alignment.Center)
-                                            .overlay(
-                                                GTGuiTextures.OVERLAY_BUTTON_REDSTONESNIFFERLOCATE.asIcon()
-                                                    .size(19, 19)
-                                                    .margin(3))
-                                            .tooltip(
-                                                tooltip -> {
-                                                    tooltip.addLine(IKey.lang("gt.item.redstone_sniffer.locate"));
-                                                })
-                                            .onMousePressed(mouseButton -> {
-                                                GTValues.NW.sendToServer(
-                                                    new PacketTeleportPlayer(
-                                                        cover.dim,
-                                                        cover.x,
-                                                        cover.y,
-                                                        cover.z,
-                                                        false));
-                                                if (NetworkUtils.isClient()) {
-                                                    ArrayList<DimensionalCoord> list = new ArrayList<>();
-                                                    list.add(
-                                                        new DimensionalCoord(cover.x, cover.y, cover.z, cover.dim));
-                                                    String foundMsg = StatCollector.translateToLocalFormatted(
-                                                        "gt.item.redstone_sniffer.highlight_message",
-                                                        cover.x,
-                                                        cover.y,
-                                                        cover.z);
-                                                    BlockPosHighlighter.highlightBlocks(
-                                                        guiSyncManager.getPlayer(),
-                                                        list,
-                                                        foundMsg,
-                                                        StatCollector.translateToLocal(
-                                                            "gt.item.redstone_sniffer.wrong_dim_message"));
-                                                    listWidget.getPanel()
-                                                        .closeIfOpen();
-                                                }
-                                                return true;
-                                            })))
+                                new ButtonWidget<>().size(25)
+                                    .overlay(
+                                        GTGuiTextures.OVERLAY_BUTTON_REDSTONESNIFFERLOCATE.asIcon()
+                                            .size(19))
+                                    .tooltip(tooltip -> tooltip.addLine(IKey.lang("gt.item.redstone_sniffer.locate")))
+                                    .onMousePressed(mouseButton -> {
+                                        GTValues.NW.sendToServer(
+                                            new PacketTeleportPlayer(cover.dim, cover.x, cover.y, cover.z, false));
+                                        if (NetworkUtils.isClient()) {
+                                            ArrayList<DimensionalCoord> list = new ArrayList<>();
+                                            list.add(new DimensionalCoord(cover.x, cover.y, cover.z, cover.dim));
+                                            String foundMsg = StatCollector.translateToLocalFormatted(
+                                                "gt.item.redstone_sniffer.highlight_message",
+                                                cover.x,
+                                                cover.y,
+                                                cover.z);
+                                            BlockPosHighlighter.highlightBlocks(
+                                                guiSyncManager.getPlayer(),
+                                                list,
+                                                foundMsg,
+                                                StatCollector
+                                                    .translateToLocal("gt.item.redstone_sniffer.wrong_dim_message"));
+                                            listWidget.getPanel()
+                                                .closeIfOpen();
+                                        }
+                                        return true;
+                                    }))
                             .child(
-                                new SingleChildWidget<>().setEnabledIf(w -> playerIsOpSyncer.getValue())
-                                    .widthRel(0.5f)
-                                    .child(
-                                        new ButtonWidget<>().size(25, 25)
-                                            .align(Alignment.Center)
-                                            .overlay(
-                                                UITexture
-                                                    .fullImage(
-                                                        GregTech.ID,
-                                                        "gui/overlay_button/redstoneSnifferTeleport")
-                                                    .asIcon()
-                                                    .size(19, 19)
-                                                    .margin(3))
-                                            .tooltip(
-                                                tooltip -> {
-                                                    tooltip.addLine(IKey.lang("gt.item.redstone_sniffer.teleport"));
-                                                })
-                                            .onMousePressed(mouseButton -> {
-                                                GTValues.NW.sendToServer(
-                                                    new PacketTeleportPlayer(
-                                                        cover.dim,
-                                                        cover.x,
-                                                        cover.y,
-                                                        cover.z,
-                                                        true));
-                                                listWidget.getPanel()
-                                                    .closeIfOpen();
-                                                return true;
-                                            })))));
+                                new ButtonWidget<>().size(25)
+                                    .setEnabledIf(w -> playerIsOpSyncer.getValue())
+                                    .overlay(
+                                        UITexture.fullImage(GregTech.ID, "gui/overlay_button/redstoneSnifferTeleport")
+                                            .asIcon()
+                                            .size(19))
+                                    .tooltip(tooltip -> tooltip.addLine(IKey.lang("gt.item.redstone_sniffer.teleport")))
+                                    .onMousePressed(mouseButton -> {
+                                        GTValues.NW.sendToServer(
+                                            new PacketTeleportPlayer(cover.dim, cover.x, cover.y, cover.z, true));
+                                        listWidget.getPanel()
+                                            .closeIfOpen();
+                                        return true;
+                                    }))));
         }
         return result;
     }

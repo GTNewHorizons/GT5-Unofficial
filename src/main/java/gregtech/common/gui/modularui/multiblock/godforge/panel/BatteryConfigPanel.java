@@ -31,7 +31,8 @@ public class BatteryConfigPanel {
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .width(SIZE_W - 8)
-                .align(Alignment.TopCenter)
+                .topRel(0)
+                .horizontalCenter()
                 .marginTop(5));
 
         // Textbox
@@ -43,7 +44,8 @@ public class BatteryConfigPanel {
                 .setTooltipOverride(true)
                 .setScrollValues(1, 4, 64)
                 .size(SIZE_W - 8, 18)
-                .align(Alignment.BottomCenter)
+                .bottomRel(0)
+                .horizontalCenter()
                 .marginBottom(9));
 
         return panel;

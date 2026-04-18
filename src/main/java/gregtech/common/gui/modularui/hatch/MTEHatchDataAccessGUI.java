@@ -1,11 +1,9 @@
 package gregtech.common.gui.modularui.hatch;
 
-import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
@@ -21,8 +19,8 @@ public class MTEHatchDataAccessGUI extends MTEHatchBaseGui<MTEHatchDataAccess> {
     }
 
     @Override
-    protected Flow createContentHolderRow(ModularPanel panel, PanelSyncManager syncManager) {
-        IWidget slots;
+    protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
+        SlotGroupWidget slots;
 
         switch (hatch.mTier) {
             case 4:
@@ -34,10 +32,10 @@ public class MTEHatchDataAccessGUI extends MTEHatchBaseGui<MTEHatchDataAccess> {
 
         }
 
-        return super.createContentHolderRow(panel, syncManager).child(slots);
+        return super.createContentSection(panel, syncManager).child(slots);
     }
 
-    private IWidget createSlotGroup(PanelSyncManager syncManager, int dimension) {
+    private SlotGroupWidget createSlotGroup(PanelSyncManager syncManager, int dimension) {
         int inventorySize = hatch.inventoryHandler.getSlots();
         int maxDim = (int) Math.floor(Math.sqrt(inventorySize));
         int gridDim = Math.min(dimension, maxDim);
@@ -61,14 +59,12 @@ public class MTEHatchDataAccessGUI extends MTEHatchBaseGui<MTEHatchDataAccess> {
             .matrix(matrix)
             .key(
                 'x',
-                i -> new ItemSlot().background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CIRCUIT)
-                    .slot(
-                        new ModularSlot(hatch.inventoryHandler, i).slotGroup("data")
-                            .filter((item) -> ItemList.Tool_DataStick.isStackEqual(item, false, true))
-
-                    ))
+                i -> new ItemSlot().slot(
+                    new ModularSlot(hatch.inventoryHandler, i).slotGroup("data")
+                        .filter((item) -> ItemList.Tool_DataStick.isStackEqual(item, false, true)))
+                    .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CIRCUIT))
             .build()
-            .align(Alignment.CENTER);
+            .center();
     }
 
 }

@@ -19,8 +19,6 @@ import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.Rectangle;
-import com.cleanroommc.modularui.overlay.OverlayHandler;
-import com.cleanroommc.modularui.overlay.OverlayManager;
 import com.cleanroommc.modularui.screen.CustomModularScreen;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
@@ -33,11 +31,10 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ColorPickerDialog;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.SliderWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
+import gregtech.api.enums.Mods;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 
@@ -46,25 +43,17 @@ public class PowerGogglesGuiOverlay {
     private static String[] settings = { "GT5U.power_goggles_config.settings_general",
         "GT5U.power_goggles_config.settings_color" };
     private static int settingsPage = 0;
-    private static IDrawable background = new Rectangle().setColor(Color.argb(0, 0, 0, 100));
+    private static IDrawable background = new Rectangle().color(Color.argb(0, 0, 0, 100));
     private static String manualGraphMinInput = "0";
     private static String manualGraphMaxInput = "1000";
     private static boolean manualScaleInvalid = false;
     private static final IDrawable MANUAL_SCALE_INVALID_TEXT_FIELD_BACKGROUND = new DrawableStack(
         GTGuiTextures.BACKGROUND_TEXT_FIELD,
-        new Rectangle().setColor(Color.argb(200, 40, 40, 110)));
+        new Rectangle().color(Color.argb(200, 40, 40, 110)));
     private static final IDrawable MANUAL_SCALE_TEXT_FIELD_BACKGROUND = new DynamicDrawable(
         () -> manualScaleInvalid ? MANUAL_SCALE_INVALID_TEXT_FIELD_BACKGROUND : GTGuiTextures.BACKGROUND_TEXT_FIELD);
 
-    public static void init() {
-
-        OverlayManager.register(
-            new OverlayHandler(
-                screen -> screen instanceof PowerGogglesGuiHudConfig,
-                PowerGogglesGuiOverlay::buildScreen));
-    }
-
-    private static CustomModularScreen buildScreen(GuiScreen screen) {
+    public static CustomModularScreen buildScreen(GuiScreen screen) {
         PowerGogglesGuiHudConfig gui = (PowerGogglesGuiHudConfig) screen;
         manualGraphMinInput = PowerGogglesConfigHandler.manualGraphMin;
         manualGraphMaxInput = PowerGogglesConfigHandler.manualGraphMax;
@@ -88,12 +77,13 @@ public class PowerGogglesGuiOverlay {
             .addPage(makeGeneralSettingsPage(gui))
             .addPage(makeColorSchemePage(overlayPanel));
 
-        return new CustomModularScreen() {
+        return new CustomModularScreen(Mods.ModIDs.GREG_TECH) {
 
             @Override
             public @NotNull ModularPanel buildUI(ModularGuiContext context) {
                 return overlayPanel.child(
-                    new Column().sizeRel(1)
+                    Flow.column()
+                        .full()
                         .child(
                             new SingleChildWidget<>().size(230, 22)
                                 .background(background)
@@ -102,7 +92,7 @@ public class PowerGogglesGuiOverlay {
                                 .child(makePagedWidgetButton(controller)))
                         .child(
                             new SingleChildWidget<>().size(230, height - 22)
-                                .child(pagedWidget.sizeRel(1))));
+                                .child(pagedWidget.full())));
             }
         };
     }
@@ -114,12 +104,13 @@ public class PowerGogglesGuiOverlay {
                 controller.setPage(settingsPage);
                 return true;
             })
-            .sizeRel(1)
-            .align(Alignment.Center);
+            .full()
+            .center();
     }
 
     private static IWidget makeGeneralSettingsPage(PowerGogglesGuiHudConfig gui) {
-        Flow settings = new Column().coverChildren()
+        Flow settings = Flow.column()
+            .coverChildren()
             .background(background);
         settings.child(makeNotationButton(gui))
             .child(makeReadingButton(gui))
@@ -247,7 +238,8 @@ public class PowerGogglesGuiOverlay {
     }
 
     private static IWidget makeManualScaleMinRow() {
-        return new Row().size(230, 18)
+        return Flow.row()
+            .size(230, 18)
             .marginBottom(4)
             .child(
                 IKey.lang("GT5U.power_goggles_config.manual_graph_min")
@@ -256,7 +248,7 @@ public class PowerGogglesGuiOverlay {
                     .paddingLeft(3)
                     .width(106)
                     .marginRight(14)
-                    .alignment(Alignment.CenterRight))
+                    .textAlign(Alignment.CenterRight))
             .child(
                 new TextFieldWidget().size(110, 18)
                     .setTextAlignment(Alignment.Center)
@@ -274,7 +266,8 @@ public class PowerGogglesGuiOverlay {
     }
 
     private static IWidget makeManualScaleMaxRow() {
-        return new Row().size(230, 18)
+        return Flow.row()
+            .size(230, 18)
             .marginBottom(4)
             .child(
                 IKey.lang("GT5U.power_goggles_config.manual_graph_max")
@@ -283,7 +276,7 @@ public class PowerGogglesGuiOverlay {
                     .paddingLeft(3)
                     .width(106)
                     .marginRight(14)
-                    .alignment(Alignment.CenterRight))
+                    .textAlign(Alignment.CenterRight))
             .child(
                 new TextFieldWidget().size(110, 18)
                     .setTextAlignment(Alignment.Center)
@@ -377,7 +370,8 @@ public class PowerGogglesGuiOverlay {
 
     private static IWidget makeSliderFlow(Supplier<Double> valSupplier, Consumer<Double> setter, String key,
         String textKey) {
-        return new Row().size(230, 18)
+        return Flow.row()
+            .size(230, 18)
             .marginBottom(4)
             .child(
                 IKey.lang(textKey)
@@ -386,7 +380,7 @@ public class PowerGogglesGuiOverlay {
                     .paddingLeft(3)
                     .width(106)
                     .marginRight(14)
-                    .alignment(Alignment.CenterRight))
+                    .textAlign(Alignment.CenterRight))
             .child(
                 new SliderWidget().size(110, 18)
                     .background(GuiTextures.MC_BUTTON)
@@ -402,9 +396,11 @@ public class PowerGogglesGuiOverlay {
     }
 
     private static IWidget makeColorSchemePage(ModularPanel overlayPanel) {
-        return new Column().coverChildren()
+        return Flow.column()
+            .coverChildren()
             .background(background)
-            .align(Alignment.TopCenter)
+            .topRel(0)
+            .horizontalCenter()
             .child(
                 makeColorConfigButton(
                     overlayPanel,
@@ -503,17 +499,18 @@ public class PowerGogglesGuiOverlay {
                     "GT5U.power_goggles_config.chart_manual_scale_indicator_color_tooltip"))
 
             .child(
-                new Row().size(228, 18)
+                Flow.row()
+                    .size(228, 18)
                     .marginBottom(4)
                     .child(
                         new DynamicDrawable(
-                            () -> new Rectangle().setHorizontalGradient(
+                            () -> new Rectangle().horizontalGradient(
                                 PowerGogglesConfigHandler.gradientBadColor,
                                 PowerGogglesConfigHandler.gradientOkColor)).asWidget()
                                     .size(114, 18))
                     .child(
                         new DynamicDrawable(
-                            () -> new Rectangle().setHorizontalGradient(
+                            () -> new Rectangle().horizontalGradient(
                                 PowerGogglesConfigHandler.gradientOkColor,
                                 PowerGogglesConfigHandler.gradientGoodColor)).asWidget()
                                     .size(114, 18)));
@@ -530,7 +527,8 @@ public class PowerGogglesGuiOverlay {
                 PowerGogglesConfigHandler.config.save();
             }, colorSupplier.get(), true).size(200, 100), true);
 
-        return new Row().size(230, 18)
+        return Flow.row()
+            .size(230, 18)
             .marginBottom(4)
             .child(
                 IKey.lang(buttonKey)
@@ -538,11 +536,11 @@ public class PowerGogglesGuiOverlay {
                     .asWidget()
                     .size(106, 18)
                     .marginRight(14)
-                    .alignment(Alignment.CenterRight))
+                    .textAlign(Alignment.CenterRight))
             .child(
                 new ButtonWidget<>().size(18, 18)
-                    .overlay(new DynamicDrawable(() -> new Rectangle().setColor(colorSupplier.get())))
-                    .hoverOverlay(new DynamicDrawable(() -> new Rectangle().setColor(colorSupplier.get())))
+                    .overlay(new DynamicDrawable(() -> new Rectangle().color(colorSupplier.get())))
+                    .hoverOverlay(new DynamicDrawable(() -> new Rectangle().color(colorSupplier.get())))
                     .tooltipBuilder(t -> t.addLine(IKey.lang((tooltipKey))))
                     .onMousePressed(d -> {
                         colorPicker.openPanel();

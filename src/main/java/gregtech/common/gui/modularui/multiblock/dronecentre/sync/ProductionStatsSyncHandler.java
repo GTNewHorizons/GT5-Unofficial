@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock.dronecentre.sync;
 
+import static com.cleanroommc.modularui.utils.serialization.ByteBufAdapters.makeAdapter;
+
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +15,13 @@ public class ProductionStatsSyncHandler extends GenericSyncValue<StatsBundle> {
     private long tick = 0;
 
     public ProductionStatsSyncHandler(@NotNull Supplier<StatsBundle> getter) {
-        super(getter, null, StatsBundle::readFromBuf, StatsBundle::writeToBuf, StatsBundle::areEqual, null);
+        super(
+            StatsBundle.class,
+            getter,
+            null,
+            makeAdapter(StatsBundle::readFromBuf, StatsBundle::writeToBuf, StatsBundle::areEqual),
+            null,
+            false);
     }
 
     @Override

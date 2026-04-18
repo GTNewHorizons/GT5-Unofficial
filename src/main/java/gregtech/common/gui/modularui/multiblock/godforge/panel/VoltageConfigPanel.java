@@ -17,9 +17,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -42,9 +40,10 @@ public class VoltageConfigPanel {
         panel.size(SIZE_W, SIZE_H)
             .relative(hypervisor.getModularPanel(module, module.getMainPanel()))
             .topRel(0)
-            .leftRelOffset(1, -3);
+            .leftRel(1);
 
-        Flow column = new Column().sizeRel(1);
+        Flow column = Flow.column()
+            .full();
 
         // Title
         column.child(
@@ -52,7 +51,6 @@ public class VoltageConfigPanel {
                 .style(EnumChatFormatting.UNDERLINE, EnumChatFormatting.BLACK)
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .widthRel(1)
                 .marginTop(7)
                 .marginBottom(5));
 
@@ -79,8 +77,8 @@ public class VoltageConfigPanel {
         BooleanSyncValue alwaysMaxParallelSyncer = SyncValues.MODULE_ALWAYS_MAX_PARALLEL
             .lookupFrom(module, Panels.VOLTAGE_CONFIG, hypervisor);
 
-        Flow column = new Column().size(130, 32)
-            .alignX(0.5f);
+        Flow column = Flow.column()
+            .coverChildren();
 
         // Header
         column.child(
@@ -88,12 +86,11 @@ public class VoltageConfigPanel {
                 .style(EnumChatFormatting.BLACK)
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .widthRel(1)
-                .height(14)
-                .alignX(0.5f));
+                .height(14));
 
-        Flow row = new Row().size(90, 18)
-            .alignX(0.5f);
+        Flow row = Flow.row()
+            .coverChildren()
+            .childPadding(4);
 
         // Max parallel text field
         row.child(
@@ -114,8 +111,7 @@ public class VoltageConfigPanel {
                 })
                 .tooltipAutoUpdate(true)
                 .tooltipShowUpTimer(TOOLTIP_DELAY)
-                .size(70, 18)
-                .marginRight(4));
+                .size(70, 18));
 
         // Always max parallel button
         row.child(
@@ -146,25 +142,14 @@ public class VoltageConfigPanel {
         BooleanSyncValue voltageConfigSyncer = SyncValues.MODULE_VOLTAGE_CONFIG
             .lookupFrom(module, Panels.VOLTAGE_CONFIG, hypervisor);
 
-        ParentWidget<?> parent = new ParentWidget<>().size(130, 32)
-            .alignX(0.5f);
-
-        // Header
-        parent.child(
-            IKey.lang("gt.blockmachines.multimachine.FOG.voltageinfo")
-                .style(EnumChatFormatting.BLACK)
-                .alignment(Alignment.CENTER)
-                .asWidget()
-                .widthRel(1)
-                .height(14)
-                .align(Alignment.TopCenter));
+        ParentWidget<?> parent = new ParentWidget<>().coverChildren();
 
         // Info widget
         parent.child(
             GTGuiTextures.PICTURE_INFO.asWidget()
                 .size(8)
-                .alignX(1)
-                .alignY(0.2f)
+                .topRel(0)
+                .rightRel(0)
                 .tooltip(t -> {
                     t.addLine(translateToLocal("fog.text.tooltip.voltageadjustment"));
                     t.addLine(translateToLocal("fog.text.tooltip.voltageadjustment.1"));
@@ -172,8 +157,20 @@ public class VoltageConfigPanel {
                 .tooltipShowUpTimer(TOOLTIP_DELAY)
                 .setEnabledIf($ -> voltageConfigSyncer.getBoolValue()));
 
+        Flow column = Flow.column()
+            .coverChildren()
+            .collapseDisabledChild();
+
+        // Header
+        column.child(
+            IKey.lang("gt.blockmachines.multimachine.FOG.voltageinfo")
+                .style(EnumChatFormatting.BLACK)
+                .alignment(Alignment.CENTER)
+                .asWidget()
+                .height(14));
+
         // Voltage per parallel text field
-        parent.child(
+        column.child(
             new TextFieldWidget().setFormatAsInteger(true)
                 .setNumbersLong(() -> 2_000_000_000L, () -> Long.MAX_VALUE)
                 .value(
@@ -182,17 +179,17 @@ public class VoltageConfigPanel {
                 .setTextAlignment(Alignment.CENTER)
                 .size(130, 18)
                 .setTooltipOverride(true)
-                .align(Alignment.BottomCenter)
                 .setEnabledIf($ -> voltageConfigSyncer.getBoolValue()));
 
         // X for when voltage config is not yet unlocked
-        parent.child(
+        column.child(
             GTGuiTextures.OVERLAY_BUTTON_CROSS.asWidget()
                 .size(20)
-                .align(Alignment.BottomCenter)
                 .tooltip(t -> t.addLine(translateToLocal("fog.button.voltageconfig.tooltip.02")))
                 .tooltipShowUpTimer(TOOLTIP_DELAY)
                 .setEnabledIf($ -> !voltageConfigSyncer.getBoolValue()));
+
+        parent.child(column);
 
         return parent;
     }
