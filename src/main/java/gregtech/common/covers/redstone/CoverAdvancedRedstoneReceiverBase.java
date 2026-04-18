@@ -19,7 +19,7 @@ import io.netty.buffer.ByteBuf;
 
 public abstract class CoverAdvancedRedstoneReceiverBase extends CoverAdvancedWirelessRedstoneBase {
 
-    private GateMode mode;
+    protected GateMode mode;
 
     public CoverAdvancedRedstoneReceiverBase(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);

@@ -2458,6 +2458,13 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
+            .itemInputs(ItemList.Cover_WirelessController.get(1L), ItemList.Cover_AdvancedRedstoneReceiver.get(1L))
+            .circuit(1)
+            .itemOutputs(ItemList.Cover_AdvancedWirelessController.get(1L))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        RA.stdBuilder()
             .itemInputs(ItemList.Cover_FluidDetector.get(1L), ItemList.Emitter_EV.get(1L))
             .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessFluidDetector.get(1L))
