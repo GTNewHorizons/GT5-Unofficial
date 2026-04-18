@@ -657,7 +657,7 @@ public class Pulverizer implements Runnable {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getIC2Item("biochaff", 1))
+            .itemInputs(ItemList.Chaff.get(1))
             .itemOutputs(new ItemStack(Blocks.dirt, 1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)

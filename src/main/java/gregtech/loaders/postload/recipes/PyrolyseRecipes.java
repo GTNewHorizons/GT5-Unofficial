@@ -8,6 +8,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
 
+import gregtech.api.enums.ItemList;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -183,7 +184,7 @@ public class PyrolyseRecipes implements Runnable {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("biochaff", 4))
+            .itemInputs(ItemList.Chaff.get(4))
             .circuit(1)
             .fluidInputs(Materials.Water.getFluid(4_000))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5_000))
@@ -192,7 +193,7 @@ public class PyrolyseRecipes implements Runnable {
             .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("biochaff", 1))
+            .itemInputs(ItemList.Chaff.get(1))
             .circuit(2)
             .fluidInputs(Materials.Water.getFluid(1_500))
             .fluidOutputs(Materials.FermentedBiomass.getFluid(1_500))

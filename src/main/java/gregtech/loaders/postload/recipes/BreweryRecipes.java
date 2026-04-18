@@ -8,6 +8,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -466,9 +467,9 @@ public class BreweryRecipes implements Runnable {
         // ic2 biomass recipes
         {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getIC2Item("biochaff", 1))
+                .itemInputs(ItemList.Chaff.get(1))
                 .fluidInputs(Materials.Water.getFluid(1_000))
-                .fluidOutputs(getFluidStack("ic2biomass", 1_000))
+                .fluidOutputs(getFluidStack("biomass", 1_000))
                 .duration(8 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(brewingRecipes);
@@ -476,9 +477,9 @@ public class BreweryRecipes implements Runnable {
             // Would add 2 different amount of water input if IC2 isn't loaded
             if (IndustrialCraft2.isModLoaded()) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTModHandler.getIC2Item("biochaff", 1))
+                    .itemInputs(ItemList.Chaff.get(1))
                     .fluidInputs(GTModHandler.getDistilledWater(500L))
-                    .fluidOutputs(getFluidStack("ic2biomass", 1_000))
+                    .fluidOutputs(getFluidStack("biomass", 1_000))
                     .duration(10 * TICKS)
                     .eut((int) TierEU.RECIPE_LV)
                     .addTo(brewingRecipes);

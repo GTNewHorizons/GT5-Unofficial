@@ -49,7 +49,7 @@ public class CentrifugeRecipes implements Runnable {
             .circuit(2)
             .itemOutputs(
                 ItemList.IC2_Resin.get(1L),
-                ItemList.IC2_Plantball.get(1L),
+                ItemList.Plantball.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
             .outputChances(5000, 3750, 2500, 2500)
@@ -401,7 +401,7 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.dirt, 1, 32767))
             .itemOutputs(
-                ItemList.IC2_Plantball.get(1),
+                ItemList.Plantball.get(1),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Clay, 1),
                 new ItemStack(Blocks.sand, 1))
             .outputChances(1250, 5000, 5000)
@@ -412,7 +412,7 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.grass, 1, 32767))
             .itemOutputs(
-                ItemList.IC2_Plantball.get(1),
+                ItemList.Plantball.get(1),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Clay, 1),
                 new ItemStack(Blocks.sand, 1))
             .outputChances(2500, 5000, 5000)
@@ -436,7 +436,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(ItemList.IC2_Resin.get(1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 3),
-                ItemList.IC2_Plantball.get(1))
+                ItemList.Plantball.get(1))
             .outputChances(10000, 1000)
             .fluidOutputs(Materials.Glue.getFluid(100))
             .duration(15 * SECONDS)
