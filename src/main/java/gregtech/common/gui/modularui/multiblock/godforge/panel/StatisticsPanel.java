@@ -27,6 +27,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.api.math.Color;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Statistics;
@@ -220,6 +221,7 @@ public class StatisticsPanel {
                 .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                 .size(WIDTH_MAJOR, HEIGHT_MAJOR));
 
         // Molten module
@@ -228,6 +230,7 @@ public class StatisticsPanel {
                 .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                 .size(WIDTH_MAJOR, HEIGHT_MAJOR));
 
         // Plasma module
@@ -236,6 +239,7 @@ public class StatisticsPanel {
                 .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                 .size(WIDTH_MAJOR, HEIGHT_MAJOR));
 
         // Exotic module
@@ -244,6 +248,7 @@ public class StatisticsPanel {
                 .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                 .size(WIDTH_MAJOR, HEIGHT_MAJOR));
 
         return returnList;

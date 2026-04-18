@@ -2,11 +2,9 @@ package gregtech.common.gui.modularui.singleblock.base;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -17,6 +15,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 
 public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachineBlockBaseGui<T> {
 
@@ -52,7 +51,7 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
         screen.child(
             IKey.lang("GT5U.machines.basic_tank.liquid_amount")
                 .asWidget()
-                .color(Color.WHITE.main));
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
 
         // liquid amount
         screen.child(
@@ -61,7 +60,7 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
                     machine.getFluidTank()
                         .getFluidAmount()))
                 .asWidget()
-                .color(Color.WHITE.main));
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
 
         // fluid slot
         screen.child(createFluidSlot(panel, syncManager));
@@ -72,7 +71,8 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
     protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager) {
         return new FluidSlot().syncHandler(new FluidSlotSyncHandler(machine.getFluidTank()))
             .align(Alignment.BottomRight)
-            .background(IDrawable.EMPTY);
+            .disableThemeBackground(true)
+            .disableHoverThemeBackground(true);
     }
 
     protected Flow createIO(ModularPanel panel, PanelSyncManager syncManager) {
