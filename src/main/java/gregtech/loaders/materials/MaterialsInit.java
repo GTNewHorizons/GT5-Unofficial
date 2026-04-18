@@ -15942,6 +15942,7 @@ public class MaterialsInit {
         Materials.MetamorphicMineralMixture = loadMetamorphicMineralMixture();
         Materials.Plagioclase = loadPlagioclase();
         Materials.Epidote = loadEpidote();
+        Materials.Hexanite = loadHexanite();
     }
 
     private static Materials loadSignalum() {
@@ -16103,5 +16104,22 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 1)
             .addMaterial(Materials.Hydrogen, 1)
             .constructMaterial();
+    }
+    private static Materials loadHexanite() {
+        return new MaterialBuilder().setName("Hexanite")
+            .setDefaultLocalName("Hexanite")
+            .setChemicalFormula("Hx⚶")
+            .setFlavorText("Insanity and willpower, given form")
+            .setIconSet(TextureSet.SET_NUCLEAR)
+            .setARGB(0x003fb094)
+            .addDustItems()
+            .addMetalItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(25_000)
+            .setBlastFurnaceRequired(true)
+            .addSubTag(SubTag.METAL)
+            .removeOrePrefix(OrePrefixes.sheetmetal) // no custom texture set for this. remove when implemented.
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
     }
 }
