@@ -36,6 +36,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.MapMaker;
@@ -582,7 +583,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         Long freq = link != null && link.getTagCompound() != null
             && link.getTagCompound()
-                .hasKey("freq", 4 /* Long */) ? link.getTagCompound()
+                .hasKey("freq", NBT.TAG_LONG) ? link.getTagCompound()
                     .getLong("freq") : null;
 
         if (!Objects.equals(freq, mLink == null ? null : mLink.mFrequency)) {
@@ -1184,6 +1185,11 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             new FakeSyncWidget.DoubleSyncer(
                 () -> mLink != null ? mLink.mWormholeEnergy : 0,
                 val -> mWormholeEnergy_UI = val));
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     // #endregion

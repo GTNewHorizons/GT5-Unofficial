@@ -71,13 +71,14 @@ public class MTEPump extends MTEBasicMachine {
 
     private boolean mDisallowRetract = true;
 
-    private static String[] MTEPumpTooltip(int aTier) {
+    @Override
+    public String[] getDescription() {
         return GTUtility.translateMultiline(
-            "GT5U.tooltip.pump",
-            TooltipHelper.euText(getEuUsagePerTier(aTier)),
-            NumberFormatUtil.formatNumber(Math.max(1, 160 >> aTier) / 20d),
-            NumberFormatUtil.formatNumber(getMaxDistanceForTier(aTier) * 2 + 1),
-            NumberFormatUtil.formatNumber(getMaxDistanceForTier(aTier) * 2 + 1));
+            "gt.blockmachines.basicmachine.pump.tooltip",
+            TooltipHelper.euText(getEuUsagePerTier(mTier)),
+            NumberFormatUtil.formatNumber(Math.max(1, 160 >> mTier) / 20d),
+            NumberFormatUtil.formatNumber(getMaxDistanceForTier(mTier) * 2 + 1),
+            NumberFormatUtil.formatNumber(getMaxDistanceForTier(mTier) * 2 + 1));
     }
 
     public MTEPump(int aID, String aName, String aNameRegional, int aTier) {
@@ -87,7 +88,7 @@ public class MTEPump extends MTEBasicMachine {
             aNameRegional,
             aTier,
             1,
-            MTEPumpTooltip(aTier),
+            new String[0],
             2,
             2,
             TextureFactory.of(
