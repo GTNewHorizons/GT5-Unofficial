@@ -4626,7 +4626,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Forestry Biomass")
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeGreen)
-            .setARGB(0x0000ff00)
+            .setARGB(0x004e912d)
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 8)
             .addCell()
             .constructMaterial();

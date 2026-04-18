@@ -1405,6 +1405,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("biomass")
             .withDefaultLocalName("Biomass")
+            .withColorRGBA(Materials.Biogas.mRGBa)
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Biomass)
