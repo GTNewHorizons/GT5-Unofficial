@@ -23,6 +23,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
@@ -33,6 +34,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.ores.OreManager;
 import ic2.core.Ic2Items;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEAdvSeismicProspector extends MTEBasicMachine {
 
     boolean ready = false;
@@ -70,11 +72,8 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Place, activate with explosives",
-            "2 Powder Barrels, " + "4 Glyceryl Trinitrate, " + "16 TNT, or " + "8 ITNT",
-            "Use Data Stick, Scan Data Stick, Print Data Stick, Bind Pages into Book",
-            "Ore prospecting area = " + radius * 2 + "x" + radius * 2 + " ONLY blocks below prospector",
-            "Oil prospecting area 3x3 oilfields, each is 8x8 chunks" };
+        return GTUtility
+            .translateMultiline("gt.blockmachines.basicmachine.seismicprospector.tooltip", radius * 2, radius * 2);
     }
 
     protected MTEAdvSeismicProspector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
