@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.Configuration;
 
@@ -53,8 +52,7 @@ public class PowerGogglesGuiOverlay {
     private static final IDrawable MANUAL_SCALE_TEXT_FIELD_BACKGROUND = new DynamicDrawable(
         () -> manualScaleInvalid ? MANUAL_SCALE_INVALID_TEXT_FIELD_BACKGROUND : GTGuiTextures.BACKGROUND_TEXT_FIELD);
 
-    public static CustomModularScreen buildScreen(GuiScreen screen) {
-        PowerGogglesGuiHudConfig gui = (PowerGogglesGuiHudConfig) screen;
+    public static CustomModularScreen buildScreen(PowerGogglesGuiHudConfig gui) {
         manualGraphMinInput = PowerGogglesConfigHandler.manualGraphMin;
         manualGraphMaxInput = PowerGogglesConfigHandler.manualGraphMax;
         validateManualScaleInputs();

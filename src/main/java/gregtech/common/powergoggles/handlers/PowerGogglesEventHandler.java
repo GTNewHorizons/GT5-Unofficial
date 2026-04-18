@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 
 import com.cleanroommc.modularui.factory.ClientGUI;
+import com.cleanroommc.modularui.screen.OpenScreenEvent;
 
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -110,7 +111,14 @@ public class PowerGogglesEventHandler {
     public void openConfig() {
         Minecraft screenInfo = Minecraft.getMinecraft();
         GuiScreen screen = new PowerGogglesGuiHudConfig(screenInfo.displayWidth, screenInfo.displayHeight);
-        ClientGUI.open(PowerGogglesGuiOverlay.buildScreen(screen));
+        ClientGUI.open(screen);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void onGuiOpen(OpenScreenEvent event) {
+        if (event.getScreen() instanceof PowerGogglesGuiHudConfig gui)
+            event.addOverlay(PowerGogglesGuiOverlay.buildScreen(gui));
     }
 
     @SideOnly(Side.CLIENT)
