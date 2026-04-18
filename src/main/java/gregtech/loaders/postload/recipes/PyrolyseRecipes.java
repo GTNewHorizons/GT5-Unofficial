@@ -187,7 +187,7 @@ public class PyrolyseRecipes implements Runnable {
             .itemInputs(ItemList.Chaff.get(4))
             .circuit(1)
             .fluidInputs(Materials.Water.getFluid(4_000))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5_000))
+            .fluidOutputs(Materials.Biomass.getFluid(5_000))
             .duration(45 * SECONDS)
             .eut(10)
             .addTo(pyrolyseRecipes, cokeOvenRecipes);
@@ -198,14 +198,6 @@ public class PyrolyseRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(1_500))
             .fluidOutputs(Materials.FermentedBiomass.getFluid(1_500))
             .duration(10 * SECONDS)
-            .eut(10)
-            .addTo(pyrolyseRecipes, cokeOvenRecipes);
-
-        GTValues.RA.stdBuilder()
-            .circuit(2)
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 1_000))
-            .fluidOutputs(Materials.FermentedBiomass.getFluid(1_000))
-            .duration(5 * SECONDS)
             .eut(10)
             .addTo(pyrolyseRecipes, cokeOvenRecipes);
 

@@ -26,13 +26,6 @@ public class FermenterRecipes implements Runnable {
             .addTo(fermentingRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 100))
-            .fluidOutputs(Materials.FermentedBiomass.getFluid(100))
-            .duration(7 * SECONDS + 10 * TICKS)
-            .eut(2)
-            .addTo(fermentingRecipes);
-
-        GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Milk.getFluid(50))
             .fluidOutputs(getFluidStack("potion.mundane", 25))
             .duration(51 * SECONDS + 4 * TICKS)

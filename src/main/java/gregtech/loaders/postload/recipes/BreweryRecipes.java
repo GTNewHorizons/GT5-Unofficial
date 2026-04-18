@@ -469,7 +469,7 @@ public class BreweryRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Chaff.get(1))
                 .fluidInputs(Materials.Water.getFluid(1_000))
-                .fluidOutputs(getFluidStack("biomass", 1_000))
+                .fluidOutputs(Materials.Biomass.getFluid(1_000))
                 .duration(8 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(brewingRecipes);
@@ -479,7 +479,7 @@ public class BreweryRecipes implements Runnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Chaff.get(1))
                     .fluidInputs(GTModHandler.getDistilledWater(500L))
-                    .fluidOutputs(getFluidStack("biomass", 1_000))
+                    .fluidOutputs(Materials.Biomass.getFluid(1_000))
                     .duration(10 * TICKS)
                     .eut((int) TierEU.RECIPE_LV)
                     .addTo(brewingRecipes);
