@@ -193,6 +193,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeCombustionEngine;
 import gregtech.common.tileentities.machines.multi.MTELargeFluidExtractor;
 import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
+import gregtech.common.tileentities.machines.multi.MTELargeNeutralizationEngine;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineGas;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
@@ -223,6 +224,7 @@ import gregtech.common.tileentities.machines.multi.MTEPyrolyseOvenLegacy;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
 import gregtech.common.tileentities.machines.multi.MTESolarFactory;
 import gregtech.common.tileentities.machines.multi.MTESpinmatron;
+import gregtech.common.tileentities.machines.multi.MTEToxicResidueSensor;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTEUniversalChemicalFuelEngine;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
@@ -682,6 +684,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.BeamStabilizer.set(
             new MTEBeamStabilizer(BEAM_STABILIZER.ID, "multimachine.beam-stabilizer", "Beam Stabilizer")
                 .getStackForm(1));
+
+        ItemList.Machine_Multi_Large_Neutralization_Engine.set(
+            new MTELargeNeutralizationEngine(
+                LARGE_NEUTRALIZATION_ENGINE_CONTROLLER.ID,
+                "multimachine.large-neutralization-engine",
+                "Large Neutralization Engine").getStackForm(1));
 
         ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
         addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTAuthors.AuthorThree));
@@ -11181,6 +11189,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 8).getStackForm(1L));
         ItemList.Hatch_HeatSensor
             .set(new MTEHeatSensor(HEAT_DETECTOR_HATCH.ID, "hatch.heatsensor", "Heat Sensor Hatch", 7).getStackForm(1));
+        ItemList.Hatch_ToxicResidueSensor.set(
+            new MTEToxicResidueSensor(
+                TOXIC_RESIDUE_DETECTOR_HATCH.ID,
+                "hatch.toxicresiduesensor",
+                "Toxic Residue Sensor Hatch",
+                7).getStackForm(1));
         ItemList.Hatch_BlackHoleUtility.set(
             new MTEBlackHoleUtility(
                 HATCH_BLACK_HOLE_UTILITY.ID,

@@ -3949,6 +3949,9 @@ item.BasicGenericChemItem.33.name=Algagenic Growth Promoter Catalyst
 item.BasicGenericChemItem.34.name=Hellish Force Catalyst
 item.BasicGenericChemItem.35.name=Crystal Colorization Catalyst
 
+# Added 13/03/26
+item.BasicGenericChemItem.36.name=Chlorination Catalyst
+
 # config gui
 gtpp.gui.config.general=General
 gtpp.gui.config.general.debug=Debug
@@ -4044,6 +4047,7 @@ gtpp.infodata.tiered_chest.name=Super Storage Chest
 gtpp.tiered_tank.desc.capacity=Stores %s of fluid
 gtpp.tiered_tank.desc.portable=A portable tank.
 gtpp.tiered_tank.desc.fluid=Fluid: %s %s L
+gtpp.tiered_tank.tooltip.contains=Contains Fluid:
 gtpp.tiered_tank.tooltip.contains=Contains Fluid: %s
 gtpp.tiered_tank.tooltip.amount=Fluid Amount: %s L
 gtpp.infodata.tiered_tank.name=%s Tank

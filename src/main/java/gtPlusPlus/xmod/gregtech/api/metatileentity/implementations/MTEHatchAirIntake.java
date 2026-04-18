@@ -43,7 +43,9 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
     public Fluid getFluidToGenerate() {
         int id = this.getBaseMetaTileEntity()
             .getWorld().provider.dimensionId;
-
+        if (id == 227) {
+            return Materials.ToxicAir.mGas;
+        }
         if (id == -1) {
             return Materials.NetherAir.mFluid;
         } else {
