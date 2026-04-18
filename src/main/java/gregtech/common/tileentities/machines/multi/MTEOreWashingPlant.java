@@ -97,7 +97,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
             'C',
             buildHatchAdder(MTEOreWashingPlant.class)
                 .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
-                .casingIndex(114)
+                .casingIndex(114) // WashPlantCasing
                 .hint(1)
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.WashPlantCasing.asElement())))
         .addElement('D', ofChain(isAir(), ofAnyWater(false)))
