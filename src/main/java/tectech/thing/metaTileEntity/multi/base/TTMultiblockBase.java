@@ -35,7 +35,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
-import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
@@ -67,9 +66,9 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -89,7 +88,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
-import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
@@ -114,14 +112,13 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 27.10.2016.
  */
-public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TTMultiblockBase>
-    implements IAlignment, IBindPlayerInventoryUI {
+public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TTMultiblockBase> {
     // region Client side variables (static - one per class)
 
     // Front icon holders - static so it is default one for my blocks
     // just add new static ones in your class and and override getTexture
-    protected static Textures.BlockIcons.CustomIcon ScreenOFF;
-    protected static Textures.BlockIcons.CustomIcon ScreenON;
+    protected static IIconContainer ScreenOFF;
+    protected static IIconContainer ScreenON;
 
     /** Base ID for the LED window popup. LED 1 I0 will have ID 100, LED 1 I1 101... */
     protected static int LED_WINDOW_BASE_ID = 100;
@@ -368,12 +365,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return list;
     }
 
-    @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addInfo("MISSING TOOLTIP")
-            .toolTipFinisher();
-    }
-
     /**
      * scanner gives it
      */
@@ -414,8 +405,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_CONTROLLER");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_CONTROLLER_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom("iconsets/EM_CONTROLLER");
+        ScreenON = Textures.BlockIcons.custom("iconsets/EM_CONTROLLER_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -994,8 +985,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                     stopMachine(ShutDownReasonRegistry.POLLUTION_FAIL);
                                 }
 
-                                if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) { // progress increase
-                                                                                                   // and done
+                                if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
                                     hatchesStatusUpdate_EM();
 
                                     outputAfterRecipe_EM();
@@ -2051,6 +2041,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             return GTUtility.translate(name);
         }
 
+        @Override
         public IGTHatchAdder<? super TTMultiblockBase> adder() {
             return adder;
         }

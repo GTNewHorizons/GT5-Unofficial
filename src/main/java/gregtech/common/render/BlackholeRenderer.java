@@ -199,6 +199,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
         ShaderProgram.clear();
     }
 
+    @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
         if (!(tile instanceof RenderingTileEntityBlackhole blackhole)) return;
 

@@ -32,6 +32,7 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -45,6 +46,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipTier;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
@@ -58,14 +60,17 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     protected static final int ASSEMBLY_OFFSET_Y = 4;
     protected static final int ASSEMBLY_OFFSET_Z = 0;
 
+    @Override
     public int structureOffsetX() {
         return ASSEMBLY_OFFSET_X;
     }
 
+    @Override
     public int structureOffsetY() {
         return ASSEMBLY_OFFSET_Y;
     }
 
+    @Override
     public int structureOffsetZ() {
         return ASSEMBLY_OFFSET_Z;
     }
@@ -199,8 +204,29 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.2")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.3")))
+            .beginStructureBlock(7, 7, 7, false)
+            .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
+            // Nanochip Reinforcement Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 25, false)
+            // Nanochip Complex Glass
+            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 24, false)
+            // Component Assembly Line Casing
+            .addCasingInfoExactly(translateToLocal("componentAssemblyLineCasing.name"), 20, true)
+            // Naquadah Alloy Frame Box
+            .addCasingInfoExactly(
+                translateToLocal("gt.blockframes.10.name")
+                    .replace("%material", Materials.NaquadahAlloy.getLocalizedName()),
+                12,
+                false)
+            // Nanochip Mesh Interface Casing
+            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 8, false)
+            // Naquadah Alloy Sheetmetal
+            .addCasingInfoExactly(OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials.NaquadahAlloy), 3, false)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
+            .addSubChannelUsage(GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING)
+            .addStructureInfoSeparator()
+            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
             .toolTipFinisher();
     }
 
@@ -251,8 +277,9 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         String[] origin = super.getInfoData();
         String[] ret = new String[origin.length + 1];
         System.arraycopy(origin, 0, ret, 0, origin.length);
-        ret[origin.length] = translateToLocal("scanner.info.CASS.tier")
-            + (machineTier >= 0 ? GTValues.VN[machineTier] : translateToLocal("scanner.info.CASS.tier.none"));
+        ret[origin.length] = translateToLocalFormatted(
+            "scanner.info.CASS.tier",
+            (machineTier >= 0 ? GTValues.VN[machineTier] : translateToLocal("scanner.info.CASS.tier.none")));
         return ret;
     }
 

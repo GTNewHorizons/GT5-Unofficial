@@ -1,11 +1,14 @@
 package gregtech.api.util.tooltip;
 
 import java.text.DecimalFormat;
+import java.util.Arrays;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
+import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.util.GTUtility;
@@ -25,6 +28,8 @@ public class TooltipHelper {
     public static final EnumChatFormatting ITALIC = EnumChatFormatting.ITALIC;
     public static final EnumChatFormatting EU_VOLT_COLOR = EnumChatFormatting.YELLOW;
     public static final EnumChatFormatting AMP_COLOR = EnumChatFormatting.AQUA;
+    public static final EnumChatFormatting CAPACITY_COLOR = EnumChatFormatting.BLUE;
+    public static final EnumChatFormatting EU_AMOUNT_COLOR = EnumChatFormatting.GRAY;
     public static final EnumChatFormatting CABLE_LOSS_COLOR = EnumChatFormatting.RED;
     public static final EnumChatFormatting L_COLOR = EnumChatFormatting.WHITE;
     public static final DecimalFormat percentageFormat = new DecimalFormat("0.##%");
@@ -154,7 +159,7 @@ public class TooltipHelper {
         if (voltageIndex < VoltageIndex.ULV || voltageIndex > VoltageIndex.MAX) return "Invalid Voltage Tier";
         return GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex]
             + EnumChatFormatting.GRAY
-            + (withTierSuffix ? "-tier" : "");
+            + (withTierSuffix ? StatCollector.translateToLocal("gt.voltage.tier") : "");
     }
 
     /**
@@ -162,6 +167,13 @@ public class TooltipHelper {
      */
     public static String euText(long eu) {
         return EU_VOLT_COLOR + NumberFormatUtil.formatNumber(eu) + EnumChatFormatting.GRAY;
+    }
+
+    /**
+     * @return The given number of EU, formatted.
+     */
+    public static String euCapacityText(long capacity) {
+        return CAPACITY_COLOR + NumberFormatUtil.formatNumber(capacity) + EU_AMOUNT_COLOR + " EU";
     }
 
     /**
@@ -184,10 +196,9 @@ public class TooltipHelper {
      * @return A string of the form "[lossPerMeter] EU-Volt"
      */
     public static String cableLossText(long lossPerMeter) {
-        return CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter)
-            + " "
-            + EnumChatFormatting.GRAY
-            + GTUtility.translate("GT5U.item.cable.eu_volt");
+        return GTUtility.translate(
+            "GT5U.item.cable.loss.eu_volt",
+            CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter) + EnumChatFormatting.GRAY);
     }
 
     /**
@@ -204,5 +215,18 @@ public class TooltipHelper {
     public static String fluidRateText(long litersPerSecond) {
         String text = NumberFormatUtil.formatNumber(litersPerSecond) + GTUtility.translate("gt.unit.liter_per_second");
         return coloredText(text, L_COLOR);
+    }
+
+    /**
+     * @return The tooltip as it was, but with a warning placed first if pollution is toggled off in config
+     */
+    public static String[] pollutionDisabledTooltip(String[] description) {
+        if (GTMod.proxy.mPollution) {
+            return description;
+        }
+        String[] descriptionWithWarning = Arrays.copyOf(description, description.length + 1);
+        System.arraycopy(descriptionWithWarning, 0, descriptionWithWarning, 1, description.length);
+        descriptionWithWarning[0] = EnumChatFormatting.RED + "Pollution is OFF - This Block is Redundant";
+        return descriptionWithWarning;
     }
 }

@@ -25,7 +25,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -52,8 +51,7 @@ import gregtech.common.gui.modularui.multiblock.AntimatterGeneratorGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
-    implements IConstructable, ISurvivalConstructable {
+public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implements ISurvivalConstructable {
 
     public static final String MAIN_NAME = "antimatterGenerator";
     protected IStructureDefinition<AntimatterGenerator> multiDefinition = null;
@@ -371,6 +369,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addInfo("Wireless mode requires Superconductor Base UMV to work")
             .addInfo("Wireless mode is still limited by hatch capacity")
             .beginStructureBlock(35, 43, 35, false)
+            .addController("Front center, 2nd layer")
             .addCasingInfoMin("Transcendentally Reinforced Borosilicate Glass", 1008, false)
             .addCasingInfoMin("Magnetic Flux Casing", 4122, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 2418, false)
@@ -611,6 +610,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
 
     @Override
     public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 

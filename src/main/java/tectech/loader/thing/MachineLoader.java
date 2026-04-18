@@ -22,7 +22,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.DataBankMasterConnector;
 import static gregtech.api.enums.MetaTileEntityIDs.DebugDataHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.DebugPollutionGenerator;
 import static gregtech.api.enums.MetaTileEntityIDs.DebugPowerGenerator;
-import static gregtech.api.enums.MetaTileEntityIDs.DebugStructureWriter;
 import static gregtech.api.enums.MetaTileEntityIDs.EV16ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.EV16AEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.EV16AWirelessEnergyHatch;
@@ -281,7 +280,6 @@ import static tectech.thing.CustomItemList.Machine_BuckConverter_UXV;
 import static tectech.thing.CustomItemList.Machine_BuckConverter_ZPM;
 import static tectech.thing.CustomItemList.Machine_DebugGenny;
 import static tectech.thing.CustomItemList.Machine_DebugPollutor;
-import static tectech.thing.CustomItemList.Machine_DebugWriter;
 import static tectech.thing.CustomItemList.Machine_Multi_Computer;
 import static tectech.thing.CustomItemList.Machine_Multi_DataBank;
 import static tectech.thing.CustomItemList.Machine_Multi_EyeOfHarmony;
@@ -543,7 +541,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.factory.test.TestFactoryHatch;
 import gregtech.api.factory.test.TestFactoryPipe;
@@ -591,7 +589,6 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeLaserMirror;
 import tectech.thing.metaTileEntity.single.MTEBuckConverter;
 import tectech.thing.metaTileEntity.single.MTEDebugPollutor;
 import tectech.thing.metaTileEntity.single.MTEDebugPowerGenerator;
-import tectech.thing.metaTileEntity.single.MTEDebugStructureWriter;
 import tectech.thing.metaTileEntity.single.MTEOwnerDetector;
 import tectech.thing.metaTileEntity.single.MTETeslaCoil;
 
@@ -1838,25 +1835,35 @@ public class MachineLoader implements Runnable {
         Machine_Multi_ForgeOfGods.set(
             new MTEForgeOfGods(ForgeoftheGods.ID, "multimachine.em.forge_of_gods", "Forge of the Gods")
                 .getStackForm(1L));
-        addItemTooltip(Machine_Multi_ForgeOfGods.get(1), GTValues.AuthorCloud);
+        addItemTooltip(
+            Machine_Multi_ForgeOfGods.get(1),
+            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
         Machine_Multi_SmeltingModule.set(
             new MTESmeltingModule(HelioflarePowerForge.ID, "multimachine.em.smelting_module", "Helioflare Power Forge")
                 .getStackForm(1L));
-        addItemTooltip(Machine_Multi_SmeltingModule.get(1), GTValues.AuthorCloud);
+        addItemTooltip(
+            Machine_Multi_SmeltingModule.get(1),
+            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
         Machine_Multi_MoltenModule.set(
             new MTEMoltenModule(HeliofluxMeltingCore.ID, "multimachine.em.molten_module", "Helioflux Melting Core")
                 .getStackForm(1L));
-        addItemTooltip(Machine_Multi_MoltenModule.get(1), GTValues.AuthorCloud);
+        addItemTooltip(
+            Machine_Multi_MoltenModule.get(1),
+            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
         Machine_Multi_PlasmaModule.set(
             new MTEPlasmaModule(
                 HeliothermalPlasmaFabricator.ID,
                 "multimachine.em.plasma_module",
                 "Heliothermal Plasma Fabricator").getStackForm(1L));
-        addItemTooltip(Machine_Multi_PlasmaModule.get(1), GTValues.AuthorCloud);
+        addItemTooltip(
+            Machine_Multi_PlasmaModule.get(1),
+            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
         Machine_Multi_QuarkGluonPlasmaModule.set(
             new MTEExoticModule(HeliofusionExoticizer.ID, "multimachine.em.exotic_module", "Heliofusion Exoticizer")
                 .getStackForm(1L));
-        addItemTooltip(Machine_Multi_QuarkGluonPlasmaModule.get(1), GTValues.AuthorCloud);
+        addItemTooltip(
+            Machine_Multi_QuarkGluonPlasmaModule.get(1),
+            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
 
         // ===================================================================================================
         // Hatches
@@ -2098,9 +2105,6 @@ public class MachineLoader implements Runnable {
                 8).getStackForm(1L));
         Machine_DebugGenny.set(
             new MTEDebugPowerGenerator(DebugPowerGenerator.ID, "debug.tt.genny", "Debug Power Generator", 14)
-                .getStackForm(1L));
-        Machine_DebugWriter.set(
-            new MTEDebugStructureWriter(DebugStructureWriter.ID, "debug.tt.writer", "Debug Structure Writer", 14)
                 .getStackForm(1L));
         UnusedStuff.set(new ItemStack(Blocks.air));
         hatch_CreativeUncertainty.set(

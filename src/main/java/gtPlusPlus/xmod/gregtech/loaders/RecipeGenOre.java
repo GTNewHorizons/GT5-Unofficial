@@ -27,8 +27,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
-import gtPlusPlus.api.interfaces.RunnableWithInfo;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
@@ -38,7 +36,7 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class RecipeGenOre extends RecipeGenBase {
 
-    public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
+    public static final Set<Runnable> mRecipeGenMap = new HashSet<>();
 
     static {
         MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
@@ -68,7 +66,6 @@ public class RecipeGenOre extends RecipeGenBase {
         }
 
         // if (material.getMaterialComposites().length > 1){
-        Logger.MATERIALS("[Recipe Generator Debug] [" + material.getLocalizedName() + "]");
         int tVoltageMultiplier = MaterialUtils.getVoltageForTier(material.vTier);
 
         final ItemStack dustStone = ItemUtils.getItemStackOfAmountFromOreDict("dustStone", 1);
@@ -98,7 +95,6 @@ public class RecipeGenOre extends RecipeGenBase {
         }
 
         ArrayList<Material> amJ = new ArrayList<>();
-        int aIndexCounter = 0;
         for (Material g : aMatComp) {
             if (g.hasSolidForm()) {
                 if (getDust(g) != null && getTinyDust(g) != null) {
@@ -202,8 +198,6 @@ public class RecipeGenOre extends RecipeGenBase {
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
-        Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate ore to Crushed ore'");
-
         // Macerate raw ore to Crushed
         GTValues.RA.stdBuilder()
             .itemInputs(material.getRawOre(1))
@@ -211,8 +205,6 @@ public class RecipeGenOre extends RecipeGenBase {
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
-
-        Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate raw ore to Crushed ore'");
 
         // Macerate Crushed to Impure Dust
         GTValues.RA.stdBuilder()
@@ -223,8 +215,6 @@ public class RecipeGenOre extends RecipeGenBase {
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
-        Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate Crushed ore to Impure Dust'");
-
         // Macerate Washed to Purified Dust
         GTValues.RA.stdBuilder()
             .itemInputs(material.getCrushedPurified(1))
@@ -234,8 +224,6 @@ public class RecipeGenOre extends RecipeGenBase {
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
-        Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate Washed ore to Purified Dust'");
-
         // Macerate Centrifuged to Pure Dust
         GTValues.RA.stdBuilder()
             .itemInputs(material.getCrushedCentrifuged(1))
@@ -244,8 +232,6 @@ public class RecipeGenOre extends RecipeGenBase {
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
-
-        Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate Centrifuged ore to Pure Dust'");
 
         // Wash
         RA.stdBuilder()
@@ -265,15 +251,8 @@ public class RecipeGenOre extends RecipeGenBase {
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(oreWasherRecipes);
-        Logger.MATERIALS("[OreWasher] Added Recipe: 'Wash Crushed ore into Purified Crushed ore'");
 
         // Thermal Centrifuge
-
-        Logger.MATERIALS("material.getCrushed(1): " + (material.getCrushed(1) != null));
-        Logger.MATERIALS("material.getCrushedPurified(1): " + (material.getCrushedPurified(1) != null));
-
-        Logger.MATERIALS("material.getTinyDust(1): " + (ItemUtils.getItemName(bonusA.getCrushed(1))));
-        Logger.MATERIALS("material.getTinyDust(1): " + (ItemUtils.getItemName(bonusB.getCrushed(1))));
 
         GTValues.RA.stdBuilder()
             .itemInputs(material.getCrushed(1))
@@ -283,18 +262,6 @@ public class RecipeGenOre extends RecipeGenBase {
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
 
-        Logger.MATERIALS(
-            "[ThermalCentrifuge] Added Recipe: 'Crushed ore to Centrifuged Ore' | Input: " + material.getCrushed(1)
-                .getDisplayName()
-                + " | Outputs: "
-                + material.getCrushedCentrifuged(1)
-                    .getDisplayName()
-                + ", "
-                + matDustB.getDisplayName()
-                + ", "
-                + dustStone.getDisplayName()
-                + ".");
-
         GTValues.RA.stdBuilder()
             .itemInputs(material.getCrushedPurified(1))
             .itemOutputs(material.getCrushedCentrifuged(1), matDustA, dustStone)
@@ -302,19 +269,6 @@ public class RecipeGenOre extends RecipeGenBase {
             .duration(25 * SECONDS)
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
-
-        Logger.MATERIALS(
-            "[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "
-                + material.getCrushedPurified(1)
-                    .getDisplayName()
-                + " | Outputs: "
-                + material.getCrushedCentrifuged(1)
-                    .getDisplayName()
-                + ", "
-                + matDustA.getDisplayName()
-                + ", "
-                + dustStone.getDisplayName()
-                + ".");
 
         // Forge Hammer
 
@@ -325,8 +279,6 @@ public class RecipeGenOre extends RecipeGenBase {
             .eut(tVoltageMultiplier / 4)
             .addTo(hammerRecipes);
 
-        Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Crushed Centrifuged to Pure Dust'");
-
         GTValues.RA.stdBuilder()
             .itemInputs(material.getCrushed(1))
             .itemOutputs(material.getDustImpure(1))
@@ -334,15 +286,12 @@ public class RecipeGenOre extends RecipeGenBase {
             .eut(tVoltageMultiplier / 4)
             .addTo(hammerRecipes);
 
-        Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Crushed to Impure Dust'");
-
         GTValues.RA.stdBuilder()
             .itemInputs(material.getCrushedPurified(1))
             .itemOutputs(material.getDustPurified(1))
             .duration(10 * TICKS)
             .eut(tVoltageMultiplier / 4)
             .addTo(hammerRecipes);
-        Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Crushed Purified to Purified Dust'");
 
         GTValues.RA.stdBuilder()
             .itemInputs(material.getOre(1))
@@ -350,8 +299,6 @@ public class RecipeGenOre extends RecipeGenBase {
             .duration(10 * TICKS)
             .eut(tVoltageMultiplier / 4)
             .addTo(hammerRecipes);
-
-        Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Ore to Crushed'");
 
         // Centrifuge
 
@@ -364,8 +311,6 @@ public class RecipeGenOre extends RecipeGenBase {
             .duration((int) Math.max(1L, material.getMass() * 8L))
             .addTo(centrifugeRecipes);
 
-        Logger.MATERIALS("[Centrifuge] Added Recipe: Purified Dust to Clean Dust");
-
         // Impure Dust to Clean
         GTValues.RA.stdBuilder()
             .itemInputs(material.getDustImpure(1))
@@ -374,8 +319,6 @@ public class RecipeGenOre extends RecipeGenBase {
             .eut(tVoltageMultiplier / 2)
             .duration((int) Math.max(1L, material.getMass() * 8L))
             .addTo(centrifugeRecipes);
-
-        Logger.MATERIALS("[Centrifuge] Added Recipe: Inpure Dust to Clean Dust");
 
         // Electrolyzer
 
@@ -393,28 +336,11 @@ public class RecipeGenOre extends RecipeGenBase {
                 for (Pair<Integer, Material> f : componentMap) {
                     if (f.getValue()
                         .getState() != MaterialState.SOLID) {
-                        Logger.MATERIALS(
-                            "[Electrolyzer] Found Fluid Component, adding " + f.getKey()
-                                + " cells of "
-                                + f.getValue()
-                                    .getLocalizedName()
-                                + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getCell(f.getKey());
                         mCellCount += f.getKey();
                         mTotalCount += f.getKey();
-                        Logger.MATERIALS(
-                            "[Electrolyzer] In total, adding " + mCellCount
-                                + " cells for "
-                                + material.getLocalizedName()
-                                + " processing.");
                     } else {
-                        Logger.MATERIALS(
-                            "[Electrolyzer] Found Solid Component, adding " + f.getKey()
-                                + " dusts of "
-                                + f.getValue()
-                                    .getLocalizedName()
-                                + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getDust(f.getKey());
                         mTotalCount += f.getKey();
@@ -423,37 +349,18 @@ public class RecipeGenOre extends RecipeGenBase {
 
                 // Build Output Array
                 for (int g = 0; g < mInternalOutputs.length; g++) {
-                    Logger.MATERIALS(
-                        "[Electrolyzer] Is output[" + g
-                            + "] valid with a chance? "
-                            + (mInternalOutputs[g] != null ? 10000 : 0));
                     mChances[g] = (mInternalOutputs[g] != null ? 10000 : 0);
                 }
 
                 ItemStack emptyCell = null;
                 if (mCellCount > 0) {
                     emptyCell = ItemList.Cell_Empty.get(mCellCount);
-                    Logger.MATERIALS("[Electrolyzer] Recipe now requires " + mCellCount + " empty cells as input.");
                 }
 
                 ItemStack mainDust = material.getDust(material.smallestStackSizeWhenProcessing);
-                if (mainDust != null) {
-                    Logger.MATERIALS(
-                        "[Electrolyzer] Recipe now requires " + material.smallestStackSizeWhenProcessing
-                            + "x "
-                            + mainDust.getDisplayName()
-                            + " as input.");
-                } else {
+                if (mainDust == null) {
                     mainDust = material.getDust(mTotalCount);
-                    Logger.MATERIALS("[Electrolyzer] Could not find valid input dust, trying alternative.");
-                    if (mainDust != null) {
-                        Logger.MATERIALS(
-                            "[Electrolyzer] Recipe now requires " + mTotalCount
-                                + "x "
-                                + mainDust.getDisplayName()
-                                + " as input.");
-                    } else {
-                        Logger.MATERIALS("[Electrolyzer] Could not find valid input dust, exiting.");
+                    if (mainDust == null) {
                         return;
                     }
                 }
@@ -461,10 +368,6 @@ public class RecipeGenOre extends RecipeGenBase {
                 for (int j = 0; j < mInternalOutputs.length; j++) {
                     if (mInternalOutputs[j] == null) {
                         mInternalOutputs[j] = GTValues.NI;
-                        Logger.MATERIALS("[Electrolyzer] Set slot " + j + "  to null.");
-                    } else {
-                        Logger.MATERIALS(
-                            "[Electrolyzer] Set slot " + j + " to " + mInternalOutputs[j].getDisplayName() + ".");
                     }
                 }
 
@@ -488,12 +391,7 @@ public class RecipeGenOre extends RecipeGenBase {
                     .eut(tVoltageMultiplier)
                     .addTo(electrolyzerRecipes);
 
-                Logger.MATERIALS("[Electrolyzer] Generated Electrolyzer recipe for " + matDust.getDisplayName());
-
             } else if (componentMap.size() > 6 && componentMap.size() <= 9) {
-                Logger.MATERIALS(
-                    "[Issue][Electrolyzer] " + material.getLocalizedName()
-                        + " is composed of over 6 materials, so an electrolyzer recipe for processing cannot be generated. Trying to create one for the Dehydrator instead.");
 
                 ItemStack[] mInternalOutputs = new ItemStack[9];
                 int[] mChances = new int[9];
@@ -507,28 +405,11 @@ public class RecipeGenOre extends RecipeGenBase {
                         .getState() != MaterialState.SOLID
                         && f.getValue()
                             .getState() != MaterialState.ORE) {
-                        Logger.MATERIALS(
-                            "[Dehydrator] Found Fluid Component, adding " + f.getKey()
-                                + " cells of "
-                                + f.getValue()
-                                    .getLocalizedName()
-                                + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getCell(f.getKey());
                         mCellCount += f.getKey();
                         mTotalCount += f.getKey();
-                        Logger.MATERIALS(
-                            "[Dehydrator] In total, adding " + mCellCount
-                                + " cells for "
-                                + material.getLocalizedName()
-                                + " processing.");
                     } else {
-                        Logger.MATERIALS(
-                            "[Dehydrator] Found Solid Component, adding " + f.getKey()
-                                + " dusts of "
-                                + f.getValue()
-                                    .getLocalizedName()
-                                + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getDust(f.getKey());
                         mTotalCount += f.getKey();
@@ -537,37 +418,18 @@ public class RecipeGenOre extends RecipeGenBase {
 
                 // Build Output Array
                 for (int g = 0; g < mInternalOutputs.length; g++) {
-                    Logger.MATERIALS(
-                        "[Dehydrator] Is output[" + g
-                            + "] valid with a chance? "
-                            + (mInternalOutputs[g] != null ? 10000 : 0));
                     mChances[g] = (mInternalOutputs[g] != null ? 10000 : 0);
                 }
 
                 ItemStack emptyCell = null;
                 if (mCellCount > 0) {
                     emptyCell = ItemList.Cell_Empty.get(mCellCount);;
-                    Logger.MATERIALS("[Dehydrator] Recipe now requires " + mCellCount + " empty cells as input.");
                 }
 
                 ItemStack mainDust = material.getDust(material.smallestStackSizeWhenProcessing);
-                if (mainDust != null) {
-                    Logger.MATERIALS(
-                        "[Dehydrator] Recipe now requires " + material.smallestStackSizeWhenProcessing
-                            + "x "
-                            + mainDust.getDisplayName()
-                            + " as input.");
-                } else {
+                if (mainDust == null) {
                     mainDust = material.getDust(mTotalCount);
-                    Logger.MATERIALS("[Dehydrator] Could not find valid input dust, trying alternative.");
-                    if (mainDust != null) {
-                        Logger.MATERIALS(
-                            "[Dehydrator] Recipe now requires " + mTotalCount
-                                + "x "
-                                + mainDust.getDisplayName()
-                                + " as input.");
-                    } else {
-                        Logger.MATERIALS("[Dehydrator] Could not find valid input dust, exiting.");
+                    if (mainDust == null) {
                         return;
                     }
                 }
@@ -575,10 +437,6 @@ public class RecipeGenOre extends RecipeGenBase {
                 for (int j = 0; j < mInternalOutputs.length; j++) {
                     if (mInternalOutputs[j] == null) {
                         mInternalOutputs[j] = GTValues.NI;
-                        Logger.MATERIALS("[Dehydrator] Set slot " + j + "  to null.");
-                    } else {
-                        Logger.MATERIALS(
-                            "[Dehydrator] Set slot " + j + " to " + mInternalOutputs[j].getDisplayName() + ".");
                     }
                 }
 
@@ -603,17 +461,6 @@ public class RecipeGenOre extends RecipeGenBase {
                     .eut(tVoltageMultiplier)
                     .duration((int) Math.max(material.getMass() * 4L * 1, 1))
                     .addTo(chemicalDehydratorRecipes);
-
-                Logger.MATERIALS("[Dehydrator] Generated Dehydrator recipe for " + matDust.getDisplayName());
-                Logger.MATERIALS(
-                    "Inputs: " + mainDust.getDisplayName()
-                        + " x"
-                        + mainDust.stackSize
-                        + ", "
-                        + (emptyCell == null ? "No Cells" : emptyCell.getDisplayName() + " x" + emptyCell.stackSize));
-                Logger.MATERIALS("Outputs " + ItemUtils.getArrayStackNames(mInternalOutputs));
-                Logger.MATERIALS("Time: " + ((int) Math.max(material.getMass() * 4L * 1, 1)));
-                Logger.MATERIALS("EU: " + tVoltageMultiplier);
 
             }
         }

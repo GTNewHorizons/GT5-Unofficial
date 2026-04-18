@@ -3,7 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.AuthorBlueWeabo;
+import static gregtech.api.enums.GTAuthors.AuthorBlueWeabo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -762,6 +762,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(30, 38, 13, false)
+            .addController("Front bottom center")
             .addStructureInfo("Total blocks needed for the structure at tier " + getTieredText("1", "2", "3"))
             .addStructureInfo(getTieredText("522", "670", "898") + "Radiant Naquadah Alloy Casing")
             .addStructureInfo(getTieredText("170", "170", "254") + "Stellar Alloy Frame Box")
@@ -846,21 +847,6 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         ItemStack aTool) {
         renderDisabled = !renderDisabled;
         GTUtility.sendChatTrans(aPlayer, "GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled"));
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
     }
 
     @Override

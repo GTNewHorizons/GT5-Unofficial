@@ -70,6 +70,9 @@ import gregtech.api.objects.GTHashSet;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategories;
+import gregtech.common.items.ItemGTToolbox;
+import gregtech.common.items.toolbox.ToolboxDelegateInventory;
+import gregtech.common.items.toolbox.ToolboxUtil;
 import ic2.api.item.IBoxable;
 import ic2.api.item.IC2Items;
 import ic2.api.item.IElectricItem;
@@ -1275,7 +1278,7 @@ public class GTModHandler {
             for (ItemStack tInput : FurnaceRecipes.smelting()
                 .getSmeltingList()
                 .keySet()) {
-                if (GTUtility.isStackValid(tInput) && GTUtility.areStacksEqual(aInput, tInput, true)) {
+                if (GTUtility.areStacksEqual(aInput, tInput, true)) {
                     FurnaceRecipes.smelting()
                         .getSmeltingList()
                         .remove(tInput);
@@ -1309,17 +1312,16 @@ public class GTModHandler {
         }
         ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        int size = allRecipes.size();
-        for (int i = 0; i < size; i++) {
-            for (; i < size; i++) {
-                if ((!(allRecipes.get(i) instanceof IGTCraftingRecipe)
-                    || ((IGTCraftingRecipe) allRecipes.get(i)).isRemovable()) && allRecipes.get(i)
-                        .matches(aCrafting, DW)) {
-                    rReturn = allRecipes.get(i)
-                        .getCraftingResult(aCrafting);
-                    if (rReturn != null) allRecipes.remove(i--);
-                    size = allRecipes.size();
-                }
+        for (int i = 0; i < allRecipes.size(); i++) {
+            final IRecipe recipe = allRecipes.get(i);
+
+            if (recipe instanceof IGTCraftingRecipe && !((IGTCraftingRecipe) recipe).isRemovable()) {
+                continue;
+            }
+
+            if (recipe.matches(aCrafting, DW)) {
+                rReturn = recipe.getCraftingResult(aCrafting);
+                allRecipes.remove(i--);
             }
         }
         return rReturn;
@@ -1352,10 +1354,15 @@ public class GTModHandler {
 
         Set<IRecipe> tListToRemove = allRecipes.parallelStream()
             .filter(tRecipe -> {
-                if ((tRecipe instanceof IGTCraftingRecipe) && !((IGTCraftingRecipe) tRecipe).isRemovable())
+                if ((tRecipe instanceof IGTCraftingRecipe) && !((IGTCraftingRecipe) tRecipe).isRemovable()) {
                     return false;
-                return toRemove.stream()
-                    .anyMatch(aCrafting -> tRecipe.matches(aCrafting, DW));
+                }
+                for (InventoryCrafting crafting : toRemove) {
+                    if (tRecipe.matches(crafting, DW)) {
+                        return true;
+                    }
+                }
+                return false;
             })
             .collect(Collectors.toSet());
 
@@ -1925,8 +1932,8 @@ public class GTModHandler {
             if (aPlayer instanceof EntityPlayer tPlayer) {
                 if (tPlayer.capabilities.isCreativeMode) return true;
                 if (isElectricItem(aStack) && ic2.api.item.ElectricItem.manager.getCharge(aStack) > 1000.0d) {
-                    if (consumeSolderingMaterial(tPlayer)
-                        || (aExternalInventory != null && consumeSolderingMaterial(aExternalInventory))) {
+                    if ((aExternalInventory != null && consumeSolderingMaterial(aExternalInventory))
+                        || consumeSolderingMaterial(tPlayer)) {
                         if (canUseElectricItem(aStack, 10000)) {
                             return GTModHandler.useElectricItem(aStack, 10000, (EntityPlayer) aPlayer);
                         }
@@ -1936,9 +1943,7 @@ public class GTModHandler {
                             (EntityPlayer) aPlayer);
                         return false;
                     } else {
-                        GTUtility.sendChatToPlayer(
-                            (EntityPlayer) aPlayer,
-                            GTUtility.trans("094.1", "Not enough soldering material!"));
+                        GTUtility.sendChatTrans((EntityPlayer) aPlayer, "GT5U.chat.soldering_iron.not_enough");
                     }
                 }
             } else {
@@ -1950,6 +1955,13 @@ public class GTModHandler {
     }
 
     public static boolean useSolderingIron(ItemStack aStack, EntityLivingBase aPlayer) {
+        if (aStack != null && aStack.getItem() instanceof ItemGTToolbox) {
+            final ToolboxDelegateInventory delegateInventory = new ToolboxDelegateInventory(aStack);
+            final boolean result = useSolderingIron(aStack, aPlayer, delegateInventory);
+
+            ToolboxUtil.saveToolbox(aStack, delegateInventory.getHandler());
+            return result;
+        }
         return useSolderingIron(aStack, aPlayer, null);
     }
 

@@ -301,7 +301,7 @@ scanner.info.YOTTank.next=None. Will lock to next fluid
 scanner.info.XHE.0=Steam Output is equal to
 scanner.info.XHE.1=Overheated Threshold:
 scanner.info.UX.0=Running Parallel
-scanner.info.CASS.tier=Casing Tier:
+scanner.info.CASS.tier=Casing Tier: %s
 scanner.info.CASS.tier.none=None!
 
 gg.scanner.info.antimatter_forge=Antimatter Forge

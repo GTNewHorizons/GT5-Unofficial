@@ -1,64 +1,29 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.Textures.BlockIcons.ITEM_OUT_SIGN;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
-import gregtech.GTMod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.util.Utils;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
 
     public MTEHatchSteamBusOutput(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { "Item Output for Steam Multiblocks", "Does not automatically export items",
-                "Capacity: 4 stacks", "Does not work with non-steam multiblocks", GTPPCore.GT_Tooltip.get() },
-            4);
+        super(aID, aName, aNameRegional, aTier, null, 4);
     }
 
     public MTEHatchSteamBusOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 4, aDescription, aTextures);
-    }
-
-    @Override
-    public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return GTMod.proxy.mRenderIndicatorsOnHatch
-            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN) }
-            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT) };
-    }
-
-    @Override
-    public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return GTMod.proxy.mRenderIndicatorsOnHatch
-            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN) }
-            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT) };
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return true;
     }
 
     @Override
@@ -70,18 +35,6 @@ public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         openGui(aPlayer);
         return true;
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return side == aBaseMetaTileEntity.getFrontFacing();
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -203,6 +156,16 @@ public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
 
     @Override
     public boolean pushOutputInventory() {
+        return false;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return Utils.splitLocalizedWithAlkalus("gt.blockmachines.output_bus_steam.desc");
+    }
+
+    @Override
+    protected boolean useMui2() {
         return false;
     }
 }

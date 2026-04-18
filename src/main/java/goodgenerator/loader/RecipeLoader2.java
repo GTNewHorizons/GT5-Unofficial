@@ -925,11 +925,11 @@ public class RecipeLoader2 {
             80000);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
-            FluidRegistry.getFluidStack("ic2hotcoolant", 16_000),
-            GTModHandler.getIC2Coolant(16_000),
-            GTModHandler.getDistilledWater(20_000),
-            FluidRegistry.getFluidStack("ic2superheatedsteam", 3_200_000),
-            FluidRegistry.getFluidStack("supercriticalsteam", 3_200_000),
+            FluidRegistry.getFluidStack("ic2hotcoolant", 128_000),
+            GTModHandler.getIC2Coolant(128_000),
+            GTModHandler.getDistilledWater(160_000),
+            FluidRegistry.getFluidStack("ic2superheatedsteam", 25_600_000),
+            FluidRegistry.getFluidStack("supercriticalsteam", 25_600_000),
             8000);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
@@ -1022,15 +1022,6 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1), 'H',
                 ItemList.Hull_IV.get(1), 'S', GGMaterial.marCeM200.get(OrePrefixes.plate, 1), 'E',
                 GTModHandler.getIC2Item("reactorHeatSwitchDiamond", 1L, 1) });
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemRefer.Salty_Root.get(1))
-            .fluidInputs(Materials.Water.getFluid(100))
-            .itemOutputs(Materials.Salt.getDust(1), Materials.RockSalt.getDust(1), Materials.Saltpeter.getDust(1))
-            .outputChances(9500, 8000, 5000)
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(chemicalBathRecipes);
 
         if (NewHorizonsCoreMod.isModLoaded()) {
             GTValues.RA.stdBuilder()
@@ -1418,7 +1409,7 @@ public class RecipeLoader2 {
             256,
             new Object[] { GregtechItemList.FusionComputer_UV3.get(48),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 }, ItemList.Circuit_Wafer_QPIC.get(64),
-                ItemList.UHV_Coil.get(64), MaterialsElements.STANDALONE.HYPOGEN.getPlateDense(8),
+                ItemList.UEV_Coil.get(16), MaterialsElements.STANDALONE.HYPOGEN.getPlateDense(8),
                 ItemRefer.HiC_T5.get(8), ItemList.Field_Generator_UEV.get(8),
                 GGMaterial.metastableOganesson.get(OrePrefixes.gearGtSmall, 64) },
             new FluidStack[] { GGMaterial.tairitsu.getMolten(16 * INGOTS),

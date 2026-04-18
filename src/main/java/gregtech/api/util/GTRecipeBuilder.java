@@ -3,6 +3,7 @@ package gregtech.api.util;
 import static gregtech.api.util.GTRecipeMapUtil.SPECIAL_VALUE_ALIASES;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Contract;
 
@@ -20,6 +22,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IRecipeMap;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
@@ -30,17 +33,17 @@ import gregtech.api.util.extensions.ArrayExt;
 public class GTRecipeBuilder {
 
     // debug mode expose problems. panic mode help you check nothing is wrong-ish without you actively monitoring
-    private static final boolean DEBUG_MODE_NULL;
+    public static final boolean DEBUG_MODE_NULL;
     // Any stable release should be tested at least once with this: -Dgt.recipebuilder.panic.null=true
-    private static boolean PANIC_MODE_NULL;
-    private static final boolean DEBUG_MODE_INVALID;
-    private static final boolean DEBUG_MODE_FULL_ENERGY;
+    public static boolean PANIC_MODE_NULL;
+    public static final boolean DEBUG_MODE_INVALID;
+    public static final boolean DEBUG_MODE_FULL_ENERGY;
     // Any stable release should be tested at least once with this: -Dgt.recipebuilder.panic.invalid=true
-    private static final boolean PANIC_MODE_INVALID;
+    public static final boolean PANIC_MODE_INVALID;
     public static final boolean DEBUG_MODE_COLLISION;
 
     // Any stable release should be tested at least once with this: -Dgt.recipebuilder.panic.collision=true
-    private static final boolean PANIC_MODE_COLLISION;
+    public static final boolean PANIC_MODE_COLLISION;
 
     // This should only be enabled in non stable instances only with -Dgt.recipebuilder.recipe_collision_check=true
     public static final boolean ENABLE_COLLISION_CHECK;
@@ -87,6 +90,7 @@ public class GTRecipeBuilder {
     protected Object[] inputsOreDict;
     protected ItemStack[] outputs = GTValues.emptyItemStackArray;
     protected ItemStack[][] alts;
+    protected int[] altOreIds;
     protected FluidStack[] fluidInputs = GTValues.emptyFluidStackArray;
     protected FluidStack[] fluidOutputs = GTValues.emptyFluidStackArray;
     protected int[] inputChances, outputChances, fluidInputChances, fluidOutputChances;
@@ -116,7 +120,7 @@ public class GTRecipeBuilder {
     GTRecipeBuilder() {}
 
     private GTRecipeBuilder(ItemStack[] inputsBasic, Object[] inputsOreDict, ItemStack[] outputs, ItemStack[][] alts,
-        FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] inputChances, int[] outputChances,
+        int[] altOreIds, FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] inputChances, int[] outputChances,
         int[] fluidInputChances, int[] fluidOutputChances, Object special, int duration, int eut, int specialValue,
         boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered, boolean mNeedsEmptyOutput,
         boolean nbtSensitive, String[] neiDesc, RecipeCategory recipeCategory,
@@ -125,6 +129,7 @@ public class GTRecipeBuilder {
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
         this.alts = alts;
+        this.altOreIds = altOreIds;
         this.fluidInputs = fluidInputs;
         this.fluidOutputs = fluidOutputs;
         this.inputChances = inputChances;
@@ -366,16 +371,43 @@ public class GTRecipeBuilder {
         if (skip) return this;
         inputsOreDict = inputs;
         alts = new ItemStack[inputs.length][];
+        altOreIds = new int[inputs.length];
+        Arrays.fill(altOreIds, -1);
         for (int i = 0, inputsLength = inputs.length; i < inputsLength; i++) {
             Object input = inputs[i];
             if (input instanceof ItemStack) {
                 alts[i] = new ItemStack[] { (ItemStack) input };
-            } else if (input instanceof ItemStack[]) {
-                alts[i] = ((ItemStack[]) input).clone();
+            } else if (input instanceof ItemStack[]inputArr) {
+                if (debugNull() && containsNull(inputArr)) handleNullRecipeComponents("itemInputs");
+                alts[i] = inputArr.clone();
+            } else if (input instanceof OreDictItemStack ods) {
+                altOreIds[i] = OreDictionary.getOreID(ods.mOreName);
+                ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(ods.mOreName);
+                if (ores.isEmpty()) {
+                    alts[i] = GTValues.emptyItemStackArray;
+                    GTLog.err
+                        .println("Warning: OreDict entry \"" + ods.mOreName + "\" is empty; recipe will be skipped.");
+                    if (debugNull()) handleNullRecipeComponents("itemInputs empty ore dict");
+                    continue;
+                }
+                ArrayList<ItemStack> list = new ArrayList<>(ores.size());
+                // noinspection ForLoopReplaceableByForEach
+                for (int j = 0, oresSize = ores.size(); j < oresSize; j++) {
+                    ItemStack itemStack = GTUtility.copyAmount(ods.mAmount, ores.get(j));
+                    if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
+                }
+                if (debugNull() && list.isEmpty()) handleNullRecipeComponents("itemInputs no valid ore dict item");
+                alts[i] = list.toArray(new ItemStack[0]);
             } else if (input instanceof Object[]arr) {
                 if (arr.length != 2) continue;
+                altOreIds[i] = OreDictionary.getOreID(arr[0].toString());
                 ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(arr[0]);
-                if (ores.isEmpty()) continue;
+                if (ores.isEmpty()) {
+                    alts[i] = GTValues.emptyItemStackArray;
+                    GTLog.err.println("Warning: OreDict entry \"" + arr[0] + "\" is empty; recipe will be skipped.");
+                    if (debugNull()) handleNullRecipeComponents("itemInputs empty ore dict");
+                    continue;
+                }
                 int size = ((Number) arr[1]).intValue();
                 ArrayList<ItemStack> list = new ArrayList<>(ores.size());
                 // noinspection ForLoopReplaceableByForEach
@@ -383,9 +415,10 @@ public class GTRecipeBuilder {
                     ItemStack itemStack = GTUtility.copyAmount(size, ores.get(j));
                     if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
                 }
+                if (debugNull() && list.isEmpty()) handleNullRecipeComponents("itemInputs no valid ore dict item");
                 alts[i] = list.toArray(new ItemStack[0]);
             } else if (input == null) {
-                handleNullRecipeComponents("recipe oredict input");
+                if (debugNull()) handleNullRecipeComponents("recipe oredict input");
                 alts[i] = GTValues.emptyItemStackArray;
             } else {
                 throw new IllegalArgumentException("index " + i + ", unexpected type: " + input.getClass());
@@ -668,6 +701,7 @@ public class GTRecipeBuilder {
             copy(inputsOreDict),
             ArrayExt.copyItemsIfNonEmpty(outputs),
             copy(alts),
+            copy(altOreIds),
             ArrayExt.copyFluidsIfNonEmpty(fluidInputs),
             ArrayExt.copyFluidsIfNonEmpty(fluidOutputs),
             copy(inputChances),
@@ -701,6 +735,7 @@ public class GTRecipeBuilder {
             copy(inputsOreDict),
             ArrayExt.copyItemsIfNonEmpty(outputs),
             copy(alts),
+            copy(altOreIds),
             ArrayExt.copyFluidsIfNonEmpty(fluidInputs),
             ArrayExt.copyFluidsIfNonEmpty(fluidOutputs),
             copy(inputChances),
@@ -1013,7 +1048,8 @@ public class GTRecipeBuilder {
                     neiDesc,
                     metadataStorage,
                     recipeCategory,
-                    alts)));
+                    alts,
+                    altOreIds)));
     }
 
     private void preBuildChecks() {
@@ -1054,6 +1090,17 @@ public class GTRecipeBuilder {
             return Collections.emptyList();
         }
         return recipeMap.doAdd(this);
+    }
+
+    public Collection<GTRecipe> addTo(IRecipeMap... recipeMaps) {
+        if (skip) {
+            return Collections.emptyList();
+        }
+
+        Collection<GTRecipe> addedRecipes = new ArrayList<>();
+        for (IRecipeMap recipeMap : recipeMaps) addedRecipes.addAll(recipeMap.doAdd(this));
+
+        return addedRecipes;
     }
 
     public GTRecipeBuilder reset() {

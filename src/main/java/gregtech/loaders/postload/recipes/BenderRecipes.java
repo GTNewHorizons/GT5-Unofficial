@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
@@ -13,6 +14,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class BenderRecipes implements Runnable {
@@ -300,6 +303,20 @@ public class BenderRecipes implements Runnable {
                 .eut((int) TierEU.RECIPE_HV)
                 .addTo(benderRecipes);
         }
+
+        // From ProcessingFood - foodDough (remove furnace smelting)
+        for (net.minecraft.item.ItemStack stack : OreDictionary.getOres("foodDough")) {
+            GTModHandler.removeFurnaceSmelting(stack);
+        }
+
+        // From ProcessingFood - foodDough bender
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("foodDough", 1))
+            .circuit(1)
+            .itemOutputs(ItemList.Food_Flat_Dough.get(1L))
+            .duration(16 * TICKS)
+            .eut(4)
+            .addTo(benderRecipes);
 
     }
 }

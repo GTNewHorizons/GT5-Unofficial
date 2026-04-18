@@ -3,7 +3,7 @@ package gregtech.common.tileentities.machines.multi.drone;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.AuthorSilverMoon;
+import static gregtech.api.enums.GTAuthors.AuthorSilverMoon;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -61,15 +61,16 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.dronecentre.DroneCentreGuiUtil;
 import gregtech.common.gui.modularui.multiblock.dronecentre.MTEDroneCentreGui;
 import gregtech.common.items.ItemTierDrone;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.drone.production.ProductionRecord;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentre> implements ISurvivalConstructable {
 
-    private static final IIconContainer ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_ACTIVE");
-    private static final IIconContainer FACE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_FACE");
-    private static final IIconContainer INACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_INACTIVE");
+    private static final IIconContainer ACTIVE = Textures.BlockIcons.custom("iconsets/DRONE_CENTRE_ACTIVE");
+    private static final IIconContainer FACE = Textures.BlockIcons.custom("iconsets/DRONE_CENTRE_FACE");
+    private static final IIconContainer INACTIVE = Textures.BlockIcons.custom("iconsets/DRONE_CENTRE_INACTIVE");
     private static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 2);
     private static final int CASINGS_MIN = 85;
     private int mCasingAmount = 0;
@@ -161,11 +162,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     @Override
-    public boolean supportsPowerPanel() {
-        return true;
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Drone Centre")
@@ -186,13 +182,14 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addInfo("There is a chance per second that the drone will crash")
             .addInfo("Chance is determined by drone tier: T1: 1/28800, T2: 1/172800, T3 & T4: 0")
             .beginStructureBlock(5, 4, 9, false)
-            .addController("Front center")
+            .addController("Front center, 3rd layer")
             .addCasingInfoRange("Stable Titanium Machine Casing", CASINGS_MIN, 91, false)
             .addCasingInfoExactly("Heat Proof Machine Casing", 8, false)
             .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 1, false)
             .addCasingInfoExactly("Any tiered glass", 6, false)
             .addInputBus("Any Titanium Casing", 1)
             .addStructureInfo("No maintenance hatch needed")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorSilverMoon);
         return tt;
     }
@@ -507,6 +504,11 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 

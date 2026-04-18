@@ -3,6 +3,9 @@ package tectech.recipe;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import gregtech.api.gui.modularui.GTUITextures;
@@ -16,9 +19,43 @@ import tectech.thing.gui.TecTechUITextures;
 
 public class TecTechRecipeMaps {
 
+    public static class TTResearchStationALRecipe extends GTRecipe.RecipeAssemblyLine {
+
+        public long mComputation;
+        public long mAmperage;
+        public long mComputationRequiredPerSec;
+
+        public TTResearchStationALRecipe(ItemStack aResearchItem, int aResearchTime, int aResearchVoltage,
+            ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt,
+            long aComputation, int aAmperage, int aComputationRequiredPerSec) {
+            super(aResearchItem, aResearchTime, aResearchVoltage, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
+            this.mComputation = aComputation;
+            this.mAmperage = aAmperage;
+            this.mComputationRequiredPerSec = aComputationRequiredPerSec;
+        }
+
+        public TTResearchStationALRecipe(ItemStack aResearchItem, int aResearchTime, int aResearchVoltage,
+            ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt,
+            ItemStack[][] aAlt, long aComputation, int aAmperage, int aComputationRequiredPerSec) {
+            super(
+                aResearchItem,
+                aResearchTime,
+                aResearchVoltage,
+                aInputs,
+                aFluidInputs,
+                aOutput,
+                aDuration,
+                aEUt,
+                aAlt);
+            this.mComputation = aComputation;
+            this.mAmperage = aAmperage;
+            this.mComputationRequiredPerSec = aComputationRequiredPerSec;
+        }
+    }
+
     public static void init() {}
 
-    public static final List<GTRecipe.RecipeAssemblyLine> researchableALRecipeList = new ArrayList<>();
+    public static final List<TTResearchStationALRecipe> researchableALRecipeList = new ArrayList<>();
 
     public static final RecipeMap<RecipeMapBackend> eyeOfHarmonyRecipes = RecipeMapBuilder.of("gt.recipe.eyeofharmony")
         .maxIO(
@@ -31,9 +68,8 @@ public class TecTechRecipeMaps {
         .progressBarPos(78, 24 + 2)
         .logoPos(10, 10)
         .neiHandlerInfo(
-            builder -> builder.setDisplayStack(CustomItemList.Machine_Multi_EyeOfHarmony.get(1))
-                .setHeight(314)
-                .setMaxRecipesPerPage(1))
+            builder -> builder.setHeight(314)
+                .setMultipleWidgetsAllowed(false))
         .frontend(EyeOfHarmonyFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> researchStationFakeRecipes = RecipeMapBuilder
@@ -92,9 +128,7 @@ public class TecTechRecipeMaps {
         .dontUseProgressBar()
         .neiTransferRect(83, 38, 30, 13)
         .frontend(GodforgeUpgradeCostFrontend::new)
-        .neiHandlerInfo(
-            builder -> builder.setDisplayStack(CustomItemList.Machine_Multi_ForgeOfGods.get(1))
-                .setHeight(100))
+        .neiHandlerInfo(builder -> builder.setHeight(100))
         .build();
 
 }

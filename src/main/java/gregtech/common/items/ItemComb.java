@@ -135,7 +135,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return CombType.valueOf(stack.getItemDamage())
-            .getName();
+            .getLocalizedName();
     }
 
     @Override
@@ -214,12 +214,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             CombType.COAL,
             new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1), ItemList.FR_Wax.get(1) },
             new int[] { 5 * 100, 50 * 100 },
-            Voltage.ULV);
-        addCentrifugeToItemStack(
-            CombType.OIL,
-            new ItemStack[] { ItemList.Crop_Drop_OilBerry.get(6), GTBees.drop.getStackForType(DropType.OIL),
-                ItemList.FR_Wax.get(1) },
-            new int[] { 100 * 100, 100 * 100, 50 * 100 },
             Voltage.ULV);
 
         // ic2
