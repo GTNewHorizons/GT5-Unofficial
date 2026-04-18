@@ -95,16 +95,15 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 for (byte i = 0; i < metaCount; i = (byte) (i + 1)) {
                     ItemStack tStack = GTUtility.copyMetaData(i, aStack);
                     if (tStack == null && i >= 16) break;
-
-                    convertSlabRecipe(tStack);
+                    convertSlabRecipe(tStack, true);
                 }
             } else {
-                convertSlabRecipe(aStack);
+                convertSlabRecipe(aStack, false);
             }
         }
     }
 
-    private void convertSlabRecipe(ItemStack aStack) {
+    private void convertSlabRecipe(ItemStack aStack, boolean excludeOreDictFallback) {
 
         SpecialSlabConversionResult tSpecialResult = trySpecialSlabConversion(aStack);
 
@@ -121,7 +120,11 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             //
             // We want to use the first recipe, if it's available, so this method is
             // used to give preference to the specific recipe over the Oredict one.
-            tOutput = GTModHandler.getRecipeOutputPreferNonOreDict(aStack, aStack, aStack);
+            if (excludeOreDictFallback) {
+                tOutput = GTModHandler.getRecipeOutputExcludeOreDict(aStack, aStack, aStack);
+            } else {
+                tOutput = GTModHandler.getRecipeOutputPreferNonOreDict(aStack, aStack, aStack);
+            }
         }
 
         if (tOutput == null || tOutput.stackSize < 3) return;
