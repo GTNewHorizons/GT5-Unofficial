@@ -67,16 +67,18 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         GL11.glScaled(PowerGogglesConfigHandler.hudScale, PowerGogglesConfigHandler.hudScale, 1);
         GL11.glTranslated(-scaleOffsetX, -scaleOffsetY, 0);
 
-        renderStorageText();
-        if (PowerGogglesConfigHandler.showPowerBar) {
-            renderGradientRectangle();
+        if (PowerGogglesConfigHandler.showMeasurements) {
+            renderStorageText();
+            if (PowerGogglesConfigHandler.showPowerBar) {
+                renderGradientRectangle();
+            }
+            renderTimedDifferenceText();
+            renderBackground();
         }
-        renderTimedDifferenceText();
 
         if (PowerGogglesConfigHandler.showPowerChart) {
             renderPowerChart();
         }
-        renderBackground();
 
         GL11.glPopMatrix();
 
@@ -143,19 +145,25 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
         if (measurementData.isWireless()) {
             BigDecimal decimalMaximumMeasurement = new BigDecimal(getMaximumMeasurement(measurements));
-            if (decimalMeasurement.equals(BigDecimal.ZERO)) {
+            if (decimalMeasurement.equals(BigDecimal.ZERO) || decimalMaximumMeasurement.equals(BigDecimal.ZERO)) {
                 return 0;
             }
-            return decimalMeasurement.divide(decimalMaximumMeasurement, RoundingMode.HALF_EVEN)
-                .doubleValue();
+            return clampPercentage(
+                decimalMeasurement.divide(decimalMaximumMeasurement, 8, RoundingMode.HALF_EVEN)
+                    .doubleValue());
         } else {
             BigDecimal decimalCapacity = BigDecimal.valueOf(measurementData.getCapacity());
             if (decimalCapacity.equals(BigDecimal.ZERO)) {
                 return 0;
             }
-            return decimalMeasurement.divide(decimalCapacity, RoundingMode.HALF_EVEN)
-                .doubleValue();
+            return clampPercentage(
+                decimalMeasurement.divide(decimalCapacity, 8, RoundingMode.HALF_EVEN)
+                    .doubleValue());
         }
+    }
+
+    private double clampPercentage(double percentage) {
+        return Math.max(0, Math.min(1, percentage));
     }
 
     private int getTextColor(BigInteger measurement) {
@@ -365,8 +373,9 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int bgColor = PowerGogglesConfigHandler.measurementsBackgroundColor;
 
         double mainStringHeight = fontRenderer.FONT_HEIGHT * mainScale;
-        double subStringHeight = fontRenderer.FONT_HEIGHT * subScale * 2;
-        double gapHeight = gapBetweenLines * 4;
+        double subStringHeight = PowerGogglesConfigHandler.showMeasurements ? fontRenderer.FONT_HEIGHT * subScale * 2
+            : 0;
+        double gapHeight = gapBetweenLines * (PowerGogglesConfigHandler.showMeasurements ? 4 : 2);
 
         int bgHeight = (int) (mainStringHeight + gradientRectangleHeight + subStringHeight + gapHeight);
 

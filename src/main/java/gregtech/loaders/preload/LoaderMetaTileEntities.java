@@ -149,6 +149,7 @@ import gregtech.common.tileentities.machines.multi.MTEDecayWarehouse;
 import gregtech.common.tileentities.machines.multi.MTEDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
+import gregtech.common.tileentities.machines.multi.MTEElectricImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
 import gregtech.common.tileentities.machines.multi.MTEExtremeCombustionEngine;
 import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngineLegacy;
@@ -163,15 +164,19 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialBendingMachine;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialBrewery;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialChemicalBath;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialCokeOven;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectrolyzer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtruder;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialFishingPond;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialFormingPress;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialMacerator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialMixer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialMolecularTransformer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialPackager;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialRockBreaker;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialThermalCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialWireMill;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
@@ -867,6 +872,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEFrothFlotationCell(FlotationCell.ID, "gtpp.multimachine.flotationcell", "Flotation Cell Regulator")
                 .getStackForm(1L));
 
+        ItemList.MacerationStack.set(
+            new MTEIndustrialMacerator(
+                MacerationStack.ID,
+                "industrialmacerator.controller.tier.single",
+                "Industrial Maceration Stack").getStackForm(1L));
+
         ItemList.MegaChemicalReactor.set(
             new MTEMegaChemicalReactor(
                 MegaChemicalReactor.ID,
@@ -894,6 +905,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "moleculartransformer.controller.tier.single",
                 "Molecular Transformer").getStackForm(1L));
 
+        ItemList.FishingPort.set(
+            new MTEIndustrialFishingPond(
+                FishingPort.ID,
+                "industrial.fishpond.controller.tier.single",
+                "Zhuhai - Fishing Port").getStackForm(1L));
+
         ItemList.IndustrialExtruder.set(
             new MTEIndustrialExtruder(
                 IndustrialExtruder.ID,
@@ -912,10 +929,19 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "UniversalChemicalFuelEngine",
                 "Universal Chemical Fuel Engine").getStackForm(1L));
 
+        ItemList.Boldarnator.set(
+            new MTEIndustrialRockBreaker(Boldarnator.ID, "industrialrockcrusher.controller.tier.single", "Boldarnator")
+                .getStackForm(1L));
+
         ItemList.IntegratedOreFactory.set(
             new MTEIntegratedOreFactory(IntegratedOreFactory.ID, "multimachine.oreprocessor", "Integrated Ore Factory")
                 .getStackForm(1L));
 
+        ItemList.ElectricImplosionCompressor.set(
+            new MTEElectricImplosionCompressor(
+                ElectricImplosionCompressor.ID,
+                "ElectricImplosionCompressor",
+                "Electric Implosion Compressor").getStackForm(1L));
         ItemList.LargeCombustionEngine.set(
             new MTELargeCombustionEngine(
                 LargeCombustionEngine.ID,
@@ -927,6 +953,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 ExtremeCombustionEngine.ID,
                 "multimachine.extremedieselengine",
                 "Extreme Combustion Engine").getStackForm(1L));
+
+        ItemList.IndustrialCokeOven.set(
+            new MTEIndustrialCokeOven(
+                IndustrialCokeOven.ID,
+                "industrialcokeoven.controller.tier.single",
+                "Industrial Coke Oven").getStackForm(1L));
     }
 
     private static void registerSteamMachines() {
