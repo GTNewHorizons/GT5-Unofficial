@@ -28,7 +28,7 @@ public class DustDecayable extends BaseItemTickable {
 
     public DustDecayable(String unlocal, int colour, int maxTicks, String[] desc1, ItemStack turnsInto, int radLevel,
         GTRecipeConstants.DecayType decayType) {
-        super(true, true, unlocal, colour, maxTicks, desc1);
+        super(true, unlocal, colour, maxTicks, desc1);
         this.turnsIntoItem = turnsInto;
         this.radLevel = radLevel;
         this.maxStackSize = 64;

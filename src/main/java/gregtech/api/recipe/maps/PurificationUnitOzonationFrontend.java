@@ -23,9 +23,8 @@ public class PurificationUnitOzonationFrontend extends PurificationUnitRecipeMap
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
             120,
-            uiPropertiesBuilder.logoPos(new Pos2d(160, 100))
-                .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_OZONATION))
-                .logoPos(new Pos2d(152, 97)),
+            uiPropertiesBuilder.logoPos(new Pos2d(152, 97))
+                .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_OZONATION)),
             neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 180)));
     }
 
