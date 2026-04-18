@@ -4,6 +4,7 @@ import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR_GLOW;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -103,27 +104,48 @@ public class MTERegulator extends MTEBuffer {
     @Override
     public void moveItems(IGregTechTileEntity igte, long aTimer) {
         GTItemTransfer transfer = new GTItemTransfer();
-
         transfer.push(igte, igte.getBackFacing());
+        transfer.setSourceSlots(0, 1, 2, 3, 4, 5, 6, 7, 8);
+
+        var targetTE = igte.getTileEntityAtSide(igte.getBackFacing());
 
         for (int i = 0; i < 9; i++) {
-            if (this.mInventory[i + 9] != null) {
-                transfer.setSourceSlots(i);
-                transfer.setSinkSlots(this.mTargetSlots[i]);
+            ItemStack filterStack = this.mInventory[i + 9];
+            if (filterStack == null) continue;
 
-                int size = this.mInventory[i + 9].stackSize;
+            int targetSlot = this.mTargetSlots[i];
+            int targetSize = filterStack.stackSize;
+            int remaining = getRemainingTargetCapacity(targetTE, targetSlot, targetSize, filterStack);
+            if (remaining <= 0) continue;
 
-                transfer.setMaxItemsPerTransfer(size);
-                transfer.setFilter(
-                    ItemStackPredicate.matches(this.mInventory[i + 9])
-                        .and(stack -> stack.getStackSize() >= size));
+            transfer.setSinkSlots(targetSlot);
+            transfer.setMaxSinkSlotStackSize(targetSize);
+            transfer.setMaxItemsPerTransfer(remaining);
+            transfer.setMaxTotalTransferred(remaining);
 
-                if (transfer.transfer() > 0) {
-                    this.mSuccess = 50;
-                    break;
-                }
+            final int needed = remaining;
+            transfer.setFilter(
+                ItemStackPredicate.matches(filterStack)
+                    .and(stack -> stack.getStackSize() >= needed));
+
+            if (transfer.transfer() > 0) {
+                igte.markInventoryBeenModified();
+                this.mSuccess = 50;
+                break;
             }
         }
+    }
+
+    private static int getRemainingTargetCapacity(Object targetTE, int targetSlot, int targetSize,
+        ItemStack filterStack) {
+        if (!(targetTE instanceof IInventory targetInv)) return targetSize;
+        if (targetSlot < 0 || targetSlot >= targetInv.getSizeInventory()) return targetSize;
+
+        ItemStack existing = targetInv.getStackInSlot(targetSlot);
+        int maxStackSize = existing != null ? existing.getMaxStackSize() : filterStack.getMaxStackSize();
+        int maxTargetSize = Math.min(targetSize, Math.min(maxStackSize, targetInv.getInventoryStackLimit()));
+        int currentInTarget = existing != null ? existing.stackSize : 0;
+        return maxTargetSize - currentInTarget;
     }
 
     @Override
