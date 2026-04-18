@@ -17,6 +17,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -42,6 +46,7 @@ import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusGui;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataCopyable, IAddGregtechLogo, IOutputBus {
@@ -487,5 +492,15 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
         return GTSplit.splitLocalizedFormatted(
             getSlots(mTier) >= 2 ? "gt.blockmachines.output_bus.desc" : "gt.blockmachines.output_bus.singular.desc",
             getSlots(mTier));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchOutputBusGui(this).build(guiData, syncManager, uiSettings);
     }
 }

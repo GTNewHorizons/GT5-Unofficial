@@ -248,4 +248,9 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
     public String[] getDescription() {
         return GTSplit.splitLocalized("gt.blockmachines.output_bus_void.desc");
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

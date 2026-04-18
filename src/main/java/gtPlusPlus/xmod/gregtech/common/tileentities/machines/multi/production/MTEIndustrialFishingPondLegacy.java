@@ -60,14 +60,14 @@ import ic2.core.init.InternalName;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFishingPond>
+public class MTEIndustrialFishingPondLegacy extends GTPPMultiBlockBase<MTEIndustrialFishingPondLegacy>
     implements ISurvivalConstructable {
 
     public static final int FISH_MODE = 14;
     public static final int JUNK_MODE = 15;
     public static final int TREASURE_MODE = 16;
 
-    private static IStructureDefinition<MTEIndustrialFishingPond> STRUCTURE_DEFINITION;
+    private static IStructureDefinition<MTEIndustrialFishingPondLegacy> STRUCTURE_DEFINITION;
     private int mCasing;
 
     private static final Class<?> cofhWater;
@@ -76,17 +76,17 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
         cofhWater = ReflectionUtil.getClass("cofh.asmhooks.block.BlockWater");
     }
 
-    public MTEIndustrialFishingPond(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialFishingPondLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEIndustrialFishingPond(final String aName) {
+    public MTEIndustrialFishingPondLegacy(final String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialFishingPond(this.mName);
+        return new MTEIndustrialFishingPondLegacy(this.mName);
     }
 
     @Override
@@ -98,6 +98,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addInfo("Can process (Tier + 1) * 2 recipes")
             .addInfo("Put a numbered circuit into the input bus")
             .addInfo("Circuit " + FISH_MODE + " for Fish")
@@ -125,9 +126,9 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     }
 
     @Override
-    public IStructureDefinition<MTEIndustrialFishingPond> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialFishingPondLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialFishingPond>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialFishingPondLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
@@ -140,7 +141,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
                                 "XXXXXXXXX", "XXXXXXXXX" }, }))
                 .addElement(
                     'X',
-                    buildHatchAdder(MTEIndustrialFishingPond.class)
+                    buildHatchAdder(MTEIndustrialFishingPondLegacy.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
                         .casingIndex(getCasingTextureIndex())
                         .hint(1)
