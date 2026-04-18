@@ -1735,6 +1735,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.FlotationCell.get(1),
             new Object[] { GregtechItemList.Controller_Flotation_Cell });
 
+        // Large Naquadah Reactor Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.LargeNaquadahReactor.get(1),
+            new Object[] { ItemRefer.Large_Naquadah_Reactor.get(1) });
+
         // Bending Machine Conversion Recipe
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialBendingMachine.get(1),
