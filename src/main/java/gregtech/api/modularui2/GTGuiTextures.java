@@ -1419,6 +1419,15 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_FINITE_MODE_PANEL = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/finite_mode_panel");
+
+    public static final UITexture OVERLAY_BUTTON_FINITE_MODE_ON = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/finite_mode_on");
+
+    public static final UITexture OVERLAY_BUTTON_FINITE_MODE_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/finite_mode_off");
+
     public static final UITexture OVERLAY_SLOT_PATTERN_ME = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/pattern_me")
         .nonOpaque()
