@@ -9,6 +9,7 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDE
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -53,6 +54,11 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
             TextureFactory
                 .of(EM_D_SIDES, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
             TextureFactory.of(EM_D_CONN) };
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        return true;
     }
 
     @Override
