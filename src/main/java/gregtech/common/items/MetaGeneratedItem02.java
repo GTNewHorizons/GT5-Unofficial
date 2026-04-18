@@ -495,23 +495,12 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 GelledToluene.ID,
                 "gt.item.gelled_toluene.name",
                 "gt.item.gelled_toluene.tooltip"));
-        ItemList.Dynamite.set(
-            addItemWithLocalizationKeys(
-                Dynamite.ID,
-                "gt.item.dynamite.name",
-                "gt.item.dynamite.tooltip"));
+        ItemList.Dynamite
+            .set(addItemWithLocalizationKeys(Dynamite.ID, "gt.item.dynamite.name", "gt.item.dynamite.tooltip"));
 
-        ItemList.Plantball.set(
-            addItemWithLocalizationKeys(
-                PlantBall.ID,
-                "gt.item.plant_ball.name",
-                "gt.item.plant_ball.tooltip"));
-        ItemList.Chaff.set(
-            addItemWithLocalizationKeys(
-                Chaff.ID,
-                "gt.item.chaff.name",
-                "gt.item.chaff.tooltip")
-        );
+        ItemList.Plantball
+            .set(addItemWithLocalizationKeys(PlantBall.ID, "gt.item.plant_ball.name", "gt.item.plant_ball.tooltip"));
+        ItemList.Chaff.set(addItemWithLocalizationKeys(Chaff.ID, "gt.item.chaff.name", "gt.item.chaff.tooltip"));
 
         ItemList.Bottle_Purple_Drink.set(
             addItemWithLocalizationKeys(

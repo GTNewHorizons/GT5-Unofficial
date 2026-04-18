@@ -9,7 +9,6 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
@@ -598,7 +597,10 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemOutputs(fertOutput)
             .fluidInputs(Materials.Biomass.getFluid(3_000))
-            .fluidOutputs(Materials.Biogas.getGas(8_000), Materials.Ethanol.getFluid(1_800), Materials.Water.getFluid(125))
+            .fluidOutputs(
+                Materials.Biogas.getGas(8_000),
+                Materials.Ethanol.getFluid(1_800),
+                Materials.Water.getFluid(125))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(distillationTowerRecipes);
