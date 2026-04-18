@@ -60,7 +60,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMacerator>
+public class MTEIndustrialMaceratorLegacy extends GTPPMultiBlockBase<MTEIndustrialMaceratorLegacy>
     implements ISurvivalConstructable {
 
     private int controllerTier = 1;
@@ -72,7 +72,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     private static final int HORIZONTAL_OFF_SET = 1;
     private static final int VERTICAL_OFF_SET = 5;
     private static final int DEPTH_OFF_SET = 0;
-    private static IStructureDefinition<MTEIndustrialMacerator> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialMaceratorLegacy> STRUCTURE_DEFINITION = null;
 
     @Nullable
     private static Integer getStructureCasingTier(Block b, int m) {
@@ -81,17 +81,17 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
         return null;
     }
 
-    public MTEIndustrialMacerator(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialMaceratorLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEIndustrialMacerator(final String aName) {
+    public MTEIndustrialMaceratorLegacy(final String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialMacerator(this.mName);
+        return new MTEIndustrialMaceratorLegacy(this.mName);
     }
 
     @Override
@@ -103,6 +103,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addInfo(TooltipHelper.parallelText("Voltage Tier * n") + " Parallels")
             .addInfo("n=2 initially. n=8 after inserting Maceration Upgrade Chip")
             .addStaticSpeedInfo(1.6f)
@@ -121,9 +122,9 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     }
 
     @Override
-    public IStructureDefinition<MTEIndustrialMacerator> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialMaceratorLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialMacerator>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialMaceratorLegacy>builder()
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
                     // spotless:off
@@ -139,7 +140,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
                 .addElement(
                     'A',
                     ofChain(
-                        buildHatchAdder(MTEIndustrialMacerator.class)
+                        buildHatchAdder(MTEIndustrialMaceratorLegacy.class)
                             .atLeast(Energy, Maintenance, InputBus, Muffler, OutputBus)
                             .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 2))
                             .allowOnly(ForgeDirection.NORTH)
@@ -148,7 +149,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
                         onElementPass(
                             m -> m.mCasing++,
                             ofBlocksTiered(
-                                MTEIndustrialMacerator::getStructureCasingTier,
+                                MTEIndustrialMaceratorLegacy::getStructureCasingTier,
                                 ImmutableList
                                     .of(Pair.of(GregTechAPI.sBlockCasings4, 2), Pair.of(ModBlocks.blockCasingsMisc, 7)),
                                 -1,
