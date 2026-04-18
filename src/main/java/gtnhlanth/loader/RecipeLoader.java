@@ -762,6 +762,19 @@ public class RecipeLoader {
                         .requiresCleanRoom()
                         .addTo(UniversalChemical);
 
+                } else if (mask == MaskList.PrQPIC) {
+
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(
+                            new ItemStack(LanthItemList.maskMap.get(MaskList.QPIC)),
+                            WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 64))
+                        .fluidInputs(Materials.InfinityCatalyst.getMolten(4 * INGOTS))
+                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrQPIC)))
+                        .duration(60 * GTRecipeBuilder.SECONDS)
+                        .eut(mask.getEngraverEUt())
+                        .requiresCleanRoom()
+                        .addTo(UniversalChemical);
+
                 } else if (mask == MaskList.PrCPU) {
 
                     GTValues.RA.stdBuilder()
