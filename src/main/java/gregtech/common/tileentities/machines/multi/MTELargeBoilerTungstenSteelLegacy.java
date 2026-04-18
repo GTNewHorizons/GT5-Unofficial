@@ -92,7 +92,12 @@ public class MTELargeBoilerTungstenSteelLegacy extends MTELargeBoiler {
     }
 
     @Override
-    boolean isSuperheated() {
+    public boolean isSuperheated() {
         return true;
+    }
+
+    @Override
+    public float getOverdriveMult() {
+        return 2F;
     }
 }

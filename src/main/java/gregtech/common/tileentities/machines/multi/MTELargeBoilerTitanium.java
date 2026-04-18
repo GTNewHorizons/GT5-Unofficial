@@ -56,4 +56,9 @@ public class MTELargeBoilerTitanium extends MTELargeBoilerBase {
     int runtimeBoost(int mTime) {
         return mTime * 130 / 400;
     }
+
+    @Override
+    public boolean isSuperheated() {
+        return true;
+    }
 }
