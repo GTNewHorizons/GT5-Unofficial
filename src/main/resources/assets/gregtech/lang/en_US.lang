@@ -4445,6 +4445,16 @@ gt.item.thermos_can.ice_tea.tooltip=Better than this purple Junk Drink from fail
 gt.item.gelled_toluene.name=Gelled Toluene
 gt.item.gelled_toluene.tooltip=Raw Explosive
 
+# Dynamite
+gt.item.dynamite.name=Dynamite
+gt.item.dynamite.tooltip=
+
+# IC2 Bio stuff
+gt.item.chaff.name=Bio Chaff
+gt.item.chaff.tooltip=Healthy food they say...
+gt.item.plant_ball.name=Plant Ball
+gt.item.plant_ball.tooltip=
+
 ## Bottle drinks
 gt.item.bottle.purple_drink.name=Purple Drink
 gt.item.bottle.purple_drink.tooltip=How about Lemonade. Or some Ice Tea? I got Purple Drink!
@@ -6157,6 +6167,7 @@ entity.gregtech.GT_Entity_Arrow.name= a GregTech arrow
 fluid.aniline=Aniline
 fluid.bioethanol=Bio Ethanol
 fluid.biomass=Biomass
+fluid.biogas=Biogas
 fluid.boricacid=Boric Acid
 fluid.butanol=Butanol
 fluid.cadaverine=Cadaverine
