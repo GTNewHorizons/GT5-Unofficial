@@ -41,13 +41,14 @@ public class MTEHatchOutputBusMEGui extends MTEHatchBaseGui<MTEHatchOutputBusME>
         BooleanSyncValue isChecking = new BooleanSyncValue(provider::getCheckMode, provider::setCheckMode);
 
         Flow mainRow = Flow.row()
-            .full()
+            .coverChildren()
+            .verticalCenter()
             .childPadding(5);
 
         // drive slot
         mainRow.child(
             new ItemSlot().slot(
-                new ModularSlot(hatch.inventoryHandler, 0).slotGroup("item_inv")
+                new ModularSlot(hatch.inventoryHandler, 0).singletonSlotGroup()
                     .filter(this::isItemCell))
                 .marginLeft(3));
 
@@ -74,13 +75,6 @@ public class MTEHatchOutputBusMEGui extends MTEHatchBaseGui<MTEHatchOutputBusME>
                 .setEnabledIf(t -> isCaching.getBoolValue()));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
-    }
-
-    @Override
-    public void registerSyncValues(PanelSyncManager syncManager) {
-        super.registerSyncValues(syncManager);
-
-        syncManager.registerSlotGroup("item_inv", 1);
     }
 
     private boolean isItemCell(ItemStack itemStack) {

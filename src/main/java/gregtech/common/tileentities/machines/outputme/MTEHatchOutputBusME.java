@@ -244,7 +244,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
             cache.iterateAll(
                 (id, amount) -> {
                     provider.addToCache(
-                        provider.getFilter()MTEHatchOutputBusME
+                        provider.getFilter()
                             .fromNative(id.getItemStack())
                             .setStackSize(amount));
                 });
@@ -557,11 +557,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
     @Override
     public MTEHatchOutputMEBase<IAEItemStack, MEFilterItem, ItemStack> getProvider() {
         return provider;
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 
     @Override
