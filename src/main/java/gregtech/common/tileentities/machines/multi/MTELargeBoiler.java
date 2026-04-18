@@ -386,7 +386,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         }
         this.mMaxProgresstime = 0;
         this.mEUt = 0;
-        this.mEfficiencyDecrease = 1;
+        this.efficiencyDecrease = 1;
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
