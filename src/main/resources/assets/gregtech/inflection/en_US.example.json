@@ -1,0 +1,11 @@
+{
+    "type1": {
+        "regex pattern": "regex replace pattern",
+        "pattern2": "replace2",
+        "pattern3": "replace3"
+    },
+    "type2": {
+        "pattern1": "replace1",
+        "pattern2": "replace2"
+    }
+}
