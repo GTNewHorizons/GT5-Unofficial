@@ -48,15 +48,6 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
     }
 
-    public void updateSlots() {
-        for (int i = 0; i < this.mInventory.length; ++i) {
-            if (this.mInventory[i] != null && this.mInventory[i].stackSize <= 0) {
-                this.mInventory[i] = null;
-            }
-        }
-        this.fillStacksIntoFirstSlots();
-    }
-
     protected void fillStacksIntoFirstSlots() {
         GTUtility.compactInventory(this);
     }
@@ -86,5 +77,10 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
                 new PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
                     .setBackground(PhantomItemButton.FILTER_BACKGROUND));
         }
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

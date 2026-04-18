@@ -1,0 +1,98 @@
+package gregtech.common.tileentities.machines.multi;
+
+import net.minecraft.block.Block;
+
+import gregtech.GTMod;
+import gregtech.api.GregTechAPI;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
+public class MTELargeBoilerTungstenSteelLegacy extends MTELargeBoiler {
+
+    public MTELargeBoilerTungstenSteelLegacy(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+        pollutionPerSecond = GTMod.proxy.mPollutionLargeTungstenSteelBoilerPerSecond;
+    }
+
+    public MTELargeBoilerTungstenSteelLegacy(String aName) {
+        super(aName);
+        pollutionPerSecond = GTMod.proxy.mPollutionLargeTungstenSteelBoilerPerSecond;
+    }
+
+    public static final int EUT_GENERATED = 16000;
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTELargeBoilerTungstenSteelLegacy(this.mName);
+    }
+
+    @Override
+    public String getCasingMaterial() {
+        return "TungstenSteel";
+    }
+
+    @Override
+    public String getCasingBlockType() {
+        return "Machine Casings";
+    }
+
+    @Override
+    public Block getCasingBlock() {
+        return GregTechAPI.sBlockCasings4;
+    }
+
+    @Override
+    public byte getCasingMeta() {
+        return 0;
+    }
+
+    @Override
+    public byte getCasingTextureIndex() {
+        return 48;
+    }
+
+    @Override
+    public Block getPipeBlock() {
+        return GregTechAPI.sBlockCasings2;
+    }
+
+    @Override
+    public byte getPipeMeta() {
+        return 15;
+    }
+
+    @Override
+    public Block getFireboxBlock() {
+        return GregTechAPI.sBlockCasings3;
+    }
+
+    @Override
+    public byte getFireboxMeta() {
+        return 15;
+    }
+
+    @Override
+    public byte getFireboxTextureIndex() {
+        return 47;
+    }
+
+    @Override
+    public int getEUt() {
+        return MTELargeBoilerTungstenSteelLegacy.EUT_GENERATED;
+    }
+
+    @Override
+    public int getEfficiencyIncrease() {
+        return 4;
+    }
+
+    @Override
+    int runtimeBoost(int mTime) {
+        return mTime * 120 / 750;
+    }
+
+    @Override
+    boolean isSuperheated() {
+        return true;
+    }
+}

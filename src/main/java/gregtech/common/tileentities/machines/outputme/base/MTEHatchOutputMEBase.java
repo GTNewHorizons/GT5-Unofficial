@@ -655,7 +655,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     }
 
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
+        if (ItemStackNBT.hasKey(stack, "baseCapacity")) {
             tooltip.add(
                 translateToLocalFormatted(
                     "GT5U.hatch.outputme.cache_capacity_label",
