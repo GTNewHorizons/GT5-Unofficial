@@ -72,6 +72,7 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
             }
             TAE.registerTexture(1, i, TextureFactory.of(this, i));
         }
+        TAE.registerTexture(3, 2, TextureFactory.of(this, 4));
 
         GregtechItemList.Casing_ThermalCentrifuge.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Refinery_External.set(new ItemStack(this, 1, 1));

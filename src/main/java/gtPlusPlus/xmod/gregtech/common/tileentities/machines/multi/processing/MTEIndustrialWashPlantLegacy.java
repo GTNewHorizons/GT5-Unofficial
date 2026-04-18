@@ -263,7 +263,7 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
     }
 
     public byte getCasingTextureIndex() {
-        return (byte) TAE.GTPP_INDEX(11);
+        return 114;
     }
 
     public boolean checkForWater() {
