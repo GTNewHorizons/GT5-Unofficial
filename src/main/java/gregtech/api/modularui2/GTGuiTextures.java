@@ -433,12 +433,16 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_SLOT_FILTER = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/filter")
         .fullImage()
-        .imageSize(18, 18)
         .canApplyTheme()
         .name("overlay_slot/filter")
         .build();
 
     public static final UITexture OVERLAY_SLOT_ARROW_4 = UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_slot/arrow_4");
+    public static final UITexture OVERLAY_SLOT_ARROW_ME = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/arrow_me")
+        .fullImage()
+        .canApplyTheme()
+        .build();
 
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
         .canApplyTheme()
@@ -1404,6 +1408,10 @@ public final class GTGuiTextures {
         .fullImage(GregTech.ID, "gui/overlay_button/autooutput_item");
     public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/autooutput_fluid");
+    public static final UITexture OVERLAY_BUTTON_AUTOPULL_ME = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/auto_pull_me");
+    public static final UITexture OVERLAY_BUTTON_AUTOPULL_ME_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/auto_pull_me_disabled");
 
     public static final UITexture OVERLAY_BUTTON_SORTING_MODE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/sorting_mode");
@@ -1772,6 +1780,7 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .adaptable(2)
         .build();
+    public static final UITexture PICTURE_ARROW_DOUBLE = UITexture.fullImage(GregTech.ID, "gui/picture/arrow_double");
     // endregion picture
 
     // region machine modes
