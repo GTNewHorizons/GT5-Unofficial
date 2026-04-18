@@ -28,6 +28,8 @@ public class TooltipHelper {
     public static final EnumChatFormatting ITALIC = EnumChatFormatting.ITALIC;
     public static final EnumChatFormatting EU_VOLT_COLOR = EnumChatFormatting.YELLOW;
     public static final EnumChatFormatting AMP_COLOR = EnumChatFormatting.AQUA;
+    public static final EnumChatFormatting CAPACITY_COLOR = EnumChatFormatting.BLUE;
+    public static final EnumChatFormatting EU_AMOUNT_COLOR = EnumChatFormatting.GRAY;
     public static final EnumChatFormatting CABLE_LOSS_COLOR = EnumChatFormatting.RED;
     public static final EnumChatFormatting L_COLOR = EnumChatFormatting.WHITE;
     public static final DecimalFormat percentageFormat = new DecimalFormat("0.##%");
@@ -172,6 +174,13 @@ public class TooltipHelper {
      */
     public static String euRateText(long eu) {
         return EU_VOLT_COLOR + NumberFormatUtil.formatNumber(eu) + TIER_COLOR + " EU/t" + EnumChatFormatting.GRAY;
+    }
+
+    /**
+     * @return The given number of EU, formatted.
+     */
+    public static String euCapacityText(long capacity) {
+        return CAPACITY_COLOR + NumberFormatUtil.formatNumber(capacity) + EU_AMOUNT_COLOR + " EU";
     }
 
     /**

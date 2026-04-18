@@ -252,7 +252,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
                 String row = rows[localY];
                 for (int localX = 0; localX < row.length(); localX++) {
 
-                    if (row.charAt(localX) != 'D') continue;
+                    if (row.charAt(localX) != 'F') continue;
 
                     int[] abc = new int[] { localX - OFFSET_X, localY - OFFSET_Y, localZ - OFFSET_Z };
 
