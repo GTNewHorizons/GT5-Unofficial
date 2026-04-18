@@ -1461,7 +1461,7 @@ public final class GTGuiTextures {
         .fullImage()
         .name(GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
         .build();
-    public static final UITexture PICTURE_TECTECH_LOGO = UITexture.builder()
+    public static final UITexture TT_PICTURE_TECTECH_LOGO = UITexture.builder()
         .location(MODID, "gui/picture/tectech_logo")
         .fullImage()
         .canApplyTheme()

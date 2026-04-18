@@ -1,5 +1,8 @@
 package gregtech.common.gui.modularui.hatch;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -40,7 +43,15 @@ public class MTEHatchObjectHolderGui extends MTEHatchBaseGui<MTEHatchObjectHolde
                         .topRel(0)
                         .rightRel(0)
                         .marginTop(4)
-                        .marginRight(4));
+                        .marginRight(4)
+                        .tooltipAutoUpdate(true)
+                        .tooltipDynamic(
+                            t -> t.add(
+                                translateToLocalFormatted(
+                                    "tt.gui.text.hatch.status",
+                                    translateToLocal(
+                                        isActiveSyncer.getBoolValue() ? "tt.gui.text.hatch.status.active"
+                                            : "tt.gui.text.hatch.status.inactive")))));
 
         // central decoration
         parent.child(
@@ -72,7 +83,7 @@ public class MTEHatchObjectHolderGui extends MTEHatchBaseGui<MTEHatchObjectHolde
 
     @Override
     protected IDrawable.DrawableWidget createLogo() {
-        return new IDrawable.DrawableWidget(GTGuiTextures.PICTURE_TECTECH_LOGO).size(18);
+        return new IDrawable.DrawableWidget(GTGuiTextures.TT_PICTURE_TECTECH_LOGO).size(18);
     }
 
     @Override
