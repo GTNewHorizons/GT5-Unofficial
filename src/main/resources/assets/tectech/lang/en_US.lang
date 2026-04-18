@@ -1969,6 +1969,10 @@ tt.infodata.multi.currently_using=Currently using: %s EU/t
 tt.infodata.multi.capacity.heat=Heat Capacity: %s
 tt.infodata.multi.capacity.heat.effective=Effective Heat Capacity: %s
 
+## Waila
+
+tt.waila.multi.computation=§7Computation: §a%s
+
 ## Eye of Harmony
 tt.infodata.eoh.control_block_statistics=Control Block Statistics
 tt.infodata.eoh.spacetime_compression.grade=Spacetime Compression Field Grade: %s (%s)
