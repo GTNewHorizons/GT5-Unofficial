@@ -1,6 +1,6 @@
 package gregtech.common.gui.modularui.multiblock.base;
 
-import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.numberFormat;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -25,7 +25,7 @@ public class TileEntityModuleBaseGui<T extends TileEntityModuleBase> extends TTM
         return super.createTerminalTextWidget(syncManager, parent).child(
             IKey.dynamic(
                 () -> GTUtility
-                    .translate("tt.spaceelevator.storedEnergy", numberFormat.format(euVarSyncer.getValue()) + " EU"))
+                    .translate("tt.spaceelevator.storedEnergy", formatNumber(euVarSyncer.getValue()) + " EU"))
                 .asWidget()
                 .setEnabledIf(
                     w -> multiblock.getBaseMetaTileEntity()
