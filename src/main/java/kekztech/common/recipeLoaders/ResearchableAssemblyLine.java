@@ -1,6 +1,5 @@
 package kekztech.common.recipeLoaders;
 
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.DRAGON_METAL;
@@ -79,7 +78,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 24), HYPOGEN.getPlateDouble(64),
                 new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4 }, ItemList.ZPM4.get(8L),
                 ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
-                ItemList.Circuit_Wafer_QPIC.get(64),  ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(64),
+                ItemList.Circuit_Wafer_QPIC.get(64), ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUIV, 64) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2 * STACKS),
@@ -100,7 +99,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 24), DRAGON_METAL.getPlateDouble(64),
                 new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4 }, ItemList.ZPM5.get(8L),
                 ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_FPIC.get(64),
-                ItemList.Circuit_Wafer_FPIC.get(64),  ItemList.Circuit_Parts_Chip_Bioware.get(64),
+                ItemList.Circuit_Wafer_FPIC.get(64), ItemList.Circuit_Parts_Chip_Bioware.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(4 * STACKS),
