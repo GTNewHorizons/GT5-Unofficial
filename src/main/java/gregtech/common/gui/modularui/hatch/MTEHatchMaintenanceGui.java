@@ -52,59 +52,64 @@ public class MTEHatchMaintenanceGui extends MTEHatchBaseGui<MTEHatchMaintenance>
                             GTUtility.breakLines(
                                 translateToLocal(
                                     mAuto ? "GT5U.gui.text.autorepair_info" : "GT5U.gui.text.repair_info"))))));
-        if (mAuto) {
-            // maintenance item input slots
-            parent.child(
-                SlotGroupWidget.builder()
-                    .matrix(new String[] { "ss", "ss" })
-                    .key(
-                        's',
-                        index -> new ItemSlot().slot(
-                            new ModularSlot(hatch.inventoryHandler, index).slotGroup("item_inv")
-                                .filter(this::isRepairItem)))
-                    .build()
-                    .center());
-        } else {
-            // maintenance slot background
-            parent.child(
-                GTGuiTextures.SLOT_MAINTENANCE.asWidget()
-                    .size(20)
-                    .center());
 
-            // maintenance slot
-            parent.child(new PhantomItemSlot() {
+        parent.childIf(mAuto, this::createAutoMaintenanceSlots);
 
-                @Override
-                public boolean handleDragAndDrop(@NotNull ItemStack draggedStack, int button) {
-                    return false;
-                }
-
-                @Override
-                public PhantomItemSlot slot(ModularSlot slot) {
-                    return syncHandler(new PhantomItemSlotSH(slot) {
-
-                        @Override
-                        protected void phantomClick(MouseData mouseData, ItemStack cursorStack) {
-                            if (cursorStack == null) return;
-                            EntityPlayer player = syncManager.getPlayer();
-
-                            if (player == null) return;
-
-                            hatch.onToolClick(cursorStack, player);
-                            // refresh held stack
-                            if (cursorStack.stackSize < 1) syncManager.setCursorItem(null);
-                            else syncManager.setCursorItem(cursorStack);
-                        }
-                    });
-                }
-            }.slot(new ModularSlot(hatch.inventoryHandler, 0))
-                .size(25)
-                .disableThemeBackground(true)
-                .disableHoverThemeBackground(true)
+        // maintenance slot background
+        parent.childIf(
+            !mAuto,
+            () -> GTGuiTextures.SLOT_MAINTENANCE.asWidget()
+                .size(20)
                 .center());
-        }
+
+        parent.childIf(!mAuto, () -> createSimpleMaintenanceSlot(syncManager));
 
         return parent;
+    }
+
+    private SlotGroupWidget createAutoMaintenanceSlots() {
+        return SlotGroupWidget.builder()
+            .matrix(new String[] { "ss", "ss" })
+            .key(
+                's',
+                index -> new ItemSlot().slot(
+                    new ModularSlot(hatch.inventoryHandler, index).slotGroup("item_inv")
+                        .filter(this::isRepairItem)))
+            .build()
+            .center();
+    }
+
+    private ItemSlot createSimpleMaintenanceSlot(PanelSyncManager syncManager) {
+        return new PhantomItemSlot() {
+
+            @Override
+            public boolean handleDragAndDrop(@NotNull ItemStack draggedStack, int button) {
+                return false;
+            }
+
+            @Override
+            public PhantomItemSlot slot(ModularSlot slot) {
+                return syncHandler(new PhantomItemSlotSH(slot) {
+
+                    @Override
+                    protected void phantomClick(MouseData mouseData, ItemStack cursorStack) {
+                        if (cursorStack == null) return;
+                        EntityPlayer player = syncManager.getPlayer();
+
+                        if (player == null) return;
+
+                        hatch.onToolClick(cursorStack, player);
+                        // refresh held stack
+                        if (cursorStack.stackSize < 1) syncManager.setCursorItem(null);
+                        else syncManager.setCursorItem(cursorStack);
+                    }
+                });
+            }
+        }.slot(new ModularSlot(hatch.inventoryHandler, 0))
+            .size(25)
+            .disableThemeBackground(true)
+            .disableHoverThemeBackground(true)
+            .center();
     }
 
     private boolean isRepairItem(ItemStack itemStack) {
