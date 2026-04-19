@@ -4623,7 +4623,7 @@ public class MaterialsInit {
 
     private static Materials loadBiomass() {
         return new MaterialBuilder().setName("Biomass")
-            .setDefaultLocalName("Forestry Biomass")
+            .setDefaultLocalName("Biomass")
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeGreen)
             .setARGB(0x004e912d)
