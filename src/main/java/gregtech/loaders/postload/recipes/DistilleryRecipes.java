@@ -314,15 +314,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.Biomass.getFluid(40))
             .fluidOutputs(Materials.Ethanol.getFluid(20))
             .duration(16 * TICKS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(distilleryRecipes);
-
-        GTValues.RA.stdBuilder()
-            .circuit(3)
-            .fluidInputs(Materials.Biomass.getFluid(40))
-            .fluidOutputs(Materials.Water.getFluid(12))
-            .duration(16 * TICKS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(24)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
