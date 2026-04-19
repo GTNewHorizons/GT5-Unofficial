@@ -6,7 +6,6 @@ import static gregtech.api.enums.Mods.ProjectRedExploration;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GTModHandler.getIC2Item;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -657,7 +656,7 @@ public class Pulverizer implements Runnable {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getIC2Item("biochaff", 1))
+            .itemInputs(ItemList.Chaff.get(1))
             .itemOutputs(new ItemStack(Blocks.dirt, 1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)

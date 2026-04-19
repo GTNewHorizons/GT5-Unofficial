@@ -56,6 +56,7 @@ import static gregtech.common.items.IDMetaItem02.Bottle_Vodka;
 import static gregtech.common.items.IDMetaItem02.Bottle_Wheaty_Hops_Juice;
 import static gregtech.common.items.IDMetaItem02.Bottle_Wheaty_Juice;
 import static gregtech.common.items.IDMetaItem02.Bottle_Wine;
+import static gregtech.common.items.IDMetaItem02.Chaff;
 import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneReceiver;
 import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneReceiverInternal;
 import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneTransmitter;
@@ -82,6 +83,7 @@ import static gregtech.common.items.IDMetaItem02.Dye_Color_13;
 import static gregtech.common.items.IDMetaItem02.Dye_Color_14;
 import static gregtech.common.items.IDMetaItem02.Dye_Color_15;
 import static gregtech.common.items.IDMetaItem02.Dye_Indigo;
+import static gregtech.common.items.IDMetaItem02.Dynamite;
 import static gregtech.common.items.IDMetaItem02.Food_Baked_Baguette;
 import static gregtech.common.items.IDMetaItem02.Food_Baked_Bun;
 import static gregtech.common.items.IDMetaItem02.Food_Baked_Cake;
@@ -170,6 +172,7 @@ import static gregtech.common.items.IDMetaItem02.Plank_Teak;
 import static gregtech.common.items.IDMetaItem02.Plank_Walnut;
 import static gregtech.common.items.IDMetaItem02.Plank_Wenge;
 import static gregtech.common.items.IDMetaItem02.Plank_Willow;
+import static gregtech.common.items.IDMetaItem02.PlantBall;
 import static gregtech.common.items.IDMetaItem02.SFMixture;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Chocolate_Milk;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Coffee;
@@ -492,6 +495,12 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 GelledToluene.ID,
                 "gt.item.gelled_toluene.name",
                 "gt.item.gelled_toluene.tooltip"));
+        ItemList.Dynamite
+            .set(addItemWithLocalizationKeys(Dynamite.ID, "gt.item.dynamite.name", "gt.item.dynamite.tooltip"));
+
+        ItemList.IC2_Plantball
+            .set(addItemWithLocalizationKeys(PlantBall.ID, "gt.item.plant_ball.name", "gt.item.plant_ball.tooltip"));
+        ItemList.Chaff.set(addItemWithLocalizationKeys(Chaff.ID, "gt.item.chaff.name", "gt.item.chaff.tooltip"));
 
         ItemList.Bottle_Purple_Drink.set(
             addItemWithLocalizationKeys(

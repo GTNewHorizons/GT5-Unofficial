@@ -349,6 +349,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     // region Not possible to determine exact Components
     public static Materials Antimatter;
     public static Materials Biomass;
+    public static Materials Biogas;
     public static Materials CharcoalByproducts;
     public static Materials Cheese;
     public static Materials Chili;

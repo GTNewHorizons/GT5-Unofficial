@@ -4574,6 +4574,7 @@ public class MaterialsInit {
 
     private static void loadNotExact() {
         Materials.Biomass = loadBiomass();
+        Materials.Biogas = loadBioGas();
         Materials.CharcoalByproducts = loadCharcoalByproducts();
         Materials.Cheese = loadCheese();
         Materials.Chili = loadChili();
@@ -4622,11 +4623,22 @@ public class MaterialsInit {
 
     private static Materials loadBiomass() {
         return new MaterialBuilder().setName("Biomass")
-            .setDefaultLocalName("Forestry Biomass")
+            .setDefaultLocalName("Biomass")
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeGreen)
-            .setARGB(0x0000ff00)
+            .setARGB(0x004e912d)
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 8)
+            .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadBioGas() {
+        return new MaterialBuilder().setName("Biogas")
+            .setDefaultLocalName("Biogas")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setARGB(0x00988D4D)
+            .setFuel(MaterialBuilder.FuelType.Gas, 40)
             .addCell()
             .constructMaterial();
     }
