@@ -1879,7 +1879,6 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .adaptable(2)
         .build();
-
     public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_RED = (width, fromRight) -> UITexture
         .builder()
         .location(GregTech.ID, "gui/picture/arrow_22_red")
