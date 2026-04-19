@@ -6,7 +6,7 @@ public enum UndergroundFluidNames {
     carbonMonoxide("carbonmonoxide", new short[] { 0x10, 0x4E, 0x8B }),
     chlorobenzene("chlorobenzene", new short[] { 0x40, 0x80, 0x40 }),
     deuterium("deuterium", new short[] { 0xFF, 0xE3, 0x9F }),
-    distilledWater("ic2distilledwater", new short[] { 0x1E, 0x90, 0xFF }),
+    distilledWater("distilledwater", new short[] { 0x1E, 0x90, 0xFF }),
     ethane("ethane", new short[] { 0x40, 0x80, 0x20 }),
     ethylene("ethylene", new short[] { 0xd0, 0xd0, 0xd0 }),
     fluorine("fluorine", new short[] { 0x99, 0xC1, 0xAD }),

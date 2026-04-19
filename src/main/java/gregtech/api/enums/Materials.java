@@ -521,6 +521,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials SodiumSulfide;
     public static Materials Titaniumtetrachloride;
     public static Materials Water, Steam; // Steam.getGas(..) reads better than Water.getGas(..)
+    public static Materials DistilledWater;
     public static Materials Zincite;
     // endregion
 

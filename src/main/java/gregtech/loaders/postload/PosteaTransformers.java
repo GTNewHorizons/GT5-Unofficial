@@ -87,6 +87,7 @@ public class PosteaTransformers implements Runnable {
 
         ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 6, Materials.Biomass.getCells(1));
         ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 7, Materials.Biogas.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 12, Materials.DistilledWater.getCells(1));
     }
 
     // TODO: Remove this and bio and breakthrough circuits once 2.8 is released.
