@@ -21,8 +21,7 @@ public class TileEntityModuleBaseGui<T extends TileEntityModuleBase> extends TTM
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        LongSyncValue euVarSyncer = new LongSyncValue(multiblock::getEUVar);
-        syncManager.syncValue("euVar", euVarSyncer);
+        LongSyncValue euVarSyncer = syncManager.findSyncHandler("euVar", LongSyncValue.class);
         return super.createTerminalTextWidget(syncManager, parent).child(
             IKey.dynamic(
                 () -> GTUtility
@@ -36,5 +35,11 @@ public class TileEntityModuleBaseGui<T extends TileEntityModuleBase> extends TTM
                 .color(Color.WHITE.main)
                 .widthRel(1)
                 .marginBottom(2));
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        syncManager.syncValue("euVar", new LongSyncValue(multiblock::getEUVar));
     }
 }
