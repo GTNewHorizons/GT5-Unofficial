@@ -47,7 +47,6 @@ public class StatisticsPanel {
 
     private static final int HEIGHT_MINOR = 18;
     private static final int HEIGHT_MAJOR = 30;
-    private static final int WIDTH_MINOR = 40;
     private static final int WIDTH_MAJOR = 53;
 
     private static final int SMELTING_INDEX = 0;
@@ -141,14 +140,12 @@ public class StatisticsPanel {
         List<IWidget> returnList = new ArrayList<>();
         returnList.add(
             IDrawable.EMPTY.asWidget()
-                .width(68)
+                .width(70)
                 .height(HEIGHT_MINOR));
 
-        returnList.add(createHeaderModuleEntry("gt.blockmachines.multimachine.FOG.powerforge").marginRight(13));
-        returnList.add(createHeaderModuleEntry("gt.blockmachines.multimachine.FOG.meltingcore").marginRight(13));
-        returnList.add(
-            createHeaderModuleEntry("gt.blockmachines.multimachine.FOG.plasmafab").width(WIDTH_MINOR + 4)
-                .marginRight(10));
+        returnList.add(createHeaderModuleEntry("gt.blockmachines.multimachine.FOG.powerforge"));
+        returnList.add(createHeaderModuleEntry("gt.blockmachines.multimachine.FOG.meltingcore"));
+        returnList.add(createHeaderModuleEntry("gt.blockmachines.multimachine.FOG.plasmafab"));
         returnList.add(createHeaderModuleEntry("gt.blockmachines.multimachine.FOG.exoticizer"));
 
         return returnList;
@@ -159,8 +156,8 @@ public class StatisticsPanel {
             .style(EnumChatFormatting.GOLD)
             .alignment(Alignment.Center)
             .asWidget()
-            .size(WIDTH_MINOR, HEIGHT_MINOR)
-            .scale(0.8f);
+            .size(WIDTH_MAJOR, HEIGHT_MINOR)
+            .scale(0.75f);
     }
 
     private static Flow createPreviewRow(MutableBoolean usingPreview, MutableInt previewFuelFactor) {
@@ -213,7 +210,9 @@ public class StatisticsPanel {
             IKey.str(stat.toString())
                 .alignment(Alignment.Center)
                 .asWidget()
-                .size(69, HEIGHT_MAJOR));
+                .size(69, HEIGHT_MAJOR)
+                .tooltip(t -> t.addLine(stat.tooltip()))
+                .tooltipShowUpTimer(TOOLTIP_DELAY));
 
         // Smelting module
         returnList.add(

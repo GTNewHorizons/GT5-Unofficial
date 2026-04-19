@@ -2782,7 +2782,10 @@ gt.circuitcomponent.processed.chipnand=Cut NAND Memory Chips
 gt.circuitcomponent.processed.chipasoc=Cut ASoC Chips
 gt.circuitcomponent.processed.chippikopic=Cut Piko Power IC Chips
 gt.circuitcomponent.processed.chipquantumpic=Cut Quantum Power IC Chips
-gt.circuitcomponent.processed.chippico=Cut Pico Chips
+gt.circuitcomponent.processed.chipattopic=Cut Atto Power IC Chips
+gt.circuitcomponent.processed.chipzeptopic=Cut Zepto Power IC Chips
+gt.circuitcomponent.processed.chipyoctopic=Cut Yocto Power IC Chips
+gt.circuitcomponent.processed.chipplanckpic=Cut Planck Power IC Chips
 
 gt.circuitcomponent.processed.chipcrystalcpu=Etched Crystal Processing Unit
 gt.circuitcomponent.processed.chipcrystalsoc=Etched Crystal SoC
@@ -3024,20 +3027,19 @@ GT5U.gui.text.LHC.collidermode=Colliding beam...
 GT5U.gui.text.LHC.completedcycles=Completed Cycles
 GT5U.gui.text.LHC.targetbeamenergyeV=Target Beam Energy (eV):
 GT5U.gui.text.LHC.maxaccelerationcycles=Max Acceleration Cycles:
-GT5U.gui.text.beamcrafter.guiheader=Current Recipe Progress
-GT5U.gui.text.beamcrafter.particleA=Particle 1
-GT5U.gui.text.beamcrafter.particleB=Particle 2
+GT5U.gui.text.beamcrafter.guiheadercrafting=Current Particles Required
+GT5U.gui.text.beamcrafter.guiheaderbuffer=Current Particle Buffer
 
 gt.blockmachines.multimachine.beamcrafting.beamcrafter.machinetype=Beam Crafter, Beam Assembler
 gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip1=Collides two beams of particles into target materials to modify
 gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip2=their subatomic structure
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip3=The Input Beams can be supplied to either Beamline Input Hatch
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip4=Recipes will not start unless both beams have sufficiently high
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5=§eBeam Energies§7
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6=Processing speed is determined purely by the Input §cBeam Rates§7
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7=Each particle §cAmount§7 provided corresponds to one tick of progress
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8=Once the required §cAmount§7 of a specific §bPart§6icle§7 have been input,
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip9=excess particles of that type are voided
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip3=Input Beams can be supplied to either Beamline Input Hatch
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip4=Inputs are consumed immediately and will wait for particles
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5=Up to §b%s§7 particles of each type can be buffered
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6=Recipe progress is determined purely by particles consumed
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7=from the buffer
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8=Has §6%s§7 parallels
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.dumpbuffer=Click to dump
 
 gt.blockmachines.multimachine.beamcrafting.beammirror.machinetype=Beam Mirror
 gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip1=Takes in particle beams and sends them back out
@@ -3064,7 +3066,7 @@ gt.blockmachines.multimachine.beamcrafting.LHC.tooltip3=Set the §etarget beam e
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip4=Cycles every second
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip5=§f§nAccelerator mode§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6=Accelerates the beam in the smaller LHC ring
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Accelerator mode increases the §6Beam Energy§7 by §bEnergy Hatch Voltage§7 * §f10eV§7, until the
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Accelerator mode increases the §6Beam Energy§7 by §bEU Consumed in cycle§7 * §f0.1eV§7, until the
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8=§eTarget Beam Energy§7 is reached, or the §9maximum number of cycles§7 is reached
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §eTarget Beam Energy§7 is reached, multiply the current §cBeam Rate§7 by §f1.1§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=§aPower§7 cost starts at §f1A§7 of §fUV§7 per §cBeam Rate§7 and increases quadratically
@@ -4819,6 +4821,7 @@ gt.item.circuit.wafer.europium.name=Europium doped Wafer
 gt.item.circuit.wafer.americium.name=Americium doped Wafer
 gt.item.circuit.wafer.optical_prepared.name=Photonically Prepared Wafer
 gt.item.circuit.wafer.optical_enhanced.name=Photonically Enhanced Wafer
+gt.item.circuit.wafer.infinite.name=Infinite Wafer
 
 ## Wafer variants (for circuits)
 gt.item.circuit.wafer.ilc.name=Integrated Logic Circuit (Wafer)
@@ -4840,6 +4843,11 @@ gt.item.circuit.wafer.npic.name=NPIC Wafer
 gt.item.circuit.wafer.ppic.name=PPIC Wafer
 gt.item.circuit.wafer.qpic.name=QPIC Wafer
 gt.item.circuit.wafer.bioware.name=Living Bio Wafer
+gt.item.circuit.wafer.fpic.name=FPIC Wafer
+gt.item.circuit.wafer.apic.name=APIC Wafer
+gt.item.circuit.wafer.zpic.name=ZPIC Wafer
+gt.item.circuit.wafer.ypic.name=YPIC Wafer
+gt.item.circuit.wafer.plpic.name=PlPIC Wafer
 
 ## Chips
 gt.item.circuit.chip.ilc.name=Integrated Logic Circuit
@@ -4880,6 +4888,16 @@ gt.item.circuit.chip.qpic.name=Quantum Power IC
 gt.item.circuit.chip.qpic.tooltip=Quantum Power Circuit
 gt.item.circuit.chip.bioware.name=Living Bio Chip
 gt.item.circuit.chip.bioware.tooltip=Needed for Circuits
+gt.item.circuit.chip.fpic.name=Femto Power IC
+gt.item.circuit.chip.fpic.tooltip=Femto Power Circuit
+gt.item.circuit.chip.apic.name=Atto Power IC
+gt.item.circuit.chip.apic.tooltip=Atto Power Circuit
+gt.item.circuit.chip.zpic.name=Zepto Power IC
+gt.item.circuit.chip.zpic.tooltip=Zepto Power Circuit
+gt.item.circuit.chip.ypic.name=Yocto Power IC
+gt.item.circuit.chip.ypic.tooltip=Yocto Power Circuit
+gt.item.circuit.chip.plpic.name=Planck Power IC
+gt.item.circuit.chip.plpic.tooltip=Planck Power Circuit
 
 ## Crystal and Bio chips
 gt.item.circuit.chip.crystal_soc2.name=Raw Advanced Crystal Chip
@@ -8023,3 +8041,6 @@ gt.item.stable_boson_containment_unit.name=Stable Boson Containment Unit
 gt.item.stable_boson_containment_unit.tooltip=Maybe contains a bound boson?
 gt.item.stable_empty_containment_unit.name=Stable Empty Containment Unit
 gt.item.stable_empty_containment_unit.tooltip=Maybe contains nothing?
+
+gt.item.gravitational_lens.name=Gravitational Lens
+gt.item.gravitational_lens.tooltip=Portable gravitational well
