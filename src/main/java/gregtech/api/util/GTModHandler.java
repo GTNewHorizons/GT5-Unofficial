@@ -1545,39 +1545,17 @@ public class GTModHandler {
      * on the list.
      */
     public static ItemStack getRecipeOutputPreferNonOreDict(ItemStack... aRecipe) {
-        return getRecipeOutput(false, true, false, aRecipe);
-    }
-
-    /**
-     * Gives you a copy of the Output from a Crafting Recipe, but only returns a result from a non-OreDict recipe.
-     * Returns null if only OreDict recipes (ShapedOreRecipe) match.
-     * <p>
-     * Useful when iterating wildcard ore dictionary entries to avoid creating recipes for non-existent item subtypes
-     * that would fall back to OreDict recipes producing incorrect outputs (e.g. Oak Slabs from any "plankWood").
-     */
-    public static ItemStack getRecipeOutputExcludeOreDict(ItemStack... aRecipe) {
-        return getRecipeOutput(false, true, true, aRecipe);
+        return getRecipeOutput(false, true, aRecipe);
     }
 
     public static ItemStack getRecipeOutput(boolean aUncopiedStack, ItemStack... aRecipe) {
-        return getRecipeOutput(aUncopiedStack, false, false, aRecipe);
+        return getRecipeOutput(aUncopiedStack, false, aRecipe);
     }
 
     /**
      * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
      */
     public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean aPreferNonOreDict, ItemStack... aRecipe) {
-        return getRecipeOutput(aUncopiedStack, aPreferNonOreDict, false, aRecipe);
-    }
-
-    /**
-     * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
-     *
-     * @param aExcludeOreDict if true and aPreferNonOreDict is true, returns null when only OreDict recipes match
-     *                        instead of falling back to the OreDict result.
-     */
-    public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean aPreferNonOreDict, boolean aExcludeOreDict,
-        ItemStack... aRecipe) {
         if (aRecipe == null || isAllNulls(aRecipe)) return null;
 
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
@@ -1617,7 +1595,7 @@ public class GTModHandler {
             }
         }
 
-        if (!tOreDictRecipeFound || aExcludeOreDict) return null;
+        if (!tOreDictRecipeFound) return null;
 
         if (tOreDictOutput == null || tOreDictOutput.stackSize <= 0) {
             // Seriously, who would ever do that shit?

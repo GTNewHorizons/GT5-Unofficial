@@ -3,8 +3,11 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemMultiTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -65,7 +68,8 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         if (aOreDictName.startsWith("plankWood")) {
             int tPlankMeta = aStack.getItemDamage();
 
-            String tHashPrefix = aModName + ":" + aStack.getUnlocalizedName();
+            UniqueIdentifier uid = GameRegistry.findUniqueIdentifierFor(aStack.getItem());
+            String tHashPrefix = uid.modId + ":" + uid.name;
 
             // Skip already processed planks (accounting for metadata)
             // Fixes duplicate ETF's and ExtraUtilities's slab recipes
@@ -84,18 +88,36 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 return;
             }
 
-            int metaCount = 64;
-            // vanilla planks
-            if (aStack.getItem() instanceof ItemMultiTexture imt) {
-                metaCount = imt.field_150942_c.length;
-            }
-
             // Gregify slab recipes
             if (tIsWildcard) {
-                for (byte i = 0; i < metaCount; i = (byte) (i + 1)) {
-                    ItemStack tStack = GTUtility.copyMetaData(i, aStack);
-                    if (tStack == null && i >= 16) break;
-                    convertSlabRecipe(tStack, true);
+                var validSubItems = new ArrayList<ItemStack>();
+                aStack.getItem()
+                    .getSubItems(
+                        aStack.getItem(),
+                        aStack.getItem()
+                            .getCreativeTab(),
+                        validSubItems);
+
+                if (!validSubItems.isEmpty()) {
+                    for (ItemStack subItem : validSubItems) {
+                        int subMeta = subItem.getItemDamage();
+                        if (!sProcessedPlanks.add(tHashPrefix + ":" + subMeta)) continue;
+                        ItemStack tStack = GTUtility.copyMetaData(subMeta, aStack);
+                        if (tStack == null) continue;
+                        convertSlabRecipe(tStack, true);
+                    }
+                } else {
+                    // vanilla planks
+                    int metaCount = 64;
+                    if (aStack.getItem() instanceof ItemMultiTexture imt) {
+                        metaCount = imt.field_150942_c.length;
+                    }
+                    for (byte i = 0; i < metaCount; i = (byte) (i + 1)) {
+                        ItemStack tStack = GTUtility.copyMetaData(i, aStack);
+                        if (tStack == null && i >= 16) break;
+                        if (!sProcessedPlanks.add(tHashPrefix + ":" + i)) continue;
+                        convertSlabRecipe(tStack, true);
+                    }
                 }
             } else {
                 convertSlabRecipe(aStack, false);
@@ -103,7 +125,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         }
     }
 
-    private void convertSlabRecipe(ItemStack aStack, boolean excludeOreDictFallback) {
+    private void convertSlabRecipe(ItemStack aStack, boolean isWildcardIteration) {
 
         SpecialSlabConversionResult tSpecialResult = trySpecialSlabConversion(aStack);
 
@@ -120,14 +142,12 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             //
             // We want to use the first recipe, if it's available, so this method is
             // used to give preference to the specific recipe over the Oredict one.
-            if (excludeOreDictFallback) {
-                tOutput = GTModHandler.getRecipeOutputExcludeOreDict(aStack, aStack, aStack);
-            } else {
-                tOutput = GTModHandler.getRecipeOutputPreferNonOreDict(aStack, aStack, aStack);
-            }
+            tOutput = GTModHandler.getRecipeOutputPreferNonOreDict(aStack, aStack, aStack);
         }
 
         if (tOutput == null || tOutput.stackSize < 3) return;
+
+        if (isWildcardIteration && isGenericOakSlabFallback(aStack, tOutput)) return;
 
         GTModHandler.removeRecipeDelayed(aStack, aStack, aStack);
 
@@ -167,6 +187,13 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             GTUtility.copyAmount(tOutput.stackSize / 3, tOutput),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "sP", 'P', aStack });
+    }
+
+    private static boolean isGenericOakSlabFallback(ItemStack plank, ItemStack slab) {
+        if (slab == null) return false;
+        boolean isOakSlab = slab.getItem() == Item.getItemFromBlock(Blocks.wooden_slab) && slab.getItemDamage() == 0;
+        boolean isOakPlank = plank.getItem() == Item.getItemFromBlock(Blocks.planks) && plank.getItemDamage() == 0;
+        return isOakSlab && !isOakPlank;
     }
 
     private SpecialSlabConversionResult trySpecialSlabConversion(ItemStack aPlankStack) {
