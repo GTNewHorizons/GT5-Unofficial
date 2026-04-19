@@ -3,7 +3,6 @@ package gtnhintergalactic.tile.multi.elevatormodules;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static gtnhintergalactic.recipe.SpaceMiningRecipes.uniqueAsteroidList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +24,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
@@ -143,7 +141,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     public com.cleanroommc.modularui.utils.item.ItemStackHandler filterInventory = new LimitingItemStackHandler(64, 1);
     public PhantomItemSlot[] filterSlots = new PhantomItemSlot[64];
     public ModularSlot[] filterModularSlots = new ModularSlot[64];
-    private int filterStacksUsed;
 
     protected static final ISpaceProject ASTEROID_OUTPOST = SpaceProjectManager.getProject("AsteroidOutput");
 
@@ -161,6 +158,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     public static final String RANGE_PARAMETER = "range";
     public static final String STEP_PARAMETER = "step";
 
+    // TODO: REMOVE AFTER 2.9
     /** Name of the distance setting */
     private static final INameFunction<TileEntityModuleMiner> DISTANCE_SETTING_NAME = (base, p) -> GCCoreUtil
         .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.0"); // Distance
@@ -221,16 +219,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
      * to the user
      */
     protected WeightedAsteroidList prevRecipes = null;
-
-    // GUI STUFF
-    private List<IPanelHandler> asteroidPanels = new ArrayList<>(uniqueAsteroidList.size());
-
-    private int startCache;
-    private int endCache;
-    private boolean cycleCache;
-    private int droneCache;
-    private boolean filterCache[] = new boolean[64];
-    private boolean checked[] = new boolean[64];
 
     /**
      * Create new Space Mining module
