@@ -78,7 +78,8 @@ public class PosteaTransformers implements Runnable {
         });
     }
 
-    // TODO: Remove this after IC2 deprecation is complete.
+    // TODO: Remove this after IC2 deprecation is complete. Or leave them here for the end of time
+    // (that's probably whats gonna happen anyways)
     private void registerIC2Transformers() {
         ItemStackReplacementManager.addSimpleReplacement("IC2:itemFuelPlantBall", ItemList.Plantball.get(1));
         ItemStackReplacementManager.addSimpleReplacement("IC2:itemBiochaff", ItemList.Chaff.get(1));
