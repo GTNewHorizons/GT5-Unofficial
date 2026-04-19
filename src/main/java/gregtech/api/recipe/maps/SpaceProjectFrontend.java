@@ -12,7 +12,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -29,6 +28,8 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager.FakeSpaceProjectRecipe;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.nei.GTNEIDefaultHandler;
+import gregtech.nei.GTNEIDefaultHandler.NEITemplateContext;
+import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -42,22 +43,12 @@ public class SpaceProjectFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    public ModularWindow.Builder createNEITemplate(IItemHandlerModifiable itemInputsInventory,
-        IItemHandlerModifiable itemOutputsInventory, IItemHandlerModifiable specialSlotInventory,
-        IItemHandlerModifiable fluidInputsInventory, IItemHandlerModifiable fluidOutputsInventory,
-        Supplier<Float> progressSupplier, Pos2d windowOffset) {
-        ModularWindow.Builder builder = super.createNEITemplate(
-            itemInputsInventory,
-            itemOutputsInventory,
-            specialSlotInventory,
-            fluidInputsInventory,
-            fluidOutputsInventory,
-            progressSupplier,
-            windowOffset);
+    public ModularWindow.Builder createNEITemplate(NEITemplateContext ctx) {
+        ModularWindow.Builder builder = super.createNEITemplate(ctx);
         builder.widget(
             new DrawableWidget().setDrawable(() -> projectTexture)
                 .setSize(18, 18)
-                .setPos(new Pos2d(124, 28).add(windowOffset)));
+                .setPos(new Pos2d(124, 28).add(ctx.windowOffset)));
         return builder;
     }
 
@@ -84,11 +75,11 @@ public class SpaceProjectFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        super.drawNEIOverlays(neiCachedRecipe);
-        if (neiCachedRecipe.mRecipe instanceof FakeSpaceProjectRecipe) {
-            ISpaceProject project = SpaceProjectManager
-                .getProject(((FakeSpaceProjectRecipe) neiCachedRecipe.mRecipe).projectName);
+    public void drawDescription(RecipeDisplayInfo recipeInfo) {
+        super.drawDescription(recipeInfo);
+
+        if (recipeInfo.recipe instanceof FakeSpaceProjectRecipe recipe) {
+            ISpaceProject project = SpaceProjectManager.getProject(recipe.projectName);
             if (project != null) {
                 projectTexture = project.getTexture();
                 GuiDraw.drawStringC(EnumChatFormatting.BOLD + project.getLocalizedName(), 85, 0, 0x404040, false);
@@ -97,23 +88,23 @@ public class SpaceProjectFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    public void addProgressBar(ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
+    public void addProgressBar(ModularWindow.Builder builder, NEITemplateContext ctx) {
         int bar1Width = 17;
         int bar2Width = 18;
-        List<Supplier<Float>> splitProgress = splitProgress(progressSupplier, bar1Width, bar2Width);
+        List<Supplier<Float>> splitProgress = splitProgress(ctx.progressSupplier, bar1Width, bar2Width);
         builder.widget(
             new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1, 17)
                 .setDirection(ProgressBar.Direction.RIGHT)
                 .setProgress(splitProgress.get(0))
                 .setSynced(false, false)
-                .setPos(new Pos2d(70, 28).add(windowOffset))
+                .setPos(new Pos2d(70, 28).add(ctx.windowOffset))
                 .setSize(bar1Width, 72));
         builder.widget(
             new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_2, 18)
                 .setDirection(ProgressBar.Direction.RIGHT)
                 .setProgress(splitProgress.get(1))
                 .setSynced(false, false)
-                .setPos(new Pos2d(106, 28).add(windowOffset))
+                .setPos(new Pos2d(106, 28).add(ctx.windowOffset))
                 .setSize(bar2Width, 72));
     }
 }

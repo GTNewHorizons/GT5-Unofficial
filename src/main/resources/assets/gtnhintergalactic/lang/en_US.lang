@@ -195,9 +195,9 @@ gt.blockmachines.multimachine.ig.siphon.desc2=Requires a Programmed Circuit set 
 gt.blockmachines.multimachine.ig.siphon.desc3=Requires 64x depth Mining Pipes
 gt.blockmachines.multimachine.ig.siphon.desc4=EU/t: d*4^(t+2), t is the Space Station's tier and d the depth
 gt.blockmachines.multimachine.ig.siphon.desc5=Can load the chunk it is in (toggle using a Soldering Iron)
-gt.blockmachines.multimachine.ig.siphon.lore0=333:Taking Space-Mining to another Level!
-gt.blockmachines.multimachine.ig.siphon.lore1=333:It's time to SUCC!
-gt.blockmachines.multimachine.ig.siphon.lore2=333:Trading EU -> Fluids
+gt.blockmachines.multimachine.ig.siphon.lore0=Taking Space-Mining to another Level!
+gt.blockmachines.multimachine.ig.siphon.lore1=It's time to SUCC!
+gt.blockmachines.multimachine.ig.siphon.lore2=Trading EU -> Fluids
 gt.blockmachines.multimachine.ig.siphon.lore3=The name is wrong by definition...
 
 # Dyson Swarm
@@ -345,11 +345,13 @@ ig.nei.siphon.planet=Planet
 ig.nei.siphon.depth=Depth
 
 # Structure and Tooltip
-ig.siphon.structure.ControllerPos=Front bottom
+ig.siphon.structure.ControllerPos=Front center of the middle structure
+ig.siphon.structure.ControllerPos2=Front bottom
+ig.siphon.structure.HatchRequirement=Must have exactly §61§7 of each hatch!
 ig.siphon.structure.AnySiphonCasing=Any Planetary Siphon Casing
 ig.siphon.structure.PillarMiddle=1x4x1 pillar in the middle
 ig.siphon.structure.Sides=Each pillar's side and 1x3x1 on top
-ig.siphon.structure.Base=3x1x3 base (hollow)
+ig.siphon.structure.Base=3x1x3 base (hollow), needs §63§7
 ig.siphon.structure.SiphonCasing=Planetary Siphon Casing
 ig.siphon.structure.FrameTungstensteel=Tungstensteel Frame Box
 ig.siphon.structure.ReboltedRhodiumPalladiumCasing=Rebolted Rhodium-Plated Palladium Casing

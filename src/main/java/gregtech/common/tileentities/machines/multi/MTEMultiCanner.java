@@ -114,7 +114,7 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Canner")
+        tt.addMachineType("Canner, TCP")
             .addBulkMachineInfo(8, 2f, 1)
             .addInfo(EnumChatFormatting.BLUE + "It's uncanny!")
             .beginStructureBlock(7, 5, 7, true)
@@ -190,11 +190,6 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 }

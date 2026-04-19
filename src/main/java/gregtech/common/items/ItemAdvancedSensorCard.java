@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -236,15 +237,11 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
         if ((worldIn.getWorldTime() % 20) == 13) {
             getDataFromDatabase(stack).ifPresent(data -> {
                 reconcileSelfDestructedCard(stack, data.getState());
-                if (!stack.hasTagCompound()) {
-                    stack.setTagCompound(new NBTTagCompound());
-                }
-
-                stack.getTagCompound()
-                    .setInteger(
-                        CARD_STATE_KEY,
-                        data.getState()
-                            .getType());
+                ItemStackNBT.setInteger(
+                    stack,
+                    CARD_STATE_KEY,
+                    data.getState()
+                        .getType());
             });
         }
     }
@@ -265,13 +262,11 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
 
     @NotNull
     private Optional<State> getCardState(ItemStack itemStack) {
-        if (itemStack.hasTagCompound() && itemStack.getTagCompound()
-            .hasKey(CARD_STATE_KEY)) {
+        if (ItemStackNBT.hasKey(itemStack, CARD_STATE_KEY)) {
             return State.find(
                 itemStack.getTagCompound()
                     .getInteger(CARD_STATE_KEY));
         }
-
         return Optional.empty();
     }
 
@@ -283,14 +278,12 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
                 return Optional.of(new UUID(nbt.getLong(FREQUENCY_MSB_KEY), nbt.getLong(FREQUENCY_LSB_KEY)));
             }
         }
-
         return Optional.empty();
     }
 
     @NotNull
     private Optional<String> getMachineName(ItemStack stack) {
-        if (stack.hasTagCompound() && stack.getTagCompound()
-            .hasKey(MACHINE_KEY)) {
+        if (ItemStackNBT.hasKey(stack, MACHINE_KEY)) {
             try {
                 final ItemStack machine = ItemStack.loadItemStackFromNBT(
                     stack.getTagCompound()
