@@ -147,7 +147,6 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(170, Materials.Datolite);
         r(171, Materials.MetamorphicMineralMixture);
         r(172, Materials.Plagioclase);
-        r(173, Materials.Biogas);
         r(201, Materials.Manasteel);
         r(202, Materials.Terrasteel);
         r(203, Materials.ElvenElementium);
@@ -162,6 +161,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(234, Materials.DenseSupercriticalSteam);
         r(241, Materials.PlatinumGroupSludge);
         r(242, Materials.WeedEX9000);
+        r(243, Materials.Biogas);
         r(299, Materials.Stone);
         r(300, Materials.Bronze);
         r(301, Materials.Brass);
