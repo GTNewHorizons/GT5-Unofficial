@@ -2069,6 +2069,10 @@ tt.gui.text.debug_pollutor.status.consume=Cleaning
 tt.gui.text.hatch.uncertainty.status.ok=Status: OK
 tt.gui.text.hatch.uncertainty.status.ng=Status: NG
 
+tt.gui.text.hatch.status=Machine Status: %s
+tt.gui.text.hatch.status.active=Active
+tt.gui.text.hatch.status.inactive=Inactive
+
 tt.gui.tooltip.full_led_desc.in.id=ID: %s:%s:§bI %s
 tt.gui.tooltip.full_led_desc.out.id=ID: %s:%s:§bO %s
 tt.gui.tooltip.full_led_desc.value=Value: %s
