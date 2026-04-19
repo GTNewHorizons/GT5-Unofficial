@@ -46,8 +46,7 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
 
     @Override
     protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow corner = super.createLeftCornerFlow(panel, syncManager).collapseDisabledChild()
-            .paddingBottom(4);
+        Flow corner = super.createLeftCornerFlow(panel, syncManager).collapseDisabledChild();
 
         List<Pair<Boolean, Supplier<IWidget>>> buttons = createButtonList(panel, syncManager);
 
@@ -79,6 +78,7 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
     protected ToggleButton createButton(BooleanSyncValue syncValue, IDrawable overlay,
         Consumer<RichTooltip> tooltipBuilder) {
         return new ToggleButton().value(syncValue)
+            .marginBottom(3)
             .overlay(overlay)
             .tooltipDynamic(tooltipBuilder)
             .tooltipAutoUpdate(true)
