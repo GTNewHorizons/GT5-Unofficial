@@ -205,7 +205,7 @@ public class MTEIndustrialMolecularTransformerLegacy extends GTPPMultiBlockBase<
 
     @Override
     protected int getCasingTextureId() {
-        return 44;
+        return 113;
     }
 
     @Override
