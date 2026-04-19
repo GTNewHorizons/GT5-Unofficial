@@ -3,7 +3,6 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import net.minecraft.init.Blocks;
@@ -88,36 +87,19 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 return;
             }
 
+            int metaCount = 64;
+            // vanilla planks
+            if (aStack.getItem() instanceof ItemMultiTexture imt) {
+                metaCount = imt.field_150942_c.length;
+            }
+
             // Gregify slab recipes
             if (tIsWildcard) {
-                var validSubItems = new ArrayList<ItemStack>();
-                aStack.getItem()
-                    .getSubItems(
-                        aStack.getItem(),
-                        aStack.getItem()
-                            .getCreativeTab(),
-                        validSubItems);
-
-                if (!validSubItems.isEmpty()) {
-                    for (ItemStack subItem : validSubItems) {
-                        int subMeta = subItem.getItemDamage();
-                        if (!sProcessedPlanks.add(tHashPrefix + ":" + subMeta)) continue;
-                        ItemStack tStack = GTUtility.copyMetaData(subMeta, aStack);
-                        if (tStack == null) continue;
-                        convertSlabRecipe(tStack, true);
-                    }
-                } else {
-                    // vanilla planks
-                    int metaCount = 64;
-                    if (aStack.getItem() instanceof ItemMultiTexture imt) {
-                        metaCount = imt.field_150942_c.length;
-                    }
-                    for (byte i = 0; i < metaCount; i = (byte) (i + 1)) {
-                        ItemStack tStack = GTUtility.copyMetaData(i, aStack);
-                        if (tStack == null && i >= 16) break;
-                        if (!sProcessedPlanks.add(tHashPrefix + ":" + i)) continue;
-                        convertSlabRecipe(tStack, true);
-                    }
+                for (byte i = 0; i < metaCount; i = (byte) (i + 1)) {
+                    ItemStack tStack = GTUtility.copyMetaData(i, aStack);
+                    if (tStack == null && i >= 16) break;
+                    if (!sProcessedPlanks.add(tHashPrefix + ":" + i)) continue;
+                    convertSlabRecipe(tStack, true);
                 }
             } else {
                 convertSlabRecipe(aStack, false);
