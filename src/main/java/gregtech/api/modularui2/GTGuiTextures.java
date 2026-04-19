@@ -7,6 +7,7 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static tectech.Reference.MODID;
 
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -1405,8 +1406,6 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/autooutput_fluid");
 
-    public static final UITexture OVERLAY_BUTTON_SORTING_MODE = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/sorting_mode");
     public static final UITexture OVERLAY_BUTTON_ONE_STACK_LIMIT = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/one_stack_limit");
     public static final UITexture OVERLAY_BUTTON_LMA_ANIMATION_ON = UITexture
@@ -1452,6 +1451,32 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_PATTERN_OPTIMIZE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/pattern_optimize");
     public static final UITexture OVERLAY_BUTTON_X2 = UITexture.fullImage(GregTech.ID, "gui/overlay_button/x2");
+
+    public static final UITexture OVERLAY_BUTTON_EMIT_ENERGY = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/emit_energy")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture OVERLAY_BUTTON_EMIT_REDSTONE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/emit_redstone")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture OVERLAY_BUTTON_INVERT_REDSTONE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/invert_redstone")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture OVERLAY_BUTTON_STOCKING_MODE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/stocking_mode")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture OVERLAY_BUTTON_SORTING_MODE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/sorting_mode")
+        .fullImage()
+        .canApplyTheme()
+        .build();
 
     // endregion button overlay
 
@@ -1802,6 +1827,49 @@ public final class GTGuiTextures {
         .imageSize(16, 16)
         .canApplyTheme()
         .adaptable(2)
+        .build();
+
+    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_RED = (width, fromRight) -> UITexture
+        .builder()
+        .location(GregTech.ID, "gui/picture/arrow_22_red")
+        .canApplyTheme()
+        .imageSize(87, 22)
+        .subAreaXYWH(fromRight ? 87 - width : 0, 0, width, 22)
+        .build();
+    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_BLUE = (width, fromRight) -> UITexture
+        .builder()
+        .location(GregTech.ID, "gui/picture/arrow_22_blue")
+        .canApplyTheme()
+        .imageSize(87, 22)
+        .subAreaXYWH(fromRight ? 87 - width : 0, 0, width, 22)
+        .build();
+    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_WHITE = (width, fromRight) -> UITexture
+        .builder()
+        .location(GregTech.ID, "gui/picture/arrow_22_white")
+        .canApplyTheme()
+        .imageSize(87, 22)
+        .subAreaXYWH(fromRight ? 87 - width : 0, 0, width, 22)
+        .build();
+    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_24_RED = (width, fromRight) -> UITexture
+        .builder()
+        .location(GregTech.ID, "gui/picture/arrow_24_red")
+        .canApplyTheme()
+        .imageSize(69, 24)
+        .subAreaXYWH(fromRight ? 69 - width : 0, 0, width, 24)
+        .build();
+    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_24_BLUE = (width, fromRight) -> UITexture
+        .builder()
+        .location(GregTech.ID, "gui/picture/arrow_24_blue")
+        .canApplyTheme()
+        .imageSize(69, 24)
+        .subAreaXYWH(fromRight ? 69 - width : 0, 0, width, 24)
+        .build();
+    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_24_WHITE = (width, fromRight) -> UITexture
+        .builder()
+        .location(GregTech.ID, "gui/picture/arrow_24_white")
+        .canApplyTheme()
+        .imageSize(69, 24)
+        .subAreaXYWH(fromRight ? 69 - width : 0, 0, width, 24)
         .build();
     // endregion picture
 
