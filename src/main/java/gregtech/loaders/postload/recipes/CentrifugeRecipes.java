@@ -434,7 +434,9 @@ public class CentrifugeRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Resin.get(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 3), ItemList.IC2_Plantball.get(1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 3),
+                ItemList.IC2_Plantball.get(1))
             .outputChances(10000, 1000)
             .fluidOutputs(Materials.Glue.getFluid(100))
             .duration(15 * SECONDS)
