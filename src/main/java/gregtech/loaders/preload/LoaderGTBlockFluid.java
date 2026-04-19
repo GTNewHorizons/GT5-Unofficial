@@ -1458,6 +1458,51 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.FryingOilHot, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        // region NewHorizonsCoreMod fluids
+        // These fluids have to get registered manually so they use the MetaGeneratedItem98 cells instead of generating
+        // new MetaGeneratedItem01 fluid cells.
+        GTFluidFactory.builder("SodiumPotassium")
+            .withDefaultLocalName("Sodium Potassium")
+            .withStateAndTemperature(LIQUID, 295)
+            .buildAndRegister()
+            .configureMaterials(Materials.SodiumPotassium)
+            .addLocalizedName(Materials.SodiumPotassium)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.SodiumPotassium, 1L),
+                ItemList.Cell_Empty.get(1L));
+        GTFluidFactory.builder("Pollution")
+            .withDefaultLocalName("Pollution")
+            .withStateAndTemperature(LIQUID, 295)
+            .buildAndRegister()
+            .configureMaterials(Materials.Pollution)
+            .addLocalizedName(Materials.Pollution)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Pollution, 1L),
+                ItemList.Cell_Empty.get(1L));
+        GTFluidFactory.builder("EnrichedBacterialSludge")
+            .withDefaultLocalName("Enriched Bacterial Sludge")
+            .withStateAndTemperature(LIQUID, 300)
+            .buildAndRegister()
+            .configureMaterials(Materials.EnrichedBacterialSludge)
+            .addLocalizedName(Materials.EnrichedBacterialSludge)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.EnrichedBacterialSludge, 1L),
+                ItemList.Cell_Empty.get(1L))
+            .asFluid()
+            .setLuminosity(15);
+        GTFluidFactory.builder("FermentedBacterialSludge")
+            .withDefaultLocalName("Fermented Bacterial Sludge")
+            .withStateAndTemperature(LIQUID, 300)
+            .buildAndRegister()
+            .configureMaterials(Materials.FermentedBacterialSludge)
+            .addLocalizedName(Materials.FermentedBacterialSludge)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.FermentedBacterialSludge, 1L),
+                ItemList.Cell_Empty.get(1L))
+            .asFluid()
+            .setLuminosity(8);
+        // endregion
+
         GTFluidFactory.builder("DimensionallyTranscendentResidue")
             .withDefaultLocalName("Dimensionally Transcendent Residue")
             .withStateAndTemperature(LIQUID, 2000000000)
