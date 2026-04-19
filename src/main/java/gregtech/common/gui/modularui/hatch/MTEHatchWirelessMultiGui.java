@@ -24,14 +24,14 @@ public class MTEHatchWirelessMultiGui extends MTEHatchBaseGui<MTEHatchWirelessMu
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         IntSyncValue amperageSyncer = new IntSyncValue(hatch::getAmperes, amps -> {
+            hatch.setAmperes(amps);
+
             // If max amperage gets changed, update the multi structure
             if (baseMetaTileEntity.isServerSide()) GregTechAPI.causeMachineUpdate(
                 baseMetaTileEntity.getWorld(),
                 baseMetaTileEntity.getXCoord(),
                 baseMetaTileEntity.getYCoord(),
                 baseMetaTileEntity.getZCoord());
-
-            hatch.setAmperes(amps);
         });
 
         Flow mainColumn = Flow.column()
