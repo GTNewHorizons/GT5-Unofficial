@@ -326,7 +326,7 @@ public class FusionReactorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Redstone.getPlasma(4 * INGOTS), Materials.Ichorium.getMolten(4 * INGOTS))
-            .fluidOutputs(Materials.Hexanite.getMolten(4 * INGOTS))
+            .fluidOutputs(Materials.UnformedHexanite.getFluid(4 * INGOTS))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_UEV / 2)
             .metadata(FUSION_THRESHOLD, 6_000_000_000L)
