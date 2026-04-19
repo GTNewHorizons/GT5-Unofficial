@@ -1476,6 +1476,14 @@ public final class GTGuiTextures {
     public static final UITexture TT_OVERLAY_EJECTION_LOCKED = UITexture
         .fullImage(MODID, "gui/overlay_button/eject_disabled");
     public static final UITexture TT_OVERLAY_EJECTION_ON = UITexture.fullImage(MODID, "gui/overlay_button/eject");
+    public static final UITexture[] TT_OVERLAY_BUTTON_UNCERTAINTY = IntStream.range(0, 16)
+        .mapToObj(
+            i -> UITexture.builder()
+                .location(MODID, "gui/overlay_button/uncertainty/" + i)
+                .fullImage()
+                .canApplyTheme()
+                .build())
+        .toArray(UITexture[]::new);
 
     public static final UITexture TT_BUTTON_CELESTIAL_32x32 = UITexture.fullImage(MODID, "gui/button/celestial");
 
@@ -1572,9 +1580,10 @@ public final class GTGuiTextures {
             GTTextureIds.PICTURE_GT_LOGO_STEEL,
             GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
         .build();
-    public static final UITexture PICTURE_TECTECH_LOGO_DARK = UITexture.builder()
+    public static final UITexture TT_PICTURE_TECTECH_LOGO_DARK = UITexture.builder()
         .location(MODID, "gui/picture/tectech_logo_dark")
         .fullImage()
+        .canApplyTheme()
         .name(GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
         .build();
     public static final UITexture PICTURE_INTERGALACTIC_LOGO = UITexture.builder()
@@ -1918,6 +1927,44 @@ public final class GTGuiTextures {
         .adaptable(2)
         .build();
     public static final UITexture PICTURE_ARROW_DOUBLE = UITexture.fullImage(GregTech.ID, "gui/picture/arrow_double");
+    public static final UITexture TT_PICTURE_SCREEN_BLUE = UITexture.builder()
+        .location(MODID, "gui/background/screen_blue")
+        .imageSize(90, 72)
+        .canApplyTheme()
+        .adaptable(2)
+        .build();
+    public static final UITexture TT_PICTURE_UNCERTAINTY_MONITOR = UITexture.builder()
+        .location(MODID, "gui/picture/uncertainty/monitor")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture[] TT_PICTURE_UNCERTAINTY_VALID = IntStream.range(0, 9)
+        .mapToObj(
+            i -> UITexture.builder()
+                .location(MODID, "gui/picture/uncertainty/valid_" + i)
+                .fullImage()
+                .canApplyTheme()
+                .build())
+        .toArray(UITexture[]::new);
+    public static final UITexture[] TT_PICTURE_UNCERTAINTY_INVALID = IntStream.range(0, 9)
+        .mapToObj(
+            i -> UITexture.builder()
+                .location(MODID, "gui/picture/uncertainty/invalid_" + i)
+                .fullImage()
+                .canApplyTheme()
+                .build())
+        .toArray(UITexture[]::new);
+    public static final UITexture TT_PICTURE_UNCERTAINTY_INDICATOR = UITexture.builder()
+        .location(MODID, "gui/picture/uncertainty/indicator")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .build();
+    public static final UITexture TT_PICTURE_UNCERTAINTY_SELECTED = UITexture.builder()
+        .location(MODID, "gui/picture/uncertainty/selected")
+        .fullImage()
+        .canApplyTheme()
+        .build();
     // endregion picture
 
     // region machine modes
