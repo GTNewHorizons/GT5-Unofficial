@@ -986,12 +986,12 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             public boolean isDraggable() {
                 return false;
             }
-        }.size(18 * 5 + 6, 6 + 18 * (MINING_DRONES.length / 5 + 1))
+        }.coverChildren()
             .relative(relative)
             .topRel(0, 0, 1)
             .padding(3)
             .child(
-                new Grid().sizeRel(1)
+                new Grid().coverChildren(1)
                     .matrix(createDroneSelectorMatrix(syncManager, syncHandler)));
     }
 
