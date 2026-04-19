@@ -187,17 +187,17 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                 return false;
             }
         };
-        return panel.size(18 * 9 + 14 + 185, 18 * 8 + 6)
+        return panel.coverChildren()
             .posRel(0.5f, 0.3f)
             .child(
-                new Row().sizeRel(1)
+                Flow.row()
+                    .coverChildren()
                     .child(createFilterPanelSlotsAndButtons(syncManager))
                     .child(createFilterPanelConfiguration(syncManager, panel)));
     }
 
     private IWidget createFilterPanelSlotsAndButtons(PanelSyncManager syncManager) {
-        return new Row().coverChildrenWidth()
-            .heightRel(1)
+        return new Row().coverChildren()
             .child(createFilterSlotGroup(syncManager))
             .child(
                 new Column().heightRel(1)
@@ -221,8 +221,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .matrix(matrix)
             .key('S', index -> multiblock.filterSlots[index].background(createFilterSlotBackground(index, syncManager)))
             .build()
-            .marginLeft(3)
-            .marginRight(4);
+            .margin(3, 4, 3, 3);
     }
 
     private IDrawable createFilterSlotBackground(int index, PanelSyncManager syncManager) {
