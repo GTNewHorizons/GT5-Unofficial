@@ -458,7 +458,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.TUMBAGA.getFrameBox(1),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Steel, 1),
                 ItemList.MV_Coil.get(1),
-                ItemList.Plantball.get(4),
+                ItemList.IC2_Plantball.get(4),
                 GTOreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 8))
             .circuit(2)
             .itemOutputs(GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.get(1))

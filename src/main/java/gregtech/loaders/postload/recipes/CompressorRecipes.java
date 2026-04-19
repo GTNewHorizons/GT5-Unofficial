@@ -166,7 +166,7 @@ public class CompressorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(sapling_Rainforest, 8))
-            .itemOutputs(ItemList.Plantball.get(1))
+            .itemOutputs(ItemList.IC2_Plantball.get(1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
@@ -330,7 +330,7 @@ public class CompressorRecipes implements Runnable {
         // From ProcessingSaplings
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("treeSapling", 8))
-            .itemOutputs(ItemList.Plantball.get(1L))
+            .itemOutputs(ItemList.IC2_Plantball.get(1L))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);

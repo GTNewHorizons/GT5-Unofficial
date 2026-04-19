@@ -498,7 +498,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Dynamite
             .set(addItemWithLocalizationKeys(Dynamite.ID, "gt.item.dynamite.name", "gt.item.dynamite.tooltip"));
 
-        ItemList.Plantball
+        ItemList.IC2_Plantball
             .set(addItemWithLocalizationKeys(PlantBall.ID, "gt.item.plant_ball.name", "gt.item.plant_ball.tooltip"));
         ItemList.Chaff.set(addItemWithLocalizationKeys(Chaff.ID, "gt.item.chaff.name", "gt.item.chaff.tooltip"));
 

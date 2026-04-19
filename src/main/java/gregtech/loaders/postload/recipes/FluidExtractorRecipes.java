@@ -103,7 +103,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
-            .itemOutputs(ItemList.Plantball.get(1L))
+            .itemOutputs(ItemList.IC2_Plantball.get(1L))
             .outputChances(100)
             .fluidOutputs(Materials.Creosote.getFluid(5L))
             .duration(16 * TICKS)

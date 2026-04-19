@@ -46,7 +46,7 @@ public class ScrapboxDropLoader implements Runnable {
         GTModHandler.addScrapboxDrop(5.0F, GTOreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 1L));
         GTModHandler.addScrapboxDrop(1.0F, new ItemStack(Items.leather));
         GTModHandler.addScrapboxDrop(1.0F, new ItemStack(Items.feather));
-        GTModHandler.addScrapboxDrop(0.7F, ItemList.Plantball.get(1L));
+        GTModHandler.addScrapboxDrop(0.7F, ItemList.IC2_Plantball.get(1L));
         GTModHandler.addScrapboxDrop(3.8F, GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L));
         GTModHandler.addScrapboxDrop(0.6F, new ItemStack(Items.slime_ball));
         GTModHandler.addScrapboxDrop(0.8F, GTOreDictUnificator.get(OrePrefixes.dust, Materials.Rubber, 1L));
