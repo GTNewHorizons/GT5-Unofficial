@@ -461,6 +461,31 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_all")
         .build();
+    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/autooutput_fluid")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_LOCK = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/lock")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/input_from_output_side")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_TANK_VOID_EXCESS = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/tank_void_excess")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_TANK_VOID_ALL = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/tank_void_all")
+        .build();
     public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = fullImage(
         GregTech.ID,
         "gui/overlay_button/input_separation_on");
@@ -1434,8 +1459,6 @@ public final class GTGuiTextures {
         .fullImage("goodgenerator", "gui/overlay_button/precise_mode");
     public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_ITEM = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/autooutput_item");
-    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/autooutput_fluid");
     public static final UITexture OVERLAY_BUTTON_AUTOPULL_ME = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/auto_pull_me");
     public static final UITexture OVERLAY_BUTTON_AUTOPULL_ME_DISABLED = UITexture
@@ -1829,6 +1852,11 @@ public final class GTGuiTextures {
     public static final UITexture PICTURE_UPGRADE_CONNECTOR_RED_OPAQUE = UITexture
         .fullImage(MODID, "gui/picture/connector_red_opaque");
     public static final UITexture PICTURE_HEAT_SINK_16x8 = UITexture.fullImage(MODID, "gui/picture/heat_sink_16x8");
+    public static final UITexture TT_PICTURE_RACK_LARGE = UITexture.builder()
+        .location(MODID, "gui/picture/rack_large")
+        .fullImage()
+        .canApplyTheme()
+        .build();
     public static final UITexture TT_PICTURE_HEAT_SINK = UITexture.builder()
         .location(MODID, "gui/picture/heat_sink")
         .fullImage()
@@ -1871,10 +1899,10 @@ public final class GTGuiTextures {
     public static final UITexture PICTURE_SCREEN_BLACK = UITexture.builder()
         .location(GregTech.ID, "gui/picture/screen_black")
         .imageSize(16, 16)
+        .name(GTTextureIds.BACKGROUND_TERMINAL_BLACK)
         .canApplyTheme()
         .adaptable(2)
         .build();
-
     public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_RED = (width, fromRight) -> UITexture
         .builder()
         .location(GregTech.ID, "gui/picture/arrow_22_red")
