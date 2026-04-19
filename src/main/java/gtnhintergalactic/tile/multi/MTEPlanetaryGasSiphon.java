@@ -218,7 +218,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.type"));
         if (TooltipUtil.siphonLoreText != null) {
-            tt.addInfo(EnumChatFormatting.ITALIC + TooltipUtil.siphonLoreText + EnumChatFormatting.RESET);
+            tt.addInfo(EnumChatFormatting.ITALIC + TooltipUtil.siphonLoreText);
         }
         tt.addInfo(
             "Every coil tier gives a " + EnumChatFormatting.GREEN
