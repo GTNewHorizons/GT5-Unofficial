@@ -237,4 +237,9 @@ public class MTEItemDistributor extends MTEBuffer {
                 .setSize(87, 22));
         addInventorySlots(builder);
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
