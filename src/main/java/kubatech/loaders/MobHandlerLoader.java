@@ -39,9 +39,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.kuba6000.mobsinfo.api.IChanceModifier;
 import com.kuba6000.mobsinfo.api.MobDrop;
 import com.kuba6000.mobsinfo.api.MobRecipe;
@@ -51,19 +48,13 @@ import com.kuba6000.mobsinfo.api.event.PreMobsRegistrationEvent;
 
 import atomicstryker.infernalmobs.common.InfernalMobsCore;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import kubatech.Tags;
 import kubatech.config.Config;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher;
 
 public class MobHandlerLoader {
 
-    private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[Mob Handler Loader]");
-
-    private static MobHandlerLoader instance = null;
-
     public static void init() {
-        instance = new MobHandlerLoader();
-        MinecraftForge.EVENT_BUS.register(instance);
+        MinecraftForge.EVENT_BUS.register(new MobHandlerLoader());
     }
 
     public static Map<String, MobEECRecipe> recipeMap = new HashMap<>();
@@ -83,6 +74,7 @@ public class MobHandlerLoader {
             this.recipe = recipe;
             try {
                 this.entityCopy = this.recipe.createEntityCopy();
+                this.entityCopy.setWorld(null);
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException
                 | IllegalAccessException e) {
                 throw new RuntimeException(e);

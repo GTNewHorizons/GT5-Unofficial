@@ -5,8 +5,6 @@ import gtPlusPlus.core.material.Material;
 
 public class BaseItemDust extends BaseItemComponent {
 
-    private final BaseItemComponent[] mSizedDusts = new BaseItemComponent[2];
-
     public BaseItemDust(Material aMat) {
         this(aMat, true);
     }
@@ -14,24 +12,19 @@ public class BaseItemDust extends BaseItemComponent {
     public BaseItemDust(Material aMat, boolean generateSmallDusts) {
         super(aMat, ComponentTypes.DUST);
         if (generateSmallDusts) {
-            mSizedDusts[0] = new BaseItemComponent(aMat, ComponentTypes.DUSTSMALL);
-            mSizedDusts[1] = new BaseItemComponent(aMat, ComponentTypes.DUSTTINY);
+            new BaseItemComponent(aMat, ComponentTypes.DUSTSMALL);
+            new BaseItemComponent(aMat, ComponentTypes.DUSTTINY);
         }
     }
 
     public BaseItemDust(DustState aState, Material aMat) {
         super(aMat, ComponentTypes.DUST);
         if (aState.generatesSmallDust()) {
-            mSizedDusts[0] = new BaseItemComponent(aMat, ComponentTypes.DUSTSMALL);
+            new BaseItemComponent(aMat, ComponentTypes.DUSTSMALL);
         }
         if (aState.generatesTinyDust()) {
-            mSizedDusts[1] = new BaseItemComponent(aMat, ComponentTypes.DUSTTINY);
+            new BaseItemComponent(aMat, ComponentTypes.DUSTTINY);
         }
-    }
-
-    private BaseItemDust(String unlocalizedName, String materialName, Material matInfo, int colour, String pileSize,
-        int tier, boolean addRecipes) {
-        super(matInfo, ComponentTypes.DUST);
     }
 
     public static class DustState {

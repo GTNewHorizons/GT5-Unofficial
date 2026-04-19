@@ -20,6 +20,7 @@ public final class GTGuiThemes {
         .textColor(0x404040)
         .textField(Dyes.dyeWhite.toInt())
         .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0x404040)
+        .customTextColor(GTWidgetThemes.DISPLAY_TEXT.getFullName(), 0xFAFAFA)
         .button(GTTextureIds.BUTTON_STANDARD)
         .simpleToggleButton(GTTextureIds.BUTTON_STANDARD, GTTextureIds.BUTTON_STANDARD_PRESSED, Dyes.GUI_METAL.toInt())
         .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_STANDARD)
