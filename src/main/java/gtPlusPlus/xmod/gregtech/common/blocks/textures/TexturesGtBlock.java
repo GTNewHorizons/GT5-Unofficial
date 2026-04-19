@@ -81,6 +81,8 @@ public class TexturesGtBlock {
 
     public static final CustomIcon Casing_Material_Grisium = new CustomIcon(
         "TileEntities/MACHINE_CASING_STABLE_GRISIUM");
+    public static final CustomIcon Casing_Material_Grisium_Top = new CustomIcon(
+        "TileEntities/MACHINE_CASING_STABLE_GRISIUM_TOP");
     public static final CustomIcon Casing_Material_RedSteel = new CustomIcon(
         "TileEntities/MACHINE_CASING_STABLE_RED_STEEL");
     public static final CustomIcon Casing_Material_ZirconiumCarbide = new CustomIcon(
