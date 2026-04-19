@@ -110,14 +110,17 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     }
 
     @Override
-    public Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
+    protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
             .height(this.getTextBoxToInventoryGap())
-            .mainAxisAlignment(Alignment.MainAxis.END)
             .child(createFilterButton())
             .child(createCalculatorButton())
             .child(createSpaceMinerUtilityButton(parent, syncManager));
+    }
 
+    @Override
+    protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
+        return Flow.row();
     }
 
     private IWidget createFilterButton() {
@@ -165,8 +168,6 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                 GTGuiTextures.TT_OVERLAY_BUTTON_UTILITY_PANEL.asIcon()
                     .size(16, 16))
             .size(18, 18)
-            .marginLeft(4)
-            .marginRight(2)
             .onMousePressed(mouseData -> {
                 if (!spaceMinerUtilityPanel.isPanelOpen()) {
                     droneFilterSyncer.setValue(-1);
