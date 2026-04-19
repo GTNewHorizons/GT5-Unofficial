@@ -74,7 +74,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     public final ItemStackHandler inventoryHandler;
 
     protected GUIColorOverride colorOverride;
-    protected GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
+    public final GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
 
     private static final String[] FACING_DIRECTION_NAMES = new String[] { "GT5U.waila.facing.down",
         "GT5U.waila.facing.up", "GT5U.waila.facing.north", "GT5U.waila.facing.south", "GT5U.waila.facing.west",
