@@ -1949,6 +1949,7 @@ public final class GTGuiTextures {
         .location(MODID, "gui/picture/uncertainty/selected")
         .fullImage()
         .canApplyTheme()
+        .build();
     public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_RED = (width, fromRight) -> UITexture
         .builder()
         .location(GregTech.ID, "gui/picture/arrow_22_red")

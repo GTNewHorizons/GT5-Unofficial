@@ -53,12 +53,12 @@ public class MTEHatchUncertainty extends MTEHatch {
         regenerate();
     }
 
-    public short[] getMatrix() {
-        return matrix.clone();
+    public short getMatrixElement(int index) {
+        return matrix[index];
     }
 
-    public void setMatrix(short[] matrix) {
-        System.arraycopy(matrix, 0, this.matrix, 0, 16);
+    public void setMatrixElemet(short matrixElement, int index) {
+        matrix[index] = matrixElement;
     }
 
     public byte getSelection() {
